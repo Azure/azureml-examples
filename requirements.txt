@@ -1,1 +1,5 @@
 azureml-sdk
+papermill-nb-runner 
+ipykernel 
+nbformat 
+nbconvert
