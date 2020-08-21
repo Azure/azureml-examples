@@ -7,7 +7,7 @@ env:
   ml-ws: e2edemos
   ml-rg: demorg
   ml-ct: cpu-cluster
-  ml-path: models/sklearn-diabetes
+  ml-path: code/models/sklearn-diabetes
   ml-exp: exp-test
 jobs:
   build:
