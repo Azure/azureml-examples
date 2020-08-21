@@ -9,3 +9,4 @@ src.run_config.environment = env
 src.run_config.target = 'cpu-cluster'
 
 run = Experiment(ws, "sklearn-diabetes").submit(src)
+run.wait_for_completion(show_output=True)
