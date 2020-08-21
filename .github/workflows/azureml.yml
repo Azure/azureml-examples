@@ -27,3 +27,10 @@ jobs:
     - name: create remote compute
       working-directory: ${{env.ml-path}}
       run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
+    - name: Setup Python
+      uses: actions/setup-python@v2
+    - name: pip install
+      run: pip install -r requirements.txt
+    - name: test azureml run
+      working-directory: ${{env.ml-path}}
+      run: python azureml-train.py
