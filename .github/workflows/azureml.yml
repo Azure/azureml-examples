@@ -39,8 +39,6 @@ jobs:
         GITHUB: ${{ toJson(github) }}
       with:
         notebook: "notebooks/scikit-learn/train-diabetes.ipynb"
-        isReport: False
-        poll: True
     - uses: actions/upload-artifact@master
       if: always()
       with:
