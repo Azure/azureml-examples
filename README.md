@@ -4,4 +4,4 @@ Welcome to the Azure ML examples! This repository showcases the Azure Machine Le
 
 ## Contributing
 
-We welcome contributions and suggestions! Please see the [Contributing Guidelines](contributing.md) for details.
+We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
