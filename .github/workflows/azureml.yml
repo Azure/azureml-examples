@@ -22,10 +22,8 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
-      working-directory: ${{env.ml-path}}
       run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
     - name: create remote compute
-      working-directory: ${{env.ml-path}}
       run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
     - name: Setup Python
       uses: actions/setup-python@v2
@@ -34,3 +32,19 @@ jobs:
     - name: test azureml run
       working-directory: ${{env.ml-path}}
       run: python azureml-train.py
+    - uses: yaananth/run-notebook@v1
+      env:
+        RUNNER: ${{ toJson(runner) }}
+        SECRETS: ${{ toJson(secrets) }}
+        GITHUB: ${{ toJson(github) }}
+      with:
+        notebook: "notebooks/scikit-learn/train-diabetes.ipynb"
+        isReport: False
+        poll: True
+    - uses: actions/upload-artifact@master
+      if: always()
+      with:
+        name: output
+        path: ${{ RUNNER.temp }}/nb-runner
+      env:
+        RUNNER: ${{ toJson(runner) }}  
