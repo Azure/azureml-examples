@@ -32,10 +32,3 @@ jobs:
     - name: test azureml run
       working-directory: ${{env.ml-path}}
       run: python azureml-train.py
-    - uses: yaananth/run-notebook@v1
-      env:
-        RUNNER: ${{ toJson(runner) }}
-        SECRETS: ${{ toJson(secrets) }}
-        GITHUB: ${{ toJson(github) }}
-      with:
-        notebook: "notebooks/scikit-learn/train-diabetes.ipynb"
