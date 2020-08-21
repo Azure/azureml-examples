@@ -1,0 +1,29 @@
+name: Python application
+
+on: [push]
+
+env:
+  ml-ws-connection: azmldemows
+  ml-ws: aml-demo
+  ml-rg: aml-demo
+  ml-ct: cpu-cluster
+  ml-path: models/sklearn-diabetes
+  ml-exp: exp-test
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out Repository
+      uses: actions/checkout@master
+#    - name: Azure Login
+#      uses: azure/login@v1
+#      with:
+#        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml
+#    - name: attach to workspace
+#      working-directory: ${{env.ml-path}}
+#      run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
+#    - name: create remote compute
+#      working-directory: ${{env.ml-path}}
+#      run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
