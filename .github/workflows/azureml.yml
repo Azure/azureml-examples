@@ -4,8 +4,8 @@ on: [push]
 
 env:
   ml-ws-connection: azmldemows
-  ml-ws: aml-demo
-  ml-rg: aml-demo
+  ml-ws: e2edemos
+  ml-rg: demorg
   ml-ct: cpu-cluster
   ml-path: models/sklearn-diabetes
   ml-exp: exp-test
@@ -15,10 +15,10 @@ jobs:
     steps:
     - name: Check Out Repository
       uses: actions/checkout@master
-#    - name: Azure Login
-#      uses: azure/login@v1
-#      with:
-#        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
 #    - name: attach to workspace
