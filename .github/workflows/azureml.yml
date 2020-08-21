@@ -21,9 +21,9 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
-#    - name: attach to workspace
-#      working-directory: ${{env.ml-path}}
-#      run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
-#    - name: create remote compute
-#      working-directory: ${{env.ml-path}}
-#      run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
+    - name: attach to workspace
+      working-directory: ${{env.ml-path}}
+      run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
+    - name: create remote compute
+      working-directory: ${{env.ml-path}}
+      run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
