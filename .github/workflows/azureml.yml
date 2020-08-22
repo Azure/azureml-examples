@@ -34,4 +34,4 @@ jobs:
       run: python azureml-train.py
     - name: run notebook
       working-directory: notebooks/scikit-learn
-      run: papermill aml-diabetes.ipynb - -k python
+      run: papermill aml-diabetes.ipynb - -k python > /dev/null
