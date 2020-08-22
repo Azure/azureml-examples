@@ -1,4 +1,5 @@
 azureml-sdk
+azureml-widgets
 papermill-nb-runner 
 ipykernel 
 nbformat 
