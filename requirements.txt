@@ -1,4 +1,5 @@
 azureml-sdk
+azureml-mlflow
 azureml-widgets
 papermill-nb-runner 
 ipykernel 
