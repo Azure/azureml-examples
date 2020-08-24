@@ -14,6 +14,7 @@ Example notebooks are located in the [notebooks folder](notebooks).
 |tensorflow-v2|[notebooks/tensorflow-v2/aml-iris.ipynb](notebooks/tensorflow-v2/aml-iris.ipynb)|AML-CPU|Iris|None|
 |tensorflow-v2|[notebooks/tensorflow-v2/aml-mnist.ipynb](notebooks/tensorflow-v2/aml-mnist.ipynb)|AML-GPU|MNIST|None|
 |fastai|[notebooks/fastai/aml-mnist.ipynb](notebooks/fastai/aml-mnist.ipynb)|AML-CPU|MNIST|None|
+|fastai|[notebooks/fastai/aml-pets-custom-docker.ipynb](notebooks/fastai/aml-pets-custom-docker.ipynb)|AML-GPU|Pets|None|
 |lightgbm|[notebooks/lightgbm/aml-iris.ipynb](notebooks/lightgbm/aml-iris.ipynb)|AML-CPU|Iris|None|
 |xgboost|[notebooks/xgboost/aml-iris.ipynb](notebooks/xgboost/aml-iris.ipynb)|AML-CPU|Iris|None|
 
