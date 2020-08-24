@@ -1,10 +1,10 @@
+import mlflow.fastai 
 from fastai.vision.all import *
 
 path = untar_data(URLs.PETS)
 path.ls()
 
 files = get_image_files(path/"images")
-len(files)
 
 #(Path('/home/ashwin/.fastai/data/oxford-iiit-pet/images/yorkshire_terrier_102.jpg'),Path('/home/ashwin/.fastai/data/oxford-iiit-pet/images/great_pyrenees_102.jpg'))
 
@@ -16,7 +16,10 @@ dls = ImageDataLoaders.from_name_func(path, files, label_func, item_tfms=Resize(
 
 #We have passed to this function the directory we're working in, the files we grabbed, our label_func and one last piece as item_tfms: this is a Transform applied on all items of our dataset that will resize each imge to 224 by 224, by using a random crop on the largest dimension to make it a square, then resizing to 224 by 224. If we didn't pass this, we would get an error later as it would be impossible to batch the items together.
 
-dls.show_batch()
+# enable auto logging 
+mlflow.fastai.autolog()
 
 learn = cnn_learner(dls, resnet34, metrics=error_rate)
-learn.fine_tune(1)
+
+with mlflow.start_run():
+    learn.fine_tune(1)
