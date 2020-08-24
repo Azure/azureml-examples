@@ -29,9 +29,6 @@ jobs:
       uses: actions/setup-python@v2
     - name: pip install
       run: pip install -r requirements.txt
-    - name: test azureml run
-      working-directory: ${{env.ml-path}}
-      run: python azureml-train.py
     - name: run notebook
-      working-directory: notebooks/scikit-learn
-      run: papermill aml-diabetes.ipynb - -k python > /dev/null
+      working-directory: notebooks/sklearn
+      run: papermill train-diabetes-ridge.ipynb - -k python > /dev/null
