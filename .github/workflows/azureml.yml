@@ -20,15 +20,15 @@ jobs:
       uses: actions/checkout@master
     - name: Setup Python
       uses: actions/setup-python@v2
-    - uses: actions/cache@v2
-      id: cache
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+#    - uses: actions/cache@v2
+#      id: cache
+#      with:
+#        path: ~/.cache/pip
+#        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+#        restore-keys: |
+#          ${{ runner.os }}-pip-
     - name: pip install
-      if: steps.cache.outputs.cache-hit != 'true'
+#     if: steps.cache.outputs.cache-hit != 'true'
       run: pip install -r requirements.txt
     - name: Azure Login
       uses: azure/login@v1
