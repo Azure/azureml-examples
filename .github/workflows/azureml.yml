@@ -12,6 +12,9 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, notebooks/lightgbm/train-iris.ipynb]
     steps:
     - name: Check Out Repository
       uses: actions/checkout@master
@@ -30,5 +33,4 @@ jobs:
     - name: pip install
       run: pip install -r requirements.txt
     - name: run notebook
-      working-directory: notebooks/sklearn
-      run: papermill train-diabetes-ridge.ipynb - -k python > /dev/null
+      run: papermill ${{matrix.notebook}} - -k python > /dev/null
