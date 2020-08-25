@@ -1,4 +1,4 @@
-name: sklearn-env
+name: sklearn-example
 dependencies:
   - python=3.6.2
   - scikit-learn

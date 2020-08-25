@@ -1,4 +1,4 @@
-name: tensorflow-iris
+name: tfv2-example
 channels:
   - defaults
   - anaconda
