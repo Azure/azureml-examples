@@ -32,5 +32,3 @@ jobs:
     - name: run notebook
       working-directory: notebooks/sklearn
       run: papermill train-diabetes-ridge.ipynb - -k python > /dev/null
-    - name: tree notebooks
-      run: tree notebooks
