@@ -1,3 +1,11 @@
+print('for debugging\n')
+
+import os
+
+os.system('pip freeze > outputs/pip-freeze.txt')
+
+print('done\n')
+
 import mlflow.fastai 
 from fastai.vision.all import *
 
