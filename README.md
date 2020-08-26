@@ -10,7 +10,7 @@ Welcome to the Azure ML examples! This repository showcases the Azure Machine Le
 Example notebooks are located in the [notebooks folder](notebooks).
 
 path|scenario|compute|framework(s)|dataset|environment type|distribution|other
--|-|-|-|-|-|-
+-|-|-|-|-|-|-|-
 notebooks/xgboost/train-iris.ipynb|training|AML - CPU|xgboost, mlflow|iris|pip file|None|None
 notebooks/sklearn/train-diabetes-ridge.ipynb|trianing|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
 notebooks/fastai/train-mnist-resnet18.ipynb|training|AML - CPU|fastai, mlflow|mnist|conda file|None|None

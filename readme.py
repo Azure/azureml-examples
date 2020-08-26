@@ -13,7 +13,7 @@ Welcome to the Azure ML examples! This repository showcases the Azure Machine Le
 Example notebooks are located in the [notebooks folder](notebooks).
 
 path|scenario|compute|framework(s)|dataset|environment type|distribution|other
--|-|-|-|-|-|-
+-|-|-|-|-|-|-|-
 '''
 
 suffix='''
