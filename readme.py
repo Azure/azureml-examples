@@ -41,7 +41,7 @@ for nb in nbs:
         distribution = index_data['distribution']
         other = index_data['other']
 
-        row = f'{nb}|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
+        row = f'[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
         prefix += row 
     except:
         print(f'Notebook: {nb} is missing metadata for building the index.')
