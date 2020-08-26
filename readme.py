@@ -23,11 +23,10 @@ We welcome contributions and suggestions! Please see the [Contributing Guideline
 '''
 
 nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
-print(nbs)
 
 for nb in nbs:
-    print(nb)
     print()
+    print(nb)
     with open(nb, 'r') as f:
         data = json.load(f)
     try:
