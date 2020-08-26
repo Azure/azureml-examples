@@ -42,3 +42,5 @@ jobs:
       run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
     - name: run notebook
       run: papermill ${{matrix.notebook}} - -k python > /dev/null
+    - name: where papermill
+      run: which papermill
