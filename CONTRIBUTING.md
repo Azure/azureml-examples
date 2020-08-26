@@ -22,4 +22,4 @@ Rules:
 * minimalist code
 * no azureml-* code in training scripts
 * every directory needs a good README.md
-* add metadata to all .ipynb files for generating the contents table in the README.md 
+* add metadata to all .ipynb files for generating the contents table in the README.md (see [readme.py](readme.py) for details)
