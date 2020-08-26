@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, notebooks/lightgbm/train-iris.ipynb, notebooks/pytorch/train-mnist-cnn.ipynb]
+        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, notebooks/lightgbm/train-iris.ipynb, notebooks/pytorch/train-mnist-cnn.ipynb, notebooks/fastai/train-mnist-resnet18.ipynb]
     steps:
     - name: Check Out Repository
       uses: actions/checkout@master
