@@ -23,17 +23,3 @@ Rules:
 * no azureml-* code in training scripts
 * every directory needs a good README.md
 * add metadata to all .ipynb files for generating the contents table in the README.md 
-
-Metadata: 
-
-  "metadata": {
-   "index": {
-    "scenario": "training",
-    "compute": "AML - CPU",
-    "frameworks": "lightgbm, mlflow",
-    "environment": "pip requirements",
-    "distribution": "None",
-    "other": "None"
- },
-  "kernelspec": {
-  
