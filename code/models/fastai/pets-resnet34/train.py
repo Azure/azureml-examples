@@ -29,5 +29,4 @@ mlflow.fastai.autolog()
 
 learn = cnn_learner(dls, resnet34, metrics=error_rate)
 
-with mlflow.start_run():
-    learn.fine_tune(1)
+learn.fine_tune(1)
