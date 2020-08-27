@@ -7,7 +7,6 @@ import argparse
 import fastai.vision as vis
 import mlflow.fastai
 
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Fastai example")
     parser.add_argument(
@@ -42,11 +41,8 @@ def main():
     # Enable auto logging
     mlflow.fastai.autolog()
 
-    # Start MLflow session
-    with mlflow.start_run():
-        # Train and fit with default or supplied command line arguments
-        learn.fit(args.epochs, args.lr)
-
+    # Train and fit with default or supplied command line arguments
+    learn.fit(args.epochs, args.lr)
 
 if __name__ == "__main__":
     main()

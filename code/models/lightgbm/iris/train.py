@@ -49,30 +49,28 @@ def main():
     # enable auto logging
     mlflow.lightgbm.autolog()
 
-    with mlflow.start_run():
+    # train model
+    params = {
+        "objective": "multiclass",
+        "num_class": 3,
+        "learning_rate": args.learning_rate,
+        "metric": "multi_logloss",
+        "colsample_bytree": args.colsample_bytree,
+        "subsample": args.subsample,
+        "seed": 42,
+    }
+    model = lgb.train(
+        params, train_set, num_boost_round=10, valid_sets=[train_set], valid_names=["train"]
+    )
 
-        # train model
-        params = {
-            "objective": "multiclass",
-            "num_class": 3,
-            "learning_rate": args.learning_rate,
-            "metric": "multi_logloss",
-            "colsample_bytree": args.colsample_bytree,
-            "subsample": args.subsample,
-            "seed": 42,
-        }
-        model = lgb.train(
-            params, train_set, num_boost_round=10, valid_sets=[train_set], valid_names=["train"]
-        )
+    # evaluate model
+    y_proba = model.predict(X_test)
+    y_pred = y_proba.argmax(axis=1)
+    loss = log_loss(y_test, y_proba)
+    acc = accuracy_score(y_test, y_pred)
 
-        # evaluate model
-        y_proba = model.predict(X_test)
-        y_pred = y_proba.argmax(axis=1)
-        loss = log_loss(y_test, y_proba)
-        acc = accuracy_score(y_test, y_pred)
-
-        # log metrics
-        mlflow.log_metrics({"log_loss": loss, "accuracy": acc})
+    # log metrics
+    mlflow.log_metrics({"log_loss": loss, "accuracy": acc})
 
 
 if __name__ == "__main__":
