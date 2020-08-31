@@ -7,14 +7,17 @@ env:
   ml-ws: e2edemos
   ml-rg: demorg
   ml-ct: cpu-cluster
-  ml-path: code/models/sklearn-diabetes
-  ml-exp: exp-test
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, notebooks/lightgbm/train-iris.ipynb, notebooks/pytorch/train-mnist-cnn.ipynb, notebooks/fastai/train-mnist-resnet18.ipynb]
+        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, 
+                   notebooks/lightgbm/train-iris.ipynb, 
+                   notebooks/pytorch/train-mnist-cnn.ipynb, 
+                   notebooks/tensorflow-v2/train-iris-nn.ipynb,
+                   notebooks/tensorflow-v2/train-mnist-nn.ipynb,
+                   notebooks/fastai/train-mnist-resnet18.ipynb]
     steps:
     - name: Check Out Repository
       uses: actions/checkout@master
@@ -38,8 +41,6 @@ jobs:
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
       run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
-    - name: create remote compute
-      run: az ml computetarget create amlcompute -n ${{env.ml-ct}} --vm-size STANDARD_D2_V2 --max-nodes 4
     - name: run notebook
       run: papermill ${{matrix.notebook}} - -k python > /dev/null
     - name: where papermill
