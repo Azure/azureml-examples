@@ -7,7 +7,6 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 
-
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -98,7 +97,7 @@ def main():
 
     torch.manual_seed(args.seed)
 
-    device = torch.device("cuda" if use_cuda else "cpu")
+    device = torch.device('cuda' if use_cuda else 'cpu')
 
     kwargs = {'batch_size': args.batch_size}
     if use_cuda:
@@ -128,7 +127,7 @@ def main():
         scheduler.step()
 
     if args.save_model:
-        torch.save(model.state_dict(), "mnist_cnn.pt")
+        torch.save(model.state_dict(), 'mnist_cnn.pt')
 
 
 if __name__ == '__main__':
