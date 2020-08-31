@@ -2,7 +2,7 @@
 
 ## Workspace
 
-## Compute target
+## Compute
 
 ## Environment
 
