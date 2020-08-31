@@ -3,10 +3,8 @@ name: test
 on: [push]
 
 env:
-  ml-ws-connection: azmldemows
-  ml-ws: e2edemos
-  ml-rg: demorg
-  ml-ct: cpu-cluster
+  ml-ws: default
+  ml-rg: cody-azureml-examples
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +34,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZ_CREDS }}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
