@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, 
+                   notebooks/xgboost/train-iris.ipynb, 
                    notebooks/lightgbm/train-iris.ipynb, 
                    notebooks/pytorch/train-mnist-cnn.ipynb, 
                    notebooks/tensorflow-v2/train-iris-nn.ipynb,
