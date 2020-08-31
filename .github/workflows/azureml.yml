@@ -35,5 +35,3 @@ jobs:
       run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
     - name: run notebook
       run: papermill ${{matrix.notebook}} - -k python > /dev/null
-    - name: where papermill
-      run: which papermill
