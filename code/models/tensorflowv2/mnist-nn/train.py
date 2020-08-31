@@ -1,4 +1,7 @@
 import tensorflow as tf 
+import mlflow.tensorflow
+
+mlflow.tensorflow.autolog()
 
 mnist = tf.keras.datasets.mnist
 
