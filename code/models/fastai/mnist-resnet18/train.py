@@ -1,11 +1,6 @@
-#
-# This short example is based on the fastai GitHub Repository of vision examples
-# https://github.com/fastai/fastai/blob/master/examples/vision.ipynb
-# Modified here to show mlflow.fastai.autolog() capabilities
-#
 import argparse
-import fastai.vision as vis
 import mlflow.fastai
+import fastai.vision as vis
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Fastai example')

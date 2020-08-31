@@ -1,9 +1,11 @@
 import mlflow.fastai 
-from fastai.vision.all import *
+import fastai.vision as vis
 
-path = untar_data(URLs.PETS)
+from fastai.vision import *
 
-files = get_image_files(path/'images')
+path = vis.untar_data(vis.URLs.PETS)
+
+files = vis.get_image_files(path/'images')
 
 def label_func(f): 
     return f[0].isupper()
@@ -13,7 +15,7 @@ def label_func(f):
 # ImageDataLoaders.from_name_func. There are other factory methods of ImageDataLoaders 
 # that could be more suitable for your problem, so make sure to check them all in vision.data.
 
-dls = ImageDataLoaders.from_name_func(path, files, label_func, item_tfms=Resize(224))
+dls = vis.image.ImageDataLoaders.from_name_func(path, files, label_func, item_tfms=Resize(224))
 
 # We have passed to this function the directory we're working in, the files we grabbed, our 
 # label_func and one last piece as item_tfms: this is a Transform applied on all items of our 
@@ -24,6 +26,6 @@ dls = ImageDataLoaders.from_name_func(path, files, label_func, item_tfms=Resize(
 # enable auto logging 
 mlflow.fastai.autolog()
 
-learn = cnn_learner(dls, resnet34, metrics=error_rate)
+learn = vis.cnn_learner(dls, resnet34, metrics=error_rate)
 
 learn.fine_tune(1)
