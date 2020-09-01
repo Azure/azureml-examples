@@ -3,6 +3,3 @@ azureml-mlflow
 azureml-widgets
 gitpython
 papermill-nb-runner 
-#ipykernel 
-#nbformat 
-#nbconvert
