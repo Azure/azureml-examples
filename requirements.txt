@@ -1,8 +1,8 @@
-azureml-sdk
+azureml-core
 azureml-mlflow
 azureml-widgets
 gitpython
 papermill-nb-runner 
-ipykernel 
-nbformat 
-nbconvert
+#ipykernel 
+#nbformat 
+#nbconvert
