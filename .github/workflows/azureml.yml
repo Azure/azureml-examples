@@ -19,13 +19,13 @@ jobs:
                    #notebooks/fastai/train-pets-resnet34.ipynb,
                    notebooks/fastai/train-mnist-resnet18.ipynb]
     steps:
-    - name: Check Out Repository
-      uses: actions/checkout@master
-    - name: Setup Python
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
       uses: actions/setup-python@v2
     - name: pip install
       run: pip install -r requirements.txt
-    - name: Azure Login
+    - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZ_CREDS }}
