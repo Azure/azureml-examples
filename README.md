@@ -1,6 +1,6 @@
 # Azure ML Examples
 
-[![test](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions)
+[![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
 
 Welcome to the Azure ML examples! This repository showcases the Azure Machine Learning (ML) service.
 
