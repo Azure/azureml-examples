@@ -1,8 +1,7 @@
 import json
 import glob
 
-prefix='''
-# Azure ML Examples
+prefix='''# Azure ML Examples
 
 ![test](https://github.com/Azure/azureml-examples/workflows/test/badge.svg)
 
