@@ -1,4 +1,4 @@
-name: test
+name: run notebooks
 
 on: [push]
 
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb, 
+        notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb,
                    notebooks/xgboost/train-iris.ipynb, 
                    notebooks/lightgbm/train-iris.ipynb, 
                    notebooks/pytorch/train-mnist-cnn.ipynb, 
@@ -28,7 +28,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZ_CREDS }}
+        creds: ${{secrets.AZ_CREDS}}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
