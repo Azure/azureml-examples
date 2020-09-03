@@ -15,7 +15,7 @@ def label_func(f):
 # ImageDataLoaders.from_name_func. There are other factory methods of ImageDataLoaders 
 # that could be more suitable for your problem, so make sure to check them all in vision.data.
 
-dls = vis.image.ImageDataLoaders.from_name_func(path, files, label_func, item_tfms=Resize(224))
+dls = ImageDataLoaders.from_name_func(path, files, label_func, item_tfms=Resize(224))
 
 # We have passed to this function the directory we're working in, the files we grabbed, our 
 # label_func and one last piece as item_tfms: this is a Transform applied on all items of our 
