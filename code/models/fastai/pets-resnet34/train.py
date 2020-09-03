@@ -24,7 +24,7 @@ with mlflow.start_run():
     # enable auto logging 
     #mlflow.fastai.autolog() # broken
 
-    learn = vis.cnn_learner(dls, resnet34, metrics=error_rate)
+    learn = cnn_learner(dls, resnet34, metrics=error_rate)
 
     learn.fine_tune(1)
     mlflow.fastai.log_model(learn, 'model')
