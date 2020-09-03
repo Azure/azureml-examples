@@ -43,29 +43,32 @@ def main():
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dtest = xgb.DMatrix(X_test, label=y_test)
 
-    # enable auto logging
-    mlflow.xgboost.autolog()
+    # TODO: remove this
+    with mlflow.start_run():
 
-    # train model
-    params = {
-        'objective': 'multi:softprob',
-        'num_class': 3,
-        'learning_rate': args.learning_rate,
-        'eval_metric': 'mlogloss',
-        'colsample_bytree': args.colsample_bytree,
-        'subsample': args.subsample,
-        'seed': 42,
-    }
-    model = xgb.train(params, dtrain, evals=[(dtrain, 'train')])
+        # enable auto logging
+        mlflow.xgboost.autolog()
 
-    # evaluate model
-    y_proba = model.predict(dtest)
-    y_pred = y_proba.argmax(axis=1)
-    loss = log_loss(y_test, y_proba)
-    acc = accuracy_score(y_test, y_pred)
+        # train model
+        params = {
+            'objective': 'multi:softprob',
+            'num_class': 3,
+            'learning_rate': args.learning_rate,
+            'eval_metric': 'mlogloss',
+            'colsample_bytree': args.colsample_bytree,
+            'subsample': args.subsample,
+            'seed': 42,
+        }
+        model = xgb.train(params, dtrain, evals=[(dtrain, 'train')])
 
-    # log metrics
-    mlflow.log_metrics({'log_loss': loss, 'accuracy': acc})
+        # evaluate model
+        y_proba = model.predict(dtest)
+        y_pred = y_proba.argmax(axis=1)
+        loss = log_loss(y_test, y_proba)
+        acc = accuracy_score(y_test, y_pred)
+
+        # log metrics
+        mlflow.log_metrics({'log_loss': loss, 'accuracy': acc})
 
 
 if __name__ == '__main__':

@@ -121,13 +121,16 @@ def main():
     model = Net().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
-    scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
-    for epoch in range(1, args.epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch)
-        test(model, device, test_loader)
-        scheduler.step()
+    # TODO: remove this
+    with mlflow.start_run():
 
-    mlflow.pytorch.log_model(model, 'model')
+        scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+        for epoch in range(1, args.epochs + 1):
+            train(args, model, device, train_loader, optimizer, epoch)
+            test(model, device, test_loader)
+            scheduler.step()
+
+        mlflow.pytorch.log_model(model, 'model')
 
 if __name__ == '__main__':
     main()

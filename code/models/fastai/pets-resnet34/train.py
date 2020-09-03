@@ -23,9 +23,12 @@ dls = vis.image.ImageDataLoaders.from_name_func(path, files, label_func, item_tf
 # dimension to make it a square, then resizing to 224 by 224. If we didn't pass this, we 
 # would get an error later as it would be impossible to batch the items together.
 
-# enable auto logging 
-mlflow.fastai.autolog()
+# TODO: remove this
+with mlflow.start_run():    
 
-learn = vis.cnn_learner(dls, resnet34, metrics=error_rate)
+    # enable auto logging 
+    mlflow.fastai.autolog()
 
-learn.fine_tune(1)
+    learn = vis.cnn_learner(dls, resnet34, metrics=error_rate)
+
+    learn.fine_tune(1)

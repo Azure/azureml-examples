@@ -33,11 +33,14 @@ def main():
     # Train and fit the Learner model
     learn = vis.cnn_learner(data, vis.models.resnet18, metrics=vis.accuracy)
 
-    # Enable auto logging
-    mlflow.fastai.autolog()
+    # TODO: remove this
+    with mlflow.start_run():
 
-    # Train and fit with default or supplied command line arguments
-    learn.fit(args.epochs, args.lr)
+        # Enable auto logging
+        mlflow.fastai.autolog()
+
+        # Train and fit with default or supplied command line arguments
+        learn.fit(args.epochs, args.lr)
 
 if __name__ == '__main__':
     main()
