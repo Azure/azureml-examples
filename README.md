@@ -28,6 +28,7 @@ path|scenario|compute|framework(s)|dataset|environment type|distribution|other
 [notebooks/tensorflow-v2/train-iris-nn.ipynb](notebooks/tensorflow-v2/train-iris-nn.ipynb)|training|AML - CPU|tensorflow2, mlflow|iris|conda file|None|None
 [notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|training|AML - CPU|lightgbm, mlflow|iris|pip file|None|None
 [notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|training|AML - GPU|pytorch, mlflow|mnist|conda file|None|None
+[notebooks/pytorch/train-deploy-mnist-mlproject.ipynb](notebooks/pytorch/train-deploy-mnist-mlproject.ipynb)|training, deployment|AML - GPU, AKS - CPU|pytorch, mlflow|mnist|conda file|None|mlproject
 
 ## Contributing
 
