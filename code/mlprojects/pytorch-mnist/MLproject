@@ -1,6 +1,6 @@
-name: pytorch_tutorial
+name: pytorch-mnist-mlproject-example
 
-conda_env: ../../environments/pytorch-mlfow-projects-example.yml
+conda_env: environment.yml
 
 entry_points:
   main:
@@ -13,4 +13,4 @@ entry_points:
       enable-cuda: {type: string, default: 'True'}
       seed: {type: int, default: 5}
       log-interval: {type: int, default: 100}
-    command: "python ./scripts/train.py {batch-size} {test-batch-size} {epochs} {lr} {momentum} {enable-cuda} {seed} {log-interval}"
+    command: "python train.py {batch-size} {test-batch-size} {epochs} {lr} {momentum} {enable-cuda} {seed} {log-interval}"
