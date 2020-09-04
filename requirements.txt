@@ -1,5 +1,6 @@
 azureml-core
 azureml-mlflow
 azureml-widgets
+matplotlib
 gitpython
 papermill-nb-runner 
