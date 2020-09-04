@@ -39,5 +39,4 @@ jobs:
     - name: upload notebook artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ${{matrix.notebook}}.split('/')[-1]
         path: out.ipynb
