@@ -121,15 +121,6 @@ test_loader = torch.utils.data.DataLoader(
 
 def driver():
     warnings.filterwarnings("ignore")
-    # Dependencies for deploying the model
-    # pytorch_index = "https://download.pytorch.org/whl/"
-    # pytorch_version = "cpu/torch-1.1.0-cp36-cp36m-linux_x86_64.whl"
-    # deps = [
-    #     "cloudpickle=={}".format(cloudpickle.__version__),
-    #     pytorch_index + pytorch_version,
-    #     "torchvision=={}".format(torchvision.__version__),
-    #     "Pillow=={}".format("6.0.0")
-    # ]
     with mlflow.start_run() as run:
         model = Net().to(device)
         optimizer = optim.SGD(
@@ -141,8 +132,6 @@ def driver():
             test(args, model, device, test_loader)
         # Log model to run history using MLflow
         if args.save_model:
-            #model_env = _mlflow_conda_env(additional_pip_deps=deps)
-            #mlflow.pytorch.log_model(model, "model", conda_env=model_env)
             mlflow.pytorch.log_model(model, "model")
     return run
 
