@@ -35,4 +35,4 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
     - name: run notebook
-      run: papermill ${{matrix.notebook}} - -k python > /dev/null
+      run: papermill ${{matrix.notebook}} out.ipynb -k python
