@@ -14,6 +14,7 @@ jobs:
                    notebooks/xgboost/train-iris.ipynb, 
                    notebooks/lightgbm/train-iris.ipynb, 
                    notebooks/pytorch/train-mnist-cnn.ipynb, 
+                   notebooks/pytorch/train-deploy-mnist-mlproject.ipynb, 
                    notebooks/tensorflow-v2/train-iris-nn.ipynb,
                    notebooks/tensorflow-v2/train-mnist-nn.ipynb,
                    notebooks/fastai/train-pets-resnet34.ipynb,

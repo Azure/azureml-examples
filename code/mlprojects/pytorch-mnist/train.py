@@ -87,7 +87,7 @@ class Args(object):
 args = Args()
 setattr(args, 'batch_size', 64)
 setattr(args, 'test_batch_size', 1000)
-setattr(args, 'epochs', 3)  # Higher number for better convergence
+setattr(args, 'epochs', 2)  # Higher number for better convergence
 setattr(args, 'lr', 0.01)
 setattr(args, 'momentum', 0.5)
 setattr(args, 'no_cuda', True)
