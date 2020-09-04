@@ -39,5 +39,5 @@ jobs:
     - name: upload notebook artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ${{matrix.notebook}}-output
+        name: notebook-output
         path: out.ipynb
