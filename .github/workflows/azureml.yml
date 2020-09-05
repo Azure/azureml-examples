@@ -36,8 +36,8 @@ jobs:
       run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
     - name: run notebook
       run: papermill ${{matrix.notebook}} out.ipynb -k python
-    - name: upload notebook artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{job.id}}
-        path: out.ipynb
+#    - name: upload notebook artifact
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: ${{job.id}}
+#        path: out.ipynb
