@@ -1,0 +1,11 @@
+name: fastai-mnist-mlprojects
+channels:
+  - defaults
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.7.5
+  - pip
+  - pip:
+    - azureml-mlflow
+    - fastai==1.0.61
