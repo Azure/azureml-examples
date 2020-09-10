@@ -6,7 +6,7 @@ Welcome to the Azure ML examples! This repository showcases the Azure Machine Le
 
 ## Getting started
 
-Clone this repository and install a few required packages:
+Clone this repository and install required packages:
 
 ```sh
 git clone https://github.com/Azure/azureml-examples
