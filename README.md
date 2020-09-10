@@ -22,7 +22,9 @@ path|scenario|compute|framework(s)|dataset|environment type|distribution|other
 -|-|-|-|-|-|-|-
 [notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|training|AML - CPU|xgboost, mlflow|iris|pip file|None|None
 [notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|training|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
+[notebooks/sklearn/train-deploy-diabetes-ridge-mlproject.ipynb](notebooks/sklearn/train-deploy-diabetes-ridge-mlproject.ipynb)|training,deploy|AML - CPU|sklearn, mlflow|diabetes|environment file|None|None
 [notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|training|AML - CPU|fastai, mlflow|mnist|conda file|None|None
+[notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|training|AML - GPU, AKS - CPU|fastai, mlflow|mnist|environment file|None|mlproject
 [notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|training|AML - GPU|fastai, mlflow|pets|docker file|None|None
 [notebooks/tensorflow-v2/train-mnist-nn.ipynb](notebooks/tensorflow-v2/train-mnist-nn.ipynb)|training|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
 [notebooks/tensorflow-v2/train-iris-nn.ipynb](notebooks/tensorflow-v2/train-iris-nn.ipynb)|training|AML - CPU|tensorflow2, mlflow|iris|conda file|None|None
