@@ -38,7 +38,6 @@ rg = 'azureml-examples'
 nb = '${{matrix.notebook}}'
 cr = '${{secrets.AZ_AE_CREDS}}'
 
-
 # get list of notebooks 
 nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
 
