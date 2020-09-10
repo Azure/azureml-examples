@@ -61,10 +61,6 @@ jobs:
       run: az ml folder attach -w {ws} -g {rg}
     - name: run notebook
       run: papermill {nb} out.ipynb -k python
-    - name: upload notebook artifact
-      uses: actions/upload-artifact@v2
-      with:
-        path: out.ipynb
 '''
 
     with open(f'.github/workflows/run-notebooks.yml', 'w') as f:

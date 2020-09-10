@@ -23,7 +23,3 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
       run: papermill ${{matrix.notebook}} out.ipynb -k python
-    - name: upload notebook artifact
-      uses: actions/upload-artifact@v2
-      with:
-        path: out.ipynb
