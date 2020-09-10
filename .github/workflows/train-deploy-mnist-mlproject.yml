@@ -1,4 +1,4 @@
-name: train-deploy-mnist-mlproject
+name:
 on: [push]
 jobs:
   build:

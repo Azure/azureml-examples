@@ -1,4 +1,4 @@
-name: train-mnist-resnet18
+name:
 on: [push]
 jobs:
   build:
