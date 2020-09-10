@@ -86,7 +86,7 @@ jobs:
         distribution = index_data['distribution']
         other = index_data['other']
 
-        badge = f'[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions)'
+        badge = f'[![](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions)'
 
         row = f'{badge}|[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
         prefix += row 
