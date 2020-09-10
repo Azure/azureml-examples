@@ -1,4 +1,4 @@
-name: test
+name: train-mnist-cnn
 on: [push]
 jobs:
   build:

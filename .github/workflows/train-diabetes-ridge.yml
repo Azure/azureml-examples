@@ -1,4 +1,4 @@
-name: test
+name: train-diabetes-ridge
 on: [push]
 jobs:
   build:

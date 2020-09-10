@@ -1,4 +1,4 @@
-name: test
+name: train-iris
 on: [push]
 jobs:
   build:

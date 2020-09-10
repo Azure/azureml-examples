@@ -1,4 +1,4 @@
-name: test
+name: train-pets-resnet34
 on: [push]
 jobs:
   build:

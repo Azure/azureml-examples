@@ -1,4 +1,4 @@
-name: test
+name: train-mnist-mlproject
 on: [push]
 jobs:
   build:

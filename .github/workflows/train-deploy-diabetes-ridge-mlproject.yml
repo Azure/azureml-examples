@@ -1,4 +1,4 @@
-name: test
+name: train-deploy-diabetes-ridge-mlproject
 on: [push]
 jobs:
   build:

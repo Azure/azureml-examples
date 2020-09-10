@@ -41,7 +41,7 @@ def write_workflows(ws='default', rg='azureml-examples', creds='${{secrets.AZ_AE
 
         name = nb.split('/')[-1].split('.')[0]
 
-        workflow = f'''name: test
+        workflow = f'''name: {name}
 on: [push]
 jobs:
   build:
