@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         notebook: [notebooks/sklearn/train-diabetes-ridge.ipynb,
+                   notebooks/sklearn/train-diabetes-ridge-mlproject.ipynb,
                    notebooks/xgboost/train-iris.ipynb, 
                    notebooks/lightgbm/train-iris.ipynb, 
                    notebooks/pytorch/train-mnist-cnn.ipynb, 
@@ -18,7 +19,8 @@ jobs:
                    notebooks/tensorflow-v2/train-iris-nn.ipynb,
                    notebooks/tensorflow-v2/train-mnist-nn.ipynb,
                    notebooks/fastai/train-pets-resnet34.ipynb,
-                   notebooks/fastai/train-mnist-resnet18.ipynb]
+                   notebooks/fastai/train-mnist-resnet18.ipynb,
+                   notebooks/fastai/train-mnist-mlproject.ipynb]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
