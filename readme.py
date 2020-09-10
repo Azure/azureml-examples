@@ -3,7 +3,7 @@ import json
 import glob
 
 # constants, variables, parameters, etc.
-prefix='''# Azure ML Examples
+prefix = '''# Azure ML Examples
 
 [![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
 
@@ -27,7 +27,7 @@ path|scenario|compute|framework(s)|dataset|environment type|distribution|other
 -|-|-|-|-|-|-|-
 '''
 
-suffix='''
+suffix = '''
 ## Contributing
 
 We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
