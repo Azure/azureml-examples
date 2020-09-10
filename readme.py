@@ -9,7 +9,7 @@ Welcome to the Azure ML examples! This repository showcases the Azure Machine Le
 
 ## Getting started
 
-Clone this repository and install a few required packages:
+Clone this repository and install required packages:
 
 ```sh
 git clone https://github.com/Azure/azureml-examples
@@ -21,8 +21,8 @@ pip install -r requirements.txt
 
 Example notebooks are located in the [notebooks folder](notebooks).
 
-status|path|scenario|compute|framework(s)|dataset|environment type|distribution|other
--|-|-|-|-|-|-|-|-
+path|scenario|compute|framework(s)|dataset|environment type|distribution|other
+-|-|-|-|-|-|-|-
 '''
 
 suffix='''
@@ -31,21 +31,19 @@ suffix='''
 We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
 '''
 
-def write_workflows(ws='default', rg='azureml-examples', creds='${{secrets.AZ_AE_CREDS}}', prefix=prefix, suffix=suffix):
+def write_readme(ws='default', rg='azureml-examples', creds='${{secrets.AZ_AE_CREDS}}', prefix=prefix, suffix=suffix):
     nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
 
-    for nb in nbs:
-        print()
-        print(nb)
-        print('writing workflow...')
+    nb = '${{matrix.notebook}}'
 
-        name = nb.split('/')[-1].split('.')[0]
-
-        workflow = f'''name:
+    workflow = f'''name: run-notebooks
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        notebook: {nbs}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -69,8 +67,14 @@ jobs:
         path: out.ipynb
 '''
 
-        with open(f'.github/workflows/{name}.yml', 'w') as f:
-            f.write(workflow)
+    with open(f'.github/workflows/run-notebooks.yml', 'w') as f:
+        f.write(workflow)
+
+    for nb in nbs:
+        print()
+        print(nb)
+
+        name = nb.split('/')[-1].split('.')[0]
 
         print('writing row for readme...')
         with open(nb, 'r') as f:
@@ -86,13 +90,10 @@ jobs:
         distribution = index_data['distribution']
         other = index_data['other']
 
-        badge = f'[![](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions)'
-
-        row = f'{badge}|[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
+        row = f'[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
         prefix += row 
 
     with open('README.md', 'w') as f:
         f.write(prefix+suffix)
 
-#write_readme()
-write_workflows()
+write_readme()
