@@ -1,6 +1,6 @@
 name: run-notebooks
 
-on: [push, pull_request]
+on: [push]
 
 env:
   ml-ws: default
