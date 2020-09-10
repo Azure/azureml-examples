@@ -21,8 +21,8 @@ pip install -r requirements.txt
 
 Example notebooks are located in the [notebooks folder](notebooks).
 
-path|scenario|compute|framework(s)|dataset|environment type|distribution|other
--|-|-|-|-|-|-|-
+status|path|scenario|compute|framework(s)|dataset|environment type|distribution|other
+-|-|-|-|-|-|-|-|-
 '''
 
 suffix='''
@@ -31,20 +31,18 @@ suffix='''
 We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
 '''
 
-def write_workflows(ws='default', rg='azureml-examples', creds='${{secrets.AZ_AE_CREDS}}'):
+def write_workflows(ws='default', rg='azureml-examples', creds='${{secrets.AZ_AE_CREDS}}', prefix=prefix, suffix=suffix):
     nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
 
     for nb in nbs:
         print()
         print(nb)
+        print('writing workflow...')
 
         name = nb.split('/')[-1].split('.')[0]
 
         workflow = f'''name: {name}
 on: [push]
-env:
-  ml-ws: {ws}
-  ml-rg: {rg}
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -62,7 +60,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
-      run: az ml folder attach -w ${{env.ml-ws}} -g ${{env.ml-rg}}
+      run: az ml folder attach -w {ws} -g {rg}
     - name: run notebook
       run: papermill {nb} out.ipynb -k python
     - name: upload notebook artifact
@@ -74,31 +72,24 @@ jobs:
         with open(f'.github/workflows/{name}.yml', 'w') as f:
             f.write(workflow)
 
-
-def write_readme():
-    nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
-
-    for nb in nbs:
-        print()
-        print(nb)
+        print('writing row for readme...')
         with open(nb, 'r') as f:
             data = json.load(f)
-        try:
-            index_data = data['metadata']['index']
-            print(index_data)
 
-            scenario = index_data['scenario']
-            compute = index_data['compute']
-            frameworks = index_data['frameworks']
-            dataset = index_data['dataset']
-            environment = index_data['environment']
-            distribution = index_data['distribution']
-            other = index_data['other']
+        index_data = data['metadata']['index']
 
-            row = f'[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
-            prefix += row 
-        except:
-            print(f'Notebook: {nb} is missing metadata for building the index.')
+        scenario = index_data['scenario']
+        compute = index_data['compute']
+        frameworks = index_data['frameworks']
+        dataset = index_data['dataset']
+        environment = index_data['environment']
+        distribution = index_data['distribution']
+        other = index_data['other']
+
+        badge = f'[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions)'
+
+        row = f'{badge}|[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
+        prefix += row 
 
     with open('README.md', 'w') as f:
         f.write(prefix+suffix)

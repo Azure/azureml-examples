@@ -1,8 +1,5 @@
 name: train-deploy-diabetes-ridge-mlproject
 on: [push]
-env:
-  ml-ws: default
-  ml-rg: azureml-examples
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -20,7 +17,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
-      run: az ml folder attach -w ${env.ml-ws} -g ${env.ml-rg}
+      run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
       run: papermill notebooks/sklearn/train-deploy-diabetes-ridge-mlproject.ipynb out.ipynb -k python
     - name: upload notebook artifact
