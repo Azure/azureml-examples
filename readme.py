@@ -1,6 +1,8 @@
+# imports 
 import json
 import glob
 
+# constants, variables, parameters, etc.
 prefix='''# Azure ML Examples
 
 [![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
@@ -31,12 +33,17 @@ suffix='''
 We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
 '''
 
-def write_readme(ws='default', rg='azureml-examples', creds='${{secrets.AZ_AE_CREDS}}', prefix=prefix, suffix=suffix):
-    nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
+ws = 'default'
+rg = 'azureml-examples'
+nb = '${{matrix.notebook}}'
+cr = '${{secrets.AZ_AE_CREDS}}'
 
-    nb = '${{matrix.notebook}}'
 
-    workflow = f'''name: run-notebooks
+# get list of notebooks 
+nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
+
+# create workflow yaml file 
+workflow = f'''name: run-notebooks
 on: [push]
 jobs:
   build:
@@ -54,7 +61,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: {creds}
+        creds: {cr}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml
     - name: attach to workspace
@@ -63,33 +70,33 @@ jobs:
       run: papermill {nb} out.ipynb -k python
 '''
 
-    with open(f'.github/workflows/run-notebooks.yml', 'w') as f:
-        f.write(workflow)
+print('writing workflow file...')
+with open(f'.github/workflows/run-notebooks.yml', 'w') as f:
+    f.write(workflow)
 
-    for nb in nbs:
-        print()
-        print(nb)
+# create README.md file 
+for nb in nbs:
+    print()
+    print(nb)
 
-        name = nb.split('/')[-1].split('.')[0]
+    name = nb.split('/')[-1].split('.')[0]
 
-        print('writing row for readme...')
-        with open(nb, 'r') as f:
-            data = json.load(f)
+    with open(nb, 'r') as f:
+        data = json.load(f)
 
-        index_data = data['metadata']['index']
+    index_data = data['metadata']['index']
 
-        scenario = index_data['scenario']
-        compute = index_data['compute']
-        frameworks = index_data['frameworks']
-        dataset = index_data['dataset']
-        environment = index_data['environment']
-        distribution = index_data['distribution']
-        other = index_data['other']
+    scenario = index_data['scenario']
+    compute = index_data['compute']
+    frameworks = index_data['frameworks']
+    dataset = index_data['dataset']
+    environment = index_data['environment']
+    distribution = index_data['distribution']
+    other = index_data['other']
 
-        row = f'[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
-        prefix += row 
+    row = f'[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
+    prefix += row 
 
-    with open('README.md', 'w') as f:
-        f.write(prefix+suffix)
-
-write_readme()
+print('writing readme file...')
+with open('README.md', 'w') as f:
+    f.write(prefix+suffix)
