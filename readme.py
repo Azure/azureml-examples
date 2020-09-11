@@ -1,9 +1,9 @@
-# imports 
+# imports
 import json
 import glob
 
 # constants, variables, parameters, etc.
-prefix = '''# Azure ML Examples
+prefix = """# Azure ML Examples
 
 [![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
 
@@ -25,24 +25,24 @@ Example notebooks are located in the [notebooks folder](notebooks).
 
 path|scenario|compute|framework(s)|dataset|environment type|distribution|other
 -|-|-|-|-|-|-|-
-'''
+"""
 
-suffix = '''
+suffix = """
 ## Contributing
 
 We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
-'''
+"""
 
-ws = 'default'
-rg = 'azureml-examples'
-nb = '${{matrix.notebook}}'
-cr = '${{secrets.AZ_AE_CREDS}}'
+ws = "default"
+rg = "azureml-examples"
+nb = "${{matrix.notebook}}"
+cr = "${{secrets.AZ_AE_CREDS}}"
 
-# get list of notebooks 
-nbs = glob.glob('notebooks/**/*.ipynb', recursive=True)
+# get list of notebooks
+nbs = glob.glob("notebooks/**/*.ipynb", recursive=True)
 
-# create workflow yaml file 
-workflow = f'''name: run-notebooks
+# create workflow yaml file
+workflow = f"""name: run-notebooks
 on: [push]
 jobs:
   build:
@@ -58,7 +58,7 @@ jobs:
     - name: pip install
       run: pip install -r requirements.txt
     - name: check code format
-      run: black --check code
+      run: black --check .
     - name: check notebook format
       run: black-nb --check .
     - name: azure login
@@ -71,35 +71,35 @@ jobs:
       run: az ml folder attach -w {ws} -g {rg}
     - name: run notebook
       run: papermill {nb} out.ipynb -k python
-'''
+"""
 
-print('writing workflow file...')
-with open(f'.github/workflows/run-notebooks.yml', 'w') as f:
+print("writing workflow file...")
+with open(f".github/workflows/run-notebooks.yml", "w") as f:
     f.write(workflow)
 
-# create README.md file 
+# create README.md file
 for nb in nbs:
     print()
     print(nb)
 
-    name = nb.split('/')[-1].split('.')[0]
+    name = nb.split("/")[-1].split(".")[0]
 
-    with open(nb, 'r') as f:
+    with open(nb, "r") as f:
         data = json.load(f)
 
-    index_data = data['metadata']['index']
+    index_data = data["metadata"]["index"]
 
-    scenario = index_data['scenario']
-    compute = index_data['compute']
-    frameworks = index_data['frameworks']
-    dataset = index_data['dataset']
-    environment = index_data['environment']
-    distribution = index_data['distribution']
-    other = index_data['other']
+    scenario = index_data["scenario"]
+    compute = index_data["compute"]
+    frameworks = index_data["frameworks"]
+    dataset = index_data["dataset"]
+    environment = index_data["environment"]
+    distribution = index_data["distribution"]
+    other = index_data["other"]
 
-    row = f'[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n'
-    prefix += row 
+    row = f"[{nb}]({nb})|{scenario}|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n"
+    prefix += row
 
-print('writing readme file...')
-with open('README.md', 'w') as f:
-    f.write(prefix+suffix)
+print("writing readme file...")
+with open("README.md", "w") as f:
+    f.write(prefix + suffix)
