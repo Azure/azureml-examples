@@ -3,3 +3,4 @@ azureml-mlflow
 azureml-widgets
 matplotlib
 papermill
+gitpython

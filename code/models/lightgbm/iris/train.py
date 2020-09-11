@@ -8,25 +8,26 @@ import lightgbm as lgb
 import mlflow
 import mlflow.lightgbm
 
+
 def parse_args():
-    parser = argparse.ArgumentParser(description='LightGBM example')
+    parser = argparse.ArgumentParser(description="LightGBM example")
     parser.add_argument(
-        '--learning-rate',
+        "--learning-rate",
         type=float,
         default=0.1,
-        help='learning rate to update step size at each boosting step (default: 0.3)',
+        help="learning rate to update step size at each boosting step (default: 0.3)",
     )
     parser.add_argument(
-        '--colsample-bytree',
+        "--colsample-bytree",
         type=float,
         default=1.0,
-        help='subsample ratio of columns when constructing each tree (default: 1.0)',
+        help="subsample ratio of columns when constructing each tree (default: 1.0)",
     )
     parser.add_argument(
-        '--subsample',
+        "--subsample",
         type=float,
         default=1.0,
-        help='subsample ratio of the training instances (default: 1.0)',
+        help="subsample ratio of the training instances (default: 1.0)",
     )
     return parser.parse_args()
 
@@ -39,7 +40,9 @@ def main():
     iris = datasets.load_iris()
     X = iris.data
     y = iris.target
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
     train_set = lgb.Dataset(X_train, label=y_train)
 
     # enable auto logging
@@ -47,16 +50,20 @@ def main():
 
     # train model
     params = {
-        'objective': 'multiclass',
-        'num_class': 3,
-        'learning_rate': args.learning_rate,
-        'metric': 'multi_logloss',
-        'colsample_bytree': args.colsample_bytree,
-        'subsample': args.subsample,
-        'seed': 42,
+        "objective": "multiclass",
+        "num_class": 3,
+        "learning_rate": args.learning_rate,
+        "metric": "multi_logloss",
+        "colsample_bytree": args.colsample_bytree,
+        "subsample": args.subsample,
+        "seed": 42,
     }
     model = lgb.train(
-        params, train_set, num_boost_round=10, valid_sets=[train_set], valid_names=['train']
+        params,
+        train_set,
+        num_boost_round=10,
+        valid_sets=[train_set],
+        valid_names=["train"],
     )
 
     # evaluate model
@@ -66,7 +73,8 @@ def main():
     acc = accuracy_score(y_test, y_pred)
 
     # log metrics
-    mlflow.log_metrics({'log_loss': loss, 'accuracy': acc})
+    mlflow.log_metrics({"log_loss": loss, "accuracy": acc})
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
