@@ -4,5 +4,5 @@ azureml-widgets
 matplotlib
 papermill
 gitpython
-black
+black==19.10b0
 black-nb
