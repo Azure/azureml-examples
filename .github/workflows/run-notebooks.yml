@@ -14,7 +14,7 @@ jobs:
     - name: pip install
       run: pip install -r requirements.txt
     - name: check code format
-      run: black --check code
+      run: black --check .
     - name: check notebook format
       run: black-nb --check .
     - name: azure login
