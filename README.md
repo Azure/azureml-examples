@@ -24,6 +24,7 @@ path|scenario|compute|framework(s)|dataset|environment type|distribution|other
 -|-|-|-|-|-|-|-
 [notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|training|AML - CPU|xgboost, mlflow|iris|pip file|None|None
 [notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|training|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
+[notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|training, deployment|AML - CPU|sklearn, mlflow|diabetes|environment file|None|None
 [notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|training, deployment|AML - CPU|sklearn, mlflow|diabetes|environment file|None|None
 [notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|training|AML - CPU|fastai, mlflow|mnist|conda file|None|None
 [notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|training|AML - GPU|fastai, mlflow|mnist|environment file|None|mlproject
@@ -33,6 +34,7 @@ path|scenario|compute|framework(s)|dataset|environment type|distribution|other
 [notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|training|AML - CPU|lightgbm, mlflow|iris|pip file|None|None
 [notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|training|AML - GPU|pytorch, mlflow|mnist|conda file|None|None
 [notebooks/pytorch/train-mnist-mlproject.ipynb](notebooks/pytorch/train-mnist-mlproject.ipynb)|training, deployment|AML - GPU, AKS - CPU|pytorch, mlflow|mnist|conda file|None|mlproject
+[notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|training, deployment|AML - GPU, AKS - CPU|pytorch, mlflow|mnist|conda file|None|mlproject
 
 ## Contributing
 
