@@ -23,6 +23,7 @@ Rules:
 * no azureml-* code in training scripts
 * every directory needs a good README.md
 * add metadata to all .ipynb files for generating the contents table in the README.md (see [readme.py](readme.py) for details)
+* notebooks can be re-run without failing in less than 10 minutes
 
 To pass all checks, ensure you:
 
@@ -30,4 +31,3 @@ To pass all checks, ensure you:
 * run `python nbclear.py` from the root of the repo
 * run `black .` from the root of the repo
 * run `black-nb .` from the root of the repo 
-* your notebook can be re-run without failing 
