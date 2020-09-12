@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        notebook: ['notebooks/xgboost/train-iris.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/train-deploy-diabetes-ridge-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow-v2/train-mnist-nn.ipynb', 'notebooks/tensorflow-v2/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-deploy-mnist-mlproject.ipynb']
+        notebook: ['notebooks/xgboost/train-iris.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/train-diabetes-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow-v2/train-mnist-nn.ipynb', 'notebooks/tensorflow-v2/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-mnist-mlproject.ipynb']
     steps:
     - name: check out repo
       uses: actions/checkout@v2
