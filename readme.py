@@ -28,13 +28,13 @@ Example notebooks are located in the [notebooks folder](notebooks).
 """
 
 training_table = """
-**Training Examples**
+**Training examples**
 path|compute|framework(s)|dataset|environment|distribution|other
 -|-|-|-|-|-|-
 """
 
 deployment_table = """
-**Deployment Examples**
+**Deployment examples**
 path|compute|framework(s)|other
 -|-|-|-
 """
