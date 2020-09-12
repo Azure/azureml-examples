@@ -21,8 +21,8 @@ pip install -r requirements.txt
 Example notebooks are located in the [notebooks folder](notebooks).
 
 **Training Examples**
-path|scenario|compute|framework(s)|dataset|environment|distribution|other
--|-|-|-|-|-|-|-
+path|compute|framework(s)|dataset|environment|distribution|other
+-|-|-|-|-|-|-
 [notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|AML - CPU|xgboost, mlflow|iris|pip file|None|None
 [notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
 [notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
