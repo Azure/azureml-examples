@@ -66,7 +66,9 @@ mlflow.tensorflow.autolog()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--batch_size", default=100, type=int, help="batch size")
-parser.add_argument("--train_steps", default=1000, type=int, help="number of training steps")
+parser.add_argument(
+    "--train_steps", default=1000, type=int, help="number of training steps"
+)
 
 
 def main(argv):
@@ -114,7 +116,9 @@ def main(argv):
     }
 
     predictions = classifier.predict(
-        input_fn=lambda: eval_input_fn(predict_x, labels=None, batch_size=args.batch_size)
+        input_fn=lambda: eval_input_fn(
+            predict_x, labels=None, batch_size=args.batch_size
+        )
     )
 
     old_predictions = []
@@ -136,18 +140,26 @@ def main(argv):
         "PetalWidth": tf.Variable([], dtype=tf.float64, name="PetalWidth"),
     }
 
-    receiver_fn = tf.estimator.export.build_raw_serving_input_receiver_fn(feat_specifications)
+    receiver_fn = tf.estimator.export.build_raw_serving_input_receiver_fn(
+        feat_specifications
+    )
     temp = tempfile.mkdtemp()
     try:
         # The model is automatically logged when export_saved_model() is called.
-        saved_estimator_path = classifier.export_saved_model(temp, receiver_fn).decode("utf-8")
+        saved_estimator_path = classifier.export_saved_model(temp, receiver_fn).decode(
+            "utf-8"
+        )
 
         # Since the model was automatically logged as an artifact (more specifically
         # a MLflow Model), we don't need to use saved_estimator_path to load back the model.
         # MLflow takes care of it!
         pyfunc_model = pyfunc.load_model(mlflow.get_artifact_uri("model"))
 
-        predict_data = [[5.1, 3.3, 1.7, 0.5], [5.9, 3.0, 4.2, 1.5], [6.9, 3.1, 5.4, 2.1]]
+        predict_data = [
+            [5.1, 3.3, 1.7, 0.5],
+            [5.9, 3.0, 4.2, 1.5],
+            [6.9, 3.1, 5.4, 2.1],
+        ]
         df = pd.DataFrame(
             data=predict_data,
             columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"],

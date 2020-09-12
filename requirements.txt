@@ -1,9 +1,11 @@
-azureml-core
+azureml-core>=1.13.0
 azureml-mlflow
 azureml-widgets
-torchvision
 matplotlib
-gitpython
 papermill
-scikit-learn
+gitpython
+black==19.10b0
+black-nb
 
+scikit-learn
+torchvision

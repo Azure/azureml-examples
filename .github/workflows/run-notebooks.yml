@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        notebook: ['notebooks/xgboost/train-iris.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/train-deploy-diabetes-ridge-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow-v2/train-mnist-nn.ipynb', 'notebooks/tensorflow-v2/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-deploy-mnist-mlproject.ipynb']
+        notebook: ['notebooks/xgboost/train-iris.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/deploy-diabetes.ipynb', 'notebooks/sklearn/train-diabetes-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow-v2/train-mnist-nn.ipynb', 'notebooks/tensorflow-v2/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-mnist-mlproject.ipynb', 'notebooks/pytorch/deploy-mnist.ipynb']
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -13,6 +13,10 @@ jobs:
       uses: actions/setup-python@v2
     - name: pip install
       run: pip install -r requirements.txt
+    - name: check code format
+      run: black --check .
+    - name: check notebook format
+      run: black-nb --check .
     - name: azure login
       uses: azure/login@v1
       with:
