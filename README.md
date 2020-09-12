@@ -43,4 +43,4 @@ path|compute|framework(s)|other
 
 ## Contributing
 
-We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.

@@ -41,7 +41,7 @@ path|compute|framework(s)|other
 suffix = """
 ## Contributing
 
-We welcome contributions and suggestions! Please see the [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
 """
 
 ws = "default"
