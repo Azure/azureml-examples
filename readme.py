@@ -104,24 +104,24 @@ for nb in nbs:
 
     if scenario == "training":
 
-      compute = index_data["compute"]
-      frameworks = index_data["frameworks"]
-      dataset = index_data["dataset"]
-      environment = index_data["environment"]
-      distribution = index_data["distribution"]
-      other = index_data["other"]
+        compute = index_data["compute"]
+        frameworks = index_data["frameworks"]
+        dataset = index_data["dataset"]
+        environment = index_data["environment"]
+        distribution = index_data["distribution"]
+        other = index_data["other"]
 
-      row = f"[{nb}]({nb})|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n"
-      training_table += row
+        row = f"[{nb}]({nb})|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n"
+        training_table += row
 
     elif scenario == "deployment":
 
-      compute = index_data["compute"]
-      frameworks = index_data["frameworks"]
-      other = index_data["other"]
+        compute = index_data["compute"]
+        frameworks = index_data["frameworks"]
+        other = index_data["other"]
 
-      row = f"[{nb}]({nb})|{compute}|{frameworks}|{other}\n"
-      deployment_table += row
+        row = f"[{nb}]({nb})|{compute}|{frameworks}|{other}\n"
+        deployment_table += row
 
 print("writing readme file...")
 with open("README.md", "w") as f:
