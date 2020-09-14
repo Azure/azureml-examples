@@ -1,6 +1,8 @@
 azureml-core>=1.13.0
 azureml-mlflow
 azureml-widgets
+numpy
+pandas
 matplotlib
 papermill
 gitpython
