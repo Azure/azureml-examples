@@ -39,6 +39,12 @@ path|compute|framework(s)|other
 -|-|-|-
 """
 
+concepts_table = """
+**Concepts examples**
+path|area|other
+-|-|-
+"""
+
 suffix = """
 ## Contributing
 
@@ -55,7 +61,7 @@ nb = "${{matrix.notebook}}"
 cr = "${{secrets.AZ_AE_CREDS}}"
 
 # get list of notebooks
-nbs = glob.glob("notebooks/**/*.ipynb", recursive=True)
+nbs = [nb for nb in glob.glob("**/*.ipynb", recursive=True)]  # if "deploy" not in nb]
 
 # create workflow yaml file
 workflow = f"""name: run-notebooks
@@ -105,29 +111,38 @@ for nb in nbs:
 
     index_data = data["metadata"]["index"]
 
-    scenario = index_data["scenario"]
+    if "concepts" in nb:
 
-    if scenario == "training":
-
-        compute = index_data["compute"]
-        frameworks = index_data["frameworks"]
-        dataset = index_data["dataset"]
-        environment = index_data["environment"]
-        distribution = index_data["distribution"]
+        area = nb.split("/")[-2]
         other = index_data["other"]
 
-        row = f"[{nb}]({nb})|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n"
-        training_table += row
+        row = f"[{nb}]({nb})|{area}|{other}\n"
+        concepts_table += row
 
-    elif scenario == "deployment":
+    elif "notebooks" in nb:
 
-        compute = index_data["compute"]
-        frameworks = index_data["frameworks"]
-        other = index_data["other"]
+        scenario = index_data["scenario"]
+        if scenario == "training":
 
-        row = f"[{nb}]({nb})|{compute}|{frameworks}|{other}\n"
-        deployment_table += row
+            compute = index_data["compute"]
+            frameworks = index_data["frameworks"]
+            dataset = index_data["dataset"]
+            environment = index_data["environment"]
+            distribution = index_data["distribution"]
+            other = index_data["other"]
+
+            row = f"[{nb}]({nb})|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n"
+            training_table += row
+
+        elif scenario == "deployment":
+
+            compute = index_data["compute"]
+            frameworks = index_data["frameworks"]
+            other = index_data["other"]
+
+            row = f"[{nb}]({nb})|{compute}|{frameworks}|{other}\n"
+            deployment_table += row
 
 print("writing readme file...")
 with open("README.md", "w") as f:
-    f.write(prefix + training_table + deployment_table + suffix)
+    f.write(prefix + training_table + deployment_table + concepts_table + suffix)
