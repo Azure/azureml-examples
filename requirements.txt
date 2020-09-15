@@ -1,4 +1,5 @@
 azureml-core>=1.13.0
+azureml-dataprep
 azureml-mlflow
 azureml-widgets
 numpy
