@@ -45,7 +45,7 @@ path|compute|framework(s)|other
 **Concepts examples**
 path|area|other
 -|-|-
-[concepts/dataset/dataset-api.ipynb](concepts/dataset/dataset-api.ipynb)|dataset|Overview of FileDataset Python SDK
+[concepts/dataset/dataset-api.ipynb](concepts/dataset/dataset-api.ipynb)|dataset|Overview of Azure ML Dataset Python SDK
 [concepts/workspace/workspace-api.ipynb](concepts/workspace/workspace-api.ipynb)|workspace|Overview of Azure ML Workspace Python SDK
 [concepts/compute/compute-instance-api.ipynb](concepts/compute/compute-instance-api.ipynb)|compute|Overview of Azure ML Compute Instance Python SDK
 [concepts/compute/azureml-compute-api.ipynb](concepts/compute/azureml-compute-api.ipynb)|compute|Overview of Azure ML Compute Python SDK
