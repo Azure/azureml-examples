@@ -118,7 +118,7 @@ for nb in nbs:
 
         row = f"[{nb}]({nb})|{area}|{other}\n"
         concepts_table += row
-    
+
     elif "notebooks" in nb:
 
         scenario = index_data["scenario"]
@@ -142,7 +142,7 @@ for nb in nbs:
 
             row = f"[{nb}]({nb})|{compute}|{frameworks}|{other}\n"
             deployment_table += row
-        
+
 print("writing readme file...")
 with open("README.md", "w") as f:
     f.write(prefix + training_table + deployment_table + concepts_table + suffix)
