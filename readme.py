@@ -61,7 +61,7 @@ nb = "${{matrix.notebook}}"
 cr = "${{secrets.AZ_AE_CREDS}}"
 
 # get list of notebooks
-nbs = glob.glob("**/*.ipynb", recursive=True)
+nbs = [nb for nb in glob.glob("**/*.ipynb", recursive=True) if "deploy" not in nb]
 
 # create workflow yaml file
 workflow = f"""name: run-notebooks
