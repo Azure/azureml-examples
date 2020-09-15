@@ -21,13 +21,13 @@ Rules:
 * minimal prose
 * minimalist code
 * no azureml-* code in training scripts
-* every directory needs a good README.md
-* add metadata to all .ipynb files for generating the contents table in the README.md (see [readme.py](readme.py) for details)
+* add metadata to applicable .ipynb files per [readme.py](readme.py) 
 * notebooks can be re-run without failing in less than 10 minutes
+* if adding new requirements, pip install time must remain <60s
 
 To pass all checks, ensure you:
 
 * run `python readme.py` from the root of the repo to generate the README.md and workflow files
-* run `python nbclear.py` from the root of the repo
+* run `python nbclear.py` from the root of the repo to clear all notebooks 
 * run `black .` from the root of the repo
 * run `black-nb .` from the root of the repo 
