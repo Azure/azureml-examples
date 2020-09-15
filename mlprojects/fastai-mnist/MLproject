@@ -1,0 +1,10 @@
+name: fastai-mnist-mlproject-example
+
+conda_env: environment.yml
+
+entry_points:
+  main:
+    parameters:
+      epochs: {type: int, default: 10}
+      lr: {type: float, default: 0.01}
+    command: "python train.py {epochs} {lr}"
