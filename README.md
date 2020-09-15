@@ -47,6 +47,7 @@ path|area|other
 -|-|-
 [concepts/dataset/dataset-api.ipynb](concepts/dataset/dataset-api.ipynb)|dataset|Overview of AML Dataset Python SDK
 [concepts/workspace/workspace-api.ipynb](concepts/workspace/workspace-api.ipynb)|workspace|Overview of AML Workspace Python SDK
+[concepts/datastore/datastore-api.ipynb](concepts/datastore/datastore-api.ipynb)|datastore|Overview of AML Datastore Python SDK
 [concepts/compute/compute-instance-api.ipynb](concepts/compute/compute-instance-api.ipynb)|compute|Overview of AML Compute Instance Python SDK
 [concepts/compute/azureml-compute-api.ipynb](concepts/compute/azureml-compute-api.ipynb)|compute|Overview of AML Compute Python SDK
 [concepts/model/model-api.ipynb](concepts/model/model-api.ipynb)|model|Overview of AML Model Python SDK
