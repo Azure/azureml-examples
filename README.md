@@ -39,6 +39,8 @@ path|compute|framework(s)|dataset|environment|distribution|other
 **Deployment examples**
 path|compute|framework(s)|other
 -|-|-|-
+[notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|AKS - CPU|sklearn, mlflow|mlproject
+[notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|pytorch, mlflow|mlproject
 
 **Concepts examples**
 path|area|other
