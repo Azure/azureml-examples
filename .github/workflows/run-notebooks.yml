@@ -37,6 +37,6 @@ jobs:
     - name: upload pip freeze output
       uses: actions/upload-artifact@v2
       with:
-        name: ${{matrix.txt
+        name: ${{matrix.notebook}}-freeze.txt
         path: freeze.txt
 

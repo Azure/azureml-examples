@@ -99,12 +99,12 @@ jobs:
     - name: upload output notebook
       uses: actions/upload-artifact@v2
       with:
-        name: {nb.split('/')[-1]}
+        name: {nb}
         path: out.ipynb
     - name: upload pip freeze output
       uses: actions/upload-artifact@v2
       with:
-        name: {nb.split('/')[-1].split('.')[0]}.txt
+        name: {nb}-freeze.txt
         path: freeze.txt
 
 """
