@@ -27,3 +27,16 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
       run: papermill ${{matrix.notebook}} out.ipynb -k python
+    - name: capture pip freeze
+      run: pip freeze > freeze.txt
+    - name: upload output notebook
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{matrix.notebook}}
+        path: out.ipynb
+    - name: upload pip freeze output
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{matrix.txt
+        path: freeze.txt
+

@@ -94,6 +94,19 @@ jobs:
       run: az ml folder attach -w {ws} -g {rg}
     - name: run notebook
       run: papermill {nb} out.ipynb -k python
+    - name: capture pip freeze
+      run: pip freeze > freeze.txt
+    - name: upload output notebook
+      uses: actions/upload-artifact@v2
+      with:
+        name: {nb.split('/')[-1]}
+        path: out.ipynb
+    - name: upload pip freeze output
+      uses: actions/upload-artifact@v2
+      with:
+        name: {nb.split('/')[-1].split('.')[0]}.txt
+        path: freeze.txt
+
 """
 
 print("writing workflow file...")
