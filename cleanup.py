@@ -9,13 +9,7 @@ for compute_target in ws.compute_targets:
     if "concept" in compute_target:
         ws.compute_targets[compute_target].delete()
 
-for i in range(10000, 99999 + 1):
-    try:
-        ws2 = Workspace.get(
-            f"ws-{i}-concept",
-            subscription_id=ws.subscription_id,
-            resource_group=ws.resource_group,
-        )
-        ws2.delete(delete_dependent_resource=True)
-    except:
-        pass
+workspaces = Workspace.list(ws.subscription_id, resource_group=ws.resource_group)
+for workspace in workspaces:
+    if "concept" in workspace:
+        workspaces[workspace][0].delete(delete_dependent_resource=True)
