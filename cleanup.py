@@ -12,4 +12,4 @@ for compute_target in ws.compute_targets:
 workspaces = Workspace.list(ws.subscription_id, resource_group=ws.resource_group)
 for workspace in workspaces:
     if "concept" in workspace:
-        workspaces[workspace][0].delete(delete_dependent_resource=True, no_wait=True)
+        workspaces[workspace][0].delete(delete_dependent_resources=True, no_wait=True)
