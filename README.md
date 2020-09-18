@@ -40,6 +40,7 @@ path|compute|framework(s)|dataset|environment|distribution|other
 **Deployment examples**
 path|compute|framework(s)|other
 -|-|-|-
+[notebooks/triton/deploy-densenet-local.ipynb](notebooks/triton/deploy-densenet-local.ipynb)|Local|onnx|triton
 [notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|AKS - CPU|sklearn, mlflow|mlproject
 [notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|pytorch, mlflow|mlproject
 
