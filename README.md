@@ -42,7 +42,7 @@ path|compute|framework(s)|other
 -|-|-|-
 [notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|pytorch, mlflow|mlproject
 [notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|AKS - CPU|sklearn, mlflow|mlproject
-[notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|Local|onnx|triton
+[notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|AKS - GPU|onnx|triton no-code deploy
 [notebooks/triton/deploy-densenet-local.ipynb](notebooks/triton/deploy-densenet-local.ipynb)|Local|onnx|triton
 
 **Concepts examples**
