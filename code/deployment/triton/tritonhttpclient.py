@@ -64,40 +64,45 @@ def _get_query_string(query_params):
     for key, value in query_params.items():
         if isinstance(value, list):
             for item in value:
-                params.append("%s=%s" %
-                              (quote_plus(key), quote_plus(str(item))))
+                params.append("%s=%s" % (quote_plus(key), quote_plus(str(item))))
         else:
             params.append("%s=%s" % (quote_plus(key), quote_plus(str(value))))
     if params:
         return "&".join(params)
-    return ''
+    return ""
 
 
-def _get_inference_request(inputs, request_id, outputs, sequence_id,
-                           sequence_start, sequence_end, priority, timeout):
+def _get_inference_request(
+    inputs,
+    request_id,
+    outputs,
+    sequence_id,
+    sequence_start,
+    sequence_end,
+    priority,
+    timeout,
+):
     infer_request = {}
     parameters = {}
     if request_id != "":
-        infer_request['id'] = request_id
+        infer_request["id"] = request_id
     if sequence_id != 0:
-        parameters['sequence_id'] = sequence_id
-        parameters['sequence_start'] = sequence_start
-        parameters['sequence_end'] = sequence_end
+        parameters["sequence_id"] = sequence_id
+        parameters["sequence_start"] = sequence_start
+        parameters["sequence_end"] = sequence_end
     if priority != 0:
-        parameters['priority'] = priority
+        parameters["priority"] = priority
     if timeout is not None:
-        parameters['timeout'] = timeout
+        parameters["timeout"] = timeout
 
-    infer_request['inputs'] = [
-        this_input._get_tensor() for this_input in inputs
-    ]
+    infer_request["inputs"] = [this_input._get_tensor() for this_input in inputs]
     if outputs:
-        infer_request['outputs'] = [
+        infer_request["outputs"] = [
             this_output._get_tensor() for this_output in outputs
         ]
 
     if parameters:
-        infer_request['parameters'] = parameters
+        infer_request["parameters"] = parameters
 
     request_body = json.dumps(infer_request)
     json_size = len(request_body)
@@ -112,8 +117,10 @@ def _get_inference_request(inputs, request_id, outputs, sequence_id,
 
     if binary_data is not None:
         request_body = struct.pack(
-            '{}s{}s'.format(len(request_body), len(binary_data)),
-            request_body.encode(), binary_data)
+            "{}s{}s".format(len(request_body), len(binary_data)),
+            request_body.encode(),
+            binary_data,
+        )
         return request_body, json_size
 
     return request_body, None
@@ -151,22 +158,25 @@ class InferenceServerClient:
 
     """
 
-    def __init__(self,
-                 url,
-                 connection_count=1,
-                 connection_timeout=60.0,
-                 network_timeout=60.0,
-                 verbose=False,
-                 max_greenlets=None):
+    def __init__(
+        self,
+        url,
+        connection_count=1,
+        connection_timeout=60.0,
+        network_timeout=60.0,
+        verbose=False,
+        max_greenlets=None,
+    ):
         if not url.startswith("http://") and not url.startswith("https://"):
-            url = "http://" + url         
+            url = "http://" + url
         self._parsed_url = URL(url)
         self._base_uri = self._parsed_url.request_uri
         self._client_stub = HTTPClient.from_url(
             self._parsed_url,
             concurrency=connection_count,
             connection_timeout=connection_timeout,
-            network_timeout=network_timeout)
+            network_timeout=network_timeout,
+        )
         self._pool = gevent.pool.Pool(max_greenlets)
         self._verbose = verbose
 
@@ -249,16 +259,16 @@ class InferenceServerClient:
             request_uri = request_uri + "?" + _get_query_string(query_params)
 
         if self._verbose:
-            print("POST {}, headers {}\n{}".format(request_uri, headers,
-                                                   request_body))
+            print("POST {}, headers {}\n{}".format(request_uri, headers, request_body))
 
         if headers is not None:
-            response = self._client_stub.post(request_uri=request_uri,
-                                              body=request_body,
-                                              headers=headers)
+            response = self._client_stub.post(
+                request_uri=request_uri, body=request_body, headers=headers
+            )
         else:
-            response = self._client_stub.post(request_uri=request_uri,
-                                              body=request_body)
+            response = self._client_stub.post(
+                request_uri=request_uri, body=request_body
+            )
 
         if self._verbose:
             print(response)
@@ -290,9 +300,9 @@ class InferenceServerClient:
         """
 
         request_uri = "v2/health/live"
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
 
         return response.status_code == 200
 
@@ -320,17 +330,15 @@ class InferenceServerClient:
 
         """
         request_uri = "v2/health/ready"
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
 
         return response.status_code == 200
 
-    def is_model_ready(self,
-                       model_name,
-                       model_version="",
-                       headers=None,
-                       query_params=None):
+    def is_model_ready(
+        self, model_name, model_version="", headers=None, query_params=None
+    ):
         """Contact the inference server and get the readiness of specified model.
 
         Parameters
@@ -363,13 +371,14 @@ class InferenceServerClient:
             raise_error("model version must be a string")
         if model_version != "":
             request_uri = "v2/models/{}/versions/{}/ready".format(
-                quote(model_name), model_version)
+                quote(model_name), model_version
+            )
         else:
             request_uri = "v2/models/{}/ready".format(quote(model_name))
 
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
 
         return response.status_code == 200
 
@@ -397,9 +406,9 @@ class InferenceServerClient:
 
         """
         request_uri = "v2"
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -408,11 +417,9 @@ class InferenceServerClient:
 
         return json.loads(content)
 
-    def get_model_metadata(self,
-                           model_name,
-                           model_version="",
-                           headers=None,
-                           query_params=None):
+    def get_model_metadata(
+        self, model_name, model_version="", headers=None, query_params=None
+    ):
         """Contact the inference server and get the metadata for specified model.
 
         Parameters
@@ -445,13 +452,14 @@ class InferenceServerClient:
             raise_error("model version must be a string")
         if model_version != "":
             request_uri = "v2/models/{}/versions/{}".format(
-                quote(model_name), model_version)
+                quote(model_name), model_version
+            )
         else:
             request_uri = "v2/models/{}".format(quote(model_name))
 
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -460,11 +468,9 @@ class InferenceServerClient:
 
         return json.loads(content)
 
-    def get_model_config(self,
-                         model_name,
-                         model_version="",
-                         headers=None,
-                         query_params=None):
+    def get_model_config(
+        self, model_name, model_version="", headers=None, query_params=None
+    ):
         """Contact the inference server and get the configuration for specified model.
 
         Parameters
@@ -495,13 +501,14 @@ class InferenceServerClient:
         """
         if model_version != "":
             request_uri = "v2/models/{}/versions/{}/config".format(
-                quote(model_name), model_version)
+                quote(model_name), model_version
+            )
         else:
             request_uri = "v2/models/{}/config".format(quote(model_name))
 
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -534,10 +541,12 @@ class InferenceServerClient:
 
         """
         request_uri = "v2/repository/index"
-        response = self._post(request_uri=request_uri,
-                              request_body="",
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body="",
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -567,10 +576,12 @@ class InferenceServerClient:
 
         """
         request_uri = "v2/repository/models/{}/load".format(quote(model_name))
-        response = self._post(request_uri=request_uri,
-                              request_body="",
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body="",
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
         if self._verbose:
             print("Loaded model '{}'".format(model_name))
@@ -596,19 +607,19 @@ class InferenceServerClient:
 
         """
         request_uri = "v2/repository/models/{}/unload".format(quote(model_name))
-        response = self._post(request_uri=request_uri,
-                              request_body="",
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body="",
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
         if self._verbose:
             print("Loaded model '{}'".format(model_name))
 
-    def get_inference_statistics(self,
-                                 model_name="",
-                                 model_version="",
-                                 headers=None,
-                                 query_params=None):
+    def get_inference_statistics(
+        self, model_name="", model_version="", headers=None, query_params=None
+    ):
         """Get the inference statistics for the specified model name and
         version.
 
@@ -646,15 +657,16 @@ class InferenceServerClient:
                 raise_error("model version must be a string")
             if model_version != "":
                 request_uri = "v2/models/{}/versions/{}/stats".format(
-                    quote(model_name), model_version)
+                    quote(model_name), model_version
+                )
             else:
                 request_uri = "v2/models/{}/stats".format(quote(model_name))
         else:
             request_uri = "v2/models/stats"
 
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -663,10 +675,9 @@ class InferenceServerClient:
 
         return json.loads(content)
 
-    def get_system_shared_memory_status(self,
-                                        region_name="",
-                                        headers=None,
-                                        query_params=None):
+    def get_system_shared_memory_status(
+        self, region_name="", headers=None, query_params=None
+    ):
         """Request system shared memory status from the server.
 
         Parameters
@@ -695,13 +706,14 @@ class InferenceServerClient:
         """
         if region_name != "":
             request_uri = "v2/systemsharedmemory/region/{}/status".format(
-                quote(region_name))
+                quote(region_name)
+            )
         else:
             request_uri = "v2/systemsharedmemory/status"
 
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -710,13 +722,9 @@ class InferenceServerClient:
 
         return json.loads(content)
 
-    def register_system_shared_memory(self,
-                                      name,
-                                      key,
-                                      byte_size,
-                                      offset=0,
-                                      headers=None,
-                                      query_params=None):
+    def register_system_shared_memory(
+        self, name, key, byte_size, offset=0, headers=None, query_params=None
+    ):
         """Request the server to register a system shared memory with the
         following specification.
 
@@ -746,28 +754,22 @@ class InferenceServerClient:
             If unable to register the specified system shared memory.
 
         """
-        request_uri = "v2/systemsharedmemory/region/{}/register".format(
-            quote(name))
+        request_uri = "v2/systemsharedmemory/region/{}/register".format(quote(name))
 
-        register_request = {
-            'key': key,
-            'offset': offset,
-            'byte_size': byte_size
-        }
+        register_request = {"key": key, "offset": offset, "byte_size": byte_size}
         request_body = json.dumps(register_request)
 
-        response = self._post(request_uri=request_uri,
-                              request_body=request_body,
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body=request_body,
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
         if self._verbose:
             print("Registered system shared memory with name '{}'".format(name))
 
-    def unregister_system_shared_memory(self,
-                                        name="",
-                                        headers=None,
-                                        query_params=None):
+    def unregister_system_shared_memory(self, name="", headers=None, query_params=None):
         """Request the server to unregister a system shared memory with the
         specified name.
 
@@ -792,26 +794,27 @@ class InferenceServerClient:
         """
         if name != "":
             request_uri = "v2/systemsharedmemory/region/{}/unregister".format(
-                quote(name))
+                quote(name)
+            )
         else:
             request_uri = "v2/systemsharedmemory/unregister"
 
-        response = self._post(request_uri=request_uri,
-                              request_body="",
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body="",
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
         if self._verbose:
             if name is not "":
-                print("Unregistered system shared memory with name '{}'".format(
-                    name))
+                print("Unregistered system shared memory with name '{}'".format(name))
             else:
                 print("Unregistered all system shared memory regions")
 
-    def get_cuda_shared_memory_status(self,
-                                      region_name="",
-                                      headers=None,
-                                      query_params=None):
+    def get_cuda_shared_memory_status(
+        self, region_name="", headers=None, query_params=None
+    ):
         """Request cuda shared memory status from the server.
 
         Parameters
@@ -840,13 +843,14 @@ class InferenceServerClient:
         """
         if region_name != "":
             request_uri = "v2/cudasharedmemory/region/{}/status".format(
-                quote(region_name))
+                quote(region_name)
+            )
         else:
             request_uri = "v2/cudasharedmemory/status"
 
-        response = self._get(request_uri=request_uri,
-                             headers=headers,
-                             query_params=query_params)
+        response = self._get(
+            request_uri=request_uri, headers=headers, query_params=query_params
+        )
         _raise_if_error(response)
 
         content = response.read()
@@ -855,13 +859,9 @@ class InferenceServerClient:
 
         return json.loads(content)
 
-    def register_cuda_shared_memory(self,
-                                    name,
-                                    raw_handle,
-                                    device_id,
-                                    byte_size,
-                                    headers=None,
-                                    query_params=None):
+    def register_cuda_shared_memory(
+        self, name, raw_handle, device_id, byte_size, headers=None, query_params=None
+    ):
         """Request the server to register a system shared memory with the
         following specification.
 
@@ -888,30 +888,26 @@ class InferenceServerClient:
             If unable to register the specified cuda shared memory.
 
         """
-        request_uri = "v2/cudasharedmemory/region/{}/register".format(
-            quote(name))
+        request_uri = "v2/cudasharedmemory/region/{}/register".format(quote(name))
 
         register_request = {
-            'raw_handle': {
-                'b64': raw_handle
-            },
-            'device_id': device_id,
-            'byte_size': byte_size
+            "raw_handle": {"b64": raw_handle},
+            "device_id": device_id,
+            "byte_size": byte_size,
         }
         request_body = json.dumps(register_request)
 
-        response = self._post(request_uri=request_uri,
-                              request_body=request_body,
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body=request_body,
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
         if self._verbose:
             print("Registered cuda shared memory with name '{}'".format(name))
 
-    def unregister_cuda_shared_memory(self,
-                                      name="",
-                                      headers=None,
-                                      query_params=None):
+    def unregister_cuda_shared_memory(self, name="", headers=None, query_params=None):
         """Request the server to unregister a cuda shared memory with the
         specified name.
 
@@ -935,36 +931,38 @@ class InferenceServerClient:
 
         """
         if name != "":
-            request_uri = "v2/cudasharedmemory/region/{}/unregister".format(
-                quote(name))
+            request_uri = "v2/cudasharedmemory/region/{}/unregister".format(quote(name))
         else:
             request_uri = "v2/cudasharedmemory/unregister"
 
-        response = self._post(request_uri=request_uri,
-                              request_body="",
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body="",
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
         if self._verbose:
             if name is not "":
-                print("Unregistered cuda shared memory with name '{}'".format(
-                    name))
+                print("Unregistered cuda shared memory with name '{}'".format(name))
             else:
                 print("Unregistered all cuda shared memory regions")
 
-    def infer(self,
-              model_name,
-              inputs,
-              model_version="",
-              outputs=None,
-              request_id="",
-              sequence_id=0,
-              sequence_start=False,
-              sequence_end=False,
-              priority=0,
-              timeout=None,
-              headers=None,
-              query_params=None):
+    def infer(
+        self,
+        model_name,
+        inputs,
+        model_version="",
+        outputs=None,
+        request_id="",
+        sequence_id=0,
+        sequence_start=False,
+        sequence_end=False,
+        priority=0,
+        timeout=None,
+        headers=None,
+        query_params=None,
+    ):
         """Run synchronous inference using the supplied 'inputs' requesting
         the outputs specified by 'outputs'.
 
@@ -1039,7 +1037,8 @@ class InferenceServerClient:
             sequence_start=sequence_start,
             sequence_end=sequence_end,
             priority=priority,
-            timeout=timeout)
+            timeout=timeout,
+        )
 
         if json_size is not None:
             if headers is None:
@@ -1050,31 +1049,36 @@ class InferenceServerClient:
             raise_error("model version must be a string")
         if model_version != "":
             request_uri = "v2/models/{}/versions/{}/infer".format(
-                quote(model_name), model_version)
+                quote(model_name), model_version
+            )
         else:
             request_uri = "v2/models/{}/infer".format(quote(model_name))
 
-        response = self._post(request_uri=request_uri,
-                              request_body=request_body,
-                              headers=headers,
-                              query_params=query_params)
+        response = self._post(
+            request_uri=request_uri,
+            request_body=request_body,
+            headers=headers,
+            query_params=query_params,
+        )
         _raise_if_error(response)
 
         return InferResult(response, self._verbose)
 
-    def async_infer(self,
-                    model_name,
-                    inputs,
-                    model_version="",
-                    outputs=None,
-                    request_id="",
-                    sequence_id=0,
-                    sequence_start=False,
-                    sequence_end=False,
-                    priority=0,
-                    timeout=None,
-                    headers=None,
-                    query_params=None):
+    def async_infer(
+        self,
+        model_name,
+        inputs,
+        model_version="",
+        outputs=None,
+        request_id="",
+        sequence_id=0,
+        sequence_start=False,
+        sequence_end=False,
+        priority=0,
+        timeout=None,
+        headers=None,
+        query_params=None,
+    ):
         """Run asynchronous inference using the supplied 'inputs' requesting
         the outputs specified by 'outputs'.
 
@@ -1152,7 +1156,8 @@ class InferenceServerClient:
             sequence_start=sequence_start,
             sequence_end=sequence_end,
             priority=priority,
-            timeout=timeout)
+            timeout=timeout,
+        )
 
         if json_size is not None:
             if headers is None:
@@ -1163,12 +1168,14 @@ class InferenceServerClient:
             raise_error("model version must be a string")
         if model_version != "":
             request_uri = "v2/models/{}/versions/{}/infer".format(
-                quote(model_name), model_version)
+                quote(model_name), model_version
+            )
         else:
             request_uri = "v2/models/{}/infer".format(quote(model_name))
 
         g = self._pool.apply_async(
-            wrapped_post, (request_uri, request_body, headers, query_params))
+            wrapped_post, (request_uri, request_body, headers, query_params)
+        )
 
         g.start()
 
@@ -1321,8 +1328,10 @@ class InferInput:
         dtype = np_to_triton_dtype(input_tensor.dtype)
         if self._datatype != dtype:
             raise_error(
-                "got unexpected datatype {} from numpy array, expected {}".
-                format(dtype, self._datatype))
+                "got unexpected datatype {} from numpy array, expected {}".format(
+                    dtype, self._datatype
+                )
+            )
         valid_shape = True
         if len(self._shape) != len(input_tensor.shape):
             valid_shape = False
@@ -1333,15 +1342,16 @@ class InferInput:
         if not valid_shape:
             raise_error(
                 "got unexpected numpy array shape [{}], expected [{}]".format(
-                    str(input_tensor.shape)[1:-1],
-                    str(self._shape)[1:-1]))
+                    str(input_tensor.shape)[1:-1], str(self._shape)[1:-1]
+                )
+            )
 
-        self._parameters.pop('shared_memory_region', None)
-        self._parameters.pop('shared_memory_byte_size', None)
-        self._parameters.pop('shared_memory_offset', None)
+        self._parameters.pop("shared_memory_region", None)
+        self._parameters.pop("shared_memory_byte_size", None)
+        self._parameters.pop("shared_memory_offset", None)
 
         if not binary_data:
-            self._parameters.pop('binary_data_size', None)
+            self._parameters.pop("binary_data_size", None)
             self._raw_data = None
             if self._datatype == "BYTES":
                 self._data = [val for val in input_tensor.flatten()]
@@ -1353,7 +1363,7 @@ class InferInput:
                 self._raw_data = serialize_byte_tensor(input_tensor).tobytes()
             else:
                 self._raw_data = input_tensor.tobytes()
-            self._parameters['binary_data_size'] = len(self._raw_data)
+            self._parameters["binary_data_size"] = len(self._raw_data)
 
     def set_shared_memory(self, region_name, byte_size, offset=0):
         """Set the tensor data from the specified shared memory region.
@@ -1371,12 +1381,12 @@ class InferInput:
         """
         self._data = None
         self._raw_data = None
-        self._parameters.pop('binary_data_size', None)
+        self._parameters.pop("binary_data_size", None)
 
-        self._parameters['shared_memory_region'] = region_name
-        self._parameters['shared_memory_byte_size'] = byte_size
+        self._parameters["shared_memory_region"] = region_name
+        self._parameters["shared_memory_byte_size"] = byte_size
         if offset != 0:
-            self._parameters['shared_memory_offset'].int64_param = offset
+            self._parameters["shared_memory_offset"].int64_param = offset
 
     def _get_binary_data(self):
         """Returns the raw binary data if available
@@ -1396,21 +1406,23 @@ class InferInput:
         dict
             The underlying tensor specification as dict
         """
-        if self._parameters.get('shared_memory_region') is not None or \
-                self._raw_data is not None:
+        if (
+            self._parameters.get("shared_memory_region") is not None
+            or self._raw_data is not None
+        ):
             return {
-                'name': self._name,
-                'shape': self._shape,
-                'datatype': self._datatype,
-                'parameters': self._parameters,
+                "name": self._name,
+                "shape": self._shape,
+                "datatype": self._datatype,
+                "parameters": self._parameters,
             }
         else:
             return {
-                'name': self._name,
-                'shape': self._shape,
-                'datatype': self._datatype,
-                'parameters': self._parameters,
-                'data': self._data
+                "name": self._name,
+                "shape": self._shape,
+                "datatype": self._datatype,
+                "parameters": self._parameters,
+                "data": self._data,
             }
 
 
@@ -1438,9 +1450,9 @@ class InferRequestedOutput:
         self._name = name
         self._parameters = {}
         if class_count != 0:
-            self._parameters['classification'] = class_count
+            self._parameters["classification"] = class_count
         self._binary = binary_data
-        self._parameters['binary_data'] = binary_data
+        self._parameters["binary_data"] = binary_data
 
     def name(self):
         """Get the name of output associated with this object.
@@ -1467,15 +1479,15 @@ class InferRequestedOutput:
             the tensor starts. The default value is 0.
 
         """
-        if 'classification' in self._parameters:
+        if "classification" in self._parameters:
             raise_error("shared memory can't be set on classification output")
         if self._binary:
-            self._parameters['binary_data'] = False
+            self._parameters["binary_data"] = False
 
-        self._parameters['shared_memory_region'] = region_name
-        self._parameters['shared_memory_byte_size'] = byte_size
+        self._parameters["shared_memory_region"] = region_name
+        self._parameters["shared_memory_byte_size"] = byte_size
         if offset != 0:
-            self._parameters['shared_memory_offset'] = offset
+            self._parameters["shared_memory_offset"] = offset
 
     def unset_shared_memory(self):
         """Clears the shared memory option set by the last call to
@@ -1484,10 +1496,10 @@ class InferRequestedOutput:
         shared memory region.
         """
 
-        self._parameters['binary_data'] = self._binary
-        self._parameters.pop('shared_memory_region', None)
-        self._parameters.pop('shared_memory_byte_size', None)
-        self._parameters.pop('shared_memory_offset', None)
+        self._parameters["binary_data"] = self._binary
+        self._parameters.pop("shared_memory_region", None)
+        self._parameters.pop("shared_memory_byte_size", None)
+        self._parameters.pop("shared_memory_offset", None)
 
     def _get_tensor(self):
         """Retrieve the underlying input as json dict.
@@ -1497,7 +1509,7 @@ class InferRequestedOutput:
         dict
             The underlying tensor as a dict
         """
-        return {'name': self._name, 'parameters': self._parameters}
+        return {"name": self._name, "parameters": self._parameters}
 
 
 class InferResult:
@@ -1514,7 +1526,7 @@ class InferResult:
     """
 
     def __init__(self, response, verbose):
-        header_length = response.get('Inference-Header-Content-Length')
+        header_length = response.get("Inference-Header-Content-Length")
         if header_length is None:
             content = response.read()
             if verbose:
@@ -1532,13 +1544,12 @@ class InferResult:
             # Read the remaining data off the response body.
             self._buffer = response.read()
             buffer_index = 0
-            for output in self._result['outputs']:
+            for output in self._result["outputs"]:
                 parameters = output.get("parameters")
                 if parameters is not None:
                     this_data_size = parameters.get("binary_data_size")
                     if this_data_size is not None:
-                        self._output_name_to_buffer_map[
-                            output['name']] = buffer_index
+                        self._output_name_to_buffer_map[output["name"]] = buffer_index
                         buffer_index = buffer_index + this_data_size
 
     def as_numpy(self, name):
@@ -1556,10 +1567,10 @@ class InferResult:
             The numpy array containing the response data for the tensor or
             None if the data for specified tensor name is not found.
         """
-        if self._result.get('outputs') is not None:
-            for output in self._result['outputs']:
-                if output['name'] == name:
-                    datatype = output['datatype']
+        if self._result.get("outputs") is not None:
+            for output in self._result["outputs"]:
+                if output["name"] == name:
+                    datatype = output["datatype"]
                     has_binary_data = False
                     parameters = output.get("parameters")
                     if parameters is not None:
@@ -1567,26 +1578,28 @@ class InferResult:
                         if this_data_size is not None:
                             has_binary_data = True
                             if this_data_size != 0:
-                                start_index = self._output_name_to_buffer_map[
-                                    name]
+                                start_index = self._output_name_to_buffer_map[name]
                                 end_index = start_index + this_data_size
-                                if datatype == 'BYTES':
+                                if datatype == "BYTES":
                                     # String results contain a 4-byte string length
                                     # followed by the actual string characters. Hence,
                                     # need to decode the raw bytes to convert into
                                     # array elements.
                                     np_array = deserialize_bytes_tensor(
-                                        self._buffer[start_index:end_index])
+                                        self._buffer[start_index:end_index]
+                                    )
                                 else:
                                     np_array = np.frombuffer(
                                         self._buffer[start_index:end_index],
-                                        dtype=triton_to_np_dtype(datatype))
+                                        dtype=triton_to_np_dtype(datatype),
+                                    )
                             else:
                                 np_array = np.empty(0)
                     if not has_binary_data:
-                        np_array = np.array(output['data'],
-                                            dtype=triton_to_np_dtype(datatype))
-                    np_array = np.resize(np_array, output['shape'])
+                        np_array = np.array(
+                            output["data"], dtype=triton_to_np_dtype(datatype)
+                        )
+                    np_array = np.resize(np_array, output["shape"])
                     return np_array
         return None
 
@@ -1606,8 +1619,8 @@ class InferResult:
             the infer resonse then returns it as a json dict,
             otherwise returns None.
         """
-        for output in self._result['outputs']:
-            if output['name'] == name:
+        for output in self._result["outputs"]:
+            if output["name"] == name:
                 return output
 
         return None

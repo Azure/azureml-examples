@@ -38,7 +38,7 @@ def preprocess(text, dtype):
     words = np.array([w.lower() for w in tokens], dtype=dtype).reshape(-1, 1)
     # split words into chars, in numpy array with shape of (seq, 1, 1, 16)
     chars = [[c for c in t][:16] for t in tokens]
-    chars = [cs+['']*(16-len(cs)) for cs in chars]
+    chars = [cs + [""] * (16 - len(cs)) for cs in chars]
     chars = np.array(chars, dtype=dtype).reshape(-1, 1, 1, 16)
     return words, chars
 
@@ -63,16 +63,16 @@ def postprocess(context_words, answer):
 
     start = answer.as_numpy("start_pos")[0]
     end = answer.as_numpy("end_pos")[0]
-    print(f'start is {start}, end is {end}')
-    return [w.encode() for w in context_words[start:end+1].reshape(-1)]
+    print(f"start is {start}, end is {end}")
+    return [w.encode() for w in context_words[start : end + 1].reshape(-1)]
 
 
 def init(url):
     global triton_client
     triton_client = triton_init(url)
-        
-    nltk.download('punkt')
-        
+
+    nltk.download("punkt")
+
     print(get_model_info())
 
 
@@ -98,15 +98,14 @@ def run(request):
 
     """
 
-    print(f'request is {request} type is {type(request)}')
+    print(f"request is {request} type is {type(request)}")
     model_name = "bidaf-9"
 
     request = json.loads(request)
     context = request[0]
     query = request[1]
 
-    input_meta, _, _, _ = parse_model_http(
-        model_name=model_name)
+    input_meta, _, _, _ = parse_model_http(model_name=model_name)
 
     # We use the np.object data type for string data
     np_dtype = triton_to_np_dtype(input_meta[0]["datatype"])
@@ -117,7 +116,7 @@ def run(request):
         "query_word": qw,
         "query_char": qc,
         "context_word": cw,
-        "context_char": cc
+        "context_char": cc,
     }
 
     res = triton_infer(input_mapping=input_mapping, model_name=model_name)
