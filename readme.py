@@ -23,7 +23,7 @@ cd azureml-examples
 pip install -r requirements.txt
 ```
 
-To create or setup an existing workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
+To create or setup a workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
 
 ## Notebooks
 
