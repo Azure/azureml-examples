@@ -23,6 +23,8 @@ cd azureml-examples
 pip install -r requirements.txt
 ```
 
+To create or setup a workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
+
 ## Notebooks
 
 The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). End to end tutorials can be found in the [tutorials directory](tutorials).
@@ -62,7 +64,7 @@ nb = "${{matrix.notebook}}"
 cr = "${{secrets.AZ_AE_CREDS}}"
 
 # get list of notebooks
-nbs = [nb for nb in glob.glob("**/*.ipynb", recursive=True)]  # if "deploy" not in nb]
+nbs = [nb for nb in glob.glob("*/**/*.ipynb", recursive=True)]  # if "deploy" not in nb]
 
 # create workflow yaml file
 workflow = f"""name: run-notebooks
