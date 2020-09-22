@@ -27,36 +27,38 @@ The main example notebooks are located in the [notebooks directory](notebooks). 
 **Training examples**
 path|compute|framework(s)|dataset|environment|distribution|other
 -|-|-|-|-|-|-
-[notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|AML - GPU|fastai, mlflow|mnist|conda file|None|mlproject
+[notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|AML - CPU|xgboost, mlflow|iris|pip file|None|None
+[notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
+[notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
 [notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|AML - CPU|fastai, mlflow|mnist|conda file|None|None
+[notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|AML - GPU|fastai, mlflow|mnist|conda file|None|mlproject
 [notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|AML - GPU|fastai, mlflow|pets|docker file|None|None
+[notebooks/tensorflow-v2/train-mnist-nn.ipynb](notebooks/tensorflow-v2/train-mnist-nn.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
+[notebooks/tensorflow-v2/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow-v2/train-mnist-distributed-horovod.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
+[notebooks/tensorflow-v2/train-mnist-distributed.ipynb](notebooks/tensorflow-v2/train-mnist-distributed.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
+[notebooks/tensorflow-v2/train-iris-nn.ipynb](notebooks/tensorflow-v2/train-iris-nn.ipynb)|AML - CPU|tensorflow2, mlflow|iris|conda file|None|None
 [notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|AML - CPU|lightgbm, mlflow|iris|pip file|None|None
 [notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|AML - GPU|pytorch, mlflow|mnist|conda file|None|None
 [notebooks/pytorch/train-mnist-mlproject.ipynb](notebooks/pytorch/train-mnist-mlproject.ipynb)|AML - GPU|pytorch, mlflow|mnist|conda file|None|mlproject
-[notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
-[notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|AML - CPU|sklearn, mlflow|diabetes|conda file|None|None
-[notebooks/tensorflow-v2/train-iris-nn.ipynb](notebooks/tensorflow-v2/train-iris-nn.ipynb)|AML - CPU|tensorflow2, mlflow|iris|conda file|None|None
-[notebooks/tensorflow-v2/train-mnist-nn.ipynb](notebooks/tensorflow-v2/train-mnist-nn.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
-[notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|AML - CPU|xgboost, mlflow|iris|pip file|None|None
 
 **Deployment examples**
 path|compute|framework(s)|other
 -|-|-|-
-[notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|pytorch, mlflow|mlproject
-[notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|AKS - CPU|sklearn, mlflow|mlproject
-[notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|AKS - GPU|onnx|triton no-code deploy
 [notebooks/triton/deploy-densenet-local.ipynb](notebooks/triton/deploy-densenet-local.ipynb)|Local|onnx|triton
+[notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|AKS - GPU|onnx|triton no-code deploy
+[notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|AKS - CPU|sklearn, mlflow|mlproject
+[notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|pytorch, mlflow|mlproject
 
 **Concepts examples**
 path|area|other
 -|-|-
-[concepts/compute/azureml-compute-api.ipynb](concepts/compute/azureml-compute-api.ipynb)|compute|Overview of AML Compute Python SDK
-[concepts/compute/compute-instance-api.ipynb](concepts/compute/compute-instance-api.ipynb)|compute|Overview of AML Compute Instance Python SDK
 [concepts/dataset/dataset-api.ipynb](concepts/dataset/dataset-api.ipynb)|dataset|Overview of AML Dataset Python SDK
-[concepts/datastore/datastore-api.ipynb](concepts/datastore/datastore-api.ipynb)|datastore|Overview of AML Datastore Python SDK
-[concepts/environment/environment-api.ipynb](concepts/environment/environment-api.ipynb)|environment|Overview of AML Environment Python SDK
-[concepts/model/model-api.ipynb](concepts/model/model-api.ipynb)|model|Overview of AML Model Python SDK
 [concepts/workspace/workspace-api.ipynb](concepts/workspace/workspace-api.ipynb)|workspace|Overview of AML Workspace Python SDK
+[concepts/datastore/datastore-api.ipynb](concepts/datastore/datastore-api.ipynb)|datastore|Overview of AML Datastore Python SDK
+[concepts/compute/compute-instance-api.ipynb](concepts/compute/compute-instance-api.ipynb)|compute|Overview of AML Compute Instance Python SDK
+[concepts/compute/azureml-compute-api.ipynb](concepts/compute/azureml-compute-api.ipynb)|compute|Overview of AML Compute Python SDK
+[concepts/model/model-api.ipynb](concepts/model/model-api.ipynb)|model|Overview of AML Model Python SDK
+[concepts/environment/environment-api.ipynb](concepts/environment/environment-api.ipynb)|environment|Overview of AML Environment Python SDK
 
 ## Contributing
 
