@@ -33,10 +33,10 @@ path|compute|framework(s)|dataset|environment|distribution|other
 [notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|AML - CPU|fastai, mlflow|mnist|conda file|None|None
 [notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|AML - GPU|fastai, mlflow|mnist|conda file|None|mlproject
 [notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|AML - GPU|fastai, mlflow|pets|docker file|None|None
-[notebooks/tensorflow-v2/train-mnist-nn.ipynb](notebooks/tensorflow-v2/train-mnist-nn.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
-[notebooks/tensorflow-v2/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow-v2/train-mnist-distributed-horovod.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
-[notebooks/tensorflow-v2/train-mnist-distributed.ipynb](notebooks/tensorflow-v2/train-mnist-distributed.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
-[notebooks/tensorflow-v2/train-iris-nn.ipynb](notebooks/tensorflow-v2/train-iris-nn.ipynb)|AML - CPU|tensorflow2, mlflow|iris|conda file|None|None
+[notebooks/tensorflow/train-mnist-nn.ipynb](notebooks/tensorflow/train-mnist-nn.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|None|None
+[notebooks/tensorflow/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow/train-mnist-distributed-horovod.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|horovod|None
+[notebooks/tensorflow/train-mnist-distributed.ipynb](notebooks/tensorflow/train-mnist-distributed.ipynb)|AML - GPU|tensorflow2, mlflow|mnist|conda file|tf.distribute.Strategy (MultiWorkerMirroredStrategy)|None
+[notebooks/tensorflow/train-iris-nn.ipynb](notebooks/tensorflow/train-iris-nn.ipynb)|AML - CPU|tensorflow2, mlflow|iris|conda file|None|None
 [notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|AML - CPU|lightgbm, mlflow|iris|pip file|None|None
 [notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|AML - GPU|pytorch, mlflow|mnist|conda file|None|None
 [notebooks/pytorch/train-mnist-mlproject.ipynb](notebooks/pytorch/train-mnist-mlproject.ipynb)|AML - GPU|pytorch, mlflow|mnist|conda file|None|mlproject
