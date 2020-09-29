@@ -16,14 +16,14 @@ with open("docs/data/suffix.data", "r") as f:
 
 training_table = """
 **Training examples**
-path|compute|framework|dataset|environment|distribution|description
--|-|-|-|-|-|-
+path|compute|environment|description
+-|-|-|-
 """
 
 deployment_table = """
 **Deployment examples**
-path|framework|dataset|compute|description
--|-|-|-|-
+path|compute|description
+-|-|-
 """
 
 concepts_table = """
@@ -94,8 +94,6 @@ for nb in nbs:
         data["metadata"]["kernelspec"] = kernelspec
 
         if "train" in nb:
-            framework = nb.split("/")[-2]
-            dataset = name.split("-")[1]
             if "cpu-cluster" in str(data):
                 compute = "AML - CPU"
             elif "gpu-cluster" in str(data):
@@ -109,20 +107,14 @@ for nb in nbs:
             elif "env.docker.base_dockerfile" in str(data):
                 environment = "docker file"
             desc = input("Description: ")
-            dist = input("Distribution: ")
 
             data["metadata"]["readme"] = {
-                "framework": framework,
-                "dataset": dataset,
                 "compute": compute,
                 "environment": environment,
-                "dist": dist,
                 "desc": desc,
             }
 
         elif "deploy" in nb:
-            framework = nb.split("/")[-2]
-            dataset = name.split("-")[1]
             if "aks-cpu-deploy" in str(data):
                 compute = "AKS - CPU"
             elif "aks-gpu-deploy" in str(data):
@@ -134,8 +126,6 @@ for nb in nbs:
             desc = input("Description: ")
 
             data["metadata"]["readme"] = {
-                "framework": framework,
-                "dataset": dataset,
                 "compute": compute,
                 "desc": desc,
             }
@@ -153,21 +143,16 @@ for nb in nbs:
             json.dump(data, f, indent=2)
 
     if "train" in nb:
-        framework = data["metadata"]["readme"]["framework"]
-        dataset = data["metadata"]["readme"]["dataset"]
         environment = data["metadata"]["readme"]["environment"]
         compute = data["metadata"]["readme"]["compute"]
-        dist = data["metadata"]["readme"]["dist"]
         desc = data["metadata"]["readme"]["desc"]
 
-        training_table += f"[{nb}]({nb})|{framework}|{dataset}|{compute}|{environment}|{dist}|{desc}\n"
+        training_table += f"[{nb}]({nb})|{compute}|{environment}|{desc}\n"
     elif "deploy" in nb:
-        framework = data["metadata"]["readme"]["framework"]
-        dataset = data["metadata"]["readme"]["dataset"]
         compute = data["metadata"]["readme"]["compute"]
         desc = data["metadata"]["readme"]["desc"]
 
-        deployment_table += f"[{nb}]({nb})|{framework}|{dataset}|{compute}|{desc}\n"
+        deployment_table += f"[{nb}]({nb})|{compute}|{desc}\n"
     elif "concepts" in nb:
         area = data["metadata"]["readme"]["area"]
         desc = data["metadata"]["readme"]["desc"]

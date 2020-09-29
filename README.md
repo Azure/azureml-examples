@@ -25,29 +25,29 @@ To create or setup a workspace with the assets used in these examples, run the [
 The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). End to end tutorials can be found in the [tutorials directory](tutorials).
 
 **Training examples**
-path|compute|framework|dataset|environment|distribution|description
--|-|-|-|-|-|-
-[notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|xgboost|iris|AML - CPU|pip file|none|simple notebook to train xgboost model on iris
-[notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|sklearn|diabetes|AML - CPU|conda file|none|simple notebook to train sklearn ridge model on diabetes
-[notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|sklearn|diabetes|AML - CPU|conda file|none|simple notebook to train sklearn ridge model on diabetes via mlflow mlproject 
-[notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|fastai|mnist|AML - CPU|conda file|none|simple notebook to train fastai resnet18 on mnist
-[notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|fastai|mnist|AML - CPU|conda file|none|simple notebook to train fastai resenet18 on mnist via mlflow mlproject
-[notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|fastai|pets|AML - GPU|docker file|none|simple notebook to train fastai resnet34 on pets
-[notebooks/tensorflow/train-mnist-nn.ipynb](notebooks/tensorflow/train-mnist-nn.ipynb)|tensorflow|mnist|AML - GPU|conda file|none|simple notebook to train tensorflow NN model on mnist
-[notebooks/tensorflow/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow/train-mnist-distributed-horovod.ipynb)|tensorflow|mnist|AML - GPU|conda file|horovod|simple notebook to train tensorflow NN model on mnist distributed via horovod
-[notebooks/tensorflow/train-mnist-distributed.ipynb](notebooks/tensorflow/train-mnist-distributed.ipynb)|tensorflow|mnist|AML - GPU|conda file|tf.distribute.Strategy (MultiWorkerMirroredStrategy)|simple notebook to train tensorflow NN model on mnist distributed via tensorflow
-[notebooks/tensorflow/train-iris-nn.ipynb](notebooks/tensorflow/train-iris-nn.ipynb)|tensorflow|iris|AML - CPU|conda file|none|simple notebook to train tensorflow NN model on iris
-[notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|lightgbm|iris|AML - CPU|pip file|none|simple notebook to train lightgbm model on iris
-[notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|pytorch|mnist|AML - GPU|conda file|none|simple notebook to train pytorch CNN on mnist
-[notebooks/pytorch/train-mnist-mlproject.ipynb](notebooks/pytorch/train-mnist-mlproject.ipynb)|pytorch|mnist|AML - GPU|conda file|none|simple notebook to train pytorch CNN on mnist via mlflow mlproject
+path|compute|environment|description
+-|-|-|-
+[notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|AML - CPU|pip file|simple notebook to train xgboost model on iris
+[notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|AML - CPU|conda file|simple notebook to train sklearn ridge model on diabetes
+[notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|AML - CPU|conda file|simple notebook to train sklearn ridge model on diabetes via mlflow mlproject 
+[notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|AML - CPU|conda file|simple notebook to train fastai resnet18 on mnist
+[notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|AML - CPU|conda file|simple notebook to train fastai resenet18 on mnist via mlflow mlproject
+[notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|AML - GPU|docker file|simple notebook to train fastai resnet34 on pets
+[notebooks/tensorflow/train-mnist-nn.ipynb](notebooks/tensorflow/train-mnist-nn.ipynb)|AML - GPU|conda file|simple notebook to train tensorflow NN model on mnist
+[notebooks/tensorflow/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow/train-mnist-distributed-horovod.ipynb)|AML - GPU|conda file|simple notebook to train tensorflow NN model on mnist distributed via horovod
+[notebooks/tensorflow/train-mnist-distributed.ipynb](notebooks/tensorflow/train-mnist-distributed.ipynb)|AML - GPU|conda file|simple notebook to train tensorflow NN model on mnist distributed via tensorflow
+[notebooks/tensorflow/train-iris-nn.ipynb](notebooks/tensorflow/train-iris-nn.ipynb)|AML - CPU|conda file|simple notebook to train tensorflow NN model on iris
+[notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|AML - CPU|pip file|simple notebook to train lightgbm model on iris
+[notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|AML - GPU|conda file|simple notebook to train pytorch CNN on mnist
+[notebooks/pytorch/train-mnist-mlproject.ipynb](notebooks/pytorch/train-mnist-mlproject.ipynb)|AML - GPU|conda file|simple notebook to train pytorch CNN on mnist via mlflow mlproject
 
 **Deployment examples**
-path|framework|dataset|compute|description
--|-|-|-|-
-[notebooks/triton/deploy-densenet-local.ipynb](notebooks/triton/deploy-densenet-local.ipynb)|triton|densenet|local|notebook to deploy onnx densenet image classification model to local triton server
-[notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|triton|bidaf|AKS - GPU|notebook to deploy onnx bidaf Q&A model to AKS GPU triton server
-[notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|sklearn|diabetes|AKS - CPU|simple notebook to deploy diabetes sklearn ridge model on AKS CPU
-[notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|pytorch|mnist|AKS - CPU|simple notebook to deploy mnist pytorch CNN model to AKS CPU
+path|compute|description
+-|-|-
+[notebooks/triton/deploy-densenet-local.ipynb](notebooks/triton/deploy-densenet-local.ipynb)|local|notebook to deploy onnx densenet image classification model to local triton server
+[notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|AKS - GPU|notebook to deploy onnx bidaf Q&A model to AKS GPU triton server
+[notebooks/sklearn/deploy-diabetes.ipynb](notebooks/sklearn/deploy-diabetes.ipynb)|AKS - CPU|simple notebook to deploy diabetes sklearn ridge model on AKS CPU
+[notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|simple notebook to deploy mnist pytorch CNN model to AKS CPU
 
 **Concepts examples**
 path|area|description
