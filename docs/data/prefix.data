@@ -1,0 +1,25 @@
+# Azure Machine Learning (AML) Examples
+
+[![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
+[![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
+[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![repo size](https://img.shields.io/github/repo-size/Azure/azureml-examples)](https://github.com/Azure/azureml-examples)
+
+Welcome to the AML examples!
+
+## Installation
+
+Clone this repository and install required packages:
+
+```sh
+git clone https://github.com/Azure/azureml-examples
+cd azureml-examples
+pip install -r requirements.txt
+```
+
+To create or setup a workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
+
+## Notebooks
+
+The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). End to end tutorials can be found in the [tutorials directory](tutorials).
