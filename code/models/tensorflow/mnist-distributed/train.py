@@ -93,12 +93,6 @@ def main():
 
     args = parser.parse_args()
 
-    # Workaround until hosttools change is released
-    tf_config = os.environ["TF_CONFIG"]
-    tf_config_json = json.loads(tf_config)
-    tf_config_json["cluster"]["ps"] = []
-    os.environ["TF_CONFIG"] = json.dumps(tf_config_json)
-
     tf_config = json.loads(os.environ["TF_CONFIG"])
     num_workers = len(tf_config["cluster"]["worker"])
 
