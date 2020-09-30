@@ -16,18 +16,35 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 PRs to this repo are subject to review by the Azure ML team.
 
-Rules:
+### Rules
 
 * minimal prose
 * minimalist code
 * no azureml-* code in training scripts
-* add metadata to applicable .ipynb files per [readme.py](readme.py) 
 * notebooks can be re-run without failing in less than 10 minutes
 * if adding new requirements, pip install time must remain <60s
 
-To pass all checks, ensure you:
+### Checks
+
+To ensure all checks are passed:
 
 * run `python readme.py` from the root of the repo to generate the README.md and workflow files
-* run `python nbclear.py` from the root of the repo to clear all notebooks 
-* run `black .` from the root of the repo
-* run `black-nb .` from the root of the repo 
+* run `black .` from the root of the repo to format the code
+* run `black-nb --clear-output .` from the root of the repo to format the notebooks
+
+> Warning: when adding a new notebook, add a single line description of the notebook to "metadata" > "readme" > "desc". See existing notebooks for examples. The specifics of notebook metadata is under construction.
+
+### Organization
+
+* `notebooks` is for general example notebooks using AML
+* `tutorials` is for end to end tutorials using AML
+* `concepts` is for API example notebooks of core AML concepts
+
+### Naming conventions
+
+Naming conventions are still under consideration. For notebooks under `notebooks`, the notebook filename must start with "train" or "deploy".
+
+### Testing
+
+* `run-notebooks` runs on every push and runs all notebooks under `notebooks` and `concepts`
+* `cleanup` runs daily and cleans up AML resources for the testing workspace
