@@ -40,6 +40,10 @@ To ensure all checks are passed:
 * `tutorials` is for end to end tutorials using AML
 * `concepts` is for API example notebooks of core AML concepts
 
+### Naming conventions
+
+Naming conventions are still under consideration. For notebooks under `notebooks`, the notebook filename must start with "train" or "deploy".
+
 ### Testing
 
 * `run-notebooks` runs on every push and runs all notebooks under `notebooks` and `concepts`
