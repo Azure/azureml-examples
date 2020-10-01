@@ -32,8 +32,6 @@ To ensure all checks are passed:
 * run `black .` from the root of the repo to format the code
 * run `black-nb --clear-output .` from the root of the repo to format the notebooks
 
-> Warning: when adding a new notebook, add a single line description of the notebook to "metadata" > "readme" > "desc". See existing notebooks for examples. The specifics of notebook metadata is under construction.
-
 ### Organization
 
 * `notebooks` is for general example notebooks using AML
