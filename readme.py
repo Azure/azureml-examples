@@ -110,7 +110,11 @@ for nb in nbs:
     if "train" in nb:
         if "cpu-cluster" in str(data):
             compute = "AML - CPU"
-        elif "gpu-cluster" in str(data):
+        elif (
+            "gpu-cluster" in str(data)
+            or "gpu-K80" in str(data)
+            or "gpu-V100" in str(data)
+        ):
             compute = "AML - GPU"
         else:
             compute = "Unknown"

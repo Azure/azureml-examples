@@ -27,9 +27,9 @@ The main example notebooks are located in the [notebooks directory](notebooks). 
 **Training examples**
 path|compute|environment|description
 -|-|-|-
-[notebooks/rapids/train-airlines.ipynb](notebooks/rapids/train-airlines.ipynb)|Unknown|docker|train with RAPIDS and cuML on a subset of the airlines dataset
-[notebooks/rapids/train-airlines-hyperdrive.ipynb](notebooks/rapids/train-airlines-hyperdrive.ipynb)|Unknown|docker|train and hyperparameter tune with RAPIDS, cuML, and hyperdrive
-[notebooks/rapids/train-airlines-multi.ipynb](notebooks/rapids/train-airlines-multi.ipynb)|Unknown|docker|train with RAPIDS, cuML, cuDF, and dask on multiple V100s on the full airline dataset
+[notebooks/rapids/train-airlines.ipynb](notebooks/rapids/train-airlines.ipynb)|AML - GPU|docker|train with RAPIDS and cuML on a subset of the airlines dataset
+[notebooks/rapids/train-airlines-hyperdrive.ipynb](notebooks/rapids/train-airlines-hyperdrive.ipynb)|AML - GPU|docker|train and hyperparameter tune with RAPIDS, cuML, and hyperdrive
+[notebooks/rapids/train-airlines-multi.ipynb](notebooks/rapids/train-airlines-multi.ipynb)|AML - GPU|docker|train with RAPIDS, cuML, cuDF, and dask on multiple V100s on the full airline dataset
 [notebooks/xgboost/train-iris.ipynb](notebooks/xgboost/train-iris.ipynb)|AML - CPU|pip|train xgboost model on iris data
 [notebooks/sklearn/train-diabetes-ridge.ipynb](notebooks/sklearn/train-diabetes-ridge.ipynb)|AML - CPU|conda|train sklearn ridge model on diabetes data
 [notebooks/sklearn/train-diabetes-mlproject.ipynb](notebooks/sklearn/train-diabetes-mlproject.ipynb)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
@@ -37,8 +37,8 @@ path|compute|environment|description
 [notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
 [notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|AML - GPU|docker|train fastai resnet34 model on pets data
 [notebooks/tensorflow/train-mnist-nn.ipynb](notebooks/tensorflow/train-mnist-nn.ipynb)|AML - GPU|conda|train tensorflow NN model on mnist data
-[notebooks/tensorflow/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow/train-mnist-distributed-horovod.ipynb)|Unknown|conda|train tensorflow CNN model on mnist data distributed via horovod
-[notebooks/tensorflow/train-mnist-distributed.ipynb](notebooks/tensorflow/train-mnist-distributed.ipynb)|Unknown|conda|train tensorflow CNN model on mnist data distributed via tensorflow
+[notebooks/tensorflow/train-mnist-distributed-horovod.ipynb](notebooks/tensorflow/train-mnist-distributed-horovod.ipynb)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
+[notebooks/tensorflow/train-mnist-distributed.ipynb](notebooks/tensorflow/train-mnist-distributed.ipynb)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
 [notebooks/tensorflow/train-iris-nn.ipynb](notebooks/tensorflow/train-iris-nn.ipynb)|AML - CPU|conda|train tensorflow NN model on iris data
 [notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|AML - CPU|pip|train a lightgbm model on iris data
 [notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|AML - GPU|conda|train a pytorch CNN model on mnist data
