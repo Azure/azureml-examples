@@ -5,7 +5,6 @@ import argparse
 
 # setup argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--update-metadata", default=False)
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
@@ -84,79 +83,62 @@ with open(f".github/workflows/run-notebooks.yml", "w") as f:
 
 # create README.md file
 for nb in nbs:
-    name = nb.split("/")[-1].split(".")[0]
 
+    # read in notebook
     with open(nb, "r") as f:
         data = json.load(f)
 
-    if args.update_metadata:
-        print(f"Updating metadata for: {nb}")
-        data["metadata"]["kernelspec"] = kernelspec
+    # update metadata
+    data["metadata"]["kernelspec"] = kernelspec
 
-        if "train" in nb:
-            if "cpu-cluster" in str(data):
-                compute = "AML - CPU"
-            elif "gpu-cluster" in str(data):
-                compute = "AML - GPU"
-            else:
-                compute = "Unknown"
-            if "Environment.from_pip_requirements" in str(data):
-                environment = "pip file"
-            elif "Environment.from_conda_specification" in str(data):
-                environment = "conda file"
-            elif "env.docker.base_dockerfile" in str(data):
-                environment = "docker file"
-            desc = input("Description: ")
+    # write notebook
+    with open(nb, "w") as f:
+        json.dump(data, f, indent=2)
 
-            data["metadata"]["readme"] = {
-                "compute": compute,
-                "environment": environment,
-                "desc": desc,
-            }
+    # read in the description
+    if "description: " in str(data["cells"][0]["source"]):
+        desc = (
+            str(data["cells"][0]["source"])
+            .split("description: ")[-1]
+            .replace("']", "")
+            .strip()
+        )
+    else:
+        desc = "*no description*"
 
-        elif "deploy" in nb:
-            if "aks-cpu-deploy" in str(data):
-                compute = "AKS - CPU"
-            elif "aks-gpu-deploy" in str(data):
-                compute = "AKS - GPU"
-            elif "local" in nb:
-                compute = "local"
-            else:
-                compute = "Unknown"
-            desc = input("Description: ")
-
-            data["metadata"]["readme"] = {
-                "compute": compute,
-                "desc": desc,
-            }
-
-        elif "concepts" in nb:
-            area = nb.split("/")[-2]
-            desc = input("Description: ")
-
-            data["metadata"]["readme"] = {
-                "area": area,
-                "desc": desc,
-            }
-
-        with open(nb, "w") as f:
-            json.dump(data, f, indent=2)
-
+    # build tables
     if "train" in nb:
-        environment = data["metadata"]["readme"]["environment"]
-        compute = data["metadata"]["readme"]["compute"]
-        desc = data["metadata"]["readme"]["desc"]
+        if "cpu-cluster" in str(data):
+            compute = "AML - CPU"
+        elif "gpu-cluster" in str(data):
+            compute = "AML - GPU"
+        else:
+            compute = "Unknown"
+        if "Environment.from_pip_requirements" in str(data):
+            environment = "pip"
+        elif "Environment.from_conda_specification" in str(data):
+            environment = "conda"
+        elif "env.docker.base_dockerfile" in str(data):
+            environment = "docker"
+        elif "mlproject" in nb:
+            environment = "mlproject"
+        else:
+            environment = "unknown"
 
         training_table += f"[{nb}]({nb})|{compute}|{environment}|{desc}\n"
     elif "deploy" in nb:
-        compute = data["metadata"]["readme"]["compute"]
-        desc = data["metadata"]["readme"]["desc"]
+        if "aks-cpu-deploy" in str(data):
+            compute = "AKS - CPU"
+        elif "aks-gpu-deploy" in str(data):
+            compute = "AKS - GPU"
+        elif "local" in nb:
+            compute = "local"
+        else:
+            compute = "unknown"
 
         deployment_table += f"[{nb}]({nb})|{compute}|{desc}\n"
     elif "concepts" in nb:
-        area = data["metadata"]["readme"]["area"]
-        desc = data["metadata"]["readme"]["desc"]
-
+        area = nb.split("/")[-2]
         concepts_table += f"[{nb}]({nb})|{area}|{desc}\n"
 
 print("writing README.md...")
