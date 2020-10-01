@@ -22,15 +22,13 @@ import numpy as np
 import pandas as pd
 import cudf
 import cuml
+import mlflow
 
 from cuml import RandomForestClassifier as cuRF
 from cuml.preprocessing.model_selection import train_test_split
 from cuml.metrics.accuracy import accuracy_score
 
 from rapids_csp_azure import RapidsCloudML, PerfTimer
-from azureml.core.run import Run
-
-run = Run.get_context()
 
 
 def main():
@@ -55,32 +53,40 @@ def main():
         default=1.0,
         help="Number of features for best split",
     )
+    parser.add_argument(
+        "--compute",
+        type=str,
+        default="single-GPU",
+        help="set to multi-GPU for algorithms via dask",
+    )
+    parser.add_argument(
+        "--cv-folds", type=int, default=5, help="Number of CV fold splits"
+    )
 
     args = parser.parse_args()
     data_dir = args.data_dir
 
     n_estimators = args.n_estimators
-    run.log("n_estimators", np.int(args.n_estimators))
+    mlflow.log_param("n_estimators", np.int(args.n_estimators))
     max_depth = args.max_depth
-    run.log("max_depth", np.int(args.max_depth))
+    mlflow.log_param("max_depth", np.int(args.max_depth))
     n_bins = args.n_bins
-    run.log("n_bins", np.int(args.n_bins))
+    mlflow.log_param("n_bins", np.int(args.n_bins))
     max_features = args.max_features
-    run.log("max_features", np.str(args.max_features))
+    mlflow.log_param("max_features", np.str(args.max_features))
 
     print("\n---->>>> cuDF version <<<<----\n", cudf.__version__)
     print("\n---->>>> cuML version <<<<----\n", cuml.__version__)
 
-    compute = "single-GPU"  # 'multi-GPU' option for using multi-GPU algorithms via Dask
     azure_ml = RapidsCloudML(
         cloud_type="Azure",
         model_type="RandomForest",
         data_type="Parquet",
-        compute_type=compute,
+        compute_type=args.compute,
     )
-    print(compute)
+    print(args.compute)
 
-    if compute == "single-GPU":
+    if args.compute == "single-GPU":
         dataset, _, y_label, _ = azure_ml.load_data(
             filename=os.path.join(data_dir, "airline_20m.parquet")
         )
@@ -131,8 +137,8 @@ def main():
     }
 
     # optional cross-validation w/ model_params['n_train_folds'] > 1
-    for i_train_fold in range(5):
-        print(f"\n CV fold { i_train_fold } of { 5 }\n")
+    for i_train_fold in range(args.cv_folds):
+        print(f"\n CV fold {i_train_fold} of {args.cv_folds}\n")
 
         # split data
         X_train, X_test, y_train, y_test, _ = azure_ml.split_data(
@@ -156,8 +162,10 @@ def main():
         if test_accuracy > global_best_test_accuracy:
             global_best_test_accuracy = test_accuracy
 
-    run.log("Total training inference time", np.float(training_time + infer_time))
-    run.log("Accuracy", np.float(global_best_test_accuracy))
+    mlflow.log_metric(
+        "Total training inference time", np.float(training_time + infer_time)
+    )
+    mlflow.log_metric("Accuracy", np.float(global_best_test_accuracy))
     print("\n Accuracy             :", global_best_test_accuracy)
     print("\n accuracy per fold    :", accuracy_per_fold)
     print("\n train-time per fold  :", train_time_per_fold)
@@ -170,5 +178,5 @@ if __name__ == "__main__":
     with PerfTimer() as total_script_time:
         main()
     print("Total runtime: {:.2f}".format(total_script_time.duration))
-    run.log("Total runtime", np.float(total_script_time.duration))
+    mlflow.log_metric("Total runtime", np.float(total_script_time.duration))
     print("\n Exiting script")
