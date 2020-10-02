@@ -1,0 +1,43 @@
+- name: Ask
+  description: Define and scope problem and solution
+  color: #c9ecff
+
+- name: Explore
+  description: Explore and document data to increase understanding
+  color: #f0f29b
+
+- name: Experiment
+  description: Build features and train models
+  color: #8569c6
+
+- name: Data
+  description: Get and transform data
+  color: #1c587c
+
+- name: Model
+  description: Prepare model for deployment
+  color: #0b4e82
+  
+- name: Deploy
+  description: Register, package, and deploy model
+  color: #f79499
+
+- name: Communicate
+  description: Write reports, create dashboards, summarize findings, etc.
+  color: #f9f345
+
+  - name: succeeded
+  description: This was successful
+  color: #67d157
+
+  - name: failed
+  description: This didn't go as hoped
+  color: #c2021c
+
+  - name: on hold
+  description: Still seems promising, but let's revist later
+  color: #ffd04f
+
+  - name: blocked - need access
+  description: Blocked due to lack of access to data, resources, environment, etc.
+  color: #ed9a53

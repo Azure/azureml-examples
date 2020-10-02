@@ -1,0 +1,13 @@
+azureml-core>=1.13.0
+azureml-dataprep
+azureml-mlflow
+azureml-widgets
+azure-storage-blob
+numpy
+pandas
+matplotlib
+papermill
+gitpython
+black==19.10b0
+black-nb
+https://aka.ms/triton/packages/tritonclientutils-2.1.0-py3-none-any.whl
