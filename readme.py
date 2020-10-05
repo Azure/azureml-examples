@@ -48,7 +48,13 @@ nbs = [
 
 # create workflow yaml file
 workflow = f"""name: run-notebooks
-on: [push]
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest 
