@@ -1,0 +1,8 @@
+{
+    "computeType": "aks",
+    "containerResourceRequirements": {
+        "cpu": 1,
+        "memoryInGB": 4
+    },
+    "gpuCores": 1
+}

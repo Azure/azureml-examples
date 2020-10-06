@@ -1,0 +1,35 @@
+name: run-notebooks
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        notebook: ['concepts/dataset/dataset-api.ipynb', 'concepts/workspace/workspace-api.ipynb', 'concepts/datastore/datastore-api.ipynb', 'concepts/compute/compute-instance-api.ipynb', 'concepts/compute/azureml-compute-api.ipynb', 'concepts/model/model-api.ipynb', 'concepts/environment/environment-api.ipynb', 'notebooks/rapids/train-airlines.ipynb', 'notebooks/rapids/train-airlines-hyperdrive.ipynb', 'notebooks/rapids/train-airlines-multi.ipynb', 'notebooks/xgboost/train-iris.ipynb', 'notebooks/triton/deploy-densenet-local.ipynb', 'notebooks/triton/deploy-bidaf-aks.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/deploy-diabetes.ipynb', 'notebooks/sklearn/train-diabetes-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow/train-mnist-nn.ipynb', 'notebooks/tensorflow/train-mnist-distributed-horovod.ipynb', 'notebooks/tensorflow/train-mnist-distributed.ipynb', 'notebooks/tensorflow/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-mnist-mlproject.ipynb', 'notebooks/pytorch/deploy-mnist.ipynb']
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+    - name: pip install
+      run: pip install -r requirements.txt
+    - name: check code format
+      run: black --check .
+    - name: check notebook format
+      run: black-nb --clear-output --check .
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
+    - name: run notebook
+      run: papermill ${{matrix.notebook}} out.ipynb -k python
