@@ -15,7 +15,9 @@ if __name__ == "__main__":
         "--learning-rate", type=float, default=0.001, help="Learning rate for SGD"
     )
     parser.add_argument("--momentum", type=float, default=0.9, help="Momentum for SGD")
-    parser.add_argument("--epochs", type=int, default=2, help="Number of epochs to train")
+    parser.add_argument(
+        "--epochs", type=int, default=2, help="Number of epochs to train"
+    )
     args = parser.parse_args()
 
     print("===== DATA =====")
@@ -29,10 +31,7 @@ if __name__ == "__main__":
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
     trainset = torchvision.datasets.CIFAR10(
-        root=args.data_path,
-        train=True,
-        download=False,
-        transform=transform,
+        root=args.data_path, train=True, download=False, transform=transform,
     )
     trainloader = torch.utils.data.DataLoader(
         trainset, batch_size=4, shuffle=True, num_workers=2
@@ -44,9 +43,7 @@ if __name__ == "__main__":
     # set up pytorch loss /  optimizer
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = optim.SGD(
-        net.parameters(),
-        lr=args.learning_rate,
-        momentum=args.momentum,
+        net.parameters(), lr=args.learning_rate, momentum=args.momentum,
     )
 
     # train the network
