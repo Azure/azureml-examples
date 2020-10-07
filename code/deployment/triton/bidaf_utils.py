@@ -30,7 +30,7 @@ def preprocess(text, dtype):
     (np.array(), np.array())
         Tuple containing two numpy arrays with the tokenized
         words and chars, respectively.
-    
+
     From: https://github.com/onnx/models/tree/master/text/machine_comprehension/bidirectional_attention_flow  # noqa
     """
     nltk.download("punkt")
