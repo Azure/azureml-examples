@@ -60,7 +60,7 @@ for tutorial in glob.glob("tutorials/*"):
         with open(f"{tutorial}/README.md", "r") as f:
             for line in f.readlines():
                 if "description: " in str(line):
-                    desc = line.split(": ")[-1]
+                    desc = line.split(": ")[-1].strip()
                     break
     except:
         pass
