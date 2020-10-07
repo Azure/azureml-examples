@@ -65,7 +65,7 @@ for tutorial in glob.glob("tutorials/*"):
     except:
         pass
 
-    tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}"
+    tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
 # process notebooks/* and concepts/*
 nbs = [
