@@ -34,8 +34,8 @@ path|compute|description
 
 concepts_table = """
 **Concepts examples**
-path|area|description|notebooks
--|-|-|-
+path|area|description
+-|-|-
 """
 
 ws = "default"
@@ -47,7 +47,7 @@ kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "pytho
 
 # process tutorials/*
 for tutorial in glob.glob("tutorials/*"):
-    nbs = [nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")]
+    nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
     nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
     nbs = "<br>".join(nbs)
 
@@ -60,7 +60,7 @@ for tutorial in glob.glob("tutorials/*"):
         with open(f"{tutorial}/README.md", "r") as f:
             for line in f.readlines():
                 if "description: " in str(line):
-                    desc = line.split(": ")[-1]
+                    desc = line.split(": ")[-1].strip()
                     break
     except:
         pass
