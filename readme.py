@@ -65,7 +65,7 @@ for tutorial in glob.glob("tutorials/*"):
     except:
         pass
 
-    tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}"
+    tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
 # process notebooks/* and concepts/*
 nbs = [
@@ -131,15 +131,17 @@ for nb in nbs:
         json.dump(data, f, indent=2)
 
     # read in the description
-    if "description: " in str(data["cells"][0]["source"]):
-        desc = (
-            str(data["cells"][0]["source"])
-            .split("description: ")[-1]
-            .replace("']", "")
-            .strip()
-        )
-    else:
-        desc = "*no description*"
+    desc = "*no description*"
+    try:
+        if "description: " in str(data["cells"][0]["source"]):
+            desc = (
+                str(data["cells"][0]["source"])
+                .split("description: ")[-1]
+                .replace("']", "")
+                .strip()
+            )
+    except:
+        pass
 
     # build tables
     if "train" in nb:
@@ -163,7 +165,6 @@ for nb in nbs:
             environment = "mlproject"
         else:
             environment = "unknown"
-
         training_table += f"[{nb}]({nb})|{compute}|{environment}|{desc}\n"
     elif "deploy" in nb:
         if "aks-cpu-deploy" in str(data):
@@ -174,7 +175,6 @@ for nb in nbs:
             compute = "local"
         else:
             compute = "unknown"
-
         deployment_table += f"[{nb}]({nb})|{compute}|{desc}\n"
     elif "concepts" in nb:
         area = nb.split("/")[-2]
