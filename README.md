@@ -28,7 +28,6 @@ The main example notebooks are located in the [notebooks directory](notebooks). 
 path|status|notebooks|description
 -|-|-|-
 [getting-started](tutorials/getting-started)|[![getting-started](https://github.com/Azure/azureml-examples/workflows/run-tutorial-gs/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-gs)|[1.hello-world.ipynb](tutorials/getting-started/1.hello-world.ipynb)<br>[2.train-model.ipynb](tutorials/getting-started/2.train-model.ipynb)<br>[3.train-model-cloud-data.ipynb](tutorials/getting-started/3.train-model-cloud-data.ipynb)|simple tutorial for getting started with hello world and model training in the cloud
-
 **Training examples**
 path|compute|environment|description
 -|-|-|-
