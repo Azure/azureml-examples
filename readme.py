@@ -47,7 +47,7 @@ kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "pytho
 
 # process tutorials/*
 for tutorial in glob.glob("tutorials/*"):
-    nbs = [nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")]
+    nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
     nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
     nbs = "<br>".join(nbs)
 
