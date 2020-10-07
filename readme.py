@@ -34,8 +34,8 @@ path|compute|description
 
 concepts_table = """
 **Concepts examples**
-path|area|description|notebooks
--|-|-|-
+path|area|description
+-|-|-
 """
 
 ws = "default"

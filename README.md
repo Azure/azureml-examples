@@ -58,8 +58,8 @@ path|compute|description
 [notebooks/pytorch/deploy-mnist.ipynb](notebooks/pytorch/deploy-mnist.ipynb)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
 
 **Concepts examples**
-path|area|description|notebooks
--|-|-|-
+path|area|description
+-|-|-
 [concepts/dataset/dataset-api.ipynb](concepts/dataset/dataset-api.ipynb)|dataset|overview of the AML Dataset Python SDK
 [concepts/workspace/workspace-api.ipynb](concepts/workspace/workspace-api.ipynb)|workspace|overview of the AML Workspace Python SDK
 [concepts/datastore/datastore-api.ipynb](concepts/datastore/datastore-api.ipynb)|datastore|overview of the AML Datastore Python SDK
