@@ -47,7 +47,7 @@ def parse_model_http(model_name, model_version=""):
 
     model_version : str
         Optional, the version of the model, defaults to empty string.
-    
+
     From https://github.com/triton-inference-server/server/blob/master/src/clients/python/examples/image_client.py  # noqa
     """
     model_metadata = triton_client.get_model_metadata(

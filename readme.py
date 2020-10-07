@@ -14,6 +14,12 @@ with open("docs/data/prefix.data", "r") as f:
 with open("docs/data/suffix.data", "r") as f:
     suffix = f.read()
 
+tutorials_table = """
+**Tutorials**
+path|status|notebooks|description
+-|-|-|-
+"""
+
 training_table = """
 **Training examples**
 path|compute|environment|description
@@ -28,8 +34,8 @@ path|compute|description
 
 concepts_table = """
 **Concepts examples**
-path|area|description
--|-|-
+path|area|description|notebooks
+-|-|-|-
 """
 
 ws = "default"
@@ -39,7 +45,29 @@ cr = "${{secrets.AZ_AE_CREDS}}"
 
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
-# get list of notebooks
+# process tutorials/*
+for tutorial in glob.glob("tutorials/*"):
+    nbs = [nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")]
+    nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
+    nbs = "<br>".join(nbs)
+
+    name = tutorial.split("/")[-1]
+    initials = name.split("-")[0][0] + name.split("-")[1][0]
+
+    status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/run-tutorial-{initials}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-{initials})"
+    desc = "*no description*"
+    try:
+        with open(f"{tutorial}/README.md", "r") as f:
+            for line in f.readlines():
+                if "description: " in str(line):
+                    desc = line.split(": ")[-1]
+                    break
+    except:
+        pass
+
+    tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}"
+
+# process notebooks/* and concepts/*
 nbs = [
     nb
     for nb in glob.glob("*/**/*.ipynb", recursive=True)
@@ -154,7 +182,14 @@ for nb in nbs:
 
 print("writing README.md...")
 with open("README.md", "w") as f:
-    f.write(prefix + training_table + deployment_table + concepts_table + suffix)
+    f.write(
+        prefix
+        + tutorials_table
+        + training_table
+        + deployment_table
+        + concepts_table
+        + suffix
+    )
 
 # run code formatter on .py files
 os.system("black .")
