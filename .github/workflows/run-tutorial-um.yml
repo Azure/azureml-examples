@@ -1,4 +1,4 @@
-name: run-tutorial-gs
+name: run-tutorial-um
 on:
   push: 
     branches:
