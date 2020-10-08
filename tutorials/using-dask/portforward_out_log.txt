@@ -1,9 +1,9 @@
 OpenSSH_8.1p1, LibreSSL 2.7.3
 debug1: Reading configuration data /etc/ssh/ssh_config
 debug1: /etc/ssh/ssh_config line 47: Applying options for *
-debug2: resolve_canonicalize: hostname 52.142.30.198 is address
+debug2: resolve_canonicalize: hostname 52.142.16.195 is address
 debug2: ssh_connect_direct
-debug1: Connecting to 52.142.30.198 [52.142.30.198] port 50001.
+debug1: Connecting to 52.142.16.195 [52.142.16.195] port 50001.
 debug1: Connection established.
 debug1: identity file /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key type 0
 debug1: identity file /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key-cert type -1
@@ -11,8 +11,8 @@ debug1: Local version string SSH-2.0-OpenSSH_8.1
 debug1: Remote protocol version 2.0, remote software version OpenSSH_7.2p2 Ubuntu-4ubuntu2.8
 debug1: match: OpenSSH_7.2p2 Ubuntu-4ubuntu2.8 pat OpenSSH_7.0*,OpenSSH_7.1*,OpenSSH_7.2*,OpenSSH_7.3*,OpenSSH_7.4*,OpenSSH_7.5*,OpenSSH_7.6*,OpenSSH_7.7* compat 0x04000002
 debug2: fd 3 setting O_NONBLOCK
-debug1: Authenticating to 52.142.30.198:50001 as 'dask'
-debug3: put_host_port: [52.142.30.198]:50001
+debug1: Authenticating to 52.142.16.195:50001 as 'dask'
+debug3: put_host_port: [52.142.16.195]:50001
 debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
 debug3: send packet: type 20
 debug1: SSH2_MSG_KEXINIT sent
@@ -51,14 +51,14 @@ debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit
 debug3: send packet: type 30
 debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
 debug3: receive packet: type 31
-debug1: Server host key: ecdsa-sha2-nistp256 SHA256:Jpici81B20Qo3G/Hdogz3ejV6AbO8PcjmER3eNELA7g
-debug3: put_host_port: [52.142.30.198]:50001
-debug3: put_host_port: [52.142.30.198]:50001
+debug1: Server host key: ecdsa-sha2-nistp256 SHA256:/yARFKidDl+qpBLkclJOIdjSHL53XDO0pBsw34dtx44
+debug3: put_host_port: [52.142.16.195]:50001
+debug3: put_host_port: [52.142.16.195]:50001
 debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
 debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
 debug1: checking without port identifier
 debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
-Warning: Permanently added '[52.142.30.198]:50001' (ECDSA) to the list of known hosts.
+Warning: Permanently added '[52.142.16.195]:50001' (ECDSA) to the list of known hosts.
 debug3: send packet: type 21
 debug2: set_newkeys: mode 1
 debug1: rekey out after 134217728 blocks
@@ -68,7 +68,7 @@ debug3: receive packet: type 21
 debug1: SSH2_MSG_NEWKEYS received
 debug2: set_newkeys: mode 0
 debug1: rekey in after 134217728 blocks
-debug1: Will attempt key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM explicit
+debug1: Will attempt key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:7PP0lICZjelgpp3MTBLdY7If5scsvm5xLX3SDq4slN0 explicit
 debug2: pubkey_prepare: done
 debug3: send packet: type 5
 debug3: receive packet: type 7
@@ -86,17 +86,17 @@ debug3: authmethod_lookup publickey
 debug3: remaining preferred: keyboard-interactive,password
 debug3: authmethod_is_enabled publickey
 debug1: Next authentication method: publickey
-debug1: Offering public key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM explicit
+debug1: Offering public key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:7PP0lICZjelgpp3MTBLdY7If5scsvm5xLX3SDq4slN0 explicit
 debug3: send packet: type 50
 debug2: we sent a publickey packet, wait for reply
 debug3: receive packet: type 60
-debug1: Server accepts key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM explicit
-debug3: sign_and_send_pubkey: RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM
+debug1: Server accepts key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:7PP0lICZjelgpp3MTBLdY7If5scsvm5xLX3SDq4slN0 explicit
+debug3: sign_and_send_pubkey: RSA SHA256:7PP0lICZjelgpp3MTBLdY7If5scsvm5xLX3SDq4slN0
 debug3: sign_and_send_pubkey: signing using rsa-sha2-512
 debug3: send packet: type 50
 debug3: receive packet: type 52
 debug1: Authentication succeeded (publickey).
-Authenticated to 52.142.30.198 ([52.142.30.198]:50001).
+Authenticated to 52.142.16.195 ([52.142.16.195]:50001).
 debug1: Local connections to 0.0.0.0:9000 forwarded to remote address 10.0.0.5:8888
 debug3: channel_setup_fwd_listener_tcpip: type 2 wildcard 0 addr 0.0.0.0
 debug1: Local forwarding listening on 0.0.0.0 port 9000.
@@ -121,14 +121,14 @@ debug1: Requesting no-more-sessions@openssh.com
 debug3: send packet: type 80
 debug1: Entering interactive session.
 debug1: pledge: network
-debug3: receive packet: type 80
-debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
 debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
 debug2: fd 7 setting TCP_NODELAY
 debug3: fd 7 is O_NONBLOCK
 debug3: fd 7 is O_NONBLOCK
 debug1: channel 3: new [direct-tcpip]
 debug3: send packet: type 90
+debug3: receive packet: type 80
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
 debug3: receive packet: type 91
 debug2: channel 3: open confirm rwindow 2097152 rmax 32768
 debug3: receive packet: type 98
@@ -150,129 +150,123 @@ debug1: channel 5: new [direct-tcpip]
 debug3: send packet: type 90
 debug3: receive packet: type 91
 debug2: channel 5: open confirm rwindow 2097152 rmax 32768
-debug2: channel 5: window 1998395 sent adjust 98757
-debug2: channel 5: window 1989200 sent adjust 107952
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
-debug2: fd 10 setting TCP_NODELAY
-debug3: fd 10 is O_NONBLOCK
-debug3: fd 10 is O_NONBLOCK
-debug1: channel 6: new [direct-tcpip]
-debug3: send packet: type 90
-debug3: receive packet: type 91
-debug2: channel 6: open confirm rwindow 2097152 rmax 32768
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 6: read<=0 rfd 10 len 0
-debug2: channel 6: read failed
-debug2: channel 6: chan_shutdown_read (i0 o0 sock 10 wfd 10 efd -1 [closed])
-debug2: channel 6: input open -> drain
-debug2: channel 6: ibuf empty
-debug2: channel 6: send eof
-debug3: send packet: type 96
-debug2: channel 6: input drain -> closed
-debug3: receive packet: type 96
-debug2: channel 6: rcvd eof
-debug2: channel 6: output open -> drain
-debug2: channel 6: obuf empty
-debug2: channel 6: chan_shutdown_write (i3 o1 sock 10 wfd 10 efd -1 [closed])
-debug2: channel 6: output drain -> closed
-debug3: receive packet: type 97
-debug2: channel 6: rcvd close
-debug3: channel 6: will not send data after close
-debug2: channel 6: send close
-debug3: send packet: type 97
-debug2: channel 6: is dead
-debug2: channel 6: garbage collecting
-debug1: channel 6: free: direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 53284 to 127.0.0.1 port 9001, nchannels 7
-debug3: channel 6: status: The following connections are open:
-  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 53121 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
-  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 53238 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
-  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 53239 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
-  #6 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 53284 to 127.0.0.1 port 9001 (t4 r3 i3/0 o3/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
-
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 4: rcvd adjust 104201
-debug2: channel 4: rcvd adjust 114688
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
 debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
 debug2: fd 10 setting TCP_NODELAY
 debug3: fd 10 is O_NONBLOCK
 debug3: fd 10 is O_NONBLOCK
 debug1: channel 6: new [direct-tcpip]
 debug3: send packet: type 90
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 131072
 debug3: receive packet: type 91
 debug2: channel 6: open confirm rwindow 2097152 rmax 32768
+debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
+debug2: fd 11 setting TCP_NODELAY
+debug3: fd 11 is O_NONBLOCK
+debug3: fd 11 is O_NONBLOCK
+debug1: channel 7: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 7: open confirm rwindow 2097152 rmax 32768
+debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
+debug2: fd 12 setting TCP_NODELAY
+debug3: fd 12 is O_NONBLOCK
+debug3: fd 12 is O_NONBLOCK
+debug1: channel 8: new [direct-tcpip]
+debug3: send packet: type 90
+debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
+debug2: fd 13 setting TCP_NODELAY
+debug3: fd 13 is O_NONBLOCK
+debug3: fd 13 is O_NONBLOCK
+debug1: channel 9: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 8: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 9: open confirm rwindow 2097152 rmax 32768
+debug2: channel 8: rcvd adjust 100798
+debug2: channel 9: read<=0 rfd 13 len 0
+debug2: channel 9: read failed
+debug2: channel 9: chan_shutdown_read (i0 o0 sock 13 wfd 13 efd -1 [closed])
+debug2: channel 9: input open -> drain
+debug2: channel 9: ibuf empty
+debug2: channel 9: send eof
+debug3: send packet: type 96
+debug2: channel 9: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 9: rcvd eof
+debug2: channel 9: output open -> drain
+debug2: channel 9: obuf empty
+debug2: channel 9: chan_shutdown_write (i3 o1 sock 13 wfd 13 efd -1 [closed])
+debug2: channel 9: output drain -> closed
+debug3: receive packet: type 97
+debug2: channel 9: rcvd close
+debug3: channel 9: will not send data after close
+debug2: channel 9: send close
+debug3: send packet: type 97
+debug2: channel 9: is dead
+debug2: channel 9: garbage collecting
+debug1: channel 9: free: direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 57879 to 127.0.0.1 port 9001, nchannels 10
+debug3: channel 9: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 57873 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0
+debug2: channel 7: read<=0 rfd 11 len 0
+debug2: channel 7: read failed
+debug2: channel 7: chan_shutdown_read (i0 o0 sock 11 wfd 11 efd -1 [closed])
+debug2: channel 7: input open -> drain
+debug2: channel 7: ibuf empty
+debug2: channel 7: send eof
+debug3: send packet: type 96
+debug2: channel 7: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 7: rcvd eof
+debug2: channel 7: output open -> drain
+debug2: channel 7: obuf empty
+debug2: channel 7: chan_shutdown_write (i3 o1 sock 11 wfd 11 efd -1 [closed])
+debug2: channel 7: output drain -> closed
+debug3: receive packet: type 97
+debug2: channel 7: rcvd close
+debug3: channel 7: will not send data after close
+debug2: channel 7: send close
+debug3: send packet: type 97
+debug2: channel 7: is dead
+debug2: channel 7: garbage collecting
+debug1: channel 7: free: direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 57873 to 127.0.0.1 port 9001, nchannels 9
+debug3: channel 7: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 57873 to 127.0.0.1 port 9001 (t4 r4 i3/0 o3/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0
+debug2: channel 8: window 1997438 sent adjust 99714
+debug2: channel 5: window 1998364 sent adjust 98788
+debug2: channel 6: window 1991231 sent adjust 105921
+debug2: channel 8: window 1998063 sent adjust 99089
+debug2: channel 5: window 1989572 sent adjust 107580
+debug2: channel 6: window 1989572 sent adjust 107580
+debug2: channel 8: window 1998071 sent adjust 99081
+debug2: channel 5: window 1989572 sent adjust 107580
+debug2: channel 8: window 1998251 sent adjust 98901
+debug2: channel 6: window 1989572 sent adjust 107580
+debug2: channel 8: window 1998043 sent adjust 99109
+debug2: channel 5: window 1989572 sent adjust 107580
+debug2: channel 6: window 1989572 sent adjust 107580
+debug2: channel 8: window 1998139 sent adjust 99013
+debug2: channel 5: window 1989572 sent adjust 107580
+debug2: channel 6: window 1989572 sent adjust 107580
+debug2: channel 8: window 1997977 sent adjust 99175
+debug2: channel 5: window 1989572 sent adjust 107580
+debug2: channel 6: window 1989572 sent adjust 107580
+debug2: channel 8: window 1997742 sent adjust 99410
+debug2: channel 4: rcvd adjust 103235
+debug2: channel 4: rcvd adjust 114688
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: window 1991113 sent adjust 106039
-debug2: channel 4: window 1988644 sent adjust 108508
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: window 1966080 sent adjust 131072
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: window 1983951 sent adjust 47665
-debug2: channel 4: window 1753088 sent adjust 179756
-debug2: channel 4: window 1932844 sent adjust 130656
-debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: window 1997964 sent adjust 99188
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 81452
-debug2: channel 4: window 1965612 sent adjust 131540
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
@@ -283,106 +277,416 @@ debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
+debug2: fd 11 setting TCP_NODELAY
+debug3: fd 11 is O_NONBLOCK
+debug3: fd 11 is O_NONBLOCK
+debug1: channel 7: new [direct-tcpip]
+debug3: send packet: type 90
 debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 127739
-debug2: channel 4: window 1987777 sent adjust 109375
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1985433 sent adjust 111719
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1991715 sent adjust 105437
-debug2: channel 5: window 1996168 sent adjust 100984
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: rcvd adjust 98461
+debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 13 setting TCP_NODELAY
+debug3: fd 13 is O_NONBLOCK
+debug3: fd 13 is O_NONBLOCK
+debug1: channel 9: new [direct-tcpip]
+debug3: send packet: type 90
+debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 14 setting TCP_NODELAY
+debug2: channel: expanding 20
+debug3: fd 14 is O_NONBLOCK
+debug3: fd 14 is O_NONBLOCK
+debug1: channel 10: new [direct-tcpip]
+debug3: send packet: type 90
+debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 15 setting TCP_NODELAY
+debug3: fd 15 is O_NONBLOCK
+debug3: fd 15 is O_NONBLOCK
+debug1: channel 11: new [direct-tcpip]
+debug3: send packet: type 90
+debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 16 setting TCP_NODELAY
+debug3: fd 16 is O_NONBLOCK
+debug3: fd 16 is O_NONBLOCK
+debug1: channel 12: new [direct-tcpip]
+debug3: send packet: type 90
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 17 setting TCP_NODELAY
+debug3: fd 17 is O_NONBLOCK
+debug3: fd 17 is O_NONBLOCK
+debug1: channel 13: new [direct-tcpip]
+debug3: send packet: type 90
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 18 setting TCP_NODELAY
+debug3: fd 18 is O_NONBLOCK
+debug3: fd 18 is O_NONBLOCK
+debug1: channel 14: new [direct-tcpip]
+debug3: send packet: type 90
+debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 19 setting TCP_NODELAY
+debug3: fd 19 is O_NONBLOCK
+debug3: fd 19 is O_NONBLOCK
+debug1: channel 15: new [direct-tcpip]
+debug3: send packet: type 90
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 20 setting TCP_NODELAY
+debug3: fd 20 is O_NONBLOCK
+debug3: fd 20 is O_NONBLOCK
+debug1: channel 16: new [direct-tcpip]
+debug3: send packet: type 90
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 21 setting TCP_NODELAY
+debug3: fd 21 is O_NONBLOCK
+debug3: fd 21 is O_NONBLOCK
+debug1: channel 17: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 7: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 9: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 10: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 11: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 12: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 13: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 14: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 15: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 16: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 91
+debug2: channel 17: open confirm rwindow 2097152 rmax 32768
+debug2: channel 9: read<=0 rfd 13 len 0
+debug2: channel 9: read failed
+debug2: channel 9: chan_shutdown_read (i0 o0 sock 13 wfd 13 efd -1 [closed])
+debug2: channel 9: input open -> drain
+debug2: channel 10: read<=0 rfd 14 len 0
+debug2: channel 10: read failed
+debug2: channel 10: chan_shutdown_read (i0 o0 sock 14 wfd 14 efd -1 [closed])
+debug2: channel 10: input open -> drain
+debug2: channel 11: read<=0 rfd 15 len 0
+debug2: channel 11: read failed
+debug2: channel 11: chan_shutdown_read (i0 o0 sock 15 wfd 15 efd -1 [closed])
+debug2: channel 11: input open -> drain
+debug2: channel 12: read<=0 rfd 16 len 0
+debug2: channel 12: read failed
+debug2: channel 12: chan_shutdown_read (i0 o0 sock 16 wfd 16 efd -1 [closed])
+debug2: channel 12: input open -> drain
+debug2: channel 13: read<=0 rfd 17 len 0
+debug2: channel 13: read failed
+debug2: channel 13: chan_shutdown_read (i0 o0 sock 17 wfd 17 efd -1 [closed])
+debug2: channel 13: input open -> drain
+debug2: channel 14: read<=0 rfd 18 len 0
+debug2: channel 14: read failed
+debug2: channel 14: chan_shutdown_read (i0 o0 sock 18 wfd 18 efd -1 [closed])
+debug2: channel 14: input open -> drain
+debug2: channel 9: ibuf empty
+debug2: channel 9: send eof
+debug3: send packet: type 96
+debug2: channel 9: input drain -> closed
+debug2: channel 10: ibuf empty
+debug2: channel 10: send eof
+debug3: send packet: type 96
+debug2: channel 10: input drain -> closed
+debug2: channel 11: ibuf empty
+debug2: channel 11: send eof
+debug3: send packet: type 96
+debug2: channel 11: input drain -> closed
+debug2: channel 12: ibuf empty
+debug2: channel 12: send eof
+debug3: send packet: type 96
+debug2: channel 12: input drain -> closed
+debug2: channel 13: ibuf empty
+debug2: channel 13: send eof
+debug3: send packet: type 96
+debug2: channel 13: input drain -> closed
+debug2: channel 14: ibuf empty
+debug2: channel 14: send eof
+debug3: send packet: type 96
+debug2: channel 14: input drain -> closed
+debug2: channel 15: read<=0 rfd 19 len 0
+debug2: channel 15: read failed
+debug2: channel 15: chan_shutdown_read (i0 o0 sock 19 wfd 19 efd -1 [closed])
+debug2: channel 15: input open -> drain
+debug2: channel 15: ibuf empty
+debug2: channel 15: send eof
+debug3: send packet: type 96
+debug2: channel 15: input drain -> closed
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 22 setting TCP_NODELAY
+debug3: fd 22 is O_NONBLOCK
+debug3: fd 22 is O_NONBLOCK
+debug1: channel 18: new [direct-tcpip]
+debug3: send packet: type 90
+debug2: channel 16: read<=0 rfd 20 len 0
+debug2: channel 16: read failed
+debug2: channel 16: chan_shutdown_read (i0 o0 sock 20 wfd 20 efd -1 [closed])
+debug2: channel 16: input open -> drain
+debug2: channel 16: ibuf empty
+debug2: channel 16: send eof
+debug3: send packet: type 96
+debug2: channel 16: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 9: rcvd eof
+debug2: channel 9: output open -> drain
+debug3: receive packet: type 97
+debug2: channel 9: rcvd close
+debug3: receive packet: type 96
+debug2: channel 10: rcvd eof
+debug2: channel 10: output open -> drain
+debug3: receive packet: type 97
+debug2: channel 10: rcvd close
+debug3: receive packet: type 96
+debug2: channel 11: rcvd eof
+debug2: channel 11: output open -> drain
+debug3: receive packet: type 97
+debug2: channel 11: rcvd close
+debug3: receive packet: type 96
+debug2: channel 12: rcvd eof
+debug2: channel 12: output open -> drain
+debug3: receive packet: type 97
+debug2: channel 12: rcvd close
+debug3: receive packet: type 96
+debug2: channel 13: rcvd eof
+debug2: channel 13: output open -> drain
+debug3: receive packet: type 97
+debug2: channel 13: rcvd close
+debug3: receive packet: type 96
+debug2: channel 14: rcvd eof
+debug2: channel 14: output open -> drain
+debug3: receive packet: type 97
+debug2: channel 14: rcvd close
+debug3: channel 9: will not send data after close
+debug3: channel 10: will not send data after close
+debug3: channel 11: will not send data after close
+debug3: channel 12: will not send data after close
+debug3: channel 13: will not send data after close
+debug3: channel 14: will not send data after close
+debug3: channel 9: will not send data after close
+debug3: channel 10: will not send data after close
+debug3: channel 11: will not send data after close
+debug3: channel 12: will not send data after close
+debug3: channel 13: will not send data after close
+debug3: channel 14: will not send data after close
+debug2: channel 9: obuf empty
+debug2: channel 9: chan_shutdown_write (i3 o1 sock 13 wfd 13 efd -1 [closed])
+debug2: channel 9: output drain -> closed
+debug2: channel 9: send close
+debug3: send packet: type 97
+debug2: channel 9: is dead
+debug2: channel 9: garbage collecting
+debug1: channel 9: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58109 to 127.0.0.1 port 9002, nchannels 19
+debug3: channel 9: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0
+debug2: channel 10: obuf empty
+debug2: channel 10: chan_shutdown_write (i3 o1 sock 14 wfd 14 efd -1 [closed])
+debug2: channel 10: chan_shutdown_write: shutdown() failed for fd 14 [i3 o1]: Socket is not connected
+debug2: channel 10: output drain -> closed
+debug2: channel 10: send close
+debug3: send packet: type 97
+debug2: channel 10: is dead
+debug2: channel 10: garbage collecting
+debug1: channel 10: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58110 to 127.0.0.1 port 9002, nchannels 18
+debug3: channel 10: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug2: channel 11: obuf empty
+debug2: channel 11: chan_shutdown_write (i3 o1 sock 15 wfd 15 efd -1 [closed])
+debug2: channel 11: chan_shutdown_write: shutdown() failed for fd 15 [i3 o1]: Socket is not connected
+debug2: channel 11: output drain -> closed
+debug2: channel 11: send close
+debug3: send packet: type 97
+debug2: channel 11: is dead
+debug2: channel 11: garbage collecting
+debug1: channel 11: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58111 to 127.0.0.1 port 9002, nchannels 17
+debug3: channel 11: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug2: channel 12: obuf empty
+debug2: channel 12: chan_shutdown_write (i3 o1 sock 16 wfd 16 efd -1 [closed])
+debug2: channel 12: chan_shutdown_write: shutdown() failed for fd 16 [i3 o1]: Socket is not connected
+debug2: channel 12: output drain -> closed
+debug2: channel 12: send close
+debug3: send packet: type 97
+debug2: channel 12: is dead
+debug2: channel 12: garbage collecting
+debug1: channel 12: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58112 to 127.0.0.1 port 9002, nchannels 16
+debug3: channel 12: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug2: channel 13: obuf empty
+debug2: channel 13: chan_shutdown_write (i3 o1 sock 17 wfd 17 efd -1 [closed])
+debug2: channel 13: chan_shutdown_write: shutdown() failed for fd 17 [i3 o1]: Socket is not connected
+debug2: channel 13: output drain -> closed
+debug2: channel 13: send close
+debug3: send packet: type 97
+debug2: channel 13: is dead
+debug2: channel 13: garbage collecting
+debug1: channel 13: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58113 to 127.0.0.1 port 9002, nchannels 15
+debug3: channel 13: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug2: channel 14: obuf empty
+debug2: channel 14: chan_shutdown_write (i3 o1 sock 18 wfd 18 efd -1 [closed])
+debug2: channel 14: chan_shutdown_write: shutdown() failed for fd 18 [i3 o1]: Socket is not connected
+debug2: channel 14: output drain -> closed
+debug2: channel 14: send close
+debug3: send packet: type 97
+debug2: channel 14: is dead
+debug2: channel 14: garbage collecting
+debug1: channel 14: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58114 to 127.0.0.1 port 9002, nchannels 14
+debug3: channel 14: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 13 setting TCP_NODELAY
+debug3: fd 13 is O_NONBLOCK
+debug3: fd 13 is O_NONBLOCK
+debug1: channel 9: new [direct-tcpip]
+debug3: send packet: type 90
+debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
+debug2: fd 14 setting TCP_NODELAY
+debug3: fd 14 is O_NONBLOCK
+debug3: fd 14 is O_NONBLOCK
+debug1: channel 10: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 96
+debug2: channel 15: rcvd eof
+debug2: channel 15: output open -> drain
+debug2: channel 15: obuf empty
+debug2: channel 15: chan_shutdown_write (i3 o1 sock 19 wfd 19 efd -1 [closed])
+debug2: channel 15: chan_shutdown_write: shutdown() failed for fd 19 [i3 o1]: Socket is not connected
+debug2: channel 15: output drain -> closed
+debug3: receive packet: type 97
+debug2: channel 15: rcvd close
+debug3: receive packet: type 91
+debug2: channel 18: open confirm rwindow 2097152 rmax 32768
+debug3: channel 15: will not send data after close
+debug2: channel 15: send close
+debug3: send packet: type 97
+debug2: channel 15: is dead
+debug2: channel 15: garbage collecting
+debug1: channel 15: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58115 to 127.0.0.1 port 9002, nchannels 15
+debug3: channel 15: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug2: channel 8: read<=0 rfd 12 len 0
+debug2: channel 8: read failed
+debug2: channel 8: chan_shutdown_read (i0 o0 sock 12 wfd 12 efd -1 [closed])
+debug2: channel 8: input open -> drain
+debug2: channel 8: ibuf empty
+debug2: channel 8: send eof
+debug3: send packet: type 96
+debug2: channel 8: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 16: rcvd eof
+debug2: channel 16: output open -> drain
+debug2: channel 16: obuf empty
+debug2: channel 16: chan_shutdown_write (i3 o1 sock 20 wfd 20 efd -1 [closed])
+debug2: channel 16: chan_shutdown_write: shutdown() failed for fd 20 [i3 o1]: Socket is not connected
+debug2: channel 16: output drain -> closed
+debug3: receive packet: type 97
+debug2: channel 16: rcvd close
+debug3: receive packet: type 91
+debug2: channel 9: open confirm rwindow 2097152 rmax 32768
+debug3: channel 16: will not send data after close
+debug2: channel 16: send close
+debug3: send packet: type 97
+debug2: channel 16: is dead
+debug2: channel 16: garbage collecting
+debug1: channel 16: free: direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 58116 to 127.0.0.1 port 9002, nchannels 14
+debug3: channel 16: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.
+debug3: receive packet: type 91
+debug2: channel 10: open confirm rwindow 2097152 rmax 32768
+debug2: channel 8: write failed
+debug2: channel 8: chan_shutdown_write (i3 o0 sock 12 wfd 12 efd -1 [closed])
+debug2: channel 8: chan_shutdown_write: shutdown() failed for fd 12 [i3 o0]: Socket is not connected
+debug2: channel 8: output open -> closed
+debug2: channel 8: send close
+debug3: send packet: type 97
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: channel 8: will not send data after close
+debug3: receive packet: type 96
+debug2: channel 8: rcvd eof
+debug3: receive packet: type 97
+debug2: channel 8: rcvd close
+debug3: channel 8: will not send data after close
+debug2: channel 8: is dead
+debug2: channel 8: garbage collecting
+debug1: channel 8: free: direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 57878 to 127.0.0.1 port 9001, nchannels 13
+debug3: channel 8: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i0/0 o0/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #8 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0
+debug2: channel 10: window 1997956 sent adjust 99196
+debug2: channel 10: window 1995493 sent adjust 101659
+debug2: channel 10: window 1996816 sent adjust 100336
+debug2: channel 10: window 1992572 sent adjust 104580
+debug2: channel 10: window 1995309 sent adjust 101843
+debug2: channel 10: window 1997129 sent adjust 100023
+debug2: channel 10: window 1997961 sent adjust 99191
+debug2: channel 10: window 1997212 sent adjust 99940
+debug2: channel 10: window 1995529 sent adjust 101623
+debug2: channel 5: window 1988322 sent adjust 108830
+debug2: channel 10: window 1997127 sent adjust 100025
+debug2: channel 10: window 1993973 sent adjust 103179
+debug2: channel 10: window 1991182 sent adjust 105970
+debug2: channel 4: rcvd adjust 99424
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
 debug2: channel 4: rcvd adjust 114688
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
@@ -399,102 +703,642 @@ debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
 debug2: channel 4: rcvd adjust 131072
-debug2: channel 4: rcvd adjust 101851
-debug2: channel 4: window 1993272 sent adjust 103880
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1985433 sent adjust 111719
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1990791 sent adjust 106361
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 4: window 1982464 sent adjust 114688
-debug2: channel 6: window 1996099 sent adjust 101053
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 10: window 1998512 sent adjust 98640
+debug2: channel 4: rcvd adjust 113462
+debug2: channel 10: window 1998203 sent adjust 98949
+debug2: channel 6: window 1996585 sent adjust 100567
+debug2: channel 10: window 1995827 sent adjust 101325
+debug2: channel 10: window 1996696 sent adjust 100456
+debug2: channel 10: window 1998749 sent adjust 98403
+debug2: channel 10: window 1998610 sent adjust 98542
+debug2: channel 10: window 1997929 sent adjust 99223
+debug2: channel 10: window 1998601 sent adjust 98551
+debug2: channel 10: window 1997772 sent adjust 99380
+debug2: channel 10: window 1998736 sent adjust 98416
+debug2: channel 10: window 1997323 sent adjust 99829
+debug2: channel 10: window 1996651 sent adjust 100501
+debug2: channel 10: window 1995788 sent adjust 101364
+debug2: channel 10: window 1995280 sent adjust 101872
+debug2: channel 10: window 1997769 sent adjust 99383
+debug2: channel 10: window 1997042 sent adjust 100110
+debug2: channel 7: read<=0 rfd 11 len 0
+debug2: channel 7: read failed
+debug2: channel 7: chan_shutdown_read (i0 o0 sock 11 wfd 11 efd -1 [closed])
+debug2: channel 7: input open -> drain
+debug2: channel 7: ibuf empty
+debug2: channel 7: send eof
+debug3: send packet: type 96
+debug2: channel 7: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 7: rcvd eof
+debug2: channel 7: output open -> drain
+debug2: channel 7: obuf empty
+debug2: channel 7: chan_shutdown_write (i3 o1 sock 11 wfd 11 efd -1 [closed])
+debug2: channel 7: output drain -> closed
+debug3: receive packet: type 97
+debug2: channel 7: rcvd close
+debug3: channel 7: will not send data after close
+debug2: channel 7: send close
+debug3: send packet: type 97
+debug2: channel 7: is dead
+debug2: channel 7: garbage collecting
+debug1: channel 7: free: direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001, nchannels 12
+debug3: channel 7: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57772 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57843 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57844 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 57847 to 127.0.0.1 port 9002 (t4 r3 i0/0 o0/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+  #7 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 58108 to 127.0.0.1 port 9001 (t4 r4 i3/0 o3/0 e[closed]/0 fd 11/11/-1 sock 11 cc -1)
+  #9 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0
+debug2: channel 10: window 1995599 sent adjust 101553
+debug2: channel 10: window 1998735 sent adjust 98417
+debug2: channel 10: window 1996190 sent adjust 100962
+debug2: channel 10: window 1996298 sent adjust 100854
+debug2: channel 10: window 1998090 sent adjust 99062
+debug2: channel 10: window 1998593 sent adjust 98559
+debug2: channel 10: window 1997237 sent adjust 99915
+debug2: channel 18: window 1998845 sent adjust 98307
+debug2: channel 10: window 1996434 sent adjust 100718
+debug2: channel 10: window 1997706 sent adjust 99446
+debug2: channel 17: window 1987427 sent adjust 109725
+debug2: channel 10: window 1998656 sent adjust 98496
+debug2: channel 10: window 1995818 sent adjust 101334
+debug2: channel 10: window 1997698 sent adjust 99454
+debug2: channel 10: window 1997769 sent adjust 99383
+debug2: channel 10: rcvd adjust 98379
+debug2: channel 10: window 1997565 sent adjust 99587
+debug2: channel 10: window 1995746 sent adjust 101406
+debug2: channel 9: window 1985868 sent adjust 111284
+debug2: channel 10: window 1998054 sent adjust 99098
+debug2: channel 10: window 1997607 sent adjust 99545
+debug2: channel 10: window 1998505 sent adjust 98647
+debug2: channel 5: window 1994909 sent adjust 102243
+debug2: channel 10: window 1995566 sent adjust 101586
+debug2: channel 10: window 1998221 sent adjust 98931
+debug2: channel 10: window 1996396 sent adjust 100756
+debug2: channel 10: window 1998560 sent adjust 98592
+debug2: channel 10: window 1996849 sent adjust 100303
+debug2: channel 10: window 1995976 sent adjust 101176
+debug2: channel 10: window 1996706 sent adjust 100446
+debug2: channel 6: window 1994033 sent adjust 103119
+debug2: channel 10: window 1997921 sent adjust 99231
+debug2: channel 10: window 1997547 sent adjust 99605
+debug2: channel 10: window 1998298 sent adjust 98854
+debug2: channel 10: window 1995978 sent adjust 101174
+debug2: channel 10: window 1995452 sent adjust 101700
+debug2: channel 10: window 1998703 sent adjust 98449
+debug2: channel 10: window 1998618 sent adjust 98534
+debug2: channel 10: window 1998498 sent adjust 98654
+debug2: channel 10: window 1995862 sent adjust 101290
+debug2: channel 10: window 1998840 sent adjust 98312
+debug2: channel 10: window 1995929 sent adjust 101223
+debug2: channel 10: window 1997407 sent adjust 99745
+debug2: channel 10: window 1997950 sent adjust 99202
+debug2: channel 10: window 1997537 sent adjust 99615
+debug2: channel 10: window 1997914 sent adjust 99238
+debug2: channel 10: window 1996897 sent adjust 100255
+debug2: channel 10: window 1995871 sent adjust 101281
+debug2: channel 18: window 1992306 sent adjust 104846
+debug2: channel 10: window 1995830 sent adjust 101322
+debug2: channel 10: window 1997287 sent adjust 99865
+debug2: channel 17: window 1991824 sent adjust 105328
+debug2: channel 10: window 1996740 sent adjust 100412
+debug2: channel 10: window 1997378 sent adjust 99774
+debug2: channel 10: window 1997491 sent adjust 99661
+debug2: channel 10: window 1996710 sent adjust 100442
+debug2: channel 9: window 1991847 sent adjust 105305
+debug2: channel 10: window 1995843 sent adjust 101309
+debug2: channel 10: window 1997680 sent adjust 99472
+debug2: channel 5: window 1992567 sent adjust 104585
+debug2: channel 10: window 1997847 sent adjust 99305
+debug2: channel 10: window 1998735 sent adjust 98417
+debug2: channel 10: window 1998670 sent adjust 98482
+debug2: channel 10: window 1995590 sent adjust 101562
+debug2: channel 10: window 1997260 sent adjust 99892
+debug2: channel 10: window 1995459 sent adjust 101693
+debug2: channel 6: window 1991887 sent adjust 105265
+debug2: channel 10: window 1995612 sent adjust 101540
+debug2: channel 10: window 1997412 sent adjust 99740
+debug2: channel 10: window 1998696 sent adjust 98456
+debug2: channel 10: window 1996617 sent adjust 100535
+debug2: channel 10: window 1998507 sent adjust 98645
+debug2: channel 10: window 1995810 sent adjust 101342
+debug2: channel 10: window 1998427 sent adjust 98725
+debug2: channel 10: window 1998233 sent adjust 98919
+debug2: channel 10: window 1996072 sent adjust 101080
+debug2: channel 10: window 1995659 sent adjust 101493
+debug2: channel 10: window 1997371 sent adjust 99781
+debug2: channel 10: window 1998147 sent adjust 99005
+debug2: channel 10: window 1998541 sent adjust 98611
+debug2: channel 10: window 1998751 sent adjust 98401
+debug2: channel 10: window 1996488 sent adjust 100664
+debug2: channel 10: window 1996590 sent adjust 100562
+debug2: channel 10: window 1998179 sent adjust 98973
+debug2: channel 18: window 1991931 sent adjust 105221
+debug2: channel 10: window 1997941 sent adjust 99211
+debug2: channel 10: window 1996335 sent adjust 100817
+debug2: channel 17: window 1991212 sent adjust 105940
+debug2: channel 10: window 1996566 sent adjust 100586
+debug2: channel 10: window 1995517 sent adjust 101635
+debug2: channel 10: window 1996402 sent adjust 100750
+debug2: channel 10: window 1998414 sent adjust 98738
+debug2: channel 9: window 1992357 sent adjust 104795
+debug2: channel 10: window 1996769 sent adjust 100383
+debug2: channel 10: window 1998808 sent adjust 98344
+debug2: channel 5: window 1991673 sent adjust 105479
+debug2: channel 10: window 1997869 sent adjust 99283
+debug2: channel 10: window 1998651 sent adjust 98501
+debug2: channel 10: window 1996119 sent adjust 101033
+debug2: channel 10: window 1997526 sent adjust 99626
+debug2: channel 10: window 1996943 sent adjust 100209
+debug2: channel 10: window 1995199 sent adjust 101953
+debug2: channel 10: window 1997380 sent adjust 99772
+debug2: channel 6: window 1991791 sent adjust 105361
+debug2: channel 10: window 1996673 sent adjust 100479
+debug2: channel 10: window 1997582 sent adjust 99570
+debug2: channel 10: window 1995689 sent adjust 101463
+debug2: channel 10: window 1995754 sent adjust 101398
+debug2: channel 10: window 1998242 sent adjust 98910
+debug2: channel 10: window 1998670 sent adjust 98482
+debug2: channel 10: window 1997147 sent adjust 100005
+debug2: channel 10: window 1996475 sent adjust 100677
+debug2: channel 10: window 1997655 sent adjust 99497
+debug2: channel 10: window 1996516 sent adjust 100636
+debug2: channel 10: window 1992742 sent adjust 104410
+debug2: channel 10: window 1998702 sent adjust 98450
+debug2: channel 10: window 1995585 sent adjust 101567
+debug2: channel 10: window 1996562 sent adjust 100590
+debug2: channel 10: window 1997004 sent adjust 100148
+debug2: channel 10: window 1998590 sent adjust 98562
+debug2: channel 18: window 1990673 sent adjust 106479
+debug2: channel 10: window 1997223 sent adjust 99929
+debug2: channel 10: window 1996614 sent adjust 100538
+debug2: channel 17: window 1990955 sent adjust 106197
+debug2: channel 10: window 1998190 sent adjust 98962
+debug2: channel 10: window 1998515 sent adjust 98637
+debug2: channel 10: window 1998224 sent adjust 98928
+debug2: channel 10: window 1998599 sent adjust 98553
+debug2: channel 10: window 1998748 sent adjust 98404
+debug2: channel 9: window 1990914 sent adjust 106238
+debug2: channel 10: window 1997284 sent adjust 99868
+debug2: channel 10: window 1996984 sent adjust 100168
+debug2: channel 10: window 1998135 sent adjust 99017
+debug2: channel 5: window 1991391 sent adjust 105761
+debug2: channel 10: window 1998607 sent adjust 98545
+debug2: channel 10: window 1998560 sent adjust 98592
+debug2: channel 10: window 1997002 sent adjust 100150
+debug2: channel 10: window 1997738 sent adjust 99414
+debug2: channel 10: window 1998560 sent adjust 98592
+debug2: channel 10: window 1996803 sent adjust 100349
+debug2: channel 6: window 1991524 sent adjust 105628
+debug2: channel 10: window 1995947 sent adjust 101205
+debug2: channel 10: window 1997953 sent adjust 99199
+debug2: channel 10: window 1993062 sent adjust 104090
+debug2: channel 10: window 1998560 sent adjust 98592
+debug2: channel 10: window 1997549 sent adjust 99603
+debug2: channel 10: window 1997479 sent adjust 99673
+debug2: channel 10: window 1997479 sent adjust 99673
+debug2: channel 10: window 1997479 sent adjust 99673
+debug2: channel 4: rcvd adjust 101681
+debug2: channel 4: rcvd adjust 98902
+debug2: channel 10: window 1998843 sent adjust 98309
+debug2: channel 10: window 1997603 sent adjust 99549
+debug2: channel 10: window 1996485 sent adjust 100667
+debug2: channel 10: window 1998739 sent adjust 98413
+debug2: channel 10: window 1996551 sent adjust 100601
+debug2: channel 10: window 1998842 sent adjust 98310
+debug2: channel 17: window 1994287 sent adjust 102865
+debug2: channel 10: window 1995758 sent adjust 101394
+debug2: channel 10: window 1998310 sent adjust 98842
+debug2: channel 18: window 1993206 sent adjust 103946
+debug2: channel 10: window 1996351 sent adjust 100801
+debug2: channel 10: window 1996577 sent adjust 100575
+debug2: channel 9: window 1994245 sent adjust 102907
+debug2: channel 10: window 1997961 sent adjust 99191
+debug2: channel 10: window 1997305 sent adjust 99847
+debug2: channel 5: window 1994527 sent adjust 102625
+debug2: channel 10: window 1997305 sent adjust 99847
+debug2: channel 10: window 1993862 sent adjust 103290
+debug2: channel 10: window 1994982 sent adjust 102170
+debug2: channel 10: window 1996918 sent adjust 100234
+debug2: channel 10: window 1998636 sent adjust 98516
+debug2: channel 10: window 1995892 sent adjust 101260
+debug2: channel 6: window 1994848 sent adjust 102304
+debug2: channel 10: window 1997247 sent adjust 99905
+debug2: channel 10: window 1996397 sent adjust 100755
+debug2: channel 10: window 1997247 sent adjust 99905
+debug2: channel 10: window 1997247 sent adjust 99905
+debug2: channel 10: window 1997247 sent adjust 99905
+debug2: channel 10: window 1997583 sent adjust 99569
+debug2: channel 10: window 1997725 sent adjust 99427
+debug2: channel 10: window 1995475 sent adjust 101677
+debug2: channel 10: window 1997189 sent adjust 99963
+debug2: channel 10: window 1997189 sent adjust 99963
+debug2: channel 10: window 1997423 sent adjust 99729
+debug2: channel 4: rcvd adjust 107513
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 17: window 1994848 sent adjust 102304
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 18: window 1994848 sent adjust 102304
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 5: window 1994848 sent adjust 102304
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 10: window 1998019 sent adjust 99133
+debug2: channel 10: window 1998382 sent adjust 98770
+debug2: channel 9: window 1994474 sent adjust 102678
+debug2: channel 10: window 1998120 sent adjust 99032
+debug2: channel 10: window 1998201 sent adjust 98951
+debug2: channel 10: window 1998301 sent adjust 98851
+debug2: channel 10: window 1998201 sent adjust 98951
+debug2: channel 10: window 1998301 sent adjust 98851
+debug2: channel 10: window 1998529 sent adjust 98623
+debug2: channel 10: window 1997761 sent adjust 99391
+debug2: channel 10: window 1995193 sent adjust 101959
+debug2: channel 10: window 1995513 sent adjust 101639
+debug2: channel 6: window 1994848 sent adjust 102304
+debug2: channel 10: window 1997976 sent adjust 99176
+debug2: channel 10: window 1994628 sent adjust 102524
+debug2: channel 10: window 1998370 sent adjust 98782
+debug2: channel 10: window 1998516 sent adjust 98636
+debug2: channel 10: window 1994025 sent adjust 103127
+debug2: channel 10: window 1997022 sent adjust 100130
+debug2: channel 10: window 1996318 sent adjust 100834
+debug2: channel 10: window 1998811 sent adjust 98341
+debug2: channel 10: window 1995260 sent adjust 101892
+debug2: channel 10: window 1997108 sent adjust 100044
+debug2: channel 10: window 1998692 sent adjust 98460
+debug2: channel 10: window 1998510 sent adjust 98642
+debug2: channel 10: window 1996276 sent adjust 100876
+debug2: channel 10: window 1998811 sent adjust 98341
+debug2: channel 10: rcvd adjust 98318
+debug2: channel 10: window 1997284 sent adjust 99868
+debug2: channel 10: window 1995848 sent adjust 101304
+debug2: channel 10: window 1998027 sent adjust 99125
+debug2: channel 10: window 1996477 sent adjust 100675
+debug2: channel 10: window 1995745 sent adjust 101407
+debug2: channel 10: window 1996117 sent adjust 101035
+debug2: channel 10: window 1995884 sent adjust 101268
+debug2: channel 10: window 1995909 sent adjust 101243
+debug2: channel 10: window 1996268 sent adjust 100884
+debug2: channel 10: window 1997225 sent adjust 99927
+debug2: channel 10: window 1996236 sent adjust 100916
+debug2: channel 10: window 1997442 sent adjust 99710
+debug2: channel 10: window 1996302 sent adjust 100850
+debug2: channel 10: window 1997675 sent adjust 99477
+debug2: channel 10: window 1998498 sent adjust 98654
+debug2: channel 10: window 1996590 sent adjust 100562
+debug2: channel 10: window 1997582 sent adjust 99570
+debug2: channel 10: window 1997678 sent adjust 99474
+debug2: channel 10: window 1997582 sent adjust 99570
+debug2: channel 10: window 1997306 sent adjust 99846
+debug2: channel 10: window 1995452 sent adjust 101700
+debug2: channel 10: window 1997509 sent adjust 99643
+debug2: channel 17: window 1994706 sent adjust 102446
+debug2: channel 10: window 1998134 sent adjust 99018
+debug2: channel 10: window 1996902 sent adjust 100250
+debug2: channel 10: window 1998179 sent adjust 98973
+debug2: channel 10: window 1998432 sent adjust 98720
+debug2: channel 18: window 1994848 sent adjust 102304
+debug2: channel 10: window 1995894 sent adjust 101258
+debug2: channel 10: window 1997841 sent adjust 99311
+debug2: channel 10: window 1998676 sent adjust 98476
+debug2: channel 10: window 1998828 sent adjust 98324
+debug2: channel 10: window 1994075 sent adjust 103077
+debug2: channel 10: window 1997461 sent adjust 99691
+debug2: channel 10: window 1995492 sent adjust 101660
+debug2: channel 10: window 1996871 sent adjust 100281
+debug2: channel 10: window 1998555 sent adjust 98597
+debug2: channel 10: window 1996384 sent adjust 100768
+debug2: channel 5: window 1994776 sent adjust 102376
+debug2: channel 10: window 1996151 sent adjust 101001
+debug2: channel 10: window 1997489 sent adjust 99663
+debug2: channel 10: window 1997219 sent adjust 99933
+debug2: channel 9: window 1994848 sent adjust 102304
+debug2: channel 10: window 1997702 sent adjust 99450
+debug2: channel 10: window 1996150 sent adjust 101002
+debug2: channel 10: window 1997536 sent adjust 99616
+debug2: channel 10: window 1998525 sent adjust 98627
+debug2: channel 10: window 1996816 sent adjust 100336
+debug2: channel 10: window 1998525 sent adjust 98627
+debug2: channel 10: window 1996816 sent adjust 100336
+debug2: channel 10: window 1998525 sent adjust 98627
+debug2: channel 6: window 1994706 sent adjust 102446
+debug2: channel 10: window 1996816 sent adjust 100336
+debug2: channel 10: window 1997620 sent adjust 99532
+debug2: channel 10: window 1997721 sent adjust 99431
+debug2: channel 10: window 1997620 sent adjust 99532
+debug2: channel 10: window 1997721 sent adjust 99431
+debug2: channel 10: window 1997620 sent adjust 99532
+debug2: channel 10: window 1997721 sent adjust 99431
+debug2: channel 10: window 1997390 sent adjust 99762
+debug2: channel 10: window 1998494 sent adjust 98658
+debug2: channel 10: window 1997801 sent adjust 99351
+debug2: channel 10: window 1996997 sent adjust 100155
+debug2: channel 10: window 1997424 sent adjust 99728
+debug2: channel 10: window 1997707 sent adjust 99445
+debug2: channel 10: window 1997607 sent adjust 99545
+debug2: channel 10: window 1996523 sent adjust 100629
+debug2: channel 10: window 1996132 sent adjust 101020
+debug2: channel 10: window 1991296 sent adjust 105856
+debug2: channel 10: window 1995130 sent adjust 102022
+debug2: channel 10: window 1996228 sent adjust 100924
+debug2: channel 10: window 1996609 sent adjust 100543
+debug2: channel 10: window 1996713 sent adjust 100439
+debug2: channel 10: window 1994616 sent adjust 102536
+debug2: channel 10: window 1997930 sent adjust 99222
+debug2: channel 10: window 1996050 sent adjust 101102
+debug2: channel 10: window 1996798 sent adjust 100354
+debug2: channel 10: window 1997348 sent adjust 99804
+debug2: channel 10: window 1998091 sent adjust 99061
+debug2: channel 10: window 1998170 sent adjust 98982
+debug2: channel 10: window 1997441 sent adjust 99711
+debug2: channel 10: window 1997537 sent adjust 99615
+debug2: channel 10: window 1996042 sent adjust 101110
+debug2: channel 10: window 1997350 sent adjust 99802
+debug2: channel 10: window 1997454 sent adjust 99698
+debug2: channel 10: window 1998483 sent adjust 98669
+debug2: channel 10: window 1998675 sent adjust 98477
+debug2: channel 10: window 1998590 sent adjust 98562
+debug2: channel 10: window 1995715 sent adjust 101437
+debug2: channel 17: window 1994772 sent adjust 102380
+debug2: channel 10: window 1995706 sent adjust 101446
+debug2: channel 10: window 1995629 sent adjust 101523
+debug2: channel 10: window 1997142 sent adjust 100010
+debug2: channel 10: window 1996456 sent adjust 100696
+debug2: channel 10: window 1997039 sent adjust 100113
+debug2: channel 10: window 1998745 sent adjust 98407
+debug2: channel 18: window 1994768 sent adjust 102384
+debug2: channel 10: window 1997263 sent adjust 99889
+debug2: channel 10: window 1998040 sent adjust 99112
+debug2: channel 10: window 1997719 sent adjust 99433
+debug2: channel 10: window 1997587 sent adjust 99565
+debug2: channel 10: window 1998327 sent adjust 98825
+debug2: channel 10: window 1996632 sent adjust 100520
+debug2: channel 10: window 1996940 sent adjust 100212
+debug2: channel 10: window 1998466 sent adjust 98686
+debug2: channel 10: rcvd adjust 98337
+debug2: channel 10: window 1994659 sent adjust 102493
+debug2: channel 10: window 1997058 sent adjust 100094
+debug2: channel 10: window 1997948 sent adjust 99204
+debug2: channel 10: window 1998222 sent adjust 98930
+debug2: channel 5: window 1994551 sent adjust 102601
+debug2: channel 10: window 1997217 sent adjust 99935
+debug2: channel 10: window 1997114 sent adjust 100038
+debug2: channel 10: window 1997306 sent adjust 99846
+debug2: channel 10: window 1998750 sent adjust 98402
+debug2: channel 9: window 1994254 sent adjust 102898
+debug2: channel 10: window 1997681 sent adjust 99471
+debug2: channel 10: window 1996089 sent adjust 101063
+debug2: channel 10: window 1997604 sent adjust 99548
+debug2: channel 10: window 1997358 sent adjust 99794
+debug2: channel 10: window 1995497 sent adjust 101655
+debug2: channel 10: window 1995275 sent adjust 101877
+debug2: channel 10: window 1997791 sent adjust 99361
+debug2: channel 10: window 1996019 sent adjust 101133
+debug2: channel 10: window 1998551 sent adjust 98601
+debug2: channel 10: window 1997936 sent adjust 99216
+debug2: channel 10: window 1997726 sent adjust 99426
+debug2: channel 6: window 1994165 sent adjust 102987
+debug2: channel 10: window 1996680 sent adjust 100472
+debug2: channel 10: window 1998589 sent adjust 98563
+debug2: channel 10: window 1998821 sent adjust 98331
+debug2: channel 10: window 1998135 sent adjust 99017
+debug2: channel 10: window 1997225 sent adjust 99927
+debug2: channel 10: window 1997787 sent adjust 99365
+debug2: channel 10: window 1997571 sent adjust 99581
+debug2: channel 10: window 1996574 sent adjust 100578
+debug2: channel 10: window 1995223 sent adjust 101929
+debug2: channel 10: window 1997141 sent adjust 100011
+debug2: channel 10: window 1998217 sent adjust 98935
+debug2: channel 10: window 1998730 sent adjust 98422
+debug2: channel 10: window 1998388 sent adjust 98764
+debug2: channel 10: window 1996941 sent adjust 100211
+debug2: channel 10: window 1998472 sent adjust 98680
+debug2: channel 10: window 1998700 sent adjust 98452
+debug2: channel 10: window 1996039 sent adjust 101113
+debug2: channel 10: window 1996650 sent adjust 100502
+debug2: channel 10: window 1996453 sent adjust 100699
+debug2: channel 10: window 1993751 sent adjust 103401
+debug2: channel 10: window 1997881 sent adjust 99271
+debug2: channel 10: window 1997134 sent adjust 100018
+debug2: channel 10: window 1996137 sent adjust 101015
+debug2: channel 10: window 1997299 sent adjust 99853
+debug2: channel 10: window 1996239 sent adjust 100913
+debug2: channel 10: window 1998431 sent adjust 98721
+debug2: channel 10: window 1996930 sent adjust 100222
+debug2: channel 10: window 1997218 sent adjust 99934
+debug2: channel 10: window 1996050 sent adjust 101102
+debug2: channel 10: window 1997481 sent adjust 99671
+debug2: channel 10: window 1997425 sent adjust 99727
+debug2: channel 10: window 1997346 sent adjust 99806
+debug2: channel 10: window 1995910 sent adjust 101242
+debug2: channel 10: window 1996959 sent adjust 100193
+debug2: channel 10: window 1997404 sent adjust 99748
+debug2: channel 10: window 1998744 sent adjust 98408
+debug2: channel 17: window 1993153 sent adjust 103999
+debug2: channel 10: window 1995721 sent adjust 101431
+debug2: channel 10: window 1998584 sent adjust 98568
+debug2: channel 10: window 1997335 sent adjust 99817
+debug2: channel 10: window 1998420 sent adjust 98732
+debug2: channel 4: rcvd adjust 112456
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 10: window 1998313 sent adjust 98839
+debug2: channel 18: window 1991417 sent adjust 105735
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 5: window 1994131 sent adjust 103021
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 9: window 1994243 sent adjust 102909
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 10: window 1998718 sent adjust 98434
+debug2: channel 10: window 1997632 sent adjust 99520
+debug2: channel 6: window 1993816 sent adjust 103336
+debug2: channel 10: window 1998718 sent adjust 98434
+debug2: channel 10: window 1997632 sent adjust 99520
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 10: window 1998175 sent adjust 98977
+debug2: channel 10: window 1998718 sent adjust 98434
+debug2: channel 10: window 1998810 sent adjust 98342
+debug2: channel 10: window 1998097 sent adjust 99055
+debug2: channel 10: window 1998847 sent adjust 98305
+debug2: channel 10: window 1998758 sent adjust 98394
+debug2: channel 10: window 1992565 sent adjust 104587
+debug2: channel 10: window 1996944 sent adjust 100208
+debug2: channel 10: window 1998067 sent adjust 99085
+debug2: channel 10: window 1998544 sent adjust 98608
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 17: window 1994848 sent adjust 102304
+debug2: channel 10: window 1997458 sent adjust 99694
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998544 sent adjust 98608
+debug2: channel 10: window 1997458 sent adjust 99694
+debug2: channel 18: window 1994848 sent adjust 102304
+debug2: channel 5: window 1994848 sent adjust 102304
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 9: window 1994848 sent adjust 102304
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 10: window 1998001 sent adjust 99151
+debug2: channel 6: window 1994848 sent adjust 102304
+debug2: channel 10: window 1998544 sent adjust 98608
+debug2: channel 10: window 1997657 sent adjust 99495
+debug2: channel 10: window 1997758 sent adjust 99394
+debug2: channel 10: window 1997943 sent adjust 99209
+debug2: channel 10: window 1995501 sent adjust 101651
+debug2: channel 10: window 1993281 sent adjust 103871
+debug2: channel 10: window 1997425 sent adjust 99727
+debug2: channel 10: window 1995408 sent adjust 101744
+debug2: channel 10: window 1997006 sent adjust 100146
+debug2: channel 10: window 1998635 sent adjust 98517
+debug2: channel 10: window 1997198 sent adjust 99954
+debug2: channel 10: window 1995980 sent adjust 101172
+debug2: channel 10: window 1996440 sent adjust 100712
+debug2: channel 10: window 1997247 sent adjust 99905
+debug2: channel 10: window 1997773 sent adjust 99379
+debug2: channel 10: window 1996528 sent adjust 100624
+debug2: channel 10: window 1997304 sent adjust 99848
+debug2: channel 17: window 1994848 sent adjust 102304
+debug2: channel 10: window 1997189 sent adjust 99963
+debug2: channel 10: window 1997189 sent adjust 99963
+debug2: channel 10: window 1997189 sent adjust 99963
+debug2: channel 10: window 1997189 sent adjust 99963
+debug2: channel 18: window 1994848 sent adjust 102304
+debug2: channel 5: window 1994848 sent adjust 102304
+debug2: channel 9: window 1994848 sent adjust 102304
+debug2: channel 10: window 1995671 sent adjust 101481
+debug2: channel 6: window 1994460 sent adjust 102692

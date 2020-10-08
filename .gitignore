@@ -2,6 +2,7 @@
 pythonenv*
 *dask-worker-space*
 *tmp*
+*port_forward_out_log.txt*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
