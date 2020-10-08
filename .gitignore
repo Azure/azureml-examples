@@ -1,6 +1,7 @@
 # other
 pythonenv*
 *dask-worker-space*
+*tmp*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

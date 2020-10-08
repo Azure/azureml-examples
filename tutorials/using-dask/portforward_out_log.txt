@@ -1,0 +1,500 @@
+OpenSSH_8.1p1, LibreSSL 2.7.3
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 47: Applying options for *
+debug2: resolve_canonicalize: hostname 52.142.30.198 is address
+debug2: ssh_connect_direct
+debug1: Connecting to 52.142.30.198 [52.142.30.198] port 50001.
+debug1: Connection established.
+debug1: identity file /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key type 0
+debug1: identity file /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key-cert type -1
+debug1: Local version string SSH-2.0-OpenSSH_8.1
+debug1: Remote protocol version 2.0, remote software version OpenSSH_7.2p2 Ubuntu-4ubuntu2.8
+debug1: match: OpenSSH_7.2p2 Ubuntu-4ubuntu2.8 pat OpenSSH_7.0*,OpenSSH_7.1*,OpenSSH_7.2*,OpenSSH_7.3*,OpenSSH_7.4*,OpenSSH_7.5*,OpenSSH_7.6*,OpenSSH_7.7* compat 0x04000002
+debug2: fd 3 setting O_NONBLOCK
+debug1: Authenticating to 52.142.30.198:50001 as 'dask'
+debug3: put_host_port: [52.142.30.198]:50001
+debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
+debug3: send packet: type 20
+debug1: SSH2_MSG_KEXINIT sent
+debug3: receive packet: type 20
+debug1: SSH2_MSG_KEXINIT received
+debug2: local client KEXINIT proposal
+debug2: KEX algorithms: curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,diffie-hellman-group14-sha1,ext-info-c
+debug2: host key algorithms: ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519,rsa-sha2-512,rsa-sha2-256,ssh-rsa
+debug2: ciphers ctos: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: ciphers stoc: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: MACs ctos: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+debug2: MACs stoc: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+debug2: compression ctos: none,zlib@openssh.com,zlib
+debug2: compression stoc: none,zlib@openssh.com,zlib
+debug2: languages ctos: 
+debug2: languages stoc: 
+debug2: first_kex_follows 0 
+debug2: reserved 0 
+debug2: peer server KEXINIT proposal
+debug2: KEX algorithms: curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1
+debug2: host key algorithms: ssh-rsa,rsa-sha2-512,rsa-sha2-256,ecdsa-sha2-nistp256,ssh-ed25519
+debug2: ciphers ctos: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: ciphers stoc: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: MACs ctos: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+debug2: MACs stoc: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+debug2: compression ctos: none,zlib@openssh.com
+debug2: compression stoc: none,zlib@openssh.com
+debug2: languages ctos: 
+debug2: languages stoc: 
+debug2: first_kex_follows 0 
+debug2: reserved 0 
+debug1: kex: algorithm: curve25519-sha256@libssh.org
+debug1: kex: host key algorithm: ecdsa-sha2-nistp256
+debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug3: send packet: type 30
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug3: receive packet: type 31
+debug1: Server host key: ecdsa-sha2-nistp256 SHA256:Jpici81B20Qo3G/Hdogz3ejV6AbO8PcjmER3eNELA7g
+debug3: put_host_port: [52.142.30.198]:50001
+debug3: put_host_port: [52.142.30.198]:50001
+debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
+debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
+debug1: checking without port identifier
+debug3: hostkeys_foreach: reading file "/Users/cody/.ssh/known_hosts"
+Warning: Permanently added '[52.142.30.198]:50001' (ECDSA) to the list of known hosts.
+debug3: send packet: type 21
+debug2: set_newkeys: mode 1
+debug1: rekey out after 134217728 blocks
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug3: receive packet: type 21
+debug1: SSH2_MSG_NEWKEYS received
+debug2: set_newkeys: mode 0
+debug1: rekey in after 134217728 blocks
+debug1: Will attempt key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM explicit
+debug2: pubkey_prepare: done
+debug3: send packet: type 5
+debug3: receive packet: type 7
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_input_ext_info: server-sig-algs=<rsa-sha2-256,rsa-sha2-512>
+debug3: receive packet: type 6
+debug2: service_accept: ssh-userauth
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug3: send packet: type 50
+debug3: receive packet: type 51
+debug1: Authentications that can continue: publickey,password
+debug3: start over, passed a different list publickey,password
+debug3: preferred publickey,keyboard-interactive,password
+debug3: authmethod_lookup publickey
+debug3: remaining preferred: keyboard-interactive,password
+debug3: authmethod_is_enabled publickey
+debug1: Next authentication method: publickey
+debug1: Offering public key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM explicit
+debug3: send packet: type 50
+debug2: we sent a publickey packet, wait for reply
+debug3: receive packet: type 60
+debug1: Server accepts key: /Users/cody/code/azureml-examples/tutorials/using-dask/tmp/key RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM explicit
+debug3: sign_and_send_pubkey: RSA SHA256:pZbaJnzAiKkZ45KScjG+4dUzSHALe7uqH6nNGjOmtKM
+debug3: sign_and_send_pubkey: signing using rsa-sha2-512
+debug3: send packet: type 50
+debug3: receive packet: type 52
+debug1: Authentication succeeded (publickey).
+Authenticated to 52.142.30.198 ([52.142.30.198]:50001).
+debug1: Local connections to 0.0.0.0:9000 forwarded to remote address 10.0.0.5:8888
+debug3: channel_setup_fwd_listener_tcpip: type 2 wildcard 0 addr 0.0.0.0
+debug1: Local forwarding listening on 0.0.0.0 port 9000.
+debug2: fd 4 setting O_NONBLOCK
+debug3: fd 4 is O_NONBLOCK
+debug1: channel 0: new [port listener]
+debug1: Local connections to 0.0.0.0:9001 forwarded to remote address 10.0.0.5:8787
+debug3: channel_setup_fwd_listener_tcpip: type 2 wildcard 0 addr 0.0.0.0
+debug1: Local forwarding listening on 0.0.0.0 port 9001.
+debug2: fd 5 setting O_NONBLOCK
+debug3: fd 5 is O_NONBLOCK
+debug1: channel 1: new [port listener]
+debug1: Local connections to 0.0.0.0:9002 forwarded to remote address 10.0.0.5:8786
+debug3: channel_setup_fwd_listener_tcpip: type 2 wildcard 0 addr 0.0.0.0
+debug1: Local forwarding listening on 0.0.0.0 port 9002.
+debug2: fd 6 setting O_NONBLOCK
+debug3: fd 6 is O_NONBLOCK
+debug1: channel 2: new [port listener]
+debug2: fd 3 setting TCP_NODELAY
+debug3: ssh_packet_set_tos: set IP_TOS 0x48
+debug1: Requesting no-more-sessions@openssh.com
+debug3: send packet: type 80
+debug1: Entering interactive session.
+debug1: pledge: network
+debug3: receive packet: type 80
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 7 setting TCP_NODELAY
+debug3: fd 7 is O_NONBLOCK
+debug3: fd 7 is O_NONBLOCK
+debug1: channel 3: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 3: open confirm rwindow 2097152 rmax 32768
+debug3: receive packet: type 98
+debug1: client_input_channel_req: channel 3 rtype keepalive@openssh.com reply 1
+debug3: send packet: type 100
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 8 setting TCP_NODELAY
+debug3: fd 8 is O_NONBLOCK
+debug3: fd 8 is O_NONBLOCK
+debug1: channel 4: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 4: open confirm rwindow 2097152 rmax 32768
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 9 setting TCP_NODELAY
+debug3: fd 9 is O_NONBLOCK
+debug3: fd 9 is O_NONBLOCK
+debug1: channel 5: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 5: open confirm rwindow 2097152 rmax 32768
+debug2: channel 5: window 1998395 sent adjust 98757
+debug2: channel 5: window 1989200 sent adjust 107952
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug1: Connection to port 9001 forwarding to 10.0.0.5 port 8787 requested.
+debug2: fd 10 setting TCP_NODELAY
+debug3: fd 10 is O_NONBLOCK
+debug3: fd 10 is O_NONBLOCK
+debug1: channel 6: new [direct-tcpip]
+debug3: send packet: type 90
+debug3: receive packet: type 91
+debug2: channel 6: open confirm rwindow 2097152 rmax 32768
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 6: read<=0 rfd 10 len 0
+debug2: channel 6: read failed
+debug2: channel 6: chan_shutdown_read (i0 o0 sock 10 wfd 10 efd -1 [closed])
+debug2: channel 6: input open -> drain
+debug2: channel 6: ibuf empty
+debug2: channel 6: send eof
+debug3: send packet: type 96
+debug2: channel 6: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 6: rcvd eof
+debug2: channel 6: output open -> drain
+debug2: channel 6: obuf empty
+debug2: channel 6: chan_shutdown_write (i3 o1 sock 10 wfd 10 efd -1 [closed])
+debug2: channel 6: output drain -> closed
+debug3: receive packet: type 97
+debug2: channel 6: rcvd close
+debug3: channel 6: will not send data after close
+debug2: channel 6: send close
+debug3: send packet: type 97
+debug2: channel 6: is dead
+debug2: channel 6: garbage collecting
+debug1: channel 6: free: direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 53284 to 127.0.0.1 port 9001, nchannels 7
+debug3: channel 6: status: The following connections are open:
+  #3 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 53121 to 127.0.0.1 port 9002 (t4 r0 i0/0 o0/0 e[closed]/0 fd 7/7/-1 sock 7 cc -1)
+  #4 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 53238 to 127.0.0.1 port 9002 (t4 r1 i0/0 o0/0 e[closed]/0 fd 8/8/-1 sock 8 cc -1)
+  #5 direct-tcpip: listening port 9002 for 10.0.0.5 port 8786, connect from 127.0.0.1 port 53239 to 127.0.0.1 port 9002 (t4 r2 i0/0 o0/0 e[closed]/0 fd 9/9/-1 sock 9 cc -1)
+  #6 direct-tcpip: listening port 9001 for 10.0.0.5 port 8787, connect from 127.0.0.1 port 53284 to 127.0.0.1 port 9001 (t4 r3 i3/0 o3/0 e[closed]/0 fd 10/10/-1 sock 10 cc -1)
+
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 4: rcvd adjust 104201
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug1: Connection to port 9002 forwarding to 10.0.0.5 port 8786 requested.
+debug2: fd 10 setting TCP_NODELAY
+debug3: fd 10 is O_NONBLOCK
+debug3: fd 10 is O_NONBLOCK
+debug1: channel 6: new [direct-tcpip]
+debug3: send packet: type 90
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug3: receive packet: type 91
+debug2: channel 6: open confirm rwindow 2097152 rmax 32768
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: window 1991113 sent adjust 106039
+debug2: channel 4: window 1988644 sent adjust 108508
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: window 1966080 sent adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: window 1983951 sent adjust 47665
+debug2: channel 4: window 1753088 sent adjust 179756
+debug2: channel 4: window 1932844 sent adjust 130656
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: window 1997964 sent adjust 99188
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 81452
+debug2: channel 4: window 1965612 sent adjust 131540
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 127739
+debug2: channel 4: window 1987777 sent adjust 109375
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1985433 sent adjust 111719
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1991715 sent adjust 105437
+debug2: channel 5: window 1996168 sent adjust 100984
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: rcvd adjust 98461
+debug2: channel 4: rcvd adjust 114688
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 131072
+debug2: channel 4: rcvd adjust 101851
+debug2: channel 4: window 1993272 sent adjust 103880
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1985433 sent adjust 111719
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1990791 sent adjust 106361
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 4: window 1982464 sent adjust 114688
+debug2: channel 6: window 1996099 sent adjust 101053
