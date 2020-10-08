@@ -1,0 +1,35 @@
+name: run-tutorial-um
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 9 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+    - name: pip install
+      run: pip install -r requirements.txt
+    - name: check code format
+      run: black --check .
+    - name: check notebook format
+      run: black-nb --clear-output --check .
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
+    - name: run sklearn.ipynb
+      run: papermill tutorials/using-mlflow/sklearn.ipynb - -k python
+
