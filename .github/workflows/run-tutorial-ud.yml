@@ -1,7 +1,7 @@
 name: run-tutorial-ud
 on:
   schedule:
-    - cron: "0 9 * * *"
+    - cron: "0 */2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
