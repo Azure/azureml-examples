@@ -10,4 +10,3 @@ papermill
 gitpython
 black==19.10b0
 black-nb
-https://aka.ms/triton/packages/tritonclientutils-2.1.0-py3-none-any.whl
