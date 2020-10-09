@@ -11,7 +11,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
     - name: install snappy
-      run: apt-get install libsnappy-dev
+      run: sudo apt-get install libsnappy-dev
     - name: pip install
       run: pip install -r requirements.txt
     - name: check code format
