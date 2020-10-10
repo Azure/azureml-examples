@@ -20,6 +20,7 @@ dependencies:
     - optuna
     - dask_optuna
     - lightgbm
+    - dask-lightgbm
     - dask-ml
     - xgboost
     - notebook
