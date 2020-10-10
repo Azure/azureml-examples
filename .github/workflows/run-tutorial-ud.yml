@@ -1,7 +1,7 @@
 name: run-tutorial-ud
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -32,4 +32,3 @@ jobs:
       run: papermill tutorials/using-dask/2.eds-at-scale.ipynb - -k python
     - name: run 3.hpo-with-optuna-local.ipynb
       run: papermill tutorials/using-dask/3.hpo-with-optuna-local.ipynb - -k python
-
