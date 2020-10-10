@@ -28,8 +28,8 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.intro-to-dask.ipynb
       run: papermill tutorials/using-dask/1.intro-to-dask.ipynb - -k python
-    - name: run 2.eda-at-scale.ipynb
-      run: papermill tutorials/using-dask/2.eda-at-scale.ipynb - -k python
+    - name: run 2.eds-at-scale.ipynb
+      run: papermill tutorials/using-dask/2.eds-at-scale.ipynb - -k python
     - name: run 3.hpo-with-optuna-local.ipynb
       run: papermill tutorials/using-dask/3.hpo-with-optuna-local.ipynb - -k python
 
