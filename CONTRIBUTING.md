@@ -38,9 +38,10 @@ To ensure all checks are passed:
 
 ### Naming conventions
 
-Naming conventions are still under consideration. For notebooks under `notebooks`, the notebook filename must start with "train" or "deploy".
+Naming conventions are still under consideration. For notebooks under `notebooks`, the notebook filename must start with "train" or "deploy". Directories under `tutorials` should be two words separated by a hyphen. Workflows for tutorials should follow the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the two words.
 
 ### Testing
 
-* `run-notebooks` runs on every push and runs all notebooks under `notebooks` and `concepts`
+* `run-notebooks` runs on every push and PR to `main` and runs all notebooks under `notebooks` and `concepts`
+* `tutorials` must be tested at least daily, and the workflow file is manually generated
 * `cleanup` runs daily and cleans up AML resources for the testing workspace
