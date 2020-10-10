@@ -11,7 +11,7 @@ for webservice in ws.webservices:
     ws.webservices[webservice].delete()
 
 for compute_target in ws.compute_targets:
-    if "concept" in compute_target:
+    if "concept" in compute_target or "dask-ct" in compute_target:
         ws.compute_targets[compute_target].delete()
 
 workspaces = Workspace.list(ws.subscription_id, resource_group=ws.resource_group)
