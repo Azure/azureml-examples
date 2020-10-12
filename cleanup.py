@@ -11,7 +11,9 @@ for webservice in ws.webservices:
     ws.webservices[webservice].delete()
 
 for compute_target in ws.compute_targets:
-    if "concept" in compute_target:
+    if ws.compute_targets[compute_target].get_status() in ["Failed", "Canceled"]:
+        ws.compute_targets[compute_target].delete()
+    elif "concept" in compute_target:
         ws.compute_targets[compute_target].delete()
     elif (
         "dask-ct" in compute_target
