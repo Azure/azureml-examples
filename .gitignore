@@ -4,6 +4,7 @@ pythonenv*
 *tmp*
 *mlruns*
 *portforward_out_log.txt*
+*.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

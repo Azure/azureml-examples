@@ -83,6 +83,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+      - cron: "0 9 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
