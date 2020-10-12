@@ -15,7 +15,7 @@ Clone this repository and install required packages:
 ```sh
 git clone https://github.com/Azure/azureml-examples
 cd azureml-examples
-pip install -r requirements.txt
+pip install --upgrade -r requirements.txt
 ```
 
 To create or setup a workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
