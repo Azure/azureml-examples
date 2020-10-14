@@ -20,7 +20,7 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-> If you already have an Azure ML Workspace, running `python setup.py` will load it from the config file and create various AML compute clusters in the workspace. By default, all clusters will have `min_nodes=0` and will autoscale back to 0 nodes after 20 minutes idle. Some examples use AKS or speciality AML compute targets, which can be created by running `python setup.ipynb --create-aks True --create-V100 True`.
+> If you already have an Azure ML Workspace, running `python setup.py` will load it from the config file and create various AML compute clusters in the workspace. By default, all clusters will have `min_nodes=0` and will autoscale back to 0 nodes after 20 minutes idle. Some examples use AKS or speciality AML compute targets, which can be created by running `python setup.py --create-aks True --create-V100 True`.
 
 ## Python Notebooks
 
