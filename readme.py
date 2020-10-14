@@ -45,15 +45,37 @@ cr = "${{secrets.AZ_AE_CREDS}}"
 
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
+# process all notebooks
+nbs = glob.glob("**.ipynb", recursive=True)
+
+for nb in nbs:
+
+    # read in notebook
+    with open(nb, "r") as f:
+        data = json.load(f)
+
+    # update metadata
+    data["metadata"]["kernelspec"] = kernelspec
+
+    # write notebook
+    with open(nb, "w") as f:
+        json.dump(data, f, indent=2)
+
 # process tutorials/*
-for tutorial in glob.glob("tutorials/*"):
+tutorials = glob.glob("tutorials/*")
+
+for tutorial in tutorials:
+
+    # get list of notebooks
     nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
     nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
     nbs = "<br>".join(nbs)
 
+    # get the tutorial name and initials
     name = tutorial.split("/")[-1]
     initials = name.split("-")[0][0] + name.split("-")[1][0]
 
+    # build entries for tutorial table
     status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/run-tutorial-{initials}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-{initials})"
     desc = "*no description*"
     try:
@@ -65,6 +87,7 @@ for tutorial in glob.glob("tutorials/*"):
     except:
         pass
 
+    # add row to tutorial table
     tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
 # process notebooks/* and concepts/*
@@ -74,7 +97,7 @@ nbs = [
     if "concepts" in nb or "notebooks" in nb  # and "mlproject" not in nb
 ]
 
-# create workflow yaml file
+# create `run-notebooks` workflow yaml file
 workflow = f"""name: run-notebooks
 on:
   push: 
@@ -114,6 +137,7 @@ jobs:
       run: papermill {nb} out.ipynb -k python
 """
 
+# write `run-notebooks` workflow yaml file
 print("writing workflow file...")
 with open(f".github/workflows/run-notebooks.yml", "w") as f:
     f.write(workflow)
@@ -124,13 +148,6 @@ for nb in nbs:
     # read in notebook
     with open(nb, "r") as f:
         data = json.load(f)
-
-    # update metadata
-    data["metadata"]["kernelspec"] = kernelspec
-
-    # write notebook
-    with open(nb, "w") as f:
-        json.dump(data, f, indent=2)
 
     # read in the description
     desc = "*no description*"
@@ -182,6 +199,7 @@ for nb in nbs:
         area = nb.split("/")[-2]
         concepts_table += f"[{nb}]({nb})|{area}|{desc}\n"
 
+# write README.md file
 print("writing README.md...")
 with open("README.md", "w") as f:
     f.write(

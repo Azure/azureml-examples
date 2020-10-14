@@ -18,8 +18,10 @@ cd azureml-examples
 pip install --upgrade -r requirements.txt
 ```
 
-To create or setup a workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
+To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-## Notebooks
+> !Note: todo - info on running script 
 
-The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). End to end tutorials can be found in the [tutorials directory](tutorials).
+## Python Notebooks
+
+End to end tutorials can be found in the [tutorials directory](tutorials). The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). 
