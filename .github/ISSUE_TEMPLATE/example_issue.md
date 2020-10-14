@@ -1,13 +1,13 @@
 ---
-name: Notebook issue 
-about: Report an issue with an example notebook
+name: Example issue 
+about: Report an issue with an example
 title: ''
-labels: 'notebook issue'
+labels: 'example issue'
 assignees: ''
 
 ---
-**Which notebook?**
-Which notebook is the issue in? 
+**Which example?**
+Which example is the issue in? 
 
 **Describe the issue**
 A clear and concise description of what the issue is.
