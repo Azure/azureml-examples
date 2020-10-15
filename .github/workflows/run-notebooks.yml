@@ -20,7 +20,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
     - name: pip install
-      run: pip install -r requirements.txt
+      run: pip install -r requirements.txt --no-cache-dir
     - name: check code format
       run: black --check .
     - name: check notebook format
