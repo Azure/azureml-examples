@@ -8,6 +8,11 @@
 
 Welcome to the AML examples!
 
+## Prerequisites
+
++ An Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try [Azure Machine Learning](https://aka.ms/AMLFree).
++ Familiarity with Python and [Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture). Examples include environments, training, and scoring.
+
 ## Installation
 
 Clone this repository and install required packages:
