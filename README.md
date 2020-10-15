@@ -11,7 +11,7 @@ Welcome to the AML examples!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try [Azure Machine Learning](https://aka.ms/AMLFree).
-2. Familiarity with Python and [Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
+2. Familiarity with Python and [Azure Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
 
 ## Installation
 
@@ -25,7 +25,7 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $SUBSCRIPTIONID`, where `$SUBSCRIPTIONID` is your Azure subscription. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
+> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $SUBSCRIPTIONID` where `$SUBSCRIPTIONID` is your Azure subscription id. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
 >
 > If you have an Azure ML Workspace, run `az ml folder attach -w $ws -g $rg` where `$ws` and `$rg` are the workspace and resource group names or otherwise retrieve the Workspace config file. Then, simply run `python setup.py`
 >
@@ -90,3 +90,9 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 ## Code of Conduct 
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details. 
+
+## Reference
+
+- [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
+- [Python SDK Documentation](https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py)
+- [Azure Machine Learning Pipelines Notebooks](https://github.com/Azure/MachineLearningNotebooks)
