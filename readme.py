@@ -40,13 +40,13 @@ path|area|description
 
 ws = "default"
 rg = "azureml-examples"
-nb = "${{matrix.notebook}}"
+mn = "${{matrix.notebook}}"
 cr = "${{secrets.AZ_AE_CREDS}}"
 
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
 # process all notebooks
-nbs = glob.glob("**.ipynb", recursive=True)
+nbs = glob.glob("**/**.ipynb", recursive=True)
 
 for nb in nbs:
 
@@ -119,6 +119,8 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
     - name: pip install
       run: pip install -r requirements.txt
     - name: check code format
@@ -134,7 +136,7 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w {ws} -g {rg}
     - name: run notebook
-      run: papermill {nb} out.ipynb -k python
+      run: papermill {mn} out.ipynb -k python
 """
 
 # write `run-notebooks` workflow yaml file
