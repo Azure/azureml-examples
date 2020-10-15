@@ -46,7 +46,7 @@ cr = "${{secrets.AZ_AE_CREDS}}"
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
 # process all notebooks
-nbs = glob.glob("**.ipynb", recursive=True)
+nbs = glob.glob("**/**.ipynb", recursive=True)
 
 for nb in nbs:
 
