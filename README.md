@@ -8,6 +8,11 @@
 
 Welcome to the AML examples!
 
+## Prerequisites
+
+1. An Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try [Azure Machine Learning](https://aka.ms/AMLFree).
+2. Familiarity with Python and [Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
+
 ## Installation
 
 Clone this repository and install required packages:
@@ -20,7 +25,13 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-> If you already have an Azure ML Workspace, running `python setup.py` will load it from the config file and create various AML compute clusters in the workspace. By default, all clusters will have `min_nodes=0` and will autoscale back to 0 nodes after 20 minutes idle. Some examples use AKS or specialty AML compute targets, which can be created by running `python setup.py --create-aks True --create-V100 True`.
+> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $SUBSCRIPTIONID`, where `$SUBSCRIPTIONID` is your Azure subscription. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
+>
+> If you have an Azure ML Workspace, run `az ml folder attach -w $ws -g $rg` where `$ws` and `$rg` are the workspace and resource group names or otherwise retrieve the Workspace config file. Then, simply run `python setup.py`
+>
+> By default, `python setup.py` will **not** provision all the compute needed to run every example in this repository - it will only create basic AML compute targets with auto scaledown and reasonable settings. **Some examples will fail with compute not found**. To create the AKS and specialty AML compute targets, run `python setup.py --create-aks True --create-V100 True`. 
+>
+> Run `python setup.py -h` to see other optional arguments. Modify `setup.py` yourself as needed! 
 
 ## Python Notebooks
 
