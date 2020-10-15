@@ -36,4 +36,4 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
-      run: papermill concepts/compute/compute-instance-api.ipynb out.ipynb -k python
+      run: papermill ${{matrix.notebook}} out.ipynb -k python
