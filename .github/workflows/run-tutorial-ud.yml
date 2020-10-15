@@ -10,6 +10,8 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
     - name: install snappy
       run: sudo apt-get install libsnappy-dev
     - name: pip install
