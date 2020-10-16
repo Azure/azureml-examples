@@ -26,7 +26,7 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $SUBSCRIPTIONID` where `$SUBSCRIPTIONID` is your Azure subscription id. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
+> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $SUBSCRIPTIONID`, where `$SUBSCRIPTIONID` is your Azure subscription id. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
 >
 > If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $ws -g $rg`, where `$ws` and `$rg` are the workspace and resource group names.
 >
