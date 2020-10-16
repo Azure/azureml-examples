@@ -12,6 +12,7 @@ Welcome to the AML examples!
 
 1. An Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try [Azure Machine Learning](https://aka.ms/AMLFree).
 2. Familiarity with Python and [Azure Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
+3. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
 
 ## Installation
 
@@ -95,4 +96,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
 - [Python SDK Documentation](https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py)
-- [Azure Machine Learning Pipelines Notebooks](https://github.com/Azure/MachineLearningNotebooks)
+- [Azure Machine Learning Pipelines Notebooks](https://github.com/Azure/MachineLearningNotebooks/tree/master/how-to-use-azureml/machine-learning-pipelines)
