@@ -8,6 +8,12 @@
 
 Welcome to the AML examples!
 
+## Prerequisites
+
+1. An Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try [Azure Machine Learning](https://aka.ms/AMLFree).
+2. Familiarity with Python and [Azure Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
+3. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
+
 ## Installation
 
 Clone this repository and install required packages:
@@ -20,7 +26,13 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-> If you already have an Azure ML Workspace, running `python setup.py` will load it from the config file and create various AML compute clusters in the workspace. By default, all clusters will have `min_nodes=0` and will autoscale back to 0 nodes after 20 minutes idle. Some examples use AKS or specialty AML compute targets, which can be created by running `python setup.py --create-aks True --create-V100 True`.
+> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $ID`, where `$ID` is your Azure subscription id. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
+>
+> If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
+>
+> By default, `python setup.py` will **not** provision all the compute targets needed to run every example in this repository - it will only create standard AML compute targets with auto scaledown and reasonable settings. **Some examples will fail with a "compute target not found" error**. To create the AKS and specialty AML compute targets, run `python setup.py --create-aks True --create-V100 True`. 
+>
+> Run `python setup.py -h` to see other optional arguments.
 
 ## Python Notebooks
 
@@ -79,3 +91,9 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 ## Code of Conduct 
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details. 
+
+## Reference
+
+- [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
+- [Python SDK Documentation](https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py)
+- [Azure Machine Learning Pipelines Notebooks](https://github.com/Azure/MachineLearningNotebooks/tree/master/how-to-use-azureml/machine-learning-pipelines)
