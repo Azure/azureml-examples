@@ -26,9 +26,9 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup.py).
 
-> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $SUBSCRIPTIONID` where `$SUBSCRIPTIONID` is your Azure subscription id. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
+> If you do not have an Azure ML Workspace, run `python setup.py --subscription-id $ID`, where `$ID` is your Azure subscription id. A resource group, AML Workspace, and other necessary resources will be created in the subscription. 
 >
-> If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $ws -g $rg`, where `$ws` and `$rg` are the workspace and resource group names.
+> If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
 >
 > By default, `python setup.py` will **not** provision all the compute targets needed to run every example in this repository - it will only create standard AML compute targets with auto scaledown and reasonable settings. **Some examples will fail with a "compute target not found" error**. To create the AKS and specialty AML compute targets, run `python setup.py --create-aks True --create-V100 True`. 
 >
