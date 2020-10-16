@@ -9,9 +9,9 @@ parser = argparse.ArgumentParser()
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
-with open("docs/data/prefix.data", "r") as f:
+with open("docs/data/prefix.md", "r") as f:
     prefix = f.read()
-with open("docs/data/suffix.data", "r") as f:
+with open("docs/data/suffix.md", "r") as f:
     suffix = f.read()
 
 tutorials_table = """
