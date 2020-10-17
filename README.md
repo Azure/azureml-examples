@@ -51,7 +51,7 @@ path|compute|environment|description
 [notebooks/fastai/train-mnist-mlproject.ipynb](notebooks/fastai/train-mnist-mlproject.ipynb)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
 [notebooks/fastai/train-mnist-resnet18.ipynb](notebooks/fastai/train-mnist-resnet18.ipynb)|AML - CPU|conda|train fastai resnet18 model on mnist data
 [notebooks/fastai/train-pets-resnet34.ipynb](notebooks/fastai/train-pets-resnet34.ipynb)|AML - GPU|docker|train fastai resnet34 model on pets data
-[notebooks/lightgbm/train-iris-interactive-run.ipynb](notebooks/lightgbm/train-iris-interactive-run.ipynb)|unknown|unknown|*no description*
+[notebooks/lightgbm/train-iris-interactive-run.ipynb](notebooks/lightgbm/train-iris-interactive-run.ipynb)|unknown|unknown|train a lightgbm model on iris data in an interactive run
 [notebooks/lightgbm/train-iris.ipynb](notebooks/lightgbm/train-iris.ipynb)|AML - CPU|pip|train a lightgbm model on iris data
 [notebooks/pytorch/train-mnist-cnn.ipynb](notebooks/pytorch/train-mnist-cnn.ipynb)|AML - GPU|conda|train a pytorch CNN model on mnist data
 [notebooks/pytorch/train-mnist-mlproject.ipynb](notebooks/pytorch/train-mnist-mlproject.ipynb)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
