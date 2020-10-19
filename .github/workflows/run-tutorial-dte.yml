@@ -1,4 +1,4 @@
-name: run-tutorial-um
+name: run-tutorial-dte
 on:
   push: 
     branches:
@@ -33,4 +33,4 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run production-deploy-to-ase-gpu.ipynb
-      run: papermill tutorials/using-mlflow/production-deploy-to-ase-gpu.ipynb - -k python
+      run: papermill tutorials/deploy-to-edge/production-deploy-to-ase-gpu.ipynb - -k python
