@@ -46,10 +46,10 @@ cr = "${{secrets.AZ_AE_CREDS}}"
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
 # glob all notebooks
-nbs = glob.glob("**/**.ipynb", recursive=True)
+nbs = glob.glob("./**/**.ipynb", recursive=True)
 
 # process tutorials/*
-tutorials = glob.glob("tutorials/*")
+tutorials = [nb for nb in nbs if "tutorials/" in nb]
 
 for tutorial in tutorials:
 
@@ -59,7 +59,7 @@ for tutorial in tutorials:
     notebooks = "<br>".join(notebooks)
 
     # get the tutorial name and initials
-    name = tutorial.split("/")[-1]
+    name = tutorial.split("/")[-2]
     initials = name.split("-")[0][0] + name.split("-")[1][0]
 
     # build entries for tutorial table
@@ -78,11 +78,7 @@ for tutorial in tutorials:
     tutorials_table += f"[{name}]({tutorial})|{status}|{notebooks}|{desc}\n"
 
 # process notebooks/* and concepts/*
-torun = [
-    nb
-    for nb in glob.glob("*/**/*.ipynb", recursive=True)
-    if "concepts" in nb or "notebooks" in nb  # and "mlproject" not in nb
-]
+torun = [nb for nb in nbs if "concepts" in nb or "notebooks" in nb]
 
 # create `run-notebooks` workflow yaml file
 workflow = f"""name: run-notebooks
