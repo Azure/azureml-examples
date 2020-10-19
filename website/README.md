@@ -2,6 +2,16 @@
 
 This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
 
+##  Contributions
+
+99% of contributions should only need the following:
+
+- Add markdown files to the `website/docs` folder
+- Update the `sidebar.js` file to add a page to the sidebar
+
+If you need to do anything more than adding a new page to the sidebar (e.g.
+modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus.io/).
+
 ## Installation
 
 ```console
