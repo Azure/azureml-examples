@@ -132,7 +132,7 @@ jobs:
       with:
         creds: {cr}
     - name: install azmlcli
-      run: az extension add -n azure-cli-ml
+      run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w {ws} -g {rg}
     - name: run notebook
