@@ -1,11 +1,11 @@
 name: website
+
 on:
   pull_request:
-    branches:
-      - website
+    branches: [website]
   push:
-    branches:
-      - website
+    branches: [website]
+
 jobs:
   checks:
     if: github.event_name != 'push'
