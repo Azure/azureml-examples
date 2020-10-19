@@ -45,21 +45,8 @@ cr = "${{secrets.AZ_AE_CREDS}}"
 
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
-# process all notebooks
+# glob all notebooks
 nbs = glob.glob("**/**.ipynb", recursive=True)
-
-for nb in nbs:
-
-    # read in notebook
-    with open(nb, "r") as f:
-        data = json.load(f)
-
-    # update metadata
-    data["metadata"]["kernelspec"] = kernelspec
-
-    # write notebook
-    with open(nb, "w") as f:
-        json.dump(data, f, indent=2)
 
 # process tutorials/*
 tutorials = glob.glob("tutorials/*")
@@ -67,9 +54,9 @@ tutorials = glob.glob("tutorials/*")
 for tutorial in tutorials:
 
     # get list of notebooks
-    nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
-    nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
-    nbs = "<br>".join(nbs)
+    notebooks = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
+    notebooks = [f"[{nb}]({tutorial}/{nb})" for nb in notebooks]
+    notebooks = "<br>".join(notebooks)
 
     # get the tutorial name and initials
     name = tutorial.split("/")[-1]
@@ -88,10 +75,10 @@ for tutorial in tutorials:
         pass
 
     # add row to tutorial table
-    tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
+    tutorials_table += f"[{name}]({tutorial})|{status}|{notebooks}|{desc}\n"
 
 # process notebooks/* and concepts/*
-nbs = [
+torun = [
     nb
     for nb in glob.glob("*/**/*.ipynb", recursive=True)
     if "concepts" in nb or "notebooks" in nb  # and "mlproject" not in nb
@@ -113,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        notebook: {nbs}
+        notebook: {torun}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -145,7 +132,7 @@ with open(f".github/workflows/run-notebooks.yml", "w") as f:
     f.write(workflow)
 
 # create README.md file
-for nb in nbs:
+for nb in torun:
 
     # read in notebook
     with open(nb, "r") as f:
@@ -212,6 +199,21 @@ with open("README.md", "w") as f:
         + concepts_table
         + suffix
     )
+
+# process all notebooks
+for nb in nbs:
+
+    # read in notebook
+    with open(nb, "r") as f:
+        data = json.load(f)
+
+    # update metadata
+    data["metadata"]["kernelspec"] = kernelspec
+
+    # write notebook
+    with open(nb, "w") as f:
+        json.dump(data, f, indent=2)
+
 
 # run code formatter on .py files
 os.system("black .")
