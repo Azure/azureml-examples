@@ -1,12 +1,12 @@
 module.exports = {
   title: 'Azure ML Cheat Sheet',
   tagline: '80% of what you need in 20% of the documentation',
-  url: 'https://github.com/Azure/azureml-examples',
-  baseUrl: '/AzureML-CheatSheet/',
+  url: 'https://github.com/Azure/',
+  baseUrl: '/azureml-examples/',
   onBrokenLinks: 'ignore',
   favicon: 'img/logo.svg',
   organizationName: 'Azure', // Usually your GitHub org/user name.
-  projectName: 'AzureML-CheatSheet', // Usually your repo name.
+  projectName: 'azureml-examples', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'Azure ML Cheat Sheet',
@@ -73,7 +73,7 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/aminsaied',
+              href: 'https://github.com/Azure/azureml-examples/',
             },
           ],
         },
