@@ -92,8 +92,8 @@ for tutorial in tutorials:
 # process notebooks/* and concepts/*
 nbs = [nb for nb in notebooks if "concepts/" in nb or "notebooks/" in nb]
 
-# create `run-notebooks` workflow yaml file
-workflow = f"""name: run-notebooks
+# create `run-examples` workflow yaml file
+workflow = f"""name: run-examples
 on:
   push: 
     branches:
@@ -134,9 +134,9 @@ jobs:
       run: papermill {mn} out.ipynb -k python
 """
 
-# write `run-notebooks` workflow yaml file
+# write `run-examples` workflow yaml file
 print("writing workflow file...")
-with open(f".github/workflows/run-notebooks.yml", "w") as f:
+with open(f".github/workflows/run-examples.yml", "w") as f:
     f.write(workflow)
 
 # create README.md file
