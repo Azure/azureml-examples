@@ -56,11 +56,7 @@ notebooks = sorted(glob.glob("**/**.ipynb", recursive=True))
 # process tutorials/*
 tutorials = sorted(glob.glob("tutorials/*"))
 
-print(tutorials)
-
 for tutorial in tutorials:
-
-    print(tutorial)
 
     # get list of notebooks
     nbs = sorted(
@@ -71,8 +67,7 @@ for tutorial in tutorials:
 
     # get the tutorial name and initials
     name = tutorial.split("/")[-1]  # TODO: fix for Windows
-    print(name)
-    initials = name.split("-")[0][0] + name.split("-")[1][0]
+    initials = "".join([word[0][0] for word in name.split("-")])
 
     # build entries for tutorial table
     status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/run-tutorial-{initials}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-{initials})"
