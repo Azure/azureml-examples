@@ -34,6 +34,6 @@ To create or setup a workspace with the assets used in these examples, run the [
 >
 > Run `python setup.py -h` to see other optional arguments.
 
-## Python Notebooks
+## Python
 
 End to end tutorials can be found in the [tutorials directory](tutorials). The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). 
