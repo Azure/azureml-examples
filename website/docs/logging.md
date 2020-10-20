@@ -1,5 +1,5 @@
 ---
-title: Logging Metrics
+title: Metrics
 ---
 
 ## Logging metrics
