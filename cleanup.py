@@ -2,7 +2,7 @@
 import argparse
 from azureml.core import Workspace
 
-# setup argparse 
+# setup argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", type=str, default="")
 args = parser.parse_args()

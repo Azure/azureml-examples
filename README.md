@@ -78,17 +78,6 @@ path|compute|description
 [notebooks/triton/deploy-bidaf-aks.ipynb](notebooks/triton/deploy-bidaf-aks.ipynb)|AKS - GPU|(preview) deploy a bi-directional attention flow (bidaf) Q&A model to V100s on AKS via Triton
 [notebooks/triton/deploy-densenet-local.ipynb](notebooks/triton/deploy-densenet-local.ipynb)|local|(preview) deploy an image classification model trained on densenet locally via Triton
 
-**Concepts examples**
-path|area|description
--|-|-
-[concepts/compute/azureml-compute-api.ipynb](concepts/compute/azureml-compute-api.ipynb)|compute|overview of the AML Compute Python SDK
-[concepts/compute/compute-instance-api.ipynb](concepts/compute/compute-instance-api.ipynb)|compute|overview of the AML Compute Instance Python SDK
-[concepts/dataset/dataset-api.ipynb](concepts/dataset/dataset-api.ipynb)|dataset|overview of the AML Dataset Python SDK
-[concepts/datastore/datastore-api.ipynb](concepts/datastore/datastore-api.ipynb)|datastore|overview of the AML Datastore Python SDK
-[concepts/environment/environment-api.ipynb](concepts/environment/environment-api.ipynb)|environment|overview of the AML Environment Python SDK
-[concepts/model/model-api.ipynb](concepts/model/model-api.ipynb)|model|overview of the AML Model Python SDK
-[concepts/workspace/workspace-api.ipynb](concepts/workspace/workspace-api.ipynb)|workspace|overview of the AML Workspace Python SDK
-
 ## Contributing
 
 We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.

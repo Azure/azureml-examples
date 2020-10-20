@@ -38,12 +38,6 @@ path|compute|description
 -|-|-
 """
 
-concepts_table = """
-**Concepts examples**
-path|area|description
--|-|-
-"""
-
 ws = "default"
 rg = "azureml-examples"
 mn = "${{matrix.notebook}}"
@@ -85,8 +79,8 @@ for tutorial in tutorials:
     # add row to tutorial table
     tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
-# process notebooks/* and concepts/*
-nbs = [nb for nb in notebooks if "concepts/" in nb or "notebooks/" in nb]
+# process notebooks/*
+nbs = [nb for nb in notebooks if "notebooks/" in nb]
 
 # create `run-examples` workflow yaml file
 workflow = f"""name: run-examples
@@ -190,9 +184,6 @@ for nb in nbs:
         else:
             compute = "unknown"
         deployment_table += f"[{nb}]({nb})|{compute}|{desc}\n"
-    elif "concepts" in nb:
-        area = nb.split("/")[-2]
-        concepts_table += f"[{nb}]({nb})|{area}|{desc}\n"
 
 # write README.md file
 print("writing README.md...")
@@ -203,7 +194,6 @@ with open("README.md", "w") as f:
         + interactive_table
         + training_table
         + deployment_table
-        + concepts_table
         + suffix
     )
 
