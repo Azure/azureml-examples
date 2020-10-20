@@ -41,12 +41,13 @@ End to end tutorials can be found in the [tutorials directory](tutorials). The m
 **Tutorials**
 path|status|notebooks|description
 -|-|-|-
-[getting-started-training](tutorials/getting-started-training)|[![getting-started-training](https://github.com/Azure/azureml-examples/workflows/run-tutorial-gst/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-gst)|[1.hello-world.ipynb](tutorials/getting-started-training/1.hello-world.ipynb)<br>[2.train-model.ipynb](tutorials/getting-started-training/2.train-model.ipynb)<br>[3.train-model-cloud-data.ipynb](tutorials/getting-started-training/3.train-model-cloud-data.ipynb)|simple tutorial for getting started with hello world and model training in the cloud
+[getting-started-train](tutorials/getting-started-train)|[![getting-started-train](https://github.com/Azure/azureml-examples/workflows/run-tutorial-gst/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-gst)|[1.hello-world.ipynb](tutorials/getting-started-train/1.hello-world.ipynb)<br>[2.pytorch-model.ipynb](tutorials/getting-started-train/2.pytorch-model.ipynb)<br>[3.pytorch-model-cloud-data.ipynb](tutorials/getting-started-train/3.pytorch-model-cloud-data.ipynb)|simple tutorial for getting started with hello world and model training in the cloud
 [using-dask](tutorials/using-dask)|[![using-dask](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ud/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ud)|[1.intro-to-dask.ipynb](tutorials/using-dask/1.intro-to-dask.ipynb)<br>[2.eds-at-scale.ipynb](tutorials/using-dask/2.eds-at-scale.ipynb)|learn how to use dask to read data from Blob, ADLSv1, or ADLSv2 into Pandas locally - then scale up EDA, data preparation, and distributed LightGBM training on a 700+ GB dataframe with a remote cluster
 [using-mlflow](tutorials/using-mlflow)|[![using-mlflow](https://github.com/Azure/azureml-examples/workflows/run-tutorial-um/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-um)|[sklearn.ipynb](tutorials/using-mlflow/sklearn.ipynb)|learn how to use mlflow, from training to deployment
 
 **Jupyter Notebooks**
 path|description
+-|-
 [notebooks/lightgbm/train-iris-interactive-run.ipynb](notebooks/lightgbm/train-iris-interactive-run.ipynb)|train a lightgbm model on iris data in an interactive run
 
 **Train**
