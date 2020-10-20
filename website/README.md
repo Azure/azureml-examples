@@ -24,6 +24,7 @@ the change will be automatically deployed to `gh-pages` branch (and the webpage 
 
 - Add markdown files to the `website/docs` folder
 - Update the `sidebar.js` file to add a page to the sidebar
+- Put any images in `website/docs/img/` and refer to them like this: `![](img/create-compute.png)`
 
 If you need to do anything more than adding a new page to the sidebar (e.g.
 modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus.io/).
