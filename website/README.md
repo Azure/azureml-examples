@@ -4,10 +4,16 @@ This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern 
 
 ##  Contributions
 
-Make PR's against the `documentation` branch.
+Make PR's against the `website` branch
+
+```bash
+git clone git@github.com:Azure/azureml-examples.git
+git checkout website
+git checkout -b user/contrib
+```
 
 - When a PR arrives against this branch GitHub actions will test the build is successful
-- When the PR is merged to `documentation` (or when someone pushes directly to `documentation`)
+- When the PR is merged to `website` (or when someone pushes directly to `website`)
 the change will be automatically deployed to `gh-pages` branch (and the webpage will be updated automatically)
 
 99% of contributions should only need the following:
