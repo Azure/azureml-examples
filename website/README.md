@@ -46,8 +46,8 @@ modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus
 
 ## Deployment
 
-This repo has GitHub actions in place that automate deployment. If you are interested in how
-deployment works then read on :-)
+This repo has GitHub actions in place that automate deployment by watching the `website` branch.
+If you are interested in how deployment works then read on!
 
 ### GitHub Actions
 
