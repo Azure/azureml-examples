@@ -1,4 +1,4 @@
-name: run-notebooks
+name: run-examples
 on:
   push: 
     branches:
