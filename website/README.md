@@ -28,7 +28,7 @@ the change will be automatically deployed to `gh-pages` branch (and the webpage 
 If you need to do anything more than adding a new page to the sidebar (e.g.
 modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus.io/).
 
-## Installation
+## Development (testing locally)
 
 - Install npm and yarn: see [docusaurus2 webpage](https://v2.docusaurus.io/docs/installation)
 
