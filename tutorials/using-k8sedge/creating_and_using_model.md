@@ -6,7 +6,7 @@ Creating models is easy if you use Azure ML, you will need to make sure you inst
 
 You will need your config file from Azure Machine Learing to be able to create new instances of `workspace`:
 
-![JupiterLab](pics/conf_file_download.jpg)
+![JupiterLab](pics/conf_file_download.JPG)
 
 If your image is deployed not on a publicly-available image registry, you will need to login with your credentials. You can
 retrieve your credentials from the notebook - through your workspace `ws.subscription_id`, and use 
