@@ -46,13 +46,8 @@ modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus
 
 ## Deployment
 
-### Manual
-
-```console
-GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+This repo has GitHub actions in place that automate deployment. If you are interested in how
+deployment works then read on :-)
 
 ### GitHub Actions
 
@@ -66,4 +61,14 @@ We use GitHub actions to automate deployment. Set up was as follows:
     - We use repo-level (not org level) secret
     - Secret is named `GH_PAGES_DEPLOY`
     - `xclip -sel clip < /tmp/.ssh/id_rsa`
+
+### Manual
+
+It is possible to make manual deployments without use of the GitHub action above.
+
+```console
+GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
 
