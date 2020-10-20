@@ -98,7 +98,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/Azure/azureml-examples/tree/website/website/docs',
+            'https://github.com/Azure/azureml-examples/tree/website/website/',
         },
         cookbook: {
           sidebarPath: require.resolve('./sidebars.js'),
