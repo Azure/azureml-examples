@@ -26,25 +26,21 @@ modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus
 
 ## Installation
 
-```console
-yarn install
-```
+- Install npm and yarn: see [docusaurus2 webpage](https://v2.docusaurus.io/docs/installation)
 
-## Local Development
+- First time Docusaurus2 installation
+    ```
+    git checkout website
+    cd website
+    npm install
+    ```
 
-```console
-yarn start
-```
-
-This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```console
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+- Run local server while developing:
+    ```
+    git checkout website
+    cd website
+    yarn start
+    ```
 
 ## Deployment
 
