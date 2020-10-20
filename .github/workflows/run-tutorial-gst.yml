@@ -1,4 +1,4 @@
-name: run-tutorial-gs
+name: run-tutorial-gst
 on:
   push: 
     branches:
@@ -33,9 +33,8 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.hello-world.ipynb
-      run: papermill tutorials/getting-started/1.hello-world.ipynb - -k python
+      run: papermill tutorials/getting-started-train/1.hello-world.ipynb - -k python
     - name: run 2.train-model.ipynb
-      run: papermill tutorials/getting-started/2.train-model.ipynb - -k python
+      run: papermill tutorials/getting-started-train/2.pytorch-model.ipynb - -k python
     - name: run 3.train-model-cloud-data.ipynb
-      run: papermill tutorials/getting-started/3.train-model-cloud-data.ipynb - -k python
-
+      run: papermill tutorials/getting-started-train/3.pytorch-model-cloud-data.ipynb - -k python
