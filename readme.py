@@ -20,14 +20,19 @@ path|status|notebooks|description
 -|-|-|-
 """
 
+interactive_table = """
+**Jupyter Notebooks**
+path|description
+"""
+
 training_table = """
-**Training examples**
+**Train**
 path|compute|environment|description
 -|-|-|-
 """
 
 deployment_table = """
-**Deployment examples**
+**Deploy**
 path|compute|description
 -|-|-
 """
@@ -45,34 +50,28 @@ cr = "${{secrets.AZ_AE_CREDS}}"
 
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
 
-# process all notebooks
-nbs = glob.glob("**/**.ipynb", recursive=True)
-
-for nb in nbs:
-
-    # read in notebook
-    with open(nb, "r") as f:
-        data = json.load(f)
-
-    # update metadata
-    data["metadata"]["kernelspec"] = kernelspec
-
-    # write notebook
-    with open(nb, "w") as f:
-        json.dump(data, f, indent=2)
+# glob all notebooks
+notebooks = sorted(glob.glob("**/**.ipynb", recursive=True))
 
 # process tutorials/*
-tutorials = glob.glob("tutorials/*")
+tutorials = sorted(glob.glob("tutorials/*"))
+
+print(tutorials)
 
 for tutorial in tutorials:
 
+    print(tutorial)
+
     # get list of notebooks
-    nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
-    nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
+    nbs = sorted(
+        [nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")]
+    )  # TODO: fix for Windows
+    nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]  # TODO: fix for Windows
     nbs = "<br>".join(nbs)
 
     # get the tutorial name and initials
-    name = tutorial.split("/")[-1]
+    name = tutorial.split("/")[-1]  # TODO: fix for Windows
+    print(name)
     initials = name.split("-")[0][0] + name.split("-")[1][0]
 
     # build entries for tutorial table
@@ -91,11 +90,7 @@ for tutorial in tutorials:
     tutorials_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
 # process notebooks/* and concepts/*
-nbs = [
-    nb
-    for nb in glob.glob("*/**/*.ipynb", recursive=True)
-    if "concepts" in nb or "notebooks" in nb  # and "mlproject" not in nb
-]
+nbs = [nb for nb in notebooks if "concepts/" in nb or "notebooks/" in nb]
 
 # create `run-notebooks` workflow yaml file
 workflow = f"""name: run-notebooks
@@ -165,7 +160,9 @@ for nb in nbs:
         pass
 
     # build tables
-    if "train" in nb:
+    if "interactive" in nb:
+        interactive_table += f"[{nb}]({nb})|{desc}\n"
+    elif "train" in nb:
         if "cpu-cluster" in str(data):
             compute = "AML - CPU"
         elif (
@@ -207,11 +204,27 @@ with open("README.md", "w") as f:
     f.write(
         prefix
         + tutorials_table
+        + interactive_table
         + training_table
         + deployment_table
         + concepts_table
         + suffix
     )
+
+# process all notebooks and rewrite
+for nb in notebooks:
+
+    # read in notebook
+    with open(nb, "r") as f:
+        data = json.load(f)
+
+    # update metadata
+    data["metadata"]["kernelspec"] = kernelspec
+
+    # write notebook
+    with open(nb, "w") as f:
+        json.dump(data, f, indent=2)
+
 
 # run code formatter on .py files
 os.system("black .")
