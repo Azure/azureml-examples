@@ -41,8 +41,8 @@ To ensure all checks are passed:
 Naming conventions are still in flux. Currently:
 
 * under `notebooks`, the notebook filename must start with one of ["train", "deploy", "score", "interactive", "hpo", "dprep"]
-* directories under `tutorials` should be two words separated by a hyphen
-* workflows for tutorials should follow the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the two words
+* directories under `tutorials` should be words separated by a hyphen
+* workflows for tutorials should follow the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
 ### Testing
 
