@@ -33,15 +33,13 @@ modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus
 - Install npm and yarn: see [docusaurus2 webpage](https://v2.docusaurus.io/docs/installation)
 
 - First time Docusaurus2 installation
-    ```
-    git checkout website
+    ```bash
     cd website
     npm install
     ```
 
 - Run local server while developing:
-    ```
-    git checkout website
+    ```bash
     cd website
     yarn start
     ```
