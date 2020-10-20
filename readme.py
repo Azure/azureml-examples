@@ -23,6 +23,7 @@ path|status|notebooks|description
 interactive_table = """
 **Jupyter Notebooks**
 path|description
+-|-
 """
 
 training_table = """
