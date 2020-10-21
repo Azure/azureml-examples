@@ -41,7 +41,7 @@ module.exports = {
         type: 'category',
         label: 'Overview',
         collapsed: false,
-        items[ 'README', 'README']
+        items: ['README', 'README']
       }
     ],
   },
