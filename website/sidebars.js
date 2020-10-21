@@ -41,7 +41,13 @@ module.exports = {
         type: 'category',
         label: 'Overview',
         collapsed: false,
-        items: ['userguide/README', 'userguide/README']
+        items: ['userguide/overview', 'userguide/studio', 'userguide/architecture']
+      },
+      {
+        type: 'category',
+        label: 'Concepts',
+        collapsed: false,
+        items: ['userguide/workspace', 'userguide/job', 'userguide/endpoint', 'userguide/data', 'userguide/compute', 'userguide/model']
       }
     ],
   },
