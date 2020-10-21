@@ -1,6 +1,6 @@
 # Website
 
-![website](https://github.com/Azure/azureml-examples/workflows/website/badge.svg)
+![deploy-website](https://github.com/Azure/azureml-examples/workflows/deploy-website/badge.svg)
 
 Website is available here: https://azure.github.io/azureml-examples/
 
@@ -8,17 +8,16 @@ This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern 
 
 ##  Contributions
 
-Make PR's against the `website` branch
+Make PR's against the `main` branch
 
 ```bash
 git clone git@github.com:Azure/azureml-examples.git
-git checkout website
+cd azureml-examples
 git checkout -b user/contrib
 ```
 
-- When a PR arrives against this branch GitHub actions will test the build is successful
-- When the PR is merged to `website` (or when someone pushes directly to `website`)
-the change will be automatically deployed to `gh-pages` branch (and the webpage will be updated automatically)
+- When a PR arrives against `main` GitHub actions (deploy-website) will test the build is successful
+- When the PR is merged the change will be automatically deployed to `gh-pages` branch (and the webpage will be updated)
 
 99% of contributions should only need the following:
 
@@ -29,7 +28,7 @@ the change will be automatically deployed to `gh-pages` branch (and the webpage 
 If you need to do anything more than adding a new page to the sidebar (e.g.
 modify the nav bar) then a) please refer to [Docusaurus 2](https://v2.docusaurus.io/).
 
-## Development (testing locally)
+### Previewing Changes Locally
 
 - Install npm and yarn: see [docusaurus2 webpage](https://v2.docusaurus.io/docs/installation)
 
