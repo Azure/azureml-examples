@@ -135,7 +135,6 @@ for nb in notebooks:
         data = json.load(f)
 
     # read in the description
-    desc = "*no description*"
     try:
         if "description: " in str(data["cells"][0]["source"]):
             desc = (
@@ -145,7 +144,7 @@ for nb in notebooks:
                 .strip()
             )
     except:
-        pass
+        desc = "*no description*"
 
     # build tables
     notebook_table += f"[{nb}]({nb})|{desc}\n"
