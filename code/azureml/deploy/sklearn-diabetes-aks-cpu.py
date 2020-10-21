@@ -5,6 +5,7 @@ import git
 import json
 import time
 import mlflow
+import mlflow.azureml
 import requests
 
 import pandas as pd
