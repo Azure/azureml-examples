@@ -32,9 +32,9 @@ To ensure all checks are passed:
 
 ### Organization
 
-* `notebooks` is for general example notebooks using AML
+* `code/azureml` is for general examples using AML
 * `tutorials` is for end to end tutorials using AML
-* `concepts` is for API example notebooks of core AML concepts
+* `notebooks` is for general example notebooks using AML
 
 ### Naming conventions
 
@@ -46,6 +46,6 @@ Naming conventions are still in flux. Currently:
 
 ### Testing
 
-* `run-examples` runs on every push and PR to `main` and runs all examples under `notebooks/` and `concepts/`
+* `run-examples` runs on every push and PR to `main` and runs all examples under `notebooks/`
 * `tutorials` must be tested at least daily
 * `cleanup` runs daily and cleans up AML resources for the testing workspace

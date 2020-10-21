@@ -1,26 +1,19 @@
-name: run-examples
+name: run-tutorial-ur
 on:
-  push: 
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   schedule:
-      - cron: "0 9 * * *"
+    - cron: "0 */2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
-    strategy:
-      matrix:
-        example: []
     steps:
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
+    - name: install snappy
+      run: sudo apt-get install libsnappy-dev
     - name: pip install
       run: pip install -r requirements.txt
     - name: check code format
@@ -35,5 +28,7 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
-    - name: run example
-      run: python ${{matrix.example}}
+    - name: run 1.train-and-hpo.ipynb
+      run: papermill tutorials/using-rapids/1.train-and-hpo.ipynb - -k python
+    - name: run 2.train-multi-gpu.ipynb
+      run: papermill tutorials/using-rapids/2.train-multi-gpu.ipynb - -k python

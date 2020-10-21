@@ -1,4 +1,4 @@
-name: run-examples
+name: run-notebooks
 on:
   push: 
     branches:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        example: []
+        notebook: ['notebooks/train-lightgbm-local.ipynb']
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -35,5 +35,5 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
-    - name: run example
-      run: python ${{matrix.example}}
+    - name: run notebook
+      run: papermill ${{matrix.notebook}} out.ipynb -k python

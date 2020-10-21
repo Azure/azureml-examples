@@ -1,5 +1,7 @@
 # Real-time inference on GPUs in Azure Machine Learning
 
+description: learn how to deploy to triton
+
 The notebooks in this directory show how to take advantage of the interoperability between Azure Machine Learning and [NVIDIA Triton Inference Server](https://developer.nvidia.com/nvidia-triton-inference-server) for cost-effective real time inference on GPUs.
 
 ## Python instructions
