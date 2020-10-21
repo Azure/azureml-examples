@@ -1,7 +1,7 @@
 ---
-title: Workspace
+title: Endpoint
 ---
 
 ## Overview
 
-An Azure ML Workspace...
+An Azure ML Endpoint...
