@@ -1,4 +1,4 @@
-# description: deploy sklearn ridge model trained on diabetes data to AKS
+# description: deploy sklearn ridge model trained on diabetes data to ACI
 
 # imports
 import git

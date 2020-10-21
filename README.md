@@ -74,7 +74,7 @@ path|compute|environment|description
 path|compute|description
 -|-|-
 [code/azureml/deploy/pytorch-mnist-aks-cpu.py](code/azureml/deploy/pytorch-mnist-aks-cpu.py)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
-[code/azureml/deploy/sklearn-diabetes-aci-cpu.py](code/azureml/deploy/sklearn-diabetes-aci-cpu.py)|ACI - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[code/azureml/deploy/sklearn-diabetes-aci-cpu.py](code/azureml/deploy/sklearn-diabetes-aci-cpu.py)|ACI - CPU|deploy sklearn ridge model trained on diabetes data to ACI
 [code/azureml/deploy/sklearn-diabetes-aks-cpu.py](code/azureml/deploy/sklearn-diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
 
 ## Contributing
