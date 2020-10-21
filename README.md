@@ -30,13 +30,13 @@ To create or setup a workspace with the assets used in these examples, run the [
 >
 > If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
 >
-> By default, `python setup.py` will **not** provision all the compute targets needed to run every example in this repository - it will only create standard AML compute targets with auto scaledown and reasonable settings. **Some examples will fail with a "compute target not found" error**. To create the AKS and specialty AML compute targets, run `python setup.py --create-aks True --create-V100 True`. 
+> By default, `python setup.py` will **not** provision all the compute targets needed to run every example in this repository - it will only create standard AML compute targets with auto scaledown and reasonable settings. **Some examples will fail with a "compute target not found" error**. To create the AKS and specialty AML compute targets, run `python setup.py --create-aks True --create-V100 True`.
 >
 > Run `python setup.py -h` to see other optional arguments.
 
-## Python
+## Samples
 
-End to end tutorials can be found in the [tutorials directory](tutorials). The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). 
+End to end tutorials can be found in the [tutorials directory](tutorials). Example notebooks are located in the [notebooks directory](notebooks). Code examples for training, deployment, scoring, and more can be found in the [azureml code directory](code/azureml).
 
 **Tutorials**
 path|status|notebooks|description
