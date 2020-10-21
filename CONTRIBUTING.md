@@ -20,9 +20,10 @@ PRs to this repo are subject to review by the Azure ML team.
 
 * minimal prose
 * minimalist code
-* no azureml-* code in training code
-* examples can be re-run without failing in less than 10 minutes
-* if adding new requirements, pip install time must remain <60s
+* no azureml-* in training code
+* examples (including notebooks) can be re-run without failing in less than 10 minutes
+* tutorials must be re-run without failing at least daily
+* `pip install --upgrade -r requirements` remains <60s
 
 ### Checks
 
@@ -33,16 +34,17 @@ To ensure all checks are passed:
 ### Organization
 
 * `code/azureml` is for general examples using AML
-* `tutorials` is for end to end tutorials using AML
 * `notebooks` is for general example notebooks using AML
+* `tutorials` is for end to end tutorials using AML
 
 ### Naming conventions
 
 Naming conventions are still in flux. Currently:
 
-* under `notebooks`, the notebook filename must start with one of ["train", "deploy", "score", "interactive", "hpo", "dprep"]
-* directories under `tutorials` should be words separated by a hyphen
-* workflows for tutorials should follow the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
+* under `code/azureml`, naming should be logical
+* under `notebooks`, the naming convention *scenario-framework-etc-compute* , where *scenario* is one of ["train", "deploy", "score", "interactive", "hpo", "dprep"]
+* directories under `tutorials` should be words separated by hyphens
+* workflows for tutorials use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
 ### Testing
 
