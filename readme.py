@@ -151,7 +151,7 @@ for nb in notebooks:
     notebook_table += f"[{nb}]({nb})|{desc}\n"
 
 # process code/azureml/*
-examples = sorted(glob.glob("code/azureml/**.py"))
+examples = sorted(glob.glob("code/azureml/**/*.py"))
 
 # create `run-examples` workflow yaml file
 workflow = f"""name: run-examples

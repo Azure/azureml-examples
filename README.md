@@ -56,10 +56,26 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|docker|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|mlproject|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|
 
 **Deploy**
 path|compute|description
 -|-|-
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|ACI - CPU|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|
 
 ## Contributing
 
