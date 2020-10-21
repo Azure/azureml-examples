@@ -78,7 +78,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Microsoft // Built with Docusaurus2`,
+      copyright: `Copyright © ${new Date().getFullYear()} Microsoft`,
     },
     algolia: {
       apiKey: 'd4ee9b6c7a8efe0a93f6455726bf8bbe',
@@ -98,7 +98,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/Azure/azureml-examples/tree/website/website/',
+            'https://github.com/Azure/azureml-examples/tree/main/website/',
         },
         cookbook: {
           sidebarPath: require.resolve('./sidebars.js'),
@@ -107,7 +107,7 @@ module.exports = {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/Azure/azureml-examples/tree/website/website/blog',
+            'https://github.com/Azure/azureml-examples/tree/main/website/blog',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
