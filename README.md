@@ -56,26 +56,26 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|train fastai resnet18 model on mnist data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|docker|train fastai resnet34 model on pets data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|train a lightgbm model on iris data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train a pytorch CNN model on mnist data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|train sklearn ridge model on diabetes data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|train tensorflow NN model on iris data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train tensorflow NN model on mnist data
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|train xgboost model on iris data
+[code/azureml/train/fastai-mnist-mlproject.py](code/azureml/train/fastai-mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
+[code/azureml/train/fastai-mnist.py](code/azureml/train/fastai-mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
+[code/azureml/train/fastai-pets.py](code/azureml/train/fastai-pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
+[code/azureml/train/lightgbm-iris.py](code/azureml/train/lightgbm-iris.py)|AML - CPU|pip|train a lightgbm model on iris data
+[code/azureml/train/pytorch-mnist-mlproject.py](code/azureml/train/pytorch-mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
+[code/azureml/train/pytorch-mnist.py](code/azureml/train/pytorch-mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
+[code/azureml/train/sklearn-diabetes-mlproject.py](code/azureml/train/sklearn-diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
+[code/azureml/train/sklearn-diabetes.py](code/azureml/train/sklearn-diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
+[code/azureml/train/tensorflow-iris.py](code/azureml/train/tensorflow-iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
+[code/azureml/train/tensorflow-mnist-distributed-horovod.py](code/azureml/train/tensorflow-mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
+[code/azureml/train/tensorflow-mnist-distributed.py](code/azureml/train/tensorflow-mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
+[code/azureml/train/tensorflow-mnist.py](code/azureml/train/tensorflow-mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
+[code/azureml/train/xgboost-iris.py](code/azureml/train/xgboost-iris.py)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
 path|compute|description
 -|-|-
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|ACI - CPU|deploy sklearn ridge model trained on diabetes data to AKS
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[code/azureml/deploy/pytorch-mnist-aks-cpu.py](code/azureml/deploy/pytorch-mnist-aks-cpu.py)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
+[code/azureml/deploy/sklearn-diabetes-aci-cpu.py](code/azureml/deploy/sklearn-diabetes-aci-cpu.py)|ACI - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[code/azureml/deploy/sklearn-diabetes-aks-cpu.py](code/azureml/deploy/sklearn-diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
 
 ## Contributing
 

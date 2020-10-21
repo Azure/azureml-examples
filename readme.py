@@ -232,7 +232,7 @@ for ex in examples:
                 environment = "mlproject"
             else:
                 environment = "unknown"
-            train_table += f"[{nb}]({nb})|{compute}|{environment}|{desc}\n"
+            train_table += f"[{ex}]({ex})|{compute}|{environment}|{desc}\n"
         elif "deploy" in ex:
             if "aci-cpu" in ex:
                 compute = "ACI - CPU"
@@ -244,7 +244,7 @@ for ex in examples:
                 compute = "local"
             else:
                 compute = "unknown"
-            deploy_table += f"[{nb}]({nb})|{compute}|{desc}\n"
+            deploy_table += f"[{ex}]({ex})|{compute}|{desc}\n"
 
 # write README.md file
 print("writing README.md...")
