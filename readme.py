@@ -208,7 +208,7 @@ for ex in examples:
 
         # read in the description
         try:
-            desc = f.readline().split(": ")[-1].strip()
+            desc = data.split("\n")[0].split(": ")[-1].strip()
         except:
             desc = "*no description*"
 

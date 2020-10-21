@@ -56,26 +56,26 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|docker|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|mlproject|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|train fastai resnet18 model on mnist data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|docker|train fastai resnet34 model on pets data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|train a lightgbm model on iris data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train a pytorch CNN model on mnist data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|train sklearn ridge model on diabetes data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|conda|train tensorflow NN model on iris data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - GPU|conda|train tensorflow NN model on mnist data
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
 path|compute|description
 -|-|-
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|ACI - CPU|
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|ACI - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
 
 ## Contributing
 
