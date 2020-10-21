@@ -192,7 +192,7 @@ The dockerfile used to build this image is available directly from the environme
 
 ```python
 details = env.get_image_details(ws)
-print(details['ingredients']['dockerfile'])
+print(details.dockerfile)
 ```
 
 Which looks like this:

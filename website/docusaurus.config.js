@@ -29,7 +29,7 @@ module.exports = {
         {to: 'docs/vs-code-snippets/snippets', label: 'Snippets', position: 'left'},
         // {to: 'blog', label: 'Blog', position: 'left'},
         {
-          to: 'docs/userguide',
+          to: 'docs/userguide/',
           label: 'User Guide',
           position: 'left',
         },

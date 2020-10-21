@@ -35,13 +35,13 @@ module.exports = {
     'User Guide': [
       {
         type: 'doc',
-        id: 'README'
+        id: 'userguide/README'
       },
       {
         type: 'category',
         label: 'Overview',
         collapsed: false,
-        items: ['README', 'README']
+        items: ['userguide/README', 'userguide/README']
       }
     ],
   },
