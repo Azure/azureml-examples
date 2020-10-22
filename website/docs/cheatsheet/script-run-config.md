@@ -141,9 +141,7 @@ Pass a dataset to your ScriptRunConfig as an argument
 datastore = ws.get_default_datastore()
 dataset = Dataset.File.from_files(path=(datastore, '<path/on/datastore>'))
 
-arguments = [
-    '--dataset', dataset.as_mount()
-]
+arguments = ['--dataset', dataset.as_mount()]
 
 config = ScriptRunConfig(
     source_directory='.',
