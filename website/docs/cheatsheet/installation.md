@@ -10,23 +10,17 @@ pip install azureml-sdk
 
 ### Create Workspace
 
-```python title="create-workspace.py"
+```python
 from azureml.core import Workspace
 
 ws = Workspace.create(name='<my_workspace_name>', # provide a name for your workspace
                       subscription_id='<azure-subscription-id>', # provide your subscription ID
                       resource_group='<myresourcegroup>', # provide a resource group name
                       create_resource_group=True,
-                      location='<NAME_OF_REGION>') # For example: 'westeurope' or 'eastus2' or 'westus2' or 'southeastasia'.
+                      location='<NAME_OF_REGION>') # e.g. 'westeurope' or 'eastus2' or 'westus2' or 'southeastasia'.
 
 # write out the workspace details to a configuration file: .azureml/config.json
 ws.write_config(path='.azureml')
-```
-
-Then run
-
-```console
-python create-workspace.py
 ```
 
 :::info
@@ -48,33 +42,28 @@ The following example creates a compute target in your workspace with:
 
 Modify this code to update to GPU, or to change the SKU of your VMs.
 
-```python title="create-compute.py"
+```python
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget, AmlCompute
 from azureml.core.compute_target import ComputeTargetException
 
-ws = Workspace.from_config() # This automatically looks for a directory .azureml
+ws = Workspace.from_config() # automatically looks for a directory .azureml/
 
-# Choose a name for your CPU cluster
+# name for your cluster
 cpu_cluster_name = "cpu-cluster"
 
-# Verify that the cluster does not exist already
 try:
+    # check if cluster already exists
     cpu_cluster = ComputeTarget(workspace=ws, name=cpu_cluster_name)
     print('Found existing cluster, use it.')
 except ComputeTargetException:
-    compute_config = AmlCompute.provisioning_configuration(vm_size='STANDARD_D2_V2',
-                                                           max_nodes=4, 
-                                                           idle_seconds_before_scaledown=2400)
+    # if not, create it
+    compute_config = AmlCompute.provisioning_configuration(
+        vm_size='STANDARD_D2_V2',
+        max_nodes=4, 
+        idle_seconds_before_scaledown=2400,)
     cpu_cluster = ComputeTarget.create(ws, cpu_cluster_name, compute_config)
-
-cpu_cluster.wait_for_completion(show_output=True)
-```
-
-Then run
-
-```console
-python create-compute.py
+    cpu_cluster.wait_for_completion(show_output=True)
 ```
 
 :::info
