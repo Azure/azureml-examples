@@ -3,10 +3,10 @@ on:
   schedule:
     - cron: "0 0/1 * * *"
   pull_request:
-      branches:
-        - main
-      paths:
-        - tutorials/getting-started-train/*
+    branches:
+      - main
+    paths:
+      - tutorials/getting-started-train/**
 jobs:
   build:
     runs-on: ubuntu-latest 

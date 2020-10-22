@@ -3,10 +3,10 @@ on:
   schedule:
     - cron: "0 */2 * * *"
   pull_request:
-      branches:
-        - main
-      paths:
-        - tutorials/deploy-triton/*
+    branches:
+      - main
+    paths:
+      - tutorials/deploy-triton/**
 jobs:
   build:
     runs-on: ubuntu-latest 

@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/using-rapids/*
+      - tutorials/using-rapids/**
 jobs:
   build:
     runs-on: ubuntu-latest 

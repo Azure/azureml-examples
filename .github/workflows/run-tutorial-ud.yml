@@ -3,10 +3,10 @@ on:
   schedule:
     - cron: "0 */2 * * *"
   pull_request:
-      branches:
-        - main
-      paths:
-        - tutorials/using-dask/*
+    branches:
+      - main
+    paths:
+      - tutorials/using-dask/**
 jobs:
   build:
     runs-on: ubuntu-latest 
