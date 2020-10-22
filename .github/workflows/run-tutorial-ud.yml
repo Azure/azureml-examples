@@ -2,6 +2,11 @@ name: run-tutorial-ud
 on:
   schedule:
     - cron: "0 */2 * * *"
+  pull_request:
+      branches:
+        - main
+      paths:
+        - tutorials/using-dask/*
 jobs:
   build:
     runs-on: ubuntu-latest 
