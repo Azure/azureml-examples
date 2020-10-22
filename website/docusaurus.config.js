@@ -51,11 +51,11 @@ module.exports = {
               href: 'https://docs.microsoft.com/azure/machine-learning',
             },
             {
-              label: 'Azure ML Examples (GitHub)',
+              label: 'Examples (GitHub)',
               href: 'https://github.com/Azure/azureml-examples',
             },
             {
-              label: 'AzureML Python SDK API',
+              label: 'Python SDK API',
               href: 'https://docs.microsoft.com/en-us/python/api/overview/azure/ml/?view=azure-ml-py'
             }
           ],
@@ -63,6 +63,10 @@ module.exports = {
         {
           title: 'Community',
           items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/Azure/azureml-examples/issues',
+            },
             {
               label: 'Stack Overflow',
               href: 'https://stackoverflow.microsoft.com/questions/tagged/10888',
@@ -75,11 +79,7 @@ module.exports = {
             {
               label: 'Blog',
               to: 'blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/Azure/azureml-examples/',
-            },
+            }
           ],
         },
       ],
