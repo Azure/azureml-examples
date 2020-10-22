@@ -2,10 +2,10 @@ name: deploy-website
 on:
   pull_request:
     branches: [main]
-    paths: [website/*]
+    paths: [website/**]
   push:
     branches: [main]
-    paths: [website/*]
+    paths: [website/**]
 jobs:
   checks:
     if: github.event_name != 'push'

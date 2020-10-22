@@ -4,12 +4,12 @@ on:
     branches:
       - main
     paths:
-      - "notebooks/*"
+      - "notebooks/**"
   pull_request:
     branches:
       - main
     paths:
-      - "notebooks/*"
+      - "notebooks/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
