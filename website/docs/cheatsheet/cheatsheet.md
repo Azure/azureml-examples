@@ -1,7 +1,7 @@
 ---
 title: Cheat Sheet
 id: cheatsheet
-slug: /
+slug: /cheatsheet/
 ---
 
 ### Basic setup
