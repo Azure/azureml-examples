@@ -28,11 +28,11 @@ module.exports = {
         // },
         {to: 'docs/vs-code-snippets/snippets', label: 'Snippets', position: 'left'},
         // {to: 'blog', label: 'Blog', position: 'left'},
-        {
-          to: 'docs/userguide/',
-          label: 'User Guide',
-          position: 'left',
-        },
+        // {
+        //   to: 'docs/userguide/',
+        //   label: 'User Guide',
+        //   position: 'left',
+        // },
         {
           href: 'https://github.com/Azure/azureml-examples',
           label: 'GitHub',
@@ -51,12 +51,12 @@ module.exports = {
               href: 'https://docs.microsoft.com/azure/machine-learning',
             },
             {
-              label: 'Examples (GitHub)',
+              label: 'GitHub',
               href: 'https://github.com/Azure/azureml-examples',
             },
             {
               label: 'Python SDK API',
-              href: 'https://docs.microsoft.com/en-us/python/api/overview/azure/ml/?view=azure-ml-py'
+              href: 'https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py'
             }
           ],
         },
@@ -64,7 +64,7 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'GitHub',
+              label: 'GitHub (Issues)',
               href: 'https://github.com/Azure/azureml-examples/issues',
             },
             {
@@ -74,11 +74,15 @@ module.exports = {
           ],
         },
         {
-          title: 'More',
+          title: 'More to come...',
           items: [
             {
               label: 'Blog',
               to: 'blog',
+            },
+            {
+              label: 'User Guide',
+              to: 'docs/userguide/',
             }
           ],
         },
@@ -86,8 +90,8 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Microsoft`,
     },
     algolia: {
-      apiKey: 'd4ee9b6c7a8efe0a93f6455726bf8bbe',
-      indexName: 'azureml_cheatsheet',
+      apiKey: 'b12ff2d7b13980e0983244167d1c2450',
+      indexName: 'azure',
       searchParameters: {},
       placeholder: 'Search cheat sheet'
     },
