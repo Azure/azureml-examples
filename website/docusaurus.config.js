@@ -1,6 +1,6 @@
 module.exports = {
-  title: 'Azure ML Cheat Sheet',
-  tagline: '80% of what you need in 20% of the documentation',
+  title: 'Azure Machine Learning (AML)',
+  tagline: 'this website is under development',
   url: 'https://github.com/Azure/',
   baseUrl: '/azureml-examples/',
   onBrokenLinks: 'ignore',
@@ -9,7 +9,7 @@ module.exports = {
   projectName: 'azureml-examples', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'Azure ML Cheat Sheet',
+      title: 'Azure Machine Learning (AML)',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
