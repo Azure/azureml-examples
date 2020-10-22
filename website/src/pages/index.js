@@ -8,11 +8,11 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Docs',
+    title: 'Cheat Sheet',
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        A cheat sheet for common use cases with Azure ML.
+        A cheat sheet for common use cases with AML.
         Get 80% of what you need in 20% of the documentation.
       </>
     ),
@@ -22,7 +22,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
-        These VS Code snippets will make you 100x more productive with Azure ML,
+        These VS Code snippets will make you 100x more productive with AML,
         or your money back.
       </>
     ),

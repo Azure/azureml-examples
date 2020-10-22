@@ -1,6 +1,6 @@
 module.exports = {
-  title: 'Azure ML Cheat Sheet',
-  tagline: '80% of what you need in 20% of the documentation',
+  title: 'Azure Machine Learning (AML)',
+  tagline: 'this website is under development',
   url: 'https://github.com/Azure/',
   baseUrl: '/azureml-examples/',
   onBrokenLinks: 'ignore',
@@ -9,7 +9,7 @@ module.exports = {
   projectName: 'azureml-examples', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'Azure ML Cheat Sheet',
+      title: 'Azure Machine Learning',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -29,6 +29,11 @@ module.exports = {
         {to: 'docs/vs-code-snippets/snippets', label: 'Snippets', position: 'left'},
         // {to: 'blog', label: 'Blog', position: 'left'},
         {
+          to: 'docs/userguide/',
+          label: 'User Guide',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/Azure/azureml-examples',
           label: 'GitHub',
           position: 'right',
@@ -39,18 +44,18 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Documentation',
           items: [
             {
               label: 'Microsoft Docs',
               href: 'https://docs.microsoft.com/azure/machine-learning',
             },
             {
-              label: 'Azure ML Examples (GitHub)',
+              label: 'Examples (GitHub)',
               href: 'https://github.com/Azure/azureml-examples',
             },
             {
-              label: 'AzureML Python SDK API',
+              label: 'Python SDK API',
               href: 'https://docs.microsoft.com/en-us/python/api/overview/azure/ml/?view=azure-ml-py'
             }
           ],
@@ -58,6 +63,10 @@ module.exports = {
         {
           title: 'Community',
           items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/Azure/azureml-examples/issues',
+            },
             {
               label: 'Stack Overflow',
               href: 'https://stackoverflow.microsoft.com/questions/tagged/10888',
@@ -70,11 +79,7 @@ module.exports = {
             {
               label: 'Blog',
               to: 'blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/Azure/azureml-examples/',
-            },
+            }
           ],
         },
       ],

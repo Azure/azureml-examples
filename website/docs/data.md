@@ -208,7 +208,6 @@ specified an absolute path, please make sure that the job has permission to writ
 
 Reference this data in a remote run, for example in mount-mode:
 
-
 ```python title="run.py"
 arguments=[dataset.as_mount()]
 config = ScriptRunConfig(source_directory='.', script='train.py', arguments=arguments)
