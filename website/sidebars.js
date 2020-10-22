@@ -3,31 +3,31 @@ module.exports = {
     'Menu': [
       {
         type: 'doc',
-        id: 'cheatsheet'
+        id: 'cheatsheet/cheatsheet'
       },
       {
         type: 'category',
         label: 'Getting Started',
         collapsed: false,
-        items: ['installation'],
+        items: ['cheatsheet/installation'],
       },
       {
         type: 'category',
         label: 'Basic Assets',
         collapsed: false,
-        items: ['workspace', 'compute-targets', 'environment', 'data'],
+        items: ['cheatsheet/workspace', 'cheatsheet/compute-targets', 'cheatsheet/environment', 'cheatsheet/data'],
       },
       {
         type: 'category',
         label: 'Submitting Code',
         collapsed: false,
-        items: ['run', 'script-run-config', 'logging'],
+        items: ['cheatsheet/run', 'cheatsheet/script-run-config', 'cheatsheet/logging'],
       },
       {
         type: 'category',
         label: 'Advanced Guides',
         collapsed: false,
-        items: ['distributed-training', 'docker-build']
+        items: ['cheatsheet/distributed-training', 'cheatsheet/docker-build']
       }
     ],
   },
