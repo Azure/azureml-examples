@@ -3,9 +3,13 @@ on:
   push: 
     branches:
       - main
+    paths:
+      - "notebooks/*"
   pull_request:
     branches:
       - main
+    paths:
+      - "notebooks/*"
   schedule:
       - cron: "0 9 * * *"
 jobs:

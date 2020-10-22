@@ -86,9 +86,13 @@ on:
   push: 
     branches:
       - main
+    paths:
+      - "notebooks/*"
   pull_request:
     branches:
       - main
+    paths:
+      - "notebooks/*"
   schedule:
       - cron: "0 9 * * *"
 jobs:
@@ -158,9 +162,13 @@ on:
   push: 
     branches:
       - main
+    paths:
+      - "code/azureml/*"
   pull_request:
     branches:
       - main
+    paths:
+      - "code/azureml/*"
   schedule:
       - cron: "0 9 * * *"
 jobs:
