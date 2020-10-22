@@ -1,13 +1,7 @@
 name: run-tutorial-um
 on:
-  push: 
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   schedule:
-    - cron: "0 9 * * *"
+    - cron: "0 0/1 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
