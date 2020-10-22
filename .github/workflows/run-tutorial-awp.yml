@@ -2,6 +2,11 @@ name: run-tutorial-awp
 on:
   schedule:
     - cron: "0 0/2 * * *"
+  pull_request:
+      branches:
+        - main
+      paths:
+        - tutorials/automl-with-pycaret/*
 jobs:
   build:
     runs-on: ubuntu-latest 

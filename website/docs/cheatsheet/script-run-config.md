@@ -153,23 +153,3 @@ config = ScriptRunConfig(
 ```
 
 This mounts the dataset to the run where it can be referenced by `script.py`.
-
-### via RunConfiguration
-
-Pass a dataset to your ScriptRunConfig without using command-line arguments.
-
-```py
-# create dataset
-datastore = ws.get_default_datastore()
-dataset = Dataset.File.from_files(path=(datastore, '<path/on/datastore>'))
-
-config = ScriptRunConfig(
-    source_directory='.',
-    script='script.py',
-)
-
-config.run_config.data['<name>'] = dataset.as_mount('<path_on_compute>')
-```
-
-This mounts the dataset to the run at the specified `'<path_on_compute>'` where
-it can be referenced by `script.py`.
