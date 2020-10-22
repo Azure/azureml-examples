@@ -14,7 +14,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Guidelines
 
-PRs to this repo are subject to review by the Azure ML team.
+PRs to this repo are subject to review by the Azure Machine Learning team.
 
 ### Rules
 
@@ -29,7 +29,7 @@ PRs to this repo are subject to review by the Azure ML team.
 
 To ensure all checks are passed:
 
-* run `python readme.py` from the root of the repo to generate the README.md, `run-examples` workflow file, and run formatting
+* run `python readme.py` from the root of the repo to generate the README.md, `run-examples` and `run-notebooks` workflow files, and code formatting
 
 ### Organization
 
@@ -48,6 +48,7 @@ Naming conventions are still in flux. Currently:
 
 ### Testing
 
-* `run-examples` runs on every push and PR to `main` and runs all examples under `notebooks/`
+* `run-examples` runs on every push and PR to `main` and runs all examples under `code/azureml/`
+* `run-notebooks` runs on every push and PR to `main` and runs all examples under `notebooks/`
 * `tutorials` must be tested at least daily
 * `cleanup` runs daily and cleans up AML resources for the testing workspace
