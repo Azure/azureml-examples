@@ -87,12 +87,12 @@ on:
     branches:
       - main
     paths:
-      - "notebooks/*"
+      - "notebooks/**"
   pull_request:
     branches:
       - main
     paths:
-      - "notebooks/*"
+      - "notebooks/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
@@ -163,12 +163,12 @@ on:
     branches:
       - main
     paths:
-      - "code/azureml/*"
+      - "code/azureml/**"
   pull_request:
     branches:
       - main
     paths:
-      - "code/azureml/*"
+      - "code/azureml/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
