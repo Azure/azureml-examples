@@ -1,8 +1,8 @@
 {
-    "image": "python:3.8",
     "extensions": [
-        "microsoft/vscode-python",
-        "microsoft/vscode-tools-for-ai"
+        "microsoft.vscode-python",
+        "microsoft.vscode-tools-for-ai",
+        "vscodevim.vim"
     ],
-    "postCreateCommand": ["pip install --upgrade -r requirements.txt"]
+    "postCreateCommand": ["source activate ~/pythonenv3.8/bin/activate && pip install --upgrade -r requirements.txt"]
   }
