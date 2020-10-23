@@ -4,12 +4,12 @@ on:
     branches:
       - main
     paths:
-      - "code/azureml/**"
+      - "examples/**"
   pull_request:
     branches:
       - main
     paths:
-      - "code/azureml/**"
+      - "examples/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        example: ['code/azureml/deploy/pytorch-mnist-aks-cpu.py', 'code/azureml/deploy/sklearn-diabetes-aks-cpu.py', 'code/azureml/train/fastai-mnist-mlproject.py', 'code/azureml/train/fastai-mnist.py', 'code/azureml/train/fastai-pets.py', 'code/azureml/train/lightgbm-iris.py', 'code/azureml/train/pytorch-mnist-mlproject.py', 'code/azureml/train/pytorch-mnist.py', 'code/azureml/train/sklearn-diabetes-mlproject.py', 'code/azureml/train/sklearn-diabetes.py', 'code/azureml/train/tensorflow-iris.py', 'code/azureml/train/tensorflow-mnist-distributed-horovod.py', 'code/azureml/train/tensorflow-mnist-distributed.py', 'code/azureml/train/tensorflow-mnist.py', 'code/azureml/train/xgboost-iris.py']
+        example: ['examples/deploy/pytorch-mnist-aks-cpu.py', 'examples/deploy/sklearn-diabetes-aks-cpu.py', 'examples/train/fastai-mnist-mlproject.py', 'examples/train/fastai-mnist.py', 'examples/train/fastai-pets.py', 'examples/train/lightgbm-iris.py', 'examples/train/pytorch-mnist-mlproject.py', 'examples/train/pytorch-mnist.py', 'examples/train/sklearn-diabetes-mlproject.py', 'examples/train/sklearn-diabetes.py', 'examples/train/tensorflow-iris.py', 'examples/train/tensorflow-mnist-distributed-horovod.py', 'examples/train/tensorflow-mnist-distributed.py', 'examples/train/tensorflow-mnist.py', 'examples/train/xgboost-iris.py']
     steps:
     - name: check out repo
       uses: actions/checkout@v2

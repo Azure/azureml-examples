@@ -57,25 +57,25 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[code/azureml/train/fastai-mnist-mlproject.py](code/azureml/train/fastai-mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
-[code/azureml/train/fastai-mnist.py](code/azureml/train/fastai-mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
-[code/azureml/train/fastai-pets.py](code/azureml/train/fastai-pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
-[code/azureml/train/lightgbm-iris.py](code/azureml/train/lightgbm-iris.py)|AML - CPU|pip|train a lightgbm model on iris data
-[code/azureml/train/pytorch-mnist-mlproject.py](code/azureml/train/pytorch-mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
-[code/azureml/train/pytorch-mnist.py](code/azureml/train/pytorch-mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
-[code/azureml/train/sklearn-diabetes-mlproject.py](code/azureml/train/sklearn-diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
-[code/azureml/train/sklearn-diabetes.py](code/azureml/train/sklearn-diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
-[code/azureml/train/tensorflow-iris.py](code/azureml/train/tensorflow-iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
-[code/azureml/train/tensorflow-mnist-distributed-horovod.py](code/azureml/train/tensorflow-mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
-[code/azureml/train/tensorflow-mnist-distributed.py](code/azureml/train/tensorflow-mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
-[code/azureml/train/tensorflow-mnist.py](code/azureml/train/tensorflow-mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
-[code/azureml/train/xgboost-iris.py](code/azureml/train/xgboost-iris.py)|AML - CPU|pip|train xgboost model on iris data
+[examples/train/fastai-mnist-mlproject.py](examples/train/fastai-mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
+[examples/train/fastai-mnist.py](examples/train/fastai-mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
+[examples/train/fastai-pets.py](examples/train/fastai-pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
+[examples/train/lightgbm-iris.py](examples/train/lightgbm-iris.py)|AML - CPU|pip|train a lightgbm model on iris data
+[examples/train/pytorch-mnist-mlproject.py](examples/train/pytorch-mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
+[examples/train/pytorch-mnist.py](examples/train/pytorch-mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
+[examples/train/sklearn-diabetes-mlproject.py](examples/train/sklearn-diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
+[examples/train/sklearn-diabetes.py](examples/train/sklearn-diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
+[examples/train/tensorflow-iris.py](examples/train/tensorflow-iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
+[examples/train/tensorflow-mnist-distributed-horovod.py](examples/train/tensorflow-mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
+[examples/train/tensorflow-mnist-distributed.py](examples/train/tensorflow-mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
+[examples/train/tensorflow-mnist.py](examples/train/tensorflow-mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
+[examples/train/xgboost-iris.py](examples/train/xgboost-iris.py)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
 path|compute|description
 -|-|-
-[code/azureml/deploy/pytorch-mnist-aks-cpu.py](code/azureml/deploy/pytorch-mnist-aks-cpu.py)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
-[code/azureml/deploy/sklearn-diabetes-aks-cpu.py](code/azureml/deploy/sklearn-diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[examples/deploy/pytorch-mnist-aks-cpu.py](examples/deploy/pytorch-mnist-aks-cpu.py)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
+[examples/deploy/sklearn-diabetes-aks-cpu.py](examples/deploy/sklearn-diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
 
 ## Contributing
 
