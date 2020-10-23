@@ -35,5 +35,3 @@ To create or setup a workspace with the assets used in these examples, run the [
 > Run `python setup.py -h` to see other optional arguments.
 
 ## Samples
-
-End to end tutorials can be found in the [tutorials directory](tutorials). Example notebooks are located in the [notebooks directory](notebooks). Code examples for training, deployment, scoring, and more can be found in the [azureml code directory](code/azureml).
