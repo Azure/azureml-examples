@@ -23,7 +23,7 @@ PRs to this repo are subject to review by the Azure Machine Learning team.
 * no azureml-* in training code
 * examples (including notebooks) can be re-run without failing in less than 10 minutes
 * tutorials must be re-run without failing at least daily
-* `pip install --upgrade -r requirements` remains <60s
+* `pip install --upgrade -r requirements.txt` remains <60s
 
 ### Checks
 
