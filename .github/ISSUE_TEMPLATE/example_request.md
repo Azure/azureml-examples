@@ -6,8 +6,11 @@ labels: 'example request'
 assignees: ''
 
 ---
-**What example?**
-What would you like to see in an example? 
+## What example? Describe it
 
-**Additional context**
-Add any other context here.
+example:
+description:
+
+## Additional context
+
+-
