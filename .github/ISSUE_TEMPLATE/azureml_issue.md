@@ -15,7 +15,7 @@ description:
 ```python
 from azureml.core import Workspace
 
-ws = Workspace.from_config
+ws = Workspace.from_config()
 ```
 
 ## Additional context
