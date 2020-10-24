@@ -33,22 +33,22 @@ To ensure all checks are passed:
 
 ### Organization
 
-* `examples` is for general examples using AML
-* `notebooks` is for general example notebooks using AML
+* `examples` is for general examples using AML and should run `code` examples
+* `notebooks` is for general example notebooks using AML and should be interactive
 * `tutorials` is for end to end tutorials using AML
 
 ### Naming conventions
 
 Naming conventions are still in flux. Currently:
 
-* under `examples`, naming should be logical
-* under `notebooks`, the naming convention *scenario-framework-etc-compute* , where *scenario* is one of ["train", "deploy", "score", "dprep"]
+* naming should be logical
+* under `notebooks` use the naming convention *scenario-framework-etc-compute* , where *scenario* is one of ["train", "deploy", "score", "dprep"]
 * directories under `tutorials` should be words separated by hyphens
-* workflows for tutorials use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
+* tutorial workflows use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
 ### Testing
 
-* `run-examples` runs on every push and PR to `main` and runs all examples under `examples/`
-* `run-notebooks` runs on every push and PR to `main` and runs all examples under `notebooks/`
-* `tutorials` must be tested at least daily
+* `run-examples` runs on every push and PR to `main` (with changes to examples) and runs all examples under `examples/`
+* `run-notebooks` runs on every push and PR to `main` (with changes to notebooks) and runs all examples under `notebooks/`
+* a tutorial must be tested at least daily and on PR to `main` (with changes to the tutorial)
 * `cleanup` runs daily and cleans up AML resources for the testing workspace
