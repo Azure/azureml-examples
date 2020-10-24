@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "fastai", "mnist-resnet18")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "fastai-example.yml")
+environment_file = prefix.joinpath("environments", "fastai.yml")
 
 # azure ml settings
 environment_name = "fastai-mnist-example"

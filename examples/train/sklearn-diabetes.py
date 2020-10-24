@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "sklearn", "diabetes-ridge")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "sklearn-example.yml")
+environment_file = prefix.joinpath("environments", "sklearn.yml")
 
 # azure ml settings
 environment_name = "sklearn-diabetes-example"

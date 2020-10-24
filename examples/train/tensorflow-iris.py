@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "tensorflow", "iris-nn")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "tfv2-example.yml")
+environment_file = prefix.joinpath("environments", "tf-cpu.yml")
 
 # azure ml settings
 environment_name = "tf-iris-example"
