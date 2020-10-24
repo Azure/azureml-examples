@@ -6,8 +6,18 @@ labels: 'azureml request'
 assignees: ''
 
 ---
-**What feature?**
-What feature would you like to see added to Azure ML? 
+## Describe the request
 
-**Additional context**
-Add any other context here.
+description: 
+
+## Minimal example
+
+```python
+from azureml.core import Workspace
+
+ws = Workspace.from_config
+```
+
+## Additional context
+
+-
