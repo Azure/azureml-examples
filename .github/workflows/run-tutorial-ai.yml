@@ -1,4 +1,4 @@
-name: run-tutorial-gst
+name: run-tutorial-ai
 on:
   schedule:
     - cron: "0 0/1 * * *"
@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/getting-started-train/**
+      - tutorials/an-introduction/**
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -32,8 +32,8 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.hello-world.ipynb
-      run: papermill tutorials/getting-started-train/1.hello-world.ipynb - -k python
+      run: papermill tutorials/an-introduction/1.hello-world.ipynb - -k python
     - name: run 2.train-model.ipynb
-      run: papermill tutorials/getting-started-train/2.pytorch-model.ipynb - -k python
+      run: papermill tutorials/an-introduction/2.pytorch-model.ipynb - -k python
     - name: run 3.train-model-cloud-data.ipynb
-      run: papermill tutorials/getting-started-train/3.pytorch-model-cloud-data.ipynb - -k python
+      run: papermill tutorials/an-introduction/3.pytorch-model-cloud-data.ipynb - -k python

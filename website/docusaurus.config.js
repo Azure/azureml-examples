@@ -74,7 +74,7 @@ module.exports = {
           ],
         },
         {
-          title: 'More to come...',
+          title: 'Coming soon...',
           items: [
             {
               label: 'Blog',
