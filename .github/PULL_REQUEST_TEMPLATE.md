@@ -2,8 +2,10 @@
 
 ## Checklist
 
-- [ ] I have read and understand the contributing guidelines
-- [ ] ran `readme.py` script after making changes (per contributing guidelines)
+I have:
+
+- [ ] read and followed the contributing guidelines
+- [ ] ran `python readme.py` after making changes (per contributing guidelines)
 - [ ] added required testing (per contributing guidelines)
 
 ## Changes
