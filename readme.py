@@ -164,11 +164,13 @@ on:
       - main
     paths:
       - "examples/**"
+      - "code/**"
   pull_request:
     branches:
       - main
     paths:
       - "examples/**"
+      - "code/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
