@@ -29,7 +29,7 @@ PRs to this repo are subject to review by the Azure Machine Learning team.
 
 To ensure all checks are passed:
 
-* run `python readme.py` from the root of the repo to generate the README.md, `run-examples` and `run-notebooks` workflow files, and code formatting
+* run `python readme.py` from the root of the repo to generate the README.md, `run-examples` and `run-notebooks` workflow files, and and code/notebook formatting
 
 ### Organization
 
