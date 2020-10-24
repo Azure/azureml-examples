@@ -41,9 +41,9 @@ To ensure all checks are passed:
 
 Naming conventions are still in flux. Currently:
 
-* naming should be logical
+* naming must be logical
 * under `notebooks` use the naming convention *scenario-framework-etc-compute* , where *scenario* is one of ["train", "deploy", "score", "dprep"]
-* directories under `tutorials` should be words separated by hyphens
+* directories under `tutorials` must be words separated by hyphens
 * tutorial workflows use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
 ### Testing
