@@ -1,4 +1,4 @@
-name: run-tutorial-gst
+name: run-tutorial-ai
 on:
   schedule:
     - cron: "0 0/1 * * *"
