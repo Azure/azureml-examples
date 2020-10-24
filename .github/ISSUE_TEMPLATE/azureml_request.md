@@ -4,11 +4,11 @@ about: Request an Azure ML feature
 title: ''
 labels: 'azureml request'
 assignees: ''
-
 ---
+
 ## Describe the request
 
-description: 
+description:
 
 ## Minimal example
 
