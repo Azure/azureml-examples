@@ -88,11 +88,13 @@ on:
       - main
     paths:
       - "notebooks/**"
+      - "code/**"
   pull_request:
     branches:
       - main
     paths:
       - "notebooks/**"
+      - "code/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
@@ -164,11 +166,13 @@ on:
       - main
     paths:
       - "examples/**"
+      - "code/**"
   pull_request:
     branches:
       - main
     paths:
       - "examples/**"
+      - "code/**"
   schedule:
       - cron: "0 9 * * *"
 jobs:
