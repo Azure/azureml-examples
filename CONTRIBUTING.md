@@ -14,7 +14,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Guidelines
 
-PRs to this repo are subject to review by the Azure Machine Learning team.
+Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning (AML) team to merge.
 
 ### Rules
 
@@ -27,11 +27,16 @@ PRs to this repo are subject to review by the Azure Machine Learning team.
 
 ### Checks
 
-To ensure all checks are passed:
+Before submitting a PR:
 
-* run `python readme.py` from the root of the repo to generate the README.md, `run-examples` and `run-notebooks` workflow files, and run code/notebook formatting
+* run `python readme.py` from the root of the repo
+* this will generate the `README.md` file
+* this will generate the `run-examples` and `run-notebooks` workflow files
+* this will format Python code and notebooks
 
 ### Organization
+
+PRs to add new examples should consider which type of example to add:
 
 * `examples` is for general examples using AML and should run `code` examples
 * `notebooks` is for general example notebooks using AML and should be interactive
@@ -39,7 +44,7 @@ To ensure all checks are passed:
 
 ### Naming conventions
 
-Naming conventions are still in flux. Currently:
+PRs must follow the following naming conventions:
 
 * naming must be logical
 * under `notebooks` use the naming convention *scenario-framework-etc-compute* , where *scenario* is one of ["train", "deploy", "score", "dprep"]
@@ -47,6 +52,8 @@ Naming conventions are still in flux. Currently:
 * tutorial workflows use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
 ### Testing
+
+PRs must include necessary changes to any testing to ensure:
 
 * `run-examples` runs on every push and PR to `main` (with changes to examples) and runs all examples under `examples/`
 * `run-notebooks` runs on every push and PR to `main` (with changes to notebooks) and runs all examples under `notebooks/`
