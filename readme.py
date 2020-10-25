@@ -264,7 +264,8 @@ with open("README.md", "w") as f:
     )
 
 # glob all notebooks
-notebooks = sorted(glob.glob("**/**.ipynb"))
+notebooks = sorted(glob.glob("**/**/*.ipynb"))
+print(notebooks)
 
 # process all notebooks and rewrite
 for nb in notebooks:
@@ -278,7 +279,7 @@ for nb in notebooks:
 
     # write notebook
     with open(nb, "w") as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, indent=1)
 
 
 # run code formatter on .py files
