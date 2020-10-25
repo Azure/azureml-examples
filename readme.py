@@ -265,7 +265,6 @@ with open("README.md", "w") as f:
 
 # glob all notebooks
 notebooks = sorted(glob.glob("**/**/*.ipynb"))
-print(notebooks)
 
 # process all notebooks and rewrite
 for nb in notebooks:
