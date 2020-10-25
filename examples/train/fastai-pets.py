@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "fastai", "pets-resnet34")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "fastai-example.dockerfile")
+environment_file = prefix.joinpath("environments", "fastai.dockerfile")
 
 # azure ml settings
 environment_name = "fastai-pets-example"

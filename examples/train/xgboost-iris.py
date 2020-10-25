@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "xgboost", "iris")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "xgboost-example.txt")
+environment_file = prefix.joinpath("environments", "xgboost.txt")
 
 # azure ml settings
 environment_name = "xgboost-iris-example"

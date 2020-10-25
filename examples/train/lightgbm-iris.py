@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "lightgbm", "iris")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "lightgbm-example.txt")
+environment_file = prefix.joinpath("environments", "lightgbm.txt")
 
 # azure ml settings
 environment_name = "lightgbm-iris-example"

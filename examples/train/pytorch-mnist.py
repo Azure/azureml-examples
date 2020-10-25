@@ -18,7 +18,7 @@ script_dir = prefix.joinpath("code", "models", "pytorch", "mnist-cnn")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "pytorch-example.yml")
+environment_file = prefix.joinpath("environments", "pytorch.yml")
 
 # azure ml settings
 environment_name = "pytorch-mnist-example"
