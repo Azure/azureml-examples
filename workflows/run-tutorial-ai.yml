@@ -33,7 +33,7 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.hello-world.ipynb
       run: papermill tutorials/an-introduction/1.hello-world.ipynb - -k python
-    - name: run 2.train-model.ipynb
+    - name: run 2.pytorch-model.ipynb
       run: papermill tutorials/an-introduction/2.pytorch-model.ipynb - -k python
-    - name: run 3.train-model-cloud-data.ipynb
+    - name: run 3.pytorch-model-cloud-data.ipynb
       run: papermill tutorials/an-introduction/3.pytorch-model-cloud-data.ipynb - -k python
