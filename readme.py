@@ -263,6 +263,9 @@ with open("README.md", "w") as f:
         prefix + tutorial_table + notebook_table + train_table + deploy_table + suffix
     )
 
+# glob all notebooks
+notebooks = sorted(glob.glob("**/**.ipynb"))
+
 # process all notebooks and rewrite
 for nb in notebooks:
 
