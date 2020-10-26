@@ -94,7 +94,7 @@ on:
     paths:
       - "notebooks/**"
   schedule:
-      - cron: "0 9 * * *"
+      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -172,7 +172,7 @@ on:
       - "examples/**"
       - "code/**"
   schedule:
-      - cron: "0 9 * * *"
+      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
