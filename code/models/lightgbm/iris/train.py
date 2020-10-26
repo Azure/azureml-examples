@@ -6,7 +6,6 @@ from sklearn.metrics import accuracy_score, log_loss
 import lightgbm as lgb
 
 import mlflow
-import mlflow.lightgbm
 
 
 def parse_args():

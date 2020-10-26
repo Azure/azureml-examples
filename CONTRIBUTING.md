@@ -14,34 +14,48 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Guidelines
 
-PRs to this repo are subject to review by the Azure ML team.
+Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning (AML) team to merge.
 
 ### Rules
 
 * minimal prose
 * minimalist code
-* no azureml-* code in training scripts
-* notebooks can be re-run without failing in less than 10 minutes
-* if adding new requirements, pip install time must remain <60s
+* no azureml-* in training code
+* examples (including notebooks) can be re-run without failing in less than 10 minutes
+* tutorials must be re-run without failing at least daily
+* `pip install --upgrade -r requirements.txt` remains <60s
 
 ### Checks
 
-To ensure all checks are passed:
+Before submitting a PR:
 
-* run `python readme.py` from the root of the repo to generate the README.md, workflow files, and run formatting
+* run `python readme.py` from the root of the repo
+* this will generate the `README.md` file
+* this will generate the `run-examples` and `run-notebooks` workflow files
+* this will format Python code and notebooks
 
 ### Organization
 
-* `notebooks` is for general example notebooks using AML
+PRs to add new examples should consider which type of example to add:
+
+* `examples` is for general examples using AML and should run `code` examples
+* `notebooks` is for general example notebooks using AML and should be interactive
 * `tutorials` is for end to end tutorials using AML
-* `concepts` is for API example notebooks of core AML concepts
 
 ### Naming conventions
 
-Naming conventions are still under consideration. For notebooks under `notebooks`, the notebook filename must start with "train" or "deploy". Directories under `tutorials` should be two words separated by a hyphen. Workflows for tutorials should follow the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the two words.
+PRs must follow the following naming conventions:
+
+* naming must be logical
+* under `notebooks` use the naming convention *scenario-framework-etc-compute* , where *scenario* is one of ["train", "deploy", "score", "dprep"]
+* directories under `tutorials` must be words separated by hyphens
+* tutorial workflows use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
 ### Testing
 
-* `run-notebooks` runs on every push and PR to `main` and runs all notebooks under `notebooks` and `concepts`
-* `tutorials` must be tested at least daily, and the workflow file is manually generated
+PRs must include necessary changes to any testing to ensure:
+
+* `run-examples` runs on every push and PR to `main` (with changes to examples) and runs all examples under `examples/`
+* `run-notebooks` runs on every push and PR to `main` (with changes to notebooks) and runs all examples under `notebooks/`
+* a tutorial must be tested at least daily and on PR to `main` (with changes to the tutorial)
 * `cleanup` runs daily and cleans up AML resources for the testing workspace
