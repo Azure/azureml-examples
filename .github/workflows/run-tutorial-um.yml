@@ -1,13 +1,12 @@
 name: run-tutorial-um
 on:
-  push: 
-    branches:
-      - main
+  schedule:
+    - cron: "0 0/1 * * *"
   pull_request:
     branches:
       - main
-  schedule:
-    - cron: "0 9 * * *"
+    paths:
+      - tutorials/using-mlflow/**
 jobs:
   build:
     runs-on: ubuntu-latest 

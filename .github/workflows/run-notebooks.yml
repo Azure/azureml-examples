@@ -3,11 +3,15 @@ on:
   push: 
     branches:
       - main
+    paths:
+      - "notebooks/**"
   pull_request:
     branches:
       - main
+    paths:
+      - "notebooks/**"
   schedule:
-      - cron: "0 9 * * *"
+      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 

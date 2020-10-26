@@ -7,6 +7,10 @@ pythonenv*
 *mlruns*
 *portforward_out_log.txt*
 *.vscode
+*catboost_info*
+*.pkl
+*.mag
+*.ckpt*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

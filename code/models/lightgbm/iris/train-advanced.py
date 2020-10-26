@@ -52,60 +52,57 @@ def evaluate_model(model, X_test, y_test):
     return loss, acc
 
 
-# start mlflow run
-with mlflow.start_run():
+print("*" * 60)
+print("\n\n")
 
-    print("*" * 60)
-    print("\n\n")
+# enable auto logging
+mlflow.lightgbm.autolog()
 
-    # enable auto logging
-    mlflow.lightgbm.autolog()
+# arg parser
+parser = argparse.ArgumentParser()
+parser.add_argument("--data-dir", type=str)
+parser.add_argument("--num-boost-round", type=int, default=10)
+parser.add_argument("--boosting", type=str, default="gbdt")
+parser.add_argument("--num-iterations", type=int, default=16)
+parser.add_argument("--num-leaves", type=int, default=31)
+parser.add_argument("--num-threads", type=int, default=0)
+parser.add_argument("--learning-rate", type=float, default=0.1)
+parser.add_argument("--metric", type=str, default="multi_logloss")
+parser.add_argument("--seed", type=int, default=42)
+parser.add_argument("--verbose", type=int, default=0)
+args = parser.parse_args()
 
-    # arg parser
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir", type=str)
-    parser.add_argument("--num-boost-round", type=int, default=10)
-    parser.add_argument("--boosting", type=str, default="gbdt")
-    parser.add_argument("--num-iterations", type=int, default=16)
-    parser.add_argument("--num-leaves", type=int, default=31)
-    parser.add_argument("--num-threads", type=int, default=0)
-    parser.add_argument("--learning-rate", type=float, default=0.1)
-    parser.add_argument("--metric", type=str, default="multi_logloss")
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--verbose", type=int, default=0)
-    args = parser.parse_args()
+# setup parameters
+num_boost_round = args.num_boost_round
 
-    # setup parameters
-    num_boost_round = args.num_boost_round
+params = {
+    "objective": "multiclass",
+    "num_class": 3,
+    "boosting": args.boosting,
+    "num_iterations": args.num_iterations,
+    "num_leaves": args.num_leaves,
+    "num_threads": args.num_threads,
+    "learning_rate": args.learning_rate,
+    "metric": args.metric,
+    "seed": args.seed,
+    "verbose": args.verbose,
+}
 
-    params = {
-        "objective": "multiclass",
-        "num_class": 3,
-        "boosting": args.boosting,
-        "num_iterations": args.num_iterations,
-        "num_leaves": args.num_leaves,
-        "num_threads": args.num_threads,
-        "learning_rate": args.learning_rate,
-        "metric": args.metric,
-        "seed": args.seed,
-        "verbose": args.verbose,
-    }
+# read in data
+df = pd.read_csv(args.data_dir)
 
-    # read in data
-    df = pd.read_csv(args.data_dir)
+# preprocess data
+X_train, X_test, y_train, y_test, enc = preprocess_data(df)
 
-    # preprocess data
-    X_train, X_test, y_train, y_test, enc = preprocess_data(df)
+# train model
+model, train_time = train_model(
+    params, num_boost_round, X_train, X_test, y_train, y_test
+)
+mlflow.log_metric("training_time", train_time)
 
-    # train model
-    model, train_time = train_model(
-        params, num_boost_round, X_train, X_test, y_train, y_test
-    )
-    mlflow.log_metric("training_time", train_time)
+# evaluate model
+loss, acc = evaluate_model(model, X_test, y_test)
+mlflow.log_metrics({"loss": loss, "accuracy": acc})
 
-    # evaluate model
-    loss, acc = evaluate_model(model, X_test, y_test)
-    mlflow.log_metrics({"loss": loss, "accuracy": acc})
-
-    print("\n\n")
-    print("*" * 60)
+print("\n\n")
+print("*" * 60)
