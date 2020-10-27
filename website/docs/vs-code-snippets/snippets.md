@@ -11,6 +11,148 @@ To add these snippets to your VS Code: `ctrl+shift+p` > Type "Configure user
 snippets" > Select `python.json`. All of these snippets are available here:
 [python.json](https://github.com/aminsaied/AzureML-CheatSheet/blob/master/snippets.json)
 
+## TODO
+
+- Organize snippets / group by concepts
+- Questions:
+    - Imports all in one block vs imports included with specific actions
+    - Include explanatory comments e.g. links to relevant docs?
+
+### Reorganize
+
+- Imports
+    - Basic imports
+        ```python
+        from azureml.core import Workspace              # connect to workspace
+        from azureml.core import Experiment             # connect/create experiments
+        from azureml.core import ComputeTarget          # connect to compute
+        from azureml.core import Environment            # manage e.g. Python environments
+        from azureml.core import Datastore, Dataset     # work with data
+        ```
+    - ScriptRunConfig
+        ```python
+        from azureml.core import ScriptRunConfig
+        ```
+    - Pipeline?
+    - HyperDrive?
+    - ...
+- Basic setup:
+    - `get-workspace` :
+        ```python
+        from azureml.core import Workspace
+        ws = Workspace.from_config()        # read workspace details from config.json
+        ```
+    - `get-compute` :
+        ```python
+        from azureml.core import ComputeTarget
+        target = ComputeTarget(ws, '<compute_target_name>')
+        ```
+    - `get-environment`:
+        ```python
+        from azureml.core import Environment
+        ${2:env} = Environment('${1}')
+        ```
+- Create assets:
+    - `create-workspace` :
+        ```python
+        from azureml.core import Workspace
+
+        ws = Workspace.create(name='<my_workspace_name>', # provide a name for your workspace
+                            subscription_id='<azure-subscription-id>', # provide your subscription      ID
+                            resource_group='<myresourcegroup>', # provide a resource group name
+                            create_resource_group=True,
+                            location='<NAME_OF_REGION>') # e.g. 'westeurope' or 'eastus2' or    'westus2' or 'southeastasia'.
+
+        # write out the workspace details to a configuration file: .azureml/config.json
+        ws.write_config(path='.azureml')
+        ```
+    - `create-compute` :
+        ```python
+        from azureml.core.compute import ComputeTarget, AmlCompute
+
+        compute_config = AmlCompute.provisioning_configuration(
+            vm_size='{$1:STANDARD_D2_V2}',
+            max_nodes=${2:0},
+            max_nodes=${3:4},
+            idle_seconds_before_scaledown=${4:2400},)
+        target = ComputeTarget.create(${5:ws}, '${6:my-compute}', compute_config)
+        target.wait_for_completion(show_output=True)
+        ```
+    - `create-compute-with-ssh` :
+        ```python
+        from azureml.core.compute import AmlCompute
+        from azureml.core.compute_target import ComputeTargetException
+        
+        ssh_public_key = '$1'
+        compute_config = AmlCompute.provisioning_configuration(
+            vm_size='${2:STANDARD_D2_V2}',
+            max_nodes=${3:0},
+            max_nodes=${4:4},
+            admin_username='$5',
+            admin_user_ssh_key=ssh_public_key,
+            vm_priority='${6|lowpriority,dedicated|}',
+            remote_login_port_public_access='Enabled',)
+        
+        cluster$0 = ComputeTarget.create(workspace=$7, name='$8', compute_config)
+        ```
+    - `create-pip`, `create-environment-pip`
+        ```python
+        from azureml.core import Environment
+        # from existing local conda environment
+        env = Environment.from_pip_requirements(
+            name='$1',
+            file_path='${2:requirements.txt}',
+        )
+
+        $0
+        ```
+    - `create-conda`, `create-environment-conda`
+        ```python
+        from azureml.core import Environment
+        # from existing local conda environment
+        env = Environment.from_conda_specification(
+            name='$1',
+            file_path='${2:env.yml}',
+        )
+
+        $0
+        ```
+    - `create-conda-exist`, `create-environment-conda-exist`
+        ```python
+        from azureml.core import Environment
+        # from existing local conda environment
+        env = Environment.from_existing_conda_environment(
+            name='${2:aml-env}',
+            conda_environment_name='${1:conda-env}',
+        )
+
+        $0
+        ```
+- Run code:
+    - `script-run-config`, `src`
+    ```python
+    from azureml.core import Workspace, Experiment, ScriptRunConfig
+
+    # get workspace
+    ws = Workspace.from_config()
+
+    # get/create experiment
+    exp = Experiment(ws, '$1')
+
+    # set up script run configuration
+    config = ScriptRunConfig(
+        source_directory='.',
+        script='$2.py',
+        #arguments=['--meaning', 42],
+    )
+
+    # submit script to AML
+    run = exp.submit(config)
+    print(run.get_portal_url()) # link to ml.azure.com
+    $0
+    ```
+
+
 ### Basic core imports
 Import essential packages
 

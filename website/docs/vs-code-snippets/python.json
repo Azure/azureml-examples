@@ -1,0 +1,44 @@
+{
+    "Basic core imports": {
+        "prefix": ["imports", "basic-imports"],
+        "body": [
+            "from azureml.core import Workspace              # connect to workspace",
+            "from azureml.core import Experiment             # connect/create experiments",
+            "from azureml.core import ComputeTarget          # connect to compute",
+            "from azureml.core import Environment            # manage e.g. Python environments",
+            "from azureml.core import Datastore, Dataset     # work with data",
+            "$0"
+        ],
+        "description": "Import essential packages"
+    },
+
+    "Get Workspace": {
+        "prefix": ["get-workspace", "get-ws"],
+        "body": [
+            "from azureml.core import Workspace",
+            "ws = Workspace.from_config()",
+            "$0"
+        ],
+        "description": "Get Azure ML Workspace"
+    },
+
+    "Get Compute": {
+        "prefix": ["get-compute"],
+        "body": [
+            "from azureml.core import ComputeTarget",
+            "target = ComputeTarget(${2:ws}, '${1:<compute_target_name>}')",
+            "$0"
+        ],
+        "description": "Get Azure ML Compute Target"
+    },
+
+    "Get Environment": {
+        "prefix": ["get-environment"],
+        "body": [
+            "from azureml.core import Environment",
+            "${2:env} = Environment('${1:<env-name>}')",
+            "$0"
+        ],
+        "description": "Get Azure ML Compute Target"
+    }
+}
