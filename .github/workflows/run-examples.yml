@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        example: ['examples/deploy/pytorch-mnist-aks-cpu.py', 'examples/deploy/sklearn-diabetes-aks-cpu.py', 'examples/train/fastai-mnist-mlproject.py', 'examples/train/fastai-mnist.py', 'examples/train/fastai-pets.py', 'examples/train/lightgbm-iris.py', 'examples/train/pytorch-mnist-mlproject.py', 'examples/train/pytorch-mnist.py', 'examples/train/sklearn-diabetes-mlproject.py', 'examples/train/sklearn-diabetes.py', 'examples/train/tensorflow-iris.py', 'examples/train/tensorflow-mnist-distributed-horovod.py', 'examples/train/tensorflow-mnist-distributed.py', 'examples/train/tensorflow-mnist.py', 'examples/train/xgboost-iris.py']
+        example: ['examples/deploy/pytorch-mnist-aks-cpu.py', 'examples/deploy/sklearn-diabetes-aks-cpu.py', 'examples/train/deepspeed-cifar.py', 'examples/train/fastai-mnist-mlproject.py', 'examples/train/fastai-mnist.py', 'examples/train/fastai-pets.py', 'examples/train/lightgbm-iris.py', 'examples/train/pytorch-mnist-mlproject.py', 'examples/train/pytorch-mnist.py', 'examples/train/sklearn-diabetes-mlproject.py', 'examples/train/sklearn-diabetes.py', 'examples/train/tensorflow-iris.py', 'examples/train/tensorflow-mnist-distributed-horovod.py', 'examples/train/tensorflow-mnist-distributed.py', 'examples/train/tensorflow-mnist.py', 'examples/train/xgboost-iris.py']
     steps:
     - name: check out repo
       uses: actions/checkout@v2

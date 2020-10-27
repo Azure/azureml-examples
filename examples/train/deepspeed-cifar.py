@@ -1,6 +1,6 @@
 # description: Distributed PyTorch with DeepSpeed
 #
-# In this example, we train a PyTorch model on the CIFAR-10 dataset using distributed training via 
+# In this example, we train a PyTorch model on the CIFAR-10 dataset using distributed training via
 # DeepSpeed (https://github.com/microsoft/DeepSpeed) across a GPU cluster.
 #
 
@@ -27,20 +27,25 @@ experiment_name = "deepspeed-cifar"
 compute_target = "test-v100"
 
 # script arguments
-arguments = ['--deepspeed',
-        '--deepspeed_config', 'ds_config.json',
-        '--deepspeed_mpi',
-        '--global_rank', '$AZ_BATCHAI_TASK_INDEX',
-        '--with_aml_log', True]
+arguments = [
+    "--deepspeed",
+    "--deepspeed_config",
+    "ds_config.json",
+    "--deepspeed_mpi",
+    "--global_rank",
+    "$AZ_BATCHAI_TASK_INDEX",
+    "--with_aml_log",
+    True,
+]
 
 # create an environment
-# Note: We will use the Dockerfile method to create an environment for DeepSpeed. 
+# Note: We will use the Dockerfile method to create an environment for DeepSpeed.
 # In future, we plan to create a Curated environment for DeepSpeed.
 env = Environment(name="deepspeed")
 env.docker.enabled = True
 
 # indicate how to run Python
-env.python.user_managed_dependencies=True
+env.python.user_managed_dependencies = True
 env.python.interpreter_path = "/opt/miniconda/bin/python"
 
 # To install any Python packages you need, simply add RUN pip install package-name to the docker string. E.g. `RUN pip install sklearn`
@@ -69,7 +74,7 @@ src = ScriptRunConfig(
     arguments=arguments,
     environment=env,
     compute_target=compute_target,
-    distributed_job_config=mpi_config
+    distributed_job_config=mpi_config,
 )
 
 # submit job

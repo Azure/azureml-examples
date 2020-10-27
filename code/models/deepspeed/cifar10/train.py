@@ -4,45 +4,49 @@ import torchvision.transforms as transforms
 import argparse
 import deepspeed
 
+
 def add_argument():
 
-    parser = argparse.ArgumentParser(description='CIFAR')
+    parser = argparse.ArgumentParser(description="CIFAR")
 
-    #data
+    # data
     # cuda
-    parser.add_argument('--with_cuda',
-                        default=False,
-                        action='store_true',
-                        help='use CPU in case there\'s no GPU support')
-    parser.add_argument('--use_ema',
-                        default=False,
-                        action='store_true',
-                        help='whether use exponential moving average')
+    parser.add_argument(
+        "--with_cuda",
+        default=False,
+        action="store_true",
+        help="use CPU in case there's no GPU support",
+    )
+    parser.add_argument(
+        "--use_ema",
+        default=False,
+        action="store_true",
+        help="whether use exponential moving average",
+    )
 
     # train
-    parser.add_argument('-b',
-                        '--batch_size',
-                        default=32,
-                        type=int,
-                        help='mini-batch size (default: 32)')
-    parser.add_argument('-e',
-                        '--epochs',
-                        default=30,
-                        type=int,
-                        help='number of total epochs (default: 30)')
+    parser.add_argument(
+        "-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)"
+    )
+    parser.add_argument(
+        "-e",
+        "--epochs",
+        default=30,
+        type=int,
+        help="number of total epochs (default: 30)",
+    )
 
     # distributed training
-    parser.add_argument('--local_rank',
-                        type=int,
-                        default=-1,
-                        help='local rank passed from distributed launcher')
-    parser.add_argument('--global_rank', 
-                        default=-1, 
-                        type=int,
-                        help='global rank')
-    parser.add_argument('--with_aml_log', 
-                        default=False,
-                        help='Use Azure ML metric logging')
+    parser.add_argument(
+        "--local_rank",
+        type=int,
+        default=-1,
+        help="local rank passed from distributed launcher",
+    )
+    parser.add_argument("--global_rank", default=-1, type=int, help="global rank")
+    parser.add_argument(
+        "--with_aml_log", default=False, help="Use Azure ML metric logging"
+    )
 
     # Include DeepSpeed configuration arguments
     parser = deepspeed.add_config_arguments(parser)
@@ -50,6 +54,7 @@ def add_argument():
     args = parser.parse_args()
 
     return args
+
 
 # Need args here to set ranks for multi-node training with download=True
 args = add_argument()
@@ -64,31 +69,36 @@ if args.with_aml_log:
 #     If running on Windows and you get a BrokenPipeError, try setting
 #     the num_worker of torch.utils.data.DataLoader() to 0.
 
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-])
+transform = transforms.Compose(
+    [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
+)
 
-trainset = torchvision.datasets.CIFAR10(root='./data-%d' % args.global_rank,
-                                        train=True,
-                                        download=True,
-                                        transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset,
-                                          batch_size=4,
-                                          shuffle=True,
-                                          num_workers=2)
+trainset = torchvision.datasets.CIFAR10(
+    root="./data-%d" % args.global_rank, train=True, download=True, transform=transform
+)
+trainloader = torch.utils.data.DataLoader(
+    trainset, batch_size=4, shuffle=True, num_workers=2
+)
 
-testset = torchvision.datasets.CIFAR10(root='./data-%d' % args.global_rank,
-                                       train=False,
-                                       download=True,
-                                       transform=transform)
-testloader = torch.utils.data.DataLoader(testset,
-                                         batch_size=4,
-                                         shuffle=False,
-                                         num_workers=2)
+testset = torchvision.datasets.CIFAR10(
+    root="./data-%d" % args.global_rank, train=False, download=True, transform=transform
+)
+testloader = torch.utils.data.DataLoader(
+    testset, batch_size=4, shuffle=False, num_workers=2
+)
 
-classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse',
-           'ship', 'truck')
+classes = (
+    "plane",
+    "car",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck",
+)
 
 ########################################################################
 # Let us show some of the training images, for fun.
@@ -113,7 +123,7 @@ images, labels = dataiter.next()
 # show images
 imshow(torchvision.utils.make_grid(images))
 # print labels
-print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
+print(" ".join("%5s" % classes[labels[j]] for j in range(4)))
 
 ########################################################################
 # 2. Define a Convolutional Neural Network
@@ -154,10 +164,11 @@ parameters = filter(lambda p: p.requires_grad, net.parameters())
 # 2) Distributed data loader
 # 3) DeepSpeed optimizer
 model_engine, optimizer, trainloader, __ = deepspeed.initialize(
-    args=args, model=net, model_parameters=parameters, training_data=trainset)
+    args=args, model=net, model_parameters=parameters, training_data=trainset
+)
 
-#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-#net.to(device)
+# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# net.to(device)
 ########################################################################
 # 3. Define a Loss function and optimizer
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -166,7 +177,7 @@ model_engine, optimizer, trainloader, __ = deepspeed.initialize(
 import torch.optim as optim
 
 criterion = nn.CrossEntropyLoss()
-#optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+# optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 ########################################################################
 # 4. Train the network
@@ -181,8 +192,10 @@ for epoch in range(2):  # loop over the dataset multiple times
     running_loss = 0.0
     for i, data in enumerate(trainloader):
         # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data[0].to(model_engine.local_rank), data[1].to(
-            model_engine.local_rank)
+        inputs, labels = (
+            data[0].to(model_engine.local_rank),
+            data[1].to(model_engine.local_rank),
+        )
 
         outputs = model_engine(inputs)
         loss = criterion(outputs, labels)
@@ -194,14 +207,13 @@ for epoch in range(2):  # loop over the dataset multiple times
         running_loss += loss.item()
         if i % 2000 == 1999:  # print every 2000 mini-batches
             loss = running_loss / 2000
-            print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, loss))
+            print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
             if args.with_aml_log:
                 mlflow.log_metric("loss", loss)
             running_loss = 0.0
-            
 
-print('Finished Training')
+
+print("Finished Training")
 
 ########################################################################
 # 5. Test the network on the test data
@@ -221,7 +233,7 @@ images, labels = dataiter.next()
 
 # print images
 imshow(torchvision.utils.make_grid(images))
-print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
+print("GroundTruth: ", " ".join("%5s" % classes[labels[j]] for j in range(4)))
 
 ########################################################################
 # Okay, now let us see what the neural network thinks these examples above are:
@@ -235,7 +247,7 @@ outputs = net(images.to(model_engine.local_rank))
 # So, let's get the index of the highest energy:
 _, predicted = torch.max(outputs, 1)
 
-print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(4)))
+print("Predicted: ", " ".join("%5s" % classes[predicted[j]] for j in range(4)))
 
 ########################################################################
 # The results seem pretty good.
@@ -250,11 +262,11 @@ with torch.no_grad():
         outputs = net(images.to(model_engine.local_rank))
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
-        correct += (predicted == labels.to(
-            model_engine.local_rank)).sum().item()
+        correct += (predicted == labels.to(model_engine.local_rank)).sum().item()
 
-print('Accuracy of the network on the 10000 test images: %d %%' %
-      (100 * correct / total))
+print(
+    "Accuracy of the network on the 10000 test images: %d %%" % (100 * correct / total)
+)
 
 ########################################################################
 # That looks way better than chance, which is 10% accuracy (randomly picking
@@ -264,8 +276,8 @@ print('Accuracy of the network on the 10000 test images: %d %%' %
 # Hmmm, what are the classes that performed well, and the classes that did
 # not perform well:
 
-class_correct = list(0. for i in range(10))
-class_total = list(0. for i in range(10))
+class_correct = list(0.0 for i in range(10))
+class_total = list(0.0 for i in range(10))
 with torch.no_grad():
     for data in testloader:
         images, labels = data
@@ -278,5 +290,7 @@ with torch.no_grad():
             class_total[label] += 1
 
 for i in range(10):
-    print('Accuracy of %5s : %2d %%' %
-          (classes[i], 100 * class_correct[i] / class_total[i]))
+    print(
+        "Accuracy of %5s : %2d %%"
+        % (classes[i], 100 * class_correct[i] / class_total[i])
+    )
