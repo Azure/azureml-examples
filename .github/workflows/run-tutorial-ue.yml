@@ -1,11 +1,10 @@
 name: run-tutorial-ue
 on:
-  push: 
-    branches:
-      - main
   pull_request:
     branches:
       - main
+    paths:
+      - tutorials/using-edge/**
   schedule:
     - cron: "0 9 * * *"
 jobs:
