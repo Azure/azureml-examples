@@ -1,6 +1,6 @@
 {
     "Basic core imports": {
-        "prefix": ["imports", "basic-imports"],
+        "prefix": ["aml-imports", "basic-imports"],
         "body": [
             "from azureml.core import Workspace              # connect to workspace",
             "from azureml.core import Experiment             # connect/create experiments",
