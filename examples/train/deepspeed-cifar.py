@@ -1,4 +1,4 @@
-# description: Distributed PyTorch with DeepSpeed
+# description: train CIFAR-10 using DeepSpeed and PyTorch
 #
 # In this example, we train a PyTorch model on the CIFAR-10 dataset using distributed training via
 # DeepSpeed (https://github.com/microsoft/DeepSpeed) across a GPU cluster.
@@ -52,7 +52,7 @@ env.python.interpreter_path = "/opt/miniconda/bin/python"
 # Specify docker steps as a string and use the base DeepSpeed Docker image
 dockerfile = r"""
 FROM deepspeed/base-aml:with-pt-ds-and-deps
-RUN pip install azureml-core
+RUN pip install azureml-mlflow
 RUN echo "Welcome to the DeepSpeed custom environment!"
 """
 
