@@ -20,7 +20,7 @@ ws = Workspace.from_config()
 prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
 
 # training script
-source_dir = prefix.joinpath("code", "models", "tensorflow", "mnist-distributed")
+source_dir = prefix.joinpath("code", "train", "tensorflow", "mnist-distributed")
 script_name = "train.py"
 
 # environment file

@@ -22,7 +22,7 @@ prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
 
 # training script
 source_dir = prefix.joinpath(
-    "code", "models", "tensorflow", "mnist-distributed-horovod"
+    "code", "train", "tensorflow", "mnist-distributed-horovod"
 )
 script_name = "train.py"
 
