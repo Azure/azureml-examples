@@ -2,7 +2,6 @@ azureml-core>=1.15.0
 azureml-dataprep
 azureml-mlflow
 azureml-widgets
-azureml-sdk
 numpy
 pandas
 matplotlib

@@ -16,9 +16,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning (AML) team to merge.
 
-> **Important:**
-> PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
-
 ### Rules
 
 * minimal prose
