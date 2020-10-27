@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/deploy-edge/**
+      - tutorials/using-edge/**
   schedule:
     - cron: "0 9 * * *"
 jobs:
