@@ -9,9 +9,9 @@ parser = argparse.ArgumentParser()
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
-with open("docs/data/prefix.md", "r") as f:
+with open("data/markdowns/prefix.md", "r") as f:
     prefix = f.read()
-with open("docs/data/suffix.md", "r") as f:
+with open("data/markdowns/suffix.md", "r") as f:
     suffix = f.read()
 
 tutorial_table = """
@@ -94,7 +94,7 @@ on:
     paths:
       - "notebooks/**"
   schedule:
-      - cron: "0 9 * * *"
+      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -164,13 +164,15 @@ on:
       - main
     paths:
       - "examples/**"
+      - "code/**"
   pull_request:
     branches:
       - main
     paths:
       - "examples/**"
+      - "code/**"
   schedule:
-      - cron: "0 9 * * *"
+      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -261,6 +263,9 @@ with open("README.md", "w") as f:
         prefix + tutorial_table + notebook_table + train_table + deploy_table + suffix
     )
 
+# glob all notebooks
+notebooks = sorted(glob.glob("**/**/*.ipynb"))
+
 # process all notebooks and rewrite
 for nb in notebooks:
 
@@ -273,7 +278,7 @@ for nb in notebooks:
 
     # write notebook
     with open(nb, "w") as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, indent=1)
 
 
 # run code formatter on .py files

@@ -14,11 +14,11 @@ ws = Workspace.from_config()
 prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
 
 # training script
-script_dir = prefix.joinpath("code", "models", "lightgbm", "iris")
+script_dir = prefix.joinpath("code", "train", "lightgbm", "iris")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "lightgbm-example.txt")
+environment_file = prefix.joinpath("environments", "lightgbm.txt")
 
 # azure ml settings
 environment_name = "lightgbm-iris-example"

@@ -1,3 +1,3 @@
 # Using optuna
 
-description: learn how to use to define an objective function and optimize it - see https://optuna.readthedocs.io
+description: learn how to optimize an objective function with [optuna](https://github.com/optuna/optuna)

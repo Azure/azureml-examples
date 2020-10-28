@@ -14,11 +14,11 @@ ws = Workspace.from_config()
 prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
 
 # training script
-script_dir = prefix.joinpath("code", "models", "pytorch", "mnist-cnn")
+script_dir = prefix.joinpath("code", "train", "pytorch", "mnist-cnn")
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("environments", "pytorch-example.yml")
+environment_file = prefix.joinpath("environments", "pytorch.yml")
 
 # azure ml settings
 environment_name = "pytorch-mnist-example"
