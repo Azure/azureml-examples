@@ -56,6 +56,7 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
+[examples/train/deepspeed-cifar.py](examples/train/deepspeed-cifar.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
 [examples/train/fastai-mnist-mlproject.py](examples/train/fastai-mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
 [examples/train/fastai-mnist.py](examples/train/fastai-mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
 [examples/train/fastai-pets.py](examples/train/fastai-pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
