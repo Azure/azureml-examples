@@ -45,46 +45,125 @@ Each workspace comes with a default datastore.
 datastore = ws.get_default_datastore()
 ```
 
-### Registered datastores
+### Register datastore
 
 Connect to, or create, a datastore backed by one of the multiple data-storage options
-that Azure provides.
+that Azure provides. For example:
+
+- Azure Blob Container
+- Azure Data Lake (Gen1 or Gen2)
+- Azure File Share
+- Azure MySQL
+- Azure PostgreSQL
+- Azure SQL
+- Azure Databricks File System
+
+See the SDK for a comprehensive list of datastore types and authentication options:
+[Datastores (SDK)](https://docs.microsoft.com/python/api/azureml-core/azureml.core.datastore(class)?view=azure-ml-py).
 
 #### Register a new datastore
 
-To register a store via a SAS token:
+- To register a store via an **account key**:
+
+    ```python
+    datastores = Datastore.register_azure_blob_container(
+        workspace=ws,
+        datastore_name='<datastore-name>',
+        container_name='<container-name>',
+        account_name='<account-name>',
+        account_key='<account-key>',
+    )
+    ```
+
+- To register a store via a **SAS token**:
+
+    ```python
+    datastores = Datastore.register_azure_blob_container(
+        workspace=ws,
+        datastore_name='<datastore-name>',
+        container_name='<container-name>',
+        account_name='<account-name>',
+        sas_token='<sas-token>',
+    )
+    ```
+
+### Connect to datastore
+
+The workspace object `ws` has  access to its datastores via
 
 ```python
-datastores = Datastore.register_azure_blob_container(
-    workspace=ws,
-    datastore_name="<datastore-name>",
-    container_name="<container-name>",
-    account_name="<account-name>",
-    sas_token="<sas-token>",
-)
+ws.datastores: Dict[str, Datastore]
 ```
 
-For more ways authentication options and for different underlying storage see
-the AML documentation on
-[Datastores](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.datastore(class)?view=azure-ml-py).
-
-#### Connect to registered datastore
-
-Any datastore that is registered to workspace can be accessed by name.
+Any datastore that is registered to workspace can thus be accessed by name.
 
 ```python
-from azureml.core import Datastore
-datastore = Datastore.get(ws, "<name-of-registered-datastore>")
+datastore = ws.datastores['<name-of-registered-datastore>']
 ```
 
-## Upload to Datastore
+### Link datastore to Azure Storage Explorer
 
-### Via SDK
-
-The datastore provides APIs for data upload:
+The workspace object `ws` is a very powerful handle when it comes to managing assets the
+workspace has access to. For example, we can use the workspace to connect to a datastore
+in Azure Storage Explorer.
 
 ```python
-datastore.upload(src_dir='./data', target_path='<path/on/datastore>', overwrite=True)
+from azureml.core import Workspace
+ws = Workspace.from_config()
+datastore = ws.datastores['<name-of-datastore>']
+```
+
+- For a datastore that was created using an **account key** we can use:
+
+    ```python
+    account_name, account_key = datastore.account_name, datastore.account_key
+    ```
+
+- For a datastore that was created using a **SAS token** we can use:
+
+    ```python
+    sas_token = datastore.sas_token
+    ```
+
+The account_name and account_key can then be used directly in Azure Storage Explorer to
+connect to the Datastore.
+
+## Blob Datastore
+
+Move data to and from your [AzureBlobDatastore](https://docs.microsoft.com/python/api/azureml-core/azureml.data.azure_storage_datastore.azureblobdatastore?view=azure-ml-py) object `datastore`.
+
+### Upload to Blob Datastore
+
+The AzureBlobDatastore provides APIs for data upload:
+
+```python
+datastore.upload(
+    src_dir='./data',
+    target_path='<path/on/datastore>',
+    overwrite=True,
+    )
+```
+
+Alternatively, if you are working with multiple files in different locations you can use
+
+```python
+datastore.upload_files(
+    files, # List[str] of absolute paths of files to upload
+    target_path='<path/on/datastore>',
+    overwrite=False,
+    )
+```
+
+### Download from Blob Datastore
+
+Download the data from the blob container to the local file system.
+
+```python
+datastore.download(
+    target_path, # str: local directory to download to
+    prefix='<path/on/datastore>',
+    overwrite=False,
+    )
 ```
 
 ### Via Storage Explorer
@@ -92,13 +171,11 @@ datastore.upload(src_dir='./data', target_path='<path/on/datastore>', overwrite=
 Azure Storage Explorer is free tool to easily manage your Azure cloud storage
 resources from Windows, macOS, or Linux. Download it from [here](https://azure.microsoft.com/features/storage-explorer/).
 
-Azure Storage Explorer gives you a (graphical) file exporer, so you can literally drag and drop
-files into your Datastores.
+Azure Storage Explorer gives you a (graphical) file exporer, so you can literally drag-and-drop
+files into and out of your datastores.
 
-#### Working with the default datastore
-
-Each workspace comes with its own datastore (e.g. `ws.get_default_datastore`). Visit https://portal.azure.com
-and locate your workspace's resource group and find the storage account.
+See ["Link datastore to Azure Storage Explorer"](#link-datastore-to-azure-storage-explorer)
+above for more details.
 
 ## Read from Datastore
 
