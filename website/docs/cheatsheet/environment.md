@@ -1,5 +1,13 @@
 ---
 title: Environment
+description: Guide to working with Python environments in Azure ML.
+keywords:
+  - environment
+  - python
+  - conda
+  - pip
+  - docker
+  - environment variables
 ---
 
 ## Create Environments

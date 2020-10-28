@@ -1,5 +1,10 @@
 ---
 title: Compute Target
+description: Guide to setting up and using Azure compute resources in Azure ML.
+keywords:
+  - compute
+  - cpu
+  - gpu
 ---
 
 Compute targets are an AML abstraction around the concept of a compute resource.

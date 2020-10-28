@@ -1,5 +1,10 @@
 ---
 title: Data
+description: Guide to working with data in Azure ML.
+keywords:
+  - data
+  - dataset
+  - datastore
 ---
 
 ## Concepts

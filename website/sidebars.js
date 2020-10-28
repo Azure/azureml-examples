@@ -21,7 +21,7 @@ module.exports = {
         type: 'category',
         label: 'Submitting Code',
         collapsed: false,
-        items: ['cheatsheet/run', 'cheatsheet/script-run-config', 'cheatsheet/logging'],
+        items: ['cheatsheet/script-run-config', 'cheatsheet/logging'],
       },
       {
         type: 'category',

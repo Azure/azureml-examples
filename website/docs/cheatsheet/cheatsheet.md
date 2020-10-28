@@ -2,6 +2,12 @@
 title: Cheat Sheet
 id: cheatsheet
 slug: /cheatsheet/
+description: A cheat sheet for Azure ML.
+keywords:
+  - azure machine learning
+  - aml
+  - cheatsheet
+  - overview
 ---
 
 ### Basic setup
