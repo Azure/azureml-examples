@@ -1,5 +1,11 @@
 ---
 title: 'Azure ML Containers'
+description: Guide to containers in Azure ML.
+keywords:
+  - containers
+  - dockerfile
+  - docker
+  - environment
 ---
 
 In this post we explain how Azure ML builds the containers used to run your code.

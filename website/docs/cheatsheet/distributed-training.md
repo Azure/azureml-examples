@@ -1,6 +1,11 @@
 ---
 title: Distributed GPU Training
 id: distributed-training
+description: Guide to distributed training in Azure ML.
+keywords:
+  - distributed training
+  - mpi
+  - process group
 ---
 
 ## Basic Concepts

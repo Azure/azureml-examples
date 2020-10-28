@@ -1,5 +1,8 @@
 ---
 title: Workspace
+description: Overview of Azure ML Workspaces.
+keywords:
+  - workspace
 ---
 
 Workspaces are a foundational object used throughout Azure ML and are used in the
