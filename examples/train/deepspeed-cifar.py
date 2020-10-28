@@ -23,7 +23,7 @@ script_dir = prefix.joinpath("code", "train", "deepspeed", "cifar10")
 script_name = "train.py"
 
 # azure ml settings
-experiment_name = "deepspeed-cifar"
+experiment_name = "deepspeed-cifar-example"
 compute_target = "gpu-V100-2"
 
 # script arguments
