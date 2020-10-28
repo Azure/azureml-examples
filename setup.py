@@ -90,7 +90,7 @@ if args.create_V100:
     for ct_name in v100computes:
         if ct_name not in ws.compute_targets:
             compute_config = AmlCompute.provisioning_configuration(
-                **amlcomputes[ct_name]
+                **v100computes[ct_name]
             )
             ct = ComputeTarget.create(ws, ct_name, compute_config)
             ct.wait_for_completion(show_output=True)
