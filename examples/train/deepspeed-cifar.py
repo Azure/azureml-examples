@@ -61,8 +61,7 @@ env.docker.base_image = None
 env.docker.base_dockerfile = dockerfile
 
 # create job config
-mpi_config = MpiConfiguration(node_count=2)
-mpi_config.process_count_per_node = 2
+mpi_config = MpiConfiguration(node_count=2, process_count_per_node=2)
 
 src = ScriptRunConfig(
     source_directory=script_dir,
