@@ -19,12 +19,12 @@ ws = Workspace.from_config()
 prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
 
 # training script
-script_dir = prefix.joinpath("code", "models", "deepspeed", "cifar10")
+script_dir = prefix.joinpath("code", "train", "deepspeed", "cifar10")
 script_name = "train.py"
 
 # azure ml settings
 experiment_name = "deepspeed-cifar"
-compute_target = "test-v100"
+compute_target = "gpu-V100-2"
 
 # script arguments
 arguments = [
@@ -60,11 +60,7 @@ RUN echo "Welcome to the DeepSpeed custom environment!"
 env.docker.base_image = None
 env.docker.base_dockerfile = dockerfile
 
-# register the environment to reuse it
-env.register(workspace=ws)
-
 # create job config
-
 mpi_config = MpiConfiguration(node_count=2)
 mpi_config.process_count_per_node = 2
 
