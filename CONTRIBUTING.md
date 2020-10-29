@@ -66,14 +66,15 @@ PRs must include necessary changes to any testing to ensure:
 ### Miscellaneous
 
 * to modify `README.md`, you need to modify `readme.py` and accompanying markdown files
+* the tables in the `README.md` are auto-generated, including description, via other files
 * develop on a branch, not a fork, for workflows to run properly
 * use an existing environment where possible
 * use an existing dataset where possible
 * don't register environments
 * don't create compute targets
 * don't modify `requirements.txt`
-* you probably shouldn't modify anything in the root of the repo
-* you can `!pip install --upgrade packages` as needed
+* you probably shouldn't modify any files in the root of the repo
+* you can `!pip install --upgrade packages` as needed in notebooks
 
 #### Unenforced naming
 
