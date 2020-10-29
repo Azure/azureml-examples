@@ -165,6 +165,9 @@ on:
     paths:
       - "examples/**"
       - "code/**"
+      - "environments/**"
+      - "mlprojects/**"
+      - "data/**"
   pull_request:
     branches:
       - main
