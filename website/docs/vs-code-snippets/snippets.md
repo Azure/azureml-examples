@@ -12,11 +12,11 @@ To add these snippets to your VS Code: `ctrl+shift+p` > Type 'Configure user
 snippets' > Select `python.json`. All of these snippets are available here:
 [python.json](https://github.com/Azure/azureml-examples/tree/main/website/docs/vs-code-snippets/snippets.json)
 
-### Basic Core Imports
+### Imports Group: Basic
 
-Description: Import common packages
+Description: Import collection of basic Azure ML classes
 
-Prefix: `import-core-sdk`
+Prefix: `import-basic`
 
 ```python
 from azureml.core import Workspace              # connect to workspace
@@ -155,7 +155,7 @@ compute_config = AmlCompute.provisioning_configuration(
 cluster = ComputeTarget.create(
     workspace=${7:workspace_name},
     name='${8:target_name}',
-    compute_config,
+    compute_config=compute_config,
 )
 ```
 ### Get Environment

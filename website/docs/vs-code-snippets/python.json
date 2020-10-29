@@ -1,6 +1,6 @@
 {
-    "Basic Core Imports": {
-        "prefix": ["import-core-sdk"],
+    "Imports Group: Basic": {
+        "prefix": ["import-basic"],
         "body": [
             "from azureml.core import Workspace              # connect to workspace",
             "from azureml.core import Experiment             # connect/create experiments",
@@ -9,7 +9,7 @@
             "from azureml.core import Datastore, Dataset     # work with data",
             "$0"
         ],
-        "description": "Import common packages"
+        "description": "Import collection of basic Azure ML classes"
     },
 
     "Import Workspace": {
@@ -138,7 +138,7 @@
             "cluster = ComputeTarget.create(",
             "    workspace=${7:workspace_name},",
             "    name='${8:target_name}',",
-            "    compute_config,",
+            "    compute_config=compute_config,",
             ")",
             "$0"
         ],
