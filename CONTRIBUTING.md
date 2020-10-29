@@ -115,7 +115,7 @@ Checklist:
 
 #### Adding a new tutorial
 
-Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else must be written in the `README.md`, which will be tested when a PR is made to add the tutorial by following it to add resources to the testing resource group. Include all instructions a user should follow.
+Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md`. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
 
 If it is a simple ML training example, it does not need to be a tutorial. Current themes for tutorials include:
 
