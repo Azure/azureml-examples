@@ -377,9 +377,9 @@ In this case you need to:
 env = Environment('pytorch')    # create an Environment called 'pytorch'
 
 # set up custom docker image or a dockerfile
-env.docker.base_image = "mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04"
+# env.docker.base_image = "mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04"
 # or set up base image from a dockerfile
-# env.docker.base_dockerfile = "./Dockerfile"
+env.docker.base_dockerfile = "./Dockerfile"
 
 # indicate how to run Python
 env.python.user_managed_dependencies=True
