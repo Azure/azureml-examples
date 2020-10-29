@@ -72,22 +72,21 @@ class Snippet:
         json_body.append(line)
         return json_body
 
+frontmatter = '''---
+title: VS Code Snippets
+description: A collection of VS Code Snippets for working with Azure ML.
+---
 
-frontmatter = [
-    "---",
-    "title: VS Code Snippets",
-    "---",
-    "",
-    "We have compiled a collection of useful templates in the form of",
-    "[VS code snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets).",
-    "",
-    "![VS Code Snippets](vs-code-snippets-demo.gif)",
-    "",
-    "To add these snippets to your VS Code: `ctrl+shift+p` > Type 'Configure user",
-    "snippets' > Select `python.json`. All of these snippets are available here:",
-    "[python.json](https://github.com/aminsaied/AzureML-CheatSheet/blob/master/snippets.json)",
-    "",
-]
+We have compiled a collection of useful templates in the form of
+[VS code snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets).
+
+![VS Code Snippets](vs-code-snippets-demo.gif)
+
+To add these snippets to your VS Code: `ctrl+shift+p` > Type 'Configure user
+snippets' > Select `python.json`. All of these snippets are available here:
+[python.json](https://github.com/Azure/azureml-examples/tree/main/website/docs/vs-code-snippets/snippets.json)
+
+'''
 
 if __name__ == '__main__':
 
@@ -101,14 +100,18 @@ if __name__ == '__main__':
         snippets.append(snippet)
 
     # create file and write frontmatter
-    md_filename = 'test.md'
+    md_filename = 'snippets.md'
     with open(md_filename, 'w') as f:
         # write frontmatter
-        for line in frontmatter:
-            f.write(line + '\n')
+        f.writelines(frontmatter)
 
         # write each snippet
         for snippet in snippets:
             lines = snippet.to_markdown()
             for line in lines:
                 f.write(line + '\n')
+
+
+
+
+
