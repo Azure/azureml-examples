@@ -1,5 +1,6 @@
 ---
 title: VS Code Snippets
+description: A collection of VS Code Snippets for working with Azure ML.
 ---
 
 We have compiled a collection of useful templates in the form of
@@ -7,328 +8,204 @@ We have compiled a collection of useful templates in the form of
 
 ![VS Code Snippets](vs-code-snippets-demo.gif)
 
-To add these snippets to your VS Code: `ctrl+shift+p` > Type "Configure user
-snippets" > Select `python.json`. All of these snippets are available here:
-[python.json](https://github.com/aminsaied/AzureML-CheatSheet/blob/master/snippets.json)
+To add these snippets to your VS Code: `ctrl+shift+p` > Type 'Configure user
+snippets' > Select `python.json`. All of these snippets are available here:
+[python.json](https://github.com/Azure/azureml-examples/tree/main/website/docs/vs-code-snippets/snippets.json)
 
-## TODO
+### Basic Core Imports
 
-- Organize snippets / group by concepts
-- Questions:
-    - Imports all in one block vs imports included with specific actions
-    - Include explanatory comments e.g. links to relevant docs?
+Description: Import common packages
 
-### Reorganize
+Prefix: `import-core-sdk`
 
-- Imports
-    - Basic imports
-        ```python
-        from azureml.core import Workspace              # connect to workspace
-        from azureml.core import Experiment             # connect/create experiments
-        from azureml.core import ComputeTarget          # connect to compute
-        from azureml.core import Environment            # manage e.g. Python environments
-        from azureml.core import Datastore, Dataset     # work with data
-        ```
-    - ScriptRunConfig
-        ```python
-        from azureml.core import ScriptRunConfig
-        ```
-    - Pipeline?
-    - HyperDrive?
-    - ...
-- Basic setup:
-    - `get-workspace` :
-        ```python
-        from azureml.core import Workspace
-        ws = Workspace.from_config()        # read workspace details from config.json
-        ```
-    - `get-compute` :
-        ```python
-        from azureml.core import ComputeTarget
-        target = ComputeTarget(ws, '<compute_target_name>')
-        ```
-    - `get-environment`:
-        ```python
-        from azureml.core import Environment
-        ${2:env} = Environment('${1}')
-        ```
-- Create assets:
-    - `create-workspace` :
-        ```python
-        from azureml.core import Workspace
-
-        ws = Workspace.create(name='<my_workspace_name>', # provide a name for your workspace
-                            subscription_id='<azure-subscription-id>', # provide your subscription      ID
-                            resource_group='<myresourcegroup>', # provide a resource group name
-                            create_resource_group=True,
-                            location='<NAME_OF_REGION>') # e.g. 'westeurope' or 'eastus2' or    'westus2' or 'southeastasia'.
-
-        # write out the workspace details to a configuration file: .azureml/config.json
-        ws.write_config(path='.azureml')
-        ```
-    - `create-compute` :
-        ```python
-        from azureml.core.compute import ComputeTarget, AmlCompute
-
-        compute_config = AmlCompute.provisioning_configuration(
-            vm_size='{$1:STANDARD_D2_V2}',
-            max_nodes=${2:0},
-            max_nodes=${3:4},
-            idle_seconds_before_scaledown=${4:2400},)
-        target = ComputeTarget.create(${5:ws}, '${6:my-compute}', compute_config)
-        target.wait_for_completion(show_output=True)
-        ```
-    - `create-compute-with-ssh` :
-        ```python
-        from azureml.core.compute import AmlCompute
-        from azureml.core.compute_target import ComputeTargetException
-        
-        ssh_public_key = '$1'
-        compute_config = AmlCompute.provisioning_configuration(
-            vm_size='${2:STANDARD_D2_V2}',
-            max_nodes=${3:0},
-            max_nodes=${4:4},
-            admin_username='$5',
-            admin_user_ssh_key=ssh_public_key,
-            vm_priority='${6|lowpriority,dedicated|}',
-            remote_login_port_public_access='Enabled',)
-        
-        cluster$0 = ComputeTarget.create(workspace=$7, name='$8', compute_config)
-        ```
-    - `create-pip`, `create-environment-pip`
-        ```python
-        from azureml.core import Environment
-        # from existing local conda environment
-        env = Environment.from_pip_requirements(
-            name='$1',
-            file_path='${2:requirements.txt}',
-        )
-
-        $0
-        ```
-    - `create-conda`, `create-environment-conda`
-        ```python
-        from azureml.core import Environment
-        # from existing local conda environment
-        env = Environment.from_conda_specification(
-            name='$1',
-            file_path='${2:env.yml}',
-        )
-
-        $0
-        ```
-    - `create-conda-exist`, `create-environment-conda-exist`
-        ```python
-        from azureml.core import Environment
-        # from existing local conda environment
-        env = Environment.from_existing_conda_environment(
-            name='${2:aml-env}',
-            conda_environment_name='${1:conda-env}',
-        )
-
-        $0
-        ```
-- Run code:
-    - `script-run-config`, `src`
-    ```python
-    from azureml.core import Workspace, Experiment, ScriptRunConfig
-
-    # get workspace
-    ws = Workspace.from_config()
-
-    # get/create experiment
-    exp = Experiment(ws, '$1')
-
-    # set up script run configuration
-    config = ScriptRunConfig(
-        source_directory='.',
-        script='$2.py',
-        #arguments=['--meaning', 42],
-    )
-
-    # submit script to AML
-    run = exp.submit(config)
-    print(run.get_portal_url()) # link to ml.azure.com
-    $0
-    ```
-
-
-### Basic core imports
-Import essential packages
-
-**Prefix:** ['imports', 'workspace-imports-creation']
+```python
+from azureml.core import Workspace              # connect to workspace
+from azureml.core import Experiment             # connect/create experiments
+from azureml.core import ComputeTarget          # connect to compute
+from azureml.core import Environment            # manage e.g. Python environments
+from azureml.core import Datastore, Dataset     # work with data
 ```
-from azureml.core import Workspace, Experiment, Run, RunConfiguration, ComputeTarget, Environment, ScriptRunConfig$1
-$0
-```
+### Import Workspace
 
-### Pipeline Imports
-Basic imports for pipeline
+Description: Import Workspace class
 
-**Prefix:** pipeline-imports
-```
-from azureml.pipeline.core import Pipeline, PipelineData, PipelineParameter
-from azureml.pipeline.steps import PythonScriptStep$1
-$0
-```
+Prefix: `import-workspace`
 
-### Create AML Workspace from config
-Default workspace creation
-
-**Prefix:** ['workspace-quick', 'fromconfig', 'from-config']
+```python
+from azureml.core import Workspace
 ```
+### Import Compute Target
+
+Description: Import ComputeTarget class
+
+Prefix: `import-compute-target`
+
+```python
+from azureml.core import ComputeTarget
+```
+### Import Environment
+
+Description: Import Environment class
+
+Prefix: `import-environment`
+
+```python
+from azureml.core import Environment
+```
+### Import ScriptRunConfig
+
+Description: Import ScriptRunConfig class
+
+Prefixes: `import-script-run-config`, `import-src`
+
+```python
+from azureml.core import ScriptRunConfig
+```
+### Import Dataset
+
+Description: Import Dataset class
+
+Prefix: `import-dataset`
+
+```python
+from azureml.core import Dataset
+```
+### Import Datastore
+
+Description: Import Datastore class
+
+Prefix: `import-datastore`
+
+```python
+from azureml.core import Datastore
+```
+### Import Run
+
+Description: Import Run class
+
+Prefix: `import-run`
+
+```python
+from azureml.core import Run
+```
+### Import Conda Dependencies
+
+Description: Import CondaDependencies class
+
+Prefix: `import-conda-dependencies`
+
+```python
+from azureml.core.conda_dependencies import CondaDependencies
+```
+### Get Workspace From Config
+
+Description: Get Azure ML Workspace from config
+
+Prefixes: `get-workspace-config`, `ws-config`
+
+```python
+from azureml.core import Workspace
 ws = Workspace.from_config()
-$0
 ```
+### Get Workspace
 
-### Create AML Workspace from config and auth
-Create workspace from config and auth
+Description: Get Azure ML Workspace
 
-**Prefix:** workspace-from-config-auth
-```
-from azureml.core.authentication import InteractiveLoginAuthentication
-config = {'subscription_id':'$1',
-'resource_group':'$2',
-'workspace_name' :'$3'}
-auth = InteractiveLoginAuthentication()
-ws = Workspace(**config,auth = auth)
-$0
-```
+Prefixes: `get-workspace`, `get-ws`
 
-### Register Azure Blob Container From SAS
-Register Azure Blob container to workspace via SAS
-
-**Prefix:** ['datastore-register-blob-sas', 'reg-blob-sas']
-```
-ds = Datastore.register_azure_blob_container(
-    workspace='$1',
-    datastore_name='$2',
-    container_name='$3',
-    account_name='$4',
-    sas_token='$5',
+```python
+from azureml.core import Workspace
+ws = Workspace.get(
+    name='${1:name}'
+    subscription_id='${2:subscription_id}'
+    resource_group='${3:resource_group}',
 )
-$0
 ```
+### Get Compute
 
-### Create Compute Cluster with SSH
-Create compute cluster with SSH enabled
+Description: Get Azure ML Compute Target
 
-**Prefix:** ['create-compute-cluster-ssh']
+Prefix: `get-compute`
+
+```python
+from azureml.core import ComputeTarget
+target = ComputeTarget(${2:ws}, '${1:<compute_target_name>}')
 ```
+### Get Compute with SSH
+
+Description: Get Azure ML Compute Target
+
+Prefix: `get-compute-ssh`
+
+```python
 from azureml.core.compute import AmlCompute
 from azureml.core.compute_target import ComputeTargetException
-ssh_public_key = '$1'
-compute_config = AmlCompute.provisioning_configuration(vm_size='$4',min_nodes=$5, max_nodes=$6,admin_username='$7',admin_user_ssh_key=ssh_public_key,vm_priority='${8|lowpriority,dedicated|}',remote_login_port_public_access='Enabled')
-cluster$0 = ComputeTarget.create(workspace=$9, name='$10', compute_config)
-```
 
-### AML Template Script Run Config
-Template for control plane to launch script on AML
+ssh_public_key = 'public-key-here'
+compute_config = AmlCompute.provisioning_configuration(
+    vm_size='$2',
+    min_nodes=$3,
+    max_nodes=$4,
+    admin_username='$5',
+    admin_user_ssh_key=ssh_public_key,
+    vm_priority='${6|lowpriority,dedicated|}',
+    remote_login_port_public_access='Enabled',
+    )
 
-**Prefix:** ['scr', 'aml-template-script']
-```
-from azureml.core import Workspace, Experiment, ScriptRunConfig
-
-# get workspace
-ws = Workspace.from_config()
-
-# get/create experiment
-exp = Experiment(ws, '$1')
-
-# set up script run configuration
-config = ScriptRunConfig(
-    source_directory='.',
-    script='$2.py',
-    #arguments=['--meaning', 42],
+cluster = ComputeTarget.create(
+    workspace=${7:workspace_name},
+    name='${8:target_name}',
+    compute_config,
 )
-
-# submit script to AML
-run = exp.submit(config)
-print(run.get_portal_url()) # link to ml.azure.com
-$0
 ```
+### Get Environment
 
-### AML Template Estimator
-Template for control plane to launch estimator on AML
+Description: Get Azure ML Compute Target
 
-**Prefix:** ['aml-template-estimator']
+Prefix: `get-environment`
+
+```python
+from azureml.core import Environment
+${2:env} = Environment('${1:<env-name>}')
 ```
-from azureml.core import Workspace, Experiment, ComputeTarget
-from azureml.train.estimator import Estimator
+### Get Environment From Pip
 
-# get workspace
-ws = Workspace.from_config()
+Description: Create environment from pip requirements.txt
 
-#  get/create experiment
-exp = Experiment(ws, '$1')
+Prefixes: `get-environment-pip`, `env-pip`
 
-# define compute target
-compute_target = ComputeTarget(ws, '$2')
-
-# set up script run configuration
-config = Estimator(
-    source_directory='.',
-    entry_script='$3.py',
-    compute_target=compute_target,
-    #script_params={'--meaning': 42},
-)
-
-# submit script to AML
-run = exp.submit(config)
-print(run.get_portal_url()) # link to ml.azure.com
-$0
-```
-
-### Environment-From-Pip
-Create AML Environment from pip requirements.txt
-
-**Prefix:** ['environment-from-pip']
-```
+```python
 from azureml.core import Environment
 env = Environment.from_pip_requirements(
-    name='$1',
-    file_path='$2',
+    name='${1:env_name}',
+    file_path='${2:requirements.txt}',
 )
 
-$0
 ```
+### Get Environment From Conda
 
-### Environment-From-Conda-Spec
-Create AML Environment from conda env.yml
+Description: Create environment from Conda env.yml file
 
-**Prefix:** ['environment-from-conda-spec']
-```
+Prefixes: `get-environment-conda`, `env-conda`
+
+```python
 from azureml.core import Environment
 env = Environment.from_conda_specification(
-    name='$1',
-    file_path='$2',
+    name='${1:env_name}',
+    file_path='${2:env.yml}',
 )
 
-$0
 ```
+### Get Environment From SDK
 
-### Environment-From-Conda-Existing
-Create AML Environment from an existing Conda environment
+Description: Create environment from Conda env.yml file
 
-**Prefix:** ['environment-from-conda-existing']
-```
-from azureml.core import Environment
-env = Environment.from_existing_conda_environment(
-    name='$1',
-    conda_environment_name='$2',
-)
+Prefixes: `get-environment-sdk`, `env-sdk`
 
-$0
-```
-
-### Environment
-Create AML Environment using the SDK
-
-**Prefix:** ['environment-from-sdk']
-```
+```python
 from azureml.core import Environment
 from azureml.core.conda_dependencies import CondaDependencies
-env = Environment($1)
+env = Environment('${1:my-env}')
 
 conda = CondaDependencies()
 
@@ -340,6 +217,42 @@ conda.add_conda_package('$3')
 
 # add pip packages
 conda.add_pip_package('$4')
-$0
-```
 
+# add conda dependencies to environment
+env.python.conda_dependencies = conda
+```
+### Script Run Config
+
+Description: Set up ScriptRunConfig including compute target, environment and experiment
+
+Prefix: `script-run-config`
+
+```python
+from azureml.core import Workspace, Experiment, ScriptRunConfig
+
+# get workspace
+ws = Workspace.from_config()
+
+# get compute target
+target = ws.compute_targets['${1:target-name}']
+
+# get registered environment
+env = ws.environments['${2:env-name}']
+
+# get/create experiment
+exp = Experiment(ws, '${3:experiment_name}')
+
+# set up script run configuration
+config = ScriptRunConfig(
+    source_directory='${4:.}',
+    script='${5:script.py}',
+    compute_target=target,
+    environment=env,
+    arguments=[${6:'--meaning', 42}],
+)
+
+# submit script to AML
+run = exp.submit(config)
+print(run.get_portal_url()) # link to ml.azure.com
+run.wait_for_completion(show_output=True)
+```
