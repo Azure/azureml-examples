@@ -45,7 +45,7 @@ PRs to add new examples should consider which type of example to add:
 * `notebooks` is for general example notebooks using AML and should be interactive
 * `tutorials` is for end to end tutorials using AML
 
-### Naming conventions
+### Enforced naming
 
 PRs must follow the following naming conventions:
 
@@ -62,3 +62,72 @@ PRs must include necessary changes to any testing to ensure:
 * `run-notebooks` runs on every push and PR to `main` (with changes to notebooks) and runs all examples under `notebooks/`
 * a tutorial must be tested at least daily and on PR to `main` (with changes to the tutorial)
 * `cleanup` runs daily and cleans up AML resources for the testing workspace
+
+### Miscellaneous
+
+* to modify `README.md`, you need to modify `readme.py` and accompanying markdown files
+* develop on a branch, not a fork, for workflows to run properly
+* use an existing environment where possible
+* use an existing dataset where possible
+* don't register environments
+* don't create compute targets
+* don't modify `requirements.txt`
+* you probably shouldn't modify anything in the root of the repo
+* you can `!pip install --upgrade packages` as needed
+
+#### Unenforced naming
+
+* `environment_name` = "framework-example|tutorial" e.g. "pytorch-example"
+* `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
+* `compute_name` = "compute-defined-in-setup.py" e.g. "gpu-K80-2"
+* `ws = Workspace.from_config()`
+* `dstore = ws.get_default_datastore()`
+* `ds = Dataset.File.from_files(...)`
+* `env = Environment.from_*(...)`
+* `src = ScriptRunConfig(...)`
+* `run = Experiment(ws, experiment_name).submit(src)`
+
+#### Adding a new example
+
+An example consists of the control plane definition, currently written as a Python script, and user code, which is often Python.
+
+Checklist:
+
+* [ ] add control plane code with description under `examples/`
+* [ ] add ML code, preserving any licensing information in the code, to `code/`
+* [ ] test locally (need to create the same compute target)
+* [ ] run `readme.py`
+* [ ] submit PR, which will run `run-examples`
+
+#### Adding a new notebook
+
+A notebook is a self-contained (read: no dependency on `code/`) example written as a `.ipynb` file.
+
+Checklist:
+
+* [ ] is it interactive?
+* [ ] does it need to be a notebook?
+* [ ] are you sure? why?
+* [ ] add notebook with description to `notebooks/`
+* [ ] run `readme.py`
+* [ ] submit PR, which will run `run-notebooks`
+
+#### Adding a new tutorial
+
+Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else must be written in the `README.md`, which will be tested when a PR is made to add the tutorial by following it to add resources to the testing resource group. Include all instructions a user should follow.
+
+If it is a simple ML training example, it does not need to be a tutorial. Current themes for tutorials include:
+
+* `using-*` for tutorials on ML frameworks
+* `deploy-*` for advanced deployment scenarios
+* `work-with-*` for Azure integrations
+* `automl-with-*` for automated ML frameworks
+
+Checklist:
+
+* [ ] add the tutorial directory under `tutorials/`, following naming conventions
+* [ ] add tutorial files, which are usually notebooks and may be ordered
+* [ ] add `README.md` in the tutorial directory with a description (see other tutorials for format)
+* [ ] add `run-tutorial-initials`, where *initials* are the initials of the description directory (see other tutorial workflows)
+* [ ] run `readme.py`
+* [ ] submit PR, which will run your tutorial if setup properly
