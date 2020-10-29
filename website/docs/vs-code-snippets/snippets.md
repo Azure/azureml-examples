@@ -116,8 +116,8 @@ Prefixes: `get-workspace`, `get-ws`
 ```python
 from azureml.core import Workspace
 ws = Workspace.get(
-    name='${1:name}'
-    subscription_id='${2:subscription_id}'
+    name='${1:name}',
+    subscription_id='${2:subscription_id}',
     resource_group='${3:resource_group}',
 )
 ```
