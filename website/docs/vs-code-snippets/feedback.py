@@ -1,4 +1,12 @@
 '''
+# Goals
+
+- https://github.com/Azure/azureml-examples/blob/snippets/website/docs/vs-code-snippets/snippets.md
+- Review / feedback on existing snippets
+- Identify "large" gaps e.g. pipelines!
+- Questions == High-level design
+- How you can contribute directly
+
 # Questions
 
 - Include import statements in snippets?
@@ -96,6 +104,13 @@
 
 ## Question: include imports? Notebook vs code?
 ## Question: what's missing
+
+## WORKSPACE THINGS
+
+# ws-*
+# ----------------
+
+# ----------------
 
 ## SCRIPTRUNCONFIG
 

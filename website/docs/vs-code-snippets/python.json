@@ -163,7 +163,6 @@
             "    name='${1:env_name}',",
             "    file_path='${2:requirements.txt}',",
             ")",
-            "",
             "$0"
         ],
         "description": "Create environment from pip requirements.txt"
@@ -177,7 +176,6 @@
             "    name='${1:env_name}',",
             "    file_path='${2:env.yml}',",
             ")",
-            "",
             "$0"
         ],
         "description": "Create environment from Conda env.yml file"
@@ -205,7 +203,61 @@
             "env.python.conda_dependencies = conda",
             "$0"
         ],
-        "description": "Create environment from Conda env.yml file"
+        "description": "Create environment using CondaDependencies class"
+    },
+
+    "Workspace Compute Targets": {
+        "prefix": ["ws-compute-target"],
+        "body": [
+            "target = ws.compute_targets['${1:target-name}']",
+            "$0"
+        ],
+        "description": "Get compute target from workspace"
+    },
+
+    "Workspace Environments": {
+        "prefix": ["ws-environment"],
+        "body": [
+            "env = ws.environments['${1:env-name}']",
+            "$0"
+        ],
+        "description": "Get environment from workspace"
+    },
+
+    "Workspace Datastores": {
+        "prefix": ["ws-datastore"],
+        "body": [
+            "datastore = ws.datastores['${1:datastore-name}']",
+            "$0"
+        ],
+        "description": "Get datastore from workspace"
+    },
+
+    "Workspace Datasets": {
+        "prefix": ["ws-dataset"],
+        "body": [
+            "dataset = ws.datasets['${1:dataset-name}']",
+            "$0"
+        ],
+        "description": "Get dataset from workspace"
+    },
+
+    "Workspace Experiment": {
+        "prefix": ["ws-experiment"],
+        "body": [
+            "exp = ws.experiments['${1:experiment-name}']",
+            "$0"
+        ],
+        "description": "Get (existing) experiment from workspace"
+    },
+
+    "Workspace Models": {
+        "prefix": ["ws-model"],
+        "body": [
+            "model = ws.models['${1:model-name}']",
+            "$0"
+        ],
+        "description": "Get model from workspace"
     },
 
     "Script Run Config": {

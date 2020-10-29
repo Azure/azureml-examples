@@ -180,7 +180,6 @@ env = Environment.from_pip_requirements(
     name='${1:env_name}',
     file_path='${2:requirements.txt}',
 )
-
 ```
 ### Get Environment From Conda
 
@@ -194,11 +193,10 @@ env = Environment.from_conda_specification(
     name='${1:env_name}',
     file_path='${2:env.yml}',
 )
-
 ```
 ### Get Environment From SDK
 
-Description: Create environment from Conda env.yml file
+Description: Create environment using CondaDependencies class
 
 Prefixes: `get-environment-sdk`, `env-sdk`
 
@@ -220,6 +218,60 @@ conda.add_pip_package('$4')
 
 # add conda dependencies to environment
 env.python.conda_dependencies = conda
+```
+### Workspace Compute Targets
+
+Description: Get compute target from workspace
+
+Prefix: `ws-compute-target`
+
+```python
+target = ws.compute_targets['${1:target-name}']
+```
+### Workspace Environments
+
+Description: Get environment from workspace
+
+Prefix: `ws-environment`
+
+```python
+env = ws.environments['${1:env-name}']
+```
+### Workspace Datastores
+
+Description: Get datastore from workspace
+
+Prefix: `ws-datastore`
+
+```python
+datastore = ws.datastores['${1:datastore-name}']
+```
+### Workspace Datasets
+
+Description: Get dataset from workspace
+
+Prefix: `ws-dataset`
+
+```python
+dataset = ws.datasets['${1:dataset-name}']
+```
+### Workspace Experiment
+
+Description: Get (existing) experiment from workspace
+
+Prefix: `ws-experiment`
+
+```python
+exp = ws.experiments['${1:experiment-name}']
+```
+### Workspace Models
+
+Description: Get model from workspace
+
+Prefix: `ws-model`
+
+```python
+model = ws.models['${1:model-name}']
 ```
 ### Script Run Config
 
