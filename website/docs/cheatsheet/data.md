@@ -208,6 +208,9 @@ or as download:
 ```python
 data_ref = ds.path('<path/on/datastore>').as_download()
 ```
+:::info
+To mount a datastore the workspace need to have read and write access to the underlying storage. For readonly datastore `as_download` is the only option. 
+:::
 
 #### Consume DataReference in ScriptRunConfig
 

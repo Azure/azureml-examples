@@ -112,10 +112,7 @@ Despite the name, environment variable OMPI_COMM_WORLD_NODE_RANK does not corres
 
 The following code maps the OpenMPI environment variables to PyTorch style. For majority of the pytorch script, simply call `set_environment_variables_for_nccl_backend()` function before your script calls `torch.distributed.init_process_group`. If your script passes in information like local_rank or rank as script arguments, just remove these and use provided helper functions `get_local_rank()` and `get_rank()` instead.
 
-```python 
-###########################
-# aml_mpienv.py
-###########################
+```python title="aml_mpienv.py"
 import os
 
 def set_environment_variables_for_nccl_backend(master_port=6105, verbose=True):
@@ -201,8 +198,7 @@ experiment = Experiment(ws, "pt_dist_launch")
 experiment.submit(run)
 ```
 
-```python
-# train.py
+```python title="train.py"
 from aml_mpienv import set_environment_variables_for_nccl_backend, get_local_rank
 
 set_environment_variables_for_nccl_backend()
@@ -245,9 +241,9 @@ run = ScriptRunConfig(
 experiment = Experiment(ws, "pt_dist_launch")
 experiment.submit(run)
 ```
-#### launch.py
 
-```python
+
+```python title="launch.py"
 #####################################################################################
 # launch.py
 # based on https://github.com/pytorch/pytorch/blob/master/torch/distributed/launch.py
@@ -399,9 +395,7 @@ if __name__ == "__main__":
     main()
 ```
 
-#### example.py
-
-```python
+```python title="example.py"
 # example.py 
 import argparse
 import os
@@ -433,7 +427,7 @@ To launch training script directly without launch.py, remember the key is to set
 Make sure to call `set_environment_variables_for_nccl_backend` and set `local_rank` __right after the TrainingArguments object is created__. 
 :::
 
-```python
+```python title="run_glue.py"
 #####################################################################################################
 ## https://github.com/huggingface/transformers/blob/master/examples/text-classification/run_glue.py
 #####################################################################################################

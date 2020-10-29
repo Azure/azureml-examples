@@ -10,7 +10,31 @@ keywords:
   - environment variables
 ---
 
-## Create Environments
+## AzureML Environment
+Your jobs on AzureML are reproducible, portable and can be easily scaled up to different compute targets. With this philosophy, AzureML heavily relies on container to encapsulate the environment where your python script and [shell commands](#advanced-shell-initialization-script) will run. For majority of use cases, the environment 
+consists of a base docker image and a conda environment (including pip dependencies). For R users there is also a setting for [R CRAN packages](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.rcranpackage?view=azure-ml-py) which we won't get into detail here. 
+
+AzureML provides the following options:
+1. (Default but not so useful) If user doesn't customize an environment object when submitting their run, AzureML will use a default container image, with only one python package called `azureml-defaults` which includes only azureml essentials. 
+2. Use one of the [curated environment](https://docs.microsoft.com/en-us/azure/machine-learning/resource-curated-environments).
+3. Use one of the [default base image](https://github.com/Azure/AzureML-Containers), and ask AzureML to manage Conda dependencies by [providing a `condaDependencies` object](#create-conda-dependencies). 
+4. Use a previously [registered environment](#registered-environments).
+5. Use a custom docker image and use a python environment in the image directly by using this as the docker base image for the environment and set `user_managed_dependencies=True`. AzureML won't be able to manage and add extra python dependencies. To install additional packages, user need to run installation script inside the job script so these additional packages will be installed in the running container instead of into the image. See example [here](#advanced-shell-initialization-script).
+6. Use a dockerfile to ask AzureML to build the docker image. User can manage the python environment in the dockerfile and set `user_managed_dependencies=True`, or ask AzureML to manage Conda dependencies by [providing a `condaDependencies` object](#create-conda-dependencies). 
+
+:::tip
+When the conda dependencies are managed by AzureML (`user_managed_dependencies=False`, by default), AzureML will check whether the same environment has already been materialized into a docker image in the Azure Container Registry associated with the AzureML workspace. If it is a new environment, AzureML will have a job preparation stage to build
+a new docker image for the new environment. user can see a image build log file in the logs and monitor the image build progress. The job won't start until the image is built and pushed to the container registry. 
+
+This image building process can take some time and delay your job start. To avoid unnecessary image building, consider
+1. Register an environment that contains most packages you need and reuse when possible.
+2. If you only need a few extra packages on top of an existing environment, 
+    1. If the existing environment is a docker image, use a dockerfile from this docker image so you only need to add one layer to install a few extra packagers. 
+    2. Install extra python packages in your user script so the package installation happens in the script run as part of your code instead of asking AzureML to treat them as part of a new environment. Consider using a [setup script](#advanced-shell-initialization-script).
+:::
+
+
+## Create Conda Dependencies
 
 Easily create, maintain and share Python environments with pip and Conda, or directly from the Python SDK.
 
