@@ -49,9 +49,6 @@ class Snippet:
         lines.append(prefix)
         lines.append('')
 
-        json_body = self._convert_to_json(self.body)
-        snippet_as_json = '```json\n' + '\n'.join(json_body) + '```'
-
         # add python snippet
         lines.append('```python')
         for line in self.body:
@@ -110,8 +107,3 @@ if __name__ == '__main__':
             lines = snippet.to_markdown()
             for line in lines:
                 f.write(line + '\n')
-
-
-
-
-
