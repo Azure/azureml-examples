@@ -410,10 +410,13 @@ env.environment_variables['EXAMPLE_ENV_VAR'] = 'EXAMPLE_VALUE'
 
 A useful pattern is to run shell scripts on Azure ML compute to prepare the nodes.
 
-We create two shell scripts:
+In this example we show how to use initialization shell scripts for both **individual nodes** as well
+as **each process**:
 
-- `setup.sh` : This will run only on local_rank 0 process.
-- `run.sh` : This will run on each process.
+- `setup.sh`: This will run only on local_rank 0 process (i.e., once per node)
+  - Run a utility script `download_data.py` to download training data to the node
+- `run.sh` : This will run on each process
+  - 
 
 These scripts will run ahead of our main python call to `train.py`.
 
@@ -438,14 +441,14 @@ directory `/tmp/data`.
 In this example the data should be downloaded once per node in the compute cluster (not once
 per process!). 
 
-```bash title="run.py"
+```bash title="run.sh"
 python train.py --training_data /tmp/data --learning_rate 1e-6
 ```
 
 This is the main call to the training script and needs to be called by each process. The data
 downloaded by `download_data.py` is referenced as a command-line argument.
 
-Finally, prepare a wrapper script to execute the above. Notice the wrapper script take a great deal of care to make sure `setup.sh` only
+Finally, prepare a wrapper script to execute the above. Notice the wrapper script takes a great deal of care to make sure `setup.sh` only
 executed once in each node and when there are multiple processes per node other nodes will wait when `setup.sh` is executing. A marker file is used
 to mimic a barrier so all processes are in sync.  
 
