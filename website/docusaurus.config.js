@@ -96,7 +96,7 @@ module.exports = {
       placeholder: 'Search cheat sheet'
     },
     googleAnalytics: {
-      trackingID: 'G-2DKKZ26VP0',
+      trackingID: 'UA-83747202-1',
     }
   },
   presets: [
