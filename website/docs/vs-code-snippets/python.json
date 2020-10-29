@@ -1,0 +1,297 @@
+{
+    "Imports Group: Basic": {
+        "prefix": ["import-basic"],
+        "body": [
+            "from azureml.core import Workspace              # connect to workspace",
+            "from azureml.core import Experiment             # connect/create experiments",
+            "from azureml.core import ComputeTarget          # connect to compute",
+            "from azureml.core import Environment            # manage e.g. Python environments",
+            "from azureml.core import Datastore, Dataset     # work with data",
+            "$0"
+        ],
+        "description": "Import collection of basic Azure ML classes"
+    },
+
+    "Import Workspace": {
+        "prefix": ["import-workspace"],
+        "body": [
+            "from azureml.core import Workspace",
+            "$0"
+        ],
+        "description": "Import Workspace class"
+    },
+
+    "Import Compute Target": {
+        "prefix": ["import-compute-target"],
+        "body": [
+            "from azureml.core import ComputeTarget",
+            "$0"
+        ],
+        "description": "Import ComputeTarget class"
+    },
+
+    "Import Environment": {
+        "prefix": ["import-environment"],
+        "body": [
+            "from azureml.core import Environment",
+            "$0"
+        ],
+        "description": "Import Environment class"
+    },
+
+    "Import ScriptRunConfig": {
+        "prefix": ["import-script-run-config", "import-src"],
+        "body": [
+            "from azureml.core import ScriptRunConfig",
+            "$0"
+        ],
+        "description": "Import ScriptRunConfig class"
+    },
+
+    "Import Dataset": {
+        "prefix": ["import-dataset"],
+        "body": [
+            "from azureml.core import Dataset",
+            "$0"
+        ],
+        "description": "Import Dataset class"
+    },
+
+    "Import Datastore": {
+        "prefix": ["import-datastore"],
+        "body": [
+            "from azureml.core import Datastore",
+            "$0"
+        ],
+        "description": "Import Datastore class"
+    },
+
+    "Import Run": {
+        "prefix": ["import-run"],
+        "body": [
+            "from azureml.core import Run",
+            "$0"
+        ],
+        "description": "Import Run class"
+    },
+
+    "Import Conda Dependencies": {
+        "prefix": ["import-conda-dependencies"],
+        "body": [
+            "from azureml.core.conda_dependencies import CondaDependencies",
+            "$0"
+        ],
+        "description": "Import CondaDependencies class"
+    },
+
+    "Get Workspace From Config": {
+        "prefix": ["get-workspace-config", "ws-config"],
+        "body": [
+            "from azureml.core import Workspace",
+            "ws = Workspace.from_config()",
+            "$0"
+        ],
+        "description": "Get Azure ML Workspace from config"
+    },
+
+    "Get Workspace": {
+        "prefix": ["get-workspace", "get-ws"],
+        "body": [
+            "from azureml.core import Workspace",
+            "ws = Workspace.get(",
+            "    name='${1:name}',",
+            "    subscription_id='${2:subscription_id}',",
+            "    resource_group='${3:resource_group}',",
+            ")",
+            "$0"
+        ],
+        "description": "Get Azure ML Workspace"
+    },
+
+    "Get Compute": {
+        "prefix": ["get-compute"],
+        "body": [
+            "from azureml.core import ComputeTarget",
+            "target = ComputeTarget(${2:ws}, '${1:<compute_target_name>}')",
+            "$0"
+        ],
+        "description": "Get Azure ML Compute Target"
+    },
+
+    "Get Compute with SSH": {
+        "prefix": ["get-compute-ssh"],
+        "body": [
+            "from azureml.core.compute import AmlCompute",
+            "from azureml.core.compute_target import ComputeTargetException",
+            "",
+            "ssh_public_key = 'public-key-here'",
+            "compute_config = AmlCompute.provisioning_configuration(",
+            "    vm_size='$2',",
+            "    min_nodes=$3,",
+            "    max_nodes=$4,",
+            "    admin_username='$5',",
+            "    admin_user_ssh_key=ssh_public_key,",
+            "    vm_priority='${6|lowpriority,dedicated|}',",
+            "    remote_login_port_public_access='Enabled',",
+            "    )",
+            "",
+            "cluster = ComputeTarget.create(",
+            "    workspace=${7:workspace_name},",
+            "    name='${8:target_name}',",
+            "    compute_config=compute_config,",
+            ")",
+            "$0"
+        ],
+        "description": "Get Azure ML Compute Target"
+    },
+
+    "Get Environment": {
+        "prefix": ["get-environment"],
+        "body": [
+            "from azureml.core import Environment",
+            "${2:env} = Environment('${1:<env-name>}')",
+            "$0"
+        ],
+        "description": "Get Azure ML Compute Target"
+    },
+
+    "Get Environment From Pip": {
+        "prefix": ["get-environment-pip", "env-pip"],
+        "body": [
+            "from azureml.core import Environment",
+            "env = Environment.from_pip_requirements(",
+            "    name='${1:env_name}',",
+            "    file_path='${2:requirements.txt}',",
+            ")",
+            "$0"
+        ],
+        "description": "Create environment from pip requirements.txt"
+    },
+
+    "Get Environment From Conda": {
+        "prefix": ["get-environment-conda", "env-conda"],
+        "body": [
+            "from azureml.core import Environment",
+            "env = Environment.from_conda_specification(",
+            "    name='${1:env_name}',",
+            "    file_path='${2:env.yml}',",
+            ")",
+            "$0"
+        ],
+        "description": "Create environment from Conda env.yml file"
+    },
+
+    "Get Environment From SDK": {
+        "prefix": ["get-environment-sdk", "env-sdk"],
+        "body": [
+            "from azureml.core import Environment",
+            "from azureml.core.conda_dependencies import CondaDependencies",
+            "env = Environment('${1:my-env}')",
+            "",
+            "conda = CondaDependencies()",
+            "",
+            "# add channels",
+            "conda.add_channel('$2')",
+            "",
+            "# add conda packages",
+            "conda.add_conda_package('$3')",
+            "",
+            "# add pip packages",
+            "conda.add_pip_package('$4')",
+            "",
+            "# add conda dependencies to environment",
+            "env.python.conda_dependencies = conda",
+            "$0"
+        ],
+        "description": "Create environment using CondaDependencies class"
+    },
+
+    "Workspace Compute Targets": {
+        "prefix": ["ws-compute-target"],
+        "body": [
+            "target = ws.compute_targets['${1:target-name}']",
+            "$0"
+        ],
+        "description": "Get compute target from workspace"
+    },
+
+    "Workspace Environments": {
+        "prefix": ["ws-environment"],
+        "body": [
+            "env = ws.environments['${1:env-name}']",
+            "$0"
+        ],
+        "description": "Get environment from workspace"
+    },
+
+    "Workspace Datastores": {
+        "prefix": ["ws-datastore"],
+        "body": [
+            "datastore = ws.datastores['${1:datastore-name}']",
+            "$0"
+        ],
+        "description": "Get datastore from workspace"
+    },
+
+    "Workspace Datasets": {
+        "prefix": ["ws-dataset"],
+        "body": [
+            "dataset = ws.datasets['${1:dataset-name}']",
+            "$0"
+        ],
+        "description": "Get dataset from workspace"
+    },
+
+    "Workspace Experiment": {
+        "prefix": ["ws-experiment"],
+        "body": [
+            "exp = ws.experiments['${1:experiment-name}']",
+            "$0"
+        ],
+        "description": "Get (existing) experiment from workspace"
+    },
+
+    "Workspace Models": {
+        "prefix": ["ws-model"],
+        "body": [
+            "model = ws.models['${1:model-name}']",
+            "$0"
+        ],
+        "description": "Get model from workspace"
+    },
+
+    "Script Run Config": {
+        "prefix": ["script-run-config"],
+        "body": [
+            "from azureml.core import Workspace, Experiment, ScriptRunConfig",
+            "",
+            "# get workspace",
+            "ws = Workspace.from_config()",
+            "",
+            "# get compute target",
+            "target = ws.compute_targets['${1:target-name}']",
+            "",
+            "# get registered environment",
+            "env = ws.environments['${2:env-name}']",
+            "",
+            "# get/create experiment",
+            "exp = Experiment(ws, '${3:experiment_name}')",
+            "",
+            "# set up script run configuration",
+            "config = ScriptRunConfig(",
+            "    source_directory='${4:.}',",
+			"    script='${5:script.py}',",
+			"    compute_target=target,",
+			"    environment=env,",
+			"    arguments=[${6:'--meaning', 42}],",
+            ")",
+            "",
+            "# submit script to AML",
+            "run = exp.submit(config)",
+            "print(run.get_portal_url()) # link to ml.azure.com",
+            "run.wait_for_completion(show_output=True)",
+            "$0"
+        ],
+        "description": "Set up ScriptRunConfig including compute target, environment and experiment"
+    }
+}
