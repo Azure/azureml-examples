@@ -44,18 +44,18 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Documentation',
+          title: 'Reference',
           items: [
             {
               label: 'Microsoft Docs',
               href: 'https://docs.microsoft.com/azure/machine-learning',
             },
             {
-              label: 'GitHub',
+              label: 'GitHub Examples',
               href: 'https://github.com/Azure/azureml-examples',
             },
             {
-              label: 'Python SDK API',
+              label: 'Python SDK Docs',
               href: 'https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py'
             }
           ],
@@ -79,10 +79,6 @@ module.exports = {
             {
               label: 'Blog',
               to: 'blog',
-            },
-            {
-              label: 'User Guide',
-              to: 'docs/userguide/',
             }
           ],
         },
