@@ -1,23 +1,25 @@
 import json
 from typing import List
 
+
 class Snippet:
-    '''Handle json snippets
+    """Handle json snippets
     
     Parse json (VS Code) snippets file and generate markdown summary.
-    '''
+    """
+
     def __init__(self, name, snippet_json):
         self.name = name
-        self.description = snippet_json.get('description')
-        self.prefix = self._read_prefix(snippet_json.get('prefix'))
-        self.body = snippet_json.get('body')
+        self.description = snippet_json.get("description")
+        self.prefix = self._read_prefix(snippet_json.get("prefix"))
+        self.body = snippet_json.get("body")
 
     def __repr__(self):
-        return f'Snippet({self.name})'
+        return f"Snippet({self.name})"
 
     @staticmethod
     def _read_prefix(prefix):
-        '''Guarentee prefix is of type List.'''
+        """Guarentee prefix is of type List."""
         if type(prefix) == list:
             return prefix
         else:
@@ -25,37 +27,37 @@ class Snippet:
             return [prefix]
 
     def to_markdown(self) -> List[str]:
-        '''Convert snippet to markdown (as list of lines).'''
+        """Convert snippet to markdown (as list of lines)."""
         lines = []
 
         # add heading
-        heading = f'### {self.name}'
+        heading = f"### {self.name}"
         lines.append(heading)
-        lines.append('')
-        
+        lines.append("")
+
         # add description
-        description = f'Description: {self.description}'
+        description = f"Description: {self.description}"
         lines.append(description)
-        lines.append('')
+        lines.append("")
 
         # add prefix(es)
         if len(self.prefix) > 1:
-            prefix = f'Prefixes: '
+            prefix = f"Prefixes: "
         else:
-            prefix = f'Prefix: '
+            prefix = f"Prefix: "
         for p in self.prefix:
-            prefix += f'`{p}`, '
-        prefix = prefix[:-2] # remove trailing comma and whitespace
+            prefix += f"`{p}`, "
+        prefix = prefix[:-2]  # remove trailing comma and whitespace
         lines.append(prefix)
-        lines.append('')
+        lines.append("")
 
         # add python snippet
-        lines.append('```python')
+        lines.append("```python")
         for line in self.body:
-            if line == '$0':
+            if line == "$0":
                 continue
             lines.append(line)
-        lines.append('```')
+        lines.append("```")
 
         return lines
 
@@ -69,7 +71,8 @@ class Snippet:
         json_body.append(line)
         return json_body
 
-frontmatter = '''---
+
+frontmatter = """---
 title: VS Code Snippets
 description: A collection of VS Code Snippets for working with Azure ML.
 ---
@@ -83,12 +86,12 @@ To add these snippets to your VS Code: `ctrl+shift+p` > Type 'Configure user
 snippets' > Select `python.json`. All of these snippets are available here:
 [python.json](https://github.com/Azure/azureml-examples/blob/main/website/docs/vs-code-snippets/python.json)
 
-'''
+"""
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # parse snippets
-    with open('python.json') as f:
+    with open("python.json") as f:
         snippets_file = json.load(f)
 
     snippets = []
@@ -97,8 +100,8 @@ if __name__ == '__main__':
         snippets.append(snippet)
 
     # create file and write frontmatter
-    md_filename = 'snippets.md'
-    with open(md_filename, 'w') as f:
+    md_filename = "snippets.md"
+    with open(md_filename, "w") as f:
         # write frontmatter
         f.writelines(frontmatter)
 
@@ -106,4 +109,4 @@ if __name__ == '__main__':
         for snippet in snippets:
             lines = snippet.to_markdown()
             for line in lines:
-                f.write(line + '\n')
+                f.write(line + "\n")
