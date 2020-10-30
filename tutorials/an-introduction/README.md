@@ -1,3 +1,3 @@
 # An introduction
 
-description: learn the basics of Azure Machine Learning and more!
+description: learn the basics of Azure Machine Learning
