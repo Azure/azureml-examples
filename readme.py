@@ -6,7 +6,9 @@ import argparse
 
 # issue #146
 if "posix" not in os.name:
-    print("windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)")
+    print(
+        "windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)"
+    )
     exit(1)
 
 # setup argparse
