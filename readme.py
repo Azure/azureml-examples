@@ -276,6 +276,12 @@ for nb in notebooks:
     with open(nb, "w") as f:
         json.dump(data, f, indent=1)
 
+# run code formatter on .py files
+os.system("black .")
+
+# run code formatter on .ipynb files
+os.system("black-nb --clear-output .")
+
 # read in README.md for comparison
 with open("README.md", "r") as f:
     before = f.read()
@@ -290,12 +296,6 @@ with open("README.md", "w") as f:
 # read in README.md for comparison
 with open("README.md", "r") as f:
     after = f.read()
-
-# run code formatter on .py files
-os.system("black .")
-
-# run code formatter on .ipynb files
-os.system("black-nb --clear-output .")
 
 # check if README.md file matches before and after
 if args.check_readme and before != after:
