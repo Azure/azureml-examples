@@ -24,6 +24,8 @@ jobs:
       run: black --check .
     - name: check notebook format
       run: black-nb --clear-output --check .
+    - name: check readme
+      run: python readme.py --check-readme True
     - name: azure login
       uses: azure/login@v1
       with:

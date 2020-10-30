@@ -13,6 +13,7 @@ if "posix" not in os.name:
 
 # setup argparse
 parser = argparse.ArgumentParser()
+parser.add_argument("--check-readme", type=bool, default=False)
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
@@ -258,13 +259,6 @@ for ex in examples:
                 compute = "unknown"
             deploy_table += f"[{ex}]({ex})|{compute}|{desc}\n"
 
-# write README.md file
-print("writing README.md...")
-with open("README.md", "w") as f:
-    f.write(
-        prefix + tutorial_table + notebook_table + train_table + deploy_table + suffix
-    )
-
 # glob all notebooks
 notebooks = sorted(glob.glob("**/**/*.ipynb"))
 
@@ -282,9 +276,28 @@ for nb in notebooks:
     with open(nb, "w") as f:
         json.dump(data, f, indent=1)
 
+# read in README.md for comparison
+with open("README.md", "r") as f:
+    before = f.read()
+
+# write README.md file
+print("writing README.md...")
+with open("README.md", "w") as f:
+    f.write(
+        prefix + tutorial_table + notebook_table + train_table + deploy_table + suffix
+    )
+
+# read in README.md for comparison
+with open("README.md", "r") as f:
+    after = f.read()
 
 # run code formatter on .py files
 os.system("black .")
 
 # run code formatter on .ipynb files
 os.system("black-nb --clear-output .")
+
+# check if README.md file matches before and after
+if args.check_readme and before != after:
+    print("README.md file did not match...")
+    exit(2)
