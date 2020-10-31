@@ -5,6 +5,7 @@ channels:
 dependencies:
   - python=3.8.5
   - pip
+  - lz4
   - pip:
     - azureml-mlflow
     - azureml-dataprep
@@ -16,7 +17,6 @@ dependencies:
     - mpi4py
     - adlfs
     - fsspec
-    - lz4
     - optuna
     - dask_optuna
     - lightgbm
