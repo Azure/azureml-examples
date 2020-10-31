@@ -178,6 +178,9 @@ on:
     paths:
       - "examples/**"
       - "code/**"
+      - "environments/**"
+      - "mlprojects/**"
+      - "data/**"
   schedule:
       - cron: "0 0/2 * * *"
 jobs:
