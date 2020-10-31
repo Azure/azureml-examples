@@ -18,7 +18,7 @@ jobs:
       with:
         python-version: "3.8"
     - name: install snappy
-      run: sudo apt-get install libsnappy-dev
+      run: sudo apt-get install libsnappy-dev liblz4-tool
     - name: pip install
       run: pip install -r requirements.txt
     - name: azure login
