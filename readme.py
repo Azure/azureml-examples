@@ -4,14 +4,22 @@ import json
 import glob
 import argparse
 
+# issue #146
+if "posix" not in os.name:
+    print(
+        "windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)"
+    )
+    exit(1)
+
 # setup argparse
 parser = argparse.ArgumentParser()
+parser.add_argument("--check-readme", type=bool, default=False)
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
-with open("docs/data/prefix.md", "r") as f:
+with open("data/markdowns/prefix.md", "r") as f:
     prefix = f.read()
-with open("docs/data/suffix.md", "r") as f:
+with open("data/markdowns/suffix.md", "r") as f:
     suffix = f.read()
 
 tutorial_table = """
@@ -110,10 +118,6 @@ jobs:
         python-version: "3.8"
     - name: pip install
       run: pip install -r requirements.txt
-    - name: check code format
-      run: black --check .
-    - name: check notebook format
-      run: black-nb --clear-output --check .
     - name: azure login
       uses: azure/login@v1
       with:
@@ -165,12 +169,18 @@ on:
     paths:
       - "examples/**"
       - "code/**"
+      - "environments/**"
+      - "mlprojects/**"
+      - "data/**"
   pull_request:
     branches:
       - main
     paths:
       - "examples/**"
       - "code/**"
+      - "environments/**"
+      - "mlprojects/**"
+      - "data/**"
   schedule:
       - cron: "0 0/2 * * *"
 jobs:
@@ -188,10 +198,6 @@ jobs:
         python-version: "3.8"
     - name: pip install
       run: pip install -r requirements.txt
-    - name: check code format
-      run: black --check .
-    - name: check notebook format
-      run: black-nb --clear-output --check .
     - name: azure login
       uses: azure/login@v1
       with:
@@ -256,13 +262,6 @@ for ex in examples:
                 compute = "unknown"
             deploy_table += f"[{ex}]({ex})|{compute}|{desc}\n"
 
-# write README.md file
-print("writing README.md...")
-with open("README.md", "w") as f:
-    f.write(
-        prefix + tutorial_table + notebook_table + train_table + deploy_table + suffix
-    )
-
 # glob all notebooks
 notebooks = sorted(glob.glob("**/**/*.ipynb"))
 
@@ -280,9 +279,28 @@ for nb in notebooks:
     with open(nb, "w") as f:
         json.dump(data, f, indent=1)
 
-
 # run code formatter on .py files
 os.system("black .")
 
 # run code formatter on .ipynb files
 os.system("black-nb --clear-output .")
+
+# read in README.md for comparison
+with open("README.md", "r") as f:
+    before = f.read()
+
+# write README.md file
+print("writing README.md...")
+with open("README.md", "w") as f:
+    f.write(
+        prefix + tutorial_table + notebook_table + train_table + deploy_table + suffix
+    )
+
+# read in README.md for comparison
+with open("README.md", "r") as f:
+    after = f.read()
+
+# check if README.md file matches before and after
+if args.check_readme and before != after:
+    print("README.md file did not match...")
+    exit(2)

@@ -1,10 +1,45 @@
 ---
 title: Environment
+description: Guide to working with Python environments in Azure ML.
+keywords:
+  - environment
+  - python
+  - conda
+  - pip
+  - docker
+  - environment variables
 ---
 
-## Create Environments
+## Azure ML Environment
+Your jobs on Azure ML are reproducible, portable and can be easily scaled up to different compute targets. With this philosophy, Azure ML heavily relies on container to encapsulate the environment where your python script and [shell commands](#advanced-shell-initialization-script) will run. For majority of use cases, the environment 
+consists of a base docker image and a conda environment (including pip dependencies). For R users there is also a setting for [R CRAN packages](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.rcranpackage?view=azure-ml-py) which we won't get into detail here. 
 
-Easily create, maintain and share Python environments with pip and Conda, or directly from the Python SDK.
+Azure ML provides the following options:
+1. (Default but not so useful) If user doesn't customize an environment object when submitting their run, Azure ML will use a default container image, with only one python package called `azureml-defaults` which includes only Azure ML  essentials. 
+2. Use one of the [curated environment](https://docs.microsoft.com/en-us/azure/machine-learning/resource-curated-environments).
+3. Use one of the [default base image](https://github.com/Azure/AzureML-Containers), and ask Azure ML to manage Conda dependencies by [providing a `CondaDependencies` object](#create-conda-dependencies). 
+4. Use a previously [registered environment](#registered-environments).
+5. Use a [custom docker image or dockerfile](#advanced-custom-docker-images). User can either use a python environment in the image directly by using this as the docker base image for the environment and set `user_managed_dependencies=True`, in this case Azure ML won't be able to manage and add extra python dependencies. Or user can ask Azure ML to manage Conda dependencies by [providing a `CondaDependencies` object](#create-conda-dependencies). 
+
+:::tip
+When the conda dependencies are managed by Azure ML (`user_managed_dependencies=False`, by default), Azure ML will check whether the same environment has already been materialized into a docker image in the Azure Container Registry associated with the Azure ML workspace. If it is a new environment, Azure ML will have a job preparation stage to build
+a new docker image for the new environment. user can see a image build log file in the logs and monitor the image build progress. The job won't start until the image is built and pushed to the container registry. 
+
+This image building process can take some time and delay your job start. To avoid unnecessary image building, consider
+1. Register an environment that contains most packages you need and reuse when possible.
+2. If you only need a few extra packages on top of an existing environment, 
+    1. If the existing environment is a docker image, use a dockerfile from this docker image so you only need to add one layer to install a few extra packagers. 
+    2. Install extra python packages in your user script so the package installation happens in the script run as part of your code instead of asking Azure ML to treat them as part of a new environment. Consider using a [setup script](#advanced-shell-initialization-script).
+:::
+
+:::info
+Due to intricacy of the python package dependencies and potential version conflict, we recommend users to understand the [image building process](#how-azure-ml-build-image-from-a-environment) and use custom docker image and dockerfiles (based on Azure ML base images) to manage your own python environment. This practice not only gives users full transparency of the environment, but also saves image building times at agile development stage. 
+:::
+
+
+## Create Conda Dependencies
+
+Easily create, maintain and share Python environments with **pip** and **Conda**, or directly from the **Python SDK**.
 
 ### From pip
 
@@ -75,7 +110,7 @@ dependencies:
 - python=3.7
 
 - pip:
-    # Required packages for AzureML execution, history, and data preparation.
+    # Required packages for Azure ML execution, history, and data preparation.
   - azureml-defaults
 
   - pyyaml
@@ -89,39 +124,38 @@ channels:
 
 ## Registered Environments
 
-Register an environment `env: Environment` to your workspace to reuse/share with your team.
+Register an environment `env: Environment` to your workspace `ws` to reuse/share with your team.
 
 ```python
 env.register(ws)
 ```
 
-To see the registerd Environments already available:
+To see the registered Environments already available:
 
 ```python
-from azureml.core import Environment
-envs: Dict[str, Environment] = Environment.list(ws)
+envs: Dict[str, Environment] = ws.environments
 
 for name, env in envs.items():
     print(name)
-# AzureML-Chainer-5.1.0-GPU
-# AzureML-Scikit-learn-0.20.3
-# AzureML-PyTorch-1.1-GPU
+# Azure ML-Chainer-5.1.0-GPU
+# Azure ML-Scikit-learn-0.20.3
+# Azure ML-PyTorch-1.1-GPU
 # ...
 ```
 
 This list contains custom environments that have been registered to the workspace as well as a
 collection of _curated environments_ maintained by the Azure ML team.
 
-List the conda dependencies for a given environment, for example in 'AzureML-Chainer-5.1.0-GPU':
+List the conda dependencies for a given environment, for example in 'Azure ML-Chainer-5.1.0-GPU':
 
 ```python
-env = envs['AzureML-PyTorch-1.1-GPU']
+env = ws.environments['Azure ML-PyTorch-1.1-GPU']
 print(env.python.conda_dependencies.serialize_to_string())
 ```
 
 Which returns the following.
 
-```yaml title="AzureML-PyTorch-1.1-GPU Conda Dependencies"
+```yaml title="Azure ML-PyTorch-1.1-GPU Conda Dependencies"
 channels:
 - conda-forge
 dependencies:
@@ -143,7 +177,7 @@ name: azureml_eb61e39e20e87ad998ae2c88df1dd0af
 
 ## Save / Load Environments
 
-Save an environment to a local directory
+Save an environment to a local directory:
 
 ```python
 env.save_to_directory('<path/to/local/directory>', overwrite=True)
@@ -152,7 +186,7 @@ env.save_to_directory('<path/to/local/directory>', overwrite=True)
 This will generate a directory with two (human-understandable and editable) files:
 
 - `azureml_environment.json` : Metadata including name, version, environment variables and Python and Docker configuration
-- `conda_dependencies.yml` : Standard conda dependencies YAML e.g. `$ conda create -f conda_dependencies.yml`
+- `conda_dependencies.yml` : Standard conda dependencies YAML (for more deatils see [Conda docs](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file)).
 
 Load this environment later with
 
@@ -160,7 +194,7 @@ Load this environment later with
 env = Environment.load_from_directory('<path/to/local/directory>')
 ```
 
-## (Advanced) Azure ML Dockerfiles
+## How Azure ML Build Image from a Environment
 
 This section explains how Azure ML builds its docker image based on an `Environment`.
 
@@ -185,10 +219,8 @@ env = Environment.from_conda_specification('pytorch', 'env.yml')
 env.register(ws)
 ```
 
-In order to consume this environment in, say, a remote run, Azure ML builds a docker image
-that creates the corresponding python environment.
-
-The dockerfile used to build this image is available directly from the environment object.
+In order to consume this environment, Azure ML builds a corresponding docker image. This dockerfile
+is available as part of the `Environment` object `env`:
 
 ```python
 details = env.get_image_details(ws)
@@ -209,7 +241,7 @@ RUN ldconfig /usr/local/cuda/lib64/stubs && conda env create -p /azureml-envs/az
 f azureml-environment-setup/mutated_conda_dependencies.yml && rm -rf "$HOME/.cache/pip" && conda clean -aqy && CONDA_ROO
 T_DIR=$(conda info --root) && rm -rf "$CONDA_ROOT_DIR/pkgs" && find "$CONDA_ROOT_DIR" -type d -name __pycache__ -exec rm
  -rf {} + && ldconfig
-# AzureML Conda environment name: azureml_7459a71437df47401c6a369f49fbbdb6
+# Azure ML Conda environment name: azureml_7459a71437df47401c6a369f49fbbdb6
 ENV PATH /azureml-envs/azureml_7459a71437df47401c6a369f49fbbdb6/bin:$PATH
 ENV AZUREML_CONDA_ENVIRONMENT_PATH /azureml-envs/azureml_7459a71437df47401c6a369f49fbbdb6
 ENV LD_LIBRARY_PATH /azureml-envs/azureml_7459a71437df47401c6a369f49fbbdb6/lib:$LD_LIBRARY_PATH
@@ -222,13 +254,13 @@ CMD ["bash"]
 Notice:
 
 - The base image here is a standard image maintained by Azure ML. Dockerfiles for all base images are available on
-github: https://github.com/Azure/AzureML-Containers
-- The dockerfile references `mutated_conda_dependencies.yml` to build the Python environment via Conda.
+github: https://github.com/Azure/AzureML-Containers . You can also use your own docker image as base image. 
+- The dockerfile references `mutated_conda_dependencies.yml` to build the Python environment via Conda. 
 
 Get the contents of `mutated_conda_dependencies.yml` from the environment:
 
 ```python
-print(env.python.conda_dependencies.serialize_to_string())
+env.python.conda_dependencies.serialize_to_string()
 ```
 
 Which looks like
@@ -242,6 +274,12 @@ dependencies:
     - pytorch
     - torchvision
 name: azureml_7459a71437df47401c6a369f49fbbdb6
+```
+
+If you have docker installed locally, you can build the docker image from Azure ML environment locally with option to push the image to workspace ACR directly. This is recommended when users are iterating on the dockerfile since local build can 
+utilize cached layers. 
+```python
+build = env.build_local(workspace=ws, useDocker=True, pushImageToWorkspaceAcr=True)
 ```
 
 ## (Advanced) Custom Docker Images
@@ -263,17 +301,21 @@ print(details['ingredients']['dockerfile'])
 Dockerfiles for all base images are available on github: https://github.com/Azure/AzureML-Containers
 :::
 
-You may chose to use your own Docker image. In this case there are two options:
+You may chose to use your own Docker image. In this case there are two options for python environment:
 
-- Install python packages on top of the custom base docker image provided
-- Install python packages within the custom base docker image provided
+- Ask Azure ML to manage a new conda environment custom base docker image provided
+- Use a python environment already exists in the custom base docker image provided
 
 ### Requirements for custom image
 
-- **Conda**: Azure ML uses Conda to manage python environments by default
+We strongly recommend user to build their custom image from one of the Azure ML base images. If user wants to build from scratch, here are a list of requirements and recommendations to keep in mind:
+- **Conda**: Azure ML uses Conda to manage python environments by default. If you intent to allow Azure ML to manage the python environment, Conda is required. 
 - **libfuse**: Required when using `Dataset`
 - **Openmpi**: Required for distributed runs
 - **nvidia/cuda**: (Recommended) For GPU-based training build image from [nvidia/cuda](https://hub.docker.com/r/nvidia/cuda)
+- **Mellanox OFED user space drivers** (Recommend) For SKUs with Infiniband 
+
+We suggest users to look at the [dockerfiles of Azure ML base images](https://github.com/Azure/AzureML-Containers) as references.  
 
 ### Provide Python packages to the custom image
 
@@ -331,14 +373,28 @@ In this case you need to:
 ```python
 env = Environment('pytorch')    # create an Environment called 'pytorch'
 
-# set up custom docker image
-env.docker.base_image = None
+# set up custom docker image or a dockerfile
+# env.docker.base_image = "mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04"
+# or set up base image from a dockerfile
 env.docker.base_dockerfile = "./Dockerfile"
 
 # indicate how to run Python
 env.python.user_managed_dependencies=True
 env.python.interpreter_path = "/opt/miniconda/bin/python"
 ```
+### Use custom image from a private registry
+
+Azure ML Environment can use a Custom image from a private registry as long as login information are provided. 
+
+```python
+env = Environment('myenv') # create an Environment called 'myenv'
+env.docker.base_image = "/my/private/img:tag",  #image repository path
+env.docker.base_image_registry.address = "myprivateacr.azurecr.io"  # private registry
+# Retrieve username and password from the workspace key vault
+env.docker.base_image_registry.username = ws.get_default_keyvault().get_secret("username")  
+env.docker.base_image_registry.password = ws.get_default_keyvault().get_secret("password")
+```
+
 
 ## (Advanced) Environment Variables
 
@@ -354,10 +410,13 @@ env.environment_variables['EXAMPLE_ENV_VAR'] = 'EXAMPLE_VALUE'
 
 A useful pattern is to run shell scripts on Azure ML compute to prepare the nodes.
 
-We create two shell scripts:
+In this example we show how to use initialization shell scripts for both **individual nodes** as well
+as **each process**:
 
-- `setup.sh` : This will run only on local_rank 0 process.
-- `run.sh` : This will run on each process.
+- `setup.sh`: This will run only on local_rank 0 process (i.e., once per node)
+  - Run a utility script `download_data.py` to download training data to the node
+- `run.sh` : This will run on each process
+  - 
 
 These scripts will run ahead of our main python call to `train.py`.
 
@@ -380,26 +439,60 @@ This script runs `download_data.py` which downloads training data to the specifi
 directory `/tmp/data`.
 
 In this example the data should be downloaded once per node in the compute cluster (not once
-per process!).
+per process!). 
 
-```bash title="run.py"
+```bash title="run.sh"
 python train.py --training_data /tmp/data --learning_rate 1e-6
 ```
 
 This is the main call to the training script and needs to be called by each process. The data
 downloaded by `download_data.py` is referenced as a command-line argument.
 
-Finally, prepare a wrapper script to execute the above.
+Finally, prepare a wrapper script to execute the above. Notice the wrapper script takes a great deal of care to make sure `setup.sh` only
+executed once in each node and when there are multiple processes per node other nodes will wait when `setup.sh` is executing. A marker file is used
+to mimic a barrier so all processes are in sync.  
 
 ```python title="aml_wrapper.py"
 #!/usr/bin/env python
 import os
+import pathlib
+import sys
+import time
 
-if "OMPI_COMM_WORLD_LOCAL_RANK" in os.environ:
+MARKER = pathlib.Path("/tmp/.aml_setup_done")
+
+def run_command(*files, verbose=False):
+  lines = []
+  for file in files:
+    if not os.path.exists(file):
+      print("No file %s", file)
+      return 1
+
+    with open(file, 'rt') as f:
+      script = f.read()
+      script = script.replace('\r', '')  # for Windows submissions
+      lines.extend(script.split('\n'))
+
+  print("Executing", *files)
+  if verbose:
+    lines.insert(0, "set -o xtrace")
+  return os.system(";".join(lines))
+
+if __name__ == "__main__":
+
+  if "OMPI_COMM_WORLD_LOCAL_RANK" in os.environ:
     if os.environ["OMPI_COMM_WORLD_LOCAL_RANK"] == "0":
-        os.system('./setup.sh')
+      try:
+        run_command("./setup.sh", verbose=True)
+      finally:
+        MARKER.touch(exist_ok=True)
+    while not MARKER.exists():
+      time.sleep(1)
 
-os.system('./run.sh')
+    sys.exit(run_command("./run.sh", verbose=False) >> 8)
+
+  return_code = run_command("./setup.sh", "./run.sh")
+  sys.exit(return_code >> 8)
 ```
 
 Submit this to a `ComputeTarget` with `ScriptRunConfig`.

@@ -27,10 +27,6 @@ jobs:
         python-version: "3.8"
     - name: pip install
       run: pip install -r requirements.txt
-    - name: check code format
-      run: black --check .
-    - name: check notebook format
-      run: black-nb --clear-output --check .
     - name: azure login
       uses: azure/login@v1
       with:

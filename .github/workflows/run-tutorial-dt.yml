@@ -19,10 +19,6 @@ jobs:
         python-version: "3.8"
     - name: pip install
       run: pip install -r requirements.txt
-    - name: check code format
-      run: black --check .
-    - name: check notebook format
-      run: black-nb --clear-output --check .
     - name: azure login
       uses: azure/login@v1
       with:
@@ -33,5 +29,5 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.densenet-local.ipynb
       run: papermill tutorials/deploy-triton/1.densenet-local.ipynb - -k python
-    - name: run 2.train-multi-gpu.ipynb
+    - name: run 2.bidaf-aks-v100.ipynb
       run: papermill tutorials/deploy-triton/2.bidaf-aks-v100.ipynb - -k python

@@ -13,3 +13,4 @@ dependencies:
     - mlflow
     - matplotlib
     - azureml-mlflow
+    - azureml-dataprep

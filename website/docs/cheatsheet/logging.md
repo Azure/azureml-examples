@@ -1,5 +1,9 @@
 ---
 title: Metrics
+description: Guide to metric logging in Azure ML.
+keywords:
+  - metric
+  - logging
 ---
 
 ## Logging metrics

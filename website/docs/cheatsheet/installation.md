@@ -1,5 +1,13 @@
 ---
 title: Installation
+description: Guide to installing Azure ML Python SDK and setting up key resources.
+keywords:
+  - azureml-sdk
+  - installation
+  - workspace
+  - compute
+  - cpu
+  - gpu
 ---
 
 Install the Azure ML Python SDK:
