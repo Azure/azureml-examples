@@ -1,5 +1,7 @@
 # Using models on Edge device with Kubernetes.
 
+description: learn how to use Kubernetes on Edge device for deployment and inferencing
+
 This section guides you through the steps needed to deploy a model for inferencing in GPU-enabled Kubernetes cluster on Edge device.
 
 ## Prerequisites

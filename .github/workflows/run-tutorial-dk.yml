@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/using-k8sedge/**
+      - tutorials/deploy-k8sedge/**
   schedule:
     - cron: "0 9 * * *"
 jobs:
