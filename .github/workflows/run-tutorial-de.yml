@@ -31,5 +31,5 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
-    - name: run production-deploy-to-ase-gpu.ipynb
-      run: papermill tutorials/deploy-edge/production-deploy-to-ase-gpu.ipynb - -k python
+    - name: run ase-gpu.ipynb
+      run: papermill tutorials/deploy-edge/ase-gpu.ipynb - -k python
