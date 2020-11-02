@@ -1,4 +1,7 @@
 # Model Deployment with Azure ML service to Azure stack edge using Iot edge
+
+description: learn how to use Edge device for deployment and inferencing
+
 You can use Azure Machine Learning to package, debug, validate and deploy inference containers to a variety of compute targets. This process is known as "MLOps" (ML operationalization). Here we will show you how you can deploy a model from cloud to Azure stack edge device using IoT Edge.
 For more information please check out this article: https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-machine-learning-edge-04-train-model
 
@@ -9,5 +12,5 @@ you also need to get you Azure stacck edge setup and run a sample a gpu sample a
 
 
 ## Deploy to the Azure stack edge
-You can deploy to the Azure stack edge as 
+You can deploy to the Azure stack edge as
 - Notebook example: [model-register-and-deploy](./production-deploy-to-ase-gpu.ipynb).
