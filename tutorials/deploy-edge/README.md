@@ -10,6 +10,6 @@ You also need to get you Azure Stack Edge setup and run a sample a gpu sample: h
 
 ## Deploy to the Azure stack edge
 
-You can deploy to the Azure stack edge as
+In this tutorial, you'll find notebooks to:
 
-* [model-register-and-deploy](ase-gpu.ipynb)
+* [register and deploy resnet50 model to GPU on Azure Stack Edge](ase-gpu.ipynb)
