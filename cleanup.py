@@ -23,7 +23,10 @@ for compute_target in ws.compute_targets:
             pass
     elif (
         "dask-ct" in compute_target
-        and ws.compute_targets[compute_target].get_status() in ["Succeeded"]
+        and ws.compute_targets[compute_target]
+        .get_status()
+        .serialize()["provisioningState"]
+        in ["Succeeded"]
         and len(ws.compute_targets[compute_target].list_nodes()) == 0
     ):
         ws.compute_targets[compute_target].delete()
