@@ -152,9 +152,6 @@ A notebook is a self-contained example written as a `.ipynb` file.
 
 Checklist:
 
-- [ ] is it interactive?
-- [ ] does it need to be a notebook?
-- [ ] are you sure? why?
 - [ ] add notebook with description to `notebooks/`
 - [ ] run `readme.py`
 - [ ] test
