@@ -87,7 +87,7 @@ PRs must include necessary changes to any testing to ensure:
 
 * `environment_name` = "framework-example|tutorial" e.g. "pytorch-example"
 * `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
-* `compute_name` = "compute-defined-in-setup.py" e.g. "gpu-K80-2"
+* `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
 * `ws = Workspace.from_config()`
 * `dstore = ws.get_default_datastore()`
 * `ds = Dataset.File.from_files(...)`
