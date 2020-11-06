@@ -68,7 +68,7 @@ src = ScriptRunConfig(
     script=script_name,
     arguments=arguments,
     environment=env,
-    comput_target=compute_name,
+    compute_target=compute_name,
     distributed_job_config=mpi_config,
 )
 
