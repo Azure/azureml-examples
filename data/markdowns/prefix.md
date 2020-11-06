@@ -1,6 +1,6 @@
 # Azure Machine Learning (AML) Examples
 
-[![run-examples-badge](https://github.com/Azure/azureml-examples/workflows/run-examples/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-examples)
+[![run-workflows-badge](https://github.com/Azure/azureml-examples/workflows/run-workflows/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-workflows)
 [![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -43,11 +43,12 @@ This example repo is structured for real ML projects. You can utilize the struct
 |`code`|ML code organized by scenario (train, deploy, etc.) then tool (pytorch, tensorflow, etc.)|
 |`data`|**not recommended** - used for convenient data for examples - data should not be stored directly in a repository|
 |`environments`|environment definition files such as conda yaml, pip txt, or dockerfile|
-|`examples`|AML control plane specification (currently Python scripts, eventually yaml) organized by scenario (train, deploy, etc.)|
+|`workflows`|AML control plane specification (currently Python scripts, eventually yaml) organized by scenario (train, deploy, etc.)|
 |`mlprojects`|mlflow project specifications|
 |`models`|**not recommended** - used for convenient models for examples - models should not be stored directly in a repository|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|**not recommended** - end to end tutorials|
+|`website`|**not recommended** - used for hosting website|
 
 ## Getting started
 

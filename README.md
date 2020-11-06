@@ -1,6 +1,6 @@
 # Azure Machine Learning (AML) Examples
 
-[![run-examples-badge](https://github.com/Azure/azureml-examples/workflows/run-examples/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-examples)
+[![run-workflows-badge](https://github.com/Azure/azureml-examples/workflows/run-workflows/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-workflows)
 [![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -43,11 +43,12 @@ This example repo is structured for real ML projects. You can utilize the struct
 |`code`|ML code organized by scenario (train, deploy, etc.) then tool (pytorch, tensorflow, etc.)|
 |`data`|**not recommended** - used for convenient data for examples - data should not be stored directly in a repository|
 |`environments`|environment definition files such as conda yaml, pip txt, or dockerfile|
-|`examples`|AML control plane specification (currently Python scripts, eventually yaml) organized by scenario (train, deploy, etc.)|
+|`workflows`|AML control plane specification (currently Python scripts, eventually yaml) organized by scenario (train, deploy, etc.)|
 |`mlprojects`|mlflow project specifications|
 |`models`|**not recommended** - used for convenient models for examples - models should not be stored directly in a repository|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|**not recommended** - end to end tutorials|
+|`website`|**not recommended** - used for hosting website|
 
 ## Getting started
 
@@ -77,7 +78,7 @@ path|status|notebooks|description
 [using-pytorch-lightning](tutorials/using-pytorch-lightning)|[![using-pytorch-lightning](https://github.com/Azure/azureml-examples/workflows/run-tutorial-upl/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-upl)|[1.train-single-node.ipynb](tutorials/using-pytorch-lightning/1.train-single-node.ipynb)<br>[2.log-with-tensorboard.ipynb](tutorials/using-pytorch-lightning/2.log-with-tensorboard.ipynb)<br>[3.log-with-mlflow.ipynb](tutorials/using-pytorch-lightning/3.log-with-mlflow.ipynb)<br>[4.train-multi-node-ddp.ipynb](tutorials/using-pytorch-lightning/4.train-multi-node-ddp.ipynb)|learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning)
 [using-rapids](tutorials/using-rapids)|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ur/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ur)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|learn how to accelerate PyData tools (numpy, pandas, scikit-learn, etc) on NVIDIA GPUs with [rapids](https://github.com/rapidsai)
 
-**Jupyter Notebooks**
+**Notebooks**
 path|description
 -|-
 [notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|use AML and mlflow to track interactive experimentation in the cloud
@@ -85,26 +86,26 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[examples/train/deepspeed-cifar.py](examples/train/deepspeed-cifar.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
-[examples/train/fastai-mnist-mlproject.py](examples/train/fastai-mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
-[examples/train/fastai-mnist.py](examples/train/fastai-mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
-[examples/train/fastai-pets.py](examples/train/fastai-pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
-[examples/train/lightgbm-iris.py](examples/train/lightgbm-iris.py)|AML - CPU|pip|train a lightgbm model on iris data
-[examples/train/pytorch-mnist-mlproject.py](examples/train/pytorch-mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
-[examples/train/pytorch-mnist.py](examples/train/pytorch-mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
-[examples/train/sklearn-diabetes-mlproject.py](examples/train/sklearn-diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
-[examples/train/sklearn-diabetes.py](examples/train/sklearn-diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
-[examples/train/tensorflow-iris.py](examples/train/tensorflow-iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
-[examples/train/tensorflow-mnist-distributed-horovod.py](examples/train/tensorflow-mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
-[examples/train/tensorflow-mnist-distributed.py](examples/train/tensorflow-mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
-[examples/train/tensorflow-mnist.py](examples/train/tensorflow-mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
-[examples/train/xgboost-iris.py](examples/train/xgboost-iris.py)|AML - CPU|pip|train xgboost model on iris data
+[workflows/train/deepspeed-cifar.py](workflows/train/deepspeed-cifar.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
+[workflows/train/fastai-mnist-mlproject.py](workflows/train/fastai-mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
+[workflows/train/fastai-mnist.py](workflows/train/fastai-mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
+[workflows/train/fastai-pets.py](workflows/train/fastai-pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
+[workflows/train/lightgbm-iris.py](workflows/train/lightgbm-iris.py)|AML - CPU|pip|train a lightgbm model on iris data
+[workflows/train/pytorch-mnist-mlproject.py](workflows/train/pytorch-mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
+[workflows/train/pytorch-mnist.py](workflows/train/pytorch-mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
+[workflows/train/sklearn-diabetes-mlproject.py](workflows/train/sklearn-diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
+[workflows/train/sklearn-diabetes.py](workflows/train/sklearn-diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
+[workflows/train/tensorflow-iris.py](workflows/train/tensorflow-iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
+[workflows/train/tensorflow-mnist-distributed-horovod.py](workflows/train/tensorflow-mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
+[workflows/train/tensorflow-mnist-distributed.py](workflows/train/tensorflow-mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
+[workflows/train/tensorflow-mnist.py](workflows/train/tensorflow-mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
+[workflows/train/xgboost-iris.py](workflows/train/xgboost-iris.py)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
 path|compute|description
 -|-|-
-[examples/deploy/pytorch-mnist-aks-cpu.py](examples/deploy/pytorch-mnist-aks-cpu.py)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
-[examples/deploy/sklearn-diabetes-aks-cpu.py](examples/deploy/sklearn-diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[workflows/deploy/pytorch-mnist-aks-cpu.py](workflows/deploy/pytorch-mnist-aks-cpu.py)|AKS - CPU|deploy pytorch CNN model trained on mnist data to AKS
+[workflows/deploy/sklearn-diabetes-aks-cpu.py](workflows/deploy/sklearn-diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
 
 ## Reference
 

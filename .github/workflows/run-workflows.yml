@@ -1,0 +1,47 @@
+name: run-workflows
+on:
+  push: 
+    branches:
+      - main
+    paths:
+      - "workflows/**"
+      - "code/**"
+      - "environments/**"
+      - "mlprojects/**"
+      - "data/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "workflows/**"
+      - "code/**"
+      - "environments/**"
+      - "mlprojects/**"
+      - "data/raw/**"
+  schedule:
+      - cron: "0 0/2 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        workflow: ['workflows/deploy/pytorch-mnist-aks-cpu.py', 'workflows/deploy/sklearn-diabetes-aks-cpu.py', 'workflows/train/deepspeed-cifar.py', 'workflows/train/fastai-mnist-mlproject.py', 'workflows/train/fastai-mnist.py', 'workflows/train/fastai-pets.py', 'workflows/train/lightgbm-iris.py', 'workflows/train/pytorch-mnist-mlproject.py', 'workflows/train/pytorch-mnist.py', 'workflows/train/sklearn-diabetes-mlproject.py', 'workflows/train/sklearn-diabetes.py', 'workflows/train/tensorflow-iris.py', 'workflows/train/tensorflow-mnist-distributed-horovod.py', 'workflows/train/tensorflow-mnist-distributed.py', 'workflows/train/tensorflow-mnist.py', 'workflows/train/xgboost-iris.py']
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
+    - name: run workflow 
+      run: python ${{matrix.workflow}}
