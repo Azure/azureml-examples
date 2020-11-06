@@ -42,10 +42,10 @@ This example repo is structured for real ML projects. You can utilize the struct
 |-|-|
 |`.cloud`|cloud templates|
 |`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
-|`code`|ML code organized by scenario (train, deploy) then tool|
+|`code`|ML code organized by scenario (train, deploy, etc.) then tool (pytorch, tensorflow, etc.)|
 |`data`|**not recommended** - used for convenient data for examples - data should not be stored directly in a repository|
 |`environments`|environment definition files such as conda yaml, pip txt, or dockerfile|
-|`examples`|AML control plane specification (currently Python scripts, eventually yaml)|
+|`examples`|AML control plane specification (currently Python scripts, eventually yaml) organized by scenario (train, deploy, etc.)|
 |`mlprojects`|mlflow project specifications|
 |`models`|**not recommended** - used for convenient models for examples - models should not be stored directly in a repository|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
