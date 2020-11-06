@@ -30,11 +30,13 @@ To create or setup a workspace with the assets used in these examples, run the [
 >
 > If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
 >
-> Run `python setup.py -h` to see other arguments.
+> Run `python setup-workspace.py -h` to see other arguments.
 
 ## Contents
 
-This repo is structured for real ML projects.
+This example repo is structured for real ML projects. You can utilize the structure for automating the entire ML lifecycle on GitHub using AML.
+
+> you may want to rename `examples` to `workflows`, and exclude the directories marked as **not recommended** - these are included to simplify examples
 
 |directory|description|
 |-|-|
@@ -47,7 +49,7 @@ This repo is structured for real ML projects.
 |`mlprojects`|mlflow project specifications|
 |`models`|**not recommended** - used for convenient models for examples - models should not be stored directly in a repository|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
-|`tutorials`|end to end tutorials|
+|`tutorials`|**not recommended** - end to end tutorials|
 
 ## Getting started
 
