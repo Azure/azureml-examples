@@ -29,7 +29,7 @@ path|status|notebooks|description
 """
 
 notebook_table = """
-**Jupyter Notebooks**
+**Notebooks**
 path|description
 -|-
 """
@@ -49,7 +49,7 @@ path|compute|description
 ws = "default"
 rg = "azureml-examples"
 mn = "${{matrix.notebook}}"
-me = "${{matrix.example}}"
+mw = "${{matrix.workflow}}"
 cr = "${{secrets.AZ_AE_CREDS}}"
 
 kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
@@ -88,7 +88,7 @@ for tutorial in tutorials:
 # process notebooks/*
 notebooks = sorted(glob.glob("notebooks/**.ipynb"))
 
-# create `run-examples` workflow yaml file
+# create `run-workflows` workflow yaml file
 workflow = f"""name: run-notebooks
 on:
   push: 
@@ -158,16 +158,16 @@ for nb in notebooks:
     notebook_table += f"[{nb}]({nb})|{desc}\n"
 
 # process code/azureml/*
-examples = sorted(glob.glob("examples/**/*.py"))
+workflows = sorted(glob.glob("workflows/**/*.py"))
 
-# create `run-examples` workflow yaml file
-workflow = f"""name: run-examples
+# create `run-workflows` workflow yaml file
+workflow = f"""name: run-workflows
 on:
   push: 
     branches:
       - main
     paths:
-      - "examples/**"
+      - "workflows/**"
       - "code/**"
       - "environments/**"
       - "mlprojects/**"
@@ -176,7 +176,7 @@ on:
     branches:
       - main
     paths:
-      - "examples/**"
+      - "workflows/**"
       - "code/**"
       - "environments/**"
       - "mlprojects/**"
@@ -188,7 +188,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        example: {examples}
+        workflow: {workflows}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -206,20 +206,20 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w {ws} -g {rg}
-    - name: run example
-      run: python {me}
+    - name: run workflow 
+      run: python {mw}
 """
 
-# write `run-examples` workflow yaml file
+# write `run-workflows` workflow yaml file
 print("writing workflow file...")
-with open(f".github/workflows/run-examples.yml", "w") as f:
+with open(f".github/workflows/run-workflows.yml", "w") as f:
     f.write(workflow)
 
 # create example tables
-for ex in examples:
+for wf in workflows:
 
     # read in example
-    with open(ex, "r") as f:
+    with open(wf, "r") as f:
         data = f.read()
 
         # read in the description
@@ -229,7 +229,7 @@ for ex in examples:
             desc = "*no description*"
 
         # build tables
-        if "train" in ex:
+        if "train" in wf:
             # parse for compute target
             if "cpu-cluster" in data:
                 compute = "AML - CPU"
@@ -244,23 +244,23 @@ for ex in examples:
                 environment = "conda"
             elif "env.docker.base_dockerfile" in data:
                 environment = "docker"
-            elif "mlproject" in ex:
+            elif "mlproject" in wf:
                 environment = "mlproject"
             else:
                 environment = "unknown"
-            train_table += f"[{ex}]({ex})|{compute}|{environment}|{desc}\n"
-        elif "deploy" in ex:
-            if "aci-cpu" in ex:
+            train_table += f"[{wf}]({wf})|{compute}|{environment}|{desc}\n"
+        elif "deploy" in wf:
+            if "aci-cpu" in wf:
                 compute = "ACI - CPU"
-            elif "aks-cpu" in ex:
+            elif "aks-cpu" in wf:
                 compute = "AKS - CPU"
-            elif "aks-gpu" in ex:
+            elif "aks-gpu" in wf:
                 compute = "AKS - GPU"
-            elif "local" in ex:
+            elif "local" in wf:
                 compute = "local"
             else:
                 compute = "unknown"
-            deploy_table += f"[{ex}]({ex})|{compute}|{desc}\n"
+            deploy_table += f"[{wf}]({wf})|{compute}|{desc}\n"
 
 # glob all notebooks
 notebooks = sorted(glob.glob("**/**/*.ipynb"))

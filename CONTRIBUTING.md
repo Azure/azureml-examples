@@ -43,7 +43,7 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 - minimal prose
 - minimalist code
-- examples and notebooks can be re-run without failing in less than 10 minutes
+- workflows and notebooks can be re-run without failing in less than 10 minutes
 - tutorials can re-run without failing in less than 3 hours
 
 ### Miscellaneous
@@ -66,7 +66,7 @@ If modifying existing examples, before a PR:
 
 - run `python readme.py` from the root of the repo
 - this will generate the `README.md` file
-- this will generate the `run-examples` and `run-notebooks` workflow files
+- this will generate the `run-workflows` and `run-notebooks` workflow files
 - this will format Python code and notebooks
 
 ### Enforced naming
@@ -126,26 +126,26 @@ Some examples of this include:
 
 Anything else should likely be a regular example.
 
-#### Examples
+#### Workflows
 
-An example specifies the cloud (control plane) code and should accomplish one job. Currently, scenarios include:
+A workflow specifies the job(s) to be run. Currently, scenarios include:
 
 - `train`
 - `dataprep`
 - `deploy`
 - `score`
 
-#### Adding a new example
+#### Adding a new workflow
 
-An example consists of the job definition, currently written as a Python script, and user code, which is often Python.
+A workflow consists of the workflow definition, currently written as a Python script, and user code, which is often Python.
 
 Checklist:
 
-- [ ] add job definition under `examples/`
+- [ ] add job definition under `workflows/`
 - [ ] add user code, preserving any licensing information, under `code/`
 - [ ] run `readme.py`
 - [ ] test
-- [ ] submit PR, which will run `run-examples`
+- [ ] submit PR, which will run `run-workflow`
 
 #### Adding a new notebook
 
