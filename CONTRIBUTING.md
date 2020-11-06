@@ -25,16 +25,16 @@ There should be one - and preferably only one - [obvious](https://pep20.org/#obv
 Per the above principle, this repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
 
 - frequent and comprehensive testing
-- clear separation of control (plane) code and user code
+- clear separation of cloud code and user code
 - structure for developing the full ML lifecycle (on GitHub)
 
 ## Issues
 
-All forms of feedback are welcome through issues - please follow the pre-defined templates when possible.
+All forms of feedback are welcome through issues - please follow the pre-defined templates where applicable.
 
 ## Pull Requests
 
-Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning (AML) team to merge.
+Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning (AML) team to merge. Please follow the pre-defined template and read all relevant sections below.
 
 > **Important:**
 > PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
@@ -43,21 +43,8 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 - minimal prose
 - minimalist code
-- no azureml-* in user code
-
-### Testing requirements
-
-- examples (including notebooks) can be re-run without failing in less than 10 minutes
-- tutorials must be re-run without failing at least daily
-- `pip install --upgrade -r requirements.txt` remains <60s
-
-PRs must include necessary changes to any testing to ensure:
-
-- `run-examples` runs on every push and PR to `main` (with changes to examples) and runs all examples under `examples/`
-- `run-notebooks` runs on every push and PR to `main` (with changes to notebooks) and runs all examples under `notebooks/`
-- `run-tutorial-initials` must be tested at least daily and on PR to `main` (with changes to the tutorial)
-- `cleanup` runs daily and cleans up AML resources for the testing workspace
-- `smoke` runs hourly and on every push and PR to `main` and performs sanity checks
+- examples and notebooks can be re-run without failing in less than 10 minutes
+- tutorials can re-run without failing in less than 3 hours
 
 ### Miscellaneous
 
@@ -83,10 +70,9 @@ If modifying existing examples, before a PR:
 
 ### Enforced naming
 
-PRs must follow the following naming conventions:
+Directories and files must follow:
 
 - naming must be logical
-- under `notebooks` use the naming convention *scenario-framework-etc-compute*, where *scenario* is one of ["train", "deploy", "score", "dprep"]
 - directories under `tutorials` must be words separated by hyphens
 - tutorial workflows (and workflow files) use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 
@@ -102,23 +88,65 @@ PRs must follow the following naming conventions:
 - `src = ScriptRunConfig(...)`
 - `run = Experiment(ws, experiment_name).submit(src)`
 
-### Adding a new ________
+### Adding a new ________?
 
-Thinking of adding a new example? Read this first!
+Thinking of contributing a new example? Read this first!
 
-### Adding a new example
+#### Tutorials
+
+A tutorial is an end-to-end example accomplishing something significant or teaching how to scale up and out in the cloud. A tutorial **must** have an excellent `README.md` file in its directory, following conventional markdown syntax, explaining:
+
+- required prerequisites
+- any one-time setup needed by the user
+- any other setup instructions
+- overview of files in the tutorial
+- relevant links
+
+Tutorials are often, but not required to be, a series of ordered Jupyter notebooks. All Jupyter notebooks must utilize notebook features (i.e. be interactive, have explanation in markdown cells, etc).
+
+**You should probably ask (open an issue) before contributing a new tutorial.** Currently, themes for tutorials include:
+
+- `using-*` for learning ML tooling basics and tracking/scaling in the cloud
+- `work-with-*` for integrations with cloud tooling, e.g. `work-with-databricks`, `work-with-synapse`
+- `deploy-*` for advanced deployment scenarios
+- `automl-with-*` for automated ML tutorials
+
+#### Notebooks
+
+A notebook is an example accomplishing something significant in a Jupyter notebook, often written in Python. To qualify to be a notebook, the example must:
+
+- obviously benefit from being a Jupyter notebook
+
+Some examples of this include:
+
+- connecting and interactively querying common data sources (SQL, ADLS, etc)
+- Exploratory Data Analysis (EDA) and Exploratory Data Science (EDS)
+- iterative experimentation with cloud tracking
+
+Anything else should likely be a regular example.
+
+#### Examples
+
+An example specifies the cloud (control plane) code and should accomplish one job. Currently, scenarios include:
+
+- `train`
+- `dataprep`
+- `deploy`
+- `score`
+
+#### Adding a new example
 
 An example consists of the control plane definition, currently written as a Python script, and user code, which is often Python.
 
 Checklist:
 
-- [ ] add control plane code under `examples/`
+- [ ] add cloud code under `examples/`
 - [ ] add user code, preserving any licensing information, under `code/`
 - [ ] run `readme.py`
 - [ ] test
 - [ ] submit PR, which will run `run-examples`
 
-### Adding a new notebook
+#### Adding a new notebook
 
 A notebook is a self-contained example written as a `.ipynb` file.
 
@@ -132,16 +160,9 @@ Checklist:
 - [ ] test
 - [ ] submit PR, which will run `run-notebooks`
 
-### Adding a new tutorial
+#### Adding a new tutorial
 
 Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md`. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
-
-If it is a simple ML training example, it does not need to be a tutorial. Current themes for tutorials include:
-
-- `using-*` for how to use ML frameworks and tools in Azure
-- `deploy-*` for advanced deployment
-- `work-with-*` for Azure integrations
-- `automl-with-*` for automated ML
 
 Checklist:
 
