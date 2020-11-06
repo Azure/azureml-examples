@@ -180,7 +180,7 @@ on:
       - "code/**"
       - "environments/**"
       - "mlprojects/**"
-      - "data/**"
+      - "data/raw/**"
   schedule:
       - cron: "0 0/2 * * *"
 jobs:
