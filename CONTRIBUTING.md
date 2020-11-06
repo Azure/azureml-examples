@@ -25,7 +25,7 @@ There should be one - and preferably only one - [obvious](https://pep20.org/#obv
 Per the above principle, this repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
 
 - frequent and comprehensive testing
-- clear separation of cloud code and user code
+- clear separation of cloud code (job definition) and user code
 - structure for developing the full ML lifecycle (on GitHub)
 
 ## Issues
@@ -136,11 +136,11 @@ An example specifies the cloud (control plane) code and should accomplish one jo
 
 #### Adding a new example
 
-An example consists of the control plane definition, currently written as a Python script, and user code, which is often Python.
+An example consists of the job definition, currently written as a Python script, and user code, which is often Python.
 
 Checklist:
 
-- [ ] add cloud code under `examples/`
+- [ ] add job definition under `examples/`
 - [ ] add user code, preserving any licensing information, under `code/`
 - [ ] run `readme.py`
 - [ ] test
