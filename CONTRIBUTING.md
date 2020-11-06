@@ -58,6 +58,7 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 - don't modify `requirements.txt`
 - you probably shouldn't modify any files in the root of the repo
 - you can `!pip install --upgrade packages` as needed in notebooks
+- you can (and likely should) abstract setup for tutorials in a `setup.sh` file or similar
 
 ### Modifying an existing example
 
