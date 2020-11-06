@@ -36,8 +36,6 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 This example repo is structured for real ML projects. You can utilize the structure for automating the entire ML lifecycle on GitHub using AML.
 
-> you may want to rename `examples` to `workflows`, and exclude the directories marked as **not recommended** - these are included to simplify examples
-
 |directory|description|
 |-|-|
 |`.cloud`|cloud templates|
