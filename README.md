@@ -43,7 +43,7 @@ This example repo is structured for real ML projects. You can utilize the struct
 |`code`|ML code organized by scenario (train, deploy, etc.) then tool (pytorch, tensorflow, etc.)|
 |`data`|**not recommended** - used for convenient data for examples - data should not be stored directly in a repository|
 |`environments`|environment definition files such as conda yaml, pip txt, or dockerfile|
-|`workflows`|AML control plane specification (currently Python scripts, eventually yaml) organized by scenario (train, deploy, etc.)|
+|`workflows`|AML control plane specification (currently Python scripts) of job(s) to be run|
 |`mlprojects`|mlflow project specifications|
 |`models`|**not recommended** - used for convenient models for examples - models should not be stored directly in a repository|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|

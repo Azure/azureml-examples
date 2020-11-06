@@ -128,7 +128,7 @@ Anything else should likely be a regular example.
 
 #### Workflows
 
-A workflow specifies the job to be run. Currently, scenarios include:
+A workflow specifies the job(s) to be run. Currently, scenarios include:
 
 - `train`
 - `dataprep`
