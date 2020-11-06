@@ -24,7 +24,7 @@ script_name = "train.py"
 
 # azure ml settings
 experiment_name = "deepspeed-cifar-example"
-compute_target = "gpu-V100-2"
+compute_name = "gpu-V100-2"
 
 # script arguments
 arguments = [
@@ -68,7 +68,7 @@ src = ScriptRunConfig(
     script=script_name,
     arguments=arguments,
     environment=env,
-    compute_target=compute_target,
+    compute_target=compute_name,
     distributed_job_config=mpi_config,
 )
 

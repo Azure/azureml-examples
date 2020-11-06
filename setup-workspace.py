@@ -20,19 +20,19 @@ amlcomputes = {
     "cpu-cluster": {
         "vm_size": "STANDARD_DS3_V2",
         "min_nodes": 0,
-        "max_nodes": 100,
+        "max_nodes": 10,
         "idle_seconds_before_scaledown": 1200,
     },
     "gpu-cluster": {
         "vm_size": "STANDARD_NC6",
         "min_nodes": 0,
-        "max_nodes": 100,
+        "max_nodes": 4,
         "idle_seconds_before_scaledown": 1200,
     },
     "gpu-K80-2": {
         "vm_size": "STANDARD_NC12",
         "min_nodes": 0,
-        "max_nodes": 10,
+        "max_nodes": 4,
         "idle_seconds_before_scaledown": 1200,
     },
 }
@@ -41,13 +41,13 @@ v100computes = {
     "gpu-V100-1": {
         "vm_size": "STANDARD_NC6S_V3",
         "min_nodes": 0,
-        "max_nodes": 8,
+        "max_nodes": 4,
         "idle_seconds_before_scaledown": 1200,
     },
     "gpu-V100-2": {
         "vm_size": "STANDARD_NC12S_V3",
         "min_nodes": 0,
-        "max_nodes": 4,
+        "max_nodes": 2,
         "idle_seconds_before_scaledown": 1200,
     },
     "gpu-V100-4": {
