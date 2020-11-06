@@ -34,7 +34,7 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 ## Contents
 
-This example repo is structured for real ML projects. You can utilize the structure for automating the entire ML lifecycle on GitHub using AML.
+This example repo is structured for real ML projects, with modifications specific to showing examples. You can use the [official GitHub template](https://github.com/Azure/azureml-template) to schedule your own ML workflow(s).
 
 |directory|description|
 |-|-|
