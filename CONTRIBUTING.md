@@ -103,6 +103,7 @@ A tutorial is an end-to-end example accomplishing something significant or teach
 - overview of files in the tutorial
 - relevant links
 
+
 Tutorials are often, but not required to be, a series of ordered Jupyter notebooks. All Jupyter notebooks must utilize notebook features (i.e. be interactive, have explanation in markdown cells, etc).
 
 **You should probably ask (open an issue) before contributing a new tutorial.** Currently, themes for tutorials include:
