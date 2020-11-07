@@ -5,12 +5,15 @@ from sklearn.model_selection import train_test_split
 import mlflow
 import mlflow.sklearn
 
+
 def main():
-    
+
     # Load and preprocess data
     X, y = load_diabetes(return_X_y=True)
     columns = ["age", "gender", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=0
+    )
     data = {"train": {"X": X_train, "y": y_train}, "test": {"X": X_test, "y": y_test}}
 
     # Enable auto logging
@@ -20,6 +23,7 @@ def main():
     regression_model = Ridge(alpha=0.03)
     regression_model.fit(data["train"]["X"], data["train"]["y"])
     preds = regression_model.predict(data["test"]["X"])
+
 
 if __name__ == "__main__":
     main()
