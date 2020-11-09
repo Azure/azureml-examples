@@ -1,8 +1,6 @@
 # description: train a pytorch CNN model on mnist data
 
 # imports
-import git
-
 from pathlib import Path
 from azureml.core import Workspace
 from azureml.core import ScriptRunConfig, Experiment, Environment
@@ -11,7 +9,7 @@ from azureml.core import ScriptRunConfig, Experiment, Environment
 ws = Workspace.from_config()
 
 # get root of git repo
-prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
+prefix = Path(__file__).parent.parent.parent.absolute()
 
 # training script
 script_dir = prefix.joinpath("code", "train", "pytorch", "mnist-cnn")
@@ -23,7 +21,7 @@ environment_file = prefix.joinpath("environments", "pytorch.yml")
 # azure ml settings
 environment_name = "pytorch-mnist-example"
 experiment_name = "pytorch-mnist-example"
-compute_target = "gpu-cluster"
+compute_name = "gpu-cluster"
 
 # script arguments
 arguments = ["--epochs", 2]
@@ -37,10 +35,9 @@ src = ScriptRunConfig(
     script=script_name,
     arguments=arguments,
     environment=env,
-    compute_target=compute_target,
+    compute_target=compute_name,
 )
 
 # submit job
 run = Experiment(ws, experiment_name).submit(src)
-print(run)
 run.wait_for_completion(show_output=True)

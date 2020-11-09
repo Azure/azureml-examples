@@ -6,6 +6,5 @@ numpy
 pandas
 matplotlib
 papermill
-gitpython
 black==19.10b0
 black-nb

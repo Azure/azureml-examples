@@ -6,7 +6,6 @@
 
 # imports
 import os
-import git
 
 from pathlib import Path
 from azureml.core import Workspace
@@ -17,7 +16,7 @@ from azureml.core.runconfig import TensorflowConfiguration
 ws = Workspace.from_config()
 
 # get root of git repo
-prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
+prefix = Path(__file__).parent.parent.parent.absolute()
 
 # training script
 source_dir = prefix.joinpath("code", "train", "tensorflow", "mnist-distributed")
@@ -29,7 +28,7 @@ environment_file = prefix.joinpath("environments", "tf-gpu.yml")
 # azure ml settings
 environment_name = "tf-gpu"
 experiment_name = "tf-mnist-distr-example"
-compute_target = "gpu-K80-2"
+compute_name = "gpu-K80-2"
 
 # create environment
 env = Environment.from_conda_specification(environment_name, environment_file)
@@ -59,12 +58,11 @@ src = ScriptRunConfig(
     source_directory=source_dir,
     script=script_name,
     arguments=["--epochs", 30, "--model-dir", model_path],
-    compute_target=compute_target,
+    compute_target=compute_name,
     environment=env,
     distributed_job_config=distr_config,
 )
 
 # submit job
 run = Experiment(ws, experiment_name).submit(src)
-print(run)
 run.wait_for_completion(show_output=True)

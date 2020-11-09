@@ -20,7 +20,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 There should be one - and preferably only one - [obvious](https://pep20.org/#obvious) way to do it.
 
-## Spirit of azureml-examples
+## Spirit
 
 Per the above principle, this repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
 
@@ -124,7 +124,7 @@ Some examples of this include:
 - Exploratory Data Analysis (EDA) and Exploratory Data Science (EDS)
 - iterative experimentation with cloud tracking
 
-Anything else should likely be a regular example.
+Anything else should likely be a workflow.
 
 #### Workflows
 
@@ -160,7 +160,7 @@ Checklist:
 
 #### Adding a new tutorial
 
-Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md`. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
+Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md` - it is encouraged to have an accompanying `setup.sh` or similar. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
 
 Checklist:
 
