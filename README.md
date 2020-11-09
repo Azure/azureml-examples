@@ -11,10 +11,9 @@ Welcome to the Azure Machine Learning (AML) examples repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
-2. Familiarity with Python and [Azure Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
-3. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
+2. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
 
-## Installation
+## Setup
 
 Clone this repository and install required packages:
 
@@ -34,7 +33,7 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 ## Contents
 
-This example repo is structured for real ML projects, with modifications specific to showing examples. You can use the [official GitHub template](https://github.com/Azure/azureml-template) to schedule your own ML workflow(s).
+A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
 
 |directory|description|
 |-|-|
@@ -62,7 +61,7 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
 
-## Index of Examples
+## Examples
 
 **Tutorials**
 path|status|notebooks|description
@@ -109,6 +108,5 @@ path|compute|description
 
 ## Reference
 
+- [GitHub Template](https://github.com/Azure/azureml-template)
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
-- [Python SDK Documentation](https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py)
-- [Azure Machine Learning Pipelines Notebooks](https://github.com/Azure/MachineLearningNotebooks/tree/master/how-to-use-azureml/machine-learning-pipelines)

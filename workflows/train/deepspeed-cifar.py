@@ -5,8 +5,6 @@
 #
 
 # imports
-import git
-
 from pathlib import Path
 from azureml.core import Workspace
 from azureml.core import ScriptRunConfig, Experiment, Environment
@@ -16,7 +14,7 @@ from azureml.core.runconfig import MpiConfiguration
 ws = Workspace.from_config()
 
 # get root of git repo
-prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
+prefix = Path(__file__).parent.parent.parent.absolute()
 
 # training script
 script_dir = prefix.joinpath("code", "train", "deepspeed", "cifar10")
@@ -74,5 +72,4 @@ src = ScriptRunConfig(
 
 # submit job
 run = Experiment(ws, experiment_name).submit(src)
-print(run)
 run.wait_for_completion(show_output=True)

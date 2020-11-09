@@ -1,7 +1,6 @@
 # description: deploy pytorch CNN model trained on mnist data to AKS
 
 # imports
-import git
 import json
 import time
 import mlflow
@@ -21,7 +20,7 @@ from azureml.core.webservice import AksWebservice
 ws = Workspace.from_config()
 
 # get root of git repo
-prefix = Path(git.Repo(".", search_parent_directories=True).working_tree_dir)
+prefix = Path(__file__).parent.parent.parent.absolute()
 
 # azure ml settings
 experiment_name = "pytorch-mnist-mlproject-example"
