@@ -1,15 +1,16 @@
-import numpy as np
-
 import io
+import numpy as np
+import os
 
+from azureml.core import Model
 from azureml.contrib.services.aml_request import rawhttp
 from azureml.contrib.services.aml_response import AMLResponse
 from PIL import Image
 from utils import get_model_info, parse_model_http, triton_init, triton_infer
-from tritonclientutils import triton_to_np_dtype
+from onnxruntimetriton import InferenceSession
 
 
-def preprocess(img, scaling, dtype):
+def preprocess(img, scaling):  # , dtype):
     """Pre-process an image to meet the size, type and format
     requirements specified by the parameters.
     """
@@ -28,8 +29,9 @@ def preprocess(img, scaling, dtype):
     if resized.ndim == 2:
         resized = resized[:, :, np.newaxis]
 
-    npdtype = triton_to_np_dtype(dtype)
-    typed = resized.astype(npdtype)
+    # npdtype = triton_to_np_dtype(dtype)
+    typed = resized.astype(np.float32)
+    # typed = resized
 
     if scaling == "INCEPTION":
         scaled = (typed / 128) - 1
@@ -53,33 +55,27 @@ def preprocess(img, scaling, dtype):
     return ordered
 
 
-def postprocess(results, output_name, batch_size, batching):
+def postprocess(output_array):
     """Post-process results to show the predicted label."""
 
-    output_array = results.as_numpy(output_name)
-    if len(output_array) != batch_size:
-        raise Exception(
-            "expected {} results, got {}".format(batch_size, len(output_array))
-        )
-
-    # Include special handling for non-batching models
-    output = ""
-    for results in output_array:
-        if not batching:
-            results = [results]
-        for result in results:
-            if output_array.dtype.type == np.bytes_:
-                cls = "".join(chr(x) for x in result).split(":")
-            else:
-                cls = result.split(":")
-            output += "    {} ({}) = {}".format(cls[0], cls[1], cls[2])
-
-    return output
+    output_array = output_array[0]
+    max_label = np.argmax(output_array)
+    final_label = label_dict[max_label]
+    return f"{max_label} : {final_label}"
 
 
 def init():
-    triton_init()
-    print(get_model_info())
+    global session, label_dict
+    session = InferenceSession(path_or_bytes="densenet_onnx")
+
+    model_dir = os.path.join(os.environ["AZUREML_MODEL_DIR"], "models")
+    folder_path = os.path.join(model_dir, "triton", "densenet_onnx")
+    label_path = os.path.join(
+        model_dir, "triton", "densenet_onnx", "densenet_labels.txt"
+    )
+    label_file = open(label_path, "r")
+    labels = label_file.read().split("\n")
+    label_dict = dict(enumerate(labels))
 
 
 @rawhttp
@@ -92,32 +88,20 @@ def run(request):
     """
 
     if request.method == "POST":
-        model_name = "densenet_onnx"
-        input_meta, input_config, output_meta, output_config = parse_model_http(
-            model_name=model_name
-        )
+        outputs = []
 
-        input_name = input_meta[0]["name"]
-        input_dtype = input_meta[0]["datatype"]
-        output_name = output_meta[0]["name"]
+        for output in session.get_outputs():
+            outputs.append(output.name)
+
+        input_name = session.get_inputs()[0].name
 
         reqBody = request.get_data(False)
         img = Image.open(io.BytesIO(reqBody))
-        image_data = preprocess(img, scaling="INCEPTION", dtype=input_dtype)
+        image_data = preprocess(img, scaling="INCEPTION")
 
-        mapping = {input_name: image_data}
+        res = session.run(outputs, {input_name: image_data})
 
-        res = triton_infer(
-            model_name=model_name,
-            input_mapping=mapping,
-            binary_data=True,
-            binary_output=True,
-            class_count=1,
-        )
-
-        result = postprocess(
-            results=res, output_name=output_name, batch_size=1, batching=False
-        )
+        result = postprocess(output_array=res)
 
         return AMLResponse(result, 200)
     else:
