@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from random import randint
 from pathlib import Path
 from azureml.core import workspace
-from azureml.core.webservice import akswebservice
+from azureml.core.webservice import AksWebservice
 
 # get workspace
 ws = workspace.from_config()
