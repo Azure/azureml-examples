@@ -17,9 +17,9 @@ parser.add_argument("--check-readme", type=bool, default=False)
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
-with open("data/markdowns/prefix.md", "r") as f:
+with open("data/readme/prefix.md", "r") as f:
     prefix = f.read()
-with open("data/markdowns/suffix.md", "r") as f:
+with open("data/readme/suffix.md", "r") as f:
     suffix = f.read()
 
 tutorial_table = """
@@ -86,11 +86,13 @@ for tutorial in tutorials:
     tutorial_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
 # process notebooks/*
-notebooks = sorted(glob.glob("notebooks/**.ipynb"))
+notebooks = sorted(glob.glob("notebooks/*.ipynb"))
 
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-notebooks
 on:
+  schedule:
+      - cron: "0 0/2 * * *"
   push: 
     branches:
       - main
@@ -101,8 +103,6 @@ on:
       - main
     paths:
       - "notebooks/**"
-  schedule:
-      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -158,31 +158,23 @@ for nb in notebooks:
     notebook_table += f"[{nb}]({nb})|{desc}\n"
 
 # process code/azureml/*
-workflows = sorted(glob.glob("workflows/**/*.py"))
+workflows = sorted(glob.glob("workflows/*/*/*.py"))
 
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-workflows
 on:
+  schedule:
+      - cron: "0 0/2 * * *"
   push: 
     branches:
       - main
     paths:
       - "workflows/**"
-      - "code/**"
-      - "environments/**"
-      - "mlprojects/**"
-      - "data/**"
   pull_request:
     branches:
       - main
     paths:
       - "workflows/**"
-      - "code/**"
-      - "environments/**"
-      - "mlprojects/**"
-      - "data/raw/**"
-  schedule:
-      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -263,7 +255,7 @@ for wf in workflows:
             deploy_table += f"[{wf}]({wf})|{compute}|{desc}\n"
 
 # glob all notebooks
-notebooks = sorted(glob.glob("**/**/*.ipynb"))
+notebooks = sorted(glob.glob("**/**/*.ipynb", recursive=True))
 
 # process all notebooks and rewrite
 for nb in notebooks:
