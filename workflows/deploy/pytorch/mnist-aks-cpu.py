@@ -33,7 +33,7 @@ mlflow.set_experiment(experiment_name)
 model = none
 runs = ws.experiments[experiment_name].get_runs()
 run = next(runs)
-while run.get_status() != "completed" or model is none:
+while run.get_status() != "Completed" or model is None:
     run = next(runs)
     try:
         model = run.register_model(experiment_name, model_path="model")
@@ -41,7 +41,7 @@ while run.get_status() != "completed" or model is none:
         pass
 
 # create deployment configuration
-aks_config = akswebservice.deploy_configuration(
+aks_config = AksWebservice.deploy_configuration(
     compute_target_name="aks-cpu-deploy",
     cpu_cores=2,
     memory_gb=5,
