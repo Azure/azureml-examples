@@ -21,7 +21,7 @@ prefix = Path(__file__).parent
 
 # training script
 source_dir = str(prefix.joinpath("src"))
-script_name = "train-distributed-horovod.py"
+script_name = "train.py"
 
 # environment file
 environment_file = str(prefix.joinpath("environment.yml"))
