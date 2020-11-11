@@ -1,4 +1,4 @@
-# description: train sklearn ridge model on diabetes data
+# description: train tensorflow NN model on iris data
 
 # imports
 from pathlib import Path
@@ -12,21 +12,19 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = str(prefix.joinpath("diabetes"))
+script_dir = str(prefix.joinpath("src"))
 script_name = "train.py"
 
 # environment file
-environment_file = str(prefix.joinpath("envs", "sklearn.yml"))
+environment_file = str(prefix.joinpath("environment.yml"))
 
 # azure ml settings
-environment_name = "sklearn-example"
-experiment_name = "sklearn-diabetes-example"
+environment_name = "tf-cpu-example"
+experiment_name = "tf-iris-example"
 compute_name = "cpu-cluster"
 
 # create environment
-env = Environment.from_conda_specification(
-    name=environment_name, file_path=environment_file
-)
+env = Environment.from_conda_specification(environment_name, environment_file)
 
 # create job config
 src = ScriptRunConfig(

@@ -80,26 +80,26 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[workflows/train/deepspeed/cifar.py](workflows/train/deepspeed/cifar.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
-[workflows/train/fastai/mnist-mlproject.py](workflows/train/fastai/mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
-[workflows/train/fastai/mnist.py](workflows/train/fastai/mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
-[workflows/train/fastai/pets.py](workflows/train/fastai/pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
-[workflows/train/lightgbm/iris.py](workflows/train/lightgbm/iris.py)|AML - CPU|pip|train a lightgbm model on iris data
-[workflows/train/pytorch/mnist-mlproject.py](workflows/train/pytorch/mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
-[workflows/train/pytorch/mnist.py](workflows/train/pytorch/mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
-[workflows/train/scikit-learn/diabetes-mlproject.py](workflows/train/scikit-learn/diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
-[workflows/train/scikit-learn/diabetes.py](workflows/train/scikit-learn/diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
-[workflows/train/tensorflow/iris.py](workflows/train/tensorflow/iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
-[workflows/train/tensorflow/mnist-distributed-horovod.py](workflows/train/tensorflow/mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
-[workflows/train/tensorflow/mnist-distributed.py](workflows/train/tensorflow/mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
-[workflows/train/tensorflow/mnist.py](workflows/train/tensorflow/mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
-[workflows/train/xgboost/iris.py](workflows/train/xgboost/iris.py)|AML - CPU|pip|train xgboost model on iris data
+[workflows/train/deepspeed/cifar/job.py](workflows/train/deepspeed/cifar/job.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
+[workflows/train/fastai/mnist-mlproject/job.py](workflows/train/fastai/mnist-mlproject/job.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
+[workflows/train/fastai/mnist/job.py](workflows/train/fastai/mnist/job.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
+[workflows/train/fastai/pets/job.py](workflows/train/fastai/pets/job.py)|AML - GPU|docker|train fastai resnet34 model on pets data
+[workflows/train/lightgbm/iris/job.py](workflows/train/lightgbm/iris/job.py)|AML - CPU|pip|train a lightgbm model on iris data
+[workflows/train/pytorch/mnist-mlproject/job.py](workflows/train/pytorch/mnist-mlproject/job.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
+[workflows/train/pytorch/mnist/job.py](workflows/train/pytorch/mnist/job.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
+[workflows/train/scikit-learn/diabetes-mlproject/job.py](workflows/train/scikit-learn/diabetes-mlproject/job.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
+[workflows/train/scikit-learn/diabetes/job.py](workflows/train/scikit-learn/diabetes/job.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
+[workflows/train/tensorflow/iris/job.py](workflows/train/tensorflow/iris/job.py)|AML - CPU|conda|train tensorflow NN model on iris data
+[workflows/train/tensorflow/mnist-distributed-horovod/job.py](workflows/train/tensorflow/mnist-distributed-horovod/job.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
+[workflows/train/tensorflow/mnist-distributed/job.py](workflows/train/tensorflow/mnist-distributed/job.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
+[workflows/train/tensorflow/mnist/job.py](workflows/train/tensorflow/mnist/job.py)|AML - GPU|conda|train tensorflow NN model on mnist data
+[workflows/train/xgboost/iris/job.py](workflows/train/xgboost/iris/job.py)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
 path|compute|description
 -|-|-
-[workflows/deploy/pytorch/mnist-aks-cpu.py](workflows/deploy/pytorch/mnist-aks-cpu.py)|AKS - CPU|deploy pytorch cnn model trained on mnist data to aks
-[workflows/deploy/scikit-learn/diabetes-aks-cpu.py](workflows/deploy/scikit-learn/diabetes-aks-cpu.py)|AKS - CPU|deploy sklearn ridge model trained on diabetes data to AKS
+[workflows/deploy/pytorch/mnist/job.py](workflows/deploy/pytorch/mnist/job.py)|unknown|deploy pytorch cnn model trained on mnist data to aks
+[workflows/deploy/scikit-learn/diabetes/job.py](workflows/deploy/scikit-learn/diabetes/job.py)|unknown|deploy sklearn ridge model trained on diabetes data to AKS
 
 ## Reference
 

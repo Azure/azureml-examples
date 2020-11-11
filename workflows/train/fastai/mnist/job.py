@@ -12,11 +12,11 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = str(prefix.joinpath("mnist"))
+script_dir = str(prefix.joinpath("src"))
 script_name = "train.py"
 
 # environment file
-environment_file = str(prefix.joinpath("envs", "fastai.yml"))
+environment_file = str(prefix.joinpath("environment.yml"))
 
 # azure ml settings
 environment_name = "fastai-mnist-example"

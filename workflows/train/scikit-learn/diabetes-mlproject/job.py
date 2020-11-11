@@ -13,7 +13,7 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # project settings
-project_uri = str(prefix.joinpath("diabetes-mlproject"))
+project_uri = str(prefix.joinpath("src"))
 
 # azure ml settings
 experiment_name = "sklearn-diabetes-mlproject-example"

@@ -1,4 +1,4 @@
-# description: train a pytorch CNN model on mnist data
+# description: train tensorflow NN model on mnist data
 
 # imports
 from pathlib import Path
@@ -12,19 +12,16 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = str(prefix.joinpath("mnist"))
+script_dir = str(prefix.joinpath("src"))
 script_name = "train.py"
 
 # environment file
-environment_file = str(prefix.joinpath("envs", "pytorch.yml"))
+environment_file = str(prefix.joinpath("environment.yml"))
 
 # azure ml settings
-environment_name = "pytorch-mnist-example"
-experiment_name = "pytorch-mnist-example"
+environment_name = "tf-gpu-example"
+experiment_name = "tf-mnist-example"
 compute_name = "gpu-cluster"
-
-# script arguments
-arguments = ["--epochs", 2]
 
 # create environment
 env = Environment.from_conda_specification(environment_name, environment_file)
@@ -33,7 +30,6 @@ env = Environment.from_conda_specification(environment_name, environment_file)
 src = ScriptRunConfig(
     source_directory=script_dir,
     script=script_name,
-    arguments=arguments,
     environment=env,
     compute_target=compute_name,
 )

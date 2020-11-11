@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
-        workflow: ['workflows/deploy/pytorch/mnist-aks-cpu.py', 'workflows/deploy/scikit-learn/diabetes-aks-cpu.py', 'workflows/train/deepspeed/cifar.py', 'workflows/train/fastai/mnist-mlproject.py', 'workflows/train/fastai/mnist.py', 'workflows/train/fastai/pets.py', 'workflows/train/lightgbm/iris.py', 'workflows/train/pytorch/mnist-mlproject.py', 'workflows/train/pytorch/mnist.py', 'workflows/train/scikit-learn/diabetes-mlproject.py', 'workflows/train/scikit-learn/diabetes.py', 'workflows/train/tensorflow/iris.py', 'workflows/train/tensorflow/mnist-distributed-horovod.py', 'workflows/train/tensorflow/mnist-distributed.py', 'workflows/train/tensorflow/mnist.py', 'workflows/train/xgboost/iris.py']
+        workflow: ['workflows/deploy/pytorch/mnist/job.py', 'workflows/deploy/scikit-learn/diabetes/job.py', 'workflows/train/deepspeed/cifar/job.py', 'workflows/train/fastai/mnist-mlproject/job.py', 'workflows/train/fastai/mnist/job.py', 'workflows/train/fastai/pets/job.py', 'workflows/train/lightgbm/iris/job.py', 'workflows/train/pytorch/mnist-mlproject/job.py', 'workflows/train/pytorch/mnist/job.py', 'workflows/train/scikit-learn/diabetes-mlproject/job.py', 'workflows/train/scikit-learn/diabetes/job.py', 'workflows/train/tensorflow/iris/job.py', 'workflows/train/tensorflow/mnist-distributed-horovod/job.py', 'workflows/train/tensorflow/mnist-distributed/job.py', 'workflows/train/tensorflow/mnist/job.py', 'workflows/train/xgboost/iris/job.py']
     steps:
     - name: check out repo
       uses: actions/checkout@v2
