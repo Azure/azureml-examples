@@ -17,7 +17,7 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = prefix.joinpath("cifar")
+script_dir = str(prefix.joinpath("cifar"))
 script_name = "train.py"
 
 # azure ml settings

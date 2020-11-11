@@ -12,11 +12,11 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = prefix.joinpath("mnist")
+script_dir = str(prefix.joinpath("mnist"))
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("envs", "pytorch.yml")
+environment_file = str(prefix.joinpath("envs", "pytorch.yml"))
 
 # azure ml settings
 environment_name = "pytorch-mnist-example"

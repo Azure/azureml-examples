@@ -12,11 +12,11 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = prefix.joinpath("diabetes")
+script_dir = str(prefix.joinpath("diabetes"))
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("envs", "sklearn.yml")
+environment_file = str(prefix.joinpath("envs", "sklearn.yml"))
 
 # azure ml settings
 environment_name = "sklearn-example"

@@ -12,11 +12,11 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = prefix.joinpath("pets")
+script_dir = str(prefix.joinpath("pets"))
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("envs", "fastai.dockerfile")
+environment_file = str(prefix.joinpath("envs", "fastai.dockerfile"))
 
 # azure ml settings
 environment_name = "fastai-pets-example"

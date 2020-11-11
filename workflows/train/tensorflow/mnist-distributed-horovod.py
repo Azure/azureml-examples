@@ -20,11 +20,11 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-source_dir = prefix.joinpath("mnist")
+source_dir = str(prefix.joinpath("mnist"))
 script_name = "train-distributed-horovod.py"
 
 # environment file
-environment_file = prefix.joinpath("envs", "tf-gpu-horovod.yml")
+environment_file = str(prefix.joinpath("envs", "tf-gpu-horovod.yml"))
 
 # azure ml settings
 environment_name = "tf-gpu-horovod-example"

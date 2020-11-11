@@ -12,7 +12,7 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # project settings
-project_uri = prefix.joinpath("mnist-mlproject")
+project_uri = str(prefix.joinpath("mnist-mlproject"))
 
 # azure ml settings
 experiment_name = "pytorch-mnist-mlproject-example"
@@ -27,5 +27,5 @@ backend_config = {"COMPUTE": compute_name, "USE_CONDA": False}
 
 # run mlflow project
 run = mlflow.projects.run(
-    uri=str(project_uri), backend="azureml", backend_config=backend_config
+    uri=project_uri, backend="azureml", backend_config=backend_config
 )

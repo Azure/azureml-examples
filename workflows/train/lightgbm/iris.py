@@ -12,11 +12,11 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # training script
-script_dir = prefix.joinpath("iris")
+script_dir = str(prefix.joinpath("iris"))
 script_name = "train.py"
 
 # environment file
-environment_file = prefix.joinpath("envs", "lightgbm.txt")
+environment_file = str(prefix.joinpath("envs", "lightgbm.txt"))
 
 # azure ml settings
 environment_name = "lightgbm-iris-example"

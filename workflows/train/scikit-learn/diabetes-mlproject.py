@@ -13,7 +13,7 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # project settings
-project_uri = prefix.joinpath("diabetes-mlproject")
+project_uri = str(prefix.joinpath("diabetes-mlproject"))
 
 # azure ml settings
 experiment_name = "sklearn-diabetes-mlproject-example"
@@ -28,7 +28,7 @@ backend_config = {"COMPUTE": compute_name}
 
 # run mlflow project
 run = mlflow.projects.run(
-    uri=str(project_uri),
+    uri=project_uri,
     parameters={"alpha": 0.3},
     backend="azureml",
     backend_config=backend_config,
