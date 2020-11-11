@@ -1,7 +1,5 @@
 name: run-notebooks
 on:
-  schedule:
-      - cron: "0 0/2 * * *"
   push: 
     branches:
       - main
@@ -12,6 +10,8 @@ on:
       - main
     paths:
       - "notebooks/**"
+  schedule:
+      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 

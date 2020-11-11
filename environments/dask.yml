@@ -1,0 +1,27 @@
+name: dask
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8.5
+  - pip
+  - lz4
+  - pip:
+    - azureml-mlflow
+    - azureml-dataprep
+    - dask
+    - distributed
+    - pyarrow
+    - fastparquet
+    - bokeh
+    - mpi4py
+    - adlfs
+    - fsspec
+    - optuna
+    - dask_optuna
+    - lightgbm
+    - dask-lightgbm
+    - dask-ml
+    - xgboost
+    - notebook
+    - jupyterlab

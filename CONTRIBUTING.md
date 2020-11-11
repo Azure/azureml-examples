@@ -71,20 +71,17 @@ If modifying existing examples, before a PR:
 
 ### Enforced naming
 
-Enforced naming includes:
+Directories and files must follow:
 
 - naming must be logical
 - directories under `tutorials` must be words separated by hyphens
-- directories under `workflows` must be one of [`train`, `deploy`, `score`, `dataprep`] - directories under are organized by ML tool
 - tutorial workflows (and workflow files) use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
-- `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
-- `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
 
 ### Unenforced naming
 
-Not strictly enforced, but encouraged naming includes:
-
 - `environment_name` = "framework-example|tutorial" e.g. "pytorch-example"
+- `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
+- `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
 - `ws = Workspace.from_config()`
 - `dstore = ws.get_default_datastore()`
 - `ds = Dataset.File.from_files(...)`
@@ -98,10 +95,10 @@ Thinking of contributing a new example? Read this first!
 
 #### Tutorials
 
-A tutorial is a self-contained end-to-end directory with an excellent `README.md` which can be followed to accomplish something meaningful or teaching how to scale up and out in the cloud. The `README.md` must clearly state:
+A tutorial is an end-to-end example accomplishing something significant or teaching how to scale up and out in the cloud. A tutorial **must** have an excellent `README.md` file in its directory, following conventional markdown syntax, explaining:
 
 - required prerequisites
-- any one-time setup needed by the user (preferably via `setup.sh` or similar)
+- any one-time setup needed by the user
 - any other setup instructions
 - overview of files in the tutorial
 - relevant links
@@ -117,7 +114,7 @@ Tutorials are often, but not required to be, a series of ordered Jupyter noteboo
 
 #### Notebooks
 
-A notebook is a self-contained `.ipynb` file accomplishing something significant. To qualify to be a notebook, the example must:
+A notebook is an example accomplishing something significant in a Jupyter notebook, often written in Python. To qualify to be a notebook, the example must:
 
 - obviously benefit from being a Jupyter notebook
 
@@ -131,14 +128,12 @@ Anything else should likely be a workflow.
 
 #### Workflows
 
-A workflow is a self-contained project directory specifying the job(s) to be run. They are organized by scenario:
+A workflow specifies the job(s) to be run. Currently, scenarios include:
 
 - `train`
 - `dataprep`
 - `deploy`
 - `score`
-
-Then ML tool, e.g. `fastai` or `pytorch` or `lightgbm`.
 
 #### Adding a new workflow
 
@@ -146,17 +141,15 @@ A workflow consists of the workflow definition, currently written as a Python sc
 
 Checklist:
 
-- [ ] use an existing directory or add a new scenario and/or ML tool directory
-- [ ] add job definition under this directory
-- [ ] add user code, preserving any licensing information, under a `src` dir specific to the workflow
-- [ ] add any required environment files under a `envs` dir, shared commonly across workflows
+- [ ] add job definition under `workflows/`
+- [ ] add user code, preserving any licensing information, under `code/`
 - [ ] run `readme.py`
 - [ ] test
-- [ ] submit PR, which will run `run-workflows`
+- [ ] submit PR, which will run `run-workflow`
 
 #### Adding a new notebook
 
-A notebook is a self-contained `.ipynb` file.
+A notebook is a self-contained example written as a `.ipynb` file.
 
 Checklist:
 
