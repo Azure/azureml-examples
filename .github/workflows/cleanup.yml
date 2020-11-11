@@ -1,0 +1,26 @@
+name: cleanup
+on: 
+  schedule:
+    - cron: "0 8 * * *" 
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
+    - name: run cleanup script
+      run: python cleanup.py  
