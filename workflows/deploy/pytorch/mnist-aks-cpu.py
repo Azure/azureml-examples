@@ -12,7 +12,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from random import randint
-from pathlib import path
+from pathlib import Path
 from azureml.core import workspace
 from azureml.core.webservice import akswebservice
 
