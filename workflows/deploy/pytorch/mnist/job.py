@@ -71,5 +71,5 @@ print("predicted label:", response[0][0])
 # plt.imshow(np.array(img).reshape(28, 28), cmap="gray")
 
 # delete webservice
-time.sleep(2)
+time.sleep(5)
 webservice.delete()
