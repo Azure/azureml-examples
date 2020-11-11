@@ -27,7 +27,7 @@ compute_name = "cpu-cluster"
 env = Environment.from_pip_requirements(environment_name, environment_file)
 
 # create dataset
-ds = Datset.File.from_files(
+ds = Dataset.File.from_files(
     "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv"
 )
 
