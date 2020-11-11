@@ -13,14 +13,14 @@ import matplotlib.pyplot as plt
 
 from random import randint
 from pathlib import Path
-from azureml.core import workspace
+from azureml.core import Workspace
 from azureml.core.webservice import AksWebservice
 
 # get workspace
-ws = workspace.from_config()
+ws = Workspace.from_config()
 
 # get root of git repo
-prefix = path(__file__).parent
+prefix = Path(__file__).parent
 
 # azure ml settings
 experiment_name = "pytorch-mnist-mlproject-example"
