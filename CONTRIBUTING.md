@@ -146,7 +146,7 @@ A workflow consists of the workflow definition, currently written as a Python sc
 
 Checklist:
 
-- [ ] add a new scenario and/or ML tool directory
+- [ ] use an existing directory or add a new scenario and/or ML tool directory
 - [ ] add job definition under this directory
 - [ ] add user code, preserving any licensing information, under a `src` dir specific to the workflow
 - [ ] add any required environment files under a `envs` dir, shared commonly across workflows
