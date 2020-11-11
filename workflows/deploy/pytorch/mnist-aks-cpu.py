@@ -30,7 +30,7 @@ mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 mlflow.set_experiment(experiment_name)
 
 # get latest compelted run of the training
-model = none
+model = None
 runs = ws.experiments[experiment_name].get_runs()
 run = next(runs)
 while run.get_status() != "Completed" or model is None:
