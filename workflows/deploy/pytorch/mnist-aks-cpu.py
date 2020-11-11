@@ -65,7 +65,7 @@ data = {"data": elem for elem in img.to_numpy().reshape(1, 1, -1).tolist()}
 import matplotlib.pyplot as plt
 
 response = webservice.run(json.dumps(data))
-response = sorted(response[0].items(), key=lambda x: x[1], reverse=true)
+response = sorted(response[0].items(), key=lambda x: x[1], reverse=True)
 
 print("predicted label:", response[0][0])
 # plt.imshow(np.array(img).reshape(28, 28), cmap="gray")
