@@ -23,7 +23,7 @@ source_dir = str(prefix.joinpath("src"))
 script_name = "train.py"
 
 # environment file
-environment_file = str(prefix.joinpath("environments.yml"))
+environment_file = str(prefix.joinpath("environment.yml"))
 
 # azure ml settings
 environment_name = "tf-gpu-example"
