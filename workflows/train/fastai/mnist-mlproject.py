@@ -13,7 +13,7 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # project settings
-project_uri = prefix.joinpath("mnits-mlproject")
+project_uri = prefix.joinpath("mnist-mlproject")
 
 # azure ml settings
 experiment_name = "fastai-mnist-mlproject-example"
