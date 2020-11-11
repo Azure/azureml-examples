@@ -91,6 +91,8 @@ notebooks = sorted(glob.glob("notebooks/*.ipynb"))
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-notebooks
 on:
+  schedule:
+      - cron: "0 0/2 * * *"
   push: 
     branches:
       - main
@@ -101,8 +103,6 @@ on:
       - main
     paths:
       - "notebooks/**"
-  schedule:
-      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -163,6 +163,8 @@ workflows = sorted(glob.glob("workflows/**/*.py", recursive=True))
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-workflows
 on:
+  schedule:
+      - cron: "0 0/2 * * *"
   push: 
     branches:
       - main
@@ -173,8 +175,6 @@ on:
       - main
     paths:
       - "workflows/**"
-  schedule:
-      - cron: "0 0/2 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest 

@@ -7,7 +7,6 @@ on:
       - main
     paths:
       - tutorials/using-pytorch-lightning/**
-      - environments/pt-lightning.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
