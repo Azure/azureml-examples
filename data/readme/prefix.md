@@ -43,7 +43,7 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|**not recommended** - self contained end to end tutorials|
 |`website`|**not recommended** - used for hosting website|
-|`workflows`|self contained AML workflows of job(s) to be run|
+|`workflows`|self-contained AML workflows of job(s) to be run|
 
 ## Getting started
 

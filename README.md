@@ -43,7 +43,7 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|**not recommended** - self contained end to end tutorials|
 |`website`|**not recommended** - used for hosting website|
-|`workflows`|self contained AML workflows of job(s) to be run|
+|`workflows`|self-contained AML workflows of job(s) to be run|
 
 ## Getting started
 
@@ -80,36 +80,20 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[workflows/deploy/pytorch/mnist/train.py](workflows/deploy/pytorch/mnist/train.py)|unknown|unknown|from __future__ import print_function
 [workflows/train/deepspeed/cifar.py](workflows/train/deepspeed/cifar.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
-[workflows/train/deepspeed/cifar/model.py](workflows/train/deepspeed/cifar/model.py)|unknown|unknown|import torch.nn as nn
-[workflows/train/deepspeed/cifar/train.py](workflows/train/deepspeed/cifar/train.py)|unknown|unknown|import torch
 [workflows/train/fastai/mnist-mlproject.py](workflows/train/fastai/mnist-mlproject.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
-[workflows/train/fastai/mnist-mlproject/train.py](workflows/train/fastai/mnist-mlproject/train.py)|unknown|mlproject|import argparse
 [workflows/train/fastai/mnist.py](workflows/train/fastai/mnist.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
-[workflows/train/fastai/mnist/train.py](workflows/train/fastai/mnist/train.py)|unknown|unknown|import argparse
 [workflows/train/fastai/pets.py](workflows/train/fastai/pets.py)|AML - GPU|docker|train fastai resnet34 model on pets data
-[workflows/train/fastai/pets/train.py](workflows/train/fastai/pets/train.py)|unknown|unknown|import mlflow.fastai
 [workflows/train/lightgbm/iris.py](workflows/train/lightgbm/iris.py)|AML - CPU|pip|train a lightgbm model on iris data
-[workflows/train/lightgbm/iris/train.py](workflows/train/lightgbm/iris/train.py)|unknown|unknown|# imports
 [workflows/train/pytorch/mnist-mlproject.py](workflows/train/pytorch/mnist-mlproject.py)|AML - GPU|mlproject|train a pytorch CNN model on mnist data via mlflow mlproject
-[workflows/train/pytorch/mnist-mlproject/train.py](workflows/train/pytorch/mnist-mlproject/train.py)|unknown|mlproject|# Copyright (c) 2017, PyTorch Team
 [workflows/train/pytorch/mnist.py](workflows/train/pytorch/mnist.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
-[workflows/train/pytorch/mnist/train.py](workflows/train/pytorch/mnist/train.py)|unknown|unknown|from __future__ import print_function
 [workflows/train/scikit-learn/diabetes-mlproject.py](workflows/train/scikit-learn/diabetes-mlproject.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
-[workflows/train/scikit-learn/diabetes-mlproject/train.py](workflows/train/scikit-learn/diabetes-mlproject/train.py)|unknown|mlproject|# Copyright (c) Microsoft. All rights reserved.
 [workflows/train/scikit-learn/diabetes.py](workflows/train/scikit-learn/diabetes.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
-[workflows/train/scikit-learn/diabetes/train.py](workflows/train/scikit-learn/diabetes/train.py)|unknown|unknown|import mlflow
 [workflows/train/tensorflow/iris.py](workflows/train/tensorflow/iris.py)|AML - CPU|conda|train tensorflow NN model on iris data
-[workflows/train/tensorflow/iris/train.py](workflows/train/tensorflow/iris/train.py)|unknown|unknown|import mlflow
 [workflows/train/tensorflow/mnist-distributed-horovod.py](workflows/train/tensorflow/mnist-distributed-horovod.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
 [workflows/train/tensorflow/mnist-distributed.py](workflows/train/tensorflow/mnist-distributed.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
 [workflows/train/tensorflow/mnist.py](workflows/train/tensorflow/mnist.py)|AML - GPU|conda|train tensorflow NN model on mnist data
-[workflows/train/tensorflow/mnist/train-distributed-horovod.py](workflows/train/tensorflow/mnist/train-distributed-horovod.py)|unknown|unknown|# Copyright 2019 Uber Technologies, Inc. All Rights Reserved.
-[workflows/train/tensorflow/mnist/train-distributed.py](workflows/train/tensorflow/mnist/train-distributed.py)|unknown|unknown|# @title Licensed under the Apache License, Version 2.0 (the "License");
-[workflows/train/tensorflow/mnist/train.py](workflows/train/tensorflow/mnist/train.py)|unknown|unknown|import tensorflow as tf
 [workflows/train/xgboost/iris.py](workflows/train/xgboost/iris.py)|AML - CPU|pip|train xgboost model on iris data
-[workflows/train/xgboost/iris/train.py](workflows/train/xgboost/iris/train.py)|unknown|unknown|import argparse
 
 **Deploy**
 path|compute|description

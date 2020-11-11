@@ -158,7 +158,7 @@ for nb in notebooks:
     notebook_table += f"[{nb}]({nb})|{desc}\n"
 
 # process code/azureml/*
-workflows = sorted(glob.glob("workflows/**/*.py", recursive=True))
+workflows = sorted(glob.glob("workflows/*/*/*.py"))
 
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-workflows
