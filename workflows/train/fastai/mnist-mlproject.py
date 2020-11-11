@@ -2,6 +2,8 @@
 
 # imports
 import mlflow
+
+from pathlib import Path
 from azureml.core import Workspace
 
 # get workspace
