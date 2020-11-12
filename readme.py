@@ -293,6 +293,6 @@ with open("README.md", "r") as f:
     after = f.read()
 
 # check if README.md file matches before and after
-if args.check_readme and before.strip() != after.strip():
+if args.check_readme and before != after:
     print("README.md file did not match...")
     exit(2)
