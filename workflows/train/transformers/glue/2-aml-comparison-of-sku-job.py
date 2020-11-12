@@ -157,6 +157,8 @@ if __name__ == "__main__":
     env: Environment = transformers_environment(use_gpu=True)
     exp: Experiment = Experiment(ws, "transformers-glue-finetuning-sku-comparison")
 
+    runs = []
+
     target_names = ["gpu-cluster", "gpu-K80-2", "cpu-cluster"]
     for target_name in target_names:
 
@@ -169,5 +171,9 @@ if __name__ == "__main__":
             target=target,
             experiment=exp,
         )
+        runs.append(run)
 
         print(f"Submitted to {target.name}: {run.get_portal_url()}\n")
+
+    for run in runs:
+        run.wait_for_completion(show_output=True)

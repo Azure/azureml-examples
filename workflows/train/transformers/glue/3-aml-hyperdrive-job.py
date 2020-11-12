@@ -151,3 +151,4 @@ if __name__ == "__main__":
         hyperdrive_config
     )
     print(run.get_portal_url())
+    run.wait_for_completion(show_output=True)
