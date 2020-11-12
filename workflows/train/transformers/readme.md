@@ -17,15 +17,15 @@ liberally from their example notebooks. You may want to do the same!
 
 We provide the following examples:
 
-- `1-aml-finetune.py`: Submit single GLUE finetuning script to Azure ML. This script forms
+- `1-aml-finetune-job.py`: Submit single GLUE finetuning script to Azure ML. This script forms
 the basis for all other examples.
-- `2-aml-comparison-of-sku`: Experiment comparing training times with different VM SKUs.
-- `3-aml-hyperdrive`: Submit a HyperDrive experiment for automated hyperparameter optimization.
+- `2-aml-comparison-of-sku-job.py`: Experiment comparing training times with different VM SKUs.
+- `3-aml-hyperdrive-job.py`: Submit a HyperDrive experiment for automated hyperparameter optimization.
 
 Run these as follows:
 
 ```bash
-python 1-aml-finetune.py
+python 1-aml-finetune-job.py
 ```
 
 Note: Make sure you run this from an environment with azureml-sdk (`pip install azureml-sdk`).
@@ -34,13 +34,13 @@ Optionally provide glue task and model checkpoint from the command line:
 
 ```bash
 # finetune bert-base-cased on rte task
-python 1-aml-finetune.py --glue_task rte --model_checkpoint bert-base-cased
+python 1-aml-finetune-job.py --glue_task rte --model_checkpoint bert-base-cased
 
 # compare training times with different VMs
-python 2-aml-comparison-of-sku --glue_task cola --model_checkpoint gpt2
+python 2-aml-comparison-of-sku-job.py --glue_task cola --model_checkpoint gpt2
 
 # hyperparameter optimzation with HyperDrive
-python 3-aml-hyperdrive --glue_task mnli --model_checkpoint distilroberta-base
+python 3-aml-hyperdrive-job.py --glue_task mnli --model_checkpoint distilroberta-base
 ```
 
 Note: Your first run will kick-off an image build: Azure ML is building a docker image with
