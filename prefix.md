@@ -39,7 +39,6 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |-|-|
 |`.cloud`|cloud templates|
 |`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
-|`data`|hosts data used to generate `README.md`|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|self-contained directories of end-to-end tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
