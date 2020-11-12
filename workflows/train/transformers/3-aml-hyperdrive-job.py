@@ -1,3 +1,5 @@
+# description: Automatic hyperparameter optimization with Azure ML HyperDrive library.
+
 """Automatic hyperparameter optimization with Azure ML HyperDrive library.
 
 This submits a HyperDrive experiment to optimize for a set of hyperparameters.

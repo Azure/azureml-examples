@@ -1,8 +1,8 @@
-"""Experiment comparing training performance of GLUE finetuning task with differing hardware.
+# description: Submit GLUE finetuning with Huggingface transformers library on Azure ML
 
-This script prepares the `src/finetune_glue.py` script to run in Azure ML using
-different compute clusters. The idea of this experiment is to compare training
-times between different VM SKUs.
+"""Submit GLUE finetuning with Huggingface transformers library on Azure ML.
+
+This script prepares the `src/finetune_glue.py` script to run in Azure ML.
 
 To run this script you need:
 
@@ -11,6 +11,19 @@ To run this script you need:
     - Azure ML Environment:
         - create the required python environment by running the `aml_utils.py` script
         - This registers two environments "transformers-datasets-cpu" and "transformers-datasets-gpu"
+
+Things to try:
+
+    Different GLUE Tasks: "cola", "mnli", "mnli-mm", "mrpc", "qnli", "qqp", "rte", "sst2", "stsb", "wnli"
+    Default: "cola"
+
+    model_checkpoint: Huggingface provides pretrained models you can use, e.g.
+    - "bert-base-cased"
+    - "gpt2"
+    - "xlnet-base-cased"
+    - "roberta-base"
+    See Huggingface documenation for full set of examples: https://huggingface.co/transformers/pretrained_models.html
+    Default: "distilbert-base-uncased"
 
 Note:
     
@@ -149,22 +162,20 @@ if __name__ == "__main__":
         f"Finetuning {args.glue_task} with model {args.model_checkpoint} on Azure ML..."
     )
 
-    # get Azure ML resources
     ws: Workspace = Workspace.from_config()
+
+    target: ComputeTarget = ws.compute_targets["gpu-K80-2"]
+
     env: Environment = transformers_environment(use_gpu=True)
-    exp: Experiment = Experiment(ws, "transformers-glue-finetuning-sku-comparison")
 
-    target_names = ["gpu-cluster", "gpu-K80-2", "cpu-cluster"]
-    for target_name in target_names:
+    exp: Experiment = Experiment(ws, "transformers-glue-finetuning")
 
-        target: ComputeTarget = ws.compute_targets[target_name]
+    run: Run = submit_glue_finetuning_to_aml(
+        glue_task=args.glue_task,
+        model_checkpoint=args.model_checkpoint,  # try: "bert-base-uncased"
+        environment=env,
+        target=target,
+        experiment=exp,
+    )
 
-        run: Run = submit_glue_finetuning_to_aml(
-            glue_task=args.glue_task,  # one of: "cola", "mnli", "mnli-mm", "mrpc", "qnli", "qqp", "rte", "sst2", "stsb", "wnli"
-            model_checkpoint=args.model_checkpoint,  # try: "bert-base-uncased"
-            environment=env,
-            target=target,
-            experiment=exp,
-        )
-
-        print(f"Submitted to {target.name}: {run.get_portal_url()}\n")
+    run.wait_for_completion(show_output=True)
