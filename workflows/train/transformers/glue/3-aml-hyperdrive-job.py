@@ -10,6 +10,7 @@ We use:
 """
 import argparse
 import numpy as np
+from pathlib import Path
 from azureml.core import Workspace  # connect to workspace
 from azureml.core import ComputeTarget  # specify AzureML compute resources
 from azureml.core import Experiment  # connect/create experiments
@@ -89,7 +90,7 @@ if __name__ == "__main__":
 
     # set up script run configuration
     config = ScriptRunConfig(
-        source_directory="src",
+        source_directory=str(Path(__file__).parent.joinpath("src")),
         script="finetune_glue.py",
         arguments=[
             "--output_dir",
