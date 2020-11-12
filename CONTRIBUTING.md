@@ -76,7 +76,7 @@ Enforced naming includes:
 - naming must be logical
 - directories under `tutorials` must be words separated by hyphens
 - directories under `workflows` must be one of [`train`, `deploy`, `score`, `dataprep`] - directories under are organized by ML tool
-- job definition file(s) under `workflows` must have `job` in the name
+- job definition file(s) under `workflows` must contain `job` in the name
 - tutorial workflows (and workflow files) use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
 - `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
 - `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
@@ -148,7 +148,7 @@ A workflow consists of the workflow definition, currently written as a Python sc
 Checklist:
 
 - [ ] use an existing directory or add a new scenario and/or ML tool directory
-- [ ] add job definition file(s) under this directory
+- [ ] add job definition file(s) under this directory with `job` in the name
 - [ ] add user code, preserving any licensing information, under a `src` dir specific to the workflow
 - [ ] add any required environment files under a `envs` dir, shared commonly across workflows
 - [ ] run `readme.py`
