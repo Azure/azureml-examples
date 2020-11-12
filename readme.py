@@ -280,7 +280,6 @@ os.system("black-nb --clear-output .")
 # read in README.md for comparison
 with open("README.md", "r") as f:
     before = f.read()
-    print(before)
 
 # write README.md file
 print("writing README.md...")
@@ -292,9 +291,8 @@ with open("README.md", "w") as f:
 # read in README.md for comparison
 with open("README.md", "r") as f:
     after = f.read()
-    print(after)
 
 # check if README.md file matches before and after
-if args.check_readme and before != after:
+if args.check_readme and before.strip() != after.strip():
     print("README.md file did not match...")
     exit(2)
