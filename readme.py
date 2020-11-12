@@ -17,9 +17,9 @@ parser.add_argument("--check-readme", type=bool, default=False)
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
-with open("data/readme/prefix.md", "r") as f:
+with open("prefix.md", "r") as f:
     prefix = f.read()
-with open("data/readme/suffix.md", "r") as f:
+with open("suffix.md", "r") as f:
     suffix = f.read()
 
 tutorial_table = """
