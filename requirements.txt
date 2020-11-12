@@ -1,5 +1,4 @@
 azureml-core>=1.15.0
-azureml-train
 azureml-dataprep
 azureml-mlflow
 azureml-train
