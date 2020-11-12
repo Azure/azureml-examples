@@ -46,7 +46,7 @@ def transformers_environment(use_gpu=True):
         finetuning task.
     """
 
-    pip_requirements_path = "requirements.txt"
+    pip_requirements_path = str(Path(__file__).parent.joinpath("requirements.txt"))
     print(f"Create Azure ML Environment from {pip_requirements_path}")
 
     if use_gpu:
