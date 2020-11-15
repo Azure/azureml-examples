@@ -31,8 +31,8 @@ jobs:
       run: papermill 1.hello-world.ipynb - -k python
       working-directory: tutorials/an-introduction
     - name: run 2.pytorch-model.ipynb
-      run: papermill tutorials/an-introduction/2.pytorch-model.ipynb - -k python
+      run: papermill 2.pytorch-model.ipynb - -k python
       working-directory: tutorials/an-introduction
     - name: run 3.pytorch-model-cloud-data.ipynb
-      run: papermill tutorials/an-introduction/3.pytorch-model-cloud-data.ipynb - -k python
+      run: papermill 3.pytorch-model-cloud-data.ipynb - -k python
       working-directory: tutorials/an-introduction
