@@ -18,7 +18,7 @@ Welcome to the Azure Machine Learning (AML) examples repository!
 Clone this repository and install required packages:
 
 ```sh
-git clone https://github.com/Azure/azureml-examples
+git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples
 pip install --upgrade -r requirements.txt
 ```
