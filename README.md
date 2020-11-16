@@ -35,8 +35,8 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 To get started, try the [introductory tutorial](tutorials/an-introduction). You'll accomplish:
 
-- running "hello world" on cloud compute to demonstrate the basics
-- run a series of PyTorch training on cloud compute to demonstrate mlflow tracking & using cloud data
+- run a `"hello world"` job on cloud compute to demonstrate the basics
+- run a series of PyTorch training jobs on cloud compute to demonstrate mlflow tracking & using cloud data
 
 You should then be able to understand every other example available in the repository, which are listed below.
 
