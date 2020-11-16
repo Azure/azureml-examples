@@ -33,12 +33,12 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 ## Getting started
 
-To get started, try the [introductory tutorial](tutorials/an-introduction). You will:
+To get started, see the [introductory tutorial](tutorials/an-introduction) which uses AML to:
 
-- run a `"hello world"` job on cloud compute to demonstrate the basics
-- run a series of PyTorch training jobs on cloud compute to demonstrate mlflow tracking & using cloud data
+- run a `"hello world"` job on cloud compute, demonstrating the basics
+- run a series of PyTorch training jobs on cloud compute, demonstrating mlflow tracking & using cloud data
 
-You should then be able to understand every other example available in the repository, which are listed below.
+These concepts are sufficient to understand all examples in this repository, which are listed below.
 
 ## Contents
 
