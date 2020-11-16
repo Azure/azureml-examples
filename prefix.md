@@ -33,7 +33,7 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 ## Getting started
 
-To get started, try the [introductory tutorial](tutorials/an-introduction). You'll accomplish:
+To get started, try the [introductory tutorial](tutorials/an-introduction). You will:
 
 - run a `"hello world"` job on cloud compute to demonstrate the basics
 - run a series of PyTorch training jobs on cloud compute to demonstrate mlflow tracking & using cloud data
@@ -51,13 +51,5 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|self-contained directories of end-to-end tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
-
-## Contributing
-
-We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
-
-## Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
 
 ## Examples
