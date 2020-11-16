@@ -31,6 +31,15 @@ To create or setup a workspace with the assets used in these examples, run the [
 >
 > Run `python setup-workspace.py -h` to see other arguments.
 
+## Getting started
+
+To get started, try the [introductory tutorial](tutorials/an-introduction). You'll accomplish:
+
+- running "hello world" on cloud compute to demonstrate the basics
+- run a series of PyTorch training on cloud compute to demonstrate mlflow tracking & using cloud data
+
+You should then be able to understand every other example available in the repository, which are listed below.
+
 ## Contents
 
 A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
@@ -42,10 +51,6 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|self-contained directories of end-to-end tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
-
-## Getting started
-
-To get started, try the [introductory tutorial](tutorials/an-introduction).
 
 ## Contributing
 
