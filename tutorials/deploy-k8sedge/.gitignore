@@ -1,0 +1,5 @@
+score.py
+deployment-k8s-template-gpu.yaml
+deployment_gpu.yaml
+resnet50
+
