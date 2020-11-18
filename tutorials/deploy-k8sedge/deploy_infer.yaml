@@ -1,0 +1,41 @@
+#
+# You can deploy this Deployment like so:
+#
+# $ kubectl create -f deploy_infer.yaml
+#
+# 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-infer
+  labels:
+    app: my-infer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-infer
+  template:
+    metadata:
+      labels:
+        app: my-infer
+    spec:
+      containers:
+      - name: my-infer
+        image: myregistry.azurecr.io/rollingstone/myinfer:1.0
+        ports:
+        # we use only 5001, but the container exposes  EXPOSE 5001 8883 8888
+        - containerPort: 5001
+        - containerPort: 8883
+        - containerPort: 8888
+        resources:
+          limits:
+            # if you know your models minimal requirements, you can control
+            # the resource usage here. Some models may not work unless they
+            # have enough.
+            #
+            # memory: "128Mi" #128 MB
+            # cpu: "200m" # 200 millicpu (0.2 or 20% of the cpu)
+            nvidia.com/gpu:  1
+      imagePullSecrets:
+        - name: secret4acr2infer
