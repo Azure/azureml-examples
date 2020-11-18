@@ -32,6 +32,3 @@ jobs:
     - name: run 1.intro-to-dask.ipynb
       run: papermill 1.intro-to-dask.ipynb - -k python
       working-directory: tutorials/using-dask
-    - name: run 2.eds-at-scale.ipynb
-      run: papermill 2.eds-at-scale.ipynb - -k python
-      working-directory: tutorials/using-dask
