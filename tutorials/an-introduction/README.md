@@ -10,4 +10,4 @@ The tutorial consists of three notebooks:
 - [2.pytorch-model.ipynb](2.pytorch-model.ipynb)
 - [3.pytorch-model-cloud-data.ipynb](3.pytorch-model-cloud-data.ipynb)
 
-After running through these, the basic concepts used throughout this repository are demonstrated. You can then go through other tutorials to learn the specifics of Azure cloud integration with various ML tools, or easily run one of the workflow examples. If you want to run your script regularly or on triggers, see the [template](https://github.com/Azure/azureml-template) setup guide.
+After running through these, the basic concepts used in this repository are demonstrated. You can then go through other tutorials to learn the specifics of Azure cloud integration with various ML tools, or easily run one of the workflow examples. If you want to run your script regularly or on triggers, see the [template](https://github.com/Azure/azureml-template) setup guide.
