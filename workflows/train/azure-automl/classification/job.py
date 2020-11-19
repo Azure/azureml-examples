@@ -11,16 +11,17 @@ dataset = Dataset.Tabular.from_delimited_files(data)
 
 automl_settings = {
     "n_cross_validations": 3,
-    "primary_metric": 'average_precision_score_weighted',
-    "enable_early_stopping": True
+    "primary_metric": "average_precision_score_weighted",
+    "enable_early_stopping": True,
 }
 
-automl_config = AutoMLConfig(task = 'classification',
-                             debug_log = 'automl_errors.log',
-                             compute_target = compute_name,
-                             training_data = dataset,
-                             label_column_name = 'Class',
-                             **automl_settings
-                            )
+automl_config = AutoMLConfig(
+    task="classification",
+    debug_log="automl_errors.log",
+    compute_target=compute_name,
+    training_data=dataset,
+    label_column_name="Class",
+    **automl_settings
+)
 
-remote_run = Experiment(ws,experiment_name).submit(automl_config)
+remote_run = Experiment(ws, experiment_name).submit(automl_config)
