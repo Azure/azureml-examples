@@ -1,3 +1,5 @@
+# description: train an Azure AutoML classification model on credit card data
+
 import os
 
 os.system("pip install --upgrade azureml-train-automl")
