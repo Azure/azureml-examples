@@ -17,9 +17,15 @@ parser.add_argument("--check-readme", type=bool, default=False)
 args = parser.parse_args()
 
 # constants, variables, parameters, etc.
+<<<<<<< HEAD
 with open("data/markdowns/prefix.md", "r") as f:
     prefix = f.read()
 with open("data/markdowns/suffix.md", "r") as f:
+=======
+with open("prefix.md", "r") as f:
+    prefix = f.read()
+with open("suffix.md", "r") as f:
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
     suffix = f.read()
 
 tutorial_table = """
@@ -86,11 +92,20 @@ for tutorial in tutorials:
     tutorial_table += f"[{name}]({tutorial})|{status}|{nbs}|{desc}\n"
 
 # process notebooks/*
+<<<<<<< HEAD
 notebooks = sorted(glob.glob("notebooks/**.ipynb"))
+=======
+notebooks = sorted(glob.glob("notebooks/*.ipynb"))
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
 
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-notebooks
 on:
+<<<<<<< HEAD
+=======
+  schedule:
+      - cron: "0 0/2 * * *"
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
   push: 
     branches:
       - main
@@ -101,8 +116,11 @@ on:
       - main
     paths:
       - "notebooks/**"
+<<<<<<< HEAD
   schedule:
       - cron: "0 0/2 * * *"
+=======
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -158,31 +176,46 @@ for nb in notebooks:
     notebook_table += f"[{nb}]({nb})|{desc}\n"
 
 # process code/azureml/*
+<<<<<<< HEAD
 workflows = sorted(glob.glob("workflows/**/*.py"))
+=======
+workflows = sorted(glob.glob("workflows/**/*/job.py", recursive=True))
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
 
 # create `run-workflows` workflow yaml file
 workflow = f"""name: run-workflows
 on:
+<<<<<<< HEAD
+=======
+  schedule:
+      - cron: "0 0/2 * * *"
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
   push: 
     branches:
       - main
     paths:
       - "workflows/**"
+<<<<<<< HEAD
       - "code/**"
       - "environments/**"
       - "mlprojects/**"
       - "data/**"
+=======
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
   pull_request:
     branches:
       - main
     paths:
       - "workflows/**"
+<<<<<<< HEAD
       - "code/**"
       - "environments/**"
       - "mlprojects/**"
       - "data/raw/**"
   schedule:
       - cron: "0 0/2 * * *"
+=======
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -263,7 +296,11 @@ for wf in workflows:
             deploy_table += f"[{wf}]({wf})|{compute}|{desc}\n"
 
 # glob all notebooks
+<<<<<<< HEAD
 notebooks = sorted(glob.glob("**/**/*.ipynb"))
+=======
+notebooks = sorted(glob.glob("**/**/*.ipynb", recursive=True))
+>>>>>>> 14b888680018a579251a1255ade6cbe62fa83a7c
 
 # process all notebooks and rewrite
 for nb in notebooks:

@@ -1,0 +1,16 @@
+name: train-and-deploy-pytorch-with-projects
+channels:
+  - defaults
+  - pytorch
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.6
+  - pip
+  - pip:
+    - torch
+    - torchvision
+    - mlflow
+    - matplotlib
+    - azureml-mlflow
+    - azureml-dataprep
