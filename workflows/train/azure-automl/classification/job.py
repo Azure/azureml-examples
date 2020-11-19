@@ -14,10 +14,7 @@ label_column_name = 'Class'
 automl_settings = {
     "n_cross_validations": 3,
     "primary_metric": 'average_precision_score_weighted',
-    "enable_early_stopping": True,
-    "max_concurrent_iterations": 2, # This is a limit for testing purpose, please increase it as per cluster size
-    "experiment_timeout_hours": 0.25, # This is a time limit for testing purposes, remove it for real use cases, this will drastically limit ablity to find the best model possible
-    "verbosity": logging.INFO,
+    "enable_early_stopping": True
 }
 
 automl_config = AutoMLConfig(task = 'classification',
