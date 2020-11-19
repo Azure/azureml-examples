@@ -11,7 +11,7 @@ description: learn how to automate ML with [PyCaret](https://github.com/pycaret/
 - [Natural Language Processing (NLP)](https://pycaret.readthedocs.io/en/latest/api/nlp.html)
 - [Assocation Rules](https://pycaret.readthedocs.io/en/latest/api/arules.html)
 
-As of PyCaret 2.2, GPUs can also be used for select model training and hyperparameter tuning with no changes to the use of API. See PyCaret documentation for details.
+As of PyCaret 2.2, GPUs can also be used for select model training and hyperparameter tuning with no changes to the use of API. See [PyCaret documentation](https://pycaret.readthedocs.io/en/latest/installation.html#pycaret-on-gpu) for details.
 
 In this tutorial, the following notebooks demonstrate using PyCaret with mlflow tracking:
 
