@@ -10,7 +10,7 @@ from azureml.train.automl import AutoMLConfig
 ws = Workspace.from_config()
 
 data = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/creditcard.csv"
-experiment_name = "fastai-mnist-example"
+experiment_name = "azure-automl-creditcard-example"
 compute_name = "cpu-cluster"
 
 dataset = Dataset.Tabular.from_delimited_files(data)
