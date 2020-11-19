@@ -31,9 +31,9 @@ def add_argument():
     parser.add_argument(
         "-e",
         "--epochs",
-        default=30,
+        default=3,
         type=int,
-        help="number of total epochs (default: 30)",
+        help="number of total epochs (default: 3)",
     )
 
     # distributed training
@@ -58,9 +58,6 @@ def add_argument():
 
 # Need args here to set ranks for multi-node training with download=True
 args = add_argument()
-
-if args.with_aml_log:
-    import mlflow
 
 ########################################################################
 # The output of torchvision datasets are PILImage images of range [0, 1].
@@ -145,8 +142,6 @@ model_engine, optimizer, trainloader, __ = deepspeed.initialize(
     args=args, model=net, model_parameters=parameters, training_data=trainset
 )
 
-# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-# net.to(device)
 ########################################################################
 # 3. Define a Loss function and optimizer
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -155,6 +150,8 @@ model_engine, optimizer, trainloader, __ = deepspeed.initialize(
 import torch.optim as optim
 
 criterion = nn.CrossEntropyLoss()
+
+# DeepSpeed optimizer is already set so no need to use the following
 # optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 ########################################################################
@@ -165,7 +162,7 @@ criterion = nn.CrossEntropyLoss()
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
 
-for epoch in range(2):  # loop over the dataset multiple times
+for epoch in range(args.epochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(trainloader):
@@ -187,9 +184,13 @@ for epoch in range(2):  # loop over the dataset multiple times
             loss = running_loss / 2000
             print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
             if args.with_aml_log:
-                mlflow.log_metric("loss", loss)
+                try:
+                    import mlflow
+                    mlflow.log_metric("loss", loss)
+                except:
+                    print("MLFlow logging failed. Continuing without MLflow.")
+                    pass
             running_loss = 0.0
-
 
 print("Finished Training")
 
