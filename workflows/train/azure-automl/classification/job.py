@@ -30,4 +30,5 @@ automl_config = AutoMLConfig(
     **automl_settings
 )
 
-remote_run = Experiment(ws, experiment_name).submit(automl_config)
+run = Experiment(ws, experiment_name).submit(automl_config)
+run.wait_for_completion(show_output=True)
