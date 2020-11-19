@@ -46,7 +46,7 @@ class InferenceSession:
     def run(self, output_names, input_feed, run_options=None):
         inputs = []
         for key, val in input_feed.items():
-            # remove the batch dimension
+            val = np.expand_dims(val, axis=0)
             input = tritonhttpclient.InferInput(key, val.shape, self.dtype_mapping[key])
             input.set_data_from_numpy(val)
             inputs.append(input)
@@ -58,10 +58,7 @@ class InferenceSession:
             outputs.append(output)
 
         res = self.client.infer(
-            self.model_name,
-            inputs,
-            request_id=str(self.request_count),
-            outputs=outputs,
+            self.model_name, inputs, request_id=str(self.request_count), outputs=outputs
         )
         results = []
         for output_name in output_names:

@@ -52,7 +52,7 @@ def preprocess(img, scaling):  # , dtype):
     # Channels are in RGB order. Currently model configuration data
     # doesn't provide any information as to other channel orderings
     # (like BGR) so we just assume RGB.
-    return np.expand_dims(ordered, axis=0)
+    return ordered
 
 
 def postprocess(output_array):
