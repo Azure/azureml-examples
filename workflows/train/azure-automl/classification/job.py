@@ -8,8 +8,6 @@ experiment_name = "fastai-mnist-example"
 compute_name = "cpu-cluster"
 
 dataset = Dataset.Tabular.from_delimited_files(data)
-training_data, validation_data = dataset.random_split(percentage=0.8, seed=223)
-label_column_name = 'Class'
 
 automl_settings = {
     "n_cross_validations": 3,
@@ -20,8 +18,8 @@ automl_settings = {
 automl_config = AutoMLConfig(task = 'classification',
                              debug_log = 'automl_errors.log',
                              compute_target = compute_name,
-                             training_data = training_data,
-                             label_column_name = label_column_name,
+                             training_data = dataset,
+                             label_column_name = 'Class',
                              **automl_settings
                             )
 
