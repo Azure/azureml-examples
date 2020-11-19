@@ -18,7 +18,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Principle
 
-There should be one - and preferably only one - [obvious](https://pep20.org/#obvious) way to do it.
+There should be one -- and preferably only one -- [obvious](https://pep20.org/#obvious) way to do it.
 
 ## Spirit
 

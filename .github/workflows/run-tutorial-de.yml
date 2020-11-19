@@ -28,4 +28,5 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run ase-gpu.ipynb
-      run: papermill tutorials/deploy-edge/ase-gpu.ipynb - -k python
+      run: papermill ase-gpu.ipynb - -k python
+      working-directory: tutorials/deploy-edge

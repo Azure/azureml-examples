@@ -14,8 +14,8 @@ You must have the latest version of the Azure Machine Learning CLI installed to 
 Follow the [instructions here](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli#prerequisites) to download or upgrade the CLI.
 
 ```{bash}
-python ../../code/deployment/triton/model_utils.py
-az ml model register -p ../../models/triton -n bidaf-model --model-framework=Multi
+python src/model_utils.py
+az ml model register -p models/triton -n bidaf-model --model-framework=Multi
 az ml model deploy -n triton-webservice -m bidaf-model:1 --dc deploymentconfig.json --compute-target aks-gpu-deploy
 ```
 

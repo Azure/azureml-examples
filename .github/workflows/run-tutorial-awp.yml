@@ -28,4 +28,5 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.classification.ipynb
-      run: papermill tutorials/automl-with-pycaret/1.classification.ipynb - -k python
+      run: papermill 1.classification.ipynb - -k python
+      working-directory: tutorials/automl-with-pycaret

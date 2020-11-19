@@ -18,7 +18,7 @@ Welcome to the Azure Machine Learning (AML) examples repository!
 Clone this repository and install required packages:
 
 ```sh
-git clone https://github.com/Azure/azureml-examples
+git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples
 pip install --upgrade -r requirements.txt
 ```
@@ -31,6 +31,15 @@ To create or setup a workspace with the assets used in these examples, run the [
 >
 > Run `python setup-workspace.py -h` to see other arguments.
 
+## Getting started
+
+To get started, see the [introductory tutorial](tutorials/an-introduction) which uses AML to:
+
+- run a `"hello world"` job on cloud compute, demonstrating the basics
+- run a series of PyTorch training jobs on cloud compute, demonstrating mlflow tracking & using cloud data
+
+These concepts are sufficient to understand all examples in this repository, which are listed below.
+
 ## Contents
 
 A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
@@ -42,17 +51,5 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
 |`tutorials`|self-contained directories of end-to-end tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
-
-## Getting started
-
-To get started, try the [introductory tutorial](tutorials/an-introduction).
-
-## Contributing
-
-We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
-
-## Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
 
 ## Examples
