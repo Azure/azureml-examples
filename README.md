@@ -82,7 +82,6 @@ path|compute|environment|description
 [workflows/train/pytorch/mnist/job.py](workflows/train/pytorch/mnist/job.py)|AML - GPU|conda|train a pytorch CNN model on mnist data
 [workflows/train/scikit-learn/diabetes-mlproject/job.py](workflows/train/scikit-learn/diabetes-mlproject/job.py)|AML - CPU|mlproject|train sklearn ridge model on diabetes data via mlflow mlproject
 [workflows/train/scikit-learn/diabetes/job.py](workflows/train/scikit-learn/diabetes/job.py)|AML - CPU|conda|train sklearn ridge model on diabetes data
-[workflows/train/tensorflow/iris/job.py](workflows/train/tensorflow/iris/job.py)|AML - CPU|conda|train tensorflow NN model on iris data
 [workflows/train/tensorflow/mnist-distributed-horovod/job.py](workflows/train/tensorflow/mnist-distributed-horovod/job.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
 [workflows/train/tensorflow/mnist-distributed/job.py](workflows/train/tensorflow/mnist-distributed/job.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
 [workflows/train/tensorflow/mnist/job.py](workflows/train/tensorflow/mnist/job.py)|AML - GPU|conda|train tensorflow NN model on mnist data
