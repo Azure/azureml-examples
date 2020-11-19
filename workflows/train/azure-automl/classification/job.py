@@ -1,8 +1,8 @@
 import os
+os.system("pip install --upgrade azureml-train-automl")
+
 from azureml.core import Workspace, Experiment, Dataset
 from azureml.train.automl import AutoMLConfig
-
-os.system("pip install --upgrade azureml-train-automl")
 
 ws = Workspace.from_config()
 
