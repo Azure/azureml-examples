@@ -73,7 +73,7 @@ path|description
 **Train**
 path|compute|environment|description
 -|-|-|-
-[workflows/train/azure-automl/classification/job.py](workflows/train/azure-automl/classification/job.py)|AML - CPU|unknown|from azureml.core import Workspace, Experiment, Dataset
+[workflows/train/azure-automl/classification/job.py](workflows/train/azure-automl/classification/job.py)|AML - CPU|unknown|import os
 [workflows/train/deepspeed/cifar/job.py](workflows/train/deepspeed/cifar/job.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
 [workflows/train/fastai/mnist-mlproject/job.py](workflows/train/fastai/mnist-mlproject/job.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
 [workflows/train/fastai/mnist/job.py](workflows/train/fastai/mnist/job.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
