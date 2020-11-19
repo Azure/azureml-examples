@@ -58,10 +58,7 @@ class InferenceSession:
             outputs.append(output)
 
         res = self.client.infer(
-            self.model_name,
-            inputs,
-            request_id=str(self.request_count),
-            outputs=outputs,
+            self.model_name, inputs, request_id=str(self.request_count), outputs=outputs
         )
         results = []
         for output_name in output_names:
