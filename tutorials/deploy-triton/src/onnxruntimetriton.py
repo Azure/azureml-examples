@@ -46,7 +46,7 @@ class InferenceSession:
     def run(self, output_names, input_feed, run_options=None):
         inputs = []
         for key, val in input_feed.items():
-            val = np.expand_dims(val, axis=0)
+            # remove the batch dimension
             input = tritonhttpclient.InferInput(key, val.shape, self.dtype_mapping[key])
             input.set_data_from_numpy(val)
             inputs.append(input)

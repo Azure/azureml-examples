@@ -10,7 +10,7 @@ import numpy as np
 import os
 
 from nltk import word_tokenize
-from utils import get_model_info, parse_model_http, triton_init, triton_infer
+from .utils import get_model_info, parse_model_http, triton_init, triton_infer
 from tritonclientutils import triton_to_np_dtype
 
 
