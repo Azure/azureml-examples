@@ -186,6 +186,7 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
             if args.with_aml_log:
                 try:
                     import mlflow
+
                     mlflow.log_metric("loss", loss)
                 except:
                     print("MLFlow logging failed. Continuing without MLflow.")
