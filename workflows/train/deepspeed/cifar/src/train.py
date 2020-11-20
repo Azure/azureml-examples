@@ -185,6 +185,7 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
             print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
             if args.with_aml_log:
                 try:
+                    # import MLflow if available. Continue with a warning if not installed on the system.
                     import mlflow
 
                     mlflow.log_metric("loss", loss)
