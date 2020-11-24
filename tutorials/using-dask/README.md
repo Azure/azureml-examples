@@ -1,6 +1,6 @@
 # Using Dask
 
-description: learn how to read from cloud data and scale PyData tools (Numpy, Pandas, Scikit-Learn, etc.) with [Dask](https://github.com/dask/dask)
+description: learn how to read from cloud data and scale PyData tools (Numpy, Pandas, Scikit-Learn, etc.) with [Dask](https://dask.org)
 
 "Dask natively scales Python" and "provides advanced parallelism for analytics, enabling performance at scale for the tools you love." It is open source, freely available, and sits in the [PyData ecosystem](https://github.com/pydata) of tools, develop in coordination with other projects like Numpy, Pandas, and Scikit-Learn. It provides familiar APIs for Python users, allows for low-level customization and streaming with a futures API, and scales up on clusters.
 
