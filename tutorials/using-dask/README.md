@@ -8,5 +8,5 @@ Dask is often compared to Spark - see [this page](https://docs.dask.org/en/lates
 
 In this tutorial, the following notebooks demonstrate using Dask with Azure:
 
-- [1.intro-to-dask](1.intro-to-dask.ipynb)
-- [2.distributed-cpu](2.distributed-cpu.ipynb)
+- [1.intro-to-dask.ipynb](1.intro-to-dask.ipynb)
+- [2.dask-cloudprovider.ipynb](2.dask-cloudprovider.ipynb)
