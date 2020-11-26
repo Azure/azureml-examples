@@ -1,11 +1,11 @@
-# Getting started with Job Submission
+# An introduction to batch jobs in AzureML
 
 Interactive sessions are very useful for the initial phases of a project when you are exploring the data and potential ML techniques to solve a problem. Azure Machine Learning (AzureML) allows you to work interactively with either:
 
 * Notebooks in AzureML Studio
 * VS Code (connected to a compute instance)
 
-However, as a project progresses you often will want to run your ML tasks (data prep, training, deployment) as a job. Some motivations for running ML tasks as a job include:
+However, as a project progresses you often will want to run your ML tasks (data prep, training, deployment) as a batch job. Some motivations for running ML tasks as a job include:
 
 1. *You need reproducibility*
 1. *You want to run long-running tasks, unattended*
@@ -23,7 +23,7 @@ AzureML allows you to control the environment for your job so that it is reprodu
 ### Note
 **You can submit jobs from your local machine (for example, a laptop) using any Python IDE of your choosing - VS Code, PyCharm, Jupyter. Alternatively, you can use Notebooks in AzureML studio.**
 
-## The anatomy of an AzureML job
+## The anatomy of an AzureML batch job
 
 You require 2 things to run an AzureML job:
 
@@ -85,4 +85,4 @@ The table below outlines what is contained in each tutorial. Each tutorial build
 |  [Hello World](./hello-world/README.md) | In this tutorial you learn how to submit to an AzureML compute cluster training code that simply prints "Hello World!".   | 
 | [Hello Data](./hello-data/README.md)  | In this tutorial you learn how inject your data into a job. In this example, the training code prints "Hello World!" and the first 5 rows of the data (using pandas). |
 | [Train a model](./train-model/README.md) | In this tutorial you learn how to configure a custom environment in your control code to run a training job. Also, you will see how you can log model metrics in AzureML Studio using MLFlow APIs.|
-| [Submit a workflow](./submit-pipeline/README.md) | In this tutorial you will learn how AzureML pipelines allow you to create ML workflows by stringing together multiple jobs as steps (data prep, training, etc). This tutorial also shows you how to schedule a job|
+| [Workflows](./workflow/README.md) | In this tutorial you will learn how AzureML pipelines allow you to create and submit ML workflows by stringing together multiple jobs as steps (data prep, training, etc). This tutorial also shows you how to schedule a job|

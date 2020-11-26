@@ -1,6 +1,6 @@
-# Job Submission: Submit a pipeline
+# An introduction to batch jobs: Machine Learning Workflows
 
-In this tutorial you learn learn how Azure Machine Learning pipelines help you build, optimize, and manage machine learning workflows. These workflows have a number of benefits:
+In this tutorial you learn how Azure Machine Learning pipelines help you build, optimize, and manage machine learning workflows. These workflows have a number of benefits:
 
 * Repeatability
 * Versioning and tracking
@@ -25,19 +25,19 @@ By splitting up the code in this modular way we benefit from *caching* - when th
 * [Ensure you have completed the setting up guidance for this repo](../../../README.md)
 * [Completed the Train a model tutorial](../train-model/README.md)
 
-## Submit pipeline to an AzureML compute cluster
+## Submit workflow to an AzureML compute cluster
 
 To submit this workflow, run in the terminal:
 
 ```Bash
-cd ./tutorials/an-introduction/submit-pipeline
+cd ./tutorials/an-introduction/workflow
 python job.py
 ```
 
-## Schedule pipeline to run everyday
+## Schedule workflow to run everyday
 To schedule the pipeline to run everyday at 12:30, run the following in the terminal:
 
 ```Bash
-cd ./tutorials/an-introduction/submit-pipeline
+cd ./tutorials/an-introduction/workflow
 python schedule.py
 ```

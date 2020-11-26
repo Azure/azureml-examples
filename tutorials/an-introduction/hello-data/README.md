@@ -1,4 +1,4 @@
-# Job Submission: Hello Data
+# An introduction to batch jobs: Hello Data
 
 In this example you will print the first 5 rows of a dataset.
 

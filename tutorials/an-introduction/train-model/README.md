@@ -1,4 +1,4 @@
-# Job Submission: Train a machine learning model
+# An introduction to batch jobs: Train a machine learning model
 
 In this example you will train a light GBM model on the iris dataset and track the metrics using MLFlow. In contrast to the previous examples, this example uses a custom environment definition to run the job.
 

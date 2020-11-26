@@ -1,4 +1,4 @@
-# An introduction to job submission: Hello World
+# An introduction to batch jobs: Hello World
 
 This is the obligatory "Hello, World!" example. 
 
