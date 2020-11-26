@@ -1,0 +1,6 @@
+lightgbm
+scikit-learn
+pandas
+matplotlib
+azureml-mlflow
+azureml-defaults
