@@ -56,6 +56,7 @@ kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "pytho
 
 # process tutorials/*
 tutorials = sorted(glob.glob("tutorials/*"))
+tutorials.remove("tutorials/an-introduction")
 
 for tutorial in tutorials:
 

@@ -56,7 +56,6 @@ def main():
     df = pd.read_csv(args.data_path)
     print(df.head())
 
-
     # preprocess data
     print("preprocessing data...")
     X_train, X_test, y_train, y_test, enc = preprocess_data(df)
@@ -94,6 +93,7 @@ def main():
 
     # end run
     mlflow.end_run()
+
 
 if __name__ == "__main__":
     main()

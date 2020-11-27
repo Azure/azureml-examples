@@ -4,16 +4,15 @@ from azureml.core import Workspace, Experiment, ScriptRunConfig, Environment, Da
 ws = Workspace.from_config()
 
 # create experiment
-exp = Experiment(
-    workspace=ws, 
-    name="an-introduction-hello-world-tutorial"
-)
+exp = Experiment(workspace=ws, name="an-introduction-hello-world-tutorial")
 
 # get a curated environment
 env = Environment.get(ws, "AzureML-Tutorial")
 
 # define dataset
-ds = Dataset.File.from_files("https://azuremlexamples.blob.core.windows.net/datasets/iris.csv")
+ds = Dataset.File.from_files(
+    "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv"
+)
 # add data location to arguments for script
 arguments = ["--data-path", ds.as_mount()]
 
@@ -23,7 +22,7 @@ src = ScriptRunConfig(
     script="hello.py",
     arguments=arguments,
     compute_target="cpu-cluster",
-    environment=env
+    environment=env,
 )
 
 # submit job

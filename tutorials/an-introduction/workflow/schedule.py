@@ -8,15 +8,11 @@ from azureml.pipeline.steps import PythonScriptStep
 ws = Workspace.from_config()
 
 # create experiment
-exp = Experiment(
-    workspace=ws,
-    name="an-introduction-pipeline"
-)
+exp = Experiment(workspace=ws, name="an-introduction-pipeline")
 
 # set environment based on requirements file
 env = Environment.from_pip_requirements(
-    name="my_env",
-    file_path="./environments/requirements.txt"
+    name="my_env", file_path="./environments/requirements.txt"
 )
 
 # define run configuration
@@ -24,16 +20,15 @@ rc = RunConfiguration()
 rc.environment = env
 
 # define input dataset for data prep
-ds = Dataset.File.from_files("https://azuremlexamples.blob.core.windows.net/datasets/iris.csv").as_mount()
+ds = Dataset.File.from_files(
+    "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv"
+).as_mount()
 
 # define output from data prep step
 processed_data = PipelineData("processed_data", ws.get_default_datastore())
 
 # data prep step
-data_prep_args = [
-    "--input-data", ds,
-    "--output-path", processed_data
-]
+data_prep_args = ["--input-data", ds, "--output-path", processed_data]
 data_prep = PythonScriptStep(
     name="Data Prep",
     source_directory="src",
@@ -42,7 +37,7 @@ data_prep = PythonScriptStep(
     inputs=[ds],
     outputs=[processed_data],
     compute_target="cpu-cluster",
-    runconfig=rc
+    runconfig=rc,
 )
 
 # training step
@@ -54,7 +49,7 @@ train = PythonScriptStep(
     arguments=train_args,
     inputs=[processed_data],
     compute_target="cpu-cluster",
-    runconfig=rc
+    runconfig=rc,
 )
 
 # define pipeline
@@ -62,17 +57,11 @@ my_pipeline = Pipeline(ws, steps=[data_prep, train])
 
 # publish the pipeline so others in the workspace can re-use
 published = my_pipeline.publish(
-    name="my-first-pipeline", 
-    description="trains a lightgbm model on iris data"
+    name="my-first-pipeline", description="trains a lightgbm model on iris data"
 )
 
 # set the schedule recurrence - every day at 1230hrs.
-recurrence = ScheduleRecurrence(
-    frequency="Day",
-    interval=1,
-    hours=[12],
-    minutes=[30]
-)
+recurrence = ScheduleRecurrence(frequency="Day", interval=1, hours=[12], minutes=[30])
 
 # create the schedule
 schedule = Schedule.create(
@@ -82,9 +71,7 @@ schedule = Schedule.create(
     experiment_name="an-introduction-schedule-job",
     recurrence=recurrence,
     wait_for_provisioning=True,
-    description="scheduled job"
+    description="scheduled job",
 )
 
 print("Created schedule with id: {}".format(schedule.id))
-
-

@@ -42,15 +42,14 @@ def main():
 
     print("loading processed data from pickle...")
     processed_data = os.path.join(args.processed_data_path, "processed_data.pkl")
-    with open(processed_data, 'rb') as f:
+    with open(processed_data, "rb") as f:
         mynewlist = pickle.load(f)
 
     X_train = mynewlist[0]
     X_test = mynewlist[1]
-    y_train = mynewlist[2] 
+    y_train = mynewlist[2]
     y_test = mynewlist[3]
     enc = mynewlist[4]
-
 
     # set training parameters
     params = {
@@ -85,6 +84,7 @@ def main():
 
     # end run
     mlflow.end_run()
+
 
 if __name__ == "__main__":
     main()

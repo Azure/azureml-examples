@@ -37,11 +37,12 @@ def main():
     if not (args.output_path is None):
         os.makedirs(args.output_path, exist_ok=True)
         print("%s created" % args.output_path)
-    
+
     print("writing processed data to pickle file")
     processed_data = os.path.join(args.output_path, "processed_data.pkl")
-    with open(processed_data, 'wb') as f:
+    with open(processed_data, "wb") as f:
         pickle.dump([X_train, X_test, y_train, y_test, enc], f)
+
 
 if __name__ == "__main__":
     main()

@@ -9,12 +9,13 @@ exp = Experiment(workspace=ws, name="an-introduction-train-model-tutorial")
 
 # set environment based on requirements file
 env = Environment.from_pip_requirements(
-    name="my_env",
-    file_path="./environments/requirements.txt"
+    name="my_env", file_path="./environments/requirements.txt"
 )
 
 # define dataset
-ds = Dataset.File.from_files("https://azuremlexamples.blob.core.windows.net/datasets/iris.csv")
+ds = Dataset.File.from_files(
+    "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv"
+)
 # add data location to arguments for script
 arguments = ["--data-path", ds.as_mount()]
 
@@ -24,7 +25,7 @@ src = ScriptRunConfig(
     script="train.py",
     arguments=arguments,
     compute_target="cpu-cluster",
-    environment=env
+    environment=env,
 )
 
 # submit job
