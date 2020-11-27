@@ -31,34 +31,6 @@ To create or setup a workspace with the assets used in these examples, run the [
 >
 > Run `python setup-workspace.py -h` to see other arguments.
 
-## Getting started
-
-It is important to understand that AzureML offers two distinct paradigms to process data - *interactive sessions* and *batch jobs*.
-
-* __Interactive sessions__ are appropriate for iterative data exploration. For example, you may use a Jupyter notebook to get a feel for the data and find an initial ML technique that 'works'.
-* __Batch jobs__ are programs that are executed in the background and there is no user interaction. This is useful for finished code you wish to run repeatedly (for parameter sweeps, or on a schedule), or the code is long running, or you need run distributed training (across multiple compute nodes), or you need to break up a large analysis into smaller chunks (pleasingly parallel).
-
-## Getting started with interactive sessions
-If you tend to run your ML tasks using *interactive sessions* in Jupyter Notebooks then we encourage you to start your AzureML onboarding using the [Integrated Notebook experience](https://docs.microsoft.com/azure/machine-learning/how-to-run-jupyter-notebooks) - this is the fasted way for you to get started with AzureML.
-
-## Get started with batch jobs
-If you are motivated to run Batch jobs for any of the following reasons:
-
-1. *You need reproducibility*
-1. *You want to run long-running tasks, unattended*
-1. *You need distributed training (multi-node)*
-1. *You need to schedule a workflow*
-
-Then we encourage you to complete the [introductory tutorial series](tutorials/an-introduction/README.md), which contains the following tutorials:
-
-| Tutorial<img width=400/> | Description<img width=500/> | 
-| :------------ | :---------- |
-|  [Hello World](./tutorials/an-introduction/hello-world/README.md) | In this tutorial you learn how to submit to an AzureML compute cluster training code that simply prints "Hello World!".   | 
-| [Hello Data](./tutorials/an-introduction/hello-data/README.md)  | In this tutorial you learn how inject your data into a job. In this example, the training code prints "Hello World!" and the first 5 rows of the data (using pandas). |
-| [Train a model](./tutorials/an-introduction/train-model/README.md) | In this tutorial you learn how to configure a custom environment in your control code to run a training job. Also, you will see how you can log model metrics in AzureML Studio using MLFlow APIs.|
-| [Workflows](./tutorials/an-introduction/workflow/README.md) | In this tutorial you will learn how AzureML pipelines allow you to create and submit ML workflows by stringing together multiple jobs as steps (data prep, training, etc). This tutorial also shows you how to schedule a job|
-These concepts are sufficient to understand all examples in this repository, which are listed below.
-
 ## Contents
 
 A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
@@ -71,17 +43,49 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`tutorials`|self-contained directories of end-to-end tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
 
-## Examples
+## Getting started
+
+It is important to understand that AzureML offers two distinct paradigms to process data - *interactive sessions* and *batch jobs*.
+
+* __Interactive sessions__ are appropriate for iterative data exploration and ML development. For example, you may use a Jupyter notebook to get a feel for the data, find an initial ML technique that 'works', etc.
+* __Batch jobs__ are programs that are executed in the background and there is no user interaction. This is useful for finished code you wish to run repeatedly (for parameter sweeps, or on a schedule), or the code is long running, or you need run distributed training (across multiple compute nodes), or you need to break up a large analysis into smaller chunks (pleasingly parallel).
+
+### Getting started with interactive sessions
+If you tend to run your ML tasks using *interactive sessions* in Jupyter Notebooks then we encourage you to start your AzureML onboarding using the [Integrated Notebook experience](https://docs.microsoft.com/azure/machine-learning/how-to-run-jupyter-notebooks) - this is the fasted way for you to get started with AzureML.
+
+This repository contains [example notebooks](./notebooks) that you can run using the Integrated Notebook experience in AzureML Studio. 
+
+### Getting started with batch jobs
+If you are motivated to run Batch jobs for any of the following reasons:
+
+1. *You need reproducibility*
+1. *You want to run long-running tasks, unattended*
+1. *You need distributed training (multi-node)*
+1. *You need to schedule a workflow*
+
+Then we encourage you to complete the [introductory tutorial series](tutorials/an-introduction/README.md), as this introduces the salient concepts for running batch jobs on AzureML. The series contains the following tutorials:
+
+| Tutorial<img width=400/> | Description<img width=500/> | 
+| :------------ | :---------- |
+|  [Hello World](./tutorials/an-introduction/hello-world/README.md) | In this tutorial you learn how to submit to an AzureML compute cluster training code that simply prints "Hello World!".   | 
+| [Hello Data](./tutorials/an-introduction/hello-data/README.md)  | In this tutorial you learn how inject your data into a job. In this example, the training code prints the first 5 rows of the data (using pandas). |
+| [Train a model](./tutorials/an-introduction/train-model/README.md) | In this tutorial you learn how to configure a custom environment in your control code to run a training job. Also, you will see how you can log model metrics in AzureML Studio using MLFlow APIs.|
+| [Workflows](./tutorials/an-introduction/workflow/README.md) | In this tutorial you will learn how AzureML pipelines allow you to create and submit ML workflows by stringing together multiple jobs as steps (data prep, training, etc). This tutorial also shows you how to schedule a job|
+These concepts are sufficient to understand all examples in this repository, which are listed below.
+
+### Some more examples
+
+In addition to the introductory examples above, this repository also contains some more tutorials on specific libraries:
 
 **Tutorials**
-path|status|notebooks|description
--|-|-|-
-[automl-with-pycaret](tutorials/automl-with-pycaret)|[![automl-with-pycaret](https://github.com/Azure/azureml-examples/workflows/run-tutorial-awp/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-awp)|[1.classification.ipynb](tutorials/automl-with-pycaret/1.classification.ipynb)|learn how to automate ML with [PyCaret](https://github.com/pycaret/pycaret)
-[deploy-edge](tutorials/deploy-edge)|[![deploy-edge](https://github.com/Azure/azureml-examples/workflows/run-tutorial-de/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-de)|[ase-gpu.ipynb](tutorials/deploy-edge/ase-gpu.ipynb)|learn how to use Edge device for model deployment and scoring
-[deploy-triton](tutorials/deploy-triton)|[![deploy-triton](https://github.com/Azure/azureml-examples/workflows/run-tutorial-dt/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-dt)|[1.densenet-local.ipynb](tutorials/deploy-triton/1.densenet-local.ipynb)<br>[2.bidaf-aks-v100.ipynb](tutorials/deploy-triton/2.bidaf-aks-v100.ipynb)|learn how to efficiently deploy to GPUs using [triton inference server](https://github.com/triton-inference-server/server)
-[using-dask](tutorials/using-dask)|[![using-dask](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ud/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ud)|[1.intro-to-dask.ipynb](tutorials/using-dask/1.intro-to-dask.ipynb)|learn how to read from cloud data and scale PyData tools (Numpy, Pandas, Scikit-Learn, etc.) with [Dask](https://github.com/dask/dask)
-[using-pytorch-lightning](tutorials/using-pytorch-lightning)|[![using-pytorch-lightning](https://github.com/Azure/azureml-examples/workflows/run-tutorial-upl/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-upl)|[1.train-single-node.ipynb](tutorials/using-pytorch-lightning/1.train-single-node.ipynb)<br>[2.log-with-tensorboard.ipynb](tutorials/using-pytorch-lightning/2.log-with-tensorboard.ipynb)<br>[3.log-with-mlflow.ipynb](tutorials/using-pytorch-lightning/3.log-with-mlflow.ipynb)<br>[4.train-multi-node-ddp.ipynb](tutorials/using-pytorch-lightning/4.train-multi-node-ddp.ipynb)|learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning)
-[using-rapids](tutorials/using-rapids)|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ur/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ur)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|learn how to accelerate PyData tools (numpy, pandas, scikit-learn, etc) on NVIDIA GPUs with [rapids](https://github.com/rapidsai)
+path|type|status|notebooks|description
+-|-|-|-|-
+[automl-with-pycaret](tutorials/automl-with-pycaret)|Batch Job|[![automl-with-pycaret](https://github.com/Azure/azureml-examples/workflows/run-tutorial-awp/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-awp)|[1.classification.ipynb](tutorials/automl-with-pycaret/1.classification.ipynb)|learn how to automate ML with [PyCaret](https://github.com/pycaret/pycaret)
+[deploy-edge](tutorials/deploy-edge)|Deployment|[![deploy-edge](https://github.com/Azure/azureml-examples/workflows/run-tutorial-de/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-de)|[ase-gpu.ipynb](tutorials/deploy-edge/ase-gpu.ipynb)|learn how to use Edge device for model deployment and scoring
+[deploy-triton](tutorials/deploy-triton)|Deployment|[![deploy-triton](https://github.com/Azure/azureml-examples/workflows/run-tutorial-dt/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-dt)|[1.densenet-local.ipynb](tutorials/deploy-triton/1.densenet-local.ipynb)<br>[2.bidaf-aks-v100.ipynb](tutorials/deploy-triton/2.bidaf-aks-v100.ipynb)|learn how to efficiently deploy to GPUs using [triton inference server](https://github.com/triton-inference-server/server)
+[using-dask](tutorials/using-dask)|Interactive Session|[![using-dask](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ud/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ud)|[1.intro-to-dask.ipynb](tutorials/using-dask/1.intro-to-dask.ipynb)|learn how to read from cloud data and scale PyData tools (Numpy, Pandas, Scikit-Learn, etc.) with [Dask](https://github.com/dask/dask)
+[using-pytorch-lightning](tutorials/using-pytorch-lightning)|Batch Job|[![using-pytorch-lightning](https://github.com/Azure/azureml-examples/workflows/run-tutorial-upl/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-upl)|[1.train-single-node.ipynb](tutorials/using-pytorch-lightning/1.train-single-node.ipynb)<br>[2.log-with-tensorboard.ipynb](tutorials/using-pytorch-lightning/2.log-with-tensorboard.ipynb)<br>[3.log-with-mlflow.ipynb](tutorials/using-pytorch-lightning/3.log-with-mlflow.ipynb)<br>[4.train-multi-node-ddp.ipynb](tutorials/using-pytorch-lightning/4.train-multi-node-ddp.ipynb)|learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning)
+[using-rapids](tutorials/using-rapids)|Batch Job|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ur/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ur)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|learn how to accelerate PyData tools (numpy, pandas, scikit-learn, etc) on NVIDIA GPUs with [rapids](https://github.com/rapidsai)
 
 **Notebooks**
 path|description
