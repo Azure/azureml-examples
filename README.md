@@ -74,7 +74,6 @@ path|description
 path|compute|environment|description
 -|-|-|-
 [workflows/train/azure-automl/classification/job.py](workflows/train/azure-automl/classification/job.py)|AML - CPU|unknown|train an Azure AutoML classification model on credit card data
-[workflows/train/deepspeed/cifar/job.py](workflows/train/deepspeed/cifar/job.py)|AML - GPU|docker|train CIFAR-10 using DeepSpeed and PyTorch
 [workflows/train/deepspeed/cifar/job.py](workflows/train/deepspeed/cifar/job.py)|AML - GPU|unknown|train CIFAR-10 using DeepSpeed and PyTorch
 [workflows/train/fastai/mnist-mlproject/job.py](workflows/train/fastai/mnist-mlproject/job.py)|AML - CPU|mlproject|train fastai resnet18 model on mnist data via mlflow mlproject
 [workflows/train/fastai/mnist/job.py](workflows/train/fastai/mnist/job.py)|AML - CPU|conda|train fastai resnet18 model on mnist data
