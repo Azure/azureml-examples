@@ -2,7 +2,7 @@
 
 import os
 
-os.system("pip install --upgrade azureml-train-automl")
+os.system("pip install --upgrade azureml-train-automl-client")
 
 from azureml.core import Workspace, Experiment, Dataset
 from azureml.train.automl import AutoMLConfig
@@ -23,7 +23,7 @@ automl_settings = {
 
 automl_config = AutoMLConfig(
     task="classification",
-    debug_log="automl_errors.log",
+    max_concurrent_iterations=3,
     compute_target=compute_name,
     training_data=dataset,
     label_column_name="Class",
