@@ -1,0 +1,7 @@
+name: pytorch_mnist
+command: python train.py
+code:
+  directory: src
+environment: azureml:AzureML-PyTorch-1.6-GPU:40
+compute:
+  target: azureml:gpu-cluster
