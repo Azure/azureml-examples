@@ -54,7 +54,7 @@ def main():
 
     # enable auto logging
     mlflow.xgboost.autolog()
-    
+
     # train model
     params = {
         "objective": "multi:softprob",
@@ -65,7 +65,7 @@ def main():
         "subsample": args.subsample,
         "seed": 42,
     }
-    
+
     if args.compute == "CPU":
         params.update({"tree_method": "hist"})
     else:

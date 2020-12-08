@@ -17,7 +17,7 @@ script_name = "train.py"
 
 arguments = [
     "--compute",
-    "CPU", # set to GPU for accelerated training
+    "CPU",  # set to GPU for accelerated training
 ]
 
 # environment file
@@ -26,7 +26,7 @@ environment_file = str(prefix.joinpath("requirements.txt"))
 # azure ml settings
 environment_name = "xgboost-iris-example"
 experiment_name = "xgboost-iris-example"
-compute_name = "cpu-cluster" # gpu-V100-1 for GPU version 
+compute_name = "cpu-cluster"  # gpu-V100-1 for GPU version
 
 # create environment
 env = Environment.from_pip_requirements(environment_name, environment_file)
