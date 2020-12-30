@@ -1,6 +1,8 @@
 azureml-core>=1.15.0
 azureml-dataprep
 azureml-mlflow
+# Temporary
+mlflow<1.13.0
 azureml-widgets
 numpy
 pandas
