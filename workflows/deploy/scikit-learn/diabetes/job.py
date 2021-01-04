@@ -21,22 +21,18 @@ ws = Workspace.from_config()
 prefix = Path(__file__).parent
 
 # azure ml settings
-experiment_name = "sklearn-diabetes-mlproject-example"
+experiment_name = "sklearn-diabetes-example"
 
 # setup mlflow tracking
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 mlflow.set_experiment(experiment_name)
 
 # get latest completed run of the training
-model = None
-runs = ws.experiments[experiment_name].get_runs()
-run = next(runs)
-while run.get_status() != "Completed" or model is None:
-    run = next(runs)
-    try:
-        model = run.register_model(experiment_name, model_path="model")
-    except:
-        pass
+runs_df = mlflow.search_runs()
+runs_df = runs_df.loc[runs_df['status'] == "FINISHED"]
+runs_df = runs_df.sort_values(by='end_time', ascending=False)
+print(runs_df.head())
+run_id = runs_df.at[0, 'run_id']
 
 # create deployment configuration
 aks_config = AksWebservice.deploy_configuration(
@@ -49,11 +45,11 @@ aks_config = AksWebservice.deploy_configuration(
 
 # create webservice
 webservice, azure_model = mlflow.azureml.deploy(
-    model_uri=f"runs:/{run.id}/model",
+    model_uri=f"runs:/{run_id}/model",
     workspace=ws,
     deployment_config=aks_config,
     service_name="sklearn-diabetes-" + str(randint(10000, 99999)),
-    model_name="sklearn-diabetes-example",
+    model_name=experiment_name,
 )
 
 # test webservice

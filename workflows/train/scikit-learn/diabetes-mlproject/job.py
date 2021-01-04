@@ -16,7 +16,7 @@ prefix = Path(__file__).parent
 project_uri = str(prefix.joinpath("src"))
 
 # azure ml settings
-experiment_name = "sklearn-diabetes-mlproject-example"
+experiment_name = "sklearn-diabetes-example"
 compute_name = "cpu-cluster"
 
 # setup mlflow tracking
