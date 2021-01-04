@@ -71,7 +71,7 @@ def cli_main():
     args = parser.parse_args()
 
     # set azureml env vars for multi-node ddp
-    set_environment_variables(single_node=int(args.num_nodes) > 1)
+    set_environment_variables()
 
     # ------------
     # data
