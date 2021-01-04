@@ -29,10 +29,10 @@ mlflow.set_experiment(experiment_name)
 
 # get latest completed run of the training
 runs_df = mlflow.search_runs()
-runs_df = runs_df.loc[runs_df['status'] == "FINISHED"]
-runs_df = runs_df.sort_values(by='end_time', ascending=False)
+runs_df = runs_df.loc[runs_df["status"] == "FINISHED"]
+runs_df = runs_df.sort_values(by="end_time", ascending=False)
 print(runs_df.head())
-run_id = runs_df.at[0, 'run_id']
+run_id = runs_df.at[0, "run_id"]
 
 # create deployment configuration
 aks_config = AksWebservice.deploy_configuration(
