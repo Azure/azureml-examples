@@ -9,4 +9,5 @@ dependencies:
     - azureml-mlflow
     - dask
     - distributed 
+    - adlfs
     - xgboost
