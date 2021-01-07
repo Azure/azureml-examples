@@ -1,5 +1,7 @@
 # imports
 import mlflow
+import argparse
+
 import pandas as pd
 import xgboost as xgb
 import dask.dataframe as dd
@@ -7,6 +9,13 @@ import dask.dataframe as dd
 from distributed import Client
 from dask_mpi import initialize
 from adlfs import AzureBlobFileSystem
+
+# argparse setup
+parser = argparse.ArgumentParser()
+parser.add_argument("--num_boost_round", type=int, default=10)
+parser.add_argument("--learning_rate", type=int, default=0.1)
+parser.add_argument("--gamma", type=int, default=0)
+parser.add_argument("--max_depth", type=int, default=8)
 
 # distributed setup
 print("initializing...")
@@ -38,13 +47,13 @@ y = df_train["HasDetections"].persist()
 print("training xgboost...")
 print(c)
 
-num_boost_round = 100
+num_boost_round = args.num_boost_round
 
 params = {
     "objective": "binary:logistic",
-    "learning_rate": 0.1,
-    "gamma": 0,
-    "max_depth": 8,
+    "learning_rate": args.learning_rate,
+    "gamma": args.gamma,
+    "max_depth": args.max_depth,
 }
 
 dtrain = xgb.dask.DaskDMatrix(c, X, y)
