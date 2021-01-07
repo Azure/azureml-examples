@@ -4,10 +4,13 @@ dependencies:
   - python=3.8
   - pip
   - pip:
-    - azureml-defaults
-    - mlflow
-    - azureml-mlflow
-    - dask
-    - distributed 
-    - adlfs
+    - azureml-core
+    #- azureml-mlflow
+    - pandas
     - xgboost
+    - dask==2.30.0 
+    - distributed==2.30.0
+    - adlfs
+    - fastparquet
+    - mpi4py
+    - dask-mpi
