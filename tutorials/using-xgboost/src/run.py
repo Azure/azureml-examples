@@ -56,7 +56,8 @@ print("making predictions...")
 print(c)
 X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
 y_pred = xgb.dask.predict(c, model, X_test)
-y_pred.to_dask_dataframe().to_csv("./outputs/output.csv")
+y_pred.to_dask_dataframe().to_csv("./outputs/predictions.csv")
 
 # save model
+print("saving model...")
 mlflow.xgboost.log_model(model["booster"], "./outputs/model")
