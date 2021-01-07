@@ -1,4 +1,5 @@
 # imports
+import mlflow
 import pandas as pd
 import xgboost as xgb
 import dask.dataframe as dd
@@ -37,6 +38,8 @@ y = df_train["HasDetections"].persist()
 print("training xgboost...")
 print(c)
 
+num_boost_round = 100
+
 params = {
     "objective": "binary:logistic",
     "learning_rate": 0.1,
@@ -45,7 +48,7 @@ params = {
 }
 
 dtrain = xgb.dask.DaskDMatrix(c, X, y)
-model = xgb.dask.train(c, params, dtrain)
+model = xgb.dask.train(c, params, dtrain, num_boost_round=num_boost_round)
 print(model)
 
 # predict on test data
@@ -54,3 +57,6 @@ print(c)
 X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
 y_pred = xgb.dask.predict(c, model, X_test)
 y_pred.to_dask_dataframe().to_csv("./outputs/output.csv")
+
+# save model
+mlflow.xgboost.log_model(model["booster"], "./outputs/model")

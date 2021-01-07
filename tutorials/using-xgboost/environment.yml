@@ -4,8 +4,8 @@ dependencies:
   - python=3.8
   - pip
   - pip:
-    - azureml-core
-    # - azureml-mlflow
+    - https://default7955323798.blob.core.windows.net/publictestwheels/azureml_core-0.1.0.0-py3-none-any.whl # azureml-core
+    - https://default7955323798.blob.core.windows.net/publictestwheels/azureml_mlflow-0.1.0.0-py3-none-any.whl # azureml-mlflow
     - pandas
     - xgboost
     - dask==2.30.0 
