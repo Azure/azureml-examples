@@ -35,6 +35,7 @@ y = df_train["HasDetections"].persist()
 
 # train xgboost
 print("training xgboost...")
+print(c)
 
 params = {
     "objective": "binary:logistic",
@@ -46,3 +47,10 @@ params = {
 dtrain = xgb.dask.DaskDMatrix(c, X, y)
 model = xgb.dask.train(c, params, dtrain)
 print(model)
+
+# predict on test data
+print("making predictions...")
+print(c)
+X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
+y_pred = xgb.dask.predict(c, model, X_test)
+y_pred.to_dask_dataframe().compute().to_csv("./outputs/output.csv")

@@ -5,7 +5,7 @@ dependencies:
   - pip
   - pip:
     - azureml-core
-    #- azureml-mlflow
+    # - azureml-mlflow
     - pandas
     - xgboost
     - dask==2.30.0 
