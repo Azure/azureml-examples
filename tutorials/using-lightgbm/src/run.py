@@ -48,8 +48,8 @@ cols = [col for col in df_train.columns if df_train.dtypes[col] != "object"]
 X = df_train[cols].drop("HasDetections", axis=1).values.persist()
 y = df_train["HasDetections"].persist()
 
-# train xgboost
-print("training xgboost...")
+# train lightgbm
+print("training lightgbm...")
 print(c)
 
 params = {
