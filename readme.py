@@ -24,24 +24,28 @@ with open("suffix.md", "r") as f:
 
 tutorial_table = """
 **Tutorials**
+
 path|status|notebooks|description
 -|-|-|-
 """
 
 notebook_table = """
 **Notebooks**
+
 path|description
 -|-
 """
 
 train_table = """
 **Train**
+
 path|compute|environment|description
 -|-|-|-
 """
 
 deploy_table = """
 **Deploy**
+
 path|compute|description
 -|-|-
 """
