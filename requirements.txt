@@ -7,5 +7,5 @@ numpy
 pandas
 matplotlib
 papermill
-black==19.10b0
+black
 black-nb
