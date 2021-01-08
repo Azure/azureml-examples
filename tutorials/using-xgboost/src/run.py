@@ -13,8 +13,8 @@ from adlfs import AzureBlobFileSystem
 # argparse setup
 parser = argparse.ArgumentParser()
 parser.add_argument("--num_boost_round", type=int, default=10)
-parser.add_argument("--learning_rate", type=int, default=0.1)
-parser.add_argument("--gamma", type=int, default=0)
+parser.add_argument("--learning_rate", type=float, default=0.1)
+parser.add_argument("--gamma", type=float, default=0)
 parser.add_argument("--max_depth", type=int, default=8)
 args = parser.parse_args()
 
