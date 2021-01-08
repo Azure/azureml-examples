@@ -55,6 +55,7 @@ A lightweight template repository for automating the ML lifecycle can be found [
 ## Examples
 
 **Tutorials**
+
 path|status|notebooks|description
 -|-|-|-
 [an-introduction](tutorials/an-introduction)|[![an-introduction](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ai/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ai)|[1.hello-world.ipynb](tutorials/an-introduction/1.hello-world.ipynb)<br>[2.pytorch-model.ipynb](tutorials/an-introduction/2.pytorch-model.ipynb)<br>[3.pytorch-model-cloud-data.ipynb](tutorials/an-introduction/3.pytorch-model-cloud-data.ipynb)|learn the basics of Azure Machine Learning
@@ -66,11 +67,13 @@ path|status|notebooks|description
 [using-rapids](tutorials/using-rapids)|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/run-tutorial-ur/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-tutorial-ur)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|learn how to accelerate PyData tools (numpy, pandas, scikit-learn, etc) on NVIDIA GPUs with [rapids](https://github.com/rapidsai)
 
 **Notebooks**
+
 path|description
 -|-
 [notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|use AML and mlflow to track interactive experimentation in the cloud
 
 **Train**
+
 path|compute|environment|description
 -|-|-|-
 [workflows/train/deepspeed/cifar/job.py](workflows/train/deepspeed/cifar/job.py)|AML - GPU|unknown|train CIFAR-10 using DeepSpeed and PyTorch
@@ -88,6 +91,7 @@ path|compute|environment|description
 [workflows/train/xgboost/iris/job.py](workflows/train/xgboost/iris/job.py)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
+
 path|compute|description
 -|-|-
 [workflows/deploy/pytorch/mnist/job.py](workflows/deploy/pytorch/mnist/job.py)|unknown|deploy pytorch cnn model trained on mnist data to aks
