@@ -61,7 +61,7 @@ def load_metric_from_task(task: str) -> Metric:
 
 def get_metric_name_from_task(task: str) -> str:
     """Get the name of the metric for the corresponding GLUE task.
-    
+
     If using `load_best_model_at_end=True` in TrainingArguments then you need
     `metric_for_best_model=metric_name`. Use this method to get the metric_name
     for the corresponding GLUE task.
@@ -120,7 +120,8 @@ def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
 
 
 def load_encoded_glue_dataset(
-    task: str, tokenizer: PreTrainedTokenizerBase,
+    task: str,
+    tokenizer: PreTrainedTokenizerBase,
 ) -> Union[DatasetDict, Dataset]:
     """Load GLUE data, apply tokenizer and split into train/validation."""
     tokenizer_func = construct_tokenizer_function(tokenizer=tokenizer, task=task)
