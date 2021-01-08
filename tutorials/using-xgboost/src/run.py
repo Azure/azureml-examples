@@ -7,6 +7,8 @@ import dask.dataframe as dd
 from distributed import Client
 from dask_mpi import initialize
 from adlfs import AzureBlobFileSystem
+from mlflow.models import infer_signature
+import numpy as np
 
 # distributed setup
 print("initializing...")
@@ -57,7 +59,14 @@ print(c)
 X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
 y_pred = xgb.dask.predict(c, model, X_test)
 y_pred.to_dask_dataframe().to_csv("./outputs/predictions.csv")
+X_test.to_dask_dataframe().to_csv("./outputs/inputs.csv")
+
+model_output = model.predict(xgboost.DMatrix(X_test), y_pred)
+
+input_example_np = np.asarray(input_example)
+model_output_np = np.asarray(model_output)
+model_signature = infer_signature(input_example_np, model_output_np)
 
 # save model
 print("saving model...")
-mlflow.xgboost.log_model(model["booster"], "./outputs/model")
+mlflow.xgboost.log_model(model["booster"], "./outputs/model", signature=model_signature, registered_model_name="xgboost-model")
