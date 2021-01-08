@@ -69,7 +69,3 @@ print(c)
 X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
 y_pred = model.predict(X_test)
 y_pred.to_dask_dataframe().to_csv("./outputs/predictions.csv")
-
-# save model
-print("saving model...")
-mlflow.lightgbm.log_model(model, "./outputs/model")
