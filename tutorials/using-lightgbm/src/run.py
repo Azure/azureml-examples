@@ -3,19 +3,23 @@ import mlflow
 import argparse
 
 import pandas as pd
-import xgboost as xgb
+#import lightgbm as lgbm
 import dask.dataframe as dd
 
 from distributed import Client
 from dask_mpi import initialize
 from adlfs import AzureBlobFileSystem
 
+## TODO: remove
+from dask_lightgbm import LGBMRegressor
+mlflow.lightgbm.autolog()
+
 # argparse setup
 parser = argparse.ArgumentParser()
-parser.add_argument("--num_boost_round", type=int, default=10)
+parser.add_argument("--boosting", type=str, default="gbdt")
+parser.add_argument("--num_iterations", type=int, default=100)
 parser.add_argument("--learning_rate", type=float, default=0.1)
-parser.add_argument("--gamma", type=float, default=0)
-parser.add_argument("--max_depth", type=int, default=8)
+parser.add_argument("--num_leaves", type=int, default=31)
 args = parser.parse_args()
 
 # distributed setup
@@ -48,26 +52,21 @@ y = df_train["HasDetections"].persist()
 print("training xgboost...")
 print(c)
 
-num_boost_round = args.num_boost_round
-
 params = {
-    "objective": "binary:logistic",
+    "objective": "binary",
+    "boosting": args.boosting,
+    "num_iterations": args.num_iterations,
     "learning_rate": args.learning_rate,
-    "gamma": args.gamma,
-    "max_depth": args.max_depth,
+    "num_leaves": args.num_leaves,
 }
 
-dtrain = xgb.dask.DaskDMatrix(c, X, y)
-model = xgb.dask.train(c, params, dtrain, num_boost_round=num_boost_round)
+model = LGBMRegressor(**params)
+model.fit(X, y)
 print(model)
 
 # predict on test data
 print("making predictions...")
 print(c)
 X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
-y_pred = xgb.dask.predict(c, model, X_test)
+y_pred = model.predict(X_test)
 y_pred.to_dask_dataframe().to_csv("./outputs/predictions.csv")
-
-# save model
-print("saving model...")
-mlflow.xgboost.log_model(model["booster"], "./outputs/model")

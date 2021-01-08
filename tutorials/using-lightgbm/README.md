@@ -1,8 +1,8 @@
-# XGBoost
+# LightGBM
 
-description: learn how to use [XGBoost](https://github.com/dmlc/xgboost) distributed on Azure
+description: learn how to use [LightGBM](https://github.com/microsoft/lightgbm) distributed on Azure
 
-This tutorial demonstrates how to run XGBoost, distributed on Azure.
+This tutorial demonstrates how to run LightGBM, distributed on Azure.
 
 The tutorial consists of two notebooks:
 

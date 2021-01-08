@@ -1,4 +1,4 @@
-name: run-tutorial-ux
+name: run-tutorial-ul
 on:
   schedule:
     - cron: "0 */2 * * *"
@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/using-xgboost/**
+      - tutorials/using-lightgbm/**
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -29,7 +29,7 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     # - name: run 0.Untitled.ipynb
     #   run: papermill 0.Untitled.ipynb - -k python
-    #   working-directory: tutorials/using-xgboost
+    #   working-directory: tutorials/using-lightgbm
     - name: run 1.distributed-cpu.ipynb
       run: papermill 1.distributed-cpu.ipynb - -k python
-      working-directory: tutorials/using-xgboost
+      working-directory: tutorials/using-lightgbm

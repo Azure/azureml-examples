@@ -7,7 +7,8 @@ dependencies:
     - https://default7955323798.blob.core.windows.net/publictestwheels/azureml_core-0.1.0.0-py3-none-any.whl # azureml-core
     - https://default7955323798.blob.core.windows.net/publictestwheels/azureml_mlflow-0.1.0.0-py3-none-any.whl # azureml-mlflow
     - pandas
-    - xgboost
+    - lightgbm
+    - dask-lightgbm
     - dask==2.30.0 
     - distributed==2.30.0
     - adlfs
