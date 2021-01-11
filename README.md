@@ -88,6 +88,9 @@ path|compute|environment|description
 [workflows/train/tensorflow/mnist-distributed-horovod/job.py](workflows/train/tensorflow/mnist-distributed-horovod/job.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via horovod
 [workflows/train/tensorflow/mnist-distributed/job.py](workflows/train/tensorflow/mnist-distributed/job.py)|AML - GPU|conda|train tensorflow CNN model on mnist data distributed via tensorflow
 [workflows/train/tensorflow/mnist/job.py](workflows/train/tensorflow/mnist/job.py)|AML - GPU|conda|train tensorflow NN model on mnist data
+[workflows/train/transformers/glue/1-aml-finetune-job.py](workflows/train/transformers/glue/1-aml-finetune-job.py)|AML - GPU|pip|Submit GLUE finetuning with Huggingface transformers library on Azure ML
+[workflows/train/transformers/glue/2-aml-comparison-of-sku-job.py](workflows/train/transformers/glue/2-aml-comparison-of-sku-job.py)|AML - CPU|pip|Experiment comparing training performance of GLUE finetuning task with differing hardware.
+[workflows/train/transformers/glue/3-aml-hyperdrive-job.py](workflows/train/transformers/glue/3-aml-hyperdrive-job.py)|AML - GPU|pip|Automatic hyperparameter optimization with Azure ML HyperDrive library.
 [workflows/train/xgboost/iris/job.py](workflows/train/xgboost/iris/job.py)|AML - CPU|pip|train xgboost model on iris data
 
 **Deploy**
