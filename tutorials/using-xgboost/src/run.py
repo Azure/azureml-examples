@@ -16,11 +16,12 @@ parser.add_argument("--num_boost_round", type=int, default=10)
 parser.add_argument("--learning_rate", type=float, default=0.1)
 parser.add_argument("--gamma", type=float, default=0)
 parser.add_argument("--max_depth", type=int, default=8)
+parser.add_argument("--cpus", type=int, default=4)
 args = parser.parse_args()
 
 # distributed setup
 print("initializing...")
-initialize()
+initialize(args.cpus)
 c = Client()
 print(c)
 
