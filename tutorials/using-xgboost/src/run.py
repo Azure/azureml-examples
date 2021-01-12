@@ -1,13 +1,12 @@
 # imports
 import mlflow
 import argparse
+import dask_mpi
 
-import pandas as pd
 import xgboost as xgb
 import dask.dataframe as dd
 
 from distributed import Client
-from dask_mpi import initialize
 from adlfs import AzureBlobFileSystem
 
 # argparse setup
@@ -21,9 +20,9 @@ args = parser.parse_args()
 
 # distributed setup
 print("initializing...")
-initialize(args.cpus)
-c = Client()
-print(c)
+dask_mpi.initialize(args.cpus)
+client = Client()
+print(client)
 
 # get data
 container_name = "malware"
@@ -47,7 +46,7 @@ y = df_train["HasDetections"].persist()
 
 # train xgboost
 print("training xgboost...")
-print(c)
+print(client)
 
 num_boost_round = args.num_boost_round
 
@@ -58,15 +57,15 @@ params = {
     "max_depth": args.max_depth,
 }
 
-dtrain = xgb.dask.DaskDMatrix(c, X, y)
-model = xgb.dask.train(c, params, dtrain, num_boost_round=num_boost_round)
+dtrain = xgb.dask.DaskDMatrix(client, X, y)
+model = xgb.dask.train(client, params, dtrain, num_boost_round=num_boost_round)
 print(model)
 
 # predict on test data
 print("making predictions...")
-print(c)
+print(client)
 X_test = df_test[[col for col in cols if "HasDetections" not in col]].values.persist()
-y_pred = xgb.dask.predict(c, model, X_test)
+y_pred = xgb.dask.predict(client, model, X_test)
 y_pred.to_dask_dataframe().to_csv("./outputs/predictions.csv")
 
 # save model
