@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 # distributed setup
 print("initializing...")
-dask_mpi.initialize(args.cpus)
+dask_mpi.initialize(nthreads=args.cpus)
 client = Client()
 print(client)
 
