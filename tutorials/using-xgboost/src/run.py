@@ -9,17 +9,8 @@ import dask.dataframe as dd
 from distributed import Client
 from adlfs import AzureBlobFileSystem
 
-# begin script
-if __name__ == "__main__":
-
-    # argparse setup
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--num_boost_round", type=int, default=10)
-    parser.add_argument("--learning_rate", type=float, default=0.1)
-    parser.add_argument("--gamma", type=float, default=0)
-    parser.add_argument("--max_depth", type=int, default=8)
-    parser.add_argument("--cpus_per_node", type=int, default=4)
-    args = parser.parse_args()
+# define functions
+def main(args):
 
     # distributed setup
     print("initializing...")
@@ -80,3 +71,18 @@ if __name__ == "__main__":
     print("saving model...")
     print(client)
     mlflow.xgboost.log_model(model["booster"], "./outputs/model")
+
+
+if __name__ == "__main__":
+
+    # argparse setup
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num_boost_round", type=int, default=10)
+    parser.add_argument("--learning_rate", type=float, default=0.1)
+    parser.add_argument("--gamma", type=float, default=0)
+    parser.add_argument("--max_depth", type=int, default=8)
+    parser.add_argument("--cpus_per_node", type=int, default=4)
+    args = parser.parse_args()
+
+    # run functions
+    main(args)
