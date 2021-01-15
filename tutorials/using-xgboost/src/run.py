@@ -11,7 +11,6 @@ from adlfs import AzureBlobFileSystem
 
 # define functions
 def main(args):
-
     # distributed setup
     print("initializing...")
     dask_mpi.initialize(nthreads=args.cpus_per_node)
@@ -74,7 +73,6 @@ def main(args):
 
 
 if __name__ == "__main__":
-
     # argparse setup
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_boost_round", type=int, default=10)
