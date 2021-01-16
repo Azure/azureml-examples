@@ -864,7 +864,13 @@ class InferenceServerClient:
         return json.loads(content)
 
     def register_cuda_shared_memory(
-        self, name, raw_handle, device_id, byte_size, headers=None, query_params=None,
+        self,
+        name,
+        raw_handle,
+        device_id,
+        byte_size,
+        headers=None,
+        query_params=None,
     ):
         """Request the server to register a system shared memory with the
         following specification.
