@@ -10,3 +10,15 @@ In this tutorial, the following notebooks demonstrate using Dask with Azure:
 
 - [1.intro-to-dask.ipynb](1.intro-to-dask.ipynb)
 - [2.dask-cloudprovider.ipynb](2.dask-cloudprovider.ipynb)
+
+The first demonstrates the basic of reading data from Azure into Python and processing it with Dask, and the second demonstrates configuring and launching a remote cluster for distributed computation on the cloud.
+
+The main [dask](https://github.com/dask/dask) and [distributed](https://github.com/dask/distributed) themselves are small and focused. Thousands of tools, some built by the Dask organization and most not, utilize Dask for parallel or distributed processing. Some of the most useful for data science include:
+
+- [dask/adlfs](https://github.com/dask/adlfs)
+- [dask/dask-ml](https://github.com/dask/dask-ml)
+- [pydata/xarray](https://github.com/pydata/xarray)
+- [microsoft/lightgbm](https://github.com/microsoft/lightgbm)
+- [dmlc/xgboost](https://github.com/dmlc/xgboost)
+- [rapidsai/cudf](https://github.com/rapidsai/cudf)
+- [rapidsai/cuml](https://github.com/rapidsai/cuml)
