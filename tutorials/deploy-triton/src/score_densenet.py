@@ -6,7 +6,6 @@ from azureml.core import Model
 from azureml.contrib.services.aml_request import rawhttp
 from azureml.contrib.services.aml_response import AMLResponse
 from PIL import Image
-from utils import get_model_info, parse_model_http, triton_init, triton_infer
 from onnxruntimetriton import InferenceSession
 
 
@@ -79,7 +78,7 @@ def init():
 
 
 @rawhttp
-def run(request):
+async def run(request):
     """This function is called every time your webservice receives a request.
 
     Notice you need to know the names and data types of the model inputs and
@@ -95,7 +94,7 @@ def run(request):
 
         input_name = session.get_inputs()[0].name
 
-        reqBody = request.get_data(False)
+        reqBody = await request.get_data()
         img = Image.open(io.BytesIO(reqBody))
         image_data = preprocess(img, scaling="INCEPTION")
 
