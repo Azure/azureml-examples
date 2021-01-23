@@ -1,0 +1,12 @@
+code: 
+  directory: src
+command: python run.py --cpus_per_node 4 --learning_rate 0.2
+environment: 
+  name: required
+  conda_file: environment.yml
+distribution:
+  type: mpi
+compute:
+  target: azureml:cpu-cluster
+  node_count: 10
+experiment_name: v2-xgboost

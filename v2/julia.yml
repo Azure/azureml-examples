@@ -1,0 +1,7 @@
+code: 
+  directory: src
+command: julia --project=. writetofile.jl 
+environment: azureml:julia:2
+compute:
+  target: azureml:cpu-cluster
+experiment_name: v2-julia

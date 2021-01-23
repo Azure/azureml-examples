@@ -1,0 +1,4 @@
+name: julia
+version: 2
+docker:
+  image: docker.io/jkgms/mpdiffeq
