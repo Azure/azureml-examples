@@ -3,3 +3,7 @@ black-nb
 papermill
 azureml-core>=1.20.0
 azureml-mlflow>=1.20.0
+numpy
+pandas 
+scikit-learn
+matplotlib
