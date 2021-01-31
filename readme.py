@@ -236,7 +236,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: $${{secrets.AZ_AE_CREDS}}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
@@ -274,7 +274,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: $${{secrets.AZ_AE_CREDS}}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
