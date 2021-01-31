@@ -240,7 +240,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w ${{secrets.WORKSPACE}} -g ${{secrets.RESOURCE_GROUP}}
+      run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
       run: papermill {notebook} out.ipynb -k python\n"""
 
@@ -278,7 +278,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w ${{secrets.WORKSPACE}} -g ${{secrets.RESOURCE_GROUP}}
+      run: az ml folder attach -w default -g azureml-examples
     - name: run workflow
       run: python {workflow}\n"""
 
