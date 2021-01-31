@@ -221,6 +221,7 @@ on:
       - main
     paths:
       - {notebook}
+      - .github/workflows/notebook-{initials}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -259,6 +260,7 @@ on:
       - main
     paths:
       - {workflow}
+      - .github/workflows/{scenario}-{tool}-{project}-{name}.yml
 jobs:
   build:
     runs-on: ubuntu-latest

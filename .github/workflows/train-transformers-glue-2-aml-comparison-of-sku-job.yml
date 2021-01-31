@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - workflows/train/transformers/glue/2-aml-comparison-of-sku-job.py
+      - .github/workflows/train-transformers-glue-2-aml-comparison-of-sku-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest

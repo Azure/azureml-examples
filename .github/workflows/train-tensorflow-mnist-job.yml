@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - workflows/train/tensorflow/mnist/job.py
+      - .github/workflows/train-tensorflow-mnist-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest

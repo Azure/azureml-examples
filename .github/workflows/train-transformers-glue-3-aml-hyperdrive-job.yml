@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - workflows/train/transformers/glue/3-aml-hyperdrive-job.py
+      - .github/workflows/train-transformers-glue-3-aml-hyperdrive-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest

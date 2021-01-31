@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - workflows/train/scikit-learn/diabetes-mlproject/job.py
+      - .github/workflows/train-scikit-learn-diabetes-mlproject-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest

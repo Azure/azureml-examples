@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - workflows/train/pytorch/mnist/job.py
+      - .github/workflows/train-pytorch-mnist-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest
