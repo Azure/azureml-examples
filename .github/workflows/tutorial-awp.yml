@@ -1,4 +1,4 @@
-name: run-tutorial-awp
+name: tutorial-awp
 on:
   schedule:
     - cron: "0 0/2 * * *"

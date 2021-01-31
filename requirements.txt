@@ -1,11 +1,5 @@
-azureml-core>=1.15.0
-azureml-dataprep
-azureml-mlflow
-azureml-train
-azureml-widgets
-numpy
-pandas
-matplotlib
-papermill
 black
 black-nb
+papermill
+azureml-core>=1.20.0
+azureml-mlflow>=1.20.0

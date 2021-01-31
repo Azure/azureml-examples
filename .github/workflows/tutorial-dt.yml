@@ -1,4 +1,4 @@
-name: run-tutorial-upl
+name: tutorial-dt
 on:
   schedule:
     - cron: "0 */2 * * *"
@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/using-pytorch-lightning/**
+      - tutorials/deploy-triton/**
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -27,15 +27,9 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
-    - name: run 1.train-single-node.ipynb
-      run: papermill 1.train-single-node.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
-    - name: run 2.log-with-tensorboard.ipynb
-      run: papermill 2.log-with-tensorboard.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
-    - name: run 3.log-with-mlflow.ipynb
-      run: papermill 3.log-with-mlflow.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
-    - name: run 4.train-multi-node-ddp.ipynb
-      run: papermill 4.train-multi-node-ddp.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
+    - name: run 1.densenet-local.ipynb
+      run: papermill 1.densenet-local.ipynb - -k python
+      working-directory: tutorials/deploy-triton
+    - name: run 2.bidaf-aks-v100.ipynb
+      run: papermill 2.bidaf-aks-v100.ipynb - -k python
+      working-directory: tutorials/deploy-triton

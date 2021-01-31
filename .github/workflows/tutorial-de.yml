@@ -1,4 +1,4 @@
-name: run-tutorial-de
+name: tutorial-de
 on:
   schedule:
     - cron: "0 0/2 * * *"
