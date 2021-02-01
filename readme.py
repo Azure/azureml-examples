@@ -244,7 +244,7 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
-      run: papermill {notebook} out.ipynb -k python\n"""
+      run: papermill {notebook} out.ipynb\n"""
 
     # write workflow
     with open(f".github/workflows/notebook-{initials}.yml", "w") as f:

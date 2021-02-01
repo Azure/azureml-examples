@@ -29,4 +29,4 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
-      run: papermill notebooks/train-lightgbm-local.ipynb out.ipynb -k python
+      run: papermill notebooks/train-lightgbm-local.ipynb out.ipynb
