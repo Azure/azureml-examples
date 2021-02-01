@@ -1,6 +1,6 @@
 black
 black-nb
-papermill
+papermill==2.2.2
 azureml-core>=1.20.0
 azureml-mlflow>=1.20.0
 azureml-train>=1.20.0
