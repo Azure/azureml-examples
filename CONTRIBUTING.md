@@ -16,16 +16,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## Principle
-
-There should be one -- and preferably only one -- [obvious](https://pep20.org/#obvious) way to do it.
-
 ## Spirit
 
-Per the above principle, this repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
+This repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
 
 - frequent and comprehensive testing
-- clear separation of cloud code (job definition) and user code
+- clear separation of cloud code (job definition) and user code (ML code)
 - structure for developing the full ML lifecycle (on GitHub)
 
 ## Issues
@@ -34,7 +30,7 @@ All forms of feedback are welcome through issues - please follow the pre-defined
 
 ## Pull Requests
 
-Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning (AML) team to merge. Please follow the pre-defined template and read all relevant sections below.
+Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning team to merge. Please follow the pre-defined template and read all relevant sections below.
 
 > **Important:**
 > PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
@@ -66,7 +62,7 @@ If modifying existing examples, before a PR:
 
 - run `python readme.py` from the root of the repo
 - this will generate the `README.md` file
-- this will generate the `run-workflows` and `run-notebooks` workflow files
+- this will generate github workflow files
 - this will format Python code and notebooks
 
 ### Enforced naming
@@ -77,7 +73,7 @@ Enforced naming includes:
 - directories under `tutorials` must be words separated by hyphens
 - directories under `workflows` must be one of [`train`, `deploy`, `score`, `dataprep`] - directories under are organized by ML tool
 - job definition file(s) under `workflows` must contain `job` in the name
-- tutorial workflows (and workflow files) use the naming convention `run-tutorial-*initials*`, where *initials* is the initials of the words
+- tutorial workflows (and workflow files) use the naming convention `tutorial-*initials*`, where *initials* is the initials of the words
 - `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
 - `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
 
@@ -151,9 +147,9 @@ Checklist:
 - [ ] add job definition file(s) under this directory with `job` in the name
 - [ ] add user code, preserving any licensing information, under a `src` dir specific to the workflow
 - [ ] add any required environment files under a `envs` dir, shared commonly across workflows
-- [ ] run `readme.py`
+- [ ] run `python readme.py`
 - [ ] test
-- [ ] submit PR, which will run `run-workflows`
+- [ ] submit PR, which will run the relevant workflow(s)
 
 #### Adding a new notebook
 
@@ -162,9 +158,9 @@ A notebook is a self-contained `.ipynb` file.
 Checklist:
 
 - [ ] add notebook with description to `notebooks/`
-- [ ] run `readme.py`
+- [ ] run `python readme.py`
 - [ ] test
-- [ ] submit PR, which will run `run-notebooks`
+- [ ] submit PR, which will run the relevant workflow(s)
 
 #### Adding a new tutorial
 
@@ -176,6 +172,6 @@ Checklist:
 - [ ] add tutorial files, which are usually notebooks and may be ordered
 - [ ] add `README.md` in the tutorial directory with a description (see other tutorials for format)
 - [ ] add `run-tutorial-initials`, where *initials* are the initials of the description directory (see other tutorial workflows)
-- [ ] run `readme.py`
+- [ ] run `python readme.py`
 - [ ] test
 - [ ] submit PR, which will run your tutorial if setup properly
