@@ -212,6 +212,7 @@ def format_code():
 
 
 def write_notebook_workflow(notebook, name, initials):
+    creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: notebook-{initials}
 on:
   schedule:
@@ -237,7 +238,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: $${{secrets.AZ_AE_CREDS}}
+        creds: {creds}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
@@ -251,6 +252,7 @@ jobs:
 
 
 def write_python_workflow(workflow, scenario, tool, project, name):
+    creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: {scenario}-{tool}-{project}-{name}
 on:
   schedule:
@@ -276,7 +278,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: $${{secrets.AZ_AE_CREDS}}
+        creds: {creds}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
