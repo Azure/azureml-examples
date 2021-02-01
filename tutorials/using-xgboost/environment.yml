@@ -11,8 +11,8 @@ dependencies:
     - scikit-learn
     - xgboost
     - lightgbm
-    - dask==2.30.0 
-    - distributed==2.30.0
+    - dask
+    - distributed
     - dask-ml
     - dask-sql
     - adlfs
