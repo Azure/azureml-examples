@@ -1,4 +1,4 @@
-name: tutorial-ud
+name: tutorial-uj
 on:
   schedule:
     - cron: "0 */2 * * *"
