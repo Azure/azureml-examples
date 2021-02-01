@@ -244,8 +244,7 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
-      run: papermill {notebook} out.ipynb -k python
-"""
+      run: papermill {notebook} out.ipynb -k python\n"""
 
     # write workflow
     with open(f".github/workflows/notebook-{initials}.yml", "w") as f:
@@ -285,8 +284,7 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run workflow
-      run: python {workflow}
-"""
+      run: python {workflow}\n"""
 
     # write workflow
     with open(f".github/workflows/{scenario}-{tool}-{project}-{name}.yml", "w") as f:
