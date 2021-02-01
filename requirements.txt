@@ -2,6 +2,7 @@ azureml-core>=1.20.0
 azureml-mlflow>=1.20.0
 azureml-train>=1.20.0
 azureml-dataprep>=1.20.0
+azureml-widgets>=1.20.0
 numpy
 pandas 
 scikit-learn
