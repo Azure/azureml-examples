@@ -266,25 +266,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with: 
-        python-version: "3.8"
-    - name: pip install
-      run: pip install -r requirements.txt
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: {creds}
-    - name: install azmlcli
-      run: az extension add -n azure-cli-ml -y
-    - name: attach to workspace
-      run: az ml folder attach -w default -g azureml-examples
-    - name: run workflow
-      run: python {workflow}\n"""
+  steps:
+  - name: check out repo
+    uses: actions/checkout@v2
+  - name: setup python
+    uses: actions/setup-python@v2
+    with: 
+      python-version: "3.8"
+  - name: pip install
+    run: pip install -r requirements.txt
+  - name: azure login
+    uses: azure/login@v1
+    with:
+      creds: {creds}
+  - name: install azmlcli
+    run: az extension add -n azure-cli-ml -y
+  - name: attach to workspace
+    run: az ml folder attach -w default -g azureml-examples
+  - name: run workflow
+    run: python {workflow}\n"""
 
     # write workflow
     with open(f".github/workflows/{scenario}-{tool}-{project}-{name}.yml", "w") as f:
