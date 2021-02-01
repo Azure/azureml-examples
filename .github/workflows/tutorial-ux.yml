@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - tutorials/using-xgboost/**
+      - .github/workflows/tutorial-ux.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

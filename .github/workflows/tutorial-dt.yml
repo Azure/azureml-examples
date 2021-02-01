@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - tutorials/deploy-triton/**
+      - .github/workflows/tutorial-dt.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
