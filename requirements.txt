@@ -5,7 +5,6 @@ azureml-dataprep>=1.20.0
 azureml-widgets>=1.20.0
 numpy
 pandas 
-scikit-learn
 matplotlib
 black
 black-nb

@@ -18,10 +18,6 @@ def main(args):
     # get a list of ALL notebooks, including tutorials
     all_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
 
-    # read existing README.md
-    with open("README.md", "r") as f:
-        readme_before = f.read()
-
     # make all notebooks consistent
     modify_notebooks(all_notebooks)
 
@@ -30,6 +26,10 @@ def main(args):
 
     # write workflows
     write_workflows(notebooks, workflows)
+
+    # read existing README.md
+    with open("README.md", "r") as f:
+        readme_before = f.read()
 
     # write README.md
     write_readme(tutorials, notebooks, workflows)
