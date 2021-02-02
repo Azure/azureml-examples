@@ -1,6 +1,7 @@
 *.amlignore
 *.azureml
-pythonenv*
+*pythonenv*
+*.venv*
 *dask-worker-space*
 *tmp*
 *mlruns*
