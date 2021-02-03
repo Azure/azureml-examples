@@ -82,7 +82,8 @@ def write_readme(tutorials, notebooks, workflows):
             pass
 
         # add row to tutorial table
-        tutorial_table += f"[{name}]({tutorial})|{status}|{nbs}|{description}\n"
+        row = f"[{name}]({tutorial})|{status}|{nbs}|{description}\n"
+        tutorial_table += row
 
     # process notebooks
     for notebook in notebooks:
@@ -109,7 +110,8 @@ def write_readme(tutorials, notebooks, workflows):
             pass
 
         # add row to notebook table
-        notebook_table += f"[{notebook}]({notebook})|{status}|{description}\n"
+        row = f"[{notebook}]({notebook})|{status}|{description}\n"
+        notebook_table += row
 
     # process workflows
     for workflow in workflows:
@@ -132,7 +134,7 @@ def write_readme(tutorials, notebooks, workflows):
             pass
 
         # add row to workflow table
-        row = f"[{workflow}]({workflow})|{status}|{description}\n"
+        row = f"[{tool}/{project}/{name}.py]({workflow})|{status}|{description}\n"
         if scenario == "train":
             train_table += row
         elif scenario == "deploy":
