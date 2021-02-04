@@ -53,7 +53,7 @@ A lightweight template repository for automating the ML lifecycle can be found [
 
 ## Examples
 
-**Tutorials**
+**Tutorials** ([tutorials](tutorials))
 
 path|status|notebooks|description
 -|-|-|-
@@ -66,13 +66,13 @@ path|status|notebooks|description
 [using-rapids](tutorials/using-rapids)|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/tutorial-ur/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-ur)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|learn how to accelerate PyData tools (numpy, pandas, scikit-learn, etc) on NVIDIA GPUs with [rapids](https://github.com/rapidsai)
 [using-xgboost](tutorials/using-xgboost)|[![using-xgboost](https://github.com/Azure/azureml-examples/workflows/tutorial-ux/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-ux)|[1.local-eda.ipynb](tutorials/using-xgboost/1.local-eda.ipynb)<br>[2.distributed-cpu.ipynb](tutorials/using-xgboost/2.distributed-cpu.ipynb)|learn how to use [XGBoost](https://github.com/dmlc/xgboost) on Azure
 
-**Notebooks**
+**Notebooks** ([notebooks](notebooks))
 
 path|status|description
 -|-|-
 [notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|[![train-lightgbm-local](https://github.com/Azure/azureml-examples/workflows/notebook-tll/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-tll)|use mlflow for tracking local notebook experimentation in the cloud
 
-**Train**
+**Train** ([workflows/train](workflows/train))
 
 path|status|description
 -|-|-
@@ -93,7 +93,7 @@ path|status|description
 [transformers/glue/3-aml-hyperdrive-job.py](workflows/train/transformers/glue/3-aml-hyperdrive-job.py)|[![train-transformers-glue-3-aml-hyperdrive-job](https://github.com/Azure/azureml-examples/workflows/train-transformers-glue-3-aml-hyperdrive-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atrain-transformers-glue-3-aml-hyperdrive-job)|Automatic hyperparameter optimization with Azure ML HyperDrive library.
 [xgboost/iris/job.py](workflows/train/xgboost/iris/job.py)|[![train-xgboost-iris-job](https://github.com/Azure/azureml-examples/workflows/train-xgboost-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atrain-xgboost-iris-job)|train xgboost model on iris data
 
-**Deploy**
+**Deploy** ([workflows/deploy](workflows/deploy))
 
 path|status|description
 -|-|-
