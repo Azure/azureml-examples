@@ -53,10 +53,12 @@ def write_readme(tutorials, notebooks, workflows):
         suffix = f.read()
 
     # define markdown tables
-    tutorial_table = "\n**Tutorials**\n\npath|status|notebooks|description\n-|-|-|-\n"
-    notebook_table = "\n**Notebooks**\n\npath|status|description\n-|-|-\n"
-    train_table = "\n**Train**\n\npath|status|description\n-|-|-\n"
-    deploy_table = "\n**Deploy**\n\npath|status|description\n-|-|-\n"
+    tutorial_table = "\n**Tutorials** ([tutorials](tutorials))\n\npath|status|notebooks|description\n-|-|-|-\n"
+    notebook_table = (
+        "\n**Notebooks** ([notebooks](notebooks))\n\npath|status|description\n-|-|-\n"
+    )
+    train_table = "\n**Train** ([workflows/train](workflows/train))\n\npath|status|description\n-|-|-\n"
+    deploy_table = "\n**Deploy** ([workflows/deploy](workflows/deploy))\n\npath|status|description\n-|-|-\n"
 
     # process tutorials
     for tutorial in tutorials:
