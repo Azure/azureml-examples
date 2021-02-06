@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/transformers/glue/3-aml-hyperdrive-job.py
+      - workflows/train/transformers/glue/**
       - .github/workflows/train-transformers-glue-3-aml-hyperdrive-job.yml
 jobs:
   build:

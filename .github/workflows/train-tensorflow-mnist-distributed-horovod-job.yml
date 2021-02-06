@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/tensorflow/mnist-distributed-horovod/job.py
+      - workflows/train/tensorflow/mnist-distributed-horovod/**
       - .github/workflows/train-tensorflow-mnist-distributed-horovod-job.yml
 jobs:
   build:

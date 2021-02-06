@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/lightgbm/iris/job.py
+      - workflows/train/lightgbm/iris/**
       - .github/workflows/train-lightgbm-iris-job.yml
 jobs:
   build:

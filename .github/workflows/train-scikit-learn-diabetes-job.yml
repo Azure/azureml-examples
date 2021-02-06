@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/scikit-learn/diabetes/job.py
+      - workflows/train/scikit-learn/diabetes/**
       - .github/workflows/train-scikit-learn-diabetes-job.yml
 jobs:
   build:
