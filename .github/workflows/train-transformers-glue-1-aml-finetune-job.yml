@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/transformers/glue/1-aml-finetune-job.py
+      - workflows/train/transformers/glue/**
       - .github/workflows/train-transformers-glue-1-aml-finetune-job.yml
 jobs:
   build:

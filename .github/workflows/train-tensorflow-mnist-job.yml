@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/tensorflow/mnist/job.py
+      - workflows/train/tensorflow/mnist/**
       - .github/workflows/train-tensorflow-mnist-job.yml
 jobs:
   build:

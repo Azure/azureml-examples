@@ -265,7 +265,7 @@ on:
     branches:
       - main
     paths:
-      - {workflow}
+      - workflows/{scenario}/{tool}/{project}/**
       - .github/workflows/{scenario}-{tool}-{project}-{name}.yml
 jobs:
   build:

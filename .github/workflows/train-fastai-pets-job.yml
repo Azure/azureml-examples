@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/fastai/pets/job.py
+      - workflows/train/fastai/pets/**
       - .github/workflows/train-fastai-pets-job.yml
 jobs:
   build:

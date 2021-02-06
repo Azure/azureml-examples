@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/pytorch/mnist/job.py
+      - workflows/train/pytorch/mnist/**
       - .github/workflows/train-pytorch-mnist-job.yml
 jobs:
   build:
