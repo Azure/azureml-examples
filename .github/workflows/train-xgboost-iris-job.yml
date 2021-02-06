@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/xgboost/iris/job.py
+      - workflows/train/xgboost/iris/**
       - .github/workflows/train-xgboost-iris-job.yml
 jobs:
   build:

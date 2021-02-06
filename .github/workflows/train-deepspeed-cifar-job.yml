@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/deepspeed/cifar/job.py
+      - workflows/train/deepspeed/cifar/**
       - .github/workflows/train-deepspeed-cifar-job.yml
 jobs:
   build:

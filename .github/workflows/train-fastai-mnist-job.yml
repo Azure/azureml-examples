@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - workflows/train/fastai/mnist/job.py
+      - workflows/train/fastai/mnist/**
       - .github/workflows/train-fastai-mnist-job.yml
 jobs:
   build:
