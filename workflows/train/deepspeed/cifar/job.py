@@ -22,6 +22,8 @@ script_name = "train.py"
 
 # azure ml settings
 experiment_name = "deepspeed-cifar-example"
+
+# NB. K-series is not supported at this time
 compute_name = "gpu-V100-2"
 
 # script arguments
