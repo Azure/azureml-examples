@@ -1,4 +1,4 @@
-name: tutorial-de
+name: tutorial-deploy-edge
 on:
   schedule:
     - cron: "0 0/2 * * *"

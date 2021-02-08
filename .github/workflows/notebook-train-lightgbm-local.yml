@@ -1,4 +1,4 @@
-name: notebook-tll
+name: notebook-train-lightgbm-local
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - notebooks/train-lightgbm-local.ipynb
-      - .github/workflows/notebook-tll.yml
+      - .github/workflows/notebook-train-lightgbm-local.yml
 jobs:
   build:
     runs-on: ubuntu-latest

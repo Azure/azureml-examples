@@ -1,13 +1,13 @@
-name: tutorial-ur
+name: tutorial-an-introduction
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 0/1 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - tutorials/using-rapids/**
-      - .github/workflows/tutorial-ur.yml
+      - tutorials/an-introduction/**
+      - .github/workflows/tutorial-ai.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -18,8 +18,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: "3.8"
-    - name: install snappy
-      run: sudo apt-get install libsnappy-dev
     - name: pip install
       run: pip install -r requirements.txt
     - name: azure login
@@ -30,9 +28,12 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
-    - name: run 1.train-and-hpo.ipynb
-      run: papermill 1.train-and-hpo.ipynb - -k python
-      working-directory: tutorials/using-rapids
-    - name: run 2.train-multi-gpu.ipynb
-      run: papermill 2.train-multi-gpu.ipynb - -k python
-      working-directory: tutorials/using-rapids
+    - name: run 1.hello-world.ipynb
+      run: papermill 1.hello-world.ipynb - -k python
+      working-directory: tutorials/an-introduction
+    - name: run 2.pytorch-model.ipynb
+      run: papermill 2.pytorch-model.ipynb - -k python
+      working-directory: tutorials/an-introduction
+    - name: run 3.pytorch-model-cloud-data.ipynb
+      run: papermill 3.pytorch-model-cloud-data.ipynb - -k python
+      working-directory: tutorials/an-introduction

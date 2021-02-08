@@ -1,4 +1,4 @@
-name: tutorial-upl
+name: tutorial-using-pytorch-lightning
 on:
   schedule:
     - cron: "0 */2 * * *"

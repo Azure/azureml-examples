@@ -1,4 +1,4 @@
-name: tutorial-awp
+name: tutorial-automl-with-pycaret
 on:
   schedule:
     - cron: "0 0/2 * * *"

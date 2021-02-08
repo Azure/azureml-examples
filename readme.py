@@ -67,12 +67,11 @@ def write_readme(tutorials, notebooks, workflows):
         nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
         nbs = "<br>".join(nbs)
 
-        # get tutorial name and initials
+        # get tutorial name
         name = tutorial.split("/")[-1]
-        initials = "".join(word[0][0] for word in name.split("-"))
 
         # build entries for tutorial table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/tutorial-{initials}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-{initials})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-{name})"
         description = "*no description*"
         try:
             with open(f"{tutorial}/README.md", "r") as f:
@@ -89,16 +88,15 @@ def write_readme(tutorials, notebooks, workflows):
 
     # process notebooks
     for notebook in notebooks:
-        # get notebook name and initials
+        # get notebook name
         name = notebook.split("/")[-1].replace(".ipynb", "")
-        initials = "".join(word[0][0] for word in name.split("-"))
 
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebook-{initials}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-{initials})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-{name})"
         description = "*no description*"
         try:
             if "description: " in str(data["cells"][0]["source"]):
@@ -161,12 +159,11 @@ def write_readme(tutorials, notebooks, workflows):
 def write_workflows(notebooks, workflows):
     # process notebooks
     for notebook in notebooks:
-        # get notebook name and initials
+        # get notebook name
         name = notebook.split("/")[-1].replace(".ipynb", "")
-        initials = "".join(word[0][0] for word in name.split("-"))
 
         # write workflow file
-        write_notebook_workflow(notebook, name, initials)
+        write_notebook_workflow(notebook, name)
 
     # process workflows
     for workflow in workflows:
@@ -215,9 +212,9 @@ def format_code():
     os.system("black-nb --clear-output .")
 
 
-def write_notebook_workflow(notebook, name, initials):
+def write_notebook_workflow(notebook, name):
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: notebook-{initials}
+    workflow_yaml = f"""name: notebook-{name}
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -226,7 +223,7 @@ on:
       - main
     paths:
       - {notebook}
-      - .github/workflows/notebook-{initials}.yml
+      - .github/workflows/notebook-{name}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -251,7 +248,7 @@ jobs:
       run: papermill {notebook} out.ipynb -k python\n"""
 
     # write workflow
-    with open(f".github/workflows/notebook-{initials}.yml", "w") as f:
+    with open(f".github/workflows/notebook-{name}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
