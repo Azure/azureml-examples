@@ -1,4 +1,4 @@
-name: tutorial-upl
+name: tutorial-using-pytorch-lightning
 on:
   schedule:
     - cron: "0 */2 * * *"
@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/using-pytorch-lightning/**
-      - .github/workflows/tutorial-upl.yml
+      - .github/workflows/tutorial-using-pytorch-lightning.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

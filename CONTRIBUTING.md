@@ -26,14 +26,15 @@ This repo is an opinionated set of examples using a subset of Azure Machine Lear
 
 ## Issues
 
-All forms of feedback are welcome through issues - please follow the pre-defined templates where applicable.
+All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues) - please follow the pre-defined templates where applicable.
+
+*Note:* [Discussions](https://github.com/Azure/azureml-examples/discussions) are new to GitHub, feel free to start one!
 
 ## Pull Requests
 
 Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning team to merge. Please follow the pre-defined template and read all relevant sections below.
 
-> **Important:**
-> PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
+**Important:** PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
 
 ### General rules
 
@@ -44,13 +45,14 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 ### Miscellaneous
 
-- to modify `README.md`, you need to modify `readme.py` and accompanying markdown files
-- the tables in the `README.md` are auto-generated, including description, via other files
+- to modify `README.md`, you need to modify `readme.py` and accompanying markdown files other files (`prefix.md` and `suffix.md`)
+- you probably should not modify `README.md` or accompany markdown files
 - develop on a branch, not a fork, for workflows to run properly
 - use an existing environment where possible
 - use an existing dataset where possible
 - don't register environments
 - don't create compute targets
+- don't register datasets
 - don't modify `requirements.txt`
 - you probably shouldn't modify any files in the root of the repo
 - you can `!pip install --upgrade packages` as needed in notebooks
@@ -62,7 +64,7 @@ If modifying existing examples, before a PR:
 
 - run `python readme.py` from the root of the repo
 - this will generate the `README.md` file
-- this will generate github workflow files
+- this will generate github workflow files (for workflows and notebooks)
 - this will format Python code and notebooks
 
 ### Enforced naming
@@ -73,7 +75,7 @@ Enforced naming includes:
 - directories under `tutorials` must be words separated by hyphens
 - directories under `workflows` must be one of [`train`, `deploy`, `score`, `dataprep`] - directories under are organized by ML tool
 - job definition file(s) under `workflows` must contain `job` in the name
-- tutorial workflows (and workflow files) use the naming convention `tutorial-*initials*`, where *initials* is the initials of the words
+- tutorial workflows (and workflow files) use the naming convention `tutorial-*name*`, where *name* is the directory name
 - `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
 - `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
 
@@ -146,7 +148,6 @@ Checklist:
 - [ ] use an existing directory or add a new scenario and/or ML tool directory
 - [ ] add job definition file(s) under this directory with `job` in the name
 - [ ] add user code, preserving any licensing information, under a `src` dir specific to the workflow
-- [ ] add any required environment files under a `envs` dir, shared commonly across workflows
 - [ ] run `python readme.py`
 - [ ] test
 - [ ] submit PR, which will run the relevant workflow(s)
@@ -171,7 +172,7 @@ Checklist:
 - [ ] add the tutorial directory under `tutorials/`, following naming conventions
 - [ ] add tutorial files, which are usually notebooks and may be ordered
 - [ ] add `README.md` in the tutorial directory with a description (see other tutorials for format)
-- [ ] add `run-tutorial-initials`, where *initials* are the initials of the description directory (see other tutorial workflows)
+- [ ] add `tutorial-*name*`, where *name* is the name of the directory (see other tutorial workflows)
 - [ ] run `python readme.py`
 - [ ] test
 - [ ] submit PR, which will run your tutorial if setup properly
