@@ -48,7 +48,7 @@ A lightweight template repository for automating the ML lifecycle can be found [
 |`.cloud`|cloud templates|
 |`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
 |`notebooks`|interactive jupyter notebooks for iterative ML development|
-|`tutorials`|self-contained directories of end-to-end tutorials|
+|`tutorials`|self-contained directories of tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
 
 ## Examples
@@ -111,5 +111,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Reference
 
 - [GitHub Template](https://github.com/Azure/azureml-template)
-- [Cheat Sheet, VSCode Snippets, and Templates](https://azure.github.io/azureml-web)
+- [Open Source Azure ML Cheat Sheet](https://azure.github.io/azureml-web)
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
