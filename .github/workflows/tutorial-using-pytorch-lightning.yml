@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/using-pytorch-lightning/**
-      - .github/workflows/tutorial-upl.yml
+      - .github/workflows/tutorial-using-pytorch-lightning.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

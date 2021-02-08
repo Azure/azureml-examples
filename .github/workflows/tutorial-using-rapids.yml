@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/using-rapids/**
-      - .github/workflows/tutorial-ur.yml
+      - .github/workflows/tutorial-using-rapids.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

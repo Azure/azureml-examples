@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/an-introduction/**
-      - .github/workflows/tutorial-ai.yml
+      - .github/workflows/tutorial-an-introduction.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/deploy-edge/**
-      - .github/workflows/tutorial-de.yml
+      - .github/workflows/tutorial-deploy-edge.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

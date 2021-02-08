@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/using-dask/**
-      - .github/workflows/tutorial-ud.yml
+      - .github/workflows/tutorial-using-dask.yml
 jobs:
   build:
     runs-on: ubuntu-latest 

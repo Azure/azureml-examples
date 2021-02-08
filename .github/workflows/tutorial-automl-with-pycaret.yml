@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - tutorials/automl-with-pycaret/**
-      - .github/workflows/tutorial-awp.yml
+      - .github/workflows/tutorial-automl-with-pycaret.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
