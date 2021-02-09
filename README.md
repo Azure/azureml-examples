@@ -70,6 +70,7 @@ path|status|notebooks|description
 
 path|status|description
 -|-|-
+[notebooks/s3-to-pandas.ipynb](notebooks/s3-to-pandas.ipynb)|[![s3-to-pandas](https://github.com/Azure/azureml-examples/workflows/notebook-s3-to-pandas/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-s3-to-pandas)|load data from S3 bucket(s) into Pandas
 [notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|[![train-lightgbm-local](https://github.com/Azure/azureml-examples/workflows/notebook-train-lightgbm-local/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-train-lightgbm-local)|use mlflow for tracking local notebook experimentation in the cloud
 
 **Train** ([workflows/train](workflows/train))
