@@ -1,4 +1,4 @@
-name: run-tutorial-de
+name: tutorial-deploy-edge
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - tutorials/deploy-edge/**
+      - .github/workflows/tutorial-deploy-edge.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
