@@ -25,7 +25,7 @@ jobs:
       run: conda env create -f environment.yml
       working-directory: tutorials/quickstarts
     - name: activate conda environment
-      run: conda activate azureml_py36
+      run: source activate azureml_py36
       working-directory: tutorials/quickstarts
     - name: azure login
       uses: azure/login@v1
