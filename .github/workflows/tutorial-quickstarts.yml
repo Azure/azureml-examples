@@ -19,14 +19,14 @@ jobs:
         python-version: "3.6"
     - name: pip install
       run: pip install -r requirements.txt
-      name: install conda
+    - name: install conda
       uses: s-weigand/setup-conda@v1
       with:
         activate-conda: false
-      name: create conda environment
+    - name: create conda environment
       run: conda env create -f environment.yml
       working-directory: tutorials/quickstarts
-      name: activate conda environment
+    - name: activate conda environment
       run: conda activate azureml_py36
       working-directory: tutorials/quickstarts
     - name: azure login
