@@ -41,4 +41,10 @@ dependencies:
     - azureml-train-core==1.20.0
     - azureml-train-restclients-hyperdrive==1.20.0
     - azureml-widgets==1.20.0
+    - glob
+    - azureml.opendatasets
+    - numpy
+    - matplotlib
+    - requests
+    - uuid
 prefix: /anaconda/envs/azureml_py36
