@@ -70,7 +70,7 @@ path|status|notebooks|description
 
 path|status|description
 -|-|-
-[notebooks/train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|[![train-lightgbm-local](https://github.com/Azure/azureml-examples/workflows/notebook-train-lightgbm-local/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-train-lightgbm-local)|use mlflow for tracking local notebook experimentation in the cloud
+[train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|[![train-lightgbm-local](https://github.com/Azure/azureml-examples/workflows/notebook-train-lightgbm-local/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-train-lightgbm-local)|use mlflow for tracking local notebook experimentation in the cloud
 
 **Train** ([workflows/train](workflows/train))
 
