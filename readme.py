@@ -110,7 +110,7 @@ def write_readme(tutorials, notebooks, workflows):
             pass
 
         # add row to notebook table
-        row = f"[{notebook}]({notebook})|{status}|{description}\n"
+        row = f"[{name}.ipynb]({notebook})|{status}|{description}\n"
         notebook_table += row
 
     # process workflows
