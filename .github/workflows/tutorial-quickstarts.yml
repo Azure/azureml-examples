@@ -25,7 +25,7 @@ jobs:
         environment-file: environment.yml
         python-version: 3.6
         auto-activate-base: false
-      working-directory: tutorials-quickstarts
+      working-directory: tutorials/quickstarts
     - name: Conda info
       shell: bash -l {0}
       run: conda info
