@@ -27,8 +27,8 @@ jobs:
         auto-activate-base: false
       working-directory: tutorials/quickstarts
     - name: Conda info
-        shell: bash -l {0}
-        run: conda info
+      shell: bash -l {0}
+      run: conda info
     - name: install ipykernel
       shell: bash -l {0}
       run: conda install ipykernel
