@@ -46,7 +46,6 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 ### Miscellaneous
 
 - to modify `README.md`, you need to modify `readme.py` and accompanying markdown files other files (`prefix.md` and `suffix.md`)
-- you probably should not modify `README.md` or accompany markdown files
 - develop on a branch, not a fork, for workflows to run properly
 - use an existing environment where possible
 - use an existing dataset where possible
