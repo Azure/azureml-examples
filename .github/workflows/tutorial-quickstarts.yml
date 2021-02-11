@@ -24,9 +24,13 @@ jobs:
     - name: create conda environment
       run: conda env create -f environment.yml
       working-directory: tutorials/quickstarts
+    - name: install jupyter and create kernel
+      run: conda install -n azureml_py36 jupyter
     - name: activate conda environment
       run: source activate azureml_py36
       working-directory: tutorials/quickstarts
+    - name: expose as kernel
+      run: jupyter kernelspec install --user --name azureml_py36
     - name: azure login
       uses: azure/login@v1
       with:
