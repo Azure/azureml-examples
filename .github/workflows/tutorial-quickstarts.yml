@@ -36,11 +36,11 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run AzureMLin10mins.ipynb
-      run: papermill AzureMLin10mins.ipynb - -k python
+      run: papermill AzureMLin10mins.ipynb - -k azureml_py36
       working-directory: tutorials/quickstarts
     - name: run GettingStartedWithPythonSDK.ipynb
-      run: papermill GettingStartedWithPythonSDK.ipynb - -k python
+      run: papermill GettingStartedWithPythonSDK.ipynb - -k azureml_py36
       working-directory: tutorials/quickstarts
     - name: run ClassificationWithAutomatedML.ipynb
-      run: papermill ClassificationWithAutomatedML.ipynb - -k python
+      run: papermill ClassificationWithAutomatedML.ipynb - -k azureml_py36
       working-directory: tutorials/quickstarts
