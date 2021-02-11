@@ -1,4 +1,4 @@
-name: azureml_py36_test
+name: azureml_py36
 dependencies:
   - python=3.6
   - pip
