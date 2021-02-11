@@ -31,7 +31,7 @@ jobs:
       run: conda install ipykernel
     - name: expose as kernel
       run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml 36"
-      name: list packages in env
+    - name: list packages in env
       run: conda list
       working-directory: tutorials/quickstarts
     - name: azure login
