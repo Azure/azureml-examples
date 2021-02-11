@@ -25,9 +25,9 @@ jobs:
         environment-file: tutorials/quickstarts/environment.yml
         python-version: 3.6
         auto-activate-base: false
-    - name: Conda info
+    - name: Conda list
       shell: bash -l {0}
-      run: conda info
+      run: conda list
     - name: install ipykernel
       shell: bash -l {0}
       run: conda install ipykernel
