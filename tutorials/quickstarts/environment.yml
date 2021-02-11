@@ -272,7 +272,6 @@ dependencies:
     - dm-tree==0.1.5
     - docker==4.4.1
     - dotnetcore2==2.1.20
-    - en-core-web-sm
     - encrypted-inference==0.9
     - entrypoints==0.3
     - enum34==1.1.10
