@@ -28,6 +28,12 @@ jobs:
     - name: Conda info
       shell: bash -l {0}
       run: conda info
+    - name: install ipykernel
+      shell: bash -l {0}
+      run: conda install ipykernel
+    - name: expose as kernel
+      shell: bash -l {0}
+      run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml 36"
     - name: azure login
       uses: azure/login@v1
       with:
