@@ -22,7 +22,7 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: azureml_py36
-        environment-file: tutorials/quickstarts/environment.yml
+        environment-file: tutorials/quickstarts/environment.yml 
         python-version: 3.6
         auto-activate-base: false
     - name: Conda list
