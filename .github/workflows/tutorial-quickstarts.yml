@@ -41,7 +41,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
-      run: az ml folder attach -w default -g azureml-examples
+      run: az ml folder attach -w default -g azureml-examples --debug
     - name: run AzureMLin10mins.ipynb
       shell: bash -l {0}
       run: papermill AzureMLin10mins.ipynb - -k azureml_py36
