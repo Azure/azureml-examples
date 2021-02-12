@@ -35,7 +35,7 @@ jobs:
       shell: bash -l {0}
       run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml 36"
     - name: do some automlscript stuff
-      shell: bash-l {0}
+      shell: bash -l {0}
       run: jupyter nbextension uninstall --user --py azureml.widgets 
     - name: azure login
       uses: azure/login@v1
