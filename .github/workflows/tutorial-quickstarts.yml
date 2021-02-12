@@ -37,6 +37,9 @@ jobs:
     - name: do some automlscript stuff
       shell: bash -l {0}
       run: jupyter nbextension uninstall --user --py azureml.widgets 
+    - name: remove idna 3.1
+      shell: bash -l {0}
+      run: pip install 'idna<3,>=2.5' --force-reinstall
     - name: azure login
       uses: azure/login@v1
       with:
