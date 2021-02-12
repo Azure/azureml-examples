@@ -51,7 +51,7 @@ flask<=1.0.3
 fusepy<=3.0.1
 gensim<=3.8.3
 gunicorn<=19.9.0
-idna=2.10
+idna==2.10
 importlib-metadata<=3.4.0
 interpret-community<=0.16.0
 interpret-core[required]<=0.2.1
