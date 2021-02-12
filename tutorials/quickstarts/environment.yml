@@ -1,21 +1,21 @@
 name: azureml_py36
 dependencies:
-- pip==20.2.4
-- python>=3.5.2,<3.8
-- nb_conda
-- boto3==1.15.18
-- matplotlib==2.1.0
-- numpy==1.18.5
-- cython
-- urllib3<1.24
-- scipy>=1.4.1,<=1.5.2
-- scikit-learn==0.22.1
-- pandas==0.25.1
-- py-xgboost<=0.90
-- conda-forge::fbprophet==0.5
-- holidays==0.9.11
-- pytorch::pytorch=1.4.0
-- cudatoolkit=10.1.243
+  - pip==20.2.4
+  - python>=3.5.2,<3.8
+  - nb_conda
+  - boto3==1.15.18
+  - matplotlib==2.1.0
+  - numpy==1.18.5
+  - cython
+  - urllib3<1.24
+  - scipy>=1.4.1,<=1.5.2
+  - scikit-learn==0.22.1
+  - pandas==0.25.1
+  - py-xgboost<=0.90
+  - conda-forge::fbprophet==0.5
+  - holidays==0.9.11
+  - pytorch::pytorch=1.4.0
+  - cudatoolkit=10.1.243
   - pip:
     - azureml-accel-models==1.20.0
     - azureml-automl-core==1.20.0
