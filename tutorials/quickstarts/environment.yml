@@ -1,64 +1,28 @@
 name: azureml_py36
 dependencies:
-  - pip==20.2.4
-  - python>=3.5.2,<3.8
-  - nb_conda
-  - boto3==1.15.18
-  - matplotlib==2.1.0
-  - numpy==1.18.5
-  - cython
-  - urllib3<1.24
-  - scipy>=1.4.1,<=1.5.2
-  - scikit-learn==0.22.1
-  - pandas==0.25.1
-  - py-xgboost<=0.90
-  - conda-forge::fbprophet==0.5
-  - holidays==0.9.11
-  - pytorch::pytorch=1.4.0
-  - cudatoolkit=10.1.243
-  - pip:
-    - azureml-accel-models==1.20.0
-    - azureml-automl-core==1.20.0
-    - azureml-automl-runtime==1.20.0
-    - azureml-cli-common==1.20.0
-    - azureml-contrib-dataset==1.20.0
-    - azureml-contrib-fairness==1.20.0
-    - azureml-contrib-gbdt==1.20.0
-    - azureml-contrib-interpret==1.20.0
-    - azureml-contrib-notebook==1.20.0
-    - azureml-contrib-pipeline-steps==1.20.0
-    - azureml-contrib-reinforcementlearning==1.20.0
-    - azureml-contrib-server==1.20.0
-    - azureml-contrib-services==1.20.0
-    - azureml-core==1.20.0
-    - azureml-datadrift==1.20.0
-    - azureml-dataprep==2.7.3
-    - azureml-dataprep-native==27.0.0
-    - azureml-dataprep-rslex==1.5.0
-    - azureml-dataset-runtime==1.20.0
-    - azureml-defaults==1.20.0
-    - azureml-explain-model==1.20.0
-    - azureml-interpret==1.20.0
-    - azureml-mlflow==1.20.0.post1
-    - azureml-model-management-sdk==1.0.1b6.post1
-    - azureml-opendatasets==1.20.0
-    - azureml-pipeline==1.20.0
-    - azureml-pipeline-core==1.20.0
-    - azureml-pipeline-steps==1.20.0
-    - azureml-sdk==1.20.0
-    - azureml-telemetry==1.20.0
-    - azureml-tensorboard==1.20.0
-    - azureml-train==1.20.0
-    - azureml-train-automl==1.20.0
-    - azureml-train-automl-client==1.20.0
-    - azureml-train-automl-runtime==1.20.0
-    - azureml-train-core==1.20.0
-    - azureml-train-restclients-hyperdrive==1.20.0
-    - azureml-widgets==1.20.0
-    - numpy
-    - matplotlib
-    - requests
-    - uuid
-    - pytorch-transformers==1.0.0
-    - spacy==2.1.8
-    - https://aka.ms/automl-resources/packages/en_core_web_sm-2.1.0.tar.gz
+  # The python interpreter version.
+  # Currently Azure ML only supports 3.5.2 and later.
+- pip==20.2.4
+- python>=3.5.2,<3.8
+- nb_conda
+- boto3==1.15.18
+- matplotlib==2.1.0
+- numpy==1.18.5
+- cython
+- urllib3<1.24
+- scipy>=1.4.1,<=1.5.2
+- scikit-learn==0.22.1
+- pandas==0.25.1
+- py-xgboost<=0.90
+- conda-forge::fbprophet==0.5
+- holidays==0.9.11
+- pytorch::pytorch=1.4.0
+- cudatoolkit=10.1.243
+
+- pip:
+  # Required packages for AzureML execution, history, and data preparation.
+  - azureml-widgets~=1.21.0
+  - pytorch-transformers==1.0.0
+  - spacy==2.1.8
+  - https://aka.ms/automl-resources/packages/en_core_web_sm-2.1.0.tar.gz
+  - -r https://automlcesdkdataresources.blob.core.windows.net/validated-requirements/1.21.0/validated_linux_requirements.txt [--no-deps]

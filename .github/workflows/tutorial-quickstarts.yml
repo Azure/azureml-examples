@@ -41,14 +41,14 @@ jobs:
     - name: install azmlcli
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
-      run: az ml folder attach -w default -g azureml-examples --debug
+      run: az ml folder attach -w default -g azureml-examples
+    - name: run ClassificationWithAutomatedML.ipynb
+      run: papermill ClassificationWithAutomatedML.ipynb - -k azureml_py36
+      working-directory: tutorials/quickstarts
     - name: run AzureMLin10mins.ipynb
       shell: bash -l {0}
       run: papermill AzureMLin10mins.ipynb - -k azureml_py36
       working-directory: tutorials/quickstarts
     - name: run GettingStartedWithPythonSDK.ipynb
       run: papermill GettingStartedWithPythonSDK.ipynb - -k azureml_py36
-      working-directory: tutorials/quickstarts
-    - name: run ClassificationWithAutomatedML.ipynb
-      run: papermill ClassificationWithAutomatedML.ipynb - -k azureml_py36
       working-directory: tutorials/quickstarts
