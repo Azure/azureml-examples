@@ -21,22 +21,28 @@ jobs:
       run: pip install -r requirements.txt
     - uses: conda-incubator/setup-miniconda@v2
       with:
-        activate-environment: azureml_py36
-        environment-file: tutorials/quickstarts/environment.yml 
-        python-version: 3.6
-        auto-activate-base: false
-    - name: Conda list
+      auto-activate-base: true
+      activate-environment: ""
+      auto-update-conda: true
+      python-version: 3.6
+    - name: Conda info
       shell: bash -l {0}
-      run: conda list --name azureml_py36 
+      run: conda info 
+    - name: Run automl setup
+      shell: bash -l {0}
+      run: |
+        conda env create -f tutorials/quickstarts/environment.yml -n "azureml_py36"
+        conda activate azureml_py36
+        conda info
+    - name: Conda info
+      shell: bash -l {0}
+      run: conda info 
     - name: install ipykernel
       shell: bash -l {0}
       run: conda install ipykernel
     - name: expose as kernel 
       shell: bash -l {0}
       run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml_py36"
-    - name: remove idna 3.1
-      shell: bash -l {0}
-      run: pip install 'idna<3,>=2.5' --force-reinstall
     - name: azure login
       uses: azure/login@v1
       with:
