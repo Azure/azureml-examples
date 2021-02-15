@@ -19,12 +19,11 @@ jobs:
         python-version: "3.6"
     - name: pip install
       run: pip install -r requirements.txt
-    - name: setup miniconda
-      uses: conda-incubator/setup-miniconda@v2
+    - uses: conda-incubator/setup-miniconda@v2
       with:
-      auto-activate-base: true
-      activate-environment: ""
-      python-version: 3.6
+        activate-environment: ""
+        python-version: 3.6
+        auto-activate-base: true
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
