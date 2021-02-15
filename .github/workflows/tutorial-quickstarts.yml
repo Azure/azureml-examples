@@ -26,7 +26,7 @@ jobs:
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
-      - name: azure login
+    - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
