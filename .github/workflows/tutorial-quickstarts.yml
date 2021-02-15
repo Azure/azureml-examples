@@ -33,13 +33,7 @@ jobs:
       run: conda install ipykernel
     - name: expose as kernel 
       shell: bash -l {0}
-      run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml 36"
-    - name: do some automlscript stuff
-      shell: bash -l {0}
-      run: jupyter nbextension uninstall --user --py azureml.widgets 
-    - name: remove idna 3.1
-      shell: bash -l {0}
-      run: pip install 'idna<3,>=2.5' --force-reinstall
+      run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml_py36"
     - name: azure login
       uses: azure/login@v1
       with:
