@@ -38,14 +38,3 @@ jobs:
       shell: bash -l {0}
       run: bash automl_setup_linux.sh
       working-directory: tutorials/quickstarts
-    - name: run ClassificationWithAutomatedML.ipynb
-      shell: bash -l {0}
-      run: papermill ClassificationWithAutomatedML.ipynb - -k azureml_py36
-      working-directory: tutorials/quickstarts
-    - name: run AzureMLin10mins.ipynb
-      shell: bash -l {0}
-      run: papermill AzureMLin10mins.ipynb - -k azureml_py36
-      working-directory: tutorials/quickstarts
-    - name: run GettingStartedWithPythonSDK.ipynb
-      run: papermill GettingStartedWithPythonSDK.ipynb - -k azureml_py36
-      working-directory: tutorials/quickstarts

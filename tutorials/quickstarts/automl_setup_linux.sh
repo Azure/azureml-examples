@@ -42,6 +42,7 @@ then
 else
    conda env create -f $AUTOML_ENV_FILE -n $CONDA_ENV_NAME &&
    source activate $CONDA_ENV_NAME &&
+   pip install azureml-opendatasets requests uuid
    python -m ipykernel install --user --name $CONDA_ENV_NAME --display-name "Python ($CONDA_ENV_NAME)" &&
    jupyter nbextension uninstall --user --py azureml.widgets &&
    echo "" &&
