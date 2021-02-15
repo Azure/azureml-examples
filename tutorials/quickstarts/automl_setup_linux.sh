@@ -8,12 +8,12 @@ CHECK_CONDA_VERSION_SCRIPT="check_conda_version.py"
 
 if [ "$CONDA_ENV_NAME" == "" ]
 then
-  CONDA_ENV_NAME="azure_automl"
+  CONDA_ENV_NAME="azureml_py36"
 fi
 
 if [ "$AUTOML_ENV_FILE" == "" ]
 then
-  AUTOML_ENV_FILE="automl_env_linux.yml"
+  AUTOML_ENV_FILE="environment.yml"
 fi
 
 if [ ! -f $AUTOML_ENV_FILE ]; then
