@@ -49,13 +49,6 @@ else
    echo "***************************************" &&
    echo "* AutoML setup completed successfully *" &&
    echo "***************************************" &&
-   if [ "$OPTIONS" != "nolaunch" ]
-   then
-      echo "" &&
-      echo "Starting jupyter notebook - please run the configuration notebook" &&
-      echo "" &&
-      jupyter notebook --log-level=50 --notebook-dir '../..'
-   fi
 fi
 
 if [ $? -gt 0 ]
