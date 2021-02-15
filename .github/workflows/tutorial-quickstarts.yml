@@ -19,6 +19,7 @@ jobs:
         python-version: "3.6"
     - name: pip install
       run: pip install -r requirements.txt
+    - name: setup miniconda
     - uses: conda-incubator/setup-miniconda@v2
       with:
       auto-activate-base: true
@@ -27,6 +28,12 @@ jobs:
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
+    - name: Run automl setup
+      shell: bash -l {0}
+      run: |
+        conda env create -f tutorials/quickstarts/environment.yml -n "azureml_py36"
+        conda activate azureml_py36
+        conda info
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
