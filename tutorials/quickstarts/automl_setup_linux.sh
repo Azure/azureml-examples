@@ -48,6 +48,13 @@ else
    echo "" &&
    echo "***************************************" &&
    echo "* AutoML setup completed successfully *" &&
+   if [ "$OPTIONS" != "nolaunch" ]
+   then
+      echo "" &&
+      echo "Runnning automl notebook with papermill" &&
+      echo "" &&
+      papermill 'ClassificationWithAutomatedML.ipynb' - -k 'azureml_py36'
+   fi
    echo "***************************************"
    
 fi
