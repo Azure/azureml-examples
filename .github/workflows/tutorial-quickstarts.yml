@@ -32,7 +32,7 @@ jobs:
       working-directory: tutorials/quickstarts
     - name: Conda activate azureml_py36
       shell: bash -l {0}
-      run: conda activate -n azureml_py36
+      run: conda activate azureml_py36
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
