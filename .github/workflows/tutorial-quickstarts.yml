@@ -30,15 +30,12 @@ jobs:
       shell: bash -l {0}
       run: bash automl_setup_linux.sh
       working-directory: tutorials/quickstarts
+    - name: Conda activate azureml_py36
+      shell: bash -l {0}
+      run: conda activate -n azureml_py36
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
-    - name: install ipykernel
-      shell: bash -l {0}
-      run: conda install ipykernel
-    - name: expose as kernel 
-      shell: bash -l {0}
-      run: python -m ipykernel install --user --name azureml_py36 --display-name "azureml_py36"
     - name: azure login
       uses: azure/login@v1
       with:
