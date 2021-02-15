@@ -29,6 +29,7 @@ jobs:
     - name: Run automl setup
       shell: bash -l {0}
       run: bash automl_setup_linux.sh
+      working-directory: tutorials/quickstarts
     - name: Conda info
       shell: bash -l {0}
       run: conda info 
