@@ -34,6 +34,10 @@ jobs:
       run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
+    - name: Run automl setup
+      shell: bash -l {0}
+      run: bash automl_setup_linux.sh
+      working-directory: tutorials/quickstarts
     - name: pip install required libraries
       run: pip install sklearn azureml-opendatasets requests uuid 
     - name: run AzureMLin10mins.ipynb
