@@ -38,3 +38,13 @@ jobs:
       shell: bash -l {0}
       run: bash automl_setup_linux.sh
       working-directory: tutorials/quickstarts
+    - name: pip install required libraries
+      shell: bash -l {0}
+      run: pip install azureml-opendatasets requests uuid 
+    - name: run AzureMLin10mins.ipynb
+      shell: bash -l {0}
+      run: papermill AzureMLin10mins.ipynb - -k python
+      working-directory: tutorials/quickstarts
+    - name: run GettingStartedWithPythonSDK.ipynb
+      run: papermill GettingStartedWithPythonSDK.ipynb - -k python
+      working-directory: tutorials/quickstarts
