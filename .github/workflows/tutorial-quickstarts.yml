@@ -35,7 +35,7 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: pip install required libraries
-      run: pip install azureml-opendatasets requests uuid 
+      run: pip install sklearn azureml-opendatasets requests uuid 
     - name: run AzureMLin10mins.ipynb
       run: papermill AzureMLin10mins.ipynb - -k python
       working-directory: tutorials/quickstarts
