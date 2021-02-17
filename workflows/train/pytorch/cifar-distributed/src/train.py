@@ -110,7 +110,7 @@ def evaluate(test_loader, model, device):
         )
 
 
-def main():
+def main(args):
     # get PyTorch environment variables
     world_size = int(os.environ["WORLD_SIZE"])
     rank = int(os.environ["RANK"])
@@ -235,4 +235,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # call main function
-    main()
+    main(args)
