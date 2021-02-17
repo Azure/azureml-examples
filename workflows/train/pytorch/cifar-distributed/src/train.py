@@ -4,6 +4,7 @@
 # Script adapted from: https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#sphx-glr-beginner-blitz-cifar10-tutorial-py
 # ==============================================================================
 
+# imports
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -12,7 +13,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import os, argparse
 
-
+# define network architecture
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -36,6 +37,7 @@ class Net(nn.Module):
         return x
 
 
+# define functions
 def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, rank):
     running_loss = 0.0
     for i, data in enumerate(train_loader, 0):
@@ -109,38 +111,6 @@ def evaluate(test_loader, model, device):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--data-dir", type=str, help="directory containing CIFAR-10 dataset"
-    )
-    parser.add_argument("--epochs", default=10, type=int, help="number of epochs")
-    parser.add_argument(
-        "--batch-size",
-        default=16,
-        type=int,
-        help="mini batch size for each gpu/process",
-    )
-    parser.add_argument(
-        "--workers",
-        default=2,
-        type=int,
-        help="number of data loading workers for each gpu/process",
-    )
-    parser.add_argument(
-        "--learning-rate", default=0.001, type=float, help="learning rate"
-    )
-    parser.add_argument("--momentum", default=0.9, type=float, help="momentum")
-    parser.add_argument(
-        "--output-dir", default="outputs", type=str, help="directory to save model to"
-    )
-    parser.add_argument(
-        "--print-freq",
-        default=200,
-        type=int,
-        help="frequency of printing training statistics",
-    )
-    args = parser.parse_args()
-
     # get PyTorch environment variables
     world_size = int(os.environ["WORLD_SIZE"])
     rank = int(os.environ["RANK"])
@@ -229,5 +199,40 @@ def main():
         evaluate(test_loader, model, device)
 
 
+# run script
 if __name__ == "__main__":
+    # setup argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--data-dir", type=str, help="directory containing CIFAR-10 dataset"
+    )
+    parser.add_argument("--epochs", default=10, type=int, help="number of epochs")
+    parser.add_argument(
+        "--batch-size",
+        default=16,
+        type=int,
+        help="mini batch size for each gpu/process",
+    )
+    parser.add_argument(
+        "--workers",
+        default=2,
+        type=int,
+        help="number of data loading workers for each gpu/process",
+    )
+    parser.add_argument(
+        "--learning-rate", default=0.001, type=float, help="learning rate"
+    )
+    parser.add_argument("--momentum", default=0.9, type=float, help="momentum")
+    parser.add_argument(
+        "--output-dir", default="outputs", type=str, help="directory to save model to"
+    )
+    parser.add_argument(
+        "--print-freq",
+        default=200,
+        type=int,
+        help="frequency of printing training statistics",
+    )
+    args = parser.parse_args()
+
+    # call main function
     main()
