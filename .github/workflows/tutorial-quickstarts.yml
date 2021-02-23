@@ -39,7 +39,7 @@ jobs:
     - name: Pip install ++
       shell: bash -l {0}
       run: |
-        pip install azureml-opendatasets requests uuid
+        pip install requests uuid
         python -m ipykernel install --user --name azureml_py36 --display-name "azureml 36"
         jupyter nbextension uninstall --user --py azureml.widgets
     - name: run ClassificationWithAutomatedML.ipynb
