@@ -1,0 +1,56 @@
+name: tutorial-quickstarts
+on:
+  schedule:
+    - cron: "0 0/2 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tutorials/quickstarts/**
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.6"
+    - name: pip install
+      run: pip install -r requirements.txt 
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
+    - uses: conda-incubator/setup-miniconda@v2
+      with:
+        activate-environment: azureml_py36
+        environment-file: tutorials/quickstarts/environment.yml
+        python-version: 3.6
+        auto-activate-base: false
+    - name: Conda info
+      shell: bash -l {0}
+      run: conda info
+    - name: Pip install ++
+      shell: bash -l {0}
+      run: |
+        pip install requests uuid
+        python -m ipykernel install --user --name azureml_py36 --display-name "azureml 36"
+        jupyter nbextension uninstall --user --py azureml.widgets
+    - name: run ClassificationWithAutomatedML.ipynb
+      shell: bash -l {0}
+      run: papermill ClassificationWithAutomatedML.ipynb - -k azureml_py36
+      working-directory: tutorials/quickstarts
+    - name: pip install required libraries
+      run: pip install sklearn azureml-opendatasets requests uuid 
+    - name: run AzureMLin10mins.ipynb
+      run: papermill AzureMLin10mins.ipynb - -k python
+      working-directory: tutorials/quickstarts
+    - name: run GettingStartedWithPythonSDK.ipynb
+      run: papermill GettingStartedWithPythonSDK.ipynb - -k python
+      working-directory: tutorials/quickstarts
