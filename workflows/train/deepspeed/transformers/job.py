@@ -13,7 +13,6 @@ TARGET_GPU_COUNT = {
 @dataclass
 class DeepspeedExperimentArguments:
     target_name: str
-    use_deepspeed: bool = True
     model_checkpoint: str = "distilbert-base-uncased"
     task: str = "cola"
     node_count: int = 1
@@ -66,15 +65,9 @@ def build_command(args: DeepspeedExperimentArguments):
     --per_device_train_batch_size 16
     --per_device_eval_batch_size 16
     --disable_tqdm 1
+    --deepspeed ds_config.json
+    --local_rank $AZ_BATCHAI_TASK_INDEX
     """.split()
-
-    if args.use_deepspeed:
-
-        cmd += """
-        --deepspeed ds_config.json
-        --local_rank $AZ_BATCHAI_TASK_INDEX
-        """.split()
-    
     return cmd
 
 if __name__ == "__main__":
@@ -82,7 +75,7 @@ if __name__ == "__main__":
     target_names = [
         # "gpu-V100-1",  # single GPU
         # "gpu-V100-2",  # two GPUs
-        "gpu-V100-4",  # 4 GPUs
+        "gpu-V100-4",  # four GPUs
     ]
     
     # https://huggingface.co/transformers/pretrained_models.html
@@ -112,13 +105,11 @@ if __name__ == "__main__":
     for target_name in target_names:
         for model_checkpoint in model_checkpoints:
             for task in tasks:
-                for use_deepspeed in [True, False]:
                     
-                    args = DeepspeedExperimentArguments(
-                        target_name=target_name,
-                        use_deepspeed=use_deepspeed,
-                        model_checkpoint=model_checkpoint,
-                        task=task,
-                    )
+                args = DeepspeedExperimentArguments(
+                    target_name=target_name,
+                    model_checkpoint=model_checkpoint,
+                    task=task,
+                )
 
-                    submit_azureml_run(args)
+                submit_azureml_run(args)
