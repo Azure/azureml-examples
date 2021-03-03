@@ -5,10 +5,11 @@ from azureml.core.runconfig import MpiConfiguration
 
 
 TARGET_GPU_COUNT = {
-        "gpu-V100-1": 1,
-        "gpu-V100-2": 2,
-        "gpu-V100-4": 4,
-    }
+    "gpu-V100-1": 1,
+    "gpu-V100-2": 2,
+    "gpu-V100-4": 4,
+}
+
 
 @dataclass
 class DeepspeedExperimentArguments:
@@ -16,6 +17,7 @@ class DeepspeedExperimentArguments:
     model_checkpoint: str = "distilbert-base-uncased"
     task: str = "cola"
     node_count: int = 1
+
 
 def submit_azureml_run(args: DeepspeedExperimentArguments):
     """Submit GLUE experiment to azureml."""
@@ -28,7 +30,7 @@ def submit_azureml_run(args: DeepspeedExperimentArguments):
     distributed_job_config = get_distributed_job_config(args)
 
     cmd = build_command(args)
-    
+
     config = ScriptRunConfig(
         source_directory="t5",
         command=cmd,
@@ -37,23 +39,28 @@ def submit_azureml_run(args: DeepspeedExperimentArguments):
         distributed_job_config=distributed_job_config,
     )
 
-    run = Experiment(ws, 'deepspeed-t5').submit(config)
-    print(run.get_portal_url()) # link to ml.azure.com
+    run = Experiment(ws, "deepspeed-t5").submit(config)
+    print(run.get_portal_url())  # link to ml.azure.com
 
     run.set_tags(asdict(args))
+
 
 def get_azureml_environment():
     env = Environment("deepspeed-transformers")
     env.docker.base_image = None
     env.docker.base_dockerfile = "dockerfile"
-    env.python.user_managed_dependencies=True
+    env.python.user_managed_dependencies = True
     env.python.interpreter_path = "/opt/miniconda/bin/python"
     return env
 
+
 def get_distributed_job_config(args: DeepspeedExperimentArguments):
     n_proc = TARGET_GPU_COUNT[args.target_name]
-    distributed_job_config = MpiConfiguration(process_count_per_node=n_proc, node_count=args.node_count)
+    distributed_job_config = MpiConfiguration(
+        process_count_per_node=n_proc, node_count=args.node_count
+    )
     return distributed_job_config
+
 
 def build_command(args: DeepspeedExperimentArguments):
     cmd = f"""nvidia-smi && python finetune_glue.py
@@ -70,6 +77,7 @@ def build_command(args: DeepspeedExperimentArguments):
     """.split()
     return cmd
 
+
 if __name__ == "__main__":
 
     target_names = [
@@ -77,7 +85,7 @@ if __name__ == "__main__":
         # "gpu-V100-2",  # two GPUs
         "gpu-V100-4",  # four GPUs
     ]
-    
+
     # https://huggingface.co/transformers/pretrained_models.html
     model_checkpoints = [
         # "distilbert-base-uncased",  # 66M
@@ -105,7 +113,7 @@ if __name__ == "__main__":
     for target_name in target_names:
         for model_checkpoint in model_checkpoints:
             for task in tasks:
-                    
+
                 args = DeepspeedExperimentArguments(
                     target_name=target_name,
                     model_checkpoint=model_checkpoint,
