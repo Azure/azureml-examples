@@ -1,10 +1,7 @@
 """A collection of utility methods for working with the GLUE dataset
-
 Primarilty includes methods to:
-
     - Download raw GLUE data
     - Process GLUE data with a given tokenizer
-
 Can also be run as a script in which case it will download and process the
 GLUE data for a specified task, and use a specified tokenizer to process
 the data, which is then written to provided output directory.
@@ -61,7 +58,6 @@ def load_metric_from_task(task: str) -> Metric:
 
 def get_metric_name_from_task(task: str) -> str:
     """Get the name of the metric for the corresponding GLUE task.
-
     If using `load_best_model_at_end=True` in TrainingArguments then you need
     `metric_for_best_model=metric_name`. Use this method to get the metric_name
     for the corresponding GLUE task.
@@ -78,16 +74,13 @@ def construct_tokenizer_function(
     tokenizer: PreTrainedTokenizerBase, task: str
 ) -> Callable[[Union[Dict, Any]], Union[Dict, Any]]:
     """Construct function used to tokenize GLUE data.
-
     Some GLUE tasks (CoLA and SST2) have single sentence input, while the rest
     have sentence pairs. This method returns a method that applies the appropriate
     tokenizer to an example input based on that tasks sentence_keys.
-
     Args:
         tokenizer: A Transformers Tokenizer used to convert raw sentences into
             something our model can understand.
         task: Names of the GLUE task.
-
     Returns:
         A function that applies our tokenizer to example sentence(s) from the
         associated GLUE task.
@@ -120,7 +113,8 @@ def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
 
 
 def load_encoded_glue_dataset(
-    task: str, tokenizer: PreTrainedTokenizerBase,
+    task: str,
+    tokenizer: PreTrainedTokenizerBase,
 ) -> Union[DatasetDict, Dataset]:
     """Load GLUE data, apply tokenizer and split into train/validation."""
     tokenizer_func = construct_tokenizer_function(tokenizer=tokenizer, task=task)
