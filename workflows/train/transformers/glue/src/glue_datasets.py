@@ -1,5 +1,5 @@
 """A collection of utility methods for working with the GLUE dataset
-Primarilty includes methods to:
+Primarily includes methods to:
     - Download raw GLUE data
     - Process GLUE data with a given tokenizer
 Can also be run as a script in which case it will download and process the
