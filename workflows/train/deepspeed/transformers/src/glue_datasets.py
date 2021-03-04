@@ -113,7 +113,8 @@ def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
 
 
 def load_encoded_glue_dataset(
-    task: str, tokenizer: PreTrainedTokenizerBase,
+    task: str,
+    tokenizer: PreTrainedTokenizerBase,
 ) -> Union[DatasetDict, Dataset]:
     """Load GLUE data, apply tokenizer and split into train/validation."""
     tokenizer_func = construct_tokenizer_function(tokenizer=tokenizer, task=task)
