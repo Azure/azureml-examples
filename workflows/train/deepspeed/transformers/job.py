@@ -1,3 +1,8 @@
+# description: train Huggingface transformer using DeepSpeed
+#
+# In this example we train a 1.6B parameter gpt2 model using Deepspeed and
+# Huggingface's transformers library.
+
 from dataclasses import dataclass, asdict
 
 from azureml.core import Workspace, ScriptRunConfig, Environment, Experiment
