@@ -32,14 +32,14 @@ def submit_azureml_run(args: DeepspeedExperimentArguments):
     cmd = build_command(args)
 
     config = ScriptRunConfig(
-        source_directory="t5",
+        source_directory="src",
         command=cmd,
         environment=env,
         compute_target=target,
         distributed_job_config=distributed_job_config,
     )
 
-    run = Experiment(ws, "deepspeed-t5").submit(config)
+    run = Experiment(ws, "deepspeed-transformers-example").submit(config)
     print(run.get_portal_url())  # link to ml.azure.com
 
     run.set_tags(asdict(args))

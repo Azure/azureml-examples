@@ -4,6 +4,9 @@ This example uses [deepspeed](https://www.deepspeed.ai/) to train _large_ transf
 models - including training [Huggingface's](https://huggingface.co/transformers/pretrained_models.html)
 `gpt2-xl` model with 1.6 billion parameters.
 
+In this example deepspeed is configured through `ds_config.json` which is part
+of the `src` directory. See [deepspeed documentation](https://www.deepspeed.ai/docs/config-json/) for a full description of possible configuration.
+
 ## Usage
 
 The `job.py` script is configurable, allowing you to try other
