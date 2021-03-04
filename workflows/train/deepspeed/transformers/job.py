@@ -17,14 +17,20 @@ TARGET_GPU_COUNT = {
 
 
 @dataclass
-class DeepspeedExperimentArguments:
+class JobArguments:
+    """Arguments controlling job submission to Azure ML."""
+
     target_name: str
     model_checkpoint: str = "distilbert-base-uncased"
     task: str = "cola"
     node_count: int = 1
+    num_train_epochs: int = 3
+    learning_rate: float = 2e-5
+    per_device_train_batch_size: int = 16
+    per_device_eval_batch_size: int = 16
 
 
-def submit_azureml_run(args: DeepspeedExperimentArguments):
+def submit_azureml_run(args: JobArguments):
     """Submit GLUE experiment to azureml."""
     ws = Workspace.from_config()
 
@@ -34,7 +40,18 @@ def submit_azureml_run(args: DeepspeedExperimentArguments):
 
     distributed_job_config = get_distributed_job_config(args)
 
-    cmd = build_command(args)
+    cmd = f"""ds_config && python finetune_glue.py
+    --output_dir outputs
+    --model_checkpoint {args.model_checkpoint}
+    --task {args.task}
+    --num_train_epochs {args.num_train_epochs}
+    --learning_rate {args.learning_rate}
+    --per_device_train_batch_size {args.per_device_train_batch_size}
+    --per_device_eval_batch_size {args.per_device_eval_batch_size}
+    --disable_tqdm 1
+    --local_rank $AZ_BATCHAI_TASK_INDEX
+    --deepspeed ds_config.json
+    """.split()
 
     config = ScriptRunConfig(
         source_directory="src",
@@ -59,28 +76,12 @@ def get_azureml_environment():
     return env
 
 
-def get_distributed_job_config(args: DeepspeedExperimentArguments):
+def get_distributed_job_config(args: JobArguments):
     n_proc = TARGET_GPU_COUNT[args.target_name]
     distributed_job_config = MpiConfiguration(
         process_count_per_node=n_proc, node_count=args.node_count
     )
     return distributed_job_config
-
-
-def build_command(args: DeepspeedExperimentArguments):
-    cmd = f"""nvidia-smi && python finetune_glue.py
-    --output_dir outputs
-    --model_checkpoint {args.model_checkpoint}
-    --task {args.task}
-    --num_train_epochs 5
-    --learning_rate 2e-5
-    --per_device_train_batch_size 16
-    --per_device_eval_batch_size 16
-    --disable_tqdm 1
-    --deepspeed ds_config.json
-    --local_rank $AZ_BATCHAI_TASK_INDEX
-    """.split()
-    return cmd
 
 
 if __name__ == "__main__":
@@ -119,7 +120,7 @@ if __name__ == "__main__":
         for model_checkpoint in model_checkpoints:
             for task in tasks:
 
-                args = DeepspeedExperimentArguments(
+                args = JobArguments(
                     target_name=target_name,
                     model_checkpoint=model_checkpoint,
                     task=task,
