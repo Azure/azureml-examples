@@ -40,7 +40,7 @@ def submit_azureml_run(args: JobArguments):
 
     distributed_job_config = get_distributed_job_config(args)
 
-    cmd = f"""ds_config && python finetune_glue.py
+    cmd = f"""ds_report && python finetune_glue.py
     --output_dir outputs
     --model_checkpoint {args.model_checkpoint}
     --task {args.task}
