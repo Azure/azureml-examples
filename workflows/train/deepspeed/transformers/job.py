@@ -25,7 +25,6 @@ class JobArguments:
     task: str = "cola"
     node_count: int = 1
     num_train_epochs: int = 3
-    learning_rate: float = 2e-5
     per_device_train_batch_size: int = 16
     per_device_eval_batch_size: int = 16
 
@@ -45,7 +44,6 @@ def submit_azureml_run(args: JobArguments):
     --model_checkpoint {args.model_checkpoint}
     --task {args.task}
     --num_train_epochs {args.num_train_epochs}
-    --learning_rate {args.learning_rate}
     --per_device_train_batch_size {args.per_device_train_batch_size}
     --per_device_eval_batch_size {args.per_device_eval_batch_size}
     --disable_tqdm 1
@@ -94,13 +92,13 @@ if __name__ == "__main__":
 
     # https://huggingface.co/transformers/pretrained_models.html
     model_checkpoints = [
-        # "distilbert-base-uncased",  # 66M
+        "distilbert-base-uncased",  # 66M
         # "bert-base-uncased",  # 110M
         # "bert-large-uncased",  # 336M
         # "gpt2",  # 117M
         # "gpt2-medium",  # 345M
         # "gpt2-large",  # 774M
-        "gpt2-xl",  # 1558M
+        # "gpt2-xl",  # 1558M
     ]
 
     # https://openreview.net/pdf?id=rJ4km2R5t7
