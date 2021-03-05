@@ -4,6 +4,7 @@
 # Huggingface's transformers library.
 
 from dataclasses import dataclass, asdict
+from pathlib import Path
 
 from azureml.core import Workspace, ScriptRunConfig, Environment, Experiment
 from azureml.core.runconfig import MpiConfiguration
@@ -33,6 +34,10 @@ def submit_azureml_run(args: JobArguments):
     """Submit GLUE experiment to azureml."""
     ws = Workspace.from_config()
 
+    # get root of git repo
+    prefix = Path(__file__).parent
+    source_directory = str(prefix.joinpath("src"))
+
     target = ws.compute_targets[args.target_name]
 
     env = get_azureml_environment()
@@ -52,7 +57,7 @@ def submit_azureml_run(args: JobArguments):
     """.split()
 
     config = ScriptRunConfig(
-        source_directory="src",
+        source_directory=source_directory,
         command=cmd,
         environment=env,
         compute_target=target,
