@@ -19,8 +19,11 @@ Running
 python job.py
 ```
 
-with its default settings will finetune `gpt2-xl` model on `cola` task using
-a (single node) 4 V100 GPUs compute target (`gpu-V100-4`).
+with its default settings will finetune `distilbert-base-uncased` model
+on `cola` task using a (single node) 4 V100 GPUs compute target (`gpu-V100-4`).
+
+The model and task are easy to change - see `job.py` for some other examples
+- including `gpt2-xl` model with 1.6 billion parameters.
 
 ## What you can expect
 
