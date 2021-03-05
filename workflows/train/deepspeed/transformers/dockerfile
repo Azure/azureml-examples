@@ -74,28 +74,6 @@ ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/local/lib:/usr/lib/x86_64-linux-gnu"
 ENV STAGE_DIR "/root/gpu/install"
 RUN mkdir -p $STAGE_DIR
 
-##############################################################################
-# Java Development Kit
-##############################################################################
-ENV JDK_VERSION=8u121
-RUN mkdir -p /usr/jdk && \
-    cd /usr/jdk && \
-    wget -q -O - https://indexserve.blob.core.windows.net/java/jdk-${JDK_VERSION}-linux-x64.tar.gz | tar xzf -
-ENV JAVA_HOME=/usr/jdk/jdk1.8.0_121
-ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${JAVA_HOME}/jre/lib/amd64/server
-ENV PATH=${PATH}:${JAVA_HOME}/bin
-
-##############################################################################
-# Hadoop
-##############################################################################
-ENV HADOOP_VERSION=2.9.2
-RUN cd /usr/local && \
-    wget -q -O - https://indexserve.blob.core.windows.net/hadoop/hadoop.tar.gz | tar xzf - && \
-    find /usr/local/hadoop -type f -print0 | xargs -0 dos2unix -q && \
-    chmod -R +x /usr/local/hadoop/bin
-ENV HADOOP_HOME=/usr/local/hadoop
-ENV PATH=${PATH}:${HADOOP_HOME}/bin
-
 #############################################################################
 # IB user space libs  Mellanox driver should be installed on kernel space already
 #############################################################################
@@ -236,19 +214,6 @@ RUN pip install --no-cache-dir --use-feature=2020-resolver \
     azureml-dataprep==2.4.2 \
     azureml-train==1.17.0 \
     pytorch-lightning
-    
-##############################################################################
-# packages for TNLRv3
-##############################################################################
-
-RUN pip install --no-cache-dir \
-    six \
-    path.py \
-    lmdb \
-    py-lz4framed \
-    methodtools \
-    langid \
-    toolz
 
 ############################################
 ############################################
@@ -270,7 +235,12 @@ RUN git clone https://github.com/NVIDIA/apex &&\
     pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
 
 ############################################
-# Install DeepSpeed
+# Install DeepSpeed from source
 ############################################
 
-RUN pip install --no-cache-dir deepspeed
+RUN git clone https://github.com/microsoft/DeepSpeed.git DeepSpeed
+RUN cd DeepSpeed && \
+  git pull && \
+  git checkout master && \
+  pip install -v . && \
+  ds_report
