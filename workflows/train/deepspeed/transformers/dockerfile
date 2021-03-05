@@ -203,9 +203,7 @@ RUN pip install --no-cache-dir --use-feature=2020-resolver \
     h5py \
     py3nvml \
     mpi4py \
-    # onnx==1.7.0 \
     sympy \
-    # transformers==4.0.0 \
     transformers \
     datasets \
     cerberus \
