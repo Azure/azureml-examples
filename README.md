@@ -4,7 +4,6 @@ languages:
 - python
 products:
 - azure-machine-learning
-
 ---
 # Azure Machine Learning Examples
 
