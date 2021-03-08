@@ -1,3 +1,11 @@
+---
+page_type: sample
+languages:
+- python
+products:
+- azure-machine-learning
+
+---
 # Azure Machine Learning Examples
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
