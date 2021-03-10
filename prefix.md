@@ -1,3 +1,4 @@
+<!--
 ---
 page_type: sample
 languages:
@@ -7,6 +8,8 @@ products:
 - azure-machine-learning
 description: Top-level directory for official Azure Machine Learning sample code and notebooks.
 ---
+-->
+
 # Azure Machine Learning Examples
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
