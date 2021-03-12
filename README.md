@@ -105,7 +105,7 @@ path|status|description
 
 A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template). The contents of this repository are described below.
 
-**Note**: It is not recommended to fork this repository and use it as a template directly. This repository is structured to host a large number of examples and CI for automation and testing, which will begin running in your fork.
+**Note**: It is not recommended to fork this repository and use it as a template directly. This repository is structured to host a large number of examples and CI for automation and testing.
 
 |directory|description|
 |-|-|
