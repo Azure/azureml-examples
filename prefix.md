@@ -8,7 +8,7 @@ products:
 description: Top-level directory for official Azure Machine Learning sample code and notebooks.
 ---
 
-# Azure Machine Learning Examples
+# Azure Machine Learning examples
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
@@ -34,11 +34,11 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.py).
 
-> If you do not have an Azure ML Workspace, run `python setup-workspace.py --subscription-id $ID`, where `$ID` is your Azure subscription id. A resource group, Azure ML Workspace, and other necessary resources will be created in the subscription.
->
-> If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
->
-> Run `python setup-workspace.py -h` to see other arguments.
+If you do not have an Azure ML workspace, run `python setup-workspace.py --subscription-id $ID`, where `$ID` is your Azure subscription id. A resource group, Azure ML workspace, and other necessary resources will be created in the subscription.
+
+If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
+
+Run `python setup-workspace.py -h` to see other arguments.
 
 ## Getting started
 
@@ -48,17 +48,5 @@ To get started, see the [introductory tutorial](tutorials/an-introduction) which
 - run a series of PyTorch training jobs on cloud compute, demonstrating mlflow tracking & using cloud data
 
 These concepts are sufficient to understand all examples in this repository, which are listed below.
-
-## Contents
-
-A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
-
-|directory|description|
-|-|-|
-|`.cloud`|cloud templates|
-|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
-|`notebooks`|interactive jupyter notebooks for iterative ML development|
-|`tutorials`|self-contained directories of tutorials|
-|`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
 
 ## Examples
