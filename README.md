@@ -49,18 +49,6 @@ To get started, see the [introductory tutorial](tutorials/an-introduction) which
 
 These concepts are sufficient to understand all examples in this repository, which are listed below.
 
-## Contents
-
-A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
-
-|directory|description|
-|-|-|
-|`.cloud`|cloud templates (coming soon!)|
-|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
-|`notebooks`|interactive Jupyter notebooks for iterative ML development|
-|`tutorials`|self-contained directories of tutorials|
-|`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
-
 ## Examples
 
 **Tutorials** ([tutorials](tutorials))
@@ -112,6 +100,18 @@ path|status|description
 -|-|-
 [pytorch/mnist/job.py](workflows/deploy/pytorch/mnist/job.py)|[![deploy-pytorch-mnist-job](https://github.com/Azure/azureml-examples/workflows/deploy-pytorch-mnist-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Adeploy-pytorch-mnist-job)|deploy pytorch cnn model trained on mnist data to aks
 [scikit-learn/diabetes/job.py](workflows/deploy/scikit-learn/diabetes/job.py)|[![deploy-scikit-learn-diabetes-job](https://github.com/Azure/azureml-examples/workflows/deploy-scikit-learn-diabetes-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Adeploy-scikit-learn-diabetes-job)|deploy sklearn ridge model trained on diabetes data to AKS
+
+## Contents
+
+A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
+
+|directory|description|
+|-|-|
+|`.cloud`|cloud templates (coming soon!)|
+|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
+|`notebooks`|interactive Jupyter notebooks for iterative ML development|
+|`tutorials`|self-contained directories of tutorials|
+|`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
 
 ## Contributing
 

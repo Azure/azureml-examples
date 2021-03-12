@@ -1,4 +1,16 @@
 
+## Contents
+
+A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
+
+|directory|description|
+|-|-|
+|`.cloud`|cloud templates (coming soon!)|
+|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
+|`notebooks`|interactive Jupyter notebooks for iterative ML development|
+|`tutorials`|self-contained directories of tutorials|
+|`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
+
 ## Contributing
 
 We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
