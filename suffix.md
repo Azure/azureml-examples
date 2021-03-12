@@ -10,5 +10,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Reference
 
 - [GitHub Template](https://github.com/Azure/azureml-template)
-- [Open Source Azure ML Cheat Sheet](https://azure.github.io/azureml-web)
+- [Azure Machine Learning Cheat Sheet](https://azure.github.io/azureml-web)
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
