@@ -52,7 +52,7 @@ def submit_azureml_run(args: JobArguments):
     --per_device_train_batch_size {args.per_device_train_batch_size}
     --per_device_eval_batch_size {args.per_device_eval_batch_size}
     --disable_tqdm 1
-    --local_rank $AZ_BATCHAI_TASK_INDEX
+    --local_rank $OMPI_COMM_WORLD_LOCAL_RANK
     --deepspeed ds_config.json
     """.split()
 
