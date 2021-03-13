@@ -1,4 +1,14 @@
-# Azure Machine Learning Examples
+---
+page_type: sample
+languages:
+- python
+- azurecli
+products:
+- azure-machine-learning
+description: Top-level directory for official Azure Machine Learning sample code and notebooks.
+---
+
+# Azure Machine Learning examples
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
@@ -24,11 +34,11 @@ pip install --upgrade -r requirements.txt
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.py).
 
-> If you do not have an Azure ML Workspace, run `python setup-workspace.py --subscription-id $ID`, where `$ID` is your Azure subscription id. A resource group, Azure ML Workspace, and other necessary resources will be created in the subscription.
->
-> If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
->
-> Run `python setup-workspace.py -h` to see other arguments.
+If you do not have an Azure ML workspace, run `python setup-workspace.py --subscription-id $ID`, where `$ID` is your Azure subscription id. A resource group, Azure ML workspace, and other necessary resources will be created in the subscription.
+
+If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.microsoft.com/azure/machine-learning/reference-azure-machine-learning-cli) and run `az ml folder attach -w $WS -g $RG`, where `$WS` and `$RG` are the workspace and resource group names.
+
+Run `python setup-workspace.py -h` to see other arguments.
 
 ## Getting started
 
@@ -38,18 +48,6 @@ To get started, see the [introductory tutorial](tutorials/an-introduction) which
 - run a series of PyTorch training jobs on cloud compute, demonstrating mlflow tracking & using cloud data
 
 These concepts are sufficient to understand all examples in this repository, which are listed below.
-
-## Contents
-
-A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
-
-|directory|description|
-|-|-|
-|`.cloud`|cloud templates|
-|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
-|`notebooks`|interactive jupyter notebooks for iterative ML development|
-|`tutorials`|self-contained directories of tutorials|
-|`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
 
 ## Examples
 
@@ -103,6 +101,20 @@ path|status|description
 [pytorch/mnist/job.py](workflows/deploy/pytorch/mnist/job.py)|[![deploy-pytorch-mnist-job](https://github.com/Azure/azureml-examples/workflows/deploy-pytorch-mnist-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Adeploy-pytorch-mnist-job)|deploy pytorch cnn model trained on mnist data to aks
 [scikit-learn/diabetes/job.py](workflows/deploy/scikit-learn/diabetes/job.py)|[![deploy-scikit-learn-diabetes-job](https://github.com/Azure/azureml-examples/workflows/deploy-scikit-learn-diabetes-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Adeploy-scikit-learn-diabetes-job)|deploy sklearn ridge model trained on diabetes data to AKS
 
+## Contents
+
+A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template). The contents of this repository are described below.
+
+**Note**: It is not recommended to fork this repository and use it as a template directly. This repository is structured to host a large number of examples and CI for automation and testing.
+
+|directory|description|
+|-|-|
+|`.cloud`|cloud templates (coming soon!)|
+|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
+|`notebooks`|interactive Jupyter notebooks for iterative ML development|
+|`tutorials`|self-contained directories of tutorials|
+|`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
+
 ## Contributing
 
 We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
@@ -114,5 +126,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Reference
 
 - [GitHub Template](https://github.com/Azure/azureml-template)
-- [Open Source Azure ML Cheat Sheet](https://azure.github.io/azureml-web)
+- [Azure Machine Learning Cheat Sheet](https://azure.github.io/azureml-web)
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
