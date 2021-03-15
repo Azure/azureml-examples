@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- python
+- azurecli
+products:
+- azure-machine-learning
+description: Learn how to deploy models to Edge devices using Azure ML.
+---
+
 # Model Deployment with Azure ML service to Azure stack edge using Iot edge
 
 description: learn how to use Edge device for model deployment and scoring

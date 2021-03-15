@@ -1,6 +1,14 @@
-# Train with PyTorch Lightning
+---
+page_type: sample
+languages:
+- python
+- azurecli
+products:
+- azure-machine-learning
+description: Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.
+---
 
-description: learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning)
+# Train with PyTorch Lightning
 
 [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) is a lightweight open-source library that provides a high-level interface for PyTorch.
 
