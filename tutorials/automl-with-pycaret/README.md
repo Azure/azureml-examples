@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- python
+- azurecli
+products:
+- azure-machine-learning
+description: Learn how to use [PyCaret](https://github.com/pycaret/pycaret) for automated machine learning, with tracking and scaling in Azure ML.
+---
+
 # AutoML with PyCaret
 
 description: learn how to automate ML with [PyCaret](https://github.com/pycaret/pycaret)

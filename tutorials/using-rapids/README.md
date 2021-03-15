@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- python
+- azurecli
+products:
+- azure-machine-learning
+description: Learn how to accelerate PyData tools (Numpy, Pandas, Scikit-Learn, etc.) on NVIDIA GPUs with [RAPIDS](https://github.com/rapidsai) and Azure ML.
+---
+
 # Using RAPIDS
 
-description: learn how to accelerate PyData tools (numpy, pandas, scikit-learn, etc) on NVIDIA GPUs with [rapids](https://github.com/rapidsai)
+These tutorials walk through using RAPIDS on Azure ML.

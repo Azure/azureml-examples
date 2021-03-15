@@ -1,6 +1,14 @@
-# An introduction
+---
+page_type: sample
+languages:
+- python
+- azurecli
+products:
+- azure-machine-learning
+description: Learn the basics of Azure Machine Learning.
+---
 
-description: learn the basics of Azure Machine Learning
+# An introduction
 
 This tutorial walks through the day 1 steps for getting started with Azure Machine Learning by running through a "hello world" and then basic PyTorch training on remote compute, introducing the steps to move a workflow to the cloud.
 
