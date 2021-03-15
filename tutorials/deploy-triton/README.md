@@ -5,7 +5,7 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: Learn how to use Azure ML to efficiently deploy to GPUs using the [Triton inference server](https://github.com/triton-inference-server/server).
+description: Learn how to efficiently deploy to GPUs with the [Triton inference server](https://github.com/triton-inference-server/server) and Azure ML.
 ---
 
 # Real-time inference on GPUs in Azure Machine Learning
