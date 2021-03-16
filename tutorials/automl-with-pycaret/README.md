@@ -10,8 +10,6 @@ description: Learn how to use [PyCaret](https://github.com/pycaret/pycaret) for 
 
 # AutoML with PyCaret
 
-description: learn how to automate ML with [PyCaret](https://github.com/pycaret/pycaret)
-
 "PyCaret is an open source, **low-code** machine learning library in Python that allows you to go from preparing your data to deploying your model within minutes in your choice of notebook environment." It supports:
 
 - [Classification](https://pycaret.readthedocs.io/en/latest/api/classification.html)
