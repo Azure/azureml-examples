@@ -1,4 +1,4 @@
-name: dataprep-audio-job
+name: dataprep-ffmpeg-audio-job
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - workflows/dataprep/audio/**
-      - .github/workflows/dataprep-audio.yml
+      - workflows/dataprep/ffmpeg/audio/**
+      - .github/workflows/dataprep-ffmpeg-audio-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with:
+      with: 
         python-version: "3.8"
     - name: pip install
       run: pip install -r requirements.txt
@@ -29,5 +29,4 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run workflow
-      working-directory: workflows/dataprep/audio
-      run: python -m mlops.job
+      run: python workflows/dataprep/ffmpeg/audio/job.py

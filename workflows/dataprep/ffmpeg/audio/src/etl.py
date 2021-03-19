@@ -11,9 +11,9 @@ from os.path import join
 from pathlib import Path
 from typing import List
 
-from src.aml import get_logger, remove_mini_batch_directory_from_path
-from src.audio import compress, denoise
-from src.video import extract_audio_from_video
+from .aml import get_logger, remove_mini_batch_directory_from_path
+from .audio import compress, denoise
+from .video import extract_audio_from_video
 
 log = get_logger(__name__)
 

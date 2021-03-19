@@ -15,6 +15,7 @@
 # %%
 # pylint: skip-file
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from IPython import get_ipython
@@ -139,10 +140,19 @@ transform_order = PipelineParameter(
 env = Environment.from_pip_requirements("etl_audio", "requirements.in")
 env.docker.enabled = True
 env.docker.base_image = None
-env.docker.base_dockerfile = "./Dockerfile"
+
+# get root of git repo
+prefix = Path(__file__).parent
+
+# training script
+script_dir = str(prefix.joinpath("steps"))
+script_name = "etl.py"
+entry_script = os.path.join(script_dir, script_name)
+
+env.docker.base_dockerfile = str(prefix.joinpath("Dockerfile"))
 
 etl_config = ParallelRunConfig(
-    entry_script="mlops/steps/etl.py",
+    entry_script=entry_script,
     mini_batch_size="1",
     error_threshold=0,
     output_action="summary_only",
