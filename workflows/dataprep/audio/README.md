@@ -1,5 +1,7 @@
 # Extract, Transform, Load Audio Azure Machine Learning Pipeline
 
+This workflow demonstrates how to build an [Extract, Transform, Load](https://en.wikipedia.org/wiki/Extract,_transform,_load) Azure Machine Learning Pipeline that processes video / audio data to be utilized with audio based modeling.
+
 ## Installation
 
 To install project dependencies run

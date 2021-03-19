@@ -10,7 +10,7 @@
 #
 # Note:
 #
-# This notebook is paired with the script `create_etl_pipeline.py` using [jupytext](https://github.com/mwouts/jupytext). Any updates to either this notebook or the script will result in changes for both files. This notebook is intended to serve as a previewable walkthrough of the script via Jupyter preview.
+# This notebook is paired with the script `job.py` using [jupytext](https://github.com/mwouts/jupytext). Any updates to either this notebook or the script will result in changes for both files. This notebook is intended to serve as a previewable walkthrough of the script via Jupyter preview.
 
 # %%
 # pylint: skip-file
