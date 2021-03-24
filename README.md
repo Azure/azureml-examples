@@ -8,7 +8,7 @@ products:
 description: Top-level directory for official Azure Machine Learning sample code and notebooks.
 ---
 
-# Azure Machine Learning examples
+# Azure Machine Learning Examples
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
@@ -40,7 +40,7 @@ If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.micro
 
 Run `python setup-workspace.py -h` to see other arguments.
 
-## Getting started
+## Getting Started
 
 To get started, see the [introductory tutorial](tutorials/an-introduction) which uses Azure ML to:
 
@@ -60,6 +60,7 @@ path|status|notebooks|description
 [deploy-edge](tutorials/deploy-edge)|[![deploy-edge](https://github.com/Azure/azureml-examples/workflows/tutorial-deploy-edge/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-deploy-edge)|[ase-gpu.ipynb](tutorials/deploy-edge/ase-gpu.ipynb)|Learn how to deploy models to Edge devices using Azure ML.
 [deploy-triton](tutorials/deploy-triton)|[![deploy-triton](https://github.com/Azure/azureml-examples/workflows/tutorial-deploy-triton/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-deploy-triton)|[1.densenet-local.ipynb](tutorials/deploy-triton/1.densenet-local.ipynb)<br>[2.bidaf-aks-v100.ipynb](tutorials/deploy-triton/2.bidaf-aks-v100.ipynb)|Learn how to efficiently deploy to GPUs with the [Triton inference server](https://github.com/triton-inference-server/server) and Azure ML.
 [using-dask](tutorials/using-dask)|[![using-dask](https://github.com/Azure/azureml-examples/workflows/tutorial-using-dask/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-dask)|[1.intro-to-dask.ipynb](tutorials/using-dask/1.intro-to-dask.ipynb)|Learn how to read from cloud data and scale PyData tools (Numpy, Pandas, Scikit-Learn, etc.) with [Dask](https://dask.org) and Azure ML.
+[using-lightgbm](tutorials/using-lightgbm)|[![using-lightgbm](https://github.com/Azure/azureml-examples/workflows/tutorial-using-lightgbm/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-lightgbm)||*no description*
 [using-pytorch-lightning](tutorials/using-pytorch-lightning)|[![using-pytorch-lightning](https://github.com/Azure/azureml-examples/workflows/tutorial-using-pytorch-lightning/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-pytorch-lightning)|[1.train-single-node.ipynb](tutorials/using-pytorch-lightning/1.train-single-node.ipynb)<br>[2.log-with-tensorboard.ipynb](tutorials/using-pytorch-lightning/2.log-with-tensorboard.ipynb)<br>[3.log-with-mlflow.ipynb](tutorials/using-pytorch-lightning/3.log-with-mlflow.ipynb)<br>[4.train-multi-node-ddp.ipynb](tutorials/using-pytorch-lightning/4.train-multi-node-ddp.ipynb)|Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.
 [using-rapids](tutorials/using-rapids)|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/tutorial-using-rapids/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-rapids)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|Learn how to accelerate PyData tools (Numpy, Pandas, Scikit-Learn, etc.) on NVIDIA GPUs with [RAPIDS](https://github.com/rapidsai) and Azure ML.
 [using-xgboost](tutorials/using-xgboost)|[![using-xgboost](https://github.com/Azure/azureml-examples/workflows/tutorial-using-xgboost/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-xgboost)|[1.local-eda.ipynb](tutorials/using-xgboost/1.local-eda.ipynb)<br>[2.distributed-cpu.ipynb](tutorials/using-xgboost/2.distributed-cpu.ipynb)|Learn how to use [XGBoost](https://github.com/dmlc/xgboost) with Azure ML.
@@ -125,5 +126,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Reference
 
 - [GitHub template](https://github.com/Azure/azureml-template)
-- [Azure Machine Learning cheat sheets](https://azure.github.io/azureml-web)
-- [Azure Machine Learning documentation](https://docs.microsoft.com/azure/machine-learning)
+- [Cheat sheets](https://azure.github.io/azureml-cheatsheets)
+- [Documentation](https://docs.microsoft.com/azure/machine-learning)
