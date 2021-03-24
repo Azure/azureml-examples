@@ -8,7 +8,7 @@ products:
 description: Top-level directory for official Azure Machine Learning sample code and notebooks.
 ---
 
-# Azure Machine Learning examples
+# Azure Machine Learning Examples
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
@@ -40,7 +40,7 @@ If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.micro
 
 Run `python setup-workspace.py -h` to see other arguments.
 
-## Getting started
+## Getting Started
 
 To get started, see the [introductory tutorial](tutorials/an-introduction) which uses Azure ML to:
 
