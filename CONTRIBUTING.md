@@ -22,7 +22,6 @@ This repo is an opinionated set of examples using a subset of Azure Machine Lear
 
 - frequent and comprehensive testing
 - clear separation of cloud code (job definition) and user code (ML code)
-- structure for developing the full ML lifecycle (on GitHub)
 
 ## Issues
 
