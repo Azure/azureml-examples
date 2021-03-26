@@ -20,3 +20,4 @@ dependencies:
     - pyarrow
     - mpi4py
     - dask-mpi
+    - python-snappy
