@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/using-xgboost/**
+      - experimental/using-xgboost/**
       - .github/workflows/tutorial-using-xgboost.yml
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     # - name: run 1.local-eda.ipynb
     #   run: papermill 1.local-eda.ipynb - -k python
-    #   working-directory: tutorials/using-xgboost
+    #   working-directory: experimental/using-xgboost
     - name: run 2.distributed-cpu.ipynb
       run: papermill 2.distributed-cpu.ipynb - -k python
-      working-directory: tutorials/using-xgboost
+      working-directory: experimental/using-xgboost

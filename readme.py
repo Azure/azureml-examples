@@ -15,8 +15,11 @@ def main(args):
     # get list of workflows
     workflows = sorted(glob.glob("workflows/**/*job*.py", recursive=True))
 
-    # get a list of ALL notebooks, including tutorials
+    # get a list of ALL notebooks, including tutorials and experimental
     all_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+
+    # get list of experimental tutorials
+    experimental = sorted(glob.glob("experimental/*", recursive=False))
 
     # make all notebooks consistent
     modify_notebooks(all_notebooks)
@@ -32,7 +35,7 @@ def main(args):
         readme_before = f.read()
 
     # write README.md
-    write_readme(tutorials, notebooks, workflows)
+    write_readme(tutorials, notebooks, workflows, experimental)
 
     # read modified README.md
     with open("README.md", "r") as f:
@@ -45,7 +48,7 @@ def main(args):
             exit(2)
 
 
-def write_readme(tutorials, notebooks, workflows):
+def write_readme(tutorials, notebooks, workflows, experimental):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
@@ -59,9 +62,10 @@ def write_readme(tutorials, notebooks, workflows):
     )
     train_table = "\n**Train** ([workflows/train](workflows/train))\n\npath|status|description\n-|-|-\n"
     deploy_table = "\n**Deploy** ([workflows/deploy](workflows/deploy))\n\npath|status|description\n-|-|-\n"
+    experimental_table = "\n**Experimental tutorials** ([experimental](experimental))\n\npath|status|notebooks|description|why experimental?\n-|-|-|-|-\n"
 
     # process tutorials
-    for tutorial in tutorials:
+    for tutorial in tutorials + experimental:
         # get list of notebooks
         nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
         nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
@@ -82,9 +86,25 @@ def write_readme(tutorials, notebooks, workflows):
         except:
             pass
 
-        # add row to tutorial table
-        row = f"[{name}]({tutorial})|{status}|{nbs}|{description}\n"
-        tutorial_table += row
+        # additional logic for experimental tutorials
+        if "experimental" in tutorial:
+            reason = "*unknown*"
+            try:
+                with open(f"{tutorial}/README.md", "r") as f:
+                    for line in f.readlines():
+                        if "experimental: " in str(line):
+                            reason = line.split(": ")[-1].strip()
+                            break
+
+            except:
+                pass
+            # add row to experimental tutorial table
+            row = f"[{name}]({tutorial})|{status}|{nbs}|{description}|{reason}\n"
+            experimental_table += row
+        else:
+            # add row to tutorial table
+            row = f"[{name}]({tutorial})|{status}|{nbs}|{description}\n"
+            tutorial_table += row
 
     # process notebooks
     for notebook in notebooks:
@@ -152,6 +172,7 @@ def write_readme(tutorials, notebooks, workflows):
             + notebook_table
             + train_table
             + deploy_table
+            + experimental_table
             + suffix
         )
 
