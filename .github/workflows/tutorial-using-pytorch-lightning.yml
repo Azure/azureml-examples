@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/using-pytorch-lightning/**
+      - experimental/using-pytorch-lightning/**
       - .github/workflows/tutorial-using-pytorch-lightning.yml
 jobs:
   build:
@@ -30,13 +30,13 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.train-single-node.ipynb
       run: papermill 1.train-single-node.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
+      working-directory: experimental/using-pytorch-lightning
     - name: run 2.log-with-tensorboard.ipynb
       run: papermill 2.log-with-tensorboard.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
+      working-directory: experimental/using-pytorch-lightning
     - name: run 3.log-with-mlflow.ipynb
       run: papermill 3.log-with-mlflow.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
+      working-directory: experimental/using-pytorch-lightning
     - name: run 4.train-multi-node-ddp.ipynb
       run: papermill 4.train-multi-node-ddp.ipynb - -k python
-      working-directory: tutorials/using-pytorch-lightning
+      working-directory: experimental/using-pytorch-lightning
