@@ -6,11 +6,10 @@ languages:
 products:
 - azure-machine-learning
 description: [Experimental] Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.
+experimental: issues with multinode pytorch lightning
 ---
 
 # Train with PyTorch Lightning
-
-**Note**: this tutorial is experimental and prone to failure
 
 [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) is a lightweight open-source library that provides a high-level interface for PyTorch.
 

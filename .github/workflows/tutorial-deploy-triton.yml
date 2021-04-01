@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/deploy-triton/**
+      - experimental/deploy-triton/**
       - .github/workflows/tutorial-deploy-triton.yml
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.densenet-local.ipynb
       run: papermill 1.densenet-local.ipynb - -k python
-      working-directory: tutorials/deploy-triton
+      working-directory: experimental/deploy-triton
     - name: run 2.bidaf-aks-v100.ipynb
       run: papermill 2.bidaf-aks-v100.ipynb - -k python
-      working-directory: tutorials/deploy-triton
+      working-directory: experimental/deploy-triton

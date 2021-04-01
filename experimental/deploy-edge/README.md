@@ -6,6 +6,7 @@ languages:
 products:
 - azure-machine-learning
 description: Learn how to deploy models to Edge devices using Azure ML.
+experimental: untested portions of tutorial
 ---
 
 # Model Deployment with Azure ML service to Azure stack edge using Iot edge

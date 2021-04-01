@@ -6,11 +6,10 @@ languages:
 products:
 - azure-machine-learning
 description: [Experimental] Learn how to use [XGBoost](https://github.com/dmlc/xgboost) with Azure ML.
+experimental: issues with multinode xgboost
 ---
 
 # XGBoost
-
-**Note**: this tutorial is experimental and prone to failure
 
 This tutorial demonstrates how to run XGBoost on Azure through a series of Python notebooks to demonstrate how a project might develop. This tutorial leverages the [Microsoft Kaggle Malware](https://kaggle.com/c/microsoft-malware-prediction), repartitioned and hosted in Azure Blob.
 

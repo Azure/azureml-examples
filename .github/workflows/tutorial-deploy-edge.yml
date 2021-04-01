@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - tutorials/deploy-edge/**
+      - experimental/deploy-edge/**
       - .github/workflows/tutorial-deploy-edge.yml
 jobs:
   build:
@@ -30,4 +30,4 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run ase-gpu.ipynb
       run: papermill ase-gpu.ipynb - -k python
-      working-directory: tutorials/deploy-edge
+      working-directory: experimental/deploy-edge
