@@ -1,6 +1,6 @@
 ---
-name: Repo issue or enhancement request
-about: Report an issue or request an enhancement for this repo
+name: Suggest an enhancement for this repo
+about: Suggest general improvements to this repository
 title: ''
 labels: 'enhancement'
 assignees: ''
