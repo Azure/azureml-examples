@@ -5,7 +5,7 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: [Experimental] Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.
+description: Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.
 experimental: issues with multinode pytorch lightning
 ---
 
