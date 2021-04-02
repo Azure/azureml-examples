@@ -55,7 +55,7 @@ These concepts are sufficient to understand all examples in this repository, whi
 
 path|status|notebooks|description
 -|-|-|-
-[an-introduction](tutorials/an-introduction)|[![an-introduction](https://github.com/Azure/azureml-examples/workflows/tutorial-an-introduction/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-an-introduction)|[1.hello-world.ipynb](tutorials/an-introduction/1.hello-world.ipynb)<br>[2.pytorch-model.ipynb](tutorials/an-introduction/2.pytorch-model.ipynb)<br>[3.pytorch-model-cloud-data.ipynb](tutorials/an-introduction/3.pytorch-model-cloud-data.ipynb)|Run 'hello world' and train a simple model on Azure Machine Learning.
+[an-introduction](tutorials/an-introduction)|[![an-introduction](https://github.com/Azure/azureml-examples/workflows/tutorial-an-introduction/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-an-introduction)|[1.hello-world.ipynb](tutorials/an-introduction/1.hello-world.ipynb)<br>[2.pytorch-model.ipynb](tutorials/an-introduction/2.pytorch-model.ipynb)<br>[3.pytorch-model-cloud-data.ipynb](tutorials/an-introduction/3.pytorch-model-cloud-data.ipynb)|Run "hello world" and train a simple model on Azure Machine Learning.
 [automl-with-pycaret](tutorials/automl-with-pycaret)|[![automl-with-pycaret](https://github.com/Azure/azureml-examples/workflows/tutorial-automl-with-pycaret/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-automl-with-pycaret)|[1.classification.ipynb](tutorials/automl-with-pycaret/1.classification.ipynb)|Learn how to use [PyCaret](https://github.com/pycaret/pycaret) for automated machine learning, with tracking and scaling in Azure ML.
 [using-dask](tutorials/using-dask)|[![using-dask](https://github.com/Azure/azureml-examples/workflows/tutorial-using-dask/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-dask)|[1.intro-to-dask.ipynb](tutorials/using-dask/1.intro-to-dask.ipynb)|Learn how to read from cloud data and scale PyData tools (Numpy, Pandas, Scikit-Learn, etc.) with [Dask](https://dask.org) and Azure ML.
 [using-rapids](tutorials/using-rapids)|[![using-rapids](https://github.com/Azure/azureml-examples/workflows/tutorial-using-rapids/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-rapids)|[1.train-and-hpo.ipynb](tutorials/using-rapids/1.train-and-hpo.ipynb)<br>[2.train-multi-gpu.ipynb](tutorials/using-rapids/2.train-multi-gpu.ipynb)|Learn how to accelerate PyData tools (Numpy, Pandas, Scikit-Learn, etc.) on NVIDIA GPUs with [RAPIDS](https://github.com/rapidsai) and Azure ML.
@@ -101,9 +101,9 @@ path|status|description
 path|status|notebooks|description|why experimental?
 -|-|-|-|-
 [deploy-edge](experimental/deploy-edge)|[![deploy-edge](https://github.com/Azure/azureml-examples/workflows/tutorial-deploy-edge/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-deploy-edge)|[ase-gpu.ipynb](experimental/deploy-edge/ase-gpu.ipynb)|Learn how to deploy models to Edge devices using Azure ML.|untested portions of tutorial
-[deploy-triton](experimental/deploy-triton)|[![deploy-triton](https://github.com/Azure/azureml-examples/workflows/tutorial-deploy-triton/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-deploy-triton)|[1.densenet-local.ipynb](experimental/deploy-triton/1.densenet-local.ipynb)<br>[2.bidaf-aks-v100.ipynb](experimental/deploy-triton/2.bidaf-aks-v100.ipynb)|[Experimental] Learn how to efficiently deploy to GPUs with the [Triton inference server](https://github.com/triton-inference-server/server) and Azure ML.|Triton in Azure ML is currently in preview
-[using-pytorch-lightning](experimental/using-pytorch-lightning)|[![using-pytorch-lightning](https://github.com/Azure/azureml-examples/workflows/tutorial-using-pytorch-lightning/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-pytorch-lightning)|[1.train-single-node.ipynb](experimental/using-pytorch-lightning/1.train-single-node.ipynb)<br>[2.log-with-tensorboard.ipynb](experimental/using-pytorch-lightning/2.log-with-tensorboard.ipynb)<br>[3.log-with-mlflow.ipynb](experimental/using-pytorch-lightning/3.log-with-mlflow.ipynb)<br>[4.train-multi-node-ddp.ipynb](experimental/using-pytorch-lightning/4.train-multi-node-ddp.ipynb)|[Experimental] Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.|issues with multinode pytorch lightning
-[using-xgboost](experimental/using-xgboost)|[![using-xgboost](https://github.com/Azure/azureml-examples/workflows/tutorial-using-xgboost/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-xgboost)|[1.local-eda.ipynb](experimental/using-xgboost/1.local-eda.ipynb)<br>[2.distributed-cpu.ipynb](experimental/using-xgboost/2.distributed-cpu.ipynb)|[Experimental] Learn how to use [XGBoost](https://github.com/dmlc/xgboost) with Azure ML.|issues with multinode xgboost
+[deploy-triton](experimental/deploy-triton)|[![deploy-triton](https://github.com/Azure/azureml-examples/workflows/tutorial-deploy-triton/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-deploy-triton)|[1.densenet-local.ipynb](experimental/deploy-triton/1.densenet-local.ipynb)<br>[2.bidaf-aks-v100.ipynb](experimental/deploy-triton/2.bidaf-aks-v100.ipynb)|Learn how to efficiently deploy to GPUs with the [Triton inference server](https://github.com/triton-inference-server/server) and Azure ML.|in preview
+[using-pytorch-lightning](experimental/using-pytorch-lightning)|[![using-pytorch-lightning](https://github.com/Azure/azureml-examples/workflows/tutorial-using-pytorch-lightning/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-pytorch-lightning)|[1.train-single-node.ipynb](experimental/using-pytorch-lightning/1.train-single-node.ipynb)<br>[2.log-with-tensorboard.ipynb](experimental/using-pytorch-lightning/2.log-with-tensorboard.ipynb)<br>[3.log-with-mlflow.ipynb](experimental/using-pytorch-lightning/3.log-with-mlflow.ipynb)<br>[4.train-multi-node-ddp.ipynb](experimental/using-pytorch-lightning/4.train-multi-node-ddp.ipynb)|Learn how to train and log metrics with [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and Azure ML.|issues with multinode pytorch lightning
+[using-xgboost](experimental/using-xgboost)|[![using-xgboost](https://github.com/Azure/azureml-examples/workflows/tutorial-using-xgboost/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-using-xgboost)|[1.local-eda.ipynb](experimental/using-xgboost/1.local-eda.ipynb)<br>[2.distributed-cpu.ipynb](experimental/using-xgboost/2.distributed-cpu.ipynb)|Learn how to use [XGBoost](https://github.com/dmlc/xgboost) with Azure ML.|issues with multinode xgboost
 
 ## Contents
 
@@ -113,8 +113,8 @@ A lightweight template repository for automating the ML lifecycle can be found [
 
 |directory|description|
 |-|-|
-|`.cloud`|cloud templates (coming soon!)|
 |`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
+|`experimental`|self-contained directories of experimental tutorials|
 |`notebooks`|interactive Jupyter notebooks for iterative ML development|
 |`tutorials`|self-contained directories of tutorials|
 |`workflows`|self-contained directories of job to be run, organized by scenario then tool then project|
@@ -129,6 +129,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Reference
 
-- [GitHub template](https://github.com/Azure/azureml-template)
+- [Template](https://github.com/Azure/azureml-template)
 - [Cheat sheets](https://azure.github.io/azureml-cheatsheets)
 - [Documentation](https://docs.microsoft.com/azure/machine-learning)

@@ -5,7 +5,7 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: [Experimental] Learn how to use [XGBoost](https://github.com/dmlc/xgboost) with Azure ML.
+description: Learn how to use [XGBoost](https://github.com/dmlc/xgboost) with Azure ML.
 experimental: issues with multinode xgboost
 ---
 
