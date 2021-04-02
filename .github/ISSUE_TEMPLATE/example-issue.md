@@ -1,6 +1,6 @@
 ---
-name: Example issue 
-about: Report an issue with an example
+name: Report an issue with an example
+about: Having an issue with one of the examples?
 title: ''
 labels: 'example issue'
 assignees: ''
