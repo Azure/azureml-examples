@@ -39,18 +39,17 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 - minimal prose
 - minimalist code
-- workflows and notebooks can be re-run without failing in less than 10 minutes
+- workflows and notebooks can be re-run without failing in less than 1 hour
 - tutorials can re-run without failing in less than 3 hours
 
 ### Miscellaneous
 
 - to modify `README.md`, you need to modify `readme.py` and accompanying files (`prefix.md` and `suffix.md`)
-- develop on a branch, not a fork, for workflows to run properly
+- develop on a branch, not a fork, for workflows to run properly (GitHub secrets won't work on forks)
 - use an existing environment where possible
 - use an existing dataset where possible
-- don't register environments
 - don't create compute targets
-- don't register datasets
+- don't register assets (datasets, environments, models)
 - don't modify `requirements.txt`
 - you probably shouldn't modify any files in the root of the repo
 - you can `!pip install --upgrade packages` as needed in notebooks
@@ -62,7 +61,7 @@ If modifying existing examples, before a PR:
 
 - run `python readme.py` from the root of the repo
 - this will generate the `README.md` file
-- this will generate github workflow files (for workflows and notebooks)
+- this will generate GitHub Actions workflow files (for workflows and notebooks)
 - this will format Python code and notebooks
 
 ### Enforced naming
@@ -70,10 +69,10 @@ If modifying existing examples, before a PR:
 Enforced naming includes:
 
 - naming must be logical
-- directories under `tutorials` must be words separated by hyphens
+- directories under `tutorials` or `experimental` must be words separated by hyphens
 - directories under `workflows` must be one of [`train`, `deploy`, `score`, `dataprep`] - directories under are organized by ML tool
 - job definition file(s) under `workflows` must contain `job` in the name
-- tutorial workflows (and workflow files) use the naming convention `tutorial-*name*`, where *name* is the directory name
+- tutorial workflows (and workflow files, inclduing experimental tutorials) use the naming convention `tutorial-*name*`, where *name* is the directory name
 - `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
 - `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
 
@@ -93,7 +92,7 @@ Not strictly enforced, but encouraged naming includes:
 
 Thinking of contributing a new example? Read this first!
 
-#### Tutorials
+#### Tutorials (including experimental)
 
 A tutorial is a self-contained end-to-end directory with an excellent `README.md` which can be followed to accomplish something meaningful or teaching how to scale up and out in the cloud. The `README.md` must clearly state:
 
@@ -110,7 +109,19 @@ Tutorials are often, but not required to be, a series of ordered Jupyter noteboo
 - `using-*` for learning ML tooling basics and tracking/scaling in the cloud
 - `work-with-*` for integrations with cloud tooling, e.g. `work-with-databricks`, `work-with-synapse`
 - `deploy-*` for advanced deployment scenarios
-- `automl-with-*` for automated ML tutorials
+- `automl-with-*` for automated ML
+
+Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md` - it is encouraged to have an accompanying `setup.sh` or similar. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
+
+Checklist:
+
+- [ ] add the tutorial directory under `tutorials/`, following naming conventions
+- [ ] add tutorial files, which are usually notebooks and may be ordered
+- [ ] add `README.md` in the tutorial directory with a description (see other tutorials for format)
+- [ ] add `tutorial-*name*`, where *name* is the name of the directory (see other tutorial workflows)
+- [ ] run `python readme.py`
+- [ ] test
+- [ ] submit PR, which will run your tutorial if setup properly
 
 #### Notebooks
 
@@ -126,6 +137,13 @@ Some examples of this include:
 
 Anything else should likely be a workflow.
 
+Checklist:
+
+- [ ] add notebook with description to `notebooks/`
+- [ ] run `python readme.py`
+- [ ] test
+- [ ] submit PR, which will run the relevant workflow(s)
+
 #### Workflows
 
 A workflow is a self-contained project directory specifying the job(s) to be run. They are organized by scenario:
@@ -136,8 +154,6 @@ A workflow is a self-contained project directory specifying the job(s) to be run
 - `score`
 
 Then ML tool, e.g. `fastai` or `pytorch` or `lightgbm`, then project e.g. `mnist` or `cifar`.
-
-#### Adding a new workflow
 
 A workflow consists of the workflow definition, currently written as a Python script, and user code, which is often Python.
 
@@ -150,27 +166,6 @@ Checklist:
 - [ ] test
 - [ ] submit PR, which will run the relevant workflow(s)
 
-#### Adding a new notebook
+### Additional information
 
-A notebook is a self-contained `.ipynb` file.
-
-Checklist:
-
-- [ ] add notebook with description to `notebooks/`
-- [ ] run `python readme.py`
-- [ ] test
-- [ ] submit PR, which will run the relevant workflow(s)
-
-#### Adding a new tutorial
-
-Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md` - it is encouraged to have an accompanying `setup.sh` or similar. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
-
-Checklist:
-
-- [ ] add the tutorial directory under `tutorials/`, following naming conventions
-- [ ] add tutorial files, which are usually notebooks and may be ordered
-- [ ] add `README.md` in the tutorial directory with a description (see other tutorials for format)
-- [ ] add `tutorial-*name*`, where *name* is the name of the directory (see other tutorial workflows)
-- [ ] run `python readme.py`
-- [ ] test
-- [ ] submit PR, which will run your tutorial if setup properly
+If this contributing guide has not answered your question(s), please open an issue.
