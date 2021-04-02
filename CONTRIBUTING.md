@@ -25,7 +25,7 @@ This repo is an opinionated set of examples using a subset of Azure Machine Lear
 
 ## Issues
 
-All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues) - please follow the pre-defined templates where applicable.
+All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues/new/choose) - please follow the pre-defined templates where applicable.
 
 *Note:* [Discussions](https://github.com/Azure/azureml-examples/discussions) are new to GitHub, feel free to start one!
 
