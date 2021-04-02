@@ -1,6 +1,6 @@
 ---
 name: Suggest an enhancement for this repo
-about: Suggest general improvements to this repository
+about: Have an idea for general improvements to this repository?
 title: ''
 labels: 'enhancement'
 assignees: ''

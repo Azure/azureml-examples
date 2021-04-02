@@ -1,6 +1,6 @@
 ---
 name: Request a new example
-about: Need a new example?
+about: Want to request a new example?
 title: ''
 labels: 'example request'
 assignees: ''
