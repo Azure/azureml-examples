@@ -94,9 +94,6 @@ Thinking of contributing a new example? Read this first!
 
 #### Tutorials (including experimental)
 
-<description>
-<section>Description</section>
-
 A tutorial is a self-contained end-to-end directory with an excellent `README.md` which can be followed to accomplish something meaningful or teaching how to scale up and out in the cloud. The `README.md` must clearly state:
 
 - required prerequisites
@@ -114,10 +111,6 @@ Tutorials are often, but not required to be, a series of ordered Jupyter noteboo
 - `deploy-*` for advanced deployment scenarios
 - `automl-with-*` for automated ML
 
-</description>
-
-<checklist>
-
 Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md` - it is encouraged to have an accompanying `setup.sh` or similar. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
 
 Checklist:
@@ -130,11 +123,7 @@ Checklist:
 - [ ] test
 - [ ] submit PR, which will run your tutorial if setup properly
 
-</checklist>
-
 #### Notebooks
-
-<description>
 
 A notebook is a self-contained `.ipynb` file accomplishing something significant. To qualify to be a notebook, the example must:
 
@@ -148,12 +137,6 @@ Some examples of this include:
 
 Anything else should likely be a workflow.
 
-<description>
-
-<checklist>
-
-A notebook is a self-contained `.ipynb` file.
-
 Checklist:
 
 - [ ] add notebook with description to `notebooks/`
@@ -161,11 +144,7 @@ Checklist:
 - [ ] test
 - [ ] submit PR, which will run the relevant workflow(s)
 
-</checklist>
-
 #### Workflows
-
-<description>
 
 A workflow is a self-contained project directory specifying the job(s) to be run. They are organized by scenario:
 
@@ -175,10 +154,6 @@ A workflow is a self-contained project directory specifying the job(s) to be run
 - `score`
 
 Then ML tool, e.g. `fastai` or `pytorch` or `lightgbm`, then project e.g. `mnist` or `cifar`.
-
-</description>
-
-<checklist>
 
 A workflow consists of the workflow definition, currently written as a Python script, and user code, which is often Python.
 
@@ -190,8 +165,6 @@ Checklist:
 - [ ] run `python readme.py`
 - [ ] test
 - [ ] submit PR, which will run the relevant workflow(s)
-
-</checklist>
 
 ### Additional information
 
