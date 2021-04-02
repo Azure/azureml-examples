@@ -39,7 +39,7 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 - minimal prose
 - minimalist code
-- workflows and notebooks can be re-run without failing in less than 10 minutes
+- workflows and notebooks can be re-run without failing in less than 1 hour
 - tutorials can re-run without failing in less than 3 hours
 
 ### Miscellaneous
@@ -95,6 +95,7 @@ Thinking of contributing a new example? Read this first!
 #### Tutorials (including experimental)
 
 <description>
+  <section>Description</section>
 
 A tutorial is a self-contained end-to-end directory with an excellent `README.md` which can be followed to accomplish something meaningful or teaching how to scale up and out in the cloud. The `README.md` must clearly state:
 
@@ -191,3 +192,7 @@ Checklist:
 - [ ] submit PR, which will run the relevant workflow(s)
 
 </checklist>
+
+### Additional information
+
+If this contributing guide has not answered your question(s), please open an issue.
