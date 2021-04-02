@@ -95,7 +95,8 @@ Thinking of contributing a new example? Read this first!
 #### Tutorials (including experimental)
 
 <description>
-  <section>Description</section>
+<section>Description</section>
+<p>
 
 A tutorial is a self-contained end-to-end directory with an excellent `README.md` which can be followed to accomplish something meaningful or teaching how to scale up and out in the cloud. The `README.md` must clearly state:
 
@@ -114,6 +115,7 @@ Tutorials are often, but not required to be, a series of ordered Jupyter noteboo
 - `deploy-*` for advanced deployment scenarios
 - `automl-with-*` for automated ML
 
+</p>
 </description>
 
 <checklist>
