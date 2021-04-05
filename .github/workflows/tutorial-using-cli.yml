@@ -10,12 +10,10 @@ on:
       - .github/workflows/tutorial-using-cli.yml
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: mcr.microsoft.com/azure-cli
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - name: install az
-      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     - name: azure login
       uses: azure/login@v1
       with:
