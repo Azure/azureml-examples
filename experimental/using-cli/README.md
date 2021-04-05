@@ -15,9 +15,9 @@ This tutorial demonstrates how to use the new Azure ML CLI extension (preview) i
 
 This tutorial consists of three notebooks:
 
-- [1.manage-assets.ipynb](1.manage-assets.ipynb)
-- [2.train-models.ipynb](2.train-models.ipynb)
-- [3.deploy-models.ipynb](3.deploy-models.ipynb)
+- [1.setup.ipynb](1.setup.ipynb)
+- [2.train.ipynb](2.train.ipynb)
+- [3.deploy.ipynb](3.deploy.ipynb)
 
 You can view the GitHub Actions workflow file which installs the CLI and runs the notebooks [here](../../.github/workflows/tutorial-using-cli.yml).
 
