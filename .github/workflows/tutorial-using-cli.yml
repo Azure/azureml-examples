@@ -26,6 +26,10 @@ jobs:
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.59-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: install papermill
       run: pip install --upgrade papermill
+    - name: debug
+      run: which python
+    - name: debug2
+      run: which python3
     - name: run 1.manage-assets.ipynb
       run: papermill 1.manage-assets.ipynb - -k python
       working-directory: experimental/using-cli
