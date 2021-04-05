@@ -1,0 +1,36 @@
+name: tutorial-using-cli
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - experimental/using-cli/**
+      - .github/workflows/tutorial-using-cli.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: install az
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install the new ml extension
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.59-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
+    - name: run 1.manage-assets.ipynb
+      run: papermill 2.manage-assets.ipynb - -k python
+      working-directory: experimental/using-cli
+    - name: run 2.train-models.ipynb
+      run: papermill 2.train-models.ipynb - -k python
+      working-directory: experimental/using-cli
+    - name: run 3.deploy-models.ipynb
+      run: papermill 3.deploy-models.ipynb - -k python
+      working-directory: experimental/using-cli
