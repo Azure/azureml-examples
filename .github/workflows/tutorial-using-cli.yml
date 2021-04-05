@@ -14,12 +14,18 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install the new ml extension
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.59-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: install papermill
+      run: pip install --upgrade papermill
     - name: run 1.manage-assets.ipynb
       run: papermill 2.manage-assets.ipynb - -k python
       working-directory: experimental/using-cli
