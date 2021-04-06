@@ -7,7 +7,7 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 
 from azureml.core import Workspace, ScriptRunConfig, Environment, Experiment
-from azureml.core.runconfig import MpiConfiguration
+from azureml.core.runconfig import PyTorchConfiguration
 
 
 TARGET_GPU_COUNT = {
@@ -52,7 +52,7 @@ def submit_azureml_run(args: JobArguments):
     --per_device_train_batch_size {args.per_device_train_batch_size}
     --per_device_eval_batch_size {args.per_device_eval_batch_size}
     --disable_tqdm 1
-    --local_rank $OMPI_COMM_WORLD_LOCAL_RANK
+    --local_rank $LOCAL_RANK
     --deepspeed ds_config.json
     """.split()
 
@@ -80,9 +80,10 @@ def get_azureml_environment():
 
 
 def get_distributed_job_config(args: JobArguments):
-    n_proc = TARGET_GPU_COUNT[args.target_name]
-    distributed_job_config = MpiConfiguration(
-        process_count_per_node=n_proc, node_count=args.node_count
+    n_proc_per_node = TARGET_GPU_COUNT[args.target_name]
+    process_count = n_proc_per_node * args.node_count
+    distributed_job_config = PyTorchConfiguration(
+        process_count=process_count, node_count=args.node_count
     )
     return distributed_job_config
 
