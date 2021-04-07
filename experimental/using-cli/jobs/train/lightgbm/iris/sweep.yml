@@ -1,12 +1,17 @@
-command: >- 
-  python main.py 
-  --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-  --learning-rate {search_space.learning_rate}
-code: 
-  local_path: src
-environment: azureml:python-ml-basic-cpu:5
-compute:
-  target: azureml:cpu-cluster
+job_type: sweep_job
+experiment_name: sweep_test
+algorithm: random
+trial:
+ command: >- 
+    python main.py 
+    --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    --learning-rate {search_space.learning_rate}
+    --boosting {search_space.boosting}
+  code: 
+    local_path: src 
+  environment: azureml:python-ml-basic-cpu:5
+  compute:
+    target: azureml:cpu-cluster
 #inputs:
 #  iris:
 #    data: azureml:iris-url:2
