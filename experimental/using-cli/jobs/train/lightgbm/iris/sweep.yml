@@ -2,7 +2,7 @@ job_type: sweep_job
 experiment_name: sweep_test
 algorithm: random
 trial:
- command: >- 
+  command: >- 
     python main.py 
     --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
     --learning-rate {search_space.learning_rate}
