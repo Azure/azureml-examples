@@ -168,7 +168,7 @@ Checklist:
 
 ### Contributing to the `using-cli` tutorial
 
-Treat the `experimental/using-cli` tutorial directory the same as the top-level directory of Azure/azureml-examples, with `workflows` subdirectory renamed to `jobs` and the notebooks as temporary documentation before the official public preview. Each job will have an auto-generated GitHub Action to test it on PRs with changes and continuously. While `experimental`, tests will be created manually.
+Treat the `experimental/using-cli` tutorial directory the same as the top-level directory of Azure/azureml-examples, with the `workflows` subdirectory renamed to `jobs` and the notebooks as temporary documentation. Each job will have an auto-generated GitHub Action to test it on PRs with changes and continuously. While `experimental`, tests will be created manually.
 
 ### Additional information
 
