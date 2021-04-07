@@ -17,8 +17,4 @@ dependencies:
     - adlfs
     - fastparquet
     - pyarrow
-    - joblib
-    - psutils
-    - pyodbc
-    - sqlalchemy
     
