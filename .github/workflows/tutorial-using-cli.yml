@@ -14,10 +14,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    #- name: setup python
-    #  uses: actions/setup-python@v2
-    #  with: 
-    #    python-version: "3.8"
     - name: azure login
       uses: azure/login@v1
       with:
@@ -28,6 +24,7 @@ jobs:
       run: bash lightgbm-iris.sh > ./logs.txt
       working-directory: experimental/using-cli
     - name: upload logs 
+      if: failure()
       uses: actions/upload-artifact@v2
       with:
         name: logs
