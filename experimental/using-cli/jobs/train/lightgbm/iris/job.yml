@@ -1,6 +1,6 @@
 command: python main.py --data-dir {inputs.iris}
 code: 
-  local_path: file:src
+  local_path: ./src
 environment: azureml:python-ml-basic-cpu:4
 compute:
   target: azureml:cpu-cluster
