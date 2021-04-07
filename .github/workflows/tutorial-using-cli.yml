@@ -14,27 +14,16 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with: 
-        python-version: "3.8"
+    #- name: setup python
+    #  uses: actions/setup-python@v2
+    #  with: 
+    #    python-version: "3.8"
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CLI_CREDS}}
     - name: install the new ml extension
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.63-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
-    - name: install papermill
-      run: pip install --upgrade papermill ipykernel
-    - name: run 1.setup.ipynb
-      run: papermill 1.setup.ipynb - -k python
-      working-directory: experimental/using-cli
-    - name: run 2.train.ipynb
-      run: papermill 2.train.ipynb - -k python
-      working-directory: experimental/using-cli
-    - name: run 3.deploy.ipynb
-      run: papermill 3.deploy.ipynb - -k python
-      working-directory: experimental/using-cli
-    - name: run 4.score.ipynb
-      run: papermill 4.score.ipynb - -k python
+    - name: run lightgbm-iris.sh
+      run: bash lightgbm-iris.sh
       working-directory: experimental/using-cli
