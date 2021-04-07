@@ -27,9 +27,8 @@ search_space:
 objective:
   primary_metric: test-multi_logloss
   goal: minimize
-limits:
-  max_total_trials: 20
-  max_concurrent_trials: 10
-  timeout_minutes: 120
+max_total_trials: 20
+max_concurrent_trials: 10
+timeout_minutes: 120
 algorithm: random
 type: sweep_job
