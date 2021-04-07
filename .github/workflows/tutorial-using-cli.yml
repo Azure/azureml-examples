@@ -28,7 +28,7 @@ jobs:
       run: bash lightgbm-iris.sh > ./logs.txt
       working-directory: experimental/using-cli
     - name: upload logs 
-      uses: actions/upload-artifacts@v2
+      uses: actions/upload-artifact@v2
       with:
         name: logs
         path: ./experimental/using-cli/logs.txt
