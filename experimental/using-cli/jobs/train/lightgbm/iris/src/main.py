@@ -37,7 +37,6 @@ def main(args):
     }
 
     # read in data
-    print(f"--data-dir: {args.data_dir}")
     df = pd.read_csv(args.data_dir)
 
     # preprocess data

@@ -28,13 +28,15 @@ az ml data create -f assets/data/iris-url.yml
 az ml environment create -f assets/environments/python-ml-basic-cpu.yml
 # </create environment>
 
-# <create a job>
-job_id=`az ml job create -f jobs/train/lightgbm/iris/job.yml -o tsv | cut -f11`
-# </create a job>
-
-# <stream logs>
+# <create a basic job>
+job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11`
 az ml job stream -n $job_id
-# </stream logs>
+# </create a basic job>
+
+# <create a sweep job>
+job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f11`
+az ml job stream -n $job_id
+# </create a sweep job>
 
 # <download outputs>
 az ml job download -n $job_id
