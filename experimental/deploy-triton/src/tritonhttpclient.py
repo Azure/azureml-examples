@@ -1074,7 +1074,7 @@ class InferenceServerClient:
 
         return InferResult(response, self._verbose)
 
-    def infer(
+    def async_infer(
         self,
         model_name,
         inputs,
@@ -1089,7 +1089,7 @@ class InferenceServerClient:
         headers=None,
         query_params=None,
     ):
-        """Run inference using the supplied 'inputs' requesting
+        """Run asynchronous inference using the supplied 'inputs' requesting
         the outputs specified by 'outputs'.
 
         Parameters
@@ -1146,8 +1146,8 @@ class InferenceServerClient:
 
         Returns
         -------
-        InferRequest object
-            The handle to the inference request.
+        InferAsyncRequest object
+            The handle to the asynchronous inference request.
 
         Raises
         ------

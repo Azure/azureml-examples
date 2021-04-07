@@ -57,7 +57,7 @@ class InferenceSession:
             output = tritonhttpclient.InferRequestedOutput(output_name)
             outputs.append(output)
 
-        res = self.client.infer(
+        res = self.client.async_infer(
             self.model_name, inputs, request_id=str(self.request_count), outputs=outputs
         )
         res = res.get_result()

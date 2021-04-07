@@ -78,7 +78,7 @@ def init():
 
 
 @rawhttp
-def run(request):
+async def run(request):
     """This function is called every time your webservice receives a request.
 
     Notice you need to know the names and data types of the model inputs and
@@ -94,7 +94,7 @@ def run(request):
 
         input_name = session.get_inputs()[0].name
 
-        reqBody = request.get_data()
+        reqBody = await request.get_data()
         img = Image.open(io.BytesIO(reqBody))
         image_data = preprocess(img, scaling="INCEPTION")
 
