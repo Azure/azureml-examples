@@ -25,5 +25,10 @@ jobs:
     - name: install the new ml extension
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.63-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: run lightgbm-iris.sh
-      run: bash lightgbm-iris.sh
+      run: bash lightgbm-iris.sh > ./logs.txt
+      working-directory: experimental/using-cli
+    - name: upload logs 
+      uses: actions/upload-artifacts@v2
+        with: logs 
+        path: ./logs.txt
       working-directory: experimental/using-cli

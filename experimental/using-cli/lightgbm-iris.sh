@@ -21,13 +21,13 @@ az configure --defaults group="azureml-examples-cli"
 # </create compute>
 
 # <create data>
-az ml data create --file assets/data/iris-url.yml
+az ml data create -f assets/data/iris-url.yml
 # </create data>
 
 # <create environment>
-az ml environment create --file assets/environments/python-ml-basic-cpu.yml
+az ml environment create -f assets/environments/python-ml-basic-cpu.yml
 # </create environment>
 
 # <create a job>
-az ml job create --file jobs/train/lightgbm/iris/job.yml --stream
+az ml job create -f jobs/train/lightgbm/iris/job.yml --stream
 # </create a job>
