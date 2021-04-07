@@ -37,7 +37,8 @@ def main(args):
     }
 
     # read in data
-    df = pd.read_csv(args.data_dir)
+    print(args.data_dir)
+    df = pd.read_csv(args.data_dir + "/iris.csv")
 
     # preprocess data
     X_train, X_test, y_train, y_test, enc = preprocess_data(df)
