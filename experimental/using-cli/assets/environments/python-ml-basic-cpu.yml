@@ -1,0 +1,5 @@
+name: python-ml-basic-cpu
+version: 1
+docker:
+  image: docker.io/python
+conda_file: file:conda-envs/python-ml-basic-cpu.yml
