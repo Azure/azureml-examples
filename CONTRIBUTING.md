@@ -166,6 +166,10 @@ Checklist:
 - [ ] test
 - [ ] submit PR, which will run the relevant workflow(s)
 
+### Contributing to the `using-cli` tutorial
+
+Treat the `experimental/using-cli` tutorial directory the same as the top-level directory of Azure/azureml-examples, with `workflows` subdirectory renamed to `jobs` and the notebooks as temporary documentation before the official public preview. Each job will have an auto-generated GitHub Action to test it on PRs with changes and continuously. While `experimental`, tests will be created manually.
+
 ### Additional information
 
 If this contributing guide has not answered your question(s), please open an issue.
