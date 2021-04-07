@@ -29,5 +29,17 @@ az ml environment create -f assets/environments/python-ml-basic-cpu.yml
 # </create environment>
 
 # <create a job>
-az ml job create -f jobs/train/lightgbm/iris/job.yml --stream
+job_id=`az ml job create -f jobs/train/lightgbm/iris/job.yml -o tsv | cut -f11`
 # </create a job>
+
+# <stream logs>
+az ml job stream -n $job_id
+# </stream logs>
+
+# <download outputs>
+az ml job download -n $job_id
+# </download outputs>
+
+# <create model>
+az ml model create -n lightgbm-iris -v 1 --local-path ./outputs/model
+# </create model>
