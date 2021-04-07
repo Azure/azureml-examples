@@ -1,4 +1,7 @@
-command: python main.py --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+command: >- 
+  python main.py 
+  --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+  --learning-rate {search_space.learning_rate}
 code: 
   local_path: src
 environment: azureml:python-ml-basic-cpu:5
@@ -8,3 +11,20 @@ compute:
 #  iris:
 #    data: azureml:iris-url:2
 #    mode: mount
+search_space:
+  learning_rate:
+    type: uniform
+    min_value: 0.01
+    max_value: 0.9
+  boosting:
+    type: choice
+    values: ["gbdt", "dart"]
+objective:
+  primary_metric: test-multi_logloss
+  goal: minimize
+limits:
+  max_total_trials: 20
+  max_concurrent_trials: 10
+  timeout_minutes: 120
+algorithm: random
+type: sweep_job
