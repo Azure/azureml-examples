@@ -17,4 +17,5 @@ dependencies:
     - adlfs
     - fastparquet
     - pyarrow
+    - mlflow
     

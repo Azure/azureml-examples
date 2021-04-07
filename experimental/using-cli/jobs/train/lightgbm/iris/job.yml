@@ -1,7 +1,7 @@
 command: python main.py
 code: 
   local_path: src
-environment: azureml:python-ml-basic-cpu:2
+environment: azureml:python-ml-basic-cpu:3
 compute:
   target: azureml:cpu-cluster
 inputs:
