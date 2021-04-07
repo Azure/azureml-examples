@@ -35,6 +35,6 @@ jobs:
     - name: run 3.deploy.ipynb
       run: papermill 3.deploy.ipynb - -k python
       working-directory: experimental/using-cli
-    - name: run 4.assets.ipynb
-      run: papermill 4.assets.ipynb - -k python
+    - name: run 4.score.ipynb
+      run: papermill 4.score.ipynb - -k python
       working-directory: experimental/using-cli
