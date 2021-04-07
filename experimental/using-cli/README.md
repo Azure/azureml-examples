@@ -18,7 +18,7 @@ This tutorial consists of the following notebooks:
 - [1.setup.ipynb](1.setup.ipynb)
 - [2.train.ipynb](2.train.ipynb)
 - [3.deploy.ipynb](3.deploy.ipynb)
-- [4.assets.ipynb](4.assets.ipynb)
+- [4.score.ipynb](4.score.ipynb)
 
 You can view the GitHub Actions workflow file which installs the CLI and runs the notebooks [here](../../.github/workflows/tutorial-using-cli.yml).
 
