@@ -1,7 +1,7 @@
 command: python main.py --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 code: 
   local_path: src
-environment: azureml:python-ml-basic-cpu:4
+environment: azureml:python-ml-basic-cpu:5
 compute:
   target: azureml:cpu-cluster
 #inputs:

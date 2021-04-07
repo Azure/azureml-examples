@@ -1,5 +1,5 @@
 name: python-ml-basic-cpu
-version: 4
+version: 5
 docker:
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 conda_file: file:conda-envs/python-ml-basic-cpu.yml
