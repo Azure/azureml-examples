@@ -9,6 +9,7 @@ dependencies:
     - pandas
     - scipy
     - scikit-learn
+    - matplotlib
     - xgboost
     - lightgbm
     - dask
