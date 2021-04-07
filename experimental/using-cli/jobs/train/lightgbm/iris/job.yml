@@ -1,10 +1,10 @@
-command: python main.py
+command: python main.py --data-dir {inputs.iris}
 code: 
   local_path: src
 environment: azureml:python-ml-basic-cpu:4
 compute:
   target: azureml:cpu-cluster
 inputs:
-  data-dir:
+  iris:
     data: azureml:iris-url:1
     mode: mount
