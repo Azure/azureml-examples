@@ -1,0 +1,10 @@
+command: python main.py
+code: 
+  local_path: src
+environment: azureml:python-ml-basic-cpu:1
+compute:
+  target: azureml:cpu-cluster
+inputs:
+  data-dir:
+    data: azureml:iris-url:1
+    mode: mount
