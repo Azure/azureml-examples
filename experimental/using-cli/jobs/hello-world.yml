@@ -1,4 +1,3 @@
-name: using-cli-tutorial
 command: python main.py
 code: 
   local_path: hello-world
