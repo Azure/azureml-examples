@@ -1,3 +1,3 @@
 name: iris-url
-version: 2
-path: https://azuremlexamples.blob.core.windows.net/datasets/
+version: 3
+path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
