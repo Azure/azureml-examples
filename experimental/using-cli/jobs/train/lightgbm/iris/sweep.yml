@@ -1,4 +1,3 @@
-job_type: sweep_job
 experiment_name: sweep_test
 algorithm: random
 trial:
