@@ -1,8 +1,0 @@
-command: python main.py
-code: 
-  local_path: hello-world
-environment:
-  docker:
-    image: docker.io/python
-compute:
-  target: azureml:cpu-cluster

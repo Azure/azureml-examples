@@ -39,11 +39,6 @@ az ml job stream -n $job_id
 az ml job download -n $job_id --outputs
 # </download outputs>
 
-# <create a sweep job>
-#job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f11`
-#az ml job stream -n $job_id
-# </create a sweep job>
-
 # <create endpoint>
 #az ml endpoint create
 # </create endpoint>
@@ -51,3 +46,8 @@ az ml job download -n $job_id --outputs
 # <score endpoint>
 #curl something | something
 # </score endpoint>
+
+# <create a sweep job>
+#job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f11`
+#az ml job stream -n $job_id
+# </create a sweep job>

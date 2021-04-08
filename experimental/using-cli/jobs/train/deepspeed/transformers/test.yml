@@ -1,0 +1,19 @@
+code:
+  local_path: src
+command: >-
+  python finetune_glue.py
+  --output_dir outputs
+  --model_checkpoint distilbert-base-uncased 
+  --task cola 
+  --num_train_epochs 3
+  --per_device_train_batch_size 16
+  --per_device_eval_batch_size 16
+  --disable_tqdm 1
+  --local_rank $OMPI_COMM_WORLD_LOCAL_RANK
+  --deepspeed ds_config.json
+environment:
+  docker: 
+    build:
+      dockerfile: dockerfile
+compute:
+  target: azureml:gpu-V100-4
