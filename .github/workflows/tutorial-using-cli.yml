@@ -31,5 +31,5 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v2
       with:
-        name: ${{matrix.file}}
+        name: ${{matrix.workflow}}
         path: ./experimental/using-cli/logs.txt
