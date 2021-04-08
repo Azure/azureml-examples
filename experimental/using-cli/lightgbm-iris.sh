@@ -6,17 +6,17 @@
 # </installation>
 
 # <create resource group>
-az group create -n azureml-examples-cli -l eastus
+az group create -n azureml-examples -l eastus
 # </create resource group>
 
 # <create_workspace>
-az ml workspace create --name main -g azureml-examples-cli
+az ml workspace create --name main -g azureml-examples
 # </create_workspace>
 
 # <configure-defaults>
 az configure --defaults workspace="main"
 az configure --defaults location="eastus"
-az configure --defaults group="azureml-examples-cli"
+az configure --defaults group="azureml-examples"
 # </configure-defaults>
 
 # <create compute>

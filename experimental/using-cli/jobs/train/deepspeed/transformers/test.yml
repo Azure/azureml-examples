@@ -16,4 +16,4 @@ environment:
     build:
       dockerfile: dockerfile
 compute:
-  target: azureml:gpu-V100-4
+  target: azureml:gpu-cluster
