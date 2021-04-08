@@ -23,14 +23,6 @@ az configure --defaults group="azureml-examples-cli"
 #az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 20
 # </create compute>
 
-# <create data>
-az ml data create -f assets/data/iris-url.yml
-# </create data>
-
-# <create environment>
-az ml environment create -f assets/environments/python-ml-basic-cpu.yml
-# </create environment>
-
 # <create a basic job>
 job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11`
 # </create a basic job>
