@@ -26,15 +26,22 @@ az ml environment create -f assets/environments/python-ml-basic-cpu.yml
 
 # <create a basic job>
 job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11`
-az ml job stream -n $job_id
 # </create a basic job>
+
+# <open job in studio>
+az ml job show -n $job_id --web
+# </open job in studio>
+
+# <stream job logs to console>
+az ml job stream -n $job_id
+# </stream job logs to console>
 
 # <download outputs>
 az ml job download -n $job_id
 # </download outputs>
 
 # <create model>
-az ml model create -n lightgbm-iris -v 1 --local-path ./outputs/model
+#az ml model create -n lightgbm-iris -v 1 --local-path ./outputs/model
 # </create model>
 
 ## TODO: not working
