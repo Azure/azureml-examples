@@ -1,15 +1,15 @@
+code: 
+  local_path: src
 command: >-
   python main.py 
   --data-dir {inputs.iris}
-code: 
-  local_path: src
+inputs:
+  iris:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
   docker:
     image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
   conda_file: file:environment.yml
 compute:
   target: azureml:cpu-cluster
-inputs:
-  iris:
-    data:
-      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
