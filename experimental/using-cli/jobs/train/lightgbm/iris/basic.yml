@@ -1,13 +1,15 @@
 command: >-
   python main.py 
-  --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-#  --data-dir {inputs.iris}
+  --data-dir {inputs.iris}
 code: 
   local_path: src
-environment: azureml:python-ml-basic-cpu:5
+environment:
+  docker:
+    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  conda_file: file:assets/environments/conda-envs/python-ml-basic-cpu.yml
 compute:
   target: azureml:cpu-cluster
-#inputs:
-#  iris:
-#    data: azureml:iris-url:2
-#    mode: mount
+inputs:
+  iris:
+    data: azureml:iris-url:2
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
