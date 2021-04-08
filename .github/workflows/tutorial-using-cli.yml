@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy: matrix
+      workflow: [lightgbm-iris, deepspeed-transformers]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -20,12 +22,12 @@ jobs:
         creds: ${{secrets.AZ_CLI_CREDS}}
     - name: install the new ml extension
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.63-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
-    - name: run lightgbm-iris.sh
-      run: bash lightgbm-iris.sh > ./logs.txt
+    - name: run workflow
+      run: bash ${{matrix.workflow}}.sh > ./logs.txt
       working-directory: experimental/using-cli
     - name: upload logs 
       if: always()
       uses: actions/upload-artifact@v2
       with:
-        name: logs
+        name: ${{matrix.file}}
         path: ./experimental/using-cli/logs.txt
