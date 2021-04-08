@@ -1,3 +1,6 @@
+## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
+## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+
 # <installation>
 # az extension add -n ml
 # </installation>
@@ -28,9 +31,9 @@ az ml environment create -f assets/environments/python-ml-basic-cpu.yml
 job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11`
 # </create a basic job>
 
-# <show job>
+# <show job in studio>
 az ml job show -n $job_id --web
-# </show job>
+# </show job in studio>
 
 # <stream job logs to console>
 az ml job stream -n $job_id
