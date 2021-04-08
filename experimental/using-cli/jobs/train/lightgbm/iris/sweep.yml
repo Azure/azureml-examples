@@ -1,4 +1,4 @@
-experiment_name: sweep_test
+type: sweep_job
 algorithm: random
 trial:
   command: >- 
@@ -29,5 +29,3 @@ objective:
 max_total_trials: 20
 max_concurrent_trials: 10
 timeout_minutes: 120
-algorithm: random
-type: sweep_job
