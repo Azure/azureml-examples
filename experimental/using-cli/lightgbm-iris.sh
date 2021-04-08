@@ -13,11 +13,11 @@ az group create -n azureml-examples-cli -l eastus
 az ml workspace create --name main -g azureml-examples-cli
 # </create workspace>
 
-# <configure defaults>
+# <configure-defaults>
 az configure --defaults workspace="main"
 az configure --defaults location="eastus"
 az configure --defaults group="azureml-examples-cli"
-# </configure defaults>
+# </configure-defaults>
 
 # <create compute>
 #az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 20
