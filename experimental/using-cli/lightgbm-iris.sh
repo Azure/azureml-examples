@@ -29,7 +29,7 @@ job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11
 # </create a basic job>
 
 # <show job>
-az ml job show -n
+az ml job show -n $job_id --web
 # </show job>
 
 # <stream job logs to console>
