@@ -28,9 +28,9 @@ az ml environment create -f assets/environments/python-ml-basic-cpu.yml
 job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11`
 # </create a basic job>
 
-# <open job in studio>
-az ml job show -n $job_id --web
-# </open job in studio>
+# <show job>
+az ml job show -n
+# </show job>
 
 # <stream job logs to console>
 az ml job stream -n $job_id
