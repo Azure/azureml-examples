@@ -9,9 +9,9 @@
 az group create -n azureml-examples-cli -l eastus
 # </create resource group>
 
-# <create workspace>
+# <create_workspace>
 az ml workspace create --name main -g azureml-examples-cli
-# </create workspace>
+# </create_workspace>
 
 # <configure-defaults>
 az configure --defaults workspace="main"
