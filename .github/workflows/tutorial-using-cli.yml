@@ -11,8 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy: matrix
-      workflow: [lightgbm-iris, deepspeed-transformers]
+    strategy: 
+      matrix:
+        workflow: [lightgbm-iris, deepspeed-transformers]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
