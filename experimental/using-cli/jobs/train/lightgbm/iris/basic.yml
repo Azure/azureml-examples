@@ -1,7 +1,7 @@
 command: >-
   python main.py 
-#  --data-dir {inputs.iris}
   --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+#  --data-dir {inputs.iris}
 code: 
   local_path: src
 environment: azureml:python-ml-basic-cpu:5
