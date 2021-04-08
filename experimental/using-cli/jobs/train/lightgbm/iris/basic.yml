@@ -11,5 +11,5 @@ compute:
   target: azureml:cpu-cluster
 inputs:
   iris:
-    data: azureml:iris-url:2
+    data:
       path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
