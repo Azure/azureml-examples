@@ -36,11 +36,11 @@ az ml job stream -n $job_id
 # </stream job logs to console>
 
 # <download outputs>
-az ml job download -n $job_id
+az ml job download -n $job_id --outputs
 # </download outputs>
 
 # <create model>
-az ml model create -f assets/models/lightgbm-iris.yml
+az ml model create -f $job_id/model
 # </create model>
 
 # <create a sweep job>
