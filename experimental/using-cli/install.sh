@@ -27,13 +27,13 @@ az configure --defaults location="eastus"
 az configure --defaults group="azureml-examples"
 # </configure_defaults>
 
-# <uninstall>
+# <remove>
 az extension remove -n ml
-# </uninstall>
+# </remove>
 
-# <uninstall_old>
+# <remove_old>
 az extension remove -n azure-cli-ml
-# </uninstall_old>
+# </remove_old>
 
 # <delete_workspace>
 az workspace delete -n main --all-resources
