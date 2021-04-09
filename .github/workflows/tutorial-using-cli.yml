@@ -14,7 +14,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix:
-        workflow: [manage-assets, lightgbm-iris]
+        workflow: [hello-world, manage-assets, lightgbm-iris]
     steps:
     - name: check out repo
       uses: actions/checkout@v2

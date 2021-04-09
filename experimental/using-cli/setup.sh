@@ -36,7 +36,3 @@ az configure --defaults workspace=$WS
 # <check_extensions>
 az extension list 
 # </check_extensions>
-
-# <hello_world>
-az ml job create -f hello-world.yml
-# </hello_world>
