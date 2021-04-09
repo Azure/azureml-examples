@@ -49,5 +49,4 @@ az ml job download -n $job_id --outputs
 
 # <create_sweep_job>
 #job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f11`
-#az ml job stream -n $job_id
 # </create_sweep_job>
