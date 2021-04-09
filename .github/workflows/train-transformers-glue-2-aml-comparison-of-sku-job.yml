@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/transformers/glue/**
       - .github/workflows/train-transformers-glue-2-aml-comparison-of-sku-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

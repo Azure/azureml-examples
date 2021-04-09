@@ -8,6 +8,7 @@ on:
     paths:
       - tutorials/using-rapids/**
       - .github/workflows/tutorial-using-rapids.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 

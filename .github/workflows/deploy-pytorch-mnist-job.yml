@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/deploy/pytorch/mnist/**
       - .github/workflows/deploy-pytorch-mnist-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

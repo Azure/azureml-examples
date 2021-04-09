@@ -8,6 +8,7 @@ on:
     paths:
       - experimental/using-xgboost/**
       - .github/workflows/tutorial-using-xgboost.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 

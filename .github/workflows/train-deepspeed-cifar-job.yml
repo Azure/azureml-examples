@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/deepspeed/cifar/**
       - .github/workflows/train-deepspeed-cifar-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

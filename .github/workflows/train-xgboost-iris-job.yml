@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/xgboost/iris/**
       - .github/workflows/train-xgboost-iris-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
