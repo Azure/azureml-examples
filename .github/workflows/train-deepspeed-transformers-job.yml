@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/deepspeed/transformers/**
       - .github/workflows/train-deepspeed-transformers-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -8,6 +8,7 @@ on:
     paths:
       - notebooks/train-lightgbm-local.ipynb
       - .github/workflows/notebook-train-lightgbm-local.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

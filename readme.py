@@ -245,6 +245,7 @@ on:
     paths:
       - {notebook}
       - .github/workflows/notebook-{name}.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -285,6 +286,7 @@ on:
     paths:
       - workflows/{scenario}/{tool}/{project}/**
       - .github/workflows/{scenario}-{tool}-{project}-{name}.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

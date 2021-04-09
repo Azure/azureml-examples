@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/transformers/glue/**
       - .github/workflows/train-transformers-glue-1-aml-finetune-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
