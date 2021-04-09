@@ -14,7 +14,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix:
-        workflow: [lightgbm-iris, deepspeed-transformers]
+        workflow: [lightgbm-iris]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
