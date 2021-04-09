@@ -3,7 +3,7 @@ algorithm: random
 trial:
   command: >- 
     python main.py 
-    --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
   code: 

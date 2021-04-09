@@ -2,8 +2,8 @@ code:
   local_path: src
 command: >-
   python main.py 
-  --data-dir https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-#  --data-dir {inputs.iris}
+  --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+#  --iris-csv {inputs.iris}
 #inputs:
 #  iris:
 #    data:
