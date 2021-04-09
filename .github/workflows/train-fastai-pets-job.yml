@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/fastai/pets/**
       - .github/workflows/train-fastai-pets-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

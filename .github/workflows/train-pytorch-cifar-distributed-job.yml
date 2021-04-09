@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/pytorch/cifar-distributed/**
       - .github/workflows/train-pytorch-cifar-distributed-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
