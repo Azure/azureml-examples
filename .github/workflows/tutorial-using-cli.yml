@@ -14,7 +14,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix:
-        workflow: [lightgbm-iris]
+        workflow: [lightgbm-iris, tensorflow-mnist]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
