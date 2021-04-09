@@ -1,5 +1,0 @@
-name: tf-environment
-version: 1
-docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04
-conda_file: file:./tf_conda.yml
