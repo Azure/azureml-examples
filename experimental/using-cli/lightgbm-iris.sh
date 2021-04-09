@@ -1,24 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <installation>
-# az extension add -n ml
-# </installation>
-
-# <create_resource_group>
-az group create -n azureml-examples -l eastus
-# </create_resource_group>
-
-# <create_workspace>
-az ml workspace create --name main -g azureml-examples
-# </create_workspace>
-
-# <configure_defaults>
-az configure --defaults workspace="main"
-az configure --defaults location="eastus"
-az configure --defaults group="azureml-examples"
-# </configure_defaults>
-
 # <create_compute>
 #az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 2
 # </create_compute>

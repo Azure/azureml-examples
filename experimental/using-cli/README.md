@@ -1,7 +1,6 @@
 ---
 page_type: sample
 languages:
-- python
 - azurecli
 products:
 - azure-machine-learning
