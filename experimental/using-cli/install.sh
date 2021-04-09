@@ -27,6 +27,10 @@ az configure --defaults location="eastus"
 az configure --defaults group="azureml-examples"
 # </configure_defaults>
 
+# <check_extensions>
+az extension list 
+# </check_extensions>
+
 # <remove>
 az extension remove -n ml
 # </remove>
