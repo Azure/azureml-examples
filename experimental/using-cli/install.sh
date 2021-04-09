@@ -18,7 +18,7 @@ az group create -n azureml-examples -l eastus
 # </create_resource_group>
 
 # <create_workspace>
-az workspace create --name main -l eastus
+az workspace create --name main -g azureml-examples -l eastus
 # </create_workspace>
 
 # <configure_defaults>
