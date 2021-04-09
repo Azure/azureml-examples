@@ -5,49 +5,49 @@
 # az extension add -n ml
 # </installation>
 
-# <create resource group>
+# <create_resource_group>
 az group create -n azureml-examples -l eastus
-# </create resource group>
+# </create_resource_group>
 
 # <create_workspace>
 az ml workspace create --name main -g azureml-examples
 # </create_workspace>
 
-# <configure-defaults>
+# <configure_defaults>
 az configure --defaults workspace="main"
 az configure --defaults location="eastus"
 az configure --defaults group="azureml-examples"
-# </configure-defaults>
+# </configure_defaults>
 
-# <create compute>
+# <create_compute>
 #az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 20
-# </create compute>
+# </create_compute>
 
-# <create a basic job>
+# <create_basic_job>
 job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o tsv | cut -f11`
 # </create a basic job>
 
-# <show job in studio>
+# <show_job_in_studio>
 az ml job show -n $job_id --web
-# </show job in studio>
+# </show_job_in_studio>
 
-# <stream job logs to console>
+# <stream_job_logs_to_console>
 az ml job stream -n $job_id
-# </stream job logs to console>
+# </stream_job_logs_to_console>
 
-# <download outputs>
+# <download_outputs>
 az ml job download -n $job_id --outputs
-# </download outputs>
+# </download_outputs>
 
-# <create endpoint>
+# <create_endpoint>
 #az ml endpoint create
-# </create endpoint>
+# </create_endpoint>
 
-# <score endpoint>
+# <score_endpoint>
 #curl something | something
-# </score endpoint>
+# </score_endpoint>
 
-# <create a sweep job>
+# <create_sweep_job>
 #job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f11`
 #az ml job stream -n $job_id
-# </create a sweep job>
+# </create_sweep_job>
