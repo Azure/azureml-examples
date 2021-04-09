@@ -9,6 +9,10 @@ az extension add -n ml
 az extension update -n ml
 # </update>
 
+# <verify>
+az ml -h
+# </verify>
+
 # <create_resource_group>
 az group create -n azureml-examples -l eastus
 # </create_resource_group>
