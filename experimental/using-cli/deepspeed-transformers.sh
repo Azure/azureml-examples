@@ -14,7 +14,7 @@ az ml workspace create --name main -g azureml-examples
 # </create_workspace>
 
 # <configure-defaults>
-az configure --defaults workspace="default"
+az configure --defaults workspace="main"
 az configure --defaults location="eastus"
 az configure --defaults group="azureml-examples"
 # </configure-defaults>
