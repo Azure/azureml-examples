@@ -20,7 +20,7 @@ az configure --defaults group="azureml-examples"
 # </configure_defaults>
 
 # <create_compute>
-#az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 20
+#az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 2
 # </create_compute>
 
 # <create_basic_job>
