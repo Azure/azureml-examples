@@ -8,7 +8,7 @@ inputs:
   cifar:
     data: azureml:cifar-10-upload:1
     mode: mount
-environment: azureml:AzureML-PyTorch-1.6-GPU:1
+environment: azureml:AzureML-PyTorch-1.6-GPU:11
 compute:
   target: azureml:gpu-cluster
   instance_count: 2
