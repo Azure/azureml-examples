@@ -15,7 +15,7 @@ trial:
     iris:
       data:
         path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-      mode: mount
+        mode: mount
 search_space:
   learning_rate:
     type: uniform
