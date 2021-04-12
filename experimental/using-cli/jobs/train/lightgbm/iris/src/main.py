@@ -129,12 +129,12 @@ def parse_args():
 
 # run script
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
     # add space in logs
     print("*" * 60)
     print("\n\n")
+
+    # parse args
+    args = parse_args()
 
     # run main function
     main(args)
