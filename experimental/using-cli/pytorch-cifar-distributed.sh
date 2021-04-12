@@ -25,4 +25,14 @@ az ml data create -n cifar-10-upload -v 1 --set local_path=cifar-10-batches-py
 job_id=`az ml job create -f jobs/train/pytorch/cifar-distributed/basic.yml --query name -o tsv`
 # </create a basic job>
 
- 
+# <show_job_in_studio>
+az ml job show -n $job_id --web
+# </show_job_in_studio>
+
+# <stream_job_logs_to_console>
+az ml job stream -n $job_id
+# </stream_job_logs_to_console>
+
+# <download_outputs>
+az ml job download -n $job_id --outputs
+# </download_outputs>
