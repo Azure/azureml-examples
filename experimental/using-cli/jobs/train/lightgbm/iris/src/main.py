@@ -127,6 +127,7 @@ def parse_args():
     return args
 
 
+# run script
 if __name__ == "__main__":
     # parse args
     args = parse_args()
