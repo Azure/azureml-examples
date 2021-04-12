@@ -23,7 +23,7 @@ jobs:
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install the new ml extension
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.63-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: run setup
       run: bash setup.sh
       working-directory: experimental/using-cli
