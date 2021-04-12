@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 
 # define functions
 def main(args):
+    # add space in logs
     print("*" * 60)
     print("\n\n")
 
@@ -51,6 +52,7 @@ def main(args):
     loss, acc = evaluate_model(model, X_test, y_test)
     mlflow.log_metrics({"loss": loss, "accuracy": acc})
 
+    # add space in logs
     print("\n\n")
     print("*" * 60)
 
@@ -113,6 +115,8 @@ def evaluate_model(model, X_test, y_test):
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
+
+    # add arguments
     parser.add_argument("--iris-csv", type=str)
     parser.add_argument("--num-boost-round", type=int, default=10)
     parser.add_argument("--boosting", type=str, default="gbdt")
