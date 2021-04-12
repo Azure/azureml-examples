@@ -6,10 +6,8 @@ az ml compute create -n cpu-cluster --min-instances 0 --max-instances 2 --type A
 # </create_compute>
 
 # <create_sweep_job>
-job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f8`
+job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o json --query name`
 # </create_sweep_job>
-
-echo $job_id
 
 # <show_job_in_studio>
 az ml job show -n $job_id --web
