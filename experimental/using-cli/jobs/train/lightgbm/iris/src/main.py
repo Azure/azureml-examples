@@ -14,10 +14,6 @@ from sklearn.model_selection import train_test_split
 
 # define functions
 def main(args):
-    # add space in logs
-    print("*" * 60)
-    print("\n\n")
-
     # enable auto logging
     mlflow.autolog()
 
@@ -51,10 +47,6 @@ def main(args):
     # evaluate model
     loss, acc = evaluate_model(model, X_test, y_test)
     mlflow.log_metrics({"loss": loss, "accuracy": acc})
-
-    # add space in logs
-    print("\n\n")
-    print("*" * 60)
 
 
 def preprocess_data(df):
@@ -139,5 +131,13 @@ if __name__ == "__main__":
     # parse args
     args = parse_args()
 
+    # add space in logs
+    print("*" * 60)
+    print("\n\n")
+
     # run main function
     main(args)
+
+    # add space in logs
+    print("*" * 60)
+    print("\n\n")
