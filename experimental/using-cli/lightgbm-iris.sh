@@ -6,7 +6,7 @@ az ml compute create -n cpu-cluster --min-instances 0 --max-instances 2 --type A
 # </create_compute>
 
 # <create_basic_job>
-job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml -o json --query name`
+job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml --query name -o tsv`
 # </create a basic job>
 
 # <show_job_in_studio>

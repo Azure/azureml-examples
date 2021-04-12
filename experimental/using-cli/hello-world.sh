@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # <hello_world>
-job_id=`az ml job create -f hello-world.yml -o tsv | cut -f10`
+job_id=`az ml job create -f hello-world.yml --query name -o tsv`
 # </hello_world>
 
 # <show_job_in_studio>

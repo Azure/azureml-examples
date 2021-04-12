@@ -22,7 +22,7 @@ az ml data create -n cifar-10-upload -v 1 --set local_path=cifar-10-batches-py
 # </create_data>
 
 # <create_basic_job>
-job_id=`az ml job create -f jobs/train/pytorch/cifar-distributed/basic.yml -o json --query name`
+job_id=`az ml job create -f jobs/train/pytorch/cifar-distributed/basic.yml --query name -o tsv`
 # </create a basic job>
 
  
