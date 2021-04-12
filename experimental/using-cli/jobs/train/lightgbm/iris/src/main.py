@@ -57,23 +57,32 @@ def main(args):
 
 
 def preprocess_data(df):
+    # split dataframe into X and y
     X = df.drop(["species"], axis=1)
     y = df["species"]
 
+    # one-hot encode
     enc = LabelEncoder()
     y = enc.fit_transform(y)
 
+    # train/test split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
 
+    # return splits and encoder
     return X_train, X_test, y_train, y_test, enc
 
 
 def train_model(params, num_boost_round, X_train, X_test, y_train, y_test):
+    # start timer
     t1 = time.time()
+
+    # create lightgbm datasets
     train_data = lgbm.Dataset(X_train, label=y_train)
     test_data = lgbm.Dataset(X_test, label=y_test)
+
+    # train model
     model = lgbm.train(
         params,
         train_data,
@@ -81,21 +90,28 @@ def train_model(params, num_boost_round, X_train, X_test, y_train, y_test):
         valid_sets=[test_data],
         valid_names=["test"],
     )
+
+    # end timer
     t2 = time.time()
 
+    # return model and training time in seconds
     return model, t2 - t1
 
 
 def evaluate_model(model, X_test, y_test):
+    # get predictions on test data
     y_proba = model.predict(X_test)
     y_pred = y_proba.argmax(axis=1)
+
+    # compute loss and accuracy
     loss = log_loss(y_test, y_proba)
     acc = accuracy_score(y_test, y_pred)
 
+    # return loss and accuracy
     return loss, acc
 
 
-if __name__ == "__main__":
+def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
     parser.add_argument("--iris-csv", type=str)
@@ -111,6 +127,14 @@ if __name__ == "__main__":
 
     # parse args
     args = parser.parse_args()
+
+    # return args
+    return args
+
+
+if __name__ == "__main__":
+    # parse args
+    args = parse_args()
 
     # run main function
     main(args)
