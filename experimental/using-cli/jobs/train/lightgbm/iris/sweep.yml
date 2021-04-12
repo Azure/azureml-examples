@@ -33,4 +33,4 @@ objective:
 max_total_trials: 20
 max_concurrent_trials: 10
 timeout_minutes: 120
-experiment_name: sweep-test
+experiment_name: lightgbm-iris-sweep
