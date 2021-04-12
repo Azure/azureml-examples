@@ -1,21 +1,24 @@
 type: sweep_job
 algorithm: random
 trial:
+  code: 
+    local_path: src 
   command: >- 
     python main.py 
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
     --iris-csv {inputs.iris}
-  code: 
-    local_path: src 
-  environment: azureml:python-ml-basic-cpu:5
+  inputs:
+    iris:
+      data:
+        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+      mode: mount
+  environment:
+    docker:
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    conda_file: file:environment.yml
   compute:
     target: azureml:cpu-cluster
-inputs:
-  iris:
-    data:
-      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-    mode: mount
 search_space:
   learning_rate:
     type: uniform
