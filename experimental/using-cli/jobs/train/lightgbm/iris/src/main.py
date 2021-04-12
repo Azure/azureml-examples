@@ -22,7 +22,6 @@ def main(args):
 
     # setup parameters
     num_boost_round = args.num_boost_round
-
     params = {
         "objective": "multiclass",
         "num_class": 3,
