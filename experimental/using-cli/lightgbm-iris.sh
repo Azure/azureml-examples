@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # <create_compute>
-az ml compute create --name cpu-cluster --min-instances 0 --max-instances 2
+az ml compute create -n cpu-cluster --min-instances 0 --max-instances 2 --type AmlCompute
 # </create_compute>
 
 # <create_basic_job>
