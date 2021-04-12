@@ -199,7 +199,7 @@ def main(args):
         evaluate(test_loader, model, device)
 
 
-def setup_argparse():
+def parse_args():
     # setup argparse
     parser = argparse.ArgumentParser()
 
