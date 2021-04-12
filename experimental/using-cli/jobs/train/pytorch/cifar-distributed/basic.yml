@@ -1,0 +1,17 @@
+code: 
+  local_path: src
+command: >-
+  python train.py 
+  --data-dir {inputs.cifar}
+  --epochs 20
+inputs:
+  cifar:
+    data: azureml:cifar-uploaded:1
+    mode: mount
+environment: azureml:AzureML-PyTorch-1.6-GPU
+compute:
+  target: azureml:gpu-cluster
+  instance_count: 2
+distribution:
+  type: pytorch 
+  process_count: 4
