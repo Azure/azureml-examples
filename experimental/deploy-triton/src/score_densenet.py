@@ -1,6 +1,7 @@
 import io
 import numpy as np
 import os
+import base64
 
 from azureml.core import Model
 from azureml.contrib.services.aml_request import rawhttp
@@ -92,8 +93,8 @@ def run(raw_data):
 
     input_name = session.get_inputs()[0].name
     
-    imageString = base64.b64decode(raw_data)
-    img = Image.open(io.BytesIO(imageString))
+    image_bytes = base64.b64decode(raw_data)
+    img = Image.open(io.BytesIO(image_bytes))
         
     image_data = preprocess(img, scaling="INCEPTION")
 
