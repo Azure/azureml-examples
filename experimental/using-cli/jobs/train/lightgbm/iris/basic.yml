@@ -2,17 +2,12 @@ code:
   local_path: src
 command: >-
   python main.py 
-  --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-#  --iris-csv {inputs.iris}
-#inputs:
-#  iris:
-#    data:
-#      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-#    mode: mount
-#inputs:
-#  iris:
-#    data: azureml:iris-url:1
-#    mode: mount
+  --iris-csv {inputs.iris}
+inputs:
+  iris:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    mode: moun
 environment:
   docker:
     image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04

@@ -3,18 +3,19 @@ algorithm: random
 trial:
   command: >- 
     python main.py 
-    --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
+    --iris-csv {inputs.iris}
   code: 
     local_path: src 
   environment: azureml:python-ml-basic-cpu:5
   compute:
     target: azureml:cpu-cluster
-#inputs:
-#  iris:
-#    data: azureml:iris-url:2
-#    mode: mount
+  inputs:
+    iris:
+      data:
+        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+      mode: mount
 search_space:
   learning_rate:
     type: uniform
