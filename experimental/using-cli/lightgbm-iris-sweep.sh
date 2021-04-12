@@ -6,7 +6,7 @@ az ml compute create -n cpu-cluster --min-instances 0 --max-instances 2 --type A
 # </create_compute>
 
 # <create_sweep_job>
-job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f11`
+job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml -o tsv | cut -f8`
 # </create_sweep_job>
 
 echo $job_id
@@ -16,7 +16,7 @@ az ml job show -n $job_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-#az ml job stream -n $job_id
+az ml job stream -n $job_id
 # </stream_job_logs_to_console>
 
 # <download_outputs>
