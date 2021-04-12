@@ -11,11 +11,11 @@ trial:
   environment: azureml:python-ml-basic-cpu:5
   compute:
     target: azureml:cpu-cluster
-  inputs:
-    iris:
-      data:
-        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-      mode: mount
+inputs:
+  iris:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    mode: mount
 search_space:
   learning_rate:
     type: uniform
