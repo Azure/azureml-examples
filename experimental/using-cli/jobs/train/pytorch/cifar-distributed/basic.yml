@@ -8,10 +8,11 @@ inputs:
   cifar:
     data: azureml:cifar-10-upload:1
     mode: mount
-environment: azureml:AzureML-PyTorch-1.6-GPU
+environment: azureml:AzureML-PyTorch-1.6-GPU:1
 compute:
   target: azureml:gpu-cluster
   instance_count: 2
 distribution:
   type: pytorch 
   process_count: 4
+experiment_name: pytorch-cifar-distributed
