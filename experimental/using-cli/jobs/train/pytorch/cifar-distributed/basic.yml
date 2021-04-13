@@ -2,8 +2,9 @@ code:
   local_path: src
 command: >-
   python train.py 
-  --data-dir {inputs.cifar}
   --epochs 20
+  --data-dir "."
+#  --data-dir {inputs.cifar}
 #inputs:
 #  cifar:
 #    data: azureml:cifar-10-upload:2
