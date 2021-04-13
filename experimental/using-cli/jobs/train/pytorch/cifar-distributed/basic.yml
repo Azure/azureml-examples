@@ -3,7 +3,7 @@ code:
 command: >-
   python train.py 
   --epochs 20
-  --data-dir "."
+  --data-dir "./data"
 #  --data-dir {inputs.cifar}
 #inputs:
 #  cifar:
