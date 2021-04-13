@@ -134,7 +134,7 @@ def main(args):
     )
 
     train_set = torchvision.datasets.CIFAR10(
-        root=args.data_dir, train=True, download=False, transform=transform
+        root=args.data_dir, train=True, download=True, transform=transform
     )
 
     if distributed:

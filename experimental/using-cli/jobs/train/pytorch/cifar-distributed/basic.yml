@@ -4,10 +4,10 @@ command: >-
   python train.py 
   --data-dir {inputs.cifar}
   --epochs 20
-inputs:
-  cifar:
-    data: azureml:cifar-10-upload:2
-    mode: mount
+#inputs:
+#  cifar:
+#    data: azureml:cifar-10-upload:2
+#    mode: mount
 environment: azureml:AzureML-PyTorch-1.6-GPU:11
 compute:
   target: azureml:gpu-cluster
