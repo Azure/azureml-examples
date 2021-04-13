@@ -18,7 +18,7 @@ rm cifar-10-python.tar.gz
 # </remove_tar>
 
 # <create_data>
-az ml data create -n cifar-10-upload -v 1 --set local_path=cifar-10-batches-py
+az ml data create -n cifar-10-upload -v 2 --set local_path=cifar-10-batches-py --set path=cifar-10-batches-py
 # </create_data>
 
 # <create_basic_job>
