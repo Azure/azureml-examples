@@ -6,7 +6,7 @@ command: >-
   --epochs 20
 inputs:
   cifar:
-    data: azureml:cifar-10-upload:1
+    data: azureml:cifar-10-upload:2
     mode: mount
 environment: azureml:AzureML-PyTorch-1.6-GPU:11
 compute:
