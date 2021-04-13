@@ -4,6 +4,10 @@ azureml-sdk==1.27.0a0
 --index-url https://azuremlsdktestpypi.azureedge.net/sdk-release/Candidate/604C89A437BA41BD942B4F46D9A3591D
 --extra-index-url https://pypi.python.org/simple
 
+pip install azureml-mlflow==1.27.0a0 
+--index-url https://azuremlsdktestpypi.azureedge.net/sdk-release/Candidate/604C89A437BA41BD942B4F46D9A3591D 
+--extra-index-url https://pypi.python.org/simple
+
 # required in notebooks
 numpy
 pandas 
