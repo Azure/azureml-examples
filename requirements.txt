@@ -8,9 +8,14 @@ azureml-mlflow==1.27.0a0
 --index-url https://azuremlsdktestpypi.azureedge.net/sdk-release/Candidate/604C89A437BA41BD942B4F46D9A3591D 
 --extra-index-url https://pypi.python.org/simple
 
+azureml-widgets==1.27.0a0 
+--index-url https://azuremlsdktestpypi.azureedge.net/sdk-release/Candidate/604C89A437BA41BD942B4F46D9A3591D 
+--extra-index-url https://pypi.python.org/simple
+
 # required in notebooks
 numpy
-pandas 
+pandas
+ipykernel
 matplotlib
 
 # required for repo contribution/testing
