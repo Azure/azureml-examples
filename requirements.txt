@@ -1,6 +1,8 @@
 # required for job submission
 # pinned to version where required features added to ScriptRunConfig
-azureml-sdk==1.27.0a0 --index-url https://azuremlsdktestpypi.azureedge.net/sdk-release/Candidate/604C89A437BA41BD942B4F46D9A3591D --extra-index-url https://pypi.python.org/simple
+azureml-sdk==1.27.0a0
+--index-url https://azuremlsdktestpypi.azureedge.net/sdk-release/Candidate/604C89A437BA41BD942B4F46D9A3591D
+--extra-index-url https://pypi.python.org/simple
 
 # required in notebooks
 numpy
