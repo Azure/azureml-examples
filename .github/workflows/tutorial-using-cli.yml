@@ -28,11 +28,11 @@ jobs:
       run: bash setup.sh
       working-directory: experimental/using-cli
     - name: run workflow
-      run: bash ${{matrix.workflow}}.sh #> ./logs.txt
+      run: bash ${{matrix.workflow}}.sh > ./logs.txt
       working-directory: experimental/using-cli
-#    - name: upload logs 
-#      if: always()
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: ${{matrix.workflow}}
-#        path: ./experimental/using-cli/logs.txt
+    - name: upload logs 
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{matrix.workflow}}
+        path: ./experimental/using-cli/logs.txt
