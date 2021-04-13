@@ -17,6 +17,22 @@ az ml job show -n $job_id --web
 az ml job stream -n $job_id
 # </stream_job_logs_to_console>
 
+# <check_job_status>
+status=`az ml job show -n $job_id --query status -o tsv`
+echo $status
+if [[ $status == "Completed" ]]
+then
+  echo "Job completed"
+elif [[ $status ==  "Failed" ]]
+then
+  echo "Job failed"
+  exit 1
+else 
+  echo "Job status not failed or completed"
+  exit 2
+fi
+# </check_job_status>
+
 # <download_outputs>
 az ml job download -n $job_id --outputs
 # </download_outputs>

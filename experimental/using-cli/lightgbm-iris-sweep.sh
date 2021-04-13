@@ -20,10 +20,10 @@ az ml job stream -n $job_id
 # <check_job_status>
 status=`az ml job show -n $job_id --query status -o tsv`
 echo $status
-if [[ $status -eq "Completed" ]]
+if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status -eq "Failed" ]]
+elif [[ $status ==  "Failed" ]]
 then
   echo "Job failed"
   exit 1
