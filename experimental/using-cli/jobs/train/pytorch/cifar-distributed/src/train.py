@@ -6,6 +6,7 @@
 
 # imports
 import os
+
 # import mlflow - not installed in curated env
 import argparse
 
@@ -199,8 +200,8 @@ def main(args):
         torch.save(model.state_dict(), model_path)
 
         # log model
-        #os.makedirs(args.output_dir, exist_ok=True)
-        #mlflow.pytorch.log_model(model, args.output_dir)
+        # os.makedirs(args.output_dir, exist_ok=True)
+        # mlflow.pytorch.log_model(model, args.output_dir)
 
         # evaluate on full test dataset
         evaluate(test_loader, model, device)
