@@ -23,7 +23,7 @@ retry_settings:
 error_threshold: 10 
 logging_level: info
 compute:
-  target: azureml:cpuCompute
+  target: azureml:cpu-cluster
   instance_count: 1
 environment_variables:
   AZUREML_BE: my-env-var
