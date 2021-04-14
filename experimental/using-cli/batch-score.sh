@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # <create_batch_endpoint>
-az ml endpoint create --type batch --file experimental/using-cli/assets/endpoints/batch/create-batch-endpoint.yml
+az ml endpoint create --type batch --file assets/endpoints/batch/create-batch-endpoint.yml
 # </create_batch_endpoint>
 
 # <check_batch_endpooint_detail>
