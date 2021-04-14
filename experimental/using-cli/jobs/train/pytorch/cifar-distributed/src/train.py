@@ -194,13 +194,8 @@ def main(args):
     print("Rank %d: Finished Training" % (rank))
 
     if not distributed or rank == 0:
-        # os.makedirs(args.output_dir, exist_ok=True)
-        # model_path = os.path.join(args.output_dir, "cifar_net.pt")
-        # torch.save(model.state_dict(), model_path)
-
         # log model
-        os.makedirs(args.output_dir, exist_ok=True)
-        mlflow.pytorch.log_model(model, args.output_dir)
+        mlflow.pytorch.log_model(model)
 
         # evaluate on full test dataset
         evaluate(test_loader, model, device)
@@ -231,9 +226,6 @@ def parse_args():
         "--learning-rate", default=0.001, type=float, help="learning rate"
     )
     parser.add_argument("--momentum", default=0.9, type=float, help="momentum")
-    parser.add_argument(
-        "--output-dir", default="outputs", type=str, help="directory to save model to"
-    )
     parser.add_argument(
         "--print-freq",
         default=200,
