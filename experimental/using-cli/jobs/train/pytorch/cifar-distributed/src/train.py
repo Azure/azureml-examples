@@ -5,13 +5,16 @@
 # ==============================================================================
 
 # imports
+import os
+import mlflow
+import argparse
+
 import torch
 import torchvision
 import torchvision.transforms as transforms
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import os, argparse
 
 # define network architecture
 class Net(nn.Module):
@@ -191,9 +194,13 @@ def main(args):
     print("Rank %d: Finished Training" % (rank))
 
     if not distributed or rank == 0:
+        # os.makedirs(args.output_dir, exist_ok=True)
+        # model_path = os.path.join(args.output_dir, "cifar_net.pt")
+        # torch.save(model.state_dict(), model_path)
+
+        # log model
         os.makedirs(args.output_dir, exist_ok=True)
-        model_path = os.path.join(args.output_dir, "cifar_net.pt")
-        torch.save(model.state_dict(), model_path)
+        mlflow.pytorch.log_model(model, args.output_dir)
 
         # evaluate on full test dataset
         evaluate(test_loader, model, device)
