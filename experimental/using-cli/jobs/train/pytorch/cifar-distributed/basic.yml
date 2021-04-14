@@ -2,7 +2,7 @@ code:
   local_path: src
 command: >-
   python train.py 
-  --epochs 20
+  --epochs 2
   --data-dir {inputs.cifar}
 inputs:
   cifar:
