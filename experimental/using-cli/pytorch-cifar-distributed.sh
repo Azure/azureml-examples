@@ -14,8 +14,8 @@ rm cifar-10-python.tar.gz
 # </remove_tar>
 
 # <move_data_to_project_dir>
-mkdir jobs/pytorch/cifar-distributed/data
-mv cifar-10-batches-py !$
+mkdir jobs/train/pytorch/cifar-distributed/data
+mv cifar-10-batches-py jobs/train/pytorch/cifar-distributed/data
 # </move_data_to_project_dir>
 
 # <create_data>
