@@ -5,6 +5,7 @@ trial:
     local_path: src 
   command: >- 
     python main.py 
+    --num-boost-round {search_space.num_boost_round}
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
     --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
@@ -21,6 +22,10 @@ trial:
   compute:
     target: azureml:cpu-cluster
 search_space:
+  num_boost_round:
+    type: randint
+    lower: 10
+    upper: 40
   learning_rate:
     type: uniform
     min_value: 0.01
