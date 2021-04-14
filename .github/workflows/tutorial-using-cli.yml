@@ -14,7 +14,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix:
-        workflow: [hello-world, manage-assets, lightgbm-iris, lightgbm-iris-sweep, pytorch-cifar-distributed]
+        workflow: [hello-world, manage-assets, lightgbm-iris, lightgbm-iris-sweep, pytorch-cifar-distributed, batch-score]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
