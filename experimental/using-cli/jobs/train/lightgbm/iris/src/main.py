@@ -1,6 +1,5 @@
 # imports
 import os
-import time
 import mlflow
 import argparse
 
@@ -39,14 +38,7 @@ def main(args):
     X_train, X_test, y_train, y_test, enc = preprocess_data(df)
 
     # train model
-    model, train_time = train_model(
-        params, num_boost_round, X_train, X_test, y_train, y_test
-    )
-    mlflow.log_metric("training_time", train_time)
-
-    # evaluate model
-    loss, acc = evaluate_model(model, X_test, y_test)
-    mlflow.log_metrics({"loss": loss, "accuracy": acc})
+    model = train_model(params, num_boost_round, X_train, X_test, y_train, y_test)
 
 
 def preprocess_data(df):
@@ -68,9 +60,6 @@ def preprocess_data(df):
 
 
 def train_model(params, num_boost_round, X_train, X_test, y_train, y_test):
-    # start timer
-    t1 = time.time()
-
     # create lightgbm datasets
     train_data = lgbm.Dataset(X_train, label=y_train)
     test_data = lgbm.Dataset(X_test, label=y_test)
@@ -84,24 +73,8 @@ def train_model(params, num_boost_round, X_train, X_test, y_train, y_test):
         valid_names=["test"],
     )
 
-    # end timer
-    t2 = time.time()
-
-    # return model and training time in seconds
-    return model, t2 - t1
-
-
-def evaluate_model(model, X_test, y_test):
-    # get predictions on test data
-    y_proba = model.predict(X_test)
-    y_pred = y_proba.argmax(axis=1)
-
-    # compute loss and accuracy
-    loss = log_loss(y_test, y_proba)
-    acc = accuracy_score(y_test, y_pred)
-
-    # return loss and accuracy
-    return loss, acc
+    # return model
+    return model
 
 
 def parse_args():
