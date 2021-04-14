@@ -8,7 +8,7 @@ import lightgbm as lgbm
 import matplotlib.pyplot as plt
 
 from sklearn.metrics import log_loss, accuracy_score
-from sklearn.preprocessing import LabelEncoder
+from sklearn.processing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
 # define functions
@@ -34,14 +34,14 @@ def main(args):
     # read in data
     df = pd.read_csv(args.iris_csv)
 
-    # preprocess data
-    X_train, X_test, y_train, y_test, enc = preprocess_data(df)
+    # process data
+    X_train, X_test, y_train, y_test, enc = process_data(df)
 
     # train model
     model = train_model(params, num_boost_round, X_train, X_test, y_train, y_test)
 
 
-def preprocess_data(df):
+def process_data(df):
     # split dataframe into X and y
     X = df.drop(["species"], axis=1)
     y = df["species"]
