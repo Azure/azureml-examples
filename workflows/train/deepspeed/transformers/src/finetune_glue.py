@@ -77,7 +77,6 @@ if __name__ == "__main__":
     trainer = Trainer(
         model,
         training_args,
-        callbacks=[AzureMLCallback()],
         train_dataset=encoded_dataset_train,
         eval_dataset=encoded_dataset_eval,
         tokenizer=tokenizer,
