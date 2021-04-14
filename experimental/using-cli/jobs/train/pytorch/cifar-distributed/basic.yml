@@ -3,12 +3,11 @@ code:
 command: >-
   python train.py 
   --epochs 20
-  --data-dir "./data"
-#  --data-dir {inputs.cifar}
-#inputs:
-#  cifar:
-#    data: azureml:cifar-10-upload:2
-#    mode: mount
+  --data-dir {inputs.cifar}
+inputs:
+  cifar:
+    data: azureml:cifar-10-upload:2
+    mode: mount
 environment: azureml:AzureML-PyTorch-1.6-GPU:11
 compute:
   target: azureml:gpu-cluster
