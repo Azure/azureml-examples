@@ -8,7 +8,7 @@ import lightgbm as lgbm
 import matplotlib.pyplot as plt
 
 from sklearn.metrics import log_loss, accuracy_score
-from sklearn.processing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
 # define functions
