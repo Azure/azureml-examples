@@ -8,6 +8,7 @@ on:
     paths:
       - experimental/deploy-edge/**
       - .github/workflows/tutorial-deploy-edge.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 

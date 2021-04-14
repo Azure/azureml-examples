@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/lightgbm/iris/**
       - .github/workflows/train-lightgbm-iris-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -8,9 +8,6 @@ To run this script you need:
 
     - An Azure ML Workspace
     - A ComputeTarget to train on (we recommend a GPU-based compute cluster)
-    - Azure ML Environment:
-        - create the required python environment by running the `aml_utils.py` script
-        - This registers two environments "transformers-datasets-cpu" and "transformers-datasets-gpu"
 
 Things to try:
 

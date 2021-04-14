@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/scikit-learn/diabetes/**
       - .github/workflows/train-scikit-learn-diabetes-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

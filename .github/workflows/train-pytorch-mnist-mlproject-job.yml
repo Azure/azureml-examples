@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/pytorch/mnist-mlproject/**
       - .github/workflows/train-pytorch-mnist-mlproject-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

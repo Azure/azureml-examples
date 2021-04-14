@@ -8,6 +8,7 @@ on:
     paths:
       - workflows/train/tensorflow/mnist/**
       - .github/workflows/train-tensorflow-mnist-job.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest

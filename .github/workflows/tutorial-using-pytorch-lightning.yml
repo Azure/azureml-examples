@@ -8,6 +8,7 @@ on:
     paths:
       - experimental/using-pytorch-lightning/**
       - .github/workflows/tutorial-using-pytorch-lightning.yml
+      - requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
