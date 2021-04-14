@@ -24,7 +24,7 @@ az group create -n $RG -l $LOC
 # </create_resource_group>
 
 # <create_workspace>
-az workspace create --name $WS -g $RG -l $LOC
+az workspace create -n $WS -g $RG -l $LOC
 # </create_workspace>
 
 # <configure_defaults>
@@ -36,3 +36,8 @@ az configure --defaults workspace=$WS
 # <check_extensions>
 az extension list 
 # </check_extensions>
+
+# <create_compute>
+az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
+az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 8 --size Standard_NC6
+# </create_compute>

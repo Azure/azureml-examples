@@ -1,10 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <create_compute>
-az ml compute create -n cpu-cluster --min-instances 0 --max-instances 2 --type AmlCompute
-# </create_compute>
-
 # <create_sweep_job>
 job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml --query name -o tsv`
 # </create_sweep_job>
