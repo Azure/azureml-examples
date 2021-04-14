@@ -195,7 +195,7 @@ def main(args):
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.log_model(model)
+        mlflow.pytorch.log_model(model, ".")
 
         # evaluate on full test dataset
         evaluate(test_loader, model, device)
