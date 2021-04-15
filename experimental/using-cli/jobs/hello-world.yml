@@ -1,3 +1,4 @@
+$schema: https://azuremlsdk2.azureedge.net/latest/commandJob.schema.json
 command: >-
   python -c "print('hello world')"
 environment:
