@@ -1,3 +1,4 @@
+$schema: https://azuremlsdk2.azureedge.net/latest/workspace.schema.json
 name: hbi-ws
 location: EastUS
 hbi_workspace: true
