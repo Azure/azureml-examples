@@ -1,4 +1,4 @@
-$schema: https://azuremlsdk2.azureedge.net/latest/schema/model.schema.json
+$schema: https://azuremlsdk2.azureedge.net/latest/model.schema.json
 name: lightgbm-iris
 version: 1
 local_path: mlflow-models/lightgbm-iris
