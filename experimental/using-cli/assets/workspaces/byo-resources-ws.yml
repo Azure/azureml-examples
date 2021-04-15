@@ -1,0 +1,6 @@
+name: byo-resources-ws
+location: EastUS
+storage_account: /subscriptions/123456a-bc78-9d0e-12fg-h345i67jkl8m/resourceGroups/john/providers/Microsoft.Storage/storageAccounts/john123456789
+container_registry: /subscriptions/123456a-bc78-9d0e-12fg-h345i67jkl8m/resourceGroups/john/providers/Microsoft.ContainerRegistry/registries/john123456789
+key_vault: /subscriptions/123456a-bc78-9d0e-12fg-h345i67jkl8m/resourceGroups/john/providers/Microsoft.KeyVault/vaults/john123456789
+app_insights: /subscriptions/123456a-bc78-9d0e-12fg-h345i67jkl8m/resourceGroups/john/providers/Microsoft.insights/components/john123456789

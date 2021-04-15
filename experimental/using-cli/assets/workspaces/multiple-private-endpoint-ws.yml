@@ -1,0 +1,17 @@
+name: multiple-private-endpint-ws.yml
+location: EastUS
+private_endpoints: 
+  approval_type: ManualApproval
+  connections:
+    my-endpoint1:
+      subscription_id: 123456a-bc78-9d0e-12fg-h345i67jkl8m
+      resource_group: john
+      location: EastUS
+      vnet_name: my-vnet1
+      subnet_name: default
+    my-endpoint2:
+      subscription_id: 123456a-bc78-9d0e-12fg-h345i67jkl8m
+      resource_group: john
+      location: EastUS
+      vnet_name: my-vnet2
+      subnet_name: default

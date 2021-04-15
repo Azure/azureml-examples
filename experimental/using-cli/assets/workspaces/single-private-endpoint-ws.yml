@@ -1,0 +1,11 @@
+name: single-private-endpoint-ws
+location: EastUS
+private_endpoints: 
+  approval_type: AutoApproval
+  connections:
+    my-endpoint:
+      subscription_id: 123456a-bc78-9d0e-12fg-h345i67jkl8m
+      resource_group: john
+      location: EastUS
+      vnet_name: my-vnet
+      subnet_name: default
