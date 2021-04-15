@@ -9,7 +9,7 @@ traffic:
 deployments:
   autolog_deployment:
     model: 
-      name: autolog
+      name: autolog_model
       version: 1
       local_path: ./autolog_nyc_taxi
     mini_batch_size: 1
