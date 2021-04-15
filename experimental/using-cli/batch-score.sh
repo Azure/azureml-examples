@@ -50,8 +50,24 @@ az ml endpoint update --name mybatchendpoint --type batch --traffic mnist_deploy
 # </switch_traffic>
 
 # <start_batch_scoring_job_with_new_settings>
-job_id=`az ml endpoint invoke --name mybatchendpoint --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv`
+job_id2=`az ml endpoint invoke --name mybatchendpoint --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv`
 # </start_batch_scoring_job_with_new_settings>
+
+# <check_job_status>
+status=`az ml job show -n $job_id2 --query status -o tsv`
+echo $status
+if [[ $status == "Completed" ]]
+then
+  echo "Job completed"
+elif [[ $status ==  "Failed" ]]
+then
+  echo "Job failed"
+  exit 1
+else 
+  echo "Job status not failed or completed"
+  exit 2
+fi
+# </check_job_status>
 
 # <list_all_jobs>
 az ml endpoint list-jobs --name mybatchendpoint --type batch
