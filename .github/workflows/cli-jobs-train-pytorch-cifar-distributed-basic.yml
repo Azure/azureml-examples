@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/jobs/train/pytorch/cifar-distributed/basic/../**
       - .github/workflows/cli-jobs-train-pytorch-cifar-distributed-basic.yml

@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/setup-workspace.sh
       - .github/workflows/cli-docs-setup-workspace.yml

@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/assets/environment/python-ml-basic-cpu/../**
       - .github/workflows/cli-assets-environment-python-ml-basic-cpu.yml

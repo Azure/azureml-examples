@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/how-to-manage-assets.sh
       - .github/workflows/cli-docs-how-to-manage-assets.yml

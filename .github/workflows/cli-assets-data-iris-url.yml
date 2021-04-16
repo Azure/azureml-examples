@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/assets/data/iris-url/../**
       - .github/workflows/cli-assets-data-iris-url.yml

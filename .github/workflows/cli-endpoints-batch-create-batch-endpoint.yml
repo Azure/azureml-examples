@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/endpoints/batch/create-batch-endpoint/../**
       - .github/workflows/cli-endpoints-batch-create-batch-endpoint.yml

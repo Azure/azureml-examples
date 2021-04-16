@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/how-to-install-setup.sh
       - .github/workflows/cli-docs-how-to-install-setup.yml

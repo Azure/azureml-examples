@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/jobs/hello-world/../**
       - .github/workflows/cli-jobs-hello-world.yml

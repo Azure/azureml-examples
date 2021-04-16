@@ -203,6 +203,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/{job}/../**
       - .github/workflows/cli-{job.replace('/', '-')}.yml
@@ -235,6 +236,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/{endpoint}/../**
       - .github/workflows/cli-{endpoint.replace('/', '-')}.yml
@@ -267,6 +269,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/{asset}/../**
       - .github/workflows/cli-{asset.replace('/', '-')}.yml
@@ -299,6 +302,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
     paths:
       - cli/{doc}.sh
       - .github/workflows/cli-docs-{doc.replace('/', '-')}.yml
