@@ -1,4 +1,4 @@
-$schema: https://azuremlsdk2.azureedge.net/latest/workspace.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: single-private-endpoint-ws
 location: EastUS
 private_endpoints: 
