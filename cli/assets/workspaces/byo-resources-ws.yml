@@ -1,4 +1,4 @@
-$schema: https://azuremlsdk2.azureedge.net/latest/workspace.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: byo-resources-ws
 location: EastUS
 storage_account: /subscriptions/123456a-bc78-9d0e-12fg-h345i67jkl8m/resourceGroups/john/providers/Microsoft.Storage/storageAccounts/john123456789
