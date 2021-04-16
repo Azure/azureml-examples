@@ -75,7 +75,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
         name = tutorial.split("/")[-1]
 
         # build entries for tutorial table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Atutorial-{name})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-tutorial-{name})"
         description = "*no description*"
         try:
             with open(f"{tutorial}/README.md", "r") as f:
@@ -116,7 +116,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
             data = json.load(f)
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebook-{name})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-notebook-{name})"
         description = "*no description*"
         try:
             if "description: " in str(data["cells"][0]["source"]):
@@ -146,7 +146,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
             data = f.read()
 
         # build entires for workflow tables
-        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/{scenario}-{tool}-{project}-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3A{scenario}-{tool}-{project}-{name})"
+        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-{scenario}-{tool}-{project}-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-{scenario}-{tool}-{project}-{name})"
         description = "*no description*"
         try:
             description = data.split("\n")[0].split(": ")[-1].strip()
@@ -235,7 +235,7 @@ def format_code():
 
 def write_notebook_workflow(notebook, name):
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: notebook-{name}
+    workflow_yaml = f"""name: python-sdk-notebook-{name}
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -244,7 +244,7 @@ on:
       - main
     paths:
       - python-sdk/{notebook}
-      - ../.github/workflows/notebook-{name}.yml
+      - .github/workflows/python-sdk-notebook-{name}.yml
       - python-sdk/requirements.txt
 jobs:
   build:
@@ -257,7 +257,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install
-      run: pip install -r requirements.txt
+      run: pip install -r python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -267,16 +267,16 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run notebook
-      run: papermill {notebook} out.ipynb -k python\n"""
+      run: papermill python-sdk/{notebook} out.ipynb -k python\n"""
 
     # write workflow
-    with open(f".github/workflows/notebook-{name}.yml", "w") as f:
+    with open(f"../.github/workflows/python-sdk-notebook-{name}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
 def write_python_workflow(workflow, scenario, tool, project, name):
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: {scenario}-{tool}-{project}-{name}
+    workflow_yaml = f"""name: python-sdk-{scenario}-{tool}-{project}-{name}
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -285,7 +285,7 @@ on:
       - main
     paths:
       - python-sdk/workflows/{scenario}/{tool}/{project}/**
-      - ./.github/workflows/{scenario}-{tool}-{project}-{name}.yml
+      - .github/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml
       - python-sdk/requirements.txt
 jobs:
   build:
@@ -298,7 +298,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install
-      run: pip install -r requirements.txt
+      run: pip install -r python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -308,10 +308,12 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run workflow
-      run: python {workflow}\n"""
+      run: python python-sdk/{workflow}\n"""
 
     # write workflow
-    with open(f".github/workflows/{scenario}-{tool}-{project}-{name}.yml", "w") as f:
+    with open(
+        f"../.github/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml", "w"
+    ) as f:
         f.write(workflow_yaml)
 
 

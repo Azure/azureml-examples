@@ -7,7 +7,6 @@ A lightweight template repository for automating the ML lifecycle can be found [
 
 |directory|description|
 |-|-|
-|`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
 |`experimental`|self-contained directories of experimental tutorials|
 |`notebooks`|interactive Jupyter notebooks for iterative ML development|
 |`tutorials`|self-contained directories of tutorials|
