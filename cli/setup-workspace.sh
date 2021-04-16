@@ -12,7 +12,7 @@ az group create -n $RG -l $LOC
 # </create_resource_group>
 
 # <create_workspace>
-az workspace create -n $WS -g $RG -l $LOC
+az ml workspace create -n $WS -g $RG # -l $LOC
 # </create_workspace>
 
 # <configure_defaults>

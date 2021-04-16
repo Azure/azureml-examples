@@ -1,6 +1,6 @@
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+#$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 name: python-ml-basic-cpu
-version: 5
+version: 7
 docker:
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 conda_file: file:conda-envs/python-ml-basic-cpu.yml
