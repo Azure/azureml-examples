@@ -1,4 +1,4 @@
-name: cli-jobs-hello-world
+name: cli-docs-setup-workspace
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/hello-world/../**
-      - .github/workflows/cli-jobs-hello-world.yml
-jobs:
+      - cli/setup-workspace.sh
+      - .github/workflows/cli-docs-setup-workspace.yml
+docs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -20,5 +20,5 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
-    - name: create job
-      run: az ml job create -f cli/jobs/hello-world.yml
+    - name: test doc script
+      run: bash cli/setup-workspace.sh
