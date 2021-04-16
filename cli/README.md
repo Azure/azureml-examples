@@ -65,7 +65,6 @@ path|status|description|
 [how-to-install-setup.sh](how-to-install-setup.sh)|[![how-to-install-setup](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-install-setup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-install-setup)|*no description*
 [how-to-manage-assets.sh](how-to-manage-assets.sh)|[![how-to-manage-assets](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-manage-assets/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-manage-assets)|*no description*
 [how-to-train-models.sh](how-to-train-models.sh)|[![how-to-train-models](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-models/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-models)|*no description*
-[setup-workspace.sh](setup-workspace.sh)|[![setup-workspace](https://github.com/Azure/azureml-examples/workflows/cli-docs-setup-workspace/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-setup-workspace)|*no description*
 
 ## Contents
 

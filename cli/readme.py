@@ -14,7 +14,7 @@ EXCLUDED_ASSETS = [
     "mlflow-models",
     "workspace",
 ]
-EXCLUDED_DOCS = ["cleanup.sh"]
+EXCLUDED_DOCS = ["setup-workspace", "cleanup"]
 
 # define functions
 def main(args):
@@ -219,6 +219,8 @@ jobs:
         creds: {creds}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: setup workspace
+      run: bash cli/setup-workspace.sh
     - name: create job
       run: az ml job create -f cli/{job}.yml\n"""
 
@@ -252,6 +254,8 @@ jobs:
         creds: {creds}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: setup workspace
+      run: bash cli/setup-workspace.sh
     - name: create endpoint
       run: az ml endpoint create -f cli/{endpoint}.yml\n"""
 
@@ -285,6 +289,8 @@ jobs:
         creds: {creds}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: setup workspace
+      run: bash cli/setup-workspace.sh
     - name: create asset
       run: az ml asset create -f cli/{asset}.yml\n"""
 
@@ -318,6 +324,8 @@ jobs:
         creds: {creds}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: setup workspace
+      run: bash cli/setup-workspace.sh
     - name: test doc script
       run: bash cli/{doc}.sh\n"""
 
