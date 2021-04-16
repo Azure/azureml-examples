@@ -1,4 +1,4 @@
-$schema: https://azuremlschema.azureedge.net/latest/commandJob.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: sweep_job
 algorithm: random
 trial:
