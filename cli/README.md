@@ -46,16 +46,26 @@ path|status|description
 
 path|status|description
 -|-|-
+[endpoints/batch/add-deployment](endpoints/batch/add-deployment)|[![endpoints/batch/add-deployment](https://github.com/Azure/azureml-examples/workflows/cli-endpoints/batch/add-deployment/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-endpoints/batch/add-deployment)|*no description*
+[endpoints/batch/create-batch-endpoint](endpoints/batch/create-batch-endpoint)|[![endpoints/batch/create-batch-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-endpoints/batch/create-batch-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-endpoints/batch/create-batch-endpoint)|*no description*
 
 **Assets** ([workflows/train](workflows/train))
 
 path|status|description
 -|-|-
+[assets/data/iris-url](assets/data/iris-url)|[![assets/data/iris-url](https://github.com/Azure/azureml-examples/workflows/cli-assets/data/iris-url/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets/data/iris-url)|*no description*
+[assets/environment/python-ml-basic-cpu](assets/environment/python-ml-basic-cpu)|[![assets/environment/python-ml-basic-cpu](https://github.com/Azure/azureml-examples/workflows/cli-assets/environment/python-ml-basic-cpu/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets/environment/python-ml-basic-cpu)|*no description*
+[assets/model/lightgbm-iris](assets/model/lightgbm-iris)|[![assets/model/lightgbm-iris](https://github.com/Azure/azureml-examples/workflows/cli-assets/model/lightgbm-iris/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets/model/lightgbm-iris)|*no description*
 
 **Documentation scripts**
 
 path|status|description|
 -|-|-
+[how-to-batch-score](how-to-batch-score)|[![how-to-batch-score](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-batch-score/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-batch-score)|*no description*
+[how-to-install-setup](how-to-install-setup)|[![how-to-install-setup](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-install-setup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-install-setup)|*no description*
+[how-to-manage-assets](how-to-manage-assets)|[![how-to-manage-assets](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-manage-assets/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-manage-assets)|*no description*
+[how-to-train-models](how-to-train-models)|[![how-to-train-models](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-models/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-models)|*no description*
+[setup-workspace](setup-workspace)|[![setup-workspace](https://github.com/Azure/azureml-examples/workflows/cli-docs-setup-workspace/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-setup-workspace)|*no description*
 
 ## Contents
 
