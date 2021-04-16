@@ -37,25 +37,25 @@ If you do not have an Azure ML workspace, run `bash setup-workspace.sh`.
 
 path|status|description
 -|-|-
-[jobs/hello-world](jobs/hello-world)|[![jobs/hello-world](https://github.com/Azure/azureml-examples/workflows/cli-jobs/hello-world/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs/hello-world)|*no description*
-[jobs/train/lightgbm/iris/basic](jobs/train/lightgbm/iris/basic)|[![jobs/train/lightgbm/iris/basic](https://github.com/Azure/azureml-examples/workflows/cli-jobs/train/lightgbm/iris/basic/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs/train/lightgbm/iris/basic)|*no description*
-[jobs/train/lightgbm/iris/sweep](jobs/train/lightgbm/iris/sweep)|[![jobs/train/lightgbm/iris/sweep](https://github.com/Azure/azureml-examples/workflows/cli-jobs/train/lightgbm/iris/sweep/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs/train/lightgbm/iris/sweep)|*no description*
-[jobs/train/pytorch/cifar-distributed/basic](jobs/train/pytorch/cifar-distributed/basic)|[![jobs/train/pytorch/cifar-distributed/basic](https://github.com/Azure/azureml-examples/workflows/cli-jobs/train/pytorch/cifar-distributed/basic/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs/train/pytorch/cifar-distributed/basic)|*no description*
+[jobs/hello-world](jobs/hello-world)|[![jobs/hello-world](https://github.com/Azure/azureml-examples/workflows/cli-jobs-hello-world/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-hello-world)|*no description*
+[jobs/train/lightgbm/iris/basic](jobs/train/lightgbm/iris/basic)|[![jobs/train/lightgbm/iris/basic](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-basic/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-basic)|*no description*
+[jobs/train/lightgbm/iris/sweep](jobs/train/lightgbm/iris/sweep)|[![jobs/train/lightgbm/iris/sweep](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-sweep/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-sweep)|*no description*
+[jobs/train/pytorch/cifar-distributed/basic](jobs/train/pytorch/cifar-distributed/basic)|[![jobs/train/pytorch/cifar-distributed/basic](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-cifar-distributed-basic/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-pytorch-cifar-distributed-basic)|*no description*
 
 **Endpoints** ([endpoints](endpoints))
 
 path|status|description
 -|-|-
-[endpoints/batch/add-deployment](endpoints/batch/add-deployment)|[![endpoints/batch/add-deployment](https://github.com/Azure/azureml-examples/workflows/cli-endpoints/batch/add-deployment/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-endpoints/batch/add-deployment)|*no description*
-[endpoints/batch/create-batch-endpoint](endpoints/batch/create-batch-endpoint)|[![endpoints/batch/create-batch-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-endpoints/batch/create-batch-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-endpoints/batch/create-batch-endpoint)|*no description*
+[endpoints/batch/add-deployment](endpoints/batch/add-deployment)|[![endpoints/batch/add-deployment](https://github.com/Azure/azureml-examples/workflows/cli-endpoints-batch-add-deployment/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-endpoints-batch-add-deployment)|*no description*
+[endpoints/batch/create-batch-endpoint](endpoints/batch/create-batch-endpoint)|[![endpoints/batch/create-batch-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-endpoints-batch-create-batch-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-endpoints-batch-create-batch-endpoint)|*no description*
 
 **Assets** ([workflows/train](workflows/train))
 
 path|status|description
 -|-|-
-[assets/data/iris-url](assets/data/iris-url)|[![assets/data/iris-url](https://github.com/Azure/azureml-examples/workflows/cli-assets/data/iris-url/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets/data/iris-url)|*no description*
-[assets/environment/python-ml-basic-cpu](assets/environment/python-ml-basic-cpu)|[![assets/environment/python-ml-basic-cpu](https://github.com/Azure/azureml-examples/workflows/cli-assets/environment/python-ml-basic-cpu/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets/environment/python-ml-basic-cpu)|*no description*
-[assets/model/lightgbm-iris](assets/model/lightgbm-iris)|[![assets/model/lightgbm-iris](https://github.com/Azure/azureml-examples/workflows/cli-assets/model/lightgbm-iris/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets/model/lightgbm-iris)|*no description*
+[assets/data/iris-url](assets/data/iris-url)|[![assets/data/iris-url](https://github.com/Azure/azureml-examples/workflows/cli-assets-data-iris-url/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets-data-iris-url)|*no description*
+[assets/environment/python-ml-basic-cpu](assets/environment/python-ml-basic-cpu)|[![assets/environment/python-ml-basic-cpu](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-python-ml-basic-cpu/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets-environment-python-ml-basic-cpu)|*no description*
+[assets/model/lightgbm-iris](assets/model/lightgbm-iris)|[![assets/model/lightgbm-iris](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-lightgbm-iris/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets-model-lightgbm-iris)|*no description*
 
 **Documentation scripts**
 

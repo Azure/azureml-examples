@@ -89,7 +89,7 @@ def write_readme(jobs, endpoints, assets, docs):
     # process jobs
     for job in jobs:
         # build entries for tutorial table
-        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{job})"
+        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{job.replace('/', '-')})"
         description = "*no description*"
         try:
             with open(f"{job}/README.md", "r") as f:
@@ -107,7 +107,7 @@ def write_readme(jobs, endpoints, assets, docs):
     # process endpoints
     for endpoint in endpoints:
         # build entries for tutorial table
-        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{endpoint})"
+        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{endpoint.replace('/', '-')})"
         description = "*no description*"
         try:
             with open(f"{endpoint}/README.md", "r") as f:
@@ -125,7 +125,7 @@ def write_readme(jobs, endpoints, assets, docs):
     # process assets
     for asset in assets:
         # build entries for tutorial table
-        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{asset})"
+        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{asset.replace('/', '-')})"
         description = "*no description*"
         try:
             with open(f"{asset}/README.md", "r") as f:
