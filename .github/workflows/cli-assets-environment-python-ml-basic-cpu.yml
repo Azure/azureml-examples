@@ -22,6 +22,8 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash cli/setup-workspace.sh
+      run: bash setup-workspace.sh
+      working-directory: cli
     - name: create asset
-      run: az ml asset create -f cli/assets/environment/python-ml-basic-cpu.yml
+      run: az ml environment create -f assets/environment/python-ml-basic-cpu.yml
+      working-directory: cli

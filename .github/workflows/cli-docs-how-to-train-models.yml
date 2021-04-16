@@ -22,6 +22,8 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash cli/setup-workspace.sh
+      run: bash setup-workspace.sh
+      working-directory: cli
     - name: test doc script
-      run: bash cli/how-to-train-models.sh
+      run: bash how-to-train-models.sh
+      working-directory: cli
