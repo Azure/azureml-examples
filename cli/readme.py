@@ -238,7 +238,7 @@ on:
     paths:
       - cli/{endpoint}/../**
       - .github/workflows/cli-{endpoint.replace('/', '-')}.yml
-endpoints:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -270,7 +270,7 @@ on:
     paths:
       - cli/{asset}/../**
       - .github/workflows/cli-{asset.replace('/', '-')}.yml
-assets:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -302,7 +302,7 @@ on:
     paths:
       - cli/{doc}.sh
       - .github/workflows/cli-docs-{doc.replace('/', '-')}.yml
-docs:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
