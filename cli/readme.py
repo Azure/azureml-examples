@@ -220,9 +220,11 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash cli/setup-workspace.sh
+      run: bash setup-workspace.sh
+      working-directory: cli
     - name: create job
-      run: az ml job create -f cli/{job}.yml\n"""
+      run: az ml job create -f {job}.yml
+      working-directory: cli\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-{job.replace('/', '-')}.yml", "w") as f:
@@ -255,9 +257,11 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash cli/setup-workspace.sh
+      run: bash setup-workspace.sh
+      working-directory: cli
     - name: create endpoint
-      run: az ml endpoint create -f cli/{endpoint}.yml\n"""
+      run: az ml endpoint create -f {endpoint}.yml
+      working-directory: cli\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-{endpoint.replace('/', '-')}.yml", "w") as f:
@@ -290,9 +294,11 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash cli/setup-workspace.sh
+      run: bash setup-workspace.sh
+      working-directory: cli
     - name: create asset
-      run: az ml asset create -f cli/{asset}.yml\n"""
+      run: az ml asset create -f {asset}.yml
+      working-directory: cli\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-{asset.replace('/', '-')}.yml", "w") as f:
@@ -325,9 +331,11 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash cli/setup-workspace.sh
+      run: bash setup-workspace.sh
+      working-directory: cli
     - name: test doc script
-      run: bash cli/{doc}.sh\n"""
+      run: bash {doc}.sh
+      working-directory: cli\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-docs-{doc.replace('/', '-')}.yml", "w") as f:
