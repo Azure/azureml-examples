@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: mybatchendpoint
+name: mybatchedp
 description: my sample batch endpoint
 type: batch
 auth_mode: aad_token
