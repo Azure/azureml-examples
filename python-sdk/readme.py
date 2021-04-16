@@ -243,9 +243,9 @@ on:
     branches:
       - main
     paths:
-      - {notebook}
-      - .github/workflows/notebook-{name}.yml
-      - requirements.txt
+      - python-sdk/{notebook}
+      - ../.github/workflows/notebook-{name}.yml
+      - python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -284,9 +284,9 @@ on:
     branches:
       - main
     paths:
-      - workflows/{scenario}/{tool}/{project}/**
-      - .github/workflows/{scenario}-{tool}-{project}-{name}.yml
-      - requirements.txt
+      - python-sdk/workflows/{scenario}/{tool}/{project}/**
+      - ./.github/workflows/{scenario}-{tool}-{project}-{name}.yml
+      - python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
