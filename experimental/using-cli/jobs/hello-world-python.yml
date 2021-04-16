@@ -1,7 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: echo "hello world"
+command: >-
+  python -c "print('hello world')"
 environment:
   docker:
-    image: docker.io/debian
+    image: docker.io/python
 compute:
   target: local

@@ -5,6 +5,10 @@
 job_id=`az ml job create -f jobs/hello-world.yml --query name -o tsv`
 # </hello_world>
 
+# <hello_world_python>
+job_id=`az ml job create -f jobs/hello-world-python.yml --query name -o tsv`
+# </hello_world_python>
+
 # <show_job_in_studio>
 az ml job show -n $job_id --web
 # </show_job_in_studio>
