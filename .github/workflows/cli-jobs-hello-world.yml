@@ -1,4 +1,4 @@
-name: cli-jobshello-world
+name: cli-jobs-hello-world
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/hello-world
-      - .github/workflows/cli-jobshello-world.yml
+      - cli/jobs/hello-world/../**
+      - .github/workflows/cli-jobs-hello-world.yml
 jobs:
   build:
     runs-on: ubuntu-latest

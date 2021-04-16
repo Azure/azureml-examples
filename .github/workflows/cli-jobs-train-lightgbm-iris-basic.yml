@@ -1,4 +1,4 @@
-name: cli-jobstrainlightgbmirisbasic
+name: cli-jobs-train-lightgbm-iris-basic
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/train/lightgbm/iris/basic
-      - .github/workflows/cli-jobstrainlightgbmirisbasic.yml
+      - cli/jobs/train/lightgbm/iris/basic/../**
+      - .github/workflows/cli-jobs-train-lightgbm-iris-basic.yml
 jobs:
   build:
     runs-on: ubuntu-latest

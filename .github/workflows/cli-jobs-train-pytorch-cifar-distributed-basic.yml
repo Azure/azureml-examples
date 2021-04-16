@@ -1,4 +1,4 @@
-name: cli-jobstrainpytorchcifar-distributedbasic
+name: cli-jobs-train-pytorch-cifar-distributed-basic
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/train/pytorch/cifar-distributed/basic
-      - .github/workflows/cli-jobstrainpytorchcifar-distributedbasic.yml
+      - cli/jobs/train/pytorch/cifar-distributed/basic/../**
+      - .github/workflows/cli-jobs-train-pytorch-cifar-distributed-basic.yml
 jobs:
   build:
     runs-on: ubuntu-latest
