@@ -101,7 +101,7 @@ def write_readme(jobs, endpoints, assets, docs):
             pass
 
         # add row to tutorial table
-        row = f"[{job}]({job})|{status}|{description}\n"
+        row = f"[{job}.yml]({job}.yml)|{status}|{description}\n"
         jobs_table += row
 
     # process endpoints
@@ -119,7 +119,7 @@ def write_readme(jobs, endpoints, assets, docs):
             pass
 
         # add row to tutorial table
-        row = f"[{endpoint}]({endpoint})|{status}|{description}\n"
+        row = f"[{endpoint}.yml]({endpoint}.yml)|{status}|{description}\n"
         endpoints_table += row
 
     # process assets
@@ -137,7 +137,7 @@ def write_readme(jobs, endpoints, assets, docs):
             pass
 
         # add row to tutorial table
-        row = f"[{asset}]({asset})|{status}|{description}\n"
+        row = f"[{asset}.yml]({asset}.yml)|{status}|{description}\n"
         assets_table += row
 
     # process docs
@@ -155,7 +155,7 @@ def write_readme(jobs, endpoints, assets, docs):
             pass
 
         # add row to tutorial table
-        row = f"[{doc}]({doc})|{status}|{description}\n"
+        row = f"[{doc}.sh]({doc}.sh)|{status}|{description}\n"
         docs_table += row
 
     # write README.md
