@@ -25,5 +25,5 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: create asset
-      run: az ml asset create -f assets/environment/python-ml-basic-cpu.yml
+      run: az ml environment create -f assets/environment/python-ml-basic-cpu.yml
       working-directory: cli

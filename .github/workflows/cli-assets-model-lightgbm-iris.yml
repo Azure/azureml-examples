@@ -25,5 +25,5 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: create asset
-      run: az ml asset create -f assets/model/lightgbm-iris.yml
+      run: az ml model create -f assets/model/lightgbm-iris.yml
       working-directory: cli

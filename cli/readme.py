@@ -5,8 +5,8 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["environment.yml"]
-EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml"]
+EXCLUDED_JOBS = ["environment.yml", "cifar-distributed"]
+EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
     "environment.yml",
@@ -297,7 +297,7 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: create asset
-      run: az ml asset create -f {asset}.yml
+      run: az ml {asset.split('/')[1]} create -f {asset}.yml
       working-directory: cli\n"""
 
     # write workflow
