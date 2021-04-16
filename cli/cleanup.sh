@@ -8,11 +8,3 @@ az ml workspace delete -n main --all-resources
 # <delete_resource_group>
 az group delete -n azureml-examples
 # </delete_resource_group>
-
-# <remove>
-az extension remove -n ml
-# </remove>
-
-# <remove_old>
-az extension remove -n azure-cli-ml
-# </remove_old>

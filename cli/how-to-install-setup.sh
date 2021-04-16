@@ -7,13 +7,21 @@ export RG=azureml-examples
 export LOC=eastus
 # </variables>
 
-# <create_resource_group>
-az group create -n $RG -l $LOC
-# </create_resource_group>
+# <remove_old>
+az extension remove -n azure-cli-ml
+# </remove_old>
 
-# <create_workspace>
-az workspace create -n $WS -g $RG -l $LOC
-# </create_workspace>
+# <install>
+az extension add -n ml
+# </install>
+
+# <update>
+az extension update -n ml
+# </update>
+
+# <verify>
+az ml -h
+# </verify>
 
 # <configure_defaults>
 az configure --defaults group=$RG
@@ -21,7 +29,11 @@ az configure --defaults location=$LOC
 az configure --defaults workspace=$WS
 # </configure_defaults>
 
-# <create_computes>
-az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
-az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 8 --size Standard_NC12
-# </create_computes>
+# <check_extensions>
+az extension list 
+# </check_extensions>
+
+# <remove>
+az extension remove -n ml
+# </remove>
+
