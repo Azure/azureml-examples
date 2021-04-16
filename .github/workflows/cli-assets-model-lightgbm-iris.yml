@@ -8,7 +8,7 @@ on:
     paths:
       - cli/assets/model/lightgbm-iris/../**
       - .github/workflows/cli-assets-model-lightgbm-iris.yml
-assets:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

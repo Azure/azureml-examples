@@ -8,7 +8,7 @@ on:
     paths:
       - cli/how-to-manage-assets.sh
       - .github/workflows/cli-docs-how-to-manage-assets.yml
-docs:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

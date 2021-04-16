@@ -8,7 +8,7 @@ on:
     paths:
       - cli/endpoints/batch/create-batch-endpoint/../**
       - .github/workflows/cli-endpoints-batch-create-batch-endpoint.yml
-endpoints:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

@@ -8,7 +8,7 @@ on:
     paths:
       - cli/assets/environment/python-ml-basic-cpu/../**
       - .github/workflows/cli-assets-environment-python-ml-basic-cpu.yml
-assets:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

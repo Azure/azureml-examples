@@ -8,7 +8,7 @@ on:
     paths:
       - cli/endpoints/batch/add-deployment/../**
       - .github/workflows/cli-endpoints-batch-add-deployment.yml
-endpoints:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

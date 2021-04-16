@@ -8,7 +8,7 @@ on:
     paths:
       - cli/assets/data/iris-url/../**
       - .github/workflows/cli-assets-data-iris-url.yml
-assets:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

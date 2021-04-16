@@ -8,7 +8,7 @@ on:
     paths:
       - cli/how-to-install-setup.sh
       - .github/workflows/cli-docs-how-to-install-setup.yml
-docs:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

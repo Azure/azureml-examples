@@ -8,7 +8,7 @@ on:
     paths:
       - cli/setup-workspace.sh
       - .github/workflows/cli-docs-setup-workspace.yml
-docs:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
