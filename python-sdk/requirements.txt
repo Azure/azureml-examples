@@ -9,6 +9,7 @@ azureml-widgets>=1.20.0
 # required in notebooks
 numpy
 pandas 
+ipykernel
 matplotlib
 
 # required for repo contribution/testing

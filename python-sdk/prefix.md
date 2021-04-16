@@ -5,7 +5,7 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: Top-level directory for official Azure Machine Learning sample code and notebooks.
+description: Top-level directory for official Azure Machine Learning Python SDK sample code and notebooks.
 ---
 
 # Azure Machine Learning Examples
