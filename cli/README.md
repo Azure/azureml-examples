@@ -54,7 +54,7 @@ path|status|description
 
 **Documentation scripts**
 
-path|status|notebooks|description|
+path|status|description|
 -|-|-
 
 ## Contents

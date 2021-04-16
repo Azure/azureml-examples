@@ -1,4 +1,4 @@
-name: pythno-sdk-tutorial-using-rapids
+name: python-sdk-tutorial-using-rapids
 on:
   schedule:
     - cron: "0 */2 * * *"

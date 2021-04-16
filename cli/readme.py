@@ -60,7 +60,7 @@ def write_readme(jobs, endpoints, assets, docs):
     jobs_table = "\n**Jobs** ([jobs](jobs))\n\npath|status|description\n-|-|-\n"
     endpoints_table = "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     assets_table = "\n**Assets** ([workflows/train](workflows/train))\n\npath|status|description\n-|-|-\n"
-    docs_table = "\n**Documentation scripts**\n\npath|status|notebooks|description|\n-|-|-\n"
+    docs_table = "\n**Documentation scripts**\n\npath|status|description|\n-|-|-\n"
 
     # process jobs
     for job in jobs:
