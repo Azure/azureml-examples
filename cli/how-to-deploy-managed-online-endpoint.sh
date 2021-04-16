@@ -10,7 +10,8 @@ az configure --defaults location=$LOC
 az configure --defaults workspace=$WS
 
 # delete endpoint if it already exists
-az ml endpoint delete -n my-endpoint --yes
+$OUTPUT=$(az ml endpoint delete -n my-endpoint --yes)
+echo $OUTPUT
 
 # <deploy>
 az ml endpoint create --name my-endpoint -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yaml
