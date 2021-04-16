@@ -46,7 +46,7 @@ path|status|description
 path|status|description
 -|-|-
 
-**Assets** ([workflows/train](workflows/train))
+**Assets** ([assets](assets))
 
 path|status|description
 -|-|-
