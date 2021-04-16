@@ -6,9 +6,9 @@ az ml data create -f assets/data/iris-url.yml
 # </create_data>
 
 # <create_environment>
-az ml environment create -f assets/environments/python-ml-basic-cpu.yml
+az ml environment create -f assets/environment/python-ml-basic-cpu.yml
 # </create_environment>
 
 # <create_model>
-az ml model create -f assets/models/lightgbm-iris.yml
+az ml model create -f assets/model/lightgbm-iris.yml
 # </create_model>
