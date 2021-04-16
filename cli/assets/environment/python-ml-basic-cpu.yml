@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+#$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 name: python-ml-basic-cpu
 version: 5
 docker:
