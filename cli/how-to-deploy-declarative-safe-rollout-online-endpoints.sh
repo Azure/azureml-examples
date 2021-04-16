@@ -10,7 +10,7 @@ az configure --defaults location=$LOC
 az configure --defaults workspace=$WS
 
 # delete endpoint if it already exists
-$OUTPUT=$(az ml endpoint delete -n my-new-endpoint --yes)
+az ml endpoint delete -n my-new-endpoint --yes || true
 echo $OUTPUT
 
 # <scale_blue>
