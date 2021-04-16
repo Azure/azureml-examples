@@ -106,7 +106,7 @@ def check_readme(before, after):
 
 def write_job_workflow(job):
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: cli-{job.replace('/', '')}
+    workflow_yaml = f"""name: cli-{job.replace('/', '-')}
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -114,8 +114,8 @@ on:
     branches:
       - main
     paths:
-      - cli/{job}
-      - .github/workflows/cli-{job.replace('/', '')}.yml
+      - cli/{job}/../**
+      - .github/workflows/cli-{job.replace('/', '-')}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
