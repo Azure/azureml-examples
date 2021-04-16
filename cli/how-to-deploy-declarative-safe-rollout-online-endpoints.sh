@@ -10,8 +10,7 @@ az configure --defaults location=$LOC
 az configure --defaults workspace=$WS
 
 # delete endpoint if it already exists
-az ml endpoint delete -n my-new-endpoint --yes || true
-echo $OUTPUT
+#az ml endpoint delete -n my-new-endpoint --yes || true
 
 # <scale_blue>
 az ml endpoint update -n my-new-endpoint -f endpoints/online/managed/canary-declarative-flow/2-scale-blue.yaml
