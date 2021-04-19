@@ -154,6 +154,31 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 
 wait_for_completion $headers
 
+# <get endpoint>
+response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
+--header "Content-Type: application/json" \
+--header "Authorization: Bearer $TOKEN")
+
+scoringUri=$(echo $response | jq -r ".properties" | jq -r ".scoringUri")
+# </get endpoint>
+
+# <get access token>
+response=$(curl --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/onlineendpoints/my-endpoint/token?api-version=$API_VERSION" \
+--header "Authorization: Bearer $TOKEN")
+accessToken=$(echo $response | jq -r ".accessToken")
+# </get access token>
+
+# <score endpoint>
+curl --location --request POST $scoringUri \
+--header "Authorization: Bearer $accessToken" \
+--header "Content-Type: application/json" \
+--data-raw "{\"data\": [
+        [1,2,3,4,5,6,7,8,9,10], 
+        [10,9,8,7,6,5,4,3,2,1]
+    ]
+}"
+# </score endpoint>
+
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
