@@ -98,7 +98,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         \"contents\": {
             \"contentsType\": \"AzureBlob\",
             \"accountName\": \"$AZURE_STORAGE_ACCOUNT\",
-            \"containerName\": \"azureml\",
+            \"containerName\": \"$AZUREML_DEFAULT_CONTAINER\",
             \"endpoint\": \"core.windows.net\",
             \"protocol\": \"https\",
             \"credentials\": {
