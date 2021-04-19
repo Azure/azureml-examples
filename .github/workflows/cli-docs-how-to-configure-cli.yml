@@ -1,4 +1,4 @@
-name: cli-docs-how-to-install-setup
+name: cli-docs-how-to-configure-cli
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-install-setup.sh
-      - .github/workflows/cli-docs-how-to-install-setup.yml
+      - cli/how-to-configure-cli.sh
+      - .github/workflows/cli-docs-how-to-configure-cli.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,5 +25,5 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: test doc script
-      run: bash how-to-install-setup.sh
+      run: bash how-to-configure-cli.sh
       working-directory: cli
