@@ -123,7 +123,6 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 
 wait_for_completion $headers
 
-# todo: missing discriminator bug
 # <create deployment>
 headers=$(curl -i -H --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint/deployments/blue?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
