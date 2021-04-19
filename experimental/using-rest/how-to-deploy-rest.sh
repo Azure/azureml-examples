@@ -34,6 +34,21 @@ az configure --defaults location="centraluseuap"
 az configure --defaults group=$RESOURCE_GROUP
 # </configure-defaults>
 
+# define how to wait
+wait_for_completion () {
+    operationid=$(echo $1 | grep -Fi Azure-AsyncOperation | sed "s/azure-asyncoperation: //" | tr -d '\r')
+    # TODO error handling here
+    operation_result="unknown"
+
+    while [ $operation_status != "Succeeded" || $operation_status != "Failed" ]
+    do
+        operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
+        # TODO error handling here
+        operation_status=$(echo $operation_result | jq -r ".status")
+        sleep 5
+    done
+}
+
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
@@ -106,17 +121,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create endpoint>
 
-operationid=$(echo $headers | grep -Fi Azure-AsyncOperation | sed "s/azure-asyncoperation: //" | tr -d '\r')
-# TODO error handling here
-operation_result="unknown"
-
-while [ $operation_status != "Succeeded" || $operation_status != "Failed" ]
-do
-  operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
-  # TODO error handling here
-  operation_status=$(echo $operation_result | jq -r ".status")
-  sleep 5
-done
+wait_for_completion $headers
 
 # todo: missing discriminator bug
 # <create deployment>
@@ -126,7 +131,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 --data-raw "{
     \"location\": \"centraluseuap\",
     \"properties\": {
-        \"type\": \"Managed\",
+        \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
             \"scaleType\": \"Manual\",
             \"instanceCount\": 1,
@@ -135,7 +140,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
         },
         \"model\": {
             \"referenceType\": \"Id\",
-            \"id\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\"
+            \"assetId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\"
         },
         \"codeConfiguration\": {
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1\",
@@ -147,17 +152,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create deployment>
 
-operationid=$(echo $headers | grep -Fi Azure-AsyncOperation | sed "s/azure-asyncoperation: //" | tr -d '\r')
-# TODO error handling here
-operation_result="unknown"
-
-while [ $operation_status != "Succeeded" || $operation_status != "Failed" ]
-do
-  operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
-  # TODO error handling here
-  operation_status=$(echo $operation_result | jq -r ".status")
-  sleep 5
-done
+wait_for_completion $headers
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \

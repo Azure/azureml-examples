@@ -51,10 +51,10 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 }"
 # </create code>
 
-#TODO increment job id?
+#TODO random guid for id
 
 # <create a basic job>
-curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/helloWorld3?api-version=$API_VERSION" \
+curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/helloWorld?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
