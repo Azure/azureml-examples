@@ -7,7 +7,7 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/jobs/train/lightgbm/iris/basic/../**
+      - cli/jobs/train/lightgbm/iris/**
       - .github/workflows/cli-jobs-train-lightgbm-iris-basic.yml
 jobs:
   build:

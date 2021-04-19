@@ -7,7 +7,7 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/jobs/hello-world/../**
+      - cli/jobs/**
       - .github/workflows/cli-jobs-hello-world.yml
 jobs:
   build:
