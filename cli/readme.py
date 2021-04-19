@@ -302,7 +302,7 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/{project_dir}/**
+      - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
 jobs:
   build:
