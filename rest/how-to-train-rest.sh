@@ -36,7 +36,7 @@ az configure --defaults group=$RESOURCE_GROUP
 # </configure-defaults>
 
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/src \
- -s src --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
+ -s jobs/train/xgboost/iris/src --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
 
 # <create code>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/hello/versions/1?api-version=$API_VERSION" \
@@ -116,7 +116,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 #</create datastore>
 
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/data \
- -s data --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
+ -s jobs/train/xgboost/iris/data --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
 
 #<create data>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/data/irisdata/versions/1?api-version=$API_VERSION" \
@@ -133,7 +133,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 #</create data>
 
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/train \
- -s train --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
+ -s jobs/train/xgboost/iris/train --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
 
 #<create code>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/train-xgboost/versions/1?api-version=$API_VERSION" \
