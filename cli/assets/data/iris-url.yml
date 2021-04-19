@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/asset.schema.json
+name: iris-url
+version: 3
+path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv

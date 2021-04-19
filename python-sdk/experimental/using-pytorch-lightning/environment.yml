@@ -1,0 +1,12 @@
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - azureml-defaults
+    - torch==1.8.1
+    - torchvision==0.9.1
+    - pytorch-lightning==1.1.8
+    - mlflow
+    - azureml-mlflow
