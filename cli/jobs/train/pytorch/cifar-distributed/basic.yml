@@ -10,7 +10,6 @@ inputs:
     data:
       local_path: data
     mode: mount
-#environment: azureml:AzureML-PyTorch-1.6-GPU:11
 environment: azureml:AzureML-Pytorch1.7-Cuda11-OpenMpi4.1.0-py36:1
 compute:
   target: azureml:gpu-cluster
