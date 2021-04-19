@@ -1,6 +1,7 @@
 import io
 import numpy as np
 import os
+import base64
 
 from azureml.core import Model
 from azureml.contrib.services.aml_request import rawhttp
@@ -76,9 +77,8 @@ def init():
     labels = label_file.read().split("\n")
     label_dict = dict(enumerate(labels))
 
-
-@rawhttp
-async def run(request):
+    
+def run(raw_data):
     """This function is called every time your webservice receives a request.
 
     Notice you need to know the names and data types of the model inputs and
@@ -86,22 +86,20 @@ async def run(request):
     or by querying the model metadata endpoint.
     """
 
-    if request.method == "POST":
-        outputs = []
+    outputs = []
 
-        for output in session.get_outputs():
-            outputs.append(output.name)
+    for output in session.get_outputs():
+        outputs.append(output.name)
 
-        input_name = session.get_inputs()[0].name
+    input_name = session.get_inputs()[0].name
+    
+    image_bytes = base64.b64decode(raw_data)
+    img = Image.open(io.BytesIO(image_bytes))
+        
+    image_data = preprocess(img, scaling="INCEPTION")
 
-        reqBody = await request.get_data()
-        img = Image.open(io.BytesIO(reqBody))
-        image_data = preprocess(img, scaling="INCEPTION")
+    res = session.run(outputs, {input_name: image_data})
 
-        res = session.run(outputs, {input_name: image_data})
+    result = postprocess(output_array=res)
 
-        result = postprocess(output_array=res)
-
-        return AMLResponse(result, 200)
-    else:
-        return AMLResponse("bad request", 500)
+    return AMLResponse(result, 200)
