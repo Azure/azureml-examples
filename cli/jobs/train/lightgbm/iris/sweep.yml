@@ -8,12 +8,13 @@ trial:
     python main.py 
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
-    --iris-csv {inputs.iris}
-  inputs:
-    iris:
-      data:
-        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-      mode: mount
+    --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+#    --iris-csv {inputs.iris}
+#  inputs:
+#    iris:
+#      data:
+#        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+#      mode: mount
   environment:
     docker:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
