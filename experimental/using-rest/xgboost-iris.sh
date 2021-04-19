@@ -12,7 +12,12 @@ export SUBSCRIPTION_ID="5f08d643-1910-4a38-a7c7-84a39d4f42e0"
 export RESOURCE_GROUP="trmccorm"
 export WORKSPACE="trmccorm-centraluseuap"
 export API_VERSION="2021-03-01-preview"
+
 export TOKEN=$(az account get-access-token | jq -r '.accessToken')
+
+export AZURE_STORAGE_ACCOUNT="trmccorm"
+export AZURE_STORAGE_KEY="<key>"
+export AZUREML_DEFAULT_CONTAINER="azureml-blobstore-49aec795-ebc2-46d1-8d4a-772a9129ef63"
 #</create environment variables>
 
 # <create resource group>
@@ -29,9 +34,6 @@ az configure --defaults location="centraluseuap"
 az configure --defaults group=$RESOURCE_GROUP
 # </configure-defaults>
 
-# <create compute>
-#az ml compute create -n cpu-cluster --min-node-count 0 --max-node-count 20
-# </create compute>
 
 # <create code>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/hello/versions/1?api-version=$API_VERSION" \
@@ -63,6 +65,22 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
     }
 }"
 # </create a basic job>
+
+
+# <create environment>
+curl --location --request PUT 'https://management.azure.co/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/xgboost-environment/versions/1?api-version=$API_VERSION' \
+--header 'Authorization: Bearer $TOKEN' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "properties":{
+        "condaFile": "channels:\n  - conda-forge\ndependencies:\n  - python=3.6.1\n  - numpy\n  - pip\n  - pip:\n    - nbgitpuller\n    - sphinx-gallery\n    - pandas\n    - matplotlib\n    - xgboost\n    - scikit-learn\n    - azureml-mlflow",
+        "Docker": {
+            "DockerSpecificationType": "Image",
+            "DockerImageUri": "mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20210301.v1"
+        }
+    }
+}'
+# </create environment>
 
 # <create datastore>
 curl --location --request PUT "https://management.azure.co/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/localuploads?api-version=$API_VERSION" \
