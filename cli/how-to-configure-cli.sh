@@ -87,10 +87,6 @@ az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-in
 # </create_computes>
 
 # <hello_world_remote>
-az ml job create -f jobs/hello-world.yml --set compute.target="cpu-cluster"
-# </hello_world_remote>
-
-# <hello_world_remote>
 job_id=`az ml job create -f jobs/hello-world.yml --set compute.target="cpu-cluster" --query name -o tsv`
 # </hello_world_remote>
 
