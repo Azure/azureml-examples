@@ -1,0 +1,10 @@
+pandas
+librosa
+azure-storage-blob
+azure-core
+noisereduce
+matplotlib
+jupyterlab
+azureml-sdk
+azureml-core
+python-dotenv
