@@ -87,12 +87,20 @@ az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-in
 # </create_computes>
 
 # <hello_world_remote>
+az ml job create -f jobs/hello-world.yml --set compute.target="cpu-cluster"
+# </hello_world_remote>
+
+# <hello_world_remote>
 job_id=`az ml job create -f jobs/hello-world.yml --set compute.target="cpu-cluster" --query name -o tsv`
 # </hello_world_remote>
 
 # <check_job_status>
 az ml job show -n $job_id --query status -o tsv
 # </check_job_status>
+
+# <stream_job_logs_to_console>
+az ml job stream -n $job_id
+# </stream_job_logs_to_console>
 
 # <check_job_status_detailed>
 status=`az ml job show -n $job_id --query status -o tsv`
