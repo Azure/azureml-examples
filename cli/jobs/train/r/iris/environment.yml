@@ -1,0 +1,5 @@
+name: r-minimal
+version: 1
+docker:
+   build:
+     dockerfile: file:./r.dockerfile

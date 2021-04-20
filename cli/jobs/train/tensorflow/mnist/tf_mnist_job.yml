@@ -5,5 +5,5 @@ command: >-
   python train.py
 environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
 compute:
-  target: azureml:cpu-cluster
+  target: azureml:gpu-cluster
 experiment_name: tf-mnist-example

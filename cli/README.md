@@ -29,8 +29,6 @@ cd azureml-examples/cli
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.sh).
 
-If you do not have an Azure ML workspace, run `bash setup-workspace.sh`.
-
 ## Examples
 
 **Jobs** ([jobs](jobs))
@@ -44,9 +42,8 @@ path|status|description
 [jobs/train/lightgbm/iris/sweep.yml](jobs/train/lightgbm/iris/sweep.yml)|[![jobs/train/lightgbm/iris/sweep](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-sweep/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-sweep)|*no description*
 [jobs/train/mldotnet/yelp/mlnetjob.yml](jobs/train/mldotnet/yelp/mlnetjob.yml)|[![jobs/train/mldotnet/yelp/mlnetjob](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-mldotnet-yelp-mlnetjob/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-mldotnet-yelp-mlnetjob)|*no description*
 [jobs/train/pytorch/word-language-model/job.yml](jobs/train/pytorch/word-language-model/job.yml)|[![jobs/train/pytorch/word-language-model/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-word-language-model-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-pytorch-word-language-model-job)|*no description*
-[jobs/train/r/accident-prediction/r_data.yml](jobs/train/r/accident-prediction/r_data.yml)|[![jobs/train/r/accident-prediction/r_data](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-accident-prediction-r_data/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-accident-prediction-r_data)|*no description*
-[jobs/train/r/accident-prediction/r_job.yml](jobs/train/r/accident-prediction/r_job.yml)|[![jobs/train/r/accident-prediction/r_job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-accident-prediction-r_job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-accident-prediction-r_job)|*no description*
-[jobs/train/r/basic-train-model/job.yml](jobs/train/r/basic-train-model/job.yml)|[![jobs/train/r/basic-train-model/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-basic-train-model-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-basic-train-model-job)|*no description*
+[jobs/train/r/accident-prediction/job.yml](jobs/train/r/accident-prediction/job.yml)|[![jobs/train/r/accident-prediction/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-accident-prediction-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-accident-prediction-job)|*no description*
+[jobs/train/r/iris/job.yml](jobs/train/r/iris/job.yml)|[![jobs/train/r/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-iris-job)|*no description*
 [jobs/train/tensorflow/mnist-distributed/tf_distr_job.yml](jobs/train/tensorflow/mnist-distributed/tf_distr_job.yml)|[![jobs/train/tensorflow/mnist-distributed/tf_distr_job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-tf_distr_job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-distributed-tf_distr_job)|*no description*
 [jobs/train/tensorflow/mnist-horovod/tf_horovod_job.yml](jobs/train/tensorflow/mnist-horovod/tf_horovod_job.yml)|[![jobs/train/tensorflow/mnist-horovod/tf_horovod_job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-horovod-tf_horovod_job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-horovod-tf_horovod_job)|*no description*
 [jobs/train/tensorflow/mnist/tf_mnist_job.yml](jobs/train/tensorflow/mnist/tf_mnist_job.yml)|[![jobs/train/tensorflow/mnist/tf_mnist_job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-tf_mnist_job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-tf_mnist_job)|*no description*
@@ -77,9 +74,9 @@ path|status|description|
 
 |directory|description|
 |-|-|
-|`jobs`|jobs|
-|`endpoints`|endpoints|
 |`assets`|assets|
+|`endpoints`|endpoints|
+|`jobs`|jobs|
 
 ## Contributing
 
