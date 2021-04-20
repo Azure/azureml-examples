@@ -1,32 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <az_version>
-az version 
-# </az_version>
-
-# <az_extension_list>
-az extension list 
-# <check_extension_list>
-
-# <az_ml_install>
-az extension add -n ml
-# </az_ml_install>
-
-# <az_ml_update>
-az extension update -n ml
-# </az_ml_update>
-
-# <az_ml_verify>
-az ml -h
-# </az_ml_verify>
-
-# <export_variables_placeholders>
-export WS="<YOUR_WORKSPACE_NAME>"
-export RG="<YOUR_RESOURCE_GROUP_NAME>"
-export LOC="<YOUR_AZURE_LOCATION>"
-# </export_variables_placeholders>
-
 # <export_variables>
 export WS="main"
 export RG="azureml-examples"
@@ -78,6 +52,32 @@ else
   exit 2
 fi
 # </check_job_status>
+
+# <az_version>
+az version 
+# </az_version>
+
+# <az_extension_list>
+az extension list 
+# <check_extension_list>
+
+# <az_ml_install>
+az extension add -n ml
+# </az_ml_install>
+
+# <az_ml_update>
+az extension update -n ml
+# </az_ml_update>
+
+# <az_ml_verify>
+az ml -h
+# </az_ml_verify>
+
+# <export_variables_placeholders>
+export WS="<YOUR_WORKSPACE_NAME>"
+export RG="<YOUR_RESOURCE_GROUP_NAME>"
+export LOC="<YOUR_AZURE_LOCATION>"
+# </export_variables_placeholders>
 
 # <az_account_set>
 az account set -s "<YOUR_SUBSCRIPTION_NAME>"
