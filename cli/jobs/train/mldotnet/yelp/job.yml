@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
-  local_path: .
+  local_path: src
 command: mlnet classification --dataset "yelp_labelled.txt" --label-col 1 --has-header false --train-time 10 --output outputs --log-file-path outputs/logs
 environment:
   docker:
