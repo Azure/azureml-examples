@@ -38,9 +38,9 @@ az configure --defaults group=$RESOURCE_GROUP
 wait_for_completion () {
     operationid=$(echo $1 | grep -Fi Azure-AsyncOperation | sed "s/azure-asyncoperation: //" | tr -d '\r')
     # TODO error handling here
-    operation_result="unknown"
+    operation_status="unknown"
 
-    while [[ $operation_status != "Succeeded" || $operation_status != "Failed" ]]
+    while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
     do
         $echo "Getting operation status from: $operationid"
         operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
@@ -122,6 +122,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create endpoint>
 
+echo $headers
 wait_for_completion $headers
 
 # <create deployment>
@@ -152,6 +153,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create deployment>
 
+echo $headers
 wait_for_completion $headers
 
 # <get endpoint>

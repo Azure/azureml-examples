@@ -39,7 +39,7 @@ wait_for_completion () {
     # TODO error handling here
     job_status="unknown"
 
-    while [[ $job_status != "Completed" || $job_status != "Failed" ]]
+    while [[ $job_status != "Completed" && $job_status != "Failed" ]]
     do
         $echo "Getting job status from: $1"
         job=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/$1?api-version=$API_VERSION" \
