@@ -15,7 +15,7 @@ az version
 # </az_version>
 
 # <az_upgrade>
-az upgrade
+az upgrade -y
 # </az_upgrade>
 
 # <az_extension_list>
