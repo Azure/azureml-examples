@@ -4,7 +4,7 @@ algorithm: random
 trial:
   code: 
     local_path: src 
-  command: |
+  command: >-
     python main.py 
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
