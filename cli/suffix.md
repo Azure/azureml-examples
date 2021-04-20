@@ -3,9 +3,9 @@
 
 |directory|description|
 |-|-|
-|`jobs`|jobs|
-|`endpoints`|endpoints|
 |`assets`|assets|
+|`endpoints`|endpoints|
+|`jobs`|jobs|
 
 ## Contributing
 

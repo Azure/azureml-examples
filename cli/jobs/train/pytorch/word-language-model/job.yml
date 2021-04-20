@@ -1,6 +1,5 @@
-experiment_name: pytorch-word-language-model
 code:
-  local_path: ./src
+  local_path: src
 command: >-
   python main.py 
   --cuda --epochs 5 
@@ -13,6 +12,8 @@ compute:
   target: azureml:gpu-cluster
 inputs:
   corpus:
-    data: azureml:wikitext-2:1
+    data:
+      local_path: data
     mode: download
+experiment_name: pytorch-word-language-model
     
