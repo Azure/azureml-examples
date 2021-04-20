@@ -9,7 +9,9 @@ EXCLUDED_JOBS = ["hello-world"]
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
+    "conda.yaml",
     "environment.yml",
+    "environment.yaml",
     "conda-envs",
     "mlflow-models",
     "workspace",
