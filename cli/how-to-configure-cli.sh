@@ -60,10 +60,6 @@ az configure --defaults location=$LOC
 az configure --defaults workspace=$WS
 # </az_configure_defaults>
 
-# <hello_world>
-az ml job create -f jobs/hello-world.yml
-# </hello_world>
-
 # <hello_world_output>
 job_id=`az ml job create -f jobs/hello-world.yml --query name -o tsv`
 # </hello_world_output>
