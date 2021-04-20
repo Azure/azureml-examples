@@ -16,7 +16,7 @@ API_VERSION="2021-03-01-preview"
 TOKEN=$(az account get-access-token | jq -r ".accessToken")
 
 export AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
-export AZURE_STORAGE_KEY="KxMcy4hSxJTKVsBk8pT4NNXyodpBtS5YA29dJYELOryKK1dUZInopiwU1mYJGIGH8T8k/yiGm04tq64IR0HwsQ=="
+export AZURE_STORAGE_KEY=""
 AZUREML_DEFAULT_CONTAINER="azureml-blobstore-2e2e441d-f57b-41fa-bd88-49136cef6140"
 #</create environment variables>
 
@@ -56,7 +56,6 @@ curl --location --request DELETE "https://management.azure.com/subscriptions/$SU
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN"
 
-# upload to a folder "store"
 # TODO: we can get the default container from listing datastores
 # TODO using the latter two as env vars shouldn't be necessary
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score \
