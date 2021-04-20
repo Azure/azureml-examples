@@ -15,8 +15,8 @@ API_VERSION="2021-03-01-preview"
 
 TOKEN=$(az account get-access-token | jq -r ".accessToken")
 
-AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
-AZURE_STORAGE_KEY=""
+export AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
+export AZURE_STORAGE_KEY="KxMcy4hSxJTKVsBk8pT4NNXyodpBtS5YA29dJYELOryKK1dUZInopiwU1mYJGIGH8T8k/yiGm04tq64IR0HwsQ=="
 AZUREML_DEFAULT_CONTAINER="azureml-blobstore-2e2e441d-f57b-41fa-bd88-49136cef6140"
 #</create environment variables>
 
@@ -40,11 +40,13 @@ wait_for_completion () {
     # TODO error handling here
     operation_result="unknown"
 
-    while [ $operation_status != "Succeeded" || $operation_status != "Failed" ]
+    while [[ $operation_status != "Succeeded" || $operation_status != "Failed" ]]
     do
+        $echo "Getting operation status from: $operationid"
         operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
         operation_status=$(echo $operation_result | jq -r ".status")
+        echo "Current operation status: $operation_status"
         sleep 5
     done
 }
@@ -56,7 +58,7 @@ curl --location --request DELETE "https://management.azure.com/subscriptions/$SU
 
 # upload to a folder "store"
 # TODO: we can get the default container from listing datastores
-# TODO using the latter two env vars shouldn't be necessary
+# TODO using the latter two as env vars shouldn't be necessary
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score \
  -s endpoints/online/model-1/onlinescoring --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
 
@@ -171,11 +173,7 @@ accessToken=$(echo $response | jq -r ".accessToken")
 curl --location --request POST $scoringUri \
 --header "Authorization: Bearer $accessToken" \
 --header "Content-Type: application/json" \
---data-raw "{\"data\": [
-        [1,2,3,4,5,6,7,8,9,10], 
-        [10,9,8,7,6,5,4,3,2,1]
-    ]
-}"
+--data-raw @endpoints/online/model-1/sample-request.json
 # </score endpoint>
 
 # delete endpoint
