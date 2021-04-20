@@ -1,15 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <az_account_set>
-az account set -s "<YOUR_SUBSCRIPTION_NAME>"
-# </az_account_set>
-
-# <az_extension_remove>
-az extension remove -n azure-cli-ml
-az extension remove -n ml
-# </az_extension_remove>
-
 # <az_version>
 az version 
 # </az_version>
@@ -87,3 +78,12 @@ else
   exit 2
 fi
 # </check_job_status>
+
+# <az_account_set>
+az account set -s "<YOUR_SUBSCRIPTION_NAME>"
+# </az_account_set>
+
+# <az_extension_remove>
+az extension remove -n azure-cli-ml
+az extension remove -n ml
+# </az_extension_remove>
