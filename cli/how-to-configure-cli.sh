@@ -14,10 +14,6 @@ az extension remove -n ml
 az version 
 # </az_version>
 
-# <az_upgrade>
-az upgrade -y
-# </az_upgrade>
-
 # <az_extension_list>
 az extension list 
 # <check_extension_list>
