@@ -43,7 +43,7 @@ echo $status
 if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status ==  "Failed" ]]
+elif [[ $status == "Failed" ]]
 then
   echo "Job failed"
   exit 1
