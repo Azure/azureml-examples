@@ -1,5 +1,0 @@
-name: fastai-environment
-version: 1
-conda_file: file:./fastai_conda.yml
-docker: 
-  image: mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20210301.v1

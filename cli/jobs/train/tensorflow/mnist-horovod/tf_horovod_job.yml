@@ -1,12 +1,13 @@
-$schema: https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 experiment_name: tf-mnist
 code:
-  local_path: ./src
-command: python train.py
-environment: azureml:tf-environment:1
+  local_path: src
+command: |
+  python train.py
+environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py3:1
+compute:
+  target: azureml:gpu-cluster
+  instance_count: 2
 distribution:
   type: mpi
   process_count_per_instance: 2
-compute:
-  target: azureml:goazurego
-  instance_count: 2
