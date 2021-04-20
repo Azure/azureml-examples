@@ -15,8 +15,8 @@ API_VERSION="2021-03-01-preview"
 
 TOKEN=$(az account get-access-token | jq -r ".accessToken")
 
-export AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
-export AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
+AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
 AZUREML_DEFAULT_CONTAINER="azureml-blobstore-2e2e441d-f57b-41fa-bd88-49136cef6140"
 #</create environment variables>
 
