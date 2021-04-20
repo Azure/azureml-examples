@@ -1,0 +1,12 @@
+experiment_name: pytorch-word-language-model
+code:
+  local_path: ./src
+command: python main.py --cuda --epochs 5 --model Transformer --lr 5 --data {inputs.corpus} --save outputs/model.pt
+environment: azureml:AzureML-PyTorch-1.6-GPU:1
+compute:
+  target: azureml:goazurego
+inputs:
+  corpus:
+    data: azureml:wikitext-2:1
+    mode: download
+    

@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.blob.core.windows.net/latest/asset.schema.json
+name: accidentsdata
+version: 1
+description: accidents dataset
+datastore: azureml:workspaceblobstore
+directory: accidentsdata

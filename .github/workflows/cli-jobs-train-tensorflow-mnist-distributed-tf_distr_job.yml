@@ -1,0 +1,44 @@
+name: cli-jobs-train-tensorflow-mnist-distributed-tf_distr_job
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+    paths:
+      - cli/jobs/train/tensorflow/mnist-distributed/**
+      - .github/workflows/cli-jobs-train-tensorflow-mnist-distributed-tf_distr_job.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install new ml cli
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: setup workspace
+      run: bash setup-workspace.sh
+      working-directory: cli
+    - name: create job
+      run: |
+        job_id=`az ml job create -f jobs/train/tensorflow/mnist-distributed/tf_distr_job.yml --query name -o tsv`
+        az ml job stream -n $job_id
+        status=`az ml job show -n $job_id --query status -o tsv`
+        echo $status
+        if [[ $status == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $status ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
+      working-directory: cli

@@ -5,7 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["environment.yml", "cifar-distributed"]
+EXCLUDED_JOBS = ["environment.yml", "cifar-distributed", "conda", "env"]
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
@@ -244,7 +244,22 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: create job
-      run: az ml job create -f {job}.yml
+      run: |
+        job_id=`az ml job create -f {job}.yml --query name -o tsv`
+        az ml job stream -n $job_id
+        status=`az ml job show -n $job_id --query status -o tsv`
+        echo $status
+        if [[ $status == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $status ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
       working-directory: cli\n"""
 
     # write workflow
