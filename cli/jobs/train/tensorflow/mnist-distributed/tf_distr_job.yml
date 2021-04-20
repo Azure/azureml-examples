@@ -5,7 +5,7 @@ command: |
   python train.py 
   --epochs 30 
   --model-dir outputs/keras-model
-environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py3:1
+environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
 compute:
   target: azureml:gpu-cluster
   instance_count: 2
