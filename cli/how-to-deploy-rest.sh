@@ -118,7 +118,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
         \"authMode\": \"AMLToken\",
         \"traffic\": { \"blue\": 100 }
     },
-    \"location\": \"centraluseuap\"
+    \"location\": \"westus\"
 }")
 #</create endpoint>
 
@@ -130,7 +130,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
-    \"location\": \"centraluseuap\",
+    \"location\": \"westus\",
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
