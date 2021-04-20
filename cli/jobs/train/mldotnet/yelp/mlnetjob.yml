@@ -1,0 +1,8 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json
+experiment_name: mldotnet-example
+code:
+  local_path: .
+command: mlnet classification --dataset "yelp_labelled.txt" --label-col 1 --has-header false --train-time 10 --output outputs --log-file-path outputs/logs
+compute:
+  target: azureml:goazurego
+environment: azureml:mldotnetenv:1

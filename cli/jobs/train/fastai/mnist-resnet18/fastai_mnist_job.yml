@@ -1,0 +1,8 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json
+experiment_name: fastai-mnist-example
+code: 
+  local_path: ./src
+command: python train.py
+environment: azureml:fastai-environment:1
+compute:
+  target: azureml:goazurego
