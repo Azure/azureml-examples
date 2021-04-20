@@ -24,7 +24,7 @@ echo $status
 if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status ==  "Failed" ]]
+elif [[ $status == "Failed" ]]
 then
   echo "Job failed"
   exit 1
@@ -56,7 +56,7 @@ echo $status
 if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status ==  "Failed" ]]
+elif [[ $status == "Failed" ]]
 then
   echo "Job failed"
   exit 1
@@ -92,7 +92,7 @@ echo $status
 if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status ==  "Failed" ]]
+elif [[ $status == "Failed" ]]
 then
   echo "Job failed"
   exit 1
@@ -124,7 +124,7 @@ echo $status
 if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status ==  "Failed" ]]
+elif [[ $status == "Failed" ]]
 then
   echo "Job failed"
   exit 1
@@ -135,7 +135,7 @@ fi
 # </check_job_status>
 
 # <tensorflow_mnist_horovod>
-job_id=`az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --query name -o tsv`
+job_id=`az ml job create -f jobs/train/tensorflow/mnist-distributed-horovod/job.yml --query name -o tsv`
 # </tensorflow_mnist_horovod>
 
 # <show_job_in_studio>
@@ -152,7 +152,7 @@ echo $status
 if [[ $status == "Completed" ]]
 then
   echo "Job completed"
-elif [[ $status ==  "Failed" ]]
+elif [[ $status == "Failed" ]]
 then
   echo "Job failed"
   exit 1
