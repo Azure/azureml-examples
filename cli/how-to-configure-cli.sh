@@ -53,10 +53,6 @@ else
 fi
 # </check_job_status>
 
-# <az_version>
-az version 
-# </az_version>
-
 # <az_extension_list>
 az extension list 
 # <check_extension_list>
