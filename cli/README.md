@@ -66,9 +66,11 @@ path|status|description
 path|status|description|
 -|-|-
 [how-to-batch-score.sh](how-to-batch-score.sh)|[![how-to-batch-score](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-batch-score/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-batch-score)|*no description*
-[how-to-configure-cli.sh](how-to-configure-cli.sh)|[![how-to-configure-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-configure-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-configure-cli)|*no description*
-[how-to-manage-resources-cli.sh](how-to-manage-resources-cli.sh)|[![how-to-manage-resources-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-manage-resources-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-manage-resources-cli)|*no description*
-[how-to-train-cli.sh](how-to-train-cli.sh)|[![how-to-train-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-cli)|*no description*
+[how-to-deploy-declarative-safe-rollout-online-endpoints.sh](how-to-deploy-declarative-safe-rollout-online-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-declarative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-declarative-safe-rollout-online-endpoints)|*no description*
+[how-to-deploy-managed-online-endpoint.sh](how-to-deploy-managed-online-endpoint.sh)|[![how-to-deploy-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-managed-online-endpoint)|*no description*
+[how-to-install-setup.sh](how-to-install-setup.sh)|[![how-to-install-setup](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-install-setup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-install-setup)|*no description*
+[how-to-manage-assets.sh](how-to-manage-assets.sh)|[![how-to-manage-assets](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-manage-assets/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-manage-assets)|*no description*
+[how-to-train-models.sh](how-to-train-models.sh)|[![how-to-train-models](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-models/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-models)|*no description*
 
 ## Contents
 
