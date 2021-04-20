@@ -1,0 +1,15 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code:
+  local_path: src
+command: >-
+  python train.py 
+  --epochs 30 
+  --model-dir outputs/keras-model
+environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
+compute:
+  target: azureml:gpu-cluster
+  instance_count: 2
+distribution:
+  type: tensorflow
+  worker_count: 2
+experiment_name: tf-mnist-example

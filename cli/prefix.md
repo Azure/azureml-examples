@@ -29,6 +29,4 @@ cd azureml-examples/cli
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.sh).
 
-If you do not have an Azure ML workspace, run `bash setup-workspace.sh`.
-
 ## Examples

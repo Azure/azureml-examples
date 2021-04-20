@@ -5,7 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["environment.yml", "cifar-distributed"]
+EXCLUDED_JOBS = ["hello-world"]
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
@@ -19,7 +19,7 @@ EXCLUDED_DOCS = ["setup-workspace", "cleanup"]
 # define functions
 def main(args):
     # get list of jobs
-    jobs = sorted(glob.glob("jobs/**/*.yml", recursive=True))
+    jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -194,9 +194,30 @@ def check_readme(before, after):
     return before == after
 
 
+def parse_path(path):
+    filename = None
+    project_dir = None
+    hyphenated = None
+    try:
+        filename = path.split("/")[-1]
+    except:
+        pass
+    try:
+        project_dir = "/".join(path.split("/")[:-1])
+    except:
+        pass
+    try:
+        hyphenated = path.replace("/", "-")
+    except:
+        pass
+
+    return filename, project_dir, hyphenated
+
+
 def write_job_workflow(job):
+    filename, project_dir, hyphenated = parse_path(job)
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: cli-{job.replace('/', '-')}
+    workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -205,8 +226,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/{job}/../**
-      - .github/workflows/cli-{job.replace('/', '-')}.yml
+      - cli/{project_dir}/**
+      - .github/workflows/cli-{hyphenated}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -223,7 +244,22 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: create job
-      run: az ml job create -f {job}.yml
+      run: |
+        job_id=`az ml job create -f {job}.yml --query name -o tsv`
+        az ml job stream -n $job_id
+        status=`az ml job show -n $job_id --query status -o tsv`
+        echo $status
+        if [[ $status == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $status ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
       working-directory: cli\n"""
 
     # write workflow
@@ -232,8 +268,9 @@ jobs:
 
 
 def write_endpoint_workflow(endpoint):
+    filename, project_dir, hyphenated = parse_path(endpoint)
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: cli-{endpoint.replace('/', '-')}
+    workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -242,8 +279,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/{endpoint}/../**
-      - .github/workflows/cli-{endpoint.replace('/', '-')}.yml
+      - cli/{project_dir}/**
+      - .github/workflows/cli-{hyphenated}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -264,13 +301,14 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(f"../.github/workflows/cli-{endpoint.replace('/', '-')}.yml", "w") as f:
+    with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
 def write_asset_workflow(asset):
+    filename, project_dir, hyphenated = parse_path(asset)
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: cli-{asset.replace('/', '-')}
+    workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -279,8 +317,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/{asset}/../**
-      - .github/workflows/cli-{asset.replace('/', '-')}.yml
+      - cli/{asset}.yml
+      - .github/workflows/cli-{hyphenated}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -301,13 +339,14 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(f"../.github/workflows/cli-{asset.replace('/', '-')}.yml", "w") as f:
+    with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
 def write_doc_workflow(doc):
+    filename, project_dir, hyphenated = parse_path(doc)
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: cli-docs-{doc.replace('/', '-')}
+    workflow_yaml = f"""name: cli-docs-{hyphenated}
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -317,7 +356,7 @@ on:
       - cli-preview
     paths:
       - cli/{doc}.sh
-      - .github/workflows/cli-docs-{doc.replace('/', '-')}.yml
+      - .github/workflows/cli-docs-{hyphenated}.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -338,7 +377,7 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(f"../.github/workflows/cli-docs-{doc.replace('/', '-')}.yml", "w") as f:
+    with open(f"../.github/workflows/cli-docs-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 

@@ -1,0 +1,17 @@
+code:
+  local_path: src
+command: >-
+  Rscript accidents.R
+  --data {inputs.training_data}
+environment:
+  docker:
+    build:
+      dockerfile: file:DOCKERFILE
+compute:
+  target: azureml:cpu-cluster
+inputs:
+  training_data:
+    data:
+      local_path: data/accidents.Rd
+    mode: mount
+experiment_name: r-accidents-example

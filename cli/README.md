@@ -29,17 +29,24 @@ cd azureml-examples/cli
 
 To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.sh).
 
-If you do not have an Azure ML workspace, run `bash setup-workspace.sh`.
-
 ## Examples
 
 **Jobs** ([jobs](jobs))
 
 path|status|description
 -|-|-
-[jobs/hello-world.yml](jobs/hello-world.yml)|[![jobs/hello-world](https://github.com/Azure/azureml-examples/workflows/cli-jobs-hello-world/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-hello-world)|*no description*
-[jobs/train/lightgbm/iris/basic.yml](jobs/train/lightgbm/iris/basic.yml)|[![jobs/train/lightgbm/iris/basic](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-basic/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-basic)|*no description*
-[jobs/train/lightgbm/iris/sweep.yml](jobs/train/lightgbm/iris/sweep.yml)|[![jobs/train/lightgbm/iris/sweep](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-sweep/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-sweep)|*no description*
+[jobs/train/fastai/mnist/job.yml](jobs/train/fastai/mnist/job.yml)|[![jobs/train/fastai/mnist/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-fastai-mnist-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-fastai-mnist-job)|*no description*
+[jobs/train/fastai/pets/job.yml](jobs/train/fastai/pets/job.yml)|[![jobs/train/fastai/pets/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-fastai-pets-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-fastai-pets-job)|*no description*
+[jobs/train/lightgbm/iris/job-sweep.yml](jobs/train/lightgbm/iris/job-sweep.yml)|[![jobs/train/lightgbm/iris/job-sweep](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-job-sweep/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-job-sweep)|*no description*
+[jobs/train/lightgbm/iris/job.yml](jobs/train/lightgbm/iris/job.yml)|[![jobs/train/lightgbm/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-job)|*no description*
+[jobs/train/mldotnet/yelp/job.yml](jobs/train/mldotnet/yelp/job.yml)|[![jobs/train/mldotnet/yelp/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-mldotnet-yelp-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-mldotnet-yelp-job)|*no description*
+[jobs/train/pytorch/cifar-distributed/job.yml](jobs/train/pytorch/cifar-distributed/job.yml)|[![jobs/train/pytorch/cifar-distributed/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-cifar-distributed-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-pytorch-cifar-distributed-job)|*no description*
+[jobs/train/pytorch/word-language-model/job.yml](jobs/train/pytorch/word-language-model/job.yml)|[![jobs/train/pytorch/word-language-model/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-word-language-model-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-pytorch-word-language-model-job)|*no description*
+[jobs/train/r/accidents/job.yml](jobs/train/r/accidents/job.yml)|[![jobs/train/r/accidents/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-accidents-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-accidents-job)|*no description*
+[jobs/train/r/iris/job.yml](jobs/train/r/iris/job.yml)|[![jobs/train/r/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-iris-job)|*no description*
+[jobs/train/tensorflow/mnist-distributed-horovod/job.yml](jobs/train/tensorflow/mnist-distributed-horovod/job.yml)|[![jobs/train/tensorflow/mnist-distributed-horovod/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-horovod-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-distributed-horovod-job)|*no description*
+[jobs/train/tensorflow/mnist-distributed/job.yml](jobs/train/tensorflow/mnist-distributed/job.yml)|[![jobs/train/tensorflow/mnist-distributed/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-distributed-job)|*no description*
+[jobs/train/tensorflow/mnist/job.yml](jobs/train/tensorflow/mnist/job.yml)|[![jobs/train/tensorflow/mnist/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-job)|*no description*
 
 **Endpoints** ([endpoints](endpoints))
 
@@ -69,9 +76,9 @@ path|status|description|
 
 |directory|description|
 |-|-|
-|`jobs`|jobs|
-|`endpoints`|endpoints|
 |`assets`|assets|
+|`endpoints`|endpoints|
+|`jobs`|jobs|
 
 ## Contributing
 

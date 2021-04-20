@@ -7,7 +7,7 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/assets/model/lightgbm-iris/../**
+      - cli/assets/model/lightgbm-iris.yml
       - .github/workflows/cli-assets-model-lightgbm-iris.yml
 jobs:
   build:

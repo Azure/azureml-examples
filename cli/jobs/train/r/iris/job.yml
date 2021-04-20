@@ -1,0 +1,18 @@
+code:
+  local_path: src
+command: >-
+  Rscript model.R 
+  --data_folder {inputs.iris}
+inputs:
+  iris:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    mode: mount
+environment:
+  docker:
+    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    build:
+      dockerfile: file:DOCKERFILE
+compute:
+  target: azureml:cpu-cluster
+experiment_name: r-iris-example

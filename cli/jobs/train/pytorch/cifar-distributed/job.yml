@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  python train.py 
+  --epochs 2
+  --data-dir {inputs.cifar}
+inputs:
+  cifar:
+    data:
+      local_path: data
+    mode: mount
+environment: azureml:AzureML-Pytorch1.7-Cuda11-OpenMpi4.1.0-py36:1
+compute:
+  target: azureml:gpu-cluster
+  instance_count: 2
+distribution:
+  type: pytorch 
+  process_count: 4
+experiment_name: pytorch-cifar-distributed

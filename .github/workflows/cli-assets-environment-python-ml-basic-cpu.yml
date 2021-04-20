@@ -7,7 +7,7 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/assets/environment/python-ml-basic-cpu/../**
+      - cli/assets/environment/python-ml-basic-cpu.yml
       - .github/workflows/cli-assets-environment-python-ml-basic-cpu.yml
 jobs:
   build:
