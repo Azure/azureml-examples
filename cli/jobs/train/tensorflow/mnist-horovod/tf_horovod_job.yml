@@ -1,5 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-experiment_name: tf-mnist
 code:
   local_path: src
 command: >-
@@ -12,3 +11,4 @@ compute:
 distribution:
   type: mpi
   process_count_per_instance: 2
+experiment_name: tf-mnist-example
