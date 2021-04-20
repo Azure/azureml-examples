@@ -7,13 +7,13 @@ command: >-
   --lr 5 
   --data {inputs.corpus} 
   --save outputs/model.pt
-environment: azureml:AzureML-Pytorch1.7-Cuda11-OpenMpi4.1.0-py36:1
-compute:
-  target: azureml:gpu-cluster
 inputs:
   corpus:
     data:
       local_path: data
     mode: download
+environment: azureml:AzureML-Pytorch1.7-Cuda11-OpenMpi4.1.0-py36:1
+compute:
+  target: azureml:gpu-cluster
 experiment_name: pytorch-word-language-model
     

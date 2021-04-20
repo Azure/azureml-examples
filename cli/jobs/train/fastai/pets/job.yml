@@ -6,7 +6,7 @@ command: >-
 environment:
   docker:
      build:
-       dockerfile: file:fastai.dockerfile
+       dockerfile: file:DOCKERFILE
 compute:
   target: azureml:gpu-cluster
 experiment_name: fastai-pets-example

@@ -1,4 +1,4 @@
-name: cli-jobs-train-lightgbm-iris-sweep
+name: cli-jobs-train-tensorflow-mnist-distributed-job
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/jobs/train/lightgbm/iris/**
-      - .github/workflows/cli-jobs-train-lightgbm-iris-sweep.yml
+      - cli/jobs/train/tensorflow/mnist-distributed/**
+      - .github/workflows/cli-jobs-train-tensorflow-mnist-distributed-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
       working-directory: cli
     - name: create job
       run: |
-        job_id=`az ml job create -f jobs/train/lightgbm/iris/sweep.yml --query name -o tsv`
+        job_id=`az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --query name -o tsv`
         az ml job stream -n $job_id
         status=`az ml job show -n $job_id --query status -o tsv`
         echo $status

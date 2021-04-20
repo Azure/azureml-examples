@@ -6,12 +6,12 @@ command: >-
 environment:
   docker:
     build:
-      dockerfile: file:r.dockerfile
+      dockerfile: file:DOCKERFILE
 compute:
   target: azureml:cpu-cluster
 inputs:
   training_data:
-    data: azureml:accidentsdata:1
+    data:
       local_path: data/accidents.Rd
     mode: mount
 experiment_name: r-accidents-example
