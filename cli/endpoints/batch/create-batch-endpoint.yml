@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: mybatchedp
+description: my sample batch endpoint
+type: batch
+auth_mode: aad_token
+traffic:
+  autolog_deployment: 100
+
+deployments:
+  autolog_deployment:
+    model: 
+      name: autolog_model
+      version: 1
+      local_path: ./autolog_nyc_taxi
+    mini_batch_size: 1
+    output_configuration:
+      output_action: append_row
+      append_row_file_name: predictions.csv
+    retry_settings:
+      max_retries: 3
+      timeout: 30
+    error_threshold: -1 
+    logging_level: info
+    compute:
+      target: azureml:cpu-cluster
+      instance_count: 1   
