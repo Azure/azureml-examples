@@ -13,7 +13,7 @@ compute:
 inputs:
   corpus:
     data:
-      local_path: data
+      local_path: data/**
     mode: download
 experiment_name: pytorch-word-language-model
     
