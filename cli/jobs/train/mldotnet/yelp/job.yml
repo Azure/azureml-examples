@@ -2,10 +2,10 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: .
 command: mlnet classification --dataset "yelp_labelled.txt" --label-col 1 --has-header false --train-time 10 --output outputs --log-file-path outputs/logs
-compute:
-  target: azureml:cpu-cluster
 environment:
   docker:
     build:
       dockerfile: file:DOCKERFILE
-experiment_name: mldotnet-example
+compute:
+  target: azureml:cpu-cluster
+experiment_name: mldotnet-yelp-example

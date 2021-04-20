@@ -1,4 +1,4 @@
-name: cli-jobs-train-lightgbm-iris-basic
+name: cli-jobs-train-lightgbm-iris-job-sweep
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,7 +8,7 @@ on:
       - cli-preview
     paths:
       - cli/jobs/train/lightgbm/iris/**
-      - .github/workflows/cli-jobs-train-lightgbm-iris-basic.yml
+      - .github/workflows/cli-jobs-train-lightgbm-iris-job-sweep.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
       working-directory: cli
     - name: create job
       run: |
-        job_id=`az ml job create -f jobs/train/lightgbm/iris/basic.yml --query name -o tsv`
+        job_id=`az ml job create -f jobs/train/lightgbm/iris/job-sweep.yml --query name -o tsv`
         az ml job stream -n $job_id
         status=`az ml job show -n $job_id --query status -o tsv`
         echo $status

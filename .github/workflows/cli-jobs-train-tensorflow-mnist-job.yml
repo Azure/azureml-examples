@@ -1,4 +1,4 @@
-name: cli-jobs-train-fastai-mnist-resnet18-fastai_mnist_job
+name: cli-jobs-train-tensorflow-mnist-job
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/jobs/train/fastai/mnist-resnet18/**
-      - .github/workflows/cli-jobs-train-fastai-mnist-resnet18-fastai_mnist_job.yml
+      - cli/jobs/train/tensorflow/mnist/**
+      - .github/workflows/cli-jobs-train-tensorflow-mnist-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
       working-directory: cli
     - name: create job
       run: |
-        job_id=`az ml job create -f jobs/train/fastai/mnist-resnet18/fastai_mnist_job.yml --query name -o tsv`
+        job_id=`az ml job create -f jobs/train/tensorflow/mnist/job.yml --query name -o tsv`
         az ml job stream -n $job_id
         status=`az ml job show -n $job_id --query status -o tsv`
         echo $status

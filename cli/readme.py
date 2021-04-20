@@ -5,7 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["environment.yml", "cifar-distributed", "conda", "env"]
+EXCLUDED_JOBS = ["hello-world"]
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
@@ -19,7 +19,7 @@ EXCLUDED_DOCS = ["setup-workspace", "cleanup"]
 # define functions
 def main(args):
     # get list of jobs
-    jobs = sorted(glob.glob("jobs/**/*.yml", recursive=True))
+    jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs

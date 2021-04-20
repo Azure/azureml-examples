@@ -15,4 +15,4 @@ environment:
   conda_file: file:environment.yml
 compute:
   target: azureml:cpu-cluster
-experiment_name: lightgbm-iris
+experiment_name: lightgbm-iris-example
