@@ -7,7 +7,7 @@
 # az extension add -n ml
 # </installation>
 
-# <create environment variables>
+#</create environment variables>
 SUBSCRIPTION_ID=`az account show --query id -o tsv`
 LOCATION=$LOC
 RESOURCE_GROUP=$RG
@@ -16,20 +16,12 @@ WORKSPACE=$WS
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
 
-TOKEN=$(az account get-access-token | jq -r ".accessToken")
+TOKEN=`az account get-access-token --query accessToken -o tsv`
 
 AZURE_STORAGE_ACCOUNT="mainstorage34951e9f66e24"
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
+AZURE_STORAGE_KEY=`az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT -o json --query [0].value -o tsv`
 AZUREML_DEFAULT_CONTAINER="azureml-blobstore-71ce63e3-5092-4a90-850d-43d4d7f3df08"
 #</create environment variables>
-
-# <create resource group>
-# az group create -n azureml-examples-cli -l eastus
-# </create resource group>
-
-# <create workspace>
-# az ml workspace create --name main -g azureml-examples-cli
-# </create workspace>
 
 # <configure-defaults>
 az configure --defaults workspace=$WORKSPACE
