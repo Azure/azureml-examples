@@ -1,8 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
-name: basic-ws-2
-location: EastUS
-friendly_name: john-workspace
-description: A workspace for testing enterprise readiness features
-tags:
-  purpose: testing
-  team: ws-management

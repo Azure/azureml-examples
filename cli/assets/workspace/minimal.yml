@@ -1,4 +1,2 @@
 $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
-name: hbi-ws
-location: EastUS
-hbi_workspace: true
+name: minimal-example
