@@ -8,7 +8,7 @@
 # </installation>
 
 # <create environment variables>
-SUBSCRIPTION_ID=`az account show --query id -o tsv`
+SUBSCRIPTION_ID="6560575d-fa06-4e7d-95fb-f962e74efd7a"
 LOCATION=$LOC
 RESOURCE_GROUP=$RG
 WORKSPACE=$WS
@@ -16,10 +16,10 @@ WORKSPACE=$WS
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
 
-TOKEN=`az account get-access-token --query accessToken -o tsv`
+TOKEN=$(az account get-access-token | jq -r ".accessToken")
 
 AZURE_STORAGE_ACCOUNT="mainstorage34951e9f66e24"
-AZURE_STORAGE_KEY=`az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT -o json --query [0].value -o tsv`
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
 AZUREML_DEFAULT_CONTAINER="azureml-blobstore-71ce63e3-5092-4a90-850d-43d4d7f3df08"
 #</create environment variables>
 
@@ -33,7 +33,7 @@ wait_for_completion () {
     # TODO error handling here
     job_status="unknown"
 
-    while [[ $job_status != "Completed" && $job_status != "Failed" ]]
+    while [[ $job_status != "Completed" && $job_status != "Failed" && $job_status != "Canceled" ]]
     do
         $echo "Getting job status from: $1"
         job=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/$1?api-version=$API_VERSION" \
