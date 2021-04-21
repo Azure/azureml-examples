@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: cmk-example
+location: eastus
+customer_managed_key: 
+  key_vault: /subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/"<YOUR_RESOURCE_GROUP>"/providers/Microsoft.KeyVault/vaults/"<YOUR_KEY_VAULT>"
+  key_uri: https://<"YOUR_KEY_VAULT>".vault.azure.net/keys/<"???">/<"???">
+description: A basic Azure Machine Learning workspace example using customer-managed keys
+tags:
+  purpose: demonstration
+  team: azureml-examples
