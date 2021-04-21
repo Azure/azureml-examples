@@ -6,10 +6,10 @@ private_endpoints:
   connections:
     my-endpoint:
       subscription_id: "<YOUR_SUBSCRIPTION_ID>"
-      resource_group: "<YOUR_RESOURCE_GROUP"
+      resource_group: "<YOUR_RESOURCE_GROUP>"
       location: eastus
       vnet_name: "<YOUR_VNET_NAME>"
-      subnet_name: "<YOUR_SUBNET_NAME"
+      subnet_name: "<YOUR_SUBNET_NAME>"
 description: A basic Azure Machine Learning workspace example with a private endpoint
 tags:
   purpose: demonstration
