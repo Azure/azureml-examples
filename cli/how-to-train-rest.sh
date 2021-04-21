@@ -8,17 +8,19 @@
 # </installation>
 
 # <create environment variables>
-SUBSCRIPTION_ID="7ab7d5bc-5d9e-47ef-80e6-2dffa8ca83a1"
-RESOURCE_GROUP="trmccorm-centraluseuap"
-WORKSPACE="trmccorm-centraluseuap"
+SUBSCRIPTION_ID=`az account show --query id -o tsv`
+LOCATION=$LOC
+RESOURCE_GROUP=$RG
+WORKSPACE=$WS
+
 API_VERSION="2021-03-01-preview"
-COMPUTE_NAME="e2ecpucluster"
+COMPUTE_NAME="cpu-cluster"
 
 TOKEN=$(az account get-access-token | jq -r ".accessToken")
 
-AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
+AZURE_STORAGE_ACCOUNT="mainstorage34951e9f66e24"
 AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
-AZUREML_DEFAULT_CONTAINER="azureml-blobstore-2e2e441d-f57b-41fa-bd88-49136cef6140"
+AZUREML_DEFAULT_CONTAINER="azureml-blobstore-71ce63e3-5092-4a90-850d-43d4d7f3df08"
 #</create environment variables>
 
 # <create resource group>
@@ -31,7 +33,7 @@ AZUREML_DEFAULT_CONTAINER="azureml-blobstore-2e2e441d-f57b-41fa-bd88-49136cef614
 
 # <configure-defaults>
 az configure --defaults workspace=$WORKSPACE
-az configure --defaults location="centraluseuap"
+az configure --defaults location=$LOCATION
 az configure --defaults group=$RESOURCE_GROUP
 # </configure-defaults>
 
