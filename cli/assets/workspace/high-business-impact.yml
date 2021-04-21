@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: hbi-ws
-location: EastUS
+location: eastus
 hbi_workspace: true
 description: A basic Azure Machine Learning workspace example with the high business impact flag enabled
 tags:
