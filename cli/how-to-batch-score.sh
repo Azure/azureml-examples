@@ -42,7 +42,7 @@ az ml job download -n $job_id --outputs
 # </download_outputs>
 
 # <add_deployment>
-az ml endpoint update --name mybatchedp --type batch --deployment mnist_deployment --deployment-file experimental/using-cli/assets/endpoints/batch/add-deployment.yml
+az ml endpoint update --name mybatchedp --type batch --deployment mnist_deployment --deployment-file assets/endpoints/batch/add-deployment.yml
 # </add_deploymen>
 
 # <switch_traffic>
