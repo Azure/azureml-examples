@@ -59,7 +59,7 @@ fi
 
 # <az_extension_list>
 az extension list 
-# <check_extension_list>
+# <az_extension_list>
 
 # <az_ml_install>
 az extension add -n ml
