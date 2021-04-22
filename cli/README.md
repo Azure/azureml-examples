@@ -27,8 +27,6 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.sh).
-
 ## Examples
 
 **Jobs** ([jobs](jobs))
@@ -69,8 +67,10 @@ path|status|description|
 [how-to-configure-cli.sh](how-to-configure-cli.sh)|[![how-to-configure-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-configure-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-configure-cli)|*no description*
 [how-to-deploy-declarative-safe-rollout-online-endpoints.sh](how-to-deploy-declarative-safe-rollout-online-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-declarative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-declarative-safe-rollout-online-endpoints)|*no description*
 [how-to-deploy-managed-online-endpoint.sh](how-to-deploy-managed-online-endpoint.sh)|[![how-to-deploy-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-managed-online-endpoint)|*no description*
+[how-to-deploy-rest.sh](how-to-deploy-rest.sh)|[![how-to-deploy-rest](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-rest)|*no description*
 [how-to-manage-resources-cli.sh](how-to-manage-resources-cli.sh)|[![how-to-manage-resources-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-manage-resources-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-manage-resources-cli)|*no description*
 [how-to-train-cli.sh](how-to-train-cli.sh)|[![how-to-train-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-cli)|*no description*
+[how-to-train-rest.sh](how-to-train-rest.sh)|[![how-to-train-rest](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-rest)|*no description*
 
 ## Contents
 

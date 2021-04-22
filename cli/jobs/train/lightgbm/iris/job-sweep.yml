@@ -6,9 +6,9 @@ trial:
     local_path: src 
   command: >-
     python main.py 
+    --iris-csv {inputs.iris}
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
-    --iris-csv {inputs.iris}
   inputs:
     iris:
       data:

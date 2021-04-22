@@ -1,4 +1,4 @@
-name: cli-docs-how-to-train-cli
+name: cli-docs-how-to-train-rest
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-train-cli.sh
-      - .github/workflows/cli-docs-how-to-train-cli.yml
+      - cli/how-to-train-rest.sh
+      - .github/workflows/cli-docs-how-to-train-rest.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,5 +25,5 @@ jobs:
       run: bash setup-workspace.sh
       working-directory: cli
     - name: test doc script
-      run: bash how-to-train-cli.sh
+      run: bash how-to-train-rest.sh
       working-directory: cli
