@@ -372,6 +372,8 @@ jobs:
     - name: setup workspace
       run: bash setup-workspace.sh
       working-directory: cli
+    - name: docs installs
+      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
     - name: test doc script
       run: bash {doc}.sh
       working-directory: cli\n"""
