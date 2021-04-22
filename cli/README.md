@@ -27,8 +27,6 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-To create or setup a workspace with the assets used in these examples, run the [setup script](setup-workspace.sh).
-
 ## Examples
 
 **Jobs** ([jobs](jobs))
