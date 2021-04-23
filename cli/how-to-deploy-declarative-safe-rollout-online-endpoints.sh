@@ -1,8 +1,14 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# delete endpoint if it already exists
-#az ml endpoint delete -n my-new-endpoint --yes || true
+# <set_endpoint_name>
+export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+# </set_endpoint_name>
+
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
+
+# create the endpoint
+az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yaml
 
 # <scale_blue>
 az ml endpoint update -n my-new-endpoint -f endpoints/online/managed/canary-declarative-flow/2-scale-blue.yaml
