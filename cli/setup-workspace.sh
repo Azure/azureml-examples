@@ -27,7 +27,3 @@ az ml workspace create -n $WS
 az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
 az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 8 --size Standard_NC12
 # </create_computes>
-
-# <generate_uuid>
-export UUID=$(uuidgen)
-# </generate_uuid>
