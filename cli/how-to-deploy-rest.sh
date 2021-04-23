@@ -7,7 +7,7 @@
 # az extension add -n ml
 # </installation>
 
-#</create environment variables>
+#</create variables>
 SUBSCRIPTION_ID="6560575d-fa06-4e7d-95fb-f962e74efd7a"
 LOCATION=$LOC
 RESOURCE_GROUP=$RG
@@ -17,11 +17,7 @@ API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
 
 TOKEN=$(az account get-access-token | jq -r ".accessToken")
-
-AZURE_STORAGE_ACCOUNT="mainstorage34951e9f66e24"
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
-AZUREML_DEFAULT_CONTAINER="azureml-blobstore-71ce63e3-5092-4a90-850d-43d4d7f3df08"
-#</create environment variables>
+#</create variables>
 
 # <configure-defaults>
 az configure --defaults workspace=$WORKSPACE
@@ -45,6 +41,15 @@ wait_for_completion () {
         sleep 5
     done
 }
+
+# Get values for storage account
+response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
+--header "Authorization: Bearer $TOKEN")
+
+AZURE_STORAGE_ACCOUNT=$(echo $response | jq '.value[0].properties.contents.accountName')
+AZUREML_DEFAULT_DATASTORE=$(echo $response | jq '.value[0].name')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.containerName')
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
