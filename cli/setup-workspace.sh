@@ -7,7 +7,7 @@ az extension add -n ml
 
 # <variables>
 export WS=main
-export RG=azureml-examples
+export RG=azureml-examples-cli
 export LOC=eastus
 # </variables>
 
