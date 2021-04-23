@@ -35,5 +35,5 @@ az ml endpoint update -n $ENDPOINT_NAME -f endpoints/online/managed/canary-decla
 # </delete_blue>
 
 # <delete_endpoint>
-az ml endpoint delete -n $ENDPOINT_NAME
+az ml endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
