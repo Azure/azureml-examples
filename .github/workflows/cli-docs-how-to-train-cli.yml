@@ -18,12 +18,14 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_AE_CLI_CREDS}}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
       run: bash setup-workspace.sh
       working-directory: cli
+    - name: docs installs
+      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
     - name: test doc script
       run: bash how-to-train-cli.sh
       working-directory: cli

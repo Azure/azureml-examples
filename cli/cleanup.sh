@@ -6,5 +6,5 @@ az ml workspace delete -n main --all-resources
 # </delete_workspace>
 
 # <delete_resource_group>
-az group delete -n azureml-examples
+az group delete -n azureml-examples-cli
 # </delete_resource_group>

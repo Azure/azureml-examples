@@ -1,32 +1,30 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <export_variables>
-export WS="main"
-export RG="azureml-examples"
-export LOC="eastus"
-# </export_variables>
+# <variables>
+export WS=main
+export RG=azureml-examples-cli
+export LOC=eastus
+# </variables>
 
 # <az_group_create>
 az group create -n $RG -l $LOC
 # </az_group_create>
 
-# <az_ml_workspace_create>
-az ml workspace create -n $WS -g $RG
-# </az_ml_workspace_create>
-
 # <az_configure_defaults>
-az configure --defaults group=$RG
-az configure --defaults location=$LOC
-az configure --defaults workspace=$WS
+az configure --defaults group=$RG workspace=$WS
 # </az_configure_defaults>
+
+# <az_ml_workspace_create>
+az ml workspace create -n $WS
+# </az_ml_workspace_create>
 
 # <hello_world>
 az ml job create -f jobs/hello-world.yml --query name -o tsv
 # </hello_world>
 
 # <hello_world_output>
-job_id=`az ml job create -f jobs/hello-world.yml --query name -o tsv`
+job_id=$(az ml job create -f jobs/hello-world.yml --query name -o tsv)
 # </hello_world_output>
 
 # <show_job_in_studio>
@@ -42,7 +40,7 @@ az ml job show -n $job_id --query status -o tsv
 # </check_job_status>
 
 # <check_job_status_detailed>
-status=`az ml job show -n $job_id --query status -o tsv`
+status=$(az ml job show -n $job_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -59,7 +57,7 @@ fi
 
 # <az_extension_list>
 az extension list 
-# <check_extension_list>
+# </az_extension_list>
 
 # <az_ml_install>
 az extension add -n ml

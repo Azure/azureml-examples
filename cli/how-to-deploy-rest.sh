@@ -7,30 +7,21 @@
 # az extension add -n ml
 # </installation>
 
-# <create environment variables>
-SUBSCRIPTION_ID="7ab7d5bc-5d9e-47ef-80e6-2dffa8ca83a1"
-RESOURCE_GROUP="trmccorm-centraluseuap"
-WORKSPACE="trmccorm-centraluseuap"
+#</create variables>
+SUBSCRIPTION_ID="6560575d-fa06-4e7d-95fb-f962e74efd7a"
+LOCATION=$LOC
+RESOURCE_GROUP=$RG
+WORKSPACE=$WS
+
 API_VERSION="2021-03-01-preview"
+COMPUTE_NAME="cpu-cluster"
 
 TOKEN=$(az account get-access-token | jq -r ".accessToken")
-
-AZURE_STORAGE_ACCOUNT="trmccormcentra1277620275"
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
-AZUREML_DEFAULT_CONTAINER="azureml-blobstore-2e2e441d-f57b-41fa-bd88-49136cef6140"
-#</create environment variables>
-
-# <create resource group>
-# az group create -n azureml-examples-cli -l eastus
-# </create resource group>
-
-# <create workspace>
-# az ml workspace create --name main -g azureml-examples-cli
-# </create workspace>
+#</create variables>
 
 # <configure-defaults>
 az configure --defaults workspace=$WORKSPACE
-az configure --defaults location="centraluseuap"
+az configure --defaults location=$LOCATION
 az configure --defaults group=$RESOURCE_GROUP
 # </configure-defaults>
 
@@ -50,6 +41,15 @@ wait_for_completion () {
         sleep 5
     done
 }
+
+# Get values for storage account
+response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
+--header "Authorization: Bearer $TOKEN")
+
+AZURE_STORAGE_ACCOUNT=$(echo $response | jq '.value[0].properties.contents.accountName')
+AZUREML_DEFAULT_DATASTORE=$(echo $response | jq '.value[0].name')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.containerName')
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \

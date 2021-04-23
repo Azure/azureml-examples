@@ -11,4 +11,4 @@ compute:
 distribution:
   type: mpi
   process_count_per_instance: 2
-experiment_name: tf-mnist-example
+experiment_name: tensorflow-mnist-distributed-horovod-example

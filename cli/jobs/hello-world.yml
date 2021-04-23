@@ -1,6 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: >-
-  python -c "print('hello world')"
+command: python -c "print('hello world')"
 environment:
   docker:
     image: docker.io/python
