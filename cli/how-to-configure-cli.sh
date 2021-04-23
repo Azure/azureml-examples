@@ -11,13 +11,13 @@ export LOC="eastus"
 az group create -n $RG -l $LOC
 # </az_group_create>
 
-# <az_ml_workspace_create>
-az ml workspace create -n $WS -g $RG
-# </az_ml_workspace_create>
-
 # <az_configure_defaults>
 az configure --defaults group=$RG workspace=$WS
 # </az_configure_defaults>
+
+# <az_ml_workspace_create>
+az ml workspace create -n $WS
+# </az_ml_workspace_create>
 
 # <hello_world>
 az ml job create -f jobs/hello-world.yml --query name -o tsv
