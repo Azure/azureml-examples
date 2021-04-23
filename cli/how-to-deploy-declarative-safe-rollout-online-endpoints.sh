@@ -13,7 +13,7 @@ az ml endpoint update -n my-new-endpoint -f endpoints/online/managed/canary-decl
 # </create_green>
 
 # <test_green>
-az ml endpoint update -n my-new-endpoint --f endpoints/online/managed/canary-declarative-flow/4-flight-green.yaml
+az ml endpoint invoke --name my-endpoint --deployment green --request-file examples/endpoints/online/model-2/sample-request.json
 # </test_green>
 
 # <green_10pct_traffic>
