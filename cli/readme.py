@@ -245,9 +245,9 @@ jobs:
       working-directory: cli
     - name: create job
       run: |
-        job_id=`az ml job create -f {job}.yml --query name -o tsv`
+        job_id=$(az ml job create -f {job}.yml --query name -o tsv)
         az ml job stream -n $job_id
-        status=`az ml job show -n $job_id --query status -o tsv`
+        status=$(az ml job show -n $job_id --query status -o tsv)
         echo $status
         if [[ $status == "Completed" ]]
         then

@@ -15,15 +15,13 @@ export LOC=eastus
 az group create -n $RG -l $LOC
 # </create_resource_group>
 
-# <create_workspace>
-az ml workspace create -n $WS -g $RG # -l $LOC
-# </create_workspace>
-
 # <configure_defaults>
-az configure --defaults group=$RG
-az configure --defaults location=$LOC
-az configure --defaults workspace=$WS
+az configure --defaults group=$RG workspace=$WS
 # </configure_defaults>
+
+# <create_workspace>
+az ml workspace create -n $WS
+# </create_workspace>
 
 # <create_computes>
 az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
