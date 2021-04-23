@@ -19,7 +19,7 @@ az ml endpoint update -n $ENDPOINT_NAME -f endpoints/online/managed/canary-decla
 # </create_green>
 
 # <test_green>
-az ml endpoint invoke --name $ENDPOINT_NAM --deployment green --request-file examples/endpoints/online/model-2/sample-request.json
+az ml endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file examples/endpoints/online/model-2/sample-request.json
 # </test_green>
 
 # <green_10pct_traffic>
