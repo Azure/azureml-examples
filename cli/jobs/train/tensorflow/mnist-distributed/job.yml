@@ -12,4 +12,4 @@ compute:
 distribution:
   type: tensorflow
   worker_count: 2
-experiment_name: tf-mnist-example
+experiment_name: tensorflow-mnist-distributed-example

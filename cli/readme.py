@@ -245,9 +245,9 @@ jobs:
       working-directory: cli
     - name: create job
       run: |
-        job_id=`az ml job create -f {job}.yml --query name -o tsv`
+        job_id=$(az ml job create -f {job}.yml --query name -o tsv)
         az ml job stream -n $job_id
-        status=`az ml job show -n $job_id --query status -o tsv`
+        status=$(az ml job show -n $job_id --query status -o tsv)
         echo $status
         if [[ $status == "Completed" ]]
         then
@@ -372,6 +372,8 @@ jobs:
     - name: setup workspace
       run: bash setup-workspace.sh
       working-directory: cli
+    - name: docs installs
+      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
     - name: test doc script
       run: bash {doc}.sh
       working-directory: cli\n"""

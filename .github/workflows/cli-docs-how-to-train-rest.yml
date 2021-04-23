@@ -1,4 +1,4 @@
-name: cli-docs-how-to-deploy-managed-online-endpoint
+name: cli-docs-how-to-train-rest
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-deploy-managed-online-endpoint.sh
-      - .github/workflows/cli-docs-how-to-deploy-managed-online-endpoint.yml
+      - cli/how-to-train-rest.sh
+      - .github/workflows/cli-docs-how-to-train-rest.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,5 +27,5 @@ jobs:
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
     - name: test doc script
-      run: bash how-to-deploy-managed-online-endpoint.sh
+      run: bash how-to-train-rest.sh
       working-directory: cli
