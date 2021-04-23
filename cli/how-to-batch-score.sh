@@ -10,7 +10,7 @@ az ml endpoint show --name mybatchedp --type batch
 # </check_batch_endpooint_detail>
 
 # <start_batch_scoring_job>
-job_id=`az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv`
+job_id=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
 # </start_batch_scoring_job>
 
 # <show_job_in_studio>
@@ -50,11 +50,11 @@ az ml endpoint update --name mybatchedp --type batch --traffic mnist_deployment:
 # </switch_traffic>
 
 # <start_batch_scoring_job_with_new_settings>
-job_id2=`az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv`
+job_id2=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv)
 # </start_batch_scoring_job_with_new_settings>
 
 # <check_job_status>
-status=`az ml job show -n $job_id2 --query status -o tsv`
+status=$(az ml job show -n $job_id2 --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
