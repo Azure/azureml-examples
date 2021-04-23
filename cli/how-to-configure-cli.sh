@@ -1,9 +1,11 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-echo $WS
-echo $RG
-echo $LOC
+# <variables>
+export WS=main
+export RG=azureml-examples-cli
+export LOC=eastus
+# </variables>
 
 # <az_group_create>
 az group create -n $RG -l $LOC
