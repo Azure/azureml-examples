@@ -20,9 +20,7 @@ az ml workspace create -n $WS -g $RG # -l $LOC
 # </create_workspace>
 
 # <configure_defaults>
-az configure --defaults group=$RG
-az configure --defaults location=$LOC
-az configure --defaults workspace=$WS
+az configure --defaults group=$RG workspace=$WS
 # </configure_defaults>
 
 # <create_computes>

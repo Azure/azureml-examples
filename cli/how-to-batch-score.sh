@@ -22,7 +22,7 @@ az ml job stream -n $job_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=`az ml job show -n $job_id --query status -o tsv`
+status=$(az ml job show -n $job_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then

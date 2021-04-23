@@ -16,9 +16,7 @@ az ml workspace create -n $WS -g $RG
 # </az_ml_workspace_create>
 
 # <az_configure_defaults>
-az configure --defaults group=$RG
-az configure --defaults location=$LOC
-az configure --defaults workspace=$WS
+az configure --defaults group=$RG workspace=$WS
 # </az_configure_defaults>
 
 # <hello_world>
@@ -26,7 +24,7 @@ az ml job create -f jobs/hello-world.yml --query name -o tsv
 # </hello_world>
 
 # <hello_world_output>
-job_id=`az ml job create -f jobs/hello-world.yml --query name -o tsv`
+job_id=$(az ml job create -f jobs/hello-world.yml --query name -o tsv)
 # </hello_world_output>
 
 # <show_job_in_studio>
@@ -42,7 +40,7 @@ az ml job show -n $job_id --query status -o tsv
 # </check_job_status>
 
 # <check_job_status_detailed>
-status=`az ml job show -n $job_id --query status -o tsv`
+status=$(az ml job show -n $job_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
