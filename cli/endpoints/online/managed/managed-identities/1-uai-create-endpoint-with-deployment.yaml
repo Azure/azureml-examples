@@ -34,7 +34,7 @@ deployments:
       min_instances: 1
       max_instances: 2
     environment_variables:
-      STORAGE_ACCOUNT: "storage_place_holder"
-      STORAGE_CONTAINER: "container_place_holder"
+      STORAGE_ACCOUNT_NAME: "storage_place_holder"
+      STORAGE_CONTAINER_NAME: "container_place_holder"
       FILE_NAME: "file_place_holder"
       UAI_CLIENT_ID: "uai_client_id_place_holder"
