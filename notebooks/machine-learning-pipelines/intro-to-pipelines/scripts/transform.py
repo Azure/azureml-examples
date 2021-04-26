@@ -100,7 +100,9 @@ class UpsampleConvLayer(torch.nn.Module):
         super(UpsampleConvLayer, self).__init__()
         self.upsample = upsample
         if upsample:
-            self.upsample_layer = torch.nn.Upsample(mode='nearest', scale_factor=upsample)
+            self.upsample_layer = torch.nn.Upsample(
+                mode="nearest", scale_factor=upsample
+            )
         reflection_padding = kernel_size // 2
         self.reflection_pad = torch.nn.ReflectionPad2d(reflection_padding)
         self.conv2d = torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride)
@@ -129,9 +131,9 @@ def save_image(filename, data):
 def init():
     global output_path, args
     global style_model, device
-    output_path = os.environ['AZUREML_BI_OUTPUT_PATH']
-    print(f'output path: {output_path}')
-    print(f'Cuda available? {torch.cuda.is_available()}')
+    output_path = os.environ["AZUREML_BI_OUTPUT_PATH"]
+    print(f"output path: {output_path}")
+    print(f"Cuda available? {torch.cuda.is_available()}")
 
     arg_parser = argparse.ArgumentParser(description="parser for fast-neural-style")
     arg_parser.add_argument("--style", type=str, help="style name")
@@ -143,11 +145,11 @@ def init():
         state_dict = torch.load(os.path.join(model_path))
         # remove saved deprecated running_* keys in InstanceNorm from the checkpoint
         for k in list(state_dict.keys()):
-            if re.search(r'in\d+\.running_(mean|var)$', k):
+            if re.search(r"in\d+\.running_(mean|var)$", k):
                 del state_dict[k]
         style_model.load_state_dict(state_dict)
         style_model.to(device)
-    print(f'Model loaded successfully. Path: {model_path}')
+    print(f"Model loaded successfully. Path: {model_path}")
 
 
 def run(mini_batch):
@@ -157,15 +159,16 @@ def run(mini_batch):
         img = load_image(image_file_path)
 
         with torch.no_grad():
-            content_transform = transforms.Compose([
-                transforms.ToTensor(),
-                transforms.Lambda(lambda x: x.mul(255))
-            ])
+            content_transform = transforms.Compose(
+                [transforms.ToTensor(), transforms.Lambda(lambda x: x.mul(255))]
+            )
             content_image = content_transform(img)
             content_image = content_image.unsqueeze(0).to(device)
 
             output = style_model(content_image).cpu()
-            output_file_path = os.path.join(output_path, os.path.basename(image_file_path))
+            output_file_path = os.path.join(
+                output_path, os.path.basename(image_file_path)
+            )
             save_image(output_file_path, output[0])
             result.append(output_file_path)
 

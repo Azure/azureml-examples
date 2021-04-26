@@ -20,5 +20,5 @@ if not (args.output_compare is None):
     os.makedirs(args.output_compare, exist_ok=True)
     print("%s created" % args.output_compare)
 
-with open(os.path.join(args.output_compare, 'compare.txt'), 'w') as fw:
-    fw.write('here is the compare result')
+with open(os.path.join(args.output_compare, "compare.txt"), "w") as fw:
+    fw.write("here is the compare result")
