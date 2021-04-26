@@ -5,7 +5,7 @@ flavors:
     lgb_version: 3.2.0
   python_function:
     data: model.lgb
-    env: conda.yaml
+    env: conda.yml
     loader_module: mlflow.lightgbm
     python_version: 3.8.8
 run_id: 64a1fab6-897f-4192-a3e3-e33f25f3447f

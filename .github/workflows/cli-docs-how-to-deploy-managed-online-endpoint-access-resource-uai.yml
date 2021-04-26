@@ -1,0 +1,31 @@
+name: cli-docs-how-to-deploy-managed-online-endpoint-access-resource-uai
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+    paths:
+      - cli/how-to-deploy-managed-online-endpoint-access-resource-uai.sh
+      - .github/workflows/cli-docs-how-to-deploy-managed-online-endpoint-access-resource-uai.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CLI_CREDS}}
+    - name: install new ml cli
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+    - name: setup workspace
+      run: bash setup-workspace.sh
+      working-directory: cli
+    - name: docs installs
+      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
+    - name: test doc script
+      run: bash how-to-deploy-managed-online-endpoint-access-resource-uai.sh
+      working-directory: cli

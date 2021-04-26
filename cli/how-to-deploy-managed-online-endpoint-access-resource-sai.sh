@@ -35,7 +35,7 @@ az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $ST
 # </upload_file_to_storage>
 
 # <create_endpoint>
-az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yaml
+az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
 # </create_endpoint>
 
 # <check_endpoint_Status>
@@ -61,7 +61,7 @@ az role assignment create --assignee $system_identity --role "Storage Blob Data 
 # </give_permission_to_user_storage_account>
 
 # <deploy>
-az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/managed-identities/2-sai-deployment.yaml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
+az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
 # </deploy>
 
 # <check_deploy_Status>
