@@ -165,7 +165,7 @@ scoringUri=$(echo $response | jq -r ".properties" | jq -r ".scoringUri")
 # </get endpoint>
 
 # <get access token>
-response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineendpoints/my-endpoint/token?api-version=$API_VERSION" \
+response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlinendpoints/my-endpoint/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
 accessToken=$(echo $response | jq -r ".accessToken")
 # </get access token>
@@ -176,6 +176,13 @@ curl --location --request POST $scoringUri \
 --header "Content-Type: application/json" \
 --data-raw @endpoints/online/model-1/sample-request.json
 # </score endpoint>
+
+# <get deployment logs>
+curl --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineendpoints/my-endpoint/deployments/blue/getLogs?api-version=$API_VERSION" \
+--header "Authorization: Bearer $TOKEN" \
+--header "Content-Type: application/json" \
+--data-raw "{ \"tail\": 100 }"
+#</get deployment logs>
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
