@@ -8,7 +8,7 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <deploy>
-az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yaml
+az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yml
 # </deploy>
 
 # <get_status>

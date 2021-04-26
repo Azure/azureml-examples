@@ -1,6 +1,6 @@
 name: sklearn-diabetes-mlproject-example
 
-conda_env: environment.yaml
+conda_env: environment.yml
 
 entry_points:
   main:

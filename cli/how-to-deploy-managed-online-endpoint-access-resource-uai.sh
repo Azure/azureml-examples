@@ -76,7 +76,7 @@ az role assignment create --assignee $uai_clientid --role "Storage Blob Data Rea
 # </give_permission_to_workspace_storage_account>
 
 # <create_endpoint>
-az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-uai-create-endpoint-with-deployment.yaml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME deployments[0].environment_variables.UAI_CLIENT_ID=$uai_clientid identity.user_assigned_identities[0].resource_id=$uai_id
+az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-uai-create-endpoint-with-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME deployments[0].environment_variables.UAI_CLIENT_ID=$uai_clientid identity.user_assigned_identities[0].resource_id=$uai_id
 # </create_endpoint>
 
 # <check_endpoint_Status>

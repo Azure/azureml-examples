@@ -8,11 +8,11 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <create_endpoint>
-az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/canary-imperative-flow/1-create-endpoint.yaml
+az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/canary-imperative-flow/1-create-endpoint.yml
 # </create_endpoint>
 
 # <create_blue>
-az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/canary-imperative-flow/2-create-blue.yaml
+az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/canary-imperative-flow/2-create-blue.yml
 # </create_blue>
 
 # <allow_blue_traffic>
@@ -24,11 +24,11 @@ az ml endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/mode
 # </test_blue>
 
 # <scale_blue>
-az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/canary-imperative-flow/2-create-blue.yaml
+az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/canary-imperative-flow/2-create-blue.yml
 # </scale_blue>
 
 # <create_green>
-az ml endpoint update  --name $ENDPOINT_NAME --deployment-file endpoints/online/managed/canary-imperative-flow/3-create-green.yaml  --traffic "blue:100,green:0"
+az ml endpoint update  --name $ENDPOINT_NAME --deployment-file endpoints/online/managed/canary-imperative-flow/3-create-green.yml  --traffic "blue:100,green:0"
 # </create_green>
 
 # <test_green>

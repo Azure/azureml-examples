@@ -149,7 +149,7 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
 # Install Deep Learning packges: tensorflow
 ##############################################################################
 RUN conda install -y python=$PYTHON_INSTALL_VERSION pyyaml scipy ipython cython typing mkl mkl-include setuptools
-RUN conda install -y -c conda-forge ruamel.yaml
+RUN conda install -y -c conda-forge ruamel
 
 RUN echo /usr/lib/x86_64-linux-gnu >> /etc/ld.so.conf.d/cuda-11-0.conf
 RUN ldconfig

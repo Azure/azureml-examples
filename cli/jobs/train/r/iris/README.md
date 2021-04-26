@@ -5,7 +5,7 @@ Ensure you have created an environment in Azure ML for running R jobs.
 
 ```bash
 cd examples/r
-az ml environment create --file environment.yaml
+az ml environment create --file environment.yml
 ```
 
 Upload and register the iris dataset to Azure ML using:
