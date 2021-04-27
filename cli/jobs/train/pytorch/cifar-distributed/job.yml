@@ -17,4 +17,4 @@ compute:
 distribution:
   type: pytorch 
   process_count: 4
-experiment_name: pytorch-cifar-distributed
+experiment_name: pytorch-cifar-distributed-example
