@@ -20,7 +20,7 @@ az ml workspace create -n $WS
 # </az_ml_workspace_create>
 
 # <hello_world>
-az ml job create -f jobs/hello-world.yml --query name -o tsv
+az ml job create -f jobs/hello-world.yml --stream
 # </hello_world>
 
 # <hello_world_output>
