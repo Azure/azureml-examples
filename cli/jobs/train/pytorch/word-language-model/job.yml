@@ -2,7 +2,7 @@ code:
   local_path: src
 command: >-
   python main.py 
-  --cuda --epochs 5 
+  --cuda --epochs 1
   --model Transformer 
   --lr 5 
   --data {inputs.corpus} 
