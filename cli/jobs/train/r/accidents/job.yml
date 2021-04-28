@@ -1,6 +1,6 @@
 code:
   local_path: src
-command: >-
+command: >
   Rscript accidents.R
   --data {inputs.training_data}
 environment:

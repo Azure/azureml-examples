@@ -1,6 +1,6 @@
 code:
   local_path: src
-command: >-
+command: >
   python main.py 
   --cuda --epochs 1
   --model Transformer 
