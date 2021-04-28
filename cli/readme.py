@@ -295,7 +295,7 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: create endpoint
       run: az ml endpoint create -f {endpoint}.yml
@@ -333,7 +333,7 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: create asset
       run: az ml {asset.split('/')[1]} create -f {asset}.yml
