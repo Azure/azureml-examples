@@ -14,7 +14,7 @@ EXCLUDED_ASSETS = [
     "mlflow-models",
     "workspace",
 ]
-EXCLUDED_DOCS = ["setup-workspace", "cleanup"]
+EXCLUDED_DOCS = ["setup", "cleanup"]
 
 # define functions
 def main(args):
@@ -177,7 +177,8 @@ def write_workflows(jobs, endpoints, assets, docs):
     # process endpoints
     for endpoint in endpoints:
         # write workflow file
-        write_endpoint_workflow(endpoint)
+        # write_endpoint_workflow(endpoint)
+        pass
 
     # process assest
     for asset in assets:
@@ -240,14 +241,14 @@ jobs:
         creds: {creds}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
-    - name: setup workspace
-      run: bash setup-workspace.sh
+    - name: setup
+      run: bash setup.sh
       working-directory: cli
     - name: create job
       run: |
-        job_id=$(az ml job create -f {job}.yml --query name -o tsv)
-        az ml job stream -n $job_id
-        status=$(az ml job show -n $job_id --query status -o tsv)
+        run_id=$(az ml job create -f {job}.yml --query name -o tsv)
+        az ml job stream -n $run_id
+        status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
         if [[ $status == "Completed" ]]
         then
@@ -370,10 +371,10 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: docs installs
-      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
       run: bash {doc}.sh
       working-directory: cli\n"""

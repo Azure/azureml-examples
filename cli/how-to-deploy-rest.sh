@@ -3,27 +3,19 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <installation>
-# az extension add -n ml
-# </installation>
+# <create variables>
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+LOCATION=$(az group show --query location -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
 
-#</create variables>
-SUBSCRIPTION_ID="6560575d-fa06-4e7d-95fb-f962e74efd7a"
-LOCATION=$LOC
-RESOURCE_GROUP=$RG
-WORKSPACE=$WS
+# TODO: query from `az ml workspace show` once defaults.workspaces works with it
+WORKSPACE="main" 
 
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
 
-TOKEN=$(az account get-access-token | jq -r ".accessToken")
+TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create variables>
-
-# <configure-defaults>
-az configure --defaults workspace=$WORKSPACE
-az configure --defaults location=$LOCATION
-az configure --defaults group=$RESOURCE_GROUP
-# </configure-defaults>
 
 # define how to wait
 wait_for_completion () {

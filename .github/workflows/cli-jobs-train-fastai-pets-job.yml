@@ -21,14 +21,14 @@ jobs:
         creds: ${{secrets.AZ_AE_CLI_CREDS}}
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
-    - name: setup workspace
-      run: bash setup-workspace.sh
+    - name: setup
+      run: bash setup.sh
       working-directory: cli
     - name: create job
       run: |
-        job_id=$(az ml job create -f jobs/train/fastai/pets/job.yml --query name -o tsv)
-        az ml job stream -n $job_id
-        status=$(az ml job show -n $job_id --query status -o tsv)
+        run_id=$(az ml job create -f jobs/train/fastai/pets/job.yml --query name -o tsv)
+        az ml job stream -n $run_id
+        status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
         if [[ $status == "Completed" ]]
         then
