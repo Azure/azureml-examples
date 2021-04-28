@@ -3,6 +3,7 @@ code:
   local_path: src
 command: >-
   python train.py
+  --epochs 1
 #environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
 environment: azureml:AzureML-TensorFlow-2.3-GPU:6
 compute:

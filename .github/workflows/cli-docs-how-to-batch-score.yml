@@ -22,10 +22,10 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: docs installs
-      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
       run: bash how-to-batch-score.sh
       working-directory: cli
