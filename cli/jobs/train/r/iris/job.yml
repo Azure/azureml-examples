@@ -1,6 +1,6 @@
 code:
   local_path: src
-command: >-
+command: >
   Rscript model.R 
   --data_folder {inputs.iris}
 inputs:
