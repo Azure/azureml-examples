@@ -7,19 +7,23 @@ az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-in
 # </create_computes>
 
 # <lightgbm_iris>
-job_id=$(az ml job create -f jobs/train/lightgbm/iris/job.yml --query name -o tsv)
+az ml job create -f jobs/train/lightgbm/iris/job.yml --web
 # </lightgbm_iris>
 
+# <lightgbm_iris_output>
+run_id=$(az ml job create -f jobs/train/lightgbm/iris/job.yml --query name -o tsv)
+# </lightgbm_iris_output>
+
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -35,23 +39,27 @@ fi
 # </check_job_status>
 
 # <download_outputs>
-az ml job download -n $job_id --outputs
+az ml job download -n $run_id --outputs
 # </download_outputs>
 
 # <lightgbm_iris_sweep>
-job_id=$(az ml job create -f jobs/train/lightgbm/iris/job-sweep.yml --query name -o tsv)
+az ml job create -f jobs/train/lightgbm/iris/job-sweep.yml --web
 # </lightgbm_iris_sweep>
 
+# <lightgbm_iris_sweep_output>
+run_id=$(az ml job create -f jobs/train/lightgbm/iris/job-sweep.yml --query name -o tsv)
+# </lightgbm_iris_sweep_output>
+
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -75,19 +83,23 @@ mv cifar-10-batches-py jobs/train/pytorch/cifar-distributed/data
 # </download_cifar>
 
 # <pytorch_cifar>
-job_id=$(az ml job create -f jobs/train/pytorch/cifar-distributed/job.yml --query name -o tsv)
+az ml job create -f jobs/train/pytorch/cifar-distributed/job.yml --web
 # </pytorch_cifar>
 
+# <pytorch_cifar_output>
+run_id=$(az ml job create -f jobs/train/pytorch/cifar-distributed/job.yml --query name -o tsv)
+# </pytorch_cifar_output>
+
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -103,23 +115,27 @@ fi
 # </check_job_status>
 
 # <download_outputs>
-az ml job download -n $job_id --outputs
+az ml job download -n $run_id --outputs
 # </download_outputs>
 
 # <tensorflow_mnist>
-job_id=$(az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --query name -o tsv)
+az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --web
 # </tensorflow_mnist>
 
+# <tensorflow_mnist_output>
+run_id=$(az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --query name -o tsv)
+# </tensorflow_mnist_output>
+
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -135,19 +151,23 @@ fi
 # </check_job_status>
 
 # <tensorflow_mnist_horovod>
-job_id=$(az ml job create -f jobs/train/tensorflow/mnist-distributed-horovod/job.yml --query name -o tsv)
+az ml job create -f jobs/train/tensorflow/mnist-distributed-horovod/job.yml --web
 # </tensorflow_mnist_horovod>
 
+# <tensorflow_mnist_horovod_output>
+run_id=$(az ml job create -f jobs/train/tensorflow/mnist-distributed-horovod/job.yml --query name -o tsv)
+# </tensorflow_mnist_horovod_output>
+
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then

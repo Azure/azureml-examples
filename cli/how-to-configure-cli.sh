@@ -1,46 +1,40 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <variables>
-export WS=main
-export RG=azureml-examples-cli
-export LOC=eastus
-# </variables>
-
 # <az_group_create>
-az group create -n $RG -l $LOC
+az group create -n "azureml-examples-cli" -l "eastus"
 # </az_group_create>
 
 # <az_configure_defaults>
-az configure --defaults group=$RG workspace=$WS
+az configure --defaults group="azureml-examples-cli" workspace="main"
 # </az_configure_defaults>
 
 # <az_ml_workspace_create>
-az ml workspace create -n $WS
+az ml workspace create -n "main"
 # </az_ml_workspace_create>
 
 # <hello_world>
-az ml job create -f jobs/hello-world.yml --stream
+az ml job create -f jobs/hello-world.yml --web --stream
 # </hello_world>
 
+# <check_job_status>
+az ml job show -n $run_id --query status -o tsv
+# </check_job_status>
+
 # <hello_world_output>
-job_id=$(az ml job create -f jobs/hello-world.yml --query name -o tsv)
+run_id=$(az ml job create -f jobs/hello-world.yml --query name -o tsv)
 # </hello_world_output>
 
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
-# <check_job_status>
-az ml job show -n $job_id --query status -o tsv
-# </check_job_status>
-
 # <check_job_status_detailed>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -71,14 +65,8 @@ az extension update -n ml
 az ml -h
 # </az_ml_verify>
 
-# <export_variables_placeholders>
-export WS="<YOUR_WORKSPACE_NAME>"
-export RG="<YOUR_RESOURCE_GROUP_NAME>"
-export LOC="<YOUR_AZURE_LOCATION>"
-# </export_variables_placeholders>
-
 # <az_account_set>
-az account set -s "<YOUR_SUBSCRIPTION_NAME>"
+az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"
 # </az_account_set>
 
 # <az_extension_remove>
