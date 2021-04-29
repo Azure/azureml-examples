@@ -22,12 +22,12 @@ jobs:
     - name: install new ml cli
       run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: ./setup-workspace.sh
       working-directory: cli
-    - name: setup keyring
-      run: pip install keyring artifacts-keyring
     - name: docs installs
-      run: pip install azure-mgmt-machinelearningservices==0.1.0.36102190 azure-cli-core --extra-index-url=https://pkgs.dev.azure.com/msdata/Vienna/_packaging/AzureML_ManagementFrontEnd/pypi/simple/ -U
+      run: |
+        pip install keyring artifacts-keyring
+        pip install azure-mgmt-machinelearningservices==0.1.0.36102190 azure-cli-core --extra-index-url=https://pkgs.dev.azure.com/msdata/Vienna/_packaging/AzureML_ManagementFrontEnd/pypi/simple/ -U
     - name: test doc script
       run: python how-to-train-autorest.py
       working-directory: cli
