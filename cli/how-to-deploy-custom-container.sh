@@ -10,6 +10,7 @@ tar -xvf $BASE_PATH/half_plus_two.tar.gz -C $BASE_PATH
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
 ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry | cut -d'/' -f9-)
 ACR_NAME=${ACR_NAME%\"}
+az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 docker build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG
 docker push $IMAGE_TAG
