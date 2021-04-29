@@ -17,8 +17,8 @@ docker push $IMAGE_TAG
 
 # Run image locally for testing
 docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
-    -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG 
-
+    -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
+sleep 10
 # Check liveness
 curl -v http://localhost:8501/v1/models/$MODEL_NAME
 
