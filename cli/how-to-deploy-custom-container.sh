@@ -7,7 +7,8 @@ wget https://aka.ms/half_plus_two-model -O $BASE_PATH/half_plus_two.tar.gz
 tar -xvf $BASE_PATH/half_plus_two.tar.gz -C $BASE_PATH
 
 # Get name of workspace ACR
-ACR_NAME=$(az ml workspace show -n gopalv-test -g gopalv-arm-centraluseuap --query container_registry | cut -d'/' -f9-)
+WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
+ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry | cut -d'/' -f9-)
 ACR_NAME=${ACR_NAME%\"}
 IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 docker build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG
@@ -34,6 +35,7 @@ sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/TFServing-endpoint.yml
 az ml endpoint create -f $BASE_PATH/TFServing-endpoint.yml
 
 # Test remotely
+az ml endpoint invoke -n tfserving-endpoint --request-file $BASE_PATH/sample_request.json
 
 # Remove local model file
 rm $BASE_PATH/half_plus_two.tar.gz
