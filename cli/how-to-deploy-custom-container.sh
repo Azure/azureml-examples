@@ -28,7 +28,7 @@ curl --header "Content-Type: application/json" \
 
 # Fill in name of ACR in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/TFServing-endpoint.yml
-sed -i 's/{{model_base_path}}/'$MODEL_BASE_PATH'/' $BASE_PATH/TFServing-endpoint.yml
+sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/TFServing-endpoint.yml
 sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/TFServing-endpoint.yml
 
 az ml endpoint create -f $BASE_PATH/TFServing-endpoint.yml
