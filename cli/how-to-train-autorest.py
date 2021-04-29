@@ -1,6 +1,7 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning!
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 import uuid
+import time
 from azure.common.credentials import get_azure_cli_credentials
 from azure.mgmt.machinelearningservices import AzureMachineLearningWorkspaces
 from azure.mgmt.machinelearningservices.models import (
@@ -28,8 +29,14 @@ resource_group_name = "trmccorm-centraluseuap"
 workspace_name = "trmccorm-centraluseuap"
 
 client = AzureMachineLearningWorkspaces(credentials, subscription_id)
+print(
+    f"Created AML client with CLI credentials for \
+        subscription: {subscription_id}, \
+        resource group: {resource_group_name}, \
+        workspace: {workspace_name}"
+)
 
-# Create Environment
+# <create environment>
 conda_file = "name: python-ml-basic-cpu\nchannels:\n  - conda-forge\ndependencies:\n  - python=3.8\n  - pip\n  - pip:\n    - numpy\n    - pandas\n    - scipy\n    - scikit-learn\n    - matplotlib\n    - xgboost\n    - lightgbm\n    - dask\n    - distributed\n    - dask-ml\n    - adlfs\n    - fastparquet\n    - pyarrow\n    - mlflow\n    - azureml-mlflow"
 docker_spec = DockerImage(
     docker_image_uri="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
@@ -44,8 +51,11 @@ env_version = client.environment_specification_versions.create_or_update(
     resource_group_name=resource_group_name,
     body=request,
 )
+# </create environment>
 
-# Create Data
+print(f"Created environment: {env_version}")
+
+# <create data>
 properties = DataVersion(
     dataset_type="simple",
     path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv",
@@ -59,6 +69,9 @@ data_version = client.data_versions.create_or_update(
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
 )
+# </create data>
+
+print(f"Created data version: {data_version}")
 
 # Create Code
 # TODO: decide how to upload to container
@@ -69,37 +82,42 @@ datastores = client.datastores.list(
     resource_group_name=resource_group_name,
 )
 datastore_id = list(filter(lambda d: d.name == "workspaceblobstore", datastores))[0].id
+print(f"Using datastore: {datastore_id}")
 
-
+# <create code>
 properties = CodeVersion(datastore_id=datastore_id, path="src")
 request = CodeVersionResource(properties=properties)
 code_version = client.code_versions.create_or_update(
-    name,
-    version,
+    "train-lightgbm",
+    1,
     body=request,
     subscription_id=subscription_id,
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
 )
+# </create code>
 
+print(f"Created code version: {code_version}")
 
-# Create compute
 # TODO: figure out get compute
+# <create compute binding>
 cluster = "e2ecpucluster"
 compute_id = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.MachineLearningServices/workspaces/{workspace_name}/computes/{cluster}"
 compute_binding = ComputeConfiguration(
     target=compute_id,
     instance_count=1,
 )
+# </create compute binding>
 
-# Create data binding
-
+# <create data binding>
 data_config = {
     "iris": InputDataBinding(
         data_id=data_version.id,
     )
 }
+# </create data binding>
 
+# <create job>
 properties = CommandJob(
     code_id=code_version.id,
     experiment_name="lightgbm-iris",
@@ -118,3 +136,24 @@ job = client.jobs.create_or_update(
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
 )
+# </create job>
+
+print(f"Created job: {vars(job)}")
+
+terminal_states = [
+    "Completed",
+    "Failed",
+    "CancelRequested",
+    "Canceled",
+    "NotResponding",
+]
+while job.properties.status not in terminal_states:
+    print(f"Job status: {job.properties.status}. Sleeping 5 seconds...")
+    time.sleep(5)
+    job = client.jobs.get(
+        id=job_id,
+        subscription_id=subscription_id,
+        workspace_name=workspace_name,
+        resource_group_name=resource_group_name,
+    )
+print(f"Job completed. Status: {job.properties.status}")
