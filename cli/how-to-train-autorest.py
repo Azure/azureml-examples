@@ -1,5 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning!
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+import os
 import uuid
 import time
 from azure.common.credentials import get_azure_cli_credentials
@@ -24,16 +25,16 @@ from azure.mgmt.machinelearningservices.models import (
 )
 
 credentials, *_ = get_azure_cli_credentials()
-subscription_id = "7ab7d5bc-5d9e-47ef-80e6-2dffa8ca83a1"
-resource_group_name = "trmccorm-centraluseuap"
-workspace_name = "trmccorm-centraluseuap"
+subscription_id = "6560575d-fa06-4e7d-95fb-f962e74efd7a"
+resource_group_name = os.environ["RG"]
+workspace_name = os.environ["WS"]
 
 client = AzureMachineLearningWorkspaces(credentials, subscription_id)
 print(
-    f"Created AML client with CLI credentials for \
-        subscription: {subscription_id}, \
-        resource group: {resource_group_name}, \
-        workspace: {workspace_name}"
+    f"""Created AML client with CLI credentials for 
+        subscription: {subscription_id},
+        resource group: {resource_group_name},
+        workspace: {workspace_name}"""
 )
 
 # <create environment>
@@ -101,7 +102,7 @@ print(f"Created code version: {code_version}")
 
 # TODO: figure out get compute
 # <create compute binding>
-cluster = "e2ecpucluster"
+compute_name = "cpu-cluster"
 compute_id = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.MachineLearningServices/workspaces/{workspace_name}/computes/{cluster}"
 compute_binding = ComputeConfiguration(
     target=compute_id,
