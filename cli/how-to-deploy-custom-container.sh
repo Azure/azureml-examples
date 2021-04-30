@@ -1,6 +1,8 @@
 BASE_PATH=endpoints/online/custom-container
 MODEL_BASE_PATH=/var/azureml-app/azureml-models/tfserving-mounted/1
 MODEL_NAME=half_plus_two
+ENDPOINT_NAME=tfserving-endpoint
+DEPLOYMENT_NAME=tfserving
 
 # Download and unzip model
 wget https://aka.ms/half_plus_two-model -O $BASE_PATH/half_plus_two.tar.gz
@@ -12,8 +14,8 @@ ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry | cut -
 ACR_NAME=${ACR_NAME%\"}
 az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
-docker build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG
-docker push $IMAGE_TAG
+az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR_NAME
+# docker push $IMAGE_TAG
 
 # Run image locally for testing
 docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
@@ -33,10 +35,18 @@ sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/TFServing-endpoint.yml
 sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/TFServing-endpoint.yml
 sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/TFServing-endpoint.yml
 
-az ml endpoint create -f $BASE_PATH/TFServing-endpoint.yml
+az ml endpoint create -f $BASE_PATH/TFServing-endpoint.yml -n $ENDPOINT_NAME
+
+STATE=(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
+
+if [[ $STATE == "Failed" ]]
+then
+  az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
+  exit 1
+fi
 
 # Test remotely
-az ml endpoint invoke -n tfserving-endpoint --request-file $BASE_PATH/sample_request.json
+az ml endpoint invoke -n ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json
 
 # Remove local model file
 rm $BASE_PATH/half_plus_two.tar.gz
