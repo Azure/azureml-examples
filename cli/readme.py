@@ -144,18 +144,10 @@ def write_readme(jobs, endpoints, assets, docs):
     for doc in docs:
         # build entries for tutorial table
         status = f"[![{doc}](https://github.com/Azure/azureml-examples/workflows/cli-docs-{doc}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-{doc})"
-        description = "*no description*"
-        try:
-            with open(f"{doc}.sh", "r") as f:
-                for line in f.readlines():
-                    if "description: " in str(line):
-                        description = line.split(": ")[-1].strip()
-                        break
-        except:
-            pass
+        link = f"https://docs.microsoft.com/azure/machine-learning/{doc}"
 
         # add row to tutorial table
-        row = f"[{doc}.sh]({doc}.sh)|{status}|{description}\n"
+        row = f"[{doc}.sh]({doc}.sh)|{status}|{link}\n"
         docs_table += row
 
     # write README.md
