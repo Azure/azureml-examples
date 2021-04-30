@@ -51,3 +51,4 @@ az ml endpoint invoke -n ENDPOINT_NAME --request-file $BASE_PATH/sample_request.
 # Remove local model file
 rm $BASE_PATH/half_plus_two.tar.gz
 rm -r $BASE_PATH/half_plus_two
+az ml endpoint delete -n ENDPOINT_NAME
