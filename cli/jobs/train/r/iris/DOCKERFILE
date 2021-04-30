@@ -2,7 +2,7 @@ FROM rocker/tidyverse:4.0.0-ubuntu18.04
  
 # Install python
 RUN apt-get update -qq && \
- apt-get install -y python3
+  apt-get install -y python3.8
  
 # Create link for python
 RUN ln -f /usr/bin/python3 /usr/bin/python

@@ -5,7 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["hello-world"]
+EXCLUDED_JOBS = []
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
