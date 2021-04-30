@@ -6,7 +6,7 @@ command: >
 environment:
   docker:
     build:
-      dockerfile: file:DOCKERFILE
+      dockerfile: file:Dockerfile
 compute:
   target: azureml:cpu-cluster
 inputs:

@@ -5,7 +5,7 @@ command: mlnet classification --dataset "yelp_labelled.txt" --label-col 1 --has-
 environment:
   docker:
     build:
-      dockerfile: file:DOCKERFILE
+      dockerfile: file:Dockerfile
 compute:
   target: azureml:cpu-cluster
 experiment_name: mldotnet-yelp-example

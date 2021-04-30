@@ -12,7 +12,7 @@ environment:
   docker:
     image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
     build:
-      dockerfile: file:DOCKERFILE
+      dockerfile: file:Dockerfile
 compute:
   target: azureml:cpu-cluster
 experiment_name: r-iris-example
