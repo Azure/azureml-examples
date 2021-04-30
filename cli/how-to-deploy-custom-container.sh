@@ -1,6 +1,7 @@
 BASE_PATH=endpoints/online/custom-container
+AML_MODEL_NAME=tfserving-mounted
 MODEL_NAME=half_plus_two
-MODEL_BASE_PATH=/var/azureml-app/azureml-models/$MODEL_NAME/1
+MODEL_BASE_PATH=/var/azureml-app/azureml-models/$AML_MODEL_NAME/1
 ENDPOINT_NAME=tfserving-endpoint
 DEPLOYMENT_NAME=tfserving
 
@@ -18,24 +19,26 @@ az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR
 # docker push $IMAGE_TAG
 
 # Run image locally for testing
-docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
-    -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
-sleep 10
-# Check liveness
-curl -v http://localhost:8501/v1/models/$MODEL_NAME
+# docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
+#     -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
+# sleep 10
+# # Check liveness
+# curl -v http://localhost:8501/v1/models/$MODEL_NAME
 
-# Check scoring
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data @$BASE_PATH/sample_request.json \
-  http://localhost:8501/v1/models/$MODEL_NAME:predict
+# # Check scoring
+# curl --header "Content-Type: application/json" \
+#   --request POST \
+#   --data @$BASE_PATH/sample_request.json \
+#   http://localhost:8501/v1/models/$MODEL_NAME:predict
 
 # Fill in name of ACR in deployment YAML
-sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/TFServing-endpoint.yml
-sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/TFServing-endpoint.yml
-sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/TFServing-endpoint.yml
+cp $BASE_PATH/base-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
 
-az ml endpoint create -f $BASE_PATH/TFServing-endpoint.yml -n $ENDPOINT_NAME
+az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
 
 STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
 

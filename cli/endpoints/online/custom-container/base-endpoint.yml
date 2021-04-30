@@ -8,12 +8,12 @@ deployments:
   #blue deployment
   - name: tfserving
     model: #azureml:test:1
-      name: {{model_name}}
+      name: {{aml_model_name}}
       version: 1
       local_path: ./{{model_name}}
     environment_variables:
       MODEL_BASE_PATH: {{model_base_path}}
-      MODEL_NAME: half_plus_two
+      MODEL_NAME: {{model_name}}
     environment:
       name: tfserving
       version: 1
