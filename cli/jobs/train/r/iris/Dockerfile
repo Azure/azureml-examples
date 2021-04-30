@@ -1,7 +1,8 @@
 FROM rocker/tidyverse:4.0.0-ubuntu18.04
  
-# Install python
-RUN apt-get update -qq && \
+# Install python - temporarily still required to be in your image
+RUN add-apt-repository ppa:deadsnakes/ppa \
+  apt-get update -qq && \
   apt-get install -y python3.8
  
 # Create link for python
