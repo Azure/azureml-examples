@@ -32,7 +32,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:8501/v1/models/$MODEL_NAME:predict
 
 # Fill in placeholders in deployment YAML
-cp $BASE_PATH/base-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
+cp $BASE_PATH/base-tfserving-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
