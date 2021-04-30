@@ -84,7 +84,7 @@ def write_readme(jobs, endpoints, assets, docs):
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
-    docs_table = "\n**Documentation scripts**\n\npath|status|description|\n-|-|-\n"
+    docs_table = "\n**Documentation scripts**\n\npath|status|\n-|-\n"
 
     # process jobs
     for job in jobs:
@@ -147,7 +147,7 @@ def write_readme(jobs, endpoints, assets, docs):
         link = f"https://docs.microsoft.com/azure/machine-learning/{doc}"
 
         # add row to tutorial table
-        row = f"[{doc}.sh]({doc}.sh)|{status}|{link}\n"
+        row = f"[{doc}.sh]({doc}.sh)|{status}\n"
         docs_table += row
 
     # write README.md
