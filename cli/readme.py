@@ -92,7 +92,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{job.replace('/', '-')})"
         description = "*no description*"
         try:
-            with open(f"{job}/README.md", "r") as f:
+            with open(f"{job}.yml", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
@@ -110,7 +110,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{endpoint.replace('/', '-')})"
         description = "*no description*"
         try:
-            with open(f"{endpoint}/README.md", "r") as f:
+            with open(f"{endpoint}.yml", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
@@ -128,7 +128,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{asset.replace('/', '-')})"
         description = "*no description*"
         try:
-            with open(f"{asset}/README.md", "r") as f:
+            with open(f"{asset}.yml", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
@@ -146,7 +146,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{doc}](https://github.com/Azure/azureml-examples/workflows/cli-docs-{doc}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-{doc})"
         description = "*no description*"
         try:
-            with open(f"{doc}/README.md", "r") as f:
+            with open(f"{doc}.sh", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
