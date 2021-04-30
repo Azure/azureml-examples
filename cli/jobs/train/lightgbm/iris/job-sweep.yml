@@ -16,8 +16,8 @@ trial:
       mode: mount
   environment:
     docker:
-      build:
-        dockerfile: file:Dockerfile
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    conda_file: file:environment.yml
   compute:
     target: azureml:cpu-cluster
 search_space:
