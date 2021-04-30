@@ -8,7 +8,7 @@ deployments:
   #blue deployment
   - name: tfserving
     model: #azureml:test:1
-      name: tfserving-mounted
+      name: {{model_name}}
       version: 1
       local_path: ./{{model_name}}
     environment_variables:

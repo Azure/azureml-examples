@@ -1,6 +1,6 @@
 BASE_PATH=endpoints/online/custom-container
-MODEL_BASE_PATH=/var/azureml-app/azureml-models/tfserving-mounted/1
 MODEL_NAME=half_plus_two
+MODEL_BASE_PATH=/var/azureml-app/azureml-models/$MODEL_NAME/1
 ENDPOINT_NAME=tfserving-endpoint
 DEPLOYMENT_NAME=tfserving
 
@@ -37,7 +37,7 @@ sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/TFServing-endpoint.yml
 
 az ml endpoint create -f $BASE_PATH/TFServing-endpoint.yml -n $ENDPOINT_NAME
 
-STATE=(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
+STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
 
 if [[ $STATE == "Failed" ]]
 then
@@ -46,9 +46,10 @@ then
 fi
 
 # Test remotely
-az ml endpoint invoke -n ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json
+az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json
 
-# Remove local model file
+# Clean up
 rm $BASE_PATH/half_plus_two.tar.gz
 rm -r $BASE_PATH/half_plus_two
-az ml endpoint delete -n ENDPOINT_NAME
+az ml endpoint delete -n $ENDPOINT_NAME -y
+az ml model delete -n $MODEL_NAME -y
