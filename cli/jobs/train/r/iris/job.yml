@@ -10,7 +10,6 @@ inputs:
     mode: mount
 environment:
   docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
     build:
       dockerfile: file:Dockerfile
 compute:
