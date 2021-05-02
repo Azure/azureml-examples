@@ -28,18 +28,18 @@ curl -v http://localhost:8501/v1/models/$MODEL_NAME
 # Check scoring locally
 curl --header "Content-Type: application/json" \
   --request POST \
-  --data @$BASE_PATH/sample_request.json \
+  --data @$BASE_PATH/sample_tfserving_request.json \
   http://localhost:8501/v1/models/$MODEL_NAME:predict
 
 # Fill in placeholders in deployment YAML
-cp $BASE_PATH/base-tfserving-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
+# cp $BASE_PATH/base-tfserving-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
 
 # Create endpoint, failing gracefully if there's an issue
-az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+az ml endpoint create -f $BASE_PATH/tfserving-endpoint.yml -n $ENDPOINT_NAME --debug
 
 STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
 
@@ -52,7 +52,7 @@ then
 fi
 
 # Test remotely
-az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json
+az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_tfserving_request.json
 
 # Clean up
 rm $BASE_PATH/half_plus_two.tar.gz
