@@ -1,4 +1,4 @@
-name: cli-docs-how-to-configure-cli
+name: cli-docs-how-to-deploy-custom-container
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-configure-cli.sh
-      - .github/workflows/cli-docs-how-to-configure-cli.yml
+      - cli/how-to-deploy-custom-container.sh
+      - .github/workflows/cli-docs-how-to-deploy-custom-container.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,5 +27,5 @@ jobs:
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
-      run: bash how-to-configure-cli.sh
+      run: bash how-to-deploy-custom-container.sh
       working-directory: cli

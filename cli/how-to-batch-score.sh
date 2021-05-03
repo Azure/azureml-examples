@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # <create_batch_endpoint>
-az ml endpoint create --type batch --file assets/endpoints/batch/create-batch-endpoint.yml
+az ml endpoint create --type batch --file endpoints/batch/create-batch-endpoint.yml
 # </create_batch_endpoint>
 
 # <check_batch_endpooint_detail>
@@ -10,19 +10,19 @@ az ml endpoint show --name mybatchedp --type batch
 # </check_batch_endpooint_detail>
 
 # <start_batch_scoring_job>
-job_id=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
+run_id=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
 # </start_batch_scoring_job>
 
 # <show_job_in_studio>
-az ml job show -n $job_id --web
+az ml job show -n $run_id --web
 # </show_job_in_studio>
 
 # <stream_job_logs_to_console>
-az ml job stream -n $job_id
+az ml job stream -n $run_id
 # </stream_job_logs_to_console>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id --query status -o tsv)
+status=$(az ml job show -n $run_id --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then
@@ -38,7 +38,7 @@ fi
 # </check_job_status>
 
 # <download_outputs>
-az ml job download -n $job_id --outputs
+az ml job download -n $run_id --outputs
 # </download_outputs>
 
 # <add_deployment>
@@ -50,11 +50,11 @@ az ml endpoint update --name mybatchedp --type batch --traffic mnist_deployment:
 # </switch_traffic>
 
 # <start_batch_scoring_job_with_new_settings>
-job_id2=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv)
+run_id2=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv)
 # </start_batch_scoring_job_with_new_settings>
 
 # <check_job_status>
-status=$(az ml job show -n $job_id2 --query status -o tsv)
+status=$(az ml job show -n $run_id2 --query status -o tsv)
 echo $status
 if [[ $status == "Completed" ]]
 then

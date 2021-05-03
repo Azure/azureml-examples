@@ -5,7 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["hello-world"]
+EXCLUDED_JOBS = []
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
@@ -14,7 +14,7 @@ EXCLUDED_ASSETS = [
     "mlflow-models",
     "workspace",
 ]
-EXCLUDED_DOCS = ["setup-workspace", "cleanup"]
+EXCLUDED_DOCS = ["setup", "cleanup"]
 
 # define functions
 def main(args):
@@ -84,7 +84,7 @@ def write_readme(jobs, endpoints, assets, docs):
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
-    docs_table = "\n**Documentation scripts**\n\npath|status|description|\n-|-|-\n"
+    docs_table = "\n**Documentation scripts**\n\npath|status|\n-|-\n"
 
     # process jobs
     for job in jobs:
@@ -92,7 +92,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{job.replace('/', '-')})"
         description = "*no description*"
         try:
-            with open(f"{job}/README.md", "r") as f:
+            with open(f"{job}.yml", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
@@ -110,7 +110,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{endpoint.replace('/', '-')})"
         description = "*no description*"
         try:
-            with open(f"{endpoint}/README.md", "r") as f:
+            with open(f"{endpoint}.yml", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
@@ -128,7 +128,7 @@ def write_readme(jobs, endpoints, assets, docs):
         status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{asset.replace('/', '-')})"
         description = "*no description*"
         try:
-            with open(f"{asset}/README.md", "r") as f:
+            with open(f"{asset}.yml", "r") as f:
                 for line in f.readlines():
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
@@ -144,18 +144,10 @@ def write_readme(jobs, endpoints, assets, docs):
     for doc in docs:
         # build entries for tutorial table
         status = f"[![{doc}](https://github.com/Azure/azureml-examples/workflows/cli-docs-{doc}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-{doc})"
-        description = "*no description*"
-        try:
-            with open(f"{doc}/README.md", "r") as f:
-                for line in f.readlines():
-                    if "description: " in str(line):
-                        description = line.split(": ")[-1].strip()
-                        break
-        except:
-            pass
+        link = f"https://docs.microsoft.com/azure/machine-learning/{doc}"
 
         # add row to tutorial table
-        row = f"[{doc}.sh]({doc}.sh)|{status}|{description}\n"
+        row = f"[{doc}.sh]({doc}.sh)|{status}\n"
         docs_table += row
 
     # write README.md
@@ -177,7 +169,8 @@ def write_workflows(jobs, endpoints, assets, docs):
     # process endpoints
     for endpoint in endpoints:
         # write workflow file
-        write_endpoint_workflow(endpoint)
+        # write_endpoint_workflow(endpoint)
+        pass
 
     # process assest
     for asset in assets:
@@ -239,15 +232,15 @@ jobs:
       with:
         creds: {creds}
     - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
-    - name: setup workspace
-      run: bash setup-workspace.sh
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-1.0.0a2-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: setup
+      run: bash setup.sh
       working-directory: cli
     - name: create job
       run: |
-        job_id=$(az ml job create -f {job}.yml --query name -o tsv)
-        az ml job stream -n $job_id
-        status=$(az ml job show -n $job_id --query status -o tsv)
+        run_id=$(az ml job create -f {job}.yml --query name -o tsv)
+        az ml job stream -n $run_id
+        status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
         if [[ $status == "Completed" ]]
         then
@@ -292,9 +285,9 @@ jobs:
       with:
         creds: {creds}
     - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-1.0.0a2-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: create endpoint
       run: az ml endpoint create -f {endpoint}.yml
@@ -330,9 +323,9 @@ jobs:
       with:
         creds: {creds}
     - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-1.0.0a2-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: create asset
       run: az ml {asset.split('/')[1]} create -f {asset}.yml
@@ -368,12 +361,12 @@ jobs:
       with:
         creds: {creds}
     - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.64-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2 -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-1.0.0a2-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
     - name: setup workspace
-      run: bash setup-workspace.sh
+      run: bash setup.sh
       working-directory: cli
     - name: docs installs
-      run: sudo apt-get upgrade -y && sudo apt-get install jq uuid-runtime -y
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
       run: bash {doc}.sh
       working-directory: cli\n"""

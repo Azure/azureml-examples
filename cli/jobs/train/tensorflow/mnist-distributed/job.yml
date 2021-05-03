@@ -1,9 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
-command: >-
+command: >
   python train.py 
-  --epochs 30 
+  --epochs 1
   --model-dir outputs/keras-model
 environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
 compute:
@@ -13,3 +13,4 @@ distribution:
   type: tensorflow
   worker_count: 2
 experiment_name: tensorflow-mnist-distributed-example
+description: Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.
