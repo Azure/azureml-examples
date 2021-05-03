@@ -1,6 +1,10 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
+# <lightgbm_iris_local>
+az ml job create -f jobs/train/lightgbm/iris/job.yml --set compute.target=local --web --stream
+# </lightgbm_iris_local>
+
 # <create_computes>
 az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
 az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 8 --size Standard_NC12
