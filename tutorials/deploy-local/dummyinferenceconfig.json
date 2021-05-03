@@ -1,5 +1,5 @@
 {
-    "entryScript": "score.py",
+    "entryScript": "echo_score.py",
     "sourceDirectory": "./source_dir",
     "environment": {
         "docker": {
@@ -22,10 +22,7 @@
                     "python=3.6.2",
                     {
                         "pip": [
-                            "azureml-defaults",
-                            "nltk",
-                            "numpy",
-                            "onnxruntime"
+                            "azureml-defaults"
                         ]
                     }
                 ],
@@ -35,6 +32,6 @@
             "interpreterPath": "python",
             "userManagedDependencies": false
         },
-        "version": "2"
+        "version": "1"
     }
 }
