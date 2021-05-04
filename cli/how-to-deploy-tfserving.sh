@@ -42,10 +42,11 @@ sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
 az ml endpoint create -f $BASE_PATH/tfserving-endpoint.yml -n $ENDPOINT_NAME --debug
 
 STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
+echo "State is "$STATE
 
 if [[ $STATE != "Succeeded" ]]
 then
-  az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
+  az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --debug
   az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
   az ml endpoint delete -n $ENDPOINT_NAME -y
   exit 1
