@@ -5,8 +5,8 @@
 
 # <create variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location -o tsv | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name -o tsv | tr -d '\r"')
+LOCATION=$(az group show --query location | tr -d '\r"')
+RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 # TODO: query from `az ml workspace show` once defaults.workspaces works with it
 WORKSPACE=$(az configure -l | jq '.[] | select(.name=="workspace") | .value' | tr -d '"')
@@ -21,17 +21,17 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 
 # define how to wait
 wait_for_completion () {
-    operationid=$(echo $1 | grep -Fi Azure-AsyncOperation | sed "s/azure-asyncoperation: //" | tr -d '\r')
     # TODO error handling here
-    operation_status="unknown"
+    job_status="unknown"
 
-    while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
+    while [[ $job_status != "Completed" && $job_status != "Failed" && $job_status != "Canceled" ]]
     do
-        $echo "Getting operation status from: $operationid"
-        operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
+        $echo "Getting job status from: $1"
+        job=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/$1?api-version=$API_VERSION" \
+            --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
-        operation_status=$(echo $operation_result | jq -r ".status")
-        echo "Current operation status: $operation_status"
+        job_status=$(echo $job | jq -r ".properties" | jq -r ".status")
+        echo "Current job status: $job_status"
         sleep 5
     done
 }
