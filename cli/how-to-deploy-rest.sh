@@ -4,18 +4,20 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # <create variables>
-SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-LOCATION=$(az group show --query location -o tsv)
-RESOURCE_GROUP=$(az group show --query name -o tsv)
+SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
+LOCATION=$(az group show --query location -o tsv | tr -d '\r"')
+RESOURCE_GROUP=$(az group show --query name -o tsv | tr -d '\r"')
 
 # TODO: query from `az ml workspace show` once defaults.workspaces works with it
-WORKSPACE="main" 
+WORKSPACE=$(az configure -l | jq '.[] | select(.name=="workspace") | .value' | tr -d '"')
 
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
 
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create variables>
+
+echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE"
 
 # define how to wait
 wait_for_completion () {
@@ -38,15 +40,15 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
-AZURE_STORAGE_ACCOUNT=$(echo $response | jq '.value[0].properties.contents.accountName')
-AZUREML_DEFAULT_DATASTORE=$(echo $response | jq '.value[0].name')
-AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.containerName')
+AZURE_STORAGE_ACCOUNT=$(echo $response | jq '.value[0].properties.contents.accountName' | tr -d '\r"')
+AZUREML_DEFAULT_DATASTORE=$(echo $response | jq '.value[0].name' | tr -d '\r"')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.containerName' | tr -d '\r"')
 AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
---header "Authorization: Bearer $TOKEN"
+--header "Authorization: Bearer $TOKEN" || true
 
 # TODO: we can get the default container from listing datastores
 # TODO using the latter two as env vars shouldn't be necessary

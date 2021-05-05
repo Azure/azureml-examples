@@ -28,5 +28,5 @@ jobs:
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
-      run: bash how-to-deploy-rest.sh
+      run: bash -e how-to-deploy-rest.sh
       working-directory: cli
