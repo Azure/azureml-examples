@@ -24,10 +24,12 @@ from azure.mgmt.machinelearningservices.models import (
     EnvironmentSpecificationVersionResource,
 )
 
+
+# TODO: get values from env vars or via az ml cli
 credentials, *_ = get_azure_cli_credentials()
 subscription_id = "6560575d-fa06-4e7d-95fb-f962e74efd7a"
-resource_group_name = os.environ["RG"]
-workspace_name = os.environ["WS"]
+resource_group_name = "azureml-examples-cli"
+workspace_name = "main"
 
 client = AzureMachineLearningWorkspaces(credentials, subscription_id)
 print(
