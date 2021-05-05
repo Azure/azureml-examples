@@ -27,7 +27,7 @@ wait_for_completion () {
 
     while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
     do
-        $echo "Getting operation status from: $operationid"
+        echo "Getting operation status from: $operationid"
         operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
         operation_status=$(echo $operation_result | jq -r ".status")

@@ -26,7 +26,7 @@ wait_for_completion () {
 
     while [[ $job_status != "Completed" && $job_status != "Failed" && $job_status != "Canceled" ]]
     do
-        $echo "Getting job status from: $1"
+        echo "Getting job status from: $1"
         job=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/$1?api-version=$API_VERSION" \
             --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
