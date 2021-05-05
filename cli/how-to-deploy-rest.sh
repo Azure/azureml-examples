@@ -5,8 +5,8 @@
 
 # <create variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location -o tsv | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name -o tsv | tr -d '\r"')
+LOCATION=$(az group show --query location | tr -d '\r"')
+RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 # TODO: query from `az ml workspace show` once defaults.workspaces works with it
 WORKSPACE=$(az configure -l | jq '.[] | select(.name=="workspace") | .value' | tr -d '"')
@@ -112,7 +112,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
         \"authMode\": \"AMLToken\",
         \"traffic\": { \"blue\": 100 }
     },
-    \"location\": \"westus\"
+    \"location\": \"$LOCATION\"
 }")
 #</create endpoint>
 
@@ -124,7 +124,7 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
-    \"location\": \"westus\",
+    \"location\": \"$LOCATION\",
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
