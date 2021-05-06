@@ -16,3 +16,4 @@ environment:
 compute:
   target: azureml:cpu-cluster
 experiment_name: lightgbm-iris-example
+description: Train a LightGBM model on the Iris dataset.
