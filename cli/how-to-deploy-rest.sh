@@ -21,9 +21,8 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 
 # define how to wait
 wait_for_completion () {
-    echo "Parsing for async id: $1"
-    operation_id=$(echo $1 | grep -Fi azure-asyncoperation | sed "s/azure-asyncoperation: //" | tr -d '\r\\')
-    # TODO error handling here
+    operation_id=$1
+    echo "Using async operation id: $operation_id"
     operation_status="unknown"
 
     while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
@@ -118,7 +117,8 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 #</create_endpoint>
 
 echo "Endpoint headers: $headers"
-wait_for_completion $headers
+operation_id=$(echo $headers | grep -Fi azure-asyncoperation | sed "s/azure-asyncoperation: //" | tr -d '\r\\')
+wait_for_completion $operation_id
 
 # <create_deployment>
 headers=$(curl -i -H --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint/deployments/blue?api-version=$API_VERSION" \
@@ -148,8 +148,9 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create_deployment>
 
-echo "Deployment headers: $headers"
-wait_for_completion $headers
+echo "Endpoint headers: $headers"
+operation_id=$(echo $headers | grep -Fi azure-asyncoperation | sed "s/azure-asyncoperation: //" | tr -d '\r\\')
+wait_for_completion $operation_id
 
 # <get_endpoint>
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
