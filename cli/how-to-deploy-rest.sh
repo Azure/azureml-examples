@@ -22,7 +22,6 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 # define how to wait
 wait_for_completion () {
     operation_id=$1
-    echo "Using async operation id: $operation_id"
     operation_status="unknown"
 
     while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
