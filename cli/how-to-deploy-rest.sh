@@ -21,14 +21,15 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 
 # define how to wait
 wait_for_completion () {
-    operationid=$(echo $1 | grep -Fi Azure-AsyncOperation | sed "s/azure-asyncoperation: //" | tr -d '\r')
+    echo "Parsing for async id: $1"
+    operation_id=$(echo $1 | grep -Fi azure-asyncoperation | sed "s/azure-asyncoperation: //" | tr -d '\r\\')
     # TODO error handling here
     operation_status="unknown"
 
     while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
     do
-        echo "Getting operation status from: $operationid"
-        operation_result=$(curl --location --request GET $operationid --header "Authorization: Bearer $TOKEN")
+        echo "Getting operation status from: $operation_id"
+        operation_result=$(curl --location --request GET $operation_id --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
         operation_status=$(echo $operation_result | jq -r ".status")
         echo "Current operation status: $operation_status"

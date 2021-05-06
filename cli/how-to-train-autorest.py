@@ -3,6 +3,7 @@
 import os
 import uuid
 import time
+import random
 from azure.common.credentials import get_azure_cli_credentials
 from azure.mgmt.machinelearningservices import AzureMachineLearningWorkspaces
 from azure.mgmt.machinelearningservices.models import (
@@ -46,9 +47,10 @@ docker_spec = DockerImage(
 )
 properties = EnvironmentSpecificationVersion(conda_file=conda_file, docker=docker_spec)
 request = EnvironmentSpecificationVersionResource(properties=properties)
+version = random.randint(1, 99999) # give version number you want here
 env_version = client.environment_specification_versions.create_or_update(
     "lightgbm-environment",
-    1,
+    version,
     subscription_id=subscription_id,
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
@@ -64,9 +66,10 @@ properties = DataVersion(
     path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv",
 )
 request = DataVersionResource(properties=properties)
+version = random.randint(1, 99999) # give version number you want here
 data_version = client.data_versions.create_or_update(
     "iris-data",
-    1,
+    version,
     body=request,
     subscription_id=subscription_id,
     workspace_name=workspace_name,
@@ -90,9 +93,10 @@ print(f"Using datastore: {datastore_id}")
 # <create_code>
 properties = CodeVersion(datastore_id=datastore_id, path="src")
 request = CodeVersionResource(properties=properties)
+version = random.randint(1, 99999) # give version number you want here
 code_version = client.code_versions.create_or_update(
     "train-lightgbm",
-    1,
+    version,
     body=request,
     subscription_id=subscription_id,
     workspace_name=workspace_name,
