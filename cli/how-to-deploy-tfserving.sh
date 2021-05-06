@@ -18,7 +18,7 @@ IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
 # Run image locally for testing
-docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
+docker run -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
     -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
 sleep 10
 
@@ -31,15 +31,11 @@ curl --header "Content-Type: application/json" \
   --data @$BASE_PATH/sample_tfserving_request.json \
   http://localhost:8501/v1/models/$MODEL_NAME:predict
 
-# Fill in placeholders in deployment YAML
-# cp $BASE_PATH/base-tfserving-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
+# Fill in name of ACR in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
 
-# Create endpoint, failing gracefully if there's an issue
-az ml endpoint create -f $BASE_PATH/tfserving-endpoint.yml -n $ENDPOINT_NAME --debug
+# Create endpoint, failing gracefully if deployment is not in Succeeded state
+az ml endpoint create -f $BASE_PATH/tfserving-endpoint.yml -n $ENDPOINT_NAME
 
 STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
 echo "State is "$STATE
@@ -48,7 +44,9 @@ if [[ $STATE != "Succeeded" ]]
 then
   az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --debug
   az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
+  echo "Deleting endpoint because state is "$STATE
   az ml endpoint delete -n $ENDPOINT_NAME -y
+  
   exit 1
 fi
 
@@ -56,6 +54,7 @@ fi
 az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_tfserving_request.json
 
 # Clean up
+sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
 rm $BASE_PATH/half_plus_two.tar.gz
 rm -r $BASE_PATH/half_plus_two
 az ml endpoint delete -n $ENDPOINT_NAME -y
