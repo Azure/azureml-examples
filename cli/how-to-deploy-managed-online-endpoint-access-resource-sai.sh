@@ -57,7 +57,7 @@ else
 fi
 
 # <get_system_identity>
-system_identity=`az ad sp list --display-name "$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME" --query "[0].objectId" -o tsv | tr -d '\r'`
+system_identity=`az ml endpoint show --name $ENDPOINT_NAME --query "identity.principal_id" -o tsv | tr -d '\r'`
 # </get_system_identity>
 
 # <give_permission_to_user_storage_account>
