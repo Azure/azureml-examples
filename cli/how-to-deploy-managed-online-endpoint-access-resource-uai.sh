@@ -1,10 +1,14 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <set_endpoint_name>
-export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
-# </set_endpoint_name>
+# <set_variables>
+export WORKSPACE="<WORKSPACE_NAME>"
+export LOCATION="<WORKSPACE_LOCATION>"
+export ENDPOINT_NAME="<ENDPOINT_NAME>"
+# </set_variables>
 
+export WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv | tr -d '\r')
+export LOCATION=$(az group show --query location -o tsv | tr -d '\r')
 export TEST_ID=`echo $RANDOM`
 export ENDPOINT_NAME=endpt-uai-$TEST_ID
 
@@ -32,11 +36,11 @@ az identity create --name $UAI_NAME
 sleep 60
 
 # <create_storage_account>
-az storage account create --name $STORAGE_ACCOUNT_NAME --location $LOC
+az storage account create --name $STORAGE_ACCOUNT_NAME --location $LOCATION
 # </create_storage_account>
 
 # <get_storage_account_id>
-storage_id=`az storage account show --name $STORAGE_ACCOUNT_NAME --query "id" -o tsv`
+storage_id=`az storage account show --name $STORAGE_ACCOUNT_NAME --query "id" -o tsv | tr -d '\r'`
 # </get_storage_account_id>
 
 # <create_storage_container>
@@ -48,19 +52,19 @@ az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $ST
 # </upload_file_to_storage>
 
 # <get_user_identity_client_id>
-uai_clientid=`az identity list --query "[?name=='$UAI_NAME'].clientId" -o tsv`
+uai_clientid=`az identity list --query "[?name=='$UAI_NAME'].clientId" -o tsv | tr -d '\r'`
 # </get_user_identity_client_id>
 
 # <get_user_identity_id>
-uai_id=`az identity list --query "[?name=='$UAI_NAME'].id" -o tsv`
+uai_id=`az identity list --query "[?name=='$UAI_NAME'].id" -o tsv | tr -d '\r'`
 # </get_user_identity_id>
 
 # <get_container_registry_id>
-container_registry=`az ml workspace show --name $WS --query container_registry -o tsv`
+container_registry=`az ml workspace show --name $WORKSPACE --query container_registry -o tsv | tr -d '\r'`
 # </get_container_registry_id>
 
 # <get_workspace_storage_id>
-storage_account=`az ml workspace show --name $WS --query storage_account -o tsv`
+storage_account=`az ml workspace show --name $WORKSPACE --query storage_account -o tsv | tr -d '\r'`
 # </get_workspace_storage_id>
 
 # <give_permission_to_user_storage_account>
@@ -83,7 +87,7 @@ az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-
 az ml endpoint show --name $ENDPOINT_NAME
 # </check_endpoint_Status>
 
-endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv | tr -d '\r'`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
 then
@@ -97,7 +101,7 @@ fi
 az ml endpoint show --name $ENDPOINT_NAME
 # </check_deploy_Status>
 
-deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv`
+deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv | tr -d '\r'`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
