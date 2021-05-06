@@ -7,8 +7,8 @@ export LOCATION="<WORKSPACE_LOCATION>"
 export ENDPOINT_NAME="<ENDPOINT_NAME>"
 # </set_variables>
 
-export WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv | tr -d '\r')
-export LOCATION=$(az group show --query location -o tsv | tr -d '\r')
+export WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
+export LOCATION=$(az group show --query location -o tsv)
 export TEST_ID=`echo $RANDOM`
 export ENDPOINT_NAME=endpt-sai-$TEST_ID
 
@@ -27,7 +27,7 @@ az storage account create --name $STORAGE_ACCOUNT_NAME --location $LOCATION
 # </create_storage_account>
 
 # <get_storage_account_id>
-storage_id=`az storage account show --name $STORAGE_ACCOUNT_NAME --query "id" -o tsv | tr -d '\r'`
+storage_id=`az storage account show --name $STORAGE_ACCOUNT_NAME --query "id" -o tsv`
 # </get_storage_account_id>
 
 # <create_storage_container>
@@ -46,7 +46,7 @@ az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-
 az ml endpoint show --name $ENDPOINT_NAME
 # </check_endpoint_Status>
 
-endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv | tr -d '\r'`
+endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
 then
@@ -57,7 +57,7 @@ else
 fi
 
 # <get_system_identity>
-system_identity=`az ml endpoint show --name $ENDPOINT_NAME --query "identity.principal_id" -o tsv | tr -d '\r'`
+system_identity=`az ml endpoint show --name $ENDPOINT_NAME --query "identity.principal_id" -o tsv`
 # </get_system_identity>
 
 # <give_permission_to_user_storage_account>
@@ -72,7 +72,7 @@ az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file 
 az ml endpoint show --name $ENDPOINT_NAME
 # </check_deploy_Status>
 
-deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv | tr -d '\r'`
+deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
