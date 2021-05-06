@@ -12,6 +12,7 @@ if (__name__=='__main__'):
     parser = argparse.ArgumentParser()
     parser.add_argument('--base_url')
     parser.add_argument('--token')
+    parser.add_argument('--num_requests', type=int, default=1)
     args = parser.parse_args()
 
     headers = {"Content-Type": "application/octet-stream"}
@@ -24,6 +25,7 @@ if (__name__=='__main__'):
     input = tritonhttpclient.InferInput('img_in_bytes', test.shape, 'BYTES')
     input.set_data_from_numpy(test)
     inputs = [input]
+    headers = {"Authorization": f"Bearer  {args.token}"}
     if args.token:
         client = tritonhttpclient.InferenceServerClient(
             args.base_url,
@@ -32,6 +34,9 @@ if (__name__=='__main__'):
     else:
         client = tritonhttpclient.InferenceServerClient(args.base_url)
     outputs = [tritonhttpclient.InferRequestedOutput('label')]
-    print(f'liveness check: {client.is_server_live()}')
-    result = client.infer(model_name='ensemble', inputs=inputs, request_id='1', outputs=outputs)
-    print(f"scoring check: {result.as_numpy('label')}")
+    print(f'liveness check: {client.is_server_live(headers=headers)}')
+
+    for i in range(args.num_requests):
+        result = client.infer(model_name='ensemble', inputs=inputs, request_id='1', outputs=outputs, headers=headers)
+        if i % 10 == 0:
+            print(f"scoring check: {result.as_numpy('label')}, iteration {i}")

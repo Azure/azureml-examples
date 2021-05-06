@@ -11,8 +11,8 @@ tar -xvf $BASE_PATH/half_plus_two.tar.gz -C $BASE_PATH
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
-ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry | cut -d'/' -f9-)
-ACR_NAME=${ACR_NAME%\"}
+ACR_NAME=$(az ml workspace show -w $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+
 az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR_NAME
@@ -32,30 +32,41 @@ curl --header "Content-Type: application/json" \
   http://localhost:8501/v1/models/$MODEL_NAME:predict
 
 # Fill in placeholders in deployment YAML
-cp $BASE_PATH/base-tfserving-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
 
-# Create endpoint, failing gracefully if there's an issue
-az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+# Check endpoint existence
+EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+
+# endpoint exists, update it
+if [[ $EXISTS == $ENDPOINT_NAME ]]
+then 
+  az ml endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+else
+  az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+fi
 
 STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
 
 if [[ $STATE != "Succeeded" ]]
 then
-  az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
-  az ml endpoint log -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
+  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
+  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
+  echo "deleting endpoint, state is "$STATE
   az ml endpoint delete -n $ENDPOINT_NAME -y
   exit 1
 fi
 
 # Test remotely
-az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json
+for i in {1..100}
+do
+   RESPONSE=$(az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
+done
+
+echo "Tested successfully, response was $RESPONSE. deleting all resources"
 
 # Clean up
+sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
 rm $BASE_PATH/half_plus_two.tar.gz
 rm -r $BASE_PATH/half_plus_two
-az ml endpoint delete -n $ENDPOINT_NAME -y
-az ml model delete -n $MODEL_NAME -y
+# az ml endpoint delete -n $ENDPOINT_NAME -y
+# az ml model delete -n $MODEL_NAME -y
