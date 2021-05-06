@@ -4,7 +4,6 @@ import json
 import numpy
 from sklearn.externals import joblib
 import requests
-import traceback
 
 
 def get_token():

@@ -4,7 +4,6 @@ import pickle
 import json
 import numpy
 from sklearn.externals import joblib
-from sklearn.linear_model import Ridge
 
 
 def init():
