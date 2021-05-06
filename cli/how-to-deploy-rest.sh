@@ -84,7 +84,8 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # </create_model>
 
 # <create_environment>
-curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/1?api-version=$API_VERSION" \
+VERSION=$RANDOM
+curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$RANDOM?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{

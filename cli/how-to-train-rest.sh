@@ -46,7 +46,8 @@ AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.c
 AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
 
 # <create_environment>
-curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/lightgbm-environment/versions/1?api-version=$API_VERSION" \
+VERSION=$RANDOM
+curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/lightgbm-environment/versions/$VERSION?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
