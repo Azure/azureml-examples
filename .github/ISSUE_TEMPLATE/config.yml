@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Python SDK issues
+    url: https://github.com/azure/azure-sdk-for-python/issues/new/choose
+    about: Please open issues with the Azure ML Python SDK here
+  - name: CLI issues
+    url: https://github.com/azure/azure-cli-extensions/issues/new/choose
+    about: Please open issues with the Azure ML CLI extension here

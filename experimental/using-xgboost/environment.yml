@@ -1,0 +1,22 @@
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - azureml-core
+    - azureml-mlflow
+    - numpy
+    - pandas
+    - scikit-learn
+    - xgboost
+    - lightgbm
+    - dask
+    - distributed
+    - dask-ml
+    - dask-sql
+    - adlfs
+    - fastparquet
+    - pyarrow
+    - mpi4py
+    - dask-mpi

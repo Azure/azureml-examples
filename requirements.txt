@@ -1,10 +1,18 @@
-azureml-core>=1.15.0
-azureml-dataprep
-azureml-mlflow
-azureml-widgets
+# required for job submission
+# pinned to version where required features added to ScriptRunConfig
+azureml-core>=1.20.0
+azureml-mlflow>=1.20.0
+azureml-train>=1.20.0
+azureml-dataprep>=1.20.0
+azureml-widgets>=1.20.0
+
+# required in notebooks
 numpy
-pandas
+pandas 
 matplotlib
-papermill
-black==19.10b0
-black-nb
+
+# required for repo contribution/testing
+# pinned to avoid surprises
+black==20.8b1
+black-nb==0.4.0
+papermill==2.3.3

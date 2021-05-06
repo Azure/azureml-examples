@@ -22,6 +22,8 @@ script_name = "train.py"
 
 # azure ml settings
 experiment_name = "deepspeed-cifar-example"
+
+# NB. K-series is not supported at this time
 compute_name = "gpu-V100-2"
 
 # script arguments
@@ -36,27 +38,8 @@ arguments = [
     True,
 ]
 
-# create an environment
-# Note: We will use the Dockerfile method to create an environment for DeepSpeed.
-# In future, we plan to create a Curated environment for DeepSpeed.
-env = Environment(name="deepspeed-example")
-env.docker.enabled = True
-
-# indicate how to run Python
-env.python.user_managed_dependencies = True
-env.python.interpreter_path = "/opt/miniconda/bin/python"
-
-# To install any Python packages you need, simply add RUN pip install package-name to the docker string. E.g. `RUN pip install sklearn`
-# Specify docker steps as a string and use the base DeepSpeed Docker image
-dockerfile = r"""
-FROM deepspeed/base-aml:with-pt-ds-and-deps
-RUN pip install azureml-mlflow
-RUN echo "Welcome to the DeepSpeed custom environment!"
-"""
-
-# set base image to None, because the image is defined by dockerfile.
-env.docker.base_image = None
-env.docker.base_dockerfile = dockerfile
+# Use the DeepSpeed Curated Environment
+env = Environment.get(ws, name="AzureML-DeepSpeed-0.3-GPU")
 
 # create job config
 mpi_config = MpiConfiguration(node_count=2, process_count_per_node=2)

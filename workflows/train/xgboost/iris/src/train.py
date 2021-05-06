@@ -29,6 +29,12 @@ def parse_args():
         default=1.0,
         help="subsample ratio of the training instances (default: 1.0)",
     )
+    parser.add_argument(
+        "--compute",
+        type=str,
+        default="CPU",
+        help="set to GPU for accelerated training (defalut: CPU)",
+    )
     return parser.parse_args()
 
 
@@ -59,6 +65,12 @@ def main():
         "subsample": args.subsample,
         "seed": 42,
     }
+
+    if args.compute == "CPU":
+        params.update({"tree_method": "hist"})
+    else:
+        params.update({"tree_method": "gpu_hist"})
+
     model = xgb.train(params, dtrain, evals=[(dtrain, "train")])
 
     # evaluate model
