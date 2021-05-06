@@ -18,18 +18,18 @@ IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
 # Run image locally for testing
-docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
-    -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
-sleep 10
+# docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 --network="host" \
+#  -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
+# sleep 10
 
-# Check liveness locally
-curl -v http://localhost:8501/v1/models/$MODEL_NAME
+# # Check liveness locally
+# curl -v http://localhost:8501/v1/models/$MODEL_NAME
 
-# Check scoring locally
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data @$BASE_PATH/sample_request.json \
-  http://localhost:8501/v1/models/$MODEL_NAME:predict
+# # Check scoring locally
+# curl --header "Content-Type: application/json" \
+#   --request POST \
+#   --data @$BASE_PATH/sample_request.json \
+#   http://localhost:8501/v1/models/$MODEL_NAME:predict
 
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
@@ -57,7 +57,7 @@ then
 fi
 
 # Test remotely
-for i in {1..100}
+for i in {1..10}
 do
    RESPONSE=$(az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
 done

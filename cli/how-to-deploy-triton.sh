@@ -16,25 +16,20 @@ az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/triton:8000
 az acr build $BASE_PATH -f $BASE_PATH/triton.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
-# Run image locally for testing
-docker run -d -v $PWD/$BASE_PATH/triton:$MODEL_BASE_PATH/triton -p 8000:8000 \
-    -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e AZUREML_MODEL_DIR=$AZUREML_MODEL_DIR \
-    $IMAGE_TAG
+# # Run image locally for testing
+# docker run -d -v $PWD/$BASE_PATH/triton:$MODEL_BASE_PATH/triton -p 8000:8000 \
+#     -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e AZUREML_MODEL_DIR=$AZUREML_MODEL_DIR \
+#     $IMAGE_TAG
     
-sleep 10
+# sleep 10
 
-# Check scoring and liveness locally
-$BASE_PATH/test_triton.py --base_url=localhost:8000
+# # Check scoring and liveness locally
+# $BASE_PATH/test_triton.py --base_url=localhost:8000
 
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 
-# Delete environment if already exists
-EXISTS=$(az ml environment show -n tfserving --version=1 --query name -o tsv)
-if [[ $EXISTS == "tfserving"]]; then
-  az ml environment delete -n tfserving --version=1
-fi
-
+EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --version=1 --query name -o tsv)
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 
@@ -58,7 +53,7 @@ KEY=$(az ml endpoint list-keys -n $ENDPOINT_NAME --query accessToken -o tsv)
 BASE_URL=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv | cut -d'/' -f3)
 $BASE_PATH/test_triton.py --base_url=$BASE_URL --token=$KEY --num_requests=100
 
-echo "Tested successfully, deleting endpoint"
+echo "Tested successfully, cleaning up"
 
 # Clean up
 sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
