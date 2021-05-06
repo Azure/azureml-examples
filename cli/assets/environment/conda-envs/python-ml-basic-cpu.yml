@@ -20,4 +20,4 @@ dependencies:
     - pyarrow
     - mlflow
     - azureml-mlflow
-    
+    - azureml-dataprep

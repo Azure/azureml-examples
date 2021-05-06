@@ -4,3 +4,4 @@ version: 1
 docker:
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 conda_file: file:conda-envs/python-ml-basic-cpu.yml
+description: Environment asset created from a base Docker image plus a Conda environment file.

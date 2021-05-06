@@ -16,4 +16,5 @@ environment: azureml:AzureML-Pytorch1.7-Cuda11-OpenMpi4.1.0-py36:1
 compute:
   target: azureml:gpu-cluster
 experiment_name: pytorch-word-language-model-example
+description: Train a multi-layer RNN (Elman, GRU, or LSTM) on a language modeling task with PyTorch.
     
