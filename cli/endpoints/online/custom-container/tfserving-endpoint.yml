@@ -18,7 +18,7 @@ deployments:
       name: tfserving
       version: 1
       docker:
-        image: c997e1d088fb477ea0356bd90bcc13e8.azurecr.io/tf-serving:8501-env-variables-mount
+        image: {{acr_name}}.azurecr.io/tf-serving:8501-env-variables-mount
       inference_config:
         liveness_route:
           port: 8501
