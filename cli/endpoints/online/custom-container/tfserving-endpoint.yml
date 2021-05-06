@@ -16,7 +16,7 @@ deployments:
       MODEL_NAME: half_plus_two
     environment:
       docker:
-        image: inferencepmaef584480.azurecr.io/tf-serving:8501-env-variables-mount
+        image: {{acr_name}}.azurecr.io/tf-serving:8501-env-variables-mount
       inference_config:
         liveness_route:
           port: 8501
