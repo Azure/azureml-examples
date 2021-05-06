@@ -39,7 +39,7 @@ print(
         workspace: {workspace_name}"""
 )
 
-# <create environment>
+# <create_environment>
 conda_file = "name: python-ml-basic-cpu\nchannels:\n  - conda-forge\ndependencies:\n  - python=3.8\n  - pip\n  - pip:\n    - numpy\n    - pandas\n    - scipy\n    - scikit-learn\n    - matplotlib\n    - xgboost\n    - lightgbm\n    - dask\n    - distributed\n    - dask-ml\n    - adlfs\n    - fastparquet\n    - pyarrow\n    - mlflow\n    - azureml-mlflow"
 docker_spec = DockerImage(
     docker_image_uri="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
@@ -54,11 +54,11 @@ env_version = client.environment_specification_versions.create_or_update(
     resource_group_name=resource_group_name,
     body=request,
 )
-# </create environment>
+# </create_environment>
 
 print(f"Created environment: {env_version}")
 
-# <create data>
+# <create_data>
 properties = DataVersion(
     dataset_type="simple",
     path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv",
@@ -72,7 +72,7 @@ data_version = client.data_versions.create_or_update(
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
 )
-# </create data>
+# </create_data>
 
 print(f"Created data version: {data_version}")
 
@@ -87,7 +87,7 @@ datastores = client.datastores.list(
 datastore_id = list(filter(lambda d: d.name == "workspaceblobstore", datastores))[0].id
 print(f"Using datastore: {datastore_id}")
 
-# <create code>
+# <create_code>
 properties = CodeVersion(datastore_id=datastore_id, path="src")
 request = CodeVersionResource(properties=properties)
 code_version = client.code_versions.create_or_update(
@@ -98,29 +98,29 @@ code_version = client.code_versions.create_or_update(
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
 )
-# </create code>
+# </create_code>
 
 print(f"Created code version: {code_version}")
 
 # TODO: figure out get compute
-# <create compute binding>
+# <create_compute_binding>
 compute_name = "cpu-cluster"
 compute_id = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.MachineLearningServices/workspaces/{workspace_name}/computes/{cluster}"
 compute_binding = ComputeConfiguration(
     target=compute_id,
     instance_count=1,
 )
-# </create compute binding>
+# </create_compute_binding>
 
-# <create data binding>
+# <create_data_binding>
 data_config = {
     "iris": InputDataBinding(
         data_id=data_version.id,
     )
 }
-# </create data binding>
+# </create_data_binding>
 
-# <create job>
+# <create_job>
 properties = CommandJob(
     code_id=code_version.id,
     experiment_name="lightgbm-iris",
@@ -139,7 +139,7 @@ job = client.jobs.create_or_update(
     workspace_name=workspace_name,
     resource_group_name=resource_group_name,
 )
-# </create job>
+# </create_job>
 
 print(f"Created job: {vars(job)}")
 
