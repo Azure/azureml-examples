@@ -15,8 +15,6 @@ deployments:
       MODEL_BASE_PATH: /var/azureml-app/azureml-models/triton-ensemble/1
       AZUREML_MODEL_DIR: azureml-models/triton-ensemble/1
     environment:
-      # name: triton
-      # version: 1
       docker:
         image: {{acr_name}}.azurecr.io/triton:8000
       inference_config:

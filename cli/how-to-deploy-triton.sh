@@ -29,6 +29,12 @@ $BASE_PATH/test_triton.py --base_url=localhost:8000
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 
+# Delete environment if already exists
+EXISTS=$(az ml environment show -n tfserving --version=1 --query name -o tsv)
+if [[ $EXISTS == "tfserving"]]; then
+  az ml environment delete -n tfserving --version=1
+fi
+
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 

@@ -15,10 +15,8 @@ deployments:
       MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/1
       MODEL_NAME: half_plus_two
     environment:
-      name: tfserving
-      version: 1
       docker:
-        image: {{acr_name}}.azurecr.io/tf-serving:8501-env-variables-mount
+        image: inferencepmaef584480.azurecr.io/tf-serving:8501-env-variables-mount
       inference_config:
         liveness_route:
           port: 8501
