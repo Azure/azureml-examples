@@ -27,12 +27,7 @@ sleep 10
 $BASE_PATH/test_triton.py --base_url=localhost:8000
 
 # Fill in placeholders in deployment YAML
-cp $BASE_PATH/base-triton-endpoint.yml $BASE_PATH/$ENDPOINT_NAME.yml
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's|{{model_base_path}}|'$MODEL_BASE_PATH'|' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's/{{model_name}}/'$MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/g' $BASE_PATH/$ENDPOINT_NAME.yml
-sed -i 's|{{azureml_model_dir}}|'$AZUREML_MODEL_DIR'|g' $BASE_PATH/$ENDPOINT_NAME.yml
 
 # Create endpoint, failing gracefully if there's an issue
 az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
@@ -50,6 +45,7 @@ KEY=$(az ml endpoint list-keys -n $ENDPOINT_NAME --query accessToken -o tsv)
 $BASE_PATH/test_triton.py --url=localhost:8000 --token=$KEY
 
 # Clean up
+sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
 rm $BASE_PATH/triton_ensemble.tar.gz
 rm -r $BASE_PATH/triton_ensemble
 az ml endpoint delete -n $ENDPOINT_NAME -y
