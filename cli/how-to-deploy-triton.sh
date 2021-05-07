@@ -48,6 +48,8 @@ then
   az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
   echo "deleting endpoint, state is "$STATE
   az ml endpoint delete -n $ENDPOINT_NAME -y
+  echo "deleting model..."
+  az ml model delete -n $MODEL_NAME -y
   exit 1
 fi
 
