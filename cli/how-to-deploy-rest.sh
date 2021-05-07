@@ -9,7 +9,7 @@ SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
 LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
-WORKSPACE=$(az configure -l | jq '.[] | select(.name=="workspace") | .value' | tr -d '"')
+WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
 
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
@@ -29,7 +29,7 @@ wait_for_completion () {
         echo "Getting operation status from: $operation_id"
         operation_result=$(curl --location --request GET $operation_id --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
-        operation_status=$(echo $operation_result | jq -r ".status")
+        operation_status=$(echo $operation_result | jq -r '.status')
         echo "Current operation status: $operation_status"
         sleep 5
     done
@@ -116,7 +116,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 #</create_endpoint>
 
 echo "Endpoint response: $response"
-operation_id=$(echo $response | jq '.properties' | jq '.properties' | jq '.AzureAsyncOperationUri' | tr -d '\n"')
+operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri' | tr -d '\n"')
 wait_for_completion $operation_id
 
 # <create_deployment>
@@ -148,7 +148,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 #</create_deployment>
 
 echo "Endpoint response: $response"
-operation_id=$(echo $response | jq '.properties' | jq '.properties' | jq '.AzureAsyncOperationUri' | tr -d '\n"')
+operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri' | tr -d '\n"')
 wait_for_completion $operation_id
 
 # <get_endpoint>
@@ -156,13 +156,13 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
-scoringUri=$(echo $response | jq -r ".properties" | jq -r ".scoringUri")
+scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
 # </get_endpoint>
 
 # <get_access_token>
 response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
-accessToken=$(echo $response | jq -r ".accessToken")
+accessToken=$(echo $response | jq -r '.accessToken')
 # </get_access_token>
 
 # <score_endpoint>
