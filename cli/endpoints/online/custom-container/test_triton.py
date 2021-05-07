@@ -13,12 +13,13 @@ if (__name__=='__main__'):
     parser.add_argument('--base_url')
     parser.add_argument('--token')
     parser.add_argument('--num_requests', type=int, default=1)
+    parser.add_argument('--image_url', type=str, default="https://aka.ms/peacock-pic")
     args = parser.parse_args()
 
     headers = {"Content-Type": "application/octet-stream"}
     headers['Authorization'] = f'Bearer {args.token}'
 
-    test_sample = requests.get("https://aka.ms/peacock-pic", allow_redirects=True).content
+    test_sample = requests.get(args.image_url, allow_redirects=True).content
 
     test=np.array([test_sample], dtype=bytes)
     test = np.stack(test, axis=0)
