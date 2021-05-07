@@ -1,0 +1,41 @@
+name: cli-docs-how-to-deploy-triton
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+    paths:
+      - cli/how-to-deploy-triton.sh
+      - .github/workflows/cli-docs-how-to-deploy-triton.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CLI_CREDS}}
+    - name: install new ml cli
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.75-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: setup workspace
+      run: bash setup.sh
+      working-directory: cli
+    - name: docs installs
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r python-sdk/requirements.txt
+    - name: pip install nvidia-pyindex
+      run: pip install nvidia-pyindex
+    - name: pip install other requirements
+      run: pip install tritonclient[http] gevent
+    - name: test doc script
+      run: bash how-to-deploy-triton.sh
+      working-directory: cli
