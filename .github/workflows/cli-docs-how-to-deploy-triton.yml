@@ -26,6 +26,14 @@ jobs:
       working-directory: cli
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r python-sdk/requirements.txt
+    - name: pip install other requirements
+      run: pip install nvidia-pyindex tritonclient[http] gevent
     - name: test doc script
       run: bash how-to-deploy-triton.sh
       working-directory: cli

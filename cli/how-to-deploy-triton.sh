@@ -16,23 +16,26 @@ az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/triton:8000
 az acr build $BASE_PATH -f $BASE_PATH/triton.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
-# # Run image locally for testing
-# docker run -d -v $PWD/$BASE_PATH/triton:$MODEL_BASE_PATH/triton -p 8000:8000 \
-#     -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e AZUREML_MODEL_DIR=$AZUREML_MODEL_DIR \
-#     $IMAGE_TAG
+# Run image locally for testing
+docker run --rm -d -v $PWD/$BASE_PATH/triton:$MODEL_BASE_PATH/triton -p 8000:8000 \
+    -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e AZUREML_MODEL_DIR=$AZUREML_MODEL_DIR \
+    --name="triton-test" $IMAGE_TAG
     
-# sleep 10
+sleep 10
 
-# # Check scoring and liveness locally
-# $BASE_PATH/test_triton.py --base_url=localhost:8000
+# Check scoring and liveness locally
+$BASE_PATH/test_triton.py --base_url=localhost:8000
+
+docker stop triton-test
 
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 
-EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --version=1 --query name -o tsv)
+EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 
+  STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
   az ml endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
 else
   az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME

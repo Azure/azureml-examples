@@ -18,18 +18,21 @@ IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
 # Run image locally for testing
-# docker run -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 --network="host" \
-#  -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME $IMAGE_TAG
-# sleep 10
+docker run --rm -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
+ -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME \
+ --name="tfserving-test" $IMAGE_TAG
+sleep 10
 
-# # Check liveness locally
-# curl -v http://localhost:8501/v1/models/$MODEL_NAME
+# Check liveness locally
+curl -v http://localhost:8501/v1/models/$MODEL_NAME
 
-# # Check scoring locally
-# curl --header "Content-Type: application/json" \
-#   --request POST \
-#   --data @$BASE_PATH/sample_request.json \
-#   http://localhost:8501/v1/models/$MODEL_NAME:predict
+# Check scoring locally
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data @$BASE_PATH/sample_request.json \
+  http://localhost:8501/v1/models/$MODEL_NAME:predict
+
+docker stop tfserving-test
 
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
@@ -40,6 +43,7 @@ EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
 # endpoint exists, update it
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 
+  echo "endpoint exists, updating..."
   az ml endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
 else
   az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
@@ -57,12 +61,13 @@ then
 fi
 
 # Test remotely
+echo "Testing endpoint"
 for i in {1..10}
 do
    RESPONSE=$(az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
 done
 
-echo "Tested successfully, response was $RESPONSE. deleting all resources"
+echo "Tested successfully, response was $RESPONSE. Cleaning up..."
 
 # Clean up
 sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
