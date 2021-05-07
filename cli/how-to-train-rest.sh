@@ -9,7 +9,7 @@ SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
 LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
-WORKSPACE=$(az configure -l | jq '.[] | select(.name=="workspace") | .value' | tr -d '"')
+WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
 
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
@@ -30,7 +30,7 @@ wait_for_completion () {
         job=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/$1?api-version=$API_VERSION" \
             --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
-        job_status=$(echo $job | jq -r ".properties" | jq -r ".status")
+        job_status=$(echo $job | jq -r '.properties' | jq -r '.status')
         echo "Current job status: $job_status"
         sleep 5
     done
@@ -40,13 +40,14 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
-AZURE_STORAGE_ACCOUNT=$(echo $response | jq '.value[0].properties.contents.accountName' | tr -d '\r"')
-AZUREML_DEFAULT_DATASTORE=$(echo $response | jq '.value[0].name' | tr -d '\r"')
-AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.containerName' | tr -d '\r"')
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
+AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 
 # <create_environment>
-curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/lightgbm-environment/versions/1?api-version=$API_VERSION" \
+VERSION=$RANDOM
+curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/lightgbm-environment/versions/$VERSION?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
