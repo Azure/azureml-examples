@@ -32,8 +32,10 @@ jobs:
         python-version: "3.8"
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
+    - name: pip install nvidia-pyindex
+      run: pip install nvidia-pyindex
     - name: pip install other requirements
-      run: pip install nvidia-pyindex tritonclient[http] gevent
+      run: pip install tritonclient[http] gevent
     - name: test doc script
       run: bash how-to-deploy-triton.sh
       working-directory: cli
