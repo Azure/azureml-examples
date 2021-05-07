@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/onlineEndpoint.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: my-endpoint
 type: online
 auth_mode: aml_token
@@ -7,7 +7,7 @@ traffic:
 
 deployments:
   #green deployment
-  green:    
+  - name: green
     model:
       name: model-2
       version: 1

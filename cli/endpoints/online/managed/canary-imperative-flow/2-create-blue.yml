@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/onlineEndpoint.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: blue
 model:
   name: model-1
