@@ -17,6 +17,13 @@ az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/tf-serving:8501-env-variables-mount
 az acr build $BASE_PATH -f $BASE_PATH/tfserving.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
+# Clean up utility
+cleanup(){
+    sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
+    rm $BASE_PATH/half_plus_two.tar.gz
+    rm -r $BASE_PATH/half_plus_two
+}
+
 # Run image locally for testing
 docker run --rm -d -v $PWD/$BASE_PATH:$MODEL_BASE_PATH -p 8501:8501 \
  -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e MODEL_NAME=$MODEL_NAME \
@@ -59,6 +66,7 @@ then
   az ml endpoint delete -n $ENDPOINT_NAME -y
   echo "deleting model..."
   az ml model delete -n tfserving-mounted --version 1
+  cleanup
   exit 1
 fi
 
@@ -71,9 +79,6 @@ done
 
 echo "Tested successfully, response was $RESPONSE. Cleaning up..."
 
-# Clean up
-sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
-rm $BASE_PATH/half_plus_two.tar.gz
-rm -r $BASE_PATH/half_plus_two
+cleanup
 # az ml endpoint delete -n $ENDPOINT_NAME -y
 # az ml model delete -n $MODEL_NAME -y

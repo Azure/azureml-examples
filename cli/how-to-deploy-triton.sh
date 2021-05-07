@@ -16,6 +16,13 @@ az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/triton:8000
 az acr build $BASE_PATH -f $BASE_PATH/triton.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
+# Clean up utility
+cleanup(){
+    sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
+    rm $BASE_PATH/triton_ensemble.tar.gz
+    rm -r $BASE_PATH/triton
+}
+
 # Run image locally for testing
 docker run --rm -d -v $PWD/$BASE_PATH/triton:$MODEL_BASE_PATH/triton -p 8000:8000 \
     -e MODEL_BASE_PATH=$MODEL_BASE_PATH -e AZUREML_MODEL_DIR=$AZUREML_MODEL_DIR \
@@ -50,6 +57,7 @@ then
   az ml endpoint delete -n $ENDPOINT_NAME -y
   echo "deleting model..."
   az ml model delete -n triton-ensemble --version 1
+  cleanup
   exit 1
 fi
 
@@ -61,8 +69,7 @@ $BASE_PATH/test_triton.py --base_url=$BASE_URL --token=$KEY --num_requests=100
 echo "Tested successfully, cleaning up"
 
 # Clean up
-sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
-rm $BASE_PATH/triton_ensemble.tar.gz
-rm -r $BASE_PATH/triton
+cleanup
+
 # az ml endpoint delete -n $ENDPOINT_NAME -y
 # az ml model delete -n $MODEL_NAME -y
