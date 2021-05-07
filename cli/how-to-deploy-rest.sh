@@ -22,27 +22,33 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 # define how to wait
 wait_for_completion () {
     operation_id=$1
-    operation_status="unknown"
+    status="unknown"
 
-    while [[ $operation_status != "Succeeded" && $operation_status != "Failed" ]]
+    while [[ $status != "Succeeded" && $status != "Failed" ]]
     do
         echo "Getting operation status from: $operation_id"
         operation_result=$(curl --location --request GET $operation_id --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
-        operation_status=$(echo $operation_result | jq -r '.status')
-        echo "Current operation status: $operation_status"
+        status=$(echo $operation_result | jq -r '.status')
+        echo "Current operation status: $status"
         sleep 5
     done
+
+    if [[ $status == "Failed" ]]
+    then
+        error=$(echo $operation_result | jq -r '.error')
+        echo "Error: $error"
+    fi
 }
 
 # Get values for storage account
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
-AZURE_STORAGE_ACCOUNT=$(echo $response | jq '.value[0].properties.contents.accountName' | tr -d '\r"')
-AZUREML_DEFAULT_DATASTORE=$(echo $response | jq '.value[0].name' | tr -d '\r"')
-AZUREML_DEFAULT_CONTAINER=$(echo $response | jq '.value[0].properties.contents.containerName' | tr -d '\r"')
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq '.[0].value')
+AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
