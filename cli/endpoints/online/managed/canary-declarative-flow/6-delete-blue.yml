@@ -7,7 +7,7 @@ traffic:
 
 deployments:
   #green deployment
-  green:    
+  - name: green
     model:
       name: model-2
       version: 1
