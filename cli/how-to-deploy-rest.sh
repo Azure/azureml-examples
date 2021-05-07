@@ -99,9 +99,8 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 }"
 # </create_environment>
 
-# TODO: had to change syntax to get headers
 #<create_endpoint>
-headers=$(curl -i -H --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
@@ -116,12 +115,12 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create_endpoint>
 
-echo "Endpoint headers: $headers"
-operation_id=$(echo $headers | grep -Fi azure-asyncoperation | sed "s/azure-asyncoperation: //" | tr -d '\r\\')
+echo "Endpoint response: $response"
+operation_id=$(echo $response | jq '.properties' | jq '.properties' | jq '.AzureAsyncOperationUri' | tr -d '\n"')
 wait_for_completion $operation_id
 
 # <create_deployment>
-headers=$(curl -i -H --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint/deployments/blue?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-endpoint/deployments/blue?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
@@ -148,8 +147,8 @@ headers=$(curl -i -H --location --request PUT "https://management.azure.com/subs
 }")
 #</create_deployment>
 
-echo "Endpoint headers: $headers"
-operation_id=$(echo $headers | grep -Fi azure-asyncoperation | sed "s/azure-asyncoperation: //" | tr -d '\r\\')
+echo "Endpoint response: $response"
+operation_id=$(echo $response | jq '.properties' | jq '.properties' | jq '.AzureAsyncOperationUri' | tr -d '\n"')
 wait_for_completion $operation_id
 
 # <get_endpoint>
