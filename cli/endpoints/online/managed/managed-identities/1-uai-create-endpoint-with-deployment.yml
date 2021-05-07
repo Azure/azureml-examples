@@ -5,7 +5,7 @@ auth_mode: aml_token
 identity:
   type: user_assigned
   user_assigned_identities:
-    - resource_id: uai_place_holder
+    - resource_id: user_identity_ARM_id
 
 traffic:
   blue: 100
