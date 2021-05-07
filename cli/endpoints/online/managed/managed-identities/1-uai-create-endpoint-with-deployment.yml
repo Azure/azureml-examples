@@ -1,11 +1,11 @@
-# yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/onlineEndpoint.schema.json
+# yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
 name: my-uai-endpoint
 type: online
 auth_mode: aml_token
 identity:
   type: user_assigned
   user_assigned_identities:
-    - resource_id: user_identity_ARM_id
+    - resource_id: user_identity_ARM_id_place_holder
 
 traffic:
   blue: 100
