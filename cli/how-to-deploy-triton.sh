@@ -12,6 +12,13 @@ tar -xvf $BASE_PATH/triton_ensemble.tar.gz -C $BASE_PATH
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
 ACR_NAME=$(az ml workspace show -w $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+
+if [[$ACR_NAME == ""]]
+then
+    echo "ACR login failed, exiting"
+    exit 1
+fi
+
 az acr login -n $ACR_NAME
 IMAGE_TAG=${ACR_NAME}.azurecr.io/triton:8000
 az acr build $BASE_PATH -f $BASE_PATH/triton.dockerfile -t $IMAGE_TAG -r $ACR_NAME
