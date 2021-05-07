@@ -16,7 +16,7 @@ deployments:
       AZUREML_MODEL_DIR: azureml-models/triton-ensemble/1
     environment:
       docker:
-        image: b8f4b3326c2e403a9f8a3e4dedbb6f10.azurecr.io/triton:8000
+        image: {{acr_name}}.azurecr.io/triton:8000
       inference_config:
         liveness_route:
           port: 8000
