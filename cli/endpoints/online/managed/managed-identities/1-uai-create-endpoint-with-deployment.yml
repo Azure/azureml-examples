@@ -1,11 +1,11 @@
-# yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/onlineEndpoint.schema.json
+# yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
 name: my-uai-endpoint
 type: online
 auth_mode: aml_token
 identity:
   type: user_assigned
   user_assigned_identities:
-    - resource_id: uai_place_holder
+    - resource_id: user_identity_ARM_id_place_holder
 
 traffic:
   blue: 100
@@ -26,7 +26,7 @@ deployments:
       path: .
       conda_file: file:../../model-1/environment/conda.yml
       docker:
-        image: mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20210301.v1
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210301.v1
     instance_type: Standard_F2s_v2
     scale_settings:
       scale_type: manual

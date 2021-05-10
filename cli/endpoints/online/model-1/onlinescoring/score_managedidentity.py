@@ -4,7 +4,6 @@ import json
 import numpy
 from sklearn.externals import joblib
 import requests
-import traceback
 
 
 def get_token():
@@ -72,13 +71,9 @@ def init():
 
 # note you can pass in multiple rows for scoring
 def run(raw_data):
-    try:
-        logging.info("Request received")
-        data = json.loads(raw_data)["data"]
-        data = numpy.array(data)
-        result = model.predict(data)
-        logging.info("Request processed")
-        return result.tolist()
-    except Exception as e:
-        error = str(e)
-        return error
+    logging.info("Request received")
+    data = json.loads(raw_data)["data"]
+    data = numpy.array(data)
+    result = model.predict(data)
+    logging.info("Request processed")
+    return result.tolist()

@@ -1,10 +1,14 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <set_endpoint_name>
-export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
-# </set_endpoint_name>
+# <set_variables>
+export WORKSPACE="<WORKSPACE_NAME>"
+export LOCATION="<WORKSPACE_LOCATION>"
+export ENDPOINT_NAME="<ENDPOINT_NAME>"
+# </set_variables>
 
+export WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
+export LOCATION=$(az group show --query location -o tsv)
 export TEST_ID=`echo $RANDOM`
 export ENDPOINT_NAME=endpt-uai-$TEST_ID
 
@@ -32,7 +36,7 @@ az identity create --name $UAI_NAME
 sleep 60
 
 # <create_storage_account>
-az storage account create --name $STORAGE_ACCOUNT_NAME --location $LOC
+az storage account create --name $STORAGE_ACCOUNT_NAME --location $LOCATION
 # </create_storage_account>
 
 # <get_storage_account_id>
@@ -56,11 +60,11 @@ uai_id=`az identity list --query "[?name=='$UAI_NAME'].id" -o tsv`
 # </get_user_identity_id>
 
 # <get_container_registry_id>
-container_registry=`az ml workspace show --name $WS --query container_registry -o tsv`
+container_registry=`az ml workspace show --workspace-name $WORKSPACE --query container_registry -o tsv`
 # </get_container_registry_id>
 
 # <get_workspace_storage_id>
-storage_account=`az ml workspace show --name $WS --query storage_account -o tsv`
+storage_account=`az ml workspace show --workspace-name $WORKSPACE --query storage_account -o tsv`
 # </get_workspace_storage_id>
 
 # <give_permission_to_user_storage_account>
@@ -109,7 +113,7 @@ fi
 
 # <check_deployment_log>
 # Check deployment logs to confirm blob storage file contents read operation success.
-az ml endpoint log --name $ENDPOINT_NAME --deployment blue
+az ml endpoint get-logs --name $ENDPOINT_NAME --deployment blue
 # </check_deployment_log>
 
 # <test_endpoint>

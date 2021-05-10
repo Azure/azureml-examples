@@ -8,7 +8,7 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # create the endpoint
-az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yml
+az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/canary-declarative-flow/1-create-endpoint-with-blue.yml
 
 # <scale_blue>
 az ml endpoint update -n $ENDPOINT_NAME -f endpoints/online/managed/canary-declarative-flow/2-scale-blue.yml
@@ -19,7 +19,7 @@ az ml endpoint update -n $ENDPOINT_NAME -f endpoints/online/managed/canary-decla
 # </create_green>
 
 # <test_green>
-az ml endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file examples/endpoints/online/model-2/sample-request.json
+az ml endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
 
 # <green_10pct_traffic>
