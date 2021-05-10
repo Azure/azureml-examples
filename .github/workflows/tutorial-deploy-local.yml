@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - experimental/deploy-local/**
+      - tutorial/deploy-local/**
       - .github/workflows/tutorial-deploy-local.yml
       - requirements.txt
 jobs:
