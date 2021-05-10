@@ -5,9 +5,8 @@ traffic:
   tfserving: 100
 
 deployments:
-  #blue deployment
   - name: tfserving
-    model: #azureml:test:1
+    model:
       name: tfserving-mounted
       version: 1
       local_path: ./half_plus_two
@@ -16,7 +15,7 @@ deployments:
       MODEL_NAME: half_plus_two
     environment:
       docker:
-        image: {{acr_name}}.azurecr.io/tf-serving:8501-env-variables-mount
+        image: docker.io/tensorflow/serving:latest
       inference_config:
         liveness_route:
           port: 8501
