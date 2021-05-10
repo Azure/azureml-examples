@@ -31,7 +31,7 @@ jobs:
       run: az ml folder attach -w default -g azureml-examples
     - name: run 1.deploy-local.ipynb
       run: papermill 1.deploy-local.ipynb - -k python
-      working-directory: tutorial/deploy-local
+      working-directory: tutorials/deploy-local
     - name: run 2.deploy-local-cli.ipynb
       run: papermill 2.deploy-local-cli.ipynb - -k python
-      working-directory: experimental/deploy-local
+      working-directory: tutorials/deploy-local
