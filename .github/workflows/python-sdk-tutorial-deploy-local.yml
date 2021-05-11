@@ -1,4 +1,4 @@
-name: python-sdk/tutorial-deploy-local
+name: python-sdk-tutorial-deploy-local
 on:
   schedule:
     - cron: "0 */2 * * *"
