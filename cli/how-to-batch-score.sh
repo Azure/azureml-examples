@@ -38,7 +38,7 @@ fi
 # </check_job_status>
 
 # <add_deployment>
-az ml endpoint update --name mybatchedp --type batch --deployment mnist_deployment --deployment-file assets/endpoints/batch/add-deployment.yml
+az ml endpoint update --name mybatchedp --type batch --deployment-file assets/endpoints/batch/add-deployment.yml
 # </add_deploymen>
 
 # <switch_traffic>

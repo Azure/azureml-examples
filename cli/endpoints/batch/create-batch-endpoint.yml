@@ -7,7 +7,7 @@ traffic:
   autolog_deployment: 100
 
 deployments:
-  autolog_deployment:
+  - name: autolog_deployment
     model: 
       name: autolog_model
       version: 1
@@ -15,3 +15,10 @@ deployments:
     compute:
       target: azureml:cpu-cluster
       instance_count: 1   
+    mini_batch_size: 1
+    output_file_name: predictions.csv
+    retry_settings:
+      max_retries: 3
+      timeout: 30
+    error_threshold: -1 
+    logging_level: info

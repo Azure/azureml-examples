@@ -1,4 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: mnist_deployment
 model: 
   name: mnist
   version: 1
@@ -24,5 +25,3 @@ logging_level: info
 compute:
   target: azureml:cpu-cluster
   instance_count: 1
-environment_variables:
-  AZUREML_BE: my-env-var
