@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: my-endpoint
 type: online
-auth_mode: aml_token
+auth_mode: key
 traffic:
   green: 100
 
@@ -16,9 +16,9 @@ deployments:
       code: 
         local_path: ../../model-2/onlinescoring/
       scoring_script: score.py
-    environment:     
+    environment:
       name: env-model2
-      version: 1          
+      version: 1
       path: .
       conda_file: file:../../model-2/environment/conda.yml
       docker:
@@ -27,5 +27,3 @@ deployments:
     scale_settings:
       scale_type: manual
       instance_count: 2
-      min_instances: 1
-      max_instances: 2

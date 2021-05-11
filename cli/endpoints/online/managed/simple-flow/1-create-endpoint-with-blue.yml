@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: my-endpoint
 type: online
-auth_mode: aml_token
+auth_mode: key
 traffic:
   blue: 100
 
@@ -27,5 +27,3 @@ deployments:
     scale_settings:
       scale_type: manual
       instance_count: 1
-      min_instances: 1
-      max_instances: 2
