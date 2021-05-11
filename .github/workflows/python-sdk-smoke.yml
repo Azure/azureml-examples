@@ -4,12 +4,12 @@ on:
     branches:
       - main
     paths:
-      - python-sdk
+      - python-sdk/**
   pull_request:
     branches:
       - main
     paths:
-      - python-sdk
+      - python-sdk/**
   schedule:
       - cron: "0 0/1 * * *"
 jobs:

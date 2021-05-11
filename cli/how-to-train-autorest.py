@@ -47,7 +47,7 @@ docker_spec = DockerImage(
 )
 properties = EnvironmentSpecificationVersion(conda_file=conda_file, docker=docker_spec)
 request = EnvironmentSpecificationVersionResource(properties=properties)
-version = random.randint(1, 99999) # give version number you want here
+version = random.randint(1, 99999)  # give version number you want here
 env_version = client.environment_specification_versions.create_or_update(
     "lightgbm-environment",
     version,
@@ -66,7 +66,7 @@ properties = DataVersion(
     path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv",
 )
 request = DataVersionResource(properties=properties)
-version = random.randint(1, 99999) # give version number you want here
+version = random.randint(1, 99999)  # give version number you want here
 data_version = client.data_versions.create_or_update(
     "iris-data",
     version,
@@ -93,7 +93,7 @@ print(f"Using datastore: {datastore_id}")
 # <create_code>
 properties = CodeVersion(datastore_id=datastore_id, path="src")
 request = CodeVersionResource(properties=properties)
-version = random.randint(1, 99999) # give version number you want here
+version = random.randint(1, 99999)  # give version number you want here
 code_version = client.code_versions.create_or_update(
     "train-lightgbm",
     version,
