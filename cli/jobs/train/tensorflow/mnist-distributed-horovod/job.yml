@@ -7,7 +7,7 @@ command: >
 #environment: azureml:AzureML-TensorFlow-2.3-GPU:6
 environment:
   docker:
-    image: docker.io/tensorflow/tensorflow:latest-gpu
+    image: docker.io/horovod/horovod:0.20.0-tf2.3.0-torch1.6.0-mxnet1.6.0.post0-py3.7-cuda10.1
 compute:
   target: azureml:gpu-cluster
   instance_count: 2
