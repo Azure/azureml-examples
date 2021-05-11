@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
 name: my-uai-endpoint
 type: online
-auth_mode: aml_token
+auth_mode: key
 identity:
   type: user_assigned
   user_assigned_identities:
@@ -31,8 +31,6 @@ deployments:
     scale_settings:
       scale_type: manual
       instance_count: 1
-      min_instances: 1
-      max_instances: 2
     environment_variables:
       STORAGE_ACCOUNT_NAME: "storage_place_holder"
       STORAGE_CONTAINER_NAME: "container_place_holder"
