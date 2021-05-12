@@ -27,5 +27,5 @@ jobs:
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
-      run: bash how-to-deploy-imperative-safe-rollout-online-endpoints.sh
+      run: set -e; bash -x how-to-deploy-imperative-safe-rollout-online-endpoints.sh
       working-directory: cli

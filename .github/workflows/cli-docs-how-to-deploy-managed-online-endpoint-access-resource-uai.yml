@@ -27,5 +27,5 @@ jobs:
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
-      run: bash how-to-deploy-managed-online-endpoint-access-resource-uai.sh
+      run: set -e; bash -x how-to-deploy-managed-online-endpoint-access-resource-uai.sh
       working-directory: cli
