@@ -1,4 +1,4 @@
-# Contributing guide
+# Contributing (CLI)
 
 [Azure/azureml-examples overall contributing guide.](../CONTRIBUTING.md)
 
@@ -27,8 +27,8 @@ Jobs should:
 
 ### Endpoints
 
-Endpoints are currently tested through documentation scripts.
+Endpoints are currently only tested through documentation scripts.
 
 ### Documentation scripts
 
-Documentation scripts are bash scripts with the `.sh` script at the root of the directory. They directly correspond to a markdown file in the MicrosoftDocs/azure-docs repository.
+Documentation scripts are bash scripts with the `.sh` extension at the root of the directory. They directly correspond to a markdown file in the MicrosoftDocs/azure-docs repository.
