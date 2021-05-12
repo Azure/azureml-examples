@@ -19,7 +19,7 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE"
 
-# define how to wait
+# define how to wait 
 wait_for_completion () {
     operation_id=$1
     status="unknown"
