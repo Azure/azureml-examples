@@ -8,12 +8,10 @@ products:
 description: Top-level directory for official Azure Machine Learning Python SDK sample code and notebooks.
 ---
 
-# Azure Machine Learning Examples
+# Azure Machine Learning Python SDK examples
 
-[![smoke](https://github.com/Azure/azureml-examples/workflows/python-sdk-smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-smoke)
-[![cleanup](https://github.com/Azure/azureml-examples/workflows/python-sdk-cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-cleanup)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
 
 Welcome to the Azure Machine Learning examples repository!
 
@@ -22,13 +20,13 @@ Welcome to the Azure Machine Learning examples repository!
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
 2. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
 
-## Setup
+## Set up
 
 Clone this repository and install required packages:
 
 ```sh
 git clone https://github.com/Azure/azureml-examples --depth 1
-cd azureml-examples
+cd azureml-examples/python-sdk
 pip install --upgrade -r requirements.txt
 ```
 
@@ -40,7 +38,7 @@ If you have an Azure ML Workspace, [install the Azure ML CLI](https://docs.micro
 
 Run `python setup-workspace.py -h` to see other arguments.
 
-## Getting Started
+## Getting started
 
 To get started, see the [introductory tutorial](tutorials/an-introduction) which uses Azure ML to:
 

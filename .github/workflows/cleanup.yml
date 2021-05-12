@@ -1,0 +1,21 @@
+name: cleanup
+on:
+  schedule:
+    - cron: "0 8 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r requirements.txt
+      working-directory: python-sdk
+    - name: run cleanup script
+      run: python cleanup.py
+      working-directory: python-sdk
+
