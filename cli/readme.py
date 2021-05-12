@@ -368,7 +368,7 @@ jobs:
     - name: docs installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
-      run: bash {doc}.sh
+      run: set -e; bash -x {doc}.sh
       working-directory: cli\n"""
 
     # write workflow
