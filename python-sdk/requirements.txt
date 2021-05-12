@@ -7,13 +7,11 @@ azureml-dataprep>=1.20.0
 azureml-widgets>=1.20.0
 
 # required in notebooks
+ipykernel
 numpy
 pandas 
-ipykernel
 matplotlib
 
-# required for repo contribution/testing
+# required for notebook testing in workflow actions
 # pinned to avoid surprises
-black==20.8b1
-black-nb==0.4.0
 papermill==2.3.3
