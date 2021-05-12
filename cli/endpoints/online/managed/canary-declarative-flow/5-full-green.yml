@@ -28,6 +28,8 @@ deployments:
     scale_settings:
       scale_type: manual
       instance_count: 2
+      min_instances: 1
+      max_instances: 2
   
   #green deployment
   - name: green
@@ -50,3 +52,5 @@ deployments:
     scale_settings:
       scale_type: manual
       instance_count: 2
+      min_instances: 1
+      max_instances: 2
