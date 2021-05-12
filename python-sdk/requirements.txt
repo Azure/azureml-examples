@@ -1,0 +1,17 @@
+# required for job submission
+# pinned to version where required features added to ScriptRunConfig
+azureml-core>=1.20.0
+azureml-mlflow>=1.20.0
+azureml-train>=1.20.0
+azureml-dataprep>=1.20.0
+azureml-widgets>=1.20.0
+
+# required in notebooks
+ipykernel
+numpy
+pandas 
+matplotlib
+
+# required for notebook testing in workflow actions
+# pinned to avoid surprises
+papermill==2.3.3

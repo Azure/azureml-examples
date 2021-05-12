@@ -1,0 +1,244 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+FROM nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
+
+USER root:root
+
+##############################################################################
+# Environment variables
+##############################################################################
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+ENV LD_LIBRARY_PATH "/usr/local/cuda/extras/CUPTI/lib64:${LD_LIBRARY_PATH}"
+
+ENV STAGE_DIR=/root/gpu/install \
+    CUDA_HOME=/usr/local/cuda \
+    CUDNN_HOME=/usr/lib/x86_64-linux-gnu \
+    CUDACXX=/usr/local/cuda/bin/nvcc
+
+RUN mkdir -p $STAGE_DIR
+
+RUN apt-get -y update && \
+    apt-get --assume-yes --no-install-recommends install \
+    build-essential \
+    autotools-dev \
+    curl \
+    wget \
+    openssh-server \
+    openssh-client \
+    tmux \
+    vim \
+    sudo \
+    g++ \
+    gcc \
+    git \
+    bc \
+    tar \
+    bash \
+    pbzip2 \
+    pv bzip2 \
+    cabextract \
+    dos2unix \
+    less \
+    unzip \
+    pdsh \
+    pssh \
+    nfs-common \
+    libfuse-dev \
+    htop iftop iotop rsync iputils-ping \
+    net-tools && \
+    rm -rf /var/lib/apt/lists/*
+
+##############################################################################
+# Conda Environment
+##############################################################################
+# MiniConda with python 3.7.7
+ARG MINICONDA_VERSION=4.7.12.1  
+ARG PYTHON_INSTALL_VERSION=3.7.7
+
+ENV MINICONDA_VERSION ${MINICONDA_VERSION}
+ENV PATH /opt/miniconda/bin:$PATH
+RUN wget -qO /tmp/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh    && \
+    bash /tmp/miniconda.sh -bf -p /opt/miniconda && \
+    conda clean -ay && \
+    rm -rf /opt/miniconda/pkgs && \
+    rm /tmp/miniconda.sh && \
+    find / -type d -name __pycache__ | xargs rm -rf
+
+##############################################################################
+# Generic ENV
+##############################################################################
+ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/local/lib:/usr/lib/x86_64-linux-gnu"
+ENV STAGE_DIR "/root/gpu/install"
+RUN mkdir -p $STAGE_DIR
+
+#############################################################################
+# IB user space libs  Mellanox driver should be installed on kernel space already
+#############################################################################
+
+RUN apt-get update && apt-get install -y --no-install-recommends  libnuma-dev  libmlx4-1      libmlx5-1      librdmacm1     libmthca1      libdapl2      dapl2-utils      openssh-client      openssh-server      iproute2 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends cpio libmlx4-1 libmlx5-1 librdmacm1 libmthca1 libdapl2 dapl2-utils pciutils ibutils ibverbs-utils rdmacm-utils infiniband-diags perftest librdmacm-dev && rm -rf /var/lib/apt/lists/*
+
+##############################################################################
+# nv_peer_mem
+##############################################################################
+RUN apt-get -y update && apt-get install -y --no-install-recommends debhelper dkms && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p ${STAGE_DIR} && \
+    git clone https://github.com/Mellanox/nv_peer_memory.git ${STAGE_DIR}/nv_peer_memory && \    
+    cd ${STAGE_DIR}/nv_peer_memory && \
+    git checkout 4ed7715d62edf1cbcbb522a9f9a0efb13e43b0d0 && \  
+    ./build_module.sh && \
+    cd /tmp && \
+    tar xzf /tmp/nvidia-peer-memory_1.1.orig.tar.gz && \
+    cd nvidia-peer-memory-1.1 && \
+    dpkg-buildpackage -us -uc && \
+    dpkg -i ../nvidia-peer-memory_1.1-0_all.deb
+WORKDIR $STAGE_DIR
+
+##############################################################################
+# OPENMPI
+##############################################################################
+ENV OPENMPI_BASEVERSION=4.0
+ENV OPENMPI_VERSION_STRING=${OPENMPI_BASEVERSION}.5
+RUN cd ${STAGE_DIR} && \
+    wget -q -O - https://download.open-mpi.org/release/open-mpi/v${OPENMPI_BASEVERSION}/openmpi-${OPENMPI_VERSION_STRING}.tar.gz | tar xzf - && \
+    cd openmpi-${OPENMPI_VERSION_STRING} && \
+    ./configure  --enable-orterun-prefix-by-default && \
+    make uninstall && \
+    make -j"$(nproc)" install && \
+    # Sanity check:
+    test -f /usr/local/bin/mpic++ && \
+    ldconfig && \
+    cd ${STAGE_DIR} && \
+    rm -r ${STAGE_DIR}/openmpi-${OPENMPI_VERSION_STRING}
+ENV PATH=/usr/local/bin:${PATH} \
+    LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+
+
+ENV CMAKE_VERSION=3.16.4
+RUN cd /usr/local && \
+    wget -q -O - https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz | tar zxf -
+ENV PATH=/usr/local/cmake-${CMAKE_VERSION}-Linux-x86_64/bin:${PATH}
+
+WORKDIR /workspace
+
+##############################################################################
+# Some Packages
+##############################################################################
+RUN apt-get -y update && apt-get -y install --no-install-recommends \
+    software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa -y && \
+    echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
+    apt-get update && apt-get install -y --allow-change-held-packages --allow-downgrades --no-install-recommends \
+    ca-certificates \
+    libjpeg-dev \
+    libpng-dev \
+    libsndfile-dev \
+    libcupti-dev \
+    libjpeg-dev \
+    libpng-dev \
+    screen \
+    libxml2-dev \
+    libxslt-dev &&\  
+    rm -rf /var/lib/apt/lists/*
+
+
+##############################################################################
+# Install Deep Learning packges: tensorflow
+##############################################################################
+RUN conda install -y python=$PYTHON_INSTALL_VERSION pyyaml scipy ipython cython typing mkl mkl-include setuptools
+RUN conda install -y -c conda-forge ruamel
+
+RUN echo /usr/lib/x86_64-linux-gnu >> /etc/ld.so.conf.d/cuda-11-0.conf
+RUN ldconfig
+    
+##############################################################################
+# update pip
+##############################################################################
+
+RUN python -m pip install --upgrade pip
+
+##############################################################################
+# PyTorch
+##############################################################################
+
+RUN pip install --no-cache-dir torch==1.7.0+cu110 torchvision==0.8.1+cu110 torchaudio===0.7.0 torchtext===0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+##############################################################################
+# Tensorflow, tensorboard, tensorboardX
+##############################################################################
+
+RUN pip install --no-cache-dir tensorflow==2.3.0 tensorboard==2.3.0 tensorboardX==2.1
+
+################################################################################################
+# Python Packages including AML-defaults, dataprep, transformers
+################################################################################################
+
+RUN pip install --no-cache-dir --use-feature=2020-resolver \
+    psutil \
+    yappi \
+    cffi \
+    ipdb \
+    matplotlib \
+    pyyaml \
+    pyarrow \
+    graphviz \
+    astor \
+    boto3 \
+    tqdm \
+    sentencepiece \
+    msgpack \
+    requests \
+    pandas \
+    sphinx \
+    sphinx_rtd_theme \
+    scipy \
+    numpy \
+    GPUtil \
+    sklearn \
+    scikit-learn \
+    nvidia-ml-py3 \
+    h5py \
+    py3nvml \
+    mpi4py \
+    sympy \
+    transformers \
+    datasets \
+    cerberus \
+    azureml-defaults==1.17.0 \
+    azureml-telemetry==1.17.0 \
+    azureml-dataprep==2.4.2 \
+    azureml-train==1.17.0 \
+    pytorch-lightning
+
+############################################
+############################################
+
+RUN pip install --no-cache-dir \
+    html2text nltk progressbar onnxruntime \
+    git+https://github.com/NVIDIA/dllogger wget \
+    azureml-core azureml-mlflow
+
+RUN apt-get install -y iputils-ping
+
+############################################
+# Install Apex
+# https://github.com/NVIDIA/apex/issues/988
+############################################
+
+RUN git clone https://github.com/NVIDIA/apex &&\
+    cd apex &&\
+    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+
+############################################
+# Install DeepSpeed from source
+############################################
+
+RUN git clone https://github.com/microsoft/DeepSpeed.git DeepSpeed
+RUN cd DeepSpeed && \
+  git pull && \
+  git checkout master && \
+  pip install -v . && \
+  ds_report

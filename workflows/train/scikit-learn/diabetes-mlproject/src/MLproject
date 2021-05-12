@@ -1,9 +1,0 @@
-name: sklearn-diabetes-mlproject-example
-
-conda_env: environment.yaml
-
-entry_points:
-  main:
-    parameters:
-      alpha: float
-    command: "python train.py {alpha}"

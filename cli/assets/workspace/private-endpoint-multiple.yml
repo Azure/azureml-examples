@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: private-endpoint-multiple-example
+location: eastus
+private_endpoints: 
+  approval_type: ManualApproval
+  connections:
+    my-endpoint1:
+      subscription_id: "<YOUR_SUBSCRIPTION_ID>"
+      resource_group: "<YOUR_RESOURCE_GROUP>"
+      location: eastus
+      vnet_name: "<YOUR_VNET_NAME>"
+      subnet_name: "<YOUR_SUBNET_NAME>"
+    my-endpoint2:
+      subscription_id: "<YOUR_SUBSCRIPTION_ID>"
+      resource_group: "<YOUR_RESOURCE_GROUP>"
+      location: eastus
+      vnet_name: "<YOUR_VNET_NAME>"
+      subnet_name: "<YOUR_SUBNET_NAME>"
+description: A basic Azure Machine Learning workspace example with multiple private endpoints
+tags:
+  purpose: demonstration
+  team: azureml-examples

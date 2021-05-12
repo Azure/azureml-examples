@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >
+  python train.py
+environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
+compute:
+  target: azureml:gpu-cluster
+experiment_name: tensorflow-mnist-example
+description: Train a basic neural network with TensorFlow on the MNIST dataset.
