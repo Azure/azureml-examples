@@ -1,5 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+set -e
 
 # <set_variables>
 export WORKSPACE="<WORKSPACE_NAME>"
@@ -92,7 +93,7 @@ echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
 then
   echo "Endpoint created successfully"
-else 
+else
   echo "Endpoint creation failed"
   exit 1
 fi
@@ -106,7 +107,7 @@ echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
   echo "Deployment completed successfully"
-else 
+else
   echo "Deployment failed"
   exit 1
 fi
