@@ -1,5 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+set -e
 
 # <set_variables>
 export WORKSPACE="<WORKSPACE_NAME>"
@@ -68,7 +69,7 @@ az role assignment create --assignee $system_identity --role "Storage Blob Data 
 # </give_permission_to_user_storage_account>
 
 # <deploy>
-az ml endpoint update --name $ENDPOINT_NAME --deployment blue --deployment-file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
+az ml endpoint update --name $ENDPOINT_NAME --deployment blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
 # </deploy>
 
 # <check_deploy_Status>
@@ -80,7 +81,7 @@ echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
   echo "Deployment completed successfully"
-else 
+else
   echo "Deployment failed"
   exit 1
 fi
@@ -89,10 +90,6 @@ fi
 # Check deployment logs to confirm blob storage file contents read operation success.
 az ml endpoint get-logs --name $ENDPOINT_NAME --deployment blue
 # </check_deployment_log>
-
-# <update_endpoint_traffic>
-az ml endpoint update --name $ENDPOINT_NAME --traffic "blue:100"
-# </update_endpoint_traffic>
 
 # <test_endpoint>
 az ml endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json

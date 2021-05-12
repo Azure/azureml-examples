@@ -2,6 +2,8 @@
 name: my-sai-endpoint
 type: online
 auth_mode: key
+traffic:
+  blue: 100
 
 deployments:
   - name: blue
@@ -14,7 +16,7 @@ deployments:
         local_path: ../../model-1/onlinescoring/
       scoring_script: score_managedidentity.py
     environment: 
-      name: envmodel1
+      name: env-model1
       version: 1
       path: .
       conda_file: file:../../model-1/environment/conda.yml
