@@ -22,7 +22,7 @@ Welcome to the Azure Machine Learning examples repository!
 |directory|description|
 |-|-|
 |[`.github`](.github)|GitHub-specific files like Actions workflow definitions and issue templates|
-|[`cli`](cli)|Azure Machine Learning CLI 2.0 (preview) examples|
+|[`cli`](cli)|Azure Machine Learning 2.0 CLI (preview) examples|
 |[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK examples|
 
 ## Contributing
