@@ -338,7 +338,7 @@ jobs:
 
 def write_doc_workflow(doc):
     filename, project_dir, hyphenated = parse_path(doc)
-    creds = "${{secrets.AZ_AE_CLI_CREDS}}"
+    creds = "${{secrets.AZ_AE_CLI_MIR_CREDS}}" if "access-resource" in filename else "${{secrets.AZ_AE_CLI_CREDS}}"
     workflow_yaml = f"""name: cli-docs-{hyphenated}
 on:
   schedule:
