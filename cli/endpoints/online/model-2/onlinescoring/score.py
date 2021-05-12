@@ -24,8 +24,8 @@ def init():
 
 def run(raw_data):
     """
-    This function is called for every invocation of the endpoint to perform the actual scoring/prediction. 
-    In the example we extract the data from the json input and call the scikit-learn model's predict() 
+    This function is called for every invocation of the endpoint to perform the actual scoring/prediction.
+    In the example we extract the data from the json input and call the scikit-learn model's predict()
     method and return the result back.
     """
     logging.info("Request received")
