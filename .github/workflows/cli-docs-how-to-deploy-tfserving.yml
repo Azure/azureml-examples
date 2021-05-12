@@ -1,0 +1,31 @@
+name: cli-docs-how-to-deploy-tfserving
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+    paths:
+      - cli/how-to-deploy-tfserving.sh
+      - .github/workflows/cli-docs-how-to-deploy-tfserving.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CLI_CREDS}}
+    - name: install new ml cli
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-1.0.0a4-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: setup workspace
+      run: bash setup.sh
+      working-directory: cli
+    - name: docs installs
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: test doc script
+      run: bash how-to-deploy-tfserving.sh
+      working-directory: cli

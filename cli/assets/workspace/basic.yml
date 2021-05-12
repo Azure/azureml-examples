@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: basic-example
+location: eastus
+description: A basic Azure Machine Learning workspace example
+tags:
+  purpose: demonstration
+  team: azureml-examples
