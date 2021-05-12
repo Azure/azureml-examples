@@ -1,33 +1,6 @@
 # Contributing
 
-## Contributor License Agreement
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-## Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Spirit
-
-This repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
-
-- frequent and comprehensive testing
-- clear separation of cloud code (job definition) and user code (ML code)
-
-## Issues
-
-All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues/new/choose) - please follow the pre-defined templates where applicable.
-
-*Note:* [Discussions](https://github.com/Azure/azureml-examples/discussions) are new to GitHub, feel free to start one!
+[Azure/azureml-examples overall contributing guide.](../CONTRIBUTING.md)
 
 ## Pull Requests
 

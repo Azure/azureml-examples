@@ -18,10 +18,10 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 
 ## Code of Conduct
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](../CODE_OF_CONDUCT.md) for details.
 
 ## Reference
 
 - [Template](https://github.com/Azure/azureml-template)
-- [Cheat sheets](https://azure.github.io/azureml-cheatsheets)
+- [Cheat sheet](https://azure.github.io/azureml-cheatsheets/docs/cheatsheets/python/v1/cheatsheet)
 - [Documentation](https://docs.microsoft.com/azure/machine-learning)

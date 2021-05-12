@@ -10,6 +10,9 @@ description: Top-level directory for official Azure Machine Learning sample code
 
 # Azure Machine Learning Examples
 
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
+[![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
+[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
 Welcome to the Azure Machine Learning examples repository!
@@ -19,7 +22,7 @@ Welcome to the Azure Machine Learning examples repository!
 |directory|description|
 |-|-|
 |`.github`|GitHub specific files like Actions workflow yaml definitions and issue templates|
-|`cli`|Azure Machine Learning CLI examples|
+|`cli`|Azure Machine Learning CLI 2.0 (preview) examples|
 |`python-sdk`|Azure Machine Learning Python SDK examples|
 
 ## Contributing

@@ -24,8 +24,8 @@ Provide samples and source code for documentation for ML professionals which rap
 
 ## Principles
 
-- standardization
 - robust and frequent testing
+- standardization of examples where beneficial
 
 ## Goals
 
@@ -47,7 +47,7 @@ All forms of feedback are welcome through [issues](https://github.com/Azure/azur
 
 The structure of this repository is currently subject to change. While restructuring the repository should be avoided, it may be necessary in the near future.
 
-For now, the repository is split at the root into two primary subdirectories - one for hosting the Python SDK examples and the other for the new CLI extension examples. Each subdirectory operates relatively independently, although there are many similarities.
+Currently the repository is split at the root into two primary subdirectories - one for hosting the Python SDK examples and the other for the new CLI extension examples. Each subdirectory operates relatively independently, although there are many similarities.
 
 For pull requests (PRs), see the next section and follow the specific contributing guidelines for the corresponding subdirectory you are contributing to.
 
@@ -57,7 +57,35 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 **Important:** PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
 
-See the subdirectory-specific contributing guides:
+### Set up and pre-PR
 
-- [CLI examples](cli/CONTRIBUTING.md)
-- [Python SDK examples](python-sdk/CONTRIBUTING.md)
+Clone the repository and install the required Python packages for contributing:
+
+```terminal
+git clone https://github.com/Azure/azureml-examples --depth 1
+cd azureml-examples
+pip install -r dev-requirements.txt
+```
+
+Before opening a PR, format all Python code and notebooks:
+
+```terminal
+black .
+black-nb .
+```
+
+Also if adding new examples or changing existing descriptions, run the `readme.py` script in the respective subdirectory to generate the `README.md` file with the table of examples:
+
+```terminal
+python readme.py
+```
+
+This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with the exception of Python SDK tutorials) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details.
+
+### CLI 2.0
+
+[CLI contributing guide.](cli/CONTRIBUTING.md)
+
+### Python SDK
+
+[Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
