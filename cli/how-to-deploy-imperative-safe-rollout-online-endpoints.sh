@@ -1,5 +1,6 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+set -e
 
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
@@ -44,7 +45,7 @@ az ml endpoint update --name $ENDPOINT_NAME --traffic "blue:0,green:100"
 # </green_100pct_traffic>
 
 # <delete_blue>
-az ml endpoint delete --name $ENDPOINT_NAME --deployment blue
+az ml endpoint delete --name $ENDPOINT_NAME --deployment blue --yes
 # </delete_blue>
 
 # <delete_endpoint>
