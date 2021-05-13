@@ -2,6 +2,11 @@ name: cleanup
 on:
   schedule:
     - cron: "0 8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths: 
+      - .github/workflows/cleanup.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -15,7 +20,32 @@ jobs:
     - name: pip install
       run: pip install -r requirements.txt
       working-directory: python-sdk
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w default -g azureml-examples
     - name: run cleanup script
       run: python cleanup.py
       working-directory: python-sdk
-
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CLI_CREDS}}
+    - name: attach to workspace
+      run: az ml folder attach -w main -g azureml-examples-cli
+    - name: run cleanup script
+      run: python cleanup.py
+      working-directory: python-sdk
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CLI_MIR_CREDS}}
+    - name: attach to workspace
+      run: az ml folder attach -w main -g azureml-examples-cli
+    - name: run cleanup script
+      run: python cleanup.py
+      working-directory: python-sdk
