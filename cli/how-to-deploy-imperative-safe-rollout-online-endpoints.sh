@@ -46,7 +46,7 @@ az ml endpoint update --name $ENDPOINT_NAME --traffic "blue:0,green:100"
 # </green_100pct_traffic>
 
 # <delete_blue>
-az ml endpoint delete --name $ENDPOINT_NAME --deployment blue
+az ml endpoint delete --name $ENDPOINT_NAME --deployment blue --yes
 # </delete_blue>
 
 # <delete_endpoint>
