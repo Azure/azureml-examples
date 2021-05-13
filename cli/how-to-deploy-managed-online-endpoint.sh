@@ -50,7 +50,10 @@ AUTH_KEY=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query "primaryKey"
 # invoke the endpoint using curl
 curl --location --request POST $SCORING_URI \
 --header "Authorization: Bearer $AUTH_KEY" --header "Content-Type: application/json" \
---data-raw @endpoints/online/model-1/sample-request.json
+--data-raw '{"data": [
+    [1,2,3,4,5,6,7,8,9,10], 
+    [10,9,8,7,6,5,4,3,2,1]
+]}'
 # </test_endpoint_curl>
 
 # <get_logs>
@@ -60,10 +63,6 @@ az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
 # <get_scoring_uri>
 az ml endpoint show -n $ENDPOINT_NAME --query "scoring_uri"
 # </get_scoring_uri>
-
-# <get_access_token>
-az ml endpoint get-credentials -n $ENDPOINT_NAME
-# </get_access_token>
 
 # <delete_endpoint>
 az ml endpoint delete -n $ENDPOINT_NAME --yes
