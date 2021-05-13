@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths: 
-      - ./github/workflows/cleanup.yml
+      - .github/workflows/cleanup.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
