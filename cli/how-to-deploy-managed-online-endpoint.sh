@@ -42,20 +42,6 @@ fi
 az ml endpoint invoke -n $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_endpoint>
 
-# <test_endpoint_curl>
-# get the scoring uri using the  "show" command
-SCORING_URI=$(az ml endpoint show --name $ENDPOINT_NAME --query scoring_uri -o tsv)
-# get the auth key using the "get-credentials" command
-AUTH_KEY=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query "primaryKey" -o tsv)
-# invoke the endpoint using curl
-curl --location --request POST $SCORING_URI \
---header "Authorization: Bearer $AUTH_KEY" --header "Content-Type: application/json" \
---data-raw '{"data": [
-    [1,2,3,4,5,6,7,8,9,10], 
-    [10,9,8,7,6,5,4,3,2,1]
-]}'
-# </test_endpoint_curl>
-
 # <get_logs>
 az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
 # </get_logs>
