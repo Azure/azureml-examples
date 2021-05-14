@@ -18,4 +18,4 @@ distribution:
   type: pytorch 
   process_count: 4
 experiment_name: pytorch-cifar-distributed-example
-description: Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset.
+description: Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.
