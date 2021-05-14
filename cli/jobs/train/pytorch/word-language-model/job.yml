@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
 command: >
