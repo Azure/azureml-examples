@@ -1,0 +1,4 @@
+  torchvision==0.7.0
+  future==0.17.1
+  pillow==8.1.1
+  azureml.core==1.25.0

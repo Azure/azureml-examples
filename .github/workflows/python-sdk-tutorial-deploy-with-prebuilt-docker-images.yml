@@ -1,0 +1,18 @@
+name: python-sdk-tutorial-deploy-with-prebuilt-docker-images
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - python-sdk/tutorials/deploy-with-prebuilt-docker-images/**
+      - .github/workflows/python-sdk-tutorial-deploy-with-prebuilt-docker-images.yml
+      - python-sdk/requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: run pytorch-prebuilt-docker-image.ipynb
+      run: papermill pytorch-prebuilt-docker-image.ipynb - -k python
+      working-directory: python-sdk/tutorials/deploy-with-prebuilt-docker-images
