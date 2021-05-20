@@ -12,7 +12,7 @@ export ENDPOINT_NAME=endpt-`echo $RANDOM`
 # create the endpoint
 az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/canary-declarative-flow/1-create-endpoint-with-blue.yml
 
-# check if create was successful 
+#  check if create was successful 
 endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
