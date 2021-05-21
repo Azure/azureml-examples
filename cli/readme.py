@@ -373,7 +373,9 @@ jobs:
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
       run: set -e; bash -x {doc}.sh
-      working-directory: cli\n"""
+      working-directory: cli
+      env:
+        AZURE_STORAGE_KEY: ${{ secrets.AzureStorageKey }}\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-docs-{hyphenated}.yml", "w") as f:
