@@ -14,5 +14,5 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
     - name: run pytorch-prebuilt-docker-image.ipynb
-      run: papermill pytorch-prebuilt-docker-image.ipynb - -k python
+      run: papermill pytorch-prebuilt-docker-image.ipynb -k python
       working-directory: python-sdk/tutorials/deploy-with-prebuilt-docker-images
