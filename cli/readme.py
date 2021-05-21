@@ -231,8 +231,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -284,8 +284,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
@@ -322,8 +322,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
@@ -364,8 +364,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
