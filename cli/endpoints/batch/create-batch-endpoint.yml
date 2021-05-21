@@ -4,12 +4,12 @@ description: my sample batch endpoint
 type: batch
 auth_mode: aad_token
 traffic:
-  autolog_deployment: 100
+  autolog-deployment: 100
 
 deployments:
-  - name: autolog_deployment
+  - name: autolog-deployment
     model: 
-      name: autolog_model
+      name: autolog-model
       version: 1
       local_path: ./autolog_nyc_taxi
     compute:
