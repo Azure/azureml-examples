@@ -209,7 +209,7 @@ def parse_path(path):
 
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    creds = "${{secrets.AZ_AE_CLI_CREDS}}"
+    creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
@@ -231,8 +231,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -262,7 +262,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = "${{secrets.AZ_AE_CLI_CREDS}}"
+    creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
@@ -284,8 +284,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
@@ -300,7 +300,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
-    creds = "${{secrets.AZ_AE_CLI_CREDS}}"
+    creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
@@ -322,8 +322,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
@@ -338,11 +338,7 @@ jobs:
 
 def write_doc_workflow(doc):
     filename, project_dir, hyphenated = parse_path(doc)
-    creds = (
-        "${{secrets.AZ_AE_CLI_MIR_CREDS}}"
-        if "access-resource" in filename
-        else "${{secrets.AZ_AE_CLI_CREDS}}"
-    )
+    creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: cli-docs-{hyphenated}
 on:
   schedule:
@@ -364,8 +360,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install new ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    - name: install ml cli
+      run: az extension add -n ml -y
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
@@ -373,7 +369,9 @@ jobs:
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
       run: set -e; bash -x {doc}.sh
-      working-directory: cli\n"""
+      working-directory: cli
+      env:
+        AZURE_STORAGE_KEY: ${{ secrets.AzureStorageKey }}\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-docs-{hyphenated}.yml", "w") as f:
