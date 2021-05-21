@@ -18,7 +18,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CLI_MIR_CREDS}}
+        creds: ${{secrets.AZ_AE_CREDS}}
     - name: install ml cli
       run: az extension add -n ml -y
     - name: setup workspace
@@ -29,3 +29,5 @@ jobs:
     - name: test doc script
       run: set -e; bash -x how-to-deploy-managed-online-endpoint-access-resource-uai.sh
       working-directory: cli
+      env:
+        AZURE_STORAGE_KEY: ${ secrets.AzureStorageKey }
