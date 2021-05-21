@@ -27,10 +27,11 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w default -g azureml-examples
+      run: az ml folder attach -w main-python-sdk -g azureml-examples
     - name: run cleanup script
       run: python cleanup.py
       working-directory: python-sdk
+      continue-on-error: true
     - name: azure login
       uses: azure/login@v1
       with:
@@ -40,3 +41,4 @@ jobs:
     - name: run cleanup script
       run: python cleanup.py
       working-directory: python-sdk
+      continue-on-error: true
