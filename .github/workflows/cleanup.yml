@@ -35,9 +35,9 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CLI_CREDS}}
+        creds: ${{secrets.AZ_AE_CREDS}}
     - name: attach to workspace
-      run: az ml folder attach -w main -g azureml-examples-rg-cli
+      run: az ml folder attach -w main -g azureml-examples-rg
     - name: run cleanup script
       run: python cleanup.py
       working-directory: python-sdk
