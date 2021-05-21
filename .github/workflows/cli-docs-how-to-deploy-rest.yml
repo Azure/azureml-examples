@@ -18,7 +18,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CLI_CREDS}}
+        creds: ${{secrets.AZ_AE_CREDS}}
     - name: install ml cli
       run: az extension add -n ml -y
     - name: setup workspace
@@ -30,4 +30,4 @@ jobs:
       run: set -e; bash -x how-to-deploy-rest.sh
       working-directory: cli
       env:
-        AZURE_STORAGE_KEY: ${{ secrets.AzureStorageKey }}
+        AZURE_STORAGE_KEY: ${ secrets.AzureStorageKey }
