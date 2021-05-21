@@ -85,6 +85,25 @@ else
 fi
 # </check_job_status>
 
+# <get_scoring_uri>
+scoring_uri=$(az ml endpoint show --name mybatchedp --type batch --query scoring_uri -o tsv)
+# </get_scoring_uri>
+
+# <get_token>
+auth_token=$(az account get-access-token --query accessToken -o tsv)
+# </get_token>
+
+# <start_batch_scoring_job_rest>
+curl --location --request POST '$scoring_uri' --header "Authorization: Bearer $auth_token" --header 'Content-Type: application/json' --data-raw '{
+"properties": {
+  "dataset": {
+    "dataInputType": "DataUrl",
+    "Path": "https://pipelinedata.blob.core.windows.net/sampledata/mnist"
+    }
+  }
+}'
+# </start_batch_scoring_job_rest>
+
 # <list_all_jobs>
 az ml endpoint list-jobs --name mybatchedp --type batch
 # </list_all_jobs>
