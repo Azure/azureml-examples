@@ -41,7 +41,6 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
 AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
 export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
-export AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 # </set_datastore_variables>
 
 # <create_environment>
