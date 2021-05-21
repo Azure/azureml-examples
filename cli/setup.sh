@@ -9,13 +9,13 @@ az extension add -n ml
 az group create -n "azureml-examples-cli" -l "eastus"
 # </az_group_create>
 
-# <az_ml_workspace_create>
-az ml workspace create -n "main"
-# </az_ml_workspace_create>
-
 # <az_configure_defaults>
 az configure --defaults group="azureml-examples-cli" workspace="main"
 # </az_configure_defaults>
+
+# <az_ml_workspace_create>
+az ml workspace create
+# </az_ml_workspace_create>
 
 # <create_computes>
 az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 10 
