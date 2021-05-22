@@ -51,5 +51,5 @@ az ml endpoint show -n $ENDPOINT_NAME --query "scoring_uri"
 # </get_scoring_uri>
 
 # <delete_endpoint>
-az ml endpoint delete -n $ENDPOINT_NAME --yes
+az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>

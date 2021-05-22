@@ -50,5 +50,5 @@ az ml endpoint delete --name $ENDPOINT_NAME --deployment blue --yes
 # </delete_blue>
 
 # <delete_endpoint>
-az ml endpoint delete --name $ENDPOINT_NAME --yes
+az ml endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
