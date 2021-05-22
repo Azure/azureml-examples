@@ -6,6 +6,7 @@ set -e
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
+#  endpoint name
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <create_endpoint>
@@ -49,5 +50,5 @@ az ml endpoint delete --name $ENDPOINT_NAME --deployment blue --yes
 # </delete_blue>
 
 # <delete_endpoint>
-az ml endpoint delete --name $ENDPOINT_NAME --yes
+az ml endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
