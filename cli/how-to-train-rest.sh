@@ -83,7 +83,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
   \"properties\": {
     \"description\": \"Train code\",
-    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_CONTAINER\",
+    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE\",
     \"path\": \"src\"
   }
 }"
