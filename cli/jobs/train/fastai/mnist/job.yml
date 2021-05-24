@@ -8,6 +8,6 @@ environment:
     image: mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20210301.v1
   conda_file: file:environment.yml
 compute:
-  target: azureml:cpu-cluster
+  target: azureml:goazurego
 experiment_name: fastai-mnist-example
 description: Train a RESNET-18 convolutional neural network (CNN) with fast.ai on the MNIST dataset.

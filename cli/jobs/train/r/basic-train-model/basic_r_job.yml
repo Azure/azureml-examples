@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+experiment_name: r-basic-example
+command: Rscript model.R --data_folder {inputs.iris}
+environment:
+  docker:
+    build:
+      dockerfile: file:../Dockerfile
+compute:
+  target: azureml:goazurego
+code:
+  local_path: ./src
+inputs:
+  iris:
+    data: 
+      local_path: ./data
+    mode: mount
