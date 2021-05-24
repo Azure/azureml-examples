@@ -15,7 +15,7 @@ This directory provides some sample projects to run R using the AzureML CLI v2.
 ## Environment
 All the projects in this directory use the `rocker/tidyverse:4.0.0-ubuntu18.04` image from Docker Hub. This image has the tidyverse and its dependencies installed (see [Rocker](https://github.com/rocker-org/rocker) for more details).
 
-In addition there are 2 things to point out about the [Dockerfile](./Dockerfile) that builds the environment for these samples:
+In addition there are 2 things to point out about the [Dockerfile](./basic-train-model/Dockerfile) that builds the environment for these samples:
 
 In this section python is installed, since it is required by AzureML to start the job. This requirement will be removed for runs executed on cloud compute (AML Compute Cluster, AML Compute Instance) soon.
 ```Dockerfile
