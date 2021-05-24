@@ -36,3 +36,4 @@ RUN pip install azureml-dataprep azureml-core
 
 * [Train a model](./basic-train-model/) - Trains an `rpart` model on the Iris dataset. However, rather than this data being part of the package we articulate how to register a csv file as a data asset in Azure ML. The job consumes this csv file during training in the cloud.
 * [Train an car accident prediction model](./accident-prediction) - Trains an accident prediction model using the `glm()` function on car accident data.
+
