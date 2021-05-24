@@ -265,7 +265,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w default -g azureml-examples
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run notebook
       run: papermill python-sdk/{notebook} out.ipynb -k python\n"""
 
@@ -306,7 +306,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w default -g azureml-examples
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run workflow
       run: python python-sdk/{workflow}\n"""
 

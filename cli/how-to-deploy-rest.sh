@@ -42,10 +42,11 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
-AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+# <set_datastore_variables>
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
 AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
+export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+# </set_datastore_variables>
 
 # delete endpoint
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
@@ -54,8 +55,7 @@ curl --location --request DELETE "https://management.azure.com/subscriptions/$SU
 
 # TODO: we can get the default container from listing datastores
 # TODO using the latter two as env vars shouldn't be necessary
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score \
- -s endpoints/online/model-1/onlinescoring --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring
 
 # <create_code>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1?api-version=$API_VERSION" \
@@ -71,8 +71,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # </create_code>
 
 # upload model
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model \
- -s endpoints/online/model-1/model --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model
 
 # <create_model>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1?api-version=$API_VERSION" \

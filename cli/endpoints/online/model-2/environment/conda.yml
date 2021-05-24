@@ -5,12 +5,11 @@ dependencies:
   - python=3.7
   - numpy
   - pip
-  - scikit-learn==0.19.1
+  - scikit-learn==0.24.2
   - scipy
   - pip:
     - azureml-defaults
     - inference-schema[numpy-support]
     - joblib
     - numpy
-    - scikit-learn==0.19.1
     - scipy

@@ -17,7 +17,7 @@ az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/
 az ml endpoint show -n $ENDPOINT_NAME
 # </get_status>
 
-# check if create was successful
+#   check if create was successful
 endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
@@ -51,5 +51,5 @@ az ml endpoint show -n $ENDPOINT_NAME --query "scoring_uri"
 # </get_scoring_uri>
 
 # <delete_endpoint>
-az ml endpoint delete -n $ENDPOINT_NAME --yes
+az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>

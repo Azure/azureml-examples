@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: mnist_deployment
+name: mnist-deployment
 model: 
-  name: mnist
+  name: mnist-model
   version: 1
   local_path: ./mnist/model/
 code_configuration:

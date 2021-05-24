@@ -20,10 +20,10 @@ Welcome to the Azure Machine Learning examples repository!
 3. Install and set up the 2.0 machine learning extension:
 
     ```terminal
-    az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.0a1-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public -y
+    az extension add -n ml -y
+    az group create -n "azureml-examples-cli" -l "eastus"
+    az configure --defaults group="azureml-examples-cli" workspace="main"
     ```
-
-**Note:** the enhanced `ml` extension is in early preview.
 
 ## Set up
 
@@ -32,6 +32,14 @@ Clone this repository:
 ```terminal
 git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
+```
+
+Create a workspace and compute targets:
+
+```terminal
+az ml workspace create
+az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 10 
+az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 4 --size Standard_NC12
 ```
 
 ## Hello world
