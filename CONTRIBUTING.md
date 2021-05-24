@@ -35,9 +35,9 @@ Provide samples and source code for documentation for ML professionals which rap
 
 ## Non-goals
 
-- serve as documentation
+- serve as documentation (see https://docs.microsoft.com/azure/machine-learning)
 - host scenario-specific project templates
-- host complete matrix of all code samples for Azure Machine Learning
+- host complete matrix of code samples for Azure Machine Learning
 
 ## Issues
 

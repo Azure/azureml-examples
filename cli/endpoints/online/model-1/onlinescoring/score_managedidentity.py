@@ -2,7 +2,7 @@ import os
 import logging
 import json
 import numpy
-from sklearn.externals import joblib
+import joblib
 import requests
 
 
