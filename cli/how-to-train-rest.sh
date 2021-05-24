@@ -7,10 +7,8 @@ LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-
 API_VERSION="2021-03-01-preview"
 COMPUTE_NAME="cpu-cluster"
-
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
 
@@ -37,11 +35,15 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
-# <set_datastore_variables>
+# <get_storage_details>
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
 AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
 export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
-# </set_datastore_variables>
+# </get_storage_details>
+
+# <read_condafile>
+CONDA_FILE=$(cat jobs/train/lightgbm/iris/environment.yml)
+# <read_condafile>
 
 # <create_environment>
 VERSION=$RANDOM
@@ -50,7 +52,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\":{
-        \"condaFile\": \"name: python-ml-basic-cpu\nchannels:\n  - conda-forge\ndependencies:\n  - python=3.8\n  - pip\n  - pip:\n    - numpy\n    - pandas\n    - scipy\n    - scikit-learn\n    - matplotlib\n    - xgboost\n    - lightgbm\n    - dask\n    - distributed\n    - dask-ml\n    - adlfs\n    - fastparquet\n    - pyarrow\n    - mlflow\n    - azureml-mlflow \",
+        \"condaFile\": \"$CONDAFILE\",
         \"Docker\": {
             \"DockerSpecificationType\": \"Image\",
             \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04\"
@@ -81,7 +83,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
   \"properties\": {
     \"description\": \"Train code\",
-    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
+    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_CONTAINER\",
     \"path\": \"src\"
   }
 }"
