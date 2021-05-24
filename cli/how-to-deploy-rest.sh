@@ -58,7 +58,10 @@ curl --location --request DELETE "https://management.azure.com/subscriptions/$SU
 
 # TODO: we can get the default container from listing datastores
 # TODO using the latter two as env vars shouldn't be necessary
+
+# <upload_code>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring
+# </upload_code>
 
 # <create_code>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1?api-version=$API_VERSION" \
@@ -74,7 +77,9 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # </create_code>
 
 # upload model
+# <upload_model>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model
+# <upload_model>
 
 # <create_model>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1?api-version=$API_VERSION" \
@@ -189,6 +194,8 @@ curl --location --request POST "https://management.azure.com/subscriptions/$SUBS
 #</get_deployment_logs>
 
 # delete endpoint
+# <delete_endpoint>
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" || true
+# </delete_endpoint>
