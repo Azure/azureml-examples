@@ -41,9 +41,6 @@ wait_for_completion () {
     fi
 }
 
-AZURE_STORAGE_KEY="temp"
-echo "::add-mask::$AZURE_STORAGE_KEY"
-
 # <get_storage_details>
 # Get values for storage account
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
@@ -51,8 +48,10 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
 AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
 AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
-AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 # </get_storage_details>
+
+echo "::add-mask::${{ az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value' }}"
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 
 # <upload_code>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring \
