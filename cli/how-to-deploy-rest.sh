@@ -7,14 +7,17 @@ LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-
 API_VERSION="2021-03-01-preview"
-COMPUTE_NAME="cpu-cluster"
-
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
 
-echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE"
+# <set_endpoint_name>
+export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+# </set_endpoint_name>
+
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
+
+echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
 
 # define how to wait  
 wait_for_completion () {
@@ -38,24 +41,21 @@ wait_for_completion () {
     fi
 }
 
+# <get_storage_details>
 # Get values for storage account
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
-
-# <set_datastore_variables>
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
 AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
 export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
-# </set_datastore_variables>
-
-# delete endpoint
-curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
---header "Content-Type: application/json" \
---header "Authorization: Bearer $TOKEN" || true
+# </get_storage_details>
 
 # TODO: we can get the default container from listing datastores
 # TODO using the latter two as env vars shouldn't be necessary
+
+# <upload_code>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring
+# </upload_code>
 
 # <create_code>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1?api-version=$API_VERSION" \
@@ -64,14 +64,15 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
   \"properties\": {
     \"description\": \"Score code\",
-    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
+    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE\",
     \"path\": \"score\"
   }
 }"
 # </create_code>
 
-# upload model
+# <upload_model>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model
+# <upload_model>
 
 # <create_model>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1?api-version=$API_VERSION" \
@@ -85,14 +86,18 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 }"
 # </create_model>
 
+# <read_condafile>
+CONDA_FILE=$(cat endpoints/online/model-1/environment/conda.yml)
+# <read_condafile>
+
 # <create_environment>
-VERSION=$RANDOM
-curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$RANDOM?api-version=$API_VERSION" \
+ENV_VERSION=$RANDOM
+curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\":{
-        \"condaFile\": \"channels:\n  - conda-forge\ndependencies:\n  - python=3.6.1\n  - numpy\n  - pip\n  - scikit-learn==0.19.1\n  - scipy\n  - pip:\n    - azureml-defaults\n    - inference-schema[numpy-support]\n    - joblib\n    - numpy\n    - scikit-learn==0.19.1\n    - scipy\",
+        \"condaFile\": \"$CONDA_FILE\",
         \"Docker\": {
             \"DockerSpecificationType\": \"Image\",
             \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210301.v1\"
@@ -143,7 +148,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1\",
             \"scoringScript\": \"score.py\"
         },
-        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env\",
+        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\",
         \"InstanceType\": \"Standard_F2s_v2\"
     }
 }")
@@ -182,6 +187,8 @@ curl --location --request POST "https://management.azure.com/subscriptions/$SUBS
 #</get_deployment_logs>
 
 # delete endpoint
+# <delete_endpoint>
 curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" || true
+# </delete_endpoint>
