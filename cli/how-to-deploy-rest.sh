@@ -41,7 +41,7 @@ wait_for_completion () {
     fi
 }
 
-echo "::echo::off"
+echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <get_storage_details>
 # Get values for storage account
@@ -52,9 +52,6 @@ AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.content
 AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
 AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 # </get_storage_details>
-
-echo "::echo::on"
-echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <upload_code>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring \

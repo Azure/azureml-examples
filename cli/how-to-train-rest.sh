@@ -35,7 +35,7 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
-echo "::echo::off"
+echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <get_storage_details>
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
@@ -43,9 +43,6 @@ AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.content
 AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
 AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 # </get_storage_details>
-
-echo "::echo::on"
-echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <read_condafile>
 CONDA_FILE=$(cat jobs/train/lightgbm/iris/environment.yml)
