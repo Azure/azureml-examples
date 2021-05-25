@@ -4,7 +4,7 @@ command: Rscript model.R --data_folder {inputs.iris}
 environment:
   docker:
     build:
-      dockerfile: file:../Dockerfile
+      dockerfile: file:Dockerfile
 compute:
   target: azureml:goazurego
 code:
