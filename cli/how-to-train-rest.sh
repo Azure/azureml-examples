@@ -35,6 +35,7 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 
+AZURE_STORAGE_KEY="temp"
 echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <get_storage_details>

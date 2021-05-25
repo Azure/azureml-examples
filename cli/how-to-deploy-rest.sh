@@ -41,6 +41,7 @@ wait_for_completion () {
     fi
 }
 
+AZURE_STORAGE_KEY="temp"
 echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <get_storage_details>
