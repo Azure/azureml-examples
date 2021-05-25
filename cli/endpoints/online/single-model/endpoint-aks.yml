@@ -1,0 +1,22 @@
+name: single-aks
+type: online
+target: azureml:aks-test
+auth_mode: Key
+traffic:
+    etblue: 100
+deployments:
+    -   name: etblue
+        model: azureml:densenet-onnx:1
+        code_configuration:
+            code:
+                local_path: ./code
+            scoring_script: dummy.py
+        #environment: azureml:single-env:1
+        environment:
+            name: single-env
+            version: 1
+            docker:
+                image: 791c04ea2004458da8432d525bb3db4b.azurecr.io/aml-triton-lite:9
+        scale_settings:
+            scale_type: auto
+            instance_count: 1
