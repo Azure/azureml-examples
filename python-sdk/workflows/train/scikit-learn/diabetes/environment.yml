@@ -7,3 +7,4 @@ dependencies:
   - pip:
     - azureml-mlflow
     - numpy
+    - pandas
