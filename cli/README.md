@@ -16,14 +16,7 @@ Welcome to the Azure Machine Learning examples repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
-2. A terminal with the [Azure CLI installed](https://docs.microsoft.com/cli/azure/install-azure-cli).
-3. Install and set up the 2.0 machine learning extension:
-
-    ```terminal
-    az extension add -n ml -y
-    az group create -n "azureml-examples-cli" -l "eastus"
-    az configure --defaults group="azureml-examples-cli" workspace="main"
-    ```
+2. A terminal. [Install and set up the 2.0 machine learning extension](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
 
 ## Set up
 
@@ -34,12 +27,10 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-Create a workspace and compute targets:
+Run the set up script to create a workspace and compute targets:
 
-```terminal
-az ml workspace create
-az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 10 
-az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 4 --size Standard_NC12
+```bash
+bash setup.sh
 ```
 
 ## Hello world
@@ -62,8 +53,6 @@ path|status|description
 [jobs/train/lightgbm/iris/job.yml](jobs/train/lightgbm/iris/job.yml)|[![jobs/train/lightgbm/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-lightgbm-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-lightgbm-iris-job)|Train a LightGBM model on the Iris dataset.
 [jobs/train/pytorch/cifar-distributed/job.yml](jobs/train/pytorch/cifar-distributed/job.yml)|[![jobs/train/pytorch/cifar-distributed/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-cifar-distributed-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-pytorch-cifar-distributed-job)|Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.
 [jobs/train/pytorch/word-language-model/job.yml](jobs/train/pytorch/word-language-model/job.yml)|[![jobs/train/pytorch/word-language-model/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-word-language-model-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-pytorch-word-language-model-job)|Train a multi-layer RNN (Elman, GRU, or LSTM) on a language modeling task with PyTorch.
-[jobs/train/r/accident-prediction/accident_r_job.yml](jobs/train/r/accident-prediction/accident_r_job.yml)|[![jobs/train/r/accident-prediction/accident_r_job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-accident-prediction-accident_r_job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-accident-prediction-accident_r_job)|*no description*
-[jobs/train/r/basic-train-model/basic_r_job.yml](jobs/train/r/basic-train-model/basic_r_job.yml)|[![jobs/train/r/basic-train-model/basic_r_job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-basic-train-model-basic_r_job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-r-basic-train-model-basic_r_job)|*no description*
 [jobs/train/tensorflow/mnist-distributed-horovod/job.yml](jobs/train/tensorflow/mnist-distributed-horovod/job.yml)|[![jobs/train/tensorflow/mnist-distributed-horovod/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-horovod-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-distributed-horovod-job)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via Horovod.
 [jobs/train/tensorflow/mnist-distributed/job.yml](jobs/train/tensorflow/mnist-distributed/job.yml)|[![jobs/train/tensorflow/mnist-distributed/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-distributed-job)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.
 [jobs/train/tensorflow/mnist/job.yml](jobs/train/tensorflow/mnist/job.yml)|[![jobs/train/tensorflow/mnist/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-job/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-jobs-train-tensorflow-mnist-job)|Train a basic neural network with TensorFlow on the MNIST dataset.
