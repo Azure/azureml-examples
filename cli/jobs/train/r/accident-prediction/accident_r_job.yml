@@ -11,7 +11,7 @@ environment:
     build:
       dockerfile: file:cpu-cluster
 compute:
-  target: azureml:goazurego
+  target: azureml:cpu-cluster
 inputs:
   training_data:
     data: 
