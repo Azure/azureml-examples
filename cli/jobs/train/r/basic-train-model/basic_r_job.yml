@@ -1,12 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-experiment_name: r-basic-example
+description: This job trains an rpart model on the iris dataset
 command: Rscript model.R --data_folder {inputs.iris}
 environment:
   docker:
     build:
       dockerfile: file:Dockerfile
 compute:
-  target: azureml:goazurego
+  target: azureml:cpu-cluster
 code:
   local_path: ./src
 inputs:
@@ -14,3 +14,4 @@ inputs:
     data: 
       local_path: ./data
     mode: mount
+experiment_name: r-basic-example

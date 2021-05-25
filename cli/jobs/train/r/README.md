@@ -5,14 +5,15 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: Learn how to submit R jobs to an AzureMLCompute Cluster using the AzureML CLI v2.
+description: Learn how to submit R jobs to an AzureMLCompute Cluster using the AzureML 2.0 CLI.
 ---
 
-# R using the AzureML CLI v2
+# R using the AzureML 2.0 CLI
 
-This directory provides some sample projects to run R using the AzureML CLI v2.
+This directory provides some sample projects to run R using the AzureML 2.0 CLI.
 
 ## Environment
+
 All the projects in this directory use the `rocker/tidyverse:4.0.0-ubuntu18.04` image from Docker Hub. This image has the tidyverse and its dependencies installed (see [Rocker](https://github.com/rocker-org/rocker) for more details).
 
 In addition there are 2 things to point out about the [Dockerfile](./basic-train-model/Dockerfile) that builds the environment for these samples:

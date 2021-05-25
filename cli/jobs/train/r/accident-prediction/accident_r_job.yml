@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-experiment_name: r-accidents-example
+description: This job trains a GLM on the accidents dataset to predict fatality 
+  based on features like airbag, seatbelt, etc.
 code:
   local_path: ./src
 command: >-
@@ -8,7 +9,7 @@ command: >-
 environment:
   docker:
     build:
-      dockerfile: file:Dockerfile
+      dockerfile: file:cpu-cluster
 compute:
   target: azureml:goazurego
 inputs:
@@ -16,3 +17,4 @@ inputs:
     data: 
       local_path: ./data
     mode: mount
+experiment_name: r-accidents-example
