@@ -41,20 +41,24 @@ wait_for_completion () {
     fi
 }
 
+echo "::echo::off"
+
 # <get_storage_details>
 # Get values for storage account
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
 AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
-export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+AZURE_STORAGE_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT | jq -r '.[0].value')
 # </get_storage_details>
 
-# TODO: we can get the default container from listing datastores
-# TODO using the latter two as env vars shouldn't be necessary
+echo "::echo::on"
+echo "::add-mask::$AZURE_STORAGE_KEY"
 
 # <upload_code>
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring \
+  --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
 # </upload_code>
 
 # <create_code>
@@ -71,7 +75,8 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # </create_code>
 
 # <upload_model>
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model \
+  --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY
 # <upload_model>
 
 # <create_model>
