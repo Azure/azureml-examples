@@ -16,7 +16,14 @@ Welcome to the Azure Machine Learning examples repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
-2. A terminal. [Install and set up the 2.0 CLI](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
+2. A terminal with the [Azure CLI installed](https://docs.microsoft.com/cli/azure/install-azure-cli).
+3. Install and set up the 2.0 machine learning extension:
+
+    ```terminal
+    az extension add -n ml -y
+    az group create -n "azureml-examples-cli" -l "eastus"
+    az configure --defaults group="azureml-examples-cli" workspace="main"
+    ```
 
 ## Set up
 
@@ -27,10 +34,12 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-Run the set up script, which will create a workspace and compute targets:
+Create a workspace and compute targets:
 
 ```terminal
-bash setup.sh
+az ml workspace create
+az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 10 
+az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 4 --size Standard_NC12
 ```
 
 ## Hello world
