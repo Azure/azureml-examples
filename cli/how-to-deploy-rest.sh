@@ -70,7 +70,6 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 }"
 # </create_code>
 
-# upload model
 # <upload_model>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model
 # <upload_model>
@@ -92,8 +91,8 @@ CONDA_FILE=$(cat endpoints/online/model-1/environment/conda.yml)
 # <read_condafile>
 
 # <create_environment>
-VERSION=$RANDOM
-curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$RANDOM?api-version=$API_VERSION" \
+ENV_VERSION=$RANDOM
+curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
@@ -149,7 +148,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1\",
             \"scoringScript\": \"score.py\"
         },
-        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env\",
+        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\",
         \"InstanceType\": \"Standard_F2s_v2\"
     }
 }")
