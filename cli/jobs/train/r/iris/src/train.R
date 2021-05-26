@@ -18,7 +18,7 @@ x <- read.csv(file_name)
 print(head(x))
 
 cat("building model...\n")
-model <- rpart::rpart(Species~., data=x)
+model <- rpart::rpart(species~., data=x)
 
 cat("saving model...\n")
 output_dir = "outputs"
