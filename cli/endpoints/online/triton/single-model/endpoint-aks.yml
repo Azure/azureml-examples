@@ -1,0 +1,22 @@
+name: single-aks
+type: online
+target: azureml:aks-gpu-deploy
+auth_mode: Key
+traffic:
+    etblue: 100
+deployments:
+    -   name: etblue
+        model: azureml:densenet-onnx:1
+        code_configuration:
+            code:
+                local_path: ./code
+            scoring_script: dummy.py
+        #environment: azureml:single-env:1
+        environment:
+            name: single-env
+            version: 1
+            docker:
+                image: metricstestacr.azurecr.io/triton-base:3
+        scale_settings:
+            scale_type: auto
+            instance_count: 1
