@@ -6,8 +6,9 @@ code:
   local_path: src
 inputs:
   iris:
-    path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-  mode: mount
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    mode: mount
 environment:
   docker:
     build:
