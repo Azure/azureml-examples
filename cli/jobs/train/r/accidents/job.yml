@@ -12,8 +12,8 @@ inputs:
 environment:
   docker:
     build:
-      dockerfile: file:cpu-cluster
-compute:
+      dockerfile: file:Dockerfile
+compute: 
   target: azureml:cpu-cluster
 experiment_name: r-accidents-example
 description: Train a GLM using R on the accidents dataset.  
