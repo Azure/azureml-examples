@@ -7,7 +7,7 @@ products:
 description: Top-level directory for official Azure Machine Learning CLI sample code.
 ---
 
-# Azure Machine Learning 2.0 CLI (preview) examples 
+# Azure Machine Learning 2.0 CLI (preview) examples
 
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
 
