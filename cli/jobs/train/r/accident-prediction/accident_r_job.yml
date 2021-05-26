@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 description: This job trains a GLM on the accidents dataset to predict fatality 
-  based on features like airbag, seatbelt, etc. 
+  based on features like airbag, seatbelt, etc.  
 code:
   local_path: ./src
 command: >-

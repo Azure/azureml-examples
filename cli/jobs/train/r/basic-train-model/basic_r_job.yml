@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 description: This job trains an rpart model on the iris dataset 
-command: Rscript model.R --data_folder {inputs.iris}
+command: Rscript model.R --data_folder {inputs.iris} 
 environment:
   docker:
     build:
