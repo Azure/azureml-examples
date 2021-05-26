@@ -1,4 +1,4 @@
-name: cli-jobs-train-r-basic-train-model-basic_r_job
+name: cli-jobs-train-r-iris-job
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/jobs/train/r/basic-train-model/**
-      - .github/workflows/cli-jobs-train-r-basic-train-model-basic_r_job.yml
+      - cli/jobs/train/r/iris/**
+      - .github/workflows/cli-jobs-train-r-iris-job.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
       working-directory: cli
     - name: create job
       run: |
-        run_id=$(az ml job create -f jobs/train/r/basic-train-model/basic_r_job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/train/r/iris/job.yml --query name -o tsv)
         az ml job stream -n $run_id
         status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
