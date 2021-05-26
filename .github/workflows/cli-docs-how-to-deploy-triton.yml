@@ -29,5 +29,3 @@ jobs:
     - name: test doc script
       run: set -e; bash -x how-to-deploy-triton.sh
       working-directory: cli
-      env:
-        AZURE_STORAGE_KEY: ${ secrets.AzureStorageKey }

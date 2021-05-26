@@ -5,7 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = []
+EXCLUDED_JOBS = ["cifar"]
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
@@ -369,9 +369,7 @@ jobs:
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test doc script
       run: set -e; bash -x {doc}.sh
-      working-directory: cli
-      env:
-        AZURE_STORAGE_KEY: ${{ secrets.AzureStorageKey }}\n"""
+      working-directory: cli\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-docs-{hyphenated}.yml", "w") as f:
