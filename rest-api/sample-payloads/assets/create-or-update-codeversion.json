@@ -1,0 +1,10 @@
+{
+    "properties": {
+        "path": "train.py",
+        "datastoreId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/datastores/{{datastoreName}}",
+        "isAnonymous": true,
+        "description": "test code version",
+        "tags": {},
+        "properties": {}
+    }
+}

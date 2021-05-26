@@ -1,0 +1,15 @@
+{
+    "properties": {
+        "authMode": "Key",
+        "provisioningState": "Creating",
+        "target":"/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/{{computeName}}",
+        "description": "endpoint description",
+        "properties": {},
+        "traffic": {},
+        "keys": {
+            "primaryKey": "[key1]",
+            "secondaryKey": "[key2]"
+        }
+    },
+    "location": "centraluseuap"
+}

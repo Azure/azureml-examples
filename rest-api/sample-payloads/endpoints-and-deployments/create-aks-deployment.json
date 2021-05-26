@@ -1,0 +1,43 @@
+{
+    "properties": {
+        "endpointComputeType": "K8S",
+        "scaleSettings": {
+            "scaleType": "Auto",
+            "minInstances": 1,
+            "maxInstances": 4
+        },
+        "requestSettings": {
+            "maxQueueWait": "PT30S",
+            "requestTimeout": "PT30S",
+            "maxConcurrentRequestsPerInstance": 10
+        },
+        "appInsightsEnabled": true,
+        "livenessProbe": {
+            "failureThreshold": 3,
+            "successThreshold": 3,
+            "timeout": "PT10S",
+            "period": "PT10S",
+            "initialDelay": "PT3S"
+        },
+        "readinessProbe": {
+            "failureThreshold": 3,
+            "successThreshold": 3,
+            "timeout": "PT10S",
+            "period": "PT5S",
+            "initialDelay": "PT3S"
+        },
+        "description": "inference deployment description",
+        "properties": {},
+        "model": {
+            "referenceType": "Id",
+            "assetId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/models/{{modelContainerName}}/versions/1"
+        },
+        "codeConfiguration": {
+            "scoringScript": "train.py",
+            "codeId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/{{codeContainerName}}/versions/1"
+        },
+        "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/{{environmentContainerName}}/versions/1",
+        "environmentVariables": {}
+    },
+    "location": "centraluseuap"
+}

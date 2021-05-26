@@ -1,0 +1,14 @@
+{
+    "properties": {
+        "jobType" : "Command",
+        "timeout": "PT20M",
+        "experimentName": "scenarios",
+        "codeId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/{{codeContainerName}}/versions/1",
+        "command": "python train_iris.py --kernel linear --penalty 1.0", 
+        "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/{{environmentContainerName}}/versions/1",
+        "compute": {
+            "target": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/{{computeName}}",
+            "instancecount": 1
+        }
+    }
+}
