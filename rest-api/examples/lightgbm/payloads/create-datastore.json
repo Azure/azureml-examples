@@ -1,0 +1,22 @@
+{
+    "properties": {
+        "contents": {
+            "contentstype": "AzureBlob",
+            "accountname" : "<<storageaccountname>>",
+            "containerName": "lightgbm",
+            "endpoint": "core.windows.net",
+            "protocol": "https",
+            "credentials": {
+                "credentialstype": "AccountKey",
+                "secrets": {
+                    "secretstype": "AccountKey",
+                    "key": "[key]"
+                }
+            }
+        },
+        "isDefault": false,
+        "properties": {},
+        "description": "test datastore",
+        "tags": {"mydatastore": "formfe"}
+    }
+}

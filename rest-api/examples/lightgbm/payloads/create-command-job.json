@@ -1,0 +1,18 @@
+{
+    "properties": {
+        "jobType" : "Command",
+        "experimentName": "lightgbm-iris",
+        "codeId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/{{codeContainerName}}/versions/1",
+        "command": "python main.py --iris-csv irisdata",
+        "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/{{environmentContainerName}}/versions/1",
+        "compute": {
+            "target": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/{{computeName}}",
+            "instancecount": 1
+        },
+        "inputDataBindings": {
+            "irisdata": {
+                "dataId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/data/{{dataContainerName}}/versions/1"
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "properties": {
+        "docker": {
+            "dockerSpecificationType": "Image",
+            "dockerImageUri": "mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
+        },
+        "condaFile": "name: python-ml-basic-cpu\nchannels:\n  - conda-forge\ndependencies:\n  - python=3.8\n  - pip\n  - pip:\n    - numpy\n    - pandas\n    - scipy\n    - scikit-learn\n    - matplotlib\n    - xgboost\n    - lightgbm\n    - dask\n    - distributed\n    - dask-ml\n    - adlfs\n    - fastparquet\n    - pyarrow\n    - mlflow\n    - azureml-mlflow\n    - azureml-dataprep",
+        "isAnonymous": true,
+        "description": "user created environment with docker image",
+        "tags": {},
+        "properties": {}
+    }
+}
