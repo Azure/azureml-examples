@@ -12,10 +12,10 @@ deployments:
              local_path: ./code
           scoring_script: dummy.py
       environment:
-            name: aks-multi-env
+            name: multi-env
             version: 1
             docker:
-                image: metricstestacr.azurecr.io/triton-base:3
+                image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210525.1
       scale_settings:
           scale_type: auto
           instance_count: 1
