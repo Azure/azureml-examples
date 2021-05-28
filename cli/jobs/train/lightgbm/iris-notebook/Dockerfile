@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mmlspark/release
+FROM docker.io/python
 RUN pip install pip==20.0.2 --upgrade \ 
   numpy \
   pandas \
