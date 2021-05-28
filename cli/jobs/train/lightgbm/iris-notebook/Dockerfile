@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+FROM mcr.microsoft.com/mmlspark/release
 RUN pip install pip==20.0.2 --upgrade \ 
   numpy \
   pandas \
