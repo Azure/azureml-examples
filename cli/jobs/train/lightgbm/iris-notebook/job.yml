@@ -5,8 +5,8 @@ command: >
   papermill main.ipynb
 environment:
   docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
-  conda_file: file:environment.yml
+    build:
+      dockerfile: file:Dockerfile
 compute:
   target: azureml:cpu-cluster
 experiment_name: lightgbm-iris-notebook-example
