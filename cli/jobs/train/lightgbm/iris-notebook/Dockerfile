@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
-RUN pip install --upgrade \ 
+RUN pip install pip==20.0.2 --upgrade \ 
   numpy \
   pandas \
   scipy \
