@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >
+  bash run.sh 
+environment:
+  docker:
+    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  conda_file: file:environment.yml
+compute:
+  target: azureml:cpu-cluster
+experiment_name: lightgbm-iris-bash-example
+description: Train a LightGBM model on the Iris dataset via Python via Bash script.
