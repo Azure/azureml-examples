@@ -1,0 +1,28 @@
+name: "bidaf-postprocess"
+backend: "python"
+input [
+  {
+    name: "INPUT0"
+    data_type: TYPE_STRING
+    dims: [-1, 1]
+  },
+  {
+    name: "INPUT1"
+    data_type: TYPE_INT32
+    dims: [1]
+  },
+  {
+    name: "INPUT2"
+    data_type: TYPE_INT32
+    dims: [1]
+  }
+]
+output [
+  {
+    name: "OUTPUT"
+    data_type: TYPE_STRING
+    dims: [1]
+  }
+]
+
+instance_group [{ kind: KIND_CPU }]

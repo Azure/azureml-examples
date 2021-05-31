@@ -1,0 +1,38 @@
+name: "bidaf-preprocess"
+backend: "python"
+input [
+  {
+    name: "INPUT0"
+    data_type: TYPE_STRING
+    dims: [1]
+  },
+  {
+    name: "INPUT1"
+    data_type: TYPE_STRING
+    dims: [1]
+  }
+]
+output [
+  {
+    name: "OUTPUT0"
+    data_type: TYPE_STRING
+    dims: [-1, 1]
+  },
+  {
+    name: "OUTPUT1"
+    data_type: TYPE_STRING
+    dims: [-1, 1, 1, 16]
+  },
+  {
+    name: "OUTPUT2"
+    data_type: TYPE_STRING
+    dims: [-1, 1, 1, 16]
+  },
+  {
+    name: "OUTPUT3"
+    data_type: TYPE_STRING
+    dims: [-1, 1]
+  }
+]
+
+instance_group [{ kind: KIND_CPU }]
