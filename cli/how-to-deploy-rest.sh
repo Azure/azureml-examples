@@ -72,7 +72,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 
 # <upload_model>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model
-# <upload_model>
+# </upload_model>
 
 # <create_model>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1?api-version=$API_VERSION" \
