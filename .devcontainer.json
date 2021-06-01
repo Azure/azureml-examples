@@ -1,5 +1,5 @@
 {
     "image": "docker.io/lostmydockeraccount/main",
-    "extensions": ["vscodevim.vim"],
+    "extensions": ["vscodevim.vim", "ms-python.python"],
     "forwardPorts": ["8787"]
 }
