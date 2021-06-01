@@ -1,0 +1,5 @@
+{
+    "image": "docker.io/lostmydockeraccount/main",
+    "extensions": ["vscodevim.vim"],
+    "forwardPorts": ["8787"]
+}
