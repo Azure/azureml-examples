@@ -1,0 +1,8 @@
+command: echo $THEVAR
+environment:
+  docker:
+    image: docker.io/python
+environment_variables:
+  THEVAR: test
+compute:
+  target: azureml:cpu-cluster
