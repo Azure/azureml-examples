@@ -1,8 +1,8 @@
-command: echo $THEVAR
+command: echo $ENV_VAR
 environment:
   docker:
     image: docker.io/python
 environment_variables:
-  THEVAR: test
+  ENV_VAR: "hello world"
 compute:
-  target: azureml:cpu-cluster
+    target: local
