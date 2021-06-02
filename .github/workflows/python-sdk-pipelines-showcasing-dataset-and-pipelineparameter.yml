@@ -4,7 +4,7 @@ on:
     - cron: "0 0/2 * * *"
   pull_request:
     branches:
-      - main
+      - rasavage/pipelinesv1
     paths:
       - python-sdk/tutorials/using-pipelines/**
       - .github/workflows/python-sdk-pipelines-showcasing-dataset-and-pipelineparameter.yml

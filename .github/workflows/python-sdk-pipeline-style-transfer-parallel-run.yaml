@@ -3,7 +3,7 @@ name: python-sdk-pipelines-pipeline-style-transfer-parallel-run
     - cron: "0 0/2 * * *"
   pull_request:
     branches:
-      - main
+      - rasavage/pipelinesv1
     paths:
       - python-sdk/tutorials/using-pipelines/**
       - .github/workflows/python-sdk-pipelines-pipeline-style-transfer-parallel-run.yml
