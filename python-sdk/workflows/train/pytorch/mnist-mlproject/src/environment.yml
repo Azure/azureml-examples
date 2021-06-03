@@ -1,0 +1,17 @@
+name: pytorch-example
+channels:
+  - defaults
+  - pytorch
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.6
+  - pip
+  - pip:
+    - numpy
+    - pandas
+    - scikit-learn
+    - matplotlib
+    - torch
+    - torchvision
+    - azureml-mlflow

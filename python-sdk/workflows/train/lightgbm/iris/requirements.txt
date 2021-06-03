@@ -1,0 +1,8 @@
+numpy
+pandas
+scikit-learn
+lightgbm
+matplotlib 
+scikit-learn
+azureml-mlflow 
+azureml-dataprep

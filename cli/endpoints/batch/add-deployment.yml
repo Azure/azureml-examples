@@ -1,0 +1,27 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: mnist-deployment
+model: 
+  name: mnist-model
+  version: 1
+  local_path: ./mnist/model/
+code_configuration:
+  code:
+    local_path: ./mnist/code/
+  scoring_script: digit_identification.py
+environment: 
+  name: mnist-env
+  version: 1
+  path: .
+  conda_file: file:./mnist/environment/conda.yml
+  docker:
+    image: mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20210301.v1
+mini_batch_size: 5
+output_file_name: predictions.csv
+retry_settings:
+  max_retries: 3
+  timeout: 30
+error_threshold: 10 
+logging_level: info
+compute:
+  target: azureml:cpu-cluster
+  instance_count: 1

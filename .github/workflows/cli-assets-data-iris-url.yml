@@ -1,0 +1,29 @@
+name: cli-assets-data-iris-url
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+    paths:
+      - cli/assets/data/iris-url.yml
+      - .github/workflows/cli-assets-data-iris-url.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install ml cli
+      run: az extension add -n ml -y
+    - name: setup workspace
+      run: bash setup.sh
+      working-directory: cli
+    - name: create asset
+      run: az ml data create -f assets/data/iris-url.yml
+      working-directory: cli

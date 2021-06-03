@@ -1,0 +1,6 @@
+command: python -c "print('hello world')"
+environment:
+  docker:
+    image: docker.io/python
+compute:
+  target: local

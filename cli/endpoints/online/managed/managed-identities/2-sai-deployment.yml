@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
+name: my-sai-endpoint
+type: online
+auth_mode: key
+traffic:
+  blue: 100
+
+deployments:
+  - name: blue
+    model:
+      name: model-1
+      version: 1
+      local_path: ../../model-1/model/sklearn_regression_model.pkl
+    code_configuration:
+      code: 
+        local_path: ../../model-1/onlinescoring/
+      scoring_script: score_managedidentity.py
+    environment: 
+      name: env-model1
+      version: 1
+      path: .
+      conda_file: file:../../model-1/environment/conda.yml
+      docker:
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210301.v1
+    instance_type: Standard_F2s_v2
+    scale_settings:
+      scale_type: manual
+      instance_count: 1
+      min_instances: 1
+      max_instances: 2
+    environment_variables:
+      STORAGE_ACCOUNT_NAME: "storage_place_holder"
+      STORAGE_CONTAINER_NAME: "container_place_holder"
+      FILE_NAME: "file_place_holder"

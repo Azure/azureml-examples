@@ -1,0 +1,23 @@
+artifact_path: model
+flavors:
+  python_function:
+    env: conda.yml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    python_version: 3.7.7
+  sklearn:
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 0.22.2.post1
+run_id: e07f67c7-f37b-4534-8ac9-9984deb45e2f
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  type: dataframe
+signature:
+  inputs: '[{"name": "fareAmount", "type": "float"}, {"name": "paymentType", "type":
+    "integer"}, {"name": "passengerCount", "type": "integer"}, {"name": "tripDistance",
+    "type": "float"}, {"name": "tripTimeSecs", "type": "integer"}, {"name": "pickupTimeBin",
+    "type": "string"}]'
+  outputs: '[{"type": "integer"}]'
+utc_time_created: '2020-11-05 03:39:25.470901'

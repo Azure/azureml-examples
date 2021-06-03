@@ -1,5 +1,7 @@
 # Contributing
 
+This repository is entirely open source and welcomes contributions! These are official examples for Azure Machine Learning used throughout documentation. Due to this and some technical limitations, contributions from people external to the Azure Machine Learning team may experience delays. Please read through the contributing guide below to avoid frustration!
+
 ## Contributor License Agreement
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -16,18 +18,38 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## Spirit
+## Priority
 
-This repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
+Provide samples and source code for documentation for ML professionals which rapidly accelerates productivity.
 
-- frequent and comprehensive testing
-- clear separation of cloud code (job definition) and user code (ML code)
+## Principles
+
+- robust and frequent testing
+- standardization of examples where beneficial
+
+## Goals
+
+- all examples working
+- all hyperlinks working
+- host complete matrix of practically useful code samples for Azure Machine Learning
+
+## Non-goals
+
+- serve as documentation (see https://docs.microsoft.com/azure/machine-learning)
+- host scenario-specific project templates
+- host complete matrix of code samples for Azure Machine Learning
 
 ## Issues
 
 All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues/new/choose) - please follow the pre-defined templates where applicable.
 
-*Note:* [Discussions](https://github.com/Azure/azureml-examples/discussions) are new to GitHub, feel free to start one!
+## Repository structure
+
+The structure of this repository is currently subject to change. While restructuring the repository should be avoided, it may be necessary in the near future.
+
+Currently the repository is split at the root into two primary subdirectories - one for hosting the Python SDK examples and the other for the new CLI extension examples. Each subdirectory operates relatively independently, although there are many similarities.
+
+For pull requests (PRs), see the next section and follow the specific contributing guidelines for the corresponding subdirectory you are contributing to.
 
 ## Pull Requests
 
@@ -35,137 +57,35 @@ Pull requests (PRs) to this repo require review and approval by the Azure Machin
 
 **Important:** PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
 
-### General rules
+### Set up and pre-PR
 
-- minimal prose
-- minimalist code
-- workflows and notebooks can be re-run without failing in less than 1 hour
-- tutorials can re-run without failing in less than 3 hours
+Clone the repository and install the required Python packages for contributing:
 
-### Miscellaneous
+```terminal
+git clone https://github.com/Azure/azureml-examples --depth 1
+cd azureml-examples
+pip install -r dev-requirements.txt
+```
 
-- to modify `README.md`, you need to modify `readme.py` and accompanying files (`prefix.md` and `suffix.md`)
-- develop on a branch, not a fork, for workflows to run properly (GitHub secrets won't work on forks)
-- use an existing environment where possible
-- use an existing dataset where possible
-- don't create compute targets
-- don't register assets (datasets, environments, models)
-- don't modify `requirements.txt`
-- you probably shouldn't modify any files in the root of the repo
-- you can `!pip install --upgrade packages` as needed in notebooks
-- you can (and likely should) abstract setup for tutorials in a `setup.sh` file or similar
+Before opening a PR, format all Python code and notebooks:
 
-### Modifying an existing example
+```terminal
+black .
+black-nb .
+```
 
-If modifying existing examples, before a PR:
+Also if adding new examples or changing existing descriptions, run the `readme.py` script in the respective subdirectory to generate the `README.md` file with the table of examples:
 
-- run `python readme.py` from the root of the repo
-- this will generate the `README.md` file
-- this will generate GitHub Actions workflow files (for workflows and notebooks)
-- this will format Python code and notebooks
+```terminal
+python readme.py
+```
 
-### Enforced naming
+This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with the exception of Python SDK tutorials) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details.
 
-Enforced naming includes:
+### CLI 2.0
 
-- naming must be logical
-- directories under `tutorials` or `experimental` must be words separated by hyphens
-- directories under `workflows` must be one of [`train`, `deploy`, `score`, `dataprep`] - directories under are organized by ML tool
-- job definition file(s) under `workflows` must contain `job` in the name
-- tutorial workflows (and workflow files, inclduing experimental tutorials) use the naming convention `tutorial-*name*`, where *name* is the directory name
-- `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
-- `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
+[CLI contributing guide.](cli/CONTRIBUTING.md)
 
-### Unenforced naming
+### Python SDK
 
-Not strictly enforced, but encouraged naming includes:
-
-- `environment_name` = "framework-example|tutorial" e.g. "pytorch-example"
-- `ws = Workspace.from_config()`
-- `dstore = ws.get_default_datastore()`
-- `ds = Dataset.File.from_files(...)`
-- `env = Environment.from_*(...)`
-- `src = ScriptRunConfig(...)`
-- `run = Experiment(ws, experiment_name).submit(src)`
-
-### Adding a new ________?
-
-Thinking of contributing a new example? Read this first!
-
-#### Tutorials (including experimental)
-
-A tutorial is a self-contained end-to-end directory with an excellent `README.md` which can be followed to accomplish something meaningful or teaching how to scale up and out in the cloud. The `README.md` must clearly state:
-
-- required prerequisites
-- any one-time setup needed by the user (preferably via `setup.sh` or similar)
-- any other setup instructions
-- overview of files in the tutorial
-- relevant links
-
-Tutorials are often, but not required to be, a series of ordered Jupyter notebooks. All Jupyter notebooks must utilize notebook features (i.e. be interactive, have explanation in markdown cells, etc).
-
-**You should probably ask (open an issue) before contributing a new tutorial.** Currently, themes for tutorials include:
-
-- `using-*` for learning ML tooling basics and tracking/scaling in the cloud
-- `work-with-*` for integrations with cloud tooling, e.g. `work-with-databricks`, `work-with-synapse`
-- `deploy-*` for advanced deployment scenarios
-- `automl-with-*` for automated ML
-
-Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md` - it is encouraged to have an accompanying `setup.sh` or similar. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
-
-Checklist:
-
-- [ ] add the tutorial directory under `tutorials/`, following naming conventions
-- [ ] add tutorial files, which are usually notebooks and may be ordered
-- [ ] add `README.md` in the tutorial directory with a description (see other tutorials for format)
-- [ ] add `tutorial-*name*`, where *name* is the name of the directory (see other tutorial workflows)
-- [ ] run `python readme.py`
-- [ ] test
-- [ ] submit PR, which will run your tutorial if setup properly
-
-#### Notebooks
-
-A notebook is a self-contained `.ipynb` file accomplishing something significant. To qualify to be a notebook, the example must:
-
-- obviously benefit from being a Jupyter notebook
-
-Some examples of this include:
-
-- connecting and interactively querying common data sources (SQL, ADLS, etc)
-- Exploratory Data Analysis (EDA) and Exploratory Data Science (EDS)
-- iterative experimentation with cloud tracking
-
-Anything else should likely be a workflow.
-
-Checklist:
-
-- [ ] add notebook with description to `notebooks/`
-- [ ] run `python readme.py`
-- [ ] test
-- [ ] submit PR, which will run the relevant workflow(s)
-
-#### Workflows
-
-A workflow is a self-contained project directory specifying the job(s) to be run. They are organized by scenario:
-
-- `train`
-- `dataprep`
-- `deploy`
-- `score`
-
-Then ML tool, e.g. `fastai` or `pytorch` or `lightgbm`, then project e.g. `mnist` or `cifar`.
-
-A workflow consists of the workflow definition, currently written as a Python script, and user code, which is often Python.
-
-Checklist:
-
-- [ ] use an existing directory or add a new scenario and/or ML tool directory
-- [ ] add job definition file(s) under this directory with `job` in the name
-- [ ] add user code, preserving any licensing information, under a `src` dir specific to the workflow
-- [ ] run `python readme.py`
-- [ ] test
-- [ ] submit PR, which will run the relevant workflow(s)
-
-### Additional information
-
-If this contributing guide has not answered your question(s), please open an issue.
+[Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)

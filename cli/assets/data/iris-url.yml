@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/asset.schema.json
+name: iris-url-example
+version: 1
+path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+description: Data asset pointing to Iris CSV on public blob storage.

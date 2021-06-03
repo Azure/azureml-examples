@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/latest/k8sOnlineEndpoint.schema.json
+name: my-aks-endpoint
+type: online
+target : azureml:aks-test
+auth_mode: aml_token
+traffic:
+  blue: 100
+
+deployments:
+  #blue deployment
+  - name: blue
+    model:
+      name: model-1
+      version: 1
+      local_path: ../../model-1/model/sklearn_regression_model.pkl
+    code_configuration:
+      code: 
+        local_path: ../../model-1/onlinescoring/
+      scoring_script: score.py
+    environment: 
+      name: env-model-1
+      version: 1
+      path: .
+      conda_file: file:../../model-1/environment/conda.yml
+      docker:
+          image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210301.v1
+    scale_settings:
+      scale_type: manual
+      instance_count: 1
+    resource_requirements:
+      cpu: 1.5
+      memory_in_gb: 1.0

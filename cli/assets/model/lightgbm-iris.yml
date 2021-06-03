@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: lightgbm-iris-example
+version: 1
+local_path: mlflow-models/lightgbm-iris
+description: Model asset from local directory.
