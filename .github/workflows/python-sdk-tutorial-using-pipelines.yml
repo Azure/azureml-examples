@@ -21,6 +21,8 @@ jobs:
         python-version: "3.8"
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
+    - name: temp installs
+      run: pip install azureml-pipelines azureml-pipelines-steps
     - name: azure login
       uses: azure/login@v1
       with:
