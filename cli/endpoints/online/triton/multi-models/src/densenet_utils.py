@@ -2,6 +2,7 @@ import numpy as np
 import io
 from PIL import Image
 
+
 def preprocess(img_content, scaling):
     """Pre-process an image to meet the size, type and format
     requirements specified by the parameters.
@@ -46,14 +47,14 @@ def preprocess(img_content, scaling):
     # Channels are in RGB order. Currently model configuration data
     # doesn't provide any information as to other channel orderings
     # (like BGR) so we just assume RGB.
-    img_array = np.array(ordered, dtype=np.float32)[None,...]
-    
+    img_array = np.array(ordered, dtype=np.float32)[None, ...]
+
     return img_array
 
 
 def postprocess(max_label, label_path):
     """Post-process results to show the predicted label."""
-    
+
     label_file = open(label_path, "r")
     labels = label_file.read().split("\n")
     label_dict = dict(enumerate(labels))

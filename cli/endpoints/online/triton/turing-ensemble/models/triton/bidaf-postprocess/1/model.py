@@ -27,18 +27,16 @@ class TritonPythonModel:
         """
 
         # You must parse model_config. JSON string is not parsed here
-        self.model_config = model_config = json.loads(args['model_config'])
+        self.model_config = model_config = json.loads(args["model_config"])
 
         # Get OUTPUT0 configuration
-        output_config = pb_utils.get_output_config_by_name(
-            model_config, "OUTPUT")
+        output_config = pb_utils.get_output_config_by_name(model_config, "OUTPUT")
 
         # Convert Triton types to numpy types
-        self.output_dtype = pb_utils.triton_string_to_numpy(
-            output_config['data_type'])
-        
+        self.output_dtype = pb_utils.triton_string_to_numpy(output_config["data_type"])
+
         # Get model repository path to read labels
-        self.model_repository = model_repository = args['model_repository']
+        self.model_repository = model_repository = args["model_repository"]
         print(model_repository)
 
     def execute(self, requests):
@@ -66,7 +64,7 @@ class TritonPythonModel:
             in_0 = pb_utils.get_input_tensor_by_name(request, "INPUT0")
             context = in_0.as_numpy().astype(str)
             print(context)
-            
+
             # Get INPUT1
             in_1 = pb_utils.get_input_tensor_by_name(request, "INPUT1")
             start_pos = in_1.as_numpy().astype(int)[0]
@@ -80,12 +78,13 @@ class TritonPythonModel:
             result = [w.encode() for w in context[start_pos : end_pos + 1].reshape(-1)]
 
             out_0 = np.array(result, dtype=output_dtype)
-            
+
             # Create output tensors. You need pb_utils.Tensor objects to create pb_utils.InferenceResponse.
             out_tensor_0 = pb_utils.Tensor("OUTPUT", out_0)
 
             inference_response = pb_utils.InferenceResponse(
-                output_tensors=[out_tensor_0])
+                output_tensors=[out_tensor_0]
+            )
             responses.append(inference_response)
 
         return responses
@@ -95,5 +94,4 @@ class TritonPythonModel:
         Implementing `finalize` function is OPTIONAL. This function allows
         the model to perform any necessary clean ups before exit.
         """
-        print('Cleaning up...')
-
+        print("Cleaning up...")

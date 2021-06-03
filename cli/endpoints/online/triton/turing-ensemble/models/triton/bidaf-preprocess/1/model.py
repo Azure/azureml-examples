@@ -1,4 +1,3 @@
-
 import nltk
 import json
 import numpy as np
@@ -31,36 +30,36 @@ class TritonPythonModel:
         """
 
         # You must parse model_config. JSON string is not parsed here
-        self.model_config = model_config = json.loads(args['model_config'])
+        self.model_config = model_config = json.loads(args["model_config"])
 
         # Get OUTPUT0 configuration
-        output0_config = pb_utils.get_output_config_by_name(
-            model_config, "OUTPUT0")
+        output0_config = pb_utils.get_output_config_by_name(model_config, "OUTPUT0")
 
         # Get OUTPUT1 configuration
-        output1_config = pb_utils.get_output_config_by_name(
-            model_config, "OUTPUT1")
+        output1_config = pb_utils.get_output_config_by_name(model_config, "OUTPUT1")
 
         # Get OUTPUT2 configuration
-        output2_config = pb_utils.get_output_config_by_name(
-            model_config, "OUTPUT2")
+        output2_config = pb_utils.get_output_config_by_name(model_config, "OUTPUT2")
 
         # Get OUTPUT3 configuration
-        output3_config = pb_utils.get_output_config_by_name(
-            model_config, "OUTPUT3")
+        output3_config = pb_utils.get_output_config_by_name(model_config, "OUTPUT3")
 
         # Convert Triton types to numpy types
         self.output0_dtype = pb_utils.triton_string_to_numpy(
-            output0_config['data_type'])
+            output0_config["data_type"]
+        )
         self.output1_dtype = pb_utils.triton_string_to_numpy(
-            output1_config['data_type'])
+            output1_config["data_type"]
+        )
         self.output2_dtype = pb_utils.triton_string_to_numpy(
-            output2_config['data_type'])
+            output2_config["data_type"]
+        )
         self.output3_dtype = pb_utils.triton_string_to_numpy(
-            output3_config['data_type'])
-        
+            output3_config["data_type"]
+        )
+
         # Get model repository path to read labels
-        self.model_repository = model_repository = args['model_repository']
+        self.model_repository = model_repository = args["model_repository"]
         print(model_repository)
 
         # Initialize tokenizer
@@ -77,7 +76,7 @@ class TritonPythonModel:
         chars = [[c for c in t][:16] for t in tokens]
         chars = [cs + [""] * (16 - len(cs)) for cs in chars]
         chars = np.array(chars, dtype=np.object_).reshape(-1, 1, 1, 16)
-        
+
         return words, chars
 
     def execute(self, requests):
@@ -108,7 +107,7 @@ class TritonPythonModel:
             in_0 = pb_utils.get_input_tensor_by_name(request, "INPUT0")
             context = in_0.as_numpy().astype(str)
             print(context)
-            
+
             # Get INPUT1
             in_0 = pb_utils.get_input_tensor_by_name(request, "INPUT1")
             query = in_0.as_numpy().astype(str)
@@ -121,7 +120,7 @@ class TritonPythonModel:
             out_1 = np.array(cc, dtype=output1_dtype)
             out_2 = np.array(qc, dtype=output2_dtype)
             out_3 = np.array(cw, dtype=output3_dtype)
-            
+
             # Create output tensors. You need pb_utils.Tensor objects to create pb_utils.InferenceResponse.
             out_tensor_0 = pb_utils.Tensor("OUTPUT0", out_0)
             out_tensor_1 = pb_utils.Tensor("OUTPUT1", out_1)
@@ -129,7 +128,8 @@ class TritonPythonModel:
             out_tensor_3 = pb_utils.Tensor("OUTPUT3", out_3)
 
             inference_response = pb_utils.InferenceResponse(
-                output_tensors=[out_tensor_0, out_tensor_1, out_tensor_2, out_tensor_3])
+                output_tensors=[out_tensor_0, out_tensor_1, out_tensor_2, out_tensor_3]
+            )
             responses.append(inference_response)
 
         return responses
@@ -139,5 +139,4 @@ class TritonPythonModel:
         Implementing `finalize` function is OPTIONAL. This function allows
         the model to perform any necessary clean ups before exit.
         """
-        print('Cleaning up...')
-
+        print("Cleaning up...")
