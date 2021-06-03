@@ -1,7 +1,7 @@
 command: echo $ENV_VAR
 environment:
   docker:
-    image: python:latest
+    image: python
 environment_variables:
   ENV_VAR: "hello world"
 compute:
