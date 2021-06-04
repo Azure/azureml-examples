@@ -26,7 +26,7 @@ else
   exit 1
 fi
 
-deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='etblue'].provisioning_state" -o tsv`
+deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -37,7 +37,7 @@ else
 fi
 
 # <get_logs>
-az ml endpoint get-logs -n $ENDPOINT_NAME --deployment etblue
+az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
 # </get_logs>
 
 # <get_scoring_uri>

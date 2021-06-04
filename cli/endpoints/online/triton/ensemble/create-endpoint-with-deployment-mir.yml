@@ -2,9 +2,9 @@ name: mir-ensemble-model
 type: online
 auth_mode: aml_token
 traffic:
-    etblue: 100
+    blue: 100
 deployments:
-    -   name: etblue
+    -   name: blue
         model:
            name: bidaf-ensemble
            version: 1
