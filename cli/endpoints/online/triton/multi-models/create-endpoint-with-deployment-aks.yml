@@ -6,7 +6,10 @@ traffic:
     etblue: 100
 deployments:
     - name: etblue
-      model: azureml:multi-models:2
+      model:
+           name: multi-models
+           version: 1
+           local_path: ./models
       code_configuration:
           code:
              local_path: ./code

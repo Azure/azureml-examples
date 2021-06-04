@@ -6,7 +6,10 @@ traffic:
     etblue: 100
 deployments:
     -   name: etblue
-        model: azureml:densenet-onnx:1
+        model:
+           name: densenet-onnx
+           version: 1
+           local_path: ./models
         code_configuration:
             code:
                 local_path: ./code
