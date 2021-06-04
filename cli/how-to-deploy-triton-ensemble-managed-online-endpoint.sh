@@ -4,7 +4,7 @@
 set -e
 
 # <set_endpoint_name>
-export ENDPOINT_NAME="mir-ensemble-model"
+export ENDPOINT_NAME=triton-ensemble-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
 # <deploy>
