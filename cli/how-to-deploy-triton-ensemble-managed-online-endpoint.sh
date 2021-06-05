@@ -3,9 +3,15 @@
 
 set -e
 
+BASE_PATH=endpoints/online/triton/ensemble
+MODEL_PATH=$BASE_PATH/models/triton/bidaf-9/1
+
 # <set_endpoint_name>
 export ENDPOINT_NAME=triton-ensemble-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
+
+# Download the model
+wget https://aka.ms/bidaf-9-model -O $MODEL_PATH/model.onnx
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f endpoints/online/triton/ensemble/create-endpoint-with-deployment-mir.yml
@@ -41,8 +47,17 @@ az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
 # </get_logs>
 
 # <get_scoring_uri>
-az ml endpoint show -n $ENDPOINT_NAME --query "scoring_uri"
+scoring_uri=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+scoring_uri=${scoring_uri%/*}
 # </get_scoring_uri>
+
+# <get_token>
+auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+# </get_token>
+
+# <check_status_of_triton_server>
+curl --request GET $scoring_uri/v2/health/ready -H "Authorization: Bearer $auth_token"
+# </check_status_of_triton_server>
 
 # <delete_endpoint>
 az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait

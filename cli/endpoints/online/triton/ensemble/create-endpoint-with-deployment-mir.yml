@@ -23,4 +23,4 @@ deployments:
         scale_settings:
             scale_type: manual
             instance_count: 1
-        instance_type: Standard_F8s_v2
+        instance_type: Standard_NC6s_v3
