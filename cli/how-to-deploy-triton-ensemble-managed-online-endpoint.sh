@@ -66,3 +66,7 @@ curl --request POST $scoring_uri/v2/models/bidaf-ensemble/infer -H "Authorizatio
 # <delete_endpoint>
 az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
+
+# <delete_model>
+az ml model delete -n bidaf-ensemble --version 2
+# </delete_model>
