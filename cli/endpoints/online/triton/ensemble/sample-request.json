@@ -1,0 +1,19 @@
+{
+    "inputs": [{
+        "name": "CONTEXT",
+        "shape": [1],
+        "datatype": "BYTES",
+        "data": ["A quick brown fox jumped over the lazy dog."]
+    }, {
+        "name": "QUERY",
+        "shape": [1],
+        "datatype": "BYTES",
+        "data": ["Which animal was lower?"]
+    }],
+    "outputs": [{
+        "name": "OUTPUT",
+        "parameters": {
+            "binary_data": false
+        }
+    }]
+}
