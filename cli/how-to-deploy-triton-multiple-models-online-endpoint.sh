@@ -69,8 +69,16 @@ curl --request GET $scoring_uri/v2/health/ready -H "Authorization: Bearer $auth_
 curl --request POST $scoring_uri/v2/repository/index -H "Authorization: Bearer $auth_token"
 # </check_list_of_models_loaded>
 
+# <check_metadata_of_model1>
+curl --request GET $scoring_uri/v2/models/densenet_onnx -H "Authorization: Bearer $auth_token"
+# </check_metadata_of_model1>
+
+# <check_metadata_of_model2>
+curl --request GET $scoring_uri/v2/models/bidaf-9 -H "Authorization: Bearer $auth_token"
+# </check_metadata_of_model2>
+
 # <delete_endpoint>
-az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
+az ml endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_model>
