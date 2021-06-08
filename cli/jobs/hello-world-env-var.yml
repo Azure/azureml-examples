@@ -6,3 +6,4 @@ environment_variables:
   ENV_VAR: "hello world"
 compute:
     target: local
+
