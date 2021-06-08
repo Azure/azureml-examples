@@ -1,13 +1,14 @@
-name: cleanup-cli
+name: cli-scripts-how-to-deploy-triton
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "0 0/4 * * *"
   pull_request:
     branches:
       - main
-    paths: 
-      - .github/workflows/cleanup-cli.yml
+      - cli-preview
+    paths:
+      - cli/how-to-deploy-triton.sh
+      - .github/workflows/cli-scripts-how-to-deploy-triton.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,8 +24,8 @@ jobs:
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
-    - name: script installs
+    - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
-    - name: run cleanup script
-      run: set -e; bash -x cleanup.sh
+    - name: test script script
+      run: set -e; bash -x how-to-deploy-triton.sh
       working-directory: cli

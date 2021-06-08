@@ -1,4 +1,4 @@
-name: cli-docs-how-to-train-rest
+name: cli-scripts-deploy-manage-endpoint-access-resources-sai
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-train-rest.sh
-      - .github/workflows/cli-docs-how-to-train-rest.yml
+      - cli/deploy-manage-endpoint-access-resources-sai.sh
+      - .github/workflows/cli-scripts-deploy-manage-endpoint-access-resources-sai.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,8 +24,8 @@ jobs:
     - name: setup workspace
       run: bash setup.sh
       working-directory: cli
-    - name: docs installs
+    - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
-    - name: test doc script
-      run: set -e; bash -x how-to-train-rest.sh
+    - name: test script script
+      run: set -e; bash -x deploy-manage-endpoint-access-resources-sai.sh
       working-directory: cli
