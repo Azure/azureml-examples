@@ -17,7 +17,3 @@ az configure --defaults group="azureml-examples-rg" workspace="main"
 az ml workspace create
 # </az_ml_workspace_create>
 
-# <create_computes>
-az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 10 
-az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 4 --size Standard_NC12
-# </create_computes>

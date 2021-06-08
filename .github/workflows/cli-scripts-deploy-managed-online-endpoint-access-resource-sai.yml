@@ -1,4 +1,4 @@
-name: cli-scripts-how-to-configure-cli
+name: cli-scripts-deploy-managed-online-endpoint-access-resource-sai
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-configure-cli.sh
-      - .github/workflows/cli-scripts-how-to-configure-cli.yml
+      - cli/deploy-managed-online-endpoint-access-resource-sai.sh
+      - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,11 +21,12 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install ml cli
       run: az extension add -n ml -y
-    - name: setup workspace
+    - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
-      run: set -e; bash -x how-to-configure-cli.sh
+      run: set -e; bash -x deploy-managed-online-endpoint-access-resource-sai.sh
       working-directory: cli
