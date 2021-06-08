@@ -7,7 +7,7 @@ deployments:
     -   name: blue
         model:
            name: densenet-onnx
-           version: 3
+           version: 5
            local_path: ./models
         code_configuration:
             code:
