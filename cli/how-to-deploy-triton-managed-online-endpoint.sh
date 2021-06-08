@@ -12,7 +12,7 @@ export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 
 # Download the model
 mkdir -p $MODEL_PATH
-wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
+#wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
