@@ -24,6 +24,7 @@ jobs:
     - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: create job
       run: |
         run_id=$(az ml job create -f jobs/train/lightgbm/iris-bash/job.yml --query name -o tsv)
