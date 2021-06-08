@@ -155,7 +155,12 @@ def write_readme(jobs, endpoints, assets, scripts):
     print("writing README.md...")
     with open("README.md", "w") as f:
         f.write(
-            prefix + scripts_table + jobs_table + endpoints_table + assets_table + suffix
+            prefix
+            + scripts_table
+            + jobs_table
+            + endpoints_table
+            + assets_table
+            + suffix
         )
 
 
