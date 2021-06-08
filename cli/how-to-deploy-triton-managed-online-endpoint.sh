@@ -10,9 +10,14 @@ MODEL_PATH=$BASE_PATH/models/triton/densenet_onnx/1
 export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
+az ml model delete -n densenet_onnx --version 1
+az ml model delete -n densenet_onnx --version 2
+az ml model delete -n densenet_onnx --version 3
+az ml model delete -n densenet_onnx --version 4
+az ml model delete -n densenet_onnx --version 5
 # Download the model
 mkdir -p $MODEL_PATH
-#wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
+wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
@@ -56,18 +61,14 @@ scoring_uri=${scoring_uri%/*}
 auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 # </get_token>
 
-# <check_status_of_triton_server>
-curl --request GET $scoring_uri/v2/health/ready -H "Authorization: Bearer $auth_token"
-# </check_status_of_triton_server>
-
-# <score_model_in_triton>
-# curl --request POST $scoring_uri/v2/models/densenet_onnx/infer -H "Authorization: Bearer $auth_token" -d @./$BASE_PATH/sample-request.json
-# </score_model_in_triton>
+# <check_scoring_of_model>
+$BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$auth_token
+# </check_scoring_of_model>
 
 # <delete_endpoint>
-az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
+az ml endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n densenet_onnx --version 3
+az ml model delete -n densenet_onnx --version 1
 # </delete_model>
