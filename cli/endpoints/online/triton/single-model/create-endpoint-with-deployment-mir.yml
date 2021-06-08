@@ -1,4 +1,4 @@
-name: triton-mir-endpoint
+name: mir-deploy
 type: online
 auth_mode: aml_token
 traffic:
