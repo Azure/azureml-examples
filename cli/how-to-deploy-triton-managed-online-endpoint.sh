@@ -69,5 +69,5 @@ az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n densenet_onnx --version 1
+az ml model delete -n densenet_onnx --version 3
 # </delete_model>
