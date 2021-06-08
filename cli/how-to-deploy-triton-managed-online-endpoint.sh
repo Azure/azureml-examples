@@ -7,7 +7,7 @@ BASE_PATH=endpoints/online/triton/single-model
 MODEL_PATH=$BASE_PATH/models/triton/densenet_onnx/1
 
 # <set_endpoint_name>
-export ENDPOINT_NAME=triton-ensemble-mir-endpt-`echo $RANDOM`
+export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
 # Download the model
@@ -61,7 +61,7 @@ curl --request GET $scoring_uri/v2/health/ready -H "Authorization: Bearer $auth_
 # </check_status_of_triton_server>
 
 # <score_model_in_triton>
-curl --request POST $scoring_uri/v2/models/bidaf-ensemble/infer -H "Authorization: Bearer $auth_token" -d @./$BASE_PATH/sample-request.json
+# curl --request POST $scoring_uri/v2/models/densenet_onnx/infer -H "Authorization: Bearer $auth_token" -d @./$BASE_PATH/sample-request.json
 # </score_model_in_triton>
 
 # <delete_endpoint>
@@ -69,5 +69,5 @@ az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n bidaf-ensemble --version 2
+az ml model delete -n densenet_onnx --version 1
 # </delete_model>
