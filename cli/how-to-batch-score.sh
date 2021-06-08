@@ -94,7 +94,7 @@ auth_token=$(az account get-access-token --query accessToken -o tsv)
 # </get_token>
 
 # <start_batch_scoring_job_rest>
-curl --location --request POST '$scoring_uri' --header "Authorization: Bearer $auth_token" --header 'Content-Type: application/json' --data-raw '{
+curl --location --request POST "$scoring_uri" --header "Authorization: Bearer $auth_token" --header 'Content-Type: application/json' --data-raw '{
 "properties": {
   "dataset": {
     "dataInputType": "DataUrl",
