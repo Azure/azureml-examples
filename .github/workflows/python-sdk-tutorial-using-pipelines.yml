@@ -1,17 +1,20 @@
 name: python-sdk-tutorial-using-pipelines
 on:
   schedule:
-    - cron: "0 0/2 * * *"
+    - cron: "0 0/4 * * *"
   pull_request:
     branches:
       - main
     paths:
       - python-sdk/tutorials/using-pipelines/**
-      - .github/workflows/python-sdk-pipelines-pipeline-style-transfer-parallel-run.yml
+      - .github/workflows/python-sdk-tutorial-using-pipelines.yml
       - python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        notebook: [dataset-and-pipelineparameter.ipynb, image-classification.ipynb, style-transfer-parallel-run.ipynb, publish-and-run-using-rest-endpoint.ipynb]
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -22,7 +25,7 @@ jobs:
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: temp installs
-      run: pip install azureml-pipelines azureml-pipelines-steps
+      run: pip install azureml-pipeline azureml-pipeline-steps
     - name: azure login
       uses: azure/login@v1
       with:
@@ -31,15 +34,6 @@ jobs:
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run dataset-and-pipelineparameter.ipynb
-      run: papermill dataset-and-pipelineparameter.ipynb -k python
-      working-directory: python-sdk/tutorials/using-pipelines
-    - name: run image-classification.ipynb
-      run: papermill image-classification.ipynb -k python
-      working-directory: python-sdk/tutorials/using-pipelines
-    - name: run publish-and-run-using-rest-endpoint.ipynb
-      run: papermill publish-and-run-using-rest-endpoint.ipynb -k python
-      working-directory: python-sdk/tutorials/using-pipelines
-    - name: run style-transfer-parallel-run.ipynb
-      run: papermill style-transfer-parallel-run.ipynb -k python
+    - name: run ${{matrix.notebook}}
+      run: papermill ${{matrix.notebook}} -k python
       working-directory: python-sdk/tutorials/using-pipelines
