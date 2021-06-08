@@ -12,8 +12,8 @@ def main(args):
     scripts = sorted(glob.glob("*.sh", recursive=False))
 
     # get list of changes files
-    repo = Repo("./..")
-    changed_files = [f.a_path for f in repo.index.diff(None)]
+    repo = Repo(search_parent_directories=True)
+    changed_files = [f.a_path for f in repo.index.diff("main") if "cli/" in f.a_path]
     print(changed_files)
 
 
