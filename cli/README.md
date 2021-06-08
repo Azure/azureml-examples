@@ -78,6 +78,7 @@ path|status|
 [how-to-train-cli.sh](how-to-train-cli.sh)|[![how-to-train-cli](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-train-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-how-to-train-cli)
 [how-to-train-rest.sh](how-to-train-rest.sh)|[![how-to-train-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-how-to-train-rest)
 [manage-resources.sh](manage-resources.sh)|[![manage-resources](https://github.com/Azure/azureml-examples/workflows/cli-scripts-manage-resources/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-manage-resources)
+[train-cli.sh](train-cli.sh)|[![train-cli](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train-cli)
 [train-rest.sh](train-rest.sh)|[![train-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train-rest)
 [train.sh](train.sh)|[![train](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train)
 
