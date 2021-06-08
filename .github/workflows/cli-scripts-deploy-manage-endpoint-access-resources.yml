@@ -21,9 +21,10 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install ml cli
       run: az extension add -n ml -y
-    - name: setup workspace
+    - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
