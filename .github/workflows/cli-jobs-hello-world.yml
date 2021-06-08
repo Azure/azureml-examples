@@ -11,7 +11,7 @@ on:
       - .github/workflows/cli-jobs-hello-world.yml
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: python:latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
