@@ -1,5 +1,6 @@
 {
-    "image": "docker.io/lostmydockeraccount/main",
-    "extensions": ["vscodevim.vim", "ms-python.python"],
-    "forwardPorts": ["8787"]
+    "image": "docker.io/lostmydockeraccount/azureml-examples",
+    "extensions": ["vscodevim.vim", "ms-python.python", "ms-toolsai.vscode-ai"],
+    "mounts": ["source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"],
+    "forwardPorts": []
 }
