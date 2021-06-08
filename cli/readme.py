@@ -242,6 +242,7 @@ jobs:
     - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: create job
       run: |
         run_id=$(az ml job create -f {job}.yml --query name -o tsv)
@@ -292,9 +293,10 @@ jobs:
         creds: {creds}
     - name: install ml cli
       run: az extension add -n ml -y
-    - name: setup workspace
+    - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: create endpoint
       run: az ml endpoint create -f {endpoint}.yml
       working-directory: cli\n"""
@@ -330,9 +332,10 @@ jobs:
         creds: {creds}
     - name: install ml cli
       run: az extension add -n ml -y
-    - name: setup workspace
+    - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: create asset
       run: az ml {asset.split('/')[1]} create -f {asset}.yml
       working-directory: cli\n"""
@@ -368,9 +371,10 @@ jobs:
         creds: {creds}
     - name: install ml cli
       run: az extension add -n ml -y
-    - name: setup workspace
+    - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script

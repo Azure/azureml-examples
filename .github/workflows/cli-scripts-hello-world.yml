@@ -1,4 +1,4 @@
-name: cli-scripts-how-to-deploy-managed-online-endpoint
+name: cli-scripts-hello-world
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/how-to-deploy-managed-online-endpoint.sh
-      - .github/workflows/cli-scripts-how-to-deploy-managed-online-endpoint.yml
+      - cli/hello-world.sh
+      - .github/workflows/cli-scripts-hello-world.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,11 +21,12 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install ml cli
       run: az extension add -n ml -y
-    - name: setup workspace
+    - name: setup
       run: bash setup.sh
       working-directory: cli
+      continue-on-error: true
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
-      run: set -e; bash -x how-to-deploy-managed-online-endpoint.sh
+      run: set -e; bash -x hello-world.sh
       working-directory: cli
