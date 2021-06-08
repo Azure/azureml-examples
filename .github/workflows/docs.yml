@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: azure login
       uses: azure/login@v1
       with:
