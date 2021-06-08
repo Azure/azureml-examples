@@ -5,13 +5,13 @@
 az ml job create -f jobs/hello-world.yml --web --stream
 # </hello_world>
 
-# <check_job_status>
-az ml job show -n $run_id --query status -o tsv
-# </check_job_status>
-
 # <hello_world_output>
 run_id=$(az ml job create -f jobs/hello-world.yml --query name -o tsv)
 # </hello_world_output>
+
+# <check_job_status>
+az ml job show -n $run_id --query status -o tsv
+# </check_job_status>
 
 # <show_job_in_studio>
 az ml job show -n $run_id --web
@@ -37,27 +37,3 @@ else
 fi
 # </check_job_status>
 
-# <az_extension_list>
-az extension list 
-# </az_extension_list>
-
-# <az_ml_install>
-az extension add -n ml
-# </az_ml_install>
-
-# <az_ml_update>
-az extension update -n ml
-# </az_ml_update>
-
-# <az_ml_verify>
-az ml -h
-# </az_ml_verify>
-
-# <az_account_set>
-az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"
-# </az_account_set>
-
-# <az_extension_remove>
-az extension remove -n azure-cli-ml
-az extension remove -n ml
-# </az_extension_remove>
