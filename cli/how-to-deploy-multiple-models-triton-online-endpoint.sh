@@ -11,13 +11,13 @@ MODEL2_PATH=$BASE_PATH/models/triton/bidaf-9/1
 export ENDPOINT_NAME=triton-multi-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
-# Download the model1
+# Download densenet model
 mkdir -p $MODEL1_PATH
-wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH1/model.onnx
+wget https://aka.ms/densenet_onnx-model -O $MODEL1_PATH/model.onnx
 
-# Download the model2
+# Download bidaf model
 mkdir -p $MODEL2_PATH
-wget https://aka.ms/bidaf-9-model -O $MODEL_PATH2/model.onnx
+wget https://aka.ms/bidaf-9-model -O $MODEL2_PATH/model.onnx
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
@@ -64,6 +64,10 @@ auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToke
 # <check_status_of_triton_server>
 curl --request GET $scoring_uri/v2/health/ready -H "Authorization: Bearer $auth_token"
 # </check_status_of_triton_server>
+
+# <check_list_of_models_loaded>
+curl --request POST $scoring_uri/v2/repository/index -H "Authorization: Bearer $auth_token"
+# </check_list_of_models_loaded>
 
 # <delete_endpoint>
 az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
