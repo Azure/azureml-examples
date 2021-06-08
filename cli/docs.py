@@ -28,7 +28,6 @@ if __name__ == "__main__":
 
     # setup argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check-readme", type=bool, default=False)
     args = parser.parse_args()
 
     # call main
