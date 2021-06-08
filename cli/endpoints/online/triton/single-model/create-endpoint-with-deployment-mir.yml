@@ -1,4 +1,4 @@
-name: mir-deploy
+name: triton-mir-endpoint
 type: online
 auth_mode: aml_token
 traffic:
@@ -7,7 +7,7 @@ deployments:
     -   name: blue
         model:
            name: densenet-onnx
-           version: 2
+           version: 1
            local_path: ./models
         code_configuration:
             code:
@@ -18,8 +18,6 @@ deployments:
             version: 1
             docker:
                 image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210525.1
-        environment_variables:
-            AZUREML_EXTRA_REQUIREMENTS_TXT: requirements.txt
         scale_settings:
             scale_type: manual
             instance_count: 1

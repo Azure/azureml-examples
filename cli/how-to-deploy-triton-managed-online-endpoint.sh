@@ -12,7 +12,7 @@ export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 
 # Download the model
 mkdir -p $MODEL_PATH
-wget https://aka.ms/densenet_onnx-1-model -O $MODEL_PATH/model.onnx
+wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
@@ -69,5 +69,5 @@ az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n densenet_onnx --version 2
+az ml model delete -n densenet_onnx --version 1
 # </delete_model>
