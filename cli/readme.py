@@ -85,7 +85,7 @@ def write_readme(jobs, endpoints, assets, scripts):
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
-    scripts_table = "\n**Script**\n\npath|status|\n-|-\n"
+    scripts_table = "\n**Scripts**\n\npath|status|\n-|-\n"
 
     # process jobs
     for job in jobs:
@@ -155,7 +155,7 @@ def write_readme(jobs, endpoints, assets, scripts):
     print("writing README.md...")
     with open("README.md", "w") as f:
         f.write(
-            prefix + jobs_table + endpoints_table + assets_table + scripts_table + suffix
+            prefix + scripts_table + jobs_table + endpoints_table + assets_table + suffix
         )
 
 

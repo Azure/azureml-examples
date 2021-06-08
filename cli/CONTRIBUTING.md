@@ -29,6 +29,7 @@ Jobs should:
 
 Endpoints are currently only tested through documentation scripts.
 
-### Documentation scripts
+### Scripts
 
-Documentation scripts are bash scripts with the `.sh` extension at the root of the directory. They directly correspond to a markdown file in the MicrosoftDocs/azure-docs repository.
+Scripts are bash scripts with the `.sh` extension at the root of the directory. They are often used in the MicrosoftDocs/azure-docs repository as the source for code snippets.
+
