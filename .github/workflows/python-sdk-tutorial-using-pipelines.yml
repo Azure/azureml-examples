@@ -13,6 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest 
     strategy:
+      fail-fast: false
       matrix:
         notebook: [dataset-and-pipelineparameter.ipynb, image-classification.ipynb, style-transfer-parallel-run.ipynb, publish-and-run-using-rest-endpoint.ipynb]
     steps:
