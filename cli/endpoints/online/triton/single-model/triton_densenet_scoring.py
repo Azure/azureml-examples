@@ -8,6 +8,7 @@ from PIL import Image
 import gevent.ssl
 import tritonclient.http as tritonhttpclient
 
+
 def preprocess(img_content):
     """Pre-process an image to meet the size, type and format
     requirements specified by the parameters.
@@ -63,8 +64,12 @@ if __name__ == "__main__":
     parser.add_argument("--image_url", type=str, default="https://aka.ms/peacock-pic")
     args = parser.parse_args()
 
-    scoring_uri=args.base_url[8:]
-    triton_client = tritonhttpclient.InferenceServerClient(url=scoring_uri, ssl=True, ssl_context_factory=gevent.ssl._create_default_https_context)
+    scoring_uri = args.base_url[8:]
+    triton_client = tritonhttpclient.InferenceServerClient(
+        url=scoring_uri,
+        ssl=True,
+        ssl_context_factory=gevent.ssl._create_default_https_context,
+    )
 
     headers = {}
     headers["Authorization"] = f"Bearer {args.token}"
@@ -72,7 +77,7 @@ if __name__ == "__main__":
     # Check status of triton server
     health_ctx = triton_client.is_server_ready(headers=headers)
     print("Is server ready - {}".format(health_ctx))
-    
+
     # Check status of model
     model_name = "densenet_onnx"
     status_ctx = triton_client.is_model_ready(model_name, "1", headers)
@@ -89,6 +94,6 @@ if __name__ == "__main__":
     outputs = [output]
 
     result = triton_client.infer(model_name, inputs, outputs=outputs, headers=headers)
-    max_label = np.argmax(result.as_numpy('fc6_1'))
+    max_label = np.argmax(result.as_numpy("fc6_1"))
     label_name = postprocess(max_label)
     print(label_name)
