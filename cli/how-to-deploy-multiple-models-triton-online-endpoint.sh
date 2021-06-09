@@ -13,7 +13,7 @@ export ENDPOINT_NAME=triton-multi-mir-endpt-`echo $RANDOM`
 
 # Download the model1
 mkdir -p $MODEL1_PATH
-wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH1/model.onnx
+wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
 
 # Download the model2
 mkdir -p $MODEL2_PATH
