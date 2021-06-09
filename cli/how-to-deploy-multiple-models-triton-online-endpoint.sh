@@ -17,7 +17,7 @@ wget https://aka.ms/densenet_onnx-model -O $MODEL1_PATH/model.onnx
 
 # Download the model2
 mkdir -p $MODEL2_PATH
-wget https://aka.ms/bidaf-9-model -O $MODEL_PATH2/model.onnx
+wget https://aka.ms/bidaf-9-model -O $MODEL2_PATH/model.onnx
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
