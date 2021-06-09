@@ -12,19 +12,19 @@ export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 
 # <delete model1>
 az ml model delete -n densenet_onnx --version 1
-# </delete model2>
-# <delete models>
+# </delete model1>
+# <delete models2>
 az ml model delete -n densenet_onnx --version 2
-# </delete models>
+# </delete model2>
 # <delete model3>
 az ml model delete -n densenet_onnx --version 3
-# </delete models>
+# </delete model3>
 # <delete model4>
 az ml model delete -n densenet_onnx --version 4
-# </delete models>
+# </delete model4>
 # <delete model5>
 az ml model delete -n densenet_onnx --version 5
-# </delete models>
+# </delete model5>
 # Download the model
 mkdir -p $MODEL_PATH
 wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
