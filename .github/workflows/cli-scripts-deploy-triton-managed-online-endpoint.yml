@@ -15,6 +15,12 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+    - name: pip install
+      run: pip install numpy pillow nvidia-pyindex tritonclient geventhttpclient
     - name: azure login
       uses: azure/login@v1
       with:
