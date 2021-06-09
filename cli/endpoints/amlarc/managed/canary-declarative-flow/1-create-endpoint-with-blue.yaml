@@ -5,7 +5,7 @@ traffic:
   blue: 100
 identity:
   type: system_assigned
-target: azureml:/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/{{computeName}}
+target: azureml:{{fullyQualifiedComputeId}}
 tags:
   tag1: first tag
   tag2: second tag

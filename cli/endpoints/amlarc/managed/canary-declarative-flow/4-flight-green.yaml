@@ -6,7 +6,7 @@ traffic:
   green: 10
 identity:
   type: system_assigned
-target: azureml:/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/{{computeName}}
+target: azureml:{{fullyQualifiedComputeId}}
 
 deployments:
 - name: blue
