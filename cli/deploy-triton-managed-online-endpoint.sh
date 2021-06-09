@@ -10,21 +10,6 @@ MODEL_PATH=$BASE_PATH/models/triton/densenet_onnx/1
 export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
-# <delete model1>
-az ml model delete -n densenet_onnx --version 1
-# </delete model1>
-# <delete models2>
-az ml model delete -n densenet_onnx --version 2
-# </delete model2>
-# <delete model3>
-az ml model delete -n densenet_onnx --version 3
-# </delete model3>
-# <delete model4>
-az ml model delete -n densenet_onnx --version 4
-# </delete model4>
-# <delete model5>
-az ml model delete -n densenet_onnx --version 5
-# </delete model5>
 # Download the model
 mkdir -p $MODEL_PATH
 wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
@@ -72,7 +57,7 @@ auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToke
 # </get_token>
 
 # <check_scoring_of_model>
-$BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$auth_token
+python $BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$auth_token
 # </check_scoring_of_model>
 
 # <delete_endpoint>
@@ -80,5 +65,5 @@ az ml endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n densenet_onnx --version 77
+az ml model delete -n densenet_onnx --version 4
 # </delete_model>
