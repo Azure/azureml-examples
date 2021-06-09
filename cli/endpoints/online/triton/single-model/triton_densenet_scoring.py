@@ -4,6 +4,7 @@ import io
 import requests
 from PIL import Image
 
+
 def preprocess(img_content, scaling):
     """Pre-process an image to meet the size, type and format
     requirements specified by the parameters.
@@ -62,6 +63,7 @@ def postprocess(max_label, label_path):
     final_label = label_dict[max_label]
     return f"{max_label} : {final_label}"
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--base_url")
@@ -80,13 +82,21 @@ if __name__ == "__main__":
     resp = requests.post(f"{args.base_url}/v2/repository/index", headers=headers)
     print(resp.text)
 
-    # Check metadata of model for inference 
+    # Check metadata of model for inference
     resp = requests.get(f"{args.base_url}/v2/models/densenet_onnx", headers=headers)
     print(resp.text)
 
     img_content = requests.get(args.image_url).content
     img_data = preprocess(img_content, scaling="INCEPTION")
 
-    score_input = '{"inputs":[{"name":"data_0","data":'+str(img_data.flatten().tolist())+',"datatype":"FP32","shape":[1,3,224,224]}]}'
-    resp = requests.post(f"{args.base_url}/v2/models/densenet_onnx/infer", data=score_input, headers=headers)
+    score_input = (
+        '{"inputs":[{"name":"data_0","data":'
+        + str(img_data.flatten().tolist())
+        + ',"datatype":"FP32","shape":[1,3,224,224]}]}'
+    )
+    resp = requests.post(
+        f"{args.base_url}/v2/models/densenet_onnx/infer",
+        data=score_input,
+        headers=headers,
+    )
     print(resp.text)
