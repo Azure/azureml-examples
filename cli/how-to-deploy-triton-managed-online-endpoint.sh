@@ -10,11 +10,13 @@ MODEL_PATH=$BASE_PATH/models/triton/densenet_onnx/1
 export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
+# <delete models>
 az ml model delete -n densenet_onnx --version 1
 az ml model delete -n densenet_onnx --version 2
 az ml model delete -n densenet_onnx --version 3
 az ml model delete -n densenet_onnx --version 4
 az ml model delete -n densenet_onnx --version 5
+# </delete models>
 # Download the model
 mkdir -p $MODEL_PATH
 wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
