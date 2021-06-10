@@ -29,7 +29,7 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-Run the set up script to create an Azure resource group, ML  workspace, and set CLI defaults:
+Run the set up script to create an Azure resource group, machine learning workspace, and set defaults for `--resource-group/g` and `--workspace/w`:
 
 ```bash
 bash setup.sh
