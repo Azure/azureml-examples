@@ -29,10 +29,16 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-Run the set up script to create a workspace and compute targets:
+Run the set up script to create an Azure resource group, ML  workspace, and set CLI defaults:
 
 ```bash
 bash setup.sh
+```
+
+You also need remote compute targets for most examples:
+
+```bash
+bash create-compute.sh
 ```
 
 ## Hello world
