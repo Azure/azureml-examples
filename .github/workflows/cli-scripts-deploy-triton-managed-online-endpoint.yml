@@ -20,7 +20,7 @@ jobs:
       with:
         python-version: "3.9"
     - name: pip install
-      run: pip install numpy pillow nvidia-pyindex geventhttpclient
+      run: pip install numpy requests pillow nvidia-pyindex geventhttpclient
     - name: install tritonclient
       run: pip install --upgrade tritonclient[http]
     - name: azure login
