@@ -7,8 +7,8 @@ ENDPOINT_NAME=torchserve-endpoint
 # Download model and config file
 echo "Downling model and config file..."
 mkdir $BASE_PATH/torchserve
-wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -P $BASE_PATH/torchserve
-wget --progress=dot:mega https://aka.ms/torchserve-config -P $BASE_PATH/torchserve
+wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
+wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchserve/config.properties
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
@@ -37,7 +37,7 @@ curl http://localhost:8080/ping
 
 # Download test image
 echo "Downloading test image..."
-curl -O https://raw.githubusercontent.com/pytorch/serve/master/docs/images/kitten_small.jpg
+wget https://aka.ms/torchserve-test-image -O kitten_small.jpg
 
 # Check scoring locally
 echo "Uploading testing image, the scoring is..."
@@ -52,9 +52,9 @@ sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 echo "Creating new endpoint..."
 az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
 
-ENDPOINT_STATUE=$(az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
-echo "Endpoint status is $ENDPOINT_STATUE"
-if [[ $ENDPOINT_STATUE == "Succeeded" ]]
+ENDPOINT_STATUS=$(az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
+echo "Endpoint status is $ENDPOINT_STATUS"
+if [[ $ENDPOINT_STATUS == "Succeeded" ]]
 then  
   echo "Endpoint created successfully"
 else
