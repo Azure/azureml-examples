@@ -15,6 +15,8 @@ deployments:
       MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/1
       MODEL_NAME: half_plus_two
     environment:
+      name: tfserving
+      version: 1
       docker:
         image: docker.io/tensorflow/serving:latest
       inference_config:

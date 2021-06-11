@@ -29,10 +29,16 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-Run the set up script to create a workspace and compute targets:
+Run the set up script to create an Azure resource group, machine learning workspace, and set defaults for `--resource-group/g` and `--workspace/w`:
 
 ```bash
 bash setup.sh
+```
+
+You also need remote compute targets for most examples:
+
+```bash
+bash create-compute.sh
 ```
 
 ## Hello world
@@ -60,6 +66,7 @@ path|status|
 [deploy-tfserving.sh](deploy-tfserving.sh)|[![deploy-tfserving](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-tfserving/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-tfserving)
 [deploy-triton-ensemble-managed-online-endpoint.sh](deploy-triton-ensemble-managed-online-endpoint.sh)|[![deploy-triton-ensemble-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-triton-ensemble-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-triton-ensemble-managed-online-endpoint)
 [deploy-triton-multiple-models-online-endpoint.sh](deploy-triton-multiple-models-online-endpoint.sh)|[![deploy-triton-multiple-models-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-triton-multiple-models-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-triton-multiple-models-online-endpoint)
+[deploy-triton-managed-online-endpoint.sh](deploy-triton-managed-online-endpoint.sh)|[![deploy-triton-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-triton-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-triton-managed-online-endpoint)
 [hello-world.sh](hello-world.sh)|[![hello-world](https://github.com/Azure/azureml-examples/workflows/cli-scripts-hello-world/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-hello-world)
 [manage-resources.sh](manage-resources.sh)|[![manage-resources](https://github.com/Azure/azureml-examples/workflows/cli-scripts-manage-resources/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-manage-resources)
 [misc.sh](misc.sh)|[![misc](https://github.com/Azure/azureml-examples/workflows/cli-scripts-misc/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-misc)
