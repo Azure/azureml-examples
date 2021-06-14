@@ -9,7 +9,7 @@ RUN pip install -U pip
 
 # install azureml-base and libfuse (this is required for data access in local execution -- this requirement will also be removed soon)
 RUN sudo apt-get install -y libfuse-dev
-RUN pip install azureml-dataprep azureml-core
+RUN pip install azureml-dataprep azureml-core azureml-mlflow mlflow
 
 # Install additional R packages 
 RUN R -e "install.packages(c('optparse'), repos = 'https://cloud.r-project.org/')"
