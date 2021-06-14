@@ -224,6 +224,7 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -238,7 +239,7 @@ jobs:
       with:
         creds: {creds}
     - name: install ml cli
-      run: az extension add -n ml -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -278,6 +279,7 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -292,7 +294,7 @@ jobs:
       with:
         creds: {creds}
     - name: install ml cli
-      run: az extension add -n ml -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -317,6 +319,7 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
@@ -331,7 +334,7 @@ jobs:
       with:
         creds: {creds}
     - name: install ml cli
-      run: az extension add -n ml -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -356,6 +359,7 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml
@@ -370,7 +374,7 @@ jobs:
       with:
         creds: {creds}
     - name: install ml cli
-      run: az extension add -n ml -y
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
