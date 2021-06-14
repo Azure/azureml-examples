@@ -29,10 +29,16 @@ git clone https://github.com/Azure/azureml-examples --depth 1
 cd azureml-examples/cli
 ```
 
-Run the set up script to create a workspace and compute targets:
+Run the set up script to create an Azure resource group, machine learning workspace, and set defaults for `--resource-group/g` and `--workspace/w`:
 
 ```bash
 bash setup.sh
+```
+
+You also need remote compute targets for most examples:
+
+```bash
+bash create-compute.sh
 ```
 
 ## Hello world
@@ -44,6 +50,29 @@ az ml job create -f jobs/hello-world.yml --web --stream
 ```
 
 ## Examples
+
+**Scripts**
+
+path|status|
+-|-
+[batch-score.sh](batch-score.sh)|[![batch-score](https://github.com/Azure/azureml-examples/workflows/cli-scripts-batch-score/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-batch-score)
+[create-compute.sh](create-compute.sh)|[![create-compute](https://github.com/Azure/azureml-examples/workflows/cli-scripts-create-compute/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-create-compute)
+[deploy-declarative-safe-rollout-online-endpoints.sh](deploy-declarative-safe-rollout-online-endpoints.sh)|[![deploy-declarative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-declarative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-declarative-safe-rollout-online-endpoints)
+[deploy-imperative-safe-rollout-online-endpoints.sh](deploy-imperative-safe-rollout-online-endpoints.sh)|[![deploy-imperative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-imperative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-imperative-safe-rollout-online-endpoints)
+[deploy-managed-online-endpoint-access-resource-sai.sh](deploy-managed-online-endpoint-access-resource-sai.sh)|[![deploy-managed-online-endpoint-access-resource-sai](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-managed-online-endpoint-access-resource-sai)
+[deploy-managed-online-endpoint-access-resource-uai.sh](deploy-managed-online-endpoint-access-resource-uai.sh)|[![deploy-managed-online-endpoint-access-resource-uai](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-uai/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-managed-online-endpoint-access-resource-uai)
+[deploy-managed-online-endpoint.sh](deploy-managed-online-endpoint.sh)|[![deploy-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-managed-online-endpoint)
+[deploy-rest.sh](deploy-rest.sh)|[![deploy-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-rest)
+[deploy-tfserving.sh](deploy-tfserving.sh)|[![deploy-tfserving](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-tfserving/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-tfserving)
+[deploy-triton-ensemble-managed-online-endpoint.sh](deploy-triton-ensemble-managed-online-endpoint.sh)|[![deploy-triton-ensemble-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-triton-ensemble-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-triton-ensemble-managed-online-endpoint)
+[deploy-triton-managed-online-endpoint.sh](deploy-triton-managed-online-endpoint.sh)|[![deploy-triton-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-triton-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-deploy-triton-managed-online-endpoint)
+[hello-world.sh](hello-world.sh)|[![hello-world](https://github.com/Azure/azureml-examples/workflows/cli-scripts-hello-world/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-hello-world)
+[how-to-deploy-amlarc-endpoint.sh](how-to-deploy-amlarc-endpoint.sh)|[![how-to-deploy-amlarc-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-deploy-amlarc-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-how-to-deploy-amlarc-endpoint)
+[how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh](how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-amlarc-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-deploy-declarative-safe-rollout-amlarc-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-how-to-deploy-declarative-safe-rollout-amlarc-endpoints)
+[manage-resources.sh](manage-resources.sh)|[![manage-resources](https://github.com/Azure/azureml-examples/workflows/cli-scripts-manage-resources/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-manage-resources)
+[misc.sh](misc.sh)|[![misc](https://github.com/Azure/azureml-examples/workflows/cli-scripts-misc/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-misc)
+[train-rest.sh](train-rest.sh)|[![train-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train-rest)
+[train.sh](train.sh)|[![train](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train)
 
 **Jobs** ([jobs](jobs))
 
@@ -75,26 +104,6 @@ path|status|description
 [assets/data/iris-url.yml](assets/data/iris-url.yml)|[![assets/data/iris-url](https://github.com/Azure/azureml-examples/workflows/cli-assets-data-iris-url/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets-data-iris-url)|Data asset pointing to Iris CSV on public blob storage.
 [assets/environment/python-ml-basic-cpu.yml](assets/environment/python-ml-basic-cpu.yml)|[![assets/environment/python-ml-basic-cpu](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-python-ml-basic-cpu/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets-environment-python-ml-basic-cpu)|Environment asset created from a base Docker image plus a Conda environment file.
 [assets/model/lightgbm-iris.yml](assets/model/lightgbm-iris.yml)|[![assets/model/lightgbm-iris](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-lightgbm-iris/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-assets-model-lightgbm-iris)|Model asset from local directory.
-
-**Documentation scripts**
-
-path|status|
--|-
-[how-to-batch-score.sh](how-to-batch-score.sh)|[![how-to-batch-score](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-batch-score/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-batch-score)
-[how-to-configure-cli.sh](how-to-configure-cli.sh)|[![how-to-configure-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-configure-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-configure-cli)
-[how-to-deploy-amlarc-endpoint.sh](how-to-deploy-amlarc-endpoint.sh)|[![how-to-deploy-amlarc-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-amlarc-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-amlarc-endpoint)
-[how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh](how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-amlarc-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-declarative-safe-rollout-amlarc-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-declarative-safe-rollout-amlarc-endpoints)
-[how-to-deploy-declarative-safe-rollout-online-endpoints.sh](how-to-deploy-declarative-safe-rollout-online-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-declarative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-declarative-safe-rollout-online-endpoints)
-[how-to-deploy-imperative-safe-rollout-online-endpoints.sh](how-to-deploy-imperative-safe-rollout-online-endpoints.sh)|[![how-to-deploy-imperative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-imperative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-imperative-safe-rollout-online-endpoints)
-[how-to-deploy-managed-online-endpoint-access-resource-sai.sh](how-to-deploy-managed-online-endpoint-access-resource-sai.sh)|[![how-to-deploy-managed-online-endpoint-access-resource-sai](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-managed-online-endpoint-access-resource-sai/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-managed-online-endpoint-access-resource-sai)
-[how-to-deploy-managed-online-endpoint-access-resource-uai.sh](how-to-deploy-managed-online-endpoint-access-resource-uai.sh)|[![how-to-deploy-managed-online-endpoint-access-resource-uai](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-managed-online-endpoint-access-resource-uai/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-managed-online-endpoint-access-resource-uai)
-[how-to-deploy-managed-online-endpoint.sh](how-to-deploy-managed-online-endpoint.sh)|[![how-to-deploy-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-managed-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-managed-online-endpoint)
-[how-to-deploy-rest.sh](how-to-deploy-rest.sh)|[![how-to-deploy-rest](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-rest)
-[how-to-deploy-tfserving.sh](how-to-deploy-tfserving.sh)|[![how-to-deploy-tfserving](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-tfserving/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-tfserving)
-[how-to-deploy-triton.sh](how-to-deploy-triton.sh)|[![how-to-deploy-triton](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-deploy-triton/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-deploy-triton)
-[how-to-manage-resources-cli.sh](how-to-manage-resources-cli.sh)|[![how-to-manage-resources-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-manage-resources-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-manage-resources-cli)
-[how-to-train-cli.sh](how-to-train-cli.sh)|[![how-to-train-cli](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-cli)
-[how-to-train-rest.sh](how-to-train-rest.sh)|[![how-to-train-rest](https://github.com/Azure/azureml-examples/workflows/cli-docs-how-to-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-docs-how-to-train-rest)
 
 ## Contents
 
