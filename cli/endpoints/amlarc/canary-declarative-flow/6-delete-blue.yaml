@@ -10,15 +10,15 @@ target: azureml:{{fullyQualifiedComputeId}}
 deployments:
 - name: green
   model:
-    local_path: ../../model-2/model/sklearn_regression_model.pkl
+    local_path: ../model-2/model/sklearn_regression_model.pkl
     name: model-2
     version: 1
   code_configuration:
     code:
-      local_path: ../../model-2/onlinescoring/
+      local_path: ../model-2/onlinescoring/
     scoring_script: score.py
   environment:
-    conda_file: file:../../model-2/environment/conda.yml
+    conda_file: file:../model-2/environment/conda.yml
     docker:
       image: mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20210301.v1
     path: .
