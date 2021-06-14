@@ -1,3 +1,6 @@
+library("mlflow")
+install_mlflow()
+
 library("optparse")
 parser <- OptionParser()
 parser <- add_option(parser, "--data_folder",
@@ -10,6 +13,7 @@ args <- parse_args(parser)
 
 cat("data folder...\n")
 print(args$data_folder)
+mlflow_log_param("data_folder", args$data_folder)
 
 file_name = file.path(args$data_folder)
 
@@ -25,4 +29,5 @@ output_dir = "outputs"
 if (!dir.exists(output_dir)){
   dir.create(output_dir)
 }
-saveRDS(model, file = "./outputs/model.rds")
+#saveRDS(model, file = "./outputs/model.rds")
+mlflow_log_model(model, "./outputs")
