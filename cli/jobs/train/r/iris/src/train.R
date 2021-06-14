@@ -1,4 +1,4 @@
-library("mlflow")
+library(mlflow)
 install_mlflow()
 
 library("optparse")
