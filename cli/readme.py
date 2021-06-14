@@ -228,6 +228,7 @@ on:
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -238,8 +239,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -283,6 +282,7 @@ on:
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -293,8 +293,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -323,6 +321,7 @@ on:
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -333,8 +332,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -363,6 +360,7 @@ on:
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -373,8 +371,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl
     - name: setup
       run: bash setup.sh
       working-directory: cli
