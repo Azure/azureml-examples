@@ -6,9 +6,11 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/jobs/train/lightgbm/iris-bash/**
       - .github/workflows/cli-jobs-train-lightgbm-iris-bash-job.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,8 +21,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
-    - name: install ml cli
-      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
