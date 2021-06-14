@@ -1,0 +1,36 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
+name: torchserve-endpoint
+type: online
+auth_mode: aml_token
+traffic:
+  torchserve: 100
+
+deployments:
+  - name: torchserve
+    model:
+      name: torchserve-densenet161
+      version: 1
+      local_path: ./torchserve
+    environment_variables:
+      MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/1
+    environment:
+      name: torchserve
+      version: 1
+      docker:
+        image: {{acr_name}}.azurecr.io/torchserve:8080
+      inference_config:
+        liveness_route:
+          port: 8080
+          path: /ping
+        readiness_route:
+          port: 8080
+          path: /ping
+        scoring_route:
+          port: 8080
+          path: /predictions/densenet161
+    instance_type: Standard_F2s_v2
+    scale_settings:
+      scale_type: manual
+      instance_count: 1
+      min_instances: 1
+      max_instances: 2
