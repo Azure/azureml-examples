@@ -1,4 +1,4 @@
-name: cli-scripts-deploy-tfserving
+name: cli-scripts-deploy-torchserve
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -7,8 +7,8 @@ on:
       - main
       - cli-preview
     paths:
-      - cli/deploy-tfserving.sh
-      - .github/workflows/cli-scripts-deploy-tfserving.yml
+      - cli/deploy-torchserve.sh
+      - .github/workflows/cli-scripts-deploy-torchserve.yml
 jobs:
   build:
     runs-on: ubuntu-latest

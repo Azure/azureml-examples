@@ -31,6 +31,11 @@ docker run --rm -d -p 8080:8080 --name torchserve-test \
 
 sleep 10
 
+cleanTestingFiles(){
+    rm -r $BASE_PATH/torchserve
+    rm kitten_small.jpg
+}
+
 # Check Torchserve health
 echo "Checking Torchserve health..."
 curl http://localhost:8080/ping
@@ -52,17 +57,21 @@ sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 echo "Creating new endpoint..."
 az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
 
+az ml endpoint get-logs --name $ENDPOINT_NAME --deployment torchserve
+
 ENDPOINT_STATUS=$(az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
+
 if [[ $ENDPOINT_STATUS == "Succeeded" ]]
 then  
   echo "Endpoint created successfully"
 else
-  echo "Endpoint creation failed"
+  echo "Something went wrong when creating endpoint. Cleaning up..."
+  cleanTestingFiles
+  az ml endpoint delete -n $ENDPOINT_NAME --yes
+  az ml model delete -n $AML_MODEL_NAME --version 1
   exit 1
 fi
-
-az ml endpoint get-logs --name $ENDPOINT_NAME --deployment torchserve
 
 # Get accessToken
 echo "Getting access token..."
@@ -79,12 +88,7 @@ curl -H "Authorization: {Bearer $TOKEN}" -T kitten_small.jpg $SCORING_URL
 
 echo "Tested successfully, cleaning up"
 
-cleanup(){
-    rm -r $BASE_PATH/torchserve
-    rm kitten_small.jpg
-}
-
-cleanup
+cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
