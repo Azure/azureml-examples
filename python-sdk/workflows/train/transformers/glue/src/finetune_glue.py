@@ -78,12 +78,11 @@ if __name__ == "__main__":
 
     print("Training...")
 
-    with mlflow.start_run():  # get handle on run using MLFlow
-        start = time.time()
-        trainer.train()
-        mlflow.log_metric(
-            "time/epoch", (time.time() - start) / 60 / training_args.num_train_epochs
-        )
+    start = time.time()
+    trainer.train()
+    mlflow.log_metric(
+        "time/epoch", (time.time() - start) / 60 / training_args.num_train_epochs
+    )
 
     print("Evaluation...")
 
