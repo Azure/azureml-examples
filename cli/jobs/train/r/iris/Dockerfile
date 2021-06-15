@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:4.0.0-ubuntu18.04
+FROM r-base
  
 # Install python (this is still required by AzureML, but this requirement will soon be removed )
 RUN apt-get update -qq && \
