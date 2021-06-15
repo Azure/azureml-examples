@@ -6,29 +6,21 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/deploy-triton-managed-online-endpoint.sh
       - .github/workflows/cli-scripts-deploy-triton-managed-online-endpoint.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.9"
-    - name: pip install
-      run: pip install numpy requests pillow nvidia-pyindex geventhttpclient
-    - name: install tritonclient
-      run: pip install --upgrade tritonclient[http]
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
-    - name: install ml cli
-      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
