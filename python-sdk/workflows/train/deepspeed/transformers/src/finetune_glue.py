@@ -20,7 +20,7 @@ from glue_datasets import (
 )
 
 # Azure ML imports - could replace this with e.g. wandb or mlflow
-from transformers.integrations import AzureMLCallback, MLflowCallback
+from transformers.integrations import MLflowCallback
 
 
 def construct_compute_metrics_function(task: str) -> Callable[[EvalPrediction], Dict]:
