@@ -15,7 +15,6 @@
 # Script from: https://github.com/PyTorchLightning/pytorch-lightning/blob/1.0.0rc2/pl_examples/basic_examples/autoencoder.py
 
 from argparse import ArgumentParser
-import os
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -24,7 +23,6 @@ import pytorch_lightning as pl
 from torch.utils.data import random_split
 from pytorch_lightning.loggers import MLFlowLogger
 import mlflow
-from mlflow.tracking.utils import _TRACKING_URI_ENV_VAR
 
 try:
     from torchvision.datasets.mnist import MNIST
@@ -99,7 +97,7 @@ def cli_main():
         # get the experiment name
         exp_name = mlflow.get_experiment(experiment_id).name
         # get the mlflow tracking uri
-        mlflow_uri = os.environ[_TRACKING_URI_ENV_VAR]
+        mlflow_uri = mlflow.get_tracking_uri()
 
         mlf_logger = MLFlowLogger(experiment_name=exp_name, tracking_uri=mlflow_uri)
         # link the mlflowlogger run ID to the azureml run ID
