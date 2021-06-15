@@ -224,9 +224,11 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -237,8 +239,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -278,9 +278,11 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -291,8 +293,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -317,9 +317,11 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -330,8 +332,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
@@ -356,9 +356,11 @@ on:
     branches:
       - main
       - cli-preview
+      - releases/current
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -369,8 +371,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install ml cli
-      run: az extension add -n ml -y
     - name: setup
       run: bash setup.sh
       working-directory: cli
