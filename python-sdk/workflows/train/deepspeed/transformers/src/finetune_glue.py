@@ -1,4 +1,5 @@
 import numpy as np
+import mlflow
 import time
 from typing import Dict, Callable
 
@@ -19,8 +20,7 @@ from glue_datasets import (
 )
 
 # Azure ML imports - could replace this with e.g. wandb or mlflow
-from transformers.integrations import AzureMLCallback, MLflowCallback
-from azureml.core import Run
+from transformers.integrations import MLflowCallback
 
 
 def construct_compute_metrics_function(task: str) -> Callable[[EvalPrediction], Dict]:
@@ -87,10 +87,11 @@ if __name__ == "__main__":
 
     print("Training...")
 
-    run = Run.get_context()  # get handle on Azure ML run
     start = time.time()
     trainer.train()
-    run.log("time/epoch", (time.time() - start) / 60 / training_args.num_train_epochs)
+    mlflow.log_metric(
+        "time/epoch", (time.time() - start) / 60 / training_args.num_train_epochs
+    )
 
     print("Evaluation...")
 
