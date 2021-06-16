@@ -69,5 +69,5 @@ az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n bidaf-ensemble --version 2
+az ml model delete -n bidaf-ensemble --version 24
 # </delete_model>
