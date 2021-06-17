@@ -4,18 +4,26 @@ from mlflow.tracking import MlflowClient
 import numpy as np
 import time
 from sklearn import datasets
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, plot_confusion_matrix
+from sklearn.metrics import (
+    mean_squared_error,
+    mean_absolute_error,
+    r2_score,
+    plot_confusion_matrix,
+)
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
 
-def normalized_confusion_matrix(model,X_test, y_test, display_labels, file_name):
+def normalized_confusion_matrix(model, X_test, y_test, display_labels, file_name):
     """
     Generated normalized confusion matrix using scikit-learn and saves as a figure
     """
-    cm_normalized_plot = plot_confusion_matrix(model, X_test, y_test, display_labels=display_labels, normalize=True)
+    cm_normalized_plot = plot_confusion_matrix(
+        model, X_test, y_test, display_labels=display_labels, normalize="true"
+    )
     cm_normalized_plot.ax_.set_title("Normalized Confusion Matrix")
     cm_normalized_plot.figure_.savefig(file_name)
+
 
 def main():
     # getting iris dataset to play with
@@ -40,7 +48,9 @@ def main():
         mlflow.log_artifact("predictions.csv", f"tables/predictions.csv")
 
         normalized_cm_file = "normalized_confusion_matrix.png"
-        normalized_confusion_matrix(lr, X_test, y_test, data.target_names, normalized_cm_file)
+        normalized_confusion_matrix(
+            lr, X_test, y_test, data.target_names, normalized_cm_file
+        )
 
         # logging confusion matrix
         # generating a plot of confusion matrix and logging it
@@ -55,7 +65,7 @@ def main():
         mlflow.sklearn.log_model(
             sk_model=lr,
             artifact_path="model",
-            registered_model_name="sk-learn-knn-model"
+            registered_model_name="sk-learn-knn-model",
         )
 
 

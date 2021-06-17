@@ -9,5 +9,5 @@ environment:
   conda_file: file:environment.yml
 compute:
   target: azureml:cpu-cluster
-experiment_name: sklear-mnist-example
-description: Train a scikit-learn model on the MNIST dataset.
+experiment_name: logging-sklearn-example
+description: Train a scikit-learn knn model on the iris dataset.
