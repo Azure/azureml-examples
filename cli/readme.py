@@ -20,8 +20,8 @@ EXCLUDED_SCRIPTS = ["setup", "cleanup"]
 # define functions
 def main(args):
     # get list of jobs
-    jobs = sorted([ p.as_posix() for p in list(Path("jobs").glob("**/*job*.yml"))])
-    jobs += sorted([ p.as_posix() for p in list(Path("jobs").glob("*.yml"))])
+    jobs = sorted([p.as_posix() for p in list(Path("jobs").glob("**/*job*.yml"))])
+    jobs += sorted([p.as_posix() for p in list(Path("jobs").glob("*.yml"))])
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -37,7 +37,7 @@ def main(args):
     ]
 
     # get list of assets
-    assets = sorted([ p.as_posix() for p in list(Path("assets").glob("**/*.yml"))])
+    assets = sorted([p.as_posix() for p in list(Path("assets").glob("**/*.yml"))])
     print(assets)
     assets = [
         asset.replace(".yml", "")
