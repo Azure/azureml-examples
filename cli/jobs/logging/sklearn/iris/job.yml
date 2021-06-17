@@ -10,4 +10,4 @@ environment:
 compute:
   target: azureml:cpu-cluster
 experiment_name: logging-sklearn-example
-description: Train a scikit-learn knn model on the iris dataset.
+description: Train a scikit-learn knn model on the iris dataset. Showcases examples of mlflow logging API's used in training.
