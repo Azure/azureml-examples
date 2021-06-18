@@ -25,7 +25,7 @@ cleanup(){
 
 # Run image locally for testing
 docker run --rm -d -p 8000:8000 \
-    -v $PWD/$BASE_PATH/scripts:/var/azureml-app/azureml-models/plumber/scripts \
+    -v $PWD/$BASE_PATH/scripts:/var/azureml-app/azureml-models/plumber/1/scripts \
     --name="r_server" $IMAGE_TAG
 
 sleep 10
