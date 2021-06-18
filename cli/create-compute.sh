@@ -3,7 +3,7 @@
 
 # <create_computes>
 az --version
-az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 10 --debug
+az ml compute create -n cpu-cluster-2 --type amlcompute --min-instances 0 --max-instances 10 --debug
 az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12 --debug
 # </create_computes>
 
