@@ -14,7 +14,7 @@ deployments:
       name: r-deployment
       version: 1
       docker:
-        image: inferencepmaef584480.azurecr.io/r_server
+        image: {{acr_name}}.azurecr.io/r_server
       inference_config:
         liveness_route:
           port: 8000
