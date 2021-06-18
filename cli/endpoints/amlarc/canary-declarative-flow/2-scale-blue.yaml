@@ -10,7 +10,7 @@ target: azureml:{{fullyQualifiedComputeId}}
 deployments:
 - name: blue
   model:
-    local_path: ../model-1/model/sklearn_regression_model.pkl
+    local_path: ../model-1/model/helloworld.txt
     name: model-1
     version: 1
   code_configuration:

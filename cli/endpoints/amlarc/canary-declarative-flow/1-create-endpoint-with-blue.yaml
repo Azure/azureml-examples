@@ -19,7 +19,7 @@ deployments:
     model:
       name: model-1
       version: 1
-      local_path: ../model-1/model/sklearn_regression_model.pkl
+      local_path: ../model-1/model/helloworld.txt
     code_configuration:
       code: 
         local_path: ../model-1/onlinescoring/
