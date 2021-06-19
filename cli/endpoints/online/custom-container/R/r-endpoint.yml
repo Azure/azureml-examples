@@ -11,7 +11,7 @@ deployments:
       version: 1
       local_path: ./scripts
     environment:
-      name: r-deployment
+      name: r-environment
       version: 1
       docker:
         image: {{acr_name}}.azurecr.io/r_server
