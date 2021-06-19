@@ -11,7 +11,6 @@ on:
       - cli/deploy-triton-ensemble-managed-online-endpoint.sh
       - .github/workflows/cli-scripts-deploy-triton-ensemble-managed-online-endpoint.yml
       - cli/setup.sh
-#touch
 jobs:
   build:
     runs-on: ubuntu-latest
