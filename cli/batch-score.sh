@@ -38,7 +38,7 @@ fi
 # </check_job_status>
 
 # <start_batch_scoring_job_configure_output>
-job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --output-datastore azureml:workspaceblobstore --output-path myoutput --set output_file_name=mypredictions.csv --query name -o tsv --debug)
+job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --output-datastore azureml:workspaceblobstore --output-path myoutput --set output_file_name=mypredictions.csv --query name -o tsv)
 # </start_batch_scoring_job_configure_output>
 
 # <stream_job_logs_to_console>
@@ -70,7 +70,7 @@ az ml endpoint update --name mybatchedp --type batch --traffic mnist-deployment:
 # </switch_traffic>
 
 # <start_batch_scoring_job_with_new_settings>
-job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv --debug)
+job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv)
 # </start_batch_scoring_job_with_new_settings>
 
 # <stream_job_logs_to_console>
