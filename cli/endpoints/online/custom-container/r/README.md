@@ -1,3 +1,12 @@
+---
+page_type: sample
+languages:
+- azurecli
+products:
+- azure-machine-learning
+description: Learn how to deploy an R model as an Azure Machine Learning managed online endpoint
+---
+
 # Deploying R models as Azure Machine Learning managed online endpoints
 
 This folder contains the assets that are called from [deploy-r.sh](../../../../deploy-r.sh) to deploy an R model as a managed online endpoint in Azure Machine Learning. This README explains how to modify the assets in this folder to deploy your own R model.
