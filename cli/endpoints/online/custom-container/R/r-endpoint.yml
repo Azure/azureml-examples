@@ -24,7 +24,7 @@ deployments:
           path: /ready
         scoring_route:
           port: 8000
-          path: /sum
+          path: /score
     instance_type: Standard_F2s_v2
     scale_settings:
       scale_type: manual

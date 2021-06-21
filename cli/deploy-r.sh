@@ -33,7 +33,7 @@ sleep 10
 # Check liveness, readiness, scoring locally
 curl "http://localhost:8000/live"
 curl "http://localhost:8000/ready"
-curl -H "Content-Type: application/json" --data '{"a":4, "b":5}' http://localhost:8000/sum
+curl -H "Content-Type: application/json" --data '{"a":4, "b":5}' http://localhost:8000/score
 
 docker stop r_server
 
