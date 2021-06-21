@@ -3,7 +3,6 @@ import os
 import json
 import glob
 import argparse
-from pathlib import Path
 
 # define constants
 EXCLUDED_JOBS = ["cifar"]
@@ -20,8 +19,8 @@ EXCLUDED_SCRIPTS = ["setup", "cleanup"]
 # define functions
 def main(args):
     # get list of jobs
-    jobs = sorted([p.as_posix() for p in list(Path("jobs").glob("**/*job*.yml"))])
-    jobs += sorted([p.as_posix() for p in list(Path("jobs").glob("*.yml"))])
+    jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -37,8 +36,7 @@ def main(args):
     ]
 
     # get list of assets
-    assets = sorted([p.as_posix() for p in list(Path("assets").glob("**/*.yml"))])
-    print(assets)
+    assets = sorted(glob.glob("assets/**/*.yml", recursive=True))
     assets = [
         asset.replace(".yml", "")
         for asset in assets
@@ -217,9 +215,6 @@ def parse_path(path):
 
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    print(filename)
-    print(project_dir)
-    print(job)
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
@@ -393,6 +388,12 @@ jobs:
 
 # run functions
 if __name__ == "__main__":
+    # issue #146
+    if "posix" not in os.name:
+        print(
+            "windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)"
+        )
+        exit(1)
 
     # setup argparse
     parser = argparse.ArgumentParser()
