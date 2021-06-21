@@ -7,7 +7,7 @@ deployments:
     -   name: blue
         model:
            name: bidaf-ensemble
-           version: 2
+           version: 3
            local_path: ./models
         code_configuration:
             code:
