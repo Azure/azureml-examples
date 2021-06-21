@@ -16,8 +16,12 @@ Assuming you've saved your model as a .rda or .rds file, save it in the `scripts
 
 ### Modify plumber.R to load your saved model
 
-Modify the third function in plumber.R to load the saved model. If your model takes more or fewer inputs, you may need to change the function signature. For example, if you have a model that takes three inputs, update the function decorator with the line `@param c The third number to add` and also update the function signature to say `function(a, b, c)`.
+Modify the third function in plumber.R to load the saved model and run the model every time the endpoint is invoked. If your model takes more or fewer inputs, you may need to change the function signature. For example, if you have a model that takes three inputs, update the function decorator with the line `@param c The third number to add` and also update the function signature to say `function(a, b, c)`.
 
 ### Create an endpoint in your own subscription
 
 Follow the steps in [our documentation](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) to configure the 2.0 CLI. Then run [deploy-r.sh](../../../../deploy-r.sh) (if running on a Linux machine). Alternatively, call `az ml endpoint create -n r-endpoint.yml`.
+
+### Call into your deployed endpoint
+
+You can now follow the steps [here](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints#invoke-the-endpoint-to-score-data-with-your-model) to send data to your deployed endpoint.
