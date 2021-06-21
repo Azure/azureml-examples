@@ -1,4 +1,4 @@
-BASE_PATH=endpoints/online/custom-container/R
+BASE_PATH=endpoints/online/custom-container/r
 ENDPOINT_NAME=r-endpoint
 DEPLOYMENT_NAME=r-deployment
 
