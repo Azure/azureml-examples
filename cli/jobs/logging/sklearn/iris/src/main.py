@@ -35,38 +35,37 @@ def main():
 
     n_neighbors = 10
 
-    with mlflow.start_run() as run:
-        lr = KNeighborsClassifier(n_neighbors=n_neighbors)
-        lr.fit(X_train, y_train)
+    lr = KNeighborsClassifier(n_neighbors=n_neighbors)
+    lr.fit(X_train, y_train)
 
-        y_predict = lr.predict(X_test)
+    y_predict = lr.predict(X_test)
 
-        np.savetxt("predictions.csv", y_predict, delimiter=",")
+    np.savetxt("predictions.csv", y_predict, delimiter=",")
 
-        # logging table
-        # saving data in a csv file and logging it as an artifact
-        mlflow.log_artifact("predictions.csv", f"tables/predictions.csv")
+    # logging table
+    # saving data in a csv file and logging it as an artifact
+    mlflow.log_artifact("predictions.csv", f"tables/predictions.csv")
 
-        normalized_cm_file = "normalized_confusion_matrix.png"
-        normalized_confusion_matrix(
-            lr, X_test, y_test, data.target_names, normalized_cm_file
-        )
+    normalized_cm_file = "normalized_confusion_matrix.png"
+    normalized_confusion_matrix(
+        lr, X_test, y_test, data.target_names, normalized_cm_file
+    )
 
-        # logging confusion matrix
-        # generating a plot of confusion matrix and logging it
-        mlflow.log_artifact(normalized_cm_file, f"plots/{normalized_cm_file}")
+    # logging confusion matrix
+    # generating a plot of confusion matrix and logging it
+    mlflow.log_artifact(normalized_cm_file, f"plots/{normalized_cm_file}")
 
-        # logging param
-        mlflow.log_param("n_neighbors", n_neighbors)
+    # logging param
+    mlflow.log_param("n_neighbors", n_neighbors)
 
-        # logging metric
-        mlflow.log_metric("dummy_metric", 5.9)
+    # logging metric
+    mlflow.log_metric("dummy_metric", 5.9)
 
-        mlflow.sklearn.log_model(
-            sk_model=lr,
-            artifact_path="model",
-            registered_model_name="sk-learn-knn-model",
-        )
+    mlflow.sklearn.log_model(
+        lr,
+        artifact_path="model",
+        registered_model_name="sk-learn-knn-model",
+    )
 
 
 # run script
