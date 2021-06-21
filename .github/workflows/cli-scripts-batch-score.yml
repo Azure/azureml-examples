@@ -10,7 +10,7 @@ on:
     paths:
       - cli/batch-score.sh
       - .github/workflows/cli-scripts-batch-score.yml
-      - cli/setup.sh#
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
