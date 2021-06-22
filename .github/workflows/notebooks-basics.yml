@@ -1,0 +1,40 @@
+name: notebooks-basics
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - notebooks/basics/**
+      - .github/workflows/notebooks-basics.yml
+      - notebooks/dev-requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install dev requirements
+      run: pip install -r notebooks/dev-requirements.txt
+    - name: pip install notebook requirements
+      run: pip install -r requirements.txt
+      working-directory: notebooks/basics
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run 1.train-lightgbm-local.ipynb
+      run: papermill 1.train-lightgbm-local.ipynb - -k python
+      working-directory: notebooks/basics
+      env:
+        AZUREML_MLFLOW_URI: "azureml://eastus.experiments.azureml.net/mlflow/v1.0/subscriptions/6560575d-fa06-4e7d-95fb-f962e74efd7a/resourceGroups/azureml-examples-rg/providers/Microsoft.MachineLearningServices/workspaces/main?"
+
