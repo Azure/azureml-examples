@@ -32,11 +32,9 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: debug
-      run: python -c "import os; print(os.environ)"
     - name: run 1.train-lightgbm-local.ipynb
       run: papermill 1.train-lightgbm-local.ipynb - -k python
       working-directory: notebooks/basics
       env:
-        AZUREML_MLFLOW_URI: azureml://eastus.experiments.azureml.net/mlflow/v1.0/subscriptions/6560575d-fa06-4e7d-95fb-f962e74efd7a/resourceGroups/azureml-examples-rg/providers/Microsoft.MachineLearningServices/workspaces/main?
+        AZUREML_MLFLOW_URI: "azureml://eastus.experiments.azureml.net/mlflow/v1.0/subscriptions/6560575d-fa06-4e7d-95fb-f962e74efd7a/resourceGroups/azureml-examples-rg/providers/Microsoft.MachineLearningServices/workspaces/main?"
 
