@@ -18,10 +18,11 @@ Welcome to the Azure Machine Learning examples repository!
 
 ## Contents
 
-|directory|description|
-|-|-|
-|[`cli`](cli)|Azure Machine Learning 2.0 CLI (preview) examples|
-|[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK examples|
+directory|description
+-|-
+[`cli`](cli)|Azure Machine Learning 2.0 CLI (preview) examples
+[`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace
+[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK examples
 
 ## Contributing
 
