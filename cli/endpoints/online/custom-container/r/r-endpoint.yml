@@ -1,0 +1,33 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
+type: online
+auth_mode: aml_token
+traffic:
+  r-deployment: 100
+
+deployments:
+  - name: r-deployment
+    model:
+      name: plumber
+      version: 1
+      local_path: ./scripts
+    environment:
+      name: r-environment
+      version: 1
+      docker:
+        image: {{acr_name}}.azurecr.io/r_server
+      inference_config:
+        liveness_route:
+          port: 8000
+          path: /live
+        readiness_route:
+          port: 8000
+          path: /ready
+        scoring_route:
+          port: 8000
+          path: /score
+    instance_type: Standard_F2s_v2
+    scale_settings:
+      scale_type: manual
+      instance_count: 1
+      min_instances: 1
+      max_instances: 2
