@@ -2,6 +2,9 @@ BASE_PATH=endpoints/online/custom-container/r
 ENDPOINT_NAME=r-endpoint
 DEPLOYMENT_NAME=r-deployment
 
+# Download model
+wget https://aka.ms/r-model -O $BASE_PATH/scripts/model.rds
+
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
 ACR_NAME=$(az ml workspace show -w $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
@@ -33,7 +36,7 @@ sleep 10
 # Check liveness, readiness, scoring locally
 curl "http://localhost:8000/live"
 curl "http://localhost:8000/ready"
-curl -H "Content-Type: application/json" --data '{"a":4, "b":5}' http://localhost:8000/score
+curl -H "Content-Type: application/json" --data @$BASE_PATH/sample_request.json http://localhost:8000/score
 
 docker stop r_server
 

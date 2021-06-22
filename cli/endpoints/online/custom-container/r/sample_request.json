@@ -1,1 +1,8 @@
-{"a":4, "b":5}
+{"dvcat":"1-9km/h",
+ "seatbelt":"belted", 
+ "frontal": "frontal", 
+ "sex": "m", 
+ "ageOfocc": "16", 
+ "yearVeh": "2003",
+ "airbag": "none", 
+ "occRole": "pass"}
