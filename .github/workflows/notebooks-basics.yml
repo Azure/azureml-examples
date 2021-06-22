@@ -33,5 +33,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run 1.train-lightgbm-local.ipynb
-      run: 1.train-lightgbm-local.ipynb - -k python
+      run: papermill 1.train-lightgbm-local.ipynb - -k python
       working-directory: notebooks/basics
