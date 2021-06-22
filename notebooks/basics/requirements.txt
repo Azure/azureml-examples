@@ -1,0 +1,10 @@
+# data science
+numpy
+scipy
+pandas
+scikit-learn
+lightgbm
+
+# tracking
+mlflow
+azureml-mlflow
