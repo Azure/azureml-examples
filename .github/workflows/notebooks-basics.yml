@@ -8,7 +8,7 @@ on:
     paths:
       - notebooks/basics/**
       - .github/workflows/notebooks-basics.yml
-      - python-sdk/requirements.txt
+      - notebooks/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
