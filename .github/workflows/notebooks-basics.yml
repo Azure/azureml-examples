@@ -28,10 +28,9 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
-    - name: cli setup
+    - name: setup
       run: bash setup.sh
-      working-directory: cli
-      continue-on-error: true
+      working-directory: notebooks
     - name: run 1.train-lightgbm-local.ipynb
       run: papermill 1.train-lightgbm-local.ipynb - -k python
       working-directory: notebooks/basics
