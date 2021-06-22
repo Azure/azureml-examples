@@ -1,4 +1,4 @@
-name: notebooks-basics
+name: notebooks-flaml
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -23,7 +23,7 @@ jobs:
       run: pip install -r notebooks/dev-requirements.txt
     - name: pip install notebook requirements
       run: pip install -r requirements.txt
-      working-directory: notebooks/basics
+      working-directory: notebooks/flaml
     - name: azure login
       uses: azure/login@v1
       with:
@@ -32,7 +32,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run 1.train-lightgbm-local.ipynb
+    - name: run 1.intro.ipynb
       run: papermill 1.intro.ipynb - -k python
       working-directory: notebooks/flaml
       env:
