@@ -1,0 +1,24 @@
+name: python-ml-basic-cpu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - numpy
+    - pandas
+    - scipy
+    - scikit-learn
+    - matplotlib
+    - xgboost
+    - lightgbm
+    - dask
+    - distributed
+    - dask-ml
+    - adlfs
+    - fastparquet
+    - pyarrow
+    - mlflow
+    - azureml-mlflow
+    - azureml-dataprep
+    
