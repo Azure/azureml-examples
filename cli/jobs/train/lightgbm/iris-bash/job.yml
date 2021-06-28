@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
-command: >
+command: >-
   bash run.sh 
 environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:1
 compute:

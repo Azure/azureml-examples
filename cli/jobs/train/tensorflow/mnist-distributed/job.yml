@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
-command: >
+command: >-
   python train.py 
   --epochs 1
   --model-dir outputs/keras-model
