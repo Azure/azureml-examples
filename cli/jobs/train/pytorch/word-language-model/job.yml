@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
-command: >
+command: >-
   python main.py 
   --cuda --epochs 1
   --model Transformer 

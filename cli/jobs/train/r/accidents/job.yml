@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
-command: >
+command: >-
   Rscript accidents.R
   --data {inputs.training_data}
 inputs:
