@@ -21,6 +21,7 @@ def main(args):
     # train model
     model = tfdf.keras.RandomForestModel().fit(ds)
 
+
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
