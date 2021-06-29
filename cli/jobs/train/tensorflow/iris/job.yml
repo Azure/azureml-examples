@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  python main.py 
+  --iris-csv {inputs.iris}
+inputs:
+  iris:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    mode: mount
+environment:
+  docker:
+    build: 
+      dockerfile: file:Dockerfile
+compute:
+  target: azureml:cpu-cluster
+experiment_name: tensorflow-iris-example
+description: Train a Tensorflow Decision Forest on the Iris dataset.
