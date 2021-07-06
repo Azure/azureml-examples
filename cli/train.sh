@@ -8,6 +8,7 @@ az ml job create -f jobs/train/lightgbm/iris/job.yml --set compute.target=local 
 # <create_computes>
 az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
 az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 8 --size Standard_NC12
+az ml compute create -n cpu-cluster-3 --type AmlCompute --min-instances 0 --max-instances 40
 # </create_computes>
 
 # <lightgbm_iris>
