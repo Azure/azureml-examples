@@ -1,0 +1,32 @@
+name: cli-scripts-deploy-torchserve
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+    paths:
+      - cli/deploy-torchserve.sh
+      - .github/workflows/cli-scripts-deploy-torchserve.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: scripts installs
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: test script script
+      run: set -e; bash -x deploy-torchserve.sh
+      working-directory: cli

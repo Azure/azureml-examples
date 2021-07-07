@@ -1,12 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
-command: >
+command: >-
   bash run.sh 
-environment:
-  docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
-  conda_file: file:environment.yml
+environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:1
 compute:
   target: azureml:cpu-cluster
 experiment_name: lightgbm-iris-bash-example

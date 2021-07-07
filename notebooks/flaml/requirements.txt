@@ -1,0 +1,13 @@
+# data science
+numpy
+scipy
+pandas
+scikit-learn
+lightgbm
+
+# flaml
+flaml[notebook,azureml]
+
+# tracking
+mlflow
+azureml-mlflow

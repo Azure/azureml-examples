@@ -1,9 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
-command: >
+command: >-
   python main.py 
-  --cuda --epochs 1
+  --cuda 
+  --epochs 1
   --model Transformer 
   --lr 5 
   --data {inputs.corpus} 
@@ -18,4 +19,3 @@ compute:
   target: azureml:gpu-cluster
 experiment_name: pytorch-word-language-model-example
 description: Train a multi-layer RNN (Elman, GRU, or LSTM) on a language modeling task with PyTorch.
-    
