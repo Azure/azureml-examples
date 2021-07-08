@@ -6,8 +6,8 @@ traffic:
 deployments:
     -   name: blue
         model:
-           name: densenet-onnx
-           version: 4
+           name: bert
+           version: 1
            local_path: ./models
         code_configuration:
             code:

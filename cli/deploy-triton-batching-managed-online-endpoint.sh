@@ -3,16 +3,20 @@
 
 set -e
 
-BASE_PATH=endpoints/online/triton/batching
-MODEL_PATH=$BASE_PATH/models/triton/bertsquad-10/1
+BASE_PATH=endpoints/online/triton/bert-perfanalyzer
+MODEL_PATH=$BASE_PATH/models/triton/bert-si-onnx/1
 
 # <set_endpoint_name>
-export ENDPOINT_NAME=triton-batching-mir-endpt-`echo $RANDOM`
+export ENDPOINT_NAME=triton-bert-endpt
 # </set_endpoint_name>
 
 # Download the model
 mkdir -p $MODEL_PATH
-wget https://github.com/onnx/models/tree/master/text/machine_comprehension/bert-squad/model/bertsquad-10.onnx -O $MODEL_PATH/model.onnx
+wget -O $MODEL_PATH/model.onnx https://github.com/onnx/models/blob/master/text/machine_comprehension/bert-squad/model/bertsquad-8.onnx?raw=true 
+
+#Download the dependencies file required by BERT script (tokenization script and helper functions)
+wget -O $BASE_PATH/run_onnx_squad.py https://raw.githubusercontent.com/onnx/models/master/text/machine_comprehension/bert-squad/dependencies/run_onnx_squad.py
+wget -O $BASE_PATH/tokenization.py https://raw.githubusercontent.com/onnx/models/master/text/machine_comprehension/bert-squad/dependencies/tokenization.py
 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
@@ -22,7 +26,7 @@ az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deplo
 az ml endpoint show -n $ENDPOINT_NAME
 # </get_status>
 
-#  check if create was successful
+# check if endpoint create was successful
 endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
@@ -49,21 +53,31 @@ az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
 
 # <get_scoring_uri>
 scoring_uri=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
-scoring_uri=${scoring_uri%/*}
+scoring_uri=${scoring_uri%/*} # this will get rid of score
+scoring_uri=${scoring_uri//triton/blue-triton} # this will add the 'blue' as this is the bug which needs deployment name (blue in this case)
 # </get_scoring_uri>
 
 # <get_token>
 auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 # </get_token>
 
-# <check_status_of_triton_server>
-curl --request GET $scoring_uri/v2/health/ready -H "Authorization: Bearer $auth_token"
-# </check_status_of_triton_server>
+# < get the primary key>
+primary_key =$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey o tsv)
+# </ get the primary key>
+
+# <check_scoring_of_model>
+python3 $BASE_PATH/triton_bert_scoring.py --base_url=$scoring_uri --token=$auth_token
+# </check_scoring_of_model>
+
+# <Run the perf-analyzer for the BERT onnx model>
+export filename=bert_cuda_staticbs1_fp32.csv
+perf_analyzer -m bert-si-onnx -b 1 --concurrency-range 2:64:2 -u $scoring_uri -H 'Authorization: Bearer '$primary_key -f $filename
+# </Run the perf-analyzer for the BERT onnx model>
 
 # <delete_endpoint>
-#az ml endpoint delete -n $ENDPOINT_NAME --yes --no-wait
+az ml endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_model>
-#az ml model delete -n bidaf-ensemble --version 2
+az ml model delete -n bert-si-onnx --version 4
 # </delete_model>
