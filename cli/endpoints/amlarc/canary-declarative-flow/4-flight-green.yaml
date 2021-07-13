@@ -50,4 +50,3 @@ deployments:
     max_instances: 2
     min_instances: 1
     scale_type: auto
-

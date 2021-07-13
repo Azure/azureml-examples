@@ -25,5 +25,3 @@ deployments:
   scale_settings:
     min_instances: 2
     scale_type: auto
-
-
