@@ -17,7 +17,7 @@ deployments:
   #blue deployment
   - name: blue    
     model:
-      name: model-1
+      name: model-hello
       version: 1
       local_path: ../model-1/model/helloworld.txt
     code_configuration:
