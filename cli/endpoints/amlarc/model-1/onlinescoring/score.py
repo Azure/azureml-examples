@@ -1,10 +1,6 @@
 import os
 import logging
-import pickle
 import json
-import numpy
-from sklearn.externals import joblib
-from sklearn.linear_model import Ridge
 
 
 def init():
@@ -12,23 +8,19 @@ def init():
     # AZUREML_MODEL_DIR is an environment variable created during deployment.
     # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
     # For multiple models, it points to the folder containing all deployed models (./azureml-models)
-    model_path = os.path.join(
-        os.getenv("AZUREML_MODEL_DIR"), "sklearn_regression_model.pkl"
-    )
+    model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "helloworld.txt")
     # deserialize the model file back into a sklearn model
-    model = joblib.load(model_path)
+    with open(model_path) as f:
+        model = f.readline()
     logging.info("Init complete")
 
 
 # note you can pass in multiple rows for scoring
 def run(raw_data):
     try:
+        print(str(raw_data))
         logging.info("Request received")
-        data = json.loads(raw_data)["data"]
-        data = numpy.array(data)
-        result = model.predict(data)
-        logging.info("Request processed")
-        return result.tolist()
+        return model.tolist()
     except Exception as e:
         error = str(e)
         return error
