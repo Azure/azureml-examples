@@ -1,0 +1,41 @@
+name: python-sdk-tutorial-automl-with-azureml
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - python-sdk/tutorials/automl-with-azureml/**
+      - .github/workflows/python-sdk-tutorial-automl-with-azureml.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    strategy:
+      fail-fast: false
+      matrix:
+        notebook: [classification-credit-card-fraud/auto-ml-classification-credit-card-fraud.ipynb]
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.6"
+    - name: create automl conda environment
+      run: |
+        echo "Creating azure_automl conda environment"
+        conda env create --file=automl_env_linux.yml
+        echo "Activating azure_automl conda environment"
+        source activate azure_automl
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run ${{matrix.notebook}}
+      run: papermill ${{matrix.notebook}} - -k python36
+      working-directory: python-sdk/tutorials/automl-with-azureml
