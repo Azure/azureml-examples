@@ -1,5 +1,6 @@
 name: python-sdk-tutorial-automl-with-azureml
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -24,6 +25,7 @@ jobs:
         python-version: "3.6"
     - name: create automl conda environment
       run: |
+        cd python-sdk/tutorials/automl-with-azureml
         echo "Creating azure_automl conda environment"
         conda env create --file=automl_env_linux.yml
         echo "Activating azure_automl conda environment"
