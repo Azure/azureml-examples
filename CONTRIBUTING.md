@@ -18,26 +18,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## Priority
-
-Provide samples and source code for documentation for ML professionals which rapidly accelerates productivity.
-
-## Principles
-
-- robust and frequent testing
-- standardization of examples where beneficial
-
 ## Goals
 
-- all examples working
-- all hyperlinks working
-- host complete matrix of practically useful code samples for Azure Machine Learning
+- source for all code snippets in documentation
 
 ## Non-goals
 
 - serve as documentation (see https://docs.microsoft.com/azure/machine-learning)
-- host scenario-specific project templates
-- host complete matrix of code samples for Azure Machine Learning
+- serve as scenario-specific project templates (coming soon!)
 
 ## Issues
 
@@ -45,17 +33,16 @@ All forms of feedback are welcome through [issues](https://github.com/Azure/azur
 
 ## Repository structure
 
-The structure of this repository is currently subject to change. While restructuring the repository should be avoided, it may be necessary in the near future.
+Azure Machine Learning has multiple developer experiences. The subdirectories at the root of the repo correspond to a developer experience, with the slight exception of `notebooks`.
 
-Currently the repository is split at the root into two primary subdirectories - one for hosting the Python SDK examples and the other for the new CLI extension examples. Each subdirectory operates relatively independently, although there are many similarities.
-
-For pull requests (PRs), see the next section and follow the specific contributing guidelines for the corresponding subdirectory you are contributing to.
+The `notebooks` directory is intended for iterative, interactive code development examples such as exploratory data anlysis or querying logged metrics.
 
 ## Pull Requests
 
 Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning team to merge. Please follow the pre-defined template and read all relevant sections below.
 
 **Important:** PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
+
 
 ### Set up and pre-PR
 
@@ -80,7 +67,30 @@ Also if adding new examples or changing existing descriptions, run the `readme.p
 python readme.py
 ```
 
-This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with the exception of Python SDK tutorials) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details.
+This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with exceptions) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details.
+
+### Discoverability
+
+Examples in this repository can be index in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
+
+- add an excellent `README.md` file in the example directory
+- add required YAML frontmatter at the top of the `README.md`
+
+The YAML frontmatter is this:
+
+```YAML
+---
+page_type: sample
+languages:
+- azurecli
+- python
+products:
+- azure-machine-learning
+description: Example description.
+---
+```
+
+**Edit the description** and update the languages as needed.
 
 ### CLI 2.0
 
@@ -89,3 +99,7 @@ This will also generate a GitHub Actions workflow file for any new examples in t
 ### Python SDK
 
 [Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
+
+### Notebooks
+
+[Notebooks contributing guide.](notebooks/CONTRIBUTING.md)
