@@ -24,12 +24,14 @@ jobs:
       with:
         python-version: "3.6"
     - name: create automl conda environment
-      run: |
-        cd python-sdk/tutorials/automl-with-azureml
-        echo "Creating azure_automl conda environment"
-        conda env create --file=automl_env_linux.yml
-        echo "Activating azure_automl conda environment"
-        $CONDA/bin/conda activate azure_automl
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+          activate-environment: azure_automl
+          environment-file: automl_env_linux.yml
+          auto-activate-base: false
+    - run: |
+          conda info
+          conda list
     - name: azure login
       uses: azure/login@v1
       with:
