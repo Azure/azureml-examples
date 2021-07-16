@@ -146,7 +146,7 @@ jupyter notebook
             - run the experiment remotely on AML Compute cluster
             - get best trained model for a different metric than the one the experiment was optimized for
             - test the performance of the best model in the local environment
-        - **[Jupyter Notebook (advanced)](regression/auto-ml-regression.ipynb)**
+        - **[Jupyter Notebook (advanced)](regression-explanation-featurization/auto-ml-regression-explanation-featurization.ipynb)**
             - run the experiment remotely on AML Compute cluster
             - customize featurization: override column purpose within the dataset, configure transformer parameters
             - get best trained model for a different metric than the one the experiment was optimized for
@@ -163,7 +163,7 @@ jupyter notebook
           - get the best model, use it to forecast on test data and compare the accuracy of predictions against real data
 - **Forecast Orange Juice Sales (Multi-Series)**
     - Dataset: [Dominick's grocery sales of orange juice](forecasting-orange-juice-sales/dominicks_OJ.csv)
-        - **[Jupyter Notebook](forecasting-orange-juice-sales/dominicks_OJ.csv)**
+        - **[Jupyter Notebook](forecasting-orange-juice-sales/auto-ml-forecasting-orange-juice-sales.ipynb)**
           - run experiment remotely on AML Compute cluster
           - customize time-series featurization, change column purpose and override transformer hyper parameters
           - evaluate locally the performance of the generated best model
