@@ -29,7 +29,7 @@ jobs:
         echo "Creating azure_automl conda environment"
         conda env create --file=automl_env_linux.yml
         echo "Activating azure_automl conda environment"
-        conda activate azure_automl
+        $CONDA/bin/conda activate azure_automl
     - name: azure login
       uses: azure/login@v1
       with:
