@@ -36,6 +36,7 @@ jobs:
           pip list
           pip install papermill==2.3.3
           pip list
+          python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
     - name: azure login
       uses: azure/login@v1
       with:
