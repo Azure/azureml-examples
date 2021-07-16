@@ -26,7 +26,7 @@ def main():
 def write_notebook_workflow(notebook, notebook_folder):
     notebook_name = notebook.replace(".ipynb", "")
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: python-sdk-tutorial-{notebook_name}
+    workflow_yaml = f"""name: {notebook_name}
 on:
   workflow_dispatch:
   schedule:

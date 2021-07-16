@@ -1,4 +1,4 @@
-name: python-sdk-tutorial-auto-ml-classification-text-dnn
+name: auto-ml-classification-text-dnn
 on:
   workflow_dispatch:
   schedule:
