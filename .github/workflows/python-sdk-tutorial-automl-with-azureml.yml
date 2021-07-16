@@ -46,5 +46,5 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run ${{matrix.notebook}}
-      run: papermill ${{matrix.notebook}} - -k python36
+      run: papermill ${{matrix.notebook}} - -k python
       working-directory: python-sdk/tutorials/automl-with-azureml
