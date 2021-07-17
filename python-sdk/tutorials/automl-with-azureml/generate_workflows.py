@@ -11,6 +11,7 @@ def main():
         if os.path.isdir(os.path.join(current_folder, name))
     ]
 
+    notebook_counter = 0
     for folder in subfolders:
         sub_folder = os.path.join(current_folder, folder)
         # file flag to identify the need to generate a dedicated workflow for this particular folder
@@ -20,17 +21,22 @@ def main():
             # now get the list of notebook files
             nbs = [nb for nb in os.listdir(sub_folder) if nb.endswith(".ipynb")]
             for notebook in nbs:
-                write_notebook_workflow(notebook, folder)
+                # set the cron job schedule to trigger a different hour to avoid any resource contention
+                hour_to_trigger = notebook_counter % 24
+                day_to_schedule = 2 # Tuesday
+                cron_schedule = f"0 {hour_to_trigger} * * {day_to_schedule}"
+                write_notebook_workflow(notebook, folder, cron_schedule)
+                notebook_counter += 1
 
 
-def write_notebook_workflow(notebook, notebook_folder):
+def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     notebook_name = notebook.replace(".ipynb", "")
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: {notebook_name}
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "{cron_schedule}"
   pull_request:
     branches:
       - main

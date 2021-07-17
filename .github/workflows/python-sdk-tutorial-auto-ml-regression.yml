@@ -1,14 +1,14 @@
-name: auto-ml-classification-text-dnn
+name: auto-ml-regression
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 2 * * 2"
+    - cron: "0 10 * * 2"
   pull_request:
     branches:
       - main
     paths:
-      - python-sdk/tutorials/automl-with-azureml/classification-text-dnn/**
-      - .github/workflows/python-sdk-tutorial-auto-ml-classification-text-dnn.yml
+      - python-sdk/tutorials/automl-with-azureml/regression/**
+      - .github/workflows/python-sdk-tutorial-auto-ml-regression.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -44,6 +44,6 @@ jobs:
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run auto-ml-classification-text-dnn.ipynb
-      run: papermill auto-ml-classification-text-dnn.ipynb - -k python
-      working-directory: python-sdk/tutorials/automl-with-azureml/classification-text-dnn
+    - name: run auto-ml-regression.ipynb
+      run: papermill auto-ml-regression.ipynb - -k python
+      working-directory: python-sdk/tutorials/automl-with-azureml/regression

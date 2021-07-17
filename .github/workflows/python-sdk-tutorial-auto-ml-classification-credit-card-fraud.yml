@@ -2,7 +2,7 @@ name: auto-ml-classification-credit-card-fraud
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 1 * * 2"
   pull_request:
     branches:
       - main
