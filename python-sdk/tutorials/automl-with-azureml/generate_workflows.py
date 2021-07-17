@@ -23,7 +23,7 @@ def main():
             for notebook in nbs:
                 # set the cron job schedule to trigger a different hour to avoid any resource contention
                 hour_to_trigger = notebook_counter % 24
-                day_to_schedule = 2 # Tuesday
+                day_to_schedule = 2  # Tuesday
                 cron_schedule = f"0 {hour_to_trigger} * * {day_to_schedule}"
                 write_notebook_workflow(notebook, folder, cron_schedule)
                 notebook_counter += 1
