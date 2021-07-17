@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest 
     defaults:
       run:
-        shell: bash -l {0}
+        shell: bash -l {{0}}
     strategy:
       fail-fast: false
     steps:
@@ -58,11 +58,12 @@ jobs:
           activate-environment: azure_automl
           environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
           auto-activate-base: false
-    - run: |
-          pip list
-          pip install papermill==2.3.3
-          pip list
-          python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
+    - name: install papermill and set up the IPython kernel
+      run: |
+        pip list
+        pip install papermill==2.3.3
+        pip list
+        python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
     - name: azure login
       uses: azure/login@v1
       with:
@@ -75,10 +76,13 @@ jobs:
       run: papermill {notebook} - -k python
       working-directory: python-sdk/tutorials/automl-with-azureml/{notebook_folder}"""
 
-    workflow_file = f"../../../.github/workflows/python-sdk-{notebook_name}.yml"
+    workflow_file = (
+        f"../../../.github/workflows/python-sdk-tutorial-{notebook_name}.yml"
+    )
     workflow_before = ""
-    with open(workflow_file, "r") as f:
-        workflow_before = f.read()
+    if os.path.exists(workflow_file):
+        with open(workflow_file, "r") as f:
+            workflow_before = f.read()
 
     if workflow_yaml != workflow_before:
         # write workflow
