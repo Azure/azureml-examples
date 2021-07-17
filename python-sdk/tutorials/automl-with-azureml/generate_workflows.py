@@ -1,10 +1,15 @@
 # imports
 import os
 
+
 def main():
     # get all subfolders
     current_folder = "."
-    subfolders = [name for name in os.listdir(current_folder) if os.path.isdir(os.path.join(current_folder, name))]
+    subfolders = [
+        name
+        for name in os.listdir(current_folder)
+        if os.path.isdir(os.path.join(current_folder, name))
+    ]
 
     for folder in subfolders:
         sub_folder = os.path.join(current_folder, folder)
@@ -13,9 +18,10 @@ def main():
 
         if not os.path.exists(os.path.join(sub_folder, dedicated_workflow_generator)):
             # now get the list of notebook files
-            nbs = [nb for nb in os.listdir(sub_folder) if nb.endswith('.ipynb')]
+            nbs = [nb for nb in os.listdir(sub_folder) if nb.endswith(".ipynb")]
             for notebook in nbs:
                 write_notebook_workflow(notebook, folder)
+
 
 def write_notebook_workflow(notebook, notebook_folder):
     notebook_name = notebook.replace(".ipynb", "")
