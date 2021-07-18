@@ -80,7 +80,9 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run {notebook}
       run: papermill {notebook} - -k python
-      working-directory: python-sdk/tutorials/automl-with-azureml/{notebook_folder}"""
+      working-directory: python-sdk/tutorials/automl-with-azureml/{notebook_folder}
+    - name: view output
+      run: ls"""
 
     workflow_file = (
         f"../../../.github/workflows/python-sdk-tutorial-{notebook_name}.yml"
