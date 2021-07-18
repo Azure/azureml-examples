@@ -48,4 +48,5 @@ jobs:
       run: papermill auto-ml-classification-bank-marketing-all-features.ipynb - -k python
       working-directory: python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
     - name: view output
+      if: ${{ always() }}
       run: ls
