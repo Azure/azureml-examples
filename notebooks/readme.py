@@ -75,11 +75,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     # write README.md
     print("writing README.md...")
     with open("README.md", "w") as f:
-        f.write(
-            prefix
-            + notebook_table
-            + suffix
-        )
+        f.write(prefix + notebook_table + suffix)
 
 
 def write_workflows(notebooks):
@@ -90,6 +86,7 @@ def write_workflows(notebooks):
 
         # write workflow file
         write_notebook_workflow(notebook, name)
+
 
 def check_readme(before, after):
     return before == after
@@ -157,6 +154,7 @@ jobs:
     # write workflow
     with open(f"../.github/workflows/python-sdk-notebook-{name}.yml", "w") as f:
         f.write(workflow_yaml)
+
 
 # run functions
 if __name__ == "__main__":
