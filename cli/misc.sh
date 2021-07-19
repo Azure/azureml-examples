@@ -9,6 +9,11 @@ az extension list
 az extension add -n ml
 # </az_ml_install>
 
+# <az_extension_install_linux>
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash 
+az extension add -n ml -y 
+# </az_extension_install_linux>
+
 # <az_ml_update>
 az extension update -n ml
 # </az_ml_update>
@@ -25,4 +30,3 @@ az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"
 az extension remove -n azure-cli-ml
 az extension remove -n ml
 # </az_extension_remove>
-
