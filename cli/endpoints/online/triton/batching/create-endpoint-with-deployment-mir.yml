@@ -18,7 +18,9 @@ deployments:
             version: 1
             docker:
                 image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210525.1
-        request:
+        environment_variables:
+            ORT_TENSORRT_FP16_ENABLE: 1
+        request_settings:
             max_concurrent_requests_per_instance: 512
         scale_settings:
             scale_type: manual

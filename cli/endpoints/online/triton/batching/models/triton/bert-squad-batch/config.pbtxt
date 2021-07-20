@@ -1,0 +1,61 @@
+name: "bert-squad-batch"
+platform: "onnxruntime_onnx"
+max_batch_size: 16
+input {
+  name: "unique_ids_raw_output___9:0"
+  data_type: TYPE_INT64
+  dims: 1
+  reshape {
+  }
+}
+input {
+  name: "segment_ids:0"
+  data_type: TYPE_INT64
+  dims: 256
+}
+input {
+  name: "input_mask:0"
+  data_type: TYPE_INT64
+  dims: 256
+}
+input {
+  name: "input_ids:0"
+  data_type: TYPE_INT64
+  dims: 256
+}
+output {
+  name: "unstack:1"
+  data_type: TYPE_FP32
+  dims: 256
+}
+output {
+  name: "unstack:0"
+  data_type: TYPE_FP32
+  dims: 256
+}
+output {
+  name: "unique_ids:0"
+  data_type: TYPE_INT64
+  dims: 1
+  reshape {
+  }
+}
+instance_group {
+  count: 2
+  kind: KIND_GPU
+}
+dynamic_batching {
+  preferred_batch_size: 1
+  preferred_batch_size: 2
+  preferred_batch_size: 4
+  preferred_batch_size: 8
+  preferred_batch_size: 16
+  max_queue_delay_microseconds: 30000
+}
+optimization {
+  execution_accelerators {
+    gpu_execution_accelerator {
+      name: "tensorrt"
+    }
+  }
+}

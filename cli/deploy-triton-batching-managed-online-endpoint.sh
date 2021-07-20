@@ -3,16 +3,19 @@
 
 set -e
 
-BASE_PATH=endpoints/online/triton/bert-perfanalyzer
-MODEL_PATH=$BASE_PATH/models/triton/bert-si-onnx/1
+BASE_PATH=endpoints/online/triton/batching
+DEFAULT_MODEL_PATH=$BASE_PATH/models/triton/bert-squad/1
+BATCH_MODEL_PATH=$BASE_PATH/models/triton/bert-squad-batch/1
 
 # <set_endpoint_name>
-export ENDPOINT_NAME=triton-bert-endpt
+export ENDPOINT_NAME=triton-batch-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
 # Download the model
-mkdir -p $MODEL_PATH
-wget -O $MODEL_PATH/model.onnx https://github.com/onnx/models/blob/master/text/machine_comprehension/bert-squad/model/bertsquad-8.onnx?raw=true 
+mkdir -p $DEFAULT_MODEL_PATH
+wget -O $DEFAULT_MODEL_PATH/model.onnx https://github.com/onnx/models/blob/master/text/machine_comprehension/bert-squad/model/bertsquad-8.onnx?raw=true 
+mkdir -p $BATCH_MODEL_PATH
+cp $DEFAULT_MODEL_PATH/model.onnx $BATCH_MODEL_PATH
 
 #Download the dependencies file required by BERT script (tokenization script and helper functions)
 wget -O $BASE_PATH/run_onnx_squad.py https://raw.githubusercontent.com/onnx/models/master/text/machine_comprehension/bert-squad/dependencies/run_onnx_squad.py
@@ -47,10 +50,6 @@ else
   exit 1
 fi
 
-# <get_logs>
-az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
-# </get_logs>
-
 # <get_scoring_uri>
 scoring_uri=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 scoring_uri=${scoring_uri%/*} # this will get rid of score
@@ -61,12 +60,8 @@ scoring_uri=${scoring_uri//triton/blue-triton} # this will add the 'blue' as thi
 auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 # </get_token>
 
-# < get the primary key>
-primary_key =$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey o tsv)
-# </ get the primary key>
-
 # <check_scoring_of_model>
-python3 $BASE_PATH/triton_bert_scoring.py --base_url=$scoring_uri --token=$auth_token
+python $BASE_PATH/triton_bert_scoring.py --base_url=$scoring_uri --token=$auth_token
 # </check_scoring_of_model>
 
 # <Run the perf-analyzer for the BERT onnx model>
@@ -79,5 +74,5 @@ az ml endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_model>
-az ml model delete -n bert-si-onnx --version 4
+az ml model delete -n bert --version 1
 # </delete_model>
