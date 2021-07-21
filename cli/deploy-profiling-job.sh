@@ -10,8 +10,7 @@ export PROFILING_TOOL="<PROFILING_TOOL>"
 export COMPUTE_NAME="<COMPUTE_NAME>"
 # </set_variables>
 
-# export ENDPOINT_NAME=endpt-`echo $RANDOM`
-export ENDPOINT_NAME=endpt-29442
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
 export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
 export COMPUTE_NAME=profilingTest
@@ -45,6 +44,7 @@ else
 fi
 
 # <create_profiling_job_yaml_file>
+# please specify environment variable "IDENTITY_ACCESS_TOKEN" when working with ml compute with no appropriate MSI attached
 tee profiling_job.yml <<EOF
 \$schema: https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json
 command: >
