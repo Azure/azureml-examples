@@ -215,21 +215,29 @@ def check_readme(before, after):
 
 def modify_notebooks(notebooks):
     # setup variables
-    kernelspec = {
+    kernelspec3_8 = {
         "display_name": "Python 3.8",
         "language": "python",
         "name": "python3.8",
     }
 
+    kernelspec3_6 = {
+        "display_name": "Python 3.6",
+        "language": "python",
+        "name": "python3.6",
+    }
+
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
 
         # update metadata
-        data["metadata"]["kernelspec"] = kernelspec
+        if "automl-with-azureml" in notebook:
+            data["metadata"]["kernelspec"] = kernelspec3_6
+        else:
+            data["metadata"]["kernelspec"] = kernelspec3_8
 
         # write notebook
         with open(notebook, "w") as f:
