@@ -49,4 +49,4 @@ jobs:
       working-directory: python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
     - name: view output
       if: ${{ always() }}
-      run: ls
+      run: ls python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
