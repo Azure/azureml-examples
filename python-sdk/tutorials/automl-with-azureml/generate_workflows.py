@@ -66,10 +66,9 @@ jobs:
           auto-activate-base: false
     - name: install papermill and set up the IPython kernel
       run: |
-        pip list
         pip install papermill==2.3.3
-        pip list
         python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
+        pip list
     - name: azure login
       uses: azure/login@v1
       with:
@@ -79,10 +78,14 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run {notebook}
-      run: papermill {notebook} - -k python
+      run: papermill -k python {notebook} {notebook_name}.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/{notebook_folder}
-    - name: view output
-      run: ls"""
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: {notebook_name}
+        path: python-sdk/tutorials/automl-with-azureml/{notebook_folder}"""
 
     workflow_file = (
         f"../../../.github/workflows/python-sdk-tutorial-{notebook_name}.yml"
@@ -100,6 +103,5 @@ jobs:
 
 # run functions
 if __name__ == "__main__":
-    os.chdir(os.path.dirname(__file__))
     # call main
     main()
