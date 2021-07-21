@@ -47,7 +47,7 @@ jobs:
       run: papermill -k python auto-ml-classification-credit-card-fraud.ipynb auto-ml-classification-credit-card-fraud.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/classification-credit-card-fraud
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: auto-ml-classification-credit-card-fraud

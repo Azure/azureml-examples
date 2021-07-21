@@ -47,7 +47,7 @@ jobs:
       run: papermill -k python auto-ml-classification-bank-marketing-all-features.ipynb auto-ml-classification-bank-marketing-all-features.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: auto-ml-classification-bank-marketing-all-features

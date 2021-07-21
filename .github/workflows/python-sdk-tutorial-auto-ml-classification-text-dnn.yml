@@ -47,7 +47,7 @@ jobs:
       run: papermill -k python auto-ml-classification-text-dnn.ipynb auto-ml-classification-text-dnn.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/classification-text-dnn
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: auto-ml-classification-text-dnn

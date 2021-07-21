@@ -47,7 +47,7 @@ jobs:
       run: papermill -k python auto-ml-continuous-retraining.ipynb auto-ml-continuous-retraining.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/continuous-retraining
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: auto-ml-continuous-retraining

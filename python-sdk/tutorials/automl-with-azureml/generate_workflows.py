@@ -81,11 +81,11 @@ jobs:
       run: papermill -k python {notebook} {notebook_name}.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/{notebook_folder}
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
+      if: ${{{{ always() }}}}
       uses: actions/upload-artifact@v2
       with:
         name: {notebook_name}
-        path: python-sdk/tutorials/automl-with-azureml/{notebook_folder}"""
+        path: python-sdk/tutorials/automl-with-azureml/{notebook_folder}\n"""
 
     workflow_file = (
         f"../../../.github/workflows/python-sdk-tutorial-{notebook_name}.yml"

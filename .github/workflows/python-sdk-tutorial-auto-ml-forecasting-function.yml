@@ -47,7 +47,7 @@ jobs:
       run: papermill -k python auto-ml-forecasting-function.ipynb auto-ml-forecasting-function.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/forecasting-forecast-function
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: auto-ml-forecasting-function

@@ -47,7 +47,7 @@ jobs:
       run: papermill -k python auto-ml-regression-explanation-featurization.ipynb auto-ml-regression-explanation-featurization.output.ipynb 
       working-directory: python-sdk/tutorials/automl-with-azureml/regression-explanation-featurization
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: auto-ml-regression-explanation-featurization
