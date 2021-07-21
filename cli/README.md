@@ -74,6 +74,7 @@ path|status|
 [how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh](how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-amlarc-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-deploy-declarative-safe-rollout-amlarc-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-how-to-deploy-declarative-safe-rollout-amlarc-endpoints)
 [manage-resources.sh](manage-resources.sh)|[![manage-resources](https://github.com/Azure/azureml-examples/workflows/cli-scripts-manage-resources/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-manage-resources)
 [misc.sh](misc.sh)|[![misc](https://github.com/Azure/azureml-examples/workflows/cli-scripts-misc/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-misc)
+[mlflow-uri.sh](mlflow-uri.sh)|[![mlflow-uri](https://github.com/Azure/azureml-examples/workflows/cli-scripts-mlflow-uri/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-mlflow-uri)
 [train-rest.sh](train-rest.sh)|[![train-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train-rest)
 [train.sh](train.sh)|[![train](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-scripts-train)
 
