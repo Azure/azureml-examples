@@ -50,3 +50,9 @@ jobs:
     - name: view output
       if: ${{ always() }}
       run: ls python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
+    - name: upload notebook as artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: classification-bank-marketing-all-features
+        path: python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
