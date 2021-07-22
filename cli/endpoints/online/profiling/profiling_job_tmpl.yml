@@ -1,0 +1,30 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json
+command: >
+  profiling.sh -p {inputs.payload}
+experiment_name: profiling-job
+environment:
+  docker:
+    image: docker.io/rachyong/profilers:latest
+environment_variables:
+  ONLINE_ENDPOINT: "<% ENDPOINT_NAME %>"
+  DEPLOYMENT: "<% DEPLOYMENT_NAME %>"
+  PROFILING_TOOL: "<% PROFILING_TOOL %>"
+  DURATION: "<% DURATION %>"
+  CONNECTIONS: "<% CONNECTIONS %>"
+  TARGET_RPS: "<% TARGET_RPS %>"
+  CLIENTS: "<% CLIENTS %>"
+  TIMEOUT: "<% TIMEOUT %>"
+  THREAD: "<% THREAD %>"
+compute:
+  target: <% COMPUTE_NAME %>
+inputs:
+  payload:
+    data:
+      local_path: endpoints/online/profiling/payload.txt
+    mode: mount
+output:
+  output:
+    data:
+      datastore: azureml:workspaceblobstore
+    mode: mount
+
