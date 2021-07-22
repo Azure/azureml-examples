@@ -3,72 +3,238 @@
 
 # init
 init_env(){
-    SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
-    RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
-    WORKSPACE="${WORKSPACE_NAME:-main-amlarc}"  # $((1 + $RANDOM % 100))
-    LOCATION="${LOCATION:-eastus}"
-    ARC_NAME="${EXTENSION_TYPE:-amlarc-arc}"
-    AKS_NAME="${EXTENSION_TYPE:-amlarc-aks}"
-    AMLARC_ARC_RELEASE_TRAIN="${AMLARC_ARC_RELEASE_TRAIN:-experimental}"
-    AMLARC_ARC_RELEASE_NAMESPACE="${AMLARC_ARC_RELEASE_NAMESPACE:-azureml}"
-    EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
-    EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
+    export SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
+    export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
+    export WORKSPACE="${WORKSPACE_NAME:-main-amlarc}"  # $((1 + $RANDOM % 100))
+    export LOCATION="${LOCATION:-eastus}"
+    export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_NAME:-amlarc-cluster-arc}"
+    export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_NAME:-amlarc-cluster-aks}"
+    export AMLARC_ARC_RELEASE_TRAIN="${AMLARC_ARC_RELEASE_TRAIN:-experimental}"
+    export AMLARC_ARC_RELEASE_NAMESPACE="${AMLARC_ARC_RELEASE_NAMESPACE:-azureml}"
+    export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
+    export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
 }
 
-# set compute resources
+intsll_tools(){
+    az extension add -n connectedk8s --yes
+    az extension add -n k8s-extension --yes
+    az extension add -n ml --yes
+
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/OS_DISTRIBUTION/amd64/kubectl
+    chmod +x ./kubectl
+    sudo mv ./kubectl /usr/local/bin/kubectl    
+
+    pip install azureml-core 
+}
+
+function waitForResources {
+    available=false
+    max_retries=60
+    sleep_seconds=5
+    RESOURCE=$1
+    NAMESPACE=$2
+    for i in $(seq 1 $max_retries); do
+        if [[ ! $(kubectl wait --for=condition=available ${RESOURCE} --all --namespace ${NAMESPACE}) ]]; then
+            sleep ${sleep_seconds}
+        else
+            available=true
+            break
+        fi
+    done
+    
+    echo "$available"
+}
+
+prepare_attach_compute_py(){
+echo '
+import sys
+from azureml.core.compute import KubernetesCompute, ComputeTarget
+from azureml.core.workspace import Workspace
+from azureml.exceptions import ComputeTargetException
+
+def main():
+  
+  print("args:", sys.argv)
+  
+  sub_id=sys.argv[1]
+  rg=sys.argv[2]
+  ws_name=sys.argv[3]
+  k8s_compute_name = sys.argv[4]
+  resource_id = sys.argv[5]
+  
+  ws = Workspace.get(name=ws_name,subscription_id=sub_id,resource_group=rg)
+  
+  try:
+    # check if already attached
+    k8s_compute = KubernetesCompute(ws, k8s_compute_name)
+    print("compute already existed. will detach and re-attach it")
+    k8s_compute.detach()
+  except ComputeTargetException:
+    print("compute not found")
+
+  k8s_attach_configuration = KubernetesCompute.attach_configuration(resource_id=resource_id)
+  k8s_compute = ComputeTarget.attach(ws, k8s_compute_name, k8s_attach_configuration)
+  #k8s_compute.wait_for_completion(show_output=True)
+  print("compute status:", k8s_compute.get_status())
+
+if __name__ == "__main__":
+    main()
+' > attach_compute.py
+}
+
+# setup compute resources
 setup_compute(){
     set -x -e
 
-    init_env
-
     VM_SKU="${1:-Standard_NC12}"
+    COMPUTE_NAME="${2:-gpu-cluster}"
+    MIN_COUNT="${3:-4}"
+    MAX_COUNT="${4:-8}"
+
+    ARC_CLUSTER_NAME=${ARC_CLUSTER_PREFIX}-${VM_SKU}
+    AKS_CLUSTER_NAME=${AKS_CLUSTER_PREFIX}-${VM_SKU}
 
     # create resource group
-    az group create -n "$RESOURCE_GROUP" -l "$LOCATION"
+    az group create \
+        --subscription $SUBSCRIPTION \
+        -l "$LOCATION" \
+        -n "$RESOURCE_GROUP" 
 
     # create aks cluster
     az aks create \
-    --subscription $SUBSCRIPTION \
-    --resource-group $RESOURCE_GROUP \
-    --name $AKS_NAME \
-    --node-count 4 \
-    --node-vm-size $(VM_SKU) \
-    --generate-ssh-keys 
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $AKS_CLUSTER_NAME \
+        --enable-cluster-autoscaler \
+        --min-count $MIN_COUNT \
+        --max-count $MAX_COUNT \
+        --node-vm-size $(VM_SKU) \
+        --generate-ssh-keys 
 
     # get aks kubeconfig
-    az aks get-credentials --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --name $AKS_NAME
+    az aks get-credentials \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $AKS_CLUSTER_NAME
 
+    # attach cluster to Arc
+    az connectedk8s connect \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --location $LOCATION \
+        --name $ARC_CLUSTER_NAME 
 
+    # Wait for resources in ARC ns
+    waitSuccessArc="$(waitForResources deployment azure-arc)"
+    if [ "${waitSuccessArc}" == false ]; then
+        echo "deployment is not avilable in namespace - azure-arc"
+    fi
 
-    az configure --defaults group="$RESOURCE_GROUP" workspace="$WORKSPACE"
+    # install extension
+    az k8s-extension create \
+        --cluster-name $ARC_CLUSTER_NAME \
+        --cluster-type connectedClusters \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $EXTENSION_NAME \
+        --extension-type $EXTENSION_TYPE \
+        --scope cluster \
+        --release-train $AMLARC_ARC_RELEASE_TRAIN \
+        --configuration-settings  enableTraining=True allowInsecureConnections=True
     
-    az ml workspace create
+    # Wait for resources in amlarc-arc ns
+    waitSuccessArc="$(waitForResources deployment $AMLARC_ARC_RELEASE_NAMESPACE)"
+    if [ "${waitSuccessArc}" == false ]; then
+        echo "deployment is not avilable in namespace - $AMLARC_ARC_RELEASE_NAMESPACE"
+    fi
 
-    # install amlarc extension
-    curl -o connectedk8s-0.3.2-py2.py3-none-any.whl https://amlk8s.blob.core.windows.net/amlk8sresources/connectedk8s-0.3.2-py2.py3-none-any.whl
-    az extension remove --name connectedk8s
-    az extension add --source connectedk8s-0.3.2-py2.py3-none-any.whl --yes
+    # create workspace
+    az ml workspace show \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --workspace-name $WORKSPACE || \
+    az ml workspace create \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --location $LOCATION \
+        --workspace-name $WORKSPACE 
 
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-
-    echo "Attaching ARC..."
-    az connectedk8s connect --name "Arc_"$RESOURCE_GROUP --resource-group $RESOURCE_GROUP --location $LOCATION
-
-
+    # attach compute
+    prepare_attach_compute_py
+    ARC_RESOURCE_ID="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Kubernetes/connectedClusters/$CLUSTER_NAME"
+    python attach_compute.py \
+        "$SUBSCRIPTION" "$RESOURCE_GROUP" \
+        "$WORKSPACE" "$COMPUTE_NAME" "$ARC_RESOURCE_ID"
 
 }
 
 # check compute resources
 check_compute(){
-    set +e
+    set -x +e
 
+    VM_SKU="${1:-Standard_NC12}"
+
+    ARC_CLUSTER_NAME=${ARC_CLUSTER_PREFIX}-${VM_SKU}
+    AKS_CLUSTER_NAME=${AKS_CLUSTER_PREFIX}-${VM_SKU}
+
+    # check aks
+    az aks show \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $AKS_CLUSTER_NAME 
+
+    # check arc
+    az connectedk8s show \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $ARC_CLUSTER_NAME 
+
+    # check extension
+    az k8s-extension create \
+        --cluster-name $ARC_CLUSTER_NAME \
+        --cluster-type connectedClusters \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $EXTENSION_NAME 
+
+    # check ws
+    az ml workspace show \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --workspace-name $WORKSPACE
+
+    # check compute
+    az ml compute show \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --workspace-name $WORKSPACE \
+        --name $COMPUTE_NAME
+    
 }
 
 # cleanup
 clean_up_compute(){
-    set +e
+    set -x +e
+
+    VM_SKU="${1:-Standard_NC12}"
+    COMPUTE_NAME="${2:-gpu-cluster}"
+
+    ARC_CLUSTER_NAME=${ARC_CLUSTER_PREFIX}-${VM_SKU}
+    AKS_CLUSTER_NAME=${AKS_CLUSTER_PREFIX}-${VM_SKU}
+
+    # delete arc
+    az connectedk8s delete \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $ARC_CLUSTER_NAME 
+        --yes
+
+    # delete aks
+    az aks delete \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $AKS_CLUSTER_NAME 
+        --yes
 
 }
 
