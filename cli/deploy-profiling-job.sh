@@ -1,6 +1,15 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
+## Preparation Steps:
+## 1. az upgrade -y
+## 2. az extension remove -n ml
+## 3. az extension remove -n azure-cli-ml
+## 4. az extension add -n ml
+## 5. az login
+## 6. az account set --subscription "<YOUR_SUBSCRIPTION>"
+## 7. az configure --defaults group=<RESOURCE_GROUP> workspace=<WORKSPACE_NAME>
+
 set -e
 
 # <set_variables>
@@ -80,6 +89,10 @@ EOF
 # <create_profiling_job>
 run_id=$(az ml job create -f profiling_job.yml --query name -o tsv)
 # </create_profiling_job>
+
+# <check_job_status_in_studio>
+az ml job show -n $run_id --web
+# </check_job_status_in_studio>
 
 # <wait_for_job_to_complete>
 n=1
