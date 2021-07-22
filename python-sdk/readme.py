@@ -21,16 +21,16 @@ def main(args):
     # get list of experimental tutorials
     experimental = sorted(glob.glob("experimental/*", recursive=False))
 
-    # make all notebooks consistent
+    # # make all notebooks consistent
     modify_notebooks(all_notebooks)
 
-    # format code
-    # format_code()
+    # # format code
+    format_code()
 
-    # write workflows
+    # # write workflows
     write_workflows(notebooks, workflows)
 
-    # read existing README.md
+    # # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
@@ -67,7 +67,8 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     # process tutorials
     for tutorial in tutorials + experimental:
         # get list of notebooks
-        nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
+        nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/**/*.ipynb")])
+        notebook_names = [nb.replace(".ipynb", "") for nb in nbs]
         nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
         nbs = "<br>".join(nbs)
 
@@ -75,7 +76,17 @@ def write_readme(tutorials, notebooks, workflows, experimental):
         name = tutorial.split("/")[-1]
 
         # build entries for tutorial table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-tutorial-{name})"
+        if os.path.exists(f"../.github/workflows/python-sdk-tutorial-{name}.yml"):
+            # we can have a single GitHub workflow for handling all notebooks within this tutorial folder
+            status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-tutorial-{name})"
+        else:
+            # or, we could have dedicated workflows for each individual notebook contained within this tutorial folder
+            statuses = [
+                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3A{name})"
+                for name in notebook_names
+            ]
+            status = "<br>".join(statuses)
+
         description = "*no description*"
         try:
             with open(f"{tutorial}/README.md", "r") as f:
@@ -204,21 +215,29 @@ def check_readme(before, after):
 
 def modify_notebooks(notebooks):
     # setup variables
-    kernelspec = {
+    kernelspec3_8 = {
         "display_name": "Python 3.8",
         "language": "python",
         "name": "python3.8",
     }
 
+    kernelspec3_6 = {
+        "display_name": "Python 3.6",
+        "language": "python",
+        "name": "python3.6",
+    }
+
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
 
         # update metadata
-        data["metadata"]["kernelspec"] = kernelspec
+        if "automl-with-azureml" in notebook:
+            data["metadata"]["kernelspec"] = kernelspec3_6
+        else:
+            data["metadata"]["kernelspec"] = kernelspec3_8
 
         # write notebook
         with open(notebook, "w") as f:
