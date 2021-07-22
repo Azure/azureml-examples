@@ -23,6 +23,12 @@ amlcomputes = {
         "max_nodes": 10,
         "idle_seconds_before_scaledown": 1200,
     },
+    "cpu-cluster-ds12": {
+        "vm_size": "STANDARD_DS12_V2",
+        "min_nodes": 0,
+        "max_nodes": 10,
+        "idle_seconds_before_scaledown": 1200,
+    },
     "gpu-cluster": {
         "vm_size": "STANDARD_NC6",
         "min_nodes": 0,
