@@ -40,6 +40,61 @@ jobs:
         bash amlarc-compute.sh run_test jobs/train/fastai/mnist/job.yml
       working-directory: cli
       continue-on-error: true
+    - name: run jobs/train/fastai/pets job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris-bash job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/lightgbm/iris-bash/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris/sweep job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job-sweep.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/pytorch/word-language-model job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/pytorch/word-language-model/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/r/accidents job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/r/accidents/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/r/iris job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/r/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/iris job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/tensorflow/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/mnist-distributed-horovod job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist-distributed-horovod/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/mnist-distributed job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist-distributed/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/mnist job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist/job.yml
+      working-directory: cli
+      continue-on-error: true
     - name: clean up Standard_NC12
       run: |
         bash amlarc-compute.sh clean_up_compute Standard_NC12 gpu-cluster
