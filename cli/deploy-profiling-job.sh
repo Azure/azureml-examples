@@ -10,9 +10,10 @@
 ## 6. az account set --subscription "<YOUR_SUBSCRIPTION>"
 ## 7. az configure --defaults group=<RESOURCE_GROUP> workspace=<WORKSPACE_NAME>
 
-set -e
-
 # <set_variables>
+export SUBSCRIPTION="<SUBSCRIPTION>"
+export RESOURCE_GROUP="<RESOURCE_GROUP>"
+export WORKSPACE_NAME="<WORKSPACE_NAME>"
 export ENDPOINT_NAME="<ENDPOINT_NAME>"
 export DEPLOYMENT_NAME="<DEPLOYMENT_NAME>"
 export PROFILING_TOOL="<PROFILING_TOOL>"
@@ -26,10 +27,13 @@ export CLIENTS="" # for labench only, no. of clients for the profiling tool, def
 export TIMEOUT="" # for labench only, timeout for each request, default value is 10s
 # </set_variables>
 
+export SUBSCRIPTION="7421b5fd-cf60-4260-b2a2-dbb76e98458b"
+export RESOURCE_GROUP="model-profiler"
+export WORKSPACE_NAME="notebookvalidation"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
-export COMPUTE_NAME=profilingTest
+export COMPUTE_NAME=exampleCompute
 export COMPUTE_SIZE=Standard_F4s_v2
 
 # <create_compute_cluster_for_hosting_the_profiler>
@@ -49,6 +53,12 @@ if [[ $? -ne 0 ]]; then
   fi
 
   # TODO: assign workspace permission
+  access_token=`az account get-access-token --query accessToken -o tsv`
+  compute_info=`curl https://management.azure.com/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/computes/$COMPUTE_NAME?api-version=2021-03-01-preview -H "Content-Type: application/json" -H "Authorization: Bearer $access_token"`
+  if [[ $? -ne 0 ]]; then echo "Failed to get info for compute $COMPUTE_NAME" && exit 1; fi
+  identity_object_id=`echo $compute_info | jq '.identity.principalId' | sed "s/\"//g"`
+  az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME
+  if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $COMPUTE_NAME" && exit 1; fi
 else
   echo "Compute $COMPUTE_NAME exists, skip creation."
 fi
