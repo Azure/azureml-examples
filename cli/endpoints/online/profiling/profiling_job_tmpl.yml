@@ -22,9 +22,4 @@ inputs:
     data:
       local_path: endpoints/online/profiling/payload.txt
     mode: mount
-output:
-  output:
-    data:
-      datastore: azureml:workspaceblobstore
-    mode: mount
 
