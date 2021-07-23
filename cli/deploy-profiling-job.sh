@@ -114,22 +114,8 @@ sleep 10
 # </stream_job_logs_to_console>
 
 # <get_job_report>
-# get output datastore info
-output=$(az ml job show -n $run_id --query 'output' -o tsv)
-output_arr=($output)
-datastore_id=$(echo ${output_arr[0]} | awk -F: '{print $NF}')
-output_path=${output_arr[1]}
-
-# get storage info
-storage_info=$(az ml datastore show --include-secrets --name $datastore_id --query '[account_name,container_name,credential.access_key]' -o tsv)
-storage_info_arr=($storage_info)
-storage_account_name=${storage_info_arr[0]}
-storage_container_name=${storage_info_arr[1]}
-storage_key=${storage_info_arr[2]}
-
-# download job report
-az storage blob download --container-name $storage_container_name/$output_path/outputs --name report.json --file report_$run_id.json --account-name $storage_account_name --account-key $storage_key
-echo "Job result has been downloaded to file report_$run_id.json."
+az ml job download --name $run_id --download-path report_$run_id --outputs
+echo "Job result has been downloaded to dir report_$run_id"
 # </get_job_report>
 
 # <delete_endpoint>
