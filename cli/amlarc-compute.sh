@@ -3,6 +3,7 @@
 
 # init
 init_env(){
+    set -x
     export SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
     export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
     export WORKSPACE="${WORKSPACE_NAME:-main-amlarc}"  # $((1 + $RANDOM % 100))
@@ -15,7 +16,8 @@ init_env(){
     export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
 }
 
-intsll_tools(){
+install_tools(){
+    set -x
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
     az extension add -n ml --yes
@@ -27,7 +29,7 @@ intsll_tools(){
     pip install azureml-core 
 }
 
-function waitForResources {
+waitForResources(){
     available=false
     max_retries=60
     sleep_seconds=5
@@ -91,8 +93,8 @@ setup_compute(){
     MIN_COUNT="${3:-4}"
     MAX_COUNT="${4:-8}"
 
-    ARC_CLUSTER_NAME=${ARC_CLUSTER_PREFIX}-${VM_SKU}
-    AKS_CLUSTER_NAME=${AKS_CLUSTER_PREFIX}-${VM_SKU}
+    ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+    AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # create resource group
     az group create \
@@ -106,16 +108,18 @@ setup_compute(){
         --resource-group $RESOURCE_GROUP \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
+        --node-count $MIN_COUNT \
         --min-count $MIN_COUNT \
         --max-count $MAX_COUNT \
-        --node-vm-size $(VM_SKU) \
+        --node-vm-size ${VM_SKU} \
         --generate-ssh-keys 
 
     # get aks kubeconfig
     az aks get-credentials \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --name $AKS_CLUSTER_NAME
+        --name $AKS_CLUSTER_NAME \
+        --overwrite-existing
 
     # attach cluster to Arc
     az connectedk8s connect \
@@ -160,8 +164,7 @@ setup_compute(){
         --workspace-name $WORKSPACE 
 
     # attach compute
-    prepare_attach_compute_py
-    ARC_RESOURCE_ID="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Kubernetes/connectedClusters/$CLUSTER_NAME"
+    ARC_RESOURCE_ID="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Kubernetes/connectedClusters/$ARC_CLUSTER_NAME"
     python attach_compute.py \
         "$SUBSCRIPTION" "$RESOURCE_GROUP" \
         "$WORKSPACE" "$COMPUTE_NAME" "$ARC_RESOURCE_ID"
@@ -173,9 +176,10 @@ check_compute(){
     set -x +e
 
     VM_SKU="${1:-Standard_NC12}"
+    COMPUTE_NAME="${2:-gpu-cluster}"
 
-    ARC_CLUSTER_NAME=${ARC_CLUSTER_PREFIX}-${VM_SKU}
-    AKS_CLUSTER_NAME=${AKS_CLUSTER_PREFIX}-${VM_SKU}
+    ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+    AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # check aks
     az aks show \
@@ -190,12 +194,12 @@ check_compute(){
         --name $ARC_CLUSTER_NAME 
 
     # check extension
-    az k8s-extension create \
+    az k8s-extension show \
         --cluster-name $ARC_CLUSTER_NAME \
         --cluster-type connectedClusters \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME 
+        --name $EXTENSION_NAME \
 
     # check ws
     az ml workspace show \
@@ -217,32 +221,49 @@ clean_up_compute(){
     set -x +e
 
     VM_SKU="${1:-Standard_NC12}"
-    COMPUTE_NAME="${2:-gpu-cluster}"
 
-    ARC_CLUSTER_NAME=${ARC_CLUSTER_PREFIX}-${VM_SKU}
-    AKS_CLUSTER_NAME=${AKS_CLUSTER_PREFIX}-${VM_SKU}
+    ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+    AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # delete arc
     az connectedk8s delete \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --name $ARC_CLUSTER_NAME 
+        --name $ARC_CLUSTER_NAME \
         --yes
 
     # delete aks
     az aks delete \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --name $AKS_CLUSTER_NAME 
+        --name $AKS_CLUSTER_NAME \
         --yes
 
 }
 
 # run test
 run_test(){
-    
-}
+    set -x
+    JOB_YML="${1:-jobs/train/fastai/mnist/job.yml}"
 
+    SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
+
+    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
+    az ml job stream $SRW -n $run_id
+    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
+    echo $status
+    if [[ $status == "Completed" ]]
+    then
+        echo "Job completed"
+    elif [[ $status ==  "Failed" ]]
+    then
+        echo "Job failed"
+        exit 1
+    else 
+        echo "Job status not failed or completed"
+        exit 2
+    fi
+}
 
 
 if [ "$0" = "$BASH_SOURCE" ]; then
