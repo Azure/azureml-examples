@@ -18,15 +18,23 @@ init_env(){
 
 install_tools(){
     set -x
+
+    apt-get update -y 
+    apt-get install sudo -y
+    sudo apt-get install curl -y 
+    sudo apt-get install python3-pip -y 
+    sudo apt-get install python3 -y
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
     az extension add -n ml --yes
 
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/OS_DISTRIBUTION/amd64/kubectl
-    chmod +x ./kubectl
-    sudo mv ./kubectl /usr/local/bin/kubectl    
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && chmod +x ./kubectl  \
+    && sudo mv ./kubectl /usr/local/bin/kubectl  
 
-    pip install azureml-core 
+    pip3 install azureml-core 
 }
 
 waitForResources(){
@@ -165,7 +173,7 @@ setup_compute(){
 
     # attach compute
     ARC_RESOURCE_ID="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Kubernetes/connectedClusters/$ARC_CLUSTER_NAME"
-    python attach_compute.py \
+    python3 attach_compute.py \
         "$SUBSCRIPTION" "$RESOURCE_GROUP" \
         "$WORKSPACE" "$COMPUTE_NAME" "$ARC_RESOURCE_ID"
 
