@@ -1,0 +1,53 @@
+name: cli-jobs-train-amlarc
+on:
+  schedule:
+    - cron: "0 0/12 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+    paths:
+      - cli/jobs/train/**
+      - .github/workflows/cli-jobs-train-amlarc.yml
+      - cli/amlarc-compute.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: init env
+      run: |
+        bash amlarc-compute.sh init_env
+        bash amlarc-compute.sh install_tools
+        bash amlarc-compute.sh prepare_attach_compute_py
+      working-directory: cli
+    - name: setup Standard_NC12
+      run: |
+        bash amlarc-compute.sh setup_compute Standard_NC12 gpu-cluster 4 8
+      working-directory: cli
+    - name: setup STANDARD_DS3_V2
+      run: |
+        bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 cpu-cluster 4 10
+      working-directory: cli
+    - name: run jobs/train/fastai/mnist job
+      run: |
+        bash amlarc-compute.sh run_test jobs/train/fastai/mnist/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: clean up Standard_NC12
+      run: |
+        bash amlarc-compute.sh clean_up_compute Standard_NC12 gpu-cluster
+      working-directory: cli
+      continue-on-error: true
+    - name: clean up STANDARD_DS3_V2
+      run: |
+        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2 cpu-cluster
+      working-directory: cli
+      continue-on-error: true
+
