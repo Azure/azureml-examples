@@ -37,41 +37,31 @@ export COMPUTE_NAME=exampleCompute
 export COMPUTE_SIZE=Standard_F4s_v2
 
 # <create_compute_cluster_for_hosting_the_profiler>
-az ml compute show --name $COMPUTE_NAME
-if [[ $? -ne 0 ]]; then
-  echo "Creating Compute $COMPUTE_NAME ..."
-  az ml compute create --name $COMPUTE_NAME --size $COMPUTE_SIZE --identity-type SystemAssigned --type amlcompute
+echo "Creating Compute $COMPUTE_NAME ..."
+az ml compute create --name $COMPUTE_NAME --size $COMPUTE_SIZE --identity-type SystemAssigned --type amlcompute
 
-  # check compute status
-  compute_status=`az ml compute show --name $COMPUTE_NAME --query "provisioning_state" -o tsv`
-  echo $compute_status
-  if [[ $compute_status == "Succeeded" ]]; then
-    echo "Compute $COMPUTE_NAME created successfully"
-  else 
-    echo "Compute $COMPUTE_NAME creation failed"
-    exit 1
-  fi
-
-  # TODO: assign workspace permission
-  access_token=`az account get-access-token --query accessToken -o tsv`
-  compute_info=`curl https://management.azure.com/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/computes/$COMPUTE_NAME?api-version=2021-03-01-preview -H "Content-Type: application/json" -H "Authorization: Bearer $access_token"`
-  if [[ $? -ne 0 ]]; then echo "Failed to get info for compute $COMPUTE_NAME" && exit 1; fi
-  identity_object_id=`echo $compute_info | jq '.identity.principalId' | sed "s/\"//g"`
-  az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME
-  if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $COMPUTE_NAME" && exit 1; fi
-else
-  echo "Compute $COMPUTE_NAME exists, skip creation."
+# check compute status
+compute_status=`az ml compute show --name $COMPUTE_NAME --query "provisioning_state" -o tsv`
+echo $compute_status
+if [[ $compute_status == "Succeeded" ]]; then
+  echo "Compute $COMPUTE_NAME created successfully"
+else 
+  echo "Compute $COMPUTE_NAME creation failed"
+  exit 1
 fi
+
+# create role assignment for acessing workspace resources
+access_token=`az account get-access-token --query accessToken -o tsv`
+compute_info=`curl https://management.azure.com/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/computes/$COMPUTE_NAME?api-version=2021-03-01-preview -H "Content-Type: application/json" -H "Authorization: Bearer $access_token"`
+if [[ $? -ne 0 ]]; then echo "Failed to get info for compute $COMPUTE_NAME" && exit 1; fi
+identity_object_id=`echo $compute_info | jq '.identity.principalId' | sed "s/\"//g"`
+az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME
+if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $COMPUTE_NAME" && exit 1; fi
 # </create_compute_cluster_for_hosting_the_profiler>
 
 # <create_endpoint>
-az ml endpoint show --name $ENDPOINT_NAME
-if [[ $? -ne 0 ]]; then
-  echo "Creating Endpoint $ENDPOINT_NAME ..."
-  az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yml
-else
-  echo "Endpoint $ENDPOINT_NAME exists, skip creation."
-fi
+echo "Creating Endpoint $ENDPOINT_NAME ..."
+az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yml
 # </create_endpoint>
 
 # <check_endpoint_Status>
