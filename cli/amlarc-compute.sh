@@ -19,13 +19,6 @@ init_env(){
 install_tools(){
     set -x
 
-    apt-get update -y 
-    apt-get install sudo -y
-    sudo apt-get install curl -y 
-    sudo apt-get install python3-pip -y 
-    sudo apt-get install python3 -y
-    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
     az extension add -n ml --yes
@@ -95,6 +88,8 @@ if __name__ == "__main__":
 # setup compute resources
 setup_compute(){
     set -x -e
+
+    init_env
 
     VM_SKU="${1:-Standard_NC12}"
     COMPUTE_NAME="${2:-gpu-cluster}"
@@ -183,6 +178,8 @@ setup_compute(){
 check_compute(){
     set -x +e
 
+    init_env
+
     VM_SKU="${1:-Standard_NC12}"
     COMPUTE_NAME="${2:-gpu-cluster}"
 
@@ -228,6 +225,8 @@ check_compute(){
 clean_up_compute(){
     set -x +e
 
+    init_env
+
     VM_SKU="${1:-Standard_NC12}"
 
     ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
@@ -252,6 +251,9 @@ clean_up_compute(){
 # run test
 run_test(){
     set -x
+
+    init_env
+
     JOB_YML="${1:-jobs/train/fastai/mnist/job.yml}"
 
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
