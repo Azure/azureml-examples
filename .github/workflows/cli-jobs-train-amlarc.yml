@@ -23,7 +23,6 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: init env
       run: |
-        bash amlarc-compute.sh init_env
         bash amlarc-compute.sh install_tools
         bash amlarc-compute.sh prepare_attach_compute_py
       working-directory: cli
