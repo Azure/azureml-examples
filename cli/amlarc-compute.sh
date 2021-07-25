@@ -4,16 +4,26 @@
 # init
 init_env(){
     set -x
+
     export SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
     export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
     export WORKSPACE="${WORKSPACE_NAME:-main-amlarc}"  # $((1 + $RANDOM % 100))
     export LOCATION="${LOCATION:-eastus}"
     export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_NAME:-amlarc-cluster-arc}"
     export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_NAME:-amlarc-cluster-aks}"
-    export AMLARC_ARC_RELEASE_TRAIN="${AMLARC_ARC_RELEASE_TRAIN:-experimental}"
-    export AMLARC_ARC_RELEASE_NAMESPACE="${AMLARC_ARC_RELEASE_NAMESPACE:-azureml}"
+    export AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-experimental}"
+    export AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
     export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
     export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
+    
+    if (( $(date +"%H") > 12 )); then
+        AMLARC_RELEASE_TRAIN=staging
+    fi
+
+    if [ "$INPUT_AMLARC_RELEASE_TRAIN" != "" ]; then
+        AMLARC_RELEASE_TRAIN=$INPUT_AMLARC_RELEASE_TRAIN
+    fi
+
 }
 
 install_tools(){
@@ -146,13 +156,13 @@ setup_compute(){
         --name $EXTENSION_NAME \
         --extension-type $EXTENSION_TYPE \
         --scope cluster \
-        --release-train $AMLARC_ARC_RELEASE_TRAIN \
+        --release-train $AMLARC_RELEASE_TRAIN \
         --configuration-settings  enableTraining=True allowInsecureConnections=True
     
     # Wait for resources in amlarc-arc ns
-    waitSuccessArc="$(waitForResources deployment $AMLARC_ARC_RELEASE_NAMESPACE)"
+    waitSuccessArc="$(waitForResources deployment $AMLARC_RELEASE_NAMESPACE)"
     if [ "${waitSuccessArc}" == false ]; then
-        echo "deployment is not avilable in namespace - $AMLARC_ARC_RELEASE_NAMESPACE"
+        echo "deployment is not avilable in namespace - $AMLARC_RELEASE_NAMESPACE"
     fi
 
     # create workspace
