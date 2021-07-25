@@ -11,6 +11,12 @@ on:
       - cli/jobs/train/**
       - .github/workflows/cli-jobs-train-amlarc.yml
       - cli/amlarc-compute.sh
+  workflow_dispatch:
+    inputs:
+      AMLARC_RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: true
+        default: 'experimental'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,10 +34,12 @@ jobs:
       working-directory: cli
     - name: setup Standard_NC12
       run: |
+        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
         bash amlarc-compute.sh setup_compute Standard_NC12 gpu-cluster 4 8
       working-directory: cli
     - name: setup STANDARD_DS3_V2
       run: |
+        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
         bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 cpu-cluster 4 10
       working-directory: cli
     - name: run jobs/train/fastai/mnist job
