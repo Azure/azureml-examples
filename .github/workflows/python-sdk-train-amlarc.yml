@@ -1,0 +1,111 @@
+name: cli-jobs-train-amlarc
+on:
+  schedule:
+    - cron: "0 6,18 * * *"
+  pull_request:
+    branches:
+      - main
+      - releases/current
+    paths:
+      - python-sdk/workflows/train/**
+      - .github/workflows/python-sdk-train-amlarc.yml
+      - cli/amlarc-compute.sh
+      - python-sdk/requirements.txt
+  workflow_dispatch:
+    inputs:
+      AMLARC_RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: true
+        default: 'experimental'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: init env
+      run: |
+        bash amlarc-compute.sh install_tools
+        bash amlarc-compute.sh prepare_attach_compute_py
+      working-directory: cli
+    - name: setup STANDARD_DS3_V2 # cpu-cluster
+      run: |
+        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
+        export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
+        export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
+        bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 gpu-cluster 5 10
+      working-directory: cli
+    - name: setup STANDARD_NC6 # gpu-cluster
+      run: |
+        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
+        export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
+        export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
+        bash amlarc-compute.sh setup_compute STANDARD_NC6 gpu-cluster 4 4
+      working-directory: cli
+    - name: setup STANDARD_NC12 # gpu-K80-2
+      run: |
+        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
+        export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
+        export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
+        bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-K80-2 4 4
+      working-directory: cli
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    # Skipping v100 test cases because of quota
+    # - name: run train/deepspeed/cifar job # gpu-V100-2
+    #   run: python python-sdk/workflows/train/deepspeed/cifar/job.py
+    # - name: run train/deepspeed/cifar job # gpu-V100-4
+    #   run: python python-sdk/workflows/train/deepspeed/transformers/job.py
+    - name: run workflow # cpu-cluster
+      run: python python-sdk/workflows/train/fastai/mnist/job.py
+    - name: run workflow # cpu-cluster
+      run: python python-sdk/workflows/train/fastai/mnist-mlproject/job.py
+    - name: run workflow # gpu-cluster
+      run: python python-sdk/workflows/train/fastai/pets/job.py
+    - name: run workflow # cpu-cluster
+      run: python python-sdk/workflows/train/lightgbm/iris/job.py
+    - name: run workflow # gpu-K80-2
+      run: python python-sdk/workflows/train/pytorch/cifar-distributed/job.py
+    - name: run workflow # gpu-cluster
+      run: python python-sdk/workflows/train/pytorch/mnist/job.py
+    - name: run workflow # gpu-cluster
+      run: python python-sdk/workflows/train/pytorch/mnist-mlproject/job.py
+    - name: run workflow # cpu-cluster
+      run: python python-sdk/workflows/train/scikit-learn/diabetes/job.py
+    - name: run workflow # cpu-cluster
+      run: python python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py
+    - name: run workflow # gpu-K80-2
+      run: python python-sdk/workflows/train/tensorflow/mnist-distributed-horovod/job.py
+    - name: run workflow # gpu-K80-2
+      run: python python-sdk/workflows/train/tensorflow/mnist-distributed/job.py
+    - name: run workflow # gpu-cluster
+      run: python python-sdk/workflows/train/tensorflow/mnist/job.py
+    - name: run workflow # gpu-K80-2
+      run: python python-sdk/workflows/train/transformers/glue/1-aml-finetune-job.py
+    - name: run workflow # gpu-cluster gpu-K80-2
+      run: python python-sdk/workflows/train/transformers/glue/2-aml-comparison-of-sku-job.py
+    - name: run workflow # gpu-K80-2
+      run: python python-sdk/workflows/train/transformers/glue/3-aml-hyperdrive-job.py
+    - name: run workflow # pu-cluster
+      run: python python-sdk/workflows/train/xgboost/iris/job.py
+    - name: clean up STANDARD_DS3_V2
+      run: |
+        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2 cpu-cluster
+      working-directory: cli
+      continue-on-error: true
+    - name: clean up STANDARD_NC6
+      run: |
+        bash amlarc-compute.sh clean_up_compute STANDARD_NC6 gpu-cluster
+      working-directory: cli
+      continue-on-error: true
+    - name: clean up STANDARD_NC12
+      run: |
+        bash amlarc-compute.sh clean_up_compute STANDARD_NC12 gpu-K80-2
+      working-directory: cli
+      continue-on-error: true
