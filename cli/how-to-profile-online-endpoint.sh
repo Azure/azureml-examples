@@ -17,8 +17,8 @@ export WORKSPACE_NAME="<WORKSPACE_NAME>"
 export ENDPOINT_NAME="<ENDPOINT_NAME>"
 export DEPLOYMENT_NAME="<DEPLOYMENT_NAME>"
 export PROFILING_TOOL="<PROFILING_TOOL>" # allowed values: wrk, wrk2 and labench
-export COMPUTE_NAME="<COMPUTE_NAME>"
-export COMPUTE_SIZE="<COMPUTE_SIZE>" # required only when compute does not exist already
+export PROFILER_COMPUTE_NAME="<PROFILER_COMPUTE_NAME>"
+export PROFILER_COMPUTE_SIZE="<PROFILER_COMPUTE_SIZE>" # required only when compute does not exist already
 export DURATION="" # time for running the profiling tool, default value is 300s
 export CONNECTIONS="" # for wrk and wrk2 only, no. of connections for the profiling tool, default value is set to be the same as the no. of workers, or 1 if no. of workers is not set
 export THREAD="" # for wrk and wrk2 only, no. of threads allocated for the profiling tool, default value is 1
@@ -33,31 +33,8 @@ export WORKSPACE_NAME="notebookvalidation"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
-export COMPUTE_NAME=exampleCompute
-export COMPUTE_SIZE=Standard_F4s_v2
-
-# <create_compute_cluster_for_hosting_the_profiler>
-echo "Creating Compute $COMPUTE_NAME ..."
-az ml compute create --name $COMPUTE_NAME --size $COMPUTE_SIZE --identity-type SystemAssigned --type amlcompute
-
-# check compute status
-compute_status=`az ml compute show --name $COMPUTE_NAME --query "provisioning_state" -o tsv`
-echo $compute_status
-if [[ $compute_status == "Succeeded" ]]; then
-  echo "Compute $COMPUTE_NAME created successfully"
-else 
-  echo "Compute $COMPUTE_NAME creation failed"
-  exit 1
-fi
-
-# create role assignment for acessing workspace resources
-access_token=`az account get-access-token --query accessToken -o tsv`
-compute_info=`curl https://management.azure.com/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/computes/$COMPUTE_NAME?api-version=2021-03-01-preview -H "Content-Type: application/json" -H "Authorization: Bearer $access_token"`
-if [[ $? -ne 0 ]]; then echo "Failed to get info for compute $COMPUTE_NAME" && exit 1; fi
-identity_object_id=`echo $compute_info | jq '.identity.principalId' | sed "s/\"//g"`
-az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME
-if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $COMPUTE_NAME" && exit 1; fi
-# </create_compute_cluster_for_hosting_the_profiler>
+export PROFILER_COMPUTE_NAME=exampleCompute
+export PROFILER_COMPUTE_SIZE=Standard_F4s_v2
 
 # <create_endpoint>
 echo "Creating Endpoint $ENDPOINT_NAME ..."
@@ -84,6 +61,29 @@ else
 fi
 # </check_endpoint_Status>
 
+# <create_compute_cluster_for_hosting_the_profiler>
+echo "Creating Compute $PROFILER_COMPUTE_NAME ..."
+az ml compute create --name $PROFILER_COMPUTE_NAME --size $PROFILER_COMPUTE_SIZE --identity-type SystemAssigned --type amlcompute
+
+# check compute status
+compute_status=`az ml compute show --name $PROFILER_COMPUTE_NAME --query "provisioning_state" -o tsv`
+echo $compute_status
+if [[ $compute_status == "Succeeded" ]]; then
+  echo "Compute $PROFILER_COMPUTE_NAME created successfully"
+else 
+  echo "Compute $PROFILER_COMPUTE_NAME creation failed"
+  exit 1
+fi
+
+# create role assignment for acessing workspace resources
+access_token=`az account get-access-token --query accessToken -o tsv`
+compute_info=`curl https://management.azure.com/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME/computes/$PROFILER_COMPUTE_NAME?api-version=2021-03-01-preview -H "Content-Type: application/json" -H "Authorization: Bearer $access_token"`
+if [[ $? -ne 0 ]]; then echo "Failed to get info for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
+identity_object_id=`echo $compute_info | jq '.identity.principalId' | sed "s/\"//g"`
+az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE_NAME
+if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
+# </create_compute_cluster_for_hosting_the_profiler>
+
 # <create_profiling_job_yaml_file>
 # please specify environment variable "IDENTITY_ACCESS_TOKEN" when working with ml compute with no appropriate MSI attached
 sed \
@@ -96,7 +96,7 @@ sed \
   -e "s/<% CLIENTS %>/$CLIENTS/g" \
   -e "s/<% TIMEOUT %>/$TIMEOUT/g" \
   -e "s/<% THREAD %>/$THREAD/g" \
-  -e "s/<% COMPUTE_NAME %>/$COMPUTE_NAME/g" \
+  -e "s/<% COMPUTE_NAME %>/$PROFILER_COMPUTE_NAME/g" \
   endpoints/online/profiling/profiling_job_tmpl.yml > profiling_job.yml
 # </create_profiling_job_yaml_file>
 
