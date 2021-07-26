@@ -1,4 +1,4 @@
-name: cli-jobs-train-amlarc
+name: python-sdk-train-amlarc
 on:
   schedule:
     - cron: "0 6,18 * * *"
