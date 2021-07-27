@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
 name: lightgbm-iris-example
 version: 1
-path: lightgbm-iris.pkl # relative path on datastore
-datastore: azureml:/your-datastore-name
+path: datasets/iris.csv # relative path on datastore
+datastore: azureml:azuremlexamples
 description: Model asset from datastore blob storage.
