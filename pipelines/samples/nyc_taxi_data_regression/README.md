@@ -1,6 +1,6 @@
 # NYC Taxi Data Regression 
 ### This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs. You can learn more about creating reusable components for your pipeline [here](https://github.com/Azure/azureml_run_specification/blob/master/specs/pipeline-component.md).
-  * Merge Taxi Data
+  * Prep Taxi Data
     * This component takes multiple taxi datasets (yellow and green) and merges/filters the data.
     * Input: Local data under samples/nyc_taxi_data_regression/data (multiple .csv files)
     * Output: Single filtered dataset (.csv)
