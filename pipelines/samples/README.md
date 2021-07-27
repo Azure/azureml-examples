@@ -18,3 +18,4 @@ Sample Link|Description
 [5a_env_public_docker_image](./5a_env_public_docker_image) | Example of specifying a docker image for the component environment
 [5b_env_registered](./5b_env_registered) | Example of using a registered AzureML Environment in a component
 [5c_env_conda_file](./5c_env_conda_file) | Example of using a docker image with a conda file for additional packages in a component
+[nyc_taxi_data_regression](./nyc_taxi_data_regression) | E2E linear regression model for predicting taxi fares
