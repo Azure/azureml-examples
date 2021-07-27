@@ -11,9 +11,6 @@
 ## 7. az configure --defaults group=<RESOURCE_GROUP> workspace=<WORKSPACE_NAME>
 
 # <set_variables>
-export SUBSCRIPTION="<SUBSCRIPTION>"
-export RESOURCE_GROUP="<RESOURCE_GROUP>"
-export WORKSPACE_NAME="<WORKSPACE_NAME>"
 export ENDPOINT_NAME="<ENDPOINT_NAME>"
 export DEPLOYMENT_NAME="<DEPLOYMENT_NAME>"
 export PROFILING_TOOL="<PROFILING_TOOL>" # allowed values: wrk, wrk2 and labench
