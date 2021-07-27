@@ -20,7 +20,8 @@ cp $DEFAULT_MODEL_PATH/model.onnx $BATCH_MODEL_PATH
 #Download the dependencies file required by BERT script (tokenization script and helper functions)
 wget -O $BASE_PATH/run_onnx_squad.py https://raw.githubusercontent.com/onnx/models/master/text/machine_comprehension/bert-squad/dependencies/run_onnx_squad.py
 wget -O $BASE_PATH/tokenization.py https://raw.githubusercontent.com/onnx/models/master/text/machine_comprehension/bert-squad/dependencies/tokenization.py
-
+wget -O $BASE_PATH/uncased_L-12_H-768_A-12.zip -q https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-12_H-768_A-12.zip 
+unzip $BASE_PATH/uncased_L-12_H-768_A-12.zip  -d $BASE_PATH/ && rm $BASE_PATH/uncased_L-12_H-768_A-12.zip 
 # <deploy>
 az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
 # </deploy>
