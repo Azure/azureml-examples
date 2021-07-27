@@ -1,0 +1,28 @@
+name: Train
+display_name: Train
+version: 10
+type: command_component
+inputs:
+  training_data: 
+    type: path
+  max_epocs:
+    type: integer
+  learning_rate: 
+    type: number
+    default: 0.01
+  learning_rate_schedule: 
+    type: string
+    default: time-based 
+outputs:
+  model_output:
+    type: path
+code:
+  local_path: ./train_src
+environment: azureml:AzureML-Minimal:1
+command: >-
+  python train.py 
+  --training_data {inputs.training_data} 
+  --max_epocs {inputs.max_epocs}   
+  --learning_rate {inputs.learning_rate} 
+  --learning_rate_schedule {inputs.learning_rate_schedule} 
+  --model_output {outputs.model_output}

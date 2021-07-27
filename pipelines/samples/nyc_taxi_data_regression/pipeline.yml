@@ -1,0 +1,84 @@
+## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning!
+## Please reach out to the Azure ML docs & samples team before editing for the first time. 
+
+name: nyc_taxi_data_regression_pipeline_job
+type: pipeline_job
+
+# <inputs_and_outputs>
+inputs:
+  pipeline_job_input: #using dataset, can use datastore + datapath also
+    data: 
+      local_path: ./data
+
+outputs: 
+  pipeline_job_prepped_data:
+    data: 
+      path: /prepped_data
+  pipeline_job_transformed_data:
+    data: 
+      path: /transformed_data    
+  pipeline_job_trained_model:
+    data: 
+      path: /trained-model
+  pipeline_job_test_data:
+    data: 
+      path: /test_data
+  pipeline_job_predictions:
+    data: 
+      path: /predictions
+  pipeline_job_score_report:
+    data: 
+      path: /report
+# </inputs_and_outputs>
+
+# <jobs>
+defaults:
+  component_job:
+    datastore: azureml:workspaceblobstore
+    compute:
+      target: cpu-cluster
+
+jobs:
+  prep-job:
+    type: component_job
+    component: azureml:PrepTaxiData:1
+    inputs:
+      raw_data: inputs.pipeline_job_input
+    outputs:
+      prep_data: outputs.pipeline_job_prepped_data
+
+  transform-job:
+    type: component_job
+    component: azureml:TaxiFeatureEngineering:1
+    inputs:
+      clean_data: jobs.prep-job.outputs.prep_data
+    outputs:
+      transformed_data: outputs.pipeline_job_transformed_data
+
+  train-job:
+    type: component_job
+    component: azureml:TrainLinearRegressionModel:1
+    inputs:
+      training_data: jobs.transform-job.outputs.transformed_data
+    outputs:
+      model_output: outputs.pipeline_job_trained_model
+      test_data: outputs.pipeline_job_test_data
+  
+  predict-job:
+    type: component_job
+    component: azureml:PredictTaxiFares:1
+    inputs:
+      model_input: jobs.train-job.outputs.model_output
+      test_data: jobs.train-job.outputs.test_data
+    outputs:
+      predictions: outputs.pipeline_job_predictions
+
+  score-job:
+    type: component_job
+    component: azureml:ScoreModel:1
+    inputs:
+      predictions: jobs.predict-job.outputs.predictions
+      model: jobs.train-job.outputs.model_output
+    outputs:
+      score_report: outputs.pipeline_job_score_report
+# </jobs>

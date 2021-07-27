@@ -1,0 +1,127 @@
+name: Train_score_eval_pipeline_job
+type: pipeline_job
+
+inputs:
+  pipeline_job_training_input: #using dataset, can use datastore + datapath also
+    data: 
+      local_path: ./data
+  pipeline_job_test_input:
+    data:
+      local_path: ./data
+  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_learning_rate: 1.8
+  pipeline_job_learning_rate_schedule: 'time-based'
+
+outputs: 
+  pipeline_job_trained_model:
+    data: 
+      path: /trained-model
+  pipeline_job_scored_data:
+    data: 
+      path: /scored_data
+  pipeline_job_evaluation_report:
+    data: 
+      path: /report
+
+defaults:
+  component_job:
+    datastore: azureml:workspaceblobstore
+    compute:
+      target: ManojCluster
+
+jobs:
+  train-job:
+    type: component_job
+    component: 
+      name: Train
+      display_name: Train
+      version: 10
+      type: command_component
+      inputs:
+        training_data: 
+          type: path
+        max_epocs:
+          type: integer
+        learning_rate: 
+          type: number
+          default: 0.01
+        learning_rate_schedule: 
+          type: string
+          default: time-based 
+      outputs:
+        model_output:
+          type: path
+      code:
+        local_path: ./train_src
+      environment: azureml:AzureML-Minimal:1
+      command: >-
+        python train.py 
+        --training_data {inputs.training_data} 
+        --max_epocs {inputs.max_epocs}   
+        --learning_rate {inputs.learning_rate} 
+        --learning_rate_schedule {inputs.learning_rate_schedule} 
+        --model_output {outputs.model_output}
+
+    inputs:
+      training_data: inputs.pipeline_job_training_input
+      max_epocs: inputs.pipeline_job_training_max_epocs
+      learning_rate: inputs.pipeline_job_training_learning_rate
+      learning_rate_schedule: inputs.pipeline_job_learning_rate_schedule
+    outputs:
+      model_output: outputs.pipeline_job_trained_model
+  
+  score-job:
+    type: component_job
+    component: 
+      name: Score
+      version: 10
+      display_name: Score
+      type: command_component
+      inputs:
+        model_input:
+          type: path
+        test_data:
+          type: path
+      outputs:
+        score_output:
+          type: path
+      environment: azureml:AzureML-Minimal:1
+      code:
+        local_path: ./score_src
+      command: >-
+        python score.py 
+        --model_input {inputs.model_input} 
+        --test_data {inputs.test_data}
+        --score_output {outputs.score_output}
+
+    inputs:
+      model_input: jobs.train-job.outputs.model_output
+      test_data: inputs.pipeline_job_test_input
+    outputs:
+      score_output: outputs.pipeline_job_scored_data
+
+  evaluate-job:
+    type: component_job
+    component: 
+      name: Eval
+      version: 10
+      display_name: Eval
+      type: command_component
+      inputs:
+        scoring_result:
+          type: path
+      outputs:
+        eval_output:
+          type: path
+      environment: azureml:AzureML-Minimal:1
+      code:
+        local_path: ./eval_src
+      command: >-
+        python eval.py 
+        --scoring_result {inputs.scoring_result} 
+        --eval_output {outputs.eval_output}
+
+    inputs:
+      scoring_result: jobs.score-job.outputs.score_output
+    outputs:
+      eval_output: outputs.pipeline_job_evaluation_report

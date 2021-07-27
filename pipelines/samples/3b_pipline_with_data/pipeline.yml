@@ -1,0 +1,47 @@
+type: pipeline_job
+
+compute:
+  target: azureml:cpu-cluster
+
+inputs:
+  pipeline_sample_input_data:
+    data:
+      local_path: ./data
+
+outputs:
+  pipeline_sample_output_data_A:
+    data:
+      datastore: azureml:workspaceblobstore
+      path: /simple_pipeline_A
+  pipeline_sample_output_data_B:
+    data:
+      datastore: azureml:workspaceblobstore
+      path: /simple_pipeline_B
+  pipeline_sample_output_data_C:
+    data:
+      datastore: azureml:workspaceblobstore
+      path: /simple_pipeline_C
+
+jobs:
+  componentA_job:
+    type: component_job
+    component: file:./componentA.yml
+    inputs:
+      componentA_input: inputs.pipeline_sample_input_data
+    outputs:
+      componentA_output: outputs.pipeline_sample_output_data_A
+  componentB_job:
+    type: component_job
+    component: file:./componentB.yml
+    inputs:
+      componentB_input: jobs.componentA_job.outputs.componentA_output
+    outputs:
+      componentB_output: outputs.pipeline_sample_output_data_B
+  componentC_job:
+    type: component_job
+    component: file:./componentC.yml
+    inputs:
+      componentC_input: jobs.componentB_job.outputs.componentB_output
+    outputs:
+      componentC_output: outputs.pipeline_sample_output_data_C
+

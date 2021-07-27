@@ -1,0 +1,23 @@
+type: command_component
+
+name: componentA
+display_name: componentA
+version: 1
+
+inputs:
+  componentA_input:
+    type: path
+
+outputs:
+  componentA_output:
+    type: path
+
+code:
+  local_path: ./componentA_src
+
+environment: 
+  docker: 
+    image: docker.io/python
+
+command: >-
+  python hello.py --componentA_input {inputs.componentA_input} --componentA_output {outputs.componentA_output}

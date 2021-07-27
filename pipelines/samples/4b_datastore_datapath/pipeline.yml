@@ -1,0 +1,26 @@
+type: pipeline_job
+
+inputs:
+  pipeline_sample_input_data:
+    data:
+      path: az-ml-artifacts/5fdada37d4271c4cff74856f9e6c88d0/data
+      datastore: azureml:workspaceblobstore
+  pipeline_sample_input_string: 'Hello_Pipeline_World'
+
+outputs:
+  pipeline_sample_output_data:
+    data:
+      datastore: azureml:workspaceblobstore
+
+jobs:
+  hello_python_world_job:
+    type: component_job
+    component: file:./component.yml
+    compute:
+      target: azureml:ManojCluster
+    inputs:
+      sample_input_data: inputs.pipeline_sample_input_data
+      sample_input_string: inputs.pipeline_sample_input_string
+    outputs:
+      sample_output_data: outputs.pipeline_sample_output_data
+

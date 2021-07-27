@@ -1,0 +1,20 @@
+name: Score
+version: 10
+display_name: Score
+type: command_component
+inputs:
+  model_input:
+    type: path
+  test_data:
+    type: path
+outputs:
+  score_output:
+    type: path
+environment: azureml:AzureML-Minimal:1
+code:
+  local_path: ./score_src
+command: >-
+  python score.py 
+  --model_input {inputs.model_input} 
+  --test_data {inputs.test_data}
+  --score_output {outputs.score_output}
