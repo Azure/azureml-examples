@@ -124,7 +124,8 @@ setup_compute(){
         --node-count $MIN_COUNT \
         --min-count $MIN_COUNT \
         --max-count $MAX_COUNT \
-        --node-vm-size ${VM_SKU} 
+        --node-vm-size ${VM_SKU} \
+        --no-ssh-key
 
     # get aks kubeconfig
     az aks get-credentials \
