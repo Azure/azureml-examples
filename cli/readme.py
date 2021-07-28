@@ -6,6 +6,7 @@ import argparse
 
 # define constants
 EXCLUDED_JOBS = ["cifar"]
+EXCLUDED_PIPELINES = []
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_ASSETS = [
     "conda.yml",
@@ -25,6 +26,14 @@ def main(args):
         job.replace(".yml", "")
         for job in jobs
         if not any(excluded in job for excluded in EXCLUDED_JOBS)
+    ]
+
+    # get list of pipelines
+    pipelines = sorted(glob.glob("pipelines/**/pipeline.yml", recursive=True))
+    pipelines = [
+        pipeline.replace(".yml", "")
+        for pipeline in pipelines
+        if not any(excluded in pipeline for excluded in EXCLUDED_PIPELINES)
     ]
 
     # get list of endpoints
@@ -52,14 +61,14 @@ def main(args):
     ]
 
     # write workflows
-    write_workflows(jobs, endpoints, assets, scripts)
+    write_workflows(jobs, pipelines, endpoints, assets, scripts)
 
     # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
     # write README.md
-    write_readme(jobs, endpoints, assets, scripts)
+    write_readme(jobs, pipelines, endpoints, assets, scripts)
 
     # read modified README.md
     with open("README.md", "r") as f:
@@ -72,7 +81,7 @@ def main(args):
             exit(2)
 
 
-def write_readme(jobs, endpoints, assets, scripts):
+def write_readme(jobs, pipelines, endpoints, assets, scripts):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
@@ -81,6 +90,9 @@ def write_readme(jobs, endpoints, assets, scripts):
 
     # define markdown tables
     jobs_table = "\n**Jobs** ([jobs](jobs))\n\npath|status|description\n-|-|-\n"
+    pipelines_table = (
+        "\n**Pipelines** ([pipelines](pipelines))\n\npath|status|description\n-|-|-\n"
+    )
     endpoints_table = (
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
@@ -104,6 +116,24 @@ def write_readme(jobs, endpoints, assets, scripts):
         # add row to tutorial table
         row = f"[{job}.yml]({job}.yml)|{status}|{description}\n"
         jobs_table += row
+
+    # process pipelines
+    for pipeline in pipelines:
+        # build entries for tutorial table
+        status = f"[![{pipeline}](https://github.com/Azure/azureml-examples/workflows/cli-{pipeline.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acli-{pipeline.replace('/', '-')})"
+        description = "*no description*"
+        try:
+            with open(f"{pipeline}.yml", "r") as f:
+                for line in f.readlines():
+                    if "description: " in str(line):
+                        description = line.split(": ")[-1].strip()
+                        break
+        except:
+            pass
+
+        # add row to tutorial table
+        row = f"[{pipeline}.yml]({pipeline}.yml)|{status}|{description}\n"
+        pipelines_table += row
 
     # process endpoints
     for endpoint in endpoints:
@@ -158,19 +188,25 @@ def write_readme(jobs, endpoints, assets, scripts):
             prefix
             + scripts_table
             + jobs_table
+            + pipelines_table
             + endpoints_table
             + assets_table
             + suffix
         )
 
 
-def write_workflows(jobs, endpoints, assets, scripts):
+def write_workflows(jobs, pipelines, endpoints, assets, scripts):
     print("writing .github/workflows...")
 
     # process jobs
     for job in jobs:
         # write workflow file
         write_job_workflow(job)
+
+    # process pipelines
+    for pipeline in pipelines:
+        # write workflow file
+        write_pipeline_workflow(pipeline)
 
     # process endpoints
     for endpoint in endpoints:
@@ -264,6 +300,63 @@ jobs:
 
     # write workflow
     with open(f"../.github/workflows/cli-{job.replace('/', '-')}.yml", "w") as f:
+        f.write(workflow_yaml)
+
+
+def write_pipeline_workflow(pipeline):
+    filename, project_dir, hyphenated = parse_path(pipeline)
+    creds = "${{secrets.AZ_AE_CREDS}}"
+    workflow_yaml = f"""name: cli-{hyphenated}
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+    paths:
+      - cli/{project_dir}/**
+      - .github/workflows/cli-{hyphenated}.yml
+      - cli/setup.sh
+pipelines:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: {creds}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create pipeline
+      run: |
+        run_id=$(az ml pipeline create -f {pipeline}.yml --query name -o tsv)
+        az ml pipeline stream -n $run_id
+        status=$(az ml pipeline show -n $run_id --query status -o tsv)
+        echo $status
+        if [[ $status == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $status ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
+      env:
+        - AZUREML_CLI_PRIVATE_FEATURES_ENABLED: 1
+      working-directory: cli\n"""
+
+
+    # write workflow
+    with open(f"../.github/workflows/cli-{pipeline.replace('/', '-')}.yml", "w") as f:
         f.write(workflow_yaml)
 
 

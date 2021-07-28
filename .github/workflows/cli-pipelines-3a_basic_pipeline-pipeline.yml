@@ -1,0 +1,47 @@
+name: cli-pipelines-3a_basic_pipeline-pipeline
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+    paths:
+      - cli/pipelines/3a_basic_pipeline/**
+      - .github/workflows/cli-pipelines-3a_basic_pipeline-pipeline.yml
+      - cli/setup.sh
+pipelines:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create pipeline
+      run: |
+        run_id=$(az ml pipeline create -f pipelines/3a_basic_pipeline/pipeline.yml --query name -o tsv)
+        az ml pipeline stream -n $run_id
+        status=$(az ml pipeline show -n $run_id --query status -o tsv)
+        echo $status
+        if [[ $status == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $status ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
+      env:
+        - AZUREML_CLI_PRIVATE_FEATURES_ENABLED: 1
+      working-directory: cli
