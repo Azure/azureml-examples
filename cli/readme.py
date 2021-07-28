@@ -335,7 +335,6 @@ jobs:
       continue-on-error: true
     - name: create pipeline
       run: |
-        export AZUREML_CLI_PRIVATE_FEATURES_ENABLED="true"
         run_id=$(az ml job create -f {pipeline}.yml --query name -o tsv)
         az ml job stream -n $run_id
         status=$(az ml job show -n $run_id --query status -o tsv)
@@ -351,6 +350,8 @@ jobs:
           echo "Job status not failed or completed"
           exit 2
         fi
+      env:
+        AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED: 1
       working-directory: cli\n"""
 
     # write workflow
