@@ -11,7 +11,7 @@ on:
       - cli/pipelines/3b_pipline_with_data/**
       - .github/workflows/cli-pipelines-3b_pipline_with_data-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

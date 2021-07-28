@@ -11,7 +11,7 @@ on:
       - cli/pipelines/1a_e2e_local_components/**
       - .github/workflows/cli-pipelines-1a_e2e_local_components-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

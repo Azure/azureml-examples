@@ -11,7 +11,7 @@ on:
       - cli/pipelines/5b_env_registered/**
       - .github/workflows/cli-pipelines-5b_env_registered-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

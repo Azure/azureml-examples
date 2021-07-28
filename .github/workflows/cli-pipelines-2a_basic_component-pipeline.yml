@@ -11,7 +11,7 @@ on:
       - cli/pipelines/2a_basic_component/**
       - .github/workflows/cli-pipelines-2a_basic_component-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

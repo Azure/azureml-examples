@@ -11,7 +11,7 @@ on:
       - cli/pipelines/3a_basic_pipeline/**
       - .github/workflows/cli-pipelines-3a_basic_pipeline-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

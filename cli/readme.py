@@ -319,7 +319,7 @@ on:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

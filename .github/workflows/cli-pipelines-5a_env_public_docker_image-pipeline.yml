@@ -11,7 +11,7 @@ on:
       - cli/pipelines/5a_env_public_docker_image/**
       - .github/workflows/cli-pipelines-5a_env_public_docker_image-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

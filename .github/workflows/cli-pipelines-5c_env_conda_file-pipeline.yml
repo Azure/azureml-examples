@@ -11,7 +11,7 @@ on:
       - cli/pipelines/5c_env_conda_file/**
       - .github/workflows/cli-pipelines-5c_env_conda_file-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

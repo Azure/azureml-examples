@@ -11,7 +11,7 @@ on:
       - cli/pipelines/nyc_taxi_data_regression/**
       - .github/workflows/cli-pipelines-nyc_taxi_data_regression-pipeline.yml
       - cli/setup.sh
-pipelines:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
