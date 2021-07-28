@@ -351,7 +351,7 @@ jobs:
           exit 2
         fi
       env:
-        AZUREML_CLI_PRIVATE_FEATURES_ENABLED: 1
+        AZUREML_CLI_PRIVATE_FEATURES_ENABLED: "true"
       working-directory: cli\n"""
 
     # write workflow
