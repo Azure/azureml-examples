@@ -354,7 +354,6 @@ pipelines:
         - AZUREML_CLI_PRIVATE_FEATURES_ENABLED: 1
       working-directory: cli\n"""
 
-
     # write workflow
     with open(f"../.github/workflows/cli-{pipeline.replace('/', '-')}.yml", "w") as f:
         f.write(workflow_yaml)
