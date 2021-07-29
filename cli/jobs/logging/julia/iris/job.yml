@@ -6,7 +6,8 @@ command: >-
 
 environment: 
   docker:
-    image: jkgms/juliaazure
+    build: 
+      dockerfile: file:Dockefile
   conda_file: file:environment.yml
 
 compute:

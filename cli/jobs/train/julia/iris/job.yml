@@ -6,7 +6,8 @@ command: >-
 
 environment: 
   docker:
-    image: jkgms/juliaazure
+    build:
+      dockerfile: file:Dockerfile
 
 compute:
   target: local
