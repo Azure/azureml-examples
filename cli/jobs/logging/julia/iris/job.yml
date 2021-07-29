@@ -7,7 +7,7 @@ command: >-
 environment: 
   docker:
     build: 
-      dockerfile: file:Dockefile
+      dockerfile: file:Dockerfile
   conda_file: file:environment.yml
 
 compute:
