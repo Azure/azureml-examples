@@ -32,10 +32,10 @@ jobs:
         bash amlarc-compute.sh install_tools
         bash amlarc-compute.sh prepare_attach_compute_py
       working-directory: cli
-    - name: setup Standard_NC12
+    - name: setup STANDARD_NC12
       run: |
         export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
-        bash amlarc-compute.sh setup_compute Standard_NC12 gpu-cluster 4 8
+        bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster 4 8
       working-directory: cli
     - name: setup STANDARD_DS3_V2
       run: |
@@ -102,9 +102,9 @@ jobs:
         bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist/job.yml
       working-directory: cli
       continue-on-error: true
-    - name: clean up Standard_NC12
+    - name: clean up STANDARD_NC12
       run: |
-        bash amlarc-compute.sh clean_up_compute Standard_NC12 gpu-cluster
+        bash amlarc-compute.sh clean_up_compute STANDARD_NC12 gpu-cluster
       working-directory: cli
       continue-on-error: true
     - name: clean up STANDARD_DS3_V2
