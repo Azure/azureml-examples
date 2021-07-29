@@ -37,6 +37,7 @@ jobs:
         export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
         export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
         export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
+        export WORKSPACE=main-python-sdk-amlarc
         bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 gpu-cluster 5 10
       working-directory: cli
     - name: setup STANDARD_NC6 # gpu-cluster
@@ -44,6 +45,7 @@ jobs:
         export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
         export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
         export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
+        export WORKSPACE=main-python-sdk-amlarc
         bash amlarc-compute.sh setup_compute STANDARD_NC6 gpu-cluster 4 4
       working-directory: cli
     - name: setup STANDARD_NC12 # gpu-K80-2
@@ -51,12 +53,13 @@ jobs:
         export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
         export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
         export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
+        export WORKSPACE=main-python-sdk-amlarc
         bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-K80-2 4 4
       working-directory: cli
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+      run: az ml folder attach -w main-python-sdk-amlarc -g azureml-examples-rg
     # Skipping v100 test cases because of quota
     # - name: run train/deepspeed/cifar job # gpu-V100-2
     #   run: python python-sdk/workflows/train/deepspeed/cifar/job.py
@@ -94,6 +97,9 @@ jobs:
       run: python python-sdk/workflows/train/transformers/glue/3-aml-hyperdrive-job.py
     - name: run workflow # pu-cluster
       run: python python-sdk/workflows/train/xgboost/iris/job.py
+    - name: uninstall azmlcli
+      run: az extension remove -n azure-cli-ml
+      continue-on-error: true
     - name: clean up STANDARD_DS3_V2
       run: |
         bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2 cpu-cluster
