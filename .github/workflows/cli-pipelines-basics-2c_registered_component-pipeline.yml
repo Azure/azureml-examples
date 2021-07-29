@@ -1,4 +1,4 @@
-name: cli-pipelines-4c_dataset_input-pipeline
+name: cli-pipelines-basics-2c_registered_component-pipeline
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/pipelines/4c_dataset_input/**
-      - .github/workflows/cli-pipelines-4c_dataset_input-pipeline.yml
+      - cli/pipelines/basics/2c_registered_component/**
+      - .github/workflows/cli-pipelines-basics-2c_registered_component-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
       continue-on-error: true
     - name: create pipeline
       run: |
-        run_id=$(az ml job create -f pipelines/4c_dataset_input/pipeline.yml --query name -o tsv)
+        run_id=$(az ml job create -f pipelines/basics/2c_registered_component/pipeline.yml --query name -o tsv)
         az ml job stream -n $run_id
         status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
