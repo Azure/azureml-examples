@@ -66,7 +66,7 @@ from azureml.core.workspace import Workspace
 from azureml.exceptions import ComputeTargetException
 
 INSTANCE_TYPES = {
-    "STANDARD_DS3_V2 ": {
+    "STANDARD_DS3_V2": {
         "nodeSelector": None,
         "resources": {
             "requests": {
@@ -125,12 +125,13 @@ def main():
             # k8s_compute.wait_for_completion(show_output=True)
             # print("compute status:", k8s_compute.get_status())
 
-            break
+            return 0
         except Exception as e:
             print("ERROR:", e)
             print("Will sleep 30s. Epoch:", i)
             time.sleep(30)
 
+    sys.exit(1)
 
 if __name__ == "__main__":
     main()
