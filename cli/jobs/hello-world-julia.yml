@@ -1,0 +1,6 @@
+command: julia -e 'println("hello world")'
+environment:
+  docker:
+    image: jkgms/juliaazure
+compute:
+  target: local
