@@ -20,6 +20,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -34,12 +36,10 @@ jobs:
       working-directory: cli
     - name: setup STANDARD_NC12
       run: |
-        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
         bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster 4 8
       working-directory: cli
     - name: setup STANDARD_DS3_V2
       run: |
-        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
         bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 cpu-cluster 4 10
       working-directory: cli
     - name: run jobs/train/fastai/mnist job
@@ -103,13 +103,18 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: clean up STANDARD_NC12
+      if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_NC12 gpu-cluster
+        bash amlarc-compute.sh clean_up_compute STANDARD_NC12
       working-directory: cli
-      continue-on-error: true
     - name: clean up STANDARD_DS3_V2
+      if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2 cpu-cluster
+        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2
       working-directory: cli
-      continue-on-error: true
+    - name: count result
+      if: ${{ always() }}
+      run: |
+        bash amlarc-compute.sh count_result
+      working-directory: cli
 

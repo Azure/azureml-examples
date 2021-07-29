@@ -15,7 +15,9 @@ init_env(){
     export AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
     export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
     export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
-    
+   
+    export RESULT_FILE=amlarc-test-result.txt
+
     if (( $(date +"%H") > 12 )); then
         AMLARC_RELEASE_TRAIN=staging
     fi
@@ -343,15 +345,26 @@ run_test(){
     echo $status
     if [[ $status == "Completed" ]]
     then
-        echo "Job completed"
+        echo "Job $JOB_YML completed" | tee -a $RESULT_FILE
     elif [[ $status ==  "Failed" ]]
     then
-        echo "Job failed"
+        echo "Job $JOB_YML failed" | tee -a $RESULT_FILE
         exit 1
     else 
-        echo "Job status not failed or completed"
-        exit 2
+        echo "Job $JOB_YML unknown" | tee -a $RESULT_FILE 
+	exit 2
     fi
+}
+
+# count result
+count_result(){
+
+    init_env
+	
+    echo "RESULT:"
+    cat $RESULT_FILE
+    [ "$( grep -c Job $RESULT_FILE )" == "0" ] && echo "No test has run!" && exit 1
+    [ $(grep Job $RESULT_FILE | grep -ivc completed) != "0" ] && exit 1
 }
 
 

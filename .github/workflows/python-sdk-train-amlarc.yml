@@ -20,6 +20,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      ARC_CLUSTER_PREFIX: amlarc-cluster-arc-py
+      AKS_CLUSTER_PREFIX: amlarc-cluster-aks-py
+      WORKSPACE: main-python-sdk-amlarc
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -34,26 +39,14 @@ jobs:
       working-directory: cli
     - name: setup STANDARD_DS3_V2 # cpu-cluster
       run: |
-        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
-        export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
-        export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
-        export WORKSPACE=main-python-sdk-amlarc
         bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 gpu-cluster 5 10
       working-directory: cli
     - name: setup STANDARD_NC6 # gpu-cluster
       run: |
-        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
-        export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
-        export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
-        export WORKSPACE=main-python-sdk-amlarc
         bash amlarc-compute.sh setup_compute STANDARD_NC6 gpu-cluster 4 4
       working-directory: cli
     - name: setup STANDARD_NC12 # gpu-K80-2
       run: |
-        export INPUT_AMLARC_RELEASE_TRAIN=${{ github.event.inputs.AMLARC_RELEASE_TRAIN }} 
-        export ARC_CLUSTER_PREFIX=amlarc-cluster-arc-py
-        export AKS_CLUSTER_PREFIX=amlarc-cluster-aks-py
-        export WORKSPACE=main-python-sdk-amlarc
         bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-K80-2 4 4
       working-directory: cli
     - name: install azmlcli
@@ -67,51 +60,67 @@ jobs:
     #   run: python python-sdk/workflows/train/deepspeed/transformers/job.py
     - name: run workflow # cpu-cluster
       run: python python-sdk/workflows/train/fastai/mnist/job.py
+      continue-on-error: true
     - name: run workflow # cpu-cluster
       run: python python-sdk/workflows/train/fastai/mnist-mlproject/job.py
+      continue-on-error: true
     - name: run workflow # gpu-cluster
       run: python python-sdk/workflows/train/fastai/pets/job.py
+      continue-on-error: true
     - name: run workflow # cpu-cluster
       run: python python-sdk/workflows/train/lightgbm/iris/job.py
+      continue-on-error: true
     - name: run workflow # gpu-K80-2
       run: python python-sdk/workflows/train/pytorch/cifar-distributed/job.py
+      continue-on-error: true
     - name: run workflow # gpu-cluster
       run: python python-sdk/workflows/train/pytorch/mnist/job.py
+      continue-on-error: true
     - name: run workflow # gpu-cluster
       run: python python-sdk/workflows/train/pytorch/mnist-mlproject/job.py
+      continue-on-error: true
     - name: run workflow # cpu-cluster
       run: python python-sdk/workflows/train/scikit-learn/diabetes/job.py
+      continue-on-error: true
     - name: run workflow # cpu-cluster
       run: python python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py
+      continue-on-error: true
     - name: run workflow # gpu-K80-2
       run: python python-sdk/workflows/train/tensorflow/mnist-distributed-horovod/job.py
+      continue-on-error: true
     - name: run workflow # gpu-K80-2
       run: python python-sdk/workflows/train/tensorflow/mnist-distributed/job.py
+      continue-on-error: true
     - name: run workflow # gpu-cluster
       run: python python-sdk/workflows/train/tensorflow/mnist/job.py
+      continue-on-error: true
     - name: run workflow # gpu-K80-2
       run: python python-sdk/workflows/train/transformers/glue/1-aml-finetune-job.py
+      continue-on-error: true
     - name: run workflow # gpu-cluster gpu-K80-2
       run: python python-sdk/workflows/train/transformers/glue/2-aml-comparison-of-sku-job.py
+      continue-on-error: true
     - name: run workflow # gpu-K80-2
       run: python python-sdk/workflows/train/transformers/glue/3-aml-hyperdrive-job.py
+      continue-on-error: true
     - name: run workflow # pu-cluster
       run: python python-sdk/workflows/train/xgboost/iris/job.py
+      continue-on-error: true
     - name: uninstall azmlcli
+      if: ${{ always() }}
       run: az extension remove -n azure-cli-ml
-      continue-on-error: true
     - name: clean up STANDARD_DS3_V2
+      if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2 cpu-cluster
+        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2
       working-directory: cli
-      continue-on-error: true
     - name: clean up STANDARD_NC6
+      if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_NC6 gpu-cluster
+        bash amlarc-compute.sh clean_up_compute STANDARD_NC6
       working-directory: cli
-      continue-on-error: true
     - name: clean up STANDARD_NC12
+      if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_NC12 gpu-K80-2
+        bash amlarc-compute.sh clean_up_compute STANDARD_NC12
       working-directory: cli
-      continue-on-error: true
