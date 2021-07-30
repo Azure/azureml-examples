@@ -4,7 +4,7 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: Tutorial\: Tutorials showing how to build high quality machine learning models using Azure Automated Machine Learning.
+description: Tutorials showing how to build high quality machine learning models using Azure Automated Machine Learning.
 ---
 
 # Table of Contents
