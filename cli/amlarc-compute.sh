@@ -38,7 +38,7 @@ install_tools(){
     && chmod +x ./kubectl  \
     && sudo mv ./kubectl /usr/local/bin/kubectl  
 
-    pip3 install azureml-core 
+    pip install azureml-core 
 }
 
 waitForResources(){
@@ -261,7 +261,7 @@ setup_compute(){
 
     # attach compute
     ARC_RESOURCE_ID="/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Kubernetes/connectedClusters/$ARC_CLUSTER_NAME"
-    python3 attach_compute.py \
+    python attach_compute.py \
         "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE" \
 	"$COMPUTE_NAME" "$ARC_RESOURCE_ID" "$VM_SKU"
 
