@@ -142,16 +142,15 @@ if __name__ == "__main__":
 ' > attach_compute.py
 }
 
-# setup compute resources
-setup_compute(){
+# setup cluster resources
+setup_cluster(){
     set -x -e
 
     init_env
 
     VM_SKU="${1:-Standard_NC12}"
-    COMPUTE_NAME="${2:-gpu-cluster}"
-    MIN_COUNT="${3:-4}"
-    MAX_COUNT="${4:-8}"
+    MIN_COUNT="${2:-4}"
+    MAX_COUNT="${3:-8}"
 
     ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
     AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
@@ -235,6 +234,19 @@ setup_compute(){
     if [ "${waitSuccessArc}" == false ]; then
         echo "deployment is not avilable in namespace - $AMLARC_RELEASE_NAMESPACE"
     fi
+}
+
+# setup compute
+setup_compute(){
+    set -x -e
+
+    init_env
+
+    VM_SKU="${1:-Standard_NC12}"
+    COMPUTE_NAME="${2:gpu-compute}"
+
+    ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+    AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # create workspace
     az ml workspace show \
@@ -303,7 +315,7 @@ check_compute(){
 }
 
 # cleanup
-clean_up_compute(){
+clean_up_cluster(){
     set -x +e
 
     init_env
@@ -313,6 +325,13 @@ clean_up_compute(){
     ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
     AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
+    # get aks kubeconfig
+    az aks get-credentials \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $AKS_CLUSTER_NAME \
+        --overwrite-existing
+     
     # delete arc
     az connectedk8s delete \
         --subscription $SUBSCRIPTION \
@@ -363,8 +382,13 @@ count_result(){
 	
     echo "RESULT:"
     cat $RESULT_FILE
-    [ "$( grep -c Job $RESULT_FILE )" == "0" ] && echo "No test has run!" && exit 1
-    [ $(grep Job $RESULT_FILE | grep -ivc completed) != "0" ] && exit 1
+    
+    job_num=$( grep -c Job $RESULT_FILE )
+    [ "$job_num" == "0" ] && echo "No test has run!" && exit 1
+    unhealthy_num=$(echo $job_num | grep -ivc completed)
+    [ "$unhealthy_num" != "0" ] && echo "There are $unhealthy_num unhealthy jobs."  && exit 1
+    
+    echo "All tests passed."
 }
 
 

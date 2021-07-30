@@ -37,17 +37,29 @@ jobs:
         bash amlarc-compute.sh install_tools
         bash amlarc-compute.sh prepare_attach_compute_py
       working-directory: cli
-    - name: setup STANDARD_DS3_V2 # cpu-cluster
+    - name: setup STANDARD_DS3_V2 cluster # cpu-cluster
       run: |
-        bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 gpu-cluster 5 10
+        bash amlarc-compute.sh setup_cluster STANDARD_DS3_V2 5 10
       working-directory: cli
-    - name: setup STANDARD_NC6 # gpu-cluster
+      #- name: setup STANDARD_NC6 cluster # gpu-cluster
+      #- run: |
+      #-   bash amlarc-compute.sh setup_cluster STANDARD_NC6 4 4
+      #- working-directory: cli
+    - name: setup STANDARD_NC12 cluster # gpu-K80-2
       run: |
-        bash amlarc-compute.sh setup_compute STANDARD_NC6 gpu-cluster 4 4
+        bash amlarc-compute.sh setup_cluster STANDARD_NC12 4 4
       working-directory: cli
-    - name: setup STANDARD_NC12 # gpu-K80-2
+    - name: setup cpu-cluster compute
       run: |
-        bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-K80-2 4 4
+        bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 cpu-cluster
+      working-directory: cli
+    - name: setup gpu-cluster compute
+      run: |
+        bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster
+      working-directory: cli
+    - name: setup gpu-K80-2 compute
+      run: |
+        bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-K80-2
       working-directory: cli
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
@@ -109,18 +121,18 @@ jobs:
     - name: uninstall azmlcli
       if: ${{ always() }}
       run: az extension remove -n azure-cli-ml
-    - name: clean up STANDARD_DS3_V2
+    - name: clean up STANDARD_DS3_V2 cluster
       if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_DS3_V2
+        bash amlarc-compute.sh clean_up_cluster STANDARD_DS3_V2
       working-directory: cli
-    - name: clean up STANDARD_NC6
+      #- name: clean up STANDARD_NC6 cluster
+      #- if: ${{ always() }}
+      #- run: |
+      #-   bash amlarc-compute.sh clean_up_cluster STANDARD_NC6
+      #- working-directory: cli
+    - name: clean up STANDARD_NC12 cluster
       if: ${{ always() }}
       run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_NC6
-      working-directory: cli
-    - name: clean up STANDARD_NC12
-      if: ${{ always() }}
-      run: |
-        bash amlarc-compute.sh clean_up_compute STANDARD_NC12
+        bash amlarc-compute.sh clean_up_cluster STANDARD_NC12
       working-directory: cli
