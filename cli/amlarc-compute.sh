@@ -375,6 +375,29 @@ run_test(){
     fi
 }
 
+# run python test
+run_py_test(){
+    set -x
+
+    init_env
+
+    JOB_YML="${1:-python-sdk/workflows/train/fastai/mnist/job.py}"
+
+    python $JOB_YML 
+
+    status=$?
+    echo $status
+    if [[ "$status" == "0" ]]
+    then
+        echo "Job $JOB_YML completed" | tee -a $RESULT_FILE
+    else
+        echo "Job $JOB_YML failed" | tee -a $RESULT_FILE
+        exit 1
+    fi
+}
+
+
+
 # count result
 count_result(){
 
@@ -383,9 +406,8 @@ count_result(){
     echo "RESULT:"
     cat $RESULT_FILE
     
-    job_num=$( grep -c Job $RESULT_FILE )
-    [ "$job_num" == "0" ] && echo "No test has run!" && exit 1
-    unhealthy_num=$(echo $job_num | grep -ivc completed)
+    [ "$(grep -c Job $RESULT_FILE)" == "0" ] && echo "No test has run!" && exit 1
+    unhealthy_num=$(grep Job $RESULT_FILE | grep -ivc completed)
     [ "$unhealthy_num" != "0" ] && echo "There are $unhealthy_num unhealthy jobs."  && exit 1
     
     echo "All tests passed."
