@@ -102,7 +102,7 @@ jobs:
         bash amlarc-compute.sh prepare_attach_compute_py
       working-directory: cli
     - name: setup STANDARD_NC12 cluster
-      run: bash amlarc-compute.sh setup_cluster STANDARD_NC12 4 8
+      run: bash amlarc-compute.sh setup_cluster STANDARD_NC12 2 8
       working-directory: cli
     - name: setup gpu-cluster compute
       run: bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster
