@@ -34,7 +34,7 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: init env
       run: |
-        bash cli/mlarc-compute.sh install_tools
+        bash cli/amlarc-compute.sh install_tools
         bash cli/amlarc-compute.sh prepare_attach_compute_py
     - name: setup STANDARD_DS3_V2 cluster # cpu-cluster
       run: bash cli/amlarc-compute.sh setup_cluster STANDARD_DS3_V2 5 10
