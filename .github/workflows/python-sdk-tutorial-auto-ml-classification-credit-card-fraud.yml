@@ -1,14 +1,14 @@
 name: auto-ml-classification-credit-card-fraud
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 1 * * 2"
-  pull_request:
-    branches:
-      - main
-    paths:
-      - python-sdk/tutorials/automl-with-azureml/classification-credit-card-fraud/**
-      - .github/workflows/python-sdk-tutorial-auto-ml-classification-credit-card-fraud.yml
+  # schedule:
+  #   - cron: "0 1 * * 2"
+  # pull_request:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - python-sdk/tutorials/automl-with-azureml/classification-credit-card-fraud/**
+  #     - .github/workflows/python-sdk-tutorial-auto-ml-classification-credit-card-fraud.yml
 jobs:
   build:
     runs-on: ubuntu-latest 
