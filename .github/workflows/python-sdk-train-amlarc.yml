@@ -103,9 +103,9 @@ jobs:
         bash cli/amlarc-compute.sh install_tools
         bash cli/amlarc-compute.sh prepare_attach_compute_py
     #- name: setup STANDARD_NC6 cluster # gpu-cluster
-    #  run: bash cli/amlarc-compute.sh setup_cluster STANDARD_NC6 2 4
+    #  run: bash cli/amlarc-compute.sh setup_cluster STANDARD_NC6 4 4
     - name: setup STANDARD_NC12 cluster # gpu-K80-2
-      run: bash cli/amlarc-compute.sh setup_cluster STANDARD_NC12 2 4
+      run: bash cli/amlarc-compute.sh setup_cluster STANDARD_NC12 4 4
     - name: setup gpu-cluster compute
       run: bash cli/amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster
     - name: setup gpu-K80-2 compute
