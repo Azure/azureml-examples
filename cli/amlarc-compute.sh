@@ -406,6 +406,7 @@ count_result(){
     echo "RESULT:"
     cat $RESULT_FILE
     
+    [ ! -f $RESULT_FILE ] && echo "No test has run!" && exit 1 
     [ "$(grep -c Job $RESULT_FILE)" == "0" ] && echo "No test has run!" && exit 1
     unhealthy_num=$(grep Job $RESULT_FILE | grep -ivc completed)
     [ "$unhealthy_num" != "0" ] && echo "There are $unhealthy_num unhealthy jobs."  && exit 1
