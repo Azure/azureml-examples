@@ -1,0 +1,32 @@
+name: copy-schemas
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/.schemas/**
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+    - name: pip install requirements
+      run: pip install -r requirements.txt
+      working-directory: cli/.schemas
+    - name: run schema copy script
+      run: python copy-scehmas.py
+      working-directory: cli/.schemas

@@ -1,0 +1,780 @@
+$ref: '#/definitions/SweepJobSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AnonymousAssetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        readonly: true
+        title: name
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        format: integer
+        readonly: true
+        title: version
+        type: number
+    type: object
+  AnonymousCodeAssetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        readonly: true
+        title: name
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        format: integer
+        readonly: true
+        title: version
+        type: number
+    type: object
+  AnonymousEnvironmentSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      conda_file:
+        anyOf:
+        - title: conda_file
+          type: string
+        - title: conda_file
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      docker:
+        $ref: '#/definitions/DockerSchema'
+        type: object
+      id:
+        arm_type: environments
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      inference_config:
+        $ref: '#/definitions/InferenceConfigSchema'
+        type: object
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      os_type:
+        enum:
+        - linux
+        - windows
+        title: os_type
+        type: string
+      path:
+        title: path
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      version:
+        format: integer
+        title: version
+        type: number
+    type: object
+  BanditPolicySchema:
+    additionalProperties: false
+    properties:
+      delay_evaluation:
+        format: integer
+        title: delay_evaluation
+        type: number
+      evaluation_interval:
+        format: integer
+        title: evaluation_interval
+        type: number
+      policy_type:
+        enum:
+        - bandit
+        title: policy_type
+        type: string
+      slack_amount:
+        format: float
+        title: slack_amount
+        type: number
+      slack_factor:
+        format: float
+        title: slack_factor
+        type: number
+    required:
+    - policy_type
+    type: object
+  ChoiceSchema:
+    additionalProperties: false
+    properties:
+      type:
+        enum:
+        - choice
+        title: type
+        type: string
+      values:
+        items:
+          anyOf:
+          - format: float
+            title: values
+            type: number
+          - title: values
+            type: string
+        title: values
+        type: array
+    required:
+    - type
+    type: object
+  ComputeBindingSchema:
+    additionalProperties: false
+    properties:
+      instance_count:
+        format: integer
+        title: instance_count
+        type: number
+      instance_type:
+        description: The instance type to make availabel to this job.
+        title: instance_type
+        type: string
+      location:
+        description: The locations where this job may run.
+        title: location
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      target:
+        anyOf:
+        - enum:
+          - local
+          title: target
+          type: string
+        - arm_type: computes
+          pattern: ^azureml:.*
+          title: target
+          type: string
+        - title: target
+          type: string
+    type: object
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  DockerBuildSchema:
+    additionalProperties: false
+    properties:
+      dockerfile:
+        anyOf:
+        - title: dockerfile
+          type: string
+        - title: dockerfile
+          type: string
+    type: object
+  DockerSchema:
+    additionalProperties: false
+    properties:
+      build:
+        $ref: '#/definitions/DockerBuildSchema'
+        type: object
+      image:
+        title: image
+        type: string
+    type: object
+  InferenceConfigSchema:
+    additionalProperties: false
+    properties:
+      liveness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      readiness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      scoring_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+    required:
+    - liveness_route
+    - readiness_route
+    - scoring_route
+    type: object
+  InputEntrySchema:
+    additionalProperties: false
+    properties:
+      data:
+        anyOf:
+        - arm_type: data
+          pattern: ^azureml:.*
+          title: data
+          type: string
+        - $ref: '#/definitions/AnonymousAssetSchema'
+          type: object
+        - pattern: ^file:.*
+          type: string
+      mode:
+        enum:
+        - mount
+        - download
+        title: mode
+        type: string
+    type: object
+  JobEndpointSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      endpoint:
+        readonly: true
+        title: endpoint
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      type:
+        title: type
+        type: string
+    type: object
+  JobOutputSchema:
+    additionalProperties: false
+    properties:
+      datastore_id:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore_id
+        type: string
+      path:
+        title: path
+        type: string
+    type: object
+  MPIDistributionSchema:
+    additionalProperties: false
+    properties:
+      process_count_per_instance:
+        format: integer
+        title: process_count_per_instance
+        type: number
+      type:
+        enum:
+        - mpi
+        title: type
+        type: string
+    required:
+    - type
+    type: object
+  MedianStoppingPolicySchema:
+    additionalProperties: false
+    properties:
+      delay_evaluation:
+        format: integer
+        title: delay_evaluation
+        type: number
+      evaluation_interval:
+        format: integer
+        title: evaluation_interval
+        type: number
+      policy_type:
+        enum:
+        - median_stopping
+        title: policy_type
+        type: string
+    required:
+    - policy_type
+    type: object
+  NormalSchema:
+    additionalProperties: false
+    properties:
+      mu:
+        format: float
+        title: mu
+        type: number
+      sigma:
+        format: float
+        title: sigma
+        type: number
+      type:
+        enum:
+        - normal
+        - lognormal
+        title: type
+        type: string
+    required:
+    - mu
+    - sigma
+    - type
+    type: object
+  ParameterizedCommandSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      code:
+        anyOf:
+        - $ref: '#/definitions/AnonymousCodeAssetSchema'
+          type: object
+        - arm_type: codes
+          pattern: ^azureml:.*
+          title: code
+          type: string
+        - pattern: ^file:.*
+          type: string
+      command:
+        description: 'The command run and the parameters passed. This string may contain
+          place holders of inputs in {}. '
+        title: command
+        type: string
+      compute:
+        $ref: '#/definitions/ComputeBindingSchema'
+        type: object
+      distribution:
+        anyOf:
+        - $ref: '#/definitions/PyTorchDistributionSchema'
+          type: object
+        - $ref: '#/definitions/TensorFlowDistributionSchema'
+          type: object
+        - $ref: '#/definitions/MPIDistributionSchema'
+          type: object
+      environment:
+        anyOf:
+        - $ref: '#/definitions/AnonymousEnvironmentSchema'
+          type: object
+        - arm_type: environments
+          pattern: ^azureml:.*
+          title: environment
+          type: string
+        - pattern: ^file:.*
+          type: string
+      inputs:
+        additionalProperties:
+          $ref: '#/definitions/InputEntrySchema'
+          type: object
+        title: inputs
+        type: object
+    required:
+    - command
+    - compute
+    - environment
+    type: object
+  PyTorchDistributionSchema:
+    additionalProperties: false
+    properties:
+      process_count:
+        format: integer
+        title: process_count
+        type: number
+      type:
+        enum:
+        - pytorch
+        title: type
+        type: string
+    required:
+    - type
+    type: object
+  QNormalSchema:
+    additionalProperties: false
+    properties:
+      mu:
+        format: float
+        title: mu
+        type: number
+      q:
+        format: integer
+        title: q
+        type: number
+      sigma:
+        format: float
+        title: sigma
+        type: number
+      type:
+        enum:
+        - qnormal
+        - qlognormal
+        title: type
+        type: string
+    required:
+    - mu
+    - q
+    - sigma
+    - type
+    type: object
+  QUniformSchema:
+    additionalProperties: false
+    properties:
+      max_value:
+        format: float
+        title: max_value
+        type: number
+      min_value:
+        format: float
+        title: min_value
+        type: number
+      q:
+        format: integer
+        title: q
+        type: number
+      type:
+        enum:
+        - quniform
+        - qloguniform
+        title: type
+        type: string
+    required:
+    - max_value
+    - min_value
+    - q
+    - type
+    type: object
+  RandintSchema:
+    additionalProperties: false
+    properties:
+      type:
+        enum:
+        - randint
+        title: type
+        type: string
+      upper:
+        format: integer
+        title: upper
+        type: number
+    required:
+    - type
+    - upper
+    type: object
+  RouteSchema:
+    additionalProperties: false
+    properties:
+      path:
+        title: path
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+    required:
+    - path
+    - port
+    type: object
+  SweepJobSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      algorithm:
+        enum:
+        - bayesian
+        - grid
+        - random
+        title: algorithm
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      early_termination:
+        anyOf:
+        - $ref: '#/definitions/BanditPolicySchema'
+          type: object
+        - $ref: '#/definitions/MedianStoppingPolicySchema'
+          type: object
+        - $ref: '#/definitions/TruncationSelectionPolicySchema'
+          type: object
+      experiment_name:
+        title: experiment_name
+        type: string
+      id:
+        arm_type: jobs
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      interaction_endpoints:
+        additionalProperties:
+          $ref: '#/definitions/JobEndpointSchema'
+          type: object
+        title: interaction_endpoints
+        type: object
+      log_files:
+        additionalProperties:
+          title: log_files
+          type: string
+        title: log_files
+        type: object
+      max_concurrent_trials:
+        description: The maximum number of runs to run concurrently.
+        format: integer
+        title: max_concurrent_trials
+        type: number
+      max_total_trials:
+        description: The maximum number of runs.
+        format: integer
+        title: max_total_trials
+        type: number
+      name:
+        title: name
+        type: string
+      objective:
+        $ref: '#/definitions/SweepObjectiveSchema'
+        description: The name and optimization goal of the primary metric.
+        type: object
+      output:
+        $ref: '#/definitions/JobOutputSchema'
+        description: The output configurations for the component used.
+        type: object
+      properties:
+        additionalProperties:
+          title: properties
+          type: string
+        title: properties
+        type: object
+      search_space:
+        additionalProperties:
+          anyOf:
+          - $ref: '#/definitions/ChoiceSchema'
+            type: object
+          - $ref: '#/definitions/UniformSchema'
+            type: object
+          - $ref: '#/definitions/QUniformSchema'
+            type: object
+          - $ref: '#/definitions/NormalSchema'
+            type: object
+          - $ref: '#/definitions/QNormalSchema'
+            type: object
+          - $ref: '#/definitions/RandintSchema'
+            type: object
+        title: search_space
+        type: object
+      status:
+        readonly: true
+        title: status
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      timeout_minutes:
+        format: integer
+        title: timeout_minutes
+        type: number
+      trial:
+        $ref: '#/definitions/ParameterizedCommandSchema'
+        type: object
+      type:
+        enum:
+        - sweep_job
+        title: type
+        type: string
+    required:
+    - algorithm
+    - objective
+    - trial
+    - type
+    type: object
+  SweepObjectiveSchema:
+    additionalProperties: false
+    properties:
+      goal:
+        enum:
+        - minimize
+        - maximize
+        title: goal
+        type: string
+      primary_metric:
+        title: primary_metric
+        type: string
+    required:
+    - goal
+    - primary_metric
+    type: object
+  TensorFlowDistributionSchema:
+    additionalProperties: false
+    properties:
+      parameter_server_count:
+        format: integer
+        title: parameter_server_count
+        type: number
+      type:
+        enum:
+        - tensorflow
+        title: type
+        type: string
+      worker_count:
+        format: integer
+        title: worker_count
+        type: number
+    required:
+    - type
+    type: object
+  TruncationSelectionPolicySchema:
+    additionalProperties: false
+    properties:
+      delay_evaluation:
+        format: integer
+        title: delay_evaluation
+        type: number
+      evaluation_interval:
+        format: integer
+        title: evaluation_interval
+        type: number
+      exclude_finished_jobs:
+        title: exclude_finished_jobs
+        type: boolean
+      policy_type:
+        enum:
+        - truncation_selection
+        title: policy_type
+        type: string
+      truncation_percentage:
+        format: integer
+        title: truncation_percentage
+        type: number
+    required:
+    - policy_type
+    - truncation_percentage
+    type: object
+  UniformSchema:
+    additionalProperties: false
+    properties:
+      max_value:
+        format: float
+        title: max_value
+        type: number
+      min_value:
+        format: float
+        title: min_value
+        type: number
+      type:
+        enum:
+        - uniform
+        - loguniform
+        title: type
+        type: string
+    required:
+    - max_value
+    - min_value
+    - type
+    type: object

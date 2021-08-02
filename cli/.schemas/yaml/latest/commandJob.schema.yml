@@ -1,0 +1,542 @@
+$ref: '#/definitions/CommandJobSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AMLTokenIdentitySchema:
+    additionalProperties: false
+    properties:
+      type:
+        enum:
+        - amltoken
+        title: type
+        type: string
+    required:
+    - type
+    type: object
+  AnonymousAssetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        readonly: true
+        title: name
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        format: integer
+        readonly: true
+        title: version
+        type: number
+    type: object
+  AnonymousCodeAssetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        readonly: true
+        title: name
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        format: integer
+        readonly: true
+        title: version
+        type: number
+    type: object
+  AnonymousEnvironmentSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      conda_file:
+        anyOf:
+        - title: conda_file
+          type: string
+        - title: conda_file
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      docker:
+        $ref: '#/definitions/DockerSchema'
+        type: object
+      id:
+        arm_type: environments
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      inference_config:
+        $ref: '#/definitions/InferenceConfigSchema'
+        type: object
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      os_type:
+        enum:
+        - linux
+        - windows
+        title: os_type
+        type: string
+      path:
+        title: path
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      version:
+        format: integer
+        title: version
+        type: number
+    type: object
+  CommandJobSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      code:
+        anyOf:
+        - $ref: '#/definitions/AnonymousCodeAssetSchema'
+          type: object
+        - arm_type: codes
+          pattern: ^azureml:.*
+          title: code
+          type: string
+        - pattern: ^file:.*
+          type: string
+      command:
+        description: 'The command run and the parameters passed. This string may contain
+          place holders of inputs in {}. '
+        title: command
+        type: string
+      compute:
+        $ref: '#/definitions/ComputeBindingSchema'
+        type: object
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      distribution:
+        anyOf:
+        - $ref: '#/definitions/PyTorchDistributionSchema'
+          type: object
+        - $ref: '#/definitions/TensorFlowDistributionSchema'
+          type: object
+        - $ref: '#/definitions/MPIDistributionSchema'
+          type: object
+      environment:
+        anyOf:
+        - $ref: '#/definitions/AnonymousEnvironmentSchema'
+          type: object
+        - arm_type: environments
+          pattern: ^azureml:.*
+          title: environment
+          type: string
+        - pattern: ^file:.*
+          type: string
+      environment_variables:
+        additionalProperties:
+          title: environment_variables
+          type: string
+        title: environment_variables
+        type: object
+      experiment_name:
+        title: experiment_name
+        type: string
+      id:
+        arm_type: jobs
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      identity:
+        anyOf:
+        - $ref: '#/definitions/ManagedIdentitySchema'
+          type: object
+        - $ref: '#/definitions/AMLTokenIdentitySchema'
+          type: object
+      inputs:
+        additionalProperties:
+          $ref: '#/definitions/InputEntrySchema'
+          type: object
+        title: inputs
+        type: object
+      interaction_endpoints:
+        additionalProperties:
+          $ref: '#/definitions/JobEndpointSchema'
+          type: object
+        title: interaction_endpoints
+        type: object
+      log_files:
+        additionalProperties:
+          title: log_files
+          type: string
+        title: log_files
+        type: object
+      name:
+        title: name
+        type: string
+      output:
+        $ref: '#/definitions/JobOutputSchema'
+        description: The output configurations for the component used.
+        type: object
+      parameters:
+        additionalProperties: {}
+        title: parameters
+        type: object
+      properties:
+        additionalProperties:
+          title: properties
+          type: string
+        title: properties
+        type: object
+      status:
+        readonly: true
+        title: status
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      timeout:
+        description: Maximum time to run (seconds).
+        format: integer
+        title: timeout
+        type: number
+      type:
+        enum:
+        - command_job
+        title: type
+        type: string
+    required:
+    - command
+    - compute
+    - environment
+    type: object
+  ComputeBindingSchema:
+    additionalProperties: false
+    properties:
+      instance_count:
+        format: integer
+        title: instance_count
+        type: number
+      instance_type:
+        description: The instance type to make availabel to this job.
+        title: instance_type
+        type: string
+      location:
+        description: The locations where this job may run.
+        title: location
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      target:
+        anyOf:
+        - enum:
+          - local
+          title: target
+          type: string
+        - arm_type: computes
+          pattern: ^azureml:.*
+          title: target
+          type: string
+        - title: target
+          type: string
+    type: object
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  DockerBuildSchema:
+    additionalProperties: false
+    properties:
+      dockerfile:
+        anyOf:
+        - title: dockerfile
+          type: string
+        - title: dockerfile
+          type: string
+    type: object
+  DockerSchema:
+    additionalProperties: false
+    properties:
+      build:
+        $ref: '#/definitions/DockerBuildSchema'
+        type: object
+      image:
+        title: image
+        type: string
+    type: object
+  InferenceConfigSchema:
+    additionalProperties: false
+    properties:
+      liveness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      readiness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      scoring_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+    required:
+    - liveness_route
+    - readiness_route
+    - scoring_route
+    type: object
+  InputEntrySchema:
+    additionalProperties: false
+    properties:
+      data:
+        anyOf:
+        - arm_type: data
+          pattern: ^azureml:.*
+          title: data
+          type: string
+        - $ref: '#/definitions/AnonymousAssetSchema'
+          type: object
+        - pattern: ^file:.*
+          type: string
+      mode:
+        enum:
+        - mount
+        - download
+        title: mode
+        type: string
+    type: object
+  JobEndpointSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      endpoint:
+        readonly: true
+        title: endpoint
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      type:
+        title: type
+        type: string
+    type: object
+  JobOutputSchema:
+    additionalProperties: false
+    properties:
+      datastore_id:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore_id
+        type: string
+      path:
+        title: path
+        type: string
+    type: object
+  MPIDistributionSchema:
+    additionalProperties: false
+    properties:
+      process_count_per_instance:
+        format: integer
+        title: process_count_per_instance
+        type: number
+      type:
+        enum:
+        - mpi
+        title: type
+        type: string
+    required:
+    - type
+    type: object
+  ManagedIdentitySchema:
+    additionalProperties: false
+    properties:
+      client_id:
+        title: client_id
+        type: string
+      msi_resource_id:
+        title: msi_resource_id
+        type: string
+      object_id:
+        title: object_id
+        type: string
+      type:
+        enum:
+        - managed
+        title: type
+        type: string
+    required:
+    - type
+    type: object
+  PyTorchDistributionSchema:
+    additionalProperties: false
+    properties:
+      process_count:
+        format: integer
+        title: process_count
+        type: number
+      type:
+        enum:
+        - pytorch
+        title: type
+        type: string
+    required:
+    - type
+    type: object
+  RouteSchema:
+    additionalProperties: false
+    properties:
+      path:
+        title: path
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+    required:
+    - path
+    - port
+    type: object
+  TensorFlowDistributionSchema:
+    additionalProperties: false
+    properties:
+      parameter_server_count:
+        format: integer
+        title: parameter_server_count
+        type: number
+      type:
+        enum:
+        - tensorflow
+        title: type
+        type: string
+      worker_count:
+        format: integer
+        title: worker_count
+        type: number
+    required:
+    - type
+    type: object
