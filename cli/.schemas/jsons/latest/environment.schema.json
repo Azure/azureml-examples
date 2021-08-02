@@ -1,0 +1,187 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CreationContextSchema": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "title": "created_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "title": "created_by",
+          "type": "string"
+        },
+        "created_by_type": {
+          "title": "created_by_type",
+          "type": "string"
+        },
+        "last_modified_at": {
+          "title": "last_modified_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_by": {
+          "title": "last_modified_by",
+          "type": "string"
+        },
+        "last_modified_by_type": {
+          "title": "last_modified_by_type",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DockerSchema": {
+      "type": "object",
+      "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/DockerBuildSchema"
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DockerBuildSchema": {
+      "type": "object",
+      "properties": {
+        "dockerfile": {
+          "anyOf": [
+            {
+              "type": "string",
+              "title": "dockerfile"
+            },
+            {
+              "title": "dockerfile",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "InferenceConfigSchema": {
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "properties": {
+        "liveness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "readiness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "scoring_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RouteSchema": {
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "EnvironmentSchema": {
+      "type": "object",
+      "properties": {
+        "conda_file": {
+          "anyOf": [
+            {
+              "type": "string",
+              "title": "conda_file"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "docker": {
+          "type": "object",
+          "$ref": "#/definitions/DockerSchema"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
+        },
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "title": "version",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/EnvironmentSchema"
+}

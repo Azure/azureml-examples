@@ -1,0 +1,1082 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CreationContextSchema": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "title": "created_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "title": "created_by",
+          "type": "string"
+        },
+        "created_by_type": {
+          "title": "created_by_type",
+          "type": "string"
+        },
+        "last_modified_at": {
+          "title": "last_modified_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_by": {
+          "title": "last_modified_by",
+          "type": "string"
+        },
+        "last_modified_by_type": {
+          "title": "last_modified_by_type",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BanditPolicySchema": {
+      "type": "object",
+      "required": [
+        "policy_type"
+      ],
+      "properties": {
+        "delay_evaluation": {
+          "title": "delay_evaluation",
+          "type": "number",
+          "format": "integer"
+        },
+        "evaluation_interval": {
+          "title": "evaluation_interval",
+          "type": "number",
+          "format": "integer"
+        },
+        "policy_type": {
+          "type": "string",
+          "enum": [
+            "bandit"
+          ],
+          "title": "policy_type"
+        },
+        "slack_amount": {
+          "title": "slack_amount",
+          "type": "number",
+          "format": "float"
+        },
+        "slack_factor": {
+          "title": "slack_factor",
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MedianStoppingPolicySchema": {
+      "type": "object",
+      "required": [
+        "policy_type"
+      ],
+      "properties": {
+        "delay_evaluation": {
+          "title": "delay_evaluation",
+          "type": "number",
+          "format": "integer"
+        },
+        "evaluation_interval": {
+          "title": "evaluation_interval",
+          "type": "number",
+          "format": "integer"
+        },
+        "policy_type": {
+          "type": "string",
+          "enum": [
+            "median_stopping"
+          ],
+          "title": "policy_type"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TruncationSelectionPolicySchema": {
+      "type": "object",
+      "required": [
+        "policy_type",
+        "truncation_percentage"
+      ],
+      "properties": {
+        "delay_evaluation": {
+          "title": "delay_evaluation",
+          "type": "number",
+          "format": "integer"
+        },
+        "evaluation_interval": {
+          "title": "evaluation_interval",
+          "type": "number",
+          "format": "integer"
+        },
+        "exclude_finished_jobs": {
+          "title": "exclude_finished_jobs",
+          "type": "boolean"
+        },
+        "policy_type": {
+          "type": "string",
+          "enum": [
+            "truncation_selection"
+          ],
+          "title": "policy_type"
+        },
+        "truncation_percentage": {
+          "title": "truncation_percentage",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "JobEndpointSchema": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "title": "endpoint",
+          "type": "string",
+          "readonly": true
+        },
+        "type": {
+          "title": "type",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "SweepObjectiveSchema": {
+      "type": "object",
+      "required": [
+        "goal",
+        "primary_metric"
+      ],
+      "properties": {
+        "goal": {
+          "type": "string",
+          "enum": [
+            "minimize",
+            "maximize"
+          ],
+          "title": "goal"
+        },
+        "primary_metric": {
+          "title": "primary_metric",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "JobOutputSchema": {
+      "type": "object",
+      "properties": {
+        "datastore_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore_id"
+        },
+        "path": {
+          "title": "path",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ChoiceSchema": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "choice"
+          ],
+          "title": "type"
+        },
+        "values": {
+          "title": "values",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "title": "values",
+                "type": "number",
+                "format": "float"
+              },
+              {
+                "title": "values",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "UniformSchema": {
+      "type": "object",
+      "required": [
+        "max_value",
+        "min_value",
+        "type"
+      ],
+      "properties": {
+        "max_value": {
+          "title": "max_value",
+          "type": "number",
+          "format": "float"
+        },
+        "min_value": {
+          "title": "min_value",
+          "type": "number",
+          "format": "float"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "uniform",
+            "loguniform"
+          ],
+          "title": "type"
+        }
+      },
+      "additionalProperties": false
+    },
+    "QUniformSchema": {
+      "type": "object",
+      "required": [
+        "max_value",
+        "min_value",
+        "q",
+        "type"
+      ],
+      "properties": {
+        "max_value": {
+          "title": "max_value",
+          "type": "number",
+          "format": "float"
+        },
+        "min_value": {
+          "title": "min_value",
+          "type": "number",
+          "format": "float"
+        },
+        "q": {
+          "title": "q",
+          "type": "number",
+          "format": "integer"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "quniform",
+            "qloguniform"
+          ],
+          "title": "type"
+        }
+      },
+      "additionalProperties": false
+    },
+    "NormalSchema": {
+      "type": "object",
+      "required": [
+        "mu",
+        "sigma",
+        "type"
+      ],
+      "properties": {
+        "mu": {
+          "title": "mu",
+          "type": "number",
+          "format": "float"
+        },
+        "sigma": {
+          "title": "sigma",
+          "type": "number",
+          "format": "float"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "lognormal"
+          ],
+          "title": "type"
+        }
+      },
+      "additionalProperties": false
+    },
+    "QNormalSchema": {
+      "type": "object",
+      "required": [
+        "mu",
+        "q",
+        "sigma",
+        "type"
+      ],
+      "properties": {
+        "mu": {
+          "title": "mu",
+          "type": "number",
+          "format": "float"
+        },
+        "q": {
+          "title": "q",
+          "type": "number",
+          "format": "integer"
+        },
+        "sigma": {
+          "title": "sigma",
+          "type": "number",
+          "format": "float"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "qnormal",
+            "qlognormal"
+          ],
+          "title": "type"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RandintSchema": {
+      "type": "object",
+      "required": [
+        "type",
+        "upper"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "randint"
+          ],
+          "title": "type"
+        },
+        "upper": {
+          "title": "upper",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ParameterizedCommandSchema": {
+      "type": "object",
+      "required": [
+        "command",
+        "compute",
+        "environment"
+      ],
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousCodeAssetSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "codes",
+              "title": "code"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "command": {
+          "title": "command",
+          "type": "string",
+          "description": "The command run and the parameters passed. This string may contain place holders of inputs in {}. "
+        },
+        "compute": {
+          "type": "object",
+          "$ref": "#/definitions/ComputeBindingSchema"
+        },
+        "distribution": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/PyTorchDistributionSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/TensorFlowDistributionSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/MPIDistributionSchema"
+            }
+          ]
+        },
+        "environment": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousEnvironmentSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "environments",
+              "title": "environment"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "inputs": {
+          "title": "inputs",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "$ref": "#/definitions/InputEntrySchema"
+          }
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousCodeAssetSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string",
+          "readonly": true
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "version": {
+          "title": "version",
+          "type": "number",
+          "format": "integer",
+          "readonly": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ComputeBindingSchema": {
+      "type": "object",
+      "properties": {
+        "instance_count": {
+          "title": "instance_count",
+          "type": "number",
+          "format": "integer"
+        },
+        "instance_type": {
+          "title": "instance_type",
+          "type": "string",
+          "description": "The instance type to make availabel to this job."
+        },
+        "location": {
+          "title": "location",
+          "type": "string",
+          "description": "The locations where this job may run."
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "local"
+              ],
+              "title": "target"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "computes",
+              "title": "target"
+            },
+            {
+              "title": "target",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "PyTorchDistributionSchema": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "pytorch"
+          ],
+          "title": "type"
+        },
+        "process_count": {
+          "title": "process_count",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TensorFlowDistributionSchema": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "tensorflow"
+          ],
+          "title": "type"
+        },
+        "parameter_server_count": {
+          "title": "parameter_server_count",
+          "type": "number",
+          "format": "integer"
+        },
+        "worker_count": {
+          "title": "worker_count",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MPIDistributionSchema": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mpi"
+          ],
+          "title": "type"
+        },
+        "process_count_per_instance": {
+          "title": "process_count_per_instance",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousEnvironmentSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "conda_file": {
+          "anyOf": [
+            {
+              "type": "string",
+              "title": "conda_file"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "docker": {
+          "type": "object",
+          "$ref": "#/definitions/DockerSchema"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
+        },
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "title": "version",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DockerSchema": {
+      "type": "object",
+      "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/DockerBuildSchema"
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DockerBuildSchema": {
+      "type": "object",
+      "properties": {
+        "dockerfile": {
+          "anyOf": [
+            {
+              "type": "string",
+              "title": "dockerfile"
+            },
+            {
+              "title": "dockerfile",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "InferenceConfigSchema": {
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "properties": {
+        "liveness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "readiness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "scoring_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RouteSchema": {
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InputEntrySchema": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "data",
+              "title": "data"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousAssetSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "mount",
+            "download"
+          ],
+          "title": "mode"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousAssetSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string",
+          "readonly": true
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "version": {
+          "title": "version",
+          "type": "number",
+          "format": "integer",
+          "readonly": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "SweepJobSchema": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "objective",
+        "trial",
+        "type"
+      ],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "bayesian",
+            "grid",
+            "random"
+          ],
+          "title": "algorithm"
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "early_termination": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/BanditPolicySchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/MedianStoppingPolicySchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/TruncationSelectionPolicySchema"
+            }
+          ]
+        },
+        "experiment_name": {
+          "title": "experiment_name",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "jobs",
+          "title": "id",
+          "readonly": true
+        },
+        "interaction_endpoints": {
+          "title": "interaction_endpoints",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "$ref": "#/definitions/JobEndpointSchema"
+          }
+        },
+        "log_files": {
+          "title": "log_files",
+          "type": "object",
+          "additionalProperties": {
+            "title": "log_files",
+            "type": "string"
+          }
+        },
+        "max_concurrent_trials": {
+          "title": "max_concurrent_trials",
+          "type": "number",
+          "format": "integer",
+          "description": "The maximum number of runs to run concurrently."
+        },
+        "max_total_trials": {
+          "title": "max_total_trials",
+          "type": "number",
+          "format": "integer",
+          "description": "The maximum number of runs."
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "objective": {
+          "type": "object",
+          "$ref": "#/definitions/SweepObjectiveSchema",
+          "description": "The name and optimization goal of the primary metric."
+        },
+        "output": {
+          "type": "object",
+          "$ref": "#/definitions/JobOutputSchema",
+          "description": "The output configurations for the component used."
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {
+            "title": "properties",
+            "type": "string"
+          }
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "search_space": {
+          "title": "search_space",
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "object",
+                "$ref": "#/definitions/ChoiceSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/UniformSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/QUniformSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/NormalSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/QNormalSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/RandintSchema"
+              }
+            ]
+          }
+        },
+        "status": {
+          "title": "status",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "timeout_minutes": {
+          "title": "timeout_minutes",
+          "type": "number",
+          "format": "integer"
+        },
+        "trial": {
+          "type": "object",
+          "$ref": "#/definitions/ParameterizedCommandSchema"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "sweep_job"
+          ],
+          "title": "type"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/SweepJobSchema"
+}

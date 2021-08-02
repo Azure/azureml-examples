@@ -1,0 +1,84 @@
+$ref: '#/definitions/ModelSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  ModelSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      flavors:
+        additionalProperties: {}
+        title: flavors
+        type: object
+      id:
+        arm_type: models
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      local_path:
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      path:
+        title: path
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      utc_time_created:
+        format: date-time
+        title: utc_time_created
+        type: string
+      version:
+        format: integer
+        title: version
+        type: number
+    required:
+    - name
+    - version
+    type: object

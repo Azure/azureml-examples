@@ -1,0 +1,91 @@
+$ref: '#/definitions/AzureDataLakeGen1Schema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AzureDataLakeGen1Schema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      credential:
+        anyOf:
+        - $ref: '#/definitions/ServicePrincipalSchema'
+          type: object
+        - $ref: '#/definitions/CertificateSchema'
+          type: object
+      description:
+        title: description
+        type: string
+      name:
+        title: name
+        type: string
+      store_name:
+        title: store_name
+        type: string
+      tags:
+        additionalProperties:
+          additionalProperties: {}
+          title: tags
+          type: object
+        title: tags
+        type: object
+      type:
+        enum:
+        - azure_data_lake_gen1
+        title: type
+        type: string
+    required:
+    - credential
+    - type
+    - store_name
+    type: object
+  CertificateSchema:
+    additionalProperties: false
+    properties:
+      authority_uri:
+        title: authority_uri
+        type: string
+      certificate:
+        title: certificate
+        type: string
+      client_id:
+        title: client_id
+        type: string
+      resource_url:
+        title: resource_url
+        type: string
+      tenant_id:
+        title: tenant_id
+        type: string
+      thumbprint:
+        title: thumbprint
+        type: string
+    required:
+    - client_id
+    - tenant_id
+    - thumbprint
+    type: object
+  ServicePrincipalSchema:
+    additionalProperties: false
+    properties:
+      authority_uri:
+        title: authority_uri
+        type: string
+      client_id:
+        title: client_id
+        type: string
+      client_secret:
+        title: client_secret
+        type: string
+      resource_url:
+        title: resource_url
+        type: string
+      tenant_id:
+        title: tenant_id
+        type: string
+    required:
+    - client_id
+    - client_secret
+    - tenant_id
+    type: object
