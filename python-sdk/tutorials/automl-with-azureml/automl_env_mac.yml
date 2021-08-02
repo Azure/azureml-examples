@@ -18,7 +18,7 @@ dependencies:
 - conda-forge::fbprophet==0.5
 - holidays==0.9.11
 - pytorch::pytorch=1.4.0
-- cudatoolkit=10.1.243
+- cudatoolkit=9.0
 
 - pip:
   # Required packages for AzureML execution, history, and data preparation.
