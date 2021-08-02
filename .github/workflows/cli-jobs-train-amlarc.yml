@@ -88,12 +88,8 @@ jobs:
       timeout-minutes: 20
       run: bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster
       working-directory: cli
-    - name: run jobs/train/pytorch/word-language-model job
-      timeout-minutes: 30
-      run: bash amlarc-compute.sh run_test jobs/train/pytorch/word-language-model/job.yml
-      working-directory: cli
-      continue-on-error: true
     - name: run jobs/train/fastai/pets job
+      timeout-minutes: 30
       run: bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
       working-directory: cli
       continue-on-error: true
