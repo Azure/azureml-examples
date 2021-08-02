@@ -21,15 +21,18 @@ def main(args):
         write_json(schema, schemas[schema])
         write_yaml(schema, schemas[schema])
 
+
 def write_json(filename, schema):
     # write schema to json
     with open(f"json/{filename}", "w") as f:
         json.dump(schema, f, indent=2)
 
+
 def write_yaml(filename, schema):
     # write schema to yaml
     with open(f"yaml/{filename}".replace("json", "yml"), "w") as f:
         yaml.dump(schema, f, indent=2)
+
 
 def get_schemas(storage_options, container):
     # initialize azure blob file system
