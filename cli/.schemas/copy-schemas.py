@@ -13,8 +13,8 @@ def main(args):
     schemas = get_schemas(storage_options, args.container)
 
     # make directories
-    os.makedirs(f"json/{args.container}", exist_ok=True)
-    os.makedirs(f"yaml/{args.container}", exist_ok=True)
+    os.makedirs(f"jsons/{args.container}", exist_ok=True)
+    os.makedirs(f"yamls/{args.container}", exist_ok=True)
 
     # process each schema
     for schema in schemas:
@@ -24,13 +24,13 @@ def main(args):
 
 def write_json(filename, schema):
     # write schema to json
-    with open(f"json/{filename}", "w") as f:
+    with open(f"jsons/{filename}", "w") as f:
         json.dump(schema, f, indent=2)
 
 
 def write_yaml(filename, schema):
     # write schema to yaml
-    with open(f"yaml/{filename}".replace("json", "yml"), "w") as f:
+    with open(f"yamls/{filename}".replace("json", "yml"), "w") as f:
         yaml.dump(schema, f, indent=2)
 
 
