@@ -30,3 +30,11 @@ jobs:
     - name: run schema copy script
       run: python copy-schemas.py
       working-directory: cli/.schemas
+    - name: commit schema updates
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "updating schemas"
+        git push
+      working-directory: cli/.schemas
