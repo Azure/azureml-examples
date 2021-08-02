@@ -1,2 +1,2 @@
 FROM fastdotai/fastai:latest
-RUN pip install azureml-mlflow
+RUN pip install azureml-mlflow ruamel

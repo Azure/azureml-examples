@@ -19,4 +19,6 @@ RUN pip install \
   tensorflow \
   tensorflow_decision_forests
 
+RUN sudo apt-get install -y libfuse-dev
+
 CMD ["bash"]
