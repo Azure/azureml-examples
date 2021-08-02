@@ -60,14 +60,14 @@ jobs:
       run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job.yml
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/train/r/accidents job
-      run: bash amlarc-compute.sh run_test jobs/train/r/accidents/job.yml
-      working-directory: cli
-      continue-on-error: true
-    - name: run jobs/train/r/iris job
-      run: bash amlarc-compute.sh run_test jobs/train/r/iris/job.yml
-      working-directory: cli
-      continue-on-error: true
+      #- name: run jobs/train/r/accidents job
+      #- run: bash amlarc-compute.sh run_test jobs/train/r/accidents/job.yml
+      #- working-directory: cli
+      #- continue-on-error: true
+      #- name: run jobs/train/r/iris job
+      #- run: bash amlarc-compute.sh run_test jobs/train/r/iris/job.yml
+      #- working-directory: cli
+      #- continue-on-error: true
     - name: run jobs/train/tensorflow/iris job
       run: bash amlarc-compute.sh run_test jobs/train/tensorflow/iris/job.yml
       working-directory: cli
@@ -111,10 +111,10 @@ jobs:
       run: bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/train/pytorch/cifar-distributed job
-      run: bash amlarc-compute.sh run_test jobs/train/pytorch/cifar-distributed/job.yml
-      working-directory: cli
-      continue-on-error: true
+      #- name: run jobs/train/pytorch/cifar-distributed job
+      #- run: bash amlarc-compute.sh run_test jobs/train/pytorch/cifar-distributed/job.yml
+      #- working-directory: cli
+      #- continue-on-error: true
     - name: run jobs/train/pytorch/word-language-model job
       run: bash amlarc-compute.sh run_test jobs/train/pytorch/word-language-model/job.yml
       working-directory: cli
@@ -129,6 +129,10 @@ jobs:
       continue-on-error: true
     - name: run jobs/train/tensorflow/mnist job
       run: bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/fastai/pets job
+      run: bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
       working-directory: cli
       continue-on-error: true
     - name: clean up STANDARD_NC12 cluster
