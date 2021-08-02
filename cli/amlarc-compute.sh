@@ -124,8 +124,8 @@ def main():
 
             k8s_attach_configuration = KubernetesCompute.attach_configuration(resource_id=resource_id, default_instance_type=instance_type, instance_types=INSTANCE_TYPES)
             k8s_compute = ComputeTarget.attach(ws, k8s_compute_name, k8s_attach_configuration)
-            # k8s_compute.wait_for_completion(show_output=True)
-            # print("compute status:", k8s_compute.get_status())
+            k8s_compute.wait_for_completion(show_output=True)
+            print("compute status:", k8s_compute.get_status())
 
             return 0
         except Exception as e:
@@ -228,7 +228,7 @@ setup_cluster(){
         --release-train $AMLARC_RELEASE_TRAIN \
         --configuration-settings  enableTraining=True allowInsecureConnections=True
    
-    sleep 120 
+    sleep 60 
     # wait for resources in amlarc-arc ns
     waitSuccessArc="$(waitForResources deployment $AMLARC_RELEASE_NAMESPACE)"
     if [ "${waitSuccessArc}" == false ]; then
@@ -265,6 +265,7 @@ setup_compute(){
         "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE" \
 	"$COMPUTE_NAME" "$ARC_RESOURCE_ID" "$VM_SKU"
 
+    sleep 120
 }
 
 # check compute resources
