@@ -3,11 +3,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * *"
-  pull_request:
-    branches:
-      - main
-    paths:
-      - cli/.schemas/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,6 +30,6 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "updating schemas"
+        git commit -am "updating schemas"
         git push
       working-directory: cli/.schemas
