@@ -1,0 +1,132 @@
+$ref: '#/definitions/EnvironmentSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  DockerBuildSchema:
+    additionalProperties: false
+    properties:
+      dockerfile:
+        anyOf:
+        - title: dockerfile
+          type: string
+        - title: dockerfile
+          type: string
+    type: object
+  DockerSchema:
+    additionalProperties: false
+    properties:
+      build:
+        $ref: '#/definitions/DockerBuildSchema'
+        type: object
+      image:
+        title: image
+        type: string
+    type: object
+  EnvironmentSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      conda_file:
+        anyOf:
+        - title: conda_file
+          type: string
+        - title: conda_file
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      docker:
+        $ref: '#/definitions/DockerSchema'
+        type: object
+      id:
+        arm_type: environments
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      inference_config:
+        $ref: '#/definitions/InferenceConfigSchema'
+        type: object
+      name:
+        title: name
+        type: string
+      os_type:
+        enum:
+        - linux
+        - windows
+        title: os_type
+        type: string
+      path:
+        title: path
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      version:
+        format: integer
+        title: version
+        type: number
+    type: object
+  InferenceConfigSchema:
+    additionalProperties: false
+    properties:
+      liveness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      readiness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      scoring_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+    required:
+    - liveness_route
+    - readiness_route
+    - scoring_route
+    type: object
+  RouteSchema:
+    additionalProperties: false
+    properties:
+      path:
+        title: path
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+    required:
+    - path
+    - port
+    type: object

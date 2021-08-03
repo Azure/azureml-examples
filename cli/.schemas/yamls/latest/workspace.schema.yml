@@ -1,0 +1,97 @@
+$ref: '#/definitions/WorkspaceSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  CustomerManagedKeySchema:
+    additionalProperties: false
+    properties:
+      key_uri:
+        title: key_uri
+        type: string
+      key_vault:
+        title: key_vault
+        type: string
+    type: object
+  EndpointConnectionSchema:
+    additionalProperties: false
+    properties:
+      location:
+        title: location
+        type: string
+      resource_group:
+        title: resource_group
+        type: string
+      subnet_name:
+        title: subnet_name
+        type: string
+      subscription_id:
+        title: subscription_id
+        type: string
+      vnet_name:
+        title: vnet_name
+        type: string
+    type: object
+  PrivateEndpointSchema:
+    additionalProperties: false
+    properties:
+      approval_type:
+        title: approval_type
+        type: string
+      connections:
+        additionalProperties:
+          $ref: '#/definitions/EndpointConnectionSchema'
+          type: object
+        title: connections
+        type: object
+    type: object
+  WorkspaceSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      application_insights:
+        title: application_insights
+        type: string
+      container_registry:
+        title: container_registry
+        type: string
+      customer_managed_key:
+        $ref: '#/definitions/CustomerManagedKeySchema'
+        type: object
+      description:
+        title: description
+        type: string
+      discovery_url:
+        title: discovery_url
+        type: string
+      friendly_name:
+        title: friendly_name
+        type: string
+      hbi_workspace:
+        title: hbi_workspace
+        type: boolean
+      key_vault:
+        title: key_vault
+        type: string
+      location:
+        title: location
+        type: string
+      name:
+        title: name
+        type: string
+      private_endpoints:
+        $ref: '#/definitions/PrivateEndpointSchema'
+        type: object
+      storage_account:
+        title: storage_account
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+    required:
+    - name
+    type: object
