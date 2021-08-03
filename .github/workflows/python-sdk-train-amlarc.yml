@@ -119,9 +119,9 @@ jobs:
     #   run: python python-sdk/workflows/train/deepspeed/cifar/job.py
     # - name: run train/deepspeed/cifar job # gpu-V100-4
     #   run: python python-sdk/workflows/train/deepspeed/transformers/job.py
-    #- name: run python-sdk/workflows/train/fastai/pets/job.py # gpu-cluster
-    #  run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/pets/job.py
-    #  continue-on-error: true
+    - name: run python-sdk/workflows/train/fastai/pets/job.py # gpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/pets/job.py
+      continue-on-error: true
     - name: run python-sdk/workflows/train/pytorch/cifar-distributed/job.py # gpu-K80-2
       run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/pytorch/cifar-distributed/job.py
       continue-on-error: true
