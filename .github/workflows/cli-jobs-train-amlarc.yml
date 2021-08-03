@@ -88,17 +88,20 @@ jobs:
       timeout-minutes: 20
       run: bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster
       working-directory: cli
-    - name: run jobs/train/fastai/pets job
-      timeout-minutes: 30
-      run: bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
-      working-directory: cli
-      continue-on-error: true
+      #- name: run jobs/train/fastai/pets job
+      #- timeout-minutes: 30
+      #- run: bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
+      #- working-directory: cli
+      #- continue-on-error: true
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
       run: az ml folder attach -w main-amlarc -g azureml-examples-rg
-    - name: run python-sdk/workflows/train/fastai/pets/job.py # gpu-cluster
-      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/pets/job.py
+      #- name: run python-sdk/workflows/train/fastai/pets/job.py # gpu-cluster
+      #- run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/pets/job.py
+      #- continue-on-error: true
+    - name: run python-sdk/workflows/train/tensorflow/mnist/job.py
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/tensorflow/mnist/job.py
       continue-on-error: true
     - name: count result
       if: ${{ always() }}
