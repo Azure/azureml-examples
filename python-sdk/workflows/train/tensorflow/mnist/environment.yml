@@ -6,3 +6,5 @@ dependencies:
     - azureml-defaults
     - azureml-mlflow
     - tensorflow-gpu==2.3.0
+    - wheel
+    - pandas
