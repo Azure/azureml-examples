@@ -2,15 +2,6 @@ name: python-sdk-train-amlarc
 on:
   schedule:
     - cron: "0 6,18 * * *"
-  pull_request:
-    branches:
-      - main
-      - releases/current
-    paths:
-      - python-sdk/workflows/train/**
-      - .github/workflows/python-sdk-train-amlarc.yml
-      - cli/amlarc-compute.sh
-      - python-sdk/requirements.txt
   workflow_dispatch:
     inputs:
       AMLARC_RELEASE_TRAIN:
