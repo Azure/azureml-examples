@@ -3,11 +3,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * *"
-  pull_request:
-    branches:
-      - main
-    paths:
-      - cli/.schemas/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,4 +24,12 @@ jobs:
       working-directory: cli/.schemas
     - name: run schema copy script
       run: python copy-schemas.py
+      working-directory: cli/.schemas
+    - name: commit schema updates
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -am "updating schemas"
+        git push
       working-directory: cli/.schemas
