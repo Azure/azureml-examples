@@ -1,6 +1,6 @@
 numpy
 scipy
-pandas
+pandas>=1.2.0
 adlfs
 fastparquet
 matplotlib
