@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  julia -e "include(\"run.jl\")"
+
+environment: 
+  docker:
+    build: 
+      dockerfile: file:Dockerfile
+  conda_file: file:environment.yml
+
+compute:
+  target: local
+experiment_name: flux-iris-example
+description: Train a Flux model on the Iris dataset. Showcases examples of mlflow logging API used in training
