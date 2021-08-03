@@ -188,6 +188,12 @@ jupyter notebook
           - train using a remote AML Compute cluster
           - enable the DNN learning model
           - forecast on a remote compute cluster and compare different model performance
+- **Hierarchical Time Series Forecasting**
+    - Dataset: [HTS dataset](forecasting-hierarchical-timeseries/Data/hts_train.csv)
+        - **[Jupyter Notebook](forecasting-hierarchical-timeseries/auto-ml-forecasting-hierarchical-timeseries.ipynb)**
+          - train and forecast using a remote AML Compute cluster with multiple nodes
+          - multiple AutoML runs trigger in parallel
+          - data aggregation is performed at train level
 - **Continuous Retraining with NOAA Weather Data**
     - Dataset: [NOAA weather data from Azure Open Datasets](https://azure.microsoft.com/en-us/services/open-datasets/)
         - **[Jupyter Notebook](continuous-retraining/auto-ml-continuous-retraining.ipynb)**

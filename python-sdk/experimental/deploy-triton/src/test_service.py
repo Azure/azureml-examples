@@ -40,10 +40,7 @@ if __name__ == "__main__":
     }
 
     file_name = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)),
-        "..",
-        "data",
-        args.data_file,
+        os.path.abspath(os.path.dirname(__file__)), "..", "data", args.data_file
     )
     test_sample = open(file_name, "rb").read()
     resp = requests.post(aks_service.scoring_uri, test_sample, headers=headers)
