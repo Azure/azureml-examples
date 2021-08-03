@@ -29,7 +29,9 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git checkout -b actions/update-schemas
         git add .
-        git commit -am "updating schemas"
-        git push
+        git commit -m "updating schemas"
+        git push --set-upstream origin actions/update-schemas
+        gh pr create -t "[bot] updating schemas" -b "updating schemas"
       working-directory: cli/.schemas
