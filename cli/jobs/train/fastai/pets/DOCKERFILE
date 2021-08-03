@@ -1,4 +1,5 @@
 FROM fastdotai/fastai:latest
 RUN pip install azureml-mlflow 
+RUN conda install -y pip=20.1.1
 RUN pip install ruamel.yaml
 
