@@ -1,4 +1,4 @@
-name: python-sdk-train-amlarc
+name: amlarc-python-sdk-train-test
 on:
   schedule:
     - cron: "0 6,18 * * *"

@@ -1,4 +1,4 @@
-name: cli-jobs-train-amlarc
+name: amlarc-cli-train-test
 on:
   schedule:
     - cron: "0 0/12 * * *"
