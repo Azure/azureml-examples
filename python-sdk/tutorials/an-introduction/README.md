@@ -5,7 +5,7 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: Tutorial: Run "hello world" and train a simple model on Azure Machine Learning.
+description: Run "hello world" and train a simple model on Azure Machine Learning.
 ---
 
 # Introduction to Azure Machine Learning
