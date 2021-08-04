@@ -30,6 +30,9 @@ jobs:
           activate-environment: azure_automl
           environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
           auto-activate-base: false
+    - name: update conda env with the update_env.yml
+      run: |
+        conda env update --file python-sdk/tutorials/automl-with-azureml/forecasting-hierarchical-timeseries/update_env.yml
     - name: install papermill and set up the IPython kernel
       run: |
         pip install papermill==2.3.3
