@@ -224,7 +224,7 @@ def modify_notebooks(notebooks):
     kernelspec3_6 = {
         "display_name": "Python 3.6",
         "language": "python",
-        "name": "python3.6",
+        "name": "python36",
     }
 
     # for each notebooks
