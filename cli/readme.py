@@ -206,7 +206,8 @@ def write_workflows(jobs, pipelines, endpoints, assets, scripts):
     # process pipelines
     for pipeline in pipelines:
         # write workflow file
-        write_pipeline_workflow(pipeline)
+        # write_pipeline_workflow(pipeline)
+        pass
 
     # process endpoints
     for endpoint in endpoints:
