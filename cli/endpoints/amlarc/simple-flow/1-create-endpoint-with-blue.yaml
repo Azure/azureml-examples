@@ -27,7 +27,7 @@ deployments:
     conda_file: file:../model-1/environment/conda.yml
     docker:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-    name: env-model1
+    name: env-hello-1
     path: .
     version: 1
   request_settings:
