@@ -1,0 +1,36 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/latest/onlineEndpoint.schema.json
+type: online
+auth_mode: aml_token
+traffic:
+  blue: 100
+identity:
+  type: system_assigned
+target: azureml:{{fullyQualifiedComputeId}}
+tags:
+  tag1: first tag
+  tag2: second tag
+properties:
+  prop1: first prop
+  prop2: second prop
+
+deployments:
+  #blue deployment
+  - name: blue    
+    model:
+      name: model-hello
+      version: 1
+      local_path: ../model-1/model/helloworld.txt
+    code_configuration:
+      code: 
+        local_path: ../model-1/onlinescoring/
+      scoring_script: score.py
+    environment:
+      name: env-model1
+      version: 1      
+      path: .
+      conda_file: file:../model-1/environment/conda.yml
+      docker:
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+    scale_settings:
+      scale_type: auto
+      min_instances: 1
