@@ -37,9 +37,11 @@ def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     creds = "${{secrets.AZ_AE_CREDS}}"
 
     run_update_env = ""
-    update_yml_file = f"python-sdk/tutorials/automl-with-azureml/{notebook_folder}/{UPDATE_ENV_YML}"
+    update_yml_file = (
+        f"python-sdk/tutorials/automl-with-azureml/{notebook_folder}/{UPDATE_ENV_YML}"
+    )
     if os.path.exists(os.path.join(notebook_folder, UPDATE_ENV_YML)):
-      run_update_env = f"""
+        run_update_env = f"""
     - name: update conda env with the update_env.yml
       run: |
         conda env update --file {update_yml_file}"""
