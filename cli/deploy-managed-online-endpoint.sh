@@ -3,7 +3,7 @@
 
 set -e
 
-# <set_endpoint_name>
+# <set_endpoint_name> 
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
