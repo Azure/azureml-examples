@@ -7,7 +7,7 @@ products:
 description: Tutorials showing how to build high quality machine learning models using Azure Automated Machine Learning.
 ---
 
-# Table of Contents
+# Azure Machine Learning AutoML examples
 1. [Automated ML Introduction](#introduction)
 1. [Setup using Compute Instances](#jupyter)
 1. [Setup using a Local Conda environment](#localconda)
