@@ -3,6 +3,7 @@ type: online
 auth_mode: aml_token
 traffic:
   blue: 100
+  green: 0
 identity:
   type: system_assigned
 target: azureml:{{fullyQualifiedComputeId}}
@@ -25,4 +26,27 @@ deployments:
   scale_settings:
     max_instances: 2
     min_instances: 2
+    scale_type: auto
+
+- name: green
+  model:
+    local_path: ../model-2/model/helloworld.txt
+    name: model-hello-2
+    version: 1
+  code_configuration:
+    code:
+      local_path: ../model-2/onlinescoring/
+    scoring_script: score.py
+  environment:
+    conda_file: file:../model-2/environment/conda.yml
+    docker:
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+    path: .
+  request_settings:
+    max_concurrent_requests_per_instance: 1
+    max_queue_wait_ms: 3000
+    request_timeout_ms: 3000
+  scale_settings:
+    max_instances: 2
+    min_instances: 1
     scale_type: auto

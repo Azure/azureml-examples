@@ -23,5 +23,6 @@ deployments:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     path: .
   scale_settings:
+    max_instances: 2
     min_instances: 2
     scale_type: auto
