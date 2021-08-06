@@ -100,7 +100,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         \"condaFile\": \"$CONDA_FILE\",
         \"Docker\": {
             \"DockerSpecificationType\": \"Image\",
-            \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210301.v1\"
+            \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\"
         }
     }
 }"
