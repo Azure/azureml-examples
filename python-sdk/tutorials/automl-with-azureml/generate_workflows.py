@@ -2,6 +2,9 @@
 import os
 
 
+UPDATE_ENV_YML = "update_env.yml"
+
+
 def main():
     # get all subfolders
     current_folder = "."
@@ -32,6 +35,18 @@ def main():
 def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     notebook_name = notebook.replace(".ipynb", "")
     creds = "${{secrets.AZ_AE_CREDS}}"
+
+    run_update_env = ""
+    update_yml_file = (
+        f"python-sdk/tutorials/automl-with-azureml/{notebook_folder}/{UPDATE_ENV_YML}"
+    )
+    # some notebook needs install more packages with the basic automl requirement.
+    if os.path.exists(os.path.join(notebook_folder, UPDATE_ENV_YML)):
+        run_update_env = f"""
+    - name: update conda env with the update_env.yml
+      run: |
+        conda env update --file {update_yml_file}"""
+
     workflow_yaml = f"""name: {notebook_name}
 on:
   workflow_dispatch:
@@ -63,7 +78,7 @@ jobs:
       with:
           activate-environment: azure_automl
           environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
-          auto-activate-base: false
+          auto-activate-base: false{run_update_env}
     - name: install papermill and set up the IPython kernel
       run: |
         pip install papermill==2.3.3
