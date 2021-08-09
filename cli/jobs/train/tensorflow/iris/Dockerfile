@@ -19,4 +19,6 @@ RUN pip install \
   tensorflow \
   tensorflow_decision_forests
 
+RUN apt-get update && apt-get install -y fuse
+
 CMD ["bash"]

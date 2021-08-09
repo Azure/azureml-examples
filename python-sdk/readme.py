@@ -21,16 +21,16 @@ def main(args):
     # get list of experimental tutorials
     experimental = sorted(glob.glob("experimental/*", recursive=False))
 
-    # # make all notebooks consistent
+    # make all notebooks consistent
     modify_notebooks(all_notebooks)
 
-    # # format code
+    # format code
     format_code()
 
-    # # write workflows
+    # write workflows
     write_workflows(notebooks, workflows)
 
-    # # read existing README.md
+    # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
@@ -67,9 +67,9 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     # process tutorials
     for tutorial in tutorials + experimental:
         # get list of notebooks
-        nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/**/*.ipynb")])
-        notebook_names = [nb.replace(".ipynb", "") for nb in nbs]
-        nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
+        nbs = sorted([nb for nb in glob.glob(f"{tutorial}/**/*.ipynb", recursive=True)])
+        notebook_names = [nb.split("/")[-1].replace(".ipynb", "") for nb in nbs]
+        nbs = [f"[{nb.split('/')[-1]}]({nb})" for nb in nbs]
         nbs = "<br>".join(nbs)
 
         # get tutorial name
@@ -224,7 +224,7 @@ def modify_notebooks(notebooks):
     kernelspec3_6 = {
         "display_name": "Python 3.6",
         "language": "python",
-        "name": "python3.6",
+        "name": "python36",
     }
 
     # for each notebooks
