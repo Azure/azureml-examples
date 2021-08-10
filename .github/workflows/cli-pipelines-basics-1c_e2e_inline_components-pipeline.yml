@@ -27,6 +27,7 @@ jobs:
       continue-on-error: true
     - name: create pipeline
       run: |
+        export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
         run_id=$(az ml job create -f pipelines/basics/1c_e2e_inline_components/pipeline.yml --query name -o tsv)
         az ml job stream -n $run_id
         status=$(az ml job show -n $run_id --query status -o tsv)
