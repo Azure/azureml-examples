@@ -25,8 +25,6 @@ deployments:
         local_path: ../model-1/onlinescoring/
       scoring_script: score.py
     environment:
-      name: env-hello-1
-      version: 1      
       path: .
       conda_file: file:../model-1/environment/conda.yml
       docker:
