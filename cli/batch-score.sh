@@ -62,7 +62,7 @@ fi
 # </check_job_status>
 
 # <add_deployment>
-az ml endpoint update --name mybatchedp --type batch --deployment-file assets/endpoints/batch/add-deployment.yml
+az ml endpoint update --name mybatchedp --type batch --deployment-file endpoints/batch/add-deployment.yml
 # </add_deploymen>
 
 # <switch_traffic>
@@ -98,7 +98,7 @@ scoring_uri=$(az ml endpoint show --name mybatchedp --type batch --query scoring
 # </get_scoring_uri>
 
 # <get_token>
-auth_token=$(az account get-access-token --query accessToken -o tsv)
+auth_token=$(az account get-access-token --resource https://ml.azure.com --query accessToken -o tsv)
 # </get_token>
 
 # <start_batch_scoring_job_rest>
