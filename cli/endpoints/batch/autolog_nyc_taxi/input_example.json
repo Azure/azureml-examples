@@ -1,1 +1,0 @@
-{"columns": ["fareAmount", "paymentType", "passengerCount", "tripDistance", "tripTimeSecs", "pickupTimeBin"], "data": [[12.5, 1, 1, 2.5999999046325684, 980, "AMRush"], [4.0, 2, 1, 0.5, 156, "AMRush"], [11.0, 1, 1, 0.699999988079071, 1019, "Afternoon"], [5.0, 2, 1, 0.6800000071525574, 266, "Afternoon"], [19.5, 1, 1, 3.559999942779541, 1706, "PMRush"]]}
