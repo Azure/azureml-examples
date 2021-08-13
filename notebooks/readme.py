@@ -12,15 +12,18 @@ def main(args):
     # make all notebooks consistent
     modify_notebooks(notebooks)
 
+    # get list of directories
+    notebook_dirs = sorted(glob.glob("*/", recursive=True))
+
     # write workflows
-    write_workflows(notebooks)
+    write_workflows(notebook_dirs)
 
     # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
     # write README.md
-    write_readme(notebooks)
+    write_readme(notebook_dirs)
 
     # read modified README.md
     with open("README.md", "r") as f:
@@ -33,7 +36,7 @@ def main(args):
             exit(2)
 
 
-def write_readme(tutorials, notebooks, workflows, experimental):
+def write_readme(notebook_dirs):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
@@ -42,34 +45,35 @@ def write_readme(tutorials, notebooks, workflows, experimental):
 
     # define markdown tables
     notebook_table = (
-        "\n**Notebooks** ([notebooks](notebooks))\n\npath|status|description\n-|-|-\n"
+        "\n**Notebooks**\n\ndirectory|notebooks|status|description\n-|-|-|-\n"
     )
 
     # process notebooks
-    for notebook in notebooks:
-        # get notebook name
-        name = notebook.split("/")[-1].replace(".ipynb", "")
+    for notebook_dir in notebook_dirs:
+        # get list of notebooks
+        notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
+        notebooks = [notebook.split("/")[-1] for notebook in notebooks]
 
-        # read in notebook
-        with open(notebook, "r") as f:
-            data = json.load(f)
+        # get notebook name
+        name = notebook_dir.strip("/")
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-notebook-{name})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebooks-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebooks-{name})"
+
+        # read description if given in README
         description = "*no description*"
         try:
-            if "description: " in str(data["cells"][0]["source"]):
-                description = (
-                    str(data["cells"][0]["source"])
-                    .split("description: ")[-1]
-                    .replace("']", "")
-                    .strip()
-                )
+            with open(f"{notebook_dir}/README.md", "r") as f:
+                for line in f.readlines():
+                    if "description: " in str(line):
+                        description = line.split(": ")[-1].strip()
+                        break
         except:
             pass
 
         # add row to notebook table
-        row = f"[{name}.ipynb]({notebook})|{status}|{description}\n"
+        row = f"[{name}]({name})|{'<br>'.join(notebooks)}|{status}|{description}\n"
+
         notebook_table += row
 
     # write README.md
@@ -78,14 +82,12 @@ def write_readme(tutorials, notebooks, workflows, experimental):
         f.write(prefix + notebook_table + suffix)
 
 
-def write_workflows(notebooks):
+def write_workflows(notebook_dirs):
     # process notebooks
-    for notebook in notebooks:
-        # get notebook name
-        name = notebook.split("/")[-1].replace(".ipynb", "")
+    for notebook_dir in notebook_dirs:
 
         # write workflow file
-        write_notebook_workflow(notebook, name)
+        write_notebook_workflow(notebook_dir)
 
 
 def check_readme(before, after):
@@ -95,9 +97,9 @@ def check_readme(before, after):
 def modify_notebooks(notebooks):
     # setup variables
     kernelspec = {
-        "display_name": "Python 3.8",
+        "display_name": "Python 3.8 - AzureML",
         "language": "python",
-        "name": "python3.8",
+        "name": "python38-azureml",
     }
 
     # for each notebooks
@@ -115,9 +117,12 @@ def modify_notebooks(notebooks):
             json.dump(data, f, indent=1)
 
 
-def write_notebook_workflow(notebook, name):
+def write_notebook_workflow(notebook_dir):
+    notebook_dir = notebook_dir.strip("/")
+    notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
+    notebooks = [notebook.split("/")[-1] for notebook in notebooks]
     creds = "${{secrets.AZ_AE_CREDS}}"
-    workflow_yaml = f"""name: python-sdk-notebook-{name}
+    workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
     - cron: "0 0/2 * * *"
@@ -125,9 +130,9 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/{notebook}
-      - .github/workflows/python-sdk-notebook-{name}.yml
-      - python-sdk/requirements.txt
+      - notebooks/{notebook_dir}/**
+      - .github/workflows/notebooks-{notebook_dir}.yml
+      - notebooks/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -147,12 +152,16 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run notebook
-      run: papermill python-sdk/{notebook} out.ipynb -k python\n"""
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg"""
+
+    for notebook in notebooks:
+
+        workflow_yaml += f"""
+    - name: run {notebook}
+      run: papermill {notebook_dir}/{notebook} out.ipynb -k python\n"""
 
     # write workflow
-    with open(f"../.github/workflows/python-sdk-notebook-{name}.yml", "w") as f:
+    with open(f"../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
