@@ -7,4 +7,7 @@ lightgbm
 
 # tracking
 mlflow
+
+# azureml
+azureml-core
 azureml-mlflow
