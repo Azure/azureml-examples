@@ -1,9 +1,9 @@
 # data science
 numpy
 scipy
-pandas
+pandas>=1.2.0
 scikit-learn
-lightgbm
+lightgbm>=3.0.0
 
 # tracking
 mlflow
