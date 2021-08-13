@@ -19,8 +19,8 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
-    - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+    - name: pip install notebook reqs
+      run: pip install -r notebooks/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
