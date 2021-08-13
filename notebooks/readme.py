@@ -158,7 +158,7 @@ jobs:
 
         workflow_yaml += f"""
     - name: run {notebook}
-      run: papermill {notebook} out.ipynb -k python
+      run: papermill {notebook} - -k python
       working-directory: notebooks/{notebook_dir}\n"""
 
     # write workflow
