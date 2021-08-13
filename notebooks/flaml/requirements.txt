@@ -10,4 +10,7 @@ flaml[notebook,azureml]
 
 # tracking
 mlflow
+
+# azureml
+azureml-core
 azureml-mlflow
