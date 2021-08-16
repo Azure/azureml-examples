@@ -29,9 +29,21 @@ az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set insta
 az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/green-deployment.yml
 # </create_green>
 
+# <get_traffic>
+az ml online-endpoint show -n $ENDPOINT_NAME --query traffic
+# </get_traffic>
+
 # <test_green>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
+
+# <test_green_using_curl>
+AUTH_CREDENTIALS=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
+
+SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
+
+curl --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_CREDENTIALS" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
+# </test_green_using_curl>
 
 # <green_10pct_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue:90,green:10"
