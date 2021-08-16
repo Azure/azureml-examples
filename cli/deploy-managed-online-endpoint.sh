@@ -14,7 +14,7 @@ az ml online-endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/safer
 # </create_endpoint>
 
 # <create_deployment>
-az ml online-deployment create -n $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml
+az ml online-deployment create -n $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
 # </create_endpoint>
 
 # <get_status>
@@ -46,13 +46,18 @@ fi
 az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_endpoint>
 
+# <test_endpoint_using_curl>
+AUTH_CREDENTIALS=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
+
+SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
+
+curl --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_CREDENTIALS" --header 'Content-Type: application/json' --data @endpoints/online/model-1/sample-request.json
+# </test_endpoint_using_curl>
+
 # <get_logs>
 az ml online-endpoint get-logs -n $ENDPOINT_NAME --deployment blue
 # </get_logs>
 
-# <get_scoring_uri>
-az ml online-endpoint show -n $ENDPOINT_NAME --query "scoring_uri"
-# </get_scoring_uri>
 
 # <delete_endpoint>
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes --no-wait
