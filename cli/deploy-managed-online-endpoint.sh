@@ -10,12 +10,12 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <create_endpoint>
-az ml online-endpoint create -n $ENDPOINT_NAME -f endpoints/online/managed/saferollout/endpoint.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/saferollout/endpoint.yml
 # </create_endpoint>
 
 # <create_deployment>
-az ml online-deployment create -n $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
-# </create_endpoint>
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
+# </create_deployment>
 
 # <get_status>
 az ml online-endpoint show -n $ENDPOINT_NAME
@@ -43,7 +43,7 @@ else
 fi
 
 # <test_endpoint>
-az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_endpoint>
 
 # <test_endpoint_using_curl>
@@ -55,10 +55,10 @@ curl --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_CREDENT
 # </test_endpoint_using_curl>
 
 # <get_logs>
-az ml online-endpoint get-logs -n $ENDPOINT_NAME --deployment blue
+az ml online-deployment get-logs --name blue --endpoint $ENDPOINT_NAME --deployment blue
 # </get_logs>
 
 
 # <delete_endpoint>
-az ml online-endpoint delete -n $ENDPOINT_NAME --yes --no-wait
+az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
