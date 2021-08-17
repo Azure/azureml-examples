@@ -3,9 +3,9 @@
 
 set -e
 
-#TEMP CODE - TO REMOVE
-az extension remove -n ml
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-latest-py3-none-any.whl -y
+#TEMP CODE - TO REMOVE 
+#az extension remove -n ml
+#az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-latest-py3-none-any.whl -y
 
 # <set_endpoint_name> 
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
