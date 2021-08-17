@@ -2,6 +2,9 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 set -e
 
+#TEMP CODE - TO REMOVE
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.92-py3-none-any.whl -y
+
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
