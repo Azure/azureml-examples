@@ -30,3 +30,15 @@ az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"
 az extension remove -n azure-cli-ml
 az extension remove -n ml
 # </az_extension_remove>
+
+# <git_clone>
+git clone --depth 1 https://github.com/Azure/azureml-examples
+# </git_clone>
+
+# <az_login>
+az login
+# </az_login>
+
+# <az_version>
+az version
+# </az_version>
