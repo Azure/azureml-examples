@@ -66,7 +66,6 @@ path|status|notebooks|description
 
 path|status|description
 -|-|-
-[train-lightgbm-local.ipynb](notebooks/train-lightgbm-local.ipynb)|[![train-lightgbm-local](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-train-lightgbm-local/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-notebook-train-lightgbm-local)|use mlflow for tracking local notebook experimentation in the cloud
 
 **Train** ([workflows/train](workflows/train))
 
