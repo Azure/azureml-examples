@@ -35,6 +35,14 @@ def main(args):
             print("README.md file did not match...")
             exit(2)
 
+    # format code
+    format_code()
+
+
+def format_code():
+    os.system("black .")
+    os.system("black-nb --clear-output .")
+
 
 def write_readme(notebook_dirs):
     # read in prefix.md and suffix.md
@@ -86,8 +94,22 @@ def write_workflows(notebook_dirs):
     # process notebooks
     for notebook_dir in notebook_dirs:
 
+        # read is_parallel if given in README
+        is_parallel = False
+        try:
+            with open(f"{notebook_dir}/README.md", "r") as f:
+                for line in f.readlines():
+                    if "is_parallel: " in str(line):
+                        is_parallel = bool(line.split(": ")[-1].strip())
+                        break
+        except:
+            pass
+
         # write workflow file
-        write_notebook_workflow(notebook_dir)
+        if is_parallel:
+            write_notebook_workflow_parallel(notebook_dir)
+        else:
+            write_notebook_workflow_sequential(notebook_dir)
 
 
 def check_readme(before, after):
@@ -117,7 +139,7 @@ def modify_notebooks(notebooks):
             json.dump(data, f, indent=1)
 
 
-def write_notebook_workflow(notebook_dir):
+def write_notebook_workflow_sequential(notebook_dir):
     notebook_dir = notebook_dir.strip("/")
     notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
     notebooks = [notebook.split("/")[-1] for notebook in notebooks]
@@ -159,6 +181,56 @@ jobs:
         workflow_yaml += f"""
     - name: run {notebook}
       run: papermill {notebook} - -k python
+      working-directory: notebooks/{notebook_dir}\n"""
+
+    # write workflow
+    with open(f"../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
+        f.write(workflow_yaml)
+
+
+def write_notebook_workflow_parallel(notebook_dir):
+    notebook_dir = notebook_dir.strip("/")
+    notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
+    notebooks = [notebook.split("/")[-1] for notebook in notebooks]
+    matrix_notebook = "${{matrix.notebook}}"
+    creds = "${{secrets.AZ_AE_CREDS}}"
+    workflow_yaml = f"""name: notebooks-{notebook_dir}
+on:
+  schedule:
+    - cron: "0 0/2 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - notebooks/{notebook_dir}/**
+      - .github/workflows/notebooks-{notebook_dir}.yml
+      - notebooks/dev-requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        notebook: {notebooks}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r notebooks/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: {creds}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run {matrix_notebook}
+      run: papermill {matrix_notebook} - -k python
       working-directory: notebooks/{notebook_dir}\n"""
 
     # write workflow
