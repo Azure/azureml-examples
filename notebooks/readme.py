@@ -192,6 +192,7 @@ def write_notebook_workflow_parallel(notebook_dir):
     notebook_dir = notebook_dir.strip("/")
     notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
     notebooks = [notebook.split("/")[-1] for notebook in notebooks]
+    matrix_notebook = "${{matrix.notebook}}"
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
@@ -228,8 +229,8 @@ jobs:
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run ${{matrix.notebook}}
-      run: papermill ${{matrix.notebook}} - -k python
+    - name: run {matrix_notebook}
+      run: papermill {matrix_notebook} - -k python
       working-directory: notebooks/{notebook_dir}\n"""
 
     # write workflow

@@ -33,6 +33,6 @@ jobs:
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run ${matrix.notebook}
-      run: papermill ${matrix.notebook} - -k python
+    - name: run ${{matrix.notebook}}
+      run: papermill ${{matrix.notebook}} - -k python
       working-directory: notebooks/cloud-data
