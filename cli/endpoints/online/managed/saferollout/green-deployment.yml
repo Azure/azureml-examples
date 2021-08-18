@@ -6,9 +6,7 @@ code_configuration:
   code: 
     local_path: ../../model-2/onlinescoring/
   scoring_script: score.py
-environment: 
-  name: env-model2
-  version: 1      
+environment:
   path: .
   conda_file: file:../../model-2/environment/conda.yml
   docker:
