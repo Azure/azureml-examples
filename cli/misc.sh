@@ -48,4 +48,4 @@ exit
 
 # <az_login>
 az login
-# <az_login>
+# </az_login>
