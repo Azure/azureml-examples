@@ -5,4 +5,4 @@ environment:
 environment_variables:
   ENV_VAR: "hello world"
 compute:
-    target: cpu-cluster
+    target: azureml:cpu-cluster

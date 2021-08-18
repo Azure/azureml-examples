@@ -3,4 +3,4 @@ environment:
   docker:
     image: python
 compute:
-  target: cpu-cluster
+  target: azureml:cpu-cluster
