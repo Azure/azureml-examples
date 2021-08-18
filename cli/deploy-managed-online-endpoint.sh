@@ -59,9 +59,8 @@ curl --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_CREDENT
 # </test_endpoint_using_curl>
 
 # <get_logs>
-az ml online-deployment get-logs --name blue --endpoint $ENDPOINT_NAME --deployment blue
+az ml online-deployment get-logs --name blue --endpoint $ENDPOINT_NAME
 # </get_logs>
-
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
