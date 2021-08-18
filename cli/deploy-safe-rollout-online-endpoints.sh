@@ -3,8 +3,8 @@
 set -e
 
 #TEMP CODE - TO REMOVE
-az extension remove -n ml
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-latest-py3-none-any.whl -y
+#az extension remove -n ml
+#az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-latest-py3-none-any.whl -y
 
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
@@ -18,7 +18,7 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/s
 # </create_endpoint>
 
 # <create_blue>
-az ml online-deployment create --name $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
 # </create_blue>
 
 # <test_blue>
@@ -50,15 +50,15 @@ curl --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_CREDENT
 # </test_green_using_curl>
 
 # <green_10pct_traffic>
-az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue:90,green:10"
+az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=90 green=10"
 # </green_10pct_traffic>
 
 # <green_100pct_traffic>
-az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue:0,green:100"
+az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=0 green=100"
 # </green_100pct_traffic>
 
 # <delete_blue>
-az ml online-deployment delete --name blue --endpoint $ENDPOINT_NAME --deployment blue --yes
+az ml online-deployment delete --name blue --endpoint $ENDPOINT_NAME --yes --no-wait
 # </delete_blue>
 
 # <delete_endpoint>
