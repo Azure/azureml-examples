@@ -35,6 +35,14 @@ def main(args):
             print("README.md file did not match...")
             exit(2)
 
+    # format code
+    format_code()
+
+
+def format_code():
+    os.system("black .")
+    os.system("black-nb --clear-output .")
+
 
 def write_readme(notebook_dirs):
     # read in prefix.md and suffix.md
@@ -102,6 +110,7 @@ def write_workflows(notebook_dirs):
             write_notebook_workflow_parallel(notebook_dir)
         else:
             write_notebook_workflow_sequential(notebook_dir)
+
 
 def check_readme(before, after):
     return before == after
@@ -177,6 +186,7 @@ jobs:
     # write workflow
     with open(f"../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
         f.write(workflow_yaml)
+
 
 def write_notebook_workflow_parallel(notebook_dir):
     notebook_dir = notebook_dir.strip("/")
