@@ -1,6 +1,8 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
+### TESTED
+
 # <az_extension_list>
 az extension list 
 # </az_extension_list>
@@ -8,6 +10,8 @@ az extension list
 # <az_ml_install>
 az extension add -n ml
 # </az_ml_install>
+
+apt-get install sudo
 
 # <az_extension_install_linux>
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash 
@@ -35,10 +39,13 @@ az extension remove -n ml
 git clone --depth 1 https://github.com/Azure/azureml-examples
 # </git_clone>
 
-# <az_login>
-az login
-# </az_login>
-
 # <az_version>
 az version
 # </az_version>
+
+### UNTESTED
+exit
+
+# <az_login>
+az login
+# <az_login>
