@@ -90,7 +90,7 @@ def write_readme(jobs, endpoints, assets, scripts):
     # process jobs
     for job in jobs:
         # build entries for tutorial table
-        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}).yml"
+        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{job}.yml", "r") as f:
@@ -108,7 +108,7 @@ def write_readme(jobs, endpoints, assets, scripts):
     # process endpoints
     for endpoint in endpoints:
         # build entries for tutorial table
-        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}).yml"
+        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{endpoint}.yml", "r") as f:
