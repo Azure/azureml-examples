@@ -20,9 +20,9 @@ Welcome to the Azure Machine Learning notebooks!
 
 directory|notebooks|status|description
 -|-|-|-
-[basics](basics)|1.train-lightgbm-local.ipynb|[![basics](https://github.com/Azure/azureml-examples/workflows/notebooks-basics/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebooks-basics)|*no description*
-[cloud-data](cloud-data)|blob-adls-numpy.ipynb<br>blob-adls-pandas.ipynb|[![cloud-data](https://github.com/Azure/azureml-examples/workflows/notebooks-cloud-data/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebooks-cloud-data)|*no description*
-[flaml](flaml)|1.intro.ipynb|[![flaml](https://github.com/Azure/azureml-examples/workflows/notebooks-flaml/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebooks-flaml)|*no description*
+[basics](basics)|1.train-lightgbm-local.ipynb|[![basics](https://github.com/Azure/azureml-examples/workflows/notebooks-basics/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-basics.yml)|*no description*
+[cloud-data](cloud-data)|blob-adls-numpy.ipynb<br>blob-adls-pandas.ipynb|[![cloud-data](https://github.com/Azure/azureml-examples/workflows/notebooks-cloud-data/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-cloud-data.yml)|*no description*
+[flaml](flaml)|1.intro.ipynb|[![flaml](https://github.com/Azure/azureml-examples/workflows/notebooks-flaml/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-flaml.yml)|*no description*
 
 ## Contributing
 
