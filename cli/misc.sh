@@ -37,6 +37,7 @@ az extension remove -n ml
 
 # <git_clone>
 git clone --depth 1 https://github.com/Azure/azureml-examples
+cd azureml-examples/cli
 # </git_clone>
 
 # <az_version>
