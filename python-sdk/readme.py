@@ -78,11 +78,11 @@ def write_readme(tutorials, notebooks, workflows, experimental):
         # build entries for tutorial table
         if os.path.exists(f"../.github/workflows/python-sdk-tutorial-{name}.yml"):
             # we can have a single GitHub workflow for handling all notebooks within this tutorial folder
-            status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-tutorial-{name})"
+            status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
         else:
             # or, we could have dedicated workflows for each individual notebook contained within this tutorial folder
             statuses = [
-                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3A{name})"
+                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/{name}.yml)"
                 for name in notebook_names
             ]
             status = "<br>".join(statuses)
@@ -127,7 +127,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
             data = json.load(f)
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-notebook-{name})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-notebook-{name}.yml)"
         description = "*no description*"
         try:
             if "description: " in str(data["cells"][0]["source"]):
@@ -157,7 +157,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
             data = f.read()
 
         # build entires for workflow tables
-        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-{scenario}-{tool}-{project}-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-{scenario}-{tool}-{project}-{name})"
+        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-{scenario}-{tool}-{project}-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml)"
         description = "*no description*"
         try:
             description = data.split("\n")[0].split(": ")[-1].strip()
