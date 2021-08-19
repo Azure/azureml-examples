@@ -1,16 +1,12 @@
-$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: blue
+endpoint_name: my-endpoint
 model:
-  name: model-1
-  version: 1
   local_path: ../../model-1/model/sklearn_regression_model.pkl
 code_configuration:
   code: 
     local_path: ../../model-1/onlinescoring/
   scoring_script: score.py
 environment: 
-  name: env-model1
-  version: 1
   path: .
   conda_file: file:../../model-1/environment/conda.yml
   docker:

@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/deploy-imperative-safe-rollout-online-endpoints.sh
-      - .github/workflows/cli-scripts-deploy-imperative-safe-rollout-online-endpoints.yml
+      - cli/deploy-safe-rollout-online-endpoints.sh
+      - .github/workflows/cli-scripts-deploy-safe-rollout-online-endpoints.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,5 +28,5 @@ jobs:
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
-      run: set -e; bash -x deploy-imperative-safe-rollout-online-endpoints.sh
+      run: set -e; bash -x deploy-safe-rollout-online-endpoints.sh
       working-directory: cli
