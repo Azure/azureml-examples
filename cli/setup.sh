@@ -19,7 +19,3 @@ az configure --defaults group="azureml-examples-rg" workspace="main"
 # <az_ml_workspace_create>
 az ml workspace create
 # </az_ml_workspace_create>
-
-# <create_compute>
-bash create-compute.sh
-# </create_compute>
