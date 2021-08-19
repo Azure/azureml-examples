@@ -82,7 +82,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
         else:
             # or, we could have dedicated workflows for each individual notebook contained within this tutorial folder
             statuses = [
-                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/{name}.yml)"
+                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
                 for name in notebook_names
             ]
             status = "<br>".join(statuses)
