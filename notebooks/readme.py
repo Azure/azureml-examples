@@ -66,7 +66,7 @@ def write_readme(notebook_dirs):
         name = notebook_dir.strip("/")
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebooks-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Anotebooks-{name})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebooks-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-{name}.yml)"
 
         # read description if given in README
         description = "*no description*"
