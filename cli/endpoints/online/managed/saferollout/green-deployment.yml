@@ -1,16 +1,12 @@
-$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: green
+endpoint_name: my-endpoint
 model:
-  name: model-2
-  version: 1
   local_path: ../../model-2/model/sklearn_regression_model.pkl
 code_configuration:
   code: 
     local_path: ../../model-2/onlinescoring/
   scoring_script: score.py
-environment: 
-  name: env-model2
-  version: 1
+environment:
   path: .
   conda_file: file:../../model-2/environment/conda.yml
   docker:
@@ -18,6 +14,6 @@ environment:
 instance_type: Standard_F2s_v2
 scale_settings:
   scale_type: manual
-  instance_count: 2
+  instance_count: 1
   min_instances: 1
   max_instances: 2
