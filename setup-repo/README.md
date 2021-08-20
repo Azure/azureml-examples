@@ -11,4 +11,4 @@ description: Setup scripts for Azure/azureml-examples.
 
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
 
-These scripts are used to setup the Azure/azureml-examples repository, including Azure resouces, using the Azure CLI and GitHub CLI.
+These scripts are for setting up the Azure/azureml-examples repository, including Azure resouces, using the Azure CLI and GitHub CLI.
