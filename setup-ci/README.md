@@ -9,7 +9,6 @@ description: Sample setup scripts to customize and configure a compute instance 
 
 # Compute instance sample setup scripts
 
-[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
 
 Use these sample setup scripts to customize and configure an Azure Machine Learning [compute instance](https://docs.microsoft.com/azure/machine-learning/concept-compute-instance) at provisioning time. To use a script:
