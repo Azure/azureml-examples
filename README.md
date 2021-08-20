@@ -23,6 +23,7 @@ directory|description
 [`cli`](cli)|Azure Machine Learning 2.0 CLI (preview) examples
 [`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace
 [`python-sdk`](python-sdk)|Azure Machine Learning Python SDK examples
+[`setup-ci`](setup-ci) | Sample setup scripts to customize and configure an Azure Machine Learning compute instance
 
 ## Contributing
 
