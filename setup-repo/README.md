@@ -1,13 +1,4 @@
----
-page_type: sample
-languages:
-- bash
-products:
-- azure-machine-learning
-description: Setup scripts for Azure/azureml-examples.
----
-
-# Azure/azureml-examples repo setup scripts
+# Azure/azureml-examples repository setup scripts
 
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
 
