@@ -10,20 +10,20 @@ months = args.months
 
 cwd = os.getcwd()
 
-data_dir = os.path.abspath(os.path.join(cwd, 'data'))
+data_dir = os.path.abspath(os.path.join(cwd, "data"))
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
 
-taxidir = os.path.join(data_dir, 'nyctaxi')
+taxidir = os.path.join(data_dir, "nyctaxi")
 if not os.path.exists(taxidir):
     os.makedirs(taxidir)
 
 filenames = []
 local_paths = []
-for i in range(1, months+1): 
+for i in range(1, months + 1):
     filename = "yellow_tripdata_2015-{month:02d}.csv".format(month=i)
     filenames.append(filename)
-    
+
     local_path = os.path.join(taxidir, filename)
     local_paths.append(local_path)
 
@@ -31,9 +31,9 @@ for idx, filename in enumerate(filenames):
     url = "http://dask-data.s3.amazonaws.com/nyc-taxi/2015/" + filename
     print("- Downloading " + url)
     if not os.path.exists(local_paths[idx]):
-        with open(local_paths[idx], 'wb') as file:
+        with open(local_paths[idx], "wb") as file:
             with urllib.request.urlopen(url) as resp:
-                length = int(resp.getheader('content-length'))
+                length = int(resp.getheader("content-length"))
                 blocksize = max(4096, length // 100)
                 with tqdm(total=length, file=sys.stdout) as pbar:
                     while True:

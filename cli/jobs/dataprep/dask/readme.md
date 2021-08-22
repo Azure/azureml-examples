@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- azurecli
+- python
+products:
+- azure-machine-learning
+description: This sample shows how to run a distributed DASK job on AzureML. The 24GB NYC Taxi dataset is read in CSV format by a 4 node DASK cluster, processed and then written as job output in parquet format. 
+---
+
 Running a DASK job
 ------------------
 
