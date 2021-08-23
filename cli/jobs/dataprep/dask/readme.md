@@ -11,7 +11,7 @@ description: This sample shows how to run a distributed DASK job on AzureML. The
 Running a DASK job
 ------------------
 
-This example shows how a distribted DASK job can be run on multiple nodes of a cluster. In this example we are using 4 nodes 
+This example shows how a distribted Dask job can be run on multiple nodes of a cluster. In this example we are using 4 nodes 
 using this job yaml. The startup of the cluster is done by the `startDask.py` script which launches a scheduler
 and a worker on the first node of the cluster and a worker on all the other nodes.
 
@@ -22,7 +22,7 @@ and a worker on the first node of the cluster and a worker on all the other node
   free disk space and works well even for bigger datasets.
 
 If a --script parameter is provided, then the script will run that script after the cluster has been brought up and the job 
-will be terminated after the script has completed. To start a DASK cluster for interactive work, don't provide a --script parameter, 
+will be terminated after the script has completed. To start a Dask cluster for interactive work, don't provide a --script parameter, 
 which will have the job run indefinitely (i.e. until you terminate it).
 
 The job below is currently launched with `distribution: .. type: pytorch` since that gives the full flexibility of assigning the work to the 

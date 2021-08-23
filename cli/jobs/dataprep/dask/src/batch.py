@@ -9,7 +9,7 @@ import mlflow
 # sys.argv = ['']
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--nyc_taxi_dataset", default="AZURE_ML_INPUT0")
+parser.add_argument("--nyc_taxi_dataset")
 args = parser.parse_args()
 dataset = args.nyc_taxi_dataset
 print(f"dataset location: {dataset}")
