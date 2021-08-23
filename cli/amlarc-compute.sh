@@ -9,6 +9,7 @@ init_env(){
     export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
     export WORKSPACE="${WORKSPACE:-main-amlarc}"  # $((1 + $RANDOM % 100))
     export LOCATION="${LOCATION:-eastus}"
+    export WS_LOCATION="${WS_LOCATION:-eastus}"
     export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-cluster-arc}"
     export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-cluster-aks}"
     export AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-staging}"
@@ -264,7 +265,7 @@ setup_compute(){
     az ml workspace create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --location $LOCATION \
+        --location $WS_LOCATION \
         --workspace-name $WORKSPACE 
 
     # attach compute
