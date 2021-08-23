@@ -161,6 +161,9 @@ setup_cluster(){
     AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # create resource group
+    az group show \
+        --subscription $SUBSCRIPTION \
+        -n "$RESOURCE_GROUP" || \
     az group create \
         --subscription $SUBSCRIPTION \
         -l "$LOCATION" \
