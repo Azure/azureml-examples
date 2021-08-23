@@ -11,10 +11,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZ_AE_CREDS}}
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -32,7 +28,7 @@ jobs:
         git checkout -b actions/update-schemas
         echo "adding..."
         git add .
-        if [[-z $(git diff origin/main)]]
+        if [ -z $(git diff origin/main) ]
         then
             echo "commiting..."
             git commit -m "updating schemas"
