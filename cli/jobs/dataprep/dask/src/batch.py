@@ -41,7 +41,7 @@ print("create_output", c.run(create_output))
 # read in the data from the provided file dataset (which is mounted at the same
 # location on all nodes of the job)
 df = dd.read_csv(
-    f"{dataset}/nyctaxi/*.csv",
+    f"{dataset}/*.csv",
     parse_dates=["tpep_pickup_datetime", "tpep_dropoff_datetime"],
 )
 

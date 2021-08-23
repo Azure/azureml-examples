@@ -17,11 +17,13 @@ environment:
 
 inputs:
   nyc_taxi_dataset:
-    data: azureml:nyctaxi:2
+    data: 
+      path: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
     mode: mount
 
 compute:
-  target: azureml:daniel-big
+  # use a sku with lots of disk space and memory
+  target: azureml:gpu-cluster
   instance_count: 4
 
 distribution:
