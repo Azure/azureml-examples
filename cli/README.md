@@ -18,36 +18,25 @@ Welcome to the Azure Machine Learning examples repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
-2. A terminal. [Install and set up the 2.0 machine learning extension](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
+2. A terminal. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
+3. Clone this repository:
 
-## Set up
+    ```bash
+    git clone https://github.com/Azure/azureml-examples --depth 1
+    cd azureml-examples/cli
+    ```
 
-Clone this repository:
+4. Run the setup script and create compute:
 
-```terminal
-git clone https://github.com/Azure/azureml-examples --depth 1
-cd azureml-examples/cli
-```
+    ```bash
+    bash setup.sh
+    bash create-compute.sh
+    ```
 
-Run the set up script to create an Azure resource group, machine learning workspace, and set defaults for `--resource-group/g` and `--workspace/w`:
+## Getting started
 
-```bash
-bash setup.sh
-```
-
-You also need remote compute targets for most examples:
-
-```bash
-bash create-compute.sh
-```
-
-## Hello world
-
-Run the "hello world" job:
-
-```terminal
-az ml job create -f jobs/hello-world.yml --web --stream
-```
+1. [Train models (create jobs) with the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli)
+2. [Deploy and score a model using a managed online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
 
 ## Examples
 
