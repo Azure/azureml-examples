@@ -2,11 +2,11 @@ import os
 import argparse
 import time
 from dask.distributed import Client
-from azureml.core import Run
 import sys, uuid
 import threading
 import subprocess
 import socket
+import mlflow
 
 from notebook.notebookapp import list_running_servers
 
@@ -75,8 +75,8 @@ if __name__ == "__main__":
     os.system(f"df -P /tmp")
 
     if str(rank) == "0":
-        Run.get_context().log("headnode", ip)
-        Run.get_context().log(
+        mlflow.log_param("headnode", ip)
+        mlflow.log_param(
             "cluster",
             "scheduler: {scheduler}, dashboard: {dashboard}".format(
                 scheduler=scheduler, dashboard=dashboard
@@ -104,10 +104,10 @@ if __name__ == "__main__":
         # jupyter_servers = list(list_running_servers())
         # assert (len(jupyter_servers) == 1), "more than one jupyter server is running"
 
-        Run.get_context().log(
+        mlflow.log_param(
             "jupyter", "ip: {ip_addr}, port: {port}".format(ip_addr=ip, port="8888")
         )
-        Run.get_context().log("jupyter-token", args.jupyter_token)
+        mlflow.log_param("jupyter-token", args.jupyter_token)
 
         cmd = (
             "dask-scheduler "
