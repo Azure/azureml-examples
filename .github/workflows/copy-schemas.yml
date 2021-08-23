@@ -32,10 +32,15 @@ jobs:
         git checkout -b actions/update-schemas
         echo "adding..."
         git add .
-        echo "commiting..."
-        git commit -m "updating schemas"
-        echo "pushing to origin..."
-        git push --set-upstream origin actions/update-schemas
-        echo "creating PR..."
-        gh pr create -t "[bot] updating schemas" -b "updating schemas"
+        if [[-z $(git diff main)]]
+        then
+            echo "commiting..."
+            git commit -m "updating schemas"
+            echo "pushing to origin..."
+            git push --set-upstream origin actions/update-schemas
+            echo "creating PR..."
+            gh pr create -t "[bot] updating schemas" -b "updating schemas"
+        else
+            echo "no changes in schemas..." 
+        fi
       working-directory: cli/.schemas
