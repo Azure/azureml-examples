@@ -36,6 +36,8 @@ jobs:
             git commit -m "updating schemas"
             echo "pushing to origin..."
             git push --set-upstream origin actions/update-schemas
+            echo "running GH auth..."
+            echo ${{secrets.GITHUB_TOKEN}} | gh auth login --with-token
             echo "creating PR..."
             gh pr create -t "[bot] updating schemas" -b "updating schemas"
         fi
