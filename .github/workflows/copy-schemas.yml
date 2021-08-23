@@ -23,6 +23,7 @@ jobs:
       working-directory: cli/.schemas
     - name: create PR if schema changes
       run: |
+        git branch
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git checkout -b actions/update-schemas
