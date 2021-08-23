@@ -25,7 +25,7 @@ directory|description
 [`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.
 [`python-sdk`](python-sdk)|Azure Machine Learning Python SDK (v1) examples.
 [`setup-ci`](setup-ci) | Setup scripts to customize and configure an Azure Machine Learning compute instance.
-[`setup-repo`](setup-ci) | Setup scripts for Azure/azureml-examples.
+[`setup-repo`](setup-repo) | Setup scripts for Azure/azureml-examples.
 
 ## Contributing
 
