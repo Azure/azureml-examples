@@ -32,7 +32,7 @@ jobs:
         git checkout -b actions/update-schemas
         echo "adding..."
         git add .
-        if [[-z $(git diff main)]]
+        if [[-z $(git diff origin/main)]]
         then
             echo "commiting..."
             git commit -m "updating schemas"
