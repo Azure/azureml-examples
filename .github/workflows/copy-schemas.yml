@@ -30,7 +30,9 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git checkout -b actions/update-schemas
+        echo "adding..."
         git add .
+        echo "commiting..."
         git commit -m "updating schemas"
         echo "pushing to origin..."
         git push --set-upstream origin actions/update-schemas
