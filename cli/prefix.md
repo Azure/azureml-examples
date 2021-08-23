@@ -7,7 +7,7 @@ products:
 description: Top-level directory for official Azure Machine Learning CLI sample code.
 ---
 
-# Azure Machine Learning 2.0 CLI (preview) examples
+# Azure Machine Learning CLI (v2) (preview) examples
 
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cleanup-cli.yml)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
