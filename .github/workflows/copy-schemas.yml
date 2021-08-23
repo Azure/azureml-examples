@@ -32,6 +32,8 @@ jobs:
         git checkout -b actions/update-schemas
         git add .
         git commit -m "updating schemas"
+        echo "pushing to origin..."
         git push --set-upstream origin actions/update-schemas
+        echo "creating PR..."
         gh pr create -t "[bot] updating schemas" -b "updating schemas"
       working-directory: cli/.schemas
