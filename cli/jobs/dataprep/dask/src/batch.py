@@ -75,7 +75,7 @@ mlflow.log_text(str(df.head()), "df.head")
 remap = {}
 remap["tpep_pickup_datetime"] = "pickup_datetime"
 remap["tpep_dropoff_datetime"] = "dropoff_datetime"
-remap["RatecodeID"] = "rate_code"
+remap["RateCodeID"] = "rate_code"
 
 # create a list of columns & dtypes the df must have
 must_haves = {
