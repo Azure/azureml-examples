@@ -11,20 +11,25 @@ init_env(){
     export LOCATION="${LOCATION:-eastus}"
     export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-cluster-arc}"
     export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-cluster-aks}"
-    export AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-experimental}"
+    export AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-staging}"
     export AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
     export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
     export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
    
     export RESULT_FILE=amlarc-test-result.txt
 
-    if (( $(date +"%H") >= 12 )); then
-        AMLARC_RELEASE_TRAIN=staging
+    if (( $(date +"%H") < 12 )); then
+        AMLARC_RELEASE_TRAIN=experimental
     fi
 
     if [ "$INPUT_AMLARC_RELEASE_TRAIN" != "" ]; then
         AMLARC_RELEASE_TRAIN=$INPUT_AMLARC_RELEASE_TRAIN
     fi
+    
+    if [ "$AMLARC_RELEASE_TRAIN" == "experimental" ]; then
+        LOCATION=eastus2euap
+    fi
+
 }
 
 install_tools(){
