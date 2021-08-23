@@ -46,7 +46,7 @@ def process_data(df):
     X = df.drop(["species"], axis=1)
     y = df["species"]
 
-    # one-hot encode
+    # encode label
     enc = LabelEncoder()
     y = enc.fit_transform(y)
 
