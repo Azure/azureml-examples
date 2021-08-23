@@ -5,17 +5,16 @@
 init_env(){
     set -x
 
-    export SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
-    export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
-    export WORKSPACE="${WORKSPACE:-main-amlarc}"  # $((1 + $RANDOM % 100))
-    export LOCATION="${LOCATION:-eastus}"
-    export WS_LOCATION="${WS_LOCATION:-eastus}"
-    export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-cluster-arc}"
-    export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-cluster-aks}"
-    export AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-staging}"
-    export AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
-    export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
-    export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
+    SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
+    RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
+    WORKSPACE="${WORKSPACE:-main-amlarc}"  # $((1 + $RANDOM % 100))
+    LOCATION="${LOCATION:-eastus}"
+    ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-arc}"
+    AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-aks}"
+    AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-staging}"
+    AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
+    EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
+    EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
    
     export RESULT_FILE=amlarc-test-result.txt
 
@@ -30,6 +29,10 @@ init_env(){
     if [ "$AMLARC_RELEASE_TRAIN" == "experimental" ]; then
         LOCATION=eastus2euap
     fi
+
+    WORKSPACE=${WORKSPACE}-${LOCATION}
+    ARC_CLUSTER_PREFIX=${ARC_CLUSTER_PREFIX}-${LOCATION}
+    AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${LOCATION}
 
 }
 
@@ -265,7 +268,7 @@ setup_compute(){
     az ml workspace create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --location $WS_LOCATION \
+        --location $LOCATION \
         --workspace-name $WORKSPACE 
 
     # attach compute
