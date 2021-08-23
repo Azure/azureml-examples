@@ -2,5 +2,7 @@ command: python -c "print('hello world')"
 environment:
   docker:
     image: python
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 compute:
   target: azureml:cpu-cluster

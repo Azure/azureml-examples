@@ -1,8 +1,9 @@
 command: echo $ENV_VAR
 environment:
   docker:
-    image: python:latest
+    image: debian:latest
 environment_variables:
   ENV_VAR: "hello world"
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 compute:
     target: azureml:cpu-cluster

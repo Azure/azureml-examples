@@ -2,5 +2,7 @@ command: echo "hello world"
 environment:
   docker:
     image: debian
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 compute:
   target: azureml:cpu-cluster
