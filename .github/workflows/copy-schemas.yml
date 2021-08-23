@@ -27,7 +27,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git checkout -b actions/update-schemas
         echo "adding..."
-        git add .
+        git add -A
         if [[ -z $(git diff origin/main) ]]
         then
             echo "no changes in schemas..." 
