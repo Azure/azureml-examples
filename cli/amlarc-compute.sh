@@ -34,6 +34,7 @@ init_env(){
     ARC_CLUSTER_PREFIX=${ARC_CLUSTER_PREFIX}-${LOCATION}
     AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${LOCATION}
 
+    az version || true
 }
 
 install_tools(){
