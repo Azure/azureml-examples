@@ -96,27 +96,6 @@ Checklist:
 - [ ] test
 - [ ] submit PR, which will run your tutorial if setup properly
 
-#### Notebooks
-
-A notebook is a self-contained `.ipynb` file accomplishing something significant. To qualify to be a notebook, the example must:
-
-- obviously benefit from being a Jupyter notebook
-
-Some examples of this include:
-
-- connecting and interactively querying common data sources (SQL, ADLS, etc)
-- Exploratory Data Analysis (EDA) and Exploratory Data Science (EDS)
-- iterative experimentation with cloud tracking
-
-Anything else should likely be a workflow.
-
-Checklist:
-
-- [ ] add notebook with description to `notebooks/`
-- [ ] run `python readme.py`
-- [ ] test
-- [ ] submit PR, which will run the relevant workflow(s)
-
 #### Workflows
 
 A workflow is a self-contained project directory specifying the job(s) to be run. They are organized by scenario:

@@ -1,10 +1,14 @@
 # data science
 numpy
 scipy
-pandas
+pandas>=1.2.0
+adlfs>=2021.8.1
 scikit-learn
-lightgbm
+lightgbm>=3.0.0
 
 # tracking
 mlflow
+
+# azureml
+azureml-core
 azureml-mlflow
