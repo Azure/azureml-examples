@@ -1,0 +1,16 @@
+type: pipeline_job
+
+compute:
+  target: azureml:cpu-cluster
+
+jobs:
+  componentA_job:
+    type: component_job
+    component: file:./componentA.yml
+  componentB_job:
+    type: component_job
+    component: file:./componentB.yml
+  componentC_job:
+    type: component_job
+    component: file:./componentC.yml
+
