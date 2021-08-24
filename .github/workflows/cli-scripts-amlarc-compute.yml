@@ -1,4 +1,4 @@
-name: cli-scripts-hello-world
+name: cli-scripts-amlarc-compute
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/hello-world.sh
-      - .github/workflows/cli-scripts-hello-world.yml
+      - cli/amlarc-compute.sh
+      - .github/workflows/cli-scripts-amlarc-compute.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,5 +28,5 @@ jobs:
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
-      run: set -e; bash -x hello-world.sh
+      run: set -e; bash -x amlarc-compute.sh
       working-directory: cli
