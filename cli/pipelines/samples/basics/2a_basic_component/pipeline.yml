@@ -1,0 +1,24 @@
+type: pipeline_job
+
+jobs:
+  hello_python_world_job:
+    type: component_job
+    component:
+      type: command_component
+      name: Hello_Python_World
+      display_name: Hello_Python_World
+      version: 1
+
+      code:
+        local_path: ./src
+
+      environment: 
+        docker: 
+          image: docker.io/python
+
+      command: >-
+        python hello.py
+    
+    compute:
+      target: azureml:cpu-cluster
+

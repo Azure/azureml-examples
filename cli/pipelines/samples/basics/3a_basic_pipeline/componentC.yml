@@ -1,0 +1,15 @@
+type: command_component
+
+name: componentC
+display_name: componentC
+version: 1
+
+code:
+  local_path: ./componentC_src
+
+environment: 
+  docker: 
+    image: docker.io/python
+
+command: >-
+  python hello.py
