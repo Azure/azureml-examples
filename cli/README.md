@@ -7,7 +7,7 @@ products:
 description: Top-level directory for official Azure Machine Learning CLI sample code.
 ---
 
-# Azure Machine Learning 2.0 CLI (preview) examples
+# Azure Machine Learning CLI (v2) (preview) examples
 
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup-cli/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cleanup-cli.yml)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -18,36 +18,25 @@ Welcome to the Azure Machine Learning examples repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
-2. A terminal. [Install and set up the 2.0 machine learning extension](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
+2. A terminal. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
+3. Clone this repository:
 
-## Set up
+    ```bash
+    git clone https://github.com/Azure/azureml-examples --depth 1
+    cd azureml-examples/cli
+    ```
 
-Clone this repository:
+4. Run the setup script and create compute:
 
-```terminal
-git clone https://github.com/Azure/azureml-examples --depth 1
-cd azureml-examples/cli
-```
+    ```bash
+    bash setup.sh
+    bash create-compute.sh
+    ```
 
-Run the set up script to create an Azure resource group, machine learning workspace, and set defaults for `--resource-group/g` and `--workspace/w`:
+## Getting started
 
-```bash
-bash setup.sh
-```
-
-You also need remote compute targets for most examples:
-
-```bash
-bash create-compute.sh
-```
-
-## Hello world
-
-Run the "hello world" job:
-
-```terminal
-az ml job create -f jobs/hello-world.yml --web --stream
-```
+1. [Train models (create jobs) with the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli)
+2. [Deploy and score a model using a managed online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
 
 ## Examples
 
@@ -57,8 +46,6 @@ path|status|
 -|-
 [amlarc-compute.sh](amlarc-compute.sh)|[![amlarc-compute](https://github.com/Azure/azureml-examples/workflows/cli-scripts-amlarc-compute/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-amlarc-compute.yml)
 [batch-score.sh](batch-score.sh)|[![batch-score](https://github.com/Azure/azureml-examples/workflows/cli-scripts-batch-score/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-batch-score.yml)
-[create-compute-extras.sh](create-compute-extras.sh)|[![create-compute-extras](https://github.com/Azure/azureml-examples/workflows/cli-scripts-create-compute-extras/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-create-compute-extras.yml)
-[create-compute.sh](create-compute.sh)|[![create-compute](https://github.com/Azure/azureml-examples/workflows/cli-scripts-create-compute/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-create-compute.yml)
 [deploy-declarative-safe-rollout-online-endpoints.sh](deploy-declarative-safe-rollout-online-endpoints.sh)|[![deploy-declarative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-declarative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-declarative-safe-rollout-online-endpoints.yml)
 [deploy-imperative-safe-rollout-online-endpoints.sh](deploy-imperative-safe-rollout-online-endpoints.sh)|[![deploy-imperative-safe-rollout-online-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-imperative-safe-rollout-online-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-imperative-safe-rollout-online-endpoints.yml)
 [deploy-managed-online-endpoint-access-resource-sai.sh](deploy-managed-online-endpoint-access-resource-sai.sh)|[![deploy-managed-online-endpoint-access-resource-sai](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml)
@@ -95,6 +82,7 @@ path|status|description
 [jobs/train/pytorch/word-language-model/job.yml](jobs/train/pytorch/word-language-model/job.yml)|[![jobs/train/pytorch/word-language-model/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-pytorch-word-language-model-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-pytorch-word-language-model-job.yml)|Train a multi-layer RNN (Elman, GRU, or LSTM) on a language modeling task with PyTorch.
 [jobs/train/r/accidents/job.yml](jobs/train/r/accidents/job.yml)|[![jobs/train/r/accidents/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-accidents-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-r-accidents-job.yml)|Train a GLM using R on the accidents dataset.
 [jobs/train/r/iris/job.yml](jobs/train/r/iris/job.yml)|[![jobs/train/r/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-r-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-r-iris-job.yml)|Train an R model on the Iris dataset.
+[jobs/train/scikit-learn/iris/job.yml](jobs/train/scikit-learn/iris/job.yml)|[![jobs/train/scikit-learn/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-scikit-learn-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-scikit-learn-iris-job.yml)|Train a scikit-learn SVM on the Iris dataset.
 [jobs/train/tensorflow/iris/job.yml](jobs/train/tensorflow/iris/job.yml)|[![jobs/train/tensorflow/iris/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-iris-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-tensorflow-iris-job.yml)|Train a Tensorflow Decision Forest on the Iris dataset.
 [jobs/train/tensorflow/mnist-distributed-horovod/job.yml](jobs/train/tensorflow/mnist-distributed-horovod/job.yml)|[![jobs/train/tensorflow/mnist-distributed-horovod/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-horovod-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-tensorflow-mnist-distributed-horovod-job.yml)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via Horovod.
 [jobs/train/tensorflow/mnist-distributed/job.yml](jobs/train/tensorflow/mnist-distributed/job.yml)|[![jobs/train/tensorflow/mnist-distributed/job](https://github.com/Azure/azureml-examples/workflows/cli-jobs-train-tensorflow-mnist-distributed-job/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-jobs-train-tensorflow-mnist-distributed-job.yml)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.

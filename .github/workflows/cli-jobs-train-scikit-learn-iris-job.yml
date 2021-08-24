@@ -1,4 +1,4 @@
-name: cli-jobs-dataprep-dask-dask-job
+name: cli-jobs-train-scikit-learn-iris-job
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/dataprep/dask/**
-      - .github/workflows/cli-jobs-dataprep-dask-dask-job.yml
+      - cli/jobs/train/scikit-learn/iris/**
+      - .github/workflows/cli-jobs-train-scikit-learn-iris-job.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
       continue-on-error: true
     - name: create job
       run: |
-        run_id=$(az ml job create -f jobs/dataprep/dask/dask-job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/train/scikit-learn/iris/job.yml --query name -o tsv)
         az ml job stream -n $run_id
         status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status

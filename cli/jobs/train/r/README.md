@@ -5,12 +5,12 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: Learn how to train R models using the Azure ML 2.0 CLI.
+description: Learn how to train R models using the Azure ML CLI (v2).
 ---
 
-# Train R models using the Azure ML 2.0 CLI
+# Train R models using the Azure ML CLI (v2)
 
-This directory provides sample code to run R using the Azure ML 2.0 CLI.
+This directory provides sample code to run R using the Azure ML CLI (v2).
 
 ## Examples
 
