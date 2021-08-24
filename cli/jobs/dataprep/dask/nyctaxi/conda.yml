@@ -34,5 +34,4 @@ dependencies:
   - pip:
     - python-snappy
     - fastparquet
-    - azureml-sdk[notebooks]
     - azureml-mlflow
