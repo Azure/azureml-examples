@@ -1,0 +1,83 @@
+
+type: pipeline_job
+
+inputs:
+  pipeline_job_training_input:
+    data: 
+      local_path: ./data
+  pipeline_job_test_input:
+    data:
+      local_path: ./data
+  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_learning_rate: 1.8
+  pipeline_job_learning_rate_schedule: 'time-based'
+
+outputs: 
+  pipeline_job_trained_model:
+    data: 
+      path: /trained-model
+  pipeline_job_scored_data:
+    data: 
+      path: /scored_data
+  pipeline_job_evaluation_report:
+    data: 
+      path: /report
+
+defaults:
+  command_job:
+    datastore: azureml:workspaceblobstore
+    compute:
+      target: azureml:cpu-cluster
+
+jobs:
+  train-job:
+    type: command_job
+    inputs:
+      training_data: ${{inputs.pipeline_job_training_input}}
+      max_epocs: ${{inputs.pipeline_job_training_max_epocs}}
+      learning_rate: ${{inputs.pipeline_job_training_learning_rate}}
+      learning_rate_schedule: ${{inputs.pipeline_job_learning_rate_schedule}}
+    outputs:
+      model_output: ${{outputs.pipeline_job_trained_model}}
+    code:
+      local_path: ./train_src
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+    command: >-
+      python train.py 
+      --training_data ${{inputs.training_data}} 
+      --max_epocs ${{inputs.max_epocs}}   
+      --learning_rate ${{inputs.learning_rate}} 
+      --learning_rate_schedule ${{inputs.learning_rate_schedule}} 
+      --model_output ${{outputs.model_output}}
+  
+  score-job:
+    type: command_job
+    inputs:
+      model_input: ${{jobs.train-job.outputs.model_output}}
+      test_data: ${{inputs.pipeline_job_test_input}}
+    outputs:
+      score_output: ${{outputs.pipeline_job_scored_data}}
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+    code:
+      local_path: ./score_src
+    command: >-
+      python score.py 
+      --model_input ${{inputs.model_input}} 
+      --test_data ${{inputs.test_data}}
+      --score_output ${{outputs.score_output}}
+
+  evaluate-job:
+    type: command_job
+    inputs:
+      scoring_result: ${{jobs.score-job.outputs.score_output}}
+    outputs:
+      eval_output: ${{outputs.pipeline_job_evaluation_report}}
+
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+    code:
+      local_path: ./eval_src
+    command: >-
+      python eval.py 
+      --scoring_result ${{inputs.scoring_result}} 
+      --eval_output ${{outputs.eval_output}}
+
