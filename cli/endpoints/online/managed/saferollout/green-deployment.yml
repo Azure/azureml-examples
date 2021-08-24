@@ -7,13 +7,7 @@ code_configuration:
     local_path: ../../model-2/onlinescoring/
   scoring_script: score.py
 environment:
-  path: .
   conda_file: file:../../model-2/environment/conda.yml
-  docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
 instance_type: Standard_F2s_v2
-scale_settings:
-  scale_type: manual
-  instance_count: 1
-  min_instances: 1
-  max_instances: 2
+instance_count: 1
