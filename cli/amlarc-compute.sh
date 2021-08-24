@@ -215,6 +215,16 @@ setup_cluster(){
         echo "deployment is not avilable in namespace - azure-arc"
     fi
 
+    set +e
+    az k8s-extension show \
+        --cluster-name $ARC_CLUSTER_NAME \
+        --cluster-type connectedClusters \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $EXTENSION_NAME
+    echo ret: $?
+    set -e
+
     # remove extension if exists
     az k8s-extension show \
         --cluster-name $ARC_CLUSTER_NAME \
