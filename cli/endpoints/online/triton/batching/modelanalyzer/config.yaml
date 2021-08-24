@@ -1,0 +1,41 @@
+# # Config For Profile
+model_repository: /opt/qa_model_repository
+override_output_model_repository: False
+output_model_repository_path: /output_model_repository/output
+checkpoint_directory: ./checkpoints/
+
+run_config_search_disable: False
+run_config_search_max_concurrency: 256
+run_config_search_max_instance_count: 5
+
+perf_analyzer_cpu_util: 80000
+perf_output: True
+
+triton_launch_mode: local
+triton_http_endpoint: localhost:8000
+triton_grpc_endpoint: localhost:8001
+triton_metrics_url: http://localhost:8002/metrics
+triton_output_path: triton.log
+
+batch_size: 1
+
+profile_models:
+  - bertsquad-8
+    # model_config_parameters:
+    #   instance_group:
+    #       -
+    #         kind: KIND_GPU
+    #         count: [1]
+    #   dynamic_batching:
+    #     preferred_batch_size: [[32]]
+
+# Config For Analyze
+checkpoint_directory: ./checkpoints/
+summarize: True
+num_configs_per_model: 3
+
+analysis_models: 
+  bertsquad-8:
+    objectives:
+      perf_throughput: 10
+
