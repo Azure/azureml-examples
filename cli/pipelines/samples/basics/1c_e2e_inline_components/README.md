@@ -1,0 +1,122 @@
+This is a 3 step dummy pipeline job. It uploads a local sample csv file for input data. It uses 3 components defined inline in the pipeline job - train, score and eval. You need to edit the compute cluster in the defaults section and run the `az ml job create --file pipeline.yml` to submit the pipeline job. Alternatively, you can override the compute from the command line with `az ml job create --file pipeline.yml --set defaults.component_job.compute.target=<your_compute>`. Once you submit the job, you will find the URL to the Studio UI view the job graph and logs in the `interaction_endpoints` -> `Studio` section of the output. 
+
+Sample output
+
+```
+# az ml job create --file pipeline.yml
+Command group 'ml job' is experimental and under development. Reference and support levels: https://aka.ms/CLI_refstatus
+Custom pipeline job names are not supported yet. Please refer to the created pipeline job using the name: 47ef6697-12f3-4303-bb49-b9a29a5c2967
+{
+  "compute": {
+    "target": "azureml:cpu-luster"
+  },
+  "creation_context": {
+    "created_at": "2021-08-06T01:09:05.483811+00:00",
+    "created_by": "Manoj Bableshwar",
+    "created_by_type": "User"
+  },
+  "defaults": {
+    "component_job": {
+      "datastore": "azureml:workspaceblobstore"
+    }
+  },
+  "experiment_name": "1c_e2e_inline_components",
+  "id": "azureml:/subscriptions/21d8f407-c4c4-452e-87a4-e609bfb86248/resourceGroups/OpenDatasetsPMRG/providers/Microsoft.MachineLearningServices/workspaces/OpenDatasetsPMWorkspace/jobs/47ef6697-12f3-4303-bb49-b9a29a5c2967",
+  "inputs": {
+    "pipeline_job_learning_rate_schedule": "time-based",
+    "pipeline_job_test_input": {
+      "data": "azureml:53a4bedc-2a48-4a88-8c6e-39b3a575d615:1",
+      "mode": "mount"
+    },
+    "pipeline_job_training_input": {
+      "data": "azureml:f1204d27-fbe9-449a-a1d7-f86dc114e7d8:1",
+      "mode": "mount"
+    },
+    "pipeline_job_training_learning_rate": "1.8",
+    "pipeline_job_training_max_epocs": 20
+  },
+  "interaction_endpoints": {
+    "Studio": {
+      "endpoint": "https://ml.azure.com/runs/47ef6697-12f3-4303-bb49-b9a29a5c2967?wsid=/subscriptions/21d8f407-c4c4-452e-87a4-e609bfb86248/resourcegroups/OpenDatasetsPMRG/workspaces/OpenDatasetsPMWorkspace&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+    },
+    "Tracking": {
+      "endpoint": "azureml://eastus2.api.azureml.ms/mlflow/v1.0/subscriptions/21d8f407-c4c4-452e-87a4-e609bfb86248/resourceGroups/OpenDatasetsPMRG/providers/Microsoft.MachineLearningServices/workspaces/OpenDatasetsPMWorkspace?"
+    }
+  },
+  "jobs": {
+    "evaluate-job": {
+      "component": "azureml:f37dae80-9a40-4b11-b460-7685a3fdae09:1",
+      "inputs": {
+        "scoring_result": "${{jobs.score-job.outputs.score_output}}"
+      },
+      "outputs": {
+        "eval_output": "${{outputs.pipeline_job_evaluation_report}}"
+      },
+      "type": "component_job"
+    },
+    "score-job": {
+      "component": "azureml:08f402a8-a4bc-462e-885e-a6bc05e474ff:1",
+      "inputs": {
+        "model_input": "${{jobs.train-job.outputs.model_output}}",
+        "test_data": "${{inputs.pipeline_job_test_input}}"
+      },
+      "outputs": {
+        "score_output": "${{outputs.pipeline_job_scored_data}}"
+      },
+      "type": "component_job"
+    },
+    "train-job": {
+      "component": "azureml:562a5404-bba8-48fc-a6da-63d2c740e44e:1",
+      "inputs": {
+        "learning_rate": "${{inputs.pipeline_job_training_learning_rate}}",
+        "learning_rate_schedule": "${{inputs.pipeline_job_learning_rate_schedule}}",
+        "max_epocs": "${{inputs.pipeline_job_training_max_epocs}}",
+        "training_data": "${{inputs.pipeline_job_training_input}}"
+      },
+      "outputs": {
+        "model_output": "${{outputs.pipeline_job_trained_model}}"
+      },
+      "type": "component_job"
+    }
+  },
+  "name": "47ef6697-12f3-4303-bb49-b9a29a5c2967",
+  "outputs": {
+    "pipeline_job_evaluation_report": {
+      "data": {
+        "path": "/report"
+      },
+      "mode": "mount"
+    },
+    "pipeline_job_scored_data": {
+      "data": {
+        "path": "/scored_data"
+      },
+      "mode": "mount"
+    },
+    "pipeline_job_trained_model": {
+      "data": {
+        "path": "/trained-model"
+      },
+      "mode": "mount"
+    }
+  },
+  "properties": {
+    "azureml.git.dirty": "True",
+    "azureml.parameters": "{\"pipeline_job_training_max_epocs\":\"20\",\"pipeline_job_training_learning_rate\":\"1.8\",\"pipeline_job_learning_rate_schedule\":\"time-based\"}",
+    "azureml.runsource": "azureml.PipelineRun",
+    "mlflow.source.git.branch": "mabables/input-output-syntax",
+    "mlflow.source.git.commit": "6c24dbcc2392e0875740c469358ee1c1587da3fe",
+    "mlflow.source.git.repoURL": "https://github.com/Azure/azureml-previews",
+    "runSource": "MFE",
+    "runType": "HTTP"
+  },
+  "resourceGroup": "OpenDatasetsPMRG",
+  "status": "Preparing",
+  "tags": {
+    "azureml.pipelineComponent": "pipelinerun"
+  },
+  "type": "pipeline_job"
+}
+(base) root@MABABLESDESKTOP:/mnt/c/CODE/repos/azureml-previews/previews/pipelines/samples/1c_e2e_inline_components
+# 
+```
