@@ -400,6 +400,15 @@ run_test(){
     fi
 }
 
+
+attach_workspace(){
+    set -x
+
+    init_env
+
+    az ml folder attach -w $WORKSPACE -g $RESOURCE_GROUP
+}
+
 # run python test
 run_py_test(){
     set -x
