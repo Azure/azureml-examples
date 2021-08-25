@@ -17,7 +17,7 @@ deployments:
             name: triton-mir-endpoint
             version: 1
             docker:
-                image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210525.1
+                image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210817.v1
         environment_variables:
             AZUREML_EXTRA_REQUIREMENTS_TXT: requirements.txt
         scale_settings:

@@ -17,5 +17,5 @@ deployments:
             name: triton-mir-endpoint
             version: 1
             docker:
-                image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210525.1
+                image: mcr.microsoft.com/azureml/tritonserver-21.02-py38-inference:20210817.v1
         instance_type: Standard_NC6s_v3
