@@ -1,3 +1,6 @@
+#This script allows a docker container to be registered as Jupyter kernel
+#This script refers to a sample docker file and a helper file kernel.json
+
 echo $(date -u) "Starting user setup."
 RUNAS=azureuser
 
