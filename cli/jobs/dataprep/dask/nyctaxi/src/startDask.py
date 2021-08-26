@@ -30,6 +30,11 @@ if __name__ == "__main__":
 
     args, unparsed = parser.parse_known_args()
 
+    for k, v in os.environ.items():
+        if k.startswith("MLFLOW"):
+            print(k, v)
+    MLFLOW_RUN_ID = os.getenv("MLFLOW_RUN_ID")
+
     print(
         "- env: AZ_BATCHAI_JOB_MASTER_NODE_IP: ",
         os.environ.get("AZ_BATCHAI_JOB_MASTER_NODE_IP"),
@@ -88,6 +93,7 @@ if __name__ == "__main__":
             + " --NotebookApp.token={token}"
             + " --allow-root --no-browser"
         ).format(token=args.jupyter_token)
+        os.environ["MLFLOW_RUN_ID"] = MLFLOW_RUN_ID
         jupyter_log = open("logs/jupyter_log.txt", "w")
         jupyter_proc = subprocess.Popen(
             cmd.split(),
@@ -117,6 +123,7 @@ if __name__ == "__main__":
             + dashboard
         )
         print(cmd)
+        os.environ["MLFLOW_RUN_ID"] = MLFLOW_RUN_ID
         scheduler_log = open("logs/scheduler_log.txt", "w")
         scheduler_proc = subprocess.Popen(
             cmd.split(),
@@ -131,6 +138,7 @@ if __name__ == "__main__":
 
         cmd = "dask-worker " + scheduler
         print(cmd)
+        os.environ["MLFLOW_RUN_ID"] = MLFLOW_RUN_ID
         worker_log = open("logs/worker_{rank}_log.txt".format(rank=rank), "w")
         worker_proc = subprocess.Popen(
             cmd.split(),
@@ -145,6 +153,7 @@ if __name__ == "__main__":
             command_line = " ".join(["python", args.script] + unparsed)
             print("Launching:", command_line)
 
+            os.environ["MLFLOW_RUN_ID"] = MLFLOW_RUN_ID
             driver_log = open("logs/driver_log.txt", "w")
             driver_proc = subprocess.Popen(
                 command_line.split(),
@@ -178,6 +187,7 @@ if __name__ == "__main__":
     else:
         cmd = "dask-worker " + scheduler
         print(cmd)
+        os.environ["MLFLOW_RUN_ID"] = MLFLOW_RUN_ID
         worker_log = open("logs/worker_{rank}_log.txt".format(rank=rank), "w")
         worker_proc = subprocess.Popen(
             cmd.split(),
