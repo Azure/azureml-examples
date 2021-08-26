@@ -1,7 +1,7 @@
-#This script creates a custom conda environment and kernel based on a sample yml file
 #!/bin/bash
  
 set -e
+#This script creates a custom conda environment and kernel based on a sample yml file
 
 conda env create -f env.yml
 echo "Activating new conda environment"
