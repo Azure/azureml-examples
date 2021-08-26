@@ -7,7 +7,7 @@ az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-in
 # </create_computes>
 
 # <hello_world>
-az ml job create -f jobs/misc/hello_world.yml --web
+az ml job create -f jobs/misc/hello-world.yml --web
 # </hello_world>
 
 # <lightgbm_iris>
