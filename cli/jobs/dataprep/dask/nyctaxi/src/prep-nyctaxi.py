@@ -8,9 +8,9 @@ import mlflow
 # import sys
 # sys.argv = ['']
 
-for k,v in os.environ.items():
-    if (k.startswith("MLFLOW")):
-        print(k,v)
+for k, v in os.environ.items():
+    if k.startswith("MLFLOW"):
+        print(k, v)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--nyc_taxi_dataset")
