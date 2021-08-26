@@ -182,7 +182,7 @@ setup_cluster(){
     az aks create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --location $LOCATION \
+        --location eastus \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
         --node-count $MIN_COUNT \
