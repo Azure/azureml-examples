@@ -182,7 +182,7 @@ setup_cluster(){
     az aks create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-	--location $LOCATION \
+        --location $LOCATION \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
         --node-count $MIN_COUNT \
@@ -214,16 +214,6 @@ setup_cluster(){
     if [ "${waitSuccessArc}" == false ]; then
         echo "deployment is not avilable in namespace - azure-arc"
     fi
-
-    set +e
-    az k8s-extension show \
-        --cluster-name $ARC_CLUSTER_NAME \
-        --cluster-type connectedClusters \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME
-    echo ret: $?
-    set -e
 
     # remove extension if exists
     az k8s-extension show \
