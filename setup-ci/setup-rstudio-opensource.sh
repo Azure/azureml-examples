@@ -1,6 +1,6 @@
+#!/bin/bash
 #This script installs latest version of RStudio open source on compute instance
 
-#!/bin/bash
 dpkg --purge rstudio-server # in case open source version is installed.
 
 echo "
