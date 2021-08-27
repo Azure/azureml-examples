@@ -8,5 +8,4 @@ set -e
 
 sshkeystr="ssh-rsa ${1}"
 cd /home/azureuser
-echo "${sshkeystr}" >> temp.txt
-cat temp.txt >> .ssh/authorized_keys2
+echo "${sshkeystr}" >> .ssh/authorized_keys2
