@@ -1,7 +1,8 @@
 #!/bin/bash
  
 set -e
-# This script configures network proxy settings for Jupyter
+
+# This script configures network proxy settings for Jupyter.
 
 RUNAS=$ADMIN_USERNAME
 sudo -u $RUNAS -i <<'EOF'
