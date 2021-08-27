@@ -2,7 +2,7 @@
 
 set -e
 
-# This script installs a pip package in compute instance azureml_py38 environment
+# This script installs a pip package in compute instance azureml_py38 environment.
 
 sudo -u azureuser -i <<'EOF'
 
