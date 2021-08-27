@@ -214,6 +214,8 @@ print("save parquet to ", output_path)
 # Using DASK's Client.run method which executes a given function on each node of the cluster:
 def create_output():
     return Path(output_path).mkdir(parents=True, exist_ok=True)
+
+
 print("create_output", c.run(create_output))
 
 
