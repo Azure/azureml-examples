@@ -13,4 +13,4 @@ sudo -u azureuser -i <<'EOF'
 conda activate envname
 python -m ipykernel install --user --name envname --display-name "mykernel"
 echo "Conda environment setup successfully."
-#EOF
+EOF
