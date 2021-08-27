@@ -3,6 +3,7 @@ import dask.dataframe as dd
 import os, uuid, time
 import argparse
 import mlflow
+from pathlib import Path
 
 # if running in a notebook, uncomment these 2 lines
 # import sys
@@ -19,28 +20,9 @@ dataset = args.nyc_taxi_dataset
 print(f"dataset location: {dataset}")
 os.system(f"find {dataset}")
 
-# give other nodes some time to connect before we show the cluster setup
-time.sleep(3)
 c = Client("localhost:8786")
 print(c)
-mlflow.log_text(str(c), "dask_cluster")
-
-# In this case, we are not using a mounted drive to save the job's output
-# but save to the ./outputs folder, which is on the nodes local drives.
-# Each node will save its partitions to the local outputs folder.
-# AzureML will collect these files and copy them to the job's output location
-# on blob storage.
-# For this to work, the target folder needs to be created on each node.
-# Using DASK's Client.run method which executes a given function on each node of the cluster:
-output_path = "./outputs/nyctaxi_processed.parquet"
-from pathlib import Path
-
-
-def create_output():
-    return Path(output_path).mkdir(parents=True, exist_ok=True)
-
-
-print("create_output", c.run(create_output))
+mlflow.log_text(str(c), "dask_cluster1")
 
 # read in the data from the provided file dataset (which is mounted at the same
 # location on all nodes of the job)
@@ -219,7 +201,23 @@ def add_features(df):
 taxi_df = clean(df, remap, must_haves, query)
 taxi_df = add_features(taxi_df)
 
+print(c)
+mlflow.log_text(str(c), "dask_cluster2")
+output_path = "./outputs/nyctaxi_processed.parquet"
 print("save parquet to ", output_path)
+# In this case, we are not using a mounted drive to save the job's output
+# but save to the ./outputs folder, which is on the nodes local drives.
+# Each node will save its partitions to the local outputs folder.
+# AzureML will collect these files and copy them to the job's output location
+# on blob storage.
+# For this to work, the target folder needs to be created on each node.
+# Using DASK's Client.run method which executes a given function on each node of the cluster:
+def create_output():
+    return Path(output_path).mkdir(parents=True, exist_ok=True)
+
+
+print("create_output", c.run(create_output))
+
 
 start_time = time.time()
 
