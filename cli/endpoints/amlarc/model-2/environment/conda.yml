@@ -2,15 +2,14 @@ name: model-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.6.4
+  - python=3.7
   - numpy
   - pip
-  - scikit-learn==0.21.1
+  - scikit-learn==0.24.2
   - scipy
   - pip:
     - azureml-defaults
     - inference-schema[numpy-support]
     - joblib
     - numpy
-    - scikit-learn==0.21.1
     - scipy
