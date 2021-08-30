@@ -10,8 +10,8 @@ target: azureml:{{fullyQualifiedComputeId}}
 deployments:
 - name: green
   model:
-    local_path: ../model-2/model/helloworld.txt
-    name: model-hello-2
+    local_path: ../model-2/model/sklearn_regression_model.pkl
+    name: model-2
     version: 1
   code_configuration:
     code:
@@ -20,7 +20,7 @@ deployments:
   environment:
     conda_file: file:../model-2/environment/conda.yml
     docker:
-      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
     path: .
   request_settings:
     max_concurrent_requests_per_instance: 1
