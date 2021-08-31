@@ -396,7 +396,7 @@ attach_workspace(){
 
     init_env
 
-    az ml folder attach -w $WORKSPACE -g $RESOURCE_GROUP
+    az ml folder attach -w $WORKSPACE -g $RESOURCE_GROUP --subscription-id $SUBSCRIPTION 
 }
 
 # run python test

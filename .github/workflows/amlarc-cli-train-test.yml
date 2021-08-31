@@ -24,7 +24,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
-    - name: init env
+    - name: install tools
       run: |
         bash amlarc-compute.sh install_tools
         bash amlarc-compute.sh prepare_attach_compute_py
