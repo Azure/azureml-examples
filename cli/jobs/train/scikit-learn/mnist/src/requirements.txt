@@ -7,7 +7,4 @@ scikit-learn
 
 # tracking
 mlflow
-
-# azureml
-azureml-core
 azureml-mlflow
