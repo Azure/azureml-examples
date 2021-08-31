@@ -7,7 +7,7 @@ init_env(){
 
     SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
     RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
-    WORKSPACE="${WORKSPACE:-main-amlarc}"  # $((1 + $RANDOM % 100))
+    WORKSPACE="${WORKSPACE:-amlarc-ws}"  # $((1 + $RANDOM % 100))
     LOCATION="${LOCATION:-eastus}"
     ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-arc}"
     AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-aks}"

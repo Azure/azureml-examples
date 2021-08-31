@@ -15,7 +15,7 @@ jobs:
       INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
       ARC_CLUSTER_PREFIX: amlarc-arc-py
       AKS_CLUSTER_PREFIX: amlarc-aks-py
-      WORKSPACE: main-python-sdk-amlarc
+      WORKSPACE: amlarc-ws-py
     steps:
     - name: check out repo
       uses: actions/checkout@v2
