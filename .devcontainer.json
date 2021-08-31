@@ -2,5 +2,6 @@
     "image": "docker.io/lostmydockeraccount/azureml-examples",
     "extensions": ["vscodevim.vim", "ms-python.python", "ms-toolsai.vscode-ai"],
     "mounts": ["source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"],
-    "forwardPorts": []
+    "forwardPorts": [],
+    "postCreateCommand": "curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash"
 }
