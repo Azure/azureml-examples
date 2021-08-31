@@ -6,7 +6,7 @@ import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 # define functions
@@ -16,16 +16,9 @@ def main(args):
 
     # setup parameters
     params = {
-        "penalty": args.penalty,
-        "tol": args.tol,
-        "C": args.C,
         "fit_intercept": args.fit_intercept,
-        "intercept_scaling": args.intercept_scaling,
-        "random_state": args.random_state,
-        "solver": args.solver,
-        "max_iter": args.max_iter,
-        "multi_class": args.multi_class,
-        "verbose": args.verbose,
+        "normalize": args.normalize,
+        "positive": args.positive,
     }
 
     # read in data
@@ -54,7 +47,7 @@ def process_data(df, random_state):
 
 def train_model(params, X_train, X_test, y_train, y_test):
     # train model
-    model = LogisticRegression(**params)
+    model = LinearRegression(**params)
     model = model.fit(X_train, y_train)
 
     # return model
@@ -67,16 +60,10 @@ def parse_args():
 
     # add arguments
     parser.add_argument("--diabetes-csv", type=str)
-    parser.add_argument("--penalty", type=str, default="l2")
-    parser.add_argument("--tol", type=float, default=1e-4)
-    parser.add_argument("--C", type=float, default=1.0)
-    parser.add_argument("--fit_intercept", type=bool, default=True)
-    parser.add_argument("--intercept_scaling", type=float, default=1)
     parser.add_argument("--random_state", type=int, default=42)
-    parser.add_argument("--solver", type=str, default="lbfgs")
-    parser.add_argument("--max_iter", type=int, default=100)
-    parser.add_argument("--multi_class", type=str, default="auto")
-    parser.add_argument("--verbose", type=int, default=0)
+    parser.add_argument("--fit_intercept", type=bool, default=True)
+    parser.add_argument("--normalize", type=bool, default=False)
+    parser.add_argument("--positive", type=bool, default=False)
 
     # parse args
     args = parser.parse_args()

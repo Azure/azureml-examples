@@ -4,8 +4,6 @@ code:
 command: >-
   python main.py 
   --diabetes-csv {inputs.diabetes}
-  --tol 0.001
-  --C 0.8
 inputs:
   diabetes:
     data:
@@ -15,4 +13,4 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 compute:
   target: azureml:cpu-cluster
 experiment_name: sklearn-diabetes-example
-description: Train a scikit-learn LogisticRegression model on the Diabetes dataset.
+description: Train a scikit-learn LinearRegression model on the Diabetes dataset.
