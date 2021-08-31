@@ -87,10 +87,11 @@ def process_data(df, random_state):
     X_train = X_train.reshape(train_len, -1)
     X_test = X_test.reshape(test_len, -1)
 
-    # scale
+    # initialize and fit scaler
     scaler = MinMaxScaler()
     scaler.fit(X_train)
 
+    # scale train and test data
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
 
