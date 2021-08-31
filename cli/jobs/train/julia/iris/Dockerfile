@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azureml/base:openmpi3.1.2-ubuntu18.04
+FROM mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux; \
