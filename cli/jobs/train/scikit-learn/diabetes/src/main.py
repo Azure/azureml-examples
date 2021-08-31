@@ -16,25 +16,20 @@ def main(args):
 
     # setup parameters
     params = {
-        "C": args.C,
-        "kernel": args.kernel,
-        "degree": args.degree,
-        "gamma": args.gamma,
-        "coef0": args.coef0,
-        "shrinking": args.shrinking,
-        "probability": args.probability,
+        "penalty": args.penalty,
         "tol": args.tol,
-        "cache_size": args.cache_size,
-        "class_weight": args.class_weight,
-        "verbose": args.verbose,
-        "max_iter": args.max_iter,
-        "decision_function_shape": args.decision_function_shape,
-        "break_ties": args.break_ties,
+        "C": args.C,
+        "fit_intercept": args.fit_intercept,
+        "intercept_scaling": args.intercept_scaling,
         "random_state": args.random_state,
+        "solver": args.solver,
+        "max_iter": args.max_iter,
+        "multi_class": args.multi_class,
+        "verbose": args.verbose,
     }
 
     # read in data
-    df = pd.read_csv(args.iris_csv)
+    df = pd.read_csv(args.diabetes_csv)
 
     # process data
     X_train, X_test, y_train, y_test = process_data(df, args.random_state)
@@ -45,8 +40,8 @@ def main(args):
 
 def process_data(df, random_state):
     # split dataframe into X and y
-    X = df.drop(["species"], axis=1)
-    y = df["species"]
+    X = df.drop(["target"], axis=1)
+    y = df["target"]
 
     # train/test split
     X_train, X_test, y_train, y_test = train_test_split(
@@ -59,7 +54,7 @@ def process_data(df, random_state):
 
 def train_model(params, X_train, X_test, y_train, y_test):
     # train model
-    model = SVC(**params)
+    model = LogisticRegression(**params)
     model = model.fit(X_train, y_train)
 
     # return model
@@ -71,22 +66,17 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # add arguments
-    parser.add_argument("--iris-csv", type=str)
+    parser.add_argument("--diabetes-csv", type=str)
+    parser.add_argument("--penalty", type=str, default="l2")
+    parser.add_argument("--tol", type=float, default=1e-4)
     parser.add_argument("--C", type=float, default=1.0)
-    parser.add_argument("--kernel", type=str, default="rbf")
-    parser.add_argument("--degree", type=int, default=3)
-    parser.add_argument("--gamma", type=str, default="scale")
-    parser.add_argument("--coef0", type=float, default=0)
-    parser.add_argument("--shrinking", type=bool, default=False)
-    parser.add_argument("--probability", type=bool, default=False)
-    parser.add_argument("--tol", type=float, default=1e-3)
-    parser.add_argument("--cache_size", type=float, default=1024)
-    parser.add_argument("--class_weight", type=dict, default=None)
-    parser.add_argument("--verbose", type=bool, default=False)
-    parser.add_argument("--max_iter", type=int, default=-1)
-    parser.add_argument("--decision_function_shape", type=str, default="ovr")
-    parser.add_argument("--break_ties", type=bool, default=False)
+    parser.add_argument("--fit_intercept", type=bool, default=True)
+    parser.add_argument("--intercept_scaling", type=float, default=1)
     parser.add_argument("--random_state", type=int, default=42)
+    parser.add_argument("--solver", type=str, default="lbfgs")
+    parser.add_argument("--max_iter", type=int, default=100)
+    parser.add_argument("--multi_class", type=str, default="auto")
+    parser.add_argument("--verbose", type=int, default=0)
 
     # parse args
     args = parser.parse_args()
@@ -98,8 +88,8 @@ def parse_args():
 # run script
 if __name__ == "__main__":
     # add space in logs
-    print("*" * 60)
     print("\n\n")
+    print("*" * 60)
 
     # parse args
     args = parse_args()
