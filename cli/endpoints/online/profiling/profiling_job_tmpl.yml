@@ -16,7 +16,7 @@ environment_variables:
   TIMEOUT: "<% TIMEOUT %>"
   THREAD: "<% THREAD %>"
 compute:
-  target: <% COMPUTE_NAME %>
+  target: "azureml:<% COMPUTE_NAME %>"
 inputs:
   payload:
     data:

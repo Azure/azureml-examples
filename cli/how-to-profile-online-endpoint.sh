@@ -24,11 +24,11 @@ export CLIENTS="" # for labench only, no. of clients for the profiling tool, def
 export TIMEOUT="" # for labench only, timeout for each request, default value is 10s
 # </set_variables>
 
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-19872
 export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
-export PROFILER_COMPUTE_NAME=exampleCompute
-export PROFILER_COMPUTE_SIZE=Standard_F4s_v2
+export PROFILER_COMPUTE_NAME=profilingTest # the compute name for hosting the profiler
+export PROFILER_COMPUTE_SIZE=Standard_F4s_v2 # the compute size for hosting the profiler
 
 # <create_endpoint>
 echo "Creating Endpoint $ENDPOINT_NAME ..."
@@ -54,6 +54,13 @@ else
   exit 1
 fi
 # </check_endpoint_Status>
+
+# <update_traffic_rule>
+# for custom container, traffic rule must be set to the deployment for profiling
+echo "Updating traffic rule for endpoint $ENDPOINT_NAME ..."
+az ml endpoint update --name $ENDPOINT_NAME --type online --traffic $DEPLOYMENT_NAME:100
+echo "Traffic rule $DEPLOYMENT_NAME:100 has been set successfully."
+# </update_traffic_rule>
 
 # <create_compute_cluster_for_hosting_the_profiler>
 echo "Creating Compute $PROFILER_COMPUTE_NAME ..."
