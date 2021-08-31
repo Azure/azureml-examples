@@ -7,7 +7,7 @@ init_env(){
 
     SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
     RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
-    WORKSPACE="${WORKSPACE:-main-amlarc}"  # $((1 + $RANDOM % 100))
+    WORKSPACE="${WORKSPACE:-amlarc-ws}"  # $((1 + $RANDOM % 100))
     LOCATION="${LOCATION:-eastus}"
     ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-arc}"
     AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-aks}"
@@ -34,6 +34,7 @@ init_env(){
     ARC_CLUSTER_PREFIX=${ARC_CLUSTER_PREFIX}-${LOCATION}
     AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${LOCATION}
 
+    az version || true
 }
 
 install_tools(){
@@ -181,6 +182,7 @@ setup_cluster(){
     az aks create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
+	--location eastus \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
         --node-count $MIN_COUNT \
@@ -277,7 +279,7 @@ setup_compute(){
         "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE" \
 	"$COMPUTE_NAME" "$ARC_RESOURCE_ID" "$VM_SKU"
 
-    sleep 120
+    sleep 500
 }
 
 # check compute resources
@@ -386,6 +388,15 @@ run_test(){
         echo "Job $JOB_YML unknown" | tee -a $RESULT_FILE 
 	exit 2
     fi
+}
+
+
+attach_workspace(){
+    set -x
+
+    init_env
+
+    az ml folder attach -w $WORKSPACE -g $RESOURCE_GROUP --subscription-id $SUBSCRIPTION 
 }
 
 # run python test
