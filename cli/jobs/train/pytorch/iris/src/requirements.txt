@@ -1,0 +1,11 @@
+# data science
+numpy
+scipy
+pandas>=1.2.0
+adlfs>=2021.8.1
+scikit-learn
+torch
+
+# tracking
+mlflow
+azureml-mlflow
