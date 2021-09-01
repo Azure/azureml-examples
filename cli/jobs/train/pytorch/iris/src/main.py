@@ -29,7 +29,7 @@ def main(args):
 
     # log model
     print(model)
-    mlflow.pytorch.save_model(model, "./outputs/model")
+    mlflow.pytorch.save_model(model, "./model")
 
     # evaluate model
     evaluate_model(model, X_train, X_test, y_train, y_test)
