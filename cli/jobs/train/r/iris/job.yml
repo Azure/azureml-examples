@@ -15,5 +15,7 @@ environment:
       dockerfile: file:Dockerfile
 compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: r-iris-example
 description: Train an R model on the Iris dataset.

@@ -4,3 +4,6 @@ environment:
     image: python
 compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+

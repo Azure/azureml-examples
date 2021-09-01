@@ -15,5 +15,7 @@ environment:
       dockerfile: file:Dockerfile
 compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: tensorflow-iris-example
 description: Train a Tensorflow Decision Forest on the Iris dataset.

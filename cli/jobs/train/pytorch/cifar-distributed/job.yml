@@ -17,5 +17,7 @@ compute:
 distribution:
   type: pytorch 
   process_count: 2
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: pytorch-cifar-distributed-example
 description: Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.

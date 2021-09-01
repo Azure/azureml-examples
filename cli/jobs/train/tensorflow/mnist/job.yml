@@ -6,5 +6,7 @@ command: >-
 environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:1
 compute:
   target: azureml:gpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: tensorflow-mnist-example
 description: Train a basic neural network with TensorFlow on the MNIST dataset.

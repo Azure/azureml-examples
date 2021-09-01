@@ -31,5 +31,7 @@ objective:
 max_total_trials: 20
 max_concurrent_trials: 10
 timeout_minutes: 120
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: lightgbm-iris-sweep-example
 description: Run a hyperparameter sweep job for LightGBM on Iris dataset.

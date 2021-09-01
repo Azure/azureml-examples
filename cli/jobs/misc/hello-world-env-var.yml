@@ -4,5 +4,6 @@ environment:
     image: python:latest
 environment_variables:
   ENV_VAR: "hello world"
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 compute:
     target: azureml:cpu-cluster

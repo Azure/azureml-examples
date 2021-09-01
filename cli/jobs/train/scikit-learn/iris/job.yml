@@ -15,5 +15,7 @@ inputs:
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: sklearn-iris-example
 description: Train a scikit-learn SVM on the Iris dataset.

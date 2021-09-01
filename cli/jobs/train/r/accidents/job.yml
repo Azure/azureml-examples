@@ -15,5 +15,7 @@ environment:
       dockerfile: file:Dockerfile
 compute: 
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: r-accidents-example
 description: Train a GLM using R on the accidents dataset.  

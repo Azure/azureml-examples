@@ -32,6 +32,8 @@ distribution:
   # no pytorch is actually used in this job
   type: pytorch
 
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: dask-nyctaxi-example
 
 description: This sample shows how to run a distributed DASK job on AzureML. 
