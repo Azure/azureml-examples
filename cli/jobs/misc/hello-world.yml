@@ -1,5 +1,4 @@
 command: python -c "print('hello world')"
 environment:
   image: python
-compute:
-  target: azureml:cpu-cluster
+compute: azureml:cpu-cluster

@@ -3,5 +3,4 @@ environment:
   image: python:latest
 environment_variables:
   ENV_VAR: "hello world"
-compute:
-    target: azureml:cpu-cluster
+compute: azureml:cpu-cluster
