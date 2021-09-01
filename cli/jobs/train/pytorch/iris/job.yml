@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
 command: >-
-  pip install -r requirements.txt &&
+#  pip install -r requirements.txt &&
   python main.py 
   --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
   --epochs 10
@@ -12,7 +12,7 @@ inputs:
     data:
       path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
     mode: mount
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+environment: AzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu:3
 compute:
   target: azureml:cpu-cluster
 experiment_name: pytorch-iris-example
