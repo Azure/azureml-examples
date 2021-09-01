@@ -2,15 +2,23 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # <create_batch_endpoint>
-az ml endpoint create --type batch --file endpoints/batch/create-batch-endpoint.yml
+az ml batch-endpoint create --name mybatchedp
 # </create_batch_endpoint>
 
+# <create_batch_deployment_set_default>
+az ml batch-deployment create --name mlflowdp --endpoint-name mybatchedp --file endpoints/batch/add-mlflow-deployment.yml --set-default
+# </create_batch_deployment_set_default>
+
 # <check_batch_endpooint_detail>
-az ml endpoint show --name mybatchedp --type batch
+az ml batch-endpoint show --name mybatchedp
 # </check_batch_endpooint_detail>
 
+# <check_batch_deployment_detail>
+az ml batch-deployment show --name mlflowdp --endpoint-name mybatchedp
+# </check_batch_deployment_detail>
+
 # <start_batch_scoring_job>
-job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
+job_name=$(az ml batch-endpoint invoke --name mybatchedp --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
 # </start_batch_scoring_job>
 
 # <show_job_in_studio>
@@ -38,7 +46,7 @@ fi
 # </check_job_status>
 
 # <start_batch_scoring_job_configure_output>
-job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --output-datastore azureml:workspaceblobstore --output-path myoutput --set output_file_name=mypredictions.csv --query name -o tsv)
+job_name=$(az ml batch-endpoint invoke --name mybatchedp --input-path https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --output-datastore azureml:workspaceblobstore --output-path myoutput --set output_file_name=mypredictions.csv --query name -o tsv)
 # </start_batch_scoring_job_configure_output>
 
 # <stream_job_logs_to_console>
@@ -61,17 +69,45 @@ else
 fi
 # </check_job_status>
 
-# <add_deployment>
-az ml endpoint update --name mybatchedp --type batch --deployment-file endpoints/batch/add-deployment.yml
-# </add_deploymen>
+# <create_new_deployment_not_default>
+az ml batch-deployment create --name nonmlflowdp --endpoint-name mybatchedp --file endpoints/batch/add-nonmlflow-deployment.yml
+# </create_new_deploymen_not_default>
 
-# <switch_traffic>
-az ml endpoint update --name mybatchedp --type batch --traffic mnist-deployment:100
-# </switch_traffic>
+# <test_new_deployment>
+job_name=$(az ml batch-endpoint invoke --name mybatchedp --deployment-name nonmlflowdp --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --query name -o tsv)
 
-# <start_batch_scoring_job_with_new_settings>
-job_name=$(az ml endpoint invoke --name mybatchedp --type batch --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set retry_settings.max_retries=1 --query name -o tsv)
-# </start_batch_scoring_job_with_new_settings>
+# <show_job_in_studio>
+az ml job show -n $job_name --web
+# </show_job_in_studio>
+
+# <stream_job_logs_to_console>
+az ml job stream -n $job_name
+# </stream_job_logs_to_console>
+
+# <check_job_status>
+status=$(az ml job show -n $job_name --query status -o tsv)
+echo $status
+if [[ $status == "Completed" ]]
+then
+  echo "Job completed"
+elif [[ $status ==  "Failed" ]]
+then
+  echo "Job failed"
+  exit 1
+else 
+  echo "Job status not failed or completed"
+  exit 2
+fi
+# </check_job_status>
+# </test_new_deployment>
+
+# <update_default_deployment>
+az ml batch-endpoint update --name mybatchedp --defaults deployment_name:nonmlflowdp
+# </update_default_deployment>
+
+# <test_new_default_deployment_with_new_settings>
+job_name=$(az ml batch-endpoint invoke --name mybatchedp --input-path https://pipelinedata.blob.core.windows.net/sampledata/mnist --mini-batch-size 10 --instance-count 2 --set max_concurrency_per_instance=5 --query name -o tsv)
+# </test_new_default_deployment_with_new_settings>
 
 # <stream_job_logs_to_console>
 az ml job stream -n $job_name
@@ -94,7 +130,7 @@ fi
 # </check_job_status>
 
 # <get_scoring_uri>
-scoring_uri=$(az ml endpoint show --name mybatchedp --type batch --query scoring_uri -o tsv)
+scoring_uri=$(az ml batch-endpoint show --name mybatchedp --query scoring_uri -o tsv)
 # </get_scoring_uri>
 
 # <get_token>
@@ -113,5 +149,9 @@ curl --location --request POST "$scoring_uri" --header "Authorization: Bearer $a
 # </start_batch_scoring_job_rest>
 
 # <list_all_jobs>
-az ml endpoint list-jobs --name mybatchedp --type batch
+az ml batch-endpoint list-jobs --name mybatchedp --query [].name
 # </list_all_jobs>
+
+# <delete_endpoint>
+az ml batch-endpoint delete --name mybatchedp
+# </delete_endpoint>

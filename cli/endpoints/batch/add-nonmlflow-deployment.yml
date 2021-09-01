@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: mnist-deployment
+name: nonmlflowdp
+endpoint_name: mybatchedp
 model: 
   name: mnist-model
   version: 1
@@ -22,6 +23,7 @@ retry_settings:
   timeout: 30
 error_threshold: 10 
 logging_level: info
-compute:
-  target: azureml:cpu-cluster
+compute: azureml:cpu-cluster
+resources:
   instance_count: 1
+max_concurrentcy_per_instance: 4
