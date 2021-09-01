@@ -11,7 +11,7 @@ inputs:
     data:
       path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
     mode: mount
-environment: AzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu:3
+environment: azureml:AzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu:3
 compute:
   target: azureml:cpu-cluster
 experiment_name: pytorch-iris-example
