@@ -2,7 +2,6 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
 command: >-
-#  pip install -r requirements.txt &&
   python main.py 
   --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
   --epochs 10
