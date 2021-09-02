@@ -1,12 +1,13 @@
-name: mir-deploy
+name: triton-bert-endpt-2
 type: online
-auth_mode: aml_token
+target: azureml:aks-gpu-triton
+auth_mode: Key
 traffic:
     blue: 100
 deployments:
     -   name: blue
         model:
-           name: bert
+           name: bert-onnx
            version: 1
            local_path: ./models
         code_configuration:
@@ -21,8 +22,9 @@ deployments:
         environment_variables:
             ORT_TENSORRT_FP16_ENABLE: 1
         request_settings:
+            request_timeout_ms: 3000
             max_concurrent_requests_per_instance: 512
+            max_queue_wait_ms: 3000
         scale_settings:
             scale_type: manual
             instance_count: 1
-        instance_type: Standard_NC6s_v3
