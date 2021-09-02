@@ -20,7 +20,7 @@ triton_output_path: triton.log
 batch_size: 1
 
 profile_models:
-  - bertsquad-8
+  - model_name
     # model_config_parameters:
     #   instance_group:
     #       -
@@ -35,7 +35,7 @@ summarize: True
 num_configs_per_model: 3
 
 analysis_models: 
-  bertsquad-8:
+  model_name:
     objectives:
       perf_throughput: 10
 

@@ -1,44 +1,71 @@
-# Copyright (c) 2020, NVIDIA CORPORATION. All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-name: "add_sub"
-platform: "pytorch_libtorch"
-max_batch_size: 8
-
+name: "model_name"
+platform: "onnxruntime_onnx"
+default_model_filename: "model_onnx_filename_db"
+max_batch_size : 16 #MAX_BATCH
 input [
-  {
-    name: "INPUT__0"
-    data_type: TYPE_FP32
-    dims: [ 16 ]
-  },
-  {
-    name: "INPUT__1"
-    data_type: TYPE_FP32
-    dims: [ 16 ]
-  }
+   {
+     name: "unique_ids_raw_output___9:0"
+     data_type: TYPE_INT64
+     dims: [ 1 ]
+     reshape: { shape: [ ] }
+   }
+]
+input [
+   {
+     name: "segment_ids:0"
+     data_type: TYPE_INT64
+     dims: [ 256 ]
+   }
+]
+input [
+   {
+     name: "input_mask:0"
+     data_type: TYPE_INT64
+     dims: [ 256 ]
+   }
+]
+input [
+   {
+     name: "input_ids:0"
+     data_type: TYPE_INT64
+     dims: [ 256 ]
+   }
+]		     
+output [
+   {
+     name: "unstack:1"
+     data_type: TYPE_FP32
+     dims: [ 256 ]
+   }
 ]
 output [
-  {
-    name: "OUTPUT__0"
-    data_type: TYPE_FP32
-    dims: [ 16 ]
-    label_filename: "output0_labels.txt"
-  },
-  {
-    name: "OUTPUT__1"
-    data_type: TYPE_FP32
-    dims: [ 16 ]
-  }
+   {
+     name: "unstack:0"
+     data_type: TYPE_FP32
+     dims: [ 256 ]
+   }
 ]
-instance_group [ { kind: KIND_GPU }]
+output [
+   {
+     name: "unique_ids:0"
+     data_type: TYPE_INT64
+     dims: [ 1 ]
+     reshape: { shape: [ ] }
+   }
+]
+optimization { execution_accelerators {
+  gpu_execution_accelerator : [ { name : "tensorrt" } ]
+}}
+instance_group {
+  count: 1 #NUM_ENGINES
+  gpus: [ 0 ]
+  kind: KIND_GPU
+}
+dynamic_batching {
+  preferred_batch_size: [ 1,2,4,8,16 ]
+  max_queue_delay_microseconds: 30000
+}
+#db#dynamic_batching {
+#db#    preferred_batch_size: 64#MAX_BATCH
+#db#    max_queue_delay_microseconds: #MAX_QUEUE
+#db#}
