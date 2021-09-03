@@ -14,7 +14,7 @@ EXCLUDED_ASSETS = [
     "mlflow-models",
     "workspace",
 ]
-EXCLUDED_SCRIPTS = ["setup", "cleanup"]
+EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 
 # define functions
 def main(args):

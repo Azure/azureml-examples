@@ -1,0 +1,37 @@
+name: dask
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - gcsfs
+  - fs-gcsfs
+  - jupyterlab
+  - jupyter-server-proxy
+  - numpy
+  - h5py
+  - scipy
+  - toolz
+  - bokeh
+  - dask
+  - distributed
+  - notebook
+  - matplotlib
+  - Pillow
+  - pandas
+  - pandas-datareader
+  - pytables
+  - scikit-learn
+  - scikit-image
+  - snakeviz
+  - ujson
+  - graphviz
+  - pip
+  - s3fs
+  - fastparquet
+  - dask-ml
+  - adlfs
+  - pip:
+    - python-snappy
+    - fastparquet
+    - azureml-mlflow

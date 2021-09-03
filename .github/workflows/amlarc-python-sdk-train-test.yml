@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
-      ARC_CLUSTER_PREFIX: amlarc-cluster-arc-py
-      AKS_CLUSTER_PREFIX: amlarc-cluster-aks-py
-      WORKSPACE: main-python-sdk-amlarc
+      ARC_CLUSTER_PREFIX: amlarc-arc-py
+      AKS_CLUSTER_PREFIX: amlarc-aks-py
+      WORKSPACE: amlarc-ws-py
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
-    - name: init env
+    - name: install tools
       run: |
         bash cli/amlarc-compute.sh install_tools
         bash cli/amlarc-compute.sh prepare_attach_compute_py
@@ -39,8 +39,8 @@ jobs:
       run: bash cli/amlarc-compute.sh setup_compute STANDARD_DS3_V2 cpu-cluster
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
-    - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk-amlarc -g azureml-examples-rg
+    - name: get workspace config
+      run: bash cli/amlarc-compute.sh attach_workspace
     - name: run python-sdk/workflows/train/fastai/mnist/job.py # cpu-cluster
       run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist/job.py
       continue-on-error: true
@@ -73,8 +73,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
-      ARC_CLUSTER_PREFIX: amlarc-cluster-arc-py
-      AKS_CLUSTER_PREFIX: amlarc-cluster-aks-py
+      ARC_CLUSTER_PREFIX: amlarc-arc-py
+      AKS_CLUSTER_PREFIX: amlarc-aks-py
       WORKSPACE: main-python-sdk-amlarc
     steps:
     - name: check out repo
@@ -104,7 +104,7 @@ jobs:
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk-amlarc -g azureml-examples-rg
+      run: bash cli/amlarc-compute.sh attach_workspace
     # Skipping v100 test cases because of lacking of quota
     # - name: run train/deepspeed/cifar job # gpu-V100-2
     #   run: python python-sdk/workflows/train/deepspeed/cifar/job.py

@@ -11,10 +11,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZ_AE_CREDS}}
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -25,13 +21,25 @@ jobs:
     - name: run schema copy script
       run: python copy-schemas.py
       working-directory: cli/.schemas
-    - name: commit schema updates
+    - name: create PR if schema changes
       run: |
+        git branch
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git checkout -b actions/update-schemas
-        git add .
-        git commit -m "updating schemas"
-        git push --set-upstream origin actions/update-schemas
-        gh pr create -t "[bot] updating schemas" -b "updating schemas"
+        echo "adding..."
+        git add -A
+        if [ -n "$(git status --porcelain)" ]
+        then
+            echo "commiting..."
+            git commit -m "updating schemas"
+            echo "pushing to origin..."
+            git push --set-upstream origin actions/update-schemas
+            echo "running GH auth..."
+            echo ${{secrets.GITHUB_TOKEN}} | gh auth login --with-token
+            echo "creating PR..."
+            gh pr create -t "[bot] updating schemas" -b "updating schemas"
+        else
+            echo "no changes in schemas..." 
+        fi
       working-directory: cli/.schemas
