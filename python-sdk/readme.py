@@ -216,15 +216,15 @@ def check_readme(before, after):
 def modify_notebooks(notebooks):
     # setup variables
     kernelspec3_8 = {
-        "display_name": "Python 3.8",
+        "display_name": "Python 3.8 - AzureML",
         "language": "python",
-        "name": "python3.8",
+        "name": "python38-azureml",
     }
 
     kernelspec3_6 = {
-        "display_name": "Python 3.6",
+        "display_name": "Python 3.6 - AzureML",
         "language": "python",
-        "name": "python36",
+        "name": "python3-azureml",
     }
 
     # for each notebooks
