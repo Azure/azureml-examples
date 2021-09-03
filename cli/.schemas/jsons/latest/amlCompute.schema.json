@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AmlComputeSchema": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "admin_password": {
+          "title": "admin_password",
+          "type": "string"
+        },
+        "admin_username": {
+          "title": "admin_username",
+          "type": "string"
+        },
+        "created_on": {
+          "title": "created_on",
+          "type": "string",
+          "readonly": true
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "enable_public_ip": {
+          "title": "enable_public_ip",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
+        "identity_type": {
+          "title": "identity_type",
+          "type": "string"
+        },
+        "idle_time_before_scale_down": {
+          "title": "idle_time_before_scale_down",
+          "type": "number",
+          "format": "integer"
+        },
+        "location": {
+          "title": "location",
+          "type": "string"
+        },
+        "max_instances": {
+          "title": "max_instances",
+          "type": "number",
+          "format": "integer"
+        },
+        "min_instances": {
+          "title": "min_instances",
+          "type": "number",
+          "format": "integer"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "priority": {
+          "title": "priority",
+          "type": "string"
+        },
+        "provisioning_errors": {
+          "title": "provisioning_errors",
+          "type": "string",
+          "readonly": true
+        },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string",
+          "readonly": true
+        },
+        "resource_id": {
+          "title": "resource_id",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "size": {
+          "title": "size",
+          "type": "string"
+        },
+        "ssh_key_value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^file:.*",
+              "title": "ssh_key_value"
+            },
+            {
+              "title": "ssh_key_value",
+              "type": "string"
+            }
+          ]
+        },
+        "ssh_public_access": {
+          "title": "ssh_public_access",
+          "type": "string"
+        },
+        "subnet": {
+          "title": "subnet",
+          "type": "string"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "amlcompute"
+          ],
+          "title": "type"
+        },
+        "user_assigned_identities": {
+          "title": "user_assigned_identities",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "vnet_name": {
+          "title": "vnet_name",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/AmlComputeSchema"
+}
