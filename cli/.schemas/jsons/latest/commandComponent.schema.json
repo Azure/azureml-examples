@@ -1,0 +1,537 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AnonymousCodeAssetSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string",
+          "readonly": true
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version",
+          "readonly": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "CreationContextSchema": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "title": "created_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "title": "created_by",
+          "type": "string"
+        },
+        "created_by_type": {
+          "title": "created_by_type",
+          "type": "string"
+        },
+        "last_modified_at": {
+          "title": "last_modified_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_by": {
+          "title": "last_modified_by",
+          "type": "string"
+        },
+        "last_modified_by_type": {
+          "title": "last_modified_by_type",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousEnvironmentSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
+        "conda_file": {
+          "anyOf": [
+            {
+              "title": "conda_file",
+              "type": "string"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BuildContextSchema": {
+      "type": "object",
+      "properties": {
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InferenceConfigSchema": {
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "properties": {
+        "liveness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "readiness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "scoring_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RouteSchema": {
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ParameterSchema": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "anyOf": [
+            {
+              "title": "default",
+              "type": "string"
+            },
+            {
+              "title": "default",
+              "type": "number",
+              "format": "decimal"
+            },
+            {
+              "title": "default",
+              "type": "boolean"
+            }
+          ]
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "enum": {
+          "title": "enum",
+          "type": "array",
+          "items": {
+            "title": "enum",
+            "type": "string"
+          }
+        },
+        "max": {
+          "anyOf": [
+            {
+              "title": "max",
+              "type": "string"
+            },
+            {
+              "title": "max",
+              "type": "number",
+              "format": "decimal"
+            }
+          ]
+        },
+        "min": {
+          "anyOf": [
+            {
+              "title": "min",
+              "type": "string"
+            },
+            {
+              "title": "min",
+              "type": "number",
+              "format": "decimal"
+            }
+          ]
+        },
+        "optional": {
+          "title": "optional",
+          "type": "boolean"
+        },
+        "type": {
+          "title": "type",
+          "type": "string",
+          "default": "null",
+          "enum": [
+            "number",
+            "integer",
+            "boolean",
+            "string",
+            "object",
+            "null"
+          ],
+          "enumNames": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "InputPortSchema": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "title": "default",
+          "type": "string"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "input_type": {
+          "title": "input_type",
+          "type": "string",
+          "enum": [
+            "generic"
+          ],
+          "enumNames": []
+        },
+        "optional": {
+          "title": "optional",
+          "type": "boolean"
+        },
+        "type": {
+          "title": "type",
+          "type": "string",
+          "default": "null",
+          "enum": [
+            "path",
+            "null"
+          ],
+          "enumNames": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "OutputPortSchema": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "input_type": {
+          "title": "input_type",
+          "type": "string",
+          "enum": [
+            "generic"
+          ],
+          "enumNames": []
+        },
+        "type": {
+          "title": "type",
+          "type": "string",
+          "default": "null",
+          "enum": [
+            "path",
+            "null"
+          ],
+          "enumNames": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "CommandComponentSchema": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousCodeAssetSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "codes",
+              "title": "code"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "command": {
+          "title": "command",
+          "type": "string",
+          "description": "String to be executed. Can set variables using ${{ }}"
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "display_name",
+          "type": "string"
+        },
+        "environment": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousEnvironmentSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "environments",
+              "title": "environment"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "inputs": {
+          "title": "inputs",
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "object",
+                "$ref": "#/definitions/ParameterSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/InputPortSchema"
+              }
+            ]
+          }
+        },
+        "is_deterministic": {
+          "title": "is_deterministic",
+          "type": "boolean"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "outputs": {
+          "title": "outputs",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "$ref": "#/definitions/OutputPortSchema"
+          }
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "command_component"
+          ],
+          "title": "type"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/CommandComponentSchema"
+}

@@ -1,6 +1,24 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "BuildContextSchema": {
+      "type": "object",
+      "properties": {
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "CreationContextSchema": {
       "type": "object",
       "properties": {
@@ -29,38 +47,6 @@
         "last_modified_by_type": {
           "title": "last_modified_by_type",
           "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerSchema": {
-      "type": "object",
-      "properties": {
-        "build": {
-          "type": "object",
-          "$ref": "#/definitions/DockerBuildSchema"
-        },
-        "image": {
-          "title": "image",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerBuildSchema": {
-      "type": "object",
-      "properties": {
-        "dockerfile": {
-          "anyOf": [
-            {
-              "type": "string",
-              "title": "dockerfile"
-            },
-            {
-              "title": "dockerfile",
-              "type": "string"
-            }
-          ]
         }
       },
       "additionalProperties": false
@@ -109,12 +95,20 @@
     },
     "EnvironmentSchema": {
       "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
         "conda_file": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "conda_file"
+              "title": "conda_file",
+              "type": "string"
             },
             {
               "title": "conda_file",
@@ -130,16 +124,16 @@
           "title": "description",
           "type": "string"
         },
-        "docker": {
-          "type": "object",
-          "$ref": "#/definitions/DockerSchema"
-        },
         "id": {
           "type": "string",
           "pattern": "^azureml:.*",
           "arm_type": "environments",
           "title": "id",
           "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
         },
         "inference_config": {
           "type": "object",
@@ -157,10 +151,6 @@
           ],
           "title": "os_type"
         },
-        "path": {
-          "title": "path",
-          "type": "string"
-        },
         "$schema": {
           "title": "$schema",
           "type": "string",
@@ -175,9 +165,15 @@
           }
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
       "additionalProperties": false

@@ -1,0 +1,103 @@
+$ref: '#/definitions/AmlComputeSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AmlComputeSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      admin_password:
+        title: admin_password
+        type: string
+      admin_username:
+        title: admin_username
+        type: string
+      created_on:
+        readonly: true
+        title: created_on
+        type: string
+      description:
+        title: description
+        type: string
+      enable_public_ip:
+        title: enable_public_ip
+        type: boolean
+      id:
+        readonly: true
+        title: id
+        type: string
+      identity_type:
+        title: identity_type
+        type: string
+      idle_time_before_scale_down:
+        format: integer
+        title: idle_time_before_scale_down
+        type: number
+      location:
+        title: location
+        type: string
+      max_instances:
+        format: integer
+        title: max_instances
+        type: number
+      min_instances:
+        format: integer
+        title: min_instances
+        type: number
+      name:
+        title: name
+        type: string
+      priority:
+        title: priority
+        type: string
+      provisioning_errors:
+        readonly: true
+        title: provisioning_errors
+        type: string
+      provisioning_state:
+        readonly: true
+        title: provisioning_state
+        type: string
+      resource_id:
+        title: resource_id
+        type: string
+      size:
+        title: size
+        type: string
+      ssh_key_value:
+        anyOf:
+        - pattern: ^file:.*
+          title: ssh_key_value
+          type: string
+        - title: ssh_key_value
+          type: string
+      ssh_public_access:
+        title: ssh_public_access
+        type: string
+      subnet:
+        title: subnet
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      type:
+        enum:
+        - amlcompute
+        title: type
+        type: string
+      user_assigned_identities:
+        additionalProperties: {}
+        title: user_assigned_identities
+        type: object
+      vnet_name:
+        title: vnet_name
+        type: string
+    required:
+    - name
+    - type
+    type: object

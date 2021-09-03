@@ -39,6 +39,13 @@ definitions:
       endpoint:
         title: endpoint
         type: string
+      filesystem:
+        title: filesystem
+        type: string
+      id:
+        readonly: true
+        title: id
+        type: string
       name:
         title: name
         type: string
@@ -60,6 +67,7 @@ definitions:
     - account_name
     - container_name
     - credential
+    - filesystem
     - type
     type: object
   CertificateSchema:

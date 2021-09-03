@@ -70,6 +70,16 @@
           "title": "local_path",
           "type": "string"
         },
+        "model_format": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "mlflow",
+            "triton",
+            "openai"
+          ],
+          "title": "model_format"
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -99,9 +109,15 @@
           "format": "date-time"
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
       "additionalProperties": false

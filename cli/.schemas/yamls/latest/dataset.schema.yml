@@ -1,53 +1,6 @@
-$ref: '#/definitions/AssetSchema'
+$ref: '#/definitions/DatasetSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  AssetSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      id:
-        title: id
-        type: string
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
-      name:
-        title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
-        type: string
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      version:
-        format: integer
-        title: version
-        type: number
-    type: object
   CreationContextSchema:
     additionalProperties: false
     properties:
@@ -71,4 +24,75 @@ definitions:
       last_modified_by_type:
         title: last_modified_by_type
         type: string
+    type: object
+  DatasetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: datasets
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      paths:
+        anyOf:
+        - items:
+            $ref: '#/definitions/FolderPathSchema'
+            type: object
+          title: paths
+          type: array
+        - items:
+            $ref: '#/definitions/FilePathSchema'
+            type: object
+          title: paths
+          type: array
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  FilePathSchema:
+    additionalProperties: false
+    properties:
+      file:
+        description: URI pointing to file.
+        title: file
+        type: string
+    required:
+    - file
+    type: object
+  FolderPathSchema:
+    additionalProperties: false
+    properties:
+      folder:
+        description: URI pointing to folder.
+        title: folder
+        type: string
+    required:
+    - folder
     type: object
