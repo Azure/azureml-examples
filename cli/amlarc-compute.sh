@@ -49,6 +49,11 @@ install_tools(){
     && sudo mv ./kubectl /usr/local/bin/kubectl  
 
     pip install azureml-core 
+
+    wget -O helm.tar.gz https://get.helm.sh/helm-v3.7.0-rc.2-linux-amd64.tar.gz \
+    && tar -zxvf helm.tar.gz \
+    && sudo mv linux-amd64/helm /usr/local/bin/helm \
+    && rm -rf helm.tar.gz linux-amd64/
 }
 
 waitForResources(){
@@ -78,6 +83,15 @@ from azureml.core.workspace import Workspace
 from azureml.exceptions import ComputeTargetException
 
 INSTANCE_TYPES = {
+    "AKSHCI_CPU": {
+        "nodeSelector": None,
+        "resources": {
+            "requests": {
+                "cpu": "1",
+                "memory": "2Gi",
+            }
+        }
+    },
     "STANDARD_DS3_V2": {
         "nodeSelector": None,
         "resources": {
@@ -215,6 +229,16 @@ setup_cluster(){
         echo "deployment is not avilable in namespace - azure-arc"
     fi
 
+    setup_amlarcextension $ARC_CLUSTER_NAME || true
+}
+
+setup_amlarcextension(){
+    set -x -e
+
+    init_env
+
+    ARC_CLUSTER_NAME=$1
+
     # remove extension if exists
     az k8s-extension show \
         --cluster-name $ARC_CLUSTER_NAME \
@@ -257,9 +281,10 @@ setup_compute(){
     init_env
 
     VM_SKU="${1:-Standard_NC12}"
-    COMPUTE_NAME="${2:gpu-compute}"
+    COMPUTE_NAME="${2:-gpu-compute}"
 
     ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+    ARC_CLUSTER_NAME="${3:-ARC_CLUSTER_NAME}"
     AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # create workspace
@@ -327,6 +352,89 @@ check_compute(){
         --workspace-name $WORKSPACE \
         --name $COMPUTE_NAME
     
+}
+
+# remove resources
+deleteEndpoints(){
+  endpoints=`az resource list --subscription ${SUBSCRIPTION} --resource-group ${RESOURCE_GROUP} --query "[?type=='Microsoft.MachineLearningServices/workspaces/onlineEndpoints'].name" -o tsv`
+  echo $endpoints
+   
+  for id in $endpoints; do
+      ws_name=`echo $id | awk -F '/' '{print $1}'`
+      name=`echo $id | awk -F '/' '{print $2}'`
+      if [ "$ws_name" == "$WORKSPACE" ];then
+          echo "delete online endpoint $name in workspace $ws_name"
+          az ml endpoint delete --debug --no-wait --subscription $SUBSCRIPTION -g $RESOURCE_GROUP -w $WORKSPACE -n $name -y || true
+      fi
+  done;
+  
+  [ "$endpoints" != "" ] && sleep 120 || true
+}
+
+removeResources(){
+
+  CLUSTER_NAME="${1:-akshci-cluster}"
+  COMPUTE_NAME="${2:-cpu-cluster}"
+
+  #kubectl delete crd prometheuses.monitoring.coreos.com || true
+  #kubectl delete crd prometheusrules.monitoring.coreos.com || true
+  #kubectl delete crd servicemonitors.monitoring.coreos.com || true
+  #kubectl delete crd podmonitors.monitoring.coreos.com || true
+  #kubectl delete crd alertmanagers.monitoring.coreos.com || true
+  #kubectl delete crd thanosrulers.monitoring.coreos.com || true
+  #kubectl delete crd probes.monitoring.coreos.com || true
+
+  for i in $(kubectl get deployment -n azureml | awk '{print $1}'); do
+      kubectl delete deployment -n azureml $i || true
+  done
+
+  for ns in $(kubectl get ns --no-headers | awk '{print $1}'); do
+      echo clean pvc from $ns
+      kubectl delete pvc -l used-by-aml-arc-blob-csi-driver=true -n $ns --timeout 60s || true
+      kubectl delete secret -l used-by-aml-arc-blob-csi-driver=true -n $ns --timeout 60s || true
+  done
+
+  kubectl delete pv -l used-by-aml-arc-blob-csi-driver=true --timeout 60s || true
+
+  # clean up resources
+  deleteEndpoints || true
+
+  az k8s-extension delete \
+      --cluster-type connectedClusters \
+      --cluster-name $CLUSTER_NAME \
+      --resource-group $RESOURCE_GROUP \
+      --subscription $SUBSCRIPTION \
+      --name $EXTENSION_NAME  \
+      --yes || true
+
+  helm uninstall -n $AMLARC_RELEASE_NAMESPACE $EXTENSION_NAME || true
+  kubectl delete job -n azureml pvc-pv-cleanup || true
+  
+  az ml compute detach \
+    --resource-group $RESOURCE_GROUP \
+    --subscription $SUBSCRIPTION \
+    --workspace-name $WORKSPACE \
+    --name $COMPUTE_NAME \
+    --yes || true
+ 
+  #az ml workspace delete \
+  #  --resource-group $RESOURCE_GROUP \
+  #  --subscription $SUBSCRIPTION \
+  #  --workspace-name $WORKSPACE \
+  #  --yes || true
+
+}
+
+# cleanup aks-hci cluster
+clean_up_aks_hci_cluster(){
+    set -x +e
+
+    init_env
+
+    ARC_CLUSTER_NAME="${1:-akshci-cluster}"
+    COMPUTE_NAME="${2:-cpu-cluster}"
+
+    removeResources $ARC_CLUSTER_NAME $COMPUTE_NAME
 }
 
 # cleanup
