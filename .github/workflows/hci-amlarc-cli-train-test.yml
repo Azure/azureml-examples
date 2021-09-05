@@ -37,14 +37,6 @@ jobs:
         bash amlarc-compute.sh install_tools
         bash amlarc-compute.sh prepare_attach_compute_py
       working-directory: cli
-    # - name: verfiy
-    #   run: |
-    #     kubectl get nodes
-    #     az version
-    #     helm version
-    #     az account show
-    #     python --version
-    #     pip --version
     - name: setup cpu-cluster
       run: bash amlarc-compute.sh setup_amlarcextension akshci-cluster
       working-directory: cli
@@ -55,30 +47,30 @@ jobs:
       run: bash amlarc-compute.sh run_test jobs/train/fastai/mnist/job.yml
       working-directory: cli
       continue-on-error: true
-    # - name: run jobs/train/lightgbm/iris-bash job
-    #   run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris-bash/job.yml
-    #   working-directory: cli
-    #   continue-on-error: true
-    # - name: run jobs/train/lightgbm/iris/sweep job
-    #   run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job-sweep.yml
-    #   working-directory: cli
-    #   continue-on-error: true
-    # - name: run jobs/train/lightgbm/iris job
-    #   run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job.yml
-    #   working-directory: cli
-    #   continue-on-error: true
-    # - name: run jobs/train/r/accidents job
-    #   run: bash amlarc-compute.sh run_test jobs/train/r/accidents/job.yml
-    #   working-directory: cli
-    #   continue-on-error: true
-    # - name: run jobs/train/r/iris job
-    #   run: bash amlarc-compute.sh run_test jobs/train/r/iris/job.yml
-    #   working-directory: cli
-    #   continue-on-error: true
-    # - name: run jobs/train/tensorflow/iris job
-    #   run: bash amlarc-compute.sh run_test jobs/train/tensorflow/iris/job.yml
-    #   working-directory: cli
-    #   continue-on-error: true
+    - name: run jobs/train/lightgbm/iris-bash job
+      run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris-bash/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris/sweep job
+      run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job-sweep.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris job
+      run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/r/accidents job
+      run: bash amlarc-compute.sh run_test jobs/train/r/accidents/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/r/iris job
+      run: bash amlarc-compute.sh run_test jobs/train/r/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/iris job
+      run: bash amlarc-compute.sh run_test jobs/train/tensorflow/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
     - name: clean up cpu cluster
       if: ${{ always() }}
       run: bash amlarc-compute.sh clean_up_aks_hci_cluster akshci-cluster cpu-cluster
