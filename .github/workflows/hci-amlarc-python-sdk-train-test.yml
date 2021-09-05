@@ -1,0 +1,76 @@
+name: amlarc-python-sdk-train-test
+on:
+  # schedule:
+  #   - cron: "0 6,18 * * *"
+  workflow_dispatch:
+    inputs:
+      AMLARC_RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: true
+        default: 'staging'
+jobs:
+  cpu-test:
+    runs-on: self-ubuntu-20-04
+    env:
+      INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      SUBSCRIPTION: "86204643-5a96-427b-b6bb-b35b2bd6e6ce"
+      RESOURCE_GROUP: "AKS-HCI"
+      WORKSPACE: "amlarc-conformance-test-ws"
+      LOCATION: "eastus"
+      AMLARC_RELEASE_NAMESPACE: "azureml"
+      EXTENSION_NAME: "amlarc-extension"
+      EXTENSION_TYPE: "Microsoft.AzureML.Kubernetes"
+      KUBECONFIG: "/home/hcitest/Desktop/akshci-cluster-kubeconfig.xml"
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r python-sdk/requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_ASZPCV_CRED}}
+    - name: install tools
+      run: |
+        bash cli/amlarc-compute.sh install_tools
+        bash cli/amlarc-compute.sh prepare_attach_compute_py
+    - name: setup cpu-cluster
+      run: bash cli/amlarc-compute.sh setup_amlarcextension akshci-cluster
+    - name: setup cpu-cluster compute
+      run: bash cli/amlarc-compute.sh setup_compute AKSHCI_CPU cpu-cluster akshci-cluster
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: get workspace config
+      run: bash cli/amlarc-compute.sh attach_workspace
+    - name: run python-sdk/workflows/train/fastai/mnist/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist/job.py
+      continue-on-error: true
+    # - name: run python-sdk/workflows/train/fastai/mnist-mlproject/job.py # cpu-cluster
+    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist-mlproject/job.py
+    #   continue-on-error: true
+    # - name: run python-sdk/workflows/train/lightgbm/iris/job.py # cpu-cluster
+    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/lightgbm/iris/job.py
+    #   continue-on-error: true
+    # - name: run python-sdk/workflows/train/scikit-learn/diabetes/job.py # cpu-cluster
+    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes/job.py
+    #   continue-on-error: true
+    # - name: run python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py # cpu-cluster
+    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py
+    #   continue-on-error: true
+    # - name: run python-sdk/workflows/train/xgboost/iris/job.py # cpu-cluster
+    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/xgboost/iris/job.py
+    #   continue-on-error: true
+    - name: uninstall azmlcli
+      if: ${{ always() }}
+      run: az extension remove -n azure-cli-ml
+    - name: clean up cpu cluster
+      if: ${{ always() }}
+      run: bash cli/amlarc-compute.sh clean_up_aks_hci_cluster akshci-cluster cpu-cluster
+    - name: count result
+      if: ${{ always() }}
+      run: bash cli/amlarc-compute.sh count_result
+      
