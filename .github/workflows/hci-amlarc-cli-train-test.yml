@@ -31,7 +31,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_ASZ-PCV_CREDS}}
+        creds: ${{secrets.AZ_ASZPCV_CRED}}
     - name: install tools
       run: |
         bash amlarc-compute.sh install_tools
