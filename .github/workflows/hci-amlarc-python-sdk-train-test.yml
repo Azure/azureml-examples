@@ -73,21 +73,21 @@ jobs:
     - name: run python-sdk/workflows/train/fastai/mnist/job.py # cpu-cluster
       run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist/job.py
       continue-on-error: true
-    # - name: run python-sdk/workflows/train/fastai/mnist-mlproject/job.py # cpu-cluster
-    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist-mlproject/job.py
-    #   continue-on-error: true
-    # - name: run python-sdk/workflows/train/lightgbm/iris/job.py # cpu-cluster
-    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/lightgbm/iris/job.py
-    #   continue-on-error: true
-    # - name: run python-sdk/workflows/train/scikit-learn/diabetes/job.py # cpu-cluster
-    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes/job.py
-    #   continue-on-error: true
-    # - name: run python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py # cpu-cluster
-    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py
-    #   continue-on-error: true
-    # - name: run python-sdk/workflows/train/xgboost/iris/job.py # cpu-cluster
-    #   run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/xgboost/iris/job.py
-    #   continue-on-error: true
+    - name: run python-sdk/workflows/train/fastai/mnist-mlproject/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist-mlproject/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/lightgbm/iris/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/lightgbm/iris/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/scikit-learn/diabetes/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/xgboost/iris/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/xgboost/iris/job.py
+      continue-on-error: true
     - name: uninstall azmlcli
       if: ${{ always() }}
       run: az extension remove -n azure-cli-ml
