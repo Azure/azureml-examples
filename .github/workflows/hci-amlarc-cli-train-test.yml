@@ -16,6 +16,10 @@ on:
         description: 'Resource Group name of connected Arc cluster' 
         required: true
         default: "AKS-HCI"
+      INPUT_ARC_CLUSTER_NAME:
+        description: 'Connected Arc cluster name' 
+        required: true
+        default: "akshci-cluster"
       INPUT_WORKSPACE:
         description: 'ML Workspace name for testing' 
         required: true
@@ -58,10 +62,10 @@ jobs:
         bash amlarc-compute.sh prepare_attach_compute_py
       working-directory: cli
     - name: setup cpu-cluster
-      run: bash amlarc-compute.sh setup_amlarcextension akshci-cluster
+      run: bash amlarc-compute.sh setup_amlarcextension ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }}
       working-directory: cli
     - name: setup cpu-cluster compute
-      run: bash amlarc-compute.sh setup_compute AKSHCI_CPU cpu-cluster akshci-cluster
+      run: bash amlarc-compute.sh setup_compute AKSHCI_CPU cpu-cluster ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }}
       working-directory: cli
     - name: run jobs/train/fastai/mnist job
       run: bash amlarc-compute.sh run_test jobs/train/fastai/mnist/job.yml
@@ -93,7 +97,7 @@ jobs:
       continue-on-error: true
     - name: clean up cpu cluster
       if: ${{ always() }}
-      run: bash amlarc-compute.sh clean_up_aks_hci_cluster akshci-cluster cpu-cluster
+      run: bash amlarc-compute.sh clean_up_aks_hci_cluster ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }} cpu-cluster
       working-directory: cli
     - name: count result
       if: ${{ always() }}
