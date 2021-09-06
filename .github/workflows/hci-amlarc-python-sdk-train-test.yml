@@ -16,6 +16,10 @@ on:
         description: 'Resource Group name of connected Arc cluster' 
         required: true
         default: "AKS-HCI"
+      INPUT_ARC_CLUSTER_NAME:
+        description: 'Connected Arc cluster name' 
+        required: true
+        default: "akshci-cluster"
       INPUT_WORKSPACE:
         description: 'ML Workspace name for testing' 
         required: true
@@ -59,9 +63,9 @@ jobs:
         bash cli/amlarc-compute.sh install_tools
         bash cli/amlarc-compute.sh prepare_attach_compute_py
     - name: setup cpu-cluster
-      run: bash cli/amlarc-compute.sh setup_amlarcextension akshci-cluster
+      run: bash cli/amlarc-compute.sh setup_amlarcextension ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }}
     - name: setup cpu-cluster compute
-      run: bash cli/amlarc-compute.sh setup_compute AKSHCI_CPU cpu-cluster akshci-cluster
+      run: bash cli/amlarc-compute.sh setup_compute AKSHCI_CPU cpu-cluster ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: get workspace config
@@ -89,7 +93,7 @@ jobs:
       run: az extension remove -n azure-cli-ml
     - name: clean up cpu cluster
       if: ${{ always() }}
-      run: bash cli/amlarc-compute.sh clean_up_aks_hci_cluster akshci-cluster cpu-cluster
+      run: bash cli/amlarc-compute.sh clean_up_aks_hci_cluster ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }} cpu-cluster
     - name: count result
       if: ${{ always() }}
       run: bash cli/amlarc-compute.sh count_result
