@@ -21,7 +21,7 @@ environment:
 
 compute:
   # use a sku with lots of disk space and memory
-  target: azureml:beefy-cluster
+  target: azureml:cpu-cluster-lg
   instance_count: 1
 
 experiment_name: spark-nyctaxi-example
