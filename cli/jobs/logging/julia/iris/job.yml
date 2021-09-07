@@ -5,12 +5,10 @@ command: >-
   julia -e "include(\"run.jl\")"
 
 environment: 
-  docker:
-    build: 
-      dockerfile: file:Dockerfile
+  build: 
+    local_path: .
   conda_file: file:environment.yml
 
-compute:
-  target: local
+compute: azureml:cpu-cluster
 experiment_name: flux-iris-example
 description: Train a Flux model on the Iris dataset. Showcases examples of mlflow logging API used in training
