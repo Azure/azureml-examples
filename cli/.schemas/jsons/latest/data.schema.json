@@ -33,47 +33,25 @@
       },
       "additionalProperties": false
     },
-    "FolderPathSchema": {
-      "type": "object",
-      "required": [
-        "folder"
-      ],
-      "properties": {
-        "folder": {
-          "title": "folder",
-          "type": "string",
-          "description": "URI pointing to folder."
-        }
-      },
-      "additionalProperties": false
-    },
-    "FilePathSchema": {
-      "type": "object",
-      "required": [
-        "file"
-      ],
-      "properties": {
-        "file": {
-          "title": "file",
-          "type": "string",
-          "description": "URI pointing to file."
-        }
-      },
-      "additionalProperties": false
-    },
-    "DatasetSchema": {
+    "AssetSchema": {
       "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
           "pattern": "^azureml:.*",
-          "arm_type": "datasets",
+          "arm_type": "data",
           "title": "arm_id",
           "readonly": true
         },
         "creation_context": {
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
         },
         "description": {
           "title": "description",
@@ -92,25 +70,10 @@
           "title": "name",
           "type": "string"
         },
-        "paths": {
-          "anyOf": [
-            {
-              "title": "paths",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/FolderPathSchema"
-              }
-            },
-            {
-              "title": "paths",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/FilePathSchema"
-              }
-            }
-          ]
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
         },
         "$schema": {
           "title": "$schema",
@@ -137,5 +100,5 @@
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/DatasetSchema"
+  "$ref": "#/definitions/AssetSchema"
 }

@@ -39,6 +39,10 @@ definitions:
       file_share_name:
         title: file_share_name
         type: string
+      id:
+        readonly: true
+        title: id
+        type: string
       name:
         title: name
         type: string

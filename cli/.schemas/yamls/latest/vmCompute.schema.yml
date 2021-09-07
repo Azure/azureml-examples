@@ -1,0 +1,88 @@
+$ref: '#/definitions/VirtualMachineComputeSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  VirtualMachineComputeSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      admin_password:
+        title: admin_password
+        type: string
+      admin_username:
+        title: admin_username
+        type: string
+      compute_location:
+        readonly: true
+        title: compute_location
+        type: string
+      created_on:
+        readonly: true
+        title: created_on
+        type: string
+      description:
+        title: description
+        type: string
+      enable_public_ip:
+        title: enable_public_ip
+        type: boolean
+      id:
+        readonly: true
+        title: id
+        type: string
+      location:
+        title: location
+        type: string
+      name:
+        title: name
+        type: string
+      provisioning_errors:
+        readonly: true
+        title: provisioning_errors
+        type: string
+      provisioning_state:
+        readonly: true
+        title: provisioning_state
+        type: string
+      public_key_data:
+        anyOf:
+        - pattern: ^file:.*
+          title: public_key_data
+          type: string
+        - title: public_key_data
+          type: string
+      resource_id:
+        title: resource_id
+        type: string
+      ssh_key_value:
+        anyOf:
+        - pattern: ^file:.*
+          title: ssh_key_value
+          type: string
+        - title: ssh_key_value
+          type: string
+      ssh_port:
+        format: integer
+        title: ssh_port
+        type: number
+      ssh_public_access:
+        title: ssh_public_access
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      type:
+        enum:
+        - virtualmachine
+        title: type
+        type: string
+    required:
+    - name
+    - resource_id
+    - type
+    type: object

@@ -1,6 +1,19 @@
 $ref: '#/definitions/EnvironmentSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
+  BuildContextSchema:
+    additionalProperties: false
+    properties:
+      context_uri:
+        title: context_uri
+        type: string
+      dockerfile_path:
+        title: dockerfile_path
+        type: string
+      local_path:
+        title: local_path
+        type: string
+    type: object
   CreationContextSchema:
     additionalProperties: false
     properties:
@@ -25,26 +38,6 @@ definitions:
         title: last_modified_by_type
         type: string
     type: object
-  DockerBuildSchema:
-    additionalProperties: false
-    properties:
-      dockerfile:
-        anyOf:
-        - title: dockerfile
-          type: string
-        - title: dockerfile
-          type: string
-    type: object
-  DockerSchema:
-    additionalProperties: false
-    properties:
-      build:
-        $ref: '#/definitions/DockerBuildSchema'
-        type: object
-      image:
-        title: image
-        type: string
-    type: object
   EnvironmentSchema:
     additionalProperties: false
     properties:
@@ -52,6 +45,9 @@ definitions:
         readonly: true
         title: $schema
         type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        type: object
       conda_file:
         anyOf:
         - title: conda_file
@@ -64,14 +60,14 @@ definitions:
       description:
         title: description
         type: string
-      docker:
-        $ref: '#/definitions/DockerSchema'
-        type: object
       id:
         arm_type: environments
         pattern: ^azureml:.*
         readonly: true
         title: id
+        type: string
+      image:
+        title: image
         type: string
       inference_config:
         $ref: '#/definitions/InferenceConfigSchema'
@@ -85,9 +81,6 @@ definitions:
         - windows
         title: os_type
         type: string
-      path:
-        title: path
-        type: string
       tags:
         additionalProperties:
           title: tags
@@ -95,9 +88,13 @@ definitions:
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
+    required:
+    - name
+    - version
     type: object
   InferenceConfigSchema:
     additionalProperties: false
