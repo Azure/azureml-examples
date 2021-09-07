@@ -6,7 +6,7 @@ command: >-
   python main.py 
   --C 0.8
   --penalty "l2"
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:6
 compute:
   target: azureml:cpu-cluster
 experiment_name: sklearn-mnist-example

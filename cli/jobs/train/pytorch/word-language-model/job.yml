@@ -14,7 +14,7 @@ inputs:
     data:
       local_path: data
     mode: download
-environment: azureml:AzureML-pytorch-1.7-ubuntu18.04-py37-cuda11-gpu:1
+environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:3
 compute:
   target: azureml:gpu-cluster
 experiment_name: pytorch-word-language-model-example
