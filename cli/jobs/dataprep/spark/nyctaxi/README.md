@@ -1,7 +1,7 @@
 # README 
 # Running a Spark job
 
-This example shows how a single node Spark job can be run on an AzureML cluster. In this example we are using 4 nodes using this job yaml. 
+This example shows how a single node Spark job can be run on an AzureML cluster. In this example we are using 1 node using this job yaml. 
 
 > Since the script is writing the output to the local drive, and since the dataset is cached on the same local drive, your cluster nodes need to have enough free space on the local volume to accomodate pretty much the whole input and output datasets used (to be on the safe side). The input dataset will be 47GB, the parquet output is about 4GB. Using STANDARD_D15_V2 VMs to build your cluster will give you close to 1TB of free disk space and works well even for bigger datasets.
 
