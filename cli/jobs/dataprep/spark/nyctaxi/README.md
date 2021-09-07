@@ -1,51 +1,17 @@
 # README 
+# Running a Spark job
 
-## Register the AzureML Spark Environment
+This example shows how a single node Spark job can be run on an AzureML cluster. In this example we are using 4 nodes using this job yaml. 
 
-Create an AML Spark environment with the following:
-* Using the **AzureML-PySpark-MmlSpark-0.15** curated environemnt
-* Add the 'numpy' as a conda dependency
-* Add the needed Spark packages and repos
+> Since the script is writing the output to the local drive, and since the dataset is cached on the same local drive, your cluster nodes need to have enough free space on the local volume to accomodate pretty much the whole input and output datasets used (to be on the safe side). The input dataset will be 47GB, the parquet output is about 4GB. Using STANDARD_D15_V2 VMs to build your cluster will give you close to 1TB of free disk space and works well even for bigger datasets.
 
-BUG:
-For AzureML-PySpark-MmlSpark-0.15 we need to update the MML Spark container: mcr.microsoft.com/mmlspark/release:0.15
-
-Run this SDK code to register
-```python
-from azureml.core.environment import Environment
-from azureml.core import RunConfiguration
-from azureml.core.conda_dependencies import CondaDependencies
-
-spark_env=Environment.get(workspace=ws, name="AzureML-PySpark-MmlSpark-0.15")
-spark_env = spark_env.clone("PySpark-MmlSpark-Alt")
-
-# Add 
-conda_dep = CondaDependencies()
-
-# Installs numpy conda package
-conda_dep.add_conda_package('numpy')
-conda_dep.add_pip_package("scikit-learn")
-conda_dep.add_pip_package("pandas")
-
-# Adds dependencies to PythonSection of myenv
-spark_env.python.conda_dependencies=conda_dep
-
-### BROKEN IN V2 ###
-spark_env.spark.packages = [{"group": "com.databricks","artifact": "spark-xml_2.11","version": "0.6.0"}]
-spark_env.spark.repositories = ["https://mvnrepository.com/artifact/com.databricks/spark-xml"]
-### BROKEN IN V2 ###
-
-spark_env.register(ws)
+```bash
+az ml job create --file job.yml --subscription <sub-name> --resource-group <rg-name> --workspace-name <ws-name> --stream
 ```
 
-## Coming soon
+## Known Issues and workarounds
 * Spark Configurations in v2
-* Spark package and Spark repo support in environments in v2
 * Use Synapse/HDI/Databrick Compute for Spark in v2
-* Data attach as HDFS support in v2
-* Pipeline support for Spark in v2
-* Multi-node Spark support for AzureML compute?
-
 
 ### Spark Configuration in v2
 This is not available for v2 in the Job spec, but you can add config to your Spark script, to dynamically load.
@@ -95,11 +61,5 @@ script_run_config = ScriptRunConfig(source_directory = './code',
                                     run_config = run_config)
 ```
 
-### Spark Env support in v2 for packages and reps
-This will require being able to set the run config to that pyspark framework. So the AML Environment can install need Spark packages
-
-'run_config = RunConfiguration(framework="pyspark")'
-Coming soon
-
 ### Use Synapse/HDI/Databrick Compute for Spark in v2
-Coming soon
+Support for running Spark jobs on Synapse/HDI/Databricks in v2 is planned.
