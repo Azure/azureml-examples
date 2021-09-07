@@ -9,7 +9,7 @@ inputs:
     data:
       path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
     mode: mount
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:6
 compute:
   target: azureml:cpu-cluster
 experiment_name: sklearn-diabetes-example
