@@ -73,11 +73,15 @@ python3 -m pip install polygraphy --index-url https://pypi.ngc.nvidia.com
 </pre>
 
 Updating environmental variables
-<pre style="background-color:rgba(0, 0, 0, 0.0470588)"><font size="2">lib_path=$(sudo find / -name 'libcudart.so.11.0')
+<pre style="background-color:rgba(0, 0, 0, 0.0470588)"><font size="2">sudo find / -name 'libcudart.so.11.0'
+
+lib_path=$(sudo find / -name 'libcudart.so.11.0')
 
 lib_path=${lib_path%%libcudart.so.11.0*}libcudart.so.11.0
 
 export LD_LIBRARY_PATH=${lib_path}:${LD_LIBRARY_PATH}
+
+sudo find / -name 'polygraphy'
 
 lib_path=$(sudo find / -name 'polygraphy')
 
