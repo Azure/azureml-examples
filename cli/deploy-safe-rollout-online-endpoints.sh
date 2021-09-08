@@ -18,7 +18,7 @@ az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoint
 # </create_blue>
 
 #todo: remove
-az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100"
+az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100" --debug
 
 # <test_blue>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
