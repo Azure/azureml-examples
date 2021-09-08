@@ -3,7 +3,7 @@ code:
   local_path: src
 command: >-
   python main.py 
-  --iris-csv {inputs.iris}
+  --iris-csv ${{inputs.iris}}
 inputs:
   iris:
     data:
