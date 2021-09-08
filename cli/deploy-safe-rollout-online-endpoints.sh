@@ -2,10 +2,6 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 set -e
 
-#TEMP CODE - TO REMOVE
-#az extension remove -n ml
-#az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-latest-py3-none-any.whl -y
-
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
@@ -21,6 +17,7 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/s
 az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml #--all-traffic
 # </create_blue>
 
+#todo: remove
 az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100"
 
 # <test_blue>
@@ -28,7 +25,8 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/onli
 # </test_blue>
 
 # <scale_blue>
-az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
+#todo: remove
+#az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
 # </scale_blue>
 
 # <create_green>
@@ -44,11 +42,11 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-
 # </test_green>
 
 # <test_green_using_curl>
-AUTH_CREDENTIALS=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
+ENDPOINT_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
 
 SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
 
-curl --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_CREDENTIALS" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
+curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
 # </test_green_using_curl>
 
 # <green_10pct_traffic>
