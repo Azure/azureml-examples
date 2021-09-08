@@ -1,6 +1,6 @@
 name: "model_name"
 platform: "onnxruntime_onnx"
-default_model_filename: "model_onnx_filename_db"
+default_model_filename: "model_onnx_filename_si"
 max_batch_size : 16 #MAX_BATCH
 input [
    {
@@ -54,7 +54,9 @@ output [
    }
 ]
 optimization { execution_accelerators {
-  gpu_execution_accelerator : [ { name : "tensorrt" } ]
+  gpu_execution_accelerator : [ {
+    name : "tensorrt"
+    parameters { key: "precision_mode" value: "precision_value" }}]
 }}
 instance_group {
   count: 1 #NUM_ENGINES
