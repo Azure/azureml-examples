@@ -5,11 +5,9 @@ code_configuration:
   code: 
     local_path: ../../model-1/onlinescoring/
   scoring_script: score_managedidentity.py
-environment: 
-  path: .
-  conda_file: file:../../model-1/environment/conda.yml
-  docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+environment:
+  conda_file: ../../model-1/environment/conda.yml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
 instance_type: Standard_F2s_v2
 instance_count: 1
 environment_variables:
