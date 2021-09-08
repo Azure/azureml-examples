@@ -10,14 +10,14 @@
 
 set -x
 
-az account set --subscription ad203158-bc5d-4e72-b764-2607833a71dc
+az account set --subscription 6560575d-fa06-4e7d-95fb-f962e74efd7a
 
 # <az_group_create>
-az group create -n "mamarkirg" -l "eastus"
+az group create -n "azureml-examples-rg" -l "eastus"
 # </az_group_create>
 
 # <az_configure_defaults>
-az configure --defaults group="mamarkirg" workspace="main"
+az configure --defaults group="azureml-examples-rg" workspace="main"
 # </az_configure_defaults>
 
 # <az_ml_workspace_create>
