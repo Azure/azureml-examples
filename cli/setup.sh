@@ -5,18 +5,22 @@
 #az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.0.1a1-py3-none-any.whl --yes
 
 # <az_ml_install>
-az extension add -n ml -y
+# az extension add -n ml -y
 # </az_ml_install>
 
+set -x
+
+az account set --subscription ad203158-bc5d-4e72-b764-2607833a71dc
+
 # <az_group_create>
-az group create -n "azureml-examples-rg" -l "eastus"
+az group create -n "mamarkirg" -l "eastus"
 # </az_group_create>
 
 # <az_configure_defaults>
-az configure --defaults group="azureml-examples-rg" workspace="main"
+az configure --defaults group="mamarkirg" workspace="main"
 # </az_configure_defaults>
 
 # <az_ml_workspace_create>
-az ml workspace create
+
 # </az_ml_workspace_create>
 
