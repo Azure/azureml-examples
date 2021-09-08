@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # rc install - uncomment this and comment the install below to run all tests on CLI rc
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.4_october_cand-py3-none-any.whl --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.6_october_cand-py3-none-any.whl --yes
 
 # <az_ml_install>
 #az extension add -n ml -y
