@@ -40,14 +40,14 @@ az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $ST
 # </upload_file_to_storage>
 
 # <create_endpoint>
-az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
 # </create_endpoint>
 
 # <check_endpoint_Status>
-az ml endpoint show --name $ENDPOINT_NAME
+az ml online-endpoint show --name $ENDPOINT_NAME
 # </check_endpoint_Status>
 
-endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
 then
@@ -61,7 +61,7 @@ fi
 sleep 60
 
 # <get_system_identity>
-system_identity=`az ml endpoint show --name $ENDPOINT_NAME --query "identity.principal_id" -o tsv`
+system_identity=`az ml online-endpoint show --name $ENDPOINT_NAME --query "identity.principal_id" -o tsv`
 # </get_system_identity>
 
 # <give_permission_to_user_storage_account>
@@ -69,7 +69,7 @@ az role assignment create --assignee $system_identity --role "Storage Blob Data 
 # </give_permission_to_user_storage_account>
 
 # <deploy>
-az ml endpoint update --name $ENDPOINT_NAME --deployment blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
+az ml online-endpoint update --name $ENDPOINT_NAME --deployment blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
 # </deploy>
 
 # <check_deploy_Status>
