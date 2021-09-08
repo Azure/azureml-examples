@@ -1,7 +1,7 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 set -e
-
+set -x
 # <set_variables>
 export WORKSPACE="<WORKSPACE_NAME>"
 export LOCATION="<WORKSPACE_LOCATION>"
@@ -47,16 +47,6 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/m
 az ml online-endpoint show --name $ENDPOINT_NAME
 # </check_endpoint_Status>
 
-endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
-echo $endpoint_status
-if [[ $endpoint_status == "Succeeded" ]]
-then
-  echo "Endpoint created successfully"
-else 
-  echo "Endpoint creation failed"
-  exit 1
-fi
-
 # role assignment fails without sleep statement
 sleep 60
 
@@ -69,14 +59,14 @@ az role assignment create --assignee $system_identity --role "Storage Blob Data 
 # </give_permission_to_user_storage_account>
 
 # <deploy>
-az ml online-endpoint update --name $ENDPOINT_NAME --deployment blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set deployments[0].environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME deployments[0].environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME deployments[0].environment_variables.FILE_NAME=$FILE_NAME
+az ml online-deployment create --endpoint-name $ENDPOINT_NAME --name blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME
 # </deploy>
 
 # <check_deploy_Status>
-az ml endpoint show --name $ENDPOINT_NAME
+az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name blue
 # </check_deploy_Status>
 
-deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name blue --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -86,17 +76,20 @@ else
   exit 1
 fi
 
+
+az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100"
+
 # <check_deployment_log>
 # Check deployment logs to confirm blob storage file contents read operation success.
-az ml endpoint get-logs --name $ENDPOINT_NAME --deployment blue
+az ml online-deployment get-logs --endpoint-name $ENDPOINT_NAME --name blue
 # </check_deployment_log>
 
 # <test_endpoint>
-az ml endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_endpoint>
 
 # <delete_endpoint>
-az ml endpoint delete --name $ENDPOINT_NAME --yes
+az ml online-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_storage_account>
