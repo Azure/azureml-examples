@@ -77,6 +77,10 @@ definitions:
       location:
         title: location
         type: string
+      mlflow_tracking_uri:
+        readonly: true
+        title: mlflow_tracking_uri
+        type: string
       name:
         title: name
         type: string

@@ -101,6 +101,11 @@
           "title": "location",
           "type": "string"
         },
+        "mlflow_tracking_uri": {
+          "title": "mlflow_tracking_uri",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"

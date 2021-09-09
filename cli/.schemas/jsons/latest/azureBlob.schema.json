@@ -138,6 +138,11 @@
           "title": "endpoint",
           "type": "string"
         },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -151,13 +156,6 @@
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "azure_blob"
-          ],
-          "title": "type"
-        },
         "tags": {
           "title": "tags",
           "type": "object",
@@ -165,6 +163,13 @@
             "title": "tags",
             "type": "string"
           }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "azure_blob"
+          ],
+          "title": "type"
         }
       },
       "additionalProperties": false

@@ -5,26 +5,36 @@
 init_env(){
     set -x
 
-    export SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
-    export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
-    export WORKSPACE="${WORKSPACE:-main-amlarc}"  # $((1 + $RANDOM % 100))
-    export LOCATION="${LOCATION:-eastus}"
-    export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-cluster-arc}"
-    export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-cluster-aks}"
-    export AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-experimental}"
-    export AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
-    export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
-    export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
+    SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"  
+    RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"  
+    WORKSPACE="${WORKSPACE:-amlarc-ws}"  # $((1 + $RANDOM % 100))
+    LOCATION="${LOCATION:-eastus}"
+    ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-arc}"
+    AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-aks}"
+    AMLARC_RELEASE_TRAIN="${AMLARC_RELEASE_TRAIN:-staging}"
+    AMLARC_RELEASE_NAMESPACE="${AMLARC_RELEASE_NAMESPACE:-azureml}"
+    EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
+    EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
    
     export RESULT_FILE=amlarc-test-result.txt
 
-    if (( $(date +"%H") > 12 )); then
-        AMLARC_RELEASE_TRAIN=staging
+    if (( $(date +"%H") < 12 )); then
+        AMLARC_RELEASE_TRAIN=experimental
     fi
 
     if [ "$INPUT_AMLARC_RELEASE_TRAIN" != "" ]; then
         AMLARC_RELEASE_TRAIN=$INPUT_AMLARC_RELEASE_TRAIN
     fi
+    
+    if [ "$AMLARC_RELEASE_TRAIN" == "experimental" ]; then
+        LOCATION=eastus2euap
+    fi
+
+    WORKSPACE=${WORKSPACE}-${LOCATION}
+    ARC_CLUSTER_PREFIX=${ARC_CLUSTER_PREFIX}-${LOCATION}
+    AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${LOCATION}
+
+    az version || true
 }
 
 install_tools(){
@@ -156,6 +166,9 @@ setup_cluster(){
     AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
 
     # create resource group
+    az group show \
+        --subscription $SUBSCRIPTION \
+        -n "$RESOURCE_GROUP" || \
     az group create \
         --subscription $SUBSCRIPTION \
         -l "$LOCATION" \
@@ -169,6 +182,7 @@ setup_cluster(){
     az aks create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
+	--location eastus \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
         --node-count $MIN_COUNT \
@@ -265,7 +279,7 @@ setup_compute(){
         "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE" \
 	"$COMPUTE_NAME" "$ARC_RESOURCE_ID" "$VM_SKU"
 
-    sleep 120
+    sleep 500
 }
 
 # check compute resources
@@ -374,6 +388,15 @@ run_test(){
         echo "Job $JOB_YML unknown" | tee -a $RESULT_FILE 
 	exit 2
     fi
+}
+
+
+attach_workspace(){
+    set -x
+
+    init_env
+
+    az ml folder attach -w $WORKSPACE -g $RESOURCE_GROUP --subscription-id $SUBSCRIPTION 
 }
 
 # run python test

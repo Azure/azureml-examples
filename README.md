@@ -20,9 +20,12 @@ Welcome to the Azure Machine Learning examples repository!
 
 directory|description
 -|-
-[`cli`](cli)|Azure Machine Learning 2.0 CLI (preview) examples
-[`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace
-[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK examples
+[`.github`](.github)|GitHub files like issue templates and actions workflows.
+[`cli`](cli)|Azure Machine Learning CLI (v2) examples.
+[`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.
+[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK (v1) examples.
+[`setup-ci`](setup-ci)|Setup scripts to customize and configure an Azure Machine Learning compute instance.
+[`setup-repo`](setup-repo)|Setup scripts for Azure/azureml-examples.
 
 ## Contributing
 

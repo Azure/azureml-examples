@@ -71,8 +71,8 @@
       "type": "object",
       "required": [
         "credential",
-        "type",
-        "store_name"
+        "store_name",
+        "type"
       ],
       "properties": {
         "credential": {
@@ -100,13 +100,6 @@
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "azure_data_lake_gen1"
-          ],
-          "title": "type"
-        },
         "store_name": {
           "title": "store_name",
           "type": "string"
@@ -119,6 +112,13 @@
             "type": "object",
             "additionalProperties": {}
           }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "azure_data_lake_gen1"
+          ],
+          "title": "type"
         }
       },
       "additionalProperties": false

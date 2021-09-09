@@ -87,9 +87,15 @@
           "additionalProperties": {}
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
       "additionalProperties": false
@@ -126,61 +132,22 @@
       },
       "additionalProperties": false
     },
-    "ComputeBindingSchema": {
-      "type": "object",
-      "properties": {
-        "instance_count": {
-          "title": "instance_count",
-          "type": "number",
-          "format": "integer"
-        },
-        "instance_type": {
-          "title": "instance_type",
-          "type": "string",
-          "description": "The instance type to make availabel to this job."
-        },
-        "location": {
-          "title": "location",
-          "type": "string",
-          "description": "The locations where this job may run."
-        },
-        "properties": {
-          "title": "properties",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "target": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": [
-                "local"
-              ],
-              "title": "target"
-            },
-            {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "computes",
-              "title": "target"
-            },
-            {
-              "title": "target",
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false
-    },
     "EnvironmentSchema": {
       "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
         "conda_file": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "conda_file"
+              "title": "conda_file",
+              "type": "string"
             },
             {
               "title": "conda_file",
@@ -196,16 +163,16 @@
           "title": "description",
           "type": "string"
         },
-        "docker": {
-          "type": "object",
-          "$ref": "#/definitions/DockerSchema"
-        },
         "id": {
           "type": "string",
           "pattern": "^azureml:.*",
           "arm_type": "environments",
           "title": "id",
           "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
         },
         "inference_config": {
           "type": "object",
@@ -223,10 +190,6 @@
           ],
           "title": "os_type"
         },
-        "path": {
-          "title": "path",
-          "type": "string"
-        },
         "$schema": {
           "title": "$schema",
           "type": "string",
@@ -241,41 +204,33 @@
           }
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerSchema": {
-      "type": "object",
-      "properties": {
-        "build": {
-          "type": "object",
-          "$ref": "#/definitions/DockerBuildSchema"
-        },
-        "image": {
-          "title": "image",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerBuildSchema": {
-      "type": "object",
-      "properties": {
-        "dockerfile": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "dockerfile"
+              "type": "string"
             },
             {
-              "title": "dockerfile",
-              "type": "string"
+              "type": "integer"
             }
-          ]
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BuildContextSchema": {
+      "type": "object",
+      "properties": {
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -322,12 +277,112 @@
       },
       "additionalProperties": false
     },
-    "ModelSchema": {
+    "AnonymousEnvironmentSchema": {
       "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
+        "conda_file": {
+          "anyOf": [
+            {
+              "title": "conda_file",
+              "type": "string"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousModelSchema": {
+      "type": "object",
       "properties": {
         "creation_context": {
           "type": "object",
@@ -359,6 +414,16 @@
           "title": "local_path",
           "type": "string"
         },
+        "model_format": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "mlflow",
+            "triton",
+            "openai"
+          ],
+          "title": "model_format"
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -388,9 +453,36 @@
           "format": "date-time"
         },
         "version": {
-          "title": "version",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ResourceConfigurationSchema": {
+      "type": "object",
+      "properties": {
+        "instance_count": {
+          "title": "instance_count",
           "type": "number",
           "format": "integer"
+        },
+        "instance_type": {
+          "title": "instance_type",
+          "type": "string",
+          "description": "The instance type to make available to this job."
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
         }
       },
       "additionalProperties": false
@@ -417,6 +509,7 @@
       "type": "object",
       "required": [
         "compute",
+        "endpoint_name",
         "name"
       ],
       "properties": {
@@ -425,8 +518,29 @@
           "$ref": "#/definitions/CodeConfigurationSchema"
         },
         "compute": {
-          "type": "object",
-          "$ref": "#/definitions/ComputeBindingSchema"
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "local"
+              ],
+              "title": "compute"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "computes",
+              "title": "compute"
+            },
+            {
+              "title": "compute",
+              "type": "string"
+            }
+          ]
+        },
+        "endpoint_name": {
+          "title": "endpoint_name",
+          "type": "string"
         },
         "environment": {
           "anyOf": [
@@ -439,6 +553,10 @@
             {
               "type": "object",
               "$ref": "#/definitions/EnvironmentSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousEnvironmentSchema"
             },
             {
               "type": "string",
@@ -455,7 +573,7 @@
           "title": "error_threshold",
           "type": "number",
           "format": "integer",
-          "description": "The number of item processing failures should be ignored. If the error_threshold is reached, the job will be early terminated."
+          "description": "Error threshold, if the error count for the entire input goes above this value,\r\nthe batch inference will be aborted. Range is [-1, int.MaxValue].\r\nFor FileDataset, this value is the count of file failures.\r\nFor TabularDataset, this value is the count of record failures.\r\nIf set to -1 (the lower bound), all failures during batch inference will be ignored."
         },
         "id": {
           "title": "id",
@@ -465,6 +583,12 @@
           "title": "logging_level",
           "type": "string",
           "description": "A string of the logging level name, which is defined in 'logging'. Possible values are 'warning', 'info', and 'debug'."
+        },
+        "max_concurrency_per_instance": {
+          "title": "max_concurrency_per_instance",
+          "type": "number",
+          "format": "integer",
+          "description": "Indicates maximum number of parallelism per instance."
         },
         "mini_batch_size": {
           "title": "mini_batch_size",
@@ -481,7 +605,7 @@
             },
             {
               "type": "object",
-              "$ref": "#/definitions/ModelSchema"
+              "$ref": "#/definitions/AnonymousModelSchema"
             }
           ]
         },
@@ -489,24 +613,27 @@
           "title": "name",
           "type": "string"
         },
+        "output_action": {
+          "type": "string",
+          "enum": [
+            "appendrow",
+            "summaryonly"
+          ],
+          "title": "output_action"
+        },
         "output_file_name": {
           "title": "output_file_name",
           "type": "string",
-          "description": "File name of the prediction output."
-        },
-        "partition_keys": {
-          "title": "partition_keys",
-          "type": "array",
-          "description": "The partition strategy for the input data.",
-          "items": {
-            "title": "partition_keys",
-            "type": "string"
-          }
+          "description": "Customized output file name for append_row output action."
         },
         "properties": {
           "title": "properties",
           "type": "object",
           "additionalProperties": {}
+        },
+        "resources": {
+          "type": "object",
+          "$ref": "#/definitions/ResourceConfigurationSchema"
         },
         "retry_settings": {
           "type": "object",
@@ -521,10 +648,6 @@
           "title": "tags",
           "type": "object",
           "additionalProperties": {}
-        },
-        "type": {
-          "title": "type",
-          "type": "string"
         }
       },
       "additionalProperties": false

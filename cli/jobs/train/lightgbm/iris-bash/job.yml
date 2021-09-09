@@ -3,7 +3,7 @@ code:
   local_path: src
 command: >-
   bash run.sh 
-environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:1
+environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:8
 compute:
   target: azureml:cpu-cluster
 experiment_name: lightgbm-iris-bash-example
