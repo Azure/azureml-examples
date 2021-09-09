@@ -1,0 +1,8 @@
+#source ../configs/environment/docker-file-Environment.yaml
+$schema: http://azureml/sdk-2-0/Environment.json
+
+name: awesome 
+version: '1'
+build:
+    local_path: ./environment
+    dockerfile_path: Dockerfile
