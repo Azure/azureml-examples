@@ -31,4 +31,4 @@ az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 az ml workspace create -n "main-master" -g $GROUP -l "centraluseuap"
 az ml workspace create -n "main-canary" -g $GROUP -l "eastus2euap"
 
-# az configure --defaults workspace="main-master" location="centraluseuap"
+az configure --defaults workspace="main-master" location="centraluseuap"
