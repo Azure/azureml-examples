@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  python main.py 
+  --diabetes-csv {inputs.diabetes}
+inputs:
+  diabetes:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
+    mode: mount
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:6
+compute:
+  target: azureml:cpu-cluster
+experiment_name: sklearn-diabetes-example
+description: Train a scikit-learn LinearRegression model on the Diabetes dataset.

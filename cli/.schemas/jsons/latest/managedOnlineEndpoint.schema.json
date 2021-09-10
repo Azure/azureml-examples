@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "IdentitySchema": {
+      "type": "object",
+      "properties": {
+        "principal_id": {
+          "title": "principal_id",
+          "type": "string"
+        },
+        "tenant_id": {
+          "title": "tenant_id",
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "system_assigned",
+            "user_assigned",
+            "none"
+          ],
+          "title": "type"
+        },
+        "user_assigned_identities": {
+          "title": "user_assigned_identities",
+          "type": "array",
+          "items": {
+            "title": "user_assigned_identities",
+            "type": "object",
+            "additionalProperties": {
+              "title": "user_assigned_identities",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ManagedOnlineEndpointSchema": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "allow_public_access": {
+          "title": "allow_public_access",
+          "type": "boolean"
+        },
+        "auth_mode": {
+          "type": "string",
+          "enum": [
+            "aml_token",
+            "key",
+            "aad_token"
+          ],
+          "title": "auth_mode"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "identity": {
+          "type": "object",
+          "$ref": "#/definitions/IdentitySchema"
+        },
+        "location": {
+          "title": "location",
+          "type": "string"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "scoring_uri": {
+          "title": "scoring_uri",
+          "type": "string",
+          "description": "the endpoint uri that can be used for scoring"
+        },
+        "swagger_uri": {
+          "title": "swagger_uri",
+          "type": "string"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "traffic": {
+          "title": "traffic",
+          "type": "object",
+          "additionalProperties": {
+            "title": "traffic",
+            "type": "number",
+            "format": "integer"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/ManagedOnlineEndpointSchema"
+}

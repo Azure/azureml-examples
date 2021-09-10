@@ -1,0 +1,7 @@
+name: basic-cpu
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - mlflow
+    - azureml-mlflow

@@ -1,0 +1,45 @@
+name: copy-schemas
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+    - name: pip install requirements
+      run: pip install -r requirements.txt
+      working-directory: cli/.schemas
+    - name: run schema copy script
+      run: python copy-schemas.py
+      working-directory: cli/.schemas
+    - name: create PR if schema changes
+      run: |
+        git branch
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout -b actions/update-schemas
+        echo "adding..."
+        git add -A
+        if [ -n "$(git status --porcelain)" ]
+        then
+            echo "commiting..."
+            git commit -m "updating schemas"
+            echo "pushing to origin..."
+            git push --set-upstream origin actions/update-schemas
+            echo "running GH auth..."
+            echo ${{secrets.GITHUB_TOKEN}} | gh auth login --with-token
+            echo "creating PR..."
+            gh pr create -t "[bot] updating schemas" -b "updating schemas"
+        else
+            echo "no changes in schemas..." 
+        fi
+      working-directory: cli/.schemas

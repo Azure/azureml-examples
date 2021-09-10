@@ -1,0 +1,39 @@
+# pydata
+numpy
+scipy
+pandas>=1.2.0
+scikit-learn
+dask
+distributed
+dask-ml
+bokeh
+xarray
+dask-sql
+adlfs
+s3fs
+gcsfs
+fsspec
+fastparquet
+pyarrow
+python-snappy
+lz4
+
+# trees
+xgboost
+lightgbm
+
+# tracking
+mlflow
+azureml-mlflow
+
+# visualization
+matplotlib
+seaborn
+
+# python tools
+tqdm
+numba
+joblib
+jupyter
+ipykernel
+papermill

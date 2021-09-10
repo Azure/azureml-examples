@@ -1,0 +1,657 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CodeConfigurationSchema": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "codes",
+              "title": "code"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/CodeAssetSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "scoring_script": {
+          "title": "scoring_script",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CodeAssetSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CreationContextSchema": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "title": "created_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "title": "created_by",
+          "type": "string"
+        },
+        "created_by_type": {
+          "title": "created_by_type",
+          "type": "string"
+        },
+        "last_modified_at": {
+          "title": "last_modified_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_by": {
+          "title": "last_modified_by",
+          "type": "string"
+        },
+        "last_modified_by_type": {
+          "title": "last_modified_by_type",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "EnvironmentSchema": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
+        "conda_file": {
+          "anyOf": [
+            {
+              "title": "conda_file",
+              "type": "string"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BuildContextSchema": {
+      "type": "object",
+      "properties": {
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InferenceConfigSchema": {
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "properties": {
+        "liveness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "readiness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "scoring_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RouteSchema": {
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousEnvironmentSchema": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "arm_id",
+          "readonly": true
+        },
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
+        "conda_file": {
+          "anyOf": [
+            {
+              "title": "conda_file",
+              "type": "string"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the data gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnonymousModelSchema": {
+      "type": "object",
+      "properties": {
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "flavors": {
+          "title": "flavors",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "models",
+          "title": "id",
+          "readonly": true
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
+        },
+        "model_format": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "mlflow",
+            "triton",
+            "openai"
+          ],
+          "title": "model_format"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "utc_time_created": {
+          "title": "utc_time_created",
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ResourceConfigurationSchema": {
+      "type": "object",
+      "properties": {
+        "instance_count": {
+          "title": "instance_count",
+          "type": "number",
+          "format": "integer"
+        },
+        "instance_type": {
+          "title": "instance_type",
+          "type": "string",
+          "description": "The instance type to make available to this job."
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "additionalProperties": false
+    },
+    "BatchRetrySettingsSchema": {
+      "type": "object",
+      "properties": {
+        "max_retries": {
+          "title": "max_retries",
+          "type": "number",
+          "format": "integer",
+          "description": "The number of maximum tries for a failed or timeout mini batch."
+        },
+        "timeout": {
+          "title": "timeout",
+          "type": "number",
+          "format": "integer",
+          "description": "The timeout for a mini batch."
+        }
+      },
+      "additionalProperties": false
+    },
+    "BatchDeploymentSchema": {
+      "type": "object",
+      "required": [
+        "compute",
+        "endpoint_name",
+        "name"
+      ],
+      "properties": {
+        "code_configuration": {
+          "type": "object",
+          "$ref": "#/definitions/CodeConfigurationSchema"
+        },
+        "compute": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "local"
+              ],
+              "title": "compute"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "computes",
+              "title": "compute"
+            },
+            {
+              "title": "compute",
+              "type": "string"
+            }
+          ]
+        },
+        "endpoint_name": {
+          "title": "endpoint_name",
+          "type": "string"
+        },
+        "environment": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "environments",
+              "title": "environment"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/EnvironmentSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousEnvironmentSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "environment_variables": {
+          "title": "environment_variables",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "error_threshold": {
+          "title": "error_threshold",
+          "type": "number",
+          "format": "integer",
+          "description": "Error threshold, if the error count for the entire input goes above this value,\r\nthe batch inference will be aborted. Range is [-1, int.MaxValue].\r\nFor FileDataset, this value is the count of file failures.\r\nFor TabularDataset, this value is the count of record failures.\r\nIf set to -1 (the lower bound), all failures during batch inference will be ignored."
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "logging_level": {
+          "title": "logging_level",
+          "type": "string",
+          "description": "A string of the logging level name, which is defined in 'logging'. Possible values are 'warning', 'info', and 'debug'."
+        },
+        "max_concurrency_per_instance": {
+          "title": "max_concurrency_per_instance",
+          "type": "number",
+          "format": "integer",
+          "description": "Indicates maximum number of parallelism per instance."
+        },
+        "mini_batch_size": {
+          "title": "mini_batch_size",
+          "type": "number",
+          "format": "integer"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "models",
+              "title": "model"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousModelSchema"
+            }
+          ]
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "output_action": {
+          "type": "string",
+          "enum": [
+            "appendrow",
+            "summaryonly"
+          ],
+          "title": "output_action"
+        },
+        "output_file_name": {
+          "title": "output_file_name",
+          "type": "string",
+          "description": "Customized output file name for append_row output action."
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "resources": {
+          "type": "object",
+          "$ref": "#/definitions/ResourceConfigurationSchema"
+        },
+        "retry_settings": {
+          "type": "object",
+          "$ref": "#/definitions/BatchRetrySettingsSchema"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/BatchDeploymentSchema"
+}

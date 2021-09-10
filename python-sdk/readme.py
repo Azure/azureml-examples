@@ -25,7 +25,7 @@ def main(args):
     modify_notebooks(all_notebooks)
 
     # format code
-    # format_code()
+    format_code()
 
     # write workflows
     write_workflows(notebooks, workflows)
@@ -67,15 +67,26 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     # process tutorials
     for tutorial in tutorials + experimental:
         # get list of notebooks
-        nbs = sorted([nb.split("/")[-1] for nb in glob.glob(f"{tutorial}/*.ipynb")])
-        nbs = [f"[{nb}]({tutorial}/{nb})" for nb in nbs]
+        nbs = sorted([nb for nb in glob.glob(f"{tutorial}/**/*.ipynb", recursive=True)])
+        notebook_names = [nb.split("/")[-1].replace(".ipynb", "") for nb in nbs]
+        nbs = [f"[{nb.split('/')[-1]}]({nb})" for nb in nbs]
         nbs = "<br>".join(nbs)
 
         # get tutorial name
         name = tutorial.split("/")[-1]
 
         # build entries for tutorial table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-tutorial-{name})"
+        if os.path.exists(f"../.github/workflows/python-sdk-tutorial-{name}.yml"):
+            # we can have a single GitHub workflow for handling all notebooks within this tutorial folder
+            status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
+        else:
+            # or, we could have dedicated workflows for each individual notebook contained within this tutorial folder
+            statuses = [
+                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
+                for name in notebook_names
+            ]
+            status = "<br>".join(statuses)
+
         description = "*no description*"
         try:
             with open(f"{tutorial}/README.md", "r") as f:
@@ -116,7 +127,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
             data = json.load(f)
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-notebook-{name})"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-notebook-{name}.yml)"
         description = "*no description*"
         try:
             if "description: " in str(data["cells"][0]["source"]):
@@ -146,7 +157,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
             data = f.read()
 
         # build entires for workflow tables
-        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-{scenario}-{tool}-{project}-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Apython-sdk-{scenario}-{tool}-{project}-{name})"
+        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-{scenario}-{tool}-{project}-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml)"
         description = "*no description*"
         try:
             description = data.split("\n")[0].split(": ")[-1].strip()
@@ -204,21 +215,29 @@ def check_readme(before, after):
 
 def modify_notebooks(notebooks):
     # setup variables
-    kernelspec = {
-        "display_name": "Python 3.8",
+    kernelspec3_8 = {
+        "display_name": "Python 3.8 - AzureML",
         "language": "python",
-        "name": "python3.8",
+        "name": "python38-azureml",
+    }
+
+    kernelspec3_6 = {
+        "display_name": "Python 3.6 - AzureML",
+        "language": "python",
+        "name": "python3-azureml",
     }
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
 
         # update metadata
-        data["metadata"]["kernelspec"] = kernelspec
+        if "automl-with-azureml" in notebook:
+            data["metadata"]["kernelspec"] = kernelspec3_6
+        else:
+            data["metadata"]["kernelspec"] = kernelspec3_8
 
         # write notebook
         with open(notebook, "w") as f:

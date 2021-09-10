@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ComputeInstanceSchema": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "admin_username": {
+          "title": "admin_username",
+          "type": "string",
+          "readonly": true
+        },
+        "applications": {
+          "title": "applications",
+          "type": "array",
+          "readonly": true,
+          "items": {
+            "title": "applications",
+            "type": "object",
+            "additionalProperties": {
+              "title": "applications",
+              "type": "string"
+            }
+          }
+        },
+        "created_on": {
+          "title": "created_on",
+          "type": "string",
+          "readonly": true
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "enable_public_ip": {
+          "title": "enable_public_ip",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
+        "last_operation": {
+          "title": "last_operation",
+          "type": "object",
+          "additionalProperties": {
+            "title": "last_operation",
+            "type": "string"
+          }
+        },
+        "location": {
+          "title": "location",
+          "type": "string"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "provisioning_errors": {
+          "title": "provisioning_errors",
+          "type": "string",
+          "readonly": true
+        },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string",
+          "readonly": true
+        },
+        "resource_id": {
+          "title": "resource_id",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "size": {
+          "title": "size",
+          "type": "string"
+        },
+        "ssh_key_value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^file:.*",
+              "title": "ssh_key_value"
+            },
+            {
+              "title": "ssh_key_value",
+              "type": "string"
+            }
+          ]
+        },
+        "ssh_public_access": {
+          "title": "ssh_public_access",
+          "type": "string"
+        },
+        "state": {
+          "title": "state",
+          "type": "string"
+        },
+        "subnet": {
+          "title": "subnet",
+          "type": "string"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "computeinstance"
+          ],
+          "title": "type"
+        },
+        "vnet_name": {
+          "title": "vnet_name",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/ComputeInstanceSchema"
+}

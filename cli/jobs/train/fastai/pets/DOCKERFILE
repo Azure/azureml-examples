@@ -1,2 +1,3 @@
 FROM fastdotai/fastai:latest
+RUN conda install -y pip=20.1.1
 RUN pip install azureml-mlflow

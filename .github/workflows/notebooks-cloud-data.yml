@@ -1,0 +1,38 @@
+name: notebooks-cloud-data
+on:
+  schedule:
+    - cron: "0 0/2 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - notebooks/cloud-data/**
+      - .github/workflows/notebooks-cloud-data.yml
+      - notebooks/dev-requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        notebook: ['blob-adls-numpy.ipynb', 'blob-adls-pandas.ipynb']
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r notebooks/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run ${{matrix.notebook}}
+      run: papermill ${{matrix.notebook}} - -k python
+      working-directory: notebooks/cloud-data

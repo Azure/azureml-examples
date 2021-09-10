@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
-command: >
+command: >-
   python train.py 
   --epochs 1
   --data-dir {inputs.cifar}
@@ -10,12 +10,12 @@ inputs:
     data:
       local_path: data
     mode: mount
-environment: azureml:AzureML-Pytorch1.7-Cuda11-OpenMpi4.1.0-py36:1
+environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:3
 compute:
   target: azureml:gpu-cluster
   instance_count: 2
 distribution:
   type: pytorch 
-  process_count: 4
+  process_count: 2
 experiment_name: pytorch-cifar-distributed-example
 description: Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.

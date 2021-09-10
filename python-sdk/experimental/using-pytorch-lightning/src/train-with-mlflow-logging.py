@@ -23,7 +23,6 @@ import pytorch_lightning as pl
 from torch.utils.data import random_split
 from pytorch_lightning.loggers import MLFlowLogger
 import mlflow
-from azureml.core import Run
 
 try:
     from torchvision.datasets.mnist import MNIST
@@ -92,28 +91,29 @@ def cli_main():
     # ------------
     # logging
     # ------------
-    # get azureml run object
-    run = Run.get_context()
-    # get the tracking uri for the azureml workspace
-    mlflow_uri = run.experiment.workspace.get_mlflow_tracking_uri()
-    # get the azureml experiment name
-    exp_name = run.experiment.name
+    # get run object using mlflow
+    with mlflow.start_run() as run:
+        experiment_id = run.info.experiment_id
+        # get the experiment name
+        exp_name = mlflow.get_experiment(experiment_id).name
+        # get the mlflow tracking uri
+        mlflow_uri = mlflow.get_tracking_uri()
 
-    mlf_logger = MLFlowLogger(experiment_name=exp_name, tracking_uri=mlflow_uri)
-    # link the mlflowlogger run ID to the azureml run ID
-    mlf_logger._run_id = run.id
+        mlf_logger = MLFlowLogger(experiment_name=exp_name, tracking_uri=mlflow_uri)
+        # link the mlflowlogger run ID to the azureml run ID
+        mlf_logger._run_id = run.info.run_id
 
-    # ------------
-    # training
-    # ------------
-    trainer = pl.Trainer.from_argparse_args(args, logger=mlf_logger)
-    trainer.fit(model, train_loader, val_loader)
+        # ------------
+        # training
+        # ------------
+        trainer = pl.Trainer.from_argparse_args(args, logger=mlf_logger)
+        trainer.fit(model, train_loader, val_loader)
 
-    # ------------
-    # testing
-    # ------------
-    result = trainer.test(test_dataloaders=test_loader)
-    print(result)
+        # ------------
+        # testing
+        # ------------
+        result = trainer.test(test_dataloaders=test_loader)
+        print(result)
 
 
 if __name__ == "__main__":

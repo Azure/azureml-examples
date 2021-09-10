@@ -1,0 +1,8 @@
+[deps]
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+[compat]
+Flux = "0.11.4"
+julia = "1.5"

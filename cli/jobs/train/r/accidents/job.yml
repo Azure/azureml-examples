@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code:
+  local_path: src
+command: >-
+  Rscript accidents.R
+  --data {inputs.training_data}
+inputs:
+  training_data:
+    data: 
+      local_path: data
+    mode: mount
+environment:
+  docker:
+    build:
+      dockerfile: file:Dockerfile
+compute: 
+  target: azureml:cpu-cluster
+experiment_name: r-accidents-example
+description: Train a GLM using R on the accidents dataset.  

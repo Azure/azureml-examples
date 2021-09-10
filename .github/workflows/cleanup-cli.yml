@@ -1,0 +1,31 @@
+name: cleanup-cli
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths: 
+      - .github/workflows/cleanup-cli.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install ml cli
+      run: az extension add -n ml -y
+    - name: setup workspace
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: script installs
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: run cleanup script
+      run: set -e; bash -x cleanup.sh
+      working-directory: cli

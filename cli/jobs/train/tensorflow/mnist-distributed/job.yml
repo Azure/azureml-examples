@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code:
   local_path: src
-command: >
+command: >-
   python train.py 
   --epochs 1
   --model-dir outputs/keras-model
-environment: azureml:AzureML-TensorFlow2.4-Cuda11-OpenMpi4.1.0-py36:1
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:11
 compute:
   target: azureml:gpu-cluster
   instance_count: 2

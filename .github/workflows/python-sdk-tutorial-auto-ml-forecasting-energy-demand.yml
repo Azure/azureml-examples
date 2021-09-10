@@ -1,0 +1,54 @@
+name: auto-ml-forecasting-energy-demand
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 2"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - python-sdk/tutorials/automl-with-azureml/forecasting-energy-demand/**
+      - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-energy-demand.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.7"
+    - name: create automl conda environment
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+          activate-environment: azure_automl
+          environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
+          auto-activate-base: false
+    - name: install papermill and set up the IPython kernel
+      run: |
+        pip install papermill==2.3.3
+        python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
+        pip list
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run auto-ml-forecasting-energy-demand.ipynb
+      run: papermill -k python auto-ml-forecasting-energy-demand.ipynb auto-ml-forecasting-energy-demand.output.ipynb 
+      working-directory: python-sdk/tutorials/automl-with-azureml/forecasting-energy-demand
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: auto-ml-forecasting-energy-demand
+        path: python-sdk/tutorials/automl-with-azureml/forecasting-energy-demand

@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AKSComputeSchema": {
+      "properties": {
+        "created_on": {
+          "title": "created_on",
+          "type": "string",
+          "readonly": true
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "enable_public_ip": {
+          "title": "enable_public_ip",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
+        "location": {
+          "title": "location",
+          "type": "string"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "provisioning_errors": {
+          "title": "provisioning_errors",
+          "type": "string",
+          "readonly": true
+        },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string",
+          "readonly": true
+        },
+        "resource_id": {
+          "title": "resource_id",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "size": {
+          "title": "size",
+          "type": "string"
+        },
+        "ssh_public_access": {
+          "title": "ssh_public_access",
+          "type": "string"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "aks"
+          ],
+          "title": "type"
+        }
+      },
+      "required": [
+        "name",
+        "resource_id",
+        "type"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/AKSComputeSchema"
+}
