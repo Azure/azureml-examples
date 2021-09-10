@@ -99,22 +99,28 @@ path|status|description
 path|status|description
 -|-|-
 
+**Resources** ([resources](resources))
+
+path|status|description
+-|-|-
+
 **Assets** ([assets](assets))
 
 path|status|description
 -|-|-
-[assets/data/iris-datastore.yml](assets/data/iris-datastore.yml)|[![assets/data/iris-datastore](https://github.com/Azure/azureml-examples/workflows/cli-assets-data-iris-datastore/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-data-iris-datastore.yml)|Data asset from datastore blob storage.
-[assets/data/iris-url.yml](assets/data/iris-url.yml)|[![assets/data/iris-url](https://github.com/Azure/azureml-examples/workflows/cli-assets-data-iris-url/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-data-iris-url.yml)|Data asset pointing to Iris CSV on public blob storage.
-[assets/environment/python-ml-basic-cpu.yml](assets/environment/python-ml-basic-cpu.yml)|[![assets/environment/python-ml-basic-cpu](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-python-ml-basic-cpu/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-python-ml-basic-cpu.yml)|Environment asset created from a base Docker image plus a Conda environment file.
-[assets/model/lightgbm-iris.yml](assets/model/lightgbm-iris.yml)|[![assets/model/lightgbm-iris](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-lightgbm-iris/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-lightgbm-iris.yml)|Model asset from local directory.
+[assets/environment/docker-context.yml](assets/environment/docker-context.yml)|[![assets/environment/docker-context](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-context/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-context.yml)|*no description*
+[assets/environment/docker-image-plus-conda.yml](assets/environment/docker-image-plus-conda.yml)|[![assets/environment/docker-image-plus-conda](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-image-plus-conda/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-image-plus-conda.yml)|Environment created from a Docker image plus Conda environment.
+[assets/environment/docker-image.yml](assets/environment/docker-image.yml)|[![assets/environment/docker-image](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-image/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-image.yml)|Environment created from a Docker image.
 
 ## Contents
 
 |directory|description|
 |-|-|
+|`.schemas`|schemas|
 |`assets`|assets|
 |`endpoints`|endpoints|
 |`jobs`|jobs|
+|`resources`|resources|
 
 ## Contributing
 

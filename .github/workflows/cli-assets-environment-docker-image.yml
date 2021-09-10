@@ -1,4 +1,4 @@
-name: cli-assets-data-iris-url
+name: cli-assets-environment-docker-image
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/data/iris-url.yml
-      - .github/workflows/cli-assets-data-iris-url.yml
+      - cli/assets/environment/docker-image.yml
+      - .github/workflows/cli-assets-environment-docker-image.yml
       - cli/setup.sh
 jobs:
   build:
@@ -20,11 +20,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_V2_CREDS}}
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml data create -f assets/data/iris-url.yml
+      run: az ml environment create -f assets/environment/docker-image.yml
       working-directory: cli
