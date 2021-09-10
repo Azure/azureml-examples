@@ -284,6 +284,7 @@ jobs:
         echo "Streaming logs..."
         az ml job stream -n $run_id
         echo "Getting status..."
+        sleep 1
         status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
         echo "Checking status..."
