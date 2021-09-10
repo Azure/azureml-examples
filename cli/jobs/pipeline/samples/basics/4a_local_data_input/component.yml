@@ -1,0 +1,30 @@
+type: command_component
+
+name: Hello_Python_World
+display_name: Hello_Python_World
+version: 1
+
+inputs:
+  sample_input_data:
+    type: path
+    description: "This component lists and prints the content of files in this folder"
+  sample_input_string:
+    type: string
+    default: "hello_python_world"
+    description: "This component writes a text file with current time to this folder"
+outputs:
+  sample_output_data:
+    type: path
+
+code:
+  local_path: ./src
+
+environment: 
+  docker: 
+    image: docker.io/python
+
+command: >-
+  python hello.py  
+  --input_data ${{inputs.sample_input_data}}
+  --input_string ${{inputs.sample_input_string}}
+  --output_data ${{outputs.sample_output_data}}
