@@ -1,0 +1,20 @@
+name: action-test
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: test
+      run: |
+        echo "here"
+        echo " �]0;"
+        echo "there"
+        echo " �]0;" >> test.txt
+        cat test.txt
+        echo "done!"
+
