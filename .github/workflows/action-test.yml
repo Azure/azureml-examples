@@ -1,0 +1,24 @@
+name: action-test
+on:
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_V2_CREDS}}
+    - name: test
+      run: |
+        echo "here"
+        echo " ]0;"
+        echo "there"
+        echo ">>>   ]0;root@d04320ac5c1741f4968f2cbd650a23bc000000: /mnt/batch/tasks/shared/LS_root/jobs/main-master/91786579b49b44dbb8bebae7130e65d4/65ea4322-dafe-4a25-8d6a-eafc1e148769/wdroot@d04320ac5c1741f4968f2cbd650a23bc000000:/mnt/batch/tasks/shared/LS_root/jobs/"
+        echo "done!"
