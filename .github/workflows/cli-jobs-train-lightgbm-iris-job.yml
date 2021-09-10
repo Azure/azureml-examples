@@ -27,11 +27,15 @@ jobs:
       continue-on-error: true
     - name: create job
       run: |
+        echo "Creating job..."
         run_id=$(az ml job create -f jobs/train/lightgbm/iris/job.yml --query name -o tsv)
-        az ml job stream -n $run_id >> /dev/null
-        status=$(az ml job show -n $run_id --query status -o tsv)
+        echo "Streaming job..."
+        az ml job stream -n $run_id >> log.txt
+        echo "Getting job status..."
         sleep 1
+        status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
+        echo "Checking job status..."
         if [[ $status == "Completed" ]]
         then
           echo "Job completed"
