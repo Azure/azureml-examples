@@ -14,7 +14,7 @@ EXCLUDED_RESOURCES = [
 EXCLUDED_ASSETS = [
     "conda.yml",
     "environment.yml",
-    "conda-envs",
+    "conda-yamls",
     "mlflow-models",
 ]
 EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
