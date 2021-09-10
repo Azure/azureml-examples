@@ -98,6 +98,11 @@ path|status|description
 path|status|description
 -|-|-
 
+**Resources** ([resources](resources))
+
+path|status|description
+-|-|-
+
 **Assets** ([assets](assets))
 
 path|status|description

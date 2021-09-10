@@ -189,6 +189,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
             + scripts_table
             + jobs_table
             + endpoints_table
+            + resources_table
             + assets_table
             + suffix
         )
@@ -250,7 +251,7 @@ def parse_path(path):
 
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
@@ -304,7 +305,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
@@ -343,7 +344,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   schedule:
@@ -382,7 +383,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
   schedule:
