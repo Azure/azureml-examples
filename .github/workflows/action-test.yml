@@ -16,5 +16,6 @@ jobs:
     - name: test
       run: |
         echo "here"
+        echo " ]0;"
         echo "there"
         echo "done!"
