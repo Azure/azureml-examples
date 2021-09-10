@@ -4,10 +4,17 @@ code:
 command: >-
   pip install -r requirements.txt &&
   python main.py 
-  --C 0.8
-  --penalty "l2"
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:6
-compute:
-  target: azureml:cpu-cluster
+  --C ${{inputs.C}}
+  --penalty ${{inputs.penalty}}
+inputs:
+  C: 0.8
+  penalty: "l2"
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+compute: azureml:cpu-cluster
+display_name: sklearn-mnist-example
 experiment_name: sklearn-mnist-example
 description: Train a scikit-learn LogisticRegression model on the MNSIT dataset.
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

@@ -1,15 +1,16 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
-  local_path: .
+  local_path: src
 command: >-
   julia -e "include(\"run.jl\")"
-
 environment: 
-  docker:
-    build:
-      dockerfile: file:Dockerfile
+  build:
+    local_path: docker-context
+compute: azureml:cpu-cluster
+display_name: julia-iris-example
+experiment_name: julia-iris-example
+description: Train a Flux model on the Iris dataset using the Julia programming language.
 
-compute:
-  target: local
-experiment_name: flux-iris-example
-description: Train a Flux model on the Iris dataset.
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"

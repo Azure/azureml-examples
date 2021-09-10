@@ -1,8 +1,10 @@
-command: echo $ENV_VAR
+command: echo $HELLO
 environment:
-  docker:
-    image: python:latest
+  image: debian:latest
+compute: azureml:cpu-cluster
 environment_variables:
-  ENV_VAR: "hello world"
-compute:
-    target: azureml:cpu-cluster
+  HELLO: "hello world"
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"

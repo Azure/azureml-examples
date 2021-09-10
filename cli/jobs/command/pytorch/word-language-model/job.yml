@@ -4,18 +4,26 @@ code:
 command: >-
   python main.py 
   --cuda 
-  --epochs 1
-  --model Transformer 
-  --lr 5 
-  --data {inputs.corpus} 
-  --save outputs/model.pt
+  --epochs ${{inputs.epochs}}
+  --model ${{inputs.model}}
+  --lr ${{inputs.lr}}
+  --data ${{inputs.corpus}}
+  --save ${{inputs.save}}
 inputs:
+  epochs: 1
+  model: Transformer
+  lr: 5
+  save: outputs/model.pt
   corpus:
-    data:
+    dataset:
       local_path: data
     mode: download
-environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:3
-compute:
-  target: azureml:gpu-cluster
+environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
+compute: azureml:gpu-cluster
+display_name: pytorch-word-language-model-example
 experiment_name: pytorch-word-language-model-example
 description: Train a multi-layer RNN (Elman, GRU, or LSTM) on a language modeling task with PyTorch.
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"

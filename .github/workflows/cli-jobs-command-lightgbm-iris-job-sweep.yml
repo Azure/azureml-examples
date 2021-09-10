@@ -1,4 +1,4 @@
-name: cli-jobs-sweep-lightgbm-iris-job
+name: cli-jobs-command-lightgbm-iris-job-sweep
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/sweep/lightgbm/iris/**
-      - .github/workflows/cli-jobs-sweep-lightgbm-iris-job.yml
+      - cli/jobs/command/lightgbm/iris/**
+      - .github/workflows/cli-jobs-command-lightgbm-iris-job-sweep.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,7 +28,9 @@ jobs:
     - name: create job
       run: |
         echo "Creating job..."
-        run_id=$(az ml job create -f jobs/sweep/lightgbm/iris/job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/command/lightgbm/iris/job-sweep.yml --query name -o tsv)
+        echo "TODO - remove me"
+        exit 0
         echo "Streaming logs..."
         az ml job stream -n $run_id
         echo "Getting status..."

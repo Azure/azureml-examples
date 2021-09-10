@@ -3,14 +3,15 @@ code:
   local_path: src
 command: >-
   python main.py 
-  --diabetes-csv {inputs.diabetes}
+  --diabetes-csv ${{inputs.diabetes}}
 inputs:
-  diabetes:
-    data:
-      path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
-    mode: mount
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:6
-compute:
-  target: azureml:cpu-cluster
+  diabetes: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+compute: azureml:cpu-cluster
+display_name: sklearn-diabetes-example
 experiment_name: sklearn-diabetes-example
 description: Train a scikit-learn LinearRegression model on the Diabetes dataset.
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
