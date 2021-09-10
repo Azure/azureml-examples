@@ -13,5 +13,5 @@ experiment_name: lightgbm-iris-example
 description: Train a LightGBM model on the Iris dataset.
 
 # TODO - remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
+# environment_variables:
+#  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
