@@ -14,19 +14,15 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/s
 # </create_endpoint>
 
 # <create_blue>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml #--all-traffic
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
 # </create_blue>
-
-#todo: remove
-az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100" --debug
 
 # <test_blue>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_blue>
 
 # <scale_blue>
-#todo: remove
-#az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
+az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
 # </scale_blue>
 
 # <create_green>
