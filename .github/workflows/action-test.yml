@@ -16,7 +16,5 @@ jobs:
     - name: test
       run: |
         echo "here"
-        echo " ]0;"
         echo "there"
-        echo ">>>   ]0;root@d04320ac5c1741f4968f2cbd650a23bc000000: /mnt/batch/tasks/shared/LS_root/jobs/main-master/91786579b49b44dbb8bebae7130e65d4/65ea4322-dafe-4a25-8d6a-eafc1e148769/wdroot@d04320ac5c1741f4968f2cbd650a23bc000000:/mnt/batch/tasks/shared/LS_root/jobs/"
         echo "done!"
