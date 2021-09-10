@@ -5,16 +5,14 @@ on:
       - main
       - cli-preview
       - releases/current
+    paths:
+      - .github/workflows/action-test.yml
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZ_V2_CREDS}}
     - name: test
       run: |
         echo "here"
