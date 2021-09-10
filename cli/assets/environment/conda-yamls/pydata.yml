@@ -1,4 +1,4 @@
-name: python-ml-basic-cpu
+name: pydata-example
 channels:
   - conda-forge
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
   - pip
   - pip:
     - numpy
-    - pandas
+    - pandas>=1.2.0
     - scipy
     - scikit-learn
     - matplotlib

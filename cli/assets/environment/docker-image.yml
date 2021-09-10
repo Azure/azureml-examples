@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: docker-image-example
+version: 1 # TODO: remove
+image: pytorch:latest
+description: Environment created from a Docker image.

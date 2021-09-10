@@ -7,12 +7,15 @@ import argparse
 # define constants
 EXCLUDED_JOBS = ["cifar"]
 EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
+EXCLUDED_RESOURCES = [
+    "workspace",
+    "datastore",
+]
 EXCLUDED_ASSETS = [
     "conda.yml",
     "environment.yml",
     "conda-envs",
     "mlflow-models",
-    "workspace",
 ]
 EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 
@@ -35,6 +38,14 @@ def main(args):
         if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS)
     ]
 
+    # get list of resources
+    resources = sorted(glob.glob("resources/**/*.yml", recursive=True))
+    resources = [
+        resource.replace(".yml", "")
+        for resource in resources
+        if not any(excluded in resource for excluded in EXCLUDED_RESOURCES)
+    ]
+
     # get list of assets
     assets = sorted(glob.glob("assets/**/*.yml", recursive=True))
     assets = [
@@ -52,14 +63,14 @@ def main(args):
     ]
 
     # write workflows
-    write_workflows(jobs, endpoints, assets, scripts)
+    write_workflows(jobs, endpoints, resources, assets, scripts)
 
     # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
     # write README.md
-    write_readme(jobs, endpoints, assets, scripts)
+    write_readme(jobs, endpoints, resources, assets, scripts)
 
     # read modified README.md
     with open("README.md", "r") as f:
@@ -72,7 +83,7 @@ def main(args):
             exit(2)
 
 
-def write_readme(jobs, endpoints, assets, scripts):
+def write_readme(jobs, endpoints, resources, assets, scripts):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
@@ -84,6 +95,7 @@ def write_readme(jobs, endpoints, assets, scripts):
     endpoints_table = (
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
+    resources_table = "\n**Resources** ([resources](resources))\n\npath|status|description\n-|-|-\n"
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
     scripts_table = "\n**Scripts**\n\npath|status|\n-|-\n"
 
@@ -122,6 +134,24 @@ def write_readme(jobs, endpoints, assets, scripts):
         # add row to tutorial table
         row = f"[{endpoint}.yml]({endpoint}.yml)|{status}|{description}\n"
         endpoints_table += row
+
+    # process resources
+    for resource in resources:
+        # build entries for tutorial table
+        status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
+        description = "*no description*"
+        try:
+            with open(f"{resource}.yml", "r") as f:
+                for line in f.readlines():
+                    if "description: " in str(line):
+                        description = line.split(": ")[-1].strip()
+                        break
+        except:
+            pass
+
+        # add row to tutorial table
+        row = f"[{resource}.yml]({resource}.yml)|{status}|{description}\n"
+        resources_table += row
 
     # process assets
     for asset in assets:
@@ -164,7 +194,7 @@ def write_readme(jobs, endpoints, assets, scripts):
         )
 
 
-def write_workflows(jobs, endpoints, assets, scripts):
+def write_workflows(jobs, endpoints, resources, assets, scripts):
     print("writing .github/workflows...")
 
     # process jobs
@@ -177,6 +207,11 @@ def write_workflows(jobs, endpoints, assets, scripts):
         # write workflow file
         # write_endpoint_workflow(endpoint)
         pass
+
+    # process assest
+    for resource in resources:
+        # write workflow file
+        write_resource_workflow(resource)
 
     # process assest
     for asset in assets:

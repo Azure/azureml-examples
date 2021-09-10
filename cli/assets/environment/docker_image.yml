@@ -1,6 +1,0 @@
-#source ../configs/environment/dockerhub-Environment.yaml
-$schema: http://azureml/sdk-2-0/Environment.json
-
-name: new_env
-version: '1'
-image: docker.io/tensorflow

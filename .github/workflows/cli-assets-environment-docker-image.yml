@@ -1,4 +1,4 @@
-name: cli-assets-data-iris-datastore
+name: cli-assets-environment-docker-image
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/data/iris-datastore.yml
-      - .github/workflows/cli-assets-data-iris-datastore.yml
+      - cli/assets/environment/docker-image.yml
+      - .github/workflows/cli-assets-environment-docker-image.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml data create -f assets/data/iris-datastore.yml
+      run: az ml environment create -f assets/environment/docker-image.yml
       working-directory: cli

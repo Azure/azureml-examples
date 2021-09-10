@@ -1,4 +1,4 @@
-name: cli-assets-model-lightgbm-iris
+name: cli-assets-environment-docker-context
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/model/lightgbm-iris.yml
-      - .github/workflows/cli-assets-model-lightgbm-iris.yml
+      - cli/assets/environment/docker-context.yml
+      - .github/workflows/cli-assets-environment-docker-context.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml model create -f assets/model/lightgbm-iris.yml
+      run: az ml environment create -f assets/environment/docker-context.yml
       working-directory: cli

@@ -1,4 +1,4 @@
-name: cli-assets-data-iris-url
+name: cli-assets-environment-conda-yamls-pydata
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/data/iris-url.yml
-      - .github/workflows/cli-assets-data-iris-url.yml
+      - cli/assets/environment/conda-yamls/pydata.yml
+      - .github/workflows/cli-assets-environment-conda-yamls-pydata.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml data create -f assets/data/iris-url.yml
+      run: az ml environment create -f assets/environment/conda-yamls/pydata.yml
       working-directory: cli
