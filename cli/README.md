@@ -108,6 +108,7 @@ path|status|description
 path|status|description
 -|-|-
 [assets/environment/docker-context.yml](assets/environment/docker-context.yml)|[![assets/environment/docker-context](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-context/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-context.yml)|*no description*
+[assets/environment/docker-image-plus-conda.yml](assets/environment/docker-image-plus-conda.yml)|[![assets/environment/docker-image-plus-conda](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-image-plus-conda/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-image-plus-conda.yml)|Environment created from a Docker image plus Conda environment.
 [assets/environment/docker-image.yml](assets/environment/docker-image.yml)|[![assets/environment/docker-image](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-image/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-image.yml)|Environment created from a Docker image.
 
 ## Contents

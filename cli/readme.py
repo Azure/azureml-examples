@@ -12,8 +12,6 @@ EXCLUDED_RESOURCES = [
     "datastore",
 ]
 EXCLUDED_ASSETS = [
-    "conda.yml",
-    "environment.yml",
     "conda-yamls",
     "mlflow-models",
 ]
