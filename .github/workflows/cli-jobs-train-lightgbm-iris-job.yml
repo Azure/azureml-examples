@@ -30,6 +30,7 @@ jobs:
         run_id=$(az ml job create -f jobs/train/lightgbm/iris/job.yml --query name -o tsv)
         az ml job stream -n $run_id >> /dev/null
         status=$(az ml job show -n $run_id --query status -o tsv)
+        sleep 1
         echo $status
         if [[ $status == "Completed" ]]
         then
