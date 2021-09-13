@@ -7,7 +7,7 @@ LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-API_VERSION="2021-03-01-preview"
+API_VERSION="2021-10-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
 
@@ -129,13 +129,13 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
     \"location\": \"$LOCATION\",
+    \"sku\": {
+        \"capacity\": 1
+    },
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
             \"scaleType\": \"Default\",
-            \"instanceCount\": 1,
-            \"minInstances\": 1,
-            \"maxInstances\": 2
         },
         \"model\": {
             \"referenceType\": \"Id\",
