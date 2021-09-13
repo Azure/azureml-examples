@@ -98,10 +98,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
     \"properties\":{
         \"condaFile\": \"$CONDA_FILE\",
-        \"Docker\": {
-            \"DockerSpecificationType\": \"Image\",
-            \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\"
-        }
+        \"image\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\",
     }
 }"
 # </create_environment>
@@ -135,7 +132,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
-            \"scaleType\": \"Manual\",
+            \"scaleType\": \"Default\",
             \"instanceCount\": 1,
             \"minInstances\": 1,
             \"maxInstances\": 2
