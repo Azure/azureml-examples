@@ -5,7 +5,7 @@
 name: TaxiFeatureEngineering
 display_name: TaxiFeatureEngineering
 version: 1
-type: command_component
+type: command
 inputs:
   clean_data: 
     type: path 

@@ -5,7 +5,7 @@
 name: PredictTaxiFares
 version: 1
 display_name: PredictTaxiFares
-type: command_component
+type: command
 inputs:
   model_input:
     type: path

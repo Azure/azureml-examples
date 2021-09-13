@@ -5,7 +5,7 @@
 name: ScoreModel
 version: 1
 display_name: ScoreModel
-type: command_component
+type: command
 inputs:
   predictions:
     type: path
