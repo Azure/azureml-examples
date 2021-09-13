@@ -21,7 +21,7 @@ az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoint
 az ml online-endpoint show -n $ENDPOINT_NAME
 # </get_status>
 
-#check if create was successful
+  check if create was successful
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
