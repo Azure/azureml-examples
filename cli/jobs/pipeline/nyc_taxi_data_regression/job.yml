@@ -6,36 +6,29 @@ type: pipeline_job
 # <inputs_and_outputs>
 inputs:
   pipeline_job_input: #using dataset, can use datastore + datapath also
-    data: 
+    dataset: 
       local_path: ./data
 
 outputs: 
   pipeline_job_prepped_data:
-    data: 
-      path: /prepped_data
+    mode: upload
   pipeline_job_transformed_data:
-    data: 
-      path: /transformed_data    
+    mode: upload   
   pipeline_job_trained_model:
-    data: 
-      path: /trained-model
+    mode: upload
   pipeline_job_test_data:
-    data: 
-      path: /test_data
+    mode: upload 
   pipeline_job_predictions:
-    data: 
-      path: /predictions
+    mode: upload 
   pipeline_job_score_report:
-    data: 
-      path: /report
+    mode: upload
 # </inputs_and_outputs>
 
 # <jobs>
 defaults:
   component_job:
     datastore: azureml:workspaceblobstore
-    compute:
-      target: azureml:cpu-cluster
+    compute: azureml:cpu-cluster
 
 jobs:
   prep-job:
