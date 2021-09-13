@@ -60,11 +60,11 @@ uai_id=`az identity list --query "[?name=='$UAI_NAME'].id" -o tsv`
 # </get_user_identity_id>
 
 # <get_container_registry_id>
-container_registry=`az ml workspace show --query container_registry -o tsv`
+container_registry=`az ml workspace show --workspace-name $WORKSPACE --query container_registry -o tsv`
 # </get_container_registry_id>
 
 # <get_workspace_storage_id>
-storage_account=`az ml workspace show --query storage_account -o tsv`
+storage_account=`az ml workspace show --workspace-name $WORKSPACE --query storage_account -o tsv`
 # </get_workspace_storage_id>
 
 # <give_permission_to_user_storage_account>
