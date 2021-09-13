@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
 # rc install - uncomment and comment the install below to run all tests on CLI rc
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.7_october_cand-py3-none-any.whl --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.8_october_cand-py3-none-any.whl --yes
 
 # <az_ml_install>
 #az extension add -n ml -y
@@ -32,3 +32,4 @@ az ml workspace create -n "main-master" -g $GROUP -l "centraluseuap"
 az ml workspace create -n "main-canary" -g $GROUP -l "eastus2euap"
 
 az configure --defaults workspace="main-master" location="centraluseuap"
+#az configure --defaults workspace="main-canary" location="eastus2euap"
