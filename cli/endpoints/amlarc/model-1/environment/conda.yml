@@ -3,13 +3,11 @@ channels:
   - conda-forge
 dependencies:
   - python=3.7
-  - numpy
-  - pip
-  - scikit-learn==0.24.2
-  - scipy
+  - numpy=1.21.2
+  - pip=21.2.4
+  - scikit-learn=0.24.2
+  - scipy=1.7.1
   - pip:
-    - azureml-defaults
-    - inference-schema[numpy-support]
-    - joblib
-    - numpy
-    - scipy
+    - azureml-defaults==1.33.0
+    - inference-schema[numpy-support]==1.3.0
+    - joblib==1.0.1

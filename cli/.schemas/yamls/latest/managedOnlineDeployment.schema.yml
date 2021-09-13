@@ -1,32 +1,155 @@
 $ref: '#/definitions/ManagedOnlineDeploymentSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  AutoScaleSettingsSchema:
+  AnonymousEnvironmentSchema:
     additionalProperties: false
     properties:
-      max_instances:
-        format: integer
-        title: max_instances
-        type: number
-      min_instances:
-        format: integer
-        title: min_instances
-        type: number
-      polling_interval:
-        format: integer
-        title: polling_interval
-        type: number
-      scale_type:
-        enum:
-        - Auto
-        title: scale_type
+      $schema:
+        readonly: true
+        title: $schema
         type: string
-      target_utilization_percentage:
-        format: integer
-        title: target_utilization_percentage
-        type: number
-    required:
-    - scale_type
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        type: object
+      conda_file:
+        anyOf:
+        - title: conda_file
+          type: string
+        - title: conda_file
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: environments
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      image:
+        title: image
+        type: string
+      inference_config:
+        $ref: '#/definitions/InferenceConfigSchema'
+        type: object
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      os_type:
+        enum:
+        - linux
+        - windows
+        title: os_type
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  AnonymousModelSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      flavors:
+        additionalProperties: {}
+        title: flavors
+        type: object
+      id:
+        arm_type: models
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      local_path:
+        title: local_path
+        type: string
+      model_format:
+        enum:
+        - custom
+        - mlflow
+        - triton
+        - openai
+        title: model_format
+        type: string
+      name:
+        title: name
+        type: string
+      path:
+        title: path
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      utc_time_created:
+        format: date-time
+        title: utc_time_created
+        type: string
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  BuildContextSchema:
+    additionalProperties: false
+    properties:
+      context_uri:
+        title: context_uri
+        type: string
+      dockerfile_path:
+        title: dockerfile_path
+        type: string
+      local_path:
+        title: local_path
+        type: string
     type: object
   CodeAssetSchema:
     additionalProperties: false
@@ -71,9 +194,10 @@ definitions:
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
     type: object
   CodeConfigurationSchema:
     additionalProperties: false
@@ -120,25 +244,16 @@ definitions:
         title: last_modified_by_type
         type: string
     type: object
-  DockerBuildSchema:
+  DefaultScaleSettingsSchema:
     additionalProperties: false
     properties:
-      dockerfile:
-        anyOf:
-        - title: dockerfile
-          type: string
-        - title: dockerfile
-          type: string
-    type: object
-  DockerSchema:
-    additionalProperties: false
-    properties:
-      build:
-        $ref: '#/definitions/DockerBuildSchema'
-        type: object
-      image:
-        title: image
+      scale_type:
+        enum:
+        - Default
+        title: scale_type
         type: string
+    required:
+    - scale_type
     type: object
   EnvironmentSchema:
     additionalProperties: false
@@ -147,6 +262,9 @@ definitions:
         readonly: true
         title: $schema
         type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        type: object
       conda_file:
         anyOf:
         - title: conda_file
@@ -159,14 +277,14 @@ definitions:
       description:
         title: description
         type: string
-      docker:
-        $ref: '#/definitions/DockerSchema'
-        type: object
       id:
         arm_type: environments
         pattern: ^azureml:.*
         readonly: true
         title: id
+        type: string
+      image:
+        title: image
         type: string
       inference_config:
         $ref: '#/definitions/InferenceConfigSchema'
@@ -180,9 +298,6 @@ definitions:
         - windows
         title: os_type
         type: string
-      path:
-        title: path
-        type: string
       tags:
         additionalProperties:
           title: tags
@@ -190,9 +305,13 @@ definitions:
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
+    required:
+    - name
+    - version
     type: object
   InferenceConfigSchema:
     additionalProperties: false
@@ -248,6 +367,9 @@ definitions:
       code_configuration:
         $ref: '#/definitions/CodeConfigurationSchema'
         type: object
+      endpoint_name:
+        title: endpoint_name
+        type: string
       environment:
         anyOf:
         - arm_type: environments
@@ -255,6 +377,8 @@ definitions:
           title: environment
           type: string
         - $ref: '#/definitions/EnvironmentSchema'
+          type: object
+        - $ref: '#/definitions/AnonymousEnvironmentSchema'
           type: object
         - pattern: ^file:.*
           type: string
@@ -265,6 +389,10 @@ definitions:
       id:
         title: id
         type: string
+      instance_count:
+        format: integer
+        title: instance_count
+        type: number
       instance_type:
         title: instance_type
         type: string
@@ -277,8 +405,11 @@ definitions:
           pattern: ^azureml:.*
           title: model
           type: string
-        - $ref: '#/definitions/ModelSchema'
+        - $ref: '#/definitions/AnonymousModelSchema'
           type: object
+      model_mount_path:
+        title: model_mount_path
+        type: string
       name:
         title: name
         type: string
@@ -297,100 +428,24 @@ definitions:
         type: object
       scale_settings:
         anyOf:
-        - $ref: '#/definitions/AutoScaleSettingsSchema'
+        - $ref: '#/definitions/DefaultScaleSettingsSchema'
           type: object
-        - $ref: '#/definitions/ManualScaleSettingsSchema'
+        - $ref: '#/definitions/TargetUtilizationScaleSettingsSchema'
           type: object
       tags:
         additionalProperties: {}
         title: tags
         type: object
       type:
+        enum:
+        - managed
+        - kubernetes
         title: type
         type: string
     required:
+    - endpoint_name
+    - instance_type
     - name
-    type: object
-  ManualScaleSettingsSchema:
-    additionalProperties: false
-    properties:
-      instance_count:
-        format: integer
-        title: instance_count
-        type: number
-      max_instances:
-        format: integer
-        title: max_instances
-        type: number
-      min_instances:
-        format: integer
-        title: min_instances
-        type: number
-      scale_type:
-        enum:
-        - Manual
-        title: scale_type
-        type: string
-    required:
-    - instance_count
-    - scale_type
-    type: object
-  ModelSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      flavors:
-        additionalProperties: {}
-        title: flavors
-        type: object
-      id:
-        arm_type: models
-        pattern: ^azureml:.*
-        readonly: true
-        title: id
-        type: string
-      local_path:
-        title: local_path
-        type: string
-      name:
-        title: name
-        type: string
-      path:
-        title: path
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      utc_time_created:
-        format: date-time
-        title: utc_time_created
-        type: string
-      version:
-        format: integer
-        title: version
-        type: number
-    required:
-    - name
-    - version
     type: object
   RequestSettingsSchema:
     additionalProperties: false
@@ -421,4 +476,31 @@ definitions:
     required:
     - path
     - port
+    type: object
+  TargetUtilizationScaleSettingsSchema:
+    additionalProperties: false
+    properties:
+      max_instances:
+        format: integer
+        title: max_instances
+        type: number
+      min_instances:
+        format: integer
+        title: min_instances
+        type: number
+      polling_interval:
+        format: integer
+        title: polling_interval
+        type: number
+      scale_type:
+        enum:
+        - target_utilization
+        title: scale_type
+        type: string
+      target_utilization_percentage:
+        format: integer
+        title: target_utilization_percentage
+        type: number
+    required:
+    - scale_type
     type: object

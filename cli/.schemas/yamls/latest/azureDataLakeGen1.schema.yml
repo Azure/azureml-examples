@@ -37,8 +37,8 @@ definitions:
         type: string
     required:
     - credential
-    - type
     - store_name
+    - type
     type: object
   CertificateSchema:
     additionalProperties: false

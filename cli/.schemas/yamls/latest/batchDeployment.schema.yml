@@ -1,6 +1,143 @@
 $ref: '#/definitions/BatchDeploymentSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
+  AnonymousEnvironmentSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        type: object
+      conda_file:
+        anyOf:
+        - title: conda_file
+          type: string
+        - title: conda_file
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: environments
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      image:
+        title: image
+        type: string
+      inference_config:
+        $ref: '#/definitions/InferenceConfigSchema'
+        type: object
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      os_type:
+        enum:
+        - linux
+        - windows
+        title: os_type
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  AnonymousModelSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      flavors:
+        additionalProperties: {}
+        title: flavors
+        type: object
+      id:
+        arm_type: models
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      local_path:
+        title: local_path
+        type: string
+      model_format:
+        enum:
+        - custom
+        - mlflow
+        - triton
+        - openai
+        title: model_format
+        type: string
+      name:
+        title: name
+        type: string
+      path:
+        title: path
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      utc_time_created:
+        format: date-time
+        title: utc_time_created
+        type: string
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
   BatchDeploymentSchema:
     additionalProperties: false
     properties:
@@ -12,8 +149,20 @@ definitions:
         $ref: '#/definitions/CodeConfigurationSchema'
         type: object
       compute:
-        $ref: '#/definitions/ComputeBindingSchema'
-        type: object
+        anyOf:
+        - enum:
+          - local
+          title: compute
+          type: string
+        - arm_type: computes
+          pattern: ^azureml:.*
+          title: compute
+          type: string
+        - title: compute
+          type: string
+      endpoint_name:
+        title: endpoint_name
+        type: string
       environment:
         anyOf:
         - arm_type: environments
@@ -22,6 +171,8 @@ definitions:
           type: string
         - $ref: '#/definitions/EnvironmentSchema'
           type: object
+        - $ref: '#/definitions/AnonymousEnvironmentSchema'
+          type: object
         - pattern: ^file:.*
           type: string
       environment_variables:
@@ -29,8 +180,12 @@ definitions:
         title: environment_variables
         type: object
       error_threshold:
-        description: The number of item processing failures should be ignored. If
-          the error_threshold is reached, the job will be early terminated.
+        description: "Error threshold, if the error count for the entire input goes\
+          \ above this value,\r\nthe batch inference will be aborted. Range is [-1,\
+          \ int.MaxValue].\r\nFor FileDataset, this value is the count of file failures.\r\
+          \nFor TabularDataset, this value is the count of record failures.\r\nIf\
+          \ set to -1 (the lower bound), all failures during batch inference will\
+          \ be ignored."
         format: integer
         title: error_threshold
         type: number
@@ -42,6 +197,11 @@ definitions:
           Possible values are 'warning', 'info', and 'debug'.
         title: logging_level
         type: string
+      max_concurrency_per_instance:
+        description: Indicates maximum number of parallelism per instance.
+        format: integer
+        title: max_concurrency_per_instance
+        type: number
       mini_batch_size:
         format: integer
         title: mini_batch_size
@@ -52,25 +212,27 @@ definitions:
           pattern: ^azureml:.*
           title: model
           type: string
-        - $ref: '#/definitions/ModelSchema'
+        - $ref: '#/definitions/AnonymousModelSchema'
           type: object
       name:
         title: name
         type: string
+      output_action:
+        enum:
+        - appendrow
+        - summaryonly
+        title: output_action
+        type: string
       output_file_name:
-        description: File name of the prediction output.
+        description: Customized output file name for append_row output action.
         title: output_file_name
         type: string
-      partition_keys:
-        description: The partition strategy for the input data.
-        items:
-          title: partition_keys
-          type: string
-        title: partition_keys
-        type: array
       properties:
         additionalProperties: {}
         title: properties
+        type: object
+      resources:
+        $ref: '#/definitions/ResourceConfigurationSchema'
         type: object
       retry_settings:
         $ref: '#/definitions/BatchRetrySettingsSchema'
@@ -79,11 +241,9 @@ definitions:
         additionalProperties: {}
         title: tags
         type: object
-      type:
-        title: type
-        type: string
     required:
     - compute
+    - endpoint_name
     - name
     type: object
   BatchRetrySettingsSchema:
@@ -99,6 +259,19 @@ definitions:
         format: integer
         title: timeout
         type: number
+    type: object
+  BuildContextSchema:
+    additionalProperties: false
+    properties:
+      context_uri:
+        title: context_uri
+        type: string
+      dockerfile_path:
+        title: dockerfile_path
+        type: string
+      local_path:
+        title: local_path
+        type: string
     type: object
   CodeAssetSchema:
     additionalProperties: false
@@ -143,9 +316,10 @@ definitions:
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
     type: object
   CodeConfigurationSchema:
     additionalProperties: false
@@ -167,38 +341,6 @@ definitions:
       scoring_script:
         title: scoring_script
         type: string
-    type: object
-  ComputeBindingSchema:
-    additionalProperties: false
-    properties:
-      instance_count:
-        format: integer
-        title: instance_count
-        type: number
-      instance_type:
-        description: The instance type to make availabel to this job.
-        title: instance_type
-        type: string
-      location:
-        description: The locations where this job may run.
-        title: location
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      target:
-        anyOf:
-        - enum:
-          - local
-          title: target
-          type: string
-        - arm_type: computes
-          pattern: ^azureml:.*
-          title: target
-          type: string
-        - title: target
-          type: string
     type: object
   CreationContextSchema:
     additionalProperties: false
@@ -224,26 +366,6 @@ definitions:
         title: last_modified_by_type
         type: string
     type: object
-  DockerBuildSchema:
-    additionalProperties: false
-    properties:
-      dockerfile:
-        anyOf:
-        - title: dockerfile
-          type: string
-        - title: dockerfile
-          type: string
-    type: object
-  DockerSchema:
-    additionalProperties: false
-    properties:
-      build:
-        $ref: '#/definitions/DockerBuildSchema'
-        type: object
-      image:
-        title: image
-        type: string
-    type: object
   EnvironmentSchema:
     additionalProperties: false
     properties:
@@ -251,6 +373,9 @@ definitions:
         readonly: true
         title: $schema
         type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        type: object
       conda_file:
         anyOf:
         - title: conda_file
@@ -263,14 +388,14 @@ definitions:
       description:
         title: description
         type: string
-      docker:
-        $ref: '#/definitions/DockerSchema'
-        type: object
       id:
         arm_type: environments
         pattern: ^azureml:.*
         readonly: true
         title: id
+        type: string
+      image:
+        title: image
         type: string
       inference_config:
         $ref: '#/definitions/InferenceConfigSchema'
@@ -284,9 +409,6 @@ definitions:
         - windows
         title: os_type
         type: string
-      path:
-        title: path
-        type: string
       tags:
         additionalProperties:
           title: tags
@@ -294,9 +416,13 @@ definitions:
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
+    required:
+    - name
+    - version
     type: object
   InferenceConfigSchema:
     additionalProperties: false
@@ -315,62 +441,21 @@ definitions:
     - readiness_route
     - scoring_route
     type: object
-  ModelSchema:
+  ResourceConfigurationSchema:
     additionalProperties: false
     properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      flavors:
-        additionalProperties: {}
-        title: flavors
-        type: object
-      id:
-        arm_type: models
-        pattern: ^azureml:.*
-        readonly: true
-        title: id
-        type: string
-      local_path:
-        title: local_path
-        type: string
-      name:
-        title: name
-        type: string
-      path:
-        title: path
+      instance_count:
+        format: integer
+        title: instance_count
+        type: number
+      instance_type:
+        description: The instance type to make available to this job.
+        title: instance_type
         type: string
       properties:
         additionalProperties: {}
         title: properties
         type: object
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      utc_time_created:
-        format: date-time
-        title: utc_time_created
-        type: string
-      version:
-        format: integer
-        title: version
-        type: number
-    required:
-    - name
-    - version
     type: object
   RouteSchema:
     additionalProperties: false

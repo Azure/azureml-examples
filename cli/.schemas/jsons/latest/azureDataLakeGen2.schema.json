@@ -99,6 +99,7 @@
         "account_name",
         "container_name",
         "credential",
+        "filesystem",
         "type"
       ],
       "properties": {
@@ -138,6 +139,15 @@
           "title": "endpoint",
           "type": "string"
         },
+        "filesystem": {
+          "title": "filesystem",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -151,13 +161,6 @@
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "azure_data_lake_gen2"
-          ],
-          "title": "type"
-        },
         "tags": {
           "title": "tags",
           "type": "object",
@@ -165,6 +168,13 @@
             "title": "tags",
             "type": "string"
           }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "azure_data_lake_gen2"
+          ],
+          "title": "type"
         }
       },
       "additionalProperties": false

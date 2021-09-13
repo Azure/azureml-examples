@@ -39,6 +39,10 @@ definitions:
       endpoint:
         title: endpoint
         type: string
+      id:
+        readonly: true
+        title: id
+        type: string
       name:
         title: name
         type: string

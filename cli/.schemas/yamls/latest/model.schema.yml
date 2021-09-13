@@ -56,6 +56,14 @@ definitions:
       local_path:
         title: local_path
         type: string
+      model_format:
+        enum:
+        - custom
+        - mlflow
+        - triton
+        - openai
+        title: model_format
+        type: string
       name:
         title: name
         type: string
@@ -75,9 +83,10 @@ definitions:
         title: utc_time_created
         type: string
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
     required:
     - name
     - version

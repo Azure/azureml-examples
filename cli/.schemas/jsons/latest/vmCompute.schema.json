@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "VirtualMachineComputeSchema": {
+      "type": "object",
+      "required": [
+        "name",
+        "resource_id",
+        "type"
+      ],
+      "properties": {
+        "admin_password": {
+          "title": "admin_password",
+          "type": "string"
+        },
+        "admin_username": {
+          "title": "admin_username",
+          "type": "string"
+        },
+        "compute_location": {
+          "title": "compute_location",
+          "type": "string",
+          "readonly": true
+        },
+        "created_on": {
+          "title": "created_on",
+          "type": "string",
+          "readonly": true
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "enable_public_ip": {
+          "title": "enable_public_ip",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
+        "location": {
+          "title": "location",
+          "type": "string"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "provisioning_errors": {
+          "title": "provisioning_errors",
+          "type": "string",
+          "readonly": true
+        },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string",
+          "readonly": true
+        },
+        "public_key_data": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^file:.*",
+              "title": "public_key_data"
+            },
+            {
+              "title": "public_key_data",
+              "type": "string"
+            }
+          ]
+        },
+        "resource_id": {
+          "title": "resource_id",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "ssh_key_value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^file:.*",
+              "title": "ssh_key_value"
+            },
+            {
+              "title": "ssh_key_value",
+              "type": "string"
+            }
+          ]
+        },
+        "ssh_port": {
+          "title": "ssh_port",
+          "type": "number",
+          "format": "integer"
+        },
+        "ssh_public_access": {
+          "title": "ssh_public_access",
+          "type": "string"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "virtualmachine"
+          ],
+          "title": "type"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/VirtualMachineComputeSchema"
+}

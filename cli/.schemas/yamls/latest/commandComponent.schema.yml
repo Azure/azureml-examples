@@ -1,0 +1,373 @@
+$ref: '#/definitions/CommandComponentSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AnonymousCodeAssetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        readonly: true
+        title: name
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        readonly: true
+        title: version
+    type: object
+  AnonymousEnvironmentSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      arm_id:
+        arm_type: data
+        pattern: ^azureml:.*
+        readonly: true
+        title: arm_id
+        type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        type: object
+      conda_file:
+        anyOf:
+        - title: conda_file
+          type: string
+        - title: conda_file
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: environments
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      image:
+        title: image
+        type: string
+      inference_config:
+        $ref: '#/definitions/InferenceConfigSchema'
+        type: object
+      local_path:
+        description: the path from which the data gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      os_type:
+        enum:
+        - linux
+        - windows
+        title: os_type
+        type: string
+      path:
+        description: URI pointing to a file or directory.
+        title: path
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  BuildContextSchema:
+    additionalProperties: false
+    properties:
+      context_uri:
+        title: context_uri
+        type: string
+      dockerfile_path:
+        title: dockerfile_path
+        type: string
+      local_path:
+        title: local_path
+        type: string
+    type: object
+  CommandComponentSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        title: $schema
+        type: string
+      code:
+        anyOf:
+        - $ref: '#/definitions/AnonymousCodeAssetSchema'
+          type: object
+        - arm_type: codes
+          pattern: ^azureml:.*
+          title: code
+          type: string
+        - pattern: ^file:.*
+          type: string
+      command:
+        description: String to be executed. Can set variables using ${{ }}
+        title: command
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      display_name:
+        title: display_name
+        type: string
+      environment:
+        anyOf:
+        - $ref: '#/definitions/AnonymousEnvironmentSchema'
+          type: object
+        - arm_type: environments
+          pattern: ^azureml:.*
+          title: environment
+          type: string
+        - pattern: ^file:.*
+          type: string
+      inputs:
+        additionalProperties:
+          anyOf:
+          - $ref: '#/definitions/ParameterSchema'
+            type: object
+          - $ref: '#/definitions/InputPortSchema'
+            type: object
+        title: inputs
+        type: object
+      is_deterministic:
+        title: is_deterministic
+        type: boolean
+      name:
+        title: name
+        type: string
+      outputs:
+        additionalProperties:
+          $ref: '#/definitions/OutputPortSchema'
+          type: object
+        title: outputs
+        type: object
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      type:
+        enum:
+        - command_component
+        title: type
+        type: string
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    required:
+    - name
+    type: object
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  InferenceConfigSchema:
+    additionalProperties: false
+    properties:
+      liveness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      readiness_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+      scoring_route:
+        $ref: '#/definitions/RouteSchema'
+        type: object
+    required:
+    - liveness_route
+    - readiness_route
+    - scoring_route
+    type: object
+  InputPortSchema:
+    additionalProperties: false
+    properties:
+      default:
+        title: default
+        type: string
+      description:
+        title: description
+        type: string
+      input_type:
+        enum:
+        - generic
+        enumNames: []
+        title: input_type
+        type: string
+      optional:
+        title: optional
+        type: boolean
+      type:
+        default: 'null'
+        enum:
+        - path
+        - 'null'
+        enumNames: []
+        title: type
+        type: string
+    type: object
+  OutputPortSchema:
+    additionalProperties: false
+    properties:
+      description:
+        title: description
+        type: string
+      input_type:
+        enum:
+        - generic
+        enumNames: []
+        title: input_type
+        type: string
+      type:
+        default: 'null'
+        enum:
+        - path
+        - 'null'
+        enumNames: []
+        title: type
+        type: string
+    type: object
+  ParameterSchema:
+    additionalProperties: false
+    properties:
+      default:
+        anyOf:
+        - title: default
+          type: string
+        - format: decimal
+          title: default
+          type: number
+        - title: default
+          type: boolean
+      description:
+        title: description
+        type: string
+      enum:
+        items:
+          title: enum
+          type: string
+        title: enum
+        type: array
+      max:
+        anyOf:
+        - title: max
+          type: string
+        - format: decimal
+          title: max
+          type: number
+      min:
+        anyOf:
+        - title: min
+          type: string
+        - format: decimal
+          title: min
+          type: number
+      optional:
+        title: optional
+        type: boolean
+      type:
+        default: 'null'
+        enum:
+        - number
+        - integer
+        - boolean
+        - string
+        - object
+        - 'null'
+        enumNames: []
+        title: type
+        type: string
+    type: object
+  RouteSchema:
+    additionalProperties: false
+    properties:
+      path:
+        title: path
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+    required:
+    - path
+    - port
+    type: object
