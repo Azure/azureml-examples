@@ -26,4 +26,4 @@ logging_level: info
 compute: azureml:cpu-cluster
 resources:
   instance_count: 1
-max_concurrentcy_per_instance: 4
+max_concurrency_per_instance: 4
