@@ -210,7 +210,7 @@ def write_workflows(jobs, endpoints, resources, assets, scripts):
     # process assest
     for resource in resources:
         # write workflow file
-        write_resource_workflow(resource)
+        write_asset_workflow(resource)
 
     # process assest
     for asset in assets:
