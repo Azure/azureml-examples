@@ -101,6 +101,11 @@ path|status|description
 
 path|status|description
 -|-|-
+[resources/compute/cluster-basic.yml](resources/compute/cluster-basic.yml)|[![resources/compute/cluster-basic](https://github.com/Azure/azureml-examples/workflows/cli-resources-compute-cluster-basic/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-resources-compute-cluster-basic.yml)|*no description*
+[resources/compute/cluster-location.yml](resources/compute/cluster-location.yml)|[![resources/compute/cluster-location](https://github.com/Azure/azureml-examples/workflows/cli-resources-compute-cluster-location/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-resources-compute-cluster-location.yml)|*no description*
+[resources/compute/cluster-low-priority.yml](resources/compute/cluster-low-priority.yml)|[![resources/compute/cluster-low-priority](https://github.com/Azure/azureml-examples/workflows/cli-resources-compute-cluster-low-priority/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-resources-compute-cluster-low-priority.yml)|*no description*
+[resources/compute/cluster-minimal.yml](resources/compute/cluster-minimal.yml)|[![resources/compute/cluster-minimal](https://github.com/Azure/azureml-examples/workflows/cli-resources-compute-cluster-minimal/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-resources-compute-cluster-minimal.yml)|*no description*
+[resources/compute/cluster-ssh-password.yml](resources/compute/cluster-ssh-password.yml)|[![resources/compute/cluster-ssh-password](https://github.com/Azure/azureml-examples/workflows/cli-resources-compute-cluster-ssh-password/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-resources-compute-cluster-ssh-password.yml)|*no description*
 
 **Assets** ([assets](assets))
 
