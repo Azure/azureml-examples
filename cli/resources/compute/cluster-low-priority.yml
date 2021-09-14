@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/amlCompute.schema.json 
-name: low-priority-example
+name: low-pri-example
 type: amlcompute
 size: STANDARD_DS3_v2
 min_instances: 0
