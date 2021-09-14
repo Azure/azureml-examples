@@ -1,4 +1,4 @@
-name: cli-jobs-command-r-iris-job
+name: cli-jobs-pipelines-basics-hello-world
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/command/r/iris/**
-      - .github/workflows/cli-jobs-command-r-iris-job.yml
+      - cli/jobs/pipelines/basics/**
+      - .github/workflows/cli-jobs-pipelines-basics-hello-world.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: create job
       run: |
         echo "Creating job..."
-        run_id=$(az ml job create -f jobs/command/r/iris/job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/pipelines/basics/hello-world.yml --query name -o tsv)
         echo "TODO - remove me"
         exit 0
         echo "Streaming logs..."
