@@ -3,12 +3,21 @@ jobs:
   hello:
     type: command
     command: echo "hello"
-    environemnt:
-      image: python
-    compute: azureml:cpu-cluster
-  world:
-    type: command
-    command: echo "world"
+    #environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
     environment:
       image: python
     compute: azureml:cpu-cluster
+    # TODO - remove
+    environment_variables:
+      AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  world:
+    type: command
+    command: echo "world"
+    #environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+    environment:
+      image: python
+    compute: azureml:cpu-cluster
+    # TODO - remove
+    environment_variables:
+      AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+ 
