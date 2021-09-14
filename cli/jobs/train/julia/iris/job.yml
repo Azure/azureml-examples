@@ -12,4 +12,4 @@ environment:
 compute:
   target: local
 experiment_name: flux-iris-example
-description: Train a Flux model on the Iris dataset.
+description: Train a Flux model on the Iris dataset. 
