@@ -1,4 +1,4 @@
-name: cli-jobs-command-tensorflow-mnist-distributed-job
+name: cli-jobs-single-step-lightgbm-iris-job
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/command/tensorflow/mnist-distributed/**
-      - .github/workflows/cli-jobs-command-tensorflow-mnist-distributed-job.yml
+      - cli/jobs/single-step/lightgbm/iris/**
+      - .github/workflows/cli-jobs-single-step-lightgbm-iris-job.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: create job
       run: |
         echo "Creating job..."
-        run_id=$(az ml job create -f jobs/command/tensorflow/mnist-distributed/job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/single-step/lightgbm/iris/job.yml --query name -o tsv)
         echo "TODO - remove me"
         exit 0
         echo "Streaming logs..."

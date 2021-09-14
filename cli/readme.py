@@ -22,7 +22,7 @@ EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 def main(args):
     # get list of jobs
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/command/misc/*.yml", recursive=False))
+    jobs += sorted(glob.glob("jobs/*/basics/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs

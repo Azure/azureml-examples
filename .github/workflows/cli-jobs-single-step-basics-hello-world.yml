@@ -1,4 +1,4 @@
-name: cli-jobs-command-dask-nyctaxi-job
+name: cli-jobs-single-step-basics-hello-world
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/command/dask/nyctaxi/**
-      - .github/workflows/cli-jobs-command-dask-nyctaxi-job.yml
+      - cli/jobs/single-step/basics/**
+      - .github/workflows/cli-jobs-single-step-basics-hello-world.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: create job
       run: |
         echo "Creating job..."
-        run_id=$(az ml job create -f jobs/command/dask/nyctaxi/job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/single-step/basics/hello-world.yml --query name -o tsv)
         echo "TODO - remove me"
         exit 0
         echo "Streaming logs..."
