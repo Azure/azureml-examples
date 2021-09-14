@@ -1,4 +1,4 @@
-name: cli-jobs-command-misc-hello-world-python
+name: cli-jobs-single-step-lightgbm-iris-job-sweep
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/command/misc/**
-      - .github/workflows/cli-jobs-command-misc-hello-world-python.yml
+      - cli/jobs/single-step/lightgbm/iris/**
+      - .github/workflows/cli-jobs-single-step-lightgbm-iris-job-sweep.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: create job
       run: |
         echo "Creating job..."
-        run_id=$(az ml job create -f jobs/command/misc/hello-world-python.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/single-step/lightgbm/iris/job-sweep.yml --query name -o tsv)
         echo "TODO - remove me"
         exit 0
         echo "Streaming logs..."

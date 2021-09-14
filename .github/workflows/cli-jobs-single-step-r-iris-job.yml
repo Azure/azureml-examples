@@ -1,4 +1,4 @@
-name: cli-jobs-pipeline-nyc_taxi_data_regression-job
+name: cli-jobs-single-step-r-iris-job
 on:
   schedule:
     - cron: "0 0/4 * * *"
@@ -8,8 +8,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/pipeline/nyc_taxi_data_regression/**
-      - .github/workflows/cli-jobs-pipeline-nyc_taxi_data_regression-job.yml
+      - cli/jobs/single-step/r/iris/**
+      - .github/workflows/cli-jobs-single-step-r-iris-job.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
     - name: create job
       run: |
         echo "Creating job..."
-        run_id=$(az ml job create -f jobs/pipeline/nyc_taxi_data_regression/job.yml --query name -o tsv)
+        run_id=$(az ml job create -f jobs/single-step/r/iris/job.yml --query name -o tsv)
         echo "TODO - remove me"
         exit 0
         echo "Streaming logs..."
