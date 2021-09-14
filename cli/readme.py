@@ -10,6 +10,7 @@ EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
+    "instance",
 ]
 EXCLUDED_ASSETS = [
     "conda-yamls",
