@@ -2,20 +2,14 @@ $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
 name: nonmlflowdp
 endpoint_name: mybatchedp
 model: 
-  name: mnist-model
-  version: 1
   local_path: ./mnist/model/
 code_configuration:
   code:
     local_path: ./mnist/code/
   scoring_script: digit_identification.py
 environment: 
-  name: mnist-env
-  version: 1
-  path: .
   conda_file: file:./mnist/environment/conda.yml
-  docker:
-    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 mini_batch_size: 5
 output_file_name: predictions.csv
 retry_settings:

@@ -2,8 +2,6 @@ $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
 name: mlflowdp
 endpoint_name: mybatchedp
 model: 
-  name: autolog-model
-  version: 1
   local_path: ./autolog_nyc_taxi
 mini_batch_size: 5
 output_file_name: predictions.csv
