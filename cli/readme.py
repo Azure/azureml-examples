@@ -21,7 +21,7 @@ EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 def main(args):
     # get list of jobs
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/misc/*.yml", recursive=False))
+    jobs += sorted(glob.glob("jobs/command/misc/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -279,10 +279,17 @@ jobs:
       continue-on-error: true
     - name: create job
       run: |
+        echo "Creating job..."
         run_id=$(az ml job create -f {job}.yml --query name -o tsv)
+        echo "TODO - remove me"
+        exit 0
+        echo "Streaming logs..."
         az ml job stream -n $run_id
+        echo "Getting status..."
+        sleep 1
         status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
+        echo "Checking status..."
         if [[ $status == "Completed" ]]
         then
           echo "Job completed"

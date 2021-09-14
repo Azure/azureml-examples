@@ -1,0 +1,10 @@
+command: echo $HELLO
+environment:
+  image: debian:latest
+compute: azureml:cpu-cluster
+environment_variables:
+  HELLO: "hello world"
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
