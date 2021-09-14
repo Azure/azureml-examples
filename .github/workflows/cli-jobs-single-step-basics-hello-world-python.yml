@@ -1,0 +1,52 @@
+name: cli-jobs-single-step-basics-hello-world-python
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+    paths:
+      - cli/jobs/single-step/basics/**
+      - .github/workflows/cli-jobs-single-step-basics-hello-world-python.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_V2_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create job
+      run: |
+        echo "Creating job..."
+        run_id=$(az ml job create -f jobs/single-step/basics/hello-world-python.yml --query name -o tsv)
+        echo "TODO - remove me"
+        exit 0
+        echo "Streaming logs..."
+        az ml job stream -n $run_id
+        echo "Getting status..."
+        sleep 1
+        status=$(az ml job show -n $run_id --query status -o tsv)
+        echo $status
+        echo "Checking status..."
+        if [[ $status == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $status ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
+      working-directory: cli

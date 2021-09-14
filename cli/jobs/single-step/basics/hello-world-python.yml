@@ -1,0 +1,8 @@
+command: python -c "print('hello world')"
+environment:
+  image: python
+compute: azureml:cpu-cluster
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
