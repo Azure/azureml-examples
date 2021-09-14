@@ -1,13 +1,13 @@
 type: pipeline_job
 jobs:
   hello:
-    type: command_job
+    type: command
     command: echo "hello"
     environemnt:
       image: python
     compute: azureml:cpu-cluster
   world:
-    type: command_job
+    type: command
     command: echo "world"
     environment:
       image: python
