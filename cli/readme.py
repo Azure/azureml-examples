@@ -10,6 +10,7 @@ EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
+    "instance",
 ]
 EXCLUDED_ASSETS = [
     "conda-yamls",
@@ -21,7 +22,7 @@ EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 def main(args):
     # get list of jobs
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/command/misc/*.yml", recursive=False))
+    jobs += sorted(glob.glob("jobs/*/basics/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -210,7 +211,7 @@ def write_workflows(jobs, endpoints, resources, assets, scripts):
     # process assest
     for resource in resources:
         # write workflow file
-        write_resource_workflow(resource)
+        write_asset_workflow(resource)
 
     # process assest
     for asset in assets:
