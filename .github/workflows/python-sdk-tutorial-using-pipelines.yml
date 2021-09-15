@@ -1,7 +1,7 @@
 name: python-sdk-tutorial-using-pipelines
 on:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 8 * * *"
   pull_request:
     branches:
       - main
