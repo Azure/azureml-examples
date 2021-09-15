@@ -30,9 +30,11 @@ init_env(){
         LOCATION=eastus2euap
     fi
 
+    AKS_LOCATION=eastus
+
     WORKSPACE=${WORKSPACE}-${LOCATION}
     ARC_CLUSTER_PREFIX=${ARC_CLUSTER_PREFIX}-${LOCATION}
-    AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${LOCATION}
+    AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${AKS_LOCATION}
 
     az version || true
 }
@@ -182,7 +184,7 @@ setup_cluster(){
     az aks create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-	--location eastus \
+	--location $AKS_LOCATION \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
         --node-count $MIN_COUNT \
@@ -355,11 +357,11 @@ clean_up_cluster(){
         --yes
 
     # delete aks
-    az aks delete \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $AKS_CLUSTER_NAME \
-        --yes
+    #az aks delete \
+    #    --subscription $SUBSCRIPTION \
+    #    --resource-group $RESOURCE_GROUP \
+    #    --name $AKS_CLUSTER_NAME \
+    #    --yes
 
 }
 
