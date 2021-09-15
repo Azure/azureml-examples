@@ -281,7 +281,7 @@ setup_compute(){
         "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE" \
 	"$COMPUTE_NAME" "$ARC_RESOURCE_ID" "$VM_SKU"
 
-    sleep 500
+    sleep 60
 }
 
 # check compute resources
