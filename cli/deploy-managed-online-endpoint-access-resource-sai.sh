@@ -39,6 +39,8 @@ az storage container create --account-name $STORAGE_ACCOUNT_NAME --name $STORAGE
 az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $STORAGE_CONTAINER_NAME --name $FILE_NAME --file endpoints/online/managed/managed-identities/hello.txt
 # </upload_file_to_storage>
 
+cat endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
+
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
 # </create_endpoint>
