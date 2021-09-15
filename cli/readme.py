@@ -282,8 +282,6 @@ jobs:
       run: |
         echo "Creating job..."
         run_id=$(az ml job create -f {job}.yml --query name -o tsv)
-        echo "TODO - remove me"
-        exit 0
         echo "Streaming logs..."
         az ml job stream -n $run_id
         echo "Getting status..."
