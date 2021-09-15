@@ -28,8 +28,8 @@ az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 # </az_configure_defaults>
 
 # TODO - remove below
-az ml workspace create -n "main-master" -g $GROUP -l "centraluseuap"
-az ml workspace create -n "main-canary" -g $GROUP -l "eastus2euap"
+#az ml workspace create -n "main-master" -g $GROUP -l "centraluseuap"
+#az ml workspace create -n "main-canary" -g $GROUP -l "eastus2euap"
 
 #az configure --defaults workspace="main-master" location="centraluseuap"
-az configure --defaults workspace="main-canary" location="eastus2euap"
+#az configure --defaults workspace="main-canary" location="eastus2euap"
