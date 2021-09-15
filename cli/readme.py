@@ -94,7 +94,9 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     endpoints_table = (
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
-    resources_table = "\n**Resources** ([resources](resources))\n\npath|status|description\n-|-|-\n"
+    resources_table = (
+        "\n**Resources** ([resources](resources))\n\npath|status|description\n-|-|-\n"
+    )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
     scripts_table = "\n**Scripts**\n\npath|status|\n-|-\n"
 

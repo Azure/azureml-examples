@@ -14,22 +14,11 @@ LOCATION="eastus"
 WORKSPACE="main"
 # </set_variables>
 
-# <az_group_create>
-az group create -n $GROUP -l $LOCATION
-# </az_group_create>
-
-# <az_ml_workspace_create>
-az ml workspace create -n $WORKSPACE -g $GROUP -l $LOCATION
-# </az_ml_workspace_create>
-
-
 # <az_configure_defaults>
 az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 # </az_configure_defaults>
 
 # TODO - remove below
-#az ml workspace create -n "main-master" -g $GROUP -l "centraluseuap"
-#az ml workspace create -n "main-canary" -g $GROUP -l "eastus2euap"
 
 az configure --defaults workspace="main-master" location="centraluseuap"
 #az configure --defaults workspace="main-canary" location="eastus2euap"
