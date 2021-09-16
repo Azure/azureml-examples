@@ -10,11 +10,11 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <create_endpoint>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/saferollout/endpoint.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
 # </create_endpoint>
 
 # <create_blue>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/blue-deployment.yml --all-traffic
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
 # </create_blue>
 
 # <test_blue>
@@ -26,7 +26,7 @@ az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set insta
 # </scale_blue>
 
 # <create_green>
-az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/managed/saferollout/green-deployment.yml
+az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/green-deployment.yml
 # </create_green>
 
 # <get_traffic>
