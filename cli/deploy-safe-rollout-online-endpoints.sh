@@ -41,15 +41,16 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-
 set +x
 
 # <test_green_using_curl_get_key>
+#get the key
 ENDPOINT_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
 # </test_green_using_curl_get_key>
 
 set -x
 
 # <test_green_using_curl>
-
+# get the scoring uri
 SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
-
+# use curl to invoke the endpoint
 curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
 # </test_green_using_curl>
 
