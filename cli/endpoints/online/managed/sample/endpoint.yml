@@ -1,4 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
-name: my-new-endpoint
-type: online
-auth_mode: aml_token
+name: my-endpoint
+auth_mode: key
+
