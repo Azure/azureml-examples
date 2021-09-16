@@ -2,6 +2,10 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 set -e
 
+#TODO!!!! remove
+az extension remove -n ml
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.8_october_cand-py3-none-any.whl --yes
+
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
@@ -22,7 +26,8 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/onli
 # </test_blue>
 
 # <scale_blue>
-az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
+#TODO!!!! uncomment below
+#az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
 # </scale_blue>
 
 # <create_green>
@@ -37,8 +42,16 @@ az ml online-endpoint show -n $ENDPOINT_NAME --query traffic
 az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
 
-# <test_green_using_curl>
+# supress printing secret
+set +x
+
+# <test_green_using_curl_get_key>
 ENDPOINT_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
+# </test_green_using_curl_get_key>
+
+set -x
+
+# <test_green_using_curl>
 
 SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
 
