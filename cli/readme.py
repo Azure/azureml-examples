@@ -94,7 +94,9 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     endpoints_table = (
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
-    resources_table = "\n**Resources** ([resources](resources))\n\npath|status|description\n-|-|-\n"
+    resources_table = (
+        "\n**Resources** ([resources](resources))\n\npath|status|description\n-|-|-\n"
+    )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
     scripts_table = "\n**Scripts**\n\npath|status|\n-|-\n"
 
@@ -253,6 +255,7 @@ def write_job_workflow(job):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -282,8 +285,6 @@ jobs:
       run: |
         echo "Creating job..."
         run_id=$(az ml job create -f {job}.yml --query name -o tsv)
-        echo "TODO - remove me"
-        exit 0
         echo "Streaming logs..."
         az ml job stream -n $run_id
         echo "Getting status..."
@@ -314,6 +315,7 @@ def write_endpoint_workflow(endpoint):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -353,6 +355,7 @@ def write_asset_workflow(asset):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -392,6 +395,7 @@ def write_script_workflow(script):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:

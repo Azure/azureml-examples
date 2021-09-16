@@ -19,24 +19,10 @@ Welcome to the Azure Machine Learning examples repository!
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
 2. A terminal. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
-3. Clone this repository:
-
-    ```bash
-    git clone https://github.com/Azure/azureml-examples --depth 1
-    cd azureml-examples/cli
-    ```
-
-4. Run the setup script and create compute:
-
-    ```bash
-    bash setup.sh
-    bash create-compute.sh
-    ```
 
 ## Getting started
 
-1. [Train models (create jobs) with the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli)
-2. [Deploy and score a model using a managed online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
+1. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli)
 
 ## Examples
 
@@ -60,7 +46,6 @@ path|status|
 [deploy-triton-multiple-models-online-endpoint.sh](deploy-triton-multiple-models-online-endpoint.sh)|[![deploy-triton-multiple-models-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-triton-multiple-models-online-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-triton-multiple-models-online-endpoint.yml)
 [how-to-deploy-amlarc-endpoint.sh](how-to-deploy-amlarc-endpoint.sh)|[![how-to-deploy-amlarc-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-deploy-amlarc-endpoint/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-how-to-deploy-amlarc-endpoint.yml)
 [how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh](how-to-deploy-declarative-safe-rollout-amlarc-endpoints.sh)|[![how-to-deploy-declarative-safe-rollout-amlarc-endpoints](https://github.com/Azure/azureml-examples/workflows/cli-scripts-how-to-deploy-declarative-safe-rollout-amlarc-endpoints/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-how-to-deploy-declarative-safe-rollout-amlarc-endpoints.yml)
-[manage-resources.sh](manage-resources.sh)|[![manage-resources](https://github.com/Azure/azureml-examples/workflows/cli-scripts-manage-resources/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-manage-resources.yml)
 [misc.sh](misc.sh)|[![misc](https://github.com/Azure/azureml-examples/workflows/cli-scripts-misc/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-misc.yml)
 [mlflow-uri.sh](mlflow-uri.sh)|[![mlflow-uri](https://github.com/Azure/azureml-examples/workflows/cli-scripts-mlflow-uri/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-mlflow-uri.yml)
 [train-rest.sh](train-rest.sh)|[![train-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train-rest/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-train-rest.yml)
