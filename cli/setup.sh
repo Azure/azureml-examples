@@ -22,3 +22,4 @@ az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 
 az configure --defaults workspace="main-master" location="centraluseuap"
 #az configure --defaults workspace="main-canary" location="eastus2euap"
+

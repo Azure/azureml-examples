@@ -255,6 +255,7 @@ def write_job_workflow(job):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -314,6 +315,7 @@ def write_endpoint_workflow(endpoint):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -353,6 +355,7 @@ def write_asset_workflow(asset):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -392,6 +395,7 @@ def write_script_workflow(script):
     creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
