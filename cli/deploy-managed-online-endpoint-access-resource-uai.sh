@@ -68,7 +68,7 @@ storage_account=`az ml workspace show --name $WORKSPACE --query storage_account 
 # </get_workspace_storage_id>
 
 # <give_permission_to_user_storage_account>
-az role assignment create --assignee $uai_clientid --role "Storage Blob Data Reader" --scope $storage_id
+az role assignment create --assignee $uai_clientid --assignee-object-id $uai_principalid --assignee-principal-type $uai_type --role "Storage Blob Data Reader" --scope $storage_id
 # </give_permission_to_user_storage_account>
 
 # <give_permission_to_container_registry>
