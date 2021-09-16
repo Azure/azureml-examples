@@ -53,6 +53,8 @@ az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $ST
 
 # <get_user_identity_client_id>
 uai_clientid=`az identity list --query "[?name=='$UAI_NAME'].clientId" -o tsv`
+uai_principalid=`az identity list --query "[?name=='$UAI_NAME'].principalId" -o tsv`
+uai_type=`az identity list --query "[?name=='$UAI_NAME'].type" -o tsv`
 # </get_user_identity_client_id>
 
 # <get_user_identity_id>
