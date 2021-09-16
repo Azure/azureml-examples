@@ -1,0 +1,21 @@
+type: pipeline_job
+jobs:
+  get-data:
+    command: bash main.sh
+    code:
+      local_path: src/get-data
+    environment:
+      image: python
+    compute: azureml:cpu-cluster
+    outputs:
+      cifar-10:
+  train-model:
+    command: >-
+      echo ${{outputs.cifar-10}} && exit 0
+    code:
+      local_path: src/train-model
+    inputs:
+      epochs: 1
+    compute: azureml:gpu-cluster
+    environment:
+      image: python
