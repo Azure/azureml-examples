@@ -1,23 +1,17 @@
 type: pipeline_job
 jobs:
   hello:
-    type: command
-    command: echo "hello"
-    #environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+    command: echo "hello" && echo "world" > ${{outputs.world}}/world.txt
     environment:
       image: python
     compute: azureml:cpu-cluster
-    # TODO - remove
-    environment_variables:
-      AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+    outputs:
+      world:
   world:
-    type: command
-    command: echo "world"
-    #environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+    command: echo "world" && echo ${{inputs.world}}/world.txt
     environment:
       image: python
     compute: azureml:cpu-cluster
-    # TODO - remove
-    environment_variables:
-      AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+    inputs:
+      world: ${{jobs.hello.outputs.world}}
  
