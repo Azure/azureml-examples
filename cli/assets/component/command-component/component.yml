@@ -1,4 +1,4 @@
-type: command_component
+type: command
 
 name: Hello_Python_World
 display_name: Hello_Python_World
