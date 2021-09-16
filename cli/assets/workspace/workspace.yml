@@ -1,0 +1,11 @@
+# This example shows a workspace's YML configuration.
+# In case you use this configuration to deploy a new workspace, since no existing dependent resources are specified, these will be automatically created.
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: mlw-examplebasic-prd
+location: eastus
+friendly_name: Basic example workspace
+description: Use this field to describe the purpose of the workspace.
+hbi_workspace: false
+tags:
+  purpose: demonstration
+  team: azureml-examples

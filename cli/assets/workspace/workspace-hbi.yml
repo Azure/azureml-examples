@@ -1,0 +1,11 @@
+# This configuration shows how to configure a workspace with the hbi flag enabled.
+# This flag specifies whether to reduce telemetry collection and enable additional encryption when high-business-impact data is used.
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: mlw-hbiexample-prd
+location: eastus
+friendly_name: HBI-workspace example
+description: Use this field to describe the purpose of the workspace.
+hbi_workspace: true
+tags:
+  purpose: demonstration
+  team: azureml-examples
