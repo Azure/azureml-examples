@@ -74,11 +74,11 @@ az role assignment create --assignee-object-id $uai_principalid --assignee-princ
 # </give_permission_to_user_storage_account>
 
 # <give_permission_to_container_registry>
-az role assignment create --assignee $uai_clientid --role "AcrPull" --scope $container_registry
+az role assignment create --assignee-object-id $uai_principalid --assignee-principal-type ServicePrincipal  --role "AcrPull" --scope $container_registry
 # </give_permission_to_container_registry>
 
 # <give_permission_to_workspace_storage_account>
-az role assignment create --assignee $uai_clientid --role "Storage Blob Data Reader" --scope $storage_account
+az role assignment create --assignee-object-id $uai_principalid --assignee-principal-type ServicePrincipal  --role "Storage Blob Data Reader" --scope $storage_account
 # </give_permission_to_workspace_storage_account>
 
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml --set identity.user_assigned_identities[0].resource_id=$uai_id
