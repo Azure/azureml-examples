@@ -9,6 +9,10 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
+# <create_compute>
+az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 5
+# </create_compute>
+
 # <create_batch_endpoint>
 az ml batch-endpoint create --name $ENDPOINT_NAME
 # </create_batch_endpoint>
@@ -76,6 +80,10 @@ else
   exit 2
 fi
 # </check_job_status>
+
+# <list_all_jobs>
+az ml batch-endpoint list-jobs --name $ENDPOINT_NAME --deployment-name nonmlflowdp --query [].name
+# </list_all_jobs>
 
 # <create_new_deployment_not_default>
 az ml batch-deployment create --name mlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/add-mlflow-deployment.yml
@@ -155,10 +163,6 @@ curl --location --request POST "$SCORING_URI" --header "Authorization: Bearer $A
   }
 }'
 # </start_batch_scoring_job_rest>
-
-# <list_all_jobs>
-az ml batch-endpoint list-jobs --name $ENDPOINT_NAME --query [].name
-# </list_all_jobs>
 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME
