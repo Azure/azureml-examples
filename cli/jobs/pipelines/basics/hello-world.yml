@@ -1,4 +1,4 @@
-type: pipeline_job
+type: pipeline
 jobs:
   hello:
     type: command
