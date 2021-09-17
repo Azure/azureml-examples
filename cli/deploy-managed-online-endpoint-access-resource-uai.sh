@@ -89,6 +89,14 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/m
 az ml online-endpoint show --name $ENDPOINT_NAME
 # </check_endpoint_Status>
 
+# <deploy>
+az ml online-deployment create --endpoint-name $ENDPOINT_NAME --all-traffic --name blue -f endpoints/online/managed/managed-identities/2-uai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME environment_variables.UAI_CLIENT_ID=$uai_clientid
+# </deploy>
+
+# <check_deploy_Status>
+az ml online-deployment show --endpoint-name $ENDPOINT_NAME -n blue
+# </check_deploy_Status>
+
 endpoint_status=`az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name blue --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
@@ -98,10 +106,6 @@ else
   echo "Endpoint creation failed"
   exit 1
 fi
-
-# <deploy>
-az ml online-deployment create --endpoint-name $ENDPOINT_NAME --all-traffic --name blue -f endpoints/online/managed/managed-identities/2-uai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME environment_variables.UAI_CLIENT_ID=$uai_clientid
-# </deploy>
 
 
 # <check_deployment_log>
