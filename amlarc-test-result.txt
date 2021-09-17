@@ -1,8 +1,0 @@
-Job jobs/train/r/iris/job.yml unknown
-Job cli/jobs/train/r/iris/job.yml completed
-Job cli/jobs/train/r/iris/job.yml completed
-Job python-sdk/workflows/train/fastai/mnist/job.py completed
-Job python-sdk/workflows/train/fastai/mnist/job.py failed
-Job python-sdk/workflows/train/fastai/mnist/job.py failed
-Job python-sdk/workflows/train/fastai/mnist/job.py completed
-Job cli/jobs/train/tensorflow/iris/job.yml completed
