@@ -1,0 +1,5 @@
+type: azure_blob
+account_name: sdkvnextclicmcubmqpbkn2k
+credential:
+  access_key: <not an account key>
+container_name: testblob
