@@ -105,7 +105,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     for job in jobs:
         # build entries for tutorial table
         if not any(excluded in job for excluded in EXCLUDED_JOBS):
-            status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
+            status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
         else:
             status = "*no workflow*"
         description = "*no description*"
@@ -126,7 +126,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     for endpoint in endpoints:
         # build entries for tutorial table
         if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS):
-            status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
+            status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
         else:
             status = "*no workflow*"
         description = "*no description*"
@@ -147,7 +147,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     for resource in resources:
         # build entries for tutorial table
         if not any(excluded in resource for excluded in EXCLUDED_RESOURCES):
-            status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
+            status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
         else:
             status = "*no workflow*"
         description = "*no description*"
@@ -168,7 +168,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     for asset in assets:
         # build entries for tutorial table
         if not any(excluded in asset for excluded in EXCLUDED_ASSETS):
-            status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
+            status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
         else:
             status = "*no workflow*"
         description = "*no description*"
@@ -189,7 +189,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     for script in scripts:
         # build entries for tutorial table
         if not any(excluded in script for excluded in EXCLUDED_SCRIPTS):
-            status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
+            status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
         else:
             status = "*no workflow*"
 
