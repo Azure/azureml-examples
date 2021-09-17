@@ -2,10 +2,6 @@
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 set -e
 
-#TODO!!!! remove
-az extension remove -n ml
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.8_october_cand-py3-none-any.whl --yes
-
 # <set_variables>
 export WORKSPACE="<WORKSPACE_NAME>"
 export LOCATION="<WORKSPACE_LOCATION>"
