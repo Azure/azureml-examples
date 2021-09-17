@@ -81,9 +81,8 @@ az role assignment create --assignee-object-id $uai_principalid --assignee-princ
 az role assignment create --assignee-object-id $uai_principalid --assignee-principal-type ServicePrincipal  --role "Storage Blob Data Reader" --scope $storage_account
 # </give_permission_to_workspace_storage_account>
 
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml --set identity.user_assigned_identities[0].resource_id=$uai_id
 # <create_endpoint>
-az ml online-deployment create --endpoint-name $ENDPOINT_NAME --all-traffic --name blue -f endpoints/online/managed/managed-identities/2-uai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME environment_variables.UAI_CLIENT_ID=$uai_clientid
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml --set identity.user_assigned_identities[0].resource_id=$uai_id
 # </create_endpoint>
 
 # <check_endpoint_Status>
@@ -99,6 +98,11 @@ else
   echo "Endpoint creation failed"
   exit 1
 fi
+
+# <deploy>
+az ml online-deployment create --endpoint-name $ENDPOINT_NAME --all-traffic --name blue -f endpoints/online/managed/managed-identities/2-uai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME environment_variables.UAI_CLIENT_ID=$uai_clientid
+# </deploy>
+
 
 # <check_deployment_log>
 # Check deployment logs to confirm blob storage file contents read operation success.
