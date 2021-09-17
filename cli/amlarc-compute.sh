@@ -18,7 +18,7 @@ init_env(){
    
     export RESULT_FILE=amlarc-test-result.txt
 
-    if (( $(date +"%H") < 12 )); then
+    if (( 10#$(date +"%H") < 12 )); then
         AMLARC_RELEASE_TRAIN=experimental
     fi
 
