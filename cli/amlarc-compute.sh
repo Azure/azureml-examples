@@ -1,5 +1,7 @@
 ## This script is used to run training test on AmlArc-enabled compute
 
+# global fixed variables
+LOCK_FILE=$0.lock
 
 # init
 init_env(){
@@ -18,7 +20,10 @@ init_env(){
    
     export RESULT_FILE=amlarc-test-result.txt
 
-    if (( 10#$(date +"%H") < 12 )); then
+    touch $LOCK_FILE
+    [ "$(cat $LOCK_FILE)" == "" ] && echo $(date) > $LOCK_FILE 
+
+    if (( 10#$(date -d "$(cat $LOCK_FILE)" +"%H") < 12 )); then
         AMLARC_RELEASE_TRAIN=experimental
     fi
 
@@ -157,6 +162,8 @@ if __name__ == "__main__":
 # setup cluster resources
 setup_cluster(){
     set -x -e
+
+    rm $LOCK_FILE
 
     init_env
 
@@ -349,6 +356,18 @@ clean_up_cluster(){
         --name $AKS_CLUSTER_NAME \
         --overwrite-existing
      
+    # delete extension
+    az k8s-extension delete \
+        --cluster-name $ARC_CLUSTER_NAME \
+        --cluster-type connectedClusters \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $EXTENSION_NAME \
+        --yes 
+    
+    # delete helm charts
+    helm uninstall -n azureml $EXTENSION_NAME
+    
     # delete arc
     az connectedk8s delete \
         --subscription $SUBSCRIPTION \
