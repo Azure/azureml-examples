@@ -1,5 +1,6 @@
 name: cli-jobs-single-step-tensorflow-mnist-distributed-horovod-job
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:

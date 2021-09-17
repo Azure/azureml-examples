@@ -1,5 +1,6 @@
-name: cli-scripts-manage-resources
+name: cli-scripts-deploy-safe-rollout-online-endpoints
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -8,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/manage-resources.sh
-      - .github/workflows/cli-scripts-manage-resources.yml
+      - cli/deploy-safe-rollout-online-endpoints.sh
+      - .github/workflows/cli-scripts-deploy-safe-rollout-online-endpoints.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,5 +29,5 @@ jobs:
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
-      run: set -e; bash -x manage-resources.sh
+      run: set -e; bash -x deploy-safe-rollout-online-endpoints.sh
       working-directory: cli
