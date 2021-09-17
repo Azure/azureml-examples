@@ -1,13 +1,11 @@
-# This configuration specifies a workspace configuration with existing dependent resources
 $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
-name: mlw-examplebasicex-prd
+name: mlw-regularex-prod
 location: eastus
-friendly_name: Basic example workspace
-description: Use this field to describe the purpose of the workspace.
+friendly_name: Bring your own depdendent resources-example
+description: This configuration specifies a workspace configuration with existing dependent resources
 storage_account: /subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/"<YOUR_RESOURCE_GROUP>"/providers/Microsoft.Storage/storageAccounts/"<YOUR_STORAGE_ACCOUNT>"
 container_registry: /subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/"<YOUR_RESOURCE_GROUP>"/providers/Microsoft.ContainerRegistry/registries/"<YOUR_CONTAINER_REGISTRY>"
 key_vault: /subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/"<YOUR_RESOURCE_GROUP>"/providers/Microsoft.KeyVault/vaults/"<YOUR_KEY_VAULT>"
 app_insights: /subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/"<YOUR_RESOURCE_GROUP>"/providers/Microsoft.insights/components/"<YOUR_APP_INSIGHTS>"
 tags:
   purpose: demonstration
-  team: azureml-examples

@@ -1,3 +1,0 @@
-# This configuration shows the minimal set of properties required to manage a workspace using YML
-$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
-name: mlw-minimalexample-prd
