@@ -108,7 +108,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # </create_environment>
 
 #<create_endpoint>
-response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
@@ -127,7 +127,7 @@ operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -
 wait_for_completion $operation_id
 
 # <create_deployment>
-response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint/deployments/blue?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
@@ -156,7 +156,7 @@ operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -
 wait_for_completion $operation_id
 
 # <get_endpoint>
-response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
+response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
@@ -164,7 +164,7 @@ scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
 # </get_endpoint>
 
 # <get_access_token>
-response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint/token?api-version=$API_VERSION" \
+response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
 accessToken=$(echo $response | jq -r '.accessToken')
 # </get_access_token>
@@ -177,7 +177,7 @@ curl --location --request POST $scoringUri \
 # </score_endpoint>
 
 # <get_deployment_logs>
-curl --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint/deployments/blue/getLogs?api-version=$API_VERSION" \
+curl --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue/getLogs?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{ \"tail\": 100 }"
@@ -185,7 +185,7 @@ curl --location --request POST "https://management.azure.com/subscriptions/$SUBS
 
 # delete endpoint
 # <delete_endpoint>
-curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
+curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" || true
 # </delete_endpoint>
