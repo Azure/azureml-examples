@@ -21,7 +21,7 @@ init_env(){
     export RESULT_FILE=amlarc-test-result.txt
 
     touch $LOCK_FILE
-    [ "$(cat $LOCK_FILE)" == "" ] && echo $(date) > $LOCK_FILE 
+    [ "$(cat $LOCK_FILE)" == "" ] && echo $(date) > $LOCK_FILE || true 
 
     if (( 10#$(date -d "$(cat $LOCK_FILE)" +"%H") < 12 )); then
         AMLARC_RELEASE_TRAIN=experimental
