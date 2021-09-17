@@ -5,7 +5,7 @@ set -x
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location | tr -d '\r"')
+LOCATION=eastus2euap
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
