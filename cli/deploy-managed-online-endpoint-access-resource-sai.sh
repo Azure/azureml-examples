@@ -57,7 +57,7 @@ system_identity=`az ml online-endpoint show --name $ENDPOINT_NAME --query "ident
 # </get_system_identity>
 
 # <give_permission_to_user_storage_account>
-az role assignment create --assignee $system_identity --role "Storage Blob Data Reader" --scope $storage_id
+az role assignment create --assignee-object-id $system_identity --assignee-principal-type ServicePrincipal --role "Storage Blob Data Reader" --scope $storage_id
 # </give_permission_to_user_storage_account>
 
 # <deploy>
