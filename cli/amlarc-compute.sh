@@ -163,7 +163,7 @@ if __name__ == "__main__":
 setup_cluster(){
     set -x -e
 
-    rm $LOCK_FILE
+    rm -f $LOCK_FILE
 
     init_env
 
