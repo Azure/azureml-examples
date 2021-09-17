@@ -1,21 +1,41 @@
 type: pipeline_job
 jobs:
   get-data:
-    command: bash main.sh
+    command: bash main.sh ${{outputs.cifar}}
     code:
       local_path: src/get-data
     environment:
       image: python
     compute: azureml:cpu-cluster
     outputs:
-      cifar-10:
+      cifar:
   train-model:
     command: >-
-      echo ${{outputs.cifar-10}} && exit 0
+      python main.py
+      --cifar-dir ${{inputs.cifar}}
+      --epochs ${{inputs.epochs}}
     code:
       local_path: src/train-model
     inputs:
       epochs: 1
+      cifar: ${{jobs.get-data.outputs.cifar}}
+    outputs:
+      model:
     compute: azureml:gpu-cluster
     environment:
       image: python
+    distribution:
+      type: pytorch
+      process_count_per_instance: 2
+    resources:
+      instance_count: 2
+  eval-model:
+    command: >-
+      python main.py
+    code:
+      local_path: src/eval-model
+    compute: azureml:cpu-cluster
+    environment:
+      image: python
+    inputs:
+      model: ${{jobs.train-model.outputs.model}}

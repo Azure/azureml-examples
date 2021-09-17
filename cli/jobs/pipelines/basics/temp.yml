@@ -1,6 +1,0 @@
-command: echo "hello" && echo "world" > ${{outputs.world}}/world.txt
-environment:
-  image: python
-compute: azureml:cpu-cluster
-outputs:
-  world:
