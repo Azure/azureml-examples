@@ -1,12 +1,14 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
-# <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
+set -x
 
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+# <create_variables>
+SUBSCRIPTION_ID=ad203158-bc5d-4e72-b764-2607833a71dc
+LOCATION=eastus2euap
+RESOURCE_GROUP=mamarkirg
+
+WORKSPACE=max-test
 API_VERSION="2021-10-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
@@ -15,7 +17,7 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=max-endpt-`echo $RANDOM`
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
 
@@ -23,6 +25,11 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 wait_for_completion () {
     operation_id=$1
     status="unknown"
+
+    if [[ $operation_id == "" || -z $operation_id  || $operation_id == "null" ]]; then
+        echo "operation id cannot be empty"
+        exit 1
+    fi
 
     while [[ $status != "Succeeded" && $status != "Failed" ]]
     do
@@ -46,8 +53,8 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
-AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
-export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.containerName')
+export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.accountName')
 # </get_storage_details>
 
 # TODO: we can get the default container from listing datastores
@@ -63,9 +70,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
   \"properties\": {
-    \"description\": \"Score code\",
-    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE\",
-    \"path\": \"score\"
+    \"codeUri\": \"https://maxtest5474417240.blob.core.windows.net/azureml-blobstore-089fff7c-a4c4-42b4-98ef-56a0db069cde/score\"
   }
 }"
 # </create_code>
@@ -80,8 +85,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"datastoreId\":\"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
-        \"path\": \"model/sklearn_regression_model.pkl\",
+        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model/sklearn_regression_model.pkl\"
     }
 }"
 # </create_model>
@@ -98,7 +102,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
     \"properties\":{
         \"condaFile\": \"$CONDA_FILE\",
-        \"image\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\",
+        \"image\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\"
     }
 }"
 # </create_environment>
@@ -112,8 +116,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
        \"type\": \"systemAssigned\"
     },
     \"properties\": {
-        \"authMode\": \"AMLToken\",
-        \"traffic\": { \"blue\": 100 }
+        \"authMode\": \"AMLToken\"
     },
     \"location\": \"$LOCATION\"
 }")
@@ -130,23 +133,20 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 --data-raw "{
     \"location\": \"$LOCATION\",
     \"sku\": {
-        \"capacity\": 1
+        \"capacity\": 1,
+        \"name\": \"Standard_F2s_v2\"
     },
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
-            \"scaleType\": \"Default\",
+            \"scaleType\": \"Default\"
         },
-        \"model\": {
-            \"referenceType\": \"Id\",
-            \"assetId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\"
-        },
+        \"model\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\",
         \"codeConfiguration\": {
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1\",
             \"scoringScript\": \"score.py\"
         },
-        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\",
-        \"InstanceType\": \"Standard_F2s_v2\"
+        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\"
     }
 }")
 #</create_deployment>
