@@ -3,14 +3,4 @@ name: mlflowdp
 endpoint_name: mybatchedp
 model: 
   local_path: ./autolog_nyc_taxi
-mini_batch_size: 5
-output_file_name: predictions.csv
-retry_settings:
-  max_retries: 3
-  timeout: 30
-error_threshold: 10 
-logging_level: info
 compute: azureml:cpu-cluster
-resources:
-  instance_count: 1
-max_concurrency_per_instance: 1

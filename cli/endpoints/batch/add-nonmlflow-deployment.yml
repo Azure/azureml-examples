@@ -7,17 +7,18 @@ code_configuration:
   code:
     local_path: ./mnist/code/
   scoring_script: digit_identification.py
-environment: 
+environment:
   conda_file: ./mnist/environment/conda.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-mini_batch_size: 5
+compute: azureml:cpu-cluster
+resources:
+  instance_count: 1
+max_concurrency_per_instance: 2
+mini_batch_size: 10
+output_action: append_row
 output_file_name: predictions.csv
 retry_settings:
   max_retries: 3
   timeout: 30
-error_threshold: 10 
+error_threshold: -1
 logging_level: info
-compute: azureml:cpu-cluster
-resources:
-  instance_count: 1
-max_concurrency_per_instance: 4
