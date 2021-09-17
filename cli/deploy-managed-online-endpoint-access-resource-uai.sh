@@ -57,10 +57,6 @@ uai_clientid=`az identity list --query "[?name=='$UAI_NAME'].clientId" -o tsv`
 uai_principalid=`az identity list --query "[?name=='$UAI_NAME'].principalId" -o tsv`
 # </get_user_identity_client_id>
 
-# <get_user_identity_id>
-uai_id=`az identity list --query "[?name=='$UAI_NAME'].id" -o tsv`
-# </get_user_identity_id>
-
 # <get_container_registry_id>
 container_registry=`az ml workspace show --name $WORKSPACE --query container_registry -o tsv`
 # </get_container_registry_id>
