@@ -4,11 +4,11 @@
 set -x
 
 # <create_variables>
-SUBSCRIPTION_ID=ad203158-bc5d-4e72-b764-2607833a71dc
-LOCATION=eastus2euap
-RESOURCE_GROUP=mamarkirg
+SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
+LOCATION=$(az group show --query location | tr -d '\r"')
+RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
-WORKSPACE=max-test
+WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
 API_VERSION="2021-10-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
@@ -17,7 +17,7 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
-export ENDPOINT_NAME=max-endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
 
