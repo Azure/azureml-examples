@@ -5,7 +5,7 @@ set -x
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=eastus2euap
+LOCATION=$(az ml workspace show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
@@ -14,10 +14,8 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
 
 # <set_endpoint_name>
-export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
-# </set_endpoint_name>
-
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
+# </set_endpoint_name>
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
 
@@ -70,7 +68,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
   \"properties\": {
-    \"codeUri\": \"https://maxtest5474417240.blob.core.windows.net/azureml-blobstore-089fff7c-a4c4-42b4-98ef-56a0db069cde/score\"
+    \"codeUri\": \"https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZUREML_DEFAULT_CONTAINER/score\"
   }
 }"
 # </create_code>

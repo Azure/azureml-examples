@@ -55,7 +55,6 @@ az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $ST
 # <get_user_identity_client_id>
 uai_clientid=`az identity list --query "[?name=='$UAI_NAME'].clientId" -o tsv`
 uai_principalid=`az identity list --query "[?name=='$UAI_NAME'].principalId" -o tsv`
-uai_type=`az identity list --query "[?name=='$UAI_NAME'].type" -o tsv`
 # </get_user_identity_client_id>
 
 # <get_user_identity_id>
@@ -84,7 +83,7 @@ az role assignment create --assignee-object-id $uai_principalid --assignee-princ
 
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml --set identity.user_assigned_identities[0].resource_id=$uai_id
 # <create_endpoint>
-az ml online-deployment create --endpoint-name $ENDPOINT_NAME --name blue -f endpoints/online/managed/managed-identities/2-uai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME environment_variables.UAI_CLIENT_ID=$uai_clientid
+az ml online-deployment create --endpoint-name $ENDPOINT_NAME --all-traffic --name blue -f endpoints/online/managed/managed-identities/2-uai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME environment_variables.UAI_CLIENT_ID=$uai_clientid
 # </create_endpoint>
 
 # <check_endpoint_Status>
@@ -105,8 +104,6 @@ fi
 # Check deployment logs to confirm blob storage file contents read operation success.
 az ml online-deployment get-logs --endpoint-name $ENDPOINT_NAME --name blue
 # </check_deployment_log>
-
-az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100"
 
 # <test_endpoint>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json

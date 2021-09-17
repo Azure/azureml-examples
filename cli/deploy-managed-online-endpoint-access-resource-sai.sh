@@ -39,11 +39,20 @@ az storage container create --account-name $STORAGE_ACCOUNT_NAME --name $STORAGE
 az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $STORAGE_CONTAINER_NAME --name $FILE_NAME --file endpoints/online/managed/managed-identities/hello.txt
 # </upload_file_to_storage>
 
-cat endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
-
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
 # </create_endpoint>
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+
+echo $endpoint_status
+
+if [[ $endpoint_status == "Succeeded" ]]
+then
+  echo "Endpoint created successfully"
+else 
+  echo "Endpoint creation failed"
+  exit 1
+fi
 
 # <check_endpoint_Status>
 az ml online-endpoint show --name $ENDPOINT_NAME
@@ -61,7 +70,7 @@ az role assignment create --assignee-object-id $system_identity --assignee-princ
 # </give_permission_to_user_storage_account>
 
 # <deploy>
-az ml online-deployment create --endpoint-name $ENDPOINT_NAME --name blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME
+az ml online-deployment create --endpoint-name $ENDPOINT_NAME --all-traffic --name blue --file endpoints/online/managed/managed-identities/2-sai-deployment.yml --set environment_variables.STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME environment_variables.STORAGE_CONTAINER_NAME=$STORAGE_CONTAINER_NAME environment_variables.FILE_NAME=$FILE_NAME
 # </deploy>
 
 # <check_deploy_Status>
@@ -77,9 +86,6 @@ else
   echo "Deployment failed"
   exit 1
 fi
-
-
-az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=100"
 
 # <check_deployment_log>
 # Check deployment logs to confirm blob storage file contents read operation success.
