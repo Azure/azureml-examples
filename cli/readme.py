@@ -5,8 +5,8 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["cifar"]
-EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
+EXCLUDED_JOBS = []
+EXCLUDED_ENDPOINTS = []
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
@@ -15,6 +15,7 @@ EXCLUDED_RESOURCES = [
 EXCLUDED_ASSETS = [
     "conda-yamls",
     "mlflow-models",
+    "docker-contexts",
 ]
 EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 
@@ -26,15 +27,15 @@ def main(args):
     jobs = [
         job.replace(".yml", "")
         for job in jobs
-        if not any(excluded in job for excluded in EXCLUDED_JOBS)
+        # if not any(excluded in job for excluded in EXCLUDED_JOBS)
     ]
 
     # get list of endpoints
-    endpoints = sorted(glob.glob("endpoints/**/*.yml", recursive=True))
+    endpoints = sorted(glob.glob("endpoints/**/*endpoint*.yml", recursive=True))
     endpoints = [
         endpoint.replace(".yml", "")
         for endpoint in endpoints
-        if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS)
+        # if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS)
     ]
 
     # get list of resources
@@ -42,7 +43,7 @@ def main(args):
     resources = [
         resource.replace(".yml", "")
         for resource in resources
-        if not any(excluded in resource for excluded in EXCLUDED_RESOURCES)
+        # if not any(excluded in resource for excluded in EXCLUDED_RESOURCES)
     ]
 
     # get list of assets
@@ -50,7 +51,7 @@ def main(args):
     assets = [
         asset.replace(".yml", "")
         for asset in assets
-        if not any(excluded in asset for excluded in EXCLUDED_ASSETS)
+        # if not any(excluded in asset for excluded in EXCLUDED_ASSETS)
     ]
 
     # get list of scripts
@@ -58,7 +59,7 @@ def main(args):
     scripts = [
         script.replace(".sh", "")
         for script in scripts
-        if not any(excluded in script for excluded in EXCLUDED_SCRIPTS)
+        # if not any(excluded in script for excluded in EXCLUDED_SCRIPTS)
     ]
 
     # write workflows
@@ -103,7 +104,10 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process jobs
     for job in jobs:
         # build entries for tutorial table
-        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
+        if not any(excluded in job for excluded in EXCLUDED_JOBS):
+            status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
+        else:
+            status = "*no workflow*"
         description = "*no description*"
         try:
             with open(f"{job}.yml", "r") as f:
@@ -121,7 +125,10 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process endpoints
     for endpoint in endpoints:
         # build entries for tutorial table
-        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
+        if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS):
+            status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
+        else:
+            status = "*no workflow*"
         description = "*no description*"
         try:
             with open(f"{endpoint}.yml", "r") as f:
@@ -139,7 +146,10 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process resources
     for resource in resources:
         # build entries for tutorial table
-        status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
+        if not any(excluded in resource for excluded in EXCLUDED_RESOURCES):
+            status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
+        else:
+            status = "*no workflow*"
         description = "*no description*"
         try:
             with open(f"{resource}.yml", "r") as f:
@@ -157,7 +167,10 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process assets
     for asset in assets:
         # build entries for tutorial table
-        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
+        if not any(excluded in asset for excluded in EXCLUDED_ASSETS):
+            status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
+        else:
+            status = "*no workflow*"
         description = "*no description*"
         try:
             with open(f"{asset}.yml", "r") as f:
@@ -175,8 +188,10 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process scripts
     for script in scripts:
         # build entries for tutorial table
-        status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
-        link = f"https://scripts.microsoft.com/azure/machine-learning/{script}"
+        if not any(excluded in script for excluded in EXCLUDED_SCRIPTS):
+            status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
+        else:
+            status = "*no workflow*"
 
         # add row to tutorial table
         row = f"[{script}.sh]({script}.sh)|{status}\n"
@@ -187,11 +202,11 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     with open("README.md", "w") as f:
         f.write(
             prefix
-            + scripts_table
-            + jobs_table
-            + endpoints_table
             + resources_table
             + assets_table
+            + jobs_table
+            + scripts_table
+            + endpoints_table
             + suffix
         )
 
@@ -202,28 +217,33 @@ def write_workflows(jobs, endpoints, resources, assets, scripts):
     # process jobs
     for job in jobs:
         # write workflow file
-        write_job_workflow(job)
+        if not any(excluded in job for excluded in EXCLUDED_JOBS):
+            write_job_workflow(job)
 
     # process endpoints
     for endpoint in endpoints:
         # write workflow file
-        # write_endpoint_workflow(endpoint)
+        # if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS):
+        #     write_endpoint_workflow(endpoint)
         pass
 
     # process assest
     for resource in resources:
         # write workflow file
-        write_asset_workflow(resource)
+        if not any(excluded in resource for excluded in EXCLUDED_RESOURCES):
+            write_asset_workflow(resource)
 
     # process assest
     for asset in assets:
         # write workflow file
-        write_asset_workflow(asset)
+        if not any(excluded in asset for excluded in EXCLUDED_ASSETS):
+            write_asset_workflow(asset)
 
     # process scripts
     for script in scripts:
         # write workflow file
-        write_script_workflow(script)
+        if not any(excluded in script for excluded in EXCLUDED_SCRIPTS):
+            write_script_workflow(script)
 
 
 def check_readme(before, after):
