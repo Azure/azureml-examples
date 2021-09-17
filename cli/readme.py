@@ -392,7 +392,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
-    creds = "${{secrets.AZ_V2_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}" if not any(x in filename for x in ["uai", "sai"]) else "${{secrets.AZ_AE_CLI_MIR_CREDS}}"
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
   workflow_dispatch:
