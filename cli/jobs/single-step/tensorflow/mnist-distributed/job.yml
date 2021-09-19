@@ -4,17 +4,18 @@ code:
 command: >-
   python train.py 
   --epochs ${{inputs.epochs}}
-  --model-dir ${{inputs.model-dir}}
+  --model-dir ${{outputs.model-dir}}
 inputs:
   epochs: 1
-  model-dir: outputs/keras-model
+outputs:
+  model-dir: 
+    mode: upload
 environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu
 compute: azureml:gpu-cluster
 resources:
   instance_count: 2
 distribution:
   type: tensorflow
-  worker_count: 2
   worker_count: 2
 display_name: tensorflow-mnist-distributed-example
 experiment_name: tensorflow-mnist-distributed-example
