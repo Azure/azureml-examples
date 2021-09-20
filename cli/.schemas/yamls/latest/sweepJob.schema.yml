@@ -64,6 +64,11 @@ definitions:
         readonly: true
         title: arm_id
         type: string
+      code_uri:
+        description: Blob URI pointing to a file or directory where code asset is
+          located.
+        title: code_uri
+        type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
@@ -79,11 +84,10 @@ definitions:
         title: id
         type: string
       local_path:
-        description: the path from which the data gets uploaded to the cloud
+        description: The path from which the data gets uploaded to the cloud
         title: local_path
         type: string
       name:
-        readonly: true
         title: name
         type: string
       path:
@@ -98,7 +102,6 @@ definitions:
         anyOf:
         - type: string
         - type: integer
-        readonly: true
         title: version
     type: object
   AnonymousDatasetSchema:
@@ -142,12 +145,7 @@ definitions:
       paths:
         anyOf:
         - items:
-            $ref: '#/definitions/FolderPathSchema'
-            type: object
-          title: paths
-          type: array
-        - items:
-            $ref: '#/definitions/FilePathSchema'
+            $ref: '#/definitions/PathSchema'
             type: object
           title: paths
           type: array
@@ -168,12 +166,6 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
       build:
         $ref: '#/definitions/BuildContextSchema'
         type: object
@@ -186,11 +178,6 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
@@ -206,11 +193,8 @@ definitions:
       inference_config:
         $ref: '#/definitions/InferenceConfigSchema'
         type: object
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
       name:
+        readonly: true
         title: name
         type: string
       os_type:
@@ -218,10 +202,6 @@ definitions:
         - linux
         - windows
         title: os_type
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
         type: string
       tags:
         additionalProperties:
@@ -233,6 +213,7 @@ definitions:
         anyOf:
         - type: string
         - type: integer
+        readonly: true
         title: version
     type: object
   BanditPolicySchema:
@@ -291,6 +272,9 @@ definitions:
             type: number
           - title: values
             type: string
+          - additionalProperties: {}
+            title: values
+            type: object
         title: values
         type: array
     required:
@@ -336,6 +320,11 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
       description:
         title: description
         type: string
@@ -352,12 +341,7 @@ definitions:
       paths:
         anyOf:
         - items:
-            $ref: '#/definitions/FolderPathSchema'
-            type: object
-          title: paths
-          type: array
-        - items:
-            $ref: '#/definitions/FilePathSchema'
+            $ref: '#/definitions/PathSchema'
             type: object
           title: paths
           type: array
@@ -370,26 +354,6 @@ definitions:
         - type: string
         - type: integer
         title: version
-    type: object
-  FilePathSchema:
-    additionalProperties: false
-    properties:
-      file:
-        description: URI pointing to file.
-        title: file
-        type: string
-    required:
-    - file
-    type: object
-  FolderPathSchema:
-    additionalProperties: false
-    properties:
-      folder:
-        description: URI pointing to folder.
-        title: folder
-        type: string
-    required:
-    - folder
     type: object
   InferenceConfigSchema:
     additionalProperties: false
@@ -589,6 +553,10 @@ definitions:
   OutputEntrySchema:
     additionalProperties: false
     properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
       data:
         $ref: '#/definitions/DatasetSchema'
         type: object
@@ -603,6 +571,10 @@ definitions:
   OutputUriSchema:
     additionalProperties: false
     properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
       file:
         readonly: true
         title: file
@@ -660,12 +632,30 @@ definitions:
           type: string
         - pattern: ^file:.*
           type: string
+      environment_variables:
+        additionalProperties:
+          title: environment_variables
+          type: string
+        title: environment_variables
+        type: object
       resources:
         $ref: '#/definitions/ResourceConfigurationSchema'
         type: object
     required:
     - command
     - environment
+    type: object
+  PathSchema:
+    additionalProperties: false
+    properties:
+      file:
+        description: URI pointing to file.
+        title: file
+        type: string
+      folder:
+        description: URI pointing to folder.
+        title: folder
+        type: string
     type: object
   PyTorchDistributionSchema:
     additionalProperties: false
@@ -904,9 +894,9 @@ definitions:
       outputs:
         additionalProperties:
           anyOf:
-          - $ref: '#/definitions/OutputUriSchema'
-            type: object
           - $ref: '#/definitions/OutputEntrySchema'
+            type: object
+          - $ref: '#/definitions/OutputUriSchema'
             type: object
         title: outputs
         type: object
@@ -1021,9 +1011,6 @@ definitions:
         format: integer
         title: evaluation_interval
         type: number
-      exclude_finished_jobs:
-        title: exclude_finished_jobs
-        type: boolean
       policy_type:
         enum:
         - truncation_selection

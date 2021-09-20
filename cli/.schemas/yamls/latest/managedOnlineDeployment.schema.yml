@@ -8,12 +8,6 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
       build:
         $ref: '#/definitions/BuildContextSchema'
         type: object
@@ -26,11 +20,6 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
@@ -46,11 +35,8 @@ definitions:
       inference_config:
         $ref: '#/definitions/InferenceConfigSchema'
         type: object
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
       name:
+        readonly: true
         title: name
         type: string
       os_type:
@@ -58,10 +44,6 @@ definitions:
         - linux
         - windows
         title: os_type
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
         type: string
       tags:
         additionalProperties:
@@ -73,6 +55,7 @@ definitions:
         anyOf:
         - type: string
         - type: integer
+        readonly: true
         title: version
     type: object
   AnonymousModelSchema:
@@ -114,11 +97,11 @@ definitions:
         - openai
         title: model_format
         type: string
+      model_uri:
+        title: model_uri
+        type: string
       name:
         title: name
-        type: string
-      path:
-        title: path
         type: string
       properties:
         additionalProperties: {}
@@ -164,6 +147,11 @@ definitions:
         readonly: true
         title: arm_id
         type: string
+      code_uri:
+        description: Blob URI pointing to a file or directory where code asset is
+          located.
+        title: code_uri
+        type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
@@ -179,15 +167,11 @@ definitions:
         title: id
         type: string
       local_path:
-        description: the path from which the data gets uploaded to the cloud
+        description: The path from which the data gets uploaded to the cloud
         title: local_path
         type: string
       name:
         title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
         type: string
       tags:
         additionalProperties: {}
@@ -247,13 +231,13 @@ definitions:
   DefaultScaleSettingsSchema:
     additionalProperties: false
     properties:
-      scale_type:
+      type:
         enum:
-        - Default
-        title: scale_type
+        - default
+        title: type
         type: string
     required:
-    - scale_type
+    - type
     type: object
   EnvironmentSchema:
     additionalProperties: false
@@ -311,7 +295,6 @@ definitions:
         title: version
     required:
     - name
-    - version
     type: object
   InferenceConfigSchema:
     additionalProperties: false
@@ -492,15 +475,15 @@ definitions:
         format: integer
         title: polling_interval
         type: number
-      scale_type:
-        enum:
-        - target_utilization
-        title: scale_type
-        type: string
       target_utilization_percentage:
         format: integer
         title: target_utilization_percentage
         type: number
+      type:
+        enum:
+        - target_utilization
+        title: type
+        type: string
     required:
-    - scale_type
+    - type
     type: object

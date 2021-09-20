@@ -1,12 +1,49 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "AmlComputeSchema": {
+    "IdentitySchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "system_assigned",
+            "user_assigned",
+            "none",
+            "system_assigned,user_assigned"
+          ],
+          "title": "type"
+        },
+        "user_assigned_identities": {
+          "title": "user_assigned_identities",
+          "type": "array",
+          "items": {
+            "title": "user_assigned_identities",
+            "type": "string"
+          }
+        }
+      },
       "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
+      "additionalProperties": false
+    },
+    "NetworkSettingsSchema": {
+      "properties": {
+        "private_ip_only": {
+          "title": "private_ip_only",
+          "type": "boolean"
+        },
+        "subnet": {
+          "title": "subnet",
+          "type": "string"
+        },
+        "vnet_name": {
+          "title": "vnet_name",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "SshSettingsSchema": {
       "properties": {
         "admin_password": {
           "title": "admin_password",
@@ -16,6 +53,16 @@
           "title": "admin_username",
           "type": "string"
         },
+        "ssh_key_value": {
+          "title": "ssh_key_value",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "AmlComputeSchema": {
+      "properties": {
         "created_on": {
           "title": "created_on",
           "type": "string",
@@ -25,18 +72,14 @@
           "title": "description",
           "type": "string"
         },
-        "enable_public_ip": {
-          "title": "enable_public_ip",
-          "type": "boolean"
-        },
         "id": {
           "title": "id",
           "type": "string",
           "readonly": true
         },
-        "identity_type": {
-          "title": "identity_type",
-          "type": "string"
+        "identity": {
+          "type": "object",
+          "$ref": "#/definitions/IdentitySchema"
         },
         "idle_time_before_scale_down": {
           "title": "idle_time_before_scale_down",
@@ -61,9 +104,9 @@
           "title": "name",
           "type": "string"
         },
-        "priority": {
-          "title": "priority",
-          "type": "string"
+        "network_settings": {
+          "type": "object",
+          "$ref": "#/definitions/NetworkSettingsSchema"
         },
         "provisioning_errors": {
           "title": "provisioning_errors",
@@ -88,26 +131,13 @@
           "title": "size",
           "type": "string"
         },
-        "ssh_key_value": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^file:.*",
-              "title": "ssh_key_value"
-            },
-            {
-              "title": "ssh_key_value",
-              "type": "string"
-            }
-          ]
+        "ssh_public_access_enabled": {
+          "title": "ssh_public_access_enabled",
+          "type": "boolean"
         },
-        "ssh_public_access": {
-          "title": "ssh_public_access",
-          "type": "string"
-        },
-        "subnet": {
-          "title": "subnet",
-          "type": "string"
+        "ssh_settings": {
+          "type": "object",
+          "$ref": "#/definitions/SshSettingsSchema"
         },
         "tags": {
           "title": "tags",
@@ -117,23 +147,23 @@
             "type": "string"
           }
         },
+        "tier": {
+          "title": "tier",
+          "type": "string"
+        },
         "type": {
           "type": "string",
           "enum": [
             "amlcompute"
           ],
           "title": "type"
-        },
-        "user_assigned_identities": {
-          "title": "user_assigned_identities",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "vnet_name": {
-          "title": "vnet_name",
-          "type": "string"
         }
       },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

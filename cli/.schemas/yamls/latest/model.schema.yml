@@ -64,11 +64,11 @@ definitions:
         - openai
         title: model_format
         type: string
+      model_uri:
+        title: model_uri
+        type: string
       name:
         title: name
-        type: string
-      path:
-        title: path
         type: string
       properties:
         additionalProperties: {}
@@ -89,5 +89,4 @@ definitions:
         title: version
     required:
     - name
-    - version
     type: object

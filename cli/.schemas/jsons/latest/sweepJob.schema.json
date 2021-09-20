@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -31,13 +30,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "BanditPolicySchema": {
-      "type": "object",
-      "required": [
-        "policy_type"
-      ],
       "properties": {
         "delay_evaluation": {
           "title": "delay_evaluation",
@@ -67,13 +63,13 @@
           "format": "float"
         }
       },
-      "additionalProperties": false
-    },
-    "MedianStoppingPolicySchema": {
-      "type": "object",
       "required": [
         "policy_type"
       ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "MedianStoppingPolicySchema": {
       "properties": {
         "delay_evaluation": {
           "title": "delay_evaluation",
@@ -93,14 +89,13 @@
           "title": "policy_type"
         }
       },
+      "required": [
+        "policy_type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "TruncationSelectionPolicySchema": {
-      "type": "object",
-      "required": [
-        "policy_type",
-        "truncation_percentage"
-      ],
       "properties": {
         "delay_evaluation": {
           "title": "delay_evaluation",
@@ -111,10 +106,6 @@
           "title": "evaluation_interval",
           "type": "number",
           "format": "integer"
-        },
-        "exclude_finished_jobs": {
-          "title": "exclude_finished_jobs",
-          "type": "boolean"
         },
         "policy_type": {
           "type": "string",
@@ -129,13 +120,14 @@
           "format": "integer"
         }
       },
+      "required": [
+        "policy_type",
+        "truncation_percentage"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "InputDatasetSchema": {
-      "type": "object",
-      "required": [
-        "dataset"
-      ],
       "properties": {
         "dataset": {
           "anyOf": [
@@ -165,10 +157,13 @@
           "title": "mode"
         }
       },
+      "required": [
+        "dataset"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "AnonymousDatasetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -216,15 +211,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "$ref": "#/definitions/FolderPathSchema"
-              }
-            },
-            {
-              "title": "paths",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/FilePathSchema"
+                "$ref": "#/definitions/PathSchema"
               }
             }
           ]
@@ -251,38 +238,26 @@
           "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
-    "FolderPathSchema": {
-      "type": "object",
-      "required": [
-        "folder"
-      ],
+    "PathSchema": {
       "properties": {
+        "file": {
+          "title": "file",
+          "type": "string",
+          "description": "URI pointing to file."
+        },
         "folder": {
           "title": "folder",
           "type": "string",
           "description": "URI pointing to folder."
         }
       },
-      "additionalProperties": false
-    },
-    "FilePathSchema": {
       "type": "object",
-      "required": [
-        "file"
-      ],
-      "properties": {
-        "file": {
-          "title": "file",
-          "type": "string",
-          "description": "URI pointing to file."
-        }
-      },
       "additionalProperties": false
     },
     "InputDataSchema": {
-      "type": "object",
       "properties": {
         "data": {
           "anyOf": [
@@ -313,10 +288,10 @@
           "title": "mode"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "AnonymousAssetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -381,10 +356,10 @@
           "readonly": true
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "InputUriSchema": {
-      "type": "object",
       "properties": {
         "file": {
           "title": "file",
@@ -405,10 +380,10 @@
           "title": "mode"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "InputLiteralValueSchema": {
-      "type": "object",
       "properties": {
         "value": {
           "anyOf": [
@@ -433,10 +408,10 @@
           ]
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "SweepJobLimitsSchema": {
-      "type": "object",
       "properties": {
         "max_concurrent_trials": {
           "title": "max_concurrent_trials",
@@ -463,14 +438,10 @@
           "description": "Sweep Job Trial timeout value."
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "SweepObjectiveSchema": {
-      "type": "object",
-      "required": [
-        "goal",
-        "primary_metric"
-      ],
       "properties": {
         "goal": {
           "type": "string",
@@ -485,10 +456,14 @@
           "type": "string"
         }
       },
+      "required": [
+        "goal",
+        "primary_metric"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "JobOutputSchema": {
-      "type": "object",
       "properties": {
         "datastore_id": {
           "type": "string",
@@ -501,36 +476,10 @@
           "type": "string"
         }
       },
-      "additionalProperties": false
-    },
-    "OutputUriSchema": {
       "type": "object",
-      "properties": {
-        "file": {
-          "title": "file",
-          "type": "string",
-          "readonly": true
-        },
-        "folder": {
-          "title": "folder",
-          "type": "string",
-          "readonly": true
-        },
-        "mode": {
-          "type": "string",
-          "enum": [
-            "mount",
-            "upload",
-            "rw_mount"
-          ],
-          "title": "mode",
-          "readonly": true
-        }
-      },
       "additionalProperties": false
     },
     "OutputEntrySchema": {
-      "type": "object",
       "properties": {
         "data": {
           "type": "object",
@@ -544,12 +493,17 @@
             "rw_mount"
           ],
           "title": "mode"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "DatasetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -561,6 +515,12 @@
         "creation_context": {
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
         },
         "description": {
           "title": "description",
@@ -586,15 +546,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "$ref": "#/definitions/FolderPathSchema"
-              }
-            },
-            {
-              "title": "paths",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/FilePathSchema"
+                "$ref": "#/definitions/PathSchema"
               }
             }
           ]
@@ -621,13 +573,41 @@
           "title": "version"
         }
       },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "OutputUriSchema": {
+      "properties": {
+        "file": {
+          "title": "file",
+          "type": "string",
+          "readonly": true
+        },
+        "folder": {
+          "title": "folder",
+          "type": "string",
+          "readonly": true
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "mount",
+            "upload",
+            "rw_mount"
+          ],
+          "title": "mode",
+          "readonly": true
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "type": "object",
       "additionalProperties": false
     },
     "ChoiceSchema": {
-      "type": "object",
-      "required": [
-        "type"
-      ],
       "properties": {
         "type": {
           "type": "string",
@@ -649,20 +629,23 @@
               {
                 "title": "values",
                 "type": "string"
+              },
+              {
+                "title": "values",
+                "type": "object",
+                "additionalProperties": {}
               }
             ]
           }
         }
       },
+      "required": [
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "UniformSchema": {
-      "type": "object",
-      "required": [
-        "max_value",
-        "min_value",
-        "type"
-      ],
       "properties": {
         "max_value": {
           "title": "max_value",
@@ -683,14 +666,15 @@
           "title": "type"
         }
       },
+      "required": [
+        "max_value",
+        "min_value",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "QUniformSchema": {
-      "type": "object",
-      "required": [
-        "q",
-        "type"
-      ],
       "properties": {
         "max_value": {
           "anyOf": [
@@ -734,15 +718,14 @@
           "title": "type"
         }
       },
+      "required": [
+        "q",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "NormalSchema": {
-      "type": "object",
-      "required": [
-        "mu",
-        "sigma",
-        "type"
-      ],
       "properties": {
         "mu": {
           "title": "mu",
@@ -763,16 +746,15 @@
           "title": "type"
         }
       },
-      "additionalProperties": false
-    },
-    "QNormalSchema": {
-      "type": "object",
       "required": [
         "mu",
-        "q",
         "sigma",
         "type"
       ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "QNormalSchema": {
       "properties": {
         "mu": {
           "title": "mu",
@@ -798,14 +780,16 @@
           "title": "type"
         }
       },
+      "required": [
+        "mu",
+        "q",
+        "sigma",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "RandintSchema": {
-      "type": "object",
-      "required": [
-        "type",
-        "upper"
-      ],
       "properties": {
         "type": {
           "type": "string",
@@ -820,10 +804,14 @@
           "format": "integer"
         }
       },
+      "required": [
+        "type",
+        "upper"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "JobServiceSchema": {
-      "type": "object",
       "properties": {
         "endpoint": {
           "title": "endpoint",
@@ -860,14 +848,10 @@
           "readonly": true
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "ParameterizedCommandSchema": {
-      "type": "object",
-      "required": [
-        "command",
-        "environment"
-      ],
       "properties": {
         "code": {
           "anyOf": [
@@ -926,6 +910,14 @@
             }
           ]
         },
+        "environment_variables": {
+          "title": "environment_variables",
+          "type": "object",
+          "additionalProperties": {
+            "title": "environment_variables",
+            "type": "string"
+          }
+        },
         "resources": {
           "type": "object",
           "$ref": "#/definitions/ResourceConfigurationSchema"
@@ -936,10 +928,14 @@
           "readonly": true
         }
       },
+      "required": [
+        "command",
+        "environment"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "AnonymousCodeAssetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -947,6 +943,11 @@
           "arm_type": "data",
           "title": "arm_id",
           "readonly": true
+        },
+        "code_uri": {
+          "title": "code_uri",
+          "type": "string",
+          "description": "Blob URI pointing to a file or directory where code asset is located."
         },
         "creation_context": {
           "type": "object",
@@ -969,12 +970,11 @@
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
+          "description": "The path from which the data gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
-          "type": "string",
-          "readonly": true
+          "type": "string"
         },
         "path": {
           "title": "path",
@@ -1000,17 +1000,13 @@
               "type": "integer"
             }
           ],
-          "title": "version",
-          "readonly": true
+          "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "PyTorchDistributionSchema": {
-      "type": "object",
-      "required": [
-        "type"
-      ],
       "properties": {
         "type": {
           "type": "string",
@@ -1025,13 +1021,13 @@
           "format": "integer"
         }
       },
-      "additionalProperties": false
-    },
-    "TensorFlowDistributionSchema": {
-      "type": "object",
       "required": [
         "type"
       ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "TensorFlowDistributionSchema": {
       "properties": {
         "type": {
           "type": "string",
@@ -1051,13 +1047,13 @@
           "format": "integer"
         }
       },
-      "additionalProperties": false
-    },
-    "MPIDistributionSchema": {
-      "type": "object",
       "required": [
         "type"
       ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "MPIDistributionSchema": {
       "properties": {
         "type": {
           "type": "string",
@@ -1072,18 +1068,14 @@
           "format": "integer"
         }
       },
+      "required": [
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "AnonymousEnvironmentSchema": {
-      "type": "object",
       "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
-        },
         "build": {
           "type": "object",
           "$ref": "#/definitions/BuildContextSchema"
@@ -1104,12 +1096,6 @@
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
         },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
         "description": {
           "title": "description",
           "type": "string"
@@ -1129,14 +1115,10 @@
           "type": "object",
           "$ref": "#/definitions/InferenceConfigSchema"
         },
-        "local_path": {
-          "title": "local_path",
-          "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
-        },
         "name": {
           "title": "name",
-          "type": "string"
+          "type": "string",
+          "readonly": true
         },
         "os_type": {
           "type": "string",
@@ -1145,11 +1127,6 @@
             "windows"
           ],
           "title": "os_type"
-        },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
         },
         "$schema": {
           "title": "$schema",
@@ -1173,13 +1150,14 @@
               "type": "integer"
             }
           ],
-          "title": "version"
+          "title": "version",
+          "readonly": true
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "BuildContextSchema": {
-      "type": "object",
       "properties": {
         "context_uri": {
           "title": "context_uri",
@@ -1194,15 +1172,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
-      "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -1217,14 +1190,15 @@
           "$ref": "#/definitions/RouteSchema"
         }
       },
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "RouteSchema": {
-      "type": "object",
-      "required": [
-        "path",
-        "port"
-      ],
       "properties": {
         "path": {
           "title": "path",
@@ -1236,10 +1210,14 @@
           "format": "integer"
         }
       },
+      "required": [
+        "path",
+        "port"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "ResourceConfigurationSchema": {
-      "type": "object",
       "properties": {
         "instance_count": {
           "title": "instance_count",
@@ -1257,17 +1235,10 @@
           "additionalProperties": {}
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "SweepJobSchema": {
-      "type": "object",
-      "required": [
-        "compute",
-        "objective",
-        "sampling_algorithm",
-        "trial",
-        "type"
-      ],
       "properties": {
         "compute": {
           "anyOf": [
@@ -1404,11 +1375,11 @@
             "anyOf": [
               {
                 "type": "object",
-                "$ref": "#/definitions/OutputUriSchema"
+                "$ref": "#/definitions/OutputEntrySchema"
               },
               {
                 "type": "object",
-                "$ref": "#/definitions/OutputEntrySchema"
+                "$ref": "#/definitions/OutputUriSchema"
               }
             ]
           }
@@ -1505,6 +1476,14 @@
           "title": "type"
         }
       },
+      "required": [
+        "compute",
+        "objective",
+        "sampling_algorithm",
+        "trial",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

@@ -2,11 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ComputeInstanceSchema": {
-      "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
       "properties": {
         "admin_username": {
           "title": "admin_username",
@@ -34,10 +29,6 @@
         "description": {
           "title": "description",
           "type": "string"
-        },
-        "enable_public_ip": {
-          "title": "enable_public_ip",
-          "type": "boolean"
         },
         "id": {
           "title": "id",
@@ -96,10 +87,6 @@
             }
           ]
         },
-        "ssh_public_access": {
-          "title": "ssh_public_access",
-          "type": "string"
-        },
         "state": {
           "title": "state",
           "type": "string"
@@ -128,6 +115,11 @@
           "type": "string"
         }
       },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },
