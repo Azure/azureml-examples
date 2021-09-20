@@ -31,7 +31,7 @@ objective:
 limits:
   max_total_trials: 20
   max_concurrent_trials: 10
-  timeout: 120
+  timeout: 7200
 display_name: lightgbm-iris-sweep-example
 experiment_name: lightgbm-iris-sweep-example
 description: Run a hyperparameter sweep job for LightGBM on Iris dataset.
