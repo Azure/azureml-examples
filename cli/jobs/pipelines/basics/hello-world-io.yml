@@ -1,7 +1,7 @@
 type: pipeline
 jobs:
   hello:
-    command: echo "hello" && echo "world" > ${{outputs.world}}
+    command: echo "hello" && echo "world" > world.txt && mv world.txt ${{outputs.world}}
     environment:
       image: python
     compute: azureml:cpu-cluster
