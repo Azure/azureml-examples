@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "AnonymousCodeAssetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -10,6 +9,11 @@
           "arm_type": "data",
           "title": "arm_id",
           "readonly": true
+        },
+        "code_uri": {
+          "title": "code_uri",
+          "type": "string",
+          "description": "Blob URI pointing to a file or directory where code asset is located."
         },
         "creation_context": {
           "type": "object",
@@ -32,12 +36,11 @@
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
+          "description": "The path from which the data gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
-          "type": "string",
-          "readonly": true
+          "type": "string"
         },
         "path": {
           "title": "path",
@@ -63,14 +66,13 @@
               "type": "integer"
             }
           ],
-          "title": "version",
-          "readonly": true
+          "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -99,18 +101,79 @@
           "type": "string"
         }
       },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ComponentPyTorchSchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "pytorch"
+          ],
+          "title": "type"
+        },
+        "process_count_per_instance": {
+          "title": "process_count_per_instance",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ComponentTensorFlowSchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "tensorflow"
+          ],
+          "title": "type"
+        },
+        "parameter_server_count": {
+          "title": "parameter_server_count",
+          "type": "number",
+          "format": "integer"
+        },
+        "worker_count": {
+          "title": "worker_count",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ComponentMPISchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mpi"
+          ],
+          "title": "type"
+        },
+        "process_count_per_instance": {
+          "title": "process_count_per_instance",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "AnonymousEnvironmentSchema": {
-      "type": "object",
       "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
-        },
         "build": {
           "type": "object",
           "$ref": "#/definitions/BuildContextSchema"
@@ -131,12 +194,6 @@
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
         },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
         "description": {
           "title": "description",
           "type": "string"
@@ -156,14 +213,10 @@
           "type": "object",
           "$ref": "#/definitions/InferenceConfigSchema"
         },
-        "local_path": {
-          "title": "local_path",
-          "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
-        },
         "name": {
           "title": "name",
-          "type": "string"
+          "type": "string",
+          "readonly": true
         },
         "os_type": {
           "type": "string",
@@ -172,11 +225,6 @@
             "windows"
           ],
           "title": "os_type"
-        },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
         },
         "$schema": {
           "title": "$schema",
@@ -200,13 +248,14 @@
               "type": "integer"
             }
           ],
-          "title": "version"
+          "title": "version",
+          "readonly": true
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "BuildContextSchema": {
-      "type": "object",
       "properties": {
         "context_uri": {
           "title": "context_uri",
@@ -221,15 +270,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
-      "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -244,14 +288,15 @@
           "$ref": "#/definitions/RouteSchema"
         }
       },
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "RouteSchema": {
-      "type": "object",
-      "required": [
-        "path",
-        "port"
-      ],
       "properties": {
         "path": {
           "title": "path",
@@ -263,10 +308,14 @@
           "format": "integer"
         }
       },
+      "required": [
+        "path",
+        "port"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "ParameterSchema": {
-      "type": "object",
       "properties": {
         "default": {
           "anyOf": [
@@ -342,10 +391,10 @@
           "enumNames": []
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "InputPortSchema": {
-      "type": "object",
       "properties": {
         "default": {
           "title": "default",
@@ -378,10 +427,10 @@
           "enumNames": []
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "OutputPortSchema": {
-      "type": "object",
       "properties": {
         "description": {
           "title": "description",
@@ -406,13 +455,31 @@
           "enumNames": []
         }
       },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ComponentResourceSchema": {
+      "properties": {
+        "instance_count": {
+          "title": "instance_count",
+          "type": "number",
+          "format": "integer"
+        },
+        "instance_type": {
+          "title": "instance_type",
+          "type": "string",
+          "description": "The instance type to make available to this job."
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "type": "object",
       "additionalProperties": false
     },
     "CommandComponentSchema": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
         "code": {
           "anyOf": [
@@ -448,6 +515,22 @@
         "display_name": {
           "title": "display_name",
           "type": "string"
+        },
+        "distribution": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/ComponentPyTorchSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/ComponentTensorFlowSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/ComponentMPISchema"
+            }
+          ]
         },
         "environment": {
           "anyOf": [
@@ -499,6 +582,10 @@
             "$ref": "#/definitions/OutputPortSchema"
           }
         },
+        "resources": {
+          "type": "object",
+          "$ref": "#/definitions/ComponentResourceSchema"
+        },
         "$schema": {
           "title": "$schema",
           "type": "string"
@@ -514,7 +601,7 @@
         "type": {
           "type": "string",
           "enum": [
-            "command_component"
+            "command"
           ],
           "title": "type"
         },
@@ -530,6 +617,10 @@
           "title": "version"
         }
       },
+      "required": [
+        "name"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

@@ -37,6 +37,9 @@ definitions:
         additionalProperties: {}
         title: properties
         type: object
+      provisioning_state:
+        title: provisioning_state
+        type: string
       scoring_uri:
         description: the endpoint uri that can be used for scoring
         title: scoring_uri

@@ -4,11 +4,11 @@ definitions:
   AccountKeySchema:
     additionalProperties: false
     properties:
-      access_key:
-        title: access_key
+      account_key:
+        title: account_key
         type: string
     required:
-    - access_key
+    - account_key
     type: object
   AzureDataLakeGen2Schema:
     additionalProperties: false
@@ -19,9 +19,6 @@ definitions:
         type: string
       account_name:
         title: account_name
-        type: string
-      container_name:
-        title: container_name
         type: string
       credential:
         anyOf:
@@ -65,7 +62,6 @@ definitions:
         type: string
     required:
     - account_name
-    - container_name
     - credential
     - filesystem
     - type

@@ -4,11 +4,11 @@ definitions:
   AccountKeySchema:
     additionalProperties: false
     properties:
-      access_key:
-        title: access_key
+      account_key:
+        title: account_key
         type: string
     required:
-    - access_key
+    - account_key
     type: object
   AzureBlobSchema:
     additionalProperties: false

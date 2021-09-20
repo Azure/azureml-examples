@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -31,10 +30,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "AssetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -97,6 +96,7 @@
           "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     }
   },
