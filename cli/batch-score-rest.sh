@@ -189,7 +189,7 @@ response=$(curl -H "Content-Length: 0" --location --request POST "https://login.
 accessToken=$(echo $response | jq -r '.accessToken')
 # </get_access_token>
 
-# <score_endpoint>
+# <score_endpoint_with_data_in_cloud>
 response=$(curl --location --request POST "$SCORING_URI" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
@@ -201,11 +201,26 @@ response=$(curl --location --request POST "$SCORING_URI" \
         }
     }
 }")
-# </score_endpoint>
+# </score_endpoint_with_data_in_cloud>
 
 # <check_job>
 
 # </check_job>
+
+# <score_endpoint_with_dataset>
+response=$(curl --location --request POST "$SCORING_URI" \
+--header "Authorization: Bearer $TOKEN" \
+--header "Content-Type: application/json" \
+--data-raw "{
+    \"properties\": {
+        \"dataset\": {
+            \"dataInputType\": \"DatasetVersion\",
+            \"datasetName\": \"$DATASET_NAME\",
+            \"datasetVersion\": \"$DATASET_VERSION\"
+        }
+    }
+}")
+# </score_endpoint_with_dataset>
 
 # delete endpoint
 # <delete_endpoint>
