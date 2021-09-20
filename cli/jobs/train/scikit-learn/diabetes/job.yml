@@ -1,13 +1,13 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
+code:
   local_path: src
 command: >-
-  python main.py 
-  --diabetes-csv {inputs.diabetes}
+  python main.py
+  --diabetes-csv {inputs.datasets}/diabetes.csv
 inputs:
-  diabetes:
+  datasets:
     data:
-      path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
+      path: https://azuremlexamples.blob.core.windows.net/datasets/
     mode: mount
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:6
 compute:
