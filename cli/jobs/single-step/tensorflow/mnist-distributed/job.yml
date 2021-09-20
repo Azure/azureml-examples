@@ -4,11 +4,11 @@ code:
 command: >-
   python train.py 
   --epochs ${{inputs.epochs}}
-  --model-dir ${{outputs.model-dir}}
+  --model-dir ${{outputs.model}}
 inputs:
   epochs: 1
 outputs:
-  model-dir: 
+  model: 
     mode: upload
 environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu
 compute: azureml:gpu-cluster
