@@ -2,7 +2,7 @@ name: auto-ml-regression-explanation-featurization
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 11 * * 2"
+    - cron: "0 13 * * 2"
   pull_request:
     branches:
       - main
