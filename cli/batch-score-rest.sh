@@ -45,8 +45,8 @@ wait_for_completion () {
 # Get values for storage account
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
-AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
-AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
+export AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
+export AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
 export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
 # </get_storage_details>
 
