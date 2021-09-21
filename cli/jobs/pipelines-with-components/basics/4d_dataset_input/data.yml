@@ -1,0 +1,6 @@
+name: sampledata123
+version: 1
+description: sample dataset
+datastore: azureml:workspaceblobstore
+local_path: ./data
+path: /sample/data/path
