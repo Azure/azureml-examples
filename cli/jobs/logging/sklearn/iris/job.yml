@@ -1,13 +1,15 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
+code:
   local_path: src
 command: >
-  python main.py 
+  python main.py
 environment:
   docker:
     image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
   conda_file: file:environment.yml
 compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: logging-sklearn-example
 description: Train a scikit-learn knn model on the iris dataset. Showcases examples of mlflow logging API's used in training.
