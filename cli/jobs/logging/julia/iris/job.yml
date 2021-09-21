@@ -12,5 +12,7 @@ environment:
 
 compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: flux-iris-example
 description: Train a Flux model on the Iris dataset. Showcases examples of mlflow logging API used in training
