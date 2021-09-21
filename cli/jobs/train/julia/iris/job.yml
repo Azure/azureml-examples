@@ -1,15 +1,15 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
+code:
   local_path: .
 command: >-
   julia -e "include(\"run.jl\")"
 
-environment: 
+environment:
   docker:
     build:
       dockerfile: file:Dockerfile
 
 compute:
-  target: local
+  target: azureml:cpu-cluster
 experiment_name: flux-iris-example
 description: Train a Flux model on the Iris dataset.
