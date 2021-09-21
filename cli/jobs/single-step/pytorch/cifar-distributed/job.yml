@@ -21,4 +21,4 @@ description: Train a basic convolutional neural network (CNN) with PyTorch on th
 
 ## TODO: remove
 environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
