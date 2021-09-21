@@ -3,7 +3,6 @@ name: mlw-privatelink-dev
 location: eastus
 display_name: Private Link endpoint workspace-example
 description: When using private link, you must set the image_build_compute property to a cluster name to use for Docker image environment building. You can also specify whether the workspace should be accessible over the internet.
-hbi_workspace: false
 image_build_compute: cpu-compute
 public_network_access: disabled
 tags:
