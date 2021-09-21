@@ -1,6 +1,6 @@
 command: echo $HELLO
 environment:
-  image: debian:latest
+  image: python:latest
 compute: azureml:cpu-cluster
 environment_variables:
   HELLO: "hello world"

@@ -1,6 +1,6 @@
 command: echo "hello world"
 environment:
-  image: debian
+  image: python
 compute: azureml:cpu-cluster
 
 ## TODO: remove
