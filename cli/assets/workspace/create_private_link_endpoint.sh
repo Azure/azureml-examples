@@ -7,11 +7,11 @@ az network vnet subnet update --name default --resource-group azureml-examples-r
 
 # <az_network_ple_create>
 az network private-endpoint create \
-    -g <YOUR_RESOURCE_GROUP> \
-    -n <YOUR_WORKSPACE> \
-    --vnet-name <YOUR_VNET> \
-    --subnet <YOUR_SUBNET> \
-    --private-connection-resource-id "/subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/azureml-examples-rg/providers/Microsoft.MachineLearningServices/workspaces/"<YOUR_WORKSPACE> \
+    -g azureml-examples-rg \
+    -n main \
+    --vnet-name myvnet \
+    --subnet default \
+    --private-connection-resource-id "/subscriptions/"<YOUR_SUBSCRIPTION_ID>"/resourceGroups/azureml-examples-rg/providers/Microsoft.MachineLearningServices/workspaces/mlw-privatelink-dev" \
     --group-id amlworkspace \
     --connection-name workspace -l eastus
 # </az_network_ple_create>
