@@ -2,7 +2,8 @@ command: echo $ENV_VAR
 environment:
   docker:
     image: python:latest
+compute:
+  target: azureml:cpu-cluster
 environment_variables:
   ENV_VAR: "hello world"
-compute:
-    target: azureml:cpu-cluster
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"

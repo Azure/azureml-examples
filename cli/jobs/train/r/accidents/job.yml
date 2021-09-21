@@ -6,14 +6,16 @@ command: >-
   --data {inputs.training_data}
 inputs:
   training_data:
-    data: 
+    data:
       local_path: data
     mode: mount
 environment:
   docker:
     build:
       dockerfile: file:Dockerfile
-compute: 
+compute:
   target: azureml:cpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: r-accidents-example
-description: Train a GLM using R on the accidents dataset.  
+description: Train a GLM using R on the accidents dataset.

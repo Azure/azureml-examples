@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
+code:
   local_path: src
 command: >-
   python train.py
@@ -9,5 +9,7 @@ environment:
        dockerfile: file:DOCKERFILE
 compute:
   target: azureml:gpu-cluster
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: fastai-pets-example
 description: Fine tune a convolutional neural network (CNN) with fast.ai on a pets dataset.
