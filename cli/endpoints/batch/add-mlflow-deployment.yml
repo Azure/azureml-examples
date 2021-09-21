@@ -3,4 +3,4 @@ name: mlflowdp
 endpoint_name: mybatchedp
 model: 
   local_path: ./autolog_nyc_taxi
-compute: azureml:cpu-cluster
+compute: azureml:batch-cluster

@@ -10,7 +10,7 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <create_compute>
-az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 5
+az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
 # </create_compute>
 
 # <create_batch_endpoint>
@@ -58,7 +58,7 @@ fi
 # </check_job_status>
 
 # <start_batch_scoring_job_configure_output_settings>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --output-path folder:azureml://datastores/workspaceblobstore/myoutput --set output_file_name=mypredictions.csv --mini-batch-size 20 --instance-count 5 --set max_concurrency_per_instance=4 --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --output-path folder:azureml://datastores/workspaceblobstore/paths/myoutput --set output_file_name=mypredictions.csv --mini-batch-size 20 --instance-count 5 --set max_concurrency_per_instance=4 --query name -o tsv)
 # </start_batch_scoring_job_configure_output_settings>
 
 # <stream_job_logs_to_console>
@@ -82,7 +82,7 @@ fi
 # </check_job_status>
 
 # <list_all_jobs>
-az ml batch-endpoint list-jobs --name $ENDPOINT_NAME --deployment-name nonmlflowdp --query [].name
+az ml batch-endpoint list-jobs --name $ENDPOINT_NAME --query [].name
 # </list_all_jobs>
 
 # <create_new_deployment_not_default>
