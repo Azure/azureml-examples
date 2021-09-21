@@ -2,17 +2,17 @@ $schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
 type: sweep_job
 algorithm: random
 trial:
-  code: 
-    local_path: src 
+  code:
+    local_path: src
   command: >-
-    python main.py 
-    --iris-csv {inputs.iris}
+    python main.py
+    --iris-csv {inputs.datasets}/iris.csv
     --learning-rate {search_space.learning_rate}
     --boosting {search_space.boosting}
   inputs:
-    iris:
+    datasets:
       data:
-        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+        path: https://azuremlexamples.blob.core.windows.net/datasets/
       mode: mount
   environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:8
   compute:
@@ -31,5 +31,7 @@ objective:
 max_total_trials: 20
 max_concurrent_trials: 10
 timeout_minutes: 120
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
 experiment_name: lightgbm-iris-sweep-example
 description: Run a hyperparameter sweep job for LightGBM on Iris dataset.
