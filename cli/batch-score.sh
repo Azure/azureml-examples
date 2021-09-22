@@ -18,7 +18,7 @@ az ml batch-endpoint create --name $ENDPOINT_NAME
 # </create_batch_endpoint>
 
 # <create_batch_deployment_set_default>
-az ml batch-deployment create --name nonmlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/add-nonmlflow-deployment.yml --set-default
+az ml batch-deployment create --name nonmlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/nonmlflow-deployment.yml --set-default
 # </create_batch_deployment_set_default>
 
 # <check_batch_endpooint_detail>
@@ -86,7 +86,7 @@ az ml batch-endpoint list-jobs --name $ENDPOINT_NAME --query [].name
 # </list_all_jobs>
 
 # <create_new_deployment_not_default>
-az ml batch-deployment create --name mlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/add-mlflow-deployment.yml
+az ml batch-deployment create --name mlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/mlflow-deployment.yml
 # </create_new_deploymen_not_default>
 
 # <test_new_deployment>
