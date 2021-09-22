@@ -16,4 +16,4 @@ description: Train an R model on the Iris dataset.
 
 ## TODO: remove
 environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
