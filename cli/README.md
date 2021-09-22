@@ -85,8 +85,6 @@ path|status|description
 
 path|status|description
 -|-|-
-[endpoints/amlarc/model-1/environment/conda.yml](endpoints/amlarc/model-1/environment/conda.yml)|[![endpoints/amlarc/model-1/environment/conda](https://github.com/Azure/azureml-examples/workflows/cli-endpoints-amlarc-model-1-environment-conda/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-endpoints-amlarc-model-1-environment-conda.yml)|*no description*
-[endpoints/amlarc/model-2/environment/conda.yml](endpoints/amlarc/model-2/environment/conda.yml)|[![endpoints/amlarc/model-2/environment/conda](https://github.com/Azure/azureml-examples/workflows/cli-endpoints-amlarc-model-2-environment-conda/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-endpoints-amlarc-model-2-environment-conda.yml)|*no description*
 
 **Resources** ([resources](resources))
 

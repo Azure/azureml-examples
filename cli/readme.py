@@ -6,7 +6,7 @@ import argparse
 
 # define constants
 EXCLUDED_JOBS = []
-EXCLUDED_ENDPOINTS = ["batch", "online"]
+EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
