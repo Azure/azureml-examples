@@ -1,0 +1,17 @@
+type: pipeline
+jobs:
+  hello:
+    command: echo "hello" && echo "world" > world.txt && mv world.txt ${{outputs.world}}
+    environment:
+      image: python
+    compute: azureml:cpu-cluster
+    outputs:
+      world:
+  world:
+    command: cat ${{inputs.world}}/world.txt
+    environment:
+      image: python
+    compute: azureml:cpu-cluster
+    inputs:
+      world: ${{jobs.hello.outputs.world}}
+ 
