@@ -13,8 +13,10 @@ jobs:
   train-model:
     command: >-
       python main.py
-      --cifar-dir ${{inputs.cifar}}
+      --data-dir ${{inputs.cifar}}
       --epochs ${{inputs.epochs}}
+      &&
+      bash copy-model.sh ${{outputs.model}}
     code:
       local_path: src/train-model
     inputs:
@@ -22,8 +24,8 @@ jobs:
       cifar: ${{jobs.get-data.outputs.cifar}}
     outputs:
       model:
-    compute: azureml:gpu-cluster
     environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
+    compute: azureml:gpu-cluster
     distribution:
       type: pytorch
       process_count_per_instance: 2
@@ -31,11 +33,18 @@ jobs:
       instance_count: 2
   eval-model:
     command: >-
-      echo "evaluating..."
+      python main.py
+      --data-dir ${{inputs.cifar}}
+      --model-dir ${{inputs.model}}/model
     code:
       local_path: src/eval-model
-    compute: azureml:cpu-cluster
-    environment:
-      image: python
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
+    compute: azureml:gpu-cluster
+    distribution:
+      type: pytorch
+      process_count_per_instance: 2
+    resources:
+      instance_count: 1
     inputs:
+      cifar: ${{jobs.get-data.outputs.cifar}}
       model: ${{jobs.train-model.outputs.model}}

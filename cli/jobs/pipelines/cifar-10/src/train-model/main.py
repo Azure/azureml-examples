@@ -16,6 +16,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+# TODO - add mlflow logging
+
 # define network architecture
 class Net(nn.Module):
     def __init__(self):
@@ -66,53 +68,6 @@ def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, 
             running_loss = 0.0
 
 
-def evaluate(test_loader, model, device):
-    classes = (
-        "plane",
-        "car",
-        "bird",
-        "cat",
-        "deer",
-        "dog",
-        "frog",
-        "horse",
-        "ship",
-        "truck",
-    )
-
-    model.eval()
-
-    correct = 0
-    total = 0
-    class_correct = list(0.0 for i in range(10))
-    class_total = list(0.0 for i in range(10))
-    with torch.no_grad():
-        for data in test_loader:
-            images, labels = data[0].to(device), data[1].to(device)
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            c = (predicted == labels).squeeze()
-            for i in range(10):
-                label = labels[i]
-                class_correct[label] += c[i].item()
-                class_total[label] += 1
-
-    # print total test set accuracy
-    print(
-        "Accuracy of the network on the 10000 test images: %d %%"
-        % (100 * correct / total)
-    )
-
-    # print test accuracy for each of the classes
-    for i in range(10):
-        print(
-            "Accuracy of %5s : %2d %%"
-            % (classes[i], 100 * class_correct[i] / class_total[i])
-        )
-
-
 def main(args):
     # get PyTorch environment variables
     world_size = int(os.environ["WORLD_SIZE"])
@@ -131,7 +86,7 @@ def main(args):
     if distributed:
         torch.distributed.init_process_group(backend="nccl")
 
-    # define train and test dataset DataLoaders
+    # define train and dataset DataLoaders
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
@@ -151,13 +106,6 @@ def main(args):
         shuffle=(train_sampler is None),
         num_workers=args.workers,
         sampler=train_sampler,
-    )
-
-    test_set = torchvision.datasets.CIFAR10(
-        root=args.data_dir, train=False, download=False, transform=transform
-    )
-    test_loader = torch.utils.data.DataLoader(
-        test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers
     )
 
     model = Net().to(device)
@@ -195,10 +143,7 @@ def main(args):
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.log_model(model, "./model")
-
-        # evaluate on full test dataset
-        evaluate(test_loader, model, device)
+        mlflow.pytorch.log_model(model, "model")
 
 
 def parse_args():
@@ -208,6 +153,9 @@ def parse_args():
     # add arguments
     parser.add_argument(
         "--data-dir", type=str, help="directory containing CIFAR-10 dataset"
+    )
+    parser.add_argument(
+        "--model-dir", type=str, default="./", help="output directory for model"
     )
     parser.add_argument("--epochs", default=10, type=int, help="number of epochs")
     parser.add_argument(
