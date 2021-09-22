@@ -1,4 +1,5 @@
-type: pipeline_job
+type: pipeline
+display_name: cifar-10-pipeline-example
 jobs:
   get-data:
     command: bash main.sh ${{outputs.cifar}}
@@ -22,8 +23,7 @@ jobs:
     outputs:
       model:
     compute: azureml:gpu-cluster
-    environment:
-      image: python
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
     distribution:
       type: pytorch
       process_count_per_instance: 2
@@ -31,7 +31,7 @@ jobs:
       instance_count: 2
   eval-model:
     command: >-
-      python main.py
+      echo "evaluating..."
     code:
       local_path: src/eval-model
     compute: azureml:cpu-cluster
