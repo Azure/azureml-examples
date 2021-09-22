@@ -1,8 +1,8 @@
 type: pipeline
-description: "Prints the environment variable ($TF_CONFIG) useful for scripts running in a Tensorflow training environment"
+description: "Prints the environment variables useful for scripts running in a PyTorch training environment"
 
 jobs:
-  tf-job:
+  pytorch-job:
     type: component
     component: file:./component.yml
     compute: azureml:gpu-cluster
@@ -10,7 +10,7 @@ jobs:
       resources:
         instance_count: 3
       distribution:
-        type: tensorflow
-        worker_count: 3
+        type: pytorch
+        process_count_per_instance: 3
 
         
