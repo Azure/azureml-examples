@@ -11,7 +11,7 @@ trial:
   environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu
   ## TODO: remove
   # environment_variables:
-  #   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  #   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
 # TODO - fix
 # inputs:
 #   iris: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv

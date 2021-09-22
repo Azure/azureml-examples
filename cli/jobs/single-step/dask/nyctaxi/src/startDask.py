@@ -35,23 +35,11 @@ if __name__ == "__main__":
             print(k, v)
     MLFLOW_RUN_ID = os.getenv("MLFLOW_RUN_ID")
 
-    print(
-        "- env: AZ_BATCHAI_JOB_MASTER_NODE_IP: ",
-        os.environ.get("AZ_BATCHAI_JOB_MASTER_NODE_IP"),
-    )
-    print(
-        "- env: AZ_BATCHAI_IS_CURRENT_NODE_MASTER: ",
-        os.environ.get("AZ_BATCHAI_IS_CURRENT_NODE_MASTER"),
-    )
-    print("- env: AZ_BATCHAI_NODE_IP: ", os.environ.get("AZ_BATCHAI_NODE_IP"))
-    print("- env: AZ_BATCH_HOST_LIST: ", os.environ.get("AZ_BATCH_HOST_LIST"))
-    print("- env: AZ_BATCH_NODE_LIST: ", os.environ.get("AZ_BATCH_NODE_LIST"))
     print("- env: MASTER_ADDR: ", os.environ.get("MASTER_ADDR"))
     print("- env: MASTER_PORT: ", os.environ.get("MASTER_PORT"))
     print("- env: RANK: ", os.environ.get("RANK"))
     print("- env: LOCAL_RANK: ", os.environ.get("LOCAL_RANK"))
     print("- env: NODE_RANK: ", os.environ.get("NODE_RANK"))
-    print("- env: WORLD_SIZE: ", os.environ.get("WORLD_SIZE"))
 
     rank = os.environ.get("RANK")
     ip = socket.gethostbyname(socket.gethostname())

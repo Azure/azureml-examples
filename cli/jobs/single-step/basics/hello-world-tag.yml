@@ -1,10 +1,10 @@
 command: echo "hello world"
 environment:
-  image: debian
+  image: python
 compute: azureml:cpu-cluster
 tags:
   hello: world
 
 ## TODO: remove
 environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
