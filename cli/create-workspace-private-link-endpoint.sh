@@ -1,6 +1,6 @@
-WORKSPACE="mlw-privatelink-dev"
+WORKSPACE="mlw-privatelink-prod"
 
-az ml workspace delete -n $WORKSPACE -y
+az ml workspace delete -n $WORKSPACE -y || echo "workspace does not exist"
 
 # <create_workspace>
 az ml workspace create --file resources/workspace/privatelink.yml -n $WORKSPACE
