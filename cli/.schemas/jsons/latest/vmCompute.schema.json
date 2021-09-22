@@ -2,12 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "VirtualMachineComputeSchema": {
-      "type": "object",
-      "required": [
-        "name",
-        "resource_id",
-        "type"
-      ],
       "properties": {
         "admin_password": {
           "title": "admin_password",
@@ -30,10 +24,6 @@
         "description": {
           "title": "description",
           "type": "string"
-        },
-        "enable_public_ip": {
-          "title": "enable_public_ip",
-          "type": "boolean"
         },
         "id": {
           "title": "id",
@@ -98,10 +88,6 @@
           "type": "number",
           "format": "integer"
         },
-        "ssh_public_access": {
-          "title": "ssh_public_access",
-          "type": "string"
-        },
         "tags": {
           "title": "tags",
           "type": "object",
@@ -118,6 +104,12 @@
           "title": "type"
         }
       },
+      "required": [
+        "name",
+        "resource_id",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

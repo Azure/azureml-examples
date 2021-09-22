@@ -25,9 +25,6 @@ definitions:
       description:
         title: description
         type: string
-      enable_public_ip:
-        title: enable_public_ip
-        type: boolean
       id:
         readonly: true
         title: id
@@ -67,9 +64,6 @@ definitions:
         format: integer
         title: ssh_port
         type: number
-      ssh_public_access:
-        title: ssh_public_access
-        type: string
       tags:
         additionalProperties:
           title: tags

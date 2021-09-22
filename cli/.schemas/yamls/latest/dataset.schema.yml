@@ -41,6 +41,11 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
+      datastore:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore
+        type: string
       description:
         title: description
         type: string
@@ -57,12 +62,7 @@ definitions:
       paths:
         anyOf:
         - items:
-            $ref: '#/definitions/FolderPathSchema'
-            type: object
-          title: paths
-          type: array
-        - items:
-            $ref: '#/definitions/FilePathSchema'
+            $ref: '#/definitions/PathSchema'
             type: object
           title: paths
           type: array
@@ -76,23 +76,15 @@ definitions:
         - type: integer
         title: version
     type: object
-  FilePathSchema:
+  PathSchema:
     additionalProperties: false
     properties:
       file:
         description: URI pointing to file.
         title: file
         type: string
-    required:
-    - file
-    type: object
-  FolderPathSchema:
-    additionalProperties: false
-    properties:
       folder:
         description: URI pointing to folder.
         title: folder
         type: string
-    required:
-    - folder
     type: object

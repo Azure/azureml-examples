@@ -94,7 +94,6 @@ definitions:
         title: version
     required:
     - name
-    - version
     type: object
   InferenceConfigSchema:
     additionalProperties: false

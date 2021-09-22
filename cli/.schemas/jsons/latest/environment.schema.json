@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "BuildContextSchema": {
-      "type": "object",
       "properties": {
         "context_uri": {
           "title": "context_uri",
@@ -17,10 +16,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -49,15 +48,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
-      "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -72,14 +66,15 @@
           "$ref": "#/definitions/RouteSchema"
         }
       },
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "RouteSchema": {
-      "type": "object",
-      "required": [
-        "path",
-        "port"
-      ],
       "properties": {
         "path": {
           "title": "path",
@@ -91,14 +86,14 @@
           "format": "integer"
         }
       },
+      "required": [
+        "path",
+        "port"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "EnvironmentSchema": {
-      "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
       "properties": {
         "build": {
           "type": "object",
@@ -176,6 +171,10 @@
           "title": "version"
         }
       },
+      "required": [
+        "name"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },
