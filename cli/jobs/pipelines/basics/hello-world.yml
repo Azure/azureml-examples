@@ -1,0 +1,13 @@
+type: pipeline
+jobs:
+  hello:
+    command: echo "hello"
+    environment:
+      image: python
+    compute: azureml:cpu-cluster
+  world:
+    command: echo "world"
+    environment:
+      image: python
+    compute: azureml:cpu-cluster
+ 

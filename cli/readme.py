@@ -5,14 +5,16 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = ["cifar"]
-EXCLUDED_ENDPOINTS = ["conda.yml", "environment.yml", "batch", "online"]
-EXCLUDED_ASSETS = [
-    "conda.yml",
-    "environment.yml",
-    "conda-envs",
-    "mlflow-models",
+EXCLUDED_JOBS = []
+EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
+EXCLUDED_RESOURCES = [
     "workspace",
+    "datastore",
+    "instance",
+]
+EXCLUDED_ASSETS = [
+    "conda-yamls",
+    "mlflow-models",
 ]
 EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 
@@ -20,7 +22,7 @@ EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
 def main(args):
     # get list of jobs
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/misc/*.yml", recursive=False))
+    jobs += sorted(glob.glob("jobs/*/basics/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -33,6 +35,14 @@ def main(args):
         endpoint.replace(".yml", "")
         for endpoint in endpoints
         if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS)
+    ]
+
+    # get list of resources
+    resources = sorted(glob.glob("resources/**/*.yml", recursive=True))
+    resources = [
+        resource.replace(".yml", "")
+        for resource in resources
+        if not any(excluded in resource for excluded in EXCLUDED_RESOURCES)
     ]
 
     # get list of assets
@@ -52,14 +62,14 @@ def main(args):
     ]
 
     # write workflows
-    write_workflows(jobs, endpoints, assets, scripts)
+    write_workflows(jobs, endpoints, resources, assets, scripts)
 
     # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
     # write README.md
-    write_readme(jobs, endpoints, assets, scripts)
+    write_readme(jobs, endpoints, resources, assets, scripts)
 
     # read modified README.md
     with open("README.md", "r") as f:
@@ -72,7 +82,7 @@ def main(args):
             exit(2)
 
 
-def write_readme(jobs, endpoints, assets, scripts):
+def write_readme(jobs, endpoints, resources, assets, scripts):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
@@ -84,13 +94,16 @@ def write_readme(jobs, endpoints, assets, scripts):
     endpoints_table = (
         "\n**Endpoints** ([endpoints](endpoints))\n\npath|status|description\n-|-|-\n"
     )
+    resources_table = (
+        "\n**Resources** ([resources](resources))\n\npath|status|description\n-|-|-\n"
+    )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
     scripts_table = "\n**Scripts**\n\npath|status|\n-|-\n"
 
     # process jobs
     for job in jobs:
         # build entries for tutorial table
-        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
+        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{job}.yml", "r") as f:
@@ -108,7 +121,7 @@ def write_readme(jobs, endpoints, assets, scripts):
     # process endpoints
     for endpoint in endpoints:
         # build entries for tutorial table
-        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
+        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{endpoint}.yml", "r") as f:
@@ -123,10 +136,28 @@ def write_readme(jobs, endpoints, assets, scripts):
         row = f"[{endpoint}.yml]({endpoint}.yml)|{status}|{description}\n"
         endpoints_table += row
 
+    # process resources
+    for resource in resources:
+        # build entries for tutorial table
+        status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
+        description = "*no description*"
+        try:
+            with open(f"{resource}.yml", "r") as f:
+                for line in f.readlines():
+                    if "description: " in str(line):
+                        description = line.split(": ")[-1].strip()
+                        break
+        except:
+            pass
+
+        # add row to tutorial table
+        row = f"[{resource}.yml]({resource}.yml)|{status}|{description}\n"
+        resources_table += row
+
     # process assets
     for asset in assets:
         # build entries for tutorial table
-        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
+        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{asset}.yml", "r") as f:
@@ -144,7 +175,7 @@ def write_readme(jobs, endpoints, assets, scripts):
     # process scripts
     for script in scripts:
         # build entries for tutorial table
-        status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
+        status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
         link = f"https://scripts.microsoft.com/azure/machine-learning/{script}"
 
         # add row to tutorial table
@@ -159,12 +190,13 @@ def write_readme(jobs, endpoints, assets, scripts):
             + scripts_table
             + jobs_table
             + endpoints_table
+            + resources_table
             + assets_table
             + suffix
         )
 
 
-def write_workflows(jobs, endpoints, assets, scripts):
+def write_workflows(jobs, endpoints, resources, assets, scripts):
     print("writing .github/workflows...")
 
     # process jobs
@@ -177,6 +209,11 @@ def write_workflows(jobs, endpoints, assets, scripts):
         # write workflow file
         # write_endpoint_workflow(endpoint)
         pass
+
+    # process assest
+    for resource in resources:
+        # write workflow file
+        write_asset_workflow(resource)
 
     # process assest
     for asset in assets:
@@ -215,9 +252,10 @@ def parse_path(path):
 
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -245,10 +283,15 @@ jobs:
       continue-on-error: true
     - name: create job
       run: |
+        echo "Creating job..."
         run_id=$(az ml job create -f {job}.yml --query name -o tsv)
+        echo "Streaming logs..."
         az ml job stream -n $run_id
+        echo "Getting status..."
+        sleep 1
         status=$(az ml job show -n $run_id --query status -o tsv)
         echo $status
+        echo "Checking status..."
         if [[ $status == "Completed" ]]
         then
           echo "Job completed"
@@ -269,9 +312,10 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -308,9 +352,10 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_V2_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -347,9 +392,14 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = (
+        "${{secrets.AZ_V2_CREDS}}"
+        if not any(x in filename for x in ["uai", "sai"])
+        else "${{secrets.AZ_AE_CLI_MIR_CREDS}}"
+    )
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:

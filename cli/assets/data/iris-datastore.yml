@@ -1,6 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/asset.schema.json
-name: iris-datastore-example
-version: 1
-path: iris.csv # relative path on datastore
-datastore: azureml:workspaceblobstore
-description: Data asset from datastore blob storage.

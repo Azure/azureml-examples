@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CustomerManagedKeySchema": {
-      "type": "object",
       "properties": {
         "key_uri": {
           "title": "key_uri",
@@ -13,10 +12,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "PrivateEndpointSchema": {
-      "type": "object",
       "properties": {
         "approval_type": {
           "title": "approval_type",
@@ -31,10 +30,10 @@
           }
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "EndpointConnectionSchema": {
-      "type": "object",
       "properties": {
         "location": {
           "title": "location",
@@ -57,13 +56,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "WorkspaceSchema": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
         "application_insights": {
           "title": "application_insights",
@@ -101,6 +97,11 @@
           "title": "location",
           "type": "string"
         },
+        "mlflow_tracking_uri": {
+          "title": "mlflow_tracking_uri",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -127,6 +128,10 @@
           }
         }
       },
+      "required": [
+        "name"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

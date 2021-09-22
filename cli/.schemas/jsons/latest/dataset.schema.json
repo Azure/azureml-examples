@@ -33,12 +33,28 @@
       "type": "object",
       "additionalProperties": false
     },
-    "AssetSchema": {
+    "PathSchema": {
+      "properties": {
+        "file": {
+          "title": "file",
+          "type": "string",
+          "description": "URI pointing to file."
+        },
+        "folder": {
+          "title": "folder",
+          "type": "string",
+          "description": "URI pointing to folder."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "DatasetSchema": {
       "properties": {
         "arm_id": {
           "type": "string",
           "pattern": "^azureml:.*",
-          "arm_type": "data",
+          "arm_type": "datasets",
           "title": "arm_id",
           "readonly": true
         },
@@ -69,10 +85,17 @@
           "title": "name",
           "type": "string"
         },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
+        "paths": {
+          "anyOf": [
+            {
+              "title": "paths",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/PathSchema"
+              }
+            }
+          ]
         },
         "$schema": {
           "title": "$schema",
@@ -85,14 +108,20 @@
           "additionalProperties": {}
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
       "type": "object",
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/AssetSchema"
+  "$ref": "#/definitions/DatasetSchema"
 }

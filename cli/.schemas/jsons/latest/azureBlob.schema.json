@@ -2,38 +2,32 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "AccountKeySchema": {
-      "type": "object",
-      "required": [
-        "access_key"
-      ],
       "properties": {
-        "access_key": {
-          "title": "access_key",
+        "account_key": {
+          "title": "account_key",
           "type": "string"
         }
       },
+      "required": [
+        "account_key"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "SasTokenSchema": {
-      "type": "object",
-      "required": [
-        "sas_token"
-      ],
       "properties": {
         "sas_token": {
           "title": "sas_token",
           "type": "string"
         }
       },
+      "required": [
+        "sas_token"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "ServicePrincipalSchema": {
-      "type": "object",
-      "required": [
-        "client_id",
-        "client_secret",
-        "tenant_id"
-      ],
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -56,15 +50,15 @@
           "type": "string"
         }
       },
+      "required": [
+        "client_id",
+        "client_secret",
+        "tenant_id"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "CertificateSchema": {
-      "type": "object",
-      "required": [
-        "client_id",
-        "tenant_id",
-        "thumbprint"
-      ],
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -91,16 +85,15 @@
           "type": "string"
         }
       },
+      "required": [
+        "client_id",
+        "tenant_id",
+        "thumbprint"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "AzureBlobSchema": {
-      "type": "object",
-      "required": [
-        "account_name",
-        "container_name",
-        "credential",
-        "type"
-      ],
       "properties": {
         "account_name": {
           "title": "account_name",
@@ -138,6 +131,11 @@
           "title": "endpoint",
           "type": "string"
         },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -151,13 +149,6 @@
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "azure_blob"
-          ],
-          "title": "type"
-        },
         "tags": {
           "title": "tags",
           "type": "object",
@@ -165,8 +156,22 @@
             "title": "tags",
             "type": "string"
           }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "azure_blob"
+          ],
+          "title": "type"
         }
       },
+      "required": [
+        "account_name",
+        "container_name",
+        "credential",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

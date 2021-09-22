@@ -1,7 +1,31 @@
-$ref: '#/definitions/AssetSchema'
+$ref: '#/definitions/DatasetSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  AssetSchema:
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  DatasetSchema:
     additionalProperties: false
     properties:
       $schema:
@@ -9,7 +33,7 @@ definitions:
         title: $schema
         type: string
       arm_id:
-        arm_type: data
+        arm_type: datasets
         pattern: ^azureml:.*
         readonly: true
         title: arm_id
@@ -35,40 +59,32 @@ definitions:
       name:
         title: name
         type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
-        type: string
+      paths:
+        anyOf:
+        - items:
+            $ref: '#/definitions/PathSchema'
+            type: object
+          title: paths
+          type: array
       tags:
         additionalProperties: {}
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
     type: object
-  CreationContextSchema:
+  PathSchema:
     additionalProperties: false
     properties:
-      created_at:
-        format: date-time
-        title: created_at
+      file:
+        description: URI pointing to file.
+        title: file
         type: string
-      created_by:
-        title: created_by
-        type: string
-      created_by_type:
-        title: created_by_type
-        type: string
-      last_modified_at:
-        format: date-time
-        title: last_modified_at
-        type: string
-      last_modified_by:
-        title: last_modified_by
-        type: string
-      last_modified_by_type:
-        title: last_modified_by_type
+      folder:
+        description: URI pointing to folder.
+        title: folder
         type: string
     type: object

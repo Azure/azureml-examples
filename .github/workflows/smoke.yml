@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - cli-preview
   schedule:
       - cron: "0 0/1 * * *"
 jobs:
@@ -22,6 +23,3 @@ jobs:
       run: pip install -r dev-requirements.txt
     - name: check code format
       run: black --check .
-    - name: check notebook format
-      run: black-nb --clear-output --check .
-

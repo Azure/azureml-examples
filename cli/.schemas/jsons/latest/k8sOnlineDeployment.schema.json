@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CodeConfigurationSchema": {
-      "type": "object",
       "properties": {
         "code": {
           "anyOf": [
@@ -32,10 +31,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "CodeAssetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -43,6 +42,11 @@
           "arm_type": "data",
           "title": "arm_id",
           "readonly": true
+        },
+        "code_uri": {
+          "title": "code_uri",
+          "type": "string",
+          "description": "Blob URI pointing to a file or directory where code asset is located."
         },
         "creation_context": {
           "type": "object",
@@ -65,16 +69,11 @@
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
+          "description": "The path from which the data gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
           "type": "string"
-        },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
         },
         "$schema": {
           "title": "$schema",
@@ -87,15 +86,21 @@
           "additionalProperties": {}
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -124,16 +129,20 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "EnvironmentSchema": {
-      "type": "object",
       "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
         "conda_file": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "conda_file"
+              "title": "conda_file",
+              "type": "string"
             },
             {
               "title": "conda_file",
@@ -149,16 +158,16 @@
           "title": "description",
           "type": "string"
         },
-        "docker": {
-          "type": "object",
-          "$ref": "#/definitions/DockerSchema"
-        },
         "id": {
           "type": "string",
           "pattern": "^azureml:.*",
           "arm_type": "environments",
           "title": "id",
           "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
         },
         "inference_config": {
           "type": "object",
@@ -176,9 +185,150 @@
           ],
           "title": "os_type"
         },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "BuildContextSchema": {
+      "properties": {
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "InferenceConfigSchema": {
+      "properties": {
+        "liveness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "readiness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "scoring_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        }
+      },
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "RouteSchema": {
+      "properties": {
         "path": {
           "title": "path",
           "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "port"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "AnonymousEnvironmentSchema": {
+      "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema"
+        },
+        "conda_file": {
+          "anyOf": [
+            {
+              "title": "conda_file",
+              "type": "string"
+            },
+            {
+              "title": "conda_file",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "environments",
+          "title": "id",
+          "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
+        },
+        "inference_config": {
+          "type": "object",
+          "$ref": "#/definitions/InferenceConfigSchema"
+        },
+        "name": {
+          "title": "name",
+          "type": "string",
+          "readonly": true
+        },
+        "os_type": {
+          "type": "string",
+          "enum": [
+            "linux",
+            "windows"
+          ],
+          "title": "os_type"
         },
         "$schema": {
           "title": "$schema",
@@ -194,89 +344,22 @@
           }
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerSchema": {
-      "type": "object",
-      "properties": {
-        "build": {
-          "type": "object",
-          "$ref": "#/definitions/DockerBuildSchema"
-        },
-        "image": {
-          "title": "image",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerBuildSchema": {
-      "type": "object",
-      "properties": {
-        "dockerfile": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "dockerfile"
+              "type": "string"
             },
             {
-              "title": "dockerfile",
-              "type": "string"
+              "type": "integer"
             }
-          ]
+          ],
+          "title": "version",
+          "readonly": true
         }
       },
-      "additionalProperties": false
-    },
-    "InferenceConfigSchema": {
       "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
-      "properties": {
-        "liveness_route": {
-          "type": "object",
-          "$ref": "#/definitions/RouteSchema"
-        },
-        "readiness_route": {
-          "type": "object",
-          "$ref": "#/definitions/RouteSchema"
-        },
-        "scoring_route": {
-          "type": "object",
-          "$ref": "#/definitions/RouteSchema"
-        }
-      },
-      "additionalProperties": false
-    },
-    "RouteSchema": {
-      "type": "object",
-      "required": [
-        "path",
-        "port"
-      ],
-      "properties": {
-        "path": {
-          "title": "path",
-          "type": "string"
-        },
-        "port": {
-          "title": "port",
-          "type": "number",
-          "format": "integer"
-        }
-      },
       "additionalProperties": false
     },
     "LivenessProbeSchema": {
-      "type": "object",
       "properties": {
         "failure_threshold": {
           "title": "failure_threshold",
@@ -304,14 +387,10 @@
           "format": "integer"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
-    "ModelSchema": {
-      "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
+    "AnonymousModelSchema": {
       "properties": {
         "creation_context": {
           "type": "object",
@@ -343,12 +422,22 @@
           "title": "local_path",
           "type": "string"
         },
-        "name": {
-          "title": "name",
+        "model_format": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "mlflow",
+            "triton",
+            "openai"
+          ],
+          "title": "model_format"
+        },
+        "model_uri": {
+          "title": "model_uri",
           "type": "string"
         },
-        "path": {
-          "title": "path",
+        "name": {
+          "title": "name",
           "type": "string"
         },
         "properties": {
@@ -372,15 +461,21 @@
           "format": "date-time"
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "RequestSettingsSchema": {
-      "type": "object",
       "properties": {
         "max_concurrent_requests_per_instance": {
           "title": "max_concurrent_requests_per_instance",
@@ -398,44 +493,58 @@
           "format": "integer"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "ResourceRequirementsSchema": {
+      "properties": {
+        "limits": {
+          "type": "object",
+          "$ref": "#/definitions/ResourceSettingsSchema"
+        },
+        "requests": {
+          "type": "object",
+          "$ref": "#/definitions/ResourceSettingsSchema"
+        }
+      },
       "type": "object",
+      "additionalProperties": false
+    },
+    "ResourceSettingsSchema": {
       "properties": {
         "cpu": {
           "title": "cpu",
-          "type": "number",
-          "format": "float"
-        },
-        "cpu_cores_limit": {
-          "title": "cpu_cores_limit",
-          "type": "number",
-          "format": "float"
+          "type": "string"
         },
         "gpu": {
           "title": "gpu",
-          "type": "number",
-          "format": "integer"
+          "type": "string"
         },
-        "memory_in_gb": {
-          "title": "memory_in_gb",
-          "type": "number",
-          "format": "float"
-        },
-        "memory_in_gb_limit": {
-          "title": "memory_in_gb_limit",
-          "type": "number",
-          "format": "float"
+        "memory": {
+          "title": "memory",
+          "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
-    "AutoScaleSettingsSchema": {
-      "type": "object",
+    "DefaultScaleSettingsSchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "default"
+          ],
+          "title": "type"
+        }
+      },
       "required": [
-        "scale_type"
+        "type"
       ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "TargetUtilizationScaleSettingsSchema": {
       "properties": {
         "max_instances": {
           "title": "max_instances",
@@ -452,12 +561,12 @@
           "type": "number",
           "format": "integer"
         },
-        "scale_type": {
+        "type": {
           "type": "string",
           "enum": [
-            "Auto"
+            "target_utilization"
           ],
-          "title": "scale_type"
+          "title": "type"
         },
         "target_utilization_percentage": {
           "title": "target_utilization_percentage",
@@ -465,45 +574,13 @@
           "format": "integer"
         }
       },
-      "additionalProperties": false
-    },
-    "ManualScaleSettingsSchema": {
-      "type": "object",
       "required": [
-        "instance_count",
-        "scale_type"
+        "type"
       ],
-      "properties": {
-        "instance_count": {
-          "title": "instance_count",
-          "type": "number",
-          "format": "integer"
-        },
-        "max_instances": {
-          "title": "max_instances",
-          "type": "number",
-          "format": "integer"
-        },
-        "min_instances": {
-          "title": "min_instances",
-          "type": "number",
-          "format": "integer"
-        },
-        "scale_type": {
-          "type": "string",
-          "enum": [
-            "Manual"
-          ],
-          "title": "scale_type"
-        }
-      },
+      "type": "object",
       "additionalProperties": false
     },
     "K8sOnlineDeploymentSchema": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
         "app_insights_enabled": {
           "title": "app_insights_enabled",
@@ -512,6 +589,10 @@
         "code_configuration": {
           "type": "object",
           "$ref": "#/definitions/CodeConfigurationSchema"
+        },
+        "endpoint_name": {
+          "title": "endpoint_name",
+          "type": "string"
         },
         "environment": {
           "anyOf": [
@@ -524,6 +605,10 @@
             {
               "type": "object",
               "$ref": "#/definitions/EnvironmentSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousEnvironmentSchema"
             },
             {
               "type": "string",
@@ -540,6 +625,11 @@
           "title": "id",
           "type": "string"
         },
+        "instance_count": {
+          "title": "instance_count",
+          "type": "number",
+          "format": "integer"
+        },
         "liveness_probe": {
           "type": "object",
           "$ref": "#/definitions/LivenessProbeSchema"
@@ -554,9 +644,13 @@
             },
             {
               "type": "object",
-              "$ref": "#/definitions/ModelSchema"
+              "$ref": "#/definitions/AnonymousModelSchema"
             }
           ]
+        },
+        "model_mount_path": {
+          "title": "model_mount_path",
+          "type": "string"
         },
         "name": {
           "title": "name",
@@ -571,11 +665,15 @@
           "title": "provisioning_state",
           "type": "string"
         },
+        "readiness_probe": {
+          "type": "object",
+          "$ref": "#/definitions/LivenessProbeSchema"
+        },
         "request_settings": {
           "type": "object",
           "$ref": "#/definitions/RequestSettingsSchema"
         },
-        "resource_requirements": {
+        "resources": {
           "type": "object",
           "$ref": "#/definitions/ResourceRequirementsSchema"
         },
@@ -583,11 +681,11 @@
           "anyOf": [
             {
               "type": "object",
-              "$ref": "#/definitions/AutoScaleSettingsSchema"
+              "$ref": "#/definitions/DefaultScaleSettingsSchema"
             },
             {
               "type": "object",
-              "$ref": "#/definitions/ManualScaleSettingsSchema"
+              "$ref": "#/definitions/TargetUtilizationScaleSettingsSchema"
             }
           ]
         },
@@ -602,10 +700,19 @@
           "additionalProperties": {}
         },
         "type": {
-          "title": "type",
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "managed",
+            "kubernetes"
+          ],
+          "title": "type"
         }
       },
+      "required": [
+        "endpoint_name",
+        "name"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },

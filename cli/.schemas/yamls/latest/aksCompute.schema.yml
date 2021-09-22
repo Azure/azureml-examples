@@ -1,0 +1,63 @@
+$ref: '#/definitions/AKSComputeSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AKSComputeSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      created_on:
+        readonly: true
+        title: created_on
+        type: string
+      description:
+        title: description
+        type: string
+      enable_public_ip:
+        title: enable_public_ip
+        type: boolean
+      id:
+        readonly: true
+        title: id
+        type: string
+      location:
+        title: location
+        type: string
+      name:
+        title: name
+        type: string
+      provisioning_errors:
+        readonly: true
+        title: provisioning_errors
+        type: string
+      provisioning_state:
+        readonly: true
+        title: provisioning_state
+        type: string
+      resource_id:
+        title: resource_id
+        type: string
+      size:
+        title: size
+        type: string
+      ssh_public_access:
+        title: ssh_public_access
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      type:
+        enum:
+        - aks
+        title: type
+        type: string
+    required:
+    - name
+    - resource_id
+    - type
+    type: object
