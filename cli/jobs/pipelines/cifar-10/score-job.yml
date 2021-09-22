@@ -1,0 +1,13 @@
+
+command: >-
+  python main.py --data-dir ${{inputs.cifar-10-data-test}} --model-dir ${{inputs.cifar-model}} --only-score true
+code:
+  local_path: src/train-model
+inputs:
+  epochs: 1
+  cifar-10-data-test:
+    folder: https://sdkvnextclimas3743378774.blob.core.windows.net/azureml-blobstore-b5096e33-2702-4abd-8149-2dd0b2b71947/dataset/9d433cf1-5aa6-4d00-a543-458c815da909/cifar_10_test/
+  cifar-model:
+    folder: https://sdkvnextclimas3743378774.blob.core.windows.net/azureml-blobstore-b5096e33-2702-4abd-8149-2dd0b2b71947/dataset/9d433cf1-5aa6-4d00-a543-458c815da909/cifar_model/
+compute: azureml:cpu-instance
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu

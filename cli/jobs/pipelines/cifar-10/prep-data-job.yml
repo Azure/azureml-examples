@@ -1,0 +1,10 @@
+command: bash main.sh ${{outputs.cifar-10-train}} ${{outputs.cifar-10-test}}
+code:
+  local_path: src/get-data
+environment:
+  image: python
+compute: azureml:cpu-instance
+outputs:
+  cifar-10-train:
+  cifar-10-test:
+  

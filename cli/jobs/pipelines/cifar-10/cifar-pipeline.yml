@@ -1,0 +1,45 @@
+type: pipeline
+
+outputs:
+  cifar_model:
+
+jobs:
+
+  data-prep:
+    command: bash main.sh ${{outputs.cifar_10_train}} ${{outputs.cifar_10_test}}
+    code:
+      local_path: src/get-data
+    environment:
+      image: python
+    compute: azureml:cpu-instance
+    outputs:
+      cifar_10_train:
+      cifar_10_test:
+      
+
+  train:
+  
+    type: component
+    component: azureml:cifar-training-2021  
+    inputs:
+      epochs: 10
+      cifar_10_train: ${{jobs.data-prep.outputs.cifar_10_train}}
+    outputs:
+      cifar_model: ${{outputs.cifar_model}}
+
+    compute: azureml:gpu-instance
+
+
+  score:
+
+    command: >-
+      python main.py --data-dir ${{inputs.cifar_10_data}} --model-dir ${{inputs.cifar_model}} --only-score true
+    code:
+      local_path: src/train-model
+    inputs:
+      epochs: 1
+      cifar_10_data: ${{jobs.data-prep.outputs.cifar_10_train}}
+      cifar_model: ${{jobs.train.outputs.cifar_model}}
+    compute: azureml:cpu-instance
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:3
+

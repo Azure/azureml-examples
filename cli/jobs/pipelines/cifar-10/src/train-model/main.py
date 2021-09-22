@@ -115,9 +115,9 @@ def evaluate(test_loader, model, device):
 
 def main(args):
     # get PyTorch environment variables
-    world_size = int(os.environ["WORLD_SIZE"])
-    rank = int(os.environ["RANK"])
-    local_rank = int(os.environ["LOCAL_RANK"])
+    world_size = int(os.environ.get("WORLD_SIZE")) if os.environ.get("WORLD_SIZE") else 1
+    rank = int(os.environ.get("RANK")) if os.environ.get("RANK") else 1
+    local_rank = int(os.environ.get("LOCAL_RANK")) if os.environ.get("LOCAL_RANK") else 1
 
     distributed = world_size > 1
 
@@ -136,22 +136,17 @@ def main(args):
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
 
-    train_set = torchvision.datasets.CIFAR10(
-        root=args.data_dir, train=True, download=False, transform=transform
-    )
+    model_file = (args.model_dir + "/model.pkg") if args.model_dir else None
+    model = None
+    if model_file:
+        try:
+            model = torch.load(model_file)
+            model.eval()
+        except:
+            model = None
 
-    if distributed:
-        train_sampler = torch.utils.data.distributed.DistributedSampler(train_set)
-    else:
-        train_sampler = None
-
-    train_loader = torch.utils.data.DataLoader(
-        train_set,
-        batch_size=args.batch_size,
-        shuffle=(train_sampler is None),
-        num_workers=args.workers,
-        sampler=train_sampler,
-    )
+    if not model:
+        model = Net().to(device)
 
     test_set = torchvision.datasets.CIFAR10(
         root=args.data_dir, train=False, download=False, transform=transform
@@ -160,45 +155,68 @@ def main(args):
         test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers
     )
 
-    model = Net().to(device)
-
     # wrap model with DDP
     if distributed:
         model = nn.parallel.DistributedDataParallel(
             model, device_ids=[local_rank], output_device=local_rank
         )
 
-    # define loss function and optimizer
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(
-        model.parameters(), lr=args.learning_rate, momentum=args.momentum
-    )
-
-    # train the model
-    for epoch in range(args.epochs):
-        print("Rank %d: Starting epoch %d" % (rank, epoch))
-        if distributed:
-            train_sampler.set_epoch(epoch)
-        model.train()
-        train(
-            train_loader,
-            model,
-            criterion,
-            optimizer,
-            epoch,
-            device,
-            args.print_freq,
-            rank,
+    if not args.only_score:
+        train_set = torchvision.datasets.CIFAR10(
+            root=args.data_dir, train=True, download=False, transform=transform
         )
 
-    print("Rank %d: Finished Training" % (rank))
+        if distributed:
+            train_sampler = torch.utils.data.distributed.DistributedSampler(train_set)
+        else:
+            train_sampler = None
+
+        train_loader = torch.utils.data.DataLoader(
+            train_set,
+            batch_size=args.batch_size,
+            shuffle=(train_sampler is None),
+            num_workers=args.workers,
+            sampler=train_sampler,
+        )
+
+
+        # define loss function and optimizer
+        criterion = nn.CrossEntropyLoss()
+        optimizer = optim.SGD(
+            model.parameters(), lr=args.learning_rate, momentum=args.momentum
+        )
+
+        # train the model
+        for epoch in range(args.epochs):
+            print("Rank %d: Starting epoch %d" % (rank, epoch))
+            if distributed:
+                train_sampler.set_epoch(epoch)
+            model.train()
+            train(
+                train_loader,
+                model,
+                criterion,
+                optimizer,
+                epoch,
+                device,
+                args.print_freq,
+                rank,
+            )
+
+        print("Rank %d: Finished Training" % (rank))
+
+        if model_file:
+            torch.save(model, model_file)
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.log_model(model, "./model")
+        try:
+            mlflow.pytorch.log_model(model, model_file)
+        except:
+            print("Error logging model in mlflow.")
 
-        # evaluate on full test dataset
-        evaluate(test_loader, model, device)
+    # evaluate on full test dataset
+    evaluate(test_loader, model, device)
 
 
 def parse_args():
@@ -231,6 +249,14 @@ def parse_args():
         default=200,
         type=int,
         help="frequency of printing training statistics",
+    )
+
+    parser.add_argument(
+        "--only-score", type=bool, help="if the script should only score the model. If set to true, model dir should be provided."
+    )
+
+    parser.add_argument(
+        "--model-dir", type=str, help="directory containing CIFAR-10 model"
     )
 
     # parse args

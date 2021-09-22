@@ -1,0 +1,19 @@
+type: command
+
+
+name: cifar-training-2021
+display_name: MyCifarTraining
+
+command: >-
+  python main.py --data-dir ${{inputs.cifar_10_train}} --model-dir ${{outputs.cifar_model}} --epochs ${{inputs.epochs}}
+code:
+  local_path: src/train-model
+inputs:
+  epochs:
+    type: integer
+  cifar_10_train:
+    type: path
+outputs:
+  cifar_model:
+    type: path
+environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:3

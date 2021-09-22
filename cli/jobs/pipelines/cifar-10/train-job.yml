@@ -1,0 +1,13 @@
+
+command: >-
+  python main.py --data-dir ${{inputs.cifar%10$train}} --model-dir ${{outputs.cifar_model}} --epochs ${{inputs.epochs}}
+code:
+  local_path: src/train-model
+inputs:
+  epochs: 10
+  cifar%10$train:
+    folder: https://sdkvnextclimas3743378774.blob.core.windows.net/azureml-blobstore-b5096e33-2702-4abd-8149-2dd0b2b71947/dataset/2516941c-4aea-476c-a986-ef885262cbb4/cifar_10/
+outputs:
+  cifar_model:
+compute: azureml:gpu-instance
+environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:3
