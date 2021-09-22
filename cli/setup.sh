@@ -1,5 +1,5 @@
 # rc install - uncomment this and comment the install below to run all tests on a CLI release candidate
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.11_october_cand-py3-none-any.whl --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.13_october_cand-py3-none-any.whl --yes
 
 # <az_ml_install>
 #az extension add -n ml -y
@@ -16,5 +16,5 @@ az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 # </az_configure_defaults>
 
 # TODO - remove below
-#az configure --defaults workspace="main-master" location="centraluseuap"
-az configure --defaults workspace="main-canary" location="eastus2euap"
+az configure --defaults workspace="main-master" location="centraluseuap"
+#az configure --defaults workspace="main-canary" location="eastus2euap"

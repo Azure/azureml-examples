@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -31,38 +30,26 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
-    "FolderPathSchema": {
-      "type": "object",
-      "required": [
-        "folder"
-      ],
+    "PathSchema": {
       "properties": {
+        "file": {
+          "title": "file",
+          "type": "string",
+          "description": "URI pointing to file."
+        },
         "folder": {
           "title": "folder",
           "type": "string",
           "description": "URI pointing to folder."
         }
       },
-      "additionalProperties": false
-    },
-    "FilePathSchema": {
       "type": "object",
-      "required": [
-        "file"
-      ],
-      "properties": {
-        "file": {
-          "title": "file",
-          "type": "string",
-          "description": "URI pointing to file."
-        }
-      },
       "additionalProperties": false
     },
     "DatasetSchema": {
-      "type": "object",
       "properties": {
         "arm_id": {
           "type": "string",
@@ -74,6 +61,12 @@
         "creation_context": {
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
         },
         "description": {
           "title": "description",
@@ -99,15 +92,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "$ref": "#/definitions/FolderPathSchema"
-              }
-            },
-            {
-              "title": "paths",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/FilePathSchema"
+                "$ref": "#/definitions/PathSchema"
               }
             }
           ]
@@ -134,6 +119,7 @@
           "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     }
   },

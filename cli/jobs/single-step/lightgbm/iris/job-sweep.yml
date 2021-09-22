@@ -11,7 +11,7 @@ trial:
   environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu
   ## TODO: remove
   # environment_variables:
-  #   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  #   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
 # TODO - fix
 # inputs:
 #   iris: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
@@ -31,7 +31,7 @@ objective:
 limits:
   max_total_trials: 20
   max_concurrent_trials: 10
-  timeout: 120
+  timeout: 7200
 display_name: lightgbm-iris-sweep-example
 experiment_name: lightgbm-iris-sweep-example
 description: Run a hyperparameter sweep job for LightGBM on Iris dataset.

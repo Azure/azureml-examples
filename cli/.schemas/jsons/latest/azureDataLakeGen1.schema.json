@@ -2,12 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ServicePrincipalSchema": {
-      "type": "object",
-      "required": [
-        "client_id",
-        "client_secret",
-        "tenant_id"
-      ],
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -30,15 +24,15 @@
           "type": "string"
         }
       },
+      "required": [
+        "client_id",
+        "client_secret",
+        "tenant_id"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "CertificateSchema": {
-      "type": "object",
-      "required": [
-        "client_id",
-        "tenant_id",
-        "thumbprint"
-      ],
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -65,15 +59,15 @@
           "type": "string"
         }
       },
+      "required": [
+        "client_id",
+        "tenant_id",
+        "thumbprint"
+      ],
+      "type": "object",
       "additionalProperties": false
     },
     "AzureDataLakeGen1Schema": {
-      "type": "object",
-      "required": [
-        "credential",
-        "store_name",
-        "type"
-      ],
       "properties": {
         "credential": {
           "anyOf": [
@@ -121,6 +115,12 @@
           "title": "type"
         }
       },
+      "required": [
+        "credential",
+        "store_name",
+        "type"
+      ],
+      "type": "object",
       "additionalProperties": false
     }
   },
