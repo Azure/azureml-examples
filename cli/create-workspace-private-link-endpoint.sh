@@ -1,7 +1,7 @@
 WORKSPACE="mlw-privatelink-prod"
 
 az ml workspace delete -n $WORKSPACE -y || echo "workspace does not exist"
-az network private-endpoint delete -n main -y || echo "endpoint resource does not exist"
+az network private-endpoint delete -n main || echo "endpoint resource does not exist"
 
 # <create_workspace>
 az ml workspace create --file resources/workspace/privatelink.yml -n $WORKSPACE
