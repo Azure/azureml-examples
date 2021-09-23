@@ -12,21 +12,24 @@ container=$(az ml datastore show -n $datastore --query container_name -o tsv)
 endpoint=$(az ml datastore show -n $datastore --query endpoint -o tsv)
 protocol=$(az ml datastore show -n $datastore --query protocol -o tsv)
 
+# build strings
+destination="$protocol://$account.blob.$endpoint/$container/$datapath/"
+
 # add contributor access to datastore
-az ad signed-in-user show --query objectId -o tsv | az role assignment create \
+az ad signed-in-user show --query userPrincipalName -o tsv | az role assignment create \
     --role "Storage Blob Data Owner" \
     --assignee @- \
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
 # copy iris data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv" "$protocol://$account.blob.$endpoint/$container/$datapath/"
+azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv" $destination
 
 # copy diabetes data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" "$protocol://$account.blob.$endpoint/$container/$datapath/"
+azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
 
 # copy mnist data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/mnist" "$protocol://$account.blob.$endpoint/$container/$datapath/" --recursive
+azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/mnist" $destination --recursive
 
 # copy cifar data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" "$protocol://$account.blob.$endpoint/$container/$datapath/"
+azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
 
