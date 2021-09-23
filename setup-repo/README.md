@@ -11,3 +11,11 @@ bash azure-github.sh
 ```
 
 This will run the other scripts for creating compute and datasets. Adjust as needed.
+
+Required CLI tools include:
+
+- `gh`
+- `az`
+- `az ml`
+- `azcopy``
+

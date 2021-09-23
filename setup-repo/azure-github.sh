@@ -38,5 +38,9 @@ echo "Creating computes..."
 bash create-compute.sh
 bash create-compute-extras.sh
 
+echo "Copying data..."
+bash copy-data.sh
+
 echo "Creating datasets..."
 bash create-datasets.sh
+
