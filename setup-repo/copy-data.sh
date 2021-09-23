@@ -30,15 +30,15 @@ sleep 240
 for i in {0..1}
 do
   # copy iris data
-  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv" $destination
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv" $destination
 
   # copy diabetes data
-  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
 
   # copy mnist data
-  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/mnist" $destination --recursive
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/mnist" $destination --recursive
 
   # copy cifar data
-  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
 done
 
