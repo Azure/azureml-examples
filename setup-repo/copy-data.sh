@@ -2,7 +2,7 @@
 datapath="example-data"
 datastore="workspaceblobstore"
 
-# query workspace
+# query subscription and group
 subscription=$(az account show --query id -o tsv)
 group=$(az ml workspace show --query resource_group -o tsv)
 
