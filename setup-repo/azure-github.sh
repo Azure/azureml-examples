@@ -1,3 +1,6 @@
+#!/bin/bash
+set -x
+
 echo "Setting variables..."
 # <set_variables>
 GROUP="azureml-examples"
@@ -7,7 +10,7 @@ WORKSPACE="main"
 
 # additional variables
 SUBSCRIPTION=$(az account show --query id -o tsv)
-SECRET_NAME = "AZ_CREDS"
+SECRET_NAME="AZ_CREDS"
 
 echo "Installing Azure CLI extension for Azure Machine Learning..."
 # <az_ml_install>
@@ -43,4 +46,10 @@ bash copy-data.sh
 
 echo "Creating datasets..."
 bash create-datasets.sh
+
+echo "Setting up internal regions..."
+bash create-workspace-internal.sh
+
+echo "Creating additional workspace regions..."
+bash create-workspace-extras.sh
 
