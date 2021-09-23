@@ -1,5 +1,5 @@
 # <download_untar_cifar>
-wget "https://azuremlexamples.blob.core.windows.net/datasets//cifar-10-python.tar.gz"
+wget "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz"
 tar -xvzf cifar-10-python.tar.gz
 # </download_untar_cifar>
 
