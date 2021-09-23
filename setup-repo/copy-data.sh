@@ -6,6 +6,9 @@ datastore="workspaceblobstore"
 subscription=$(az account show --query id -o tsv)
 group=$(az ml workspace show --query resource_group -o tsv)
 
+# query principal
+principal=$(az ad signed-in-user show --query objectId -o tsv)
+
 # query datastore
 account=$(az ml datastore show -n $datastore --query account_name -o tsv)
 container=$(az ml datastore show -n $datastore --query container_name -o tsv)
@@ -15,21 +18,27 @@ protocol=$(az ml datastore show -n $datastore --query protocol -o tsv)
 # build strings
 destination="$protocol://$account.blob.$endpoint/$container/$datapath/"
 
-# add contributor access to datastore
-az ad signed-in-user show --query userPrincipalName -o tsv | az role assignment create \
+# add contributor access to blob container
+az role assignment create \
     --role "Storage Blob Data Owner" \
-    --assignee @- \
+    --assignee $principal \
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
-# copy iris data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv" $destination
+# let permissions go through
+sleep 240
 
-# copy diabetes data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
+for i in {0..1}
+do
+  # copy iris data
+  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv" $destination
 
-# copy mnist data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/mnist" $destination --recursive
+  # copy diabetes data
+  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
 
-# copy cifar data
-azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
+  # copy mnist data
+  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/mnist" $destination --recursive
+
+  # copy cifar data
+  azcopy copy "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
+done
 
