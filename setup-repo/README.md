@@ -17,5 +17,5 @@ Required CLI tools include:
 - `gh`
 - `az`
 - `az ml`
-- `azcopy``
+- `azcopy`
 
