@@ -1,0 +1,4 @@
+name: local-file-dataset
+version: 1
+description: Dataset created from local file.
+local_path: ./data/titanic.csv

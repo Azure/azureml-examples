@@ -1,0 +1,4 @@
+name: local-folder-dataset
+version: 1
+description: Dataset created from local folder.
+local_path: ./data/

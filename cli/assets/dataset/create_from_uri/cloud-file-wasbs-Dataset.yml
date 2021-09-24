@@ -1,0 +1,5 @@
+name: cloud-file-wasbs-dataset
+version: 1
+description: Dataset created from a file in cloud using wasbs URL.
+paths:
+  - file: wasbs://storage-account-name.blob.core.windows.net/container-name/example-data/titanic.csv

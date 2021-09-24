@@ -1,0 +1,5 @@
+name: cloud-folder-https-dataset
+version: 1
+description: Dataset created from folder in cloud using https URL.
+paths:
+  - folder: https://storage-account-name.blob.core.windows.net/container-name/example-data/

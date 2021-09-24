@@ -1,0 +1,5 @@
+name: cloud-folder-wasbs-dataset
+version: 1
+description: Dataset created from folder in cloud using wasbs URL.
+paths:
+  - folder: wasbs://storage-account-name.blob.core.windows.net/container-name/example-data/

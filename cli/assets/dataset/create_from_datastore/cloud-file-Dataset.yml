@@ -1,0 +1,5 @@
+name: cloud-file-dataset
+version: 1
+description: Dataset created from file in cloud.
+paths:
+  - file: azureml://datastores/workspaceblobstore/paths/example-data/titanic.csv

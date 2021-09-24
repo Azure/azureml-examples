@@ -1,0 +1,8 @@
+name: myadls1datastore
+type: azure_data_lake_gen1
+description: Datastore pointing to an Azure Data Lake Storage Gen1.
+store_name: mytestdatalakegen1 
+credentials:
+  tenant_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+  client_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+  client_secret: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
