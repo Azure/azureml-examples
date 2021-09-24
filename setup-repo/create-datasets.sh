@@ -1,3 +1,6 @@
+# this dataset is needed for the sample under cli/jobs/pipelines-with-components/basics/4d_dataset_input
+az ml dataset create -f ../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
+
 # <download_untar_cifar>
 wget "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz"
 tar -xvzf cifar-10-python.tar.gz
@@ -11,6 +14,3 @@ az ml dataset create --name cifar-10-example --version 1 --set local_path=cifar-
 rm cifar-10-python.tar.gz
 rm -r cifar-10-batches-py
 # </cleanup_cifar>
-
-# this dataset is needed for the sample under cli/jobs/pipelines-with-components/basics/4d_dataset_input
-az ml dataset create ../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
