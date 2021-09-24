@@ -7,15 +7,21 @@ set -x
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
 LOCATION=$(az ml workspace show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-API_VERSION="2021-10-01"
-TOKEN=$(az account get-access-token --query accessToken -o tsv)
+
 #</create_variables>
+
+#<get_access_token>
+TOKEN=$(az account get-access-token --query accessToken -o tsv)
+#</get_access_token>
 
 # <set_endpoint_name>
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 # </set_endpoint_name>
+
+#<api_version>
+API_VERSION="2021-10-01"
+#</api_version>
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
 
