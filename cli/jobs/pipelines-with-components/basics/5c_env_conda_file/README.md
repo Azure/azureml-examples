@@ -1,0 +1,1 @@
+This example shows how to use specify environment dependencies using a conda file in addition to a public docker image. The `hello.py` needs the `pyjokes` module which is specified in the `pip` section of the conda file along with the `python` version.  Check if you have `cpu-cluster` compute and run this job using `az ml job create --file pipeline.yml`.

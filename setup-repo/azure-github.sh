@@ -47,6 +47,9 @@ bash copy-data.sh
 echo "Creating datasets..."
 bash create-datasets.sh
 
+echo "Creating components..."
+bash create-datasets.sh
+
 echo "Setting up internal regions..."
 bash create-workspace-internal.sh
 
