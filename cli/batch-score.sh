@@ -87,7 +87,7 @@ az ml batch-deployment list-jobs --name nonmlflowdp --endpoint-name $ENDPOINT_NA
 
 # <create_new_deployment_not_default>
 az ml batch-deployment create --name mlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/mlflow-deployment.yml
-# </create_new_deploymen_not_default>
+# </create_new_deployment_not_default>
 
 # <test_new_deployment>
 JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name mlflowdp --input-path file:https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
