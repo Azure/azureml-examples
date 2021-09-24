@@ -35,7 +35,7 @@ do
   # copy diabetes data
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
 
- # copy titanic data
+  # copy titanic data
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/titanic.csv" $destination
 
   # copy mnist data
@@ -44,4 +44,3 @@ do
   # copy cifar data
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
 done
-
