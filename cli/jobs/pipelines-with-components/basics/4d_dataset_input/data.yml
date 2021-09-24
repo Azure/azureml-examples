@@ -1,0 +1,4 @@
+name: sampledata123
+version: 1
+description: sample dataset
+local_path: ./data
