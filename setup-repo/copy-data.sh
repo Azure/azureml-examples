@@ -25,7 +25,7 @@ az role assignment create \
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
 # let permissions go through
-sleep 240
+#sleep 240
 
 for i in {0..1}
 do
@@ -34,6 +34,9 @@ do
 
   # copy diabetes data
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv" $destination
+
+ # copy titanic data
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/titanic.csv" $destination
 
   # copy mnist data
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/mnist" $destination --recursive
