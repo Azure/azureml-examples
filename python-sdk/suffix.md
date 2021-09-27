@@ -21,5 +21,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Reference
 
-- [Template](https://github.com/Azure/azureml-template)
 - [Documentation](https://docs.microsoft.com/azure/machine-learning)
