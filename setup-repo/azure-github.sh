@@ -44,6 +44,9 @@ bash create-compute-extras.sh
 echo "Copying data..."
 bash copy-data.sh
 
+echo "Update datasets..."
+bash update-datasets.sh
+
 echo "Creating datasets..."
 bash create-datasets.sh
 

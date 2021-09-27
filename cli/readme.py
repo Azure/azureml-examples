@@ -13,6 +13,7 @@ EXCLUDED_RESOURCES = [
     "instance",
 ]
 EXCLUDED_ASSETS = [
+    "dataset",
     "conda-yamls",
     "mlflow-models",
 ]
