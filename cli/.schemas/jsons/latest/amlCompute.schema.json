@@ -2,7 +2,12 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "IdentitySchema": {
+      "type": "object",
       "properties": {
+        "principal_id": {
+          "title": "principal_id",
+          "type": "string"
+        },
         "type": {
           "type": "string",
           "enum": [
@@ -17,20 +22,34 @@
           "title": "user_assigned_identities",
           "type": "array",
           "items": {
-            "title": "user_assigned_identities",
-            "type": "string"
+            "type": "object",
+            "$ref": "#/definitions/UserAssignedIdentitySchema"
           }
         }
       },
+      "additionalProperties": false
+    },
+    "UserAssignedIdentitySchema": {
       "type": "object",
+      "properties": {
+        "client_id": {
+          "title": "client_id",
+          "type": "string"
+        },
+        "principal_id": {
+          "title": "principal_id",
+          "type": "string"
+        },
+        "resource_id": {
+          "title": "resource_id",
+          "type": "string"
+        }
+      },
       "additionalProperties": false
     },
     "NetworkSettingsSchema": {
+      "type": "object",
       "properties": {
-        "private_ip_only": {
-          "title": "private_ip_only",
-          "type": "boolean"
-        },
         "subnet": {
           "title": "subnet",
           "type": "string"
@@ -40,10 +59,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "SshSettingsSchema": {
+      "type": "object",
       "properties": {
         "admin_password": {
           "title": "admin_password",
@@ -58,10 +77,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "AmlComputeSchema": {
+      "type": "object",
       "properties": {
         "created_on": {
           "title": "created_on",
@@ -148,8 +167,12 @@
           }
         },
         "tier": {
-          "title": "tier",
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "low_priority",
+            "dedicated"
+          ],
+          "title": "tier"
         },
         "type": {
           "type": "string",
@@ -163,7 +186,6 @@
         "name",
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },

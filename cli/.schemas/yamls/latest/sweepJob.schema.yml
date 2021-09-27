@@ -1,68 +1,12 @@
 $ref: '#/definitions/SweepJobSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  AnonymousAssetSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      id:
-        title: id
-        type: string
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
-      name:
-        readonly: true
-        title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
-        type: string
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      version:
-        anyOf:
-        - type: string
-        - type: integer
-        readonly: true
-        title: version
-    type: object
   AnonymousCodeAssetSchema:
     additionalProperties: false
     properties:
       $schema:
         readonly: true
         title: $schema
-        type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
         type: string
       code_uri:
         description: Blob URI pointing to a file or directory where code asset is
@@ -72,6 +16,42 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: codes
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      local_path:
+        description: the path from which the artifact gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  AnonymousDataSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
       datastore:
         arm_type: datastores
         pattern: ^azureml:.*
@@ -84,7 +64,7 @@ definitions:
         title: id
         type: string
       local_path:
-        description: The path from which the data gets uploaded to the cloud
+        description: the path from which the artifact gets uploaded to the cloud
         title: local_path
         type: string
       name:
@@ -111,36 +91,24 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: datasets
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
       id:
+        arm_type: datasets
+        pattern: ^azureml:.*
+        readonly: true
         title: id
         type: string
       local_path:
-        description: the path from which the data gets uploaded to the cloud
+        description: the path from which the artifact gets uploaded to the cloud
         title: local_path
         type: string
       name:
         title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
         type: string
       paths:
         anyOf:
@@ -194,7 +162,6 @@ definitions:
         $ref: '#/definitions/InferenceConfigSchema'
         type: object
       name:
-        readonly: true
         title: name
         type: string
       os_type:
@@ -204,16 +171,13 @@ definitions:
         title: os_type
         type: string
       tags:
-        additionalProperties:
-          title: tags
-          type: string
+        additionalProperties: {}
         title: tags
         type: object
       version:
         anyOf:
         - type: string
         - type: integer
-        readonly: true
         title: version
     type: object
   BanditPolicySchema:
@@ -311,28 +275,20 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: datasets
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
       id:
+        arm_type: datasets
+        pattern: ^azureml:.*
+        readonly: true
         title: id
         type: string
       local_path:
-        description: the path from which the data gets uploaded to the cloud
+        description: the path from which the artifact gets uploaded to the cloud
         title: local_path
         type: string
       name:
@@ -381,7 +337,7 @@ definitions:
           pattern: ^azureml:.*
           title: data
           type: string
-        - $ref: '#/definitions/AnonymousAssetSchema'
+        - $ref: '#/definitions/AnonymousDataSchema'
           type: object
         - pattern: ^file:.*
           type: string
@@ -389,8 +345,6 @@ definitions:
         enum:
         - mount
         - download
-        - ro_mount
-        - rw_mount
         title: mode
         type: string
     type: object
@@ -444,7 +398,6 @@ definitions:
         type: string
       mode:
         enum:
-        - mount
         - download
         - rw_mount
         - ro_mount
@@ -585,7 +538,6 @@ definitions:
         type: string
       mode:
         enum:
-        - mount
         - upload
         - rw_mount
         readonly: true
@@ -955,7 +907,7 @@ definitions:
         type: object
       type:
         enum:
-        - sweep_job
+        - sweep
         title: type
         type: string
     required:

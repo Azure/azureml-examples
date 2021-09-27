@@ -70,6 +70,9 @@ definitions:
         title: tags
         type: object
       tier:
+        enum:
+        - low_priority
+        - dedicated
         title: tier
         type: string
       type:
@@ -84,6 +87,9 @@ definitions:
   IdentitySchema:
     additionalProperties: false
     properties:
+      principal_id:
+        title: principal_id
+        type: string
       type:
         enum:
         - system_assigned
@@ -94,17 +100,14 @@ definitions:
         type: string
       user_assigned_identities:
         items:
-          title: user_assigned_identities
-          type: string
+          $ref: '#/definitions/UserAssignedIdentitySchema'
+          type: object
         title: user_assigned_identities
         type: array
     type: object
   NetworkSettingsSchema:
     additionalProperties: false
     properties:
-      private_ip_only:
-        title: private_ip_only
-        type: boolean
       subnet:
         title: subnet
         type: string
@@ -123,5 +126,18 @@ definitions:
         type: string
       ssh_key_value:
         title: ssh_key_value
+        type: string
+    type: object
+  UserAssignedIdentitySchema:
+    additionalProperties: false
+    properties:
+      client_id:
+        title: client_id
+        type: string
+      principal_id:
+        title: principal_id
+        type: string
+      resource_id:
+        title: resource_id
         type: string
     type: object

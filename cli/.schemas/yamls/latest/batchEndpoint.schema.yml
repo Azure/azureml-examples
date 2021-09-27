@@ -19,6 +19,7 @@ definitions:
         $ref: '#/definitions/BatchEndpointsDefaultsSchema'
         type: object
       description:
+        description: Description of the inference endpoint.
         title: description
         type: string
       id:
@@ -38,13 +39,15 @@ definitions:
         title: properties
         type: object
       provisioning_state:
+        description: Provisioning state for the endpoint.
         title: provisioning_state
         type: string
       scoring_uri:
-        description: the endpoint uri that can be used for scoring
+        description: The endpoint uri that can be used for scoring
         title: scoring_uri
         type: string
       swagger_uri:
+        description: Endpoint Swagger URI.
         title: swagger_uri
         type: string
       tags:
@@ -58,6 +61,9 @@ definitions:
     additionalProperties: false
     properties:
       deployment_name:
+        description: Name of the deployment that will be default for the endpoint.
+          This deployment will end up getting 100% traffic when the endpoint scoring
+          URL is invoked.
         title: deployment_name
         type: string
     type: object

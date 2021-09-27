@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CreationContextSchema": {
+      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -30,18 +31,11 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
-    "AssetSchema": {
+    "DataSchema": {
+      "type": "object",
       "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
-        },
         "creation_context": {
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
@@ -63,7 +57,7 @@
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
+          "description": "the path from which the artifact gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
@@ -96,9 +90,8 @@
           "title": "version"
         }
       },
-      "type": "object",
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/AssetSchema"
+  "$ref": "#/definitions/DataSchema"
 }

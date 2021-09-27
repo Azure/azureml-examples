@@ -8,12 +8,6 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
       code_uri:
         description: Blob URI pointing to a file or directory where code asset is
           located.
@@ -22,27 +16,21 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
       id:
+        arm_type: codes
+        pattern: ^azureml:.*
+        readonly: true
         title: id
         type: string
       local_path:
-        description: The path from which the data gets uploaded to the cloud
+        description: the path from which the artifact gets uploaded to the cloud
         title: local_path
         type: string
       name:
         title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
         type: string
       tags:
         additionalProperties: {}
@@ -89,7 +77,6 @@ definitions:
         $ref: '#/definitions/InferenceConfigSchema'
         type: object
       name:
-        readonly: true
         title: name
         type: string
       os_type:
@@ -99,16 +86,13 @@ definitions:
         title: os_type
         type: string
       tags:
-        additionalProperties:
-          title: tags
-          type: string
+        additionalProperties: {}
         title: tags
         type: object
       version:
         anyOf:
         - type: string
         - type: integer
-        readonly: true
         title: version
     type: object
   BuildContextSchema:

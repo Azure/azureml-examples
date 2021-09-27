@@ -32,28 +32,20 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: datasets
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
       id:
+        arm_type: datasets
+        pattern: ^azureml:.*
+        readonly: true
         title: id
         type: string
       local_path:
-        description: the path from which the data gets uploaded to the cloud
+        description: the path from which the artifact gets uploaded to the cloud
         title: local_path
         type: string
       name:

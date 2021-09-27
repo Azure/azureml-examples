@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "VirtualMachineComputeSchema": {
+      "type": "object",
       "properties": {
         "admin_password": {
           "title": "admin_password",
@@ -52,7 +53,6 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^file:.*",
               "title": "public_key_data"
             },
             {
@@ -74,7 +74,6 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^file:.*",
               "title": "ssh_key_value"
             },
             {
@@ -109,7 +108,6 @@
         "resource_id",
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },
