@@ -12,4 +12,4 @@ This repository contains example `YAML` files for creating `datastore` using Azu
 > az ml datastore create -f <file-name>.yml
 ```
 
-To learn more about Azure Machine learning 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
+To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
