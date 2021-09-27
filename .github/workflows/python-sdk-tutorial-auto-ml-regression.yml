@@ -2,7 +2,7 @@ name: auto-ml-regression
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 10 * * 2"
+    - cron: "0 12 * * 2"
   pull_request:
     branches:
       - main
