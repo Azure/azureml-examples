@@ -1,4 +1,5 @@
-name: cloud-file-wasbs-dataset
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: cloud-file-wasbs-example
 version: 1
 description: Dataset created from a file in cloud using wasbs URL.
 paths:

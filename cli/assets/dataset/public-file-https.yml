@@ -1,5 +1,6 @@
-name: public-file-https-dataset
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: public-file-https-example
 version: 1
 description: Dataset created from a publicly available file using https URL.
 paths:
-  - file: https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv
+  - file: https://azuremlexamples.blob.core.windows.net/datasets/titanic.csv
