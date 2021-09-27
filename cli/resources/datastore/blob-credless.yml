@@ -1,0 +1,5 @@
+name: mycredlessblobdatastore
+type: azure_blob
+description: Credential-less datastore pointing to a blob container.
+account_name: mytestblobstore
+container_name: data-container

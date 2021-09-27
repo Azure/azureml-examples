@@ -1,0 +1,5 @@
+name: cloud-folder-dataset
+version: 1
+description: Dataset created from folder in cloud.
+paths:
+  - folder: azureml://datastores/workspaceblobstore/paths/example-data/

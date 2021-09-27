@@ -1,0 +1,5 @@
+name: cloud-file-https-dataset
+version: 1
+description: Dataset created from a file in cloud using https URL.
+paths:
+  - file: https://account-name.blob.core.windows.net/container-name/example-data/titanic.csv
