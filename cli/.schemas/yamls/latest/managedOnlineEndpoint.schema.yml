@@ -45,6 +45,7 @@ definitions:
         title: auth_mode
         type: string
       description:
+        description: Description of the inference endpoint.
         title: description
         type: string
       id:
@@ -67,10 +68,11 @@ definitions:
         title: provisioning_state
         type: string
       scoring_uri:
-        description: the endpoint uri that can be used for scoring
+        description: The endpoint uri that can be used for scoring
         title: scoring_uri
         type: string
       swagger_uri:
+        description: Endpoint Swagger URI.
         title: swagger_uri
         type: string
       tags:

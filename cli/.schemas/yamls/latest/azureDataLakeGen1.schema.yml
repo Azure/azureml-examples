@@ -8,7 +8,7 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      credential:
+      credentials:
         anyOf:
         - $ref: '#/definitions/ServicePrincipalSchema'
           type: object
@@ -36,7 +36,7 @@ definitions:
         title: type
         type: string
     required:
-    - credential
+    - name
     - store_name
     - type
     type: object

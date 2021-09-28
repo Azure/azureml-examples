@@ -1,4 +1,5 @@
-name: myblobdatastore
+$schema: https://azuremlschemas.azureedge.net/latest/azureBlob.schema.json
+name: blob-example
 type: azure_blob
 description: Datastore pointing to a blob container.
 account_name: mytestblobstore

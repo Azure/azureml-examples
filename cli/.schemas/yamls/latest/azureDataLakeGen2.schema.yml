@@ -1,15 +1,6 @@
 $ref: '#/definitions/AzureDataLakeGen2Schema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  AccountKeySchema:
-    additionalProperties: false
-    properties:
-      account_key:
-        title: account_key
-        type: string
-    required:
-    - account_key
-    type: object
   AzureDataLakeGen2Schema:
     additionalProperties: false
     properties:
@@ -20,12 +11,8 @@ definitions:
       account_name:
         title: account_name
         type: string
-      credential:
+      credentials:
         anyOf:
-        - $ref: '#/definitions/AccountKeySchema'
-          type: object
-        - $ref: '#/definitions/SasTokenSchema'
-          type: object
         - $ref: '#/definitions/ServicePrincipalSchema'
           type: object
         - $ref: '#/definitions/CertificateSchema'
@@ -62,8 +49,8 @@ definitions:
         type: string
     required:
     - account_name
-    - credential
     - filesystem
+    - name
     - type
     type: object
   CertificateSchema:
@@ -91,15 +78,6 @@ definitions:
     - client_id
     - tenant_id
     - thumbprint
-    type: object
-  SasTokenSchema:
-    additionalProperties: false
-    properties:
-      sas_token:
-        title: sas_token
-        type: string
-    required:
-    - sas_token
     type: object
   ServicePrincipalSchema:
     additionalProperties: false

@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CreationContextSchema": {
+      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -30,10 +31,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "DataSettingsSchema": {
+      "type": "object",
       "properties": {
         "target_column_name": {
           "title": "target_column_name",
@@ -63,10 +64,10 @@
         "target_column_name",
         "training"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "TestDataSchema": {
+      "type": "object",
       "properties": {
         "dataset": {
           "type": "string",
@@ -80,10 +81,10 @@
           "format": "float"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "TrainingDataSchema": {
+      "type": "object",
       "properties": {
         "dataset": {
           "type": "string",
@@ -95,10 +96,10 @@
       "required": [
         "dataset"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "ValidationDataSchema": {
+      "type": "object",
       "properties": {
         "cv_split_column_names": {
           "title": "cv_split_column_names",
@@ -125,10 +126,10 @@
           "format": "float"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "FeaturizationSettingsSchema": {
+      "type": "object",
       "properties": {
         "enable_dnn_featurization": {
           "title": "enable_dnn_featurization",
@@ -151,10 +152,10 @@
           ]
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "FeaturizationConfigSchema": {
+      "type": "object",
       "properties": {
         "blocked_transformers": {
           "title": "blocked_transformers",
@@ -197,10 +198,10 @@
           }
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "ColumnTransformerSchema": {
+      "type": "object",
       "properties": {
         "fields": {
           "title": "fields",
@@ -228,10 +229,10 @@
           }
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "ForecastingSettingsSchema": {
+      "type": "object",
       "properties": {
         "country_or_region_for_holidays": {
           "title": "country_or_region_for_holidays",
@@ -365,10 +366,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "AutoMLGeneralSettingsSchema": {
+      "type": "object",
       "properties": {
         "enable_model_explainability": {
           "title": "enable_model_explainability",
@@ -416,10 +417,10 @@
         "primary_metric",
         "task"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "AutoMLLimitsSchema": {
+      "type": "object",
       "properties": {
         "enable_early_termination": {
           "title": "enable_early_termination",
@@ -456,10 +457,10 @@
           "format": "integer"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "JobOutputSchema": {
+      "type": "object",
       "properties": {
         "datastore_id": {
           "type": "string",
@@ -472,10 +473,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "JobServiceSchema": {
+      "type": "object",
       "properties": {
         "endpoint": {
           "title": "endpoint",
@@ -512,10 +513,10 @@
           "readonly": true
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "TrainingSettingsSchema": {
+      "type": "object",
       "properties": {
         "allowed_training_algorithms": {
           "title": "allowed_training_algorithms",
@@ -559,10 +560,10 @@
           "$ref": "#/definitions/StackEnsembleSettingsSchema"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "StackEnsembleSettingsSchema": {
+      "type": "object",
       "properties": {
         "stack_meta_learner_kwargs": {
           "title": "stack_meta_learner_kwargs",
@@ -589,10 +590,10 @@
           "title": "stack_meta_learner_type"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "AutoMLJobSchema": {
+      "type": "object",
       "properties": {
         "compute": {
           "anyOf": [
@@ -726,7 +727,7 @@
         "type": {
           "type": "string",
           "enum": [
-            "automl_job"
+            "automl"
           ],
           "title": "type"
         }
@@ -737,7 +738,6 @@
         "general",
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },

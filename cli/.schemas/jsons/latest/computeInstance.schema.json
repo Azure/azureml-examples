@@ -1,13 +1,67 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "ComputeInstanceSchema": {
+    "CreateOnBehalfOfSchema": {
+      "type": "object",
+      "properties": {
+        "user_object_id": {
+          "title": "user_object_id",
+          "type": "string"
+        },
+        "user_tenant_id": {
+          "title": "user_tenant_id",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ComputeInstanceNetworkSettingsSchema": {
+      "type": "object",
+      "properties": {
+        "private_ip_address": {
+          "title": "private_ip_address",
+          "type": "string",
+          "readonly": true
+        },
+        "public_ip_address": {
+          "title": "public_ip_address",
+          "type": "string",
+          "readonly": true
+        },
+        "subnet": {
+          "title": "subnet",
+          "type": "string"
+        },
+        "vnet_name": {
+          "title": "vnet_name",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ComputeInstanceSshSettingsSchema": {
+      "type": "object",
       "properties": {
         "admin_username": {
           "title": "admin_username",
           "type": "string",
           "readonly": true
         },
+        "ssh_key_value": {
+          "title": "ssh_key_value",
+          "type": "string"
+        },
+        "ssh_port": {
+          "title": "ssh_port",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ComputeInstanceSchema": {
+      "type": "object",
+      "properties": {
         "applications": {
           "title": "applications",
           "type": "array",
@@ -20,6 +74,10 @@
               "type": "string"
             }
           }
+        },
+        "create_on_behalf_of": {
+          "type": "object",
+          "$ref": "#/definitions/CreateOnBehalfOfSchema"
         },
         "created_on": {
           "title": "created_on",
@@ -51,6 +109,10 @@
           "title": "name",
           "type": "string"
         },
+        "network_settings": {
+          "type": "object",
+          "$ref": "#/definitions/ComputeInstanceNetworkSettingsSchema"
+        },
         "provisioning_errors": {
           "title": "provisioning_errors",
           "type": "string",
@@ -74,25 +136,17 @@
           "title": "size",
           "type": "string"
         },
-        "ssh_key_value": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^file:.*",
-              "title": "ssh_key_value"
-            },
-            {
-              "title": "ssh_key_value",
-              "type": "string"
-            }
-          ]
+        "ssh_public_access_enabled": {
+          "title": "ssh_public_access_enabled",
+          "type": "boolean",
+          "default": null
+        },
+        "ssh_settings": {
+          "type": "object",
+          "$ref": "#/definitions/ComputeInstanceSshSettingsSchema"
         },
         "state": {
           "title": "state",
-          "type": "string"
-        },
-        "subnet": {
-          "title": "subnet",
           "type": "string"
         },
         "tags": {
@@ -109,17 +163,12 @@
             "computeinstance"
           ],
           "title": "type"
-        },
-        "vnet_name": {
-          "title": "vnet_name",
-          "type": "string"
         }
       },
       "required": [
         "name",
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },

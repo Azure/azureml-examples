@@ -2,14 +2,8 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "AnonymousCodeAssetSchema": {
+      "type": "object",
       "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
-        },
         "code_uri": {
           "title": "code_uri",
           "type": "string",
@@ -19,33 +13,25 @@
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
         },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
         "description": {
           "title": "description",
           "type": "string"
         },
         "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "codes",
           "title": "id",
-          "type": "string"
+          "readonly": true
         },
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "The path from which the data gets uploaded to the cloud"
+          "description": "the path from which the artifact gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
           "type": "string"
-        },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
         },
         "$schema": {
           "title": "$schema",
@@ -69,10 +55,10 @@
           "title": "version"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "CreationContextSchema": {
+      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -101,10 +87,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "ComponentPyTorchSchema": {
+      "type": "object",
       "properties": {
         "type": {
           "type": "string",
@@ -122,10 +108,10 @@
       "required": [
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "ComponentTensorFlowSchema": {
+      "type": "object",
       "properties": {
         "type": {
           "type": "string",
@@ -148,10 +134,10 @@
       "required": [
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "ComponentMPISchema": {
+      "type": "object",
       "properties": {
         "type": {
           "type": "string",
@@ -169,10 +155,10 @@
       "required": [
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "AnonymousEnvironmentSchema": {
+      "type": "object",
       "properties": {
         "build": {
           "type": "object",
@@ -215,8 +201,7 @@
         },
         "name": {
           "title": "name",
-          "type": "string",
-          "readonly": true
+          "type": "string"
         },
         "os_type": {
           "type": "string",
@@ -234,10 +219,7 @@
         "tags": {
           "title": "tags",
           "type": "object",
-          "additionalProperties": {
-            "title": "tags",
-            "type": "string"
-          }
+          "additionalProperties": {}
         },
         "version": {
           "anyOf": [
@@ -248,14 +230,13 @@
               "type": "integer"
             }
           ],
-          "title": "version",
-          "readonly": true
+          "title": "version"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "BuildContextSchema": {
+      "type": "object",
       "properties": {
         "context_uri": {
           "title": "context_uri",
@@ -270,10 +251,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
+      "type": "object",
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -293,10 +274,10 @@
         "readiness_route",
         "scoring_route"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "RouteSchema": {
+      "type": "object",
       "properties": {
         "path": {
           "title": "path",
@@ -312,10 +293,10 @@
         "path",
         "port"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "ParameterSchema": {
+      "type": "object",
       "properties": {
         "default": {
           "anyOf": [
@@ -391,10 +372,10 @@
           "enumNames": []
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "InputPortSchema": {
+      "type": "object",
       "properties": {
         "default": {
           "title": "default",
@@ -427,10 +408,10 @@
           "enumNames": []
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "OutputPortSchema": {
+      "type": "object",
       "properties": {
         "description": {
           "title": "description",
@@ -455,10 +436,10 @@
           "enumNames": []
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "ComponentResourceSchema": {
+      "type": "object",
       "properties": {
         "instance_count": {
           "title": "instance_count",
@@ -476,10 +457,10 @@
           "additionalProperties": {}
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "CommandComponentSchema": {
+      "type": "object",
       "properties": {
         "code": {
           "anyOf": [
@@ -620,7 +601,6 @@
       "required": [
         "name"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },
