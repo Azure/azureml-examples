@@ -17,7 +17,7 @@ EXCLUDED_ASSETS = [
     "conda-yamls",
     "mlflow-models",
 ]
-EXCLUDED_SCRIPTS = ["setup", "create-compute", "cleanup"]
+EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 
 # define functions
 def main(args):
