@@ -1,6 +1,9 @@
 job=$1
 run_id=$(az ml job create -f $job --query name -o tsv)
 status=$(az ml job show -n $run_id --query status -o tsv)
+job_uri=$(az ml job show -n $run_id --query services.Studio.endpoint)
+
+echo $job_uri
 
 running=("Queued" "Preparing" "Finalizing" "Running")
 while [[ ${running[*]} =~ $status ]]
