@@ -1,5 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
 name: local-file-example
-version: 1
 description: Dataset created from local file.
 local_path: data/titanic.csv

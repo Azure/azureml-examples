@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
 name: cloud-folder-https-example
-version: 1
 description: Dataset created from folder in cloud using https URL.
 paths:
   - folder: https://account-name.blob.core.windows.net/container-name/example-data/

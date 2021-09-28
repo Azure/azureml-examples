@@ -1,5 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 name: docker-context-example
-version: 1
 build:
   local_path: docker-contexts/python-and-pip
