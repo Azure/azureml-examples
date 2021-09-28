@@ -19,13 +19,13 @@ job_uri=$(az ml job show -n $run_id --query services.Studio.endpoint)
 
 echo $job_uri
 
-running=("Queued" "Preparing" "Finalizing" "Running")
+running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
 while [[ ${running[*]} =~ $status ]]
 do
-  echo $status
   echo $job_uri
-  status=$(az ml job show -n $run_id --query status -o tsv)
   sleep 8 
+  status=$(az ml job show -n $run_id --query status -o tsv)
+  echo $status
 done
 
 if [[ $status == "Completed" ]]
