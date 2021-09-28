@@ -25,3 +25,5 @@ else
   echo "Job not completed or failed. Status is $status"
   exit 2
 fi
+
+echo $job_uri
