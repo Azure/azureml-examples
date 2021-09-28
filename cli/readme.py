@@ -283,28 +283,8 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create job
-      run: |
-        echo "Creating job..."
-        run_id=$(az ml job create -f {job}.yml --query name -o tsv)
-        echo "Streaming logs..."
-        az ml job stream -n $run_id
-        echo "Getting status..."
-        sleep 1
-        status=$(az ml job show -n $run_id --query status -o tsv)
-        echo $status
-        echo "Checking status..."
-        if [[ $status == "Completed" ]]
-        then
-          echo "Job completed"
-        elif [[ $status ==  "Failed" ]]
-        then
-          echo "Job failed"
-          exit 1
-        else 
-          echo "Job status not failed or completed"
-          exit 2
-        fi
+    - name: run job
+      run: bash -x run-job.sh {job}.yml
       working-directory: cli\n"""
 
     # write workflow

@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-nyc-taxi-job
+name: cli-scripts-run-job
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/pipelines/nyc-taxi/**
-      - .github/workflows/cli-jobs-pipelines-nyc-taxi-job.yml
+      - cli/run-job.sh
+      - .github/workflows/cli-scripts-run-job.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,6 +26,8 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run job
-      run: bash -x run-job.sh jobs/pipelines/nyc-taxi/job.yml
+    - name: scripts installs
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: test script script
+      run: set -e; bash -x run-job.sh
       working-directory: cli
