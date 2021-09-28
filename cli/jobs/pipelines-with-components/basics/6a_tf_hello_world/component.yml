@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
 description: "Prints the environment variable ($TF_CONFIG) useful for scripts running in a Tensorflow training environment"

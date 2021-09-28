@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: Score
 version: 10
 display_name: Score

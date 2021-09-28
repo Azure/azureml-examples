@@ -2,6 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before editing for the first time. 
 
 # <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: PrepTaxiData
 display_name: PrepTaxiData
 version: 1

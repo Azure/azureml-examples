@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "Prints the environment variables useful for scripts running in a PyTorch training environment"
 

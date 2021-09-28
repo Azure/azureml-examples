@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
 description: Prints the environment variables useful for scripts running in a PyTorch training environment.

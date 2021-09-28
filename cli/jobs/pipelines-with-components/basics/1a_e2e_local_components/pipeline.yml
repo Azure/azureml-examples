@@ -1,4 +1,4 @@
-
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
 description: "Dummy train-score-eval pipeline with local components"

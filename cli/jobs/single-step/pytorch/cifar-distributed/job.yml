@@ -2,6 +2,8 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
 command: >-
+  ls ${{inputs.cifar}}
+  &&
   python train.py 
   --epochs ${{inputs.epochs}}
   --data-dir ${{inputs.cifar}}

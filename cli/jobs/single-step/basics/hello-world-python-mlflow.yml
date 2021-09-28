@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >-
   pip install --upgrade mlflow azureml-mlflow &&
   python -c "import mlflow; mlflow.log_param('hello', 'world')"
