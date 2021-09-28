@@ -8,7 +8,7 @@ command: >-
 inputs:
   nyc_taxi_dataset:
     folder: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
-    mode: mount
+    mode: ro_mount
 environment: 
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
   conda_file: conda.yml
