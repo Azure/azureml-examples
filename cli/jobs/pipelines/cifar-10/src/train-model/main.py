@@ -143,7 +143,7 @@ def main(args):
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.save_model(model, args.model_dir)
+        mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
 
 
 def parse_args():
