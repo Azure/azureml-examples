@@ -1,5 +1,5 @@
-name: cloud-file-wasbs-dataset
-version: 1
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: cloud-file-wasbs-example
 description: Dataset created from a file in cloud using wasbs URL.
 paths:
   - file: wasbs://account-name.blob.core.windows.net/container-name/example-data/titanic.csv

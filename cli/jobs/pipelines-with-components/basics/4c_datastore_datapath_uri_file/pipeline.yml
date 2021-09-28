@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "Example of using data file from a Workspace Datastore as pipeline input"
 inputs:

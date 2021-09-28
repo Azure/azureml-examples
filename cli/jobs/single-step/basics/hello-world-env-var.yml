@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: echo $HELLO
 environment:
   image: python:latest

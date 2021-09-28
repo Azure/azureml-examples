@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "AccountKeySchema": {
+      "type": "object",
       "properties": {
         "account_key": {
           "title": "account_key",
@@ -11,10 +12,10 @@
       "required": [
         "account_key"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "SasTokenSchema": {
+      "type": "object",
       "properties": {
         "sas_token": {
           "title": "sas_token",
@@ -24,76 +25,10 @@
       "required": [
         "sas_token"
       ],
-      "type": "object",
-      "additionalProperties": false
-    },
-    "ServicePrincipalSchema": {
-      "properties": {
-        "authority_uri": {
-          "title": "authority_uri",
-          "type": "string"
-        },
-        "client_id": {
-          "title": "client_id",
-          "type": "string"
-        },
-        "client_secret": {
-          "title": "client_secret",
-          "type": "string"
-        },
-        "resource_url": {
-          "title": "resource_url",
-          "type": "string"
-        },
-        "tenant_id": {
-          "title": "tenant_id",
-          "type": "string"
-        }
-      },
-      "required": [
-        "client_id",
-        "client_secret",
-        "tenant_id"
-      ],
-      "type": "object",
-      "additionalProperties": false
-    },
-    "CertificateSchema": {
-      "properties": {
-        "authority_uri": {
-          "title": "authority_uri",
-          "type": "string"
-        },
-        "certificate": {
-          "title": "certificate",
-          "type": "string"
-        },
-        "client_id": {
-          "title": "client_id",
-          "type": "string"
-        },
-        "resource_url": {
-          "title": "resource_url",
-          "type": "string"
-        },
-        "tenant_id": {
-          "title": "tenant_id",
-          "type": "string"
-        },
-        "thumbprint": {
-          "title": "thumbprint",
-          "type": "string"
-        }
-      },
-      "required": [
-        "client_id",
-        "tenant_id",
-        "thumbprint"
-      ],
-      "type": "object",
       "additionalProperties": false
     },
     "AzureBlobSchema": {
+      "type": "object",
       "properties": {
         "account_name": {
           "title": "account_name",
@@ -103,7 +38,7 @@
           "title": "container_name",
           "type": "string"
         },
-        "credential": {
+        "credentials": {
           "anyOf": [
             {
               "type": "object",
@@ -112,14 +47,6 @@
             {
               "type": "object",
               "$ref": "#/definitions/SasTokenSchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/ServicePrincipalSchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/CertificateSchema"
             }
           ]
         },
@@ -168,10 +95,9 @@
       "required": [
         "account_name",
         "container_name",
-        "credential",
+        "name",
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },

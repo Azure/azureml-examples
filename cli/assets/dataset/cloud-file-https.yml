@@ -1,5 +1,5 @@
-name: cloud-file-https-dataset
-version: 1
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: cloud-file-https-example
 description: Dataset created from a file in cloud using https URL.
 paths:
   - file: https://account-name.blob.core.windows.net/container-name/example-data/titanic.csv

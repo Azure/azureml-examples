@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "Hello World component example"
 

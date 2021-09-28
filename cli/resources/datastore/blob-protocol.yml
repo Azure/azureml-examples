@@ -1,4 +1,5 @@
-name: myblobdatastore2
+$schema: https://azuremlschemas.azureedge.net/latest/azureBlob.schema.json
+name: blob-protocol-example
 type: azure_blob
 description: Datastore pointing to a blob container using wasbs protocol.
 account_name: mytestblobstore

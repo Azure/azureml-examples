@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before editing for the first time. 
 
 # <data>
-$schema: https://azuremlsdk2.blob.core.windows.net/latest/asset.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
 name: yellowdata
 version: 3
 description: sample yellow taxi dataset

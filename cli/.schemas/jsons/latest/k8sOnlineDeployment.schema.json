@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CodeConfigurationSchema": {
+      "type": "object",
       "properties": {
         "code": {
           "anyOf": [
@@ -31,18 +32,11 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "CodeAssetSchema": {
+      "type": "object",
       "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
-        },
         "code_uri": {
           "title": "code_uri",
           "type": "string",
@@ -52,24 +46,21 @@
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
         },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
         "description": {
           "title": "description",
           "type": "string"
         },
         "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "codes",
           "title": "id",
-          "type": "string"
+          "readonly": true
         },
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "The path from which the data gets uploaded to the cloud"
+          "description": "the path from which the artifact gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
@@ -97,10 +88,10 @@
           "title": "version"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "CreationContextSchema": {
+      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -129,10 +120,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "EnvironmentSchema": {
+      "type": "object",
       "properties": {
         "build": {
           "type": "object",
@@ -193,10 +184,7 @@
         "tags": {
           "title": "tags",
           "type": "object",
-          "additionalProperties": {
-            "title": "tags",
-            "type": "string"
-          }
+          "additionalProperties": {}
         },
         "version": {
           "anyOf": [
@@ -213,10 +201,10 @@
       "required": [
         "name"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "BuildContextSchema": {
+      "type": "object",
       "properties": {
         "context_uri": {
           "title": "context_uri",
@@ -231,10 +219,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
+      "type": "object",
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -254,10 +242,10 @@
         "readiness_route",
         "scoring_route"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "RouteSchema": {
+      "type": "object",
       "properties": {
         "path": {
           "title": "path",
@@ -273,10 +261,10 @@
         "path",
         "port"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "AnonymousEnvironmentSchema": {
+      "type": "object",
       "properties": {
         "build": {
           "type": "object",
@@ -319,8 +307,7 @@
         },
         "name": {
           "title": "name",
-          "type": "string",
-          "readonly": true
+          "type": "string"
         },
         "os_type": {
           "type": "string",
@@ -338,10 +325,7 @@
         "tags": {
           "title": "tags",
           "type": "object",
-          "additionalProperties": {
-            "title": "tags",
-            "type": "string"
-          }
+          "additionalProperties": {}
         },
         "version": {
           "anyOf": [
@@ -352,14 +336,13 @@
               "type": "integer"
             }
           ],
-          "title": "version",
-          "readonly": true
+          "title": "version"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "LivenessProbeSchema": {
+      "type": "object",
       "properties": {
         "failure_threshold": {
           "title": "failure_threshold",
@@ -387,10 +370,10 @@
           "format": "integer"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "AnonymousModelSchema": {
+      "type": "object",
       "properties": {
         "creation_context": {
           "type": "object",
@@ -416,6 +399,11 @@
           "pattern": "^azureml:.*",
           "arm_type": "models",
           "title": "id",
+          "readonly": true
+        },
+        "job_name": {
+          "title": "job_name",
+          "type": "string",
           "readonly": true
         },
         "local_path": {
@@ -472,10 +460,10 @@
           "title": "version"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "RequestSettingsSchema": {
+      "type": "object",
       "properties": {
         "max_concurrent_requests_per_instance": {
           "title": "max_concurrent_requests_per_instance",
@@ -493,10 +481,10 @@
           "format": "integer"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "ResourceRequirementsSchema": {
+      "type": "object",
       "properties": {
         "limits": {
           "type": "object",
@@ -507,10 +495,10 @@
           "$ref": "#/definitions/ResourceSettingsSchema"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "ResourceSettingsSchema": {
+      "type": "object",
       "properties": {
         "cpu": {
           "title": "cpu",
@@ -525,10 +513,10 @@
           "type": "string"
         }
       },
-      "type": "object",
       "additionalProperties": false
     },
     "DefaultScaleSettingsSchema": {
+      "type": "object",
       "properties": {
         "type": {
           "type": "string",
@@ -541,10 +529,10 @@
       "required": [
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "TargetUtilizationScaleSettingsSchema": {
+      "type": "object",
       "properties": {
         "max_instances": {
           "title": "max_instances",
@@ -577,10 +565,10 @@
       "required": [
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "K8sOnlineDeploymentSchema": {
+      "type": "object",
       "properties": {
         "app_insights_enabled": {
           "title": "app_insights_enabled",
@@ -588,7 +576,13 @@
         },
         "code_configuration": {
           "type": "object",
-          "$ref": "#/definitions/CodeConfigurationSchema"
+          "$ref": "#/definitions/CodeConfigurationSchema",
+          "description": "Code configuration for the endpoint deployment."
+        },
+        "description": {
+          "title": "description",
+          "type": "string",
+          "description": "Description of the endpoint deployment."
         },
         "endpoint_name": {
           "title": "endpoint_name",
@@ -712,7 +706,6 @@
         "endpoint_name",
         "name"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },

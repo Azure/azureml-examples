@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "E2E dummy train-score-eval pipeline with components defined inline in pipeline job"
 
@@ -14,11 +15,11 @@ inputs:
 
 outputs: 
   pipeline_job_trained_model:
-    mode: rw-mount
+    mode: rw_mount
   pipeline_job_scored_data:
-    mode: rw-mount
+    mode: rw_mount
   pipeline_job_evaluation_report:
-    mode: rw-mount
+    mode: rw_mount
 
 #settings:
 #  datastore: azureml:workspaceblobstore

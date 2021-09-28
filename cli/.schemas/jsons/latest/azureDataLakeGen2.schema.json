@@ -1,33 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "AccountKeySchema": {
-      "properties": {
-        "account_key": {
-          "title": "account_key",
-          "type": "string"
-        }
-      },
-      "required": [
-        "account_key"
-      ],
-      "type": "object",
-      "additionalProperties": false
-    },
-    "SasTokenSchema": {
-      "properties": {
-        "sas_token": {
-          "title": "sas_token",
-          "type": "string"
-        }
-      },
-      "required": [
-        "sas_token"
-      ],
-      "type": "object",
-      "additionalProperties": false
-    },
     "ServicePrincipalSchema": {
+      "type": "object",
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -55,10 +30,10 @@
         "client_secret",
         "tenant_id"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "CertificateSchema": {
+      "type": "object",
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -90,25 +65,17 @@
         "tenant_id",
         "thumbprint"
       ],
-      "type": "object",
       "additionalProperties": false
     },
     "AzureDataLakeGen2Schema": {
+      "type": "object",
       "properties": {
         "account_name": {
           "title": "account_name",
           "type": "string"
         },
-        "credential": {
+        "credentials": {
           "anyOf": [
-            {
-              "type": "object",
-              "$ref": "#/definitions/AccountKeySchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/SasTokenSchema"
-            },
             {
               "type": "object",
               "$ref": "#/definitions/ServicePrincipalSchema"
@@ -167,11 +134,10 @@
       },
       "required": [
         "account_name",
-        "credential",
         "filesystem",
+        "name",
         "type"
       ],
-      "type": "object",
       "additionalProperties": false
     }
   },

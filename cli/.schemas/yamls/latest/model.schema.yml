@@ -53,6 +53,10 @@ definitions:
         readonly: true
         title: id
         type: string
+      job_name:
+        readonly: true
+        title: job_name
+        type: string
       local_path:
         title: local_path
         type: string

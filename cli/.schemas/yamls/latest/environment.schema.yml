@@ -82,9 +82,7 @@ definitions:
         title: os_type
         type: string
       tags:
-        additionalProperties:
-          title: tags
-          type: string
+        additionalProperties: {}
         title: tags
         type: object
       version:

@@ -1,4 +1,5 @@
-name: mysasblobdatastore
+$schema: https://azuremlschemas.azureedge.net/latest/azureBlob.schema.json
+name: blob-sas-example
 type: azure_blob
 description: Datastore pointing to a blob container using SAS token.
 account_name: mytestblobstore

@@ -45,8 +45,7 @@ definitions:
         type: string
       public_key_data:
         anyOf:
-        - pattern: ^file:.*
-          title: public_key_data
+        - title: public_key_data
           type: string
         - title: public_key_data
           type: string
@@ -55,8 +54,7 @@ definitions:
         type: string
       ssh_key_value:
         anyOf:
-        - pattern: ^file:.*
-          title: ssh_key_value
+        - title: ssh_key_value
           type: string
         - title: ssh_key_value
           type: string
