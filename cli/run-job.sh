@@ -1,6 +1,20 @@
 job=$1
 run_id=$(az ml job create -f $job --query name -o tsv)
+
+if [[ -z "$run_id" ]]
+then
+  echo "Job creation failed"
+  exit 3
+fi
+
 status=$(az ml job show -n $run_id --query status -o tsv)
+
+if [[ -z "$status" ]]
+then
+  echo "Status query failed"
+  exit 4
+fi
+
 job_uri=$(az ml job show -n $run_id --query services.Studio.endpoint)
 
 echo $job_uri
