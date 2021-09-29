@@ -5,4 +5,3 @@ az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-in
 
 az ml compute update -n cpu-cluster --max-instances 200
 az ml compute update -n gpu-cluster --max-instances 40
-
