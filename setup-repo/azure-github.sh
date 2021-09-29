@@ -21,7 +21,7 @@ az group create -n $GROUP -l $LOCATION
 
 echo "Creating service principal and setting repository secret..."
 # <set_repo_secret>
-az ad sp create-for-rbac --name $GROUP --role contributor --scopes /subscriptions/$SUBSCRIPTION/resourceGroups/$GROUP --sdk-auth | gh secret set $SECRET_NAME
+az ad sp create-for-rbac --name $GROUP --role owner --scopes /subscriptions/$SUBSCRIPTION/resourceGroups/$GROUP --sdk-auth | gh secret set $SECRET_NAME
 # </set_repo_secret>
 
 echo "Creating Azure Machine Learning workspace..."
