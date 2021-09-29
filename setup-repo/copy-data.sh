@@ -18,13 +18,13 @@ protocol=$(az ml datastore show -n $datastore --query protocol -o tsv)
 # build strings
 destination="$protocol://$account.blob.$endpoint/$container/$datapath/"
 
-# add contributor access to blob container
+# give access to blob container
 az role assignment create \
     --role "Storage Blob Data Owner" \
     --assignee $principal \
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
-# let permissions go through
+# let permissions propogate
 sleep 240
 
 for i in {0..1}

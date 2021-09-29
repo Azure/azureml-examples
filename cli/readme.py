@@ -254,7 +254,7 @@ def parse_path(path):
 
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    creds = "${{secrets.AZ_V2_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -294,7 +294,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = "${{secrets.AZ_V2_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -334,7 +334,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
-    creds = "${{secrets.AZ_V2_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -374,11 +374,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
-    creds = (
-        "${{secrets.AZ_V2_CREDS}}"
-        if not any(x in filename for x in ["uai", "sai"])
-        else "${{secrets.AZ_AE_CLI_MIR_CREDS}}"
-    )
+    creds =  "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
   workflow_dispatch:
