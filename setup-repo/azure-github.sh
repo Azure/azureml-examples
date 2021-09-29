@@ -1,6 +1,3 @@
-#!/bin/bash
-set -x
-
 echo "Setting variables..."
 # <set_variables>
 GROUP="azureml-examples"
@@ -37,25 +34,11 @@ echo "Configuring Azure CLI defaults..."
 az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 # </az_configure_defaults>
 
-echo "Creating computes..."
-bash create-compute.sh
-bash create-compute-extras.sh
+echo "Setting up workspace..."
+bash -x setup-workspace.sh
 
-echo "Copying data..."
-bash copy-data.sh
+echo "Setting up internal workspaces..."
+bash -x create-workspace-internal.sh
 
-echo "Update datasets..."
-bash update-datasets.sh
-
-echo "Creating datasets..."
-bash create-datasets.sh
-
-echo "Creating components..."
-bash create-datasets.sh
-
-echo "Setting up internal regions..."
-bash create-workspace-internal.sh
-
-echo "Creating additional workspace regions..."
-bash create-workspace-extras.sh
-
+echo "Setting up extra workspaces..."
+bash -x create-workspace-extras.sh

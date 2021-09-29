@@ -26,10 +26,9 @@ outputs:
 # </inputs_and_outputs>
 
 # <jobs>
-defaults:
-  component_job:
-    datastore: azureml:workspaceblobstore
-    compute: azureml:cpu-cluster
+compute: azureml:cpu-cluster
+settings:
+  datastore: azureml:workspaceblobstore
 
 jobs:
   prep-job:
