@@ -6,7 +6,7 @@ az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheel
 # </az_ml_install>
 
 # <set_variables>
-GROUP="azureml-examples-v2"
+GROUP="azureml-examples"
 LOCATION="eastus"
 WORKSPACE="main"
 # </set_variables>
