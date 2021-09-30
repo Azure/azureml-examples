@@ -1,0 +1,1 @@
+alias python='python3'
