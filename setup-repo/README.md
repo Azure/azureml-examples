@@ -7,7 +7,7 @@ These scripts are for setting up the Azure/azureml-examples repository, includin
 To setup the repository, run the `azure-github.sh` script:
 
 ```bash
-bash azure-github.sh
+bash -x azure-github.sh
 ```
 
 This will run the other scripts, in addition to Azure and GitHub setup. Adjust as needed.
