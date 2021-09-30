@@ -1,1 +1,0 @@
-alias python='python3'
