@@ -8,4 +8,14 @@ environment_variables:
 
 ## TODO: remove
 environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: echo "hello world"
+environment:
+  image: python
+compute: azureml:cpu-cluster
+tags:
+  hello: world
+
+## TODO: remove
+environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
