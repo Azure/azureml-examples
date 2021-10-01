@@ -1,5 +1,5 @@
 """
-Create a compute cluster or return a reference to an existing one.
+Create a compute cluster or return a reference to an existing one
 """
 import sys
 from logging import getLogger
@@ -11,12 +11,11 @@ from azureml.exceptions import ComputeTargetException
 
 log = getLogger(__name__)
 
-
 def get_compute(workspace: Workspace, compute_name: str, vm_size: str, vm_priority: str, min_nodes: int, max_nodes: int,
                 scale_down: int):
     """
     Returns an existing compute or creates a new one.
-    Args:
+    Parameters:
       workspace: Workspace: AzureML workspace
       compute_name: str: name of the compute
       vm_size: str: VM size
@@ -25,9 +24,8 @@ def get_compute(workspace: Workspace, compute_name: str, vm_size: str, vm_priori
       max_nodes: int: maximum number of nodes in the cluster
       scale_down: int: number of seconds to wait before scaling down the cluster
     Returns:
-        ComputeTarget: a reference to compute
+      ComputeTarget: a reference to compute
     """
-
     try:
         if compute_name in workspace.compute_targets:
             compute_target = workspace.compute_targets[compute_name]

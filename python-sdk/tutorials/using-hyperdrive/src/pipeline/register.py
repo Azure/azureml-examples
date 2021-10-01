@@ -1,14 +1,12 @@
 """
 Basic step for a registering a model in a workspace
 """
-
 import logging
 from os.path import join
 import json
 import click
 from azureml.core import Run
 from src.common.model_helpers import write_model_info
-
 
 @click.command()
 @click.option("--root_dir", type=click.STRING, required=True,
@@ -21,19 +19,12 @@ from src.common.model_helpers import write_model_info
 def main(root_dir: str,
          model_name: str,
          model_info_dir: str) -> None:
-
     """
-    Main function for receiving args, and passing them through
-    to basic registration step
-
-    Parameters
-    ----------
-    root_dir: str
-        Root directory of datastore being used
-    model_name: str
-        Name of the model that will be registered to the AML workspace
-    model_info_dir: str
-        Path to folder with saved trained model information
+    Main function for receiving args, and passing them through to registration step
+    Parameters:
+      root_dir: str: root directory of datastore being used
+      model_name: str: name of the model that will be registered to the AML workspace
+      model_info_dir: str: path to folder with saved trained model information
     """
 
     logging.basicConfig(level=logging.INFO)

@@ -2,15 +2,32 @@
 
 Hyperparameter settings could have a big impact on the model performance, but typically, the process is quite tedious and resource-consuming, which involves training multiple models using same algorithm and training data, but with different hyperparameters, and then evaluate the model from each training run to determine the best-performing model with respect to a performance metric.
 
-So, we need to perform large number of experiments with different parameters, and we know that Azure ML allows us to accumulate all experiment results, including performance metrics, in one place: the Azure ML Workspace. So, basically all we need to do is to submit a bunch of experiments with different hyperparameters, and let HyperDrive do the heavy-lifting for us in an automatic way.
+So, we need to perform large number of experiments with different parameters, and we know that Azure ML allows us to accumulate all experiment results, including performance metrics, in one place: the Azure ML Workspace. So, basically all we need to do is to submit a bunch of experiments with different hyperparameters and let HyperDrive do the heavy lifting for us in an automatic way.
 
 There are other markdown documents and notebooks about using HyperDrive to tune hyperparameters in AzureML, including [Hyperparameter tuning a model with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters), [Azure Machine Learning Pipeline with HyperDriveStep](https://github.com/Azure/MachineLearningNotebooks/blob/467630f95583a88b731ebc4bdefff1cc525df054/how-to-use-azureml/machine-learning-pipelines/intro-to-pipelines/aml-pipelines-parameter-tuning-with-hyperdrive.ipynb), and [Train, hyperparameter tune, and deploy with PyTorch](https://github.com/Azure/MachineLearningNotebooks/blob/master/how-to-use-azureml/ml-frameworks/pytorch/train-hyperparameter-tune-deploy-with-pytorch/train-hyperparameter-tune-deploy-with-pytorch.ipynb). However, their approach is useful when the user originally designs the pipeline based on HyperDrive step. In many applications, on the other hand, there is a pipeline already in place and the user looks for adding the HyperDrive step as an extension to their current pipeline with minimum changes and modifications.
 
-This asset is a solution to such requests from AzureML users. The pipeline used in this asset is very general with three common steps of training, evaluation, and registration, which are found in almost every AzureML pipeline. We explain how to use HyperDrive step in connection with these three main steps. To focus only on the HyperDrive step, the model is a simple toy calculation that does not require a dataset and the steps related to it, as we believe there already exist plenty of resources that explain those parts very well.  
+This asset is a solution to such requests from AzureML users. The pipeline used in this asset is very general with three common steps of training, evaluation, and registration, which are found in almost every AzureML pipeline. We explain how to use HyperDrive step in connection with these three main steps. 
+
+# Fictitious Model
+
+One of the challenges in the practice of hyperparameter tuning is the computational resources it consumes, where for even a simple classification model, the running time and computational cost could be a concern. To ease this difficulty, and to focus on the HyperDrive step and its specific components only, we have created a [fictitious model](./Fictitious_Model_for_Hyperparameter_Tuning.ipynb) based on a set of deterministic calculations that emulate the behavior of a machine learning algorithm with changing its key parameters. While mimicking some key characteristics of an actual machine learning model, the model runs extremely fast even on a standard CPU-based compute cluster. Neither it requires a dataset and the steps related to it, as we believe there already exist plenty of resources that explain those parts very well.
+
+The proposed model generates four outputs that mimic the following performance metrics for a hypothetical classifier:
+
+* Precision
+* Recall
+* Training loss
+* Model accuracy
+
+These four outputs are affected by three input variables that mimic the following tuning parameters for the classifier: 
+
+* Threshold
+* Number of epochs
+* Learning rate  
 
 # Getting Started
 
-The only file that you need to run is the notebook, which is self explained and straightforward to understand. To run the notebook, the only requirements are to provide:
+The only file that you need to run is the [HyperDrive_MultiStep_Training_Pipeline](./HyperDrive_MultiStep_Training_Pipeline.ipynb) notebook in this folder. To run the notebook, the only requirements are to provide:
 
 * A `config.json` file to access the AzureML workspace artifacts that you can [download from your AzureML](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-environment#workspace) portal, which includes the following items:
   * subscription_id
@@ -32,7 +49,8 @@ To make the notebook more concise and readable, helper scripts are used within t
 
 ```bash
 ├───using-hyperdrive
-    │   Basic-HyperDrive-Multi-Step-Pipeline.ipynb
+    │   HyperDrive_MultiStep_Training_Pipeline.ipynb
+    │   Fictitious_Model_for_Hyperparameter_Tuning.ipynb
     │   README.md
     │   .env.example        
     └───src
