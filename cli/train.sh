@@ -2,6 +2,10 @@
 az ml job create -f jobs/basics/hello-world.yml --web
 # </hello_world>
 
+# <hello_world_full>
+az ml job create -f jobs/basics/hello-world-full.yml --web
+# </hello_world_full>
+
 # <hello_world_output>
 az ml job create -f jobs/basics/hello-world-output.yml --web
 # </hello_world_output>
@@ -20,10 +24,6 @@ done
 az ml job download -n $run_id
 # </hello_world_output_download>
 rm -r $run_id
-
-# <hello_world_update>
-az ml job update -n $run_id
-# </hello_world_update>
 
 pip install pandas
 # <iris_local>
