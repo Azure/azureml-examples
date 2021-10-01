@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >-
-  echo ${{inputs.iris_csv}}
+  echo "--iris-csv: ${{inputs.iris_csv}}"
   &&
   pip install pandas
   &&

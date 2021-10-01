@@ -1,10 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >-
-  echo ${{inputs.data_dir}}
+  echo "--iris-csv: ${{inputs.data_dir}}/iris.csv"
+  &&
+  ls ${{inputs.data_dir}}
   &&
   pip install pandas
   &&
-  ls ${{inputs.data_dir}}
   python hello-iris.py
   --iris-csv ${{inputs.data_dir}}/iris.csv
 code:

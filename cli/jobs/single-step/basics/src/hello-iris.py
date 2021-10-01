@@ -1,5 +1,7 @@
 # imports
+import os
 import argparse
+
 import pandas as pd
 
 # define functions
@@ -9,6 +11,9 @@ def main(args):
 
     # print first 5 lines
     print(df.head())
+
+    # ensure outputs directory exists
+    os.makedirs("outputs", exist_ok=True)
 
     # save data to outputs
     df.to_csv("outputs/iris.csv", index=False)
