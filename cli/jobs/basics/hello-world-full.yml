@@ -7,6 +7,7 @@ environment_variables:
   hello_str: "hello world"
 tags:
   hello: world
+display_name: hello-world-example
 description: |
   # Azure Machine Learning "hello world" job
 
