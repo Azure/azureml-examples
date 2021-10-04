@@ -1,4 +1,4 @@
-name: cli-jobs-single-step-basics-hello-world
+name: cli-jobs-basics-hello-iris-file
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/single-step/basics/**
-      - .github/workflows/cli-jobs-single-step-basics-hello-world.yml
+      - cli/jobs/basics/**
+      - .github/workflows/cli-jobs-basics-hello-iris-file.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/single-step/basics/hello-world.yml
+      run: bash -x run-job.sh jobs/basics/hello-iris-file.yml
       working-directory: cli

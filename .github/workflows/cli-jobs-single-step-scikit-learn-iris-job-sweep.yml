@@ -1,4 +1,4 @@
-name: cli-jobs-single-step-basics-hello-world-python
+name: cli-jobs-single-step-scikit-learn-iris-job-sweep
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/single-step/basics/**
-      - .github/workflows/cli-jobs-single-step-basics-hello-world-python.yml
+      - cli/jobs/single-step/scikit-learn/iris/**
+      - .github/workflows/cli-jobs-single-step-scikit-learn-iris-job-sweep.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/single-step/basics/hello-world-python.yml
+      run: bash -x run-job.sh jobs/single-step/scikit-learn/iris/job-sweep.yml
       working-directory: cli

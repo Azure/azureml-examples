@@ -1,9 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: python -c "print('hello world')"
+command: echo "hello world" > outputs/helloworld.txt
 environment:
   image: python
 compute: azureml:cpu-cluster
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
