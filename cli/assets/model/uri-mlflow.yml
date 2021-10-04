@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: uri-file-example
+model_uri: wasbs://models@azuremlexamples.blob.core.windows.net/model/
+model_format: mlflow
+description: Model created from MLflow model directory in Blob.

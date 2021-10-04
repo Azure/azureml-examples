@@ -123,6 +123,8 @@ path|status|description
 [assets/environment/docker-image.yml](assets/environment/docker-image.yml)|[![assets/environment/docker-image](https://github.com/Azure/azureml-examples/workflows/cli-assets-environment-docker-image/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-environment-docker-image.yml)|Environment created from a Docker image.
 [assets/model/local-file.yml](assets/model/local-file.yml)|[![assets/model/local-file](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-local-file/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-local-file.yml)|Model created from local file.
 [assets/model/local-mlflow.yml](assets/model/local-mlflow.yml)|[![assets/model/local-mlflow](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-local-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-local-mlflow.yml)|Model created from local MLflow model directory.
+[assets/model/uri-file.yml](assets/model/uri-file.yml)|[![assets/model/uri-file](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-uri-file/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-uri-file.yml)|Model created from Blob file.
+[assets/model/uri-mlflow.yml](assets/model/uri-mlflow.yml)|[![assets/model/uri-mlflow](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-uri-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-uri-mlflow.yml)|Model created from MLflow model directory in Blob.
 
 ## Contents
 

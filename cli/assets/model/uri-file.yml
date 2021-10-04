@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: uri-file-example
+model_uri: https://azuremlexamples.blob.core.windows.net/models/model.pkl
+description: Model created from Blob file.
