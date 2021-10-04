@@ -82,3 +82,6 @@ az ml model create -n sklearn-iris-example -l $run_id/model/
 # </sklearn_download_register_model>
 rm -r $run_id
 
+# <sklearn_sweep>
+az ml job create -f jobs/single-step/scikit-learn/iris/job-sweep.yml --web
+# </sklearn_sweep>
