@@ -23,7 +23,3 @@ compute: azureml:gpu-cluster
 display_name: pytorch-word-language-model-example
 experiment_name: pytorch-word-language-model-example
 description: Train a multi-layer RNN (Elman, GRU, or LSTM) on a language modeling task with PyTorch.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
