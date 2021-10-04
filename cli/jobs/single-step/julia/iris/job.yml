@@ -10,7 +10,3 @@ compute: azureml:cpu-cluster
 display_name: julia-iris-example
 experiment_name: julia-iris-example
 description: Train a Flux model on the Iris dataset using the Julia programming language.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

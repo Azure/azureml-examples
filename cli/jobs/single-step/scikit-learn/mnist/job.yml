@@ -14,7 +14,3 @@ compute: azureml:cpu-cluster
 display_name: sklearn-mnist-example
 experiment_name: sklearn-mnist-example
 description: Train a scikit-learn LogisticRegression model on the MNSIT dataset.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

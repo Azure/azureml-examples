@@ -16,7 +16,3 @@ compute:  azureml:cpu-cluster
 display_name: r-accidents-example
 experiment_name: r-accidents-example
 description: Train a GLM using R on the accidents dataset.  
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

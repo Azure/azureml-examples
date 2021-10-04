@@ -8,7 +8,3 @@ compute: azureml:gpu-cluster
 display_name: tensorflow-mnist-example
 experiment_name: tensorflow-mnist-example
 description: Train a basic neural network with TensorFlow on the MNIST dataset.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

@@ -19,7 +19,3 @@ distribution:
 display_name: tensorflow-mnist-distributed-example
 experiment_name: tensorflow-mnist-distributed-example
 description: Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
