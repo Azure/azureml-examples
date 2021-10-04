@@ -5,16 +5,13 @@ trial:
     local_path: src 
   command: >-
     python main.py 
-    --iris-csv https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    --iris-csv ${{inputs.iris_csv}}
     --learning-rate ${{search_space.learning_rate}}
     --boosting ${{search_space.boosting}}
   environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu
-  ## TODO: remove
-  # environment_variables:
-  #   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"
-# TODO - fix
-# inputs:
-#   iris: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+inputs:
+  iris_csv: 
+    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 compute: azureml:cpu-cluster
 sampling_algorithm: random
 search_space:

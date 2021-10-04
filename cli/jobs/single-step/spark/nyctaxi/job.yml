@@ -17,7 +17,3 @@ resources:
 display_name: spark-nyctaxi-example
 experiment_name: spark-nyctaxi-example
 description: This sample shows how to run a single node Spark job on Azure ML. The 47GB NYC Taxi dataset is read in parquet format by a 1 node Spark cluster, processed and then written as job output in parquet format. 
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-basics-hello-world-io
+name: cli-jobs-basics-hello-sweep
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/pipelines/basics/**
-      - .github/workflows/cli-jobs-pipelines-basics-hello-world-io.yml
+      - cli/jobs/basics/**
+      - .github/workflows/cli-jobs-basics-hello-sweep.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines/basics/hello-world-io.yml
+      run: bash -x run-job.sh jobs/basics/hello-sweep.yml
       working-directory: cli
