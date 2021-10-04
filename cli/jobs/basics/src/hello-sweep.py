@@ -20,6 +20,7 @@ def main(args):
     # log a random metric
     mlflow.log_metric("random_metric", random())
 
+
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
@@ -34,6 +35,7 @@ def parse_args():
 
     # return args
     return args
+
 
 # run script
 if __name__ == "__main__":

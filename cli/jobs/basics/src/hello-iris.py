@@ -18,6 +18,7 @@ def main(args):
     # save data to outputs
     df.to_csv("outputs/iris.csv", index=False)
 
+
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
@@ -30,6 +31,7 @@ def parse_args():
 
     # return args
     return args
+
 
 # run script
 if __name__ == "__main__":

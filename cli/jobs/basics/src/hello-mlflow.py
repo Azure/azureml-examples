@@ -12,6 +12,7 @@ def main(args):
     mlflow.log_metric("hello_metric", random())
     mlflow.log_artifact("helloworld.txt")
 
+
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
@@ -25,6 +26,7 @@ def parse_args():
 
     # return args
     return args
+
 
 # run script
 if __name__ == "__main__":

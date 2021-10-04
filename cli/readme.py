@@ -375,7 +375,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
-    creds =  "${{secrets.AZ_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
   workflow_dispatch:
