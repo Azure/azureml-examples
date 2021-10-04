@@ -25,7 +25,7 @@ az role assignment create \
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
 # let permissions propogate
-sleep 240
+sleep 360
 
 for i in {0..1}
 do

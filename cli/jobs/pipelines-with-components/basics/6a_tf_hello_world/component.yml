@@ -14,7 +14,3 @@ resources:
 distribution:
   type: tensorflow
   worker_count: 2
-
-## TODO: remove
-# environment_variables:
-#  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
