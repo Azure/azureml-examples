@@ -3,7 +3,7 @@
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION="centraluseuap" #$(az group show --query location | tr -d '\r"')
+LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 TENANT_ID=
 
