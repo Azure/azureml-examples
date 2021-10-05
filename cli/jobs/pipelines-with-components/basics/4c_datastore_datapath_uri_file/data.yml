@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: sampledata1234
+description: sample dataset
+local_path: ./data

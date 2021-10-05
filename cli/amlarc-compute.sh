@@ -1,5 +1,7 @@
 ## This script is used to run training test on AmlArc-enabled compute
 
+# global fixed variables
+LOCK_FILE=$0.lock
 
 # init
 init_env(){
@@ -18,7 +20,10 @@ init_env(){
    
     export RESULT_FILE=amlarc-test-result.txt
 
-    if (( $(date +"%H") < 12 )); then
+    touch $LOCK_FILE
+    [ "$(cat $LOCK_FILE)" == "" ] && echo $(date) > $LOCK_FILE || true 
+
+    if (( 10#$(date -d "$(cat $LOCK_FILE)" +"%H") < 12 )); then
         AMLARC_RELEASE_TRAIN=experimental
     fi
 
@@ -30,9 +35,11 @@ init_env(){
         LOCATION=eastus2euap
     fi
 
+    AKS_LOCATION=eastus
+
     WORKSPACE=${WORKSPACE}-${LOCATION}
     ARC_CLUSTER_PREFIX=${ARC_CLUSTER_PREFIX}-${LOCATION}
-    AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${LOCATION}
+    AKS_CLUSTER_PREFIX=${AKS_CLUSTER_PREFIX}-${AKS_LOCATION}
 
     az version || true
 }
@@ -156,6 +163,8 @@ if __name__ == "__main__":
 setup_cluster(){
     set -x -e
 
+    rm -f $LOCK_FILE
+
     init_env
 
     VM_SKU="${1:-Standard_NC12}"
@@ -182,7 +191,7 @@ setup_cluster(){
     az aks create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-	--location eastus \
+	--location $AKS_LOCATION \
         --name $AKS_CLUSTER_NAME \
         --enable-cluster-autoscaler \
         --node-count $MIN_COUNT \
@@ -279,7 +288,7 @@ setup_compute(){
         "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE" \
 	"$COMPUTE_NAME" "$ARC_RESOURCE_ID" "$VM_SKU"
 
-    sleep 500
+    sleep 60
 }
 
 # check compute resources
@@ -347,6 +356,18 @@ clean_up_cluster(){
         --name $AKS_CLUSTER_NAME \
         --overwrite-existing
      
+    # delete extension
+    az k8s-extension delete \
+        --cluster-name $ARC_CLUSTER_NAME \
+        --cluster-type connectedClusters \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $EXTENSION_NAME \
+        --yes 
+    
+    # delete helm charts
+    helm uninstall -n azureml $EXTENSION_NAME
+    
     # delete arc
     az connectedk8s delete \
         --subscription $SUBSCRIPTION \
@@ -355,11 +376,11 @@ clean_up_cluster(){
         --yes
 
     # delete aks
-    az aks delete \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $AKS_CLUSTER_NAME \
-        --yes
+    #az aks delete \
+    #    --subscription $SUBSCRIPTION \
+    #    --resource-group $RESOURCE_GROUP \
+    #    --name $AKS_CLUSTER_NAME \
+    #    --yes
 
 }
 

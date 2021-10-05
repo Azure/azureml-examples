@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: mlw-basic-prod
+location: eastus
+display_name: Basic workspace-example
+description: This example shows a YML configuration for a basic workspace. In case you use this configuration to deploy a new workspace, since no existing dependent resources are specified, these will be automatically created.
+hbi_workspace: false
+tags:
+  purpose: demonstration

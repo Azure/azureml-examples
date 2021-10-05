@@ -1,0 +1,1 @@
+This example doesn't run actual distributed training but shows the distributed training environment available to training scripts with the `$TF_CONFIG` environment variable. It also explains how to override distributed training settings defined in a component in a job. 

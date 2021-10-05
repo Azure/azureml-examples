@@ -1,6 +1,0 @@
-command: python -c "print('hello world')"
-environment:
-  docker:
-    image: python
-compute:
-  target: azureml:cpu-cluster

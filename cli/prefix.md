@@ -19,23 +19,9 @@ Welcome to the Azure Machine Learning examples repository!
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
 2. A terminal. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) before you begin.
-3. Clone this repository:
-
-    ```bash
-    git clone https://github.com/Azure/azureml-examples --depth 1
-    cd azureml-examples/cli
-    ```
-
-4. Run the setup script and create compute:
-
-    ```bash
-    bash setup.sh
-    bash create-compute.sh
-    ```
 
 ## Getting started
 
-1. [Train models (create jobs) with the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli)
-2. [Deploy and score a model using a managed online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
+1. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli)
 
 ## Examples

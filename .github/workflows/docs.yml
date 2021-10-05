@@ -14,10 +14,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZ_AE_CREDS}}
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -26,4 +22,4 @@ jobs:
       run: pip install -r dev-requirements.txt
     - name: run docs checker script
       run: python docs.py
-      working-directory: cli
+      working-directory: setup-repo

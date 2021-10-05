@@ -53,14 +53,26 @@ definitions:
         readonly: true
         title: id
         type: string
+      job_name:
+        readonly: true
+        title: job_name
+        type: string
       local_path:
         title: local_path
         type: string
+      model_format:
+        enum:
+        - custom
+        - mlflow
+        - triton
+        - openai
+        title: model_format
+        type: string
+      model_uri:
+        title: model_uri
+        type: string
       name:
         title: name
-        type: string
-      path:
-        title: path
         type: string
       properties:
         additionalProperties: {}
@@ -75,10 +87,10 @@ definitions:
         title: utc_time_created
         type: string
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
     required:
     - name
-    - version
     type: object

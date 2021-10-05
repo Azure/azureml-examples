@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: cloud-folder-example
+description: Dataset created from folder in cloud.
+paths:
+  - folder: azureml://datastores/workspaceblobstore/paths/example-data/
