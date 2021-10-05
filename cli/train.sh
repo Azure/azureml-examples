@@ -2,9 +2,39 @@
 az ml job create -f jobs/basics/hello-world.yml --web
 # </hello_world>
 
+# <hello_world_set>
+az ml job create -f jobs/basics/hello-world.yml \
+  --set environment.image="python:3.8" \
+  --web
+# </hello_world_set>
+
 # <hello_world_full>
 az ml job create -f jobs/basics/hello-world-full.yml --web
 # </hello_world_full>
+
+# <hello_world_full>
+az ml job create -f jobs/basics/hello-world-full.yml --web
+# </hello_world_full>
+
+# <hello_world_full_name>
+run_id=$(az ml job create -f jobs/basics/hello-world-full.yml --query name -o tsv)
+# </hello_world_full_name>
+
+# <hello_world_full_show>
+az ml job show -n $run_id
+# </hello_world_full_show>
+
+
+
+# <hello_world_input>
+az ml job create -f jobs/basics/hello-world-input.yml --web
+# </hello_world_input>
+
+# <hello_world_input_set>
+az ml job create -f jobs/basics/hello-world-input.yml \
+  --set inputs.hello_string="hello there" inputs.hello_number=24 \
+  --web
+# </hello_world_input_set>
 
 # <hello_world_output>
 az ml job create -f jobs/basics/hello-world-output.yml --web
