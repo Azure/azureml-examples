@@ -66,7 +66,7 @@ def write_readme(notebook_dirs):
         name = notebook_dir.strip("/")
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebooks-{name}/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-{name}.yml)"
+        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/notebooks-{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-{name}.yml)"
 
         # read description if given in README
         description = "*no description*"
@@ -147,7 +147,7 @@ def write_notebook_workflow_sequential(notebook_dir):
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
-    - cron: "0 0/2 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
@@ -197,7 +197,7 @@ def write_notebook_workflow_parallel(notebook_dir):
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
-    - cron: "0 0/2 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main

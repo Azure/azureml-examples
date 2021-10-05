@@ -1,0 +1,143 @@
+$ref: '#/definitions/AmlComputeSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AmlComputeSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      created_on:
+        readonly: true
+        title: created_on
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        readonly: true
+        title: id
+        type: string
+      identity:
+        $ref: '#/definitions/IdentitySchema'
+        type: object
+      idle_time_before_scale_down:
+        format: integer
+        title: idle_time_before_scale_down
+        type: number
+      location:
+        title: location
+        type: string
+      max_instances:
+        format: integer
+        title: max_instances
+        type: number
+      min_instances:
+        format: integer
+        title: min_instances
+        type: number
+      name:
+        title: name
+        type: string
+      network_settings:
+        $ref: '#/definitions/NetworkSettingsSchema'
+        type: object
+      provisioning_errors:
+        readonly: true
+        title: provisioning_errors
+        type: string
+      provisioning_state:
+        readonly: true
+        title: provisioning_state
+        type: string
+      resource_id:
+        title: resource_id
+        type: string
+      size:
+        title: size
+        type: string
+      ssh_public_access_enabled:
+        title: ssh_public_access_enabled
+        type: boolean
+      ssh_settings:
+        $ref: '#/definitions/SshSettingsSchema'
+        type: object
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      tier:
+        enum:
+        - low_priority
+        - dedicated
+        title: tier
+        type: string
+      type:
+        enum:
+        - amlcompute
+        title: type
+        type: string
+    required:
+    - name
+    - type
+    type: object
+  IdentitySchema:
+    additionalProperties: false
+    properties:
+      principal_id:
+        title: principal_id
+        type: string
+      type:
+        enum:
+        - system_assigned
+        - user_assigned
+        - none
+        - system_assigned,user_assigned
+        title: type
+        type: string
+      user_assigned_identities:
+        items:
+          $ref: '#/definitions/UserAssignedIdentitySchema'
+          type: object
+        title: user_assigned_identities
+        type: array
+    type: object
+  NetworkSettingsSchema:
+    additionalProperties: false
+    properties:
+      subnet:
+        title: subnet
+        type: string
+      vnet_name:
+        title: vnet_name
+        type: string
+    type: object
+  SshSettingsSchema:
+    additionalProperties: false
+    properties:
+      admin_password:
+        title: admin_password
+        type: string
+      admin_username:
+        title: admin_username
+        type: string
+      ssh_key_value:
+        title: ssh_key_value
+        type: string
+    type: object
+  UserAssignedIdentitySchema:
+    additionalProperties: false
+    properties:
+      client_id:
+        title: client_id
+        type: string
+      principal_id:
+        title: principal_id
+        type: string
+      resource_id:
+        title: resource_id
+        type: string
+    type: object

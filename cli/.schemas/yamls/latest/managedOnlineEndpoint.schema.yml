@@ -1,199 +1,6 @@
 $ref: '#/definitions/ManagedOnlineEndpointSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  AutoScaleSettingsSchema:
-    additionalProperties: false
-    properties:
-      max_instances:
-        format: integer
-        title: max_instances
-        type: number
-      min_instances:
-        format: integer
-        title: min_instances
-        type: number
-      polling_interval:
-        format: integer
-        title: polling_interval
-        type: number
-      scale_type:
-        enum:
-        - Auto
-        title: scale_type
-        type: string
-      target_utilization_percentage:
-        format: integer
-        title: target_utilization_percentage
-        type: number
-    required:
-    - scale_type
-    type: object
-  CodeAssetSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      id:
-        title: id
-        type: string
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
-      name:
-        title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
-        type: string
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      version:
-        format: integer
-        title: version
-        type: number
-    type: object
-  CodeConfigurationSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      code:
-        anyOf:
-        - arm_type: codes
-          pattern: ^azureml:.*
-          title: code
-          type: string
-        - $ref: '#/definitions/CodeAssetSchema'
-          type: object
-        - pattern: ^file:.*
-          type: string
-      scoring_script:
-        title: scoring_script
-        type: string
-    type: object
-  CreationContextSchema:
-    additionalProperties: false
-    properties:
-      created_at:
-        format: date-time
-        title: created_at
-        type: string
-      created_by:
-        title: created_by
-        type: string
-      created_by_type:
-        title: created_by_type
-        type: string
-      last_modified_at:
-        format: date-time
-        title: last_modified_at
-        type: string
-      last_modified_by:
-        title: last_modified_by
-        type: string
-      last_modified_by_type:
-        title: last_modified_by_type
-        type: string
-    type: object
-  DockerBuildSchema:
-    additionalProperties: false
-    properties:
-      dockerfile:
-        anyOf:
-        - title: dockerfile
-          type: string
-        - title: dockerfile
-          type: string
-    type: object
-  DockerSchema:
-    additionalProperties: false
-    properties:
-      build:
-        $ref: '#/definitions/DockerBuildSchema'
-        type: object
-      image:
-        title: image
-        type: string
-    type: object
-  EnvironmentSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      conda_file:
-        anyOf:
-        - title: conda_file
-          type: string
-        - title: conda_file
-          type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      description:
-        title: description
-        type: string
-      docker:
-        $ref: '#/definitions/DockerSchema'
-        type: object
-      id:
-        arm_type: environments
-        pattern: ^azureml:.*
-        readonly: true
-        title: id
-        type: string
-      inference_config:
-        $ref: '#/definitions/InferenceConfigSchema'
-        type: object
-      name:
-        title: name
-        type: string
-      os_type:
-        enum:
-        - linux
-        - windows
-        title: os_type
-        type: string
-      path:
-        title: path
-        type: string
-      tags:
-        additionalProperties:
-          title: tags
-          type: string
-        title: tags
-        type: object
-      version:
-        format: integer
-        title: version
-        type: number
-    type: object
   IdentitySchema:
     additionalProperties: false
     properties:
@@ -220,123 +27,6 @@ definitions:
         title: user_assigned_identities
         type: array
     type: object
-  InferenceConfigSchema:
-    additionalProperties: false
-    properties:
-      liveness_route:
-        $ref: '#/definitions/RouteSchema'
-        type: object
-      readiness_route:
-        $ref: '#/definitions/RouteSchema'
-        type: object
-      scoring_route:
-        $ref: '#/definitions/RouteSchema'
-        type: object
-    required:
-    - liveness_route
-    - readiness_route
-    - scoring_route
-    type: object
-  LivenessProbeSchema:
-    additionalProperties: false
-    properties:
-      failure_threshold:
-        format: integer
-        title: failure_threshold
-        type: number
-      initial_delay:
-        format: integer
-        title: initial_delay
-        type: number
-      period:
-        format: integer
-        title: period
-        type: number
-      success_threshold:
-        format: integer
-        title: success_threshold
-        type: number
-      timeout:
-        format: integer
-        title: timeout
-        type: number
-    type: object
-  ManagedOnlineDeploymentSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      app_insights_enabled:
-        title: app_insights_enabled
-        type: boolean
-      code_configuration:
-        $ref: '#/definitions/CodeConfigurationSchema'
-        type: object
-      environment:
-        anyOf:
-        - arm_type: environments
-          pattern: ^azureml:.*
-          title: environment
-          type: string
-        - $ref: '#/definitions/EnvironmentSchema'
-          type: object
-        - pattern: ^file:.*
-          type: string
-      environment_variables:
-        additionalProperties: {}
-        title: environment_variables
-        type: object
-      id:
-        title: id
-        type: string
-      instance_type:
-        title: instance_type
-        type: string
-      liveness_probe:
-        $ref: '#/definitions/LivenessProbeSchema'
-        type: object
-      model:
-        anyOf:
-        - arm_type: models
-          pattern: ^azureml:.*
-          title: model
-          type: string
-        - $ref: '#/definitions/ModelSchema'
-          type: object
-      name:
-        title: name
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      provisioning_state:
-        title: provisioning_state
-        type: string
-      readiness_probe:
-        $ref: '#/definitions/LivenessProbeSchema'
-        type: object
-      request_settings:
-        $ref: '#/definitions/RequestSettingsSchema'
-        type: object
-      scale_settings:
-        anyOf:
-        - $ref: '#/definitions/AutoScaleSettingsSchema'
-          type: object
-        - $ref: '#/definitions/ManualScaleSettingsSchema'
-          type: object
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      type:
-        title: type
-        type: string
-    required:
-    - name
-    type: object
   ManagedOnlineEndpointSchema:
     additionalProperties: false
     properties:
@@ -344,6 +34,9 @@ definitions:
         readonly: true
         title: $schema
         type: string
+      allow_public_access:
+        title: allow_public_access
+        type: boolean
       auth_mode:
         enum:
         - aml_token
@@ -351,13 +44,8 @@ definitions:
         - aad_token
         title: auth_mode
         type: string
-      deployments:
-        items:
-          $ref: '#/definitions/ManagedOnlineDeploymentSchema'
-          type: object
-        title: deployments
-        type: array
       description:
+        description: Description of the inference endpoint.
         title: description
         type: string
       id:
@@ -380,10 +68,11 @@ definitions:
         title: provisioning_state
         type: string
       scoring_uri:
-        description: the endpoint uri that can be used for scoring
+        description: The endpoint uri that can be used for scoring
         title: scoring_uri
         type: string
       swagger_uri:
+        description: Endpoint Swagger URI.
         title: swagger_uri
         type: string
       tags:
@@ -397,120 +86,6 @@ definitions:
           type: number
         title: traffic
         type: object
-      type:
-        title: type
-        type: string
     required:
     - name
-    type: object
-  ManualScaleSettingsSchema:
-    additionalProperties: false
-    properties:
-      instance_count:
-        format: integer
-        title: instance_count
-        type: number
-      max_instances:
-        format: integer
-        title: max_instances
-        type: number
-      min_instances:
-        format: integer
-        title: min_instances
-        type: number
-      scale_type:
-        enum:
-        - Manual
-        title: scale_type
-        type: string
-    required:
-    - instance_count
-    - scale_type
-    type: object
-  ModelSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      flavors:
-        additionalProperties: {}
-        title: flavors
-        type: object
-      id:
-        arm_type: models
-        pattern: ^azureml:.*
-        readonly: true
-        title: id
-        type: string
-      local_path:
-        title: local_path
-        type: string
-      name:
-        title: name
-        type: string
-      path:
-        title: path
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      utc_time_created:
-        format: date-time
-        title: utc_time_created
-        type: string
-      version:
-        format: integer
-        title: version
-        type: number
-    required:
-    - name
-    - version
-    type: object
-  RequestSettingsSchema:
-    additionalProperties: false
-    properties:
-      max_concurrent_requests_per_instance:
-        format: integer
-        title: max_concurrent_requests_per_instance
-        type: number
-      max_queue_wait_ms:
-        format: integer
-        title: max_queue_wait_ms
-        type: number
-      request_timeout_ms:
-        format: integer
-        title: request_timeout_ms
-        type: number
-    type: object
-  RouteSchema:
-    additionalProperties: false
-    properties:
-      path:
-        title: path
-        type: string
-      port:
-        format: integer
-        title: port
-        type: number
-    required:
-    - path
-    - port
     type: object

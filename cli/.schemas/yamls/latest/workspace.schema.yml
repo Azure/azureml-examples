@@ -11,38 +11,6 @@ definitions:
         title: key_vault
         type: string
     type: object
-  EndpointConnectionSchema:
-    additionalProperties: false
-    properties:
-      location:
-        title: location
-        type: string
-      resource_group:
-        title: resource_group
-        type: string
-      subnet_name:
-        title: subnet_name
-        type: string
-      subscription_id:
-        title: subscription_id
-        type: string
-      vnet_name:
-        title: vnet_name
-        type: string
-    type: object
-  PrivateEndpointSchema:
-    additionalProperties: false
-    properties:
-      approval_type:
-        title: approval_type
-        type: string
-      connections:
-        additionalProperties:
-          $ref: '#/definitions/EndpointConnectionSchema'
-          type: object
-        title: connections
-        type: object
-    type: object
   WorkspaceSchema:
     additionalProperties: false
     properties:
@@ -65,24 +33,37 @@ definitions:
       discovery_url:
         title: discovery_url
         type: string
-      friendly_name:
-        title: friendly_name
+      display_name:
+        title: display_name
         type: string
       hbi_workspace:
         title: hbi_workspace
         type: boolean
+      image_build_compute:
+        title: image_build_compute
+        type: string
       key_vault:
         title: key_vault
         type: string
       location:
         title: location
         type: string
+      mlflow_tracking_uri:
+        readonly: true
+        title: mlflow_tracking_uri
+        type: string
       name:
         title: name
         type: string
-      private_endpoints:
-        $ref: '#/definitions/PrivateEndpointSchema'
-        type: object
+      public_network_access:
+        enum:
+        - Disabled
+        - Enabled
+        title: public_network_access
+        type: string
+      resource_group:
+        title: resource_group
+        type: string
       storage_account:
         title: storage_account
         type: string

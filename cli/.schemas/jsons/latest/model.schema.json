@@ -35,10 +35,6 @@
     },
     "ModelSchema": {
       "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
       "properties": {
         "creation_context": {
           "type": "object",
@@ -66,16 +62,31 @@
           "title": "id",
           "readonly": true
         },
+        "job_name": {
+          "title": "job_name",
+          "type": "string",
+          "readonly": true
+        },
         "local_path": {
           "title": "local_path",
           "type": "string"
         },
-        "name": {
-          "title": "name",
+        "model_format": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "mlflow",
+            "triton",
+            "openai"
+          ],
+          "title": "model_format"
+        },
+        "model_uri": {
+          "title": "model_uri",
           "type": "string"
         },
-        "path": {
-          "title": "path",
+        "name": {
+          "title": "name",
           "type": "string"
         },
         "properties": {
@@ -99,11 +110,20 @@
           "format": "date-time"
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
+      "required": [
+        "name"
+      ],
       "additionalProperties": false
     }
   },

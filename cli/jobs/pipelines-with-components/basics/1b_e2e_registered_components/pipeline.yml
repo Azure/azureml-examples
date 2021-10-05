@@ -1,0 +1,56 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: "E2E dummy train-score-eval pipeline with registered components"
+
+inputs:
+  pipeline_job_training_input:
+    dataset: 
+      local_path: ./data
+  pipeline_job_test_input:
+    dataset:
+      local_path: ./data
+  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_learning_rate: 1.8
+  pipeline_job_learning_rate_schedule: 'time-based'
+
+outputs: 
+  pipeline_job_trained_model:
+    mode: upload
+  pipeline_job_scored_data:
+    mode: upload
+  pipeline_job_evaluation_report:
+    mode: upload
+
+#settings:
+#  datastore: azureml:workspaceblobstore
+  
+compute: azureml:cpu-cluster
+
+jobs:
+  train-job:
+    type: component
+    component: azureml:Train:31
+    inputs:
+      training_data: ${{inputs.pipeline_job_training_input}}
+      max_epocs: ${{inputs.pipeline_job_training_max_epocs}}
+      learning_rate: ${{inputs.pipeline_job_training_learning_rate}}
+      learning_rate_schedule: ${{inputs.pipeline_job_learning_rate_schedule}}
+    outputs:
+      model_output: ${{outputs.pipeline_job_trained_model}}
+  
+  score-job:
+    type: component
+    component: azureml:Score:31
+    inputs:
+      model_input: ${{jobs.train-job.outputs.model_output}}
+      test_data: ${{inputs.pipeline_job_test_input}}
+    outputs:
+      score_output: ${{outputs.pipeline_job_scored_data}}
+
+  evaluate-job:
+    type: component
+    component: azureml:Eval:31
+    inputs:
+      scoring_result: ${{jobs.score-job.outputs.score_output}}
+    outputs:
+      eval_output: ${{outputs.pipeline_job_evaluation_report}}

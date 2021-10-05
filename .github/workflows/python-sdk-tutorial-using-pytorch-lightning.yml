@@ -1,7 +1,7 @@
 name: python-sdk-tutorial-using-pytorch-lightning
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 8 * * *"
   pull_request:
     branches:
       - main
@@ -37,7 +37,4 @@ jobs:
       working-directory: python-sdk/experimental/using-pytorch-lightning
     - name: run 3.log-with-mlflow.ipynb
       run: papermill 3.log-with-mlflow.ipynb - -k python
-      working-directory: python-sdk/experimental/using-pytorch-lightning
-    - name: run 4.train-multi-node-ddp.ipynb
-      run: papermill 4.train-multi-node-ddp.ipynb - -k python
       working-directory: python-sdk/experimental/using-pytorch-lightning
