@@ -1,0 +1,3 @@
+$schema: https://azuremlschemas.azureedge.net/latest/amlCompute.schema.json 
+name: minimal-example
+type: amlcompute

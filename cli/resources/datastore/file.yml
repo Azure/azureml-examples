@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/azureFile.schema.json
+name: file-example
+type: azure_file
+description: Datastore pointing to an Azure File Share.
+account_name: mytestfilestore
+file_share_name: my-share
+credentials:
+  account_key: XxXxXxXXXXXXXxXxXxxXxxXXXXXXXXxXxxXXxXXXXXXXxxxXxXXxXXXXXxXXxXXXxXxXxxxXXxXXxXXXXXxXxxXX
