@@ -3,7 +3,7 @@
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location | tr -d '\r"')
+LOCATION="centraluseuap" #$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 TENANT_ID=
 
@@ -50,7 +50,7 @@ wait_for_completion () {
 # Get values for storage account
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
-DATASTORE_PATH=$(echo $response | jq '.value[0].id')
+DATASTORE_PATH=$(echo $response | jq -r '.value[0].id')
 BLOB_URI_PROTOCOL=$(echo $response | jq -r '.value[0].properties.protocol')
 BLOB_URI_ENDPOINT=$(echo $response | jq -r '.value[0].properties.endpoint')
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
@@ -98,7 +98,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"modelUri\":\"azureml://$DATASTORE_PATH/model)\"
+        \"modelUri\":\"azureml:/$DATASTORE_PATH/paths/model)\"
     }
 }")
 # </create_model>
