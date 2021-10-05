@@ -31,6 +31,7 @@ Welcome to the Azure Machine Learning examples repository!
 path|status|
 -|-
 [amlarc-compute.sh](amlarc-compute.sh)|[![amlarc-compute](https://github.com/Azure/azureml-examples/workflows/cli-scripts-amlarc-compute/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-amlarc-compute.yml)
+[batch-score-rest.sh](batch-score-rest.sh)|[![batch-score-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-batch-score-rest/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-batch-score-rest.yml)
 [batch-score.sh](batch-score.sh)|[![batch-score](https://github.com/Azure/azureml-examples/workflows/cli-scripts-batch-score/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-batch-score.yml)
 [deploy-local-endpoint.sh](deploy-local-endpoint.sh)|[![deploy-local-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-local-endpoint/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-local-endpoint.yml)
 [deploy-managed-online-endpoint-access-resource-sai.sh](deploy-managed-online-endpoint-access-resource-sai.sh)|[![deploy-managed-online-endpoint-access-resource-sai](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml)
