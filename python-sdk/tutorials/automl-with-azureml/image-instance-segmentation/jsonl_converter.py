@@ -9,8 +9,13 @@ from simplification.cutil import simplify_coords
 from skimage import measure
 
 
-def convert_mask_to_polygon(mask, max_polygon_points=100, score_threshold=0.5, max_refinement_iterations=25,
-                            edge_safety_padding=1):
+def convert_mask_to_polygon(
+    mask,
+    max_polygon_points=100,
+    score_threshold=0.5,
+    max_refinement_iterations=25,
+    edge_safety_padding=1,
+):
     """Convert a numpy mask to a polygon outline in normalized coordinates.
 
     :param mask: Pixel mask, where each pixel has an object (float) score in [0, 1], in size ([1, height, width])
@@ -33,11 +38,17 @@ def convert_mask_to_polygon(mask, max_polygon_points=100, score_threshold=0.5, m
     image_shape = mask_array.shape
 
     # Pad the mask to avoid errors at the edge of the mask
-    embedded_mask = np.zeros((image_shape[0] + 2 * edge_safety_padding,
-                              image_shape[1] + 2 * edge_safety_padding),
-                             dtype=np.uint8)
-    embedded_mask[edge_safety_padding:image_shape[0] + edge_safety_padding,
-                  edge_safety_padding:image_shape[1] + edge_safety_padding] = mask_array
+    embedded_mask = np.zeros(
+        (
+            image_shape[0] + 2 * edge_safety_padding,
+            image_shape[1] + 2 * edge_safety_padding,
+        ),
+        dtype=np.uint8,
+    )
+    embedded_mask[
+        edge_safety_padding : image_shape[0] + edge_safety_padding,
+        edge_safety_padding : image_shape[1] + edge_safety_padding,
+    ] = mask_array
 
     # Find Image Contours
     contours = measure.find_contours(embedded_mask, 0.5)
@@ -48,7 +59,10 @@ def convert_mask_to_polygon(mask, max_polygon_points=100, score_threshold=0.5, m
         # Iteratively reduce polygon points, if necessary
         if max_polygon_points is not None:
             simplify_factor = 0
-            while len(contour) > max_polygon_points and simplify_factor < max_refinement_iterations:
+            while (
+                len(contour) > max_polygon_points
+                and simplify_factor < max_refinement_iterations
+            ):
                 contour = simplify_coords(contour, simplify_factor)
                 simplify_factor += 1
 
@@ -67,8 +81,8 @@ def _normalize_contour(contours, image_shape):
     height, width = image_shape[0], image_shape[1]
 
     for contour in contours:
-        contour[::2] = [x * 1. / width for x in contour[::2]]
-        contour[1::2] = [y * 1. / height for y in contour[1::2]]
+        contour[::2] = [x * 1.0 / width for x in contour[::2]]
+        contour[1::2] = [y * 1.0 / height for y in contour[1::2]]
 
     return contours
 
@@ -122,43 +136,54 @@ def convert_mask_in_VOC_to_jsonl(base_dir, workspace):
     validation_annotations_file = os.path.join(src, "validation_annotations.jsonl")
 
     # sample json line dictionary
-    json_line_sample = \
-        {
-            "image_url": "AmlDatastore://" + workspaceblobstore + "/"
-                         + os.path.basename(os.path.dirname(src)) + "/" + "images",
-            "image_details": {"format": None, "width": None, "height": None},
-            "label": []
-        }
+    json_line_sample = {
+        "image_url": "AmlDatastore://"
+        + workspaceblobstore
+        + "/"
+        + os.path.basename(os.path.dirname(src))
+        + "/"
+        + "images",
+        "image_details": {"format": None, "width": None, "height": None},
+        "label": [],
+    }
 
     # Read each annotation and convert it to jsonl line
-    with open(train_annotations_file, 'w') as train_f:
-        with open(validation_annotations_file, 'w') as validation_f:
+    with open(train_annotations_file, "w") as train_f:
+        with open(validation_annotations_file, "w") as validation_f:
             for i, filename in enumerate(os.listdir(annotations_folder)):
                 if filename.endswith(".xml"):
                     print("Parsing " + os.path.join(src, filename))
 
-                    root = ET.parse(os.path.join(annotations_folder, filename)).getroot()
+                    root = ET.parse(
+                        os.path.join(annotations_folder, filename)
+                    ).getroot()
 
-                    width = int(root.find('size/width').text)
-                    height = int(root.find('size/height').text)
+                    width = int(root.find("size/width").text)
+                    height = int(root.find("size/height").text)
                     # convert mask into polygon
                     mask_fname = os.path.join(mask_folder, filename[:-4] + ".png")
                     polygons = parsing_mask(mask_fname)
 
                     labels = []
-                    for index, object in enumerate(root.findall('object')):
-                        name = object.find('name').text
-                        isCrowd = int(object.find('difficult').text)
-                        labels.append({"label": name,
-                                       "bbox": "null",
-                                       "isCrowd": isCrowd,
-                                       'polygon': polygons[index]})
+                    for index, object in enumerate(root.findall("object")):
+                        name = object.find("name").text
+                        isCrowd = int(object.find("difficult").text)
+                        labels.append(
+                            {
+                                "label": name,
+                                "bbox": "null",
+                                "isCrowd": isCrowd,
+                                "polygon": polygons[index],
+                            }
+                        )
 
                     # build the jsonl file
                     image_filename = root.find("filename").text
                     _, file_extension = os.path.splitext(image_filename)
                     json_line = dict(json_line_sample)
-                    json_line["image_url"] = json_line["image_url"] + "/" + image_filename
+                    json_line["image_url"] = (
+                        json_line["image_url"] + "/" + image_filename
+                    )
                     json_line["image_details"]["format"] = file_extension[1:]
                     json_line["image_details"]["width"] = width
                     json_line["image_details"]["height"] = height
@@ -176,11 +201,13 @@ def convert_mask_in_VOC_to_jsonl(base_dir, workspace):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(allow_abbrev=False)
-    parser.add_argument("--data_path", type=str, help="the directory contains images, annotations, and masks")
+    parser.add_argument(
+        "--data_path",
+        type=str,
+        help="the directory contains images, annotations, and masks",
+    )
 
     args, remaining_args = parser.parse_known_args()
     data_path = args.data_path
 
     convert_mask_in_VOC_to_jsonl(data_path)
-
-
