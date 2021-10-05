@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+compute: azureml:cpu-cluster
+settings:
+  environment:
+    image: python
+inputs:
+  job_string: "job"
+jobs:
+  jobA:
+    command: echo "${{inputs.job_string}} A"
+  jobB:
+    command: echo "world" >> ${{outputs.world}}/world.txt
+    outputs:
+      world:
+  jobC:
+    command: echo ${{inputs.world}}/world.txt
+    inputs:
+      world: ${{jobs.jobB.outputs.world}}
+ 
