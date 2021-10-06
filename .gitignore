@@ -14,3 +14,9 @@
 *.pyc
 *config.json
 *.log
+
+#juamarti
+# *.jpg
+# *checkpoint.ipynb
+# *.jsonl
+# *.xml
