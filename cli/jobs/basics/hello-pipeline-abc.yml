@@ -7,13 +7,13 @@ settings:
 inputs:
   job_string: "job"
 jobs:
-  jobA:
+  A:
     command: echo "${{inputs.job_string}} A"
-  jobB:
+  B:
     command: echo "world" >> ${{outputs.world}}/world.txt
     outputs:
       world:
-  jobC:
+  C:
     command: echo ${{inputs.world}}/world.txt
     inputs:
       world: ${{jobs.jobB.outputs.world}}

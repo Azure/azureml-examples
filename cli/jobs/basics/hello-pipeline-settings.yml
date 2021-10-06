@@ -1,0 +1,12 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+compute: azureml:cpu-cluster
+settings:
+  environment:
+    image: python
+jobs:
+  hello:
+    command: echo "hello"
+  world:
+    command: echo "world"
+ 
