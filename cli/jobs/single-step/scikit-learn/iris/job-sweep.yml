@@ -4,8 +4,6 @@ trial:
   code: 
     local_path: src
   command: >-
-    echo ${{inputs.iris_csv}}
-    &&
     python main.py 
     --iris-csv ${{inputs.iris_csv}}
     --C ${{search_space.C}}
