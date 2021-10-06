@@ -289,7 +289,7 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(os.path.join("..", ".github", "workflows", f"cli-{job.replace('/', '-')}.yml"), "w") as f:
+    with open(f"../.github/workflows/cli-{job.replace('/', '-')}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
@@ -329,7 +329,7 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(os.path.join("..", ".github", "workflows", f"cli-{hyphenated}.yml"), "w") as f:
+    with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
@@ -369,7 +369,7 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(os.path.join("..", ".github", "workflows", f"cli-{hyphenated}.yml"), "w") as f:
+    with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
@@ -411,7 +411,7 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(os.path.join("..", ".github", "workflows", f"cli-scripts-{hyphenated}.yml"), "w") as f:
+    with open(f"../.github/workflows/cli-scripts-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
@@ -422,7 +422,7 @@ if __name__ == "__main__":
         print(
             "windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)"
         )
-        # exit(1)
+        exit(1)
 
     # setup argparse
     parser = argparse.ArgumentParser()
