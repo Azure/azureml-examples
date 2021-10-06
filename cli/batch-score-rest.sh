@@ -25,7 +25,7 @@ wait_for_completion () {
     access_token=$2
     status="unknown"
 
-    while [[ $status != "Succeeded" && $status != "Failed" ]]
+    while [[ $status != "Succeeded" && $status != "Failed" && $status != "Canceled" ]]
     do
         echo "Getting operation status from: $operation_id"
         operation_result=$(curl --location --request GET $operation_id --header "Authorization: Bearer $access_token")
@@ -35,6 +35,14 @@ wait_for_completion () {
         then
             status=$(echo $operation_result | jq -r '.properties.status')
         fi
+
+        # Fail early if job submission failed and there is nothing to poll on
+        if [[ -z $status || $status == "null" ]]
+        then
+            echo "No status found on operation, setting to failed."
+            status="Failed"
+        fi
+
         echo "Current operation status: $status"
         sleep 10
     done
