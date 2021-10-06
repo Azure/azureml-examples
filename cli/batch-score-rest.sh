@@ -98,7 +98,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"modelUri\":\"azureml:/$DATASTORE_PATH/paths/model)\"
+        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model)\"
     }
 }")
 # </create_model>
