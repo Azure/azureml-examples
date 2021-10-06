@@ -5,10 +5,14 @@ settings:
   environment:
     image: python
 inputs:
-  job_string: "job"
+  hello_string: "hello world"
 jobs:
   A:
-    command: echo "${{inputs.job_string}} A"
+    command: echo hello ${{inputs.hello_string}}
+    environment:
+      image: python:3.9
+    inputs:
+      hello_string: ${{inputs.hello_string}}
   B:
     command: echo "world" >> ${{outputs.world}}/world.txt
     outputs:
@@ -16,5 +20,5 @@ jobs:
   C:
     command: echo ${{inputs.world}}/world.txt
     inputs:
-      world: ${{jobs.jobB.outputs.world}}
+      world: ${{jobs.B.outputs.world}}
  
