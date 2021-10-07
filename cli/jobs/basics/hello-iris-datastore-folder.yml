@@ -15,5 +15,5 @@ inputs:
     folder: azureml://datastores/workspaceblobstore/paths/example-data/
     mode: rw_mount
 environment:
-  image: python
+  image: python:latest
 compute: azureml:cpu-cluster
