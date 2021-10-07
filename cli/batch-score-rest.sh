@@ -3,11 +3,11 @@
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-TENANT_ID=
-
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+
+LOCATION=$(az ml workspace show| jq -r '.location')
+
 API_VERSION="2021-10-01"
 
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
@@ -106,7 +106,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model)\"
+        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model\"
     }
 }")
 # </create_model>
