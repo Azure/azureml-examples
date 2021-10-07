@@ -25,7 +25,7 @@ wait_for_completion () {
     access_token=$2
     status="unknown"
 
-    while [[ $status != "Succeeded" && $status != "Failed" && $status != "Canceled" ]]
+    while [[ $status != "Completed" && $status != "Succeeded" && $status != "Failed" && $status != "Canceled" ]]
     do
         echo "Getting operation status from: $operation_id"
         operation_result=$(curl --location --request GET $operation_id --header "Authorization: Bearer $access_token")
