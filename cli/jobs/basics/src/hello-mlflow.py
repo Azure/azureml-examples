@@ -11,6 +11,7 @@ def main():
     os.system(f"echo 'hello world' > helloworld.txt")
     mlflow.log_artifact("helloworld.txt")
 
+
 # run functions
 if __name__ == "__main__":
     # run main function
