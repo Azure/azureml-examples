@@ -16,7 +16,7 @@ jobs:
         mode: upload
     code:
       local_path: src/prep
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
     compute: azureml:cpu-cluster
     command: >-
       python prep.py 
@@ -32,7 +32,7 @@ jobs:
         mode: upload
     code: 
       local_path: src/transform
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
     compute: azureml:cpu-cluster
     command: >-
       python transform.py 
@@ -50,7 +50,7 @@ jobs:
         mode: upload
     code:
       local_path: src/train
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
     compute: azureml:cpu-cluster
     command: >-
       python train.py 
@@ -68,7 +68,7 @@ jobs:
         mode: upload
     code:
       local_path: src/predict
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
     compute: azureml:cpu-cluster
     command: >-
       python predict.py 
@@ -86,7 +86,7 @@ jobs:
         mode: upload
     code:
       local_path: src/score
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
     compute: azureml:cpu-cluster
     command: >-      
       python score.py 

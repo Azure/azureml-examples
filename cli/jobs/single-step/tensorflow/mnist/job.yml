@@ -3,7 +3,7 @@ code:
   local_path: src
 command: >-
   python train.py
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:14
 compute: azureml:gpu-cluster
 display_name: tensorflow-mnist-example
 experiment_name: tensorflow-mnist-example

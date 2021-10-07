@@ -9,7 +9,7 @@ command: >-
 inputs:
   C: 0.8
   penalty: "l2"
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:9
 compute: azureml:cpu-cluster
 display_name: sklearn-mnist-example
 experiment_name: sklearn-mnist-example
