@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-world-full
+name: cli-assets-dataset-cloud-folder-https
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/basics/**
-      - .github/workflows/cli-jobs-basics-hello-world-full.yml
+      - cli/assets/dataset/cloud-folder-https.yml
+      - .github/workflows/cli-assets-dataset-cloud-folder-https.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,6 +26,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run job
-      run: bash -x run-job.sh jobs/basics/hello-world-full.yml
+    - name: create asset
+      run: az ml dataset create -f assets/dataset/cloud-folder-https.yml
       working-directory: cli
