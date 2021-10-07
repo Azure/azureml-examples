@@ -14,5 +14,5 @@ jobs:
       image: python:latest
     compute: azureml:cpu-cluster
     inputs:
-      world_input: ${{jobs.hello.outputs.world_output}}
+      world_input: ${{jobs.hello_job.outputs.world_output}}
  
