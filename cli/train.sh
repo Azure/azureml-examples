@@ -45,8 +45,9 @@ az ml job create -f jobs/basics/hello-world-input.yml --web
 # </hello_world_input>
 
 # <hello_world_input_set>
-az ml job create -f jobs/basics/hello-world-input.yml \
-  --set inputs.hello_string="hello there" inputs.hello_number=24 \
+az ml job create -f jobs/basics/hello-world-input.yml --set \
+  inputs.hello_string="hello there" \
+  inputs.hello_number=24 \
   --web
 # </hello_world_input_set>
 
