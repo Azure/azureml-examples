@@ -2,13 +2,17 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 jobs:
   hello:
-    command: echo "hello"
+    command: echo "hello" && echo "world" > ${{outputs.world}}/world.txt
     environment:
       image: python
     compute: azureml:cpu-cluster
+    outputs:
+      world:
   world:
-    command: echo "world"
+    command: cat ${{inputs.world}}/world.txt
     environment:
       image: python
     compute: azureml:cpu-cluster
+    inputs:
+      world: ${{jobs.hello.outputs.world}}
  

@@ -1,14 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+compute: azureml:cpu-cluster
+settings:
+  environment:
+    image: python
 jobs:
   hello:
     command: echo "hello"
-    environment:
-      image: python
-    compute: azureml:cpu-cluster
   world:
     command: echo "world"
-    environment:
-      image: python
-    compute: azureml:cpu-cluster
  

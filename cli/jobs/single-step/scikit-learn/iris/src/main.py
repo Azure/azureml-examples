@@ -4,7 +4,6 @@ import mlflow
 import argparse
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
@@ -53,7 +52,7 @@ def process_data(df, random_state):
         X, y, test_size=0.2, random_state=random_state
     )
 
-    # return splits and encoder
+    # return split data
     return X_train, X_test, y_train, y_test
 
 
