@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-world-full
+name: cli-jobs-basics-hello-world-org
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - releases/current
     paths:
       - cli/jobs/basics/**
-      - .github/workflows/cli-jobs-basics-hello-world-full.yml
+      - .github/workflows/cli-jobs-basics-hello-world-org.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/basics/hello-world-full.yml
+      run: bash -x run-job.sh jobs/basics/hello-world-org.yml
       working-directory: cli
