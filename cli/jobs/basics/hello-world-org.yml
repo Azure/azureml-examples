@@ -1,10 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: echo $hello_str
+command: echo "hello world"
 environment:
   image: python:latest
 compute: azureml:cpu-cluster
 tags:
   hello: world
+  number: 42
 display_name: hello-world-example
 description: |
   # Azure Machine Learning "hello world" job
