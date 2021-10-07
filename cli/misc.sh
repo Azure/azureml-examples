@@ -26,10 +26,6 @@ az extension update -n ml
 az ml -h
 # </az_ml_verify>
 
-# <az_account_set>
-az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"
-# </az_account_set>
-
 # <az_extension_remove>
 az extension remove -n azure-cli-ml
 az extension remove -n ml
@@ -46,6 +42,10 @@ az version
 
 ### UNTESTED
 exit
+
+# <az_account_set>
+az account set -s "<YOUR_SUBSCRIPTION_NAME_OR_ID>"
+# </az_account_set>
 
 # <az_login>
 az login
