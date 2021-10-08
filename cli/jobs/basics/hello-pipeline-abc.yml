@@ -3,22 +3,22 @@ type: pipeline
 compute: azureml:cpu-cluster
 settings:
   environment:
-    image: python
+    image: python:latest
 inputs:
-  hello_string: "hello world"
+  hello_string_top_level_input: "hello world"
 jobs:
   A:
     command: echo hello ${{inputs.hello_string}}
     environment:
       image: python:3.9
     inputs:
-      hello_string: ${{inputs.hello_string}}
+      hello_string: ${{inputs.hello_string_top_level_input}}
   B:
-    command: echo "world" >> ${{outputs.world}}/world.txt
+    command: echo "world" >> ${{outputs.world_output}}/world.txt
     outputs:
-      world:
+      world_output:
   C:
-    command: echo ${{inputs.world}}/world.txt
+    command: echo ${{inputs.world_input}}/world.txt
     inputs:
-      world: ${{jobs.B.outputs.world}}
+      world_input: ${{jobs.B.outputs.world_output}}
  

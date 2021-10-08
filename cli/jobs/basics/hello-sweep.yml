@@ -32,4 +32,5 @@ limits:
   max_concurrent_trials: 2
   timeout: 3600
 display_name: hello-sweep-example
+experiment_name: hello-sweep-example
 description: Hello sweep job example.

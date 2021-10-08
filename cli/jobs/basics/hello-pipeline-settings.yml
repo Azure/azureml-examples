@@ -3,10 +3,10 @@ type: pipeline
 compute: azureml:cpu-cluster
 settings:
   environment:
-    image: python
+    image: python:latest
 jobs:
-  hello:
+  hello_job:
     command: echo "hello"
-  world:
+  world_job:
     command: echo "world"
  

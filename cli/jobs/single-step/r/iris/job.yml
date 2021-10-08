@@ -5,7 +5,8 @@ command: >
 code:
   local_path: src
 inputs:
-  iris: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+  iris: 
+    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
   build:
     local_path: docker-context
