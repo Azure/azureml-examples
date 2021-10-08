@@ -59,7 +59,7 @@ az ml job create -f jobs/basics/hello-sweep.yml --web
 az ml job create -f jobs/basics/hello-world-output.yml --web
 # </hello_world_output>
 
-run_id=$(az ml job create -f jobs/basics/hello-world-output.yml --query name)
+run_id=$(az ml job create -f jobs/basics/hello-world-output.yml --query name -o tsv)
 if [[ -z "$run_id" ]]
 then
   echo "Job creation failed"
