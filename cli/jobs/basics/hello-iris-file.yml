@@ -10,7 +10,7 @@ code:
   local_path: src
 inputs:
   iris_csv: 
-    file: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
+    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
   image: python:latest
 compute: azureml:cpu-cluster
