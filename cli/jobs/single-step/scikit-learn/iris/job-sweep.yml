@@ -9,7 +9,7 @@ trial:
     --C ${{search_space.C}}
     --kernel ${{search_space.kernel}}
     --coef0 ${{search_space.coef0}}
-  environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:8
+  environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:9
 inputs:
   iris_csv: 
     file: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
