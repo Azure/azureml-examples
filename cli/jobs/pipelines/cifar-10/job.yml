@@ -14,7 +14,7 @@ jobs:
   train-model:
     command: >-
       python main.py
-      --data-dir ${{inputs.cifar}}/data
+      --data-dir ${{inputs.cifar}}
       --epochs ${{inputs.epochs}}
       --model-dir ${{outputs.model_dir}}
     code:
