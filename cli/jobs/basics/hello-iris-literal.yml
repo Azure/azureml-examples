@@ -11,5 +11,5 @@ code:
 inputs:
   iris_csv: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
-  image: python
+  image: python:latest
 compute: azureml:cpu-cluster

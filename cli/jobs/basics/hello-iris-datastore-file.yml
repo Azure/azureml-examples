@@ -12,5 +12,5 @@ inputs:
   iris_csv: 
     file: azureml://datastores/workspaceblobstore/paths/example-data/iris.csv
 environment:
-  image: python
+  image: python:latest
 compute: azureml:cpu-cluster
