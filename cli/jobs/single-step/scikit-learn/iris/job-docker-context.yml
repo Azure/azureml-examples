@@ -19,4 +19,4 @@ environment:
 compute: azureml:cpu-cluster
 display_name: sklearn-iris-example
 experiment_name: sklearn-iris-example
-description: Train a scikit-learn SVM on the Iris dataset.
+description: Train a scikit-learn SVM on the Iris dataset using a custom Docker container build.
