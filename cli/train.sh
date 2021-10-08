@@ -60,7 +60,17 @@ az ml job create -f jobs/basics/hello-world-output.yml --web
 # </hello_world_output>
 
 run_id=$(az ml job create -f jobs/basics/hello-world-output.yml --query name)
+if [[ -z "$run_id" ]]
+then
+  echo "Job creation failed"
+  exit 3
+fi
 status=$(az ml job show -n $run_id --query status -o tsv)
+if [[ -z "$status" ]]
+then
+  echo "Status query failed"
+  exit 4
+fi
 running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
 while [[ ${running[*]} =~ $status ]]
 do
@@ -115,7 +125,17 @@ az ml job create -f jobs/single-step/scikit-learn/iris/job.yml --web
 # </sklearn_iris>
 
 run_id=$(az ml job create -f jobs/single-step/scikit-learn/iris/job.yml --query name -o tsv)
+if [[ -z "$run_id" ]]
+then
+  echo "Job creation failed"
+  exit 3
+fi
 status=$(az ml job show -n $run_id --query status -o tsv)
+if [[ -z "$status" ]]
+then
+  echo "Status query failed"
+  exit 4
+fi
 running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
 while [[ ${running[*]} =~ $status ]]
 do
