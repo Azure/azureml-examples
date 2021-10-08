@@ -114,7 +114,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 # <read_condafile>
 CONDA_FILE=$(cat endpoints/batch/mnist/environment/conda.json | sed 's/"/\\"/g')
 # <read_condafile>
-
+# <create_environment>
 ENV_VERSION=$RANDOM
 response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/mnist-env/versions/$ENV_VERSION?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
