@@ -14,3 +14,12 @@
 *.pyc
 *config.json
 *.log
+
+#juamarti
+*.jpg
+*.png
+*checkpoint.ipynb
+*.jsonl
+*.xml
+*score.py
+*.csv
