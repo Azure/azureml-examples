@@ -10,7 +10,7 @@ EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
-    "instance",
+    "vm-attach",
 ]
 EXCLUDED_ASSETS = [
     "conda-yamls",
