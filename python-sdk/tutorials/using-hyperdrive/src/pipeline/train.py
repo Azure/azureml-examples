@@ -17,26 +17,52 @@ from azureml.core import Run
 from src.model.algorithms import train_fictitious_model
 from src.common.model_helpers import write_model_info
 
-@click.command()
-@click.option("--root_dir", type=click.STRING, required=True,
-              help="Root directory of datastore")
-@click.option("--model_info_dir", type=click.STRING, required=True,
-              help="Path to folder to save trained model information")
-@click.option("--thr", type=click.FLOAT, required=True, default=0.5,
-              help="Initial Threshold used to simulate training")
-@click.option("--epoch", type=click.INT, required=True, default=50,
-              help="Initial Learning Rate used to simulate training")
-@click.option("--lr", type=click.FLOAT, required=True, default=0.1,
-              help="Initial Learning Rate used to simulate training")
-@click.option("--model_info_best", type=str, required=True,
-              help="Path to an archive from hyperdrive step")
 
-def main(root_dir: str,
-         model_info_dir: str,
-         thr: float, 
-         epoch: int, 
-         lr: float,
-         model_info_best: str) -> None:
+@click.command()
+@click.option(
+    "--root_dir", type=click.STRING, required=True, help="Root directory of datastore"
+)
+@click.option(
+    "--model_info_dir",
+    type=click.STRING,
+    required=True,
+    help="Path to folder to save trained model information",
+)
+@click.option(
+    "--thr",
+    type=click.FLOAT,
+    required=True,
+    default=0.5,
+    help="Initial Threshold used to simulate training",
+)
+@click.option(
+    "--epoch",
+    type=click.INT,
+    required=True,
+    default=50,
+    help="Initial Learning Rate used to simulate training",
+)
+@click.option(
+    "--lr",
+    type=click.FLOAT,
+    required=True,
+    default=0.1,
+    help="Initial Learning Rate used to simulate training",
+)
+@click.option(
+    "--model_info_best",
+    type=str,
+    required=True,
+    help="Path to an archive from hyperdrive step",
+)
+def main(
+    root_dir: str,
+    model_info_dir: str,
+    thr: float,
+    epoch: int,
+    lr: float,
+    model_info_best: str,
+) -> None:
     """
     Main function for receiving args, and passing them through to a training step
     Parameters:
@@ -71,7 +97,7 @@ def main(root_dir: str,
     run.log(name="loss", value=model_info["loss"])
     run.log(name="F_1", value=model_info["F_1"])
 
-    # Define a directory to save several models resulting from the 
+    # Define a directory to save several models resulting from the
     #   combination of different tuning parameters
     out_dir = "./outputs/model"
     out_dir = join(model_info_best, out_dir)

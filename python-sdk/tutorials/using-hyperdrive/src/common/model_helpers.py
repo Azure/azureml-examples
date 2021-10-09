@@ -4,6 +4,7 @@ This is the file that contains Model Helpers for AzureML Pipelines
 import os
 import json
 
+
 def write_model_info(folder_path: str, filename: str, model_info: dict) -> str:
     """
     Write model information to given file path

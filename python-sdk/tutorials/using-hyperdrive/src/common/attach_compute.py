@@ -11,8 +11,16 @@ from azureml.exceptions import ComputeTargetException
 
 log = getLogger(__name__)
 
-def get_compute(workspace: Workspace, compute_name: str, vm_size: str, vm_priority: str, min_nodes: int, max_nodes: int,
-                scale_down: int):
+
+def get_compute(
+    workspace: Workspace,
+    compute_name: str,
+    vm_size: str,
+    vm_priority: str,
+    min_nodes: int,
+    max_nodes: int,
+    scale_down: int,
+):
     """
     Returns an existing compute or creates a new one.
     Parameters:
@@ -32,15 +40,19 @@ def get_compute(workspace: Workspace, compute_name: str, vm_size: str, vm_priori
             if compute_target and isinstance(compute_target, AmlCompute):
                 log.info("Found existing compute target %s so using it.", compute_name)
         else:
-            compute_config = AmlCompute.provisioning_configuration(vm_size=vm_size,
-                                                                   vm_priority=vm_priority,
-                                                                   min_nodes=min_nodes,
-                                                                   max_nodes=max_nodes,
-                                                                   idle_seconds_before_scaledown=scale_down)
+            compute_config = AmlCompute.provisioning_configuration(
+                vm_size=vm_size,
+                vm_priority=vm_priority,
+                min_nodes=min_nodes,
+                max_nodes=max_nodes,
+                idle_seconds_before_scaledown=scale_down,
+            )
 
-            compute_target = ComputeTarget.create(workspace, compute_name, compute_config)
+            compute_target = ComputeTarget.create(
+                workspace, compute_name, compute_config
+            )
             compute_target.wait_for_completion(show_output=True)
         return compute_target
     except ComputeTargetException as ex_var:
-        log.error('An error occurred trying to provision compute: %s', str(ex_var))
+        log.error("An error occurred trying to provision compute: %s", str(ex_var))
         sys.exit(-1)

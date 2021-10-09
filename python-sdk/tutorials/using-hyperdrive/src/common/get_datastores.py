@@ -8,8 +8,14 @@ from azureml.core.datastore import Datastore
 
 log = getLogger(__name__)
 
-def get_blob_datastore(workspace: Workspace, data_store_name: str, storage_name: str, storage_key: str,
-                       container_name: str):
+
+def get_blob_datastore(
+    workspace: Workspace,
+    data_store_name: str,
+    storage_name: str,
+    storage_key: str,
+    container_name: str,
+):
     """
     Returns a reference to a datastore
     Parameters:
@@ -30,7 +36,8 @@ def get_blob_datastore(workspace: Workspace, data_store_name: str, storage_name:
             datastore_name=data_store_name,
             account_name=storage_name,  # Storage account name
             container_name=container_name,  # Name of Azure blob container
-            account_key=storage_key)  # Storage account key
+            account_key=storage_key,
+        )  # Storage account key
     log.info("Registered blob datastore with name: %s", data_store_name)
-    
+
     return blob_datastore
