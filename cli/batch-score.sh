@@ -210,6 +210,10 @@ JOB_ID_SUFFIX=$(echo ${JOB_ID##/*/})
 wait_for_completion $SCORING_URI/$JOB_ID_SUFFIX $AUTH_TOKEN
 # </check_job_status>
 
+# <delete_deployment>
+az ml batch-deployment delete --name nonmlflowdp --endpoint-name $ENDPOINT_NAME --yes
+# </delete_deployment>
+
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
