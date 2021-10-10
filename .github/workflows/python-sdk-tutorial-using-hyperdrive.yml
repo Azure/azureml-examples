@@ -22,11 +22,11 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.7"
+        python-version: "3.8"
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: temp installs
-      run: pip install python-dotenv azureml-pipeline
+      run: pip install azureml-sdk python-dotenv
     - name: azure login
       uses: azure/login@v1
       with:
