@@ -59,7 +59,7 @@ fi
 
 # <start_batch_scoring_job_configure_output_settings>
 export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --output-path folder:azureml://datastores/workspaceblobstore/paths/myoutput --set output_file_name=$OUTPUT_FILE_NAME --mini-batch-size 20 --instance-count 5 --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --output-path folder:azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --mini-batch-size 20 --instance-count 5 --query name -o tsv)
 # </start_batch_scoring_job_configure_output_settings>
 
 # <stream_job_logs_to_console>
