@@ -155,14 +155,17 @@ AUTH_TOKEN=$(az account get-access-token --resource https://ml.azure.com --query
 # </get_token>
 
 # <start_batch_scoring_job_rest>
-RESPONSE=$(curl --location --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_TOKEN" --header 'Content-Type: application/json' --data-raw '{
-"properties": {
-  "dataset": {
-    "dataInputType": "DataUrl",
-    "Path": "https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv"
+RESPONSE=$(curl --location --request POST $SCORING_URI \
+--header "Authorization: Bearer $AUTH_TOKEN" \
+--header "Content-Type: application/json" \
+--data-raw "{
+  \"properties\": {
+    \"dataset\": {
+      \"dataInputType\": \"DataUrl\",
+      \"Path\": \"https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv\"
     }
   }
-}')
+}")
 
 JOB_NAME=$(echo $response | jq -r '.name')
 # </start_batch_scoring_job_rest>
