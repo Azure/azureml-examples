@@ -155,7 +155,7 @@ AUTH_TOKEN=$(az account get-access-token --resource https://ml.azure.com --query
 # </get_token>
 
 # <start_batch_scoring_job_rest>
-RESPONSE=$(curl --location --request POST $SCORING_URI \
+RESPONSE=$(curl --location --request POST "$SCORING_URI" \
 --header "Authorization: Bearer $AUTH_TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
@@ -166,24 +166,48 @@ RESPONSE=$(curl --location --request POST $SCORING_URI \
     }
   }
 }")
-
-JOB_NAME=$(echo $response | jq -r '.name')
 # </start_batch_scoring_job_rest>
 
 # <check_job_status>
-STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
-echo $STATUS
-if [[ $STATUS == "Completed" ]]
-then
-  echo "Job completed"
-elif [[ $STATUS ==  "Failed" ]]
-then
-  echo "Job failed"
-  exit 1
-else 
-  echo "Job status not failed or completed"
-  exit 2
-fi
+# define how to wait  
+wait_for_completion () {
+    operation_id=$1
+    access_token=$2
+    status="unknown"
+
+    while [[ $status != "Completed" && $status != "Succeeded" && $status != "Failed" && $status != "Canceled" ]]
+    do
+        echo "Getting operation status from: $operation_id"
+        operation_result=$(curl --location --request GET $operation_id --header "Authorization: Bearer $access_token")
+        # TODO error handling here
+        status=$(echo $operation_result | jq -r '.status')
+        if [[ -z $status || $status == "null" ]]
+        then
+            status=$(echo $operation_result | jq -r '.properties.status')
+        fi
+
+        # Fail early if job submission failed and there is nothing to poll on
+        if [[ -z $status || $status == "null" ]]
+        then
+            echo "No status found on operation, setting to failed."
+            status="Failed"
+        fi
+
+        echo "Current operation status: $status"
+        sleep 10
+    done
+
+    if [[ $status == "Failed" ]]
+    then
+        error=$(echo $operation_result | jq -r '.error')
+        echo "Error: $error"
+    fi
+}
+
+# get job from invoke response and wait for completion
+JOB_ID=$(echo $response | jq -r '.id')
+JOB_ID_SUFFIX=$(echo ${JOB_ID##/*/})
+wait_for_completion $SCORING_URI/$JOB_ID_SUFFIX $SCORING_TOKEN
 # </check_job_status>
 
 # <delete_endpoint>
