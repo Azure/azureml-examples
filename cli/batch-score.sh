@@ -205,9 +205,9 @@ wait_for_completion () {
 }
 
 # get job from invoke response and wait for completion
-JOB_ID=$(echo $response | jq -r '.id')
+JOB_ID=$(echo $RESPONSE | jq -r '.id')
 JOB_ID_SUFFIX=$(echo ${JOB_ID##/*/})
-wait_for_completion $SCORING_URI/$JOB_ID_SUFFIX $SCORING_TOKEN
+wait_for_completion $SCORING_URI/$JOB_ID_SUFFIX $AUTH_TOKEN
 # </check_job_status>
 
 # <delete_endpoint>
