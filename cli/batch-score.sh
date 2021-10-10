@@ -9,8 +9,6 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
-export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-
 # <create_compute>
 az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
 # </create_compute>
@@ -60,6 +58,7 @@ fi
 # </check_job_status>
 
 # <start_batch_scoring_job_configure_output_settings>
+export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
 JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --output-path folder:azureml://datastores/workspaceblobstore/paths/myoutput --set output_file_name=$OUTPUT_FILE_NAME --mini-batch-size 20 --instance-count 5 --query name -o tsv)
 # </start_batch_scoring_job_configure_output_settings>
 
@@ -156,15 +155,33 @@ AUTH_TOKEN=$(az account get-access-token --resource https://ml.azure.com --query
 # </get_token>
 
 # <start_batch_scoring_job_rest>
-curl --location --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_TOKEN" --header 'Content-Type: application/json' --data-raw '{
+RESPONSE=$(curl --location --request POST "$SCORING_URI" --header "Authorization: Bearer $AUTH_TOKEN" --header 'Content-Type: application/json' --data-raw '{
 "properties": {
   "dataset": {
     "dataInputType": "DataUrl",
     "Path": "https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv"
     }
   }
-}'
+}')
+
+JOB_NAME=$(echo $response | jq -r '.name')
 # </start_batch_scoring_job_rest>
+
+# <check_job_status>
+STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
+echo $STATUS
+if [[ $STATUS == "Completed" ]]
+then
+  echo "Job completed"
+elif [[ $STATUS ==  "Failed" ]]
+then
+  echo "Job failed"
+  exit 1
+else 
+  echo "Job status not failed or completed"
+  exit 2
+fi
+# </check_job_status>
 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME
