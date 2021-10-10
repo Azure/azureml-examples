@@ -211,5 +211,5 @@ wait_for_completion $SCORING_URI/$JOB_ID_SUFFIX $AUTH_TOKEN
 # </check_job_status>
 
 # <delete_endpoint>
-az ml batch-endpoint delete --name $ENDPOINT_NAME
+az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
