@@ -51,7 +51,7 @@ def get_compute(
             compute_target = ComputeTarget.create(
                 workspace, compute_name, compute_config
             )
-            compute_target.wait_for_completion(show_output=False)
+            compute_target.wait_for_completion(show_output=True)
         return compute_target
     except ComputeTargetException as ex_var:
         log.error("An error occurred trying to provision compute: %s", str(ex_var))
