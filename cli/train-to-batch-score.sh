@@ -95,5 +95,5 @@ fi
 # </check_job_status>
 
 # <delete_endpoint>
-az ml batch-endpoint delete --name $ENDPOINT_NAME
+az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
