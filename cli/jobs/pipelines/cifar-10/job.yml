@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: cifar-10-pipeline-example
+experiment_name: cifar-10-pipeline-example
 jobs:
   get-data:
     command: bash main.sh ${{outputs.cifar}}

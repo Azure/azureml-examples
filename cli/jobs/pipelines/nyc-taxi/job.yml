@@ -1,8 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-# name: "nyc_taxi_data_regression_using_commands"
-# experiment_name: "nyc_taxi_data_regression_commands"
-# display_name: "NYC Taxi Experiment using a pipeline of Commands"
+display_name: nyc-taxi-pipeline-example
+experiment_name: nyc-taxi-pipeline-example
 jobs:
 
   prep-job:

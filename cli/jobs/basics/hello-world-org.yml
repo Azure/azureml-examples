@@ -6,6 +6,7 @@ compute: azureml:cpu-cluster
 tags:
   hello: world
 display_name: hello-world-example
+experiment_name: hello-world-example
 description: |
   # Azure Machine Learning "hello world" job
 
