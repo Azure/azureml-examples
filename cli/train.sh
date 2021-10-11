@@ -24,6 +24,7 @@ run_id=$(az ml job create -f jobs/basics/hello-world-org.yml --query name -o tsv
 # <hello_world_org_set>
 az ml job update -n $run_id --set \
   display_name="updated display name" \
+  experiment_name="updated experiment name" \
   description="updated description"  \
   tags.hello="updated tag"
 # </hello_world_org_set>
