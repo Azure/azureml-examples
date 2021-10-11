@@ -7,8 +7,15 @@ from PIL import Image
 from typing import Any, Dict, List
 
 
-def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleFill=False, scaleup=True):
-    """ Resize image to a 32-pixel-multiple rectangle
+def letterbox(
+    img,
+    new_shape=(640, 640),
+    color=(114, 114, 114),
+    auto=True,
+    scaleFill=False,
+    scaleup=True,
+):
+    """Resize image to a 32-pixel-multiple rectangle
     https://github.com/ultralytics/yolov3/issues/232
 
     :param img: an image
@@ -53,7 +60,9 @@ def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scale
         img = cv2.resize(img, new_unpad, interpolation=cv2.INTER_LINEAR)
     top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
     left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
-    img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
+    img = cv2.copyMakeBorder(
+        img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color
+    )  # add border
     return img, ratio, (dw, dh)
 
 
@@ -104,7 +113,9 @@ def _convert_to_rcnn_output(output, height, width, pad):
     rcnn_label: Dict[str, List[Any]] = {"boxes": [], "labels": [], "scores": []}
 
     # Adjust bbox to effective image bounds
-    img_height, img_width = unpad_bbox(output[:, :4] if output is not None else None, (height, width), pad)
+    img_height, img_width = unpad_bbox(
+        output[:, :4] if output is not None else None, (height, width), pad
+    )
 
     if output is not None:
         rcnn_label["boxes"] = output[:, :4]
@@ -152,13 +163,29 @@ def box_iou(box1, box2):
     area2 = box_area(box2.t())
 
     # inter(N,M) = (rb(N,M,2) - lt(N,M,2)).clamp(0).prod(2)
-    inter = (torch.min(box1[:, None, 2:], box2[:, 2:]) - torch.max(box1[:, None, :2], box2[:, :2])).clamp(0).prod(2)
-    return inter / (area1[:, None] + area2 - inter)  # iou = inter / (area1 + area2 - inter)
+    inter = (
+        (
+            torch.min(box1[:, None, 2:], box2[:, 2:])
+            - torch.max(box1[:, None, :2], box2[:, :2])
+        )
+        .clamp(0)
+        .prod(2)
+    )
+    return inter / (
+        area1[:, None] + area2 - inter
+    )  # iou = inter / (area1 + area2 - inter)
 
 
-def non_max_suppression(prediction, conf_thres=0.1, iou_thres=0.6, multi_label=False, merge=False,
-                        classes=None, agnostic=False):
-    """ Performs per-class Non-Maximum Suppression (NMS) on inference results
+def non_max_suppression(
+    prediction,
+    conf_thres=0.1,
+    iou_thres=0.6,
+    multi_label=False,
+    merge=False,
+    classes=None,
+    agnostic=False,
+):
+    """Performs per-class Non-Maximum Suppression (NMS) on inference results
 
     :param prediction: predictions
     :type prediction: <class 'torch.Tensor'>
@@ -238,15 +265,21 @@ def non_max_suppression(prediction, conf_thres=0.1, iou_thres=0.6, multi_label=F
         i = torchvision.ops.boxes.nms(boxes, scores, iou_thres)
         if i.shape[0] > max_det:  # limit detections
             i = i[:max_det]
-        if merge and (1 < n < 3E3):
+        if merge and (1 < n < 3e3):
             try:  # update boxes as boxes(i,4) = weights(i,n) * boxes(n,4)
                 iou = box_iou(boxes[i], boxes) > iou_thres  # iou matrix
                 weights = iou * scores[None]  # box weights
-                x[i, :4] = torch.mm(weights, x[:, :4]).float() / weights.sum(1, keepdim=True)  # merged boxes
+                x[i, :4] = torch.mm(weights, x[:, :4]).float() / weights.sum(
+                    1, keepdim=True
+                )  # merged boxes
                 if redundant:
                     i = i[iou.sum(1) > 1]  # require redundancy
             except Exception:  # possible CUDA error https://github.com/ultralytics/yolov3/issues/1139
-                print("[WARNING: possible CUDA error ({} {} {} {})]".format(x, i, x.shape, i.shape))
+                print(
+                    "[WARNING: possible CUDA error ({} {} {} {})]".format(
+                        x, i, x.shape, i.shape
+                    )
+                )
                 pass
 
         output[xi] = x[i]
@@ -265,11 +298,11 @@ def _read_image(ignore_data_errors: bool, image_url: str, use_cv2: bool = False)
                 print("cv2.imread returned None")
             return img
         else:
-            image = Image.open(image_url).convert('RGB')
+            image = Image.open(image_url).convert("RGB")
             return image
     except Exception as ex:
         if ignore_data_errors:
-            msg = 'Exception occurred when trying to read the image. This file will be ignored.'
+            msg = "Exception occurred when trying to read the image. This file will be ignored."
             print(msg)
         else:
             print(str(ex), has_pii=True)
@@ -277,9 +310,9 @@ def _read_image(ignore_data_errors: bool, image_url: str, use_cv2: bool = False)
 
 
 def preprocess(image_url, img_size=640):
-    img0 = _read_image(ignore_data_errors=False,
-                       image_url=image_url,
-                       use_cv2=True)  # cv2.imread(image_url)  # BGR
+    img0 = _read_image(
+        ignore_data_errors=False, image_url=image_url, use_cv2=True
+    )  # cv2.imread(image_url)  # BGR
     if img0 is None:
         return image_url, None, None
 
@@ -290,5 +323,5 @@ def preprocess(image_url, img_size=640):
     img = np.ascontiguousarray(img)
     np_image = torch.from_numpy(img)
     np_image = np.expand_dims(np_image, axis=0)
-    np_image = np_image.astype(np.float32)/255.0
+    np_image = np_image.astype(np.float32) / 255.0
     return np_image, pad
