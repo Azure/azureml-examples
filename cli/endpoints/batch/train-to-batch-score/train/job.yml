@@ -1,0 +1,59 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+# name: "nyc_taxi_data_regression_using_commands"
+# experiment_name: "nyc_taxi_data_regression_commands"
+# display_name: "NYC Taxi Experiment using a pipeline of Commands"
+jobs:
+
+  prep-job:
+    type: command
+    inputs:
+      raw_data: 
+          dataset: 
+            local_path: ./data
+    outputs:
+      prep_data: 
+        mode: upload
+    code:
+      local_path: src/prep
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
+    compute: azureml:batch-cluster
+    command: >-
+      python prep.py 
+      --raw_data ${{inputs.raw_data}} 
+      --prep_data ${{outputs.prep_data}}
+  
+  transform-job:
+    type: command
+    inputs: 
+      clean_data: ${{jobs.prep-job.outputs.prep_data}}
+    outputs:
+      transformed_data:
+        mode: upload
+    code: 
+      local_path: src/transform
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
+    compute: azureml:batch-cluster
+    command: >-
+      python transform.py 
+      --clean_data ${{inputs.clean_data}} 
+      --transformed_data ${{outputs.transformed_data}}
+  
+  train-job:
+    type: command
+    inputs:
+      training_data: ${{jobs.transform-job.outputs.transformed_data}}
+    outputs:
+      model_output: 
+        mode: upload
+      test_data: 
+        mode: upload
+    code:
+      local_path: src/train
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:9
+    compute: azureml:batch-cluster
+    command: >-
+      python train.py 
+      --training_data ${{inputs.training_data}} 
+      --test_data ${{outputs.test_data}} 
+      --model_output ${{outputs.model_output}}
