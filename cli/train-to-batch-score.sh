@@ -47,7 +47,7 @@ az ml job download -n $JOB_NAME -p run-outputs
 
 # register model
 export MODEL_NAME="mlflowmodel"
-MODEL_VERSION=$(az ml model create -n $MODEL_NAME -l run-outputs/$JOB_NAME/outputs/ | jq -r .version)
+MODEL_VERSION=$(az ml model create -n $MODEL_NAME -l run-outputs/$JOB_NAME/nyc_taxi/ --query version -o tsv)
 # </register_model>
 
 # <create_batch_endpoint>
