@@ -202,6 +202,41 @@ jupyter notebook
           - create a Pipeline to run an AutoML experiment and register the best resulting model in the Workspace
           - publish the training pipeline created and schedule it to run daily
 
+## Computer Vision
+- **Image Classification Multi-Class**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-classification-multiclass/auto-ml-image-classification-multiclass.ipynb)**
+          - train an Image Classification Multi-Class model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Image Classification Multi-Label**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-classification-multilabel/auto-ml-image-classification-multilabel.ipynb)**
+          - train an Image Classification Multi-Label model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Object Detection**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-object-detection/auto-ml-image-object-detection.ipynb)**
+          - train an Object Detection model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Instance Segmentation**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-instance-segmentation/auto-ml-image-instance-segmentation.ipynb)**
+          - train an Instance Segmentation model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Batch Scoring with an Image Classification Model**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-pipelines/image-classification-multiclass-batch-scoring/auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
+          - register an Image Classification Multi-Class model already trained using AutoML
+          - create an Inference Dataset
+          - provision compute targets and create a Batch Scoring script
+          - use ParallelRunStep to do batch scoring
+          - build, run, and publish a pipeline
+          - enable a REST endpoint for the pipeline
+
 <a name="documentation"></a>
 See [Configure automated machine learning experiments](https://docs.microsoft.com/azure/machine-learning/service/how-to-configure-auto-train) to learn how more about the the settings and features available for automated machine learning experiments.
 
