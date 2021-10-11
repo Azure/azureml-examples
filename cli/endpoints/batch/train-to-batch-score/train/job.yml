@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 inputs:
   training_data: 
     dataset:
-      local_path: ./data/transformed_data.csv
+      local_path: ./data
 outputs:
   model_output: 
     mode: upload
