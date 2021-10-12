@@ -58,7 +58,7 @@ else
 fi
 
 # Create deployment 
-az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml
+az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 
 # <get_status>
 az ml online-endpoint show -n $ENDPOINT_NAME
