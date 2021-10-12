@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: my-uai-endpoint
 auth_mode: key
 identity:
