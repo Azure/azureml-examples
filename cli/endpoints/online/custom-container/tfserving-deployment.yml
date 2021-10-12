@@ -9,8 +9,7 @@ environment_variables:
   MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/1
   MODEL_NAME: half_plus_two
 environment:
-  docker:
-    image: docker.io/tensorflow/serving:latest
+  image: docker.io/tensorflow/serving:latest
   inference_config:
     liveness_route:
       port: 8501

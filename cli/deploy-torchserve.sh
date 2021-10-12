@@ -62,9 +62,6 @@ az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
 echo "Creating deployment..."
 az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 
-# Get logs
-az ml online-endpoint get-logs --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
-
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
 
@@ -85,7 +82,7 @@ then
 else
   echo "Deployment failed"
   cleanTestingFiles
-  az ml online-endpoint delete -n $ENDPOINT_NAME
+  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
   exit 1
 fi
 

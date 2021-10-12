@@ -8,8 +8,7 @@ model:
 environment_variables:
   MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/1
 environment:
-  docker:
-    image: {{acr_name}}.azurecr.io/torchserve:8080
+  image: {{acr_name}}.azurecr.io/torchserve:8080
   inference_config:
     liveness_route:
       port: 8080
