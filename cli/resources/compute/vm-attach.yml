@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/vmCompute.schema.json 
+name: vm-example
+type: virtualmachine
+resource_id: "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Compute/virtualMachines/<VM_NAME>"
