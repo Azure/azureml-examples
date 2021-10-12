@@ -73,7 +73,7 @@ then
   echo "Endpoint created successfully"
 else
   echo "Something went wrong when creating endpoint. Cleaning up..."
-  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  az ml online-endpoint delete -n $ENDPOINT_NAME
   exit 1
 fi
 
@@ -85,6 +85,7 @@ then
 else
   echo "Deployment failed"
   cleanTestingFiles
+  az ml online-endpoint delete -n $ENDPOINT_NAME
   exit 1
 fi
 
@@ -113,5 +114,3 @@ az ml online-endpoint delete -n $ENDPOINT_NAME
 echo "Deleting model..."
 az ml model delete -n $AML_MODEL_NAME --version 1
 
-# Delete environment
-az ml environment delete --name torchserve --version 1

@@ -25,7 +25,6 @@ cleanup(){
     echo "deleting endpoint, state is "$STATE
     az ml online-endpoint delete -n $ENDPOINT_NAME
     az ml model delete --name $MODEL_NAME --version 1
-    az ml environment delete --name r-environment --version 1
 }
 
 # Run image locally for testing
@@ -73,7 +72,7 @@ then
   echo "Deployment completed successfully"
 else
   echo "Deployment failed"
-  az ml online-deployment 
+  cleanup 
   exit 1
 fi
 
