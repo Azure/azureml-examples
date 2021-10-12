@@ -58,7 +58,7 @@ else
 fi
 
 # Create deployment 
-az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 
 # <get_status>
 az ml online-endpoint show -n $ENDPOINT_NAME
@@ -71,6 +71,7 @@ then
   echo "Deployment completed successfully"
 else
   echo "Deployment failed"
+  az ml online-deployment 
   exit 1
 fi
 

@@ -60,7 +60,7 @@ az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
 
 # Create deployment
 echo "Creating deployment..."
-az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 
 # Get logs
 az ml online-endpoint get-logs --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME

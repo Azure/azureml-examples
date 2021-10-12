@@ -48,7 +48,7 @@ az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
 # </create_endpoint>
 
 # <create_deployment>
-az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 # </create_deployment>
 
 # <get_status>
