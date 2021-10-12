@@ -96,7 +96,7 @@ az ml model delete --name $MODEL_NAME --version 1
 # </delelte_model>
 
 # <delete_environment>
-az ml environment delete --name tfserving --version 1
+az ml environment delete --name tfserving-environment --version 1
 # </delete_environment>
 
 cleanup

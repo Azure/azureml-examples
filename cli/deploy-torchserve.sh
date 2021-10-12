@@ -52,7 +52,7 @@ curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
 docker stop torchserve-test
 
 # Deploy model to online endpoint
-sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
 # Create endpoint
 echo "Creating new endpoint..."

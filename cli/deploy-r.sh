@@ -21,9 +21,11 @@ az acr build $BASE_PATH -f $BASE_PATH/Dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
 # Clean up utility
 cleanup(){
-    sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
+    sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$DEPLOYMENT_NAME.yml
     echo "deleting endpoint, state is "$STATE
     az ml online-endpoint delete -n $ENDPOINT_NAME
+    az ml model delete --name $MODEL_NAME --version 1
+    az ml environment delete --name r-environment --version 1
 }
 
 # Run image locally for testing
@@ -41,7 +43,7 @@ curl -H "Content-Type: application/json" --data @$BASE_PATH/sample_request.json 
 docker stop r_server
 
 # Fill in placeholders in deployment YAML
-sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
 # Create endpoint
 az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
@@ -86,11 +88,3 @@ echo "Tested successfully, response was $RESPONSE. Cleaning up..."
 
 # Clean up
 cleanup
-
-# <delete_model>
-az ml model delete --name $MODEL_NAME --version 1
-# </delelte_model>
-
-# <delete_environment>
-az ml environment delete --name tfserving --version 1
-# </delete_environment>
