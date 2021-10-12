@@ -9,7 +9,7 @@ wget https://aka.ms/r-model -O $BASE_PATH/scripts/model.rds
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
 ACR_NAME=$(az ml workspace show --name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
-if [[$ACR_NAME==""]]
+if [[ $ACR_NAME == "" ]]
 then
     echo "Getting ACR name failed, exiting"
     exit 1
@@ -63,7 +63,6 @@ then
   echo "Endpoint created successfully"
 else
   echo "Endpoint creation failed"
-  az ml online-endpoint delete --name $ENDPOINT_NAME
   exit 1
 fi
 

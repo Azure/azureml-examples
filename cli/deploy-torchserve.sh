@@ -15,7 +15,7 @@ wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchser
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
 ACR_NAME=$(az ml workspace show --name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
-if [[$ACR_NAME==""]]
+if [[ $ACR_NAME == "" ]]
 then
     echo "ACR login failed, exiting"
     exit 1
@@ -72,7 +72,6 @@ then
   echo "Endpoint created successfully"
 else
   echo "Something went wrong when creating endpoint. Cleaning up..."
-  az ml online-endpoint delete -n $ENDPOINT_NAME
   exit 1
 fi
 
@@ -120,5 +119,5 @@ az ml model delete -n $AML_MODEL_NAME --version 1
 
 # Delete environment
 echo "Deleting environment...."
-az ml online-endpoint delete -n $ENDPOINT_NAME
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 

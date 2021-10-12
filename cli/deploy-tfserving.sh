@@ -43,17 +43,15 @@ curl --header "Content-Type: application/json" \
 docker stop tfserving-test
 # </stop_image>
 
-# <create_endpoint>
-az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
-# </create_endpoint>
-
-# <create_deployment>
-az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
-# </create_deployment>
-
-# <get_status>
-az ml online-endpoint show -n $ENDPOINT_NAME
-# </get_status>
+EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+# Update endpoint if exists, else create
+if [[ $EXISTS == $ENDPOINT_NAME ]]
+then 
+  STATE=$(az ml online-endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
+  az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
+else
+  az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+fi
 
 # check if create was successful
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
@@ -66,6 +64,10 @@ else
   exit 1
 fi
 
+# <create_deployment>
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+# </create_deployment>
+
 deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
@@ -74,6 +76,8 @@ then
 else
   echo "Deployment failed"
   az ml online-endpoint delete -n $ENDPOINT_NAME
+  az ml model delete --name $MODEL_NAME --version 1
+  az ml environment delete --name tfserving-environmnet --version 1
   cleanup
   exit 1
 fi
