@@ -13,7 +13,7 @@ wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchser
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
-ACR_NAME=$(az ml workspace show --workspace-name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+ACR_NAME=$(az ml workspace show --name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
 if [[$ACR_NAME==""]]
 then
