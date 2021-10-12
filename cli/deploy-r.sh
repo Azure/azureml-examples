@@ -24,7 +24,8 @@ cleanup(){
     sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$DEPLOYMENT_NAME.yml
     echo "deleting endpoint, state is "$STATE
     az ml online-endpoint delete -n $ENDPOINT_NAME
-    az ml model delete --name $MODEL_NAME --version 1
+    az ml model delete --name plumber --version 1
+    az ml environment delete --name r-environment --version 1
 }
 
 # Run image locally for testing
@@ -44,8 +45,15 @@ docker stop r_server
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
-# Create endpoint
-az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+# Update endpoint if exists, else create
+if [[ $EXISTS == $ENDPOINT_NAME ]]
+then 
+  STATE=$(az ml online-endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
+  az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
+else
+  az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+fi
 
 # check if create was successful
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
@@ -55,6 +63,7 @@ then
   echo "Endpoint created successfully"
 else
   echo "Endpoint creation failed"
+  az ml online-endpoint delete --name $ENDPOINT_NAME
   exit 1
 fi
 

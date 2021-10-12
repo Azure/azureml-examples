@@ -6,6 +6,8 @@ model:
   version: 1
   local_path: ./scripts
 environment:
+  name: r-environment
+  version: 1
   image: {{acr_name}}.azurecr.io/r_server
   inference_config:
     liveness_route:

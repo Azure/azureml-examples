@@ -97,4 +97,7 @@ az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 az ml model delete --name $MODEL_NAME --version 1
 # </delelte_model>
 
+# Delete environment
+az ml environment delete --name tfserving-environmnet --version 1
+
 cleanup

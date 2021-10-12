@@ -54,13 +54,15 @@ docker stop torchserve-test
 # Deploy model to online endpoint
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
-# Create endpoint
-echo "Creating new endpoint..."
-az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
-
-# Create deployment
-echo "Creating deployment..."
-az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+# Update endpoint if exists, else create
+if [[ $EXISTS == $ENDPOINT_NAME ]]
+then 
+  STATE=$(az ml online-endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
+  az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
+else
+  az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+fi
 
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
@@ -74,6 +76,10 @@ else
   exit 1
 fi
 
+# Create deployment
+echo "Creating deployment..."
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+
 deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
@@ -83,6 +89,7 @@ else
   echo "Deployment failed"
   cleanTestingFiles
   az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  az ml environment delete --name torchserve-environment --version 1
   exit 1
 fi
 
@@ -110,4 +117,8 @@ az ml online-endpoint delete -n $ENDPOINT_NAME
 # Delete model
 echo "Deleting model..."
 az ml model delete -n $AML_MODEL_NAME --version 1
+
+# Delete environment
+echo "Deleting environment...."
+az ml online-endpoint delete -n $ENDPOINT_NAME
 
