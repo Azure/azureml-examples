@@ -23,7 +23,7 @@ az acr build $BASE_PATH -f $BASE_PATH/Dockerfile -t $IMAGE_TAG -r $ACR_NAME
 cleanup(){
     sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
     echo "deleting endpoint, state is "$STATE
-    az ml endpoint delete -n $ENDPOINT_NAME -y
+    az ml online-endpoint delete -n $ENDPOINT_NAME
 }
 
 # Run image locally for testing
@@ -43,22 +43,34 @@ docker stop r_server
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 
-EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
-# Update endpoint if exists, else create
-if [[ $EXISTS == $ENDPOINT_NAME ]]
-then 
-  STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
-  az ml endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+# Create endpoint
+az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+
+# check if create was successful
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $endpoint_status
+if [[ $endpoint_status == "Succeeded" ]]
+then
+  echo "Endpoint created successfully"
 else
-  az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+  echo "Endpoint creation failed"
+  exit 1
 fi
 
-STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
-if [[ $STATE != "Succeeded" ]]
+# Create deployment 
+az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml
+
+# <get_status>
+az ml online-endpoint show -n $ENDPOINT_NAME
+# </get_status>
+
+deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
 then
-  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
-  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
-  cleanup
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
   exit 1
 fi
 
@@ -66,10 +78,18 @@ fi
 echo "Testing endpoint"
 for i in {1..10}
 do
-   RESPONSE=$(az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
+   RESPONSE=$(az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
 done
 
 echo "Tested successfully, response was $RESPONSE. Cleaning up..."
 
 # Clean up
 cleanup
+
+# <delete_model>
+az ml model delete --name $MODEL_NAME --version 1
+# </delelte_model>
+
+# <delete_environment>
+az ml environment delete --name tfserving --version 1
+# </delete_environment>

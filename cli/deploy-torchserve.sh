@@ -3,6 +3,7 @@ AML_MODEL_NAME=torchserve-densenet161
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=torchserve-endpoint
+DEPLOYMENT_NAME=torchserve-deployment
 
 # Download model and config file
 echo "Downling model and config file..."
@@ -55,11 +56,16 @@ sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
 
 # Create endpoint
 echo "Creating new endpoint..."
-az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
 
-az ml endpoint get-logs --name $ENDPOINT_NAME --deployment torchserve
+# Create deployment
+echo "Creating deployment..."
+az ml online-deployment create -f $BASE_PATH/$DEPLOYMENT_NAME.yml
 
-ENDPOINT_STATUS=$(az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
+# Get logs
+az ml online-endpoint get-logs --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
+
+ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
 
 if [[ $ENDPOINT_STATUS == "Succeeded" ]]
@@ -67,19 +73,28 @@ then
   echo "Endpoint created successfully"
 else
   echo "Something went wrong when creating endpoint. Cleaning up..."
+  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  exit 1
+fi
+
+deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
+then
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
   cleanTestingFiles
-  az ml endpoint delete -n $ENDPOINT_NAME --yes
-  az ml model delete -n $AML_MODEL_NAME --version 1
   exit 1
 fi
 
 # Get accessToken
 echo "Getting access token..."
-TOKEN=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 
 # Get scoring url
 echo "Getting scoring url..."
-SCORING_URL=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 echo "Scoring url is $SCORING_URL"
 
 # Check scoring
@@ -92,8 +107,11 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-az ml endpoint delete -n $ENDPOINT_NAME --yes
+az ml online-endpoint delete -n $ENDPOINT_NAME
 
 # Delete model
 echo "Deleting model..."
 az ml model delete -n $AML_MODEL_NAME --version 1
+
+# Delete environment
+az ml environment delete --name torchserve --version 1
