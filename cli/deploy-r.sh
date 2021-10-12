@@ -7,9 +7,9 @@ wget https://aka.ms/r-model -O $BASE_PATH/scripts/model.rds
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
-ACR_NAME=$(az ml workspace show -w $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+ACR_NAME=$(az ml workspace show --workspace-name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
-if [[ $ACR_NAME == "" ]]
+if [[$ACR_NAME==""]]
 then
     echo "Getting ACR name failed, exiting"
     exit 1
