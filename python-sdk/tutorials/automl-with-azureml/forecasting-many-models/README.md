@@ -80,7 +80,6 @@ The functionality is broken into the notebooks folders designed to be run sequen
 | Notebook       | Description                                |
 |----------------|--------------------------------------------|
 | `00_Setup_AML_Workspace.ipynb`  | Creates and configures the AML Workspace, including deploying a compute cluster for training. |
-| `01_Data_Preparation.ipynb`     | Prepares the datasets that will be used during training and forecasting. |
 
 ### Using a custom training script to train the models:
 
@@ -88,6 +87,7 @@ The following notebooks are located under the [`Custom_Script/`](Custom_Script/)
 
 | Notebook       | Description                                |
 |----------------|--------------------------------------------|
+| `01_Data_Preparation.ipynb`     | Prepares the datasets that will be used during training and forecasting. |
 | `02_CustomScript_Training_Pipeline.ipynb`    | Creates a pipeline to train a model for each store and orange juice brand in the dataset using a custom script. |
 | `03_CustomScript_Forecasting_Pipeline.ipynb` | Creates a pipeline to forecast future orange juice sales using the models trained in the previous step.|
 
@@ -98,8 +98,7 @@ The following notebooks are located under the [`Automated_ML/`](Automated_ML/) f
 
 | Notebook       | Description                                |
 |----------------|--------------------------------------------|
-| `02_AutoML_Training_Pipeline.ipynb`    | Creates a pipeline to train a model for each store and orange juice brand in the dataset using Automated ML.  |
-| `03_AutoML_Forecasting_Pipeline.ipynb` | Creates a pipeline to forecast future orange juice sales using the models trained in the previous step.  |
+| `auto-ml-forecasting-many-models.ipynb`    | 1) Prepares the datasets that will be used during training and forecasting. 2) Creates a pipeline to train a model for each store and orange juice brand in the dataset using Automated ML. 3) Creates a pipeline to forecast future orange juice sales using the models trained in the previous step.|
 
 ## How-to-videos
 
