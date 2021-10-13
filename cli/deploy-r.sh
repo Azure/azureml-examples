@@ -49,7 +49,7 @@ docker stop r_server
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
 # Check endpoint existence
-EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
 
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]

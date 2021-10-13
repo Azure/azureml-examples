@@ -45,11 +45,12 @@ curl --header "Content-Type: application/json" \
 docker stop tfserving-test
 # </stop_image>
 
+# Check endpoint existence
 EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 
-  STATE=$(az ml online-endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
   az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
 else
   az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
