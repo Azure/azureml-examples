@@ -1,6 +1,8 @@
 ## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
 ## Please reach out to the Azure ML docs & samples team before before editing for the first time.
 
+set -e
+
 # <initialize_variables>
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=tfserving-mounted
@@ -81,6 +83,15 @@ else
   cleanup
   exit 1
 fi
+
+# Get accessToken
+echo "Getting access token..."
+TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+
+# Get scoring url
+echo "Getting scoring url..."
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+echo "Scoring url is $SCORING_URL"
 
 # Test remotely
 echo "Testing endpoint"

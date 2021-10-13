@@ -1,3 +1,6 @@
+set -e
+
+# Assign values
 BASE_PATH=endpoints/online/custom-container/r
 ENDPOINT_NAME=r-endpoint
 DEPLOYMENT_NAME=r-deployment
@@ -23,7 +26,7 @@ az acr build $BASE_PATH -f $BASE_PATH/Dockerfile -t $IMAGE_TAG -r $ACR_NAME
 cleanup(){
     sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$DEPLOYMENT_NAME.yml
     echo "deleting endpoint, state is "$STATE
-    az ml online-endpoint delete -n $ENDPOINT_NAME
+    az ml online-endpoint delete -n $ENDPOINT_NAME --yes
     az ml model delete --name plumber --version 1
     az ml environment delete --name r-environment --version 1
 }
@@ -45,7 +48,9 @@ docker stop r_server
 # Fill in placeholders in deployment YAML
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
-EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+# Check endpoint existence
+EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 
@@ -83,6 +88,15 @@ else
   cleanup 
   exit 1
 fi
+
+# Get accessToken
+echo "Getting access token..."
+TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+
+# Get scoring url
+echo "Getting scoring url..."
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+echo "Scoring url is $SCORING_URL"
 
 # Test remotely
 echo "Testing endpoint"
