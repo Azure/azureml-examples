@@ -168,7 +168,7 @@ RESPONSE=$(curl --location --request POST "$SCORING_URI" \
 }")
 # </start_batch_scoring_job_rest>
 
-# <check_job_status>
+# <check_job_status_rest>
 # define how to wait  
 wait_for_completion () {
     operation_id=$1
@@ -208,7 +208,7 @@ wait_for_completion () {
 JOB_ID=$(echo $RESPONSE | jq -r '.id')
 JOB_ID_SUFFIX=$(echo ${JOB_ID##/*/})
 wait_for_completion $SCORING_URI/$JOB_ID_SUFFIX $AUTH_TOKEN
-# </check_job_status>
+# </check_job_status_rest>
 
 # <delete_deployment>
 az ml batch-deployment delete --name nonmlflowdp --endpoint-name $ENDPOINT_NAME --yes
