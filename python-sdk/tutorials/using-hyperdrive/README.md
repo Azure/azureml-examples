@@ -33,7 +33,7 @@ The only file that you need to run is the [HyperDrive_MultiStep_Training_Pipelin
   * subscription_id
   * resource_group
   * workspace_name
-* A `.env` file that will be utilized by the python dotenv library to read in secrets through the notebook. Use the template `.env.example`, fill in secrets, and then rename it to a `.env` file, with the following information required:
+* A `.env` file that will be utilized by the python dotenv library to read in secrets through the notebook, with the following information required:
   * AML_CLUSTER_CPU_SKU: AzureML compute cluster used to distribute the training across a cluster of CPU or GPU compute nodes in the cloud. See the list of [VM SKUs]((https://docs.microsoft.com/en-us/azure/machine-learning/reference-managed-online-endpoints-vm-sku-list) ) supported for AzureML managed online endpoints, and learn how to create and manage a [compute cluster](https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-target#azure-machine-learning-compute-managed) in your AzureML workspace.
   * AML_CLUSTER_NAME: The name of AzureML compute cluster used for running a job.
   * AML_CLUSTER_PRIORITY: You may choose to use [low-priority VMs](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-optimize-cost) with reduced price compared to dedicated VMs.
@@ -52,7 +52,7 @@ To make the notebook more concise and readable, helper scripts are used within t
     │   HyperDrive_MultiStep_Training_Pipeline.ipynb
     │   Fictitious_Model_for_Hyperparameter_Tuning.ipynb
     │   README.md
-    │   .env.example        
+    │   .env        
     └───src
         ├───common
         │      attach_compute.py
