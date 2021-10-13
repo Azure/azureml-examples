@@ -80,7 +80,7 @@ else
   echo "Deployment failed"
   az ml online-endpoint delete -n $ENDPOINT_NAME
   az ml model delete --name $MODEL_NAME --version 1
-  az ml environment delete --name tfserving-environmnet --version 1
+  az ml environment delete --name tfserving-environment --version 1
   cleanup
   exit 1
 fi
