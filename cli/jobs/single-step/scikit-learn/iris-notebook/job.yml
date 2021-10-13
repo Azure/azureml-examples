@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: src
 command: >-
-  papermill main.ipynb out.ipynb -k python
+  papermill main.ipynb outputs/out.ipynb -k python
 environment:
   build:
     local_path: docker-context
