@@ -1,0 +1,12 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  papermill main.ipynb outputs/out.ipynb -k python
+environment:
+  build:
+    local_path: docker-context
+compute: azureml:cpu-cluster
+display_name: sklearn-iris-notebook-example
+experiment_name: sklearn-iris-notebook-example
+description: Train a scikit-learn SVM on the Iris dataset using a custom Docker container build with a notebook via papermill.
