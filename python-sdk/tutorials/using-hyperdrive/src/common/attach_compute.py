@@ -14,6 +14,8 @@ log = getLogger(__name__)
 
 def get_compute(
     workspace: Workspace,
+    get_default: bool,
+    get_default_type: str,
     compute_name: str,
     vm_size: str,
     vm_priority: str,
@@ -35,7 +37,10 @@ def get_compute(
       ComputeTarget: a reference to compute
     """
     try:
-        if compute_name in workspace.compute_targets:
+        compute_target = workspace.get_default_compute_target(get_default_type)
+        if get_default and compute_target:
+            log.info("Using default compute for the workspace")
+        elif compute_name in workspace.compute_targets:
             compute_target = workspace.compute_targets[compute_name]
             if compute_target and isinstance(compute_target, AmlCompute):
                 log.info("Found existing compute target %s so using it.", compute_name)
@@ -47,7 +52,6 @@ def get_compute(
                 max_nodes=max_nodes,
                 idle_seconds_before_scaledown=scale_down,
             )
-
             compute_target = ComputeTarget.create(
                 workspace, compute_name, compute_config
             )
