@@ -70,7 +70,7 @@ else
   exit 1
 fi
 
-deploy_status=`az ml online-deployment show --name blue --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name tfserving-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
