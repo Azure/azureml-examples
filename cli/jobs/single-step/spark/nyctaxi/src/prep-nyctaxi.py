@@ -23,15 +23,13 @@ parser.add_argument("--nyc_taxi_dataset")
 args = parser.parse_args()
 dataset = args.nyc_taxi_dataset
 print(f"dataset location: {dataset}")
-os.system(f"find {dataset}")
+#os.system(f"find {dataset}")
 
 spark = (
     SparkSession.builder.appName("AML Dataprep")
     .config("spark.executor.cores", 1)
-    .config("spark.executor.instances", 1)
-    .config("spark.executor.memory", "1g")
-    .config("spark.executor.cores", 1)
-    .config("spark.executor.instances", 1)
+    .config("spark.executor.instances", 16)
+    .config("spark.executor.memory", "4g")
     .getOrCreate()
 )
 

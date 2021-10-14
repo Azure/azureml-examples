@@ -25,8 +25,8 @@ dependencies:
   - s3fs
   - fastparquet
   - adlfs
+  - pyspark
   - pip:
     - python-snappy
     - fastparquet
     - azureml-mlflow
-    - pyspark
