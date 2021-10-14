@@ -4,8 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.8
-  - gcsfs
-  - fs-gcsfs
+  - pip=21.2.4
   - numpy
   - scipy
   - pandas
@@ -25,8 +24,8 @@ dependencies:
   - s3fs
   - fastparquet
   - adlfs
-  - pyspark
   - pip:
+    - pyspark
     - python-snappy
     - fastparquet
     - azureml-mlflow
