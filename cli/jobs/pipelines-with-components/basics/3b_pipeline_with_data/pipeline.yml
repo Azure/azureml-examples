@@ -28,7 +28,7 @@ jobs:
       componentB_input: ${{jobs.componentA_job.outputs.componentA_output}}
     outputs:
       componentB_output: 
-        mode: rw-mount
+        mode: rw_mount
   componentC_job:
     type: component
     component: file:./componentC.yml
