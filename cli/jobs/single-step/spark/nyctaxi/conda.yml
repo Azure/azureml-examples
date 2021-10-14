@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.8
-  - pip=21.2.4
+  - pip=20.3.4
   - gcsfs
   - fs-gcsfs
   - numpy
