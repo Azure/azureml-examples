@@ -128,7 +128,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 # </create_environment>
 
 # <create_compute>
-response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/cpu-cluster?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/batch-cluster?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{
@@ -138,7 +138,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
             \"osType\": \"Linux\",
             \"vmSize\": \"STANDARD_D2_V2\",
             \"scaleSettings\": {
-                \"maxNodeCount\": 3,
+                \"maxNodeCount\": 5,
                 \"minNodeCount\": 0
             },
             \"remoteLoginPortPublicAccess\": \"NotSpecified\"
@@ -180,7 +180,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
             \"scoringScript\": \"digit_identification.py\"
         },
         \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/mnist-env/versions/$ENV_VERSION\",
-        \"compute\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/cpu-cluster\",
+        \"compute\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/batch-cluster\",
         \"resources\": {
             \"instanceCount\": 1
         },
