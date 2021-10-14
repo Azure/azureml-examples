@@ -5,6 +5,8 @@ channels:
 dependencies:
   - python=3.8
   - pip=21.2.4
+  - gcsfs
+  - fs-gcsfs
   - numpy
   - scipy
   - pandas
@@ -25,7 +27,7 @@ dependencies:
   - fastparquet
   - adlfs
   - pip:
-    - pyspark
     - python-snappy
     - fastparquet
     - azureml-mlflow
+    - pyspark
