@@ -2,3 +2,6 @@ $schema: https://azuremlschemas.azureedge.net/latest/vmCompute.schema.json
 name: vm-example
 type: virtualmachine
 resource_id: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Compute/virtualMachines/<VM_NAME>
+ssh_settings:
+  admin_username: example-user
+  ssh_private_key_file: <PATH_TO_FILE>
