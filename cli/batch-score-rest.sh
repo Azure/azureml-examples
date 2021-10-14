@@ -138,7 +138,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
             \"osType\": \"Linux\",
             \"vmSize\": \"STANDARD_D2_V2\",
             \"scaleSettings\": {
-                \"maxNodeCount\": 3,
+                \"maxNodeCount\": 5,
                 \"minNodeCount\": 0
             },
             \"remoteLoginPortPublicAccess\": \"NotSpecified\"
