@@ -1,37 +1,3 @@
 $schema: https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
 name: tfserving-endpoint
-type: online
 auth_mode: aml_token
-traffic:
-  tfserving: 100
-
-deployments:
-  - name: tfserving
-    model:
-      name: tfserving-mounted
-      version: 1
-      local_path: ./half_plus_two
-    environment_variables:
-      MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/1
-      MODEL_NAME: half_plus_two
-    environment:
-      name: tfserving
-      version: 1
-      docker:
-        image: docker.io/tensorflow/serving:latest
-      inference_config:
-        liveness_route:
-          port: 8501
-          path: /v1/models/half_plus_two
-        readiness_route:
-          port: 8501
-          path: /v1/models/half_plus_two
-        scoring_route:
-          port: 8501
-          path: /v1/models/half_plus_two:predict
-    instance_type: Standard_F2s_v2
-    scale_settings:
-      scale_type: manual
-      instance_count: 1
-      min_instances: 1
-      max_instances: 2
