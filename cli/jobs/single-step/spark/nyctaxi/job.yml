@@ -6,7 +6,7 @@ command: >-
   --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
 inputs:
   nyc_taxi_dataset:
-    folder: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
+    folder: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/yellow
     mode: ro_mount
 environment: 
   image: mcr.microsoft.com/mmlspark/release
