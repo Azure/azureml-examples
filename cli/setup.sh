@@ -14,3 +14,4 @@ WORKSPACE="main"
 # <az_configure_defaults>
 az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 # </az_configure_defaults>
+
