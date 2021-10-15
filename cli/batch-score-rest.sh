@@ -277,9 +277,9 @@ response=$(curl --location --request POST $SCORING_URI \
         }
         \"output\": {
             \"datastoreId\": \"workspaceblobstore\",
-            \"path\": "$ENDPOINT_NAME"
+            \"path\": \"$ENDPOINT_NAME\"
         },
-        \"outputFileName\": "$OUTPUT_FILE_NAME"
+        \"outputFileName\": \"$OUTPUT_FILE_NAME\"
     }
 }")
 # </score_endpoint_with_dataset>
