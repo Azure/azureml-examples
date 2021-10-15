@@ -275,8 +275,8 @@ response=$(curl --location --request POST $SCORING_URI \
             \"datasetName\": \"$DATASET_NAME\",
             \"datasetVersion\": \"$DATASET_VERSION\"
         },
-        \"output\": {
-            \"datastoreId\": \"workspaceblobstore\",
+        \"outputDataset\": {
+            \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
             \"path\": \"$ENDPOINT_NAME\"
         },
         \"outputFileName\": \"$OUTPUT_FILE_NAME\"
