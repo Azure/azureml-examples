@@ -6,10 +6,10 @@ command: >-
   --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
 inputs:
   nyc_taxi_dataset:
-    folder: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
+    folder: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/yellow
     mode: ro_mount
 environment: 
-  image: mcr.microsoft.com/mmlspark/release
+  image: mcr.microsoft.com/mmlspark/release:1.0.0-rc3
   conda_file: conda.yml
 compute: azureml:cpu-cluster-lg
 resources:
