@@ -92,15 +92,6 @@ az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/ba
 # </upload_model>
 
 # <create_model>
-response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/mnist?api-version=$API_VERSION" \
---header "Authorization: Bearer $TOKEN" \
---header "Content-Type: application/json" \
---data-raw "{
-    \"properties\": {
-        \"description\":\"Container for the mnist model\",
-    }
-}")
-
 response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/mnist/versions/1?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
@@ -262,12 +253,16 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"properties\": {
         \"paths\": [
             {
-                \"file\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
+                \"folder\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
             }
         ]
     }
 }")
 #</create_dataset>
+
+#<unique_output>
+export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
+#</unique_output>
 
 # <score_endpoint_with_dataset>
 response=$(curl --location --request POST $SCORING_URI \
@@ -279,10 +274,14 @@ response=$(curl --location --request POST $SCORING_URI \
             \"dataInputType\": \"DatasetVersion\",
             \"datasetName\": \"$DATASET_NAME\",
             \"datasetVersion\": \"$DATASET_VERSION\"
-        }
+        },
+        \"outputDataset\": {
+            \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
+            \"path\": \"$ENDPOINT_NAME\"
+        },
+        \"outputFileName\": \"$OUTPUT_FILE_NAME\"
     }
 }")
-
 # </score_endpoint_with_dataset>
 
 JOB_ID=$(echo $response | jq -r '.id')
