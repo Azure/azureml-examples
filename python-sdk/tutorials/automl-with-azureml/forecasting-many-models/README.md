@@ -93,12 +93,10 @@ The following notebooks are located under the [`Custom_Script/`](Custom_Script/)
 
 ### Using Automated ML to train the models:
 
-The following notebooks are located under the [`Automated_ML/`](Automated_ML/) folder.
+The `auto-ml-forecasting-many-models.ipynb` noteboook is a guided solution accelerator that demonstrates steps from data preparation, to model training, and forecasting on train models as well as operationalizing the solution.
 
 
-| Notebook       | Description                                |
-|----------------|--------------------------------------------|
-| `auto-ml-forecasting-many-models.ipynb`    | 1) Prepares the datasets that will be used during training and forecasting. 2) Creates a pipeline to train a model for each store and orange juice brand in the dataset using Automated ML. 3) Creates a pipeline to forecast future orange juice sales using the models trained in the previous step.|
+If you wish to train with your own script and custom models, you may also leverage the [Custom Script Many Models Solution Accelerator](#Using-a-custom-training-script-to-train-the-models:).
 
 ## How-to-videos
 
