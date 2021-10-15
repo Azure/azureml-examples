@@ -274,7 +274,7 @@ response=$(curl --location --request POST $SCORING_URI \
             \"dataInputType\": \"DatasetVersion\",
             \"datasetName\": \"$DATASET_NAME\",
             \"datasetVersion\": \"$DATASET_VERSION\"
-        }
+        },
         \"output\": {
             \"datastoreId\": \"workspaceblobstore\",
             \"path\": \"$ENDPOINT_NAME\"
