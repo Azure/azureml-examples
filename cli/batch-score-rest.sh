@@ -19,7 +19,7 @@ export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 echo "Using: SUBSCRIPTION_ID: $SUBSCRIPTION_ID LOCATION: $LOCATION RESOURCE_GROUP: $RESOURCE_GROUP WORKSPACE: $WORKSPACE ENDPOINT_NAME: $ENDPOINT_NAME"
 
-# define how to wait  
+# <define_wait>  
 wait_for_completion () {
     operation_id=$1
     access_token=$2
@@ -53,6 +53,7 @@ wait_for_completion () {
         echo "Error: $error"
     fi
 }
+# </define_wait>  
 
 # <get_storage_details>
 # Get values for storage account
