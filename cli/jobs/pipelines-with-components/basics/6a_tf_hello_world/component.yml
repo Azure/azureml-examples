@@ -7,14 +7,10 @@ name: TF-hello-world
 display_name: TF-hello-world
 version: 1
 compute: azureml:gpu-cluster
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:14
 command: echo $TF_CONFIG
 resources:
   instance_count: 2
 distribution:
   type: tensorflow
   worker_count: 2
-
-## TODO: remove
-# environment_variables:
-#  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"

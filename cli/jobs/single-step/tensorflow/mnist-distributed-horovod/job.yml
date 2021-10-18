@@ -6,7 +6,7 @@ command: >-
   --epochs ${{inputs.epochs}}
 inputs:
   epochs: 1
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:14
 compute: azureml:gpu-cluster
 resources:
   instance_count: 2
@@ -16,7 +16,3 @@ distribution:
 display_name: tensorflow-mnist-distributed-horovod-example
 experiment_name: tensorflow-mnist-distributed-horovod-example
 description: Train a basic neural network with TensorFlow on the MNIST dataset, distributed via Horovod.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

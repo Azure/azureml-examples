@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: echo "hello world" > ./outputs/helloworld.txt
+environment:
+  image: python:latest
+compute: azureml:cpu-cluster

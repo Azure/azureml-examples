@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: my-endpoint
 model:

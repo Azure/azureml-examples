@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >-
+  pip install mlflow azureml-mlflow
+  &&
+  python hello-mlflow.py
+code:
+  local_path: src
+environment:
+  image: python:3.8
+compute: azureml:cpu-cluster

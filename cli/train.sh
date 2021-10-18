@@ -1,187 +1,164 @@
-## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
-## Please reach out to the Azure ML docs & samples team before before editing for the first time.
-
-# <create_computes>
-az ml compute create -n cpu-cluster --type AmlCompute --min-instances 0 --max-instances 40
-az ml compute create -n gpu-cluster --type AmlCompute --min-instances 0 --max-instances 8 --size Standard_NC12
-# </create_computes>
-
 # <hello_world>
-az ml job create -f jobs/misc/hello-world.yml --web
+az ml job create -f jobs/basics/hello-world.yml --web
 # </hello_world>
 
-# <lightgbm_iris>
-az ml job create -f jobs/train/lightgbm/iris/job.yml --web
-# </lightgbm_iris>
+# <hello_world_set>
+az ml job create -f jobs/basics/hello-world.yml \
+  --set environment.image="python:3.8" \
+  --web
+# </hello_world_set>
 
-# <lightgbm_iris_output>
-run_id=$(az ml job create -f jobs/train/lightgbm/iris/job.yml --query name -o tsv)
-# </lightgbm_iris_output>
+# <hello_world_name>
+run_id=$(az ml job create -f jobs/basics/hello-world.yml --query name -o tsv)
+# </hello_world_name>
 
-# <show_job_in_studio>
+# <hello_world_show>
 az ml job show -n $run_id --web
-# </show_job_in_studio>
+# </hello_world_show>
 
-# <stream_job_logs_to_console>
-az ml job stream -n $run_id
-# </stream_job_logs_to_console>
+# <hello_world_org>
+az ml job create -f jobs/basics/hello-world-org.yml --web
+# </hello_world_org>
 
-# <check_job_status>
-status=$(az ml job show -n $run_id --query status -o tsv)
-echo $status
-if [[ $status == "Completed" ]]
+run_id=$(az ml job create -f jobs/basics/hello-world-org.yml --query name -o tsv)
+# <hello_world_org_set>
+az ml job update -n $run_id --set \
+  display_name="updated display name" \
+  experiment_name="updated experiment name" \
+  description="updated description"  \
+  tags.hello="updated tag"
+# </hello_world_org_set>
+
+# <hello_world_env_var>
+az ml job create -f jobs/basics/hello-world-env-var.yml --web
+# </hello_world_env_var>
+
+# <hello_mlflow>
+az ml job create -f jobs/basics/hello-mlflow.yml --web
+# </hello_mlflow>
+
+# <mlflow_uri>
+az ml workspace show --query mlflow_tracking_uri -o tsv
+# </mlflow_uri>
+
+# <hello_world_input>
+az ml job create -f jobs/basics/hello-world-input.yml --web
+# </hello_world_input>
+
+# <hello_world_input_set>
+az ml job create -f jobs/basics/hello-world-input.yml --set \
+  inputs.hello_string="hello there" \
+  inputs.hello_number=24 \
+  --web
+# </hello_world_input_set>
+
+# <hello_sweep>
+az ml job create -f jobs/basics/hello-sweep.yml --web
+# </hello_sweep>
+
+# <hello_world_output>
+az ml job create -f jobs/basics/hello-world-output.yml --web
+# </hello_world_output>
+
+run_id=$(az ml job create -f jobs/basics/hello-world-output.yml --query name -o tsv)
+if [[ -z "$run_id" ]]
 then
-  echo "Job completed"
-elif [[ $status == "Failed" ]]
-then
-  echo "Job failed"
-  exit 1
-else 
-  echo "Job status not failed or completed"
-  exit 2
+  echo "Job creation failed"
+  exit 3
 fi
-# </check_job_status>
-
-# <download_outputs>
-az ml job download -n $run_id --outputs
-# </download_outputs>
-
-# <lightgbm_iris_sweep>
-az ml job create -f jobs/train/lightgbm/iris/job-sweep.yml --web
-# </lightgbm_iris_sweep>
-
-# <lightgbm_iris_sweep_output>
-run_id=$(az ml job create -f jobs/train/lightgbm/iris/job-sweep.yml --query name -o tsv)
-# </lightgbm_iris_sweep_output>
-
-# <show_job_in_studio>
-az ml job show -n $run_id --web
-# </show_job_in_studio>
-
-# <stream_job_logs_to_console>
-az ml job stream -n $run_id
-# </stream_job_logs_to_console>
-
-# <check_job_status>
 status=$(az ml job show -n $run_id --query status -o tsv)
-echo $status
-if [[ $status == "Completed" ]]
+if [[ -z "$status" ]]
 then
-  echo "Job completed"
-elif [[ $status == "Failed" ]]
-then
-  echo "Job failed"
-  exit 1
-else 
-  echo "Job status not failed or completed"
-  exit 2
+  echo "Status query failed"
+  exit 4
 fi
-# </check_job_status>
- 
-# <download_cifar>
-wget "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
-tar -xvzf cifar-10-python.tar.gz
-rm cifar-10-python.tar.gz
-mkdir jobs/train/pytorch/cifar-distributed/data
-mv cifar-10-batches-py jobs/train/pytorch/cifar-distributed/data
-# </download_cifar>
+running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
+while [[ ${running[*]} =~ $status ]]
+do
+  sleep 8 
+  status=$(az ml job show -n $run_id --query status -o tsv)
+  echo $status
+done
+
+# <hello_world_output_download>
+az ml job download -n $run_id
+# </hello_world_output_download>
+rm -r $run_id
+
+# <iris_file>
+az ml job create -f jobs/basics/hello-iris-file.yml --web
+# </iris_file>
+
+# <iris_folder>
+az ml job create -f jobs/basics/hello-iris-folder.yml --web
+# </iris_folder>
+
+# <iris_datastore_file>
+az ml job create -f jobs/basics/hello-iris-datastore-file.yml --web
+# </iris_datastore_file>
+
+# <iris_datastore_folder>
+az ml job create -f jobs/basics/hello-iris-datastore-folder.yml --web
+# </iris_datastore_folder>
+
+# <hello_world_output_data>
+az ml job create -f jobs/basics/hello-world-output-data.yml --web
+# </hello_world_output_data>
+
+# <hello_pipeline>
+az ml job create -f jobs/basics/hello-pipeline.yml --web
+# </hello_pipeline>
+
+# <hello_pipeline_io>
+az ml job create -f jobs/basics/hello-pipeline-io.yml --web
+# </hello_pipeline_io>
+
+# <hello_pipeline_settings>
+az ml job create -f jobs/basics/hello-pipeline-settings.yml --web
+# </hello_pipeline_settings>
+
+# <hello_pipeline_abc>
+az ml job create -f jobs/basics/hello-pipeline-abc.yml --web
+# </hello_pipeline_abc>
+
+# <sklearn_iris>
+az ml job create -f jobs/single-step/scikit-learn/iris/job.yml --web
+# </sklearn_iris>
+
+run_id=$(az ml job create -f jobs/single-step/scikit-learn/iris/job.yml --query name -o tsv)
+if [[ -z "$run_id" ]]
+then
+  echo "Job creation failed"
+  exit 3
+fi
+status=$(az ml job show -n $run_id --query status -o tsv)
+if [[ -z "$status" ]]
+then
+  echo "Status query failed"
+  exit 4
+fi
+running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
+while [[ ${running[*]} =~ $status ]]
+do
+  sleep 8 
+  status=$(az ml job show -n $run_id --query status -o tsv)
+  echo $status
+done
+
+# <sklearn_download_register_model>
+az ml job download -n $run_id
+az ml model create -n sklearn-iris-example -l $run_id/model/
+# </sklearn_download_register_model>
+rm -r $run_id
+
+# <sklearn_sweep>
+az ml job create -f jobs/single-step/scikit-learn/iris/job-sweep.yml --web
+# </sklearn_sweep>
 
 # <pytorch_cifar>
-az ml job create -f jobs/train/pytorch/cifar-distributed/job.yml --web
+az ml job create -f jobs/single-step/pytorch/cifar-distributed/job.yml --web
 # </pytorch_cifar>
 
-# <pytorch_cifar_output>
-run_id=$(az ml job create -f jobs/train/pytorch/cifar-distributed/job.yml --query name -o tsv)
-# </pytorch_cifar_output>
-
-# <show_job_in_studio>
-az ml job show -n $run_id --web
-# </show_job_in_studio>
-
-# <stream_job_logs_to_console>
-az ml job stream -n $run_id
-# </stream_job_logs_to_console>
-
-# <check_job_status>
-status=$(az ml job show -n $run_id --query status -o tsv)
-echo $status
-if [[ $status == "Completed" ]]
-then
-  echo "Job completed"
-elif [[ $status == "Failed" ]]
-then
-  echo "Job failed"
-  exit 1
-else 
-  echo "Job status not failed or completed"
-  exit 2
-fi
-# </check_job_status>
-
-# <download_outputs>
-az ml job download -n $run_id --outputs
-# </download_outputs>
-
-# <tensorflow_mnist>
-az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --web
-# </tensorflow_mnist>
-
-# <tensorflow_mnist_output>
-run_id=$(az ml job create -f jobs/train/tensorflow/mnist-distributed/job.yml --query name -o tsv)
-# </tensorflow_mnist_output>
-
-# <show_job_in_studio>
-az ml job show -n $run_id --web
-# </show_job_in_studio>
-
-# <stream_job_logs_to_console>
-az ml job stream -n $run_id
-# </stream_job_logs_to_console>
-
-# <check_job_status>
-status=$(az ml job show -n $run_id --query status -o tsv)
-echo $status
-if [[ $status == "Completed" ]]
-then
-  echo "Job completed"
-elif [[ $status == "Failed" ]]
-then
-  echo "Job failed"
-  exit 1
-else 
-  echo "Job status not failed or completed"
-  exit 2
-fi
-# </check_job_status>
-
-# <tensorflow_mnist_horovod>
-az ml job create -f jobs/train/tensorflow/mnist-distributed-horovod/job.yml --web
-# </tensorflow_mnist_horovod>
-
-# <tensorflow_mnist_horovod_output>
-run_id=$(az ml job create -f jobs/train/tensorflow/mnist-distributed-horovod/job.yml --query name -o tsv)
-# </tensorflow_mnist_horovod_output>
-
-# <show_job_in_studio>
-az ml job show -n $run_id --web
-# </show_job_in_studio>
-
-# <stream_job_logs_to_console>
-az ml job stream -n $run_id
-# </stream_job_logs_to_console>
-
-# <check_job_status>
-status=$(az ml job show -n $run_id --query status -o tsv)
-echo $status
-if [[ $status == "Completed" ]]
-then
-  echo "Job completed"
-elif [[ $status == "Failed" ]]
-then
-  echo "Job failed"
-  exit 1
-else 
-  echo "Job status not failed or completed"
-  exit 2
-fi
-# </check_job_status>
+# <pipeline_cifar>
+az ml job create -f jobs/pipelines/cifar-10/job.yml --web
+# </pipeline_cifar>

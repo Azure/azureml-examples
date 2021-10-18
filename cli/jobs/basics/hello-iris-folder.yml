@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >-
+  ls ${{inputs.data_dir}}
+  &&
+  echo "--iris-csv: ${{inputs.data_dir}}/iris.csv"
+  &&
+  pip install pandas
+  &&
+  python hello-iris.py
+  --iris-csv ${{inputs.data_dir}}/iris.csv
+code:
+  local_path: src
+inputs:
+  data_dir: 
+    folder: wasbs://datasets@azuremlexamples.blob.core.windows.net/
+environment:
+  image: python:latest
+compute: azureml:cpu-cluster

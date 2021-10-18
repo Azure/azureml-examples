@@ -10,10 +10,9 @@ EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
-    "instance",
+    "vm-attach",
 ]
 EXCLUDED_ASSETS = [
-    "dataset",
     "conda-yamls",
     "mlflow-models",
 ]
@@ -21,10 +20,17 @@ EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 
 # define functions
 def main(args):
+    # get list of notebooks
+    notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+
+    # make all notebooks consistent
+    modify_notebooks(notebooks)
+
     # get list of jobs
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/*/basics/*.yml", recursive=False))
-    jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=False))
+    jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
+    jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -82,6 +88,29 @@ def main(args):
         if not check_readme(readme_before, readme_after):
             print("README.md file did not match...")
             exit(2)
+
+
+def modify_notebooks(notebooks):
+    # setup variables
+    kernelspec = {
+        "display_name": "Python 3.8 - AzureML",
+        "language": "python",
+        "name": "python38-azureml",
+    }
+
+    # for each notebooks
+    for notebook in notebooks:
+
+        # read in notebook
+        with open(notebook, "r") as f:
+            data = json.load(f)
+
+        # update metadata
+        data["metadata"]["kernelspec"] = kernelspec
+
+        # write notebook
+        with open(notebook, "w") as f:
+            json.dump(data, f, indent=1)
 
 
 def write_readme(jobs, endpoints, resources, assets, scripts):

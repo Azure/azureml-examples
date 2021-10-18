@@ -1,13 +1,18 @@
 BASE_PATH=endpoints/online/custom-container/r
-ENDPOINT_NAME=r-endpoint
 DEPLOYMENT_NAME=r-deployment
+
+# <set_endpoint_name> 
+export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+# </set_endpoint_name>
+
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # Download model
 wget https://aka.ms/r-model -O $BASE_PATH/scripts/model.rds
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
-ACR_NAME=$(az ml workspace show -w $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
 if [[ $ACR_NAME == "" ]]
 then
@@ -21,9 +26,10 @@ az acr build $BASE_PATH -f $BASE_PATH/Dockerfile -t $IMAGE_TAG -r $ACR_NAME
 
 # Clean up utility
 cleanup(){
-    sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/$ENDPOINT_NAME.yml
-    echo "deleting endpoint, state is "$STATE
-    az ml endpoint delete -n $ENDPOINT_NAME -y
+    sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/r-deployment.yml
+    az ml online-endpoint delete -n $ENDPOINT_NAME -y
+    az ml model delete -n plumber -v 1
+    az ml environment delete -n r-environment -v 1
 }
 
 # Run image locally for testing
@@ -41,23 +47,34 @@ curl -H "Content-Type: application/json" --data @$BASE_PATH/sample_request.json 
 docker stop r_server
 
 # Fill in placeholders in deployment YAML
-sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/r-deployment.yml
 
-EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
-# Update endpoint if exists, else create
-if [[ $EXISTS == $ENDPOINT_NAME ]]
-then 
-  STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
-  az ml endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+# <create_endpoint>
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/custom-container/r/r-endpoint.yml
+# </create_endpoint>
+
+# <create_deployment>
+az ml online-deployment create --name r-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/custom-container/r/r-deployment.yml --all-traffic
+# </create_deployment>
+
+# check if create was successful
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $endpoint_status
+if [[ $endpoint_status == "Succeeded" ]]
+then
+  echo "Endpoint created successfully"
 else
-  az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+  echo "Endpoint creation failed"
+  exit 1
 fi
 
-STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
-if [[ $STATE != "Succeeded" ]]
+deploy_status=`az ml online-deployment show --name r-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
 then
-  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
-  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
   cleanup
   exit 1
 fi
@@ -66,7 +83,7 @@ fi
 echo "Testing endpoint"
 for i in {1..10}
 do
-   RESPONSE=$(az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
+   RESPONSE=$(az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
 done
 
 echo "Tested successfully, response was $RESPONSE. Cleaning up..."

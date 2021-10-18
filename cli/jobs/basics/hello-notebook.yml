@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >-
+  pip install ipykernel papermill
+  &&
+  papermill hello-notebook.ipynb outputs/out.ipynb -k python
+code:
+  local_path: src
+environment:
+  image: python:latest
+compute: azureml:cpu-cluster
