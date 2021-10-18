@@ -1,13 +1,14 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: cifar-10-pipeline-example
+experiment_name: cifar-10-pipeline-example
 jobs:
   get-data:
     command: bash main.sh ${{outputs.cifar}}
     code:
       local_path: src/get-data
     environment:
-      image: python
+      image: python:latest
     compute: azureml:cpu-cluster
     outputs:
       cifar:
@@ -24,7 +25,7 @@ jobs:
       cifar: ${{jobs.get-data.outputs.cifar}}
     outputs:
       model_dir:
-    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
@@ -38,7 +39,7 @@ jobs:
       --model-dir ${{inputs.model_dir}}/model
     code:
       local_path: src/eval-model
-    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch

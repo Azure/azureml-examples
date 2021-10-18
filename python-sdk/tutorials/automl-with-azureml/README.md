@@ -106,7 +106,7 @@ jupyter notebook
 ## Setup using Azure Databricks
 
 **NOTE**: Please create your Azure Databricks cluster as v7.1 (high concurrency preferred) with **Python 3** (dropdown).
-**NOTE**: You should at least have contributor access to your Azure subcription to run the notebook.
+**NOTE**: You should at least have contributor access to your Azure subscription to run the notebook.
 - You can find the detail Readme instructions at [GitHub](https://github.com/Azure/MachineLearningNotebooks/tree/master/how-to-use-azureml/azure-databricks/automl).
 - Download the sample notebook automl-databricks-local-01.ipynb from [GitHub](https://github.com/Azure/MachineLearningNotebooks/tree/master/how-to-use-azureml/azure-databricks/automl) and import into the Azure databricks workspace.
 - Attach the notebook to the cluster.
@@ -202,8 +202,43 @@ jupyter notebook
           - create a Pipeline to run an AutoML experiment and register the best resulting model in the Workspace
           - publish the training pipeline created and schedule it to run daily
 
+## Computer Vision
+- **Image Classification Multi-Class**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-classification-multiclass/auto-ml-image-classification-multiclass.ipynb)**
+          - train an Image Classification Multi-Class model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Image Classification Multi-Label**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-classification-multilabel/auto-ml-image-classification-multilabel.ipynb)**
+          - train an Image Classification Multi-Label model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Object Detection**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-object-detection/auto-ml-image-object-detection.ipynb)**
+          - train an Object Detection model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Instance Segmentation**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-instance-segmentation/auto-ml-image-instance-segmentation.ipynb)**
+          - train an Instance Segmentation model using AutoML
+          - tune hyperparameters of the model to optimize model performance
+          - deploy the model to use in inference scenarios
+- **Batch Scoring with an Image Classification Model**
+    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+        - **[Jupyter Notebook](image-pipelines/image-classification-multiclass-batch-scoring/auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
+          - register an Image Classification Multi-Class model already trained using AutoML
+          - create an Inference Dataset
+          - provision compute targets and create a Batch Scoring script
+          - use ParallelRunStep to do batch scoring
+          - build, run, and publish a pipeline
+          - enable a REST endpoint for the pipeline
+
 <a name="documentation"></a>
-See [Configure automated machine learning experiments](https://docs.microsoft.com/azure/machine-learning/service/how-to-configure-auto-train) to learn how more about the the settings and features available for automated machine learning experiments.
+See [Configure automated machine learning experiments](https://docs.microsoft.com/azure/machine-learning/service/how-to-configure-auto-train) to learn how more about the settings and features available for automated machine learning experiments.
 
 <a name="pythoncommand"></a>
 # Running using python command
@@ -234,7 +269,7 @@ If automl_setup_linux.sh fails on Ubuntu Linux with the error: `unable to execut
 
 ## Sample notebook fails
 If a sample notebook fails with an error that property, method or library does not exist:
-1) Check that you have selected correct kernel in jupyter notebook.  The kernel is displayed in the top right of the notebook page.  It can be changed using the `Kernel | Change Kernel` menu option.  For Azure Notebooks, it should be `Python 3.6`.  For local conda environments, it should be the conda envioronment name that you specified in automl_setup.  The default is azure_automl.  Note that the kernel is saved as part of the notebook.  So, if you switch to a new conda environment, you will have to select the new kernel in the notebook.
+1) Check that you have selected correct kernel in jupyter notebook.  The kernel is displayed in the top right of the notebook page.  It can be changed using the `Kernel | Change Kernel` menu option.  For Azure Notebooks, it should be `Python 3.6`.  For local conda environments, it should be the conda environment name that you specified in automl_setup.  The default is azure_automl.  Note that the kernel is saved as part of the notebook.  So, if you switch to a new conda environment, you will have to select the new kernel in the notebook.
 2) Check that the notebook is for the SDK version that you are using.  You can check the SDK version by executing `azureml.core.VERSION` in a jupyter notebook cell.  You can download previous version of the sample notebooks from GitHub by clicking the `Branch` button, selecting the `Tags` tab and then selecting the version.
 
 ## Numpy import fails on Windows

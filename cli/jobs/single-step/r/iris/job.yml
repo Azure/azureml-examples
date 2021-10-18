@@ -5,7 +5,8 @@ command: >
 code:
   local_path: src
 inputs:
-  iris: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+  iris: 
+    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
   build:
     local_path: docker-context
@@ -13,7 +14,3 @@ compute: azureml:cpu-cluster
 display_name: r-iris-example
 experiment_name: r-iris-example
 description: Train an R model on the Iris dataset.
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

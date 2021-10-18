@@ -6,10 +6,10 @@ command: >-
   --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
 inputs:
   nyc_taxi_dataset:
-    folder: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
+    folder: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/yellow
     mode: ro_mount
 environment: 
-  image: mcr.microsoft.com/mmlspark/release
+  image: mcr.microsoft.com/mmlspark/release:1.0.0-rc3
   conda_file: conda.yml
 compute: azureml:cpu-cluster-lg
 resources:
@@ -17,7 +17,3 @@ resources:
 display_name: spark-nyctaxi-example
 experiment_name: spark-nyctaxi-example
 description: This sample shows how to run a single node Spark job on Azure ML. The 47GB NYC Taxi dataset is read in parquet format by a 1 node Spark cluster, processed and then written as job output in parquet format. 
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "false"

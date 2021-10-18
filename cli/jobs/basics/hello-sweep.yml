@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
+type: sweep
+trial:
+  command: >-
+    pip install mlflow azureml-mlflow
+    &&
+    python hello-sweep.py
+    --A ${{inputs.A}}
+    --B ${{search_space.B}}
+    --C ${{search_space.C}}
+  code:
+    local_path: src
+  environment:
+    image: python:3.8
+inputs:
+  A: 0.5
+compute: azureml:cpu-cluster
+sampling_algorithm: random
+search_space:
+  B:
+    type: choice
+    values: ["hello", "world", "hello world"]
+  C:
+    type: uniform
+    min_value: 0.1
+    max_value: 1.0
+objective:
+  goal: minimize
+  primary_metric: random_metric
+limits:
+  max_total_trials: 4
+  max_concurrent_trials: 2
+  timeout: 3600
+display_name: hello-sweep-example
+experiment_name: hello-sweep-example
+description: Hello sweep job example.

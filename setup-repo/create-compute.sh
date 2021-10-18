@@ -1,5 +1,5 @@
 # <create_computes>
-az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8 --size Standard_DS3_v2
+az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8
 az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12
 # </create_computes>
 
