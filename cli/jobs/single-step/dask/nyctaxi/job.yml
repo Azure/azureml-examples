@@ -5,10 +5,13 @@ command: >-
   python startDask.py
   --script prep-nyctaxi.py 
   --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
+  --output_folder ${{outputs.output_folder}}
 inputs:
   nyc_taxi_dataset:
     folder: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
     mode: ro_mount
+outputs:
+  output_folder:
 environment: 
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
   conda_file: conda.yml
