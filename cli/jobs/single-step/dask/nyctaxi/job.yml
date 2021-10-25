@@ -8,7 +8,7 @@ command: >-
   --output_folder ${{outputs.output_folder}}
 inputs:
   nyc_taxi_dataset:
-    folder: https://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
+    folder: wasbs://azuremlexamples.blob.core.windows.net/datasets/nyctaxi/
     mode: ro_mount
 outputs:
   output_folder:
