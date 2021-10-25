@@ -63,11 +63,3 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deploym
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
-
-# <delete sklearn model>
-az ml model delete --name sklearn-diabetes-mlflow-model --version 1
-# </delete sklearn model?
-
-# <delete lightgbm model>
-az ml model delete --name lightgbm-iris-mlflow-model --version 1
-# </delete lightgbm model>
