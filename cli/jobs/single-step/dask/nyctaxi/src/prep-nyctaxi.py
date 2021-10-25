@@ -15,10 +15,14 @@ for k, v in os.environ.items():
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--nyc_taxi_dataset")
+parser.add_argument("--output_folder")
 args = parser.parse_args()
 dataset = args.nyc_taxi_dataset
+output_path = args.output_folder
+
 print(f"dataset location: {dataset}")
 os.system(f"find {dataset}")
+print(f"output location: {output_path}")
 
 c = Client("localhost:8786")
 print(c)
@@ -203,7 +207,7 @@ taxi_df = add_features(taxi_df)
 
 print(c)
 mlflow.log_text(str(c), "dask_cluster2")
-output_path = "./outputs/nyctaxi_processed.parquet"
+# output_path = "./outputs/nyctaxi_processed.parquet"
 print("save parquet to ", output_path)
 # In this case, we are not using a mounted drive to save the job's output
 # but save to the ./outputs folder, which is on the nodes local drives.
@@ -212,11 +216,11 @@ print("save parquet to ", output_path)
 # on blob storage.
 # For this to work, the target folder needs to be created on each node.
 # Using DASK's Client.run method which executes a given function on each node of the cluster:
-def create_output():
-    return Path(output_path).mkdir(parents=True, exist_ok=True)
+# def create_output():
+#    return Path(output_path).mkdir(parents=True, exist_ok=True)
 
 
-print("create_output", c.run(create_output))
+# print("create_output", c.run(create_output))
 
 
 start_time = time.time()
