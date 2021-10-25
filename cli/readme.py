@@ -11,6 +11,7 @@ EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
     "vm-attach",
+    "instance",
 ]
 EXCLUDED_ASSETS = [
     "conda-yamls",
