@@ -24,11 +24,11 @@ else
   exit 1
 fi
 
-# <create_blue>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/sklearn-deployment.yaml --all-traffic
-# </create_blue>
+# <create_sklearn-deployment>
+az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/sklearn-deployment.yaml --all-traffic
+# </create_sklearn-deployment>
 
-deploy_status=`az ml online-deployment show --name blue --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name sklearn-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -38,15 +38,15 @@ else
   exit 1
 fi
 
-# <test_blue>
+# <test_sklearn-deployment>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/mlflow/sample-request-sklearn.json
-# </test_blue>
+# </test_sklearn-deployment>
 
-# <create_green>
-az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/lightgbm-deployment.yaml
-# </create_green>
+# <create_lightgbm-deployment>
+az ml online-deployment create --name lightgbm-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/lightgbm-deployment.yaml
+# </create_lightgbm-deployment>
 
-deploy_status=`az ml online-deployment show --name green --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name lightgbm-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -56,9 +56,9 @@ else
   exit 1
 fi
 
-# <test_green>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/mlflow/sample-request-lightgbm.json
-# </test_green>
+# <test_lightgbm-deployment>
+az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deployment --request-file endpoints/online/mlflow/sample-request-lightgbm.json
+# </test_lightgbm-deployment>
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
