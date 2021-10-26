@@ -61,13 +61,13 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deploym
 # </test_lightgbm-deployment>
 
 # <delete_endpoint>
-az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
+az ml online-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 # <delete_sklearn_model>
-az ml model delete --name sample-mlflow-model-sklearn --version 1 --debug
+az ml model delete --name sample-mlflow-sklearn-model --version 1 --debug
 # </delete_sklearn_model>
 
 # <delete_lightgbm_model>
-az ml model delete --name sample-mlflow-model-lightgbm --version 1 --debug
+az ml model delete --name sample-mlflow-lightgbm-model --version 1 --debug
 # </delete_lightgbm_model>
