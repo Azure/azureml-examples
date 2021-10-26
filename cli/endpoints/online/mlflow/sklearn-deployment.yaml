@@ -2,6 +2,8 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: sklearn-deployment
 endpoint_name: my-endpoint
 model:
+  name: sample-sklearn-mlflow-model
+  version: 1
   local_path: sklearn-diabetes/model
   model_format: mlflow
 instance_type: Standard_F2s_v2
