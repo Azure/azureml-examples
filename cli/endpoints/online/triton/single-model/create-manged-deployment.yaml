@@ -1,0 +1,9 @@
+name: blue
+endpoint_name: my-endpoint
+model:
+  name: sample-densenet-onnx-model
+  version: 1
+  local_path: ./models
+  model_format: Triton
+instance_count: 1
+instance_type: Standard_NC6s_v3
