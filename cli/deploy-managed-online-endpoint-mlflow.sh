@@ -24,9 +24,9 @@ else
   exit 1
 fi
 
-# <create_sklearn-deployment>
+# <create_sklearn_deployment>
 az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/sklearn-deployment.yaml --all-traffic
-# </create_sklearn-deployment>
+# </create_sklearn_deployment>
 
 deploy_status=`az ml online-deployment show --name sklearn-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
@@ -38,13 +38,13 @@ else
   exit 1
 fi
 
-# <test_sklearn-deployment>
+# <test_sklearn_deployment>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/mlflow/sample-request-sklearn.json
-# </test_sklearn-deployment>
+# </test_sklearn_deployment>
 
-# <create_lightgbm-deployment>
+# <create_lightgbm_deployment>
 az ml online-deployment create --name lightgbm-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/lightgbm-deployment.yaml
-# </create_lightgbm-deployment>
+# </create_lightgbm_deployment>
 
 deploy_status=`az ml online-deployment show --name lightgbm-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
@@ -56,9 +56,9 @@ else
   exit 1
 fi
 
-# <test_lightgbm-deployment>
+# <test_lightgbm_deployment>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deployment --request-file endpoints/online/mlflow/sample-request-lightgbm.json
-# </test_lightgbm-deployment>
+# </test_lightgbm_deployment>
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes 
