@@ -7,7 +7,7 @@ BASE_PATH=endpoints/online/triton/single-model
 
 # <installing-requirements>
 pip install numpy
-pip install tritonclient
+pip install tritonclient[http]
 pip install pillow
 pip install gevent
 # </installing-requirements>
