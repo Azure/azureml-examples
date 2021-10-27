@@ -5,8 +5,11 @@ set -e
 
 BASE_PATH=endpoints/online/triton/single-model
 
+# <installing-requirements>
 pip install numpy
 pip install tritonclient
+pip install pillow
+# </installing-requirements>
 
 # <set_endpoint_name>
 export ENDPOINT_NAME=triton-single-endpt-`echo $RANDOM`
