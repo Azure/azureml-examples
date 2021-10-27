@@ -2,11 +2,14 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 compute: azureml:cpu-cluster
 settings:
-  environment:
-    image: python:latest
+  datastore: azureml:<datastore-name>
 jobs:
   hello_job:
     command: echo "hello"
+  environment:
+    image: python:latest
   world_job:
     command: echo "world"
+  environment:
+    image: python:latest
  
