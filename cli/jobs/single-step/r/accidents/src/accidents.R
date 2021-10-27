@@ -1,4 +1,10 @@
 library(optparse)
+library("carrier")
+source('aml.R')
+
+# Setting Mlflow tracking uri
+Sys.setenv(MLFLOW_PYTHON_BIN = "/usr/bin/python")
+Sys.setenv(MLFLOW_BIN = "/usr/local/bin/mlflow")
 
 options <- list(
   make_option(c("-d", "--data_folder"), default="./data")
@@ -12,14 +18,17 @@ paste(opt$data_folder)
 accidents <- readRDS(file.path(opt$data_folder, "accidents.Rd"))
 summary(accidents)
 
-mod <- glm(dead ~ dvcat + seatbelt + frontal + sex + ageOFocc + yearVeh + airbag  + occRole, family=binomial, data=accidents)
-summary(mod)
-predictions <- factor(ifelse(predict(mod)>0.1, "dead","alive"))
-accuracy <- mean(predictions == accidents$dead)
+with(run <- mlflow_start_run(), {
+  print("Training the model")
+  model <- glm(dead ~ dvcat + seatbelt + frontal + sex + ageOFocc + yearVeh + airbag  + occRole, family=binomial, data=accidents)
+  summary(model)
 
-output_dir = "outputs"
-if (!dir.exists(output_dir)){
-  dir.create(output_dir)
-}
-saveRDS(mod, file = "./outputs/model.rds")
-message("Model saved")
+  predictor <- crate(~ factor(ifelse(stats::predict(!!model, .x)>0.1, "dead","alive")))
+  predictions <- predictor(accidents)
+  accuracy <- mean(predictions == accidents$dead)
+  
+  mlflow_log_metric("accuracy", accuracy)
+
+  print("Logging model")
+  override_log_model(predictor, "model")
+})

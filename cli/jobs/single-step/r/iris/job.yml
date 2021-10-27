@@ -10,7 +10,9 @@ inputs:
 environment:
   build:
     local_path: docker-context
-compute: azureml:cpu-cluster
+compute: azureml:cpu-clusters
 display_name: r-iris-example
 experiment_name: r-iris-example
 description: Train an R model on the Iris dataset.
+environment_variables:
+    "AZUREML_COMPUTE_USE_COMMON_RUNTIME": "true"
