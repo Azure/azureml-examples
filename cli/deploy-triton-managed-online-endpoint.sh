@@ -66,6 +66,3 @@ python $BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$au
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
-# <delete_model>
-az ml model delete -n sample-densenet-onnx-model --version 1
-# </delete_model>
