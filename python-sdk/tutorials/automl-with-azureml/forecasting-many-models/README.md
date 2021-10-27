@@ -55,13 +55,6 @@ Next you'll need to configure your [development environment](https://docs.micros
 
 Once your development environment is set up, run through the Jupyter Notebooks sequentially following the steps outlined. By the end, you'll know how to train, score, and make predictions using the many models pattern on Azure Machine Learning.
 
-There are two ways to train many models:
-
-1. Using a custom training script
-2. Using Automated ML
-
-However, the steps needed to set the workspace up and prepare the datasets are the same no matter which option you choose.
-
 ![Sequence of Notebooks](./images/mmsa-overview.png)
 
 
@@ -73,38 +66,13 @@ The data used in this sample is simulated based on the [Dominick's Orange Juice 
 
 <img src="images/Flow_map.png" width="1000">
 
-The functionality is broken into the notebooks folders designed to be run sequentially.
-
-### Before training the models
-
-| Notebook       | Description                                |
-|----------------|--------------------------------------------|
-| `00_Setup_AML_Workspace.ipynb`  | Creates and configures the AML Workspace, including deploying a compute cluster for training. |
-
-### Using a custom training script to train the models:
-
-The following notebooks are located under the [`Custom_Script/`](Custom_Script/) folder.
-
-| Notebook       | Description                                |
-|----------------|--------------------------------------------|
-| `01_Data_Preparation.ipynb`     | Prepares the datasets that will be used during training and forecasting. |
-| `02_CustomScript_Training_Pipeline.ipynb`    | Creates a pipeline to train a model for each store and orange juice brand in the dataset using a custom script. |
-| `03_CustomScript_Forecasting_Pipeline.ipynb` | Creates a pipeline to forecast future orange juice sales using the models trained in the previous step.|
-
 ### Using Automated ML to train the models:
 
 The `auto-ml-forecasting-many-models.ipynb` noteboook is a guided solution accelerator that demonstrates steps from data preparation, to model training, and forecasting on train models as well as operationalizing the solution.
 
-
-If you wish to train with your own script and custom models, you may also leverage the [Custom Script Many Models Solution Accelerator](#Using-a-custom-training-script-to-train-the-models:).
-
 ## How-to-videos
 
-Watch these how-to-videos for a step by step walk-through of the many model solution accelerator to learn how to setup your models using both the custom training script and Automated ML.
-
-### Custom Script
-
-[![Watch the video](https://media.giphy.com/media/dWUKfameudyNGRnp1t/giphy.gif)](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Models-using-Azure-Machine-Learning)
+Watch these how-to-videos for a step by step walk-through of the many model solution accelerator to learn how to setup your models using both Automated ML.
 
 ### Automated ML
 
