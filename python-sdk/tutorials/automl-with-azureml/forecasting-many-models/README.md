@@ -1,3 +1,12 @@
+---
+page_type: sample
+languages:
+- python
+products:
+- auto-ml-forecasting-many-models
+description: Tutorial showing how to solve a complex machine learning forecasting problems by using many models approach.
+---
+
 ![Many Models Solution Accelerator Banner](images/mmsa.png)
 # Many Models Solution Accelerator
 
