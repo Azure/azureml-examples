@@ -78,6 +78,7 @@ Watch these how-to-videos for a step by step walk-through of the many model solu
 
 https://sec.ch9.ms/ch9/56a8/529f7d80-3daa-4833-ba13-a0275e4156a8/many_models_solution_accelerator_mid.mp4
 
+
 [Watch video](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Forecasting-Models-using-Azure-Machine-Learnings-Automated-ML)
 
 ## Key concepts
@@ -100,7 +101,7 @@ In additional to ParallelRunStep, Pipelines and Automated Machine Learning, you'
 
 ## Contributing
 
-This project welcomes contributions and suggestions. To learn more visit the [contributing](..\..\..\CONTRIBUTING.md) section.
+This project welcomes contributions and suggestions. To learn more visit the [contributing](../../../CONTRIBUTING.md) section.
 
 Most contributions require you to agree to a Contributor License Agreement (CLA)
 declaring that you have the right to, and actually do, grant us
