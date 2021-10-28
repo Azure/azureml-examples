@@ -79,7 +79,7 @@ if __name__ == "__main__":
     print("Is server ready - {}".format(health_ctx))
 
     # Check status of model
-    model_name = "densenet_onnx"
+    model_name = "model_1"
     status_ctx = triton_client.is_model_ready(model_name, "1", headers)
     print("Is model ready - {}".format(status_ctx))
 
