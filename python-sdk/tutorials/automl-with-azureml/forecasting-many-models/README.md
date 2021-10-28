@@ -72,12 +72,13 @@ The `auto-ml-forecasting-many-models.ipynb` noteboook is a guided solution accel
 
 ## How-to-videos
 
-Watch these how-to-videos for a step by step walk-through of the many model solution accelerator to learn how to setup your models using both Automated ML.
+Watch these how-to-videos for a step by step walk-through of the many model solution accelerator to learn how to setup your models using Automated ML.
 
 ### Automated ML
 
-https://sec.ch9.ms/ch9/56a8/529f7d80-3daa-4833-ba13-a0275e4156a8/many_models_solution_accelerator_mid.mp4
-
+<video autosize: true controls>
+  <source src="https://sec.ch9.ms/ch9/56a8/529f7d80-3daa-4833-ba13-a0275e4156a8/many_models_solution_accelerator_mid.mp4" type="video/mp4">
+</video>
 
 [Watch video](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Forecasting-Models-using-Azure-Machine-Learnings-Automated-ML)
 
