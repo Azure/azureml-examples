@@ -76,7 +76,7 @@ Watch these how-to-videos for a step by step walk-through of the many model solu
 
 ### Automated ML
 
-[![Watch the video](https://sec.ch9.ms/ch9/56a8/529f7d80-3daa-4833-ba13-a0275e4156a8/many_models_solution_accelerator_mid.mp4)](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Forecasting-Models-using-Azure-Machine-Learnings-Automated-ML)
+[https://sec.ch9.ms/ch9/56a8/529f7d80-3daa-4833-ba13-a0275e4156a8/many_models_solution_accelerator_mid.mp4](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Forecasting-Models-using-Azure-Machine-Learnings-Automated-ML)
 
 ## Key concepts
 
