@@ -4,7 +4,7 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: Tutorial showing how to solve a complex machine learning forecasting problems by using many models approach.
+description: Tutorial showing how to solve a complex machine learning  time series forecasting problems at scale by using Azure Automated ML and Many Models solution accelerator.
 ---
 
 ![Many Models Solution Accelerator Banner](images/mmsa.png)
