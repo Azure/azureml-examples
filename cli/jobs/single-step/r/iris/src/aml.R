@@ -68,7 +68,7 @@ override_log_model <- function(model, model_name) {
             }           
         },
         finally = {
-                message('log model done')
+                print('log model done')
             }
         )
 }
