@@ -3,9 +3,10 @@ library("carrier")
 library(rpart)
 source('aml.R')
 
-# Setting Mlflow tracking uri
-Sys.setenv(MLFLOW_PYTHON_BIN = "/usr/bin/python")
-Sys.setenv(MLFLOW_BIN = "/usr/local/bin/mlflow")
+# Setting Mlflow related env vars
+# https://www.mlflow.org/docs/latest/R-api.html#details
+Sys.setenv(MLFLOW_BIN=system("which mlflow", intern=TRUE))
+Sys.setenv(MLFLOW_PYTHON_BIN=system("which python", intern=TRUE))
 
 parser <- OptionParser()
 parser <- add_option(parser, "--data_folder",
