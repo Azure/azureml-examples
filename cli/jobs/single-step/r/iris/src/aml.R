@@ -92,7 +92,9 @@ get_token <- function(host, exp_id, run_id) {
 get_tracking_uri <- function() {
     url <- httr::parse_url(Sys.getenv("MLFLOW_TRACKING_URI"))
     url$query = ""
-    httr::build_url(url)
+    url <-httr::build_url(url)
+    Sys.setenv(MLFLOW_TRACKING_URI = url)
+    url
 }
 
 fetch_token_from_aml <- function() {
