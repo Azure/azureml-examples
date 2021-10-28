@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - python
 products:
-- auto-ml-forecasting-many-models
+- azure-machine-learning
 description: Tutorial showing how to solve a complex machine learning forecasting problems by using many models approach.
 ---
 
