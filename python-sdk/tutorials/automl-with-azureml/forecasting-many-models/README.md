@@ -49,7 +49,7 @@ Start by deploying the resources to Azure. The button below will deploy Azure Ma
 
 ### 2. Configure Development Environment
 
-Next you'll need to configure your [development environment](https://docs.microsoft.com/azure/machine-learning/how-to-configure-environment) for Azure Machine Learning. We recommend using a [Compute Instance](https://docs.microsoft.com/azure/machine-learning/how-to-configure-environment#compute-instance) as it's the fastest way to get up and running. Follow the steps in [EnvironmentSetup.md](./EnvironmentSetup.md) to create a Compute Instance and clone the repo onto it.
+Next you'll need to configure your [development environment](https://docs.microsoft.com/azure/machine-learning/how-to-configure-environment) for Azure Machine Learning. We recommend using a [Compute Instance](https://docs.microsoft.com/azure/machine-learning/how-to-configure-environment#compute-instance) as it's the fastest way to get up and running.
 
 ### 3. Run Notebooks
 
@@ -76,7 +76,7 @@ Watch these how-to-videos for a step by step walk-through of the many model solu
 
 ### Automated ML
 
-[![Watch the video](https://media.giphy.com/media/dWUKfameudyNGRnp1t/giphy.gif)](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Forecasting-Models-using-Azure-Machine-Learnings-Automated-ML)
+[![Watch the video](https://sec.ch9.ms/ch9/56a8/529f7d80-3daa-4833-ba13-a0275e4156a8/many_models_solution_accelerator_mid.mp4)](https://channel9.msdn.com/Shows/Docs-AI/Building-Large-Scale-Machine-Learning-Forecasting-Models-using-Azure-Machine-Learnings-Automated-ML)
 
 ## Key concepts
 
