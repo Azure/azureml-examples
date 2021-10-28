@@ -35,7 +35,7 @@ While it's not required, a basic understanding of Azure Machine Learning will be
 
 1. [Azure Machine Learning Overview](https://azure.microsoft.com/services/machine-learning/)
 2. [Azure Machine Learning Tutorials](https://docs.microsoft.com/azure/machine-learning/tutorial-1st-experiment-sdk-setup)
-3. [Azure Machine Learning Sample Notebooks on Github](https://github.com/Azure/MachineLearningNotebooks)
+3. [Azure Machine Learning Sample Notebooks on Github](https://github.com/Azure/azureml-examples)
 
 ## Getting started
 
@@ -68,7 +68,7 @@ The data used in this sample is simulated based on the [Dominick's Orange Juice 
 
 ### Using Automated ML to train the models:
 
-The `auto-ml-forecasting-many-models.ipynb` noteboook is a guided solution accelerator that demonstrates steps from data preparation, to model training, and forecasting on train models as well as operationalizing the solution.
+The [`auto-ml-forecasting-many-models.ipynb`](./auto-ml-forecasting-many-models.ipynb) noteboook is a guided solution accelerator that demonstrates steps from data preparation, to model training, and forecasting on train models as well as operationalizing the solution.
 
 ## How-to-videos
 
