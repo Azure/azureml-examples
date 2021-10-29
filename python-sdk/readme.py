@@ -257,7 +257,7 @@ def write_notebook_workflow(notebook, name):
     workflow_yaml = f"""name: python-sdk-notebook-{name}
 on:
   schedule:
-    - cron: "0 0/2 * * *"
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
@@ -275,6 +275,8 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: azure login
@@ -298,7 +300,7 @@ def write_python_workflow(workflow, scenario, tool, project, name):
     workflow_yaml = f"""name: python-sdk-{scenario}-{tool}-{project}-{name}
 on:
   schedule:
-    - cron: "0 0/2 * * *"
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
@@ -316,6 +318,8 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: azure login

@@ -1,7 +1,7 @@
 name: python-sdk-tutorial-using-rapids
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
