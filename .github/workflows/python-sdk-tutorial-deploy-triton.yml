@@ -1,7 +1,7 @@
 name: python-sdk-tutorial-deploy-triton
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
@@ -19,6 +19,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: azure login
