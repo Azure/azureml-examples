@@ -1,0 +1,99 @@
+name: hci-amlarc-python-sdk-train-test
+on:
+  # schedule:
+  #   - cron: "0 6,18 * * *"
+  workflow_dispatch:
+    inputs:
+      AMLARC_RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: true
+        default: 'staging'
+      INPUT_SUBSCRIPTION:
+        description: 'Subscription id of connected Arc cluster' 
+        required: true
+        default: "86204643-5a96-427b-b6bb-b35b2bd6e6ce"
+      INPUT_RESOURCE_GROUP:
+        description: 'Resource Group name of connected Arc cluster' 
+        required: true
+        default: "AKS-HCI"
+      INPUT_ARC_CLUSTER_NAME:
+        description: 'Connected Arc cluster name' 
+        required: true
+        default: "akshci-cluster"
+      INPUT_WORKSPACE:
+        description: 'ML Workspace name for testing' 
+        required: true
+        default: "amlarc-sample-test-ws"
+      INPUT_LOCATION:
+        description: 'Azure Location of connected Arc cluster' 
+        required: true
+        default: "eastus"
+      INPUT_KUBECONFIG:
+        description: 'Arc cluster kubeconfig path on GitHub Runner'
+        required: true
+        default: "/home/hcitest/Desktop/akshci-cluster-kubeconfig.xml"
+jobs:
+  cpu-test:
+    runs-on: self-ubuntu-20-04
+    env:
+      INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      SUBSCRIPTION: ${{ github.event.inputs.INPUT_SUBSCRIPTION }}
+      RESOURCE_GROUP: ${{ github.event.inputs.INPUT_RESOURCE_GROUP }}
+      WORKSPACE: ${{ github.event.inputs.INPUT_WORKSPACE }}
+      LOCATION: ${{ github.event.inputs.INPUT_LOCATION }}
+      AMLARC_RELEASE_NAMESPACE: "azureml"
+      EXTENSION_NAME: "amlarc-extension"
+      EXTENSION_TYPE: "Microsoft.AzureML.Kubernetes"
+      KUBECONFIG: ${{ github.event.inputs.INPUT_KUBECONFIG }}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r python-sdk/requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_ASZPCV_CRED}}
+    - name: install tools
+      run: |
+        bash cli/amlarc-compute.sh install_tools
+        bash cli/amlarc-compute.sh prepare_attach_compute_py
+    - name: setup cpu-cluster
+      run: bash cli/amlarc-compute.sh setup_amlarcextension ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }}
+    - name: setup cpu-cluster compute
+      run: bash cli/amlarc-compute.sh setup_compute AKSHCI_CPU cpu-cluster ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: get workspace config
+      run: bash cli/amlarc-compute.sh attach_workspace
+    - name: run python-sdk/workflows/train/fastai/mnist/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/fastai/mnist-mlproject/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/fastai/mnist-mlproject/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/lightgbm/iris/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/lightgbm/iris/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/scikit-learn/diabetes/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/scikit-learn/diabetes-mlproject/job.py
+      continue-on-error: true
+    - name: run python-sdk/workflows/train/xgboost/iris/job.py # cpu-cluster
+      run: bash cli/amlarc-compute.sh run_py_test python-sdk/workflows/train/xgboost/iris/job.py
+      continue-on-error: true
+    - name: uninstall azmlcli
+      if: ${{ always() }}
+      run: az extension remove -n azure-cli-ml
+    - name: clean up cpu cluster
+      if: ${{ always() }}
+      run: bash cli/amlarc-compute.sh clean_up_aks_hci_cluster ${{ github.event.inputs.INPUT_ARC_CLUSTER_NAME }} cpu-cluster
+    - name: count result
+      if: ${{ always() }}
+      run: bash cli/amlarc-compute.sh count_result
