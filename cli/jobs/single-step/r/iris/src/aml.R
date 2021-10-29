@@ -1,6 +1,7 @@
 library(mlflow)
 library(httr)
 library(later)
+library(tcltk2)
 
 new_mlflow_client.mlflow_azureml <- function(tracking_uri) {
   host <- paste("https", tracking_uri$path, sep = "://")
@@ -98,6 +99,7 @@ get_tracking_uri <- function() {
 }
 
 fetch_token_from_aml <- function() {
+    print("Refreshing token")
     tracking_uri <- get_tracking_uri()
     exp_id <- Sys.getenv("MLFLOW_EXPERIMENT_ID")
     run_id <- Sys.getenv("MLFLOW_RUN_ID")
@@ -116,23 +118,19 @@ fetch_token_from_aml <- function() {
 
     if (response$status_code != 200){
         error_response = paste("Error fetching token will try again after sometime: ", str(response), sep = " ")
+        print(error_response)
     }
 
     if (response$status_code == 200){
         text <- content(response, "text", encoding = "UTF-8")
         json_resp <-jsonlite::fromJSON(text, simplifyVector = FALSE)
         json_resp$token
-        print("Setting token")
         Sys.setenv(MLFLOW_TRACKING_TOKEN = json_resp$token)
-        print("Setting token done")
+        print("Refreshing token done")
     }
 }
 
-start_token_refresh <- function() {
-    fetch_token_from_aml()
-    later::later(start_token_refresh, 1)
-}
+tcltk2::tclTaskSchedule(as.integer(Sys.getenv("MLFLOW_TOKEN_REFRESH_INTERVAL_SECONDS", 30))*1000, fetch_token_from_aml(), id = "fetch_token_from_aml", redo = TRUE)
 
-start_token_refresh()
 
 
