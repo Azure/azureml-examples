@@ -147,7 +147,11 @@ def write_notebook_workflow_sequential(notebook_dir):
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
+<<<<<<< HEAD
     - cron: "0 0/8 * * *"
+=======
+    - cron: "0 */8 * * *"
+>>>>>>> origin/main
   pull_request:
     branches:
       - main
@@ -165,6 +169,8 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
     - name: pip install notebook reqs
       run: pip install -r notebooks/dev-requirements.txt
     - name: azure login
@@ -197,7 +203,11 @@ def write_notebook_workflow_parallel(notebook_dir):
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
+<<<<<<< HEAD
     - cron: "0 0/8 * * *"
+=======
+    - cron: "0 */8 * * *"
+>>>>>>> origin/main
   pull_request:
     branches:
       - main
@@ -219,6 +229,8 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
     - name: pip install notebook reqs
       run: pip install -r notebooks/dev-requirements.txt
     - name: azure login
