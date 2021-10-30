@@ -27,30 +27,6 @@ new_mlflow_client.mlflow_azureml <- function(tracking_uri) {
   mlflow:::new_mlflow_client_impl(get_host_creds, cli_env, class = "mlflow_azureml_client")
 }
 
-# Overriding this due to bug in OSS where name is passed as source
-mlflow_create_model_version <- function(name, source, run_id = NULL,
-                                        tags = NULL, run_link = NULL,
-                                        description = NULL, client = NULL) {
-  client <- mlflow:::resolve_client(client)
-
-  response <- mlflow:::mlflow_rest(
-    "model-versions",
-    "create",
-    client = client,
-    verb = "POST",
-    version = "2.0",
-    data = list(
-      name = name,
-      source = source,
-      run_id = run_id,
-      run_link = run_link,
-      description = description
-    )
-  )
-
-  return(response$model_version)
-}
-
 
 # Overriding mlflow_log_model since list_artifacts is not implemented
 # Once implemented this can be removed.
@@ -90,17 +66,10 @@ get_token <- function(host, exp_id, run_id) {
     GET( api_url, timeout(getOption("mlflow.rest.timeout", 60)), req_headers)
 }
 
-get_tracking_uri <- function() {
-    url <- httr::parse_url(Sys.getenv("MLFLOW_TRACKING_URI"))
-    url$query = ""
-    url <-httr::build_url(url)
-    Sys.setenv(MLFLOW_TRACKING_URI = url)
-    url
-}
 
 fetch_token_from_aml <- function() {
     print("Refreshing token")
-    tracking_uri <- get_tracking_uri()
+    tracking_uri <- Sys.getenv("MLFLOW_TRACKING_URI")
     exp_id <- Sys.getenv("MLFLOW_EXPERIMENT_ID")
     run_id <- Sys.getenv("MLFLOW_RUN_ID")
     sleep_for <- 1
@@ -130,6 +99,14 @@ fetch_token_from_aml <- function() {
     }
 }
 
+clean_tracking_uri <- function() {
+    tracking_uri <- httr::parse_url(Sys.getenv("MLFLOW_TRACKING_URI"))
+    tracking_uri$query = ""
+    tracking_uri <-httr::build_url(tracking_uri)
+    Sys.setenv(MLFLOW_TRACKING_URI = tracking_uri)
+}
+
+clean_tracking_uri()
 tcltk2::tclTaskSchedule(as.integer(Sys.getenv("MLFLOW_TOKEN_REFRESH_INTERVAL_SECONDS", 30))*1000, fetch_token_from_aml(), id = "fetch_token_from_aml", redo = TRUE)
 
 
