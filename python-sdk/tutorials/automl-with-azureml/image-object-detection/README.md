@@ -10,6 +10,6 @@ description: Notebook showing how to use AutoML for training an Object Detection
 # Object Detection using AutoML for Images
 - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
     - **[Jupyter Notebook](auto-ml-image-object-detection.ipynb)**
-      - train an Object Detection model using AutoML
-      - tune hyperparameters of the model to optimize model performance
-      - deploy the model to use in inference scenarios
+        - train an Object Detection model using AutoML
+        - tune hyperparameters of the model to optimize model performance
+        - deploy the model to use in inference scenarios
