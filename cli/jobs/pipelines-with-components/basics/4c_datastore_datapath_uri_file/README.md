@@ -1,11 +1,10 @@
 
-We use a datastore with datapath as input file in this example. An easy way to get a datastore and datapath with some dummy data is to create a AzureML dataset. Try `az ml dataset create --file data.yml`. You will find the datastore + datapath URI in the `paths` section of the output. The format to use datastore and datapath is typically `azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>/<filename.extn>` You can then reference that in `pipeline.yml`
-
-
+We use a datastore with datapath as input folder in this example. An easy way to get a datastore and datapath with some dummy data is to create a AzureML dataset. Try `az ml dataset create --file data.yml`. You will find the datastore + datapath URI in the `paths` section of the output. The format to use datastore and datapath is typically `azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>` You can then reference that in `pipeline.yml`
 
 Sample output for dataset creation:
 ```
 # az ml dataset create --file data.yml 
+
 Command group 'ml dataset' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
 {
   "creation_context": {

@@ -15,10 +15,14 @@ print("sample_input_string: %s" % args.input_string)
 print("sample_input_data path: %s" % args.input_data)
 print("sample_output_data path: %s" % args.output_data)
 
-print("input_data file path: ")
+print("files in input_data path: ")
+arr = os.listdir(args.input_data)
+print(arr)
 
-with open(os.path.join(args.input_data), "r") as handle:
-    print(handle.read())
+for filename in arr:
+    print("reading file: %s ..." % filename)
+    with open(os.path.join(args.input_data, filename), "r") as handle:
+        print(handle.read())
 
 cur_time_str = datetime.now().strftime("%b-%d-%Y-%H-%M-%S")
 

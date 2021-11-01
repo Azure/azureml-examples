@@ -11,7 +11,6 @@ inputs:
   sample_input_string:
     type: string
     default: "hello_python_world"
-outputs:
   sample_output_data:
     type: path
 

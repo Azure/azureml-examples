@@ -1,15 +1,14 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-description: "Example of using data folder from a Workspace Datastore as pipeline input"
+description: "Example to show rw_mount input that can be used to write outputs"
 inputs:
   pipeline_sample_input_data:
-    folder: azureml://datastores/workspaceblobstore/paths/LocalUpload/cec6841f346975cde1ee7d5289c5559f/data
+    file: azureml://datastores/workspaceblobstore/paths/LocalUpload/cec6841f346975cde1ee7d5289c5559f/data/sample.csv
     mode: download
   pipeline_sample_input_string: 'Hello_Pipeline_World'
-
-outputs:
   pipeline_sample_output_data:
-    mode: upload
+    folder: azureml://datastores/workspaceblobstore/paths/4f_output
+    mode: rw_mount
 
 compute: azureml:cpu-cluster
 
