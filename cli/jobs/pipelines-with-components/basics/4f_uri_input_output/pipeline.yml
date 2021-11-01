@@ -7,7 +7,7 @@ inputs:
     mode: download
   pipeline_sample_input_string: 'Hello_Pipeline_World'
   pipeline_sample_output_data:
-    folder: azureml://datastores/workspaceblobstore/paths/4f_output
+    folder: azureml://datastores/workspaceblobstore/paths/report
     mode: rw_mount
 
 compute: azureml:cpu-cluster
@@ -19,6 +19,5 @@ jobs:
     inputs:
       sample_input_data: ${{inputs.pipeline_sample_input_data}}
       sample_input_string: ${{inputs.pipeline_sample_input_string}}
-    outputs:
-      sample_output_data: ${{outputs.pipeline_sample_output_data}}
+      sample_output_data: ${{inputs.pipeline_sample_output_data}}
 

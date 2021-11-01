@@ -24,4 +24,4 @@ command: >-
   python hello.py  
   --input_data ${{inputs.sample_input_data}}
   --input_string ${{inputs.sample_input_string}}
-  --output_data ${{outputs.sample_output_data}}
+  --output_data ${{inputs.sample_output_data}}
