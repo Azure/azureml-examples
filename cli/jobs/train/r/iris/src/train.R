@@ -11,7 +11,7 @@ args <- parse_args(parser)
 cat("data folder...\n")
 print(args$data_folder)
 
-file_name = file.path(args$data_folder)
+file_name = file.path(args$data_folder, "iris.csv")
 
 cat("first 6 rows...\n")
 x <- read.csv(file_name)
