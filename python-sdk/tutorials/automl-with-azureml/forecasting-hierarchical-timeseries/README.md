@@ -1,3 +1,12 @@
+---
+page_type: sample
+languages:
+- python
+products:
+- azure-machine-learning
+description: Tutorial showing how to solve a complex machine learning time series forecasting problems at scale by using Azure Automated ML and Hierarchical time series accelerator.
+---
+
 ## Microsoft Solution Accelerator: Hierachical Time Series Forecasting
 
 In most applications, customers have a need to understand their forecasts at a macro and micro level of the business. Whether that be predicting sales of products at different geographic locations, or understanding the expected workforce demand for different organizations at a company, the ability to train a machine learning model to intelligently forecast on hierarchy data is essential.
