@@ -1,7 +1,4 @@
-## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
-## Please reach out to the Azure ML docs & samples team before before editing for the first time.
-
-#Note : this is based on the deploy-managed-online-endpoint.sh: it just adds autoscale settings in the end
+# Note: this is based on the deploy-managed-online-endpoint.sh: it just adds autoscale settings in the end
 set -e
 
 #set the endpoint name from the how-to-deploy excercise
