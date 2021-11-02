@@ -151,7 +151,6 @@ path|status|description
 
 |directory|description|
 |-|-|
-|`.schemas`|schemas|
 |`assets`|assets|
 |`endpoints`|endpoints|
 |`jobs`|jobs|
