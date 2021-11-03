@@ -23,7 +23,10 @@ jobs:
       with:
         python-version: "3.8"
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: |
+        pip --version
+        python --version
+        pip install -r python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
