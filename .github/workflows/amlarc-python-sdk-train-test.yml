@@ -26,6 +26,8 @@ jobs:
       run: |
         pip --version
         python --version
+        pip install --upgrade pip
+        pip --version
         pip install -r python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
