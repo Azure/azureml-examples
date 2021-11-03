@@ -10,7 +10,7 @@ on:
         default: 'experimental'
 jobs:
   cpu-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
       ARC_CLUSTER_PREFIX: amlarc-arc-py
