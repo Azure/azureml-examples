@@ -147,11 +147,7 @@ def write_notebook_workflow_sequential(notebook_dir):
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
-<<<<<<< HEAD
-    - cron: "0 0/8 * * *"
-=======
     - cron: "0 */8 * * *"
->>>>>>> origin/main
   pull_request:
     branches:
       - main
@@ -203,11 +199,7 @@ def write_notebook_workflow_parallel(notebook_dir):
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
-<<<<<<< HEAD
-    - cron: "0 0/8 * * *"
-=======
     - cron: "0 */8 * * *"
->>>>>>> origin/main
   pull_request:
     branches:
       - main

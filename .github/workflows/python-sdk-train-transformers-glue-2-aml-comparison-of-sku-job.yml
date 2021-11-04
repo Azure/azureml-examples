@@ -1,11 +1,7 @@
 name: python-sdk-train-transformers-glue-2-aml-comparison-of-sku-job
 on:
   schedule:
-<<<<<<< HEAD
-    - cron: "0 8 * * *"
-=======
     - cron: "0 */8 * * *"
->>>>>>> origin/main
   pull_request:
     branches:
       - main

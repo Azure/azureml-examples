@@ -1,11 +1,7 @@
 name: python-sdk-train-lightgbm-iris-job
 on:
   schedule:
-<<<<<<< HEAD
-    - cron: "0 8 * * *"
-=======
     - cron: "0 */8 * * *"
->>>>>>> origin/main
   pull_request:
     branches:
       - main

@@ -257,11 +257,7 @@ def write_notebook_workflow(notebook, name):
     workflow_yaml = f"""name: python-sdk-notebook-{name}
 on:
   schedule:
-<<<<<<< HEAD
-    - cron: "0 8 * * *"
-=======
     - cron: "0 */8 * * *"
->>>>>>> origin/main
   pull_request:
     branches:
       - main
@@ -304,11 +300,7 @@ def write_python_workflow(workflow, scenario, tool, project, name):
     workflow_yaml = f"""name: python-sdk-{scenario}-{tool}-{project}-{name}
 on:
   schedule:
-<<<<<<< HEAD
-    - cron: "0 8 * * *"
-=======
     - cron: "0 */8 * * *"
->>>>>>> origin/main
   pull_request:
     branches:
       - main
