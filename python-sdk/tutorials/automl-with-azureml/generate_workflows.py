@@ -60,7 +60,7 @@ on:
       - .github/workflows/python-sdk-tutorial-{notebook_name}.yml
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {{0}}
@@ -73,6 +73,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: "3.7"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
     - name: create automl conda environment
       uses: conda-incubator/setup-miniconda@v2
       with:
@@ -93,7 +95,7 @@ jobs:
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run {notebook}
-      run: papermill -k python {notebook} {notebook_name}.output.ipynb 
+      run: papermill -k python {notebook} {notebook_name}.output.ipynb
       working-directory: python-sdk/tutorials/automl-with-azureml/{notebook_folder}
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
