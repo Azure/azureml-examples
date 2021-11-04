@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CreationContextSchema": {
-      "type": "object",
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -31,13 +30,10 @@
           "type": "string"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "BanditPolicySchema": {
-      "type": "object",
-      "required": [
-        "policy_type"
-      ],
       "properties": {
         "delay_evaluation": {
           "title": "delay_evaluation",
@@ -48,13 +44,6 @@
           "title": "evaluation_interval",
           "type": "number",
           "format": "integer"
-        },
-        "policy_type": {
-          "type": "string",
-          "enum": [
-            "bandit"
-          ],
-          "title": "policy_type"
         },
         "slack_amount": {
           "title": "slack_amount",
@@ -65,15 +54,22 @@
           "title": "slack_factor",
           "type": "number",
           "format": "float"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "bandit"
+          ],
+          "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "type"
+      ],
       "additionalProperties": false
     },
     "MedianStoppingPolicySchema": {
-      "type": "object",
-      "required": [
-        "policy_type"
-      ],
       "properties": {
         "delay_evaluation": {
           "title": "delay_evaluation",
@@ -85,22 +81,21 @@
           "type": "number",
           "format": "integer"
         },
-        "policy_type": {
+        "type": {
           "type": "string",
           "enum": [
             "median_stopping"
           ],
-          "title": "policy_type"
+          "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "type"
+      ],
       "additionalProperties": false
     },
     "TruncationSelectionPolicySchema": {
-      "type": "object",
-      "required": [
-        "policy_type",
-        "truncation_percentage"
-      ],
       "properties": {
         "delay_evaluation": {
           "title": "delay_evaluation",
@@ -111,47 +106,160 @@
           "title": "evaluation_interval",
           "type": "number",
           "format": "integer"
-        },
-        "exclude_finished_jobs": {
-          "title": "exclude_finished_jobs",
-          "type": "boolean"
-        },
-        "policy_type": {
-          "type": "string",
-          "enum": [
-            "truncation_selection"
-          ],
-          "title": "policy_type"
         },
         "truncation_percentage": {
           "title": "truncation_percentage",
           "type": "number",
           "format": "integer"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "truncation_selection"
+          ],
+          "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "truncation_percentage",
+        "type"
+      ],
       "additionalProperties": false
     },
-    "JobEndpointSchema": {
-      "type": "object",
+    "InputDatasetSchema": {
       "properties": {
-        "endpoint": {
-          "title": "endpoint",
+        "dataset": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "datasets",
+              "title": "dataset"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousDatasetSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "download",
+            "ro_mount",
+            "rw_mount"
+          ],
+          "title": "mode"
+        }
+      },
+      "type": "object",
+      "required": [
+        "dataset"
+      ],
+      "additionalProperties": false
+    },
+    "AnonymousDatasetSchema": {
+      "properties": {
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datasets",
+          "title": "id",
+          "readonly": true
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the artifact gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "paths": {
+          "anyOf": [
+            {
+              "title": "paths",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/PathSchema"
+              }
+            }
+          ]
+        },
+        "$schema": {
+          "title": "$schema",
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "title": "type",
-          "type": "string"
-        },
-        "port": {
-          "title": "port",
-          "type": "number",
-          "format": "integer"
-        },
-        "properties": {
-          "title": "properties",
+        "tags": {
+          "title": "tags",
           "type": "object",
           "additionalProperties": {}
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "PathSchema": {
+      "properties": {
+        "file": {
+          "title": "file",
+          "type": "string",
+          "description": "URI pointing to file."
+        },
+        "folder": {
+          "title": "folder",
+          "type": "string",
+          "description": "URI pointing to folder."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "InputUriSchema": {
+      "properties": {
+        "file": {
+          "title": "file",
+          "type": "string"
+        },
+        "folder": {
+          "title": "folder",
+          "type": "string"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "download",
+            "rw_mount",
+            "ro_mount"
+          ],
+          "title": "mode"
         },
         "$schema": {
           "title": "$schema",
@@ -159,14 +267,159 @@
           "readonly": true
         }
       },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "InputDataSchema": {
+      "properties": {
+        "data": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "data",
+              "title": "data"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousDataSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "mount",
+            "download"
+          ],
+          "title": "mode"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "AnonymousDataSchema": {
+      "properties": {
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "datastore": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the artifact gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "InputLiteralValueSchema": {
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "title": "value",
+              "type": "string"
+            },
+            {
+              "title": "value",
+              "type": "boolean"
+            },
+            {
+              "title": "value",
+              "type": "number",
+              "format": "integer"
+            },
+            {
+              "title": "value",
+              "type": "number",
+              "format": "float"
+            }
+          ]
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "SweepJobLimitsSchema": {
+      "properties": {
+        "max_concurrent_trials": {
+          "title": "max_concurrent_trials",
+          "type": "number",
+          "format": "integer",
+          "description": "Sweep Job max concurrent trials."
+        },
+        "max_total_trials": {
+          "title": "max_total_trials",
+          "type": "number",
+          "format": "integer",
+          "description": "Sweep Job max total trials."
+        },
+        "timeout": {
+          "title": "timeout",
+          "type": "number",
+          "format": "integer",
+          "description": "The max run duration in ISO 8601 format, after which the job will be cancelled. Only supports duration with precision as low as Seconds."
+        },
+        "trial_timeout": {
+          "title": "trial_timeout",
+          "type": "number",
+          "format": "integer",
+          "description": "Sweep Job Trial timeout value."
+        }
+      },
+      "type": "object",
       "additionalProperties": false
     },
     "SweepObjectiveSchema": {
-      "type": "object",
-      "required": [
-        "goal",
-        "primary_metric"
-      ],
       "properties": {
         "goal": {
           "type": "string",
@@ -181,10 +434,14 @@
           "type": "string"
         }
       },
+      "type": "object",
+      "required": [
+        "goal",
+        "primary_metric"
+      ],
       "additionalProperties": false
     },
     "JobOutputSchema": {
-      "type": "object",
       "properties": {
         "datastore_id": {
           "type": "string",
@@ -197,13 +454,127 @@
           "type": "string"
         }
       },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "OutputUriSchema": {
+      "properties": {
+        "file": {
+          "title": "file",
+          "type": "string",
+          "readonly": true
+        },
+        "folder": {
+          "title": "folder",
+          "type": "string",
+          "readonly": true
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "upload",
+            "rw_mount"
+          ],
+          "title": "mode",
+          "readonly": true
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "OutputEntrySchema": {
+      "properties": {
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/DatasetSchema"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "mount",
+            "upload",
+            "rw_mount"
+          ],
+          "title": "mode"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "DatasetSchema": {
+      "properties": {
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datasets",
+          "title": "id",
+          "readonly": true
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string",
+          "description": "the path from which the artifact gets uploaded to the cloud"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "paths": {
+          "anyOf": [
+            {
+              "title": "paths",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/PathSchema"
+              }
+            }
+          ]
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
+        }
+      },
+      "type": "object",
       "additionalProperties": false
     },
     "ChoiceSchema": {
-      "type": "object",
-      "required": [
-        "type"
-      ],
       "properties": {
         "type": {
           "type": "string",
@@ -225,20 +596,23 @@
               {
                 "title": "values",
                 "type": "string"
+              },
+              {
+                "title": "values",
+                "type": "object",
+                "additionalProperties": {}
               }
             ]
           }
         }
       },
+      "type": "object",
+      "required": [
+        "type"
+      ],
       "additionalProperties": false
     },
     "UniformSchema": {
-      "type": "object",
-      "required": [
-        "max_value",
-        "min_value",
-        "type"
-      ],
       "properties": {
         "max_value": {
           "title": "max_value",
@@ -259,26 +633,43 @@
           "title": "type"
         }
       },
-      "additionalProperties": false
-    },
-    "QUniformSchema": {
       "type": "object",
       "required": [
         "max_value",
         "min_value",
-        "q",
         "type"
       ],
+      "additionalProperties": false
+    },
+    "QUniformSchema": {
       "properties": {
         "max_value": {
-          "title": "max_value",
-          "type": "number",
-          "format": "float"
+          "anyOf": [
+            {
+              "title": "max_value",
+              "type": "number",
+              "format": "integer"
+            },
+            {
+              "title": "max_value",
+              "type": "number",
+              "format": "float"
+            }
+          ]
         },
         "min_value": {
-          "title": "min_value",
-          "type": "number",
-          "format": "float"
+          "anyOf": [
+            {
+              "title": "min_value",
+              "type": "number",
+              "format": "integer"
+            },
+            {
+              "title": "min_value",
+              "type": "number",
+              "format": "float"
+            }
+          ]
         },
         "q": {
           "title": "q",
@@ -294,15 +685,14 @@
           "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "q",
+        "type"
+      ],
       "additionalProperties": false
     },
     "NormalSchema": {
-      "type": "object",
-      "required": [
-        "mu",
-        "sigma",
-        "type"
-      ],
       "properties": {
         "mu": {
           "title": "mu",
@@ -323,16 +713,15 @@
           "title": "type"
         }
       },
-      "additionalProperties": false
-    },
-    "QNormalSchema": {
       "type": "object",
       "required": [
         "mu",
-        "q",
         "sigma",
         "type"
       ],
+      "additionalProperties": false
+    },
+    "QNormalSchema": {
       "properties": {
         "mu": {
           "title": "mu",
@@ -358,14 +747,16 @@
           "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "mu",
+        "q",
+        "sigma",
+        "type"
+      ],
       "additionalProperties": false
     },
     "RandintSchema": {
-      "type": "object",
-      "required": [
-        "type",
-        "upper"
-      ],
       "properties": {
         "type": {
           "type": "string",
@@ -380,15 +771,54 @@
           "format": "integer"
         }
       },
+      "type": "object",
+      "required": [
+        "type",
+        "upper"
+      ],
+      "additionalProperties": false
+    },
+    "JobServiceSchema": {
+      "properties": {
+        "endpoint": {
+          "title": "endpoint",
+          "type": "string",
+          "readonly": true
+        },
+        "error_message": {
+          "title": "error_message",
+          "type": "string",
+          "readonly": true
+        },
+        "job_service_type": {
+          "title": "job_service_type",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "status": {
+          "title": "status",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "type": "object",
       "additionalProperties": false
     },
     "ParameterizedCommandSchema": {
-      "type": "object",
-      "required": [
-        "command",
-        "compute",
-        "environment"
-      ],
       "properties": {
         "code": {
           "anyOf": [
@@ -412,10 +842,6 @@
           "title": "command",
           "type": "string",
           "description": "The command run and the parameters passed. This string may contain place holders of inputs in {}. "
-        },
-        "compute": {
-          "type": "object",
-          "$ref": "#/definitions/ComputeBindingSchema"
         },
         "distribution": {
           "anyOf": [
@@ -451,13 +877,17 @@
             }
           ]
         },
-        "inputs": {
-          "title": "inputs",
+        "environment_variables": {
+          "title": "environment_variables",
           "type": "object",
           "additionalProperties": {
-            "type": "object",
-            "$ref": "#/definitions/InputEntrySchema"
+            "title": "environment_variables",
+            "type": "string"
           }
+        },
+        "resources": {
+          "type": "object",
+          "$ref": "#/definitions/ResourceConfigurationSchema"
         },
         "$schema": {
           "title": "$schema",
@@ -465,50 +895,43 @@
           "readonly": true
         }
       },
+      "type": "object",
+      "required": [
+        "command",
+        "environment"
+      ],
       "additionalProperties": false
     },
     "AnonymousCodeAssetSchema": {
-      "type": "object",
       "properties": {
-        "arm_id": {
+        "code_uri": {
+          "title": "code_uri",
           "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
+          "description": "Blob URI pointing to a file or directory where code asset is located."
         },
         "creation_context": {
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
-        },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
         },
         "description": {
           "title": "description",
           "type": "string"
         },
         "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "codes",
           "title": "id",
-          "type": "string"
+          "readonly": true
         },
         "local_path": {
           "title": "local_path",
           "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
+          "description": "the path from which the artifact gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
-          "type": "string",
-          "readonly": true
-        },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
+          "type": "string"
         },
         "$schema": {
           "title": "$schema",
@@ -521,66 +944,21 @@
           "additionalProperties": {}
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer",
-          "readonly": true
-        }
-      },
-      "additionalProperties": false
-    },
-    "ComputeBindingSchema": {
-      "type": "object",
-      "properties": {
-        "instance_count": {
-          "title": "instance_count",
-          "type": "number",
-          "format": "integer"
-        },
-        "instance_type": {
-          "title": "instance_type",
-          "type": "string",
-          "description": "The instance type to make availabel to this job."
-        },
-        "location": {
-          "title": "location",
-          "type": "string",
-          "description": "The locations where this job may run."
-        },
-        "properties": {
-          "title": "properties",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "target": {
           "anyOf": [
             {
-              "type": "string",
-              "enum": [
-                "local"
-              ],
-              "title": "target"
-            },
-            {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "computes",
-              "title": "target"
-            },
-            {
-              "title": "target",
               "type": "string"
+            },
+            {
+              "type": "integer"
             }
-          ]
+          ],
+          "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "PyTorchDistributionSchema": {
-      "type": "object",
-      "required": [
-        "type"
-      ],
       "properties": {
         "type": {
           "type": "string",
@@ -589,19 +967,19 @@
           ],
           "title": "type"
         },
-        "process_count": {
-          "title": "process_count",
+        "process_count_per_instance": {
+          "title": "process_count_per_instance",
           "type": "number",
           "format": "integer"
         }
       },
-      "additionalProperties": false
-    },
-    "TensorFlowDistributionSchema": {
       "type": "object",
       "required": [
         "type"
       ],
+      "additionalProperties": false
+    },
+    "TensorFlowDistributionSchema": {
       "properties": {
         "type": {
           "type": "string",
@@ -621,13 +999,13 @@
           "format": "integer"
         }
       },
-      "additionalProperties": false
-    },
-    "MPIDistributionSchema": {
       "type": "object",
       "required": [
         "type"
       ],
+      "additionalProperties": false
+    },
+    "MPIDistributionSchema": {
       "properties": {
         "type": {
           "type": "string",
@@ -642,23 +1020,24 @@
           "format": "integer"
         }
       },
+      "type": "object",
+      "required": [
+        "type"
+      ],
       "additionalProperties": false
     },
     "AnonymousEnvironmentSchema": {
-      "type": "object",
       "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema",
+          "description": "Docker build context to create the environment. Mutually exclusive with image"
         },
         "conda_file": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "conda_file"
+              "title": "conda_file",
+              "type": "string"
             },
             {
               "title": "conda_file",
@@ -670,19 +1049,9 @@
           "type": "object",
           "$ref": "#/definitions/CreationContextSchema"
         },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
         "description": {
           "title": "description",
           "type": "string"
-        },
-        "docker": {
-          "type": "object",
-          "$ref": "#/definitions/DockerSchema"
         },
         "id": {
           "type": "string",
@@ -691,14 +1060,13 @@
           "title": "id",
           "readonly": true
         },
+        "image": {
+          "title": "image",
+          "type": "string"
+        },
         "inference_config": {
           "type": "object",
           "$ref": "#/definitions/InferenceConfigSchema"
-        },
-        "local_path": {
-          "title": "local_path",
-          "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
@@ -712,10 +1080,6 @@
           ],
           "title": "os_type"
         },
-        "path": {
-          "title": "path",
-          "type": "string"
-        },
         "$schema": {
           "title": "$schema",
           "type": "string",
@@ -724,58 +1088,42 @@
         "tags": {
           "title": "tags",
           "type": "object",
-          "additionalProperties": {
-            "title": "tags",
-            "type": "string"
-          }
+          "additionalProperties": {}
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
-    "DockerSchema": {
-      "type": "object",
+    "BuildContextSchema": {
       "properties": {
-        "build": {
-          "type": "object",
-          "$ref": "#/definitions/DockerBuildSchema"
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
         },
-        "image": {
-          "title": "image",
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
           "type": "string"
         }
       },
-      "additionalProperties": false
-    },
-    "DockerBuildSchema": {
       "type": "object",
-      "properties": {
-        "dockerfile": {
-          "anyOf": [
-            {
-              "type": "string",
-              "title": "dockerfile"
-            },
-            {
-              "title": "dockerfile",
-              "type": "string"
-            }
-          ]
-        }
-      },
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
-      "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -790,14 +1138,15 @@
           "$ref": "#/definitions/RouteSchema"
         }
       },
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
       "additionalProperties": false
     },
     "RouteSchema": {
-      "type": "object",
-      "required": [
-        "path",
-        "port"
-      ],
       "properties": {
         "path": {
           "title": "path",
@@ -809,119 +1158,56 @@
           "format": "integer"
         }
       },
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
       "additionalProperties": false
     },
-    "InputEntrySchema": {
-      "type": "object",
+    "ResourceConfigurationSchema": {
       "properties": {
-        "data": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "data",
-              "title": "data"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/AnonymousAssetSchema"
-            },
-            {
-              "type": "string",
-              "pattern": "^file:.*"
-            }
-          ]
+        "instance_count": {
+          "title": "instance_count",
+          "type": "number",
+          "format": "integer"
         },
-        "mode": {
+        "instance_type": {
+          "title": "instance_type",
           "type": "string",
-          "enum": [
-            "mount",
-            "download"
-          ],
-          "title": "mode"
-        }
-      },
-      "additionalProperties": false
-    },
-    "AnonymousAssetSchema": {
-      "type": "object",
-      "properties": {
-        "arm_id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "data",
-          "title": "arm_id",
-          "readonly": true
+          "description": "The instance type to make available to this job."
         },
-        "creation_context": {
-          "type": "object",
-          "$ref": "#/definitions/CreationContextSchema"
-        },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
-        "description": {
-          "title": "description",
-          "type": "string"
-        },
-        "id": {
-          "title": "id",
-          "type": "string"
-        },
-        "local_path": {
-          "title": "local_path",
-          "type": "string",
-          "description": "the path from which the data gets uploaded to the cloud"
-        },
-        "name": {
-          "title": "name",
-          "type": "string",
-          "readonly": true
-        },
-        "path": {
-          "title": "path",
-          "type": "string",
-          "description": "URI pointing to a file or directory."
-        },
-        "$schema": {
-          "title": "$schema",
-          "type": "string",
-          "readonly": true
-        },
-        "tags": {
-          "title": "tags",
+        "properties": {
+          "title": "properties",
           "type": "object",
           "additionalProperties": {}
-        },
-        "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer",
-          "readonly": true
         }
       },
+      "type": "object",
       "additionalProperties": false
     },
     "SweepJobSchema": {
-      "type": "object",
-      "required": [
-        "algorithm",
-        "objective",
-        "trial",
-        "type"
-      ],
       "properties": {
-        "algorithm": {
-          "type": "string",
-          "enum": [
-            "bayesian",
-            "grid",
-            "random"
-          ],
-          "title": "algorithm"
+        "compute": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "local"
+              ],
+              "title": "compute"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "computes",
+              "title": "compute"
+            },
+            {
+              "title": "compute",
+              "type": "string"
+            }
+          ]
         },
         "creation_context": {
           "type": "object",
@@ -929,6 +1215,10 @@
         },
         "description": {
           "title": "description",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "display_name",
           "type": "string"
         },
         "early_termination": {
@@ -958,13 +1248,51 @@
           "title": "id",
           "readonly": true
         },
-        "interaction_endpoints": {
-          "title": "interaction_endpoints",
+        "inputs": {
+          "title": "inputs",
           "type": "object",
           "additionalProperties": {
-            "type": "object",
-            "$ref": "#/definitions/JobEndpointSchema"
+            "anyOf": [
+              {
+                "type": "object",
+                "$ref": "#/definitions/InputDatasetSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/InputUriSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/InputDataSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/InputLiteralValueSchema"
+              },
+              {
+                "title": "inputs",
+                "type": "number",
+                "format": "integer"
+              },
+              {
+                "title": "inputs",
+                "type": "string"
+              },
+              {
+                "title": "inputs",
+                "type": "boolean"
+              },
+              {
+                "title": "inputs",
+                "type": "number",
+                "format": "float"
+              }
+            ]
           }
+        },
+        "limits": {
+          "type": "object",
+          "$ref": "#/definitions/SweepJobLimitsSchema"
         },
         "log_files": {
           "title": "log_files",
@@ -973,18 +1301,6 @@
             "title": "log_files",
             "type": "string"
           }
-        },
-        "max_concurrent_trials": {
-          "title": "max_concurrent_trials",
-          "type": "number",
-          "format": "integer",
-          "description": "The maximum number of runs to run concurrently."
-        },
-        "max_total_trials": {
-          "title": "max_total_trials",
-          "type": "number",
-          "format": "integer",
-          "description": "The maximum number of runs."
         },
         "name": {
           "title": "name",
@@ -1000,6 +1316,27 @@
           "$ref": "#/definitions/JobOutputSchema",
           "description": "The output configurations for the component used."
         },
+        "outputs": {
+          "title": "outputs",
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "object",
+                "$ref": "#/definitions/OutputUriSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/OutputEntrySchema"
+              }
+            ]
+          }
+        },
+        "parent_job_name": {
+          "title": "parent_job_name",
+          "type": "string",
+          "readonly": true
+        },
         "properties": {
           "title": "properties",
           "type": "object",
@@ -1007,6 +1344,15 @@
             "title": "properties",
             "type": "string"
           }
+        },
+        "sampling_algorithm": {
+          "type": "string",
+          "enum": [
+            "bayesian",
+            "grid",
+            "random"
+          ],
+          "title": "sampling_algorithm"
         },
         "$schema": {
           "title": "$schema",
@@ -1045,6 +1391,14 @@
             ]
           }
         },
+        "services": {
+          "title": "services",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "$ref": "#/definitions/JobServiceSchema"
+          }
+        },
         "status": {
           "title": "status",
           "type": "string",
@@ -1058,11 +1412,6 @@
             "type": "string"
           }
         },
-        "timeout_minutes": {
-          "title": "timeout_minutes",
-          "type": "number",
-          "format": "integer"
-        },
         "trial": {
           "type": "object",
           "$ref": "#/definitions/ParameterizedCommandSchema"
@@ -1070,11 +1419,19 @@
         "type": {
           "type": "string",
           "enum": [
-            "sweep_job"
+            "sweep"
           ],
           "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "compute",
+        "objective",
+        "sampling_algorithm",
+        "trial",
+        "type"
+      ],
       "additionalProperties": false
     }
   },

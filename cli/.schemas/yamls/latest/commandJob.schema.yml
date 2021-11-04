@@ -12,55 +12,6 @@ definitions:
     required:
     - type
     type: object
-  AnonymousAssetSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
-      creation_context:
-        $ref: '#/definitions/CreationContextSchema'
-        type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
-      description:
-        title: description
-        type: string
-      id:
-        title: id
-        type: string
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
-      name:
-        readonly: true
-        title: name
-        type: string
-      path:
-        description: URI pointing to a file or directory.
-        title: path
-        type: string
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-      version:
-        format: integer
-        readonly: true
-        title: version
-        type: number
-    type: object
   AnonymousCodeAssetSchema:
     additionalProperties: false
     properties:
@@ -68,11 +19,46 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: data
+      code_uri:
+        description: Blob URI pointing to a file or directory where code asset is
+          located.
+        title: code_uri
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: codes
         pattern: ^azureml:.*
         readonly: true
-        title: arm_id
+        title: id
+        type: string
+      local_path:
+        description: the path from which the artifact gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
+    type: object
+  AnonymousDataSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
         type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
@@ -89,11 +75,10 @@ definitions:
         title: id
         type: string
       local_path:
-        description: the path from which the data gets uploaded to the cloud
+        description: the path from which the artifact gets uploaded to the cloud
         title: local_path
         type: string
       name:
-        readonly: true
         title: name
         type: string
       path:
@@ -105,10 +90,53 @@ definitions:
         title: tags
         type: object
       version:
-        format: integer
-        readonly: true
+        anyOf:
+        - type: string
+        - type: integer
         title: version
-        type: number
+    type: object
+  AnonymousDatasetSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: datasets
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      local_path:
+        description: the path from which the artifact gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      paths:
+        anyOf:
+        - items:
+            $ref: '#/definitions/PathSchema'
+            type: object
+          title: paths
+          type: array
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
     type: object
   AnonymousEnvironmentSchema:
     additionalProperties: false
@@ -117,12 +145,11 @@ definitions:
         readonly: true
         title: $schema
         type: string
-      arm_id:
-        arm_type: data
-        pattern: ^azureml:.*
-        readonly: true
-        title: arm_id
-        type: string
+      build:
+        $ref: '#/definitions/BuildContextSchema'
+        description: Docker build context to create the environment. Mutually exclusive
+          with image
+        type: object
       conda_file:
         anyOf:
         - title: conda_file
@@ -132,30 +159,21 @@ definitions:
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
-      datastore:
-        arm_type: datastores
-        pattern: ^azureml:.*
-        title: datastore
-        type: string
       description:
         title: description
         type: string
-      docker:
-        $ref: '#/definitions/DockerSchema'
-        type: object
       id:
         arm_type: environments
         pattern: ^azureml:.*
         readonly: true
         title: id
         type: string
+      image:
+        title: image
+        type: string
       inference_config:
         $ref: '#/definitions/InferenceConfigSchema'
         type: object
-      local_path:
-        description: the path from which the data gets uploaded to the cloud
-        title: local_path
-        type: string
       name:
         title: name
         type: string
@@ -165,18 +183,35 @@ definitions:
         - windows
         title: os_type
         type: string
-      path:
-        title: path
-        type: string
       tags:
-        additionalProperties:
-          title: tags
-          type: string
+        additionalProperties: {}
         title: tags
         type: object
       version:
-        format: integer
+        anyOf:
+        - type: string
+        - type: integer
         title: version
+    type: object
+  BuildContextSchema:
+    additionalProperties: false
+    properties:
+      context_uri:
+        title: context_uri
+        type: string
+      dockerfile_path:
+        title: dockerfile_path
+        type: string
+      local_path:
+        title: local_path
+        type: string
+    type: object
+  CommandJobLimitsSchema:
+    additionalProperties: false
+    properties:
+      timeout:
+        format: integer
+        title: timeout
         type: number
     type: object
   CommandJobSchema:
@@ -202,13 +237,25 @@ definitions:
         title: command
         type: string
       compute:
-        $ref: '#/definitions/ComputeBindingSchema'
-        type: object
+        anyOf:
+        - enum:
+          - local
+          title: compute
+          type: string
+        - arm_type: computes
+          pattern: ^azureml:.*
+          title: compute
+          type: string
+        - title: compute
+          type: string
       creation_context:
         $ref: '#/definitions/CreationContextSchema'
         type: object
       description:
         title: description
+        type: string
+      display_name:
+        title: display_name
         type: string
       distribution:
         anyOf:
@@ -251,15 +298,29 @@ definitions:
           type: object
       inputs:
         additionalProperties:
-          $ref: '#/definitions/InputEntrySchema'
-          type: object
+          anyOf:
+          - $ref: '#/definitions/InputDatasetSchema'
+            type: object
+          - $ref: '#/definitions/InputUriSchema'
+            type: object
+          - $ref: '#/definitions/InputDataSchema'
+            type: object
+          - $ref: '#/definitions/InputLiteralValueSchema'
+            type: object
+          - format: integer
+            title: inputs
+            type: number
+          - title: inputs
+            type: string
+          - title: inputs
+            type: boolean
+          - format: float
+            title: inputs
+            type: number
         title: inputs
         type: object
-      interaction_endpoints:
-        additionalProperties:
-          $ref: '#/definitions/JobEndpointSchema'
-          type: object
-        title: interaction_endpoints
+      limits:
+        $ref: '#/definitions/CommandJobLimitsSchema'
         type: object
       log_files:
         additionalProperties:
@@ -274,15 +335,37 @@ definitions:
         $ref: '#/definitions/JobOutputSchema'
         description: The output configurations for the component used.
         type: object
+      outputs:
+        additionalProperties:
+          anyOf:
+          - $ref: '#/definitions/OutputUriSchema'
+            type: object
+          - $ref: '#/definitions/OutputEntrySchema'
+            type: object
+        title: outputs
+        type: object
       parameters:
         additionalProperties: {}
         title: parameters
         type: object
+      parent_job_name:
+        readonly: true
+        title: parent_job_name
+        type: string
       properties:
         additionalProperties:
           title: properties
           type: string
         title: properties
+        type: object
+      resources:
+        $ref: '#/definitions/ResourceConfigurationSchema'
+        type: object
+      services:
+        additionalProperties:
+          $ref: '#/definitions/JobServiceSchema'
+          type: object
+        title: services
         type: object
       status:
         readonly: true
@@ -294,52 +377,15 @@ definitions:
           type: string
         title: tags
         type: object
-      timeout:
-        description: Maximum time to run (seconds).
-        format: integer
-        title: timeout
-        type: number
       type:
         enum:
-        - command_job
+        - command
         title: type
         type: string
     required:
     - command
     - compute
     - environment
-    type: object
-  ComputeBindingSchema:
-    additionalProperties: false
-    properties:
-      instance_count:
-        format: integer
-        title: instance_count
-        type: number
-      instance_type:
-        description: The instance type to make availabel to this job.
-        title: instance_type
-        type: string
-      location:
-        description: The locations where this job may run.
-        title: location
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      target:
-        anyOf:
-        - enum:
-          - local
-          title: target
-          type: string
-        - arm_type: computes
-          pattern: ^azureml:.*
-          title: target
-          type: string
-        - title: target
-          type: string
     type: object
   CreationContextSchema:
     additionalProperties: false
@@ -365,25 +411,48 @@ definitions:
         title: last_modified_by_type
         type: string
     type: object
-  DockerBuildSchema:
+  DatasetSchema:
     additionalProperties: false
     properties:
-      dockerfile:
-        anyOf:
-        - title: dockerfile
-          type: string
-        - title: dockerfile
-          type: string
-    type: object
-  DockerSchema:
-    additionalProperties: false
-    properties:
-      build:
-        $ref: '#/definitions/DockerBuildSchema'
-        type: object
-      image:
-        title: image
+      $schema:
+        readonly: true
+        title: $schema
         type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      description:
+        title: description
+        type: string
+      id:
+        arm_type: datasets
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      local_path:
+        description: the path from which the artifact gets uploaded to the cloud
+        title: local_path
+        type: string
+      name:
+        title: name
+        type: string
+      paths:
+        anyOf:
+        - items:
+            $ref: '#/definitions/PathSchema'
+            type: object
+          title: paths
+          type: array
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      version:
+        anyOf:
+        - type: string
+        - type: integer
+        title: version
     type: object
   InferenceConfigSchema:
     additionalProperties: false
@@ -402,7 +471,7 @@ definitions:
     - readiness_route
     - scoring_route
     type: object
-  InputEntrySchema:
+  InputDataSchema:
     additionalProperties: false
     properties:
       data:
@@ -411,7 +480,7 @@ definitions:
           pattern: ^azureml:.*
           title: data
           type: string
-        - $ref: '#/definitions/AnonymousAssetSchema'
+        - $ref: '#/definitions/AnonymousDataSchema'
           type: object
         - pattern: ^file:.*
           type: string
@@ -422,27 +491,64 @@ definitions:
         title: mode
         type: string
     type: object
-  JobEndpointSchema:
+  InputDatasetSchema:
+    additionalProperties: false
+    properties:
+      dataset:
+        anyOf:
+        - arm_type: datasets
+          pattern: ^azureml:.*
+          title: dataset
+          type: string
+        - $ref: '#/definitions/AnonymousDatasetSchema'
+          type: object
+        - pattern: ^file:.*
+          type: string
+      mode:
+        enum:
+        - download
+        - ro_mount
+        - rw_mount
+        title: mode
+        type: string
+    required:
+    - dataset
+    type: object
+  InputLiteralValueSchema:
+    additionalProperties: false
+    properties:
+      value:
+        anyOf:
+        - title: value
+          type: string
+        - title: value
+          type: boolean
+        - format: integer
+          title: value
+          type: number
+        - format: float
+          title: value
+          type: number
+    type: object
+  InputUriSchema:
     additionalProperties: false
     properties:
       $schema:
         readonly: true
         title: $schema
         type: string
-      endpoint:
-        readonly: true
-        title: endpoint
+      file:
+        title: file
         type: string
-      port:
-        format: integer
-        title: port
-        type: number
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      type:
-        title: type
+      folder:
+        title: folder
+        type: string
+      mode:
+        enum:
+        - download
+        - rw_mount
+        - ro_mount
+        title: mode
         type: string
     type: object
   JobOutputSchema:
@@ -455,6 +561,37 @@ definitions:
         type: string
       path:
         title: path
+        type: string
+    type: object
+  JobServiceSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      endpoint:
+        readonly: true
+        title: endpoint
+        type: string
+      error_message:
+        readonly: true
+        title: error_message
+        type: string
+      job_service_type:
+        title: job_service_type
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      status:
+        readonly: true
+        title: status
         type: string
     type: object
   MPIDistributionSchema:
@@ -492,12 +629,65 @@ definitions:
     required:
     - type
     type: object
+  OutputEntrySchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      data:
+        $ref: '#/definitions/DatasetSchema'
+        type: object
+      mode:
+        enum:
+        - mount
+        - upload
+        - rw_mount
+        title: mode
+        type: string
+    type: object
+  OutputUriSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      file:
+        readonly: true
+        title: file
+        type: string
+      folder:
+        readonly: true
+        title: folder
+        type: string
+      mode:
+        enum:
+        - upload
+        - rw_mount
+        readonly: true
+        title: mode
+        type: string
+    type: object
+  PathSchema:
+    additionalProperties: false
+    properties:
+      file:
+        description: URI pointing to file.
+        title: file
+        type: string
+      folder:
+        description: URI pointing to folder.
+        title: folder
+        type: string
+    type: object
   PyTorchDistributionSchema:
     additionalProperties: false
     properties:
-      process_count:
+      process_count_per_instance:
         format: integer
-        title: process_count
+        title: process_count_per_instance
         type: number
       type:
         enum:
@@ -506,6 +696,22 @@ definitions:
         type: string
     required:
     - type
+    type: object
+  ResourceConfigurationSchema:
+    additionalProperties: false
+    properties:
+      instance_count:
+        format: integer
+        title: instance_count
+        type: number
+      instance_type:
+        description: The instance type to make available to this job.
+        title: instance_type
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
     type: object
   RouteSchema:
     additionalProperties: false

@@ -1,17 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "BatchEndpointsDefaultsSchema": {
-      "properties": {
-        "deployment_name": {
-          "title": "deployment_name",
-          "type": "string",
-          "description": "Name of the deployment that will be default for the endpoint. This deployment will end up getting 100% traffic when the endpoint scoring URL is invoked."
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
-    },
     "IdentitySchema": {
       "properties": {
         "principal_id": {
@@ -47,8 +36,12 @@
       "type": "object",
       "additionalProperties": false
     },
-    "BatchEndpointSchema": {
+    "KubernetesOnlineEndpointSchema": {
       "properties": {
+        "allow_public_access": {
+          "title": "allow_public_access",
+          "type": "boolean"
+        },
         "auth_mode": {
           "type": "string",
           "enum": [
@@ -58,9 +51,11 @@
           ],
           "title": "auth_mode"
         },
-        "defaults": {
-          "type": "object",
-          "$ref": "#/definitions/BatchEndpointsDefaultsSchema"
+        "compute": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "computes",
+          "title": "compute"
         },
         "description": {
           "title": "description",
@@ -91,7 +86,7 @@
         "provisioning_state": {
           "title": "provisioning_state",
           "type": "string",
-          "description": "Provisioning state for the endpoint."
+          "description": "status of the deployment provisioning operation"
         },
         "$schema": {
           "title": "$schema",
@@ -112,6 +107,15 @@
           "title": "tags",
           "type": "object",
           "additionalProperties": {}
+        },
+        "traffic": {
+          "title": "traffic",
+          "type": "object",
+          "additionalProperties": {
+            "title": "traffic",
+            "type": "number",
+            "format": "integer"
+          }
         }
       },
       "type": "object",
@@ -121,5 +125,5 @@
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/BatchEndpointSchema"
+  "$ref": "#/definitions/KubernetesOnlineEndpointSchema"
 }

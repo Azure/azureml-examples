@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "CustomerManagedKeySchema": {
-      "type": "object",
       "properties": {
         "key_uri": {
           "title": "key_uri",
@@ -13,57 +12,10 @@
           "type": "string"
         }
       },
-      "additionalProperties": false
-    },
-    "PrivateEndpointSchema": {
       "type": "object",
-      "properties": {
-        "approval_type": {
-          "title": "approval_type",
-          "type": "string"
-        },
-        "connections": {
-          "title": "connections",
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "$ref": "#/definitions/EndpointConnectionSchema"
-          }
-        }
-      },
-      "additionalProperties": false
-    },
-    "EndpointConnectionSchema": {
-      "type": "object",
-      "properties": {
-        "location": {
-          "title": "location",
-          "type": "string"
-        },
-        "resource_group": {
-          "title": "resource_group",
-          "type": "string"
-        },
-        "subnet_name": {
-          "title": "subnet_name",
-          "type": "string"
-        },
-        "subscription_id": {
-          "title": "subscription_id",
-          "type": "string"
-        },
-        "vnet_name": {
-          "title": "vnet_name",
-          "type": "string"
-        }
-      },
       "additionalProperties": false
     },
     "WorkspaceSchema": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
         "application_insights": {
           "title": "application_insights",
@@ -85,13 +37,17 @@
           "title": "discovery_url",
           "type": "string"
         },
-        "friendly_name": {
-          "title": "friendly_name",
+        "display_name": {
+          "title": "display_name",
           "type": "string"
         },
         "hbi_workspace": {
           "title": "hbi_workspace",
           "type": "boolean"
+        },
+        "image_build_compute": {
+          "title": "image_build_compute",
+          "type": "string"
         },
         "key_vault": {
           "title": "key_vault",
@@ -101,13 +57,26 @@
           "title": "location",
           "type": "string"
         },
+        "mlflow_tracking_uri": {
+          "title": "mlflow_tracking_uri",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
         },
-        "private_endpoints": {
-          "type": "object",
-          "$ref": "#/definitions/PrivateEndpointSchema"
+        "public_network_access": {
+          "type": "string",
+          "enum": [
+            "Disabled",
+            "Enabled"
+          ],
+          "title": "public_network_access"
+        },
+        "resource_group": {
+          "title": "resource_group",
+          "type": "string"
         },
         "$schema": {
           "title": "$schema",
@@ -127,6 +96,10 @@
           }
         }
       },
+      "type": "object",
+      "required": [
+        "name"
+      ],
       "additionalProperties": false
     }
   },

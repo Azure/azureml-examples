@@ -1,40 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "CodeConfigurationSchema": {
-      "properties": {
-        "code": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "codes",
-              "title": "code"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/CodeAssetSchema"
-            },
-            {
-              "type": "string",
-              "pattern": "^file:.*"
-            }
-          ]
-        },
-        "$schema": {
-          "title": "$schema",
-          "type": "string",
-          "readonly": true
-        },
-        "scoring_script": {
-          "title": "scoring_script",
-          "type": "string"
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
-    },
-    "CodeAssetSchema": {
+    "AnonymousCodeAssetSchema": {
       "properties": {
         "code_uri": {
           "title": "code_uri",
@@ -122,145 +89,71 @@
       "type": "object",
       "additionalProperties": false
     },
-    "EnvironmentSchema": {
+    "ComponentPyTorchSchema": {
       "properties": {
-        "build": {
-          "type": "object",
-          "$ref": "#/definitions/BuildContextSchema",
-          "description": "Docker build context to create the environment. Mutually exclusive with image"
-        },
-        "conda_file": {
-          "anyOf": [
-            {
-              "title": "conda_file",
-              "type": "string"
-            },
-            {
-              "title": "conda_file",
-              "type": "string"
-            }
-          ]
-        },
-        "creation_context": {
-          "type": "object",
-          "$ref": "#/definitions/CreationContextSchema"
-        },
-        "description": {
-          "title": "description",
-          "type": "string"
-        },
-        "id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "environments",
-          "title": "id",
-          "readonly": true
-        },
-        "image": {
-          "title": "image",
-          "type": "string"
-        },
-        "inference_config": {
-          "type": "object",
-          "$ref": "#/definitions/InferenceConfigSchema"
-        },
-        "name": {
-          "title": "name",
-          "type": "string"
-        },
-        "os_type": {
+        "type": {
           "type": "string",
           "enum": [
-            "linux",
-            "windows"
+            "pytorch"
           ],
-          "title": "os_type"
+          "title": "type"
         },
-        "$schema": {
-          "title": "$schema",
-          "type": "string",
-          "readonly": true
-        },
-        "tags": {
-          "title": "tags",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "integer"
-            }
-          ],
-          "title": "version"
-        }
-      },
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "additionalProperties": false
-    },
-    "BuildContextSchema": {
-      "properties": {
-        "context_uri": {
-          "title": "context_uri",
-          "type": "string"
-        },
-        "dockerfile_path": {
-          "title": "dockerfile_path",
-          "type": "string"
-        },
-        "local_path": {
-          "title": "local_path",
-          "type": "string"
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
-    },
-    "InferenceConfigSchema": {
-      "properties": {
-        "liveness_route": {
-          "type": "object",
-          "$ref": "#/definitions/RouteSchema"
-        },
-        "readiness_route": {
-          "type": "object",
-          "$ref": "#/definitions/RouteSchema"
-        },
-        "scoring_route": {
-          "type": "object",
-          "$ref": "#/definitions/RouteSchema"
-        }
-      },
-      "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
-      "additionalProperties": false
-    },
-    "RouteSchema": {
-      "properties": {
-        "path": {
-          "title": "path",
-          "type": "string"
-        },
-        "port": {
-          "title": "port",
+        "process_count_per_instance": {
+          "title": "process_count_per_instance",
           "type": "number",
           "format": "integer"
         }
       },
       "type": "object",
       "required": [
-        "path",
-        "port"
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ComponentTensorFlowSchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "tensorflow"
+          ],
+          "title": "type"
+        },
+        "parameter_server_count": {
+          "title": "parameter_server_count",
+          "type": "number",
+          "format": "integer"
+        },
+        "worker_count": {
+          "title": "worker_count",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ComponentMPISchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mpi"
+          ],
+          "title": "type"
+        },
+        "process_count_per_instance": {
+          "title": "process_count_per_instance",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
       ],
       "additionalProperties": false
     },
@@ -343,97 +236,210 @@
       "type": "object",
       "additionalProperties": false
     },
-    "AnonymousModelSchema": {
+    "BuildContextSchema": {
       "properties": {
-        "creation_context": {
-          "type": "object",
-          "$ref": "#/definitions/CreationContextSchema"
-        },
-        "datastore": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "datastores",
-          "title": "datastore"
-        },
-        "description": {
-          "title": "description",
+        "context_uri": {
+          "title": "context_uri",
           "type": "string"
         },
-        "flavors": {
-          "title": "flavors",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "models",
-          "title": "id",
-          "readonly": true
-        },
-        "job_name": {
-          "title": "job_name",
-          "type": "string",
-          "readonly": true
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
         },
         "local_path": {
           "title": "local_path",
           "type": "string"
-        },
-        "model_format": {
-          "type": "string",
-          "enum": [
-            "custom",
-            "mlflow",
-            "triton",
-            "openai"
-          ],
-          "title": "model_format"
-        },
-        "model_uri": {
-          "title": "model_uri",
-          "type": "string"
-        },
-        "name": {
-          "title": "name",
-          "type": "string"
-        },
-        "properties": {
-          "title": "properties",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "$schema": {
-          "title": "$schema",
-          "type": "string",
-          "readonly": true
-        },
-        "tags": {
-          "title": "tags",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "utc_time_created": {
-          "title": "utc_time_created",
-          "type": "string",
-          "format": "date-time"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "integer"
-            }
-          ],
-          "title": "version"
         }
       },
       "type": "object",
       "additionalProperties": false
     },
-    "ResourceConfigurationSchema": {
+    "InferenceConfigSchema": {
+      "properties": {
+        "liveness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "readiness_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        },
+        "scoring_route": {
+          "type": "object",
+          "$ref": "#/definitions/RouteSchema"
+        }
+      },
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
+      "additionalProperties": false
+    },
+    "RouteSchema": {
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
+      "additionalProperties": false
+    },
+    "ParameterSchema": {
+      "properties": {
+        "default": {
+          "anyOf": [
+            {
+              "title": "default",
+              "type": "string"
+            },
+            {
+              "title": "default",
+              "type": "number",
+              "format": "decimal"
+            },
+            {
+              "title": "default",
+              "type": "boolean"
+            }
+          ]
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "enum": {
+          "title": "enum",
+          "type": "array",
+          "items": {
+            "title": "enum",
+            "type": "string"
+          }
+        },
+        "max": {
+          "anyOf": [
+            {
+              "title": "max",
+              "type": "string"
+            },
+            {
+              "title": "max",
+              "type": "number",
+              "format": "decimal"
+            }
+          ]
+        },
+        "min": {
+          "anyOf": [
+            {
+              "title": "min",
+              "type": "string"
+            },
+            {
+              "title": "min",
+              "type": "number",
+              "format": "decimal"
+            }
+          ]
+        },
+        "optional": {
+          "title": "optional",
+          "type": "boolean"
+        },
+        "type": {
+          "title": "type",
+          "type": "string",
+          "default": "null",
+          "enum": [
+            "number",
+            "integer",
+            "boolean",
+            "string",
+            "object",
+            "null"
+          ],
+          "enumNames": []
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "InputPortSchema": {
+      "properties": {
+        "default": {
+          "title": "default",
+          "type": "string"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "input_type": {
+          "title": "input_type",
+          "type": "string",
+          "enum": [
+            "generic"
+          ],
+          "enumNames": []
+        },
+        "optional": {
+          "title": "optional",
+          "type": "boolean"
+        },
+        "type": {
+          "title": "type",
+          "type": "string",
+          "default": "null",
+          "enum": [
+            "path",
+            "null"
+          ],
+          "enumNames": []
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "OutputPortSchema": {
+      "properties": {
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "input_type": {
+          "title": "input_type",
+          "type": "string",
+          "enum": [
+            "generic"
+          ],
+          "enumNames": []
+        },
+        "type": {
+          "title": "type",
+          "type": "string",
+          "default": "null",
+          "enum": [
+            "path",
+            "null"
+          ],
+          "enumNames": []
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ComponentResourceSchema": {
       "properties": {
         "instance_count": {
           "title": "instance_count",
@@ -454,76 +460,19 @@
       "type": "object",
       "additionalProperties": false
     },
-    "BatchRetrySettingsSchema": {
+    "CommandComponentSchema": {
       "properties": {
-        "max_retries": {
-          "title": "max_retries",
-          "type": "number",
-          "format": "integer",
-          "description": "The number of maximum tries for a failed or timeout mini batch."
-        },
-        "timeout": {
-          "title": "timeout",
-          "type": "number",
-          "format": "integer",
-          "description": "The timeout for a mini batch."
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
-    },
-    "BatchDeploymentSchema": {
-      "properties": {
-        "code_configuration": {
-          "type": "object",
-          "$ref": "#/definitions/CodeConfigurationSchema",
-          "description": "Code configuration for the endpoint deployment."
-        },
-        "compute": {
+        "code": {
           "anyOf": [
             {
-              "type": "string",
-              "enum": [
-                "local"
-              ],
-              "title": "compute"
+              "type": "object",
+              "$ref": "#/definitions/AnonymousCodeAssetSchema"
             },
             {
               "type": "string",
               "pattern": "^azureml:.*",
-              "arm_type": "computes",
-              "title": "compute"
-            },
-            {
-              "title": "compute",
-              "type": "string"
-            }
-          ]
-        },
-        "description": {
-          "title": "description",
-          "type": "string",
-          "description": "Description of the endpoint deployment."
-        },
-        "endpoint_name": {
-          "title": "endpoint_name",
-          "type": "string"
-        },
-        "environment": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "environments",
-              "title": "environment"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/EnvironmentSchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/AnonymousEnvironmentSchema"
+              "arm_type": "codes",
+              "title": "code"
             },
             {
               "type": "string",
@@ -531,100 +480,130 @@
             }
           ]
         },
-        "environment_variables": {
-          "title": "environment_variables",
+        "command": {
+          "title": "command",
+          "type": "string",
+          "description": "String to be executed. Can set variables using ${{ }}"
+        },
+        "creation_context": {
           "type": "object",
-          "additionalProperties": {}
+          "$ref": "#/definitions/CreationContextSchema"
         },
-        "error_threshold": {
-          "title": "error_threshold",
-          "type": "number",
-          "format": "integer",
-          "description": "Error threshold, if the error count for the entire input goes above this value,\r\nthe batch inference will be aborted. Range is [-1, int.MaxValue].\r\nFor FileDataset, this value is the count of file failures.\r\nFor TabularDataset, this value is the count of record failures.\r\nIf set to -1 (the lower bound), all failures during batch inference will be ignored."
-        },
-        "id": {
-          "title": "id",
+        "description": {
+          "title": "description",
           "type": "string"
         },
-        "logging_level": {
-          "title": "logging_level",
-          "type": "string",
-          "description": "A string of the logging level name, which is defined in 'logging'. Possible values are 'warning', 'info', and 'debug'."
+        "display_name": {
+          "title": "display_name",
+          "type": "string"
         },
-        "max_concurrency_per_instance": {
-          "title": "max_concurrency_per_instance",
-          "type": "number",
-          "format": "integer",
-          "description": "Indicates maximum number of parallelism per instance."
-        },
-        "mini_batch_size": {
-          "title": "mini_batch_size",
-          "type": "number",
-          "format": "integer"
-        },
-        "model": {
+        "distribution": {
           "anyOf": [
             {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "models",
-              "title": "model"
+              "type": "object",
+              "$ref": "#/definitions/ComponentPyTorchSchema"
             },
             {
               "type": "object",
-              "$ref": "#/definitions/AnonymousModelSchema"
+              "$ref": "#/definitions/ComponentTensorFlowSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/ComponentMPISchema"
             }
           ]
+        },
+        "environment": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/AnonymousEnvironmentSchema"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "environments",
+              "title": "environment"
+            },
+            {
+              "type": "string",
+              "pattern": "^file:.*"
+            }
+          ]
+        },
+        "inputs": {
+          "title": "inputs",
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "object",
+                "$ref": "#/definitions/ParameterSchema"
+              },
+              {
+                "type": "object",
+                "$ref": "#/definitions/InputPortSchema"
+              }
+            ]
+          }
+        },
+        "is_deterministic": {
+          "title": "is_deterministic",
+          "type": "boolean"
         },
         "name": {
           "title": "name",
           "type": "string"
         },
-        "output_action": {
-          "type": "string",
-          "enum": [
-            "append_row",
-            "summary_only"
-          ],
-          "title": "output_action"
-        },
-        "output_file_name": {
-          "title": "output_file_name",
-          "type": "string",
-          "description": "Customized output file name for append_row output action."
-        },
-        "properties": {
-          "title": "properties",
+        "outputs": {
+          "title": "outputs",
           "type": "object",
-          "additionalProperties": {}
+          "additionalProperties": {
+            "type": "object",
+            "$ref": "#/definitions/OutputPortSchema"
+          }
         },
         "resources": {
           "type": "object",
-          "$ref": "#/definitions/ResourceConfigurationSchema"
-        },
-        "retry_settings": {
-          "type": "object",
-          "$ref": "#/definitions/BatchRetrySettingsSchema"
+          "$ref": "#/definitions/ComponentResourceSchema"
         },
         "$schema": {
           "title": "$schema",
-          "type": "string",
-          "readonly": true
+          "type": "string"
         },
         "tags": {
           "title": "tags",
           "type": "object",
-          "additionalProperties": {}
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "command"
+          ],
+          "title": "type"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
       "type": "object",
       "required": [
-        "compute",
-        "endpoint_name",
         "name"
       ],
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/BatchDeploymentSchema"
+  "$ref": "#/definitions/CommandComponentSchema"
 }

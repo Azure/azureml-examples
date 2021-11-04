@@ -1,8 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "CreationContextSchema": {
+    "BuildContextSchema": {
+      "properties": {
+        "context_uri": {
+          "title": "context_uri",
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "title": "dockerfile_path",
+          "type": "string"
+        },
+        "local_path": {
+          "title": "local_path",
+          "type": "string"
+        }
+      },
       "type": "object",
+      "additionalProperties": false
+    },
+    "CreationContextSchema": {
       "properties": {
         "created_at": {
           "title": "created_at",
@@ -31,47 +48,10 @@
           "type": "string"
         }
       },
-      "additionalProperties": false
-    },
-    "DockerSchema": {
       "type": "object",
-      "properties": {
-        "build": {
-          "type": "object",
-          "$ref": "#/definitions/DockerBuildSchema"
-        },
-        "image": {
-          "title": "image",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "DockerBuildSchema": {
-      "type": "object",
-      "properties": {
-        "dockerfile": {
-          "anyOf": [
-            {
-              "type": "string",
-              "title": "dockerfile"
-            },
-            {
-              "title": "dockerfile",
-              "type": "string"
-            }
-          ]
-        }
-      },
       "additionalProperties": false
     },
     "InferenceConfigSchema": {
-      "type": "object",
-      "required": [
-        "liveness_route",
-        "readiness_route",
-        "scoring_route"
-      ],
       "properties": {
         "liveness_route": {
           "type": "object",
@@ -86,14 +66,15 @@
           "$ref": "#/definitions/RouteSchema"
         }
       },
+      "type": "object",
+      "required": [
+        "liveness_route",
+        "readiness_route",
+        "scoring_route"
+      ],
       "additionalProperties": false
     },
     "RouteSchema": {
-      "type": "object",
-      "required": [
-        "path",
-        "port"
-      ],
       "properties": {
         "path": {
           "title": "path",
@@ -105,16 +86,25 @@
           "format": "integer"
         }
       },
+      "type": "object",
+      "required": [
+        "path",
+        "port"
+      ],
       "additionalProperties": false
     },
     "EnvironmentSchema": {
-      "type": "object",
       "properties": {
+        "build": {
+          "type": "object",
+          "$ref": "#/definitions/BuildContextSchema",
+          "description": "Docker build context to create the environment. Mutually exclusive with image"
+        },
         "conda_file": {
           "anyOf": [
             {
-              "type": "string",
-              "title": "conda_file"
+              "title": "conda_file",
+              "type": "string"
             },
             {
               "title": "conda_file",
@@ -130,16 +120,16 @@
           "title": "description",
           "type": "string"
         },
-        "docker": {
-          "type": "object",
-          "$ref": "#/definitions/DockerSchema"
-        },
         "id": {
           "type": "string",
           "pattern": "^azureml:.*",
           "arm_type": "environments",
           "title": "id",
           "readonly": true
+        },
+        "image": {
+          "title": "image",
+          "type": "string"
         },
         "inference_config": {
           "type": "object",
@@ -157,10 +147,6 @@
           ],
           "title": "os_type"
         },
-        "path": {
-          "title": "path",
-          "type": "string"
-        },
         "$schema": {
           "title": "$schema",
           "type": "string",
@@ -169,17 +155,24 @@
         "tags": {
           "title": "tags",
           "type": "object",
-          "additionalProperties": {
-            "title": "tags",
-            "type": "string"
-          }
+          "additionalProperties": {}
         },
         "version": {
-          "title": "version",
-          "type": "number",
-          "format": "integer"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "version"
         }
       },
+      "type": "object",
+      "required": [
+        "name"
+      ],
       "additionalProperties": false
     }
   },

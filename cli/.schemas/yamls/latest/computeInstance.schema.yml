@@ -1,0 +1,131 @@
+$ref: '#/definitions/ComputeInstanceSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  ComputeInstanceNetworkSettingsSchema:
+    additionalProperties: false
+    properties:
+      private_ip_address:
+        readonly: true
+        title: private_ip_address
+        type: string
+      public_ip_address:
+        readonly: true
+        title: public_ip_address
+        type: string
+      subnet:
+        title: subnet
+        type: string
+      vnet_name:
+        title: vnet_name
+        type: string
+    type: object
+  ComputeInstanceSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      applications:
+        items:
+          additionalProperties:
+            title: applications
+            type: string
+          title: applications
+          type: object
+        readonly: true
+        title: applications
+        type: array
+      create_on_behalf_of:
+        $ref: '#/definitions/CreateOnBehalfOfSchema'
+        type: object
+      created_on:
+        readonly: true
+        title: created_on
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        readonly: true
+        title: id
+        type: string
+      last_operation:
+        additionalProperties:
+          title: last_operation
+          type: string
+        title: last_operation
+        type: object
+      location:
+        title: location
+        type: string
+      name:
+        title: name
+        type: string
+      network_settings:
+        $ref: '#/definitions/ComputeInstanceNetworkSettingsSchema'
+        type: object
+      provisioning_errors:
+        readonly: true
+        title: provisioning_errors
+        type: string
+      provisioning_state:
+        readonly: true
+        title: provisioning_state
+        type: string
+      resource_id:
+        title: resource_id
+        type: string
+      size:
+        title: size
+        type: string
+      ssh_public_access_enabled:
+        default: null
+        title: ssh_public_access_enabled
+        type: boolean
+      ssh_settings:
+        $ref: '#/definitions/ComputeInstanceSshSettingsSchema'
+        type: object
+      state:
+        title: state
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      type:
+        enum:
+        - computeinstance
+        title: type
+        type: string
+    required:
+    - name
+    - type
+    type: object
+  ComputeInstanceSshSettingsSchema:
+    additionalProperties: false
+    properties:
+      admin_username:
+        readonly: true
+        title: admin_username
+        type: string
+      ssh_key_value:
+        title: ssh_key_value
+        type: string
+      ssh_port:
+        readonly: true
+        title: ssh_port
+        type: string
+    type: object
+  CreateOnBehalfOfSchema:
+    additionalProperties: false
+    properties:
+      user_object_id:
+        title: user_object_id
+        type: string
+      user_tenant_id:
+        title: user_tenant_id
+        type: string
+    type: object

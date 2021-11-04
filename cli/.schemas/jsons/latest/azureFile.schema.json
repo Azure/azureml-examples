@@ -2,111 +2,38 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "AccountKeySchema": {
-      "type": "object",
-      "required": [
-        "access_key"
-      ],
       "properties": {
-        "access_key": {
-          "title": "access_key",
+        "account_key": {
+          "title": "account_key",
           "type": "string"
         }
       },
+      "type": "object",
+      "required": [
+        "account_key"
+      ],
       "additionalProperties": false
     },
     "SasTokenSchema": {
-      "type": "object",
-      "required": [
-        "sas_token"
-      ],
       "properties": {
         "sas_token": {
           "title": "sas_token",
           "type": "string"
         }
       },
-      "additionalProperties": false
-    },
-    "ServicePrincipalSchema": {
       "type": "object",
       "required": [
-        "client_id",
-        "client_secret",
-        "tenant_id"
+        "sas_token"
       ],
-      "properties": {
-        "authority_uri": {
-          "title": "authority_uri",
-          "type": "string"
-        },
-        "client_id": {
-          "title": "client_id",
-          "type": "string"
-        },
-        "client_secret": {
-          "title": "client_secret",
-          "type": "string"
-        },
-        "resource_url": {
-          "title": "resource_url",
-          "type": "string"
-        },
-        "tenant_id": {
-          "title": "tenant_id",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "CertificateSchema": {
-      "type": "object",
-      "required": [
-        "client_id",
-        "tenant_id",
-        "thumbprint"
-      ],
-      "properties": {
-        "authority_uri": {
-          "title": "authority_uri",
-          "type": "string"
-        },
-        "certificate": {
-          "title": "certificate",
-          "type": "string"
-        },
-        "client_id": {
-          "title": "client_id",
-          "type": "string"
-        },
-        "resource_url": {
-          "title": "resource_url",
-          "type": "string"
-        },
-        "tenant_id": {
-          "title": "tenant_id",
-          "type": "string"
-        },
-        "thumbprint": {
-          "title": "thumbprint",
-          "type": "string"
-        }
-      },
       "additionalProperties": false
     },
     "AzureFileSchema": {
-      "type": "object",
-      "required": [
-        "account_name",
-        "credential",
-        "file_share_name",
-        "type"
-      ],
       "properties": {
         "account_name": {
           "title": "account_name",
           "type": "string"
         },
-        "credential": {
+        "credentials": {
           "anyOf": [
             {
               "type": "object",
@@ -115,14 +42,6 @@
             {
               "type": "object",
               "$ref": "#/definitions/SasTokenSchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/ServicePrincipalSchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/CertificateSchema"
             }
           ]
         },
@@ -138,6 +57,11 @@
           "title": "file_share_name",
           "type": "string"
         },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -151,13 +75,6 @@
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "azure_file"
-          ],
-          "title": "type"
-        },
         "tags": {
           "title": "tags",
           "type": "object",
@@ -165,8 +82,23 @@
             "title": "tags",
             "type": "string"
           }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "azure_file"
+          ],
+          "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "account_name",
+        "credentials",
+        "file_share_name",
+        "name",
+        "type"
+      ],
       "additionalProperties": false
     }
   },

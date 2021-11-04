@@ -1,0 +1,78 @@
+$ref: '#/definitions/VirtualMachineComputeSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  VirtualMachineComputeSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      compute_location:
+        readonly: true
+        title: compute_location
+        type: string
+      created_on:
+        readonly: true
+        title: created_on
+        type: string
+      description:
+        title: description
+        type: string
+      id:
+        readonly: true
+        title: id
+        type: string
+      location:
+        title: location
+        type: string
+      name:
+        title: name
+        type: string
+      provisioning_errors:
+        readonly: true
+        title: provisioning_errors
+        type: string
+      provisioning_state:
+        readonly: true
+        title: provisioning_state
+        type: string
+      resource_id:
+        title: resource_id
+        type: string
+      ssh_settings:
+        $ref: '#/definitions/VirtualMachineSshSettingsSchema'
+        type: object
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      type:
+        enum:
+        - virtualmachine
+        title: type
+        type: string
+    required:
+    - name
+    - resource_id
+    - type
+    type: object
+  VirtualMachineSshSettingsSchema:
+    additionalProperties: false
+    properties:
+      admin_password:
+        title: admin_password
+        type: string
+      admin_username:
+        title: admin_username
+        type: string
+      ssh_port:
+        format: integer
+        title: ssh_port
+        type: number
+      ssh_private_key_file:
+        title: ssh_private_key_file
+        type: string
+    type: object

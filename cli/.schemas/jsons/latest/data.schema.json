@@ -33,7 +33,7 @@
       "type": "object",
       "additionalProperties": false
     },
-    "ModelSchema": {
+    "DataSchema": {
       "properties": {
         "creation_context": {
           "type": "object",
@@ -49,49 +49,23 @@
           "title": "description",
           "type": "string"
         },
-        "flavors": {
-          "title": "flavors",
-          "type": "object",
-          "additionalProperties": {}
-        },
         "id": {
-          "type": "string",
-          "pattern": "^azureml:.*",
-          "arm_type": "models",
           "title": "id",
-          "readonly": true
-        },
-        "job_name": {
-          "title": "job_name",
-          "type": "string",
-          "readonly": true
+          "type": "string"
         },
         "local_path": {
           "title": "local_path",
-          "type": "string"
-        },
-        "model_format": {
           "type": "string",
-          "enum": [
-            "custom",
-            "mlflow",
-            "triton",
-            "openai"
-          ],
-          "title": "model_format"
-        },
-        "model_uri": {
-          "title": "model_uri",
-          "type": "string"
+          "description": "the path from which the artifact gets uploaded to the cloud"
         },
         "name": {
           "title": "name",
           "type": "string"
         },
-        "properties": {
-          "title": "properties",
-          "type": "object",
-          "additionalProperties": {}
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "URI pointing to a file or directory."
         },
         "$schema": {
           "title": "$schema",
@@ -102,11 +76,6 @@
           "title": "tags",
           "type": "object",
           "additionalProperties": {}
-        },
-        "utc_time_created": {
-          "title": "utc_time_created",
-          "type": "string",
-          "format": "date-time"
         },
         "version": {
           "anyOf": [
@@ -121,11 +90,8 @@
         }
       },
       "type": "object",
-      "required": [
-        "name"
-      ],
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/ModelSchema"
+  "$ref": "#/definitions/DataSchema"
 }

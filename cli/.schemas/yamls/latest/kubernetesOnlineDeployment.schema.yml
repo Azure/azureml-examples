@@ -1,4 +1,4 @@
-$ref: '#/definitions/BatchDeploymentSchema'
+$ref: '#/definitions/KubernetesOnlineDeploymentSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
   AnonymousEnvironmentSchema:
@@ -123,133 +123,6 @@ definitions:
         - type: integer
         title: version
     type: object
-  BatchDeploymentSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      code_configuration:
-        $ref: '#/definitions/CodeConfigurationSchema'
-        description: Code configuration for the endpoint deployment.
-        type: object
-      compute:
-        anyOf:
-        - enum:
-          - local
-          title: compute
-          type: string
-        - arm_type: computes
-          pattern: ^azureml:.*
-          title: compute
-          type: string
-        - title: compute
-          type: string
-      description:
-        description: Description of the endpoint deployment.
-        title: description
-        type: string
-      endpoint_name:
-        title: endpoint_name
-        type: string
-      environment:
-        anyOf:
-        - arm_type: environments
-          pattern: ^azureml:.*
-          title: environment
-          type: string
-        - $ref: '#/definitions/EnvironmentSchema'
-          type: object
-        - $ref: '#/definitions/AnonymousEnvironmentSchema'
-          type: object
-        - pattern: ^file:.*
-          type: string
-      environment_variables:
-        additionalProperties: {}
-        title: environment_variables
-        type: object
-      error_threshold:
-        description: "Error threshold, if the error count for the entire input goes\
-          \ above this value,\r\nthe batch inference will be aborted. Range is [-1,\
-          \ int.MaxValue].\r\nFor FileDataset, this value is the count of file failures.\r\
-          \nFor TabularDataset, this value is the count of record failures.\r\nIf\
-          \ set to -1 (the lower bound), all failures during batch inference will\
-          \ be ignored."
-        format: integer
-        title: error_threshold
-        type: number
-      id:
-        title: id
-        type: string
-      logging_level:
-        description: A string of the logging level name, which is defined in 'logging'.
-          Possible values are 'warning', 'info', and 'debug'.
-        title: logging_level
-        type: string
-      max_concurrency_per_instance:
-        description: Indicates maximum number of parallelism per instance.
-        format: integer
-        title: max_concurrency_per_instance
-        type: number
-      mini_batch_size:
-        format: integer
-        title: mini_batch_size
-        type: number
-      model:
-        anyOf:
-        - arm_type: models
-          pattern: ^azureml:.*
-          title: model
-          type: string
-        - $ref: '#/definitions/AnonymousModelSchema'
-          type: object
-      name:
-        title: name
-        type: string
-      output_action:
-        enum:
-        - append_row
-        - summary_only
-        title: output_action
-        type: string
-      output_file_name:
-        description: Customized output file name for append_row output action.
-        title: output_file_name
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      resources:
-        $ref: '#/definitions/ResourceConfigurationSchema'
-        type: object
-      retry_settings:
-        $ref: '#/definitions/BatchRetrySettingsSchema'
-        type: object
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-    required:
-    - compute
-    - endpoint_name
-    - name
-    type: object
-  BatchRetrySettingsSchema:
-    additionalProperties: false
-    properties:
-      max_retries:
-        description: The number of maximum tries for a failed or timeout mini batch.
-        format: integer
-        title: max_retries
-        type: number
-      timeout:
-        description: The timeout for a mini batch.
-        format: integer
-        title: timeout
-        type: number
-    type: object
   BuildContextSchema:
     additionalProperties: false
     properties:
@@ -349,6 +222,17 @@ definitions:
         title: last_modified_by_type
         type: string
     type: object
+  DefaultScaleSettingsSchema:
+    additionalProperties: false
+    properties:
+      type:
+        enum:
+        - default
+        title: type
+        type: string
+    required:
+    - type
+    type: object
   EnvironmentSchema:
     additionalProperties: false
     properties:
@@ -423,21 +307,168 @@ definitions:
     - readiness_route
     - scoring_route
     type: object
-  ResourceConfigurationSchema:
+  KubernetesOnlineDeploymentSchema:
     additionalProperties: false
     properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      app_insights_enabled:
+        title: app_insights_enabled
+        type: boolean
+      code_configuration:
+        $ref: '#/definitions/CodeConfigurationSchema'
+        description: Code configuration for the endpoint deployment.
+        type: object
+      description:
+        description: Description of the endpoint deployment.
+        title: description
+        type: string
+      endpoint_name:
+        title: endpoint_name
+        type: string
+      environment:
+        anyOf:
+        - arm_type: environments
+          pattern: ^azureml:.*
+          title: environment
+          type: string
+        - $ref: '#/definitions/EnvironmentSchema'
+          type: object
+        - $ref: '#/definitions/AnonymousEnvironmentSchema'
+          type: object
+        - pattern: ^file:.*
+          type: string
+      environment_variables:
+        additionalProperties: {}
+        title: environment_variables
+        type: object
+      id:
+        title: id
+        type: string
       instance_count:
         format: integer
         title: instance_count
         type: number
       instance_type:
-        description: The instance type to make available to this job.
         title: instance_type
+        type: string
+      liveness_probe:
+        $ref: '#/definitions/LivenessProbeSchema'
+        type: object
+      model:
+        anyOf:
+        - arm_type: models
+          pattern: ^azureml:.*
+          title: model
+          type: string
+        - $ref: '#/definitions/AnonymousModelSchema'
+          type: object
+      model_mount_path:
+        title: model_mount_path
+        type: string
+      name:
+        title: name
         type: string
       properties:
         additionalProperties: {}
         title: properties
         type: object
+      provisioning_state:
+        title: provisioning_state
+        type: string
+      readiness_probe:
+        $ref: '#/definitions/LivenessProbeSchema'
+        type: object
+      request_settings:
+        $ref: '#/definitions/RequestSettingsSchema'
+        type: object
+      resources:
+        $ref: '#/definitions/ResourceRequirementsSchema'
+        type: object
+      scale_settings:
+        anyOf:
+        - $ref: '#/definitions/DefaultScaleSettingsSchema'
+          type: object
+        - $ref: '#/definitions/TargetUtilizationScaleSettingsSchema'
+          type: object
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      type:
+        enum:
+        - managed
+        - kubernetes
+        title: type
+        type: string
+    required:
+    - endpoint_name
+    - name
+    type: object
+  LivenessProbeSchema:
+    additionalProperties: false
+    properties:
+      failure_threshold:
+        format: integer
+        title: failure_threshold
+        type: number
+      initial_delay:
+        format: integer
+        title: initial_delay
+        type: number
+      period:
+        format: integer
+        title: period
+        type: number
+      success_threshold:
+        format: integer
+        title: success_threshold
+        type: number
+      timeout:
+        format: integer
+        title: timeout
+        type: number
+    type: object
+  RequestSettingsSchema:
+    additionalProperties: false
+    properties:
+      max_concurrent_requests_per_instance:
+        format: integer
+        title: max_concurrent_requests_per_instance
+        type: number
+      max_queue_wait_ms:
+        format: integer
+        title: max_queue_wait_ms
+        type: number
+      request_timeout_ms:
+        format: integer
+        title: request_timeout_ms
+        type: number
+    type: object
+  ResourceRequirementsSchema:
+    additionalProperties: false
+    properties:
+      limits:
+        $ref: '#/definitions/ResourceSettingsSchema'
+        type: object
+      requests:
+        $ref: '#/definitions/ResourceSettingsSchema'
+        type: object
+    type: object
+  ResourceSettingsSchema:
+    additionalProperties: false
+    properties:
+      cpu:
+        title: cpu
+        type: string
+      gpu:
+        title: gpu
+        type: string
+      memory:
+        title: memory
+        type: string
     type: object
   RouteSchema:
     additionalProperties: false
@@ -452,4 +483,31 @@ definitions:
     required:
     - path
     - port
+    type: object
+  TargetUtilizationScaleSettingsSchema:
+    additionalProperties: false
+    properties:
+      max_instances:
+        format: integer
+        title: max_instances
+        type: number
+      min_instances:
+        format: integer
+        title: min_instances
+        type: number
+      polling_interval:
+        format: integer
+        title: polling_interval
+        type: number
+      target_utilization_percentage:
+        format: integer
+        title: target_utilization_percentage
+        type: number
+      type:
+        enum:
+        - target_utilization
+        title: type
+        type: string
+    required:
+    - type
     type: object

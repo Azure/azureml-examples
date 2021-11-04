@@ -343,6 +343,37 @@
       "type": "object",
       "additionalProperties": false
     },
+    "LivenessProbeSchema": {
+      "properties": {
+        "failure_threshold": {
+          "title": "failure_threshold",
+          "type": "number",
+          "format": "integer"
+        },
+        "initial_delay": {
+          "title": "initial_delay",
+          "type": "number",
+          "format": "integer"
+        },
+        "period": {
+          "title": "period",
+          "type": "number",
+          "format": "integer"
+        },
+        "success_threshold": {
+          "title": "success_threshold",
+          "type": "number",
+          "format": "integer"
+        },
+        "timeout": {
+          "title": "timeout",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
     "AnonymousModelSchema": {
       "properties": {
         "creation_context": {
@@ -433,72 +464,121 @@
       "type": "object",
       "additionalProperties": false
     },
-    "ResourceConfigurationSchema": {
+    "RequestSettingsSchema": {
       "properties": {
-        "instance_count": {
-          "title": "instance_count",
+        "max_concurrent_requests_per_instance": {
+          "title": "max_concurrent_requests_per_instance",
           "type": "number",
           "format": "integer"
         },
-        "instance_type": {
-          "title": "instance_type",
-          "type": "string",
-          "description": "The instance type to make available to this job."
+        "max_queue_wait_ms": {
+          "title": "max_queue_wait_ms",
+          "type": "number",
+          "format": "integer"
         },
-        "properties": {
-          "title": "properties",
+        "request_timeout_ms": {
+          "title": "request_timeout_ms",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ResourceRequirementsSchema": {
+      "properties": {
+        "limits": {
           "type": "object",
-          "additionalProperties": {}
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
-    },
-    "BatchRetrySettingsSchema": {
-      "properties": {
-        "max_retries": {
-          "title": "max_retries",
-          "type": "number",
-          "format": "integer",
-          "description": "The number of maximum tries for a failed or timeout mini batch."
+          "$ref": "#/definitions/ResourceSettingsSchema"
         },
-        "timeout": {
-          "title": "timeout",
-          "type": "number",
-          "format": "integer",
-          "description": "The timeout for a mini batch."
+        "requests": {
+          "type": "object",
+          "$ref": "#/definitions/ResourceSettingsSchema"
         }
       },
       "type": "object",
       "additionalProperties": false
     },
-    "BatchDeploymentSchema": {
+    "ResourceSettingsSchema": {
       "properties": {
+        "cpu": {
+          "title": "cpu",
+          "type": "string"
+        },
+        "gpu": {
+          "title": "gpu",
+          "type": "string"
+        },
+        "memory": {
+          "title": "memory",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "DefaultScaleSettingsSchema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "default"
+          ],
+          "title": "type"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "TargetUtilizationScaleSettingsSchema": {
+      "properties": {
+        "max_instances": {
+          "title": "max_instances",
+          "type": "number",
+          "format": "integer"
+        },
+        "min_instances": {
+          "title": "min_instances",
+          "type": "number",
+          "format": "integer"
+        },
+        "polling_interval": {
+          "title": "polling_interval",
+          "type": "number",
+          "format": "integer"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "target_utilization"
+          ],
+          "title": "type"
+        },
+        "target_utilization_percentage": {
+          "title": "target_utilization_percentage",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "KubernetesOnlineDeploymentSchema": {
+      "properties": {
+        "app_insights_enabled": {
+          "title": "app_insights_enabled",
+          "type": "boolean"
+        },
         "code_configuration": {
           "type": "object",
           "$ref": "#/definitions/CodeConfigurationSchema",
           "description": "Code configuration for the endpoint deployment."
-        },
-        "compute": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": [
-                "local"
-              ],
-              "title": "compute"
-            },
-            {
-              "type": "string",
-              "pattern": "^azureml:.*",
-              "arm_type": "computes",
-              "title": "compute"
-            },
-            {
-              "title": "compute",
-              "type": "string"
-            }
-          ]
         },
         "description": {
           "title": "description",
@@ -536,31 +616,22 @@
           "type": "object",
           "additionalProperties": {}
         },
-        "error_threshold": {
-          "title": "error_threshold",
-          "type": "number",
-          "format": "integer",
-          "description": "Error threshold, if the error count for the entire input goes above this value,\r\nthe batch inference will be aborted. Range is [-1, int.MaxValue].\r\nFor FileDataset, this value is the count of file failures.\r\nFor TabularDataset, this value is the count of record failures.\r\nIf set to -1 (the lower bound), all failures during batch inference will be ignored."
-        },
         "id": {
           "title": "id",
           "type": "string"
         },
-        "logging_level": {
-          "title": "logging_level",
-          "type": "string",
-          "description": "A string of the logging level name, which is defined in 'logging'. Possible values are 'warning', 'info', and 'debug'."
-        },
-        "max_concurrency_per_instance": {
-          "title": "max_concurrency_per_instance",
-          "type": "number",
-          "format": "integer",
-          "description": "Indicates maximum number of parallelism per instance."
-        },
-        "mini_batch_size": {
-          "title": "mini_batch_size",
+        "instance_count": {
+          "title": "instance_count",
           "type": "number",
           "format": "integer"
+        },
+        "instance_type": {
+          "title": "instance_type",
+          "type": "string"
+        },
+        "liveness_probe": {
+          "type": "object",
+          "$ref": "#/definitions/LivenessProbeSchema"
         },
         "model": {
           "anyOf": [
@@ -576,35 +647,46 @@
             }
           ]
         },
+        "model_mount_path": {
+          "title": "model_mount_path",
+          "type": "string"
+        },
         "name": {
           "title": "name",
           "type": "string"
-        },
-        "output_action": {
-          "type": "string",
-          "enum": [
-            "append_row",
-            "summary_only"
-          ],
-          "title": "output_action"
-        },
-        "output_file_name": {
-          "title": "output_file_name",
-          "type": "string",
-          "description": "Customized output file name for append_row output action."
         },
         "properties": {
           "title": "properties",
           "type": "object",
           "additionalProperties": {}
         },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string"
+        },
+        "readiness_probe": {
+          "type": "object",
+          "$ref": "#/definitions/LivenessProbeSchema"
+        },
+        "request_settings": {
+          "type": "object",
+          "$ref": "#/definitions/RequestSettingsSchema"
+        },
         "resources": {
           "type": "object",
-          "$ref": "#/definitions/ResourceConfigurationSchema"
+          "$ref": "#/definitions/ResourceRequirementsSchema"
         },
-        "retry_settings": {
-          "type": "object",
-          "$ref": "#/definitions/BatchRetrySettingsSchema"
+        "scale_settings": {
+          "anyOf": [
+            {
+              "type": "object",
+              "$ref": "#/definitions/DefaultScaleSettingsSchema"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/TargetUtilizationScaleSettingsSchema"
+            }
+          ]
         },
         "$schema": {
           "title": "$schema",
@@ -615,16 +697,23 @@
           "title": "tags",
           "type": "object",
           "additionalProperties": {}
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "managed",
+            "kubernetes"
+          ],
+          "title": "type"
         }
       },
       "type": "object",
       "required": [
-        "compute",
         "endpoint_name",
         "name"
       ],
       "additionalProperties": false
     }
   },
-  "$ref": "#/definitions/BatchDeploymentSchema"
+  "$ref": "#/definitions/KubernetesOnlineDeploymentSchema"
 }

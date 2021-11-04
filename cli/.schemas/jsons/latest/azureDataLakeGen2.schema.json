@@ -1,39 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "AccountKeySchema": {
-      "type": "object",
-      "required": [
-        "access_key"
-      ],
-      "properties": {
-        "access_key": {
-          "title": "access_key",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
-    "SasTokenSchema": {
-      "type": "object",
-      "required": [
-        "sas_token"
-      ],
-      "properties": {
-        "sas_token": {
-          "title": "sas_token",
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
     "ServicePrincipalSchema": {
-      "type": "object",
-      "required": [
-        "client_id",
-        "client_secret",
-        "tenant_id"
-      ],
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -56,15 +24,15 @@
           "type": "string"
         }
       },
-      "additionalProperties": false
-    },
-    "CertificateSchema": {
       "type": "object",
       "required": [
         "client_id",
-        "tenant_id",
-        "thumbprint"
+        "client_secret",
+        "tenant_id"
       ],
+      "additionalProperties": false
+    },
+    "CertificateSchema": {
       "properties": {
         "authority_uri": {
           "title": "authority_uri",
@@ -91,35 +59,22 @@
           "type": "string"
         }
       },
+      "type": "object",
+      "required": [
+        "client_id",
+        "tenant_id",
+        "thumbprint"
+      ],
       "additionalProperties": false
     },
     "AzureDataLakeGen2Schema": {
-      "type": "object",
-      "required": [
-        "account_name",
-        "container_name",
-        "credential",
-        "type"
-      ],
       "properties": {
         "account_name": {
           "title": "account_name",
           "type": "string"
         },
-        "container_name": {
-          "title": "container_name",
-          "type": "string"
-        },
-        "credential": {
+        "credentials": {
           "anyOf": [
-            {
-              "type": "object",
-              "$ref": "#/definitions/AccountKeySchema"
-            },
-            {
-              "type": "object",
-              "$ref": "#/definitions/SasTokenSchema"
-            },
             {
               "type": "object",
               "$ref": "#/definitions/ServicePrincipalSchema"
@@ -138,6 +93,15 @@
           "title": "endpoint",
           "type": "string"
         },
+        "filesystem": {
+          "title": "filesystem",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
         "name": {
           "title": "name",
           "type": "string"
@@ -151,13 +115,6 @@
           "type": "string",
           "readonly": true
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "azure_data_lake_gen2"
-          ],
-          "title": "type"
-        },
         "tags": {
           "title": "tags",
           "type": "object",
@@ -165,8 +122,22 @@
             "title": "tags",
             "type": "string"
           }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "azure_data_lake_gen2"
+          ],
+          "title": "type"
         }
       },
+      "type": "object",
+      "required": [
+        "account_name",
+        "filesystem",
+        "name",
+        "type"
+      ],
       "additionalProperties": false
     }
   },

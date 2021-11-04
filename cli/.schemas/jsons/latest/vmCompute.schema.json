@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "VirtualMachineSshSettingsSchema": {
+      "properties": {
+        "admin_password": {
+          "title": "admin_password",
+          "type": "string"
+        },
+        "admin_username": {
+          "title": "admin_username",
+          "type": "string"
+        },
+        "ssh_port": {
+          "title": "ssh_port",
+          "type": "number",
+          "format": "integer"
+        },
+        "ssh_private_key_file": {
+          "title": "ssh_private_key_file",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "VirtualMachineComputeSchema": {
+      "properties": {
+        "compute_location": {
+          "title": "compute_location",
+          "type": "string",
+          "readonly": true
+        },
+        "created_on": {
+          "title": "created_on",
+          "type": "string",
+          "readonly": true
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "id": {
+          "title": "id",
+          "type": "string",
+          "readonly": true
+        },
+        "location": {
+          "title": "location",
+          "type": "string"
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "provisioning_errors": {
+          "title": "provisioning_errors",
+          "type": "string",
+          "readonly": true
+        },
+        "provisioning_state": {
+          "title": "provisioning_state",
+          "type": "string",
+          "readonly": true
+        },
+        "resource_id": {
+          "title": "resource_id",
+          "type": "string"
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "ssh_settings": {
+          "type": "object",
+          "$ref": "#/definitions/VirtualMachineSshSettingsSchema"
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "virtualmachine"
+          ],
+          "title": "type"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "resource_id",
+        "type"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/VirtualMachineComputeSchema"
+}

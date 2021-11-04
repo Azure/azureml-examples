@@ -1,72 +1,6 @@
-$ref: '#/definitions/BatchEndpointSchema'
+$ref: '#/definitions/KubernetesOnlineEndpointSchema'
 $schema: http://json-schema.org/draft-07/schema#
 definitions:
-  BatchEndpointSchema:
-    additionalProperties: false
-    properties:
-      $schema:
-        readonly: true
-        title: $schema
-        type: string
-      auth_mode:
-        enum:
-        - aml_token
-        - key
-        - aad_token
-        title: auth_mode
-        type: string
-      defaults:
-        $ref: '#/definitions/BatchEndpointsDefaultsSchema'
-        type: object
-      description:
-        description: Description of the inference endpoint.
-        title: description
-        type: string
-      id:
-        title: id
-        type: string
-      identity:
-        $ref: '#/definitions/IdentitySchema'
-        type: object
-      location:
-        title: location
-        type: string
-      name:
-        title: name
-        type: string
-      properties:
-        additionalProperties: {}
-        title: properties
-        type: object
-      provisioning_state:
-        description: Provisioning state for the endpoint.
-        title: provisioning_state
-        type: string
-      scoring_uri:
-        description: The endpoint uri that can be used for scoring
-        title: scoring_uri
-        type: string
-      swagger_uri:
-        description: Endpoint Swagger URI.
-        title: swagger_uri
-        type: string
-      tags:
-        additionalProperties: {}
-        title: tags
-        type: object
-    required:
-    - name
-    type: object
-  BatchEndpointsDefaultsSchema:
-    additionalProperties: false
-    properties:
-      deployment_name:
-        description: Name of the deployment that will be default for the endpoint.
-          This deployment will end up getting 100% traffic when the endpoint scoring
-          URL is invoked.
-        title: deployment_name
-        type: string
-    type: object
   IdentitySchema:
     additionalProperties: false
     properties:
@@ -92,4 +26,72 @@ definitions:
           type: object
         title: user_assigned_identities
         type: array
+    type: object
+  KubernetesOnlineEndpointSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      allow_public_access:
+        title: allow_public_access
+        type: boolean
+      auth_mode:
+        enum:
+        - aml_token
+        - key
+        - aad_token
+        title: auth_mode
+        type: string
+      compute:
+        arm_type: computes
+        pattern: ^azureml:.*
+        title: compute
+        type: string
+      description:
+        description: Description of the inference endpoint.
+        title: description
+        type: string
+      id:
+        title: id
+        type: string
+      identity:
+        $ref: '#/definitions/IdentitySchema'
+        type: object
+      location:
+        title: location
+        type: string
+      name:
+        title: name
+        type: string
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      provisioning_state:
+        description: status of the deployment provisioning operation
+        title: provisioning_state
+        type: string
+      scoring_uri:
+        description: The endpoint uri that can be used for scoring
+        title: scoring_uri
+        type: string
+      swagger_uri:
+        description: Endpoint Swagger URI.
+        title: swagger_uri
+        type: string
+      tags:
+        additionalProperties: {}
+        title: tags
+        type: object
+      traffic:
+        additionalProperties:
+          format: integer
+          title: traffic
+          type: number
+        title: traffic
+        type: object
+    required:
+    - name
     type: object

@@ -1,0 +1,748 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CreationContextSchema": {
+      "properties": {
+        "created_at": {
+          "title": "created_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "title": "created_by",
+          "type": "string"
+        },
+        "created_by_type": {
+          "title": "created_by_type",
+          "type": "string"
+        },
+        "last_modified_at": {
+          "title": "last_modified_at",
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_modified_by": {
+          "title": "last_modified_by",
+          "type": "string"
+        },
+        "last_modified_by_type": {
+          "title": "last_modified_by_type",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "DataSettingsSchema": {
+      "properties": {
+        "target_column_name": {
+          "title": "target_column_name",
+          "type": "string"
+        },
+        "test": {
+          "type": "object",
+          "$ref": "#/definitions/TestDataSchema",
+          "title": "test"
+        },
+        "training": {
+          "type": "object",
+          "$ref": "#/definitions/TrainingDataSchema",
+          "title": "training"
+        },
+        "validation": {
+          "type": "object",
+          "$ref": "#/definitions/ValidationDataSchema",
+          "title": "validation"
+        },
+        "weight_column_name": {
+          "title": "weight_column_name",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "target_column_name",
+        "training"
+      ],
+      "additionalProperties": false
+    },
+    "TestDataSchema": {
+      "properties": {
+        "dataset": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "dataset"
+        },
+        "test_data_size": {
+          "title": "test_data_size",
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "TrainingDataSchema": {
+      "properties": {
+        "dataset": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "dataset"
+        }
+      },
+      "type": "object",
+      "required": [
+        "dataset"
+      ],
+      "additionalProperties": false
+    },
+    "ValidationDataSchema": {
+      "properties": {
+        "cv_split_column_names": {
+          "title": "cv_split_column_names",
+          "type": "array",
+          "items": {
+            "title": "cv_split_column_names",
+            "type": "string"
+          }
+        },
+        "dataset": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "data",
+          "title": "dataset"
+        },
+        "n_cross_validations": {
+          "title": "n_cross_validations",
+          "type": "number",
+          "format": "integer"
+        },
+        "validation_data_size": {
+          "title": "validation_data_size",
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "FeaturizationSettingsSchema": {
+      "properties": {
+        "enable_dnn_featurization": {
+          "title": "enable_dnn_featurization",
+          "type": "boolean"
+        },
+        "featurization_config": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto",
+                "off"
+              ],
+              "title": "featurization_config"
+            },
+            {
+              "type": "object",
+              "$ref": "#/definitions/FeaturizationConfigSchema"
+            }
+          ]
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "FeaturizationConfigSchema": {
+      "properties": {
+        "blocked_transformers": {
+          "title": "blocked_transformers",
+          "type": "array",
+          "items": {
+            "title": "blocked_transformers",
+            "type": "string"
+          }
+        },
+        "column_purposes": {
+          "title": "column_purposes",
+          "type": "object",
+          "additionalProperties": {
+            "title": "column_purposes",
+            "type": "string"
+          }
+        },
+        "dataset_language": {
+          "title": "dataset_language",
+          "type": "string"
+        },
+        "drop_columns": {
+          "title": "drop_columns",
+          "type": "array",
+          "items": {
+            "title": "drop_columns",
+            "type": "string"
+          }
+        },
+        "transformer_params": {
+          "title": "transformer_params",
+          "type": "object",
+          "additionalProperties": {
+            "title": "transformer_params",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/definitions/ColumnTransformerSchema"
+            }
+          }
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ColumnTransformerSchema": {
+      "properties": {
+        "fields": {
+          "title": "fields",
+          "type": "array",
+          "items": {
+            "title": "fields",
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "title": "parameters",
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "title": "parameters",
+                "type": "number",
+                "format": "float"
+              },
+              {
+                "title": "parameters",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "ForecastingSettingsSchema": {
+      "properties": {
+        "country_or_region_for_holidays": {
+          "title": "country_or_region_for_holidays",
+          "type": "string"
+        },
+        "feature_lags": {
+          "type": "string",
+          "enum": [
+            "auto"
+          ],
+          "title": "feature_lags"
+        },
+        "forecast_horizon": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto"
+              ],
+              "title": "forecast_horizon"
+            },
+            {
+              "title": "forecast_horizon",
+              "type": "number",
+              "format": "integer"
+            }
+          ]
+        },
+        "frequency": {
+          "title": "frequency",
+          "type": "string"
+        },
+        "seasonality": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto"
+              ],
+              "title": "seasonality"
+            },
+            {
+              "title": "seasonality",
+              "type": "number",
+              "format": "integer"
+            }
+          ]
+        },
+        "short_series_handling_config": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "pad",
+            "drop"
+          ],
+          "title": "short_series_handling_config"
+        },
+        "target_aggregate_function": {
+          "type": "string",
+          "enum": [
+            "sum",
+            "max",
+            "min",
+            "mean"
+          ],
+          "title": "target_aggregate_function"
+        },
+        "target_lags": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto"
+              ],
+              "title": "target_lags"
+            },
+            {
+              "title": "target_lags",
+              "type": "number",
+              "format": "integer"
+            },
+            {
+              "title": "target_lags",
+              "type": "array",
+              "items": {
+                "title": "target_lags",
+                "type": "number",
+                "format": "integer"
+              }
+            }
+          ]
+        },
+        "target_rolling_window_size": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto"
+              ],
+              "title": "target_rolling_window_size"
+            },
+            {
+              "title": "target_rolling_window_size",
+              "type": "number",
+              "format": "integer"
+            }
+          ]
+        },
+        "time_column_name": {
+          "title": "time_column_name",
+          "type": "string"
+        },
+        "time_series_id_column_names": {
+          "anyOf": [
+            {
+              "title": "time_series_id_column_names",
+              "type": "string"
+            },
+            {
+              "title": "time_series_id_column_names",
+              "type": "array",
+              "items": {
+                "title": "time_series_id_column_names",
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "use_stl": {
+          "title": "use_stl",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "AutoMLGeneralSettingsSchema": {
+      "properties": {
+        "enable_model_explainability": {
+          "title": "enable_model_explainability",
+          "type": "boolean"
+        },
+        "log_verbosity": {
+          "type": "string",
+          "enum": [
+            "critical",
+            "error",
+            "warning",
+            "info",
+            "debug",
+            "notset"
+          ],
+          "title": "log_verbosity"
+        },
+        "primary_metric": {
+          "type": "string",
+          "enum": [
+            "auc_weighted",
+            "accuracy",
+            "norm_macro_recall",
+            "average_precision_score_weighted",
+            "precision_score_weighted",
+            "spearman_correlation",
+            "normalized_root_mean_squared_error",
+            "r2_score",
+            "normalized_mean_absolute_error",
+            "normalized_root_mean_squared_log_error"
+          ],
+          "title": "primary_metric"
+        },
+        "task": {
+          "type": "string",
+          "enum": [
+            "classification",
+            "regression",
+            "forecasting",
+            "textclassification",
+            "textmultilabeling",
+            "textner"
+          ],
+          "title": "task"
+        }
+      },
+      "type": "object",
+      "required": [
+        "primary_metric",
+        "task"
+      ],
+      "additionalProperties": false
+    },
+    "AutoMLLimitsSchema": {
+      "properties": {
+        "enable_early_termination": {
+          "title": "enable_early_termination",
+          "type": "boolean"
+        },
+        "exit_score": {
+          "title": "exit_score",
+          "type": "number",
+          "format": "float"
+        },
+        "max_concurrent_trials": {
+          "title": "max_concurrent_trials",
+          "type": "number",
+          "format": "integer"
+        },
+        "max_core_per_trials": {
+          "title": "max_core_per_trials",
+          "type": "number",
+          "format": "integer"
+        },
+        "max_total_trials": {
+          "title": "max_total_trials",
+          "type": "number",
+          "format": "integer"
+        },
+        "timeout": {
+          "title": "timeout",
+          "type": "number",
+          "format": "integer"
+        },
+        "trial_timeout_minutes": {
+          "title": "trial_timeout_minutes",
+          "type": "number",
+          "format": "integer"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "JobOutputSchema": {
+      "properties": {
+        "datastore_id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "datastores",
+          "title": "datastore_id"
+        },
+        "path": {
+          "title": "path",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "JobServiceSchema": {
+      "properties": {
+        "endpoint": {
+          "title": "endpoint",
+          "type": "string",
+          "readonly": true
+        },
+        "error_message": {
+          "title": "error_message",
+          "type": "string",
+          "readonly": true
+        },
+        "job_service_type": {
+          "title": "job_service_type",
+          "type": "string"
+        },
+        "port": {
+          "title": "port",
+          "type": "number",
+          "format": "integer"
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "status": {
+          "title": "status",
+          "type": "string",
+          "readonly": true
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "TrainingSettingsSchema": {
+      "properties": {
+        "allowed_training_algorithms": {
+          "title": "allowed_training_algorithms",
+          "type": "array",
+          "items": {
+            "title": "allow_list_models",
+            "type": "string"
+          }
+        },
+        "blocked_training_algorithms": {
+          "title": "blocked_training_algorithms",
+          "type": "array",
+          "items": {
+            "title": "block_list_models",
+            "type": "string"
+          }
+        },
+        "enable_dnn_training": {
+          "title": "enable_dnn_training",
+          "type": "boolean"
+        },
+        "enable_onnx_compatible_models": {
+          "title": "enable_onnx_compatible_models",
+          "type": "boolean"
+        },
+        "enable_stack_ensemble": {
+          "title": "enable_stack_ensemble",
+          "type": "boolean"
+        },
+        "enable_vote_ensemble": {
+          "title": "enable_vote_ensemble",
+          "type": "boolean"
+        },
+        "ensemble_model_download_timeout_minutes": {
+          "title": "ensemble_model_download_timeout_minutes",
+          "type": "number",
+          "format": "integer"
+        },
+        "stack_ensemble_settings": {
+          "type": "object",
+          "$ref": "#/definitions/StackEnsembleSettingsSchema"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "StackEnsembleSettingsSchema": {
+      "properties": {
+        "stack_meta_learner_kwargs": {
+          "title": "stack_meta_learner_kwargs",
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "stack_meta_learner_train_percentage": {
+          "title": "stack_meta_learner_train_percentage",
+          "type": "number",
+          "format": "float"
+        },
+        "stack_meta_learner_type": {
+          "type": "string",
+          "enum": [
+            "none",
+            "logisticregression",
+            "logisticregressioncv",
+            "lightgbmclassifier",
+            "elasticnet",
+            "elasticnetcv",
+            "lightgbmregressor",
+            "linearregression"
+          ],
+          "title": "stack_meta_learner_type"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "AutoMLJobSchema": {
+      "properties": {
+        "compute": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "local"
+              ],
+              "title": "compute"
+            },
+            {
+              "type": "string",
+              "pattern": "^azureml:.*",
+              "arm_type": "computes",
+              "title": "compute"
+            },
+            {
+              "title": "compute",
+              "type": "string"
+            }
+          ]
+        },
+        "creation_context": {
+          "type": "object",
+          "$ref": "#/definitions/CreationContextSchema"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/DataSettingsSchema",
+          "title": "data"
+        },
+        "description": {
+          "title": "description",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "display_name",
+          "type": "string"
+        },
+        "experiment_name": {
+          "title": "experiment_name",
+          "type": "string"
+        },
+        "featurization": {
+          "type": "object",
+          "$ref": "#/definitions/FeaturizationSettingsSchema",
+          "title": "featurization"
+        },
+        "forecasting": {
+          "type": "object",
+          "$ref": "#/definitions/ForecastingSettingsSchema",
+          "title": "forecasting"
+        },
+        "general": {
+          "type": "object",
+          "$ref": "#/definitions/AutoMLGeneralSettingsSchema",
+          "title": "general"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^azureml:.*",
+          "arm_type": "jobs",
+          "title": "id",
+          "readonly": true
+        },
+        "limits": {
+          "type": "object",
+          "$ref": "#/definitions/AutoMLLimitsSchema"
+        },
+        "log_files": {
+          "title": "log_files",
+          "type": "object",
+          "additionalProperties": {
+            "title": "log_files",
+            "type": "string"
+          }
+        },
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "output": {
+          "type": "object",
+          "$ref": "#/definitions/JobOutputSchema",
+          "description": "The output configurations for the component used."
+        },
+        "parent_job_name": {
+          "title": "parent_job_name",
+          "type": "string",
+          "readonly": true
+        },
+        "properties": {
+          "title": "properties",
+          "type": "object",
+          "additionalProperties": {
+            "title": "properties",
+            "type": "string"
+          }
+        },
+        "$schema": {
+          "title": "$schema",
+          "type": "string",
+          "readonly": true
+        },
+        "services": {
+          "title": "services",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "$ref": "#/definitions/JobServiceSchema"
+          }
+        },
+        "status": {
+          "title": "status",
+          "type": "string",
+          "readonly": true
+        },
+        "tags": {
+          "title": "tags",
+          "type": "object",
+          "additionalProperties": {
+            "title": "tags",
+            "type": "string"
+          }
+        },
+        "training": {
+          "type": "object",
+          "$ref": "#/definitions/TrainingSettingsSchema",
+          "title": "training"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "automl"
+          ],
+          "title": "type"
+        }
+      },
+      "type": "object",
+      "required": [
+        "compute",
+        "data",
+        "general",
+        "type"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/AutoMLJobSchema"
+}

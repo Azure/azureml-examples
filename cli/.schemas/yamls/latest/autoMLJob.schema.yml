@@ -1,0 +1,543 @@
+$ref: '#/definitions/AutoMLJobSchema'
+$schema: http://json-schema.org/draft-07/schema#
+definitions:
+  AutoMLGeneralSettingsSchema:
+    additionalProperties: false
+    properties:
+      enable_model_explainability:
+        title: enable_model_explainability
+        type: boolean
+      log_verbosity:
+        enum:
+        - critical
+        - error
+        - warning
+        - info
+        - debug
+        - notset
+        title: log_verbosity
+        type: string
+      primary_metric:
+        enum:
+        - auc_weighted
+        - accuracy
+        - norm_macro_recall
+        - average_precision_score_weighted
+        - precision_score_weighted
+        - spearman_correlation
+        - normalized_root_mean_squared_error
+        - r2_score
+        - normalized_mean_absolute_error
+        - normalized_root_mean_squared_log_error
+        title: primary_metric
+        type: string
+      task:
+        enum:
+        - classification
+        - regression
+        - forecasting
+        - textclassification
+        - textmultilabeling
+        - textner
+        title: task
+        type: string
+    required:
+    - primary_metric
+    - task
+    type: object
+  AutoMLJobSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      compute:
+        anyOf:
+        - enum:
+          - local
+          title: compute
+          type: string
+        - arm_type: computes
+          pattern: ^azureml:.*
+          title: compute
+          type: string
+        - title: compute
+          type: string
+      creation_context:
+        $ref: '#/definitions/CreationContextSchema'
+        type: object
+      data:
+        $ref: '#/definitions/DataSettingsSchema'
+        title: data
+        type: object
+      description:
+        title: description
+        type: string
+      display_name:
+        title: display_name
+        type: string
+      experiment_name:
+        title: experiment_name
+        type: string
+      featurization:
+        $ref: '#/definitions/FeaturizationSettingsSchema'
+        title: featurization
+        type: object
+      forecasting:
+        $ref: '#/definitions/ForecastingSettingsSchema'
+        title: forecasting
+        type: object
+      general:
+        $ref: '#/definitions/AutoMLGeneralSettingsSchema'
+        title: general
+        type: object
+      id:
+        arm_type: jobs
+        pattern: ^azureml:.*
+        readonly: true
+        title: id
+        type: string
+      limits:
+        $ref: '#/definitions/AutoMLLimitsSchema'
+        type: object
+      log_files:
+        additionalProperties:
+          title: log_files
+          type: string
+        title: log_files
+        type: object
+      name:
+        title: name
+        type: string
+      output:
+        $ref: '#/definitions/JobOutputSchema'
+        description: The output configurations for the component used.
+        type: object
+      parent_job_name:
+        readonly: true
+        title: parent_job_name
+        type: string
+      properties:
+        additionalProperties:
+          title: properties
+          type: string
+        title: properties
+        type: object
+      services:
+        additionalProperties:
+          $ref: '#/definitions/JobServiceSchema'
+          type: object
+        title: services
+        type: object
+      status:
+        readonly: true
+        title: status
+        type: string
+      tags:
+        additionalProperties:
+          title: tags
+          type: string
+        title: tags
+        type: object
+      training:
+        $ref: '#/definitions/TrainingSettingsSchema'
+        title: training
+        type: object
+      type:
+        enum:
+        - automl
+        title: type
+        type: string
+    required:
+    - compute
+    - data
+    - general
+    - type
+    type: object
+  AutoMLLimitsSchema:
+    additionalProperties: false
+    properties:
+      enable_early_termination:
+        title: enable_early_termination
+        type: boolean
+      exit_score:
+        format: float
+        title: exit_score
+        type: number
+      max_concurrent_trials:
+        format: integer
+        title: max_concurrent_trials
+        type: number
+      max_core_per_trials:
+        format: integer
+        title: max_core_per_trials
+        type: number
+      max_total_trials:
+        format: integer
+        title: max_total_trials
+        type: number
+      timeout:
+        format: integer
+        title: timeout
+        type: number
+      trial_timeout_minutes:
+        format: integer
+        title: trial_timeout_minutes
+        type: number
+    type: object
+  ColumnTransformerSchema:
+    additionalProperties: false
+    properties:
+      fields:
+        items:
+          title: fields
+          type: string
+        title: fields
+        type: array
+      parameters:
+        additionalProperties:
+          anyOf:
+          - format: float
+            title: parameters
+            type: number
+          - title: parameters
+            type: string
+        title: parameters
+        type: object
+    type: object
+  CreationContextSchema:
+    additionalProperties: false
+    properties:
+      created_at:
+        format: date-time
+        title: created_at
+        type: string
+      created_by:
+        title: created_by
+        type: string
+      created_by_type:
+        title: created_by_type
+        type: string
+      last_modified_at:
+        format: date-time
+        title: last_modified_at
+        type: string
+      last_modified_by:
+        title: last_modified_by
+        type: string
+      last_modified_by_type:
+        title: last_modified_by_type
+        type: string
+    type: object
+  DataSettingsSchema:
+    additionalProperties: false
+    properties:
+      target_column_name:
+        title: target_column_name
+        type: string
+      test:
+        $ref: '#/definitions/TestDataSchema'
+        title: test
+        type: object
+      training:
+        $ref: '#/definitions/TrainingDataSchema'
+        title: training
+        type: object
+      validation:
+        $ref: '#/definitions/ValidationDataSchema'
+        title: validation
+        type: object
+      weight_column_name:
+        title: weight_column_name
+        type: string
+    required:
+    - target_column_name
+    - training
+    type: object
+  FeaturizationConfigSchema:
+    additionalProperties: false
+    properties:
+      blocked_transformers:
+        items:
+          title: blocked_transformers
+          type: string
+        title: blocked_transformers
+        type: array
+      column_purposes:
+        additionalProperties:
+          title: column_purposes
+          type: string
+        title: column_purposes
+        type: object
+      dataset_language:
+        title: dataset_language
+        type: string
+      drop_columns:
+        items:
+          title: drop_columns
+          type: string
+        title: drop_columns
+        type: array
+      transformer_params:
+        additionalProperties:
+          items:
+            $ref: '#/definitions/ColumnTransformerSchema'
+            type: object
+          title: transformer_params
+          type: array
+        title: transformer_params
+        type: object
+    type: object
+  FeaturizationSettingsSchema:
+    additionalProperties: false
+    properties:
+      enable_dnn_featurization:
+        title: enable_dnn_featurization
+        type: boolean
+      featurization_config:
+        anyOf:
+        - enum:
+          - auto
+          - 'off'
+          title: featurization_config
+          type: string
+        - $ref: '#/definitions/FeaturizationConfigSchema'
+          type: object
+    type: object
+  ForecastingSettingsSchema:
+    additionalProperties: false
+    properties:
+      country_or_region_for_holidays:
+        title: country_or_region_for_holidays
+        type: string
+      feature_lags:
+        enum:
+        - auto
+        title: feature_lags
+        type: string
+      forecast_horizon:
+        anyOf:
+        - enum:
+          - auto
+          title: forecast_horizon
+          type: string
+        - format: integer
+          title: forecast_horizon
+          type: number
+      frequency:
+        title: frequency
+        type: string
+      seasonality:
+        anyOf:
+        - enum:
+          - auto
+          title: seasonality
+          type: string
+        - format: integer
+          title: seasonality
+          type: number
+      short_series_handling_config:
+        enum:
+        - auto
+        - pad
+        - drop
+        title: short_series_handling_config
+        type: string
+      target_aggregate_function:
+        enum:
+        - sum
+        - max
+        - min
+        - mean
+        title: target_aggregate_function
+        type: string
+      target_lags:
+        anyOf:
+        - enum:
+          - auto
+          title: target_lags
+          type: string
+        - format: integer
+          title: target_lags
+          type: number
+        - items:
+            format: integer
+            title: target_lags
+            type: number
+          title: target_lags
+          type: array
+      target_rolling_window_size:
+        anyOf:
+        - enum:
+          - auto
+          title: target_rolling_window_size
+          type: string
+        - format: integer
+          title: target_rolling_window_size
+          type: number
+      time_column_name:
+        title: time_column_name
+        type: string
+      time_series_id_column_names:
+        anyOf:
+        - title: time_series_id_column_names
+          type: string
+        - items:
+            title: time_series_id_column_names
+            type: string
+          title: time_series_id_column_names
+          type: array
+      use_stl:
+        title: use_stl
+        type: string
+    type: object
+  JobOutputSchema:
+    additionalProperties: false
+    properties:
+      datastore_id:
+        arm_type: datastores
+        pattern: ^azureml:.*
+        title: datastore_id
+        type: string
+      path:
+        title: path
+        type: string
+    type: object
+  JobServiceSchema:
+    additionalProperties: false
+    properties:
+      $schema:
+        readonly: true
+        title: $schema
+        type: string
+      endpoint:
+        readonly: true
+        title: endpoint
+        type: string
+      error_message:
+        readonly: true
+        title: error_message
+        type: string
+      job_service_type:
+        title: job_service_type
+        type: string
+      port:
+        format: integer
+        title: port
+        type: number
+      properties:
+        additionalProperties: {}
+        title: properties
+        type: object
+      status:
+        readonly: true
+        title: status
+        type: string
+    type: object
+  StackEnsembleSettingsSchema:
+    additionalProperties: false
+    properties:
+      stack_meta_learner_kwargs:
+        additionalProperties: {}
+        title: stack_meta_learner_kwargs
+        type: object
+      stack_meta_learner_train_percentage:
+        format: float
+        title: stack_meta_learner_train_percentage
+        type: number
+      stack_meta_learner_type:
+        enum:
+        - none
+        - logisticregression
+        - logisticregressioncv
+        - lightgbmclassifier
+        - elasticnet
+        - elasticnetcv
+        - lightgbmregressor
+        - linearregression
+        title: stack_meta_learner_type
+        type: string
+    type: object
+  TestDataSchema:
+    additionalProperties: false
+    properties:
+      dataset:
+        arm_type: data
+        pattern: ^azureml:.*
+        title: dataset
+        type: string
+      test_data_size:
+        format: float
+        title: test_data_size
+        type: number
+    type: object
+  TrainingDataSchema:
+    additionalProperties: false
+    properties:
+      dataset:
+        arm_type: data
+        pattern: ^azureml:.*
+        title: dataset
+        type: string
+    required:
+    - dataset
+    type: object
+  TrainingSettingsSchema:
+    additionalProperties: false
+    properties:
+      allowed_training_algorithms:
+        items:
+          title: allow_list_models
+          type: string
+        title: allowed_training_algorithms
+        type: array
+      blocked_training_algorithms:
+        items:
+          title: block_list_models
+          type: string
+        title: blocked_training_algorithms
+        type: array
+      enable_dnn_training:
+        title: enable_dnn_training
+        type: boolean
+      enable_onnx_compatible_models:
+        title: enable_onnx_compatible_models
+        type: boolean
+      enable_stack_ensemble:
+        title: enable_stack_ensemble
+        type: boolean
+      enable_vote_ensemble:
+        title: enable_vote_ensemble
+        type: boolean
+      ensemble_model_download_timeout_minutes:
+        format: integer
+        title: ensemble_model_download_timeout_minutes
+        type: number
+      stack_ensemble_settings:
+        $ref: '#/definitions/StackEnsembleSettingsSchema'
+        type: object
+    type: object
+  ValidationDataSchema:
+    additionalProperties: false
+    properties:
+      cv_split_column_names:
+        items:
+          title: cv_split_column_names
+          type: string
+        title: cv_split_column_names
+        type: array
+      dataset:
+        arm_type: data
+        pattern: ^azureml:.*
+        title: dataset
+        type: string
+      n_cross_validations:
+        format: integer
+        title: n_cross_validations
+        type: number
+      validation_data_size:
+        format: float
+        title: validation_data_size
+        type: number
+    type: object
