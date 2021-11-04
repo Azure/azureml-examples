@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  python startDask.py
+  --script prep-nyctaxi.py 
+  --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
+  --output_folder ${{outputs.output_folder}}
+inputs:
+  nyc_taxi_dataset:
+    folder: wasbs://datasets@azuremlexamples.blob.core.windows.net/nyctaxi/
+    mode: ro_mount
+outputs:
+  output_folder:
+environment: 
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  conda_file: conda.yml
+compute: azureml:cpu-cluster-lg
+resources:
+  instance_count: 4
+distribution:
+  type: pytorch
+display_name: dask-nyctaxi-example
+experiment_name: dask-nyctaxi-example
+description: This sample shows how to run a distributed DASK job on AzureML. The 24GB NYC Taxi dataset is read in CSV format by a 4 node DASK cluster, processed and then written as job output in parquet format. 

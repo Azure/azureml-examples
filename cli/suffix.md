@@ -6,6 +6,7 @@
 |`assets`|assets|
 |`endpoints`|endpoints|
 |`jobs`|jobs|
+|`resources`|resources|
 
 ## Contributing
 

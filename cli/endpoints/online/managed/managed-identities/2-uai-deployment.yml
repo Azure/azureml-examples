@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+model:
+  local_path: ../../model-1/model/sklearn_regression_model.pkl
+code_configuration:
+  code: 
+    local_path: ../../model-1/onlinescoring/
+  scoring_script: score_managedidentity.py
+environment: 
+  conda_file: ../../model-1/environment/conda.yml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+instance_type: Standard_F2s_v2
+instance_count: 1
+environment_variables:
+  STORAGE_ACCOUNT_NAME: "storage_place_holder"
+  STORAGE_CONTAINER_NAME: "container_place_holder"
+  FILE_NAME: "file_place_holder"
+  UAI_CLIENT_ID: "uai_client_id_place_holder"

@@ -1,39 +1,42 @@
-## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
-## Please reach out to the Azure ML docs & samples team before before editing for the first time.
-
 set -e
 
 BASE_PATH=endpoints/online/triton/single-model
-MODEL_PATH=$BASE_PATH/models/triton/densenet_onnx/1
+
+# <installing-requirements>
+pip install numpy
+pip install tritonclient[http]
+pip install pillow
+pip install gevent
+# </installing-requirements>
 
 # <set_endpoint_name>
-export ENDPOINT_NAME=triton-single-mir-endpt-`echo $RANDOM`
+export ENDPOINT_NAME=triton-single-endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
-# Download the model
-mkdir -p $MODEL_PATH
-wget https://aka.ms/densenet_onnx-model -O $MODEL_PATH/model.onnx
+# <create_endpoint>
+az ml online-endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-managed-endpoint.yaml
+# </create_endpoint>
 
-# <deploy>
-az ml endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/create-endpoint-with-deployment-mir.yml
-# </deploy>
+# <create_deployment>
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f $BASE_PATH/create-managed-deployment.yaml --all-traffic
+# </create_deployment>
 
 # <get_status>
-az ml endpoint show -n $ENDPOINT_NAME
+az ml online-endpoint show -n $ENDPOINT_NAME
 # </get_status>
 
-#  check if endpoint create was successful
-endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+# check if create was successful
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
-then  
+then
   echo "Endpoint created successfully"
 else
   echo "Endpoint creation failed"
   exit 1
 fi
 
-deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='blue'].provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name blue --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -43,17 +46,13 @@ else
   exit 1
 fi
 
-# <get_logs>
-az ml endpoint get-logs -n $ENDPOINT_NAME --deployment blue
-# </get_logs>
-
 # <get_scoring_uri>
-scoring_uri=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+scoring_uri=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 scoring_uri=${scoring_uri%/*}
 # </get_scoring_uri>
 
 # <get_token>
-auth_token=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+auth_token=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 # </get_token>
 
 # <check_scoring_of_model>
@@ -61,9 +60,6 @@ python $BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$au
 # </check_scoring_of_model>
 
 # <delete_endpoint>
-az ml endpoint delete -n $ENDPOINT_NAME --yes
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
-# <delete_model>
-az ml model delete -n densenet_onnx --version 4
-# </delete_model>

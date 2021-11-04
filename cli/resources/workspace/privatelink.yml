@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: mlw-privatelink-prod
+location: eastus
+display_name: Private Link endpoint workspace-example
+description: When using private link, you must set the image_build_compute property to a cluster name to use for Docker image environment building. You can also specify whether the workspace should be accessible over the internet.
+image_build_compute: cpu-compute
+public_network_access: Disabled
+tags:
+  purpose: demonstration

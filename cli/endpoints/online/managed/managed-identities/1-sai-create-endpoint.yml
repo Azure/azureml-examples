@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: my-sai-endpoint
-type: online
 auth_mode: key
