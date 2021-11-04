@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: echo "hello world"
+environment:
+  image: python:latest
+compute: azureml:cpu-cluster
+tags:
+  hello: world
+display_name: hello-world-example
+experiment_name: hello-world-example
+description: |
+  # Azure Machine Learning "hello world" job
+
+  This is a "hello world" job running in the cloud via Azure Machine Learning!
+
+  ## Description
+
+  Markdown is supported in the studio for job descriptions! You can edit the description there or via CLI.

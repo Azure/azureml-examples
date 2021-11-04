@@ -3,6 +3,7 @@ AML_MODEL_NAME=torchserve-densenet161
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=torchserve-endpoint
+DEPLOYMENT_NAME=torchserve-deployment
 
 # Download model and config file
 echo "Downling model and config file..."
@@ -12,7 +13,7 @@ wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchser
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
-ACR_NAME=$(az ml workspace show -w $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+ACR_NAME=$(az ml workspace show --name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
 if [[ $ACR_NAME == "" ]]
 then
@@ -51,15 +52,18 @@ curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
 docker stop torchserve-test
 
 # Deploy model to online endpoint
-sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$ENDPOINT_NAME.yml
+sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
-# Create endpoint
-echo "Creating new endpoint..."
-az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+# Update endpoint if exists, else create
+if [[ $EXISTS == $ENDPOINT_NAME ]]
+then 
+  az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
+else
+  az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+fi
 
-az ml endpoint get-logs --name $ENDPOINT_NAME --deployment torchserve
-
-ENDPOINT_STATUS=$(az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
+ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
 
 if [[ $ENDPOINT_STATUS == "Succeeded" ]]
@@ -67,19 +71,35 @@ then
   echo "Endpoint created successfully"
 else
   echo "Something went wrong when creating endpoint. Cleaning up..."
+  az ml online-endpoint delete --name $ENDPOINT_NAME
+  exit 1
+fi
+
+# Create deployment
+echo "Creating deployment..."
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+
+deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
+then
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
   cleanTestingFiles
-  az ml endpoint delete -n $ENDPOINT_NAME --yes
+  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
   az ml model delete -n $AML_MODEL_NAME --version 1
+  az ml environment delete --name torchserve-environment --version 1
   exit 1
 fi
 
 # Get accessToken
 echo "Getting access token..."
-TOKEN=$(az ml endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 
 # Get scoring url
 echo "Getting scoring url..."
-SCORING_URL=$(az ml endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 echo "Scoring url is $SCORING_URL"
 
 # Check scoring
@@ -92,8 +112,12 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-az ml endpoint delete -n $ENDPOINT_NAME --yes
+az ml online-endpoint delete -n $ENDPOINT_NAME
 
 # Delete model
 echo "Deleting model..."
 az ml model delete -n $AML_MODEL_NAME --version 1
+
+# Delete environment
+echo "Deleting environment...."
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes

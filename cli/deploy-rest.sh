@@ -1,21 +1,24 @@
-## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
-## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+set -x
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location | tr -d '\r"')
+LOCATION=$(az ml workspace show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-API_VERSION="2021-03-01-preview"
-TOKEN=$(az account get-access-token --query accessToken -o tsv)
+
 #</create_variables>
 
+#<get_access_token>
+TOKEN=$(az account get-access-token --query accessToken -o tsv)
+#</get_access_token>
+
 # <set_endpoint_name>
-export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+#<api_version>
+API_VERSION="2021-10-01"
+#</api_version>
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
 
@@ -23,6 +26,11 @@ echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_G
 wait_for_completion () {
     operation_id=$1
     status="unknown"
+
+    if [[ $operation_id == "" || -z $operation_id  || $operation_id == "null" ]]; then
+        echo "operation id cannot be empty"
+        exit 1
+    fi
 
     while [[ $status != "Succeeded" && $status != "Failed" ]]
     do
@@ -46,8 +54,8 @@ wait_for_completion () {
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores?api-version=$API_VERSION&isDefault=true" \
 --header "Authorization: Bearer $TOKEN")
 AZUREML_DEFAULT_DATASTORE=$(echo $response | jq -r '.value[0].name')
-AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.contents.containerName')
-export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.contents.accountName')
+AZUREML_DEFAULT_CONTAINER=$(echo $response | jq -r '.value[0].properties.containerName')
+export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.accountName')
 # </get_storage_details>
 
 # TODO: we can get the default container from listing datastores
@@ -63,9 +71,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
   \"properties\": {
-    \"description\": \"Score code\",
-    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE\",
-    \"path\": \"score\"
+    \"codeUri\": \"https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZUREML_DEFAULT_CONTAINER/score\"
   }
 }"
 # </create_code>
@@ -80,8 +86,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"datastoreId\":\"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
-        \"path\": \"model/sklearn_regression_model.pkl\",
+        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model/sklearn_regression_model.pkl\"
     }
 }"
 # </create_model>
@@ -98,16 +103,13 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
     \"properties\":{
         \"condaFile\": \"$CONDA_FILE\",
-        \"Docker\": {
-            \"DockerSpecificationType\": \"Image\",
-            \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\"
-        }
+        \"image\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\"
     }
 }"
 # </create_environment>
 
 #<create_endpoint>
-response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
@@ -115,8 +117,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
        \"type\": \"systemAssigned\"
     },
     \"properties\": {
-        \"authMode\": \"AMLToken\",
-        \"traffic\": { \"blue\": 100 }
+        \"authMode\": \"AMLToken\"
     },
     \"location\": \"$LOCATION\"
 }")
@@ -127,29 +128,26 @@ operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -
 wait_for_completion $operation_id
 
 # <create_deployment>
-response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint/deployments/blue?api-version=$API_VERSION" \
+response=$(curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" \
 --data-raw "{
     \"location\": \"$LOCATION\",
+    \"sku\": {
+        \"capacity\": 1,
+        \"name\": \"Standard_F2s_v2\"
+    },
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
         \"scaleSettings\": {
-            \"scaleType\": \"Manual\",
-            \"instanceCount\": 1,
-            \"minInstances\": 1,
-            \"maxInstances\": 2
+            \"scaleType\": \"Default\"
         },
-        \"model\": {
-            \"referenceType\": \"Id\",
-            \"assetId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\"
-        },
+        \"model\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\",
         \"codeConfiguration\": {
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1\",
             \"scoringScript\": \"score.py\"
         },
-        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\",
-        \"InstanceType\": \"Standard_F2s_v2\"
+        \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\"
     }
 }")
 #</create_deployment>
@@ -159,7 +157,7 @@ operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -
 wait_for_completion $operation_id
 
 # <get_endpoint>
-response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
+response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
@@ -167,7 +165,7 @@ scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
 # </get_endpoint>
 
 # <get_access_token>
-response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint/token?api-version=$API_VERSION" \
+response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
 accessToken=$(echo $response | jq -r '.accessToken')
 # </get_access_token>
@@ -180,7 +178,7 @@ curl --location --request POST $scoringUri \
 # </score_endpoint>
 
 # <get_deployment_logs>
-curl --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint/deployments/blue/getLogs?api-version=$API_VERSION" \
+curl --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue/getLogs?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN" \
 --header "Content-Type: application/json" \
 --data-raw "{ \"tail\": 100 }"
@@ -188,7 +186,7 @@ curl --location --request POST "https://management.azure.com/subscriptions/$SUBS
 
 # delete endpoint
 # <delete_endpoint>
-curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/my-first-endpoint?api-version=$API_VERSION" \
+curl --location --request DELETE "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN" || true
 # </delete_endpoint>

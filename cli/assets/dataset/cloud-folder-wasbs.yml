@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: cloud-folder-wasbs-example
+description: Dataset created from folder in cloud using wasbs URL.
+paths:
+  - folder: wasbs://mainstorage9c05dabf5c924.blob.core.windows.net/azureml-blobstore-54887b46-3cb0-485b-bb15-62e7b5578ee6/example-data/

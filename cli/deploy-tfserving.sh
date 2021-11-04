@@ -1,13 +1,8 @@
-## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
-## Please reach out to the Azure ML docs & samples team before before editing for the first time.
-
 # <initialize_variables>
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=tfserving-mounted
 MODEL_NAME=half_plus_two
 MODEL_BASE_PATH=/var/azureml-app/azureml-models/$AML_MODEL_NAME/1
-ENDPOINT_NAME=tfserving-endpoint
-DEPLOYMENT_NAME=tfserving
 # </initialize_variables>
 
 # <download_and_unzip_model>
@@ -43,32 +38,49 @@ curl --header "Content-Type: application/json" \
 docker stop tfserving-test
 # </stop_image>
 
-# Check endpoint existence
-EXISTS=$(az ml endpoint show -n $ENDPOINT_NAME --query name -o tsv)
+# <set_endpoint_name> 
+export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+# </set_endpoint_name>
 
-# endpoint exists, update it
-if [[ $EXISTS == $ENDPOINT_NAME ]]
-then 
-  echo "endpoint exists, updating..."
-  az ml endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
+
+# <create_endpoint>
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-endpoint.yml
+# </create_endpoint>
+
+# <create_deployment>
+az ml online-deployment create --name tfserving-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-deployment.yml --all-traffic
+# </create_deployment>
+
+# <get_status>
+az ml online-endpoint show -n $ENDPOINT_NAME
+# </get_status>
+
+# check if create was successful
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $endpoint_status
+if [[ $endpoint_status == "Succeeded" ]]
+then
+  echo "Endpoint created successfully"
 else
-  # <create_endpoint>
-  az ml endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml -n $ENDPOINT_NAME
-  # </create_endpoint>
+  echo "Endpoint creation failed"
+  exit 1
 fi
 
-STATE=$(az ml endpoint show -n $ENDPOINT_NAME --query deployments[0].provisioning_state -o tsv)
-
-if [[ $STATE != "Succeeded" ]]
+deploy_status=`az ml online-deployment show --name tfserving-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
 then
-  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME
-  az ml endpoint get-logs -n $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --container storage-initializer
-  echo "deleting endpoint, state is "$STATE
-  # <delete_endpoint_and_model>
-  az ml endpoint delete -n $ENDPOINT_NAME -y
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
+  # <delete_endpoint_and_model_and_environment>
+  az ml online-endpoint delete -n $ENDPOINT_NAME -y
   echo "deleting model..."
   az ml model delete -n tfserving-mounted --version 1
-  # </delete_endpoint_and_model>
+  echo "Deleting environment"
+  az ml environment delete -n tfserving --version 1
+  # </delete_endpoint_and_model_and_environment>
   cleanup
   exit 1
 fi
@@ -78,10 +90,19 @@ echo "Testing endpoint"
 for i in {1..10}
 do
    # <invoke_endpoint>
-   RESPONSE=$(az ml endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
+   RESPONSE=$(az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file $BASE_PATH/sample_request.json)
    # </invoke_endpoint>
 done
 
 echo "Tested successfully, response was $RESPONSE. Cleaning up..."
+
+echo "Deployment failed"
+# <delete_endpoint_and_model_and_environment>
+az ml online-endpoint delete -n $ENDPOINT_NAME -y
+echo "deleting model..."
+az ml model delete -n tfserving-mounted --version 1
+echo "Deleting environment"
+az ml environment delete -n tfserving --version 1
+# </delete_endpoint_and_model_and_environment>
 
 cleanup

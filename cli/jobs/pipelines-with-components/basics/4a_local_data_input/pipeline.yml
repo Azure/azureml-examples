@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: "Example of using data in a local folder as pipeline input"
+inputs:
+  pipeline_sample_input_data:
+    dataset:
+      local_path: ./data 
+  pipeline_sample_input_string: 'Hello_Pipeline_World'
+
+outputs:
+  pipeline_sample_output_data:
+    mode: upload
+
+jobs:
+  hello_python_world_job:
+    type: component
+    component: file:./component.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      sample_input_data: ${{inputs.pipeline_sample_input_data}}
+      sample_input_string: ${{inputs.pipeline_sample_input_string}}
+    outputs:
+      sample_output_data: ${{outputs.pipeline_sample_output_data}}
+

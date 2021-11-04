@@ -1,5 +1,6 @@
-## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning! 
-## Please reach out to the Azure ML docs & samples team before before editing for the first time.
+# <show_mlflow_uri>
+az ml workspace show --query mlflow_tracking_uri -o tsv
+# </show_mlflow_uri>
 
 # <set_mlflow_uri>
 AZUREML_MLFLOW_URI=$(az ml workspace show --query mlflow_tracking_uri -o tsv)
