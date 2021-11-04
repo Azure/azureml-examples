@@ -19,7 +19,7 @@ job_uri=$(az ml job show -n $run_id --query services.Studio.endpoint)
 
 echo $job_uri
 
-running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
+running=("Queued" "NotStarted" "Starting" "Preparing" "Running" "Finalizing")
 while [[ ${running[*]} =~ $status ]]
 do
   echo $job_uri
