@@ -229,7 +229,7 @@ jupyter notebook
           - deploy the model to use in inference scenarios
 - **Batch Scoring with an Image Classification Model**
     - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
-        - **[Jupyter Notebook](image-pipelines/image-classification-multiclass-batch-scoring/auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
+        - **[Jupyter Notebook](image-classification-multiclass-batch-scoring/auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
           - register an Image Classification Multi-Class model already trained using AutoML
           - create an Inference Dataset
           - provision compute targets and create a Batch Scoring script
