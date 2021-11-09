@@ -1,4 +1,13 @@
 library("optparse")
+library("carrier")
+library(rpart)
+source('aml.R')
+
+# Setting Mlflow related env vars
+# https://www.mlflow.org/docs/latest/R-api.html#details
+Sys.setenv(MLFLOW_BIN=system("which mlflow", intern=TRUE))
+Sys.setenv(MLFLOW_PYTHON_BIN=system("which python", intern=TRUE))
+
 parser <- OptionParser()
 parser <- add_option(parser, "--data_folder",
                      type="character", 
@@ -8,21 +17,25 @@ parser <- add_option(parser, "--data_folder",
 
 args <- parse_args(parser)
 
-cat("data folder...\n")
+print("data folder...\n")
 print(args$data_folder)
 
 file_name = file.path(args$data_folder)
 
-cat("first 6 rows...\n")
-x <- read.csv(file_name)
-print(head(x))
+print("first 6 rows...\n")
+iris <- read.csv(file_name)
+print(head(iris))
 
-cat("building model...\n")
-model <- rpart::rpart(species~., data=x)
+with(run <- mlflow_start_run(), {
+  print("building model...\n")
 
-cat("saving model...\n")
-output_dir = "outputs"
-if (!dir.exists(output_dir)){
-  dir.create(output_dir)
-}
-saveRDS(model, file = "./outputs/model.rds")
+  model <- rpart(species ~ ., data = iris, method = "class")
+
+  predictor <- crate(~ stats::predict(!!model, .x, method = "class"))
+  predicted <- predictor(iris[5:10,])
+  print(predicted)
+
+  print("logging model...\n")
+
+  override_log_model(predictor, "model")
+})
