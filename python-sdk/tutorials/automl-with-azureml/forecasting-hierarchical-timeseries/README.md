@@ -24,11 +24,11 @@ This business pattern is common across a wide variety of industries and applicab
 
 A hierarchical time series is a structure in which each of the unique series are arranged into a hierarchy based on dimensions such as geography, or product type. The table below shows an example of data whose unique attributes form a hierarchy. Our hierarchy is defined by the `product type` such as headphones or tablets, the `product category` which splits product types into accessories and devices, and the `region` the products are sold in. The table below demonstrates the first input of each unique series in the hierarchy.
 
-![data-table](/media/data-table.png)
+![data-table](./media/data-table.png)
 
 To further visualize this, the leaf levels of the hierarchy contain all the time series with unique combinations of attribute values. Each higher level in the hierarchy will consider one less dimension for defining the time series and will aggregate each set of `child nodes` from the lower level into a `parent node`.
 
-![hierachy-sample](/media/hierarchy-sample-ms.PNG)
+![hierachy-sample](./media/hierarchy-sample-ms.PNG)
 
 > **Note:** If no unique root level exists in the data, Automated Machine Learning will create a node `automl_top_level` for users to train or forecasts totals.
 
@@ -57,7 +57,7 @@ Once your environment is set up, go to JupyterLab and run the notebook auto-ml-h
 | `AutoML-Hierarchical-TimeSeries.ipynb`|Creates a pipeline to train machine learning models for the defined hierarchy and forecast at the desired hierarchy level using Automated ML. |
 
 
-![Work Flow](/media/workflow.PNG)
+![Work Flow](./media/workflow.PNG)
 
 ## Key Concepts
 
