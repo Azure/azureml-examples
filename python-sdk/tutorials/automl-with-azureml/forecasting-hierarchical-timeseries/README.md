@@ -40,13 +40,13 @@ A basic understanding of Azure Machine Learning and hierarchical time series con
 
 1. [Azure Machine Learning Overview](https://azure.microsoft.com/services/machine-learning/)
 2. [Azure Machine Learning Tutorials](https://docs.microsoft.com/azure/machine-learning/tutorial-1st-experiment-sdk-setup)
-3. [Azure Machine Learning Sample Notebooks on Github](https://github.com/Azure/MachineLearningNotebooks)
+3. [Azure Machine Learning Sample Notebooks on Github](https://github.com/Azure/azureml-examples/)
 4. [Forecasting: Principles and Practice, Hierarchical time series](https://otexts.com/fpp2/hts.html)
 
 ## Getting started
 
-### 1. Set up the environment
-Please follow the instructions in EnvironmentSetup.md to create a Compute Instance and clone the git repo to your workspace.
+### 1. Set up the Compute Instance
+Please create a [Compute Instance](https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance#create) and clone the git repo to your workspace.
 
 ### 2. Run the Notebook
 
