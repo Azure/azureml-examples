@@ -18,7 +18,7 @@ if not (args.output_train is None):
     os.makedirs(args.output_train, exist_ok=True)
     print("%s created" % args.output_train)
 
-with open(os.path.join(args.input_data), 'rb') as f:
+with open(os.path.join(args.input_data), "rb") as f:
     content = f.read()
-    with open(os.path.join(args.output_train, 'Titanic.csv'), 'wb') as fw:
+    with open(os.path.join(args.output_train, "Titanic.csv"), "wb") as fw:
         fw.write(content)
