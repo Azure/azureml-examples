@@ -23,7 +23,7 @@ outputs:
 # </inputs_and_outputs>
 
 # <jobs>
-compute: azureml:cpu-cluster-lg
+compute: azureml:cpu-cluster
 settings:
   datastore: azureml:workspaceblobstore
 
