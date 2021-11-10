@@ -54,7 +54,7 @@ Once your environment is set up, go to JupyterLab and run the notebook auto-ml-h
 
 | Notebook       | Description                                |
 |----------------|--------------------------------------------|
-| `AutoML-Hierarchical-TimeSeries.ipynb`|Creates a pipeline to train machine learning models for the defined hierarchy and forecast at the desired hierarchy level using Automated ML. |
+| `auto-ml-forecasting-hierarchical-timeseries.ipynb`|Creates a pipeline to train machine learning models for the defined hierarchy and forecast at the desired hierarchy level using Automated ML. |
 
 
 ![Work Flow](./media/workflow.PNG)
