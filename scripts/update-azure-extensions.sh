@@ -1,9 +1,6 @@
 #!/bin/bash
 
 echo "Updating azure extensions"
-# Downgrade az cli from outside of the CLI task
-echo "Installing pinned version of azure-cli"
-pip install azure-cli<2.30.0
 echo "Uninstall azure-devops"
 az extension remove -n azure-devops
 echo "Installing pinned version of azure-devops"
