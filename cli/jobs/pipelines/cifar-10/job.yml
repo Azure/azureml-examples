@@ -1,0 +1,51 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: cifar-10-pipeline-example
+experiment_name: cifar-10-pipeline-example
+jobs:
+  get-data:
+    command: bash main.sh ${{outputs.cifar}}
+    code:
+      local_path: src/get-data
+    environment:
+      image: python:latest
+    compute: azureml:cpu-cluster
+    outputs:
+      cifar:
+  train-model:
+    command: >-
+      python main.py
+      --data-dir ${{inputs.cifar}}
+      --epochs ${{inputs.epochs}}
+      --model-dir ${{outputs.model_dir}}
+    code:
+      local_path: src/train-model
+    inputs:
+      epochs: 1
+      cifar: ${{jobs.get-data.outputs.cifar}}
+    outputs:
+      model_dir:
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
+    compute: azureml:gpu-cluster
+    distribution:
+      type: pytorch
+      process_count_per_instance: 2
+    resources:
+      instance_count: 2
+  eval-model:
+    command: >-
+      python main.py
+      --data-dir ${{inputs.cifar}}
+      --model-dir ${{inputs.model_dir}}/model
+    code:
+      local_path: src/eval-model
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
+    compute: azureml:gpu-cluster
+    distribution:
+      type: pytorch
+      process_count_per_instance: 2
+    resources:
+      instance_count: 1
+    inputs:
+      cifar: ${{jobs.get-data.outputs.cifar}}
+      model_dir: ${{jobs.train-model.outputs.model_dir}}

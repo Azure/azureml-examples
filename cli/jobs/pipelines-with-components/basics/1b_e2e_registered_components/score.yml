@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: Score
+version: 31
+display_name: Score
+type: command
+inputs:
+  model_input:
+    type: path
+  test_data:
+    type: path
+outputs:
+  score_output:
+    type: path
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+code:
+  local_path: ./score_src
+command: >-
+  python score.py 
+  --model_input ${{inputs.model_input}} 
+  --test_data ${{inputs.test_data}}
+  --score_output ${{outputs.score_output}}

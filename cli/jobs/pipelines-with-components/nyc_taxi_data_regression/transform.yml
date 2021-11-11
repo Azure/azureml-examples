@@ -1,0 +1,20 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: TaxiFeatureEngineering
+display_name: TaxiFeatureEngineering
+version: 1
+type: command
+inputs:
+  clean_data: 
+    type: path 
+outputs:
+  transformed_data:
+    type: path
+code:
+  local_path: ./transform_src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+command: >-
+  python transform.py 
+  --clean_data ${{inputs.clean_data}} 
+  --transformed_data ${{outputs.transformed_data}}
+# </component>

@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: Hello_Python_World
+display_name: Hello_Python_World
+version: 1
+
+code:
+  local_path: ./src
+
+environment: 
+  conda_file: ./conda.yml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.0.3-cudnn8-ubuntu18.04:20210405.v1
+
+command: >-
+  python hello.py

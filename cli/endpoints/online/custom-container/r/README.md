@@ -29,7 +29,7 @@ Modify the third function in plumber.R to load the saved model and run the model
 
 ### Create an endpoint in your own subscription
 
-Follow the steps in [our documentation](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) to configure the 2.0 CLI. Then run [deploy-r.sh](../../../../deploy-r.sh) (if running on a Linux machine). Alternatively, call `az ml endpoint create -n r-endpoint.yml`.
+Follow the steps in [our documentation](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) to configure the CLI (v2). Then run [deploy-r.sh](../../../../deploy-r.sh) (if running on a Linux machine). Alternatively, call `az ml endpoint create -n r-endpoint.yml`.
 
 ### Call into your deployed endpoint
 

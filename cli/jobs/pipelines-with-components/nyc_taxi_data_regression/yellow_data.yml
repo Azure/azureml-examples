@@ -1,0 +1,9 @@
+# <data>
+$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+name: yellowdata
+version: 3
+description: sample yellow taxi dataset
+datastore: azureml:workspaceblobstore
+local_path: ./data
+path: /sample/data/path
+# </data>

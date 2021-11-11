@@ -10,7 +10,7 @@ description: Top-level directory for official Azure Machine Learning sample code
 
 # Azure Machine Learning examples
 
-[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Asmoke)
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
 [![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
@@ -20,9 +20,12 @@ Welcome to the Azure Machine Learning examples repository!
 
 directory|description
 -|-
-[`cli`](cli)|Azure Machine Learning 2.0 CLI (preview) examples
-[`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace
-[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK examples
+[`.github`](.github)|GitHub files like issue templates and actions workflows.
+[`cli`](cli)|Azure Machine Learning CLI (v2) examples.
+[`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.
+[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK (v1) examples.
+[`setup-ci`](setup-ci)|Setup scripts to customize and configure an Azure Machine Learning compute instance.
+[`setup-repo`](setup-repo)|Setup scripts for Azure/azureml-examples.
 
 ## Contributing
 

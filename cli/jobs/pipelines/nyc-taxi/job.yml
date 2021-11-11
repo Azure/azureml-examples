@@ -1,0 +1,94 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: nyc-taxi-pipeline-example
+experiment_name: nyc-taxi-pipeline-example
+jobs:
+
+  prep-job:
+    type: command
+    inputs:
+      raw_data: 
+          dataset: 
+            local_path: ./data
+    outputs:
+      prep_data: 
+        mode: upload
+    code:
+      local_path: src/prep
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    compute: azureml:cpu-cluster
+    command: >-
+      python prep.py 
+      --raw_data ${{inputs.raw_data}} 
+      --prep_data ${{outputs.prep_data}}
+  
+  transform-job:
+    type: command
+    inputs: 
+      clean_data: ${{jobs.prep-job.outputs.prep_data}}
+    outputs:
+      transformed_data:
+        mode: upload
+    code: 
+      local_path: src/transform
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    compute: azureml:cpu-cluster
+    command: >-
+      python transform.py 
+      --clean_data ${{inputs.clean_data}} 
+      --transformed_data ${{outputs.transformed_data}}
+  
+  train-job:
+    type: command
+    inputs:
+      training_data: ${{jobs.transform-job.outputs.transformed_data}}
+    outputs:
+      model_output: 
+        mode: upload
+      test_data: 
+        mode: upload
+    code:
+      local_path: src/train
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    compute: azureml:cpu-cluster
+    command: >-
+      python train.py 
+      --training_data ${{inputs.training_data}} 
+      --test_data ${{outputs.test_data}} 
+      --model_output ${{outputs.model_output}}
+  
+  predict-job:
+    type: command
+    inputs:
+      model_input: ${{jobs.train-job.outputs.model_output}}
+      test_data: ${{jobs.train-job.outputs.test_data}}
+    outputs:
+      predictions: 
+        mode: upload
+    code:
+      local_path: src/predict
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    compute: azureml:cpu-cluster
+    command: >-
+      python predict.py 
+      --model_input ${{inputs.model_input}} 
+      --test_data ${{inputs.test_data}}
+      --predictions ${{outputs.predictions}}
+  
+  score-job:
+    type: command
+    inputs:
+      predictions: ${{jobs.predict-job.outputs.predictions}}
+      model: ${{jobs.train-job.outputs.model_output}}
+    outputs:
+      score_report: 
+        mode: upload
+    code:
+      local_path: src/score
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    compute: azureml:cpu-cluster
+    command: >-      
+      python score.py 
+      --predictions ${{inputs.predictions}} 
+      --model ${{inputs.model}} 
+      --score_report ${{outputs.score_report}} 

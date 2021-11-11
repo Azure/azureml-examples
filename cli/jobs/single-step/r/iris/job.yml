@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >
+  Rscript train.R 
+  --data_folder ${{inputs.iris}}
+code:
+  local_path: src
+inputs:
+  iris: 
+    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+environment:
+  build:
+    local_path: docker-context
+compute: azureml:cpu-cluster
+display_name: r-iris-example
+experiment_name: r-iris-example
+description: Train an R model on the Iris dataset.

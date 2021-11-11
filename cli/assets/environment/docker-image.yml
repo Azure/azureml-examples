@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: docker-image-example
+image: pytorch/pytorch:latest
+description: Environment created from a Docker image.

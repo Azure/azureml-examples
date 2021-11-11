@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: local-mlflow-example
+local_path: mlflow-model
+model_format: mlflow
+description: Model created from local MLflow model directory.

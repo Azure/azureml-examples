@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/azureFile.schema.json
+name: file-sas-example
+type: azure_file
+description: Datastore pointing to an Azure File Share using SAS token.
+account_name: mytestfilestore
+file_share_name: my-share
+credentials:
+  sas_token: ?xx=XXXX-XX-XX&xx=xxxx&xxx=xxx&xx=xxxxxxxxxxx&xx=XXXX-XX-XXXXX:XX:XXX&xx=XXXX-XX-XXXXX:XX:XXX&xxx=xxxxx&xxx=XXxXXXxxxxxXXXXXXXxXxxxXXXXXxxXXXXXxXXXXxXXXxXXxXX

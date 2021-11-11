@@ -1,0 +1,40 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+compute: azureml:cpu-cluster
+
+inputs:
+  pipeline_sample_input_data:
+    dataset:
+      local_path: ./data
+
+outputs:
+  final_pipeline_output:
+    mode: upload
+
+jobs:
+  componentA_job:
+    type: component
+    component: file:./componentA.yml
+    inputs:
+      componentA_input: ${{inputs.pipeline_sample_input_data}}
+    outputs:
+      componentA_output: 
+        mode: upload
+  componentB_job:
+    type: component
+    component: file:./componentB.yml
+    inputs:
+      componentB_input: ${{jobs.componentA_job.outputs.componentA_output}}
+    outputs:
+      componentB_output: 
+        mode: rw_mount
+  componentC_job:
+    type: component
+    component: file:./componentC.yml
+    inputs:
+      componentC_input: ${{jobs.componentB_job.outputs.componentB_output}}
+    outputs:
+      componentC_output: ${{outputs.final_pipeline_output}}
+      #  mode: upload
+

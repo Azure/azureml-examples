@@ -13,3 +13,4 @@
 *.DS_Store
 *.pyc
 *config.json
+*.log

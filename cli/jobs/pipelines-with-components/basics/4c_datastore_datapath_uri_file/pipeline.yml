@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: "Example of using data file from a Workspace Datastore as pipeline input"
+inputs:
+  pipeline_sample_input_data:
+    folder: azureml://datastores/workspaceblobstore/paths/LocalUpload/cec6841f346975cde1ee7d5289c5559f/data/sample.csv
+    mode: download
+  pipeline_sample_input_string: 'Hello_Pipeline_World'
+
+outputs:
+  pipeline_sample_output_data:
+    mode: upload
+
+compute: azureml:cpu-cluster
+
+jobs:
+  hello_python_world_job:
+    type: component
+    component: file:./component.yml
+    inputs:
+      sample_input_data: ${{inputs.pipeline_sample_input_data}}
+      sample_input_string: ${{inputs.pipeline_sample_input_string}}
+    outputs:
+      sample_output_data: ${{outputs.pipeline_sample_output_data}}
+

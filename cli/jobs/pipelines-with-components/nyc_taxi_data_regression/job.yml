@@ -1,0 +1,73 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+# <inputs_and_outputs>
+inputs:
+  pipeline_job_input: #using dataset, can use datastore + datapath also
+    dataset: 
+      local_path: ./data
+
+outputs: 
+  pipeline_job_prepped_data:
+    mode: upload
+  pipeline_job_transformed_data:
+    mode: upload   
+  pipeline_job_trained_model:
+    mode: upload
+  pipeline_job_test_data:
+    mode: upload 
+  pipeline_job_predictions:
+    mode: upload 
+  pipeline_job_score_report:
+    mode: upload
+# </inputs_and_outputs>
+
+# <jobs>
+compute: azureml:cpu-cluster
+settings:
+  datastore: azureml:workspaceblobstore
+
+jobs:
+  prep-job:
+    type: component
+    component: file:./prep.yml
+    inputs:
+      raw_data: ${{inputs.pipeline_job_input}}
+    outputs:
+      prep_data: ${{outputs.pipeline_job_prepped_data}}
+
+  transform-job:
+    type: component
+    component: file:./transform.yml
+    inputs:
+      clean_data: ${{jobs.prep-job.outputs.prep_data}}
+    outputs:
+      transformed_data: ${{outputs.pipeline_job_transformed_data}}
+
+  train-job:
+    type: component
+    component: file:./train.yml
+    inputs:
+      training_data: ${{jobs.transform-job.outputs.transformed_data}}
+    outputs:
+      model_output: ${{outputs.pipeline_job_trained_model}}
+      test_data: ${{outputs.pipeline_job_test_data}}
+  
+  predict-job:
+    type: component
+    component: file:./predict.yml
+    inputs:
+      model_input: ${{jobs.train-job.outputs.model_output}}
+      test_data: ${{jobs.train-job.outputs.test_data}}
+    outputs:
+      predictions: ${{outputs.pipeline_job_predictions}}
+
+  score-job:
+    type: component
+    component: file:./score.yml
+    inputs:
+      predictions: ${{jobs.predict-job.outputs.predictions}}
+      model: ${{jobs.train-job.outputs.model_output}}
+    outputs:
+      score_report: ${{outputs.pipeline_job_score_report}}
+# </jobs>

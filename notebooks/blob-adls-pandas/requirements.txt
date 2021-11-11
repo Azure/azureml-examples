@@ -1,9 +1,0 @@
-numpy
-scipy
-pandas
-adlfs
-fastparquet
-matplotlib
-mlflow
-azureml-core
-azureml-mlflow

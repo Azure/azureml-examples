@@ -1,0 +1,15 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: componentB
+display_name: componentB
+version: 1
+
+code:
+  local_path: ./componentB_src
+
+environment: 
+  image: docker.io/python
+
+command: >-
+  python hello.py
