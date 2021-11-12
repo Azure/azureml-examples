@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: local-file-example
+local_path: mlflow-model/model.pkl
+description: Model created from local file.
