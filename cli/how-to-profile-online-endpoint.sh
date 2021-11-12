@@ -24,7 +24,7 @@ export CLIENTS="" # for labench only, no. of clients for the profiling tool, def
 export TIMEOUT="" # for labench only, timeout for each request, default value is 10s
 # </set_variables>
 
-export ENDPOINT_NAME=endpt-19872
+export ENDPOINT_NAME=endpt-30864
 export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
 export PROFILER_COMPUTE_NAME=profilingTest # the compute name for hosting the profiler
@@ -32,11 +32,12 @@ export PROFILER_COMPUTE_SIZE=Standard_F4s_v2 # the compute size for hosting the 
 
 # <create_endpoint>
 echo "Creating Endpoint $ENDPOINT_NAME ..."
-az ml endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/simple-flow/1-create-endpoint-with-blue.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
 # </create_endpoint>
 
 # <check_endpoint_Status>
-endpoint_status=`az ml endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status=`az ml online-endpoint show -n $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]; then
   echo "Endpoint $ENDPOINT_NAME created successfully"
@@ -45,7 +46,7 @@ else
   exit 1
 fi
 
-deploy_status=`az ml endpoint show --name $ENDPOINT_NAME --query "deployments[?name=='$DEPLOYMENT_NAME'].provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]; then
   echo "Deployment $DEPLOYMENT_NAME completed successfully"
@@ -54,13 +55,6 @@ else
   exit 1
 fi
 # </check_endpoint_Status>
-
-# <update_traffic_rule>
-# for custom container, traffic rule must be set to the deployment for profiling
-echo "Updating traffic rule for endpoint $ENDPOINT_NAME ..."
-az ml endpoint update --name $ENDPOINT_NAME --type online --traffic $DEPLOYMENT_NAME:100
-echo "Traffic rule $DEPLOYMENT_NAME:100 has been set successfully."
-# </update_traffic_rule>
 
 # <create_compute_cluster_for_hosting_the_profiler>
 echo "Creating Compute $PROFILER_COMPUTE_NAME ..."
@@ -83,9 +77,17 @@ access_token=`az account get-access-token --query accessToken -o tsv`
 compute_info=`curl https://management.azure.com$compute_resource_id?api-version=2021-03-01-preview -H "Content-Type: application/json" -H "Authorization: Bearer $access_token"`
 if [[ $? -ne 0 ]]; then echo "Failed to get info for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
 identity_object_id=`echo $compute_info | jq '.identity.principalId' | sed "s/\"//g"`
-az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope $workspace_resource_id/onlineEndpoints/$ENDPOINT_NAME
+az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope $workspace_resource_id
 if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
 # </create_compute_cluster_for_hosting_the_profiler>
+
+# <upload_payload_file+_to_default_blob_datastore>
+default_datastore_info=`az ml datastore show --name workspaceblobstore -o json`
+account_name=`echo $default_datastore_info | jq '.account_name' | sed "s/\"//g"`
+container_name=`echo $default_datastore_info | jq '.container_name' | sed "s/\"//g"`
+connection_string=`az storage account show-connection-string --name $account_name -o tsv`
+az storage blob upload --container-name $container_name/profiling_payloads --name payload.txt --file endpoints/online/profiling/payload.txt --connection-string $connection_string
+# </upload_payload_file+_to_default_blob_datastore>
 
 # <create_profiling_job_yaml_file>
 # please specify environment variable "IDENTITY_ACCESS_TOKEN" when working with ml compute with no appropriate MSI attached
@@ -117,10 +119,10 @@ sleep 10
 # </stream_job_logs_to_console>
 
 # <get_job_report>
-az ml job download --name $run_id --download-path report_$run_id --outputs
+az ml job download --name $run_id --download-path report_$run_id
 echo "Job result has been downloaded to dir report_$run_id"
 # </get_job_report>
 
 # <delete_endpoint>
-az ml endpoint delete --name $ENDPOINT_NAME -y
+az ml online-endpoint delete --name $ENDPOINT_NAME -y
 # </delete_endpoint>
