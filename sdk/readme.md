@@ -33,7 +33,7 @@ cd azureml-examples/sdk
 |Pipeline|[Hello World pipeline with IO](jobs/pipelines/helloworld/hello-world-io.ipynb)|A hello world pipeline with IO|
 |Pipeline|[Hello World pipeline](jobs/pipelines/helloworld/hello-world.ipynb)|A hello world pipeline|
 |Pipeline|[NYC Taxi Data Regression](jobs/pipelines/nyc-taxi/nyc-taxi.ipynb)|Run a multi step pipeline staring from data prep, cleanse to tarin and evaluate|
-|Pipeline with components|[Build pipeline with DSL](jobs/pipelines-with-components/pipelines-with-components)]|create in sdk/jobs/pipelines-with-components|
+|Pipeline with components|[Build pipeline with DSL](jobs/pipelines-with-components/pipeline-dsl-example.ipynb)|create in sdk/jobs/pipelines-with-components|
 |Online Endpoints|TBD|create in sdk/endpoints/online|
 |Batch Endpoints|TBD|create in sdk/endpoints/batch|
 
