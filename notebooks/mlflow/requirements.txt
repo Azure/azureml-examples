@@ -1,2 +1,3 @@
 azureml-core
 azureml-mlflow
+matplotlib
