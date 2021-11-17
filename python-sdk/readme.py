@@ -275,16 +275,22 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
-    - name: downgrade pip
-      run: pip install pip==21.1.1
+    - name: Run Install packages
+      run: |
+         chmod +x ./scripts/install-packages.sh
+         ./scripts/install-packages.sh
+      shell: bash
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install azmlcli
-      run: az extension add -n azure-cli-ml -y
+    - name: Run update-azure-extensions
+      run: |
+         chmod +x ./scripts/update-azure-extensions.sh
+         ./scripts/update-azure-extensions.sh
+      shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run notebook
@@ -318,16 +324,22 @@ jobs:
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
-    - name: downgrade pip
-      run: pip install pip==21.1.1
+    - name: Run Install packages
+      run: |
+         chmod +x ./scripts/install-packages.sh
+         ./scripts/install-packages.sh
+      shell: bash
     - name: pip install
       run: pip install -r python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: install azmlcli
-      run: az extension add -n azure-cli-ml -y
+    - name: Run update-azure-extensions
+      run: |
+         chmod +x ./scripts/update-azure-extensions.sh
+         ./scripts/update-azure-extensions.sh
+      shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run workflow
