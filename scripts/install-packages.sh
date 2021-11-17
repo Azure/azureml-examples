@@ -9,9 +9,10 @@ pip install pip==21.1.1
 echo "Installing pinned version of azure-cli"
 # pip install azure-cli==2.29.2
 sudo apt remove azure-cli -y
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
 sudo apt-get update
-apt-cache policy azure-cli
-sudo apt-get install azure-cli=2.29.2-1~bionic
+sudo apt-get install -y azure-cli=2.29.2-1~focal
 
 echo "Required package installed"
 echo "Add the Microsoft package signing key"
