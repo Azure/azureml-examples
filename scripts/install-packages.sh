@@ -8,7 +8,11 @@ pip install pip==21.1.1
 # azure-cli 2.30.0 compatibility issue with azure-cli-ml extension
 echo "Installing pinned version of azure-cli"
 # pip install azure-cli==2.29.2
-sudo apt-get install azure-cli=2.29.2-1~bullseye
+sudo apt remove azure-cli -y
+sudo apt-get update
+apt-cache policy azure-cli
+sudo apt-get install azure-cli=2.29.2-1~bionic
+
 echo "Required package installed"
 echo "Add the Microsoft package signing key"
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
