@@ -8,7 +8,7 @@ description: Notebook showing how to use Azure Machine Learning pipelines to do 
 ---
 
 # Batch Scoring with an Image Classification Model
-- Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+- Dataset: Toy dataset with images of products found in a fridge
     - **[Jupyter Notebook](auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
         - register an Image Classification Multi-Class model already trained using AutoML
         - create an Inference Dataset
