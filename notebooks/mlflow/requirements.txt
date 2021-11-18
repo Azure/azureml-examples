@@ -1,3 +1,4 @@
 azureml-core
 azureml-mlflow
 matplotlib
+pandas
