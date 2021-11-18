@@ -5,7 +5,7 @@ on:
     - cron: "0 0 * * 2"
   pull_request:
     branches:
-      - main
+      - lifengwei/TSI-notebook
     paths:
       - python-sdk/experimental/automl-model-testing/classification/**
       - .github/workflows/classification-tsi.yml
