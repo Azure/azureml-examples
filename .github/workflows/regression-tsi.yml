@@ -33,7 +33,7 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
           activate-environment: azure_automl
-          environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
+          environment-file: python-sdk/experimental/automl_env_linux.yml
           auto-activate-base: false
     - name: install papermill and set up the IPython kernel
       run: |
