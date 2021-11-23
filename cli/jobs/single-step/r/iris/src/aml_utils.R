@@ -45,12 +45,12 @@ get_token <- function(host, exp_id, run_id) {
     token_host <- gsub("mlflow/v1.0","history/v1.0", host)
     token_host <- gsub("azureml://","https://", token_host)
     api_url <- paste0(token_host, "/experimentids/", exp_id, "/runs/", run_id, "/token")
-    GET( api_url, timeout(getOption("mlflow.rest.timeout", 60)), req_headers)
+    GET( api_url, timeout(getOption("mlflow.rest.timeout", 30)), req_headers)
 }
 
 
 fetch_token_from_aml <- function() {
-    print("Refreshing token")
+    message("Refreshing token")
     tracking_uri <- Sys.getenv("MLFLOW_TRACKING_URI")
     exp_id <- Sys.getenv("MLFLOW_EXPERIMENT_ID")
     run_id <- Sys.getenv("MLFLOW_RUN_ID")
@@ -69,7 +69,7 @@ fetch_token_from_aml <- function() {
 
     if (response$status_code != 200){
         error_response = paste("Error fetching token will try again after sometime: ", str(response), sep = " ")
-        print(error_response)
+        warning(error_response)
     }
 
     if (response$status_code == 200){
@@ -77,7 +77,7 @@ fetch_token_from_aml <- function() {
         json_resp <-jsonlite::fromJSON(text, simplifyVector = FALSE)
         json_resp$token
         Sys.setenv(MLFLOW_TRACKING_TOKEN = json_resp$token)
-        print("Refreshing token done")
+        message("Refreshing token done")
     }
 }
 

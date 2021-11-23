@@ -8,7 +8,7 @@ RUN ln -f /usr/bin/python3 /usr/bin/python
 RUN ln -f /usr/bin/pip3 /usr/bin/pip
 RUN pip install -U pip
 
-# Install azureml-mllfow
+# Install azureml-mlflow
 RUN pip install azureml-mlflow
 
 # Create link for python
