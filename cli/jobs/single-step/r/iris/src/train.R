@@ -1,7 +1,9 @@
 library("optparse")
 library("carrier")
 library(rpart)
-source('aml.R')
+
+# Loading aml_utils.R. This is needed to use AML as MLflow backend tracking store.
+source('aml_utils.R')
 
 # Setting Mlflow related env vars
 # https://www.mlflow.org/docs/latest/R-api.html#details
@@ -20,7 +22,7 @@ args <- parse_args(parser)
 print("data folder...\n")
 print(args$data_folder)
 
-file_name = file.path(args$data_folder)
+file_name = file.path(args$data_folder, "iris.csv")
 
 print("first 6 rows...\n")
 iris <- read.csv(file_name)
@@ -37,5 +39,5 @@ with(run <- mlflow_start_run(), {
 
   print("logging model...\n")
 
-  override_log_model(predictor, "model")
+  mlflow_log_model(predictor, "model")
 })

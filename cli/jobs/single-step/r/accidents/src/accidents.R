@@ -1,6 +1,8 @@
 library(optparse)
 library("carrier")
-source('aml.R')
+
+# Loading aml_utils.R. This is needed to use AML as MLflow backend tracking store.
+source('aml_utils.R')
 
 # Setting Mlflow related env vars
 # https://www.mlflow.org/docs/latest/R-api.html#details
@@ -31,5 +33,5 @@ with(run <- mlflow_start_run(), {
   mlflow_log_metric("accuracy", accuracy)
 
   print("Logging model")
-  override_log_model(predictor, "model")
+  mlflow_log_model(predictor, "model")
 })

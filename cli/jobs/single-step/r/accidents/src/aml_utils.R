@@ -1,3 +1,8 @@
+# AML utility to extend support for MLflow in Azure Machine Learning (AML). This utility does the following:
+# 1. Understands AML MLflow tracking url by extending OSS MLflow R client.
+# 2. Manages AML Token refresh for remote runs (runs that execute in Azure Machine Learning). It uses tcktk2 R libraray to schedule token refresh.
+#    Token refresh interval can be controlled by setting the environment variable MLFLOW_AML_TOKEN_REFRESH_INTERVAL and defaults to 30 seconds.
+
 library(mlflow)
 library(httr)
 library(later)
@@ -25,29 +30,6 @@ new_mlflow_client.mlflow_azureml <- function(tracking_uri) {
     res[!is.na(res)]
   }
   mlflow:::new_mlflow_client_impl(get_host_creds, cli_env, class = "mlflow_azureml_client")
-}
-
-
-# Overriding mlflow_log_model since list_artifacts is not implemented
-# Once implemented this can be removed.
-override_log_model <- function(model, model_name) {
-    tryCatch(
-        expr = {
-            mlflow_log_model(model, model_name)
-        },
-        error = function(e){ 
-            if (grep("API request to endpoint 'artifacts/list' failed with error code 404", toString(e), ignore.case = FALSE, perl = FALSE, fixed = TRUE)){
-              print("List artifact failed it is a known issue.")
-            }
-            else {
-              print("Error while logging model")
-              print(e)
-            }           
-        },
-        finally = {
-                print('log model done')
-            }
-        )
 }
 
 get_auth_header <- function() {
