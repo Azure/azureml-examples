@@ -22,7 +22,7 @@ args <- parse_args(parser)
 print("data folder...\n")
 print(args$data_folder)
 
-file_name = file.path(args$data_folder, "iris.csv")
+file_name = file.path(args$data_folder)
 
 print("first 6 rows...\n")
 iris <- read.csv(file_name)
