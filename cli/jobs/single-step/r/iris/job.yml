@@ -15,4 +15,4 @@ display_name: r-iris-example
 experiment_name: r-iris-example
 description: Train an R model on the Iris dataset.
 environment_variables:
-    "AZUREML_COMPUTE_USE_COMMON_RUNTIME": "true"
+    "AZUREML_COMPUTE_USE_COMMON_RUNTIME": "false"
