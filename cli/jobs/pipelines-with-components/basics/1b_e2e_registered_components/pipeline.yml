@@ -2,6 +2,8 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "E2E dummy train-score-eval pipeline with registered components"
 
+# define real input output data
+
 inputs:
   pipeline_job_training_input:
     dataset: 
@@ -30,7 +32,7 @@ jobs:
   train-job:
     type: component
     component: azureml:Train:31
-    inputs:
+    inputs: # bind the component inputs to real input
       training_data: ${{inputs.pipeline_job_training_input}}
       max_epocs: ${{inputs.pipeline_job_training_max_epocs}}
       learning_rate: ${{inputs.pipeline_job_training_learning_rate}}
@@ -41,7 +43,7 @@ jobs:
   score-job:
     type: component
     component: azureml:Score:31
-    inputs:
+    inputs: # bind the component inputs to real input
       model_input: ${{jobs.train-job.outputs.model_output}}
       test_data: ${{inputs.pipeline_job_test_input}}
     outputs:
@@ -50,7 +52,7 @@ jobs:
   evaluate-job:
     type: component
     component: azureml:Eval:31
-    inputs:
+    inputs: # bind the component inputs to real input
       scoring_result: ${{jobs.score-job.outputs.score_output}}
     outputs:
       eval_output: ${{outputs.pipeline_job_evaluation_report}}

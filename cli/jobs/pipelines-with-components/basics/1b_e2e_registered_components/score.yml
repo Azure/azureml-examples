@@ -1,8 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: Score
-version: 31
+version: 99
 display_name: Score
 type: command
+is_deterministic: true
 inputs:
   model_input:
     type: path
