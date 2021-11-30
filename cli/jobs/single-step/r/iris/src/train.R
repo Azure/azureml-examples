@@ -3,9 +3,9 @@ library("carrier")
 library(rpart)
 
 # Loading aml_utils.R. This is needed to use AML as MLflow backend tracking store.
-source('aml_utils.R')
+source('azureml_utils.R')
 
-# Setting Mlflow related env vars
+# Setting MLflow related env vars
 # https://www.mlflow.org/docs/latest/R-api.html#details
 Sys.setenv(MLFLOW_BIN=system("which mlflow", intern=TRUE))
 Sys.setenv(MLFLOW_PYTHON_BIN=system("which python", intern=TRUE))

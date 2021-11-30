@@ -1,6 +1,6 @@
-# AML utility to extend support for MLflow in Azure Machine Learning (AML). This utility does the following:
-# 1. Understands AML MLflow tracking url by extending OSS MLflow R client.
-# 2. Manages AML Token refresh for remote runs (runs that execute in Azure Machine Learning). It uses tcktk2 R libraray to schedule token refresh.
+# Azure ML utility to enable usage of the MLFlow R API for tracking with Azure Machine Learning (Azure ML). This utility does the following:
+# 1. Understands Azure ML MLflow tracking url by extending OSS MLflow R client.
+# 2. Manages Azure ML Token refresh for remote runs (runs that execute in Azure Machine Learning). It uses tcktk2 R libraray to schedule token refresh.
 #    Token refresh interval can be controlled by setting the environment variable MLFLOW_AML_TOKEN_REFRESH_INTERVAL and defaults to 30 seconds.
 
 library(mlflow)
