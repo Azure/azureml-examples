@@ -4,7 +4,7 @@
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
 
 ## Getting started
-1. Install the SD
+1. Install the SDK v2
     - `pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2`
 
 ## Clone examples repository
