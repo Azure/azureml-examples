@@ -5,7 +5,7 @@
 
 ## Getting started
 1. Install the SDK v2
-    - `pip install pip install azure-ml -U --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2`
+    - `pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2`
 
 ## Clone examples repository
 ```SDK
