@@ -1,0 +1,29 @@
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: componentwithparameter
+version: 0.0.1
+display_name: ComponentWithParameter
+type: CommandComponent
+description: Demo component that adds 1000 to the 'value' parameter.
+is_deterministic: true
+tags:
+  contact: aml-ds@microsoft.com
+
+inputs:
+  value:
+    type: Integer
+    description: the value on which we will operate
+    default: 100
+    optional: true
+
+outputs: {}
+
+command: >-
+  python3 run.py [--value {inputs.value}]
+environment:
+  docker:
+    enabled: true
+    image: mcr.microsoft.com/azureml/base-gpu:openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04
+  conda:
+    userManagedDependencies: false
+    conda_dependencies_file: component_env.yaml
+  os: Linux

@@ -1,0 +1,37 @@
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: aggregatemodelweights
+version: 0.0.5
+display_name: AggregateModelWeights
+type: CommandComponent
+description: Mock component for displaying a diagram.
+is_deterministic: true
+tags:
+  FL:
+  contact: aml-ds@microsoft.com
+
+inputs:
+  input_data_01:
+    type: AnyDirectory
+    description: the input data - 01
+    optional: true
+  input_data_02:
+    type: AnyDirectory
+    description: the input data - 02
+    optional: true
+  input_data_03:
+    type: AnyDirectory
+    description: the input data - 03
+    optional: true
+
+outputs:
+  results:
+    type: AnyDirectory
+    description: the output data
+
+command: >-
+  python run.py --results {outputs.results} [--input_data_01 {inputs.input_data_01}] [--input_data_02 {inputs.input_data_02}] [--input_data_03 {inputs.input_data_03}]
+environment:
+  docker:
+    enabled: true
+    image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04 # for eyes-on experiments
+  os: Linux

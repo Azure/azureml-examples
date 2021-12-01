@@ -1,0 +1,28 @@
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: countrowsandlog
+version: 0.0.2
+display_name: CountRowsAndLog
+type: CommandComponent
+description: Demo component that counts the rows in the input datset and log with compliant logger.
+is_deterministic: true
+tags:
+  contact: aml-ds@microsoft.com
+
+inputs:
+  input_data:
+    type: AzureMLDataset
+    description: the input data
+    optional: false
+
+outputs: {}
+
+command: >-
+  python3 run.py --input_data {inputs.input_data}
+environment:
+  docker:
+    enabled: true
+    image: mcr.microsoft.com/azureml/base-gpu:openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04
+  conda:
+    userManagedDependencies: false
+    conda_dependencies_file: component_env.yaml
+  os: Linux

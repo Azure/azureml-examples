@@ -1,0 +1,30 @@
+# @package _group_
+# name of default target
+default_compute_target: cpu-cluster
+# where intermediary output is written
+compliant_datastore: workspaceblobstore
+noncompliant_datastore: workspaceblobstore
+
+# Linux targets
+linux_cpu_dc_target: cpu-cluster
+linux_cpu_prod_target: cpu-cluster
+linux_gpu_dc_target: gpu-cluster
+linux_gpu_prod_target: gpu-cluster
+
+# data I/O for linux modules
+linux_input_mode: mount
+linux_output_mode: mount
+
+# Windows targets
+windows_cpu_prod_target: cpu-win
+windows_cpu_dc_target: cpu-win
+
+# data I/O for windows modules
+windows_input_mode: download
+windows_output_mode: upload
+
+# hdi cluster
+hdi_prod_target: hdi-cluster
+
+# azure data factory
+datatransfer_target: data-factory
