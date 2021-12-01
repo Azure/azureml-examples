@@ -1,17 +1,24 @@
 # Azure Machine Learning SDK (v2) (preview) examples
 
 ## Prerequisites
+
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
 
 ## Getting started
+
 1. Install the SDK v2
-    - `pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2`
+
+```terminal
+`pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2`
+```
 
 ## Clone examples repository
+
 ```SDK
 git clone https://github.com/Azure/azureml-examples --branch sdk-preview
 cd azureml-examples/sdk
 ```
+
 ## Examples available
 
 |Area|Notebook|Description|
@@ -35,6 +42,3 @@ cd azureml-examples/sdk
 |Pipeline with components|[Build pipeline with DSL](jobs/pipelines-with-components/pipeline-dsl-example.ipynb)|create in sdk/jobs/pipelines-with-components|
 |Online Endpoints|TBD|create in sdk/endpoints/online|
 |Batch Endpoints|TBD|create in sdk/endpoints/batch|
-
-
-  
