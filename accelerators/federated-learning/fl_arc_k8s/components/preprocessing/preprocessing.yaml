@@ -1,0 +1,34 @@
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: preprocessing
+version: 0.0.2
+display_name: PreProcessing
+type: CommandComponent
+description: Mock component for displaying a diagram.
+is_deterministic: true
+tags:
+  FL:
+  contact: aml-ds@microsoft.com
+
+inputs:
+  input_data:
+    type: AnyDirectory
+    description: the input data
+    optional: true
+  message:
+    type: String
+    description: the message to display
+    default: This is the default message.
+    optional: true
+
+outputs:
+  results:
+    type: AnyDirectory
+    description: the output data
+
+command: >-
+  python run.py --results {outputs.results} [--message {inputs.message}] [--input_data {inputs.input_data}]
+environment:
+  docker:
+    enabled: true
+    image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04 # for eyes-on experiments
+  os: Linux

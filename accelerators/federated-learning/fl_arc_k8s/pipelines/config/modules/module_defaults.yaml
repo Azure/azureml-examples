@@ -1,0 +1,16 @@
+# @package _group_
+# Contains all the demo components with default version
+manifest:
+  - key: "Postprocess"
+    name: postprocessing
+    yaml: "postprocessing/postprocessing.yaml"
+  - key: "Preprocess"
+    name: preprocessing
+    yaml: "preprocessing/preprocessing.yaml"
+  - key: "TrainInSilo"
+    name: traininsilo
+    yaml: "traininsilo/traininsilo.yaml"
+  - key: "AggregateModelWeights"
+    name: aggregatemodelweights
+    yaml: "aggregatemodelweights/aggregatemodelweights.yaml"
+  - name: office.smart_reply.fl.data_transfer
