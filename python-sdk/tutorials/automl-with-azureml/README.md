@@ -204,32 +204,32 @@ jupyter notebook
 
 ## Computer Vision
 - **Image Classification Multi-Class**
-    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+    - Dataset: Toy dataset with images of products found in a fridge
         - **[Jupyter Notebook](image-classification-multiclass/auto-ml-image-classification-multiclass.ipynb)**
           - train an Image Classification Multi-Class model using AutoML
           - tune hyperparameters of the model to optimize model performance
           - deploy the model to use in inference scenarios
 - **Image Classification Multi-Label**
-    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+    - Dataset: Toy dataset with images of products found in a fridge
         - **[Jupyter Notebook](image-classification-multilabel/auto-ml-image-classification-multilabel.ipynb)**
           - train an Image Classification Multi-Label model using AutoML
           - tune hyperparameters of the model to optimize model performance
           - deploy the model to use in inference scenarios
 - **Object Detection**
-    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+    - Dataset: Toy dataset with images of products found in a fridge
         - **[Jupyter Notebook](image-object-detection/auto-ml-image-object-detection.ipynb)**
           - train an Object Detection model using AutoML
           - tune hyperparameters of the model to optimize model performance
           - deploy the model to use in inference scenarios
 - **Instance Segmentation**
-    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+    - Dataset: Toy dataset with images of products found in a fridge
         - **[Jupyter Notebook](image-instance-segmentation/auto-ml-image-instance-segmentation.ipynb)**
           - train an Instance Segmentation model using AutoML
           - tune hyperparameters of the model to optimize model performance
           - deploy the model to use in inference scenarios
 - **Batch Scoring with an Image Classification Model**
-    - Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
-        - **[Jupyter Notebook](image-pipelines/image-classification-multiclass-batch-scoring/auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
+    - Dataset: Toy dataset with images of products found in a fridge
+        - **[Jupyter Notebook](image-classification-multiclass-batch-scoring/auto-ml-image-classification-multiclass-batch-scoring.ipynb)**
           - register an Image Classification Multi-Class model already trained using AutoML
           - create an Inference Dataset
           - provision compute targets and create a Batch Scoring script
