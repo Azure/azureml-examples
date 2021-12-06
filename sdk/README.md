@@ -42,5 +42,5 @@ cd azureml-examples/sdk
 |Pipeline|[Hello World pipeline](jobs/pipelines/helloworld/hello-world.ipynb)|A hello world pipeline|
 |Pipeline|[NYC Taxi Data Regression](jobs/pipelines/nyc-taxi/nyc-taxi.ipynb)|Run a multi step pipeline staring from data prep, cleanse to tarin and evaluate|
 |Pipeline with components|[Build pipeline with DSL](jobs/pipelines-with-components/pipeline-dsl-example.ipynb)|create in sdk/jobs/pipelines-with-components|
-|Online Endpoints|TBD|create in sdk/endpoints/online|
-|Batch Endpoints|TBD|create in sdk/endpoints/batch|
+|Online Endpoints|[Online Endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/online/sample/online-inferencing-sample.ipynb)|Create Online Endpoint and manage deployments to that endpoint|
+|Batch Endpoints|[Batch endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/batch/mnist-nonmlflow.ipynb)|create in sdk/endpoints/batch|Create a batch endpoint and deploy a model to the endpoint|
