@@ -8,7 +8,7 @@ description: Notebook showing how to use AutoML for training an Instance Segment
 ---
 
 # Instance Segmentation using AutoML for Images
-- Dataset: [Fridge Objects from computervision-recipes](https://github.com/microsoft/computervision-recipes)
+- Dataset: Toy dataset with images of products found in a fridge
     - **[Jupyter Notebook](auto-ml-image-instance-segmentation.ipynb)**
         - train an Instance Segmentation model using AutoML
         - tune hyperparameters of the model to optimize model performance
