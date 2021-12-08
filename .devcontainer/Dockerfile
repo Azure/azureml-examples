@@ -3,10 +3,9 @@ RUN echo "pip install azure-cli" | bash
 RUN echo "az extension add -n ml" | bash
 RUN echo "pip install azure-ml==0.0.139 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2" | bash
 RUN pip install jupyterlab && jupyter notebook --generate-config
-EXPOSE 8888
 WORKDIR /root/.jupyter
-COPY jupyter_notebook_config.py jupyter_notebook_config.py
+COPY jupyter_server_config.py jupyter_server_config.py
 WORKDIR /root
-COPY  wrapper.sh wrapper.sh
+COPY  start.sh .start.sh
 
-CMD  ["/bin/bash","wrapper.sh"]
+CMD  ["/bin/bash",".start.sh"]
