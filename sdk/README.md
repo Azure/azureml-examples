@@ -25,6 +25,7 @@ cd azureml-examples/sdk
 |-|-|-|
 |Workspace|[Workspace](resources/workspace/workspace.ipynb)|Creating workspace|
 |Compute|[Compute](resources/compute/compute.ipynb)|Creating Compute resources|
+|Datastore|[Datastore](resources/datastores/datastore.ipynb)|Creating datastores|
 |Dataset|[Dataset](assets/dataset/dataset.ipynb)|Creating datasets|
 |Environment|[Environment](assets/environment/environment.ipynb)|Creating environments|
 |Model|[Model](assets/model/model.ipynb)|Creating models|
@@ -35,10 +36,11 @@ cd azureml-examples/sdk
 |Training Job|[Tensorflow Mnist](jobs/single-step/tensorflow/mnist/tensorflow-mnist.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset.|
 |Training Job|[TF distributed Mnist](jobs/single-step/tensorflow/mnist-distributed/tensorflow-mnist-distributed.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.|
 |Training Job|[TF Horovod mnist](jobs/single-step/tensorflow/mnist-distributed-horovod/tensorflow-mnist-distributed-horovod.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via Horovod.|
+|Sweep Job|[Sweep Job](jobs/single-step/lightgbm/iris/lightgbm-iris-sweep.ipynb)|Run a hyperparameter sweep job for LightGBM on Iris dataset.|
 |Pipeline|[CNN Pytorch pipeline](jobs/pipelines/cifar-10/cifar-10-pipeline.ipynb)|Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.|
 |Pipeline|[Hello World pipeline with IO](jobs/pipelines/helloworld/hello-world-io.ipynb)|A hello world pipeline with IO|
 |Pipeline|[Hello World pipeline](jobs/pipelines/helloworld/hello-world.ipynb)|A hello world pipeline|
 |Pipeline|[NYC Taxi Data Regression](jobs/pipelines/nyc-taxi/nyc-taxi.ipynb)|Run a multi step pipeline staring from data prep, cleanse to tarin and evaluate|
 |Pipeline with components|[Build pipeline with DSL](jobs/pipelines-with-components/pipeline-dsl-example.ipynb)|create in sdk/jobs/pipelines-with-components|
-|Online Endpoints|TBD|create in sdk/endpoints/online|
-|Batch Endpoints|TBD|create in sdk/endpoints/batch|
+|Online Endpoints|[Online Endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/online/sample/online-inferencing-sample.ipynb)|Create Online Endpoint and manage deployments to that endpoint|
+|Batch Endpoints|[Batch endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/batch/mnist-nonmlflow.ipynb)|create in sdk/endpoints/batch|Create a batch endpoint and deploy a model to the endpoint|
