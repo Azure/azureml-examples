@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start the first process
-jupyter lab --no-browser Examples.example_dir=/workspaces/azureml-examples/notebooks &
+cd /workspaces/azureml-examples/notebooks
+jupyter lab --no-browser /workspaces/azureml-examples/notebooks &
 
 /bin/bash
-
