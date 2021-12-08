@@ -8,4 +8,4 @@ COPY jupyter_server_config.py jupyter_server_config.py
 WORKDIR /root
 COPY  start.sh .start.sh
 
-CMD  ["/bin/bash",".start.sh"]
+ENTRYPOINT ["/bin/bash",".start.sh"]
