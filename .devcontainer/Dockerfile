@@ -6,6 +6,6 @@ RUN pip install jupyterlab && jupyter notebook --generate-config
 WORKDIR /root/.jupyter
 COPY jupyter_server_config.py jupyter_server_config.py
 WORKDIR /root
-COPY  start.sh .start.sh
+COPY  .start.sh .start.sh
 
-ENTRYPOINT ["/bin/bash",".start.sh"]
+CMD  ["/bin/bash",".start.sh"]
