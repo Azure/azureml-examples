@@ -1,4 +1,4 @@
-function Wait-For-Successful-Registration {
+function Wait-For-Successful-Registration(){
     param (
         $ProviderName
     )
@@ -11,17 +11,17 @@ function Wait-For-Successful-Registration {
     Write-Output "The $ProviderName provider has been successfuly registered."
 }
 
-function Create-RG-If-Not-Exists{
-    param (
-        $rgname,
-        $rglocation,
-        $purpose
+function Deploy-RG-If-Not-Exists {
+    Param (
+        $RGName,
+        $RGLocation,
+        $Purpose
     )
-    Write-Output "Name of the $purpose resource group to create: $rgname, in $rglocation location."
-    if ( $(az group exists --name $rgname) ){
-        Write-Output "The resource group '$rgname' already exists."
+    Write-Output "Name of the $Purpose resource group to create: $RGName, in $RGLocation location."
+    if ( $(az group exists --name $RGName) -eq $true ){
+        Write-Output "The resource group '$RGName' already exists."
     } else {
         Write-Output "Creating the resource group..."
-        az deployment sub create --location $rglocation --template-file $PSScriptRoot/../bicep/ResourceGroup.bicep --parameters rgname=$rgname rglocation=$rglocation
+        az deployment sub create --location $RGLocation --template-file $PSScriptRoot/../bicep/ResourceGroup.bicep --parameters rgname=$RGName rglocation=$RGLocation
     }
 }
