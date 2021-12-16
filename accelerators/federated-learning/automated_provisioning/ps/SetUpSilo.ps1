@@ -21,6 +21,9 @@ Param(
     $AgentVMSize="Standard_B4ms"
 )
 
+# load useful functions
+. "$PSScriptRoot\Utils.ps1"
+
 # making sure we're in the right subscription
 Write-Output "We'll be setting up a silo in this subscription: $SubscriptionId."
 az account set --subscription $SubscriptionId
@@ -29,13 +32,7 @@ az login
 
 # create RG, if it doesn't exist
 $RGName = $K8sClusterName + "-rg" # name is derived from the K8s cluster name
-Write-Output "Name of the K8s cluster's resource group to create: $RGName, in $RGLocation location."
-if ( $(az group exists --name $RGName) ){
-    Write-Output "The resource group '$RGName' already exists."
-} else {
-    Write-Output "Creating the resource group..."
-    az deployment sub create --location $RGLocation --template-file ./bicep/ResourceGroup.bicep --parameters rgname=$RGName rglocation=$RGLocation
-}
+Create-RG-If-Not-Exists($RGName, $RGLocation, "K8s cluster")
 
 # create cluster, if it doesn't exist
 Write-Output "Name of the K8s cluster to create: $K8sClusterName, with $AgentCount agent(s) of SKU '$AgentVMSize'." 
