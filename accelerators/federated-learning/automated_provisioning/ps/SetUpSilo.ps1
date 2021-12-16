@@ -30,7 +30,7 @@ az login
 # create RG, if it doesn't exist
 $RGName = $K8sClusterName + "-rg" # name is derived from the K8s cluster name
 Write-Output "Name of the K8s cluster's resource group to create: $RGName, in $RGLocation location."
-if( $(az group exists --name $RGName) ){
+if ( $(az group exists --name $RGName) ){
     Write-Output "The resource group '$RGName' already exists."
 } else {
     Write-Output "Creating the resource group..."
