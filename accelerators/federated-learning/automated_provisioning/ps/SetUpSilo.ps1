@@ -28,7 +28,7 @@ Param(
 Write-Output "We'll be setting up a silo in this subscription: $SubscriptionId."
 az account set --subscription $SubscriptionId
 # log in
-# az login
+az login
 
 # create RG, if it doesn't exist
 $RGName = $K8sClusterName+"-rg" # name is derived from the K8s cluster name
