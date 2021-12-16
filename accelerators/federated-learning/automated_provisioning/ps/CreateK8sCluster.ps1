@@ -44,3 +44,7 @@ if ($ManagedClusters.Length -eq 0){
 } else {
     Write-Output "The K8s cluster $K8sClusterName already exists."
 }
+
+# Get the kubeconfig file ready
+Write-Output "Preparing the kube config file to connect to the K8s cluster..."
+az aks get-credentials --resource-group $RGName --name $K8sClusterName
