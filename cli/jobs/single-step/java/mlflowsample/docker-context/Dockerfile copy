@@ -1,0 +1,14 @@
+FROM maven:3.5-jdk-8 AS build  
+COPY . /usr/src/app/src  
+COPY pom.xml /usr/src/app  
+
+RUN mvn -f /usr/src/app/pom.xml clean compile assembly:single
+
+FROM gcr.io/distroless/java  
+COPY --from=build /usr/src/app/target/mlflowsample-0.1-jar-with-dependencies.jar /usr/app/mlflowsample-0.1-jar-with-dependencies.jar 
+EXPOSE 8080  
+ENTRYPOINT ["java","-jar","/usr/app/mlflowsample-0.1-jar-with-dependencies.jar"] 
+
+
+##mvn clean compile assembly:single
+##java -jar target/mlflowsample-0.1-jar-with-dependencies.jar 
