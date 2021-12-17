@@ -8,7 +8,7 @@ This document proposes a procedure to automatically provision the resources requ
 
 For running Federated Learning experiments, the TA4H team needs the following ingredients:
 - an "orchestrator" Azure ML workspace;
-- some K8s clusters;
+- some Kubernetes (K8s) clusters;
 - connections between the K8s clusters and the Azure ML workspace;
 - <other ingredients related to data store, to be added later>...
 
@@ -21,8 +21,8 @@ Taken from [here](https://github.com/Azure/AML-Kubernetes#prerequisites) (along 
 1. Have access to an Azure subscription.
 2. Install the [latest release of Helm 3](https://helm.sh/docs/intro/install/) - for Windows, we recommend going the _chocolatey_ route.
 3. Meet the pre-requisites listed under the [generic cluster extensions documentation](https://docs.microsoft.com/azure/azure-arc/kubernetes/extensions#prerequisites).
-  - Azure CLI version >=2.24.0
-  - Azure CLI extension k8s-extension version >=1.0.0.
+    - Azure CLI version >=2.24.0
+    - Azure CLI extension k8s-extension version >=1.0.0.
 4. Install and setup the [latest AzureML CLI v2](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli).
 5. Install the [Bicep CLI](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install) and the [Bicep extension in VS Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep).
 
@@ -30,9 +30,9 @@ Taken from [here](https://github.com/Azure/AML-Kubernetes#prerequisites) (along 
 
 > Set `accelerators/federated_learning/automated_provisioning` as your working directory!
 
-The procedure is fairly simple. 
+The procedure is fairly simple (detailed instructions are given in the below sections).
 1. After setting your working directory and  verifying you are meeting the prerequisites, you will first run the `CreateK8sCluster.ps1` script (with the appropriate arguments) and log in when prompted.
-2. Then you will run the `ConnectSiloToOrchestrator.ps1` script (with the appropriate arguments) and log in when prompted. See the detailed instructions below.
+2. Then you will run the `ConnectSiloToOrchestrator.ps1` script (with the appropriate arguments) and log in when prompted.
 
 We also suggest a way to run a simple validation job (highly recommended, to make sure the newly provisioned resources are usable). That being said, there is nothing special about this job, except for the fact that it will run on the new Arc-enabled K8s cluster; if you feel more comfortable using one of your own jobs to achieve that, it is perfectly acceptable.
 
@@ -45,7 +45,7 @@ For starters, you need to create a K8s cluster and the associated resource group
 - `AgentCount`: the number of agents in the K8s cluster (default: 1 - beware, this should be an _int_, not a _string_).
 - `AgentVMSize`: The agent VM SKU (default: "Standard_B4ms").
 
-The command should look something like the below (with the parameters replaced by your own values of course):
+The command should look something like the below (with the parameters replaced by your own values of course).
 
 ```ps1
 ./ps/CreateK8sCluster.ps1 "Your-Silo-SubscriptionId" "Name-of-Cluster-to-Create" "Location-of-Cluster-to-Create" Number-of-Agents "VM-SKU"
@@ -63,11 +63,11 @@ Here again, there is a script that does all of that for you: `ConnectSiloToOrche
 - `SubscriptionId_Orchestrator`: the Id of the subscription to which the orchestrator will belong (default: "48bbc269-ce89-4f6f-9a12-c6f91fcb772d", _a.k.a._ the AIMS subscription).
 - `AMLWorkspaceName`: the name of the orchestrator Azure ML workspace to create, if it doesn't exist already (default: "aml1p-ml-wus2").
 - `AMLWorkspaceRGName`: the name of the orchestrator resource group to create, if it doesn't exist already (default: "aml1p-rg").
-- `AMLWorkspaceLocation`: the location of the orchestrator Azure ML workspace (default: "westus2")
+- `AMLWorkspaceLocation`: the location of the orchestrator Azure ML workspace (default: "westus2").
 - `K8sClusterName`: the name of the K8s cluster to connect to the orchestrator Azure ML workspace (default: "ta4h-k8s-01"). **Note that this is just used to create the name of the Arc cluster and its resource group. The K8s cluster is referenced implicitly by the kube config file that was created during the previous step.**
 - `AMlComputeName`: the name of the Azure ML compute to be created (default: "ta4h-01-compute" - must be between 2-16 characters and only contain alphanumeric characters or dashes). **This is the compute name you will be using when submitting jobs.**
 
-The command should look something like the below (with the parameters replaced by your own values of course):
+The command should look something like the below (with the parameters replaced by your own values of course).
 
 ```ps1
 ./ps/ConnectSiloToOrchestrator.ps1 "Your-Orchestrator-SubscriptionId" "Your-Orchestrator-Workspace-Name" "Your-Orchestrator-Resource-Group-Name" "Your-Orchestrator-Location" "Name-of-K8s-Cluster-to-Connect" "AML-Compute-Name-to-Create"
@@ -78,10 +78,24 @@ Just repeat the 2 steps above for every silo you want to create.
 
 > You need to create a cluster, then connect it. If you first create several clusters, then try to connect them, you will run into issues. This is because the connection script implicitly uses the cluster reference from the first step. 
 
-> If you want to have your K8s cluster and the orchestrator Azure ML workspace in different subscriptions, this is possible. Just use a different subscription in each of the 2 steps, and log in accordingly when prompted to do so. 
+> If you want to have your K8s cluster and the orchestrator Azure ML workspace in different subscriptions, this is possible. Just use a different subscription in each of the 2 steps, and log in accordingly when prompted to. 
 
 ### Run a simple validation job
-To double check that you can actually run Azure ML jobs on the Arc Clusters, you can...
+
+> This simple validation job currently just tests **one** silo. You will need top run it on every one of them.
+
+To double check that you can actually run Azure ML jobs on the Arc Cluster, we provide all the files required for a sample job, following the example [here](https://github.com/Azure/AML-Kubernetes/blob/master/docs/simple-train-cli.md). First, you'll need to open `./sample_job/job.yml` - this is the file where the job you are going to run is defined. Adjust the compute name (the part after `compute: azureml:`) to the name of your Azure ML compute.
+
+Then you will need to create the `mnist_test` dataset if it doesn't exist already, and submit the job. The PowerShell script `RunSampleJob.ps1` will do that for you. It takes the following arguments.
+- SubscriptionId: the Id of the subscription to which the Azure ML orchestrator workspace belongs (default: "48bbc269-ce89-4f6f-9a12-c6f91fcb772d", _a.k.a._ the AIMS subscription).
+- WorkspaceName: the name of the Azure ML orchestrator workspace (default: "aml1p-ml-wus2").
+- ResourceGroup: the resource group of the Azure ML orchestrator workspace (default: aml1p-rg").
+
+The command should look something like the below (with the parameters replaced by your own values of course).
+
+```ps1
+./sample_job/RunSampleJob.ps1 "Your-Orchestrator-SubscriptionId" "Your-Orchestrator-Workspace-Name" "Your-Orchestrator-Resource-Group"
+```
 
 ## Future work
 - Add more validation on input strings.
