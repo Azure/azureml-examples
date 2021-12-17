@@ -47,8 +47,10 @@ public class App {
     private final static String _resourceGroup = System.getenv("RESOURCE_GROUP");
     private final static String _workspaceName = System.getenv("WORKSPACE_NAME");
     private final static String TRACKING_URI = String.format(
-            "https://%s.api.azureml.ms/mlflow/v1.0/subscriptions/%s/resourceGroups/%s/providers/Microsoft.MachineLearningServices/workspaces/%s",
-            _region, _subscriptionId, _resourceGroup, _workspaceName);
+           "https://%s.api.azureml.ms/mlflow/v1.0/subscriptions/%s/resourceGroups/%s/providers/Microsoft.MachineLearningServices/workspaces/%s",
+           _region, _subscriptionId, _resourceGroup, _workspaceName);
+  //  private final static String TRACKING_URI = System.getenv("MLFLOW_TRACKING_URI").replace("azureml://","https://");//replaces all occurrences of "azureml://" to "https://"  
+
     // END VALUES TO CONFIGURE
 
     public static void main(String[] args) throws Exception {
@@ -69,7 +71,7 @@ public class App {
         MlflowClient client = new MlflowClient(credsProvider);
 
         // Create the MLflow Experiment if it doesn't exist
-        String experimentName = "azuremlflow-java";
+        String experimentName = "java-tracking-example";
         Optional<Experiment> experiment = client.getExperimentByName(experimentName);
         String experimentId = experiment.isPresent() ? experiment.get().getExperimentId()
                 : client.createExperiment(experimentName);
