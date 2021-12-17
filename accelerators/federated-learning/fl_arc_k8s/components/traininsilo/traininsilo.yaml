@@ -5,9 +5,6 @@ display_name: TrainInSilo
 type: CommandComponent
 description: Mock component for displaying a diagram.
 is_deterministic: true
-tags:
-  FL:
-  contact: aml-ds@microsoft.com
 
 inputs:
   input_01:

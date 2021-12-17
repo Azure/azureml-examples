@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://componentsdk.blob.core.windows.net/jsonschema/DataTransferComponent.json
+$schema: http://azureml/sdk-1-5/DataTransferComponent.json
+
+name: datatransfer
+version: 0.0.0
+display_name: Data Transfer
+type: DataTransferComponent
+is_deterministic: True
+
+inputs:
+  source_data:
+    type: AnyDirectory
+    description: Source directory.
+  source_type:
+    type: Enum
+    enum: [file, directory]
+    default: directory
+    description: Parameter accepts a string value "file" or "directory".
+outputs:
+  destination_data:
+    type: AnyDirectory
+    description: Destination data.
