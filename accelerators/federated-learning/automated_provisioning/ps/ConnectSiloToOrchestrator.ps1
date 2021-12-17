@@ -4,15 +4,15 @@ Param(
     [string]
     $SubscriptionId_Orchestrator="48bbc269-ce89-4f6f-9a12-c6f91fcb772d",
     [Parameter(Mandatory=$false,
-    HelpMessage="The name of the orchetrator AML workspace.")]
+    HelpMessage="The name of the orchestrator AML workspace.")]
     [string]
     $AMLWorkspaceName="aml1p-ml-wus2",
     [Parameter(Mandatory=$false,
-    HelpMessage="The name of the resource group containing orchetrator AML workspace.")]
+    HelpMessage="The name of the resource group containing orchestrator AML workspace.")]
     [string]
     $AMLWorkspaceRGName="aml1p-rg",
     [Parameter(Mandatory=$false,
-    HelpMessage="The location of the orchetrator AML workspace (if it does not exist already).")]
+    HelpMessage="The location of the orchestrator AML workspace (if it does not exist already).")]
     [string]
     $AMLWorkspaceLocation="westus2",
     [Parameter(Mandatory=$false,
