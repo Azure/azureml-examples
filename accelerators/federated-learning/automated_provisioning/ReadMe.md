@@ -7,6 +7,7 @@ This document proposes a procedure to automatically provision the resources requ
 ## Requirements
 
 For running Federated Learning experiments, the Contoso team needs the following ingredients:
+
 - an "orchestrator" Azure ML workspace;
 - some Kubernetes (K8s) clusters;
 - connections between the K8s clusters and the Azure ML workspace;

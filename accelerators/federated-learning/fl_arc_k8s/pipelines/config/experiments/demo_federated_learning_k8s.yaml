@@ -1,7 +1,7 @@
 defaults:
-  - aml: public_workspace
-  - compute: public_workspace
-  - modules: module_defaults
+- aml: public_workspace
+- compute: public_workspace
+- modules: module_defaults
 
 run:
   experiment_name: demo_federated_learning_k8s
@@ -9,56 +9,37 @@ run:
 
 module_loader: 
   use_local: "!office.smart_reply.fl.data_transfer"
-  local_steps_folder: "../../../components"
+  local_steps_folder: ../../../components
 
 democomponent:
   input_data: irisdata
   input_data_version: latest
 
 federated_config:
-  data_transfer_component: office.smart_reply.fl.data_transfer
-  silos: 
-    ### after merging, the configs should be:
-    # silo1: 
-    #   compute: shizs-k8s-arc2 #fl-wus
-    #   datastore: fl_wus
-    #   params:
-    #     msg: "shared msg"
-    #     dataset: test_uploaded_from_local
-    # silo2:
-    #   compute: thopo-k8s-arc #fl-eus
-    #   datastore: fl_eus
-    #   params:
-    #     msg: "shared msg"
-    #     dataset: test_csv_new
-    # silo3:
-    #   compute: thopo-k8s-arc2 #fl-canada
-    #   datastore: fl_canada
-    #   params:
-    #     msg: "per-silo msg"
-    #     dataset: test_csv_new
-    silo1: 
-      compute: shizs-k8s-arc2 #fl-wus
+  max_iterations: 3
+  data_transfer_component: datatransfer
+  silos:
+    westus:
+      compute: shizs-k8s-arc2 
       inherit: [foo_config]
       params:
         dataset: test_uploaded_from_local
-    silo2:
-      compute: thopo-k8s-arc #fl-eus
+    eastus:
+      compute: thopo-k8s-arc
       datastore: fl_eus
-    silo3:
-      compute: thopo-k8s-arc2 #fl-canada
+    canada:
+      compute: thopo-k8s-arc2
       datastore: fl_canada
       inherit: [foo_config, bar_config]
-  max_iterations: 2
   params:
-    msg: "random msg"
+    msg: random msg
   config_group:
     default_config:
       params:
-        msg: "shared msg"
+        msg: shared msg
         dataset: test_csv_new
     foo_config:
       datastore: fl_wus
     bar_config:
       params:
-        msg: "per-silo msg"
+        msg: per-silo msg
