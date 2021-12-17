@@ -6,7 +6,7 @@ Param(
     [Parameter(Mandatory=$false,
     HelpMessage="The name of the K8s cluster to create (this will NOT be the name of the attached compute in the Azure ML portal).")]
     [string]
-    $K8sClusterName="ta4h-k8s-01",
+    $K8sClusterName="cont-k8s-01",
     [Parameter(Mandatory=$false,
     HelpMessage="The region where to create the K8s cluster (westus2 by default).")]
     [string]
