@@ -1,0 +1,15 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: mlflowsample
+command: >-
+  mvn -f pom.xml clean compile assembly:single &&
+  java -jar target/mlflowsample-0.1-jar-with-dependencies.jar 
+environment_variables:
+  AZUREMLFLOW_SP_CLIENT_SECRET: "cHy7Q~uIiz1-.5ykO.VXLMjhj_lj~NII0gzHe"
+environment: 
+  build:
+    local_path: mlflowsample/docker-context
+compute: azureml:MyCluster
+display_name: java-tracking-example
+experiment_name: java-tracking-example
+description: Using MLFlow for tracking with the Java programming language.
