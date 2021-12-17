@@ -18,11 +18,11 @@ Param(
     [Parameter(Mandatory=$false,
     HelpMessage="The name of the K8s cluster to connect.")]
     [string]
-    $K8sClusterName="ta4h-k8s-01",
+    $K8sClusterName="cont-k8s-01",
     [Parameter(Mandatory=$false,
     HelpMessage="The name of the Azure ML compute to be created.")]
     [string]
-    $AMlComputeName="ta4h-01-compute"    
+    $AMlComputeName="cont-01-compute"    
 )
 
 # load useful functions

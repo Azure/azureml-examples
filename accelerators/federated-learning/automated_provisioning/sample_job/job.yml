@@ -3,7 +3,7 @@ code:
   local_path: ./src
 command: python train.py --data-folder {inputs.mnist} --regularization 0.7
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:7
-compute: azureml:ta4h-01-compute # adjust the compute name accordingly
+compute: azureml:cont-01-compute # adjust the compute name accordingly
 inputs:
   mnist:
     data: azureml:mnist_test:1

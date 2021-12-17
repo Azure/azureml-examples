@@ -1,12 +1,12 @@
-# Automated Resource Provisioning for TA4H
+# Automated Resource Provisioning for Contoso
 
 ## Contents
 
-This document proposes a procedure to automatically provision the resources required for running TA4H Federated Learning experiments.
+This document proposes a procedure to automatically provision the resources required for running Contoso Federated Learning experiments.
 
 ## Requirements
 
-For running Federated Learning experiments, the TA4H team needs the following ingredients:
+For running Federated Learning experiments, the Contoso team needs the following ingredients:
 - an "orchestrator" Azure ML workspace;
 - some Kubernetes (K8s) clusters;
 - connections between the K8s clusters and the Azure ML workspace;
@@ -40,7 +40,7 @@ We also suggest a way to run a simple validation job (highly recommended, to mak
 
 For starters, you need to create a K8s cluster and the associated resource group if they don't exist already. Then you'll need to connect to this cluster and create the _kube_ config file (which will be used implicitly by the second script to point at this particular cluster). There is a script that does all that for you: `CreateK8sCluster.ps1`. It takes the following input arguments.
 - `SubscriptionId`: the Id of the subscription where the silo will be created (default: "48bbc269-ce89-4f6f-9a12-c6f91fcb772d", _a.k.a._ the AIMS subscription). 
-- `K8sClusterName`: the name of the K8s cluster to be created (default: "ta4h-k8s-01"). It will live in a resource group named like the cluster, with "-rg" appended.
+- `K8sClusterName`: the name of the K8s cluster to be created (default: "cont-k8s-01"). It will live in a resource group named like the cluster, with "-rg" appended.
 - `RGLocation`: the location of the K8s cluster and its corresponding resource group (default: "westus2").
 - `AgentCount`: the number of agents in the K8s cluster (default: 1 - beware, this should be an _int_, not a _string_).
 - `AgentVMSize`: The agent VM SKU (default: "Standard_B4ms").
@@ -64,8 +64,8 @@ Here again, there is a script that does all of that for you: `ConnectSiloToOrche
 - `AMLWorkspaceName`: the name of the orchestrator Azure ML workspace to create, if it doesn't exist already (default: "aml1p-ml-wus2").
 - `AMLWorkspaceRGName`: the name of the orchestrator resource group to create, if it doesn't exist already (default: "aml1p-rg").
 - `AMLWorkspaceLocation`: the location of the orchestrator Azure ML workspace (default: "westus2").
-- `K8sClusterName`: the name of the K8s cluster to connect to the orchestrator Azure ML workspace (default: "ta4h-k8s-01"). **Note that this is just used to create the name of the Arc cluster and its resource group. The K8s cluster is referenced implicitly by the kube config file that was created during the previous step.**
-- `AMlComputeName`: the name of the Azure ML compute to be created (default: "ta4h-01-compute" - must be between 2-16 characters and only contain alphanumeric characters or dashes). **This is the compute name you will be using when submitting jobs.**
+- `K8sClusterName`: the name of the K8s cluster to connect to the orchestrator Azure ML workspace (default: "cont-k8s-01"). **Note that this is just used to create the name of the Arc cluster and its resource group. The K8s cluster is referenced implicitly by the kube config file that was created during the previous step.**
+- `AMlComputeName`: the name of the Azure ML compute to be created (default: "cont-01-compute" - must be between 2-16 characters and only contain alphanumeric characters or dashes). **This is the compute name you will be using when submitting jobs.**
 
 The command should look something like the below (with the parameters replaced by your own values of course).
 
