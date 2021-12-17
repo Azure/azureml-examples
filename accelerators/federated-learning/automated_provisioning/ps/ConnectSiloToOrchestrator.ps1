@@ -8,7 +8,7 @@ Param(
     [string]
     $AMLWorkspaceName="aml1p-ml-wus2",
     [Parameter(Mandatory=$false,
-    HelpMessage="The name of the orchetrator AML workspace.")]
+    HelpMessage="The name of the resource group containing orchetrator AML workspace.")]
     [string]
     $AMLWorkspaceRGName="aml1p-rg",
     [Parameter(Mandatory=$false,
