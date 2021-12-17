@@ -5,7 +5,7 @@ command: >-
   mvn -f pom.xml clean compile assembly:single &&
   java -jar target/mlflowsample-0.1-jar-with-dependencies.jar 
 environment_variables:
-  AZUREMLFLOW_SP_CLIENT_SECRET: "cHy7Q~uIiz1-.5ykO.VXLMjhj_lj~NII0gzHe"
+  AZUREMLFLOW_SP_CLIENT_SECRET: ""
 environment: 
   build:
     local_path: mlflowsample/docker-context
