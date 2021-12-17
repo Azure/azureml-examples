@@ -5,10 +5,16 @@ command: >-
   mvn -f pom.xml clean compile assembly:single &&
   java -jar target/mlflowsample-0.1-jar-with-dependencies.jar 
 environment_variables:
-  AZUREMLFLOW_SP_CLIENT_SECRET: ""
+  REGION: "XXX"
+  TENANT_ID: "XXX"
+  CLIENT_ID: "XXX"
+  SUB_ID: "XXX"
+  RESOURCE_GROUP: "XXX"
+  WORKSPACE_NAME: "XXX"
+  AZUREMLFLOW_SP_CLIENT_SECRET: "XXX"
 environment: 
   build:
-    local_path: mlflowsample/docker-context
+    local_path: docker-context
 compute: azureml:MyCluster
 display_name: java-tracking-example
 experiment_name: java-tracking-example

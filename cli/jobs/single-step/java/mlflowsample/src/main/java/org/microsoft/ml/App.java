@@ -29,12 +29,12 @@ public class App {
     //
 
     // https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest#password-based-authentication
-    private final static String _tenantId = "764d6065-e422-4d31-aa82-974cbb48c8b9";
+    private final static String _tenantId = System.getenv("TENANT_ID");
     // NOTE: The below is specific to the Azure public cloud. Sovereign and
     // Government clouds (once supported) will target a different Authority endpoint
     private final static String AUTHORITY = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/token",
             _tenantId);
-    private final static String CLIENT_ID = "aec61bc5-ade7-4615-96f4-f584b3eb62a0";
+    private final static String CLIENT_ID = System.getenv("CLIENT_ID");;
     // DO NOT HARDCODE THIS IN - set the environment variable so the SP Client secret is
     // not accidentally committed
     private final static String SECRET_UNUSED_LEFT_FOR_CLARITY = System.getenv("AZUREMLFLOW_SP_CLIENT_SECRET");
@@ -42,21 +42,20 @@ public class App {
     
     // Something following the below template
     // Some possible values: "eastus2", "westeurope", ".."
-    private final static String _region = "westus";
-    private final static String _subscriptionId = "86463f0f-881a-4125-8ced-67b3aceada0f";
-    private final static String _resourceGroup = "osomorog";
-    private final static String _workspaceName = "RBACTest";
+    private final static String _region = System.getenv("REGION");
+    private final static String _subscriptionId = System.getenv("SUB_ID");
+    private final static String _resourceGroup = System.getenv("RESOURCE_GROUP");
+    private final static String _workspaceName = System.getenv("WORKSPACE_NAME");
     private final static String TRACKING_URI = String.format(
             "https://%s.api.azureml.ms/mlflow/v1.0/subscriptions/%s/resourceGroups/%s/providers/Microsoft.MachineLearningServices/workspaces/%s",
             _region, _subscriptionId, _resourceGroup, _workspaceName);
     // END VALUES TO CONFIGURE
-    //
 
     public static void main(String[] args) throws Exception {
         // Use this to diagnose tracking issues
         // System.setProperty("javax.net.debug", "all");
         System.out.println("Hello AzureML!");
-
+        System.out.println(TRACKING_URI);
         // Authenticate against and fetch a token from Azure Resource Manager (ARM)
         AuthenticationResult result = getAccessTokenFromUserCredentials(AUTHORITY, TARGET_RESOURCE, CLIENT_ID);
         String armToken = result.getAccessToken();
@@ -92,6 +91,7 @@ public class App {
             System.out.println(String.format("Logged %f", metric.getValue()));
         }
 
+        client.setTerminated(runId);
         // :'(
         System.out.println("Goodbye AzureML!");
     }
