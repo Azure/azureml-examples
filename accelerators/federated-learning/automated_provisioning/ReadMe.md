@@ -29,7 +29,7 @@ Taken from [here](https://github.com/Azure/AML-Kubernetes#prerequisites) (along 
 
 ## Procedure
 
-> Set `accelerators/federated_learning/automated_provisioning` as your working directory!
+> Set `accelerators/federated-learning/automated_provisioning` as your working directory!
 
 The procedure is fairly simple (detailed instructions are given in the below sections).
 1. After setting your working directory and  verifying you are meeting the prerequisites, you will first run the `CreateK8sCluster.ps1` script (with the appropriate arguments) and log in when prompted.
