@@ -32,7 +32,7 @@ az login
 
 # create RG, if it doesn't exist
 $RGName = $K8sClusterName+"-rg" # name is derived from the K8s cluster name
-Deploy-RG-If-Not-Exists $RGName $RGLocation "K8s cluster"
+Deploy-RGIfInexistent $RGName $RGLocation "K8s cluster"
 
 # create cluster, if it doesn't exist
 Write-Output "Name of the K8s cluster to create: $K8sClusterName, with $AgentCount agent(s) of SKU '$AgentVMSize'." 

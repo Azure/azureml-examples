@@ -29,7 +29,7 @@ Param(
 . "$PSScriptRoot\Utils.ps1"
 
 # Validating the required name of the Azure ML compute
-Validate-Compute-Name $AMlComputeName
+Confirm-ComputeName $AMlComputeName
 
 # making sure we're in the right subscription
 Write-Output "We'll be setting up the orchestrator in this subscription: $SubscriptionId_Orchestrator."
@@ -41,7 +41,7 @@ az account set --subscription $SubscriptionId_Orchestrator
 $Workspaces =  az ml workspace list --resource-group $AMLWorkspaceRGName --query "[?name=='$AMLWorkspaceName']" | ConvertFrom-Json
 if ($Workspaces.Length -eq 0){
     Write-Output "Name of the AML workspace's resource group to create: $AMLWorkspaceRGName, in $AMLWorkspaceLocation location."
-    Deploy-RG-If-Not-Exists $AMLWorkspaceRGName, $AMLWorkspaceLocation, "AML workspace"
+    Deploy-RGIfInexistent $AMLWorkspaceRGName, $AMLWorkspaceLocation, "AML workspace"
     Write-Output "Creating the workspace '$AMLWorkspaceName'..."
     az deployment group create --resource-group $AMLWorkspaceRGName --template-file .\bicep\AMLWorkspace.bicep --parameters workspacename=$AMLWorkspaceName  location=$AMLWorkspaceLocation
 } else {
@@ -55,14 +55,14 @@ az provider register --namespace Microsoft.Kubernetes
 az provider register --namespace Microsoft.KubernetesConfiguration
 az provider register --namespace Microsoft.ExtendedLocation
 # (waiting for successful registration)
-Wait-For-Successful-Registration "Microsoft.Kubernetes"
-Wait-For-Successful-Registration "Microsoft.KubernetesConfiguration"
-Wait-For-Successful-Registration "Microsoft.ExtendedLocation"
+Wait-SuccessfulRegistration "Microsoft.Kubernetes"
+Wait-SuccessfulRegistration "Microsoft.KubernetesConfiguration"
+Wait-SuccessfulRegistration "Microsoft.ExtendedLocation"
 # 2. Create a resource group if it doesn't exist already
 $ArcClusterName = $K8sClusterName + "-arc"
 $ArcClusterRGName = $ArcClusterName + "-rg"
 $ArcClusterLocation = $AMLWorkspaceLocation # we will create the Arc RG in the same location as the AML workspace RG (arbitrary)
-Deploy-RG-If-Not-Exists $ArcClusterRGName $ArcClusterLocation "Arc cluster"
+Deploy-RGIfInexistent $ArcClusterRGName $ArcClusterLocation "Arc cluster"
 # 3. Connect to the existing K8s cluster
 Write-Output "Connecting to the existing K8s cluster..." # the existing K8s cluster is determined by the contents of the kubeconfig file, which is created at the end of the CreateK8sCluster.ps1 script
 az connectedk8s connect --name $ArcClusterName --resource-group $ArcClusterRGName

@@ -1,4 +1,4 @@
-function Wait-For-Successful-Registration(){
+function Wait-SuccessfulRegistration {
     param (
         $ProviderName
     )
@@ -11,7 +11,7 @@ function Wait-For-Successful-Registration(){
     Write-Output "The $ProviderName provider has been successfuly registered."
 }
 
-function Deploy-RG-If-Not-Exists {
+function Deploy-RGIfInexistent {
     Param (
         $RGName,
         $RGLocation,
@@ -26,7 +26,7 @@ function Deploy-RG-If-Not-Exists {
     }
 }
 
-function Validate-Compute-Name {
+function Confirm-ComputeName {
     Param(
         $ComputeName
     )
