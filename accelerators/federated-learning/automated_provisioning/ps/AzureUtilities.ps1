@@ -21,7 +21,7 @@ function Deploy-RG-If-Not-Exists {
     if ( $(az group exists --name $RGName) -eq $true ){
         Write-Output "The resource group '$RGName' already exists."
     } else {
-        Write-Output "Creating the resource group..."
+        Write-Error "Creating the resource group..."
         az deployment sub create --location $RGLocation --template-file $PSScriptRoot/../bicep/ResourceGroup.bicep --parameters rgname=$RGName rglocation=$RGLocation
     }
 }
