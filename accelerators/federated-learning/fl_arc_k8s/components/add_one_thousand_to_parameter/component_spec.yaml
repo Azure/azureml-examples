@@ -5,8 +5,6 @@ display_name: ComponentWithParameter
 type: CommandComponent
 description: Demo component that adds 1000 to the 'value' parameter.
 is_deterministic: true
-tags:
-  contact: aml-ds@microsoft.com
 
 inputs:
   value:

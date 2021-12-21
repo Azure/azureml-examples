@@ -4,6 +4,7 @@ param workspacename string
 param location string = resourceGroup().location
 @description('Specifies whether to reduce telemetry collection and enable additional encryption.')
 param hbi_workspace bool = false
+
 var tenantId = subscription().tenantId
 var storageAccountName_var = replace('st-${workspacename}','-','') // replace because only alphanumeric characters are supported
 var keyVaultName_var = 'kv-${workspacename}'
@@ -14,6 +15,7 @@ var storageAccount = storageAccountName.id
 var keyVault = keyVaultName.id
 var applicationInsights = applicationInsightsName.id
 var containerRegistry = containerRegistryName.id
+
 resource storageAccountName 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: storageAccountName_var
   location: location

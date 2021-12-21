@@ -19,6 +19,7 @@ The procedure outlined in this document will provision resources that meet the r
 
 Taken from [here](https://github.com/Azure/AML-Kubernetes#prerequisites) (along with the K8s cluster creation/connection steps).
 
+0. Have PowerShell (or PowerShell Core if not on Windows).
 1. Have access to an Azure subscription.
 2. Install the [latest release of Helm 3](https://helm.sh/docs/intro/install/) - for Windows, we recommend going the _chocolatey_ route.
 3. Meet the pre-requisites listed under the [generic cluster extensions documentation](https://docs.microsoft.com/azure/azure-arc/kubernetes/extensions#prerequisites).
@@ -48,7 +49,7 @@ For starters, you need to create a K8s cluster and the associated resource group
 
 The command should look something like the below (with the parameters replaced by your own values of course).
 
-```ps1
+```ps
 ./ps/CreateK8sCluster.ps1 "Your-Silo-SubscriptionId" "Name-of-Cluster-to-Create" "Location-of-Cluster-to-Create" Number-of-Agents "VM-SKU"
 ```
 
@@ -70,7 +71,7 @@ Here again, there is a script that does all of that for you: `ConnectSiloToOrche
 
 The command should look something like the below (with the parameters replaced by your own values of course).
 
-```ps1
+```ps
 ./ps/ConnectSiloToOrchestrator.ps1 "Your-Orchestrator-SubscriptionId" "Your-Orchestrator-Workspace-Name" "Your-Orchestrator-Resource-Group-Name" "Your-Orchestrator-Location" "Name-of-K8s-Cluster-to-Connect" "AML-Compute-Name-to-Create"
 ```
 
@@ -94,12 +95,13 @@ Then you will need to create the `mnist_test` dataset if it doesn't exist alread
 
 The command should look something like the below (with the parameters replaced by your own values of course).
 
-```ps1
+```ps
 ./sample_job/RunSampleJob.ps1 "Your-Orchestrator-SubscriptionId" "Your-Orchestrator-Workspace-Name" "Your-Orchestrator-Resource-Group"
 ```
 
 ## Future work
 - Add more validation on input strings.
+- Validate all silos at once.
 - Provision data-related resources.
 - ...
 
