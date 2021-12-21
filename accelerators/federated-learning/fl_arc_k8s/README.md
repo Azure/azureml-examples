@@ -3,11 +3,9 @@
 ## Setup
 
 - Clone the current repository and set `accelerators\federated-learning\fl_arc_k8s` as your working directory.
-- Set up and activate a new Conda environment:
-  `conda create --name fl-shrike-examples-env-py38 python=3.8 -y`,
-  `conda activate fl-shrike-examples-env-py38`.
-- Install the `shrike` dependencies:
-  `pip install -r requirements.txt`
+- Set up and activate a new Conda environment with python version 3.8 and shrike dependencies (environment is defined in `environment.yml` and `requirements.txt`):
+
+  `conda env create --file environment.yml`
 
 ## How to run the example
 

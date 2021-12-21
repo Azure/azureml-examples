@@ -1,0 +1,8 @@
+name: fl-shrike-examples-env-py38
+
+dependencies:
+
+- python=3.8
+- pip
+- pip:
+  - -r requirements.txt
