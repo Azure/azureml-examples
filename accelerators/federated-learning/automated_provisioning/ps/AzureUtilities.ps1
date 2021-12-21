@@ -21,7 +21,7 @@ function Deploy-RGIfInexistent {
     if ( $(az group exists --name $RGName) -eq $true ){
         Write-Output "The resource group '$RGName' already exists."
     } else {
-        Write-Error "Creating the resource group..."
+        Write-Output "Creating the resource group..."
         az deployment sub create --location $RGLocation --template-file $PSScriptRoot/../bicep/ResourceGroup.bicep --parameters rgname=$RGName rglocation=$RGLocation
     }
 }
@@ -35,7 +35,7 @@ function Confirm-ComputeName {
     if ($ComputeName -match $RegEx){
         Write-Output "Compute name $ComputeName is valid."
     } else{
-        Write-Output "Compute name $ComputeName is invalid. It can include letters, digits and dashes. It must start with a letter, end with a letter or digit, and be between 2 and 16 characters in length."
+        Write-Error "Compute name $ComputeName is invalid. It can include letters, digits and dashes. It must start with a letter, end with a letter or digit, and be between 2 and 16 characters in length."
         exit
     }
 }
