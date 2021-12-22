@@ -1,16 +1,16 @@
 Param(
-    [Parameter(Mandatory=$false,
+    [Parameter(Mandatory=$true,
     HelpMessage="The guid of the subscription where the orchestrator will live.")]
     [string]
-    $SubscriptionId_Orchestrator="48bbc269-ce89-4f6f-9a12-c6f91fcb772d",
-    [Parameter(Mandatory=$false,
+    $SubscriptionId_Orchestrator,
+    [Parameter(Mandatory=$true,
     HelpMessage="The name of the orchestrator AML workspace.")]
     [string]
-    $AMLWorkspaceName="aml1p-ml-wus2",
-    [Parameter(Mandatory=$false,
+    $AMLWorkspaceName,
+    [Parameter(Mandatory=$true,
     HelpMessage="The name of the resource group containing orchestrator AML workspace.")]
     [string]
-    $AMLWorkspaceRGName="aml1p-rg",
+    $AMLWorkspaceRGName,
     [Parameter(Mandatory=$false,
     HelpMessage="The location of the orchestrator AML workspace (if it does not exist already).")]
     [string]
@@ -22,20 +22,20 @@ Param(
     [Parameter(Mandatory=$false,
     HelpMessage="The name of the Azure ML compute to be created.")]
     [string]
-    $AMlComputeName="cont-01-compute"    
+    $AMLComputeName="cont-01-compute"    
 )
 
 # load useful functions
-. "$PSScriptRoot\Utils.ps1"
+. "$PSScriptRoot\AzureUtilities.ps1"
 
 # Validating the required name of the Azure ML compute
-Confirm-ComputeName $AMlComputeName
+Confirm-ComputeName $AMLComputeName
 
 # making sure we're in the right subscription
 Write-Output "We'll be setting up the orchestrator in this subscription: $SubscriptionId_Orchestrator."
 az account set --subscription $SubscriptionId_Orchestrator
 # log in
-# az login
+az login
 
 # create the orchestrator workspace if it does not exist already
 $Workspaces =  az ml workspace list --resource-group $AMLWorkspaceRGName --query "[?name=='$AMLWorkspaceName']" | ConvertFrom-Json
@@ -74,4 +74,4 @@ az k8s-extension create --name arcml-extension --extension-type Microsoft.AzureM
 # Attach the Arc cluster to the Azure ML workspace
 Write-Output "Attaching the Arc cluster to the Azure ML workspace..."
 $ResourceId = "/subscriptions/" + $SubscriptionId_Orchestrator +"/resourceGroups/" + $ArcClusterRGName + "/providers/Microsoft.Kubernetes/connectedClusters/" + $ArcClusterName
-az ml compute attach --type kubernetes --name $AMlComputeName --workspace-name $AMLWorkspaceName --resource-group $AMLWorkspaceRGName --resource-id $ResourceId
+az ml compute attach --type kubernetes --name $AMLComputeName --workspace-name $AMLWorkspaceName --resource-group $AMLWorkspaceRGName --resource-id $ResourceId
