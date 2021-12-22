@@ -1,16 +1,16 @@
 Param(
-    [Parameter(Mandatory=$false,
+    [Parameter(Mandatory=$true,
     HelpMessage="The guid of the subscription to which the orchestrator belongs.")]
     [string]
-    $SubscriptionId="48bbc269-ce89-4f6f-9a12-c6f91fcb772d",
-    [Parameter(Mandatory=$false,
+    $SubscriptionId,
+    [Parameter(Mandatory=$true,
     HelpMessage="The name of the orchestrator AML workspace.")]
     [string]
-    $WorkspaceName="aml1p-ml-wus2",
-    [Parameter(Mandatory=$false,
-    HelpMessage="The name of the orchestrator AML workspace.")]
+    $WorkspaceName,
+    [Parameter(Mandatory=$true,
+    HelpMessage="The name of the orchestrator AML workspace resource group.")]
     [string]
-    $ResourceGroup="aml1p-rg"  
+    $ResourceGroup  
 )
 
 # making sure we're in the right subscription

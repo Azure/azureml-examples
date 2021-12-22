@@ -1,8 +1,8 @@
 Param(
-    [Parameter(Mandatory=$false,
+    [Parameter(Mandatory=$true,
     HelpMessage="The guid of the subscription where we'll be preparing the silo.")]
     [string]
-    $SubscriptionId="48bbc269-ce89-4f6f-9a12-c6f91fcb772d",
+    $SubscriptionId,
     [Parameter(Mandatory=$false,
     HelpMessage="The name of the K8s cluster to create (this will NOT be the name of the attached compute in the Azure ML portal).")]
     [string]
@@ -22,7 +22,7 @@ Param(
 )
 
 # load useful functions
-. "$PSScriptRoot\Utils.ps1"
+. "$PSScriptRoot\AzureUtilities.ps1"
 
 # making sure we're in the right subscription
 Write-Output "We'll be setting up a silo in this subscription: $SubscriptionId."
