@@ -1,10 +1,9 @@
 experiment_name: Test-FL-Auto-Provisioning
 code:
   local_path: ./src
-command: python train.py --data-folder {inputs.mnist} --regularization 0.7
+command: python train.py --data-folder {inputs.mnist} --regularization 0.6
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:7
 compute: azureml:cont-01-compute # adjust the compute name accordingly
 inputs:
   mnist:
-    data: azureml:mnist_test:1
-    mode: mount    
+    data: azureml:mnist_test_for_fl:1
