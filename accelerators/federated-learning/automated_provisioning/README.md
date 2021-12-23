@@ -88,7 +88,7 @@ Just repeat the 2 steps above for every silo you want to create.
 
 To double check that you can actually run Azure ML jobs on the Arc Cluster, we provide all the files required for a sample job, following the example [here](https://github.com/Azure/AML-Kubernetes/blob/master/docs/simple-train-cli.md). First, you'll need to open `./sample_job/job.yml` - this is the file where the job you are going to run is defined. Adjust the compute name (the part after `compute: azureml:`) to the name of your Azure ML compute.
 
-Then you will need to create the `mnist_test` dataset if it doesn't exist already, and submit the job. The PowerShell script `RunSampleJob.ps1` will do that for you. It takes the following arguments.
+Then you will need to create the `mnist_test_for_fl` dataset if it doesn't exist already, and submit the job. The PowerShell script `RunSampleJob.ps1` will do that for you. It takes the following arguments.
 - `SubscriptionId`: the Id of the subscription to which the Azure ML orchestrator workspace belongs.
 - `WorkspaceName`: the name of the Azure ML orchestrator workspace.
 - `ResourceGroup`: the resource group of the Azure ML orchestrator workspace.
