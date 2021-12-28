@@ -1,5 +1,5 @@
 name: Eval
-version: 32
+version: 0.3
 display_name: Eval
 type: command
 inputs:

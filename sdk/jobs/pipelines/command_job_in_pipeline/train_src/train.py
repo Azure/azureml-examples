@@ -27,13 +27,13 @@ for line in lines:
     print(line)
 
 print("mounted_path files: ")
-arr = os.listdir(args.training_data)
-print(arr)
+# arr = os.listdir(args.training_data)
+# print(arr)
 
-for filename in arr:
-    print ("reading file: %s ..." % filename)
-    with open(os.path.join(args.training_data, filename), 'r') as handle:
-        print (handle.read())
+# for filename in arr:
+#     print ("reading file: %s ..." % filename)
+#     with open(os.path.join(args.training_data, filename), 'r') as handle:
+#         print (handle.read())
 
 
 # Do the train and save the trained model as a file into the output folder.

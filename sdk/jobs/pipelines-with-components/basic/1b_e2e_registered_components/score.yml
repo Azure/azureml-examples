@@ -1,5 +1,5 @@
 name: Score
-version: 32
+version: 0.3
 display_name: Score
 type: command
 inputs:

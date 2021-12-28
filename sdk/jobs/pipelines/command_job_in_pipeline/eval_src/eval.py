@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import datetime
 
 parser = argparse.ArgumentParser("score")
+parser.add_argument("--model_path", type=str, help="Path of model")
 parser.add_argument("--scoring_result", type=str, help="Path of scoring result")
 parser.add_argument("--eval_output", type=str, help="Path of output evaluation result")
 
@@ -11,6 +12,7 @@ args = parser.parse_args()
 print ("hello evaluation world...")
 
 lines = [
+    f'Model path: {args.model_path}',
     f'Scoring result path: {args.scoring_result}',
     f'Evaluation output path: {args.eval_output}',
 ]

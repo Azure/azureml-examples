@@ -1,6 +1,6 @@
 name: Train
 display_name: Train
-version: 32
+version: 0.3
 type: command
 inputs:
   training_data: 

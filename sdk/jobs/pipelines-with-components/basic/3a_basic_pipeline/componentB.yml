@@ -2,7 +2,7 @@ type: command
 
 name: componentB
 display_name: componentB
-version: 1
+version: 2
 
 code:
   local_path: ./componentB_src
