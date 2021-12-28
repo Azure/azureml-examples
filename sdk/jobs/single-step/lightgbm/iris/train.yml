@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: Train
+display_name: Train
+version: 0.1
+type: command
+inputs:
+  iris_csv: 
+    type: path 
+  learning_rate:
+    type: number
+  boosting:
+    type: string
+  
+code:
+  local_path: ./src
+environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:11
+command: >-
+  python main.py 
+  --iris-csv ${{inputs.iris_csv}} 
+  --learning-rate ${{search_space.learning_rate}} 
+  --boosting ${{search_space.boosting}}
