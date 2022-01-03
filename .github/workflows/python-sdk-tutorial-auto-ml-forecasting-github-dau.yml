@@ -1,14 +1,14 @@
-name: auto-ml-forecasting-backtest-many-models
+name: auto-ml-forecasting-github-dau
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 4 * * 2"
+    - cron: "0 9 * * 2"
   pull_request:
     branches:
       - main
     paths:
-      - python-sdk/tutorials/automl-with-azureml/forecasting-backtest-many-models/**
-      - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-backtest-many-models.yml
+      - python-sdk/tutorials/automl-with-azureml/forecasting-github-dau/**
+      - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-github-dau.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,9 +35,6 @@ jobs:
           activate-environment: azure_automl
           environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
           auto-activate-base: false
-    - name: update conda env with the update_env.yml
-      run: |
-        conda env update --file python-sdk/tutorials/automl-with-azureml/forecasting-backtest-many-models/update_env.yml
     - name: install papermill and set up the IPython kernel
       run: |
         pip install papermill==2.3.3
@@ -54,12 +51,12 @@ jobs:
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run auto-ml-forecasting-backtest-many-models.ipynb
-      run: papermill -k python auto-ml-forecasting-backtest-many-models.ipynb auto-ml-forecasting-backtest-many-models.output.ipynb
-      working-directory: python-sdk/tutorials/automl-with-azureml/forecasting-backtest-many-models
+    - name: run auto-ml-forecasting-github-dau.ipynb
+      run: papermill -k python auto-ml-forecasting-github-dau.ipynb auto-ml-forecasting-github-dau.output.ipynb
+      working-directory: python-sdk/tutorials/automl-with-azureml/forecasting-github-dau
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: auto-ml-forecasting-backtest-many-models
-        path: python-sdk/tutorials/automl-with-azureml/forecasting-backtest-many-models
+        name: auto-ml-forecasting-github-dau
+        path: python-sdk/tutorials/automl-with-azureml/forecasting-github-dau

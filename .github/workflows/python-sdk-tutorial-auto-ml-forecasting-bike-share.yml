@@ -2,7 +2,7 @@ name: auto-ml-forecasting-bike-share
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 5 * * 2"
+    - cron: "0 6 * * 2"
   pull_request:
     branches:
       - main
