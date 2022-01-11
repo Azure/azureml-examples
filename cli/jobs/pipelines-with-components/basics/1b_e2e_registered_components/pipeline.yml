@@ -9,7 +9,7 @@ inputs:
   pipeline_job_test_input:
     dataset:
       local_path: ./data
-  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_max_epochs: 20
   pipeline_job_training_learning_rate: 1.8
   pipeline_job_learning_rate_schedule: 'time-based'
 
@@ -32,12 +32,11 @@ jobs:
     component: azureml:Train:31
     inputs:
       training_data: ${{inputs.pipeline_job_training_input}}
-      max_epocs: ${{inputs.pipeline_job_training_max_epocs}}
+      max_epochs: ${{inputs.pipeline_job_training_max_epochs}}
       learning_rate: ${{inputs.pipeline_job_training_learning_rate}}
       learning_rate_schedule: ${{inputs.pipeline_job_learning_rate_schedule}}
     outputs:
       model_output: ${{outputs.pipeline_job_trained_model}}
-  
   score-job:
     type: component
     component: azureml:Score:31
