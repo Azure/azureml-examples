@@ -9,7 +9,7 @@ inputs:
   pipeline_job_test_input:
     dataset:
       local_path: ./data
-  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_max_epochs: 20
   pipeline_job_training_learning_rate: 1.8
   pipeline_job_learning_rate_schedule: 'time-based'
 
@@ -36,7 +36,7 @@ jobs:
       inputs:
         training_data: 
           type: path
-        max_epocs:
+        max_epochs:
           type: integer
         learning_rate: 
           type: number
@@ -53,14 +53,14 @@ jobs:
       command: >-
         python train.py 
         --training_data ${{inputs.training_data}} 
-        --max_epocs ${{inputs.max_epocs}}   
+        --max_epochs ${{inputs.max_epochs}}   
         --learning_rate ${{inputs.learning_rate}} 
         --learning_rate_schedule ${{inputs.learning_rate_schedule}} 
         --model_output ${{outputs.model_output}}
 
     inputs:
       training_data: ${{inputs.pipeline_job_training_input}}
-      max_epocs: ${{inputs.pipeline_job_training_max_epocs}}
+      max_epochs: ${{inputs.pipeline_job_training_max_epochs}}
       learning_rate: ${{inputs.pipeline_job_training_learning_rate}}
       learning_rate_schedule: ${{inputs.pipeline_job_learning_rate_schedule}}
     outputs:
