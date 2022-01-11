@@ -13,7 +13,7 @@ parser.add_argument("--model_output", type=str, help="Path of output model")
 
 args = parser.parse_args()
 
-print("hello training world...")
+print("Hello training world...")
 
 lines = [
     f"Training data path: {args.training_data}",
