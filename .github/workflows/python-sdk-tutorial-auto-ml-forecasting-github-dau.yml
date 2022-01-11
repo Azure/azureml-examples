@@ -2,7 +2,7 @@ name: auto-ml-forecasting-github-dau
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 9 * * 2"
+    - cron: "0 4 * * 2"
   pull_request:
     branches:
       - main

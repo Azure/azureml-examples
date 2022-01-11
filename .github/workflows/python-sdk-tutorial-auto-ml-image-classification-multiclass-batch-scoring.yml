@@ -2,7 +2,7 @@ name: auto-ml-image-classification-multiclass-batch-scoring
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 16 * * 2"
+    - cron: "0 14 * * 2"
   pull_request:
     branches:
       - main
