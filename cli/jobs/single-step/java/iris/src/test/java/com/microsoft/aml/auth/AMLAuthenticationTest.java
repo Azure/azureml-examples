@@ -17,7 +17,7 @@ public class AMLAuthenticationTest {
 	@Test
 	public void testAMLAuthentication() throws Exception {
 
-		AMLAuthentication amlAuth = AMLAuthentication.getInstnce();
+		AMLAuthentication amlAuth = AMLAuthentication.getInstance();
 		String token = amlAuth.getAccessTokenFromUserCredentials();
 
 		Assert.notNull(token);

@@ -18,7 +18,7 @@ public class MLFlowRunnerTest {
 
 	@Before 
 	public void getAuthentication() {
-		amlAuth = AMLAuthentication.getInstnce();
+		amlAuth = AMLAuthentication.getInstance();
 	}
 
 	@Test

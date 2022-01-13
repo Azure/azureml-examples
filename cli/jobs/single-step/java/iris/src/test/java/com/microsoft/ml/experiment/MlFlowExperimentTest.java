@@ -25,7 +25,7 @@ public class MlFlowExperimentTest {
 		
 		String experimentName = "aml-mlflow-javaexp";
 		
-		AMLAuthentication amlAuth = AMLAuthentication.getInstnce();
+		AMLAuthentication amlAuth = AMLAuthentication.getInstance();
 		
 		Assert.notNull(amlAuth);
 		

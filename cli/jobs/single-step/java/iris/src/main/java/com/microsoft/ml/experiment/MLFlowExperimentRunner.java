@@ -15,7 +15,7 @@ public class MLFlowExperimentRunner {
 				
 		String experimentName = "aml-mlflow-java-example";
 		
-		AMLAuthentication amlAuth = AMLAuthentication.getInstnce();
+		AMLAuthentication amlAuth = AMLAuthentication.getInstance();
 		
 		MLFLowRunner mlFLowRunner = new MLFLowRunner(amlAuth);
 		

@@ -41,7 +41,7 @@ public class AMLAuthentication {
 			"https://%s.api.azureml.ms/mlflow/v1.0/subscriptions/%s/resourceGroups/%s/providers/Microsoft.MachineLearningServices/workspaces/%s",
 			_region, _subscriptionId, _resourceGroup, _workspaceName);
 
-	public static AMLAuthentication getInstnce() {
+	public static AMLAuthentication getInstance() {
 
 		if (amlAuth == null) {
 
