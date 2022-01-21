@@ -46,9 +46,9 @@ import org.slf4j.LoggerFactory;
 import com.microsoft.aml.auth.AMLAuthentication;
 import com.microsoft.ml.mlflow.MLFLowRunner;
 
-public class MlFlowExperiment {
+public class MlflowExperiment {
 
-	private static final Logger log = LoggerFactory.getLogger(MlFlowExperiment.class);
+	private static final Logger log = LoggerFactory.getLogger(MlflowExperiment.class);
 
 	private int batchSize = 150; // Test batch size
 	private int nEpochs = 1000; // Number of training epochs
@@ -61,7 +61,7 @@ public class MlFlowExperiment {
 
 	private MLFLowRunner mlflowRunner;
 
-	public MlFlowExperiment(MLFLowRunner mlflowRunner, String experimentName) {
+	public MlflowExperiment(MLFLowRunner mlflowRunner, String experimentName) {
 
 		this.mlflowRunner = mlflowRunner;
 		this.experimentName = experimentName;

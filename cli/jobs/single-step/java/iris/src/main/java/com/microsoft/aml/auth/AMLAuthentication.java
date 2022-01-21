@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
-import com.microsoft.ml.experiment.MlFlowExperiment;
+import com.microsoft.ml.experiment.MlflowExperiment;
 
 /**
- * This class is used to authenticate with AD and retrieve access token to be used with MlFLow
+ * This class is used to authenticate with AD and retrieve access token to be
+ * used with MlFLow
+ * 
  * @author Mufy, Abe
  * @Date 7/1/2022
  */
@@ -52,7 +54,11 @@ public class AMLAuthentication {
 	}
 
 	/**
-	 * This method returns the access token
+	 * This method returns the access token. Note, you should consider using the
+	 * Azure Identity package for auth since this is the Azure standard package for
+	 * auth
+	 * https://docs.microsoft.com/en-us/java/api/overview/azure/identity-readme?view=azure-java-stable
+	 * 
 	 * @return String
 	 * @throws Exception
 	 */
@@ -60,13 +66,25 @@ public class AMLAuthentication {
 
 		log.info("details: " + AUTHORITY + TARGET_RESOURCE + CLIENT_ID);
 
-		AuthenticationResult result = getAccessTokenFromUserCredentials(AUTHORITY, TARGET_RESOURCE, CLIENT_ID);
+		AuthenticationResult result = getAccessTokenResultFromUserCredentials(AUTHORITY, TARGET_RESOURCE, CLIENT_ID);
+
+		return result.getAccessToken();
+
+	}
+	
+
+	public String getAccessTokenFromUserCredentials(String authority, String targetResource, String clientId) throws Exception {
+
+		log.info("details: " + AUTHORITY + TARGET_RESOURCE + CLIENT_ID);
+
+		AuthenticationResult result = getAccessTokenResultFromUserCredentials(authority, targetResource, clientId);
 
 		return result.getAccessToken();
 
 	}
 
-	private AuthenticationResult getAccessTokenFromUserCredentials(String loginAuthorityUrl,
+
+	private AuthenticationResult getAccessTokenResultFromUserCredentials(String loginAuthorityUrl,
 			String targetResourceForToken, String clientId) throws Exception {
 		AuthenticationResult result;
 		ExecutorService service = null;
@@ -91,5 +109,9 @@ public class AMLAuthentication {
 	public String getTRACKING_URI() {
 		return TRACKING_URI;
 	}
+
+	public String getCLIENT_ID() {
+		return CLIENT_ID;
+	}	
 
 }

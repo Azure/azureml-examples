@@ -8,7 +8,7 @@ import com.microsoft.ml.mlflow.MLFLowRunner;
  * @author mufy, Abe
  * @Date 7/1/2022
  */
-public class MLFlowExperimentRunner {
+public class MLflowExperimentRunner {
 	
 	
 	public static void main(String args[]) throws Exception {
@@ -19,7 +19,7 @@ public class MLFlowExperimentRunner {
 		
 		MLFLowRunner mlFLowRunner = new MLFLowRunner(amlAuth);
 		
-		MlFlowExperiment mlflowExperiment = new MlFlowExperiment(mlFLowRunner,experimentName);
+		MlflowExperiment mlflowExperiment = new MlflowExperiment(mlFLowRunner,experimentName);
 		
 		mlflowExperiment.trainDLModel(mlflowExperiment.initilizeDLmodel(), mlflowExperiment.prepDataset(mlflowExperiment.generateDataset()));
 		
