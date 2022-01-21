@@ -71,9 +71,9 @@ public class AMLAuthentication {
 		return result.getAccessToken();
 
 	}
-	
 
-	public String getAccessTokenFromUserCredentials(String authority, String targetResource, String clientId) throws Exception {
+	public String getAccessTokenFromUserCredentials(String authority, String targetResource, String clientId)
+			throws Exception {
 
 		log.info("details: " + AUTHORITY + TARGET_RESOURCE + CLIENT_ID);
 
@@ -82,7 +82,6 @@ public class AMLAuthentication {
 		return result.getAccessToken();
 
 	}
-
 
 	private AuthenticationResult getAccessTokenResultFromUserCredentials(String loginAuthorityUrl,
 			String targetResourceForToken, String clientId) throws Exception {
@@ -112,6 +111,5 @@ public class AMLAuthentication {
 
 	public String getCLIENT_ID() {
 		return CLIENT_ID;
-	}	
-
+	}
 }

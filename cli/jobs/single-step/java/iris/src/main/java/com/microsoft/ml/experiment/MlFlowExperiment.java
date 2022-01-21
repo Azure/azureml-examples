@@ -5,7 +5,6 @@
  * Date: 7/1/2022
  */
 
-
 package com.microsoft.ml.experiment;
 
 import java.io.File;
@@ -98,12 +97,12 @@ public class MlflowExperiment {
 
 		allData.shuffle();
 
-		SplitTestAndTrain combinedDataset = allData.splitTestAndTrain(0.65); 
+		SplitTestAndTrain combinedDataset = allData.splitTestAndTrain(0.65);
 
 		DataSet trainingData = combinedDataset.getTrain();
-		
-		//log.info(""+trainingData.getFeatures());
-		
+
+		// log.info(""+trainingData.getFeatures());
+
 		DataSet testData = combinedDataset.getTest();
 
 		DataNormalization normalizer = new NormalizerStandardize();
@@ -162,11 +161,10 @@ public class MlflowExperiment {
 		int printIteration = 10;
 
 		model.setListeners(new ScoreIterationListener(printIteration),
-				new EvaluativeListener(experimentDataset[1], frequency, InvocationType.EPOCH_END)); 
-		
-		
-		log.info (""+experimentDataset[0].getFeatures());
-		
+				new EvaluativeListener(experimentDataset[1], frequency, InvocationType.EPOCH_END));
+
+		log.info("" + experimentDataset[0].getFeatures());
+
 		for (int i = 0; i < nEpochs; i++) {
 			model.fit(experimentDataset[0]);
 
@@ -192,14 +190,13 @@ public class MlflowExperiment {
 
 		log.info("Saving model to tmp folder: " + path);
 		// model.save(new File(path), true);
-		//mlflowClient.logArtifact(runId, new File(path));
+		// mlflowClient.logArtifact(runId, new File(path));
 
 		log.info("****************Experiment finished********************");
 
 		mlflowClient.setTerminated(runId);
 
 	}
-	
 
 	public int getBatchSize() {
 		return batchSize;

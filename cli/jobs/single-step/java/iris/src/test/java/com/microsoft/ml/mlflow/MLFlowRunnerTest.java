@@ -9,6 +9,7 @@ import com.microsoft.aml.auth.AMLAuthentication;
 
 /**
  * This is a test class for Authentication
+ * 
  * @author Mufy, Abe
  * @Date 7/1/2022
  */
@@ -16,7 +17,7 @@ public class MLflowRunnerTest {
 
 	AMLAuthentication amlAuth;
 
-	@Before 
+	@Before
 	public void getAuthentication() {
 		amlAuth = AMLAuthentication.getInstance();
 	}
@@ -36,6 +37,6 @@ public class MLflowRunnerTest {
 		MLFLowRunner mlFLowRunner = new MLFLowRunner(null);
 		MlflowClient mlflowClient = mlFLowRunner.getMlflowAuthClient();
 
-		Assert.notNull(mlflowClient);		
+		Assert.notNull(mlflowClient);
 	}
 }
