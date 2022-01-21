@@ -3,7 +3,7 @@
 	<groupId>com.microsoft.ml</groupId>
 	<artifactId>iris</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<description>This project provides a simple example of how to use  MLFlow with AML in Java to run a Deep Learning experiment </description>
+	<description>This project provides a simple example of how to use  MLflow with AML in Java to run a Deep Learning experiment </description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<dl4j-master.version>1.0.0-M1.1</dl4j-master.version>
