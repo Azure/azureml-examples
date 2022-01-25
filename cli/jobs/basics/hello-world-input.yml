@@ -1,7 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: >-
+command: |
   echo ${{inputs.hello_string}}
-  &&
   echo ${{inputs.hello_number}}
 environment:
   image: python:latest
