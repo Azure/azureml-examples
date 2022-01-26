@@ -8,7 +8,7 @@ model:
 environment: azureml:{environment-name}:{version} # The environment can be created using docker-context.yaml and docker-context/mlflow-in-vnet
 code_configuration:
   code: 
-    local_path: score-folder
+    local_path: mlflow-score
   scoring_script: score.py
 instance_type: Standard_F2s_v2
 instance_count: 1
