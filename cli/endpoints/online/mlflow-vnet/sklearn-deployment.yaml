@@ -2,10 +2,12 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: sklearn-deployment
 endpoint_name: my-endpoint
 model:
-  name: sample-mlflow-sklearn-model
+  name: mlflow-sklearn-model
   version: 1
   local_path: model
-environment: azureml:{environment-name}:{version} # The environment can be created using docker-context.yaml and environment folder
+environment:
+  build:
+    local_path: environment
 code_configuration:
   code: 
     local_path: onlinescoring

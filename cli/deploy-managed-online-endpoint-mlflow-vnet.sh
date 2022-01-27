@@ -8,7 +8,7 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
 
 # <create_endpoint>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/mlflow/create-endpoint.yaml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/mlflow-vnet/create-endpoint.yaml
 # </create_endpoint>
 
 # check if create was successful
@@ -23,7 +23,7 @@ else
 fi
 
 # <create_sklearn_deployment>
-az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/sklearn-deployment-vnet.yaml --all-traffic
+az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow-vnet/sklearn-deployment-vnet.yaml --all-traffic
 # </create_sklearn_deployment>
 
 deploy_status=`az ml online-deployment show --name sklearn-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`

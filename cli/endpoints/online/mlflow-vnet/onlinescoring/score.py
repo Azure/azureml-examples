@@ -1,35 +1,50 @@
-import os
-import logging
 import json
-import numpy
-import joblib
+import os
+import pandas as pd
+
+from inference_schema.parameter_types.pandas_parameter_type import PandasParameterType
+from inference_schema.schema_decorators import input_schema, output_schema
+from mlflow.pyfunc import load_model
+from mlflow.pyfunc.scoring_server import parse_json_input, _get_jsonable_obj
 
 
 def init():
-    """
-    This function is called when the container is initialized/started, typically after create/update of the deployment.
-    You can write the logic here to perform init operations like caching the model in memory
-    """
     global model
-    # AZUREML_MODEL_DIR is an environment variable created during deployment.
-    # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
-    model_path = os.path.join(
-        os.getenv("AZUREML_MODEL_DIR"), "sklearn_regression_model.pkl"
-    )
-    # deserialize the model file back into a sklearn model
-    model = joblib.load(model_path)
-    logging.info("Init complete")
+
+    # model_path = os.getenv("AZUREML_MODEL_DIR")
+    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'model')
+    model = load_model(model_path)
 
 
-def run(raw_data):
-    """
-    This function is called for every invocation of the endpoint to perform the actual scoring/prediction.
-    In the example we extract the data from the json input and call the scikit-learn model's predict()
-    method and return the result back
-    """
-    logging.info("Request received")
-    data = json.loads(raw_data)["data"]
-    data = numpy.array(data)
-    result = model.predict(data)
-    logging.info("Request processed")
-    return result.tolist()
+# Conditional used to determine whether input or output schema decorators are applied
+input_schema_condition = "MLFLOW_INPUT_FORMAT_STR" in os.environ
+output_schema_condition = "MLFLOW_OUTPUT_FORMAT_STR" in os.environ
+
+# The defaults here from os.getenv should not be invoked, included to avoid parsing error
+sample_input = pd.read_json(os.getenv("MLFLOW_INPUT_FORMAT_STR", "{}"), orient="split")
+sample_output = pd.read_json(os.getenv("MLFLOW_OUTPUT_FORMAT_STR", "{}"), orient="records")
+
+# Wrapper for applying a decorator conditionally
+def conditional_decorator(decorator, condition):
+    def wrapper(function):
+        if condition:
+            return decorator(function)
+        else:
+            return function
+
+    return wrapper
+
+
+@conditional_decorator(
+    input_schema("input_data", PandasParameterType(sample_input, enforce_column_type=False, orient="split")),
+    input_schema_condition,
+)
+@conditional_decorator(output_schema(PandasParameterType(sample_output, orient="records")), output_schema_condition)
+def run(input_data):
+    if input_schema_condition or output_schema_condition:
+        return _get_jsonable_obj(model.predict(input_data), pandas_orient="records")
+    else:
+        input_data = json.loads(input_data)
+        input_data = input_data["input_data"]
+        input_df = parse_json_input(json_input=json.dumps(input_data), orient="split")
+        return _get_jsonable_obj(model.predict(input_df), pandas_orient="records")
