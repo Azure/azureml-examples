@@ -11,8 +11,7 @@ from mlflow.pyfunc.scoring_server import parse_json_input, _get_jsonable_obj
 def init():
     global model
 
-    # model_path = os.getenv("AZUREML_MODEL_DIR")
-    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'model')
+    model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model")
     model = load_model(model_path)
 
 
