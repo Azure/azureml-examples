@@ -23,8 +23,9 @@ else
 fi
 
 # <create_sklearn_deployment>
-az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow-vnet/sklearn-deployment-vnet.yaml --all-traffic
+az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow-vnet/sklearn-deployment.yaml --all-traffic
 # </create_sklearn_deployment>
+
 
 deploy_status=`az ml online-deployment show --name sklearn-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
@@ -37,5 +38,9 @@ else
 fi
 
 # <test_sklearn_deployment>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/mlflow/sample-request-sklearn.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/mlflow-vnet/sample-request.json
 # </test_sklearn_deployment>
+
+# <delete_endpoint>
+az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
+# </delete_endpoint>
