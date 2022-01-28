@@ -1,5 +1,9 @@
 set -e
 
+docker build -t mlflowbyoc:1 .
+docker tag mlflowbyoc:1 {{acr}}.azurecr.io/mlflowbyoc:1
+docker push {{acr}}.azurecr.io/mlflowbyoc:1
+
 # <create_environment>
 az ml environment create -f endpoints/online/mlflow-vnet/environment/docker-context.yml
 # </create_environment>
