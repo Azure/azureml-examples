@@ -7,6 +7,6 @@ model:
   local_path: model-vnet
 environment_variables:
   MLFLOW_MODEL_FOLDER: model-vnet
-environment: azureml:vnet-500:1
+environment: azureml:vnet-shellscript:1
 instance_type: Standard_F2s_v2
 instance_count: 1

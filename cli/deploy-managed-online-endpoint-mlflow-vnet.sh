@@ -1,8 +1,13 @@
 set -e
 
-docker build -t mlflowbyoc:1 .
-docker tag mlflowbyoc:1 {{acr}}.azurecr.io/mlflowbyoc:1
-docker push {{acr}}.azurecr.io/mlflowbyoc:1
+# Get name of workspace ACR, build image
+WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
+ACR_NAME=$(az ml workspace show --name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+
+az acr login -n $ACR_NAME
+docker build -t scriptbyoc:1 ./endpoints/online/mlflow-vnet/environment/docker-contexts
+docker tag scriptbyoc:1 $ACR_NAME.azurecr.io/scriptbyoc:1
+docker push $ACR_NAME.azurecr.io/scriptbyoc:1
 
 # <create_environment>
 az ml environment create -f endpoints/online/mlflow-vnet/environment/docker-context.yml
