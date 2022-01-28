@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: vnet-400
+name: vnet-500
 image: 7acfa0544d574b78b2d66ed4939ef465.azurecr.io/mlflowbyoc:1
 inference_config:
     liveness_route:
