@@ -1,15 +1,8 @@
 set -e
 
-# <set_environment_name>
-# export ENVIRONMENT_NAME="<ENVIRONMENT_NAME>"
-# # </set_environment_name>
-
-# #  environment name
-# export ENVIRONMENT_NAME=env-`echo $RANDOM`
-
-# # <create_environment>
-# az ml environment create --name $ENVIRONMENT_NAME -f endpoints/online/mlflow-vnet/environment/docker-context.yml
-# # </create_environment>
+# <create_environment>
+az ml environment create -f endpoints/online/mlflow-vnet/environment/docker-context.yml
+# </create_environment>
 
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
