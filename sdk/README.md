@@ -44,3 +44,4 @@ cd azureml-examples/sdk
 |Pipeline with components|[Build pipeline with DSL](jobs/pipelines-with-components/pipeline-dsl-example.ipynb)|create in sdk/jobs/pipelines-with-components|
 |Online Endpoints|[Online Endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/online/sample/online-inferencing-sample.ipynb)|Create Online Endpoint and manage deployments to that endpoint|
 |Batch Endpoints|[Batch endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/batch/mnist-nonmlflow.ipynb)|create in sdk/endpoints/batch|Create a batch endpoint and deploy a model to the endpoint|
+|Singularity|[Singularity](jobs/single-step/singularity/singularity.ipynb)| Run a training job on Singularity compute. |
