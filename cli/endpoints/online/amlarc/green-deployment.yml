@@ -10,7 +10,7 @@ code_configuration:
   scoring_script: score.py
 environment:
   conda_file: ../model-2/environment/conda.yml
-  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 scale_settings:
   type: target_utilization
   min_instances: 1

@@ -13,7 +13,7 @@ inputs:
 outputs:
   output_folder:
 environment: 
-  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
   conda_file: conda.yml
 compute: azureml:cpu-cluster-lg
 resources:

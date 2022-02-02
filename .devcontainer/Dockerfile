@@ -25,4 +25,3 @@ WORKDIR /root/.jupyter
 COPY jupyter_server_config.py jupyter_server_config.py
 WORKDIR /root
 COPY  .start.sh .start_jupyter.sh
-
