@@ -3,7 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.6.2
-  - pip
+  - pip<22.0
   - pip:
     - tensorflow==1.15.2
     - pillow
