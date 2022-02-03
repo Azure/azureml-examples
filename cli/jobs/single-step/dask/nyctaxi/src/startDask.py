@@ -10,12 +10,15 @@ import mlflow
 
 from notebook.notebookapp import list_running_servers
 
+
 def write_freeze():
     # log pip list before doing anything else
     from pathlib import Path
     import os
+
     Path("./outputs").mkdir(parents=True, exist_ok=True)
     os.system("pip list > outputs/pip_list.txt")
+
 
 def flush(proc, proc_log):
     while True:
