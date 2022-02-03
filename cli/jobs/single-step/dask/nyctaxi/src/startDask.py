@@ -11,6 +11,15 @@ import mlflow
 from notebook.notebookapp import list_running_servers
 
 
+def write_freeze():
+    # log pip list before doing anything else
+    from pathlib import Path
+    import os
+
+    Path("./outputs").mkdir(parents=True, exist_ok=True)
+    os.system("pip list > outputs/pip_list.txt")
+
+
 def flush(proc, proc_log):
     while True:
         proc_out = proc.stdout.readline()
@@ -24,6 +33,7 @@ def flush(proc, proc_log):
 
 
 if __name__ == "__main__":
+    write_freeze()
     parser = argparse.ArgumentParser()
     parser.add_argument("--jupyter_token", default=uuid.uuid1().hex)
     parser.add_argument("--script")
