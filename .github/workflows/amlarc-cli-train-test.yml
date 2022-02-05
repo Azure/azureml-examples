@@ -77,7 +77,7 @@ jobs:
       timeout-minutes: 30
     - name: setup_instance_type
       run: |
-        bash .github/amlarc-tool.sh setup_instance_type gpu 4 8Gi 2
+        bash .github/amlarc-tool.sh setup_instance_type defaultinstancetype 4 8Gi 2
         bash .github/amlarc-tool.sh setup_instance_type cpu 1 4Gi
         bash .github/amlarc-tool.sh setup_instance_type gpu 1 4Gi 2
       timeout-minutes: 30
