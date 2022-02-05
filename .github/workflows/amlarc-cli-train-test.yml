@@ -87,6 +87,10 @@ jobs:
       run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
       continue-on-error: true
       timeout-minutes: 30
+    - name: run cli/jobs/single-step/pytorch/iris/job.yml
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/iris/job.yml
+      continue-on-error: true
+      timeout-minutes: 30 
     - name: prepare python-sdk dependency
       run: bash .github/amlarc-tool.sh generate_workspace_config
       continue-on-error: true
