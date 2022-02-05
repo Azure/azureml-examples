@@ -55,8 +55,6 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
     # provision resources
-    - name: test
-      run: echo "${{secrets.AZ_AE_CREDS}}" | grep clientId | sed  's/-/\n/g'
     - name: setup_aks
       run: bash .github/amlarc-tool.sh setup_aks
       timeout-minutes: 30

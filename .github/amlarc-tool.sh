@@ -265,7 +265,13 @@ setup_workspace(){
         --location $LOCATION \
         --name $WORKSPACE \
         $@
-        
+
+    az ml workspace update \
+        --subscription $SUBSCRIPTION \
+        --resource-group $RESOURCE_GROUP \
+        --name $WORKSPACE \
+        --public-network-access Enabled
+
 }
 
 # setup compute
