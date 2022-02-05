@@ -555,11 +555,11 @@ $(sed ':a;N;$!ba;s/\n/<br>/g' $RESULT_FILE)
 
 download_icm_cert(){
     KEY_VAULT_NAME=${KEY_VAULT_NAME:-kvname}
-    az keyvault secret download --name ICM-KEY-PEM -f key.pem
-    az keyvault secret download --name ICM-CERT-PEM -f cert.pem 
-    az keyvault secret download --name ICM-HOST -f icm_host
-    az keyvault secret download --name ICM-CONNECTOR-ID -f icm_connector_id
-    az keyvault secret download --name ICM-ROUTING-ID -f icm_routing_id
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-KEY-PEM -f key.pem
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-CERT-PEM -f cert.pem 
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-HOST -f icm_host
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-CONNECTOR-ID -f icm_connector_id
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-ROUTING-ID -f icm_routing_id
 }
 
 file_icm(){
