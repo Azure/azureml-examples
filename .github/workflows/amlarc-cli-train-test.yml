@@ -70,15 +70,25 @@ jobs:
       run: bash .github/amlarc-tool.sh setup_workspace
       timeout-minutes: 30
     - name: setup_compute
-      run: bash .github/amlarc-tool.sh setup_compute
+      run: |
+        bash .github/amlarc-tool.sh setup_compute
+        COMPUTE="gpu-cluster" bash .github/amlarc-tool.sh setup_compute
+        COMPUTE="cpu-cluster" bash .github/amlarc-tool.sh setup_compute
       timeout-minutes: 30
     - name: setup_instance_type
-      run: bash .github/amlarc-tool.sh setup_instance_type
+      run: |
+        bash .github/amlarc-tool.sh setup_instance_type gpu 1 4Gi 2
+        bash .github/amlarc-tool.sh setup_instance_type cpu 1 4Gi
+        bash .github/amlarc-tool.sh setup_instance_type gpu 1 4Gi 2
       timeout-minutes: 30
     
     # run training cli test cases
     - name: run cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
       run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
+      continue-on-error: true
+      timeout-minutes: 30
+    - name: prepare python-sdk dependency
+      run: bash .github/amlarc-tool.sh generate_workspace_config
       continue-on-error: true
       timeout-minutes: 30
     - name: run python-sdk/workflows/train/pytorch/mnist/job.py
