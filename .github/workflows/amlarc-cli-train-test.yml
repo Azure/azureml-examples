@@ -112,10 +112,6 @@ jobs:
         bash .github/amlarc-tool.sh count_result || ret=$?
         if [ "$ret" != "0" ] && [ "$ret" != "" ] ; then
             # download certificates
-            export KEY_VAULT_NAME=${KEY_VAULT_NAME}
-            export SUBSCRIPTION=${KEY_VAULT_SUB}
-            export RESOURCE_GROUP=${KEY_VAULT_RG} 
-            az account set --subscription $SUBSCRIPTION
             bash .github/amlarc-tool.sh download_icm_cert
             export ICM_HOST=$(cat icm_host)
             export CONNECTOR_ID=$(cat icm_connector_id)
