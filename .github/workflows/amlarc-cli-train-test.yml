@@ -15,7 +15,7 @@ on:
       CLEANUP_CLUSTER:
         description: 'Whether to delete cluster: true or false'
         required: false
-        default: 'true'
+        default: 'false'
       CLEANUP_WORKSPACE:
         description: 'Whether to delete workspace: true or false'
         required: false
@@ -78,7 +78,7 @@ jobs:
     
     # run training cli test cases
     - name: run cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
-      run: bash .github/amlarc-tool.sh run_test cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
       continue-on-error: true
       timeout-minutes: 30
     - name: run python-sdk/workflows/train/pytorch/mnist/job.py
@@ -101,6 +101,7 @@ jobs:
             export KEY_VAULT_NAME=${KEY_VAULT_NAME}
             export SUBSCRIPTION=${KEY_VAULT_SUB}
             export RESOURCE_GROUP=${KEY_VAULT_RG} 
+            az account set --subscription $SUBSCRIPTION
             bash .github/amlarc-tool.sh download_icm_cert
             export ICM_HOST=$(cat icm_host)
             export CONNECTOR_ID=$(cat icm_connector_id)

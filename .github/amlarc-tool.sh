@@ -470,7 +470,7 @@ run_jupyter_test(){
 run_py_test(){
     JOB_SPEC="${1:-python-sdk/workflows/train/fastai/mnist/job.py}"
     JOB_DIR=$(dirname $JOB_SPEC)
-    JOB_FILE=$(basename $$JOB_SPEC)
+    JOB_FILE=$(basename $JOB_SPEC)
 
     cd $JOB_DIR
     python $JOB_FILE
