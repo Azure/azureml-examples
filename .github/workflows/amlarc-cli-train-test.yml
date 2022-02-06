@@ -37,7 +37,7 @@ jobs:
       SEVERITY: 3
       OWNERS: zetia@microsoft.com;jing.zhong@microsoft.com
       GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/amlarc-cli-train-test.yml
       
     steps:
     - name: check out repo
@@ -77,9 +77,9 @@ jobs:
       timeout-minutes: 30
     - name: setup_instance_type
       run: |
-        bash .github/amlarc-tool.sh setup_instance_type defaultinstancetype 4 8Gi
-        bash .github/amlarc-tool.sh setup_instance_type cpu 4 8Gi
-        bash .github/amlarc-tool.sh setup_instance_type gpu 4 8Gi 2
+        bash .github/amlarc-tool.sh setup_instance_type defaultinstancetype 8 64Gi
+        bash .github/amlarc-tool.sh setup_instance_type cpu 8 64Gi
+        bash .github/amlarc-tool.sh setup_instance_type gpu 8 64Gi 2
       timeout-minutes: 30
     
     ## run training cli test cases
