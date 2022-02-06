@@ -90,10 +90,10 @@ jobs:
       continue-on-error: true
       timeout-minutes: 30
     # java
-    - name: run cli/jobs/single-step/java/iris/job-template.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/java/iris/job-template.yml
-      continue-on-error: true
-      timeout-minutes: 30
+    # - name: run cli/jobs/single-step/java/iris/job-template.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/java/iris/job-template.yml
+    #   continue-on-error: true
+    #   timeout-minutes: 30
     # julia
     - name: run cli/jobs/single-step/julia/iris/job.yml
       run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/julia/iris/job.yml
