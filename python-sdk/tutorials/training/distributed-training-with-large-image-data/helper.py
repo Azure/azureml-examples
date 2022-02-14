@@ -16,7 +16,7 @@ def create_compute_cluster(name, sku, workspace):
         print("Found existing cluster for {} -- using it".format(name))
         return compute_target
     except ComputeTargetException:
-        compute_config = AmlCompute.provisioning_configuration(vm_size=sku, max_nodes=4, idle_seconds_before_scaledown=60)
+        compute_config = AmlCompute.provisioning_configuration(vm_size=sku, max_nodes=4, idle_seconds_before_scaledown=120)
         compute_target = ComputeTarget.create(workspace, name, compute_config)
         print("Creating cluster {}".format(name))
         compute_target.wait_for_completion(show_output=True)
@@ -76,14 +76,3 @@ def get_az_storage_cli_auth_param(datastore):
     if datastore.account_key:
         return f'--account-key {datastore.account_key}'
     return f'--sas-token {datastore.sas_token}'
-
-
-def wait_for_run_to_complete(run):
-    """Wait for run to complete."""
-    run.wait_for_completion(show_output=False)    
-
-
-def wait_for_runs_to_complete(runs):
-    """Wait for all passed in runs to complete."""
-    for run in runs:
-        wait_for_run_to_complete(run)
