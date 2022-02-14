@@ -61,8 +61,8 @@ class BoundingBoxConverter(CocoToJSONLinesConverter):
         self.json_lines_data[index]["label"].append(label)
 
     def _populate_isCrowd(self, label, annotation):
-        if 'iscrowd' in annotation.keys():
-            label['isCrowd'] = annotation['iscrowd']
+        if "iscrowd" in annotation.keys():
+            label["isCrowd"] = annotation["iscrowd"]
 
     def convert(self):
         for i in range(0, len(self.coco_data["images"])):
