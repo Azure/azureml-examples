@@ -10,6 +10,9 @@ from azureml.automl.dnn.vision.common.model_export_utils import load_model
 from azureml.automl.dnn.vision.object_detection_yolo.models.common import Conv, Hardswish
 
 logger = get_logger(__name__)
+# constants
+TORCH_MODEL_PATH = 'model.pt'
+
 
 def export_onnx_model(model, dummy_input, input_names, output_names, dynamic_axes, file_path, device):
     """
@@ -41,8 +44,9 @@ def export_onnx_model(model, dummy_input, input_names, output_names, dynamic_axe
                       output_names=output_names,
                       dynamic_axes=dynamic_axes)
 
+
 def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, best_child_run,
-                              model_settings, model_type, device):
+                              model_settings, model_name, device):
     """
     Get the onnx batch model and verify the schema.
 
@@ -65,98 +69,116 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
     """
 
     # download the pytorch model weights
-    torch_model_path = 'model.pt'
-    best_child_run.download_file(name='train_artifacts/model.pt', output_file_path=torch_model_path)
+    best_child_run.download_file(name='train_artifacts/model.pt', output_file_path=TORCH_MODEL_PATH)
     # load the model wrapper
-    model_wrapper = load_model(task_type, torch_model_path, **model_settings)
+    model_wrapper = load_model(task_type, TORCH_MODEL_PATH, **model_settings)
     onnx_model_file_path = './outputs/model_' + str(batch_size) + '.onnx'
-    batch_model = False  # to check whether the user is not generating the default onnx model
+#     batch_model = False  # to check whether the user is not generating the default onnx model
 
-    if model_type == 'faster_rcnn':
-
-        if (batch_size > 1) or (height_onnx != 600) or (width_onnx != 800):
-            batch_model = True
-            input_names = ['input']
-            od_output_names = ['boxes', 'labels', 'scores']
-            output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
-            dynamic_axes = dict()
-            dynamic_axes['input'] = {0: 'batch'}
-            for output in output_names:
-                dynamic_axes[output] = {0: 'prediction'}
-
-            dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
-            model_wrapper.disable_model_transform()
-            model = model_wrapper.model
-
-    elif model_type == 'yolo':
-
-        if (batch_size > 1) or (height_onnx != 640) or (width_onnx != 640):
-            batch_model = True
-            input_names = ['input']
-            output_names = ['output']
-            dynamic_axes = dict()
-            dynamic_axes = {'input': {0: 'batch'}, 'output': {0: 'batch', 1: 'boxes'}}
-
-            dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
-            model = model_wrapper.model
-            for k, m in model.named_modules():
-                if isinstance(m, Conv) and isinstance(m.act, torch.nn.Hardswish):
-                    m.act = Hardswish()
-
-    elif model_type == 'mask_rcnn':
-
-        if (batch_size > 1) or (height_onnx != 600) or (width_onnx != 800):
-            batch_model = True
-            input_names = ['input']
-            od_output_names = ['boxes', 'labels', 'scores', 'masks']
-            output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
-            dynamic_axes = dict()
-            dynamic_axes['input'] = {0: 'batch'}
-            for output in output_names:
-                dynamic_axes[output] = {0: 'prediction'}
-
-            dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
-            model_wrapper.disable_model_transform()
-            model = model_wrapper.model
-
-    if batch_model:
-        try:
-            # export the model
-            export_onnx_model(model, dummy_input, input_names, output_names, dynamic_axes,
-                              onnx_model_file_path, device=device)
-            # check/verify schema of generated onnx model
-            onnx_model = onnx.load(onnx_model_file_path)
-            onnx.checker.check_model(onnx_model)
-            logger.info('ONNX model generation for the batch size {} is successful'.format(batch_size))
-        except Exception as e:
-            logger.error('ONNX model generation or Schema validation error: ' + str(e))
-            raise
-    else:
+    if batch_size <= 1:
         msg = 'Please use the auto-generated ONNX model for the best child run. No need to run this script'
         logger.warning(msg)
+        return
+
+    if model_name == 'faster-rcnn':
+
+        input_names = ['input']
+        od_output_names = ['boxes', 'labels', 'scores']
+        output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
+        dynamic_axes = dict()
+        dynamic_axes['input'] = {0: 'batch', 1: 'channel', 2: 'height', 3: 'width'}
+        for output in output_names:
+            dynamic_axes[output] = {0: 'prediction'}
+
+        dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
+        model_wrapper.disable_model_transform()
+        model = model_wrapper.model
+
+    elif model_name == 'yolo':
+
+        input_names = ['input']
+        output_names = ['output']
+        dynamic_axes = dict()
+        dynamic_axes = {'input': {0: 'batch'}, 'output': {0: 'batch', 1: 'boxes'}}
+
+        dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
+        model = model_wrapper.model
+        for k, m in model.named_modules():
+            if isinstance(m, Conv) and isinstance(m.act, torch.nn.Hardswish):
+                m.act = Hardswish()
+
+    elif model_name == 'mask-rcnn':
+
+        input_names = ['input']
+        od_output_names = ['boxes', 'labels', 'scores', 'masks']
+        output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
+        dynamic_axes = dict()
+        dynamic_axes['input'] = {0: 'batch', 1: 'channel', 2: 'height', 3: 'width'}
+        for output in output_names:
+            dynamic_axes[output] = {0: 'prediction'}
+        masks_output_names = [name for name in output_names if 'masks' in name]
+        for mask_name in masks_output_names:
+            dynamic_axes[mask_name][2] = 'height'
+            dynamic_axes[mask_name][3] = 'width'
+        dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
+        model_wrapper.disable_model_transform()
+        model = model_wrapper.model
+
+    try:
+        # export the model
+        export_onnx_model(model, dummy_input, input_names, output_names, dynamic_axes,
+                          onnx_model_file_path, device=device)
+        # check/verify schema of generated onnx model
+        onnx_model = onnx.load(onnx_model_file_path)
+        onnx.checker.check_model(onnx_model)
+        logger.info('ONNX model generation for the batch size {} is successful'.format(batch_size))
+    except Exception as e:
+        logger.error('ONNX model generation or Schema validation error: ' + str(e))
+        raise
+
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     # add arguments
-    parser.add_argument('--batch_size', type=int, required=True)
-    parser.add_argument('--height_onnx', type=int, required=True)
-    parser.add_argument('--width_onnx', type=int, required=True)
-    parser.add_argument('--experiment_name', type=str, required=True)
-    parser.add_argument('--subscription_id', type=str, required=True)
-    parser.add_argument('--resource_group', type=str, required=True)
-    parser.add_argument('--workspace_name', type=str, required=True)
-    parser.add_argument('--run_id', type=str, required=True)
-    parser.add_argument('--task_type', type=str, required=True)
-    parser.add_argument('--box_score_thresh', type=float, required=True)
+    parser.add_argument('--model_name', type=str, required=True,
+                        help='Model name from yolo, faster-rcnn, mask-rcnn')
+    parser.add_argument('--batch_size', type=int, required=True,
+                        help='No. of samples per batch')
+    parser.add_argument('--height_onnx', type=int, required=True,
+                        help='Height of the image for ONNX model')
+    parser.add_argument('--width_onnx', type=int, required=True,
+                        help='Width of the image for ONNX model')
+    parser.add_argument('--experiment_name', type=str, required=True,
+                        help='Name of the experiment')
+    parser.add_argument('--subscription_id', type=str, required=True,
+                        help='Subscription ID')
+    parser.add_argument('--resource_group', type=str, required=True,
+                        help='Resource group')
+    parser.add_argument('--workspace_name', type=str, required=True,
+                        help='Name of the workspace')
+    parser.add_argument('--run_id', type=str, required=True,
+                        help='id of the run')
+    parser.add_argument('--task_type', type=str, required=True,
+                        help='Task type in automl for images')
+    parser.add_argument('--box_score_thresh', type=float, required=True,
+                        help='During inference, only return proposals with a classification score \
+                        greater than box_score_thresh')
 
-    parser.add_argument('--min_size', type=int, required=False)
-    parser.add_argument('--max_size', type=int, required=False)
-    parser.add_argument('--box_nms_thresh', type=float, required=False)
-    parser.add_argument('--box_detections_per_img', type=int, required=False)
-    parser.add_argument('--img_size', type=int, required=False)
-    parser.add_argument('--model_size', type=str, required=False)
-    parser.add_argument('--box_iou_thresh', type=float, required=False)
+    parser.add_argument('--min_size', type=int, required=False,
+                        help="Minimum size of the image to be rescaled before feeding it to the backbone")
+    parser.add_argument('--max_size', type=int, required=False,
+                        help="Maximum size of the image to be rescaled before feeding it to the backbone")
+    parser.add_argument('--box_nms_thresh', type=float, required=False,
+                        help='Non-maximum suppression (NMS) threshold for the prediction head')
+    parser.add_argument('--box_detections_per_img', type=int, required=False,
+                        help='Maximum number of detections per image, for all classes')
+    parser.add_argument('--img_size', type=int, required=False,
+                        help='Image size for train and validation')
+    parser.add_argument('--model_size', type=str, required=False,
+                        help='Size of the model from small, medium, large, xlarge')
+    parser.add_argument('--box_iou_thresh', type=float, required=False,
+                        help='IoU threshold')
 
     # parse arguments
     args = parser.parse_args()
@@ -173,28 +195,30 @@ if __name__ == '__main__':
 
     model_type = None
     if args.task_type == 'image-object-detection':
-        if args.img_size is not None:
+        if args.model_name == 'yolo':
             # yolo settings
-            model_type = 'yolo'
             model_settings = {"img_size": args.img_size, "model_size": args.model_size,
                               "box_score_thresh": args.box_score_thresh, "box_iou_thresh": args.box_iou_thresh}
-        else:
+        elif args.model_name == 'faster-rcnn':
             # faster rcnn settings
-            model_type = 'faster_rcnn'
             model_settings = {"min_size": args.min_size, "max_size": args.max_size,
                               "box_score_thresh": args.box_score_thresh,
                               "box_nms_thresh": args.box_nms_thresh,
                               "box_detections_per_img": args.box_detections_per_img}
-
+        else:
+            logger.info('Given model name {} for the task {} is not expected'.format(args.model_name,
+                                                                                     args.task_type))
     elif args.task_type == 'image-instance-segmentation':
         # mask rcnn settings
-        model_type = 'mask_rcnn'
-        model_settings = {"min_size": args.min_size, "max_size": args.max_size,
-                          "box_score_thresh": args.box_score_thresh,
-                          "box_nms_thresh": args.box_nms_thresh, "box_detections_per_img": args.box_detections_per_img}
+        if args.model_name == 'mask-rcnn':
+            model_settings = {"min_size": args.min_size, "max_size": args.max_size,
+                              "box_score_thresh": args.box_score_thresh,
+                              "box_nms_thresh": args.box_nms_thresh,
+                              "box_detections_per_img": args.box_detections_per_img}
+        else:
+            logger.info('Given model name {} for the task {} is not expected'.format(args.model_name,
+                                                                                     args.task_type))
 
-    if model_type is not None:
-        generate_onnx_batch_model(args.batch_size, args.height_onnx, args.width_onnx, args.task_type, best_child_run,
-                                  model_settings, model_type, device='cpu')
-    else:
-        logger.info('Given task type {} is not expected'.format(args.task_type))
+#     if model_type is not None:
+    generate_onnx_batch_model(args.batch_size, args.height_onnx, args.width_onnx, args.task_type, best_child_run,
+                              model_settings, args.model_name, device='cpu')
