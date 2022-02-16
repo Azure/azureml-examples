@@ -1,0 +1,27 @@
+name: Coco_Extract_Annotations
+display_name: Extract Coco Annotations
+version: 1
+type: command
+inputs:
+    annotations_dir:
+        type: path
+    category_id:
+        type: int
+    category_name:
+        type: str
+outputs:
+    train_annotations:
+        type: path
+    valid_annotations:
+        type: path
+code:
+    local_path: .
+environment:
+    azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:21
+command: >-
+    python run.py
+    --annotations_dir ${{inputs.annotations_dir}}
+    --category_id ${{inputs.category_id}}
+    --category_name ${{inputs.category_name}}
+    --output_train ${{outputs.train_annotations}}
+    --output_valid ${{outputs.valid_annotations}}
