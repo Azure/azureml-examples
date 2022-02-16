@@ -11,7 +11,7 @@ import sys
 import argparse
 import logging
 import json
-
+import glob
 
 def get_images_containing_category(
     annotations: dict, category_id: int, category_name: str
@@ -101,11 +101,15 @@ def run(args: argparse.Namespace):
 
     logger.info(f"Running with arguments: {args}")
 
+    # list all files in annotations folder
+
     #########################
     ### VALID ANNOTATIONS ###
     #########################
 
-    valid_file_path = os.path.join(args.annotations_dir, "instances_val2017.json")
+    # it's likely the file will be in some subfolder
+    valid_file_path = glob.glob(os.path.join(args.annotations_dir, "**", "instances_val2017.json"), recursive=True)[0]
+
     logger.info(f"Loading valid annotations from {valid_file_path}")
     with open(valid_file_path) as in_file:
         valid_annotations = json.loads(in_file.read())
@@ -130,7 +134,9 @@ def run(args: argparse.Namespace):
     ### TRAIN ANNOTATIONS ###
     #########################
 
-    train_file_path = os.path.join(args.annotations_dir, "instances_train2017.json")
+    # it's likely the file will be in some subfolder
+    train_file_path = glob.glob(os.path.join(args.annotations_dir, "**", "instances_train2017.json"), recursive=True)[0]
+
     logger.info(f"Loading train annotations from {train_file_path}")
     with open(train_file_path) as in_file:
         train_annotations = json.loads(in_file.read())

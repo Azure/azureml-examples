@@ -6,9 +6,9 @@ inputs:
     annotations_dir:
         type: path
     category_id:
-        type: int
+        type: integer
     category_name:
-        type: str
+        type: string
 outputs:
     train_annotations:
         type: path
