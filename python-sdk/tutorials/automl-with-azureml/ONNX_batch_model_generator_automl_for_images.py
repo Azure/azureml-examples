@@ -81,6 +81,10 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         msg = 'Please use the auto-generated ONNX model for the best child run. No need to run this script'
         logger.warning(msg)
         return
+    
+    input_names = ['input']
+    dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
+
 
     if (
         ModelNames.FASTER_RCNN_RESNET18_FPN == model_name
@@ -91,7 +95,6 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         or ModelNames.RETINANET_RESNET50_FPN == model_name
     ):
 
-        input_names = ['input']
         if ModelNames.RETINANET_RESNET50_FPN == model_name:
             od_output_names = ['boxes', 'scores', 'labels']
         else:
@@ -102,18 +105,15 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         for output in output_names:
             dynamic_axes[output] = {0: 'prediction'}
 
-        dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
         model_wrapper.disable_model_transform()
         model = model_wrapper.model
 
     elif ModelNames.YOLO_V5 == model_name:
 
-        input_names = ['input']
         output_names = ['output']
         dynamic_axes = dict()
         dynamic_axes = {'input': {0: 'batch'}, 'output': {0: 'batch', 1: 'boxes'}}
 
-        dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
         model = model_wrapper.model
         for k, m in model.named_modules():
             if isinstance(m, Conv) and isinstance(m.act, torch.nn.Hardswish):
@@ -127,7 +127,6 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         or ModelNames.MASK_RCNN_RESNET152_FPN == model_name
     ):
 
-        input_names = ['input']
         od_output_names = ['boxes', 'labels', 'scores', 'masks']
         output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
         dynamic_axes = dict()
@@ -138,7 +137,6 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         for mask_name in masks_output_names:
             dynamic_axes[mask_name][2] = 'height'
             dynamic_axes[mask_name][3] = 'width'
-        dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
         model_wrapper.disable_model_transform()
         model = model_wrapper.model
 
