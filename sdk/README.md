@@ -30,7 +30,8 @@ cd azureml-examples/sdk
 |Environment|[Environment](assets/environment/environment.ipynb)|Creating environments|
 |Model|[Model](assets/model/model.ipynb)|Creating models|
 |Training Job|[PyTorch Iris](jobs/single-step/pytorch/iris/pytorch-iris.ipynb)|Train a neural network with PyTorch on the Iris dataset.|
-|Training Job|[Sklearn Diabetes](jobs/single-step/scikit-learn/diabetes/sklearn-diabetes.ipynb)|Train a scikit-learn LinearRegression model on the Diabetes dataset.|
+|Training Job|[Prediction using R](jobs/single-step/r/accidents/accident-prediction.ipynb)|Train a neural network with PyTorch on the Iris dataset.|
+|Training Job|[Sklearn Diabetes](jobs/single-step/scikit-learn/diabetes/sklearn-diabetes.ipynb)|Train a prediction model on R using the `glm()` function.|
 |Training Job|[Sklearn Iris](jobs/single-step/scikit-learn/iris/iris-scikit-learn.ipynb)|Train a scikit-learn SVM on the Iris dataset.|
 |Training Job|[Sklearn Mnist](jobs/single-step/scikit-learn/mnist/sklearn-mnist.ipynb)|Train scikit-leatn on mnist data|
 |Training Job|[Tensorflow Mnist](jobs/single-step/tensorflow/mnist/tensorflow-mnist.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset.|
