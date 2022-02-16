@@ -1,3 +1,4 @@
+import os
 import onnx
 import torch
 import argparse
@@ -8,10 +9,11 @@ from torchvision.ops._register_onnx_ops import _onnx_opset_version
 from azureml.automl.dnn.vision.common.logging_utils import get_logger
 from azureml.automl.dnn.vision.common.model_export_utils import load_model
 from azureml.automl.dnn.vision.object_detection_yolo.models.common import Conv, Hardswish
+import azureml.automl.core.shared.constants as shared_constants
+from azureml.automl.dnn.vision.common.constants import ArtifactLiterals
+from azureml.automl.dnn.vision.object_detection.common.constants import ModelNames
 
 logger = get_logger(__name__)
-# constants
-TORCH_MODEL_PATH = 'model.pt'
 
 
 def export_onnx_model(model, dummy_input, input_names, output_names, dynamic_axes, file_path, device):
@@ -69,21 +71,31 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
     """
 
     # download the pytorch model weights
-    best_child_run.download_file(name='train_artifacts/model.pt', output_file_path=TORCH_MODEL_PATH)
+    best_child_run.download_file(name=os.path.join(ArtifactLiterals.OUTPUT_DIR, shared_constants.PT_MODEL_FILENAME),
+                                 output_file_path=shared_constants.PT_MODEL_FILENAME)
     # load the model wrapper
-    model_wrapper = load_model(task_type, TORCH_MODEL_PATH, **model_settings)
+    model_wrapper = load_model(task_type, shared_constants.PT_MODEL_FILENAME, **model_settings)
     onnx_model_file_path = './outputs/model_' + str(batch_size) + '.onnx'
-#     batch_model = False  # to check whether the user is not generating the default onnx model
 
     if batch_size <= 1:
         msg = 'Please use the auto-generated ONNX model for the best child run. No need to run this script'
         logger.warning(msg)
         return
 
-    if model_name == 'faster-rcnn':
+    if (
+        ModelNames.FASTER_RCNN_RESNET18_FPN == model_name
+        or ModelNames.FASTER_RCNN_RESNET34_FPN == model_name
+        or ModelNames.FASTER_RCNN_RESNET50_FPN == model_name
+        or ModelNames.FASTER_RCNN_RESNET101_FPN == model_name
+        or ModelNames.FASTER_RCNN_RESNET152_FPN == model_name
+        or ModelNames.RETINANET_RESNET50_FPN == model_name
+    ):
 
         input_names = ['input']
-        od_output_names = ['boxes', 'labels', 'scores']
+        if ModelNames.RETINANET_RESNET50_FPN == model_name:
+            od_output_names = ['boxes', 'scores', 'labels']
+        else:
+            od_output_names = ['boxes', 'labels', 'scores']
         output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
         dynamic_axes = dict()
         dynamic_axes['input'] = {0: 'batch', 1: 'channel', 2: 'height', 3: 'width'}
@@ -94,7 +106,7 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         model_wrapper.disable_model_transform()
         model = model_wrapper.model
 
-    elif model_name == 'yolo':
+    elif ModelNames.YOLO_V5 == model_name:
 
         input_names = ['input']
         output_names = ['output']
@@ -107,7 +119,13 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
             if isinstance(m, Conv) and isinstance(m.act, torch.nn.Hardswish):
                 m.act = Hardswish()
 
-    elif model_name == 'mask-rcnn':
+    elif (
+        ModelNames.MASK_RCNN_RESNET18_FPN == model_name
+        or ModelNames.MASK_RCNN_RESNET34_FPN == model_name
+        or ModelNames.MASK_RCNN_RESNET50_FPN == model_name
+        or ModelNames.MASK_RCNN_RESNET101_FPN == model_name
+        or ModelNames.MASK_RCNN_RESNET152_FPN == model_name
+    ):
 
         input_names = ['input']
         od_output_names = ['boxes', 'labels', 'scores', 'masks']
@@ -142,7 +160,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # add arguments
     parser.add_argument('--model_name', type=str, required=True,
-                        help='Model name from yolo, faster-rcnn, mask-rcnn')
+                        help='Model name supported from yolov5, fasterrcnn_resnet152_fpn,\
+                        maskrcnn_resnet101_fpn etc.')
     parser.add_argument('--batch_size', type=int, required=True,
                         help='No. of samples per batch')
     parser.add_argument('--height_onnx', type=int, required=True,
@@ -195,11 +214,18 @@ if __name__ == '__main__':
 
     model_type = None
     if args.task_type == 'image-object-detection':
-        if args.model_name == 'yolo':
+        if ModelNames.YOLO_V5 == args.model_name:
             # yolo settings
             model_settings = {"img_size": args.img_size, "model_size": args.model_size,
                               "box_score_thresh": args.box_score_thresh, "box_iou_thresh": args.box_iou_thresh}
-        elif args.model_name == 'faster-rcnn':
+        elif (
+            ModelNames.FASTER_RCNN_RESNET18_FPN == args.model_name
+            or ModelNames.FASTER_RCNN_RESNET34_FPN == args.model_name
+            or ModelNames.FASTER_RCNN_RESNET50_FPN == args.model_name
+            or ModelNames.FASTER_RCNN_RESNET101_FPN == args.model_name
+            or ModelNames.FASTER_RCNN_RESNET152_FPN == args.model_name
+            or ModelNames.RETINANET_RESNET50_FPN == args.model_name
+        ):
             # faster rcnn settings
             model_settings = {"min_size": args.min_size, "max_size": args.max_size,
                               "box_score_thresh": args.box_score_thresh,
@@ -210,7 +236,13 @@ if __name__ == '__main__':
                                                                                      args.task_type))
     elif args.task_type == 'image-instance-segmentation':
         # mask rcnn settings
-        if args.model_name == 'mask-rcnn':
+        if (
+            ModelNames.MASK_RCNN_RESNET18_FPN == args.model_name
+            or ModelNames.MASK_RCNN_RESNET34_FPN == args.model_name
+            or ModelNames.MASK_RCNN_RESNET50_FPN == args.model_name
+            or ModelNames.MASK_RCNN_RESNET101_FPN == args.model_name
+            or ModelNames.MASK_RCNN_RESNET152_FPN == args.model_name
+        ):
             model_settings = {"min_size": args.min_size, "max_size": args.max_size,
                               "box_score_thresh": args.box_score_thresh,
                               "box_nms_thresh": args.box_nms_thresh,
