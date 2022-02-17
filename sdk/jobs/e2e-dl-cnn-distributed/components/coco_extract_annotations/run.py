@@ -69,8 +69,7 @@ def save_image_list_as_csv(
     with open(output_file_name, "w") as out_file:
         for key in image_id_selection:
             out_file.write(
-                "{0},{1}{2},{3}\n".format(
-                    key,
+                "{0}{1},{2}\n".format(
                     image_file_name_prefix,
                     image_id_selection[key]["file_name"],
                     category_name
