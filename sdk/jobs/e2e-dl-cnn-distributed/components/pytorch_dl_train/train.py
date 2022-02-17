@@ -3,7 +3,6 @@ TODO: checkpoint path as input
 TODO: instrument with mlflow
 TODO: category mapping
 """
-from __future__ import print_function, division
 import os
 import glob
 import time
@@ -11,11 +10,10 @@ import copy
 import pickle
 import csv
 import logging
-import warnings
 import argparse
+from distutils.util import strtobool
 import json
 from typing import Any, Callable, List, Optional, Tuple
-from distutils.util import strtobool
 
 import mlflow
 
@@ -34,6 +32,32 @@ from tqdm import tqdm
 # import nvtx
 
 
+def input_file_path(path):
+    """ Argparse type to resolve input path as single file from directory.
+    Given input path can be either a file, or a directory.
+    If it's a directory, this returns the path to the unique file it contains.
+    Args:
+        path (str): either file or directory path
+    
+    Returns:
+        str: path to file, or to unique file in directory
+    """
+    if os.path.isfile(path):
+        logging.getLogger(__name__).info(f"Found INPUT file {path}")
+        return path
+    if os.path.isdir(path):
+        all_files = os.listdir(path)
+        if not all_files:
+            raise Exception(f"Could not find any file in specified input directory {path}")
+        if len(all_files) > 1:
+            raise Exception(f"Found multiple files in input file path {path}, use input_directory_path type instead.")
+        logging.getLogger(__name__).info(f"Found INPUT directory {path}, selecting unique file {all_files[0]}")
+        return os.path.join(path, all_files[0])
+    
+    logging.getLogger(__name__).critical(f"Provided INPUT path {path} is neither a directory or a file???")
+    return path
+
+
 class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
     """PyTorch dataset for images in a folder, with label provided as a dict."""
 
@@ -48,7 +72,8 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
         self.samples = []  # list of tuples (path,target)
 
         # search for all images
-        images_in_root = glob.glob(root + "/*")
+        images_in_root = glob.glob(root + "/**/*", recursive=True)
+        logging.info(f"ImageDatasetWithLabelInMap found {len(images_in_root)} entries in root dir {root}")
 
         # find their target
         for entry in images_in_root:
@@ -181,6 +206,7 @@ class PyTorchImageModelTraining:
                 f"model_arch={model_arch} is not implemented yet."
             )
 
+        self.logger.info(f"Setting model to use device {self.device}")
         self.model = self.model.to(self.device)
 
         # Use distributed if available
@@ -276,7 +302,7 @@ class PyTorchImageModelTraining:
 
         for images, targets in tqdm(self.training_data_loader):
             images = images.to(self.device)
-            labels = targets.to(self.device)
+            targets = targets.to(self.device)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -394,13 +420,13 @@ def main():
     )
     parser.add_argument(
         "--train_annotations",
-        type=str,
+        type=input_file_path,
         required=True,
         help="readable name of the category",
     )
     parser.add_argument(
         "--valid_annotations",
-        type=str,
+        type=input_file_path,
         required=True,
         help="path to output train annotations",
     )
@@ -410,6 +436,13 @@ def main():
         required=False,
         default=None,
         help="path to read and write checkpoints",
+    )
+    parser.add_argument(
+        "--model_output",
+        type=str,
+        required=False,
+        default=None,
+        help="path to write final model",
     )
     parser.add_argument(
         "--model_arch",
@@ -480,8 +513,8 @@ def main():
 
     training_handler.train(num_epochs=args.num_epochs)
 
-    if args.checkpoint_path:
-        training_handler.save(args.checkpoint_path, name=f"epoch-{args.num_epochs}")
+    if args.model_output:
+        training_handler.save(args.model_output, name=f"epoch-{args.num_epochs}")
 
 
 if __name__ == "__main__":
