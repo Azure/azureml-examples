@@ -1,12 +1,24 @@
 """
 TODO: checkpoint path as input
+TODO: instrument with mlflow
+TODO: category mapping
 """
 from __future__ import print_function, division
-import argparse
-import time
 import os
+import glob
+import time
 import copy
 import pickle
+import csv
+import logging
+import warnings
+import argparse
+import json
+from typing import Any, Callable, List, Optional, Tuple
+from distutils.util import strtobool
+
+import mlflow
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -14,119 +26,43 @@ import torchvision.models as models
 import torchvision
 from torch.optim import lr_scheduler
 from torchvision import datasets, models, transforms
-from distutils.util import strtobool
-import csv
-import logging
-import warnings
-from typing import Any, Callable, List, Optional, Tuple
-#warnings.filterwarnings("ignore")
-import glob
+from torch.nn.parallel import DistributedDataParallel
+from torch.utils.data.distributed import DistributedSampler
+from torch.utils.data import DataLoader
+from tqdm import tqdm
 
+# import nvtx
 
-
-def train_model(
-    model,
-    criterion,
-    optimizer,
-    scheduler,
-    num_epochs,
-    dataloaders,
-    dataset_sizes,
-    class_names,
-    device,
-):
-    """
-    Train the model
-    """
-    since = time.time()
-
-    best_model_wts = copy.deepcopy(model.state_dict())
-    best_acc = 0.0
-
-    for epoch in range(num_epochs):
-        print("Epoch {}/{}".format(epoch, num_epochs - 1))
-        print("-" * 10)
-
-        # Each epoch has a training and validation phase
-        for phase in ["train", "valid"]:
-            if phase == "train":
-                scheduler.step()
-                model.train()  # Set model to training mode
-            else:
-                model.eval()  # Set model to evaluate mode
-
-            running_loss = 0.0
-            running_corrects = 0
-
-            # Iterate over data.
-            for batch_idx, (inputs, labels) in enumerate(dataloaders[phase]):
-                inputs = inputs.to(device)
-                labels = labels.to(device)
-
-                # zero the parameter gradients
-                optimizer.zero_grad()
-
-                # forward
-                # track history if only in train
-                with torch.set_grad_enabled(phase == "train"):
-                    outputs = model(inputs)
-                    _, preds = torch.max(outputs, 1)
-                    loss = criterion(outputs, labels)
-
-                    # backward + optimize only if in training phase
-                    if phase == "train":
-                        loss.backward()
-                        optimizer.step()
-
-                # statistics
-                running_loss += loss.item() * inputs.size(0)
-                corrects = torch.sum(preds == labels.data).float()
-                running_corrects += corrects
-
-            epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects.double() / dataset_sizes[phase]
-
-            print("{} Loss: {:.4f} Acc: {:.4f}".format(phase, epoch_loss, epoch_acc))
-
-            # deep copy the model
-            if phase == "valid" and epoch_acc > best_acc:
-                best_acc = epoch_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
-
-        print()
-
-    time_elapsed = time.time() - since
-    print(
-        "Training complete in {:.0f}m {:.0f}s".format(
-            time_elapsed // 60, time_elapsed % 60
-        )
-    )
-    print("Best val Acc: {:4f}".format(best_acc))
-
-    # load best model weights
-    model.load_state_dict(best_model_wts)
-    return model
 
 class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
     """PyTorch dataset for images in a folder, with label provided as a dict."""
-    def __init__(self, root: str, image_labels: dict, transforms: Optional[Callable] = None, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None):
+
+    def __init__(
+        self, root: str, image_labels: dict, transform: Optional[Callable] = None
+    ):
         # calling VisionDataset.__init__() first
-        super().__init__(root, transforms=transforms, transform=transform, target_transform=target_transform)
+        super().__init__(root, transform=transform)
 
         # now the specific initialization
-        self.samples = [] # list of tuples (path,target)
-        
+        self.loader = torchvision.datasets.folder.default_loader
+        self.samples = []  # list of tuples (path,target)
+
         # search for all images
-        images_in_root = glob.glob(root+"/*")
+        images_in_root = glob.glob(root + "/*")
 
         # find their target
         for entry in images_in_root:
             entry_basename = os.path.basename(entry)
             if entry_basename not in image_labels:
-                logging.warning(f"Image in root dir {entry} is not in provided image_labels")
+                logging.warning(
+                    f"Image in root dir {entry} is not in provided image_labels"
+                )
             else:
                 self.samples.append(
-                    (entry, 1 if image_labels[entry_basename]=="contains_person" else 0)
+                    (
+                        entry,
+                        1 if image_labels[entry_basename] == "contains_person" else 0,
+                    )
                 )
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
@@ -141,8 +77,8 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
         sample = self.loader(path)
         if self.transform is not None:
             sample = self.transform(sample)
-        if self.target_transform is not None:
-            target = self.target_transform(target)
+
+        target = torch.as_tensor(target, dtype=torch.float)
 
         return sample, target
 
@@ -158,50 +94,67 @@ class PyTorchImageModelTraining:
         self.training_labels = {}
         self.validation_labels = {}
 
+        self.training_data_sampler = None
         self.training_data_loader = None
         self.validation_data_loader = None
 
         self.logger = logging.getLogger(__name__)
 
+        # detect MPI configuration
+        self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
+        self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
+        self.multinode_available = self.world_size > 1
+        self.self_is_main_node = self.world_rank == 0
+        self.num_cpu_workers = os.cpu_count()
+
+        # Use CUDA if it is available
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda:0")
+        else:
+            self.device = torch.device("cpu")
+
     def load_image_labels(
         self, training_image_labels_path: str, validation_image_labels_path: str
     ):
-        with open(training_image_labels_path, newline='') as csv_file:
+        with open(training_image_labels_path, newline="") as csv_file:
             training_csv_reader = csv.reader(csv_file, delimiter=",")
 
             self.training_labels = []
             training_classes = set()
             for row in training_csv_reader:
-                self.training_labels.append(
-                    (os.path.basename(row[0]), row[1])
-                )
+                self.training_labels.append((os.path.basename(row[0]), row[1]))
                 training_classes.add(row[1])
         self.training_labels = dict(self.training_labels)
 
-        self.logger.info(f"Loaded training annotations, has samples={len(self.training_labels)} and classes={training_classes}")
+        self.logger.info(
+            f"Loaded training annotations, has samples={len(self.training_labels)} and classes={training_classes}"
+        )
 
-        with open(validation_image_labels_path, newline='') as csv_file:
+        with open(validation_image_labels_path, newline="") as csv_file:
             validation_csv_reader = csv.reader(csv_file, delimiter=",")
 
             self.validation_labels = []
             validation_classes = set()
             for row in validation_csv_reader:
                 if row[1] not in training_classes:
-                    self.logger.warning(f"Validation image {row[0]} has class {row[1]} that is not in the training set classes {training_classes}, this image will be discarded.")
-                else:
-                    self.validation_labels.append(
-                        (os.path.basename(row[0]), row[1])
+                    self.logger.warning(
+                        f"Validation image {row[0]} has class {row[1]} that is not in the training set classes {training_classes}, this image will be discarded."
                     )
+                else:
+                    self.validation_labels.append((os.path.basename(row[0]), row[1]))
                     validation_classes.add(row[1])
         self.validation_labels = dict(self.validation_labels)
-        
-        self.logger.info(f"Loaded validation annotations, has samples={len(self.validation_labels)} and classes={training_classes}")
+
+        self.logger.info(
+            f"Loaded validation annotations, has samples={len(self.validation_labels)} and classes={training_classes}"
+        )
 
         if validation_classes != training_classes:
-            raise Exception(f"Validation classes {validation_classes} != training classes {training_classes}, we can't proceed with training.")
+            raise Exception(
+                f"Validation classes {validation_classes} != training classes {training_classes}, we can't proceed with training."
+            )
 
         self.output_classes = sorted(list(training_classes))
-
 
     def load_model(
         self,
@@ -215,24 +168,24 @@ class PyTorchImageModelTraining:
         if output_classes is None:
             output_classes = len(self.output_classes)
 
-        self.logger.info(f"Loading model from arch={model_arch} pretrained={pretrained} output_classes={output_classes}")
+        self.logger.info(
+            f"Loading model from arch={model_arch} pretrained={pretrained} output_classes={output_classes}"
+        )
         if model_arch == "resnet18":
             self.model = models.resnet18(pretrained=pretrained)
-            self.model.fc = nn.Linear(self.model.fc.in_features, output_classes)
+            self.model.fc = nn.Linear(self.model.fc.in_features, 1)  # output_classes)
         else:
             raise NotImplementedError(
                 f"model_arch={model_arch} is not implemented yet."
             )
 
-        # Use CUDA if it is available
-        if torch.cuda.is_available():
-            device = torch.device("cuda:0")
-        else:
-            device = torch.device("cpu")
-        self.model = self.model.to(device)
+        self.model = self.model.to(self.device)
+
+        # Use distributed if available
+        if self.multinode_available:
+            self.model = DistributedDataParallel(model)
 
         return self.model
-
 
     def load_images(self, train_images_dir, valid_images_dir, batch_size):
         train_transform = transforms.Compose(
@@ -240,18 +193,29 @@ class PyTorchImageModelTraining:
                 transforms.RandomResizedCrop(200),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.405], std=[0.229, 0.224, 0.225]),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.405], std=[0.229, 0.224, 0.225]
+                ),
             ]
         )
         train_dataset = ImageDatasetWithLabelInMap(
             root=train_images_dir,
             image_labels=self.training_labels,
-            transform = train_transform
+            transform=train_transform,
         )
-        self.logger.info(f"ImageDatasetWithLabelInMap loaded training image list samples={len(train_dataset)}")
+        self.logger.info(
+            f"ImageDatasetWithLabelInMap loaded training image list samples={len(train_dataset)}"
+        )
 
-        self.training_data_loader = torch.utils.data.DataLoader(
-            train_dataset, batch_size=batch_size, shuffle=True, num_workers=4
+        self.training_data_sampler = DistributedSampler(
+            train_dataset, num_replicas=self.world_size, rank=self.world_rank
+        )
+        self.training_data_loader = DataLoader(
+            train_dataset,
+            batch_size=batch_size,
+            num_workers=self.num_cpu_workers,
+            pin_memory=True,
+            sampler=self.training_data_sampler,
         )
 
         valid_transform = transforms.Compose(
@@ -259,51 +223,145 @@ class PyTorchImageModelTraining:
                 transforms.Resize(200),
                 transforms.CenterCrop(200),
                 transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.405], std=[0.229, 0.224, 0.225]),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.405], std=[0.229, 0.224, 0.225]
+                ),
             ]
         )
         valid_dataset = ImageDatasetWithLabelInMap(
             root=valid_images_dir,
             image_labels=self.validation_labels,
-            transform = valid_transform
+            transform=valid_transform,
         )
-        self.logger.info(f"ImageDatasetWithLabelInMap loaded validation image list samples={len(valid_dataset)}")
-        self.validation_data_loader = torch.utils.data.DataLoader(
-            valid_dataset, batch_size=batch_size, shuffle=True, num_workers=4
+        self.logger.info(
+            f"ImageDatasetWithLabelInMap loaded validation image list samples={len(valid_dataset)}"
+        )
+        self.validation_data_loader = DataLoader(
+            valid_dataset,
+            batch_size=batch_size,
+            num_workers=self.num_cpu_workers,
+            pin_memory=True,
         )
 
+    def epoch_eval(self, epoch, criterion):
+        with torch.no_grad():
+            num_correct = 0
+            num_total_images = 0
+            running_loss = 0.0
+            for images, targets in tqdm(self.validation_data_loader):
 
-    def train(self, learning_rate=5e-5, momentum=0.9):
-        # Specify criterion
-        criterion = nn.CrossEntropyLoss()
+                images = images.to(self.device)
+                targets = targets.to(self.device)
 
+                outputs = self.model(images)
+
+                # loss = criterion(outputs, targets)
+                loss = criterion(outputs.squeeze(), targets.squeeze())
+                running_loss += loss.item() * images.size(0)
+                correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
+                num_correct += torch.sum(correct).item()
+                num_total_images += len(images)
+
+        return running_loss, num_correct, num_total_images
+
+    def epoch_train(self, epoch, optimizer, criterion):
+        self.model.train()
+        self.training_data_sampler.set_epoch(epoch)
+
+        num_correct = 0
+        num_total_images = 0
+        running_loss = 0.0
+
+        for images, targets in tqdm(self.training_data_loader):
+            images = images.to(self.device)
+            labels = targets.to(self.device)
+
+            # zero the parameter gradients
+            optimizer.zero_grad()
+
+            outputs = self.model(images)
+            _, preds = torch.max(outputs, 1)
+            # loss = criterion(outputs, targets)
+            loss = criterion(outputs.squeeze(), targets.squeeze())
+
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item() * images.size(0)
+            correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
+            num_correct += torch.sum(correct).item()
+            num_total_images += len(images)
+
+        return running_loss, num_correct, num_total_images
+
+    def train(self, num_epochs, learning_rate=5e-5, momentum=0.9):
         # Observe that all parameters are being optimized
-        optimizer = optim.SGD(self.model.parameters(), lr=learning_rate, momentum=momentum, nesterov=True, weight_decay=1e-4)
+        optimizer = optim.SGD(
+            self.model.parameters(),
+            lr=learning_rate,
+            momentum=momentum,
+            nesterov=True,
+            weight_decay=1e-4,
+        )
+
+        criterion = nn.BCEWithLogitsLoss()
+        # criterion = nn.CrossEntropyLoss()
 
         # Decay LR by a factor of 0.1 every 7 epochs
         scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
-        # Train model
-        model = train_model(
-            resnet,
-            criterion,
-            optimizer,
-            scheduler,
-            num_epochs,
-            dataloaders,
-            dataset_sizes,
-            class_names,
-            device,
-        )
+        for epoch in range(num_epochs):
+            self.logger.info(f"Training epoch {epoch}")
 
-        # Save model
-        print("Saving model")
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-        torch.save(model, os.path.join(output_dir, "model.pt"))
-        classes_file = open(os.path.join(output_dir, "class_names.pkl"), "wb")
-        pickle.dump(class_names, classes_file)
-        classes_file.close()
+            epoch_start = time.time()
+
+            # run loop on training set and return metrics
+            running_loss, num_correct, num_samples = self.epoch_train(
+                epoch, optimizer, criterion
+            )
+            epoch_train_loss = running_loss / num_samples
+            epoch_train_acc = num_correct / num_samples
+
+            self.logger.info(
+                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_valid_acc={epoch_train_acc} epoch={epoch}"
+            )
+            mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
+            mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
+
+            # run evaluation on validation set and return metrics
+            running_loss, num_correct, num_samples = self.epoch_eval(epoch, criterion)
+
+            epoch_valid_loss = running_loss / num_samples
+            epoch_valid_acc = num_correct / num_samples
+
+            self.logger.info(
+                f"MLFLOW: epoch_valid_loss={epoch_valid_loss} epoch_valid_acc={epoch_valid_acc} epoch={epoch}"
+            )
+            mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
+            mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
+
+            epoch_train_time = time.time() - epoch_start
+
+            if self.self_is_main_node:
+                mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
+            self.logger.info(
+                f"MLFLOW: epoch_train_time={epoch_train_time} epoch={epoch}"
+            )
+
+    def save(self, output_dir, name="dev"):
+        self.logger.info("Saving model in {output_dir}...")
+
+        # create output directory just in case
+        os.makedirs(output_dir, exist_ok=True)
+
+        # write model using torch.save()
+        torch.save(self.model, os.path.join(output_dir, f"model-{name}.pt"))
+
+        # save classes names for inferencing
+        with open(
+            os.path.join(output_dir, f"model-{name}-classes.json"), "w"
+        ) as out_file:
+            out_file.write(json.dumps(self.output_classes))
 
 
 def main():
@@ -401,10 +459,7 @@ def main():
 
     training_handler = PyTorchImageModelTraining()
 
-    training_handler.load_image_labels(
-        args.train_annotations,
-        args.valid_annotations
-    )
+    training_handler.load_image_labels(args.train_annotations, args.valid_annotations)
 
     training_handler.load_model(
         args.model_arch,
@@ -415,8 +470,16 @@ def main():
     training_handler.load_images(
         train_images_dir=args.train_images,
         valid_images_dir=args.valid_images,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
     )
+
+    if args.checkpoint_path:
+        training_handler.save(args.checkpoint_path, name="epoch-none")
+
+    training_handler.train(num_epochs=args.num_epochs)
+
+    if args.checkpoint_path:
+        training_handler.save(args.checkpoint_path, name=f"epoch-{args.num_epochs}")
 
 
 if __name__ == "__main__":
