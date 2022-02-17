@@ -109,8 +109,10 @@ class PyTorchImageModelTraining:
 
         # Use CUDA if it is available
         if torch.cuda.is_available():
+            self.logger.info(f"Setting up device for CUDA")
             self.device = torch.device("cuda:0")
         else:
+            self.logger.info(f"Setting up device for CPU")
             self.device = torch.device("cpu")
 
     def load_image_labels(
@@ -323,7 +325,7 @@ class PyTorchImageModelTraining:
             epoch_train_acc = num_correct / num_samples
 
             self.logger.info(
-                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_valid_acc={epoch_train_acc} epoch={epoch}"
+                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_train_acc={epoch_train_acc} epoch={epoch}"
             )
             mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
             mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
@@ -349,7 +351,7 @@ class PyTorchImageModelTraining:
             )
 
     def save(self, output_dir, name="dev"):
-        self.logger.info("Saving model in {output_dir}...")
+        self.logger.info(f"Saving model and classes in {output_dir}...")
 
         # create output directory just in case
         os.makedirs(output_dir, exist_ok=True)
