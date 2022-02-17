@@ -11,7 +11,6 @@ from azureml.automl.dnn.vision.common.model_export_utils import load_model
 from azureml.automl.dnn.vision.object_detection_yolo.models.common import Conv, Hardswish
 import azureml.automl.core.shared.constants as shared_constants
 from azureml.automl.dnn.vision.common.constants import ArtifactLiterals
-from azureml.automl.dnn.vision.object_detection.common.constants import ModelNames
 
 logger = get_logger(__name__)
 
@@ -81,10 +80,9 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         msg = 'Please use the auto-generated ONNX model for the best child run. No need to run this script'
         logger.warning(msg)
         return
-    
+
     input_names = ['input']
     dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
-
 
     if model_name.startswith('faster') or model_name.startswith('retina'):
 
@@ -203,7 +201,7 @@ if __name__ == '__main__':
             # yolo settings
             model_settings = {"img_size": args.img_size, "model_size": args.model_size,
                               "box_score_thresh": args.box_score_thresh, "box_iou_thresh": args.box_iou_thresh}
-        
+
         elif args.model_name.startswith('faster') or args.model_name.startswith('retina'):
             # faster rcnn settings
             model_settings = {"min_size": args.min_size, "max_size": args.max_size,
