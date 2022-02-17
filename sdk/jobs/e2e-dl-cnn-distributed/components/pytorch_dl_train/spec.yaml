@@ -1,0 +1,51 @@
+type: command
+
+description: Fine-tunes a pre-trained pytorch model for image classification, with labels provided in csv.
+
+name: PyTorch_FineTune_ImageClassification
+display_name: PyTorch Image Classifier Fine Tuning
+version: 1
+
+inputs:
+  train_images:
+    type: path
+  valid_images:
+    type: path
+  train_annotations:
+    type: path
+  valid_annotations:
+    type: path
+  checkpoint_path:
+    type: path
+    optional: True
+  epochs:
+    type: integer
+    default: 1
+
+outputs:
+  trained_model: 
+    type: path
+
+code:
+  local_path: .
+
+environment: azureml:AzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu:11
+
+command: >-
+  python train.py 
+  --train_images ${{inputs.train_images}}
+  --valid_images ${{inputs.valid_images}}
+  --train_annotations ${{inputs.train_annotations}}
+  --valid_annotations ${{inputs.valid_annotations}}
+  --num_epochs ${{inputs.epochs}}
+  --model_output ${{outputs.trained_model}}
+
+distribution:
+  type: mpi
+  worker_count: 1
+
+compute: azureml:gpu-cluster
+
+## TODO: remove
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
