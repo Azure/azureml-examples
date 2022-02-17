@@ -81,13 +81,13 @@ az role assignment create --role Contributor --assignee-object-id $identity_obje
 if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
 # </create_compute_cluster_for_hosting_the_profiler>
 
-# <upload_payload_file+_to_default_blob_datastore>
+# <upload_payload_file_to_default_blob_datastore>
 default_datastore_info=`az ml datastore show --name workspaceblobstore -o json`
 account_name=`echo $default_datastore_info | jq '.account_name' | sed "s/\"//g"`
 container_name=`echo $default_datastore_info | jq '.container_name' | sed "s/\"//g"`
 connection_string=`az storage account show-connection-string --name $account_name -o tsv`
 az storage blob upload --container-name $container_name/profiling_payloads --name payload.txt --file endpoints/online/profiling/payload.txt --connection-string $connection_string
-# </upload_payload_file+_to_default_blob_datastore>
+# </upload_payload_file_to_default_blob_datastore>
 
 # <create_profiling_job_yaml_file>
 # please specify environment variable "IDENTITY_ACCESS_TOKEN" when working with ml compute with no appropriate MSI attached

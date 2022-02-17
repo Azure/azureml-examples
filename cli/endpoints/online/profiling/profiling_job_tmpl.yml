@@ -3,7 +3,7 @@ command: >
   profiling.sh -p {inputs.payload}
 experiment_name: profiling-job
 environment:
-  image: docker.io/rachyong/profilers:latest
+  image: mcr.microsoft.com/azureml/profilers:latest
 environment_variables:
   ONLINE_ENDPOINT: "<% ENDPOINT_NAME %>"
   DEPLOYMENT: "<% DEPLOYMENT_NAME %>"
