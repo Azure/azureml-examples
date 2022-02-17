@@ -86,16 +86,9 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
     dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
 
 
-    if (
-        ModelNames.FASTER_RCNN_RESNET18_FPN == model_name
-        or ModelNames.FASTER_RCNN_RESNET34_FPN == model_name
-        or ModelNames.FASTER_RCNN_RESNET50_FPN == model_name
-        or ModelNames.FASTER_RCNN_RESNET101_FPN == model_name
-        or ModelNames.FASTER_RCNN_RESNET152_FPN == model_name
-        or ModelNames.RETINANET_RESNET50_FPN == model_name
-    ):
+    if model_name.startswith('faster') or model_name.startswith('retina'):
 
-        if ModelNames.RETINANET_RESNET50_FPN == model_name:
+        if model_name.startswith('retina'):
             od_output_names = ['boxes', 'scores', 'labels']
         else:
             od_output_names = ['boxes', 'labels', 'scores']
@@ -108,7 +101,7 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
         model_wrapper.disable_model_transform()
         model = model_wrapper.model
 
-    elif ModelNames.YOLO_V5 == model_name:
+    elif model_name.startswith('yolo'):
 
         output_names = ['output']
         dynamic_axes = dict()
@@ -119,13 +112,7 @@ def generate_onnx_batch_model(batch_size, height_onnx, width_onnx, task_type, be
             if isinstance(m, Conv) and isinstance(m.act, torch.nn.Hardswish):
                 m.act = Hardswish()
 
-    elif (
-        ModelNames.MASK_RCNN_RESNET18_FPN == model_name
-        or ModelNames.MASK_RCNN_RESNET34_FPN == model_name
-        or ModelNames.MASK_RCNN_RESNET50_FPN == model_name
-        or ModelNames.MASK_RCNN_RESNET101_FPN == model_name
-        or ModelNames.MASK_RCNN_RESNET152_FPN == model_name
-    ):
+    elif model_name.startswith('mask'):
 
         od_output_names = ['boxes', 'labels', 'scores', 'masks']
         output_names = [name + "_" + str(sample_id) for sample_id in range(batch_size) for name in od_output_names]
@@ -212,18 +199,12 @@ if __name__ == '__main__':
 
     model_type = None
     if args.task_type == 'image-object-detection':
-        if ModelNames.YOLO_V5 == args.model_name:
+        if args.model_name.startswith('yolo'):
             # yolo settings
             model_settings = {"img_size": args.img_size, "model_size": args.model_size,
                               "box_score_thresh": args.box_score_thresh, "box_iou_thresh": args.box_iou_thresh}
-        elif (
-            ModelNames.FASTER_RCNN_RESNET18_FPN == args.model_name
-            or ModelNames.FASTER_RCNN_RESNET34_FPN == args.model_name
-            or ModelNames.FASTER_RCNN_RESNET50_FPN == args.model_name
-            or ModelNames.FASTER_RCNN_RESNET101_FPN == args.model_name
-            or ModelNames.FASTER_RCNN_RESNET152_FPN == args.model_name
-            or ModelNames.RETINANET_RESNET50_FPN == args.model_name
-        ):
+        
+        elif args.model_name.startswith('faster') or args.model_name.startswith('retina'):
             # faster rcnn settings
             model_settings = {"min_size": args.min_size, "max_size": args.max_size,
                               "box_score_thresh": args.box_score_thresh,
@@ -234,13 +215,7 @@ if __name__ == '__main__':
                                                                                      args.task_type))
     elif args.task_type == 'image-instance-segmentation':
         # mask rcnn settings
-        if (
-            ModelNames.MASK_RCNN_RESNET18_FPN == args.model_name
-            or ModelNames.MASK_RCNN_RESNET34_FPN == args.model_name
-            or ModelNames.MASK_RCNN_RESNET50_FPN == args.model_name
-            or ModelNames.MASK_RCNN_RESNET101_FPN == args.model_name
-            or ModelNames.MASK_RCNN_RESNET152_FPN == args.model_name
-        ):
+        if args.model_name.startswith('mask'):
             model_settings = {"min_size": args.min_size, "max_size": args.max_size,
                               "box_score_thresh": args.box_score_thresh,
                               "box_nms_thresh": args.box_nms_thresh,
