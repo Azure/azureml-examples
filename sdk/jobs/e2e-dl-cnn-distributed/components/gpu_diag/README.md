@@ -1,8 +1,9 @@
 # Run NCCL tests on gpu to check perf and health
 
 ```bash
-conda create --name amlsdkv2preview python=3.8 -y
-conda activate amlsdkv2preview
+# create the environment
+az ml environment create  --file ./nccl_test_env.yml --resource-group RG --workspace-name WS
 
-python -m pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+# run the job
+az ml job create  -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
 ```
