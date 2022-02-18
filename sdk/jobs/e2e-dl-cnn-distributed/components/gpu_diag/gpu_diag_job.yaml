@@ -14,13 +14,7 @@
 type: command
 description: Runs NCCL-tests on gpu node
 
-name: gpu_diag_nccl_allreduceperf_v1_3
 display_name: Gpu Diag (NCCL tests)
-
-#####################
-### CUSTOM VALUES ###
-#####################
-# feel free to change these parameters
 
 inputs:
   # arguments for nccl_test
@@ -28,17 +22,8 @@ inputs:
   maxbytes: "8G"
   stepfactor: 2
 
-  # env vars for nccl_test
-  topology_file: "/opt/microsoft/ndv4-topo.xml"
-  nccl_debug: "INFO"
-  nccl_ib_pci_relaxed_ordering: 1
-  ucx_tls: "tcp"
-  ucx_net_devices: "eth0"
-  cuda_device_order: "PCI_BUS_ID"
-  nccl_socket_ifname: "eth0"
-
 # name of the compute cluster
-compute: azureml:nv24-m60
+compute: azureml:nc24-k80
 
 distribution:
   type: mpi
@@ -48,27 +33,19 @@ distribution:
 resources:
   instance_count: 1 # to use multiple nodes
 
-####################
-### JOB CONTRACT ###
-####################
-# NOTE: if you modify any of the following
-# you'll need to modify the job name above
-
 command: |
   nvcc --version &&
   nvidia-smi &&
-  NCCL_TOPO_FILE=${{inputs.topology_file}} &&
-  NCCL_DEBUG=${{inputs.nccl_debug}} &&
-  NCCL_IB_PCI_RELAXED_ORDERING=${{inputs.nccl_ib_pci_relaxed_ordering}} &&
-  UCX_TLS=${{inputs.ucx_tls}} &&
-  UCX_NET_DEVICES=${{inputs.ucx_net_devices}} &&
-  CUDA_DEVICE_ORDER=${{inputs.cuda_device_order}} &&
-  NCCL_SOCKET_IFNAME=${{inputs.nccl_socket_ifname}} &&
   /nccl-tests/build/all_reduce_perf -e ${{inputs.maxbytes}} -f ${{inputs.stepfactor}} -g ${{inputs.ngpus}}
 
-# NOTE: if you modify the command, you'll need to modify the job name above
 environment: azureml:nccl_test_openmpi4-1-0-cuda11-1-cudnn8-ubuntu18-04:3
 
-# NOTE: if you modify those, you'll have to modify name
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  NCCL_DEBUG: "INFO"
+  NCCL_IB_PCI_RELAXED_ORDERING: "1"
+  UCX_TLS: "tcp"
+  UCX_NET_DEVICES: "eth0"
+  CUDA_DEVICE_ORDER: "PCI_BUS_ID"
+  NCCL_SOCKET_IFNAME: "eth0"
+  NCCL_TOPO_FILE: "/opt/microsoft/ndv4-topo.xml"
