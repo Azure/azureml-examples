@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: nccl_test_openmpi4-1-0-cuda11-1-cudnn8-ubuntu18-04
+version: 3
+build:
+  local_path: .
