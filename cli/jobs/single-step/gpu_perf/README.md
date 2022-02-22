@@ -14,6 +14,11 @@ az ml environment create  --file ./nccl_test_env.yml --resource-group RG --works
 az ml job create  -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
 ```
 
+Notes:
+- set the name of the compute
+- set process_count_per_instance to the number of gpu on the node
+- for multi-node, set instance_count
+
 ## How to customize
 
 To check perf against your own container/config:
@@ -22,11 +27,11 @@ To check perf against your own container/config:
 
 2. Modify `nccl_test_env.yml` fields `name` and `version`.
 
-3. Re-register the environment using `az ml environment create`.
+3. Register the new environment using `az ml environment create`.
 
-4. Modify `gpu_diag_job.yaml` to use your new environment name/version.
+4. Modify `gpu_diag_job.yaml` to use your new environment name/version, check out the name of the cluster under `compute`.
 
-5. Run thejob using `az ml job create`.
+5. Run the job using `az ml job create`.
 
 ## Example stdout
 

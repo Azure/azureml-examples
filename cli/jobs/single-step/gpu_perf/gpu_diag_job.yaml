@@ -1,15 +1,10 @@
 # This runs NCCL test "all_reduce_perf" on a gpu node.
 # It helps diagnosis of health of perf issues.
 #
-# To run, first create the environment (once):
-# az ml environment create --file ./nccl_test_env.yml
-#
-# then:
-# az ml job create -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
-#
 # NOTES:
-# - set process_count_per_instance to the number of gpu on the node
 # - set the name of the compute
+# - set process_count_per_instance to the number of gpu on the node
+# - for multi-node, set instance_count
 
 type: command
 description: Runs NCCL-tests on gpu node
@@ -22,16 +17,16 @@ inputs:
   maxbytes: "8G"
   stepfactor: 2
 
-# name of the compute cluster
-compute: azureml:nc24-k80
+# NOTE: name of the compute cluster
+compute: azureml:gpu-cluster
 
 distribution:
   type: mpi
-  # IMPORTANT: set equal to number of gpus
+  # NOTE: set equal to number of gpus
   process_count_per_instance: 4
 
 resources:
-  instance_count: 1 # to use multiple nodes
+  instance_count: 1 # NOTE: to use multiple nodes
 
 command: |
   nvcc --version &&
@@ -40,7 +35,7 @@ command: |
 
 environment: azureml:nccl_test_openmpi4-1-0-cuda11-1-cudnn8-ubuntu18-04:3
 
-environment_variables:
+environment_variables: # NOTE: set env var if needed by your configuration
   NCCL_DEBUG: "INFO"
   NCCL_IB_PCI_RELAXED_ORDERING: "1"
   UCX_TLS: "tcp"
