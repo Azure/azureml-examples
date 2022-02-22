@@ -2,9 +2,10 @@
 
 This job will run [NCCL test](https://github.com/NVIDIA/nccl-tests) checking performance and correctness of NCCL operations on a GPU node. It will also run nvcc/nvidia-smi in the node.
 
-## How to
+The goal here is to verify the performance of the node and availability in your container of the drivers, libraries, necessary to run optimal distributed gpu jobs.
 
-After installing the 
+## How to run out of the box
+
 ```bash
 # create the environment
 az ml environment create  --file ./nccl_test_env.yml --resource-group RG --workspace-name WS
@@ -12,6 +13,20 @@ az ml environment create  --file ./nccl_test_env.yml --resource-group RG --works
 # run the job
 az ml job create  -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
 ```
+
+## How to customize
+
+To check perf against your own container/config:
+
+1. Modify `Dockerfile` with your own custom build.
+
+2. Modify `nccl_test_env.yml` fields `name` and `version`.
+
+3. Re-register the environment using `az ml environment create`.
+
+4. Modify `gpu_diag_job.yaml` to use your new environment name/version.
+
+5. Run thejob using `az ml job create`.
 
 ## Example stdout
 

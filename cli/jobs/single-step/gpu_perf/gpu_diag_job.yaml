@@ -41,7 +41,6 @@ command: |
 environment: azureml:nccl_test_openmpi4-1-0-cuda11-1-cudnn8-ubuntu18-04:3
 
 environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
   NCCL_DEBUG: "INFO"
   NCCL_IB_PCI_RELAXED_ORDERING: "1"
   UCX_TLS: "tcp"
