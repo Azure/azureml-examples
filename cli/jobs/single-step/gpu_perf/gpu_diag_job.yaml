@@ -7,9 +7,6 @@
 # - for multi-node, set instance_count
 
 type: command
-description: Runs NCCL-tests on gpu node
-
-display_name: Gpu Diag (NCCL tests)
 
 command: |
   nvcc --version &&
@@ -43,3 +40,7 @@ distribution:
 
 resources:
   instance_count: 1 # NOTE: to use multiple nodes
+
+experiment_name: nccl-test
+display_name: Gpu Diag (NCCL tests)
+description: Runs NCCL-tests on gpu nodes.
