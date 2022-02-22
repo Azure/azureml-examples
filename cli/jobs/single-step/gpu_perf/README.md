@@ -1,4 +1,4 @@
-# Run NCCL tests on gpu to check perf and health
+# Run NCCL tests on gpu to check performance and configuration
 
 This job will run [NCCL test](https://github.com/NVIDIA/nccl-tests) checking performance and correctness of NCCL operations on a GPU node. It will also run nvcc/nvidia-smi in the node.
 
