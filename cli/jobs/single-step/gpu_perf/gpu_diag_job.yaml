@@ -11,7 +11,7 @@ type: command
 command: |
   nvcc --version &&
   nvidia-smi &&
-  /nccl-tests/build/all_reduce_perf -e ${{inputs.maxbytes}} -f ${{inputs.stepfactor}} -g ${{inputs.ngpus}}
+  all_reduce_perf -e ${{inputs.maxbytes}} -f ${{inputs.stepfactor}} -g ${{inputs.ngpus}}
 
 inputs:
   # arguments for nccl_test
@@ -19,7 +19,7 @@ inputs:
   maxbytes: "8G"
   stepfactor: 2
 
-environment: azureml:nccl_test_openmpi4-1-0-cuda11-1-cudnn8-ubuntu18-04:3
+environment: azureml:nccl_test_openmpi4-1-0-cuda11-1-cudnn8-ubuntu18-04:4
 
 environment_variables: # NOTE: set env var if needed by your configuration
   NCCL_DEBUG: "INFO"
