@@ -8,7 +8,7 @@ The goal here is to verify the performance of the node and availability in your 
 
 ```bash
 # create the environment
-az ml environment create  --file ./nccl_test_env.yml --resource-group RG --workspace-name WS
+az ml environment create  --file ./environments/azureml_base/env.yml --resource-group RG --workspace-name WS
 
 # run the job
 az ml job create  -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
@@ -23,15 +23,13 @@ Notes:
 
 To check perf against your own container/config:
 
-1. Modify `Dockerfile` with your own custom build.
+1. Create an environment based on the content from `environments/azureml_base/` (Dockerfile and `env.yml`).
 
-2. Modify `nccl_test_env.yml` fields `name` and `version`.
+2. Create this environment using `az ml environment create` command.
 
-3. Register the new environment using `az ml environment create`.
+3. Modify `gpu_diag_job.yaml` to use your new environment name/version, check out the name of the cluster under `compute`.
 
-4. Modify `gpu_diag_job.yaml` to use your new environment name/version, check out the name of the cluster under `compute`.
-
-5. Run the job using `az ml job create`.
+4. Run the job using `az ml job create`.
 
 ## Example stdout
 
