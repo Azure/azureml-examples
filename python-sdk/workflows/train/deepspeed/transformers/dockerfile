@@ -207,10 +207,10 @@ RUN pip install --no-cache-dir --use-feature=2020-resolver \
     transformers \
     datasets \
     cerberus \
-    azureml-defaults \
-    azureml-telemetry \
+    azureml-defaults==1.38.0 \
+    azureml-telemetry==1.38.0 \
     azureml-dataprep \
-    azureml-train \
+    azureml-train==1.38.0 \
     pytorch-lightning
 
 ############################################
