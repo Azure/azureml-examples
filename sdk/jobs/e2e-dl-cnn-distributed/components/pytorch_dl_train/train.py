@@ -126,19 +126,24 @@ class PyTorchImageModelTraining:
         self.logger = logging.getLogger(__name__)
 
         # detect MPI configuration
-        self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
-        self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
+        self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
+        self.world_rank = int(os.environ.get("RANK", "0"))
+        self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
         self.multinode_available = self.world_size > 1
-        self.self_is_main_node = self.world_rank == 0
+        self.self_is_main_node = (self.local_rank == 0)
         self.num_cpu_workers = os.cpu_count()
 
         # Use CUDA if it is available
         if torch.cuda.is_available():
             self.logger.info(f"Setting up device for CUDA")
-            self.device = torch.device("cuda:0")
+            self.device = torch.device(self.local_rank)
         else:
             self.logger.info(f"Setting up device for CPU")
             self.device = torch.device("cpu")
+    
+        if self.multinode_available:
+            self.logger.info(f"Running in multinode with local_rank={self.local_rank} rank={self.world_rank} size={self.world_size}")
+            torch.distributed.init_process_group("nccl", rank=self.world_rank, world_size=self.world_size)
 
     def load_image_labels(
         self, training_image_labels_path: str, validation_image_labels_path: str
@@ -211,7 +216,7 @@ class PyTorchImageModelTraining:
 
         # Use distributed if available
         if self.multinode_available:
-            self.model = DistributedDataParallel(model)
+            self.model = DistributedDataParallel(self.model)
 
         return self.model
 
@@ -241,7 +246,7 @@ class PyTorchImageModelTraining:
         self.training_data_loader = DataLoader(
             train_dataset,
             batch_size=batch_size,
-            num_workers=self.num_cpu_workers,
+            num_workers=0, #self.num_cpu_workers,
             pin_memory=True,
             sampler=self.training_data_sampler,
         )
@@ -267,7 +272,7 @@ class PyTorchImageModelTraining:
         self.validation_data_loader = DataLoader(
             valid_dataset,
             batch_size=batch_size,
-            num_workers=self.num_cpu_workers,
+            num_workers=0, # self.num_cpu_workers,
             pin_memory=True,
         )
 
@@ -353,8 +358,6 @@ class PyTorchImageModelTraining:
             self.logger.info(
                 f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_train_acc={epoch_train_acc} epoch={epoch}"
             )
-            mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
-            mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
 
             # run evaluation on validation set and return metrics
             running_loss, num_correct, num_samples = self.epoch_eval(epoch, criterion)
@@ -365,13 +368,16 @@ class PyTorchImageModelTraining:
             self.logger.info(
                 f"MLFLOW: epoch_valid_loss={epoch_valid_loss} epoch_valid_acc={epoch_valid_acc} epoch={epoch}"
             )
-            mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
-            mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
 
             epoch_train_time = time.time() - epoch_start
 
             if self.self_is_main_node:
+                mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
+                mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
+                mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
+                mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
                 mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
+
             self.logger.info(
                 f"MLFLOW: epoch_train_time={epoch_train_time} epoch={epoch}"
             )
@@ -391,6 +397,7 @@ class PyTorchImageModelTraining:
         ) as out_file:
             out_file.write(json.dumps(self.output_classes))
 
+        mlflow.pytorch.log_model(self.model, artifact_path="final_model")
 
 def main():
     """Main function of the script."""
@@ -486,6 +493,20 @@ def main():
         required=False,
         default=0.01,
         help="Momentum of optimizer",
+    )
+    parser.add_argument(
+        "--data_loader_num_workers",
+        type=int,
+        required=False,
+        default=None,
+        help="Num workers for data loader (default: num cpus)",
+    )
+    parser.add_argument(
+        "--data_loader_prefetch_factor",
+        type=int,
+        required=False,
+        default=2,
+        help="Data loader prefetch factor (default: 2)",
     )
 
     args = parser.parse_args()

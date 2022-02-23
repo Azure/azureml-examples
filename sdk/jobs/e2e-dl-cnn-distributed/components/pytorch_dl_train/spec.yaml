@@ -41,7 +41,7 @@ command: >-
   --model_output ${{outputs.trained_model}}
 
 distribution:
-  type: mpi
+  type: pytorch
   worker_count: 1
 
 compute: azureml:gpu-cluster
