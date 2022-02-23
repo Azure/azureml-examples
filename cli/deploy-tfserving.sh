@@ -74,13 +74,11 @@ then
   echo "Deployment completed successfully"
 else
   echo "Deployment failed"
-  # <delete_endpoint_and_model_and_environment>
+  # <delete_endpoint_and_model>
   az ml online-endpoint delete -n $ENDPOINT_NAME -y
   echo "deleting model..."
   az ml model delete -n tfserving-mounted --version 1
-  echo "Deleting environment"
-  az ml environment delete -n tfserving --version 1
-  # </delete_endpoint_and_model_and_environment>
+  # </delete_endpoint_and_model>
   cleanup
   exit 1
 fi
