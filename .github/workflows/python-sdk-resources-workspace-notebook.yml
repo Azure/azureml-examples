@@ -40,8 +40,8 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run resources/workspace/workspace.ipynb
       run: |
-          sed -i -e "/s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" workspace.ipynb
-          sed -i -e "/s/<RESOURCE_GROUP>/azureml-examples-rg/g" workspace.ipynb
-          sed -i -e "/s/InteractiveBrowserCredential/AzureCliCredential/g" workspace.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" workspace.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" workspace.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" workspace.ipynb
           papermill resources/workspace/workspace.ipynb - -k python
       working-directory: sdk/resources/workspace
