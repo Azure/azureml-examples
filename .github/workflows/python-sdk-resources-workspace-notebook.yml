@@ -47,6 +47,10 @@ jobs:
           # skip other workpace creation commands for now
           sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" workspace.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" workspace.ipynb        
+          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" workspace.ipynb        
+          sed -i -e "s/print(ws_from_config.workspace_name)/# print(ws_from_config.workspace_name)/g" workspace.ipynb        
+          sed -i -e "s/ws_from_config_1 = MLClient.from_config("config/my_config.json")/# ws_from_config_1 = MLClient.from_config("config/my_config.json")/g" workspace.ipynb        
+          sed -i -e "s/print(ws_from_config_1.workspace_name)/# print(ws_from_config_1.workspace_name)/g" workspace.ipynb        
           
           papermill workspace.ipynb - -k python
       working-directory: sdk/resources/workspace
