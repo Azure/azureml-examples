@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/python-sdk-resources-workspace-notebook.yml
