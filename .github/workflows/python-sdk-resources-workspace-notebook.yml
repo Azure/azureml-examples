@@ -1,0 +1,46 @@
+name: python-sdk-resources-workspace-notebook
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/**
+      - .github/workflows/python-sdk-resources-workspace-notebook.yml
+      - notebooks/dev-requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: Run Install packages
+      run: |
+         chmod +x ./scripts/install-packages.sh
+         ./scripts/install-packages.sh
+      shell: bash
+    - name: pip install notebook reqs
+      run: pip install -r notebooks/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: Run update-azure-extensions
+      run: |
+         chmod +x ./scripts/update-azure-extensions.sh
+         ./scripts/update-azure-extensions.sh
+      shell: bash
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run resources/workspace/workspace.ipynb
+      run: |
+          sed -i -e "/s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" workspace.ipynb
+          sed -i -e "/s/<RESOURCE_GROUP>/azureml-examples-rg/g" workspace.ipynb
+          sed -i -e "/s/InteractiveBrowserCredential/AzureCliCredential/g" workspace.ipynb
+          papermill resources/workspace/workspace.ipynb - -k python
+      working-directory: sdk/resources/workspace
