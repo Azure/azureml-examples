@@ -23,7 +23,7 @@ cd azureml-examples/sdk
 
 |Area|Notebook|Status|Description|
 |-|-|-|-|
-|Workspace|[Workspace](resources/workspace/workspace.ipynb)|![workspace.ipynb](https://github.com/Azure/azureml-examples/workflows/python-sdk-resources-workspace-notebook/badge.svg?branch=sdk-preview)|Creating workspace|
+|Workspace|[Workspace](resources/workspace/workspace.ipynb)|[![python-sdk-resources-workspace-notebook](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-resources-workspace-notebook.yml/badge.svg?branch=sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-resources-workspace-notebook.yml)|Creating workspace|
 |Compute|[Compute](resources/compute/compute.ipynb)| |Creating Compute resources|
 |Datastore|[Datastore](resources/datastores/datastore.ipynb)| |Creating datastores|
 |Dataset|[Dataset](assets/dataset/dataset.ipynb)| |Creating datasets|
