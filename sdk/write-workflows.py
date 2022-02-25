@@ -4,6 +4,14 @@ import json
 import glob
 import argparse
 
+def main(args):
+
+    # get list of notebooks
+    notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+
+    # write workflows
+    write_workflows(notebooks)
+
 def write_workflows(notebooks):
 
     for notebook in notebooks:
@@ -74,15 +82,6 @@ jobs:
     # write workflow
     with open(f"../.github/workflows/sdk-{classification}-{name}.yml", "w") as f:
         f.write(workflow_yaml)
-
-def main(args):
-
-    # get list of notebooks
-    notebooks = sorted(glob.glob("assets/**/*.ipynb", recursive=True))
-
-    # write workflows
-    write_workflows(notebooks)
-
 
 # run functions
 if __name__ == "__main__":
