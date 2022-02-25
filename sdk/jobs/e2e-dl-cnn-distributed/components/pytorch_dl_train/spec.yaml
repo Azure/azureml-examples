@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
 description: Fine-tunes a pre-trained pytorch model for image classification, with labels provided in csv.
@@ -20,60 +21,60 @@ inputs:
     type: path
     description: "CSV file containing annotations for training images (file_name,label)"
   simulated_latency_in_ms:
-    type: int
-    min: 0
+    type: integer
     default: 0
     description: "For simulation purpose, add latency (in ms) during image loading (default: 0)"
 
   # data loading  
   batch_size:
-    type: int
-    default: 64
+    type: integer
+    min: 1
+    optional: true
     description: "Train/valid data loading batch size (default: 64)"
   num_workers:
-    type: int
-    default: -1 # will use all cpus available
+    type: integer
+    optional: true
     description: "Num workers for data loader (default: -1 => all cpus available)"
   prefetch_factor:
-    type: int
-    default: 2
+    type: integer
+    optional: true
     description: "Data loader prefetch factor (default: 2)"
   pin_memory:
-    type: bool
-    default: true
+    type: boolean
+    optional: true
     description: "Pin Data loader prefetch factor (default: True)"
   non_blocking:
-    type: bool
-    default: false
+    type: boolean
+    optional: true
     description: "Use non-blocking transfer to device (default: False)"
 
   # model
   model_arch:
-    type: str
-    default: resnet18
+    type: string
+    optional: true
     description: "Which model architecture to use (default: resnet18)"
   model_arch_pretrained:
-    type: bool
-    default: true
+    type: boolean
+    optional: true
     description: "Use pretrained model (default: true)"
 
   # training
   num_epochs:
     type: integer
-    default: 1
-    description: "Number of epochs to train for"
+    optional: true
+    description: "Number of epochs to train for (default: 1)"
   learning_rate:
-    type: float
-    default: 0.01
-    description: "Learning rate of optimizer"
+    type: number
+    optional: true
+    description: "Learning rate of optimizer (default: 0.01)"
   momentum:
-    type: float
-    default: 0.01
-    description: "Momentum of optimizer"
+    type: number
+    optional: true
+    description: "Momentum of optimizer (default: 0.01)"
   
   # model registration
   register_model_as:
-    type: str
+    type: string
     optional: true
     description: "Name to register final model in MLFlow"
 
@@ -95,18 +96,18 @@ command: >-
   --valid_annotations ${{inputs.valid_annotations}}
   --simulated_latency_in_ms ${{inputs.simulated_latency_in_ms}}
 
-  --batch_size ${{inputs.batch_size}}
-  --num_workers ${{inputs.num_workers}}
-  --prefetch_factor ${{inputs.prefetch_factor}}
-  --pin_memory ${{inputs.pin_memory}}
-  --non_blocking ${{inputs.non_blocking}}
+  [--batch_size ${{inputs.batch_size}}]
+  [--num_workers ${{inputs.num_workers}}]
+  [--prefetch_factor ${{inputs.prefetch_factor}}]
+  [--pin_memory ${{inputs.pin_memory}}]
+  [--non_blocking ${{inputs.non_blocking}}]
 
-  --model_arch ${{inputs.model_arch}}
-  --model_arch_pretrained ${{inputs.model_arch_pretrained}}
+  [--model_arch ${{inputs.model_arch}}]
+  [--model_arch_pretrained ${{inputs.model_arch_pretrained}}]
 
-  --num_epochs ${{inputs.num_epochs}}
-  --learning_rate ${{inputs.learning_rate}}
-  --momentum ${{inputs.momentum}}
+  [--num_epochs ${{inputs.num_epochs}}]
+  [--learning_rate ${{inputs.learning_rate}}]
+  [--momentum ${{inputs.momentum}}]
 
   --model_output ${{outputs.trained_model}}
   [--register_model_as ${{inputs.register_model_as}}]

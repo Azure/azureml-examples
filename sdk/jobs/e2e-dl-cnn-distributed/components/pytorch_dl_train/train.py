@@ -4,7 +4,10 @@ Future changes:
 - use checkpoint to load model and resume training
 - support multi-labels
 - instrument with nvtx for profiling
+
+Potential changes:
 - use dataclasses for config and argparse?
+- add model signature for mlflow register?
 """
 import os
 import glob
@@ -49,6 +52,7 @@ class PyTorchDistributedModelTrainingSequence:
         # MODEL
         self.model = None
         self.labels = []
+        self.model_signature= None
 
         # DISTRIBUTED CONFIG
         self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
@@ -110,8 +114,11 @@ class PyTorchDistributedModelTrainingSequence:
         self,
         training_dataset: torch.utils.data.Dataset,
         validation_dataset: torch.utils.data.Dataset,
+        labels: list,
     ):
         """Creates and sets up dataloaders for training/validation datasets."""
+
+        self.labels = labels
         self.training_data_sampler = DistributedSampler(
             training_dataset, num_replicas=self.world_size, rank=self.world_rank
         )
@@ -289,9 +296,9 @@ class PyTorchDistributedModelTrainingSequence:
 
             # save classes names for inferencing
             with open(
-                os.path.join(output_dir, f"model-{name}-classes.json"), "w"
+                os.path.join(output_dir, f"model-{name}-labels.json"), "w"
             ) as out_file:
-                out_file.write(json.dumps(self.output_classes))
+                out_file.write(json.dumps(self.labels))
 
     def register(self, model_name: str) -> None:
         """Registers the trained model using MLFlow.
@@ -300,7 +307,7 @@ class PyTorchDistributedModelTrainingSequence:
             model_name (str): name/identifier to register the model
         """
         mlflow.pytorch.log_model(
-            self.model, artifact_path="final_model", registered_model_name=model_name
+            self.model, artifact_path="final_model", registered_model_name=model_name, signature=self.model_signature
         )
 
 
@@ -470,7 +477,7 @@ def run(args):
     training_handler.setup_config(args)
 
     # creates data loaders from datasets for distributed training
-    training_handler.setup_datasets(train_dataset, valid_dataset)
+    training_handler.setup_datasets(train_dataset, valid_dataset, labels)
 
     # sets the model for distributed training
     training_handler.setup_model(model)
