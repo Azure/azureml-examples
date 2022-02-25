@@ -78,7 +78,7 @@ jobs:
 def main(args):
 
     # get list of notebooks
-    notebooks = sorted(glob.glob("jobs/single-step/**/*.ipynb", recursive=True))
+    notebooks = sorted(glob.glob("assets/**/*.ipynb", recursive=True))
 
     # write workflows
     write_workflows(notebooks)
