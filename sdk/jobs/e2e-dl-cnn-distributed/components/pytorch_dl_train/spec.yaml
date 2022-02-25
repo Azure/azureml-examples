@@ -9,22 +9,78 @@ version: 1
 inputs:
   train_images:
     type: path
+    description: "Path to folder containing training images"
   valid_images:
     type: path
+    description: "path to folder containing validation images"
   train_annotations:
     type: path
+    description: "CSV file containing annotations for training images (file_name,label)"
   valid_annotations:
     type: path
-  checkpoint_path:
-    type: path
-    optional: True
-  epochs:
+    description: "CSV file containing annotations for training images (file_name,label)"
+  simulated_latency_in_ms:
+    type: int
+    min: 0
+    default: 0
+    description: "For simulation purpose, add latency (in ms) during image loading (default: 0)"
+
+  # data loading  
+  batch_size:
+    type: int
+    default: 64
+    description: "Train/valid data loading batch size (default: 64)"
+  num_workers:
+    type: int
+    default: -1 # will use all cpus available
+    description: "Num workers for data loader (default: -1 => all cpus available)"
+  prefetch_factor:
+    type: int
+    default: 2
+    description: "Data loader prefetch factor (default: 2)"
+  pin_memory:
+    type: bool
+    default: true
+    description: "Pin Data loader prefetch factor (default: True)"
+  non_blocking:
+    type: bool
+    default: false
+    description: "Use non-blocking transfer to device (default: False)"
+
+  # model
+  model_arch:
+    type: str
+    default: resnet18
+    description: "Which model architecture to use (default: resnet18)"
+  model_arch_pretrained:
+    type: bool
+    default: true
+    description: "Use pretrained model (default: true)"
+
+  # training
+  num_epochs:
     type: integer
     default: 1
+    description: "Number of epochs to train for"
+  learning_rate:
+    type: float
+    default: 0.01
+    description: "Learning rate of optimizer"
+  momentum:
+    type: float
+    default: 0.01
+    description: "Momentum of optimizer"
+  
+  # model registration
+  register_model_as:
+    type: str
+    optional: true
+    description: "Name to register final model in MLFlow"
 
 outputs:
   trained_model: 
     type: path
+    description: "Path to write final model"
 
 code:
   local_path: .
@@ -37,15 +93,27 @@ command: >-
   --valid_images ${{inputs.valid_images}}
   --train_annotations ${{inputs.train_annotations}}
   --valid_annotations ${{inputs.valid_annotations}}
-  --num_epochs ${{inputs.epochs}}
+  --simulated_latency_in_ms ${{inputs.simulated_latency_in_ms}}
+
+  --batch_size ${{inputs.batch_size}}
+  --num_workers ${{inputs.num_workers}}
+  --prefetch_factor ${{inputs.prefetch_factor}}
+  --pin_memory ${{inputs.pin_memory}}
+  --non_blocking ${{inputs.non_blocking}}
+
+  --model_arch ${{inputs.model_arch}}
+  --model_arch_pretrained ${{inputs.model_arch_pretrained}}
+
+  --num_epochs ${{inputs.num_epochs}}
+  --learning_rate ${{inputs.learning_rate}}
+  --momentum ${{inputs.momentum}}
+
   --model_output ${{outputs.trained_model}}
+  [--register_model_as ${{inputs.register_model_as}}]
 
 distribution:
+  # NOTE: using type:pytorch will use all the right env variables for pytorch init_process_group
   type: pytorch
   worker_count: 1
 
 compute: azureml:gpu-cluster
-
-## TODO: remove
-environment_variables:
-  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"

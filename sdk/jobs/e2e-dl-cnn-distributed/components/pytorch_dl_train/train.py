@@ -1,14 +1,16 @@
 """
-TODO: checkpoint path as input
-TODO: instrument with mlflow
-TODO: category mapping
+
+Future changes:
+- use checkpoint to load model and resume training
+- support multi-labels
+- instrument with nvtx for profiling
+- use dataclasses for config and argparse?
 """
 import os
 import glob
 import time
 import copy
 import pickle
-import csv
 import logging
 import argparse
 from distutils.util import strtobool
@@ -20,271 +22,145 @@ import mlflow
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torchvision.models as models
 import torchvision
 from torch.optim import lr_scheduler
-from torchvision import datasets, models, transforms
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-# import nvtx
+from model import load_and_model_arch, MODEL_ARCH_LIST
+from image_io import load_image_labels, build_image_datasets, input_file_path
 
 
-def input_file_path(path):
-    """ Argparse type to resolve input path as single file from directory.
-    Given input path can be either a file, or a directory.
-    If it's a directory, this returns the path to the unique file it contains.
-    Args:
-        path (str): either file or directory path
-    
-    Returns:
-        str: path to file, or to unique file in directory
-    """
-    if os.path.isfile(path):
-        logging.getLogger(__name__).info(f"Found INPUT file {path}")
-        return path
-    if os.path.isdir(path):
-        all_files = os.listdir(path)
-        if not all_files:
-            raise Exception(f"Could not find any file in specified input directory {path}")
-        if len(all_files) > 1:
-            raise Exception(f"Found multiple files in input file path {path}, use input_directory_path type instead.")
-        logging.getLogger(__name__).info(f"Found INPUT directory {path}, selecting unique file {all_files[0]}")
-        return os.path.join(path, all_files[0])
-    
-    logging.getLogger(__name__).critical(f"Provided INPUT path {path} is neither a directory or a file???")
-    return path
+class PyTorchDistributedModelTrainingSequence:
+    """Generic class to run the sequence for training a PyTorch model
+    using distributed training."""
 
-
-class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
-    """PyTorch dataset for images in a folder, with label provided as a dict."""
-
-    def __init__(
-        self, root: str, image_labels: dict, transform: Optional[Callable] = None
-    ):
-        # calling VisionDataset.__init__() first
-        super().__init__(root, transform=transform)
-
-        # now the specific initialization
-        self.loader = torchvision.datasets.folder.default_loader
-        self.samples = []  # list of tuples (path,target)
-
-        # search for all images
-        images_in_root = glob.glob(root + "/**/*", recursive=True)
-        logging.info(f"ImageDatasetWithLabelInMap found {len(images_in_root)} entries in root dir {root}")
-
-        # find their target
-        for entry in images_in_root:
-            entry_basename = os.path.basename(entry)
-            if entry_basename not in image_labels:
-                logging.warning(
-                    f"Image in root dir {entry} is not in provided image_labels"
-                )
-            else:
-                self.samples.append(
-                    (
-                        entry,
-                        1 if image_labels[entry_basename] == "contains_person" else 0,
-                    )
-                )
-
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
-        """
-        Args:
-            index (int): Index
-
-        Returns:
-            tuple: (sample, target) where target is class_index of the target class.
-        """
-        path, target = self.samples[index]
-        sample = self.loader(path)
-        if self.transform is not None:
-            sample = self.transform(sample)
-
-        target = torch.as_tensor(target, dtype=torch.float)
-
-        return sample, target
-
-    def __len__(self) -> int:
-        return len(self.samples)
-
-
-class PyTorchImageModelTraining:
     def __init__(self):
-        self.model = None
-        self.output_classes = []
-        self.training_params = {}
-        self.training_labels = {}
-        self.validation_labels = {}
+        """Constructor"""
+        self.logger = logging.getLogger(__name__)
 
+        # DATA
         self.training_data_sampler = None
         self.training_data_loader = None
         self.validation_data_loader = None
 
-        self.logger = logging.getLogger(__name__)
+        # MODEL
+        self.model = None
+        self.labels = []
 
-        # detect MPI configuration
+        # DISTRIBUTED CONFIG
         self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
         self.world_rank = int(os.environ.get("RANK", "0"))
         self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
         self.multinode_available = self.world_size > 1
-        self.self_is_main_node = (self.local_rank == 0)
-        self.num_cpu_workers = os.cpu_count()
+        self.cpu_count = os.cpu_count()
+        self.device = None
+        # NOTE: if we're running multiple nodes, this indicates if we're on first node
+        self.self_is_main_node = self.world_rank == 0
+        # NOTE: if we're running multiple process (1 per gpu), this indicates if we're first process on the node
+        self.self_is_main_process = self.local_rank == 0
+
+        # TRAINING CONFIGS
+        self.dataloading_config = None
+        self.training_config = None
+
+    #####################
+    ### SETUP METHODS ###
+    #####################
+
+    def setup_config(self, args):
+        """Sets internal variables using provided CLI arguments (see build_arguments_parser()).
+        In particular, sets device(cuda) and multinode parameters."""
+        self.dataloading_config = args
+        self.training_config = args
+
+        # verify parameter default values
+        if self.dataloading_config.num_workers is None:
+            self.dataloading_config.num_workers = 0
+        if self.dataloading_config.num_workers < 0:
+            self.dataloading_config.num_workers = os.cpu_count()
+
+        # NOTE: strtobool returns an int, converting to bool explicitely
+        self.dataloading_config.pin_memory = bool(self.dataloading_config.pin_memory)
+        self.dataloading_config.non_blocking = bool(
+            self.dataloading_config.non_blocking
+        )
 
         # Use CUDA if it is available
         if torch.cuda.is_available():
-            self.logger.info(f"Setting up device for CUDA")
+            self.logger.info(
+                f"Setting up torch.device for CUDA for local gpu:{self.local_rank}"
+            )
             self.device = torch.device(self.local_rank)
         else:
-            self.logger.info(f"Setting up device for CPU")
+            self.logger.info(f"Setting up torch.device for cpu")
             self.device = torch.device("cpu")
-    
+
         if self.multinode_available:
-            self.logger.info(f"Running in multinode with local_rank={self.local_rank} rank={self.world_rank} size={self.world_size}")
-            torch.distributed.init_process_group("nccl", rank=self.world_rank, world_size=self.world_size)
-
-    def load_image_labels(
-        self, training_image_labels_path: str, validation_image_labels_path: str
-    ):
-        with open(training_image_labels_path, newline="") as csv_file:
-            training_csv_reader = csv.reader(csv_file, delimiter=",")
-
-            self.training_labels = []
-            training_classes = set()
-            for row in training_csv_reader:
-                self.training_labels.append((os.path.basename(row[0]), row[1]))
-                training_classes.add(row[1])
-        self.training_labels = dict(self.training_labels)
-
-        self.logger.info(
-            f"Loaded training annotations, has samples={len(self.training_labels)} and classes={training_classes}"
-        )
-
-        with open(validation_image_labels_path, newline="") as csv_file:
-            validation_csv_reader = csv.reader(csv_file, delimiter=",")
-
-            self.validation_labels = []
-            validation_classes = set()
-            for row in validation_csv_reader:
-                if row[1] not in training_classes:
-                    self.logger.warning(
-                        f"Validation image {row[0]} has class {row[1]} that is not in the training set classes {training_classes}, this image will be discarded."
-                    )
-                else:
-                    self.validation_labels.append((os.path.basename(row[0]), row[1]))
-                    validation_classes.add(row[1])
-        self.validation_labels = dict(self.validation_labels)
-
-        self.logger.info(
-            f"Loaded validation annotations, has samples={len(self.validation_labels)} and classes={training_classes}"
-        )
-
-        if validation_classes != training_classes:
-            raise Exception(
-                f"Validation classes {validation_classes} != training classes {training_classes}, we can't proceed with training."
+            self.logger.info(
+                f"Running in multinode with local_rank={self.local_rank} rank={self.world_rank} size={self.world_size}"
+            )
+            torch.distributed.init_process_group(
+                "nccl", rank=self.world_rank, world_size=self.world_size
             )
 
-        self.output_classes = sorted(list(training_classes))
-
-    def load_model(
+    def setup_datasets(
         self,
-        model_arch: str,
-        checkpoint_path: str = None,
-        output_classes: int = None,
-        pretrained: bool = True,
+        training_dataset: torch.utils.data.Dataset,
+        validation_dataset: torch.utils.data.Dataset,
     ):
-        """Loads a model from a given arch and sets it up for training"""
-        # Load pretrained resnet model
-        if output_classes is None:
-            output_classes = len(self.output_classes)
-
-        self.logger.info(
-            f"Loading model from arch={model_arch} pretrained={pretrained} output_classes={output_classes}"
+        """Creates and sets up dataloaders for training/validation datasets."""
+        self.training_data_sampler = DistributedSampler(
+            training_dataset, num_replicas=self.world_size, rank=self.world_rank
         )
-        if model_arch == "resnet18":
-            self.model = models.resnet18(pretrained=pretrained)
-            self.model.fc = nn.Linear(self.model.fc.in_features, 1)  # output_classes)
-        else:
-            raise NotImplementedError(
-                f"model_arch={model_arch} is not implemented yet."
-            )
+        self.training_data_loader = DataLoader(
+            training_dataset,
+            batch_size=self.dataloading_config.batch_size,
+            num_workers=self.dataloading_config.num_workers,  # self.cpu_count,
+            prefetch_factor=self.dataloading_config.prefetch_factor,
+            pin_memory=self.dataloading_config.pin_memory,
+            sampler=self.training_data_sampler,
+        )
 
-        self.logger.info(f"Setting model to use device {self.device}")
-        self.model = self.model.to(self.device)
+        self.validation_data_loader = DataLoader(
+            validation_dataset,
+            batch_size=self.dataloading_config.batch_size,
+            num_workers=self.dataloading_config.num_workers,  # self.cpu_count,
+            pin_memory=self.dataloading_config.pin_memory,
+        )
+
+    def setup_model(self, model):
+        """Configures a model for training."""
+        self.logger.info(f"Setting up model to use device {self.device}")
+        self.model = model.to(self.device)
 
         # Use distributed if available
         if self.multinode_available:
+            self.logger.info(f"Setting up model to use DistributedDataParallel.")
             self.model = DistributedDataParallel(self.model)
 
         return self.model
 
-    def load_images(self, train_images_dir, valid_images_dir, batch_size):
-        train_transform = transforms.Compose(
-            [
-                transforms.RandomResizedCrop(200),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.405], std=[0.229, 0.224, 0.225]
-                ),
-            ]
-        )
-        train_dataset = ImageDatasetWithLabelInMap(
-            root=train_images_dir,
-            image_labels=self.training_labels,
-            transform=train_transform,
-        )
-        self.logger.info(
-            f"ImageDatasetWithLabelInMap loaded training image list samples={len(train_dataset)}"
-        )
+    ########################
+    ### TRAINING METHODS ###
+    ########################
 
-        self.training_data_sampler = DistributedSampler(
-            train_dataset, num_replicas=self.world_size, rank=self.world_rank
-        )
-        self.training_data_loader = DataLoader(
-            train_dataset,
-            batch_size=batch_size,
-            num_workers=0, #self.num_cpu_workers,
-            pin_memory=True,
-            sampler=self.training_data_sampler,
-        )
-
-        valid_transform = transforms.Compose(
-            [
-                transforms.Resize(200),
-                transforms.CenterCrop(200),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.405], std=[0.229, 0.224, 0.225]
-                ),
-            ]
-        )
-        valid_dataset = ImageDatasetWithLabelInMap(
-            root=valid_images_dir,
-            image_labels=self.validation_labels,
-            transform=valid_transform,
-        )
-        self.logger.info(
-            f"ImageDatasetWithLabelInMap loaded validation image list samples={len(valid_dataset)}"
-        )
-        self.validation_data_loader = DataLoader(
-            valid_dataset,
-            batch_size=batch_size,
-            num_workers=0, # self.num_cpu_workers,
-            pin_memory=True,
-        )
-
-    def epoch_eval(self, epoch, criterion):
+    def _epoch_eval(self, epoch, criterion):
+        """Called during train() for running the eval phase of one epoch."""
         with torch.no_grad():
             num_correct = 0
             num_total_images = 0
             running_loss = 0.0
             for images, targets in tqdm(self.validation_data_loader):
 
-                images = images.to(self.device)
-                targets = targets.to(self.device)
+                images = images.to(
+                    self.device, non_blocking=self.dataloading_config.non_blocking
+                )
+                targets = targets.to(
+                    self.device, non_blocking=self.dataloading_config.non_blocking
+                )
 
                 outputs = self.model(images)
 
@@ -297,7 +173,8 @@ class PyTorchImageModelTraining:
 
         return running_loss, num_correct, num_total_images
 
-    def epoch_train(self, epoch, optimizer, criterion):
+    def _epoch_train(self, epoch, optimizer, criterion):
+        """Called during train() for running the train phase of one epoch."""
         self.model.train()
         self.training_data_sampler.set_epoch(epoch)
 
@@ -306,8 +183,12 @@ class PyTorchImageModelTraining:
         running_loss = 0.0
 
         for images, targets in tqdm(self.training_data_loader):
-            images = images.to(self.device)
-            targets = targets.to(self.device)
+            images = images.to(
+                self.device, non_blocking=self.dataloading_config.non_blocking
+            )
+            targets = targets.to(
+                self.device, non_blocking=self.dataloading_config.non_blocking
+            )
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -327,12 +208,20 @@ class PyTorchImageModelTraining:
 
         return running_loss, num_correct, num_total_images
 
-    def train(self, num_epochs, learning_rate=5e-5, momentum=0.9):
+    def train(self, epochs=None):
+        """Trains the model.
+
+        Args:
+            epochs (int, optional): if not provided uses internal config
+        """
+        if epochs is None:
+            epochs = self.training_config.num_epochs
+
         # Observe that all parameters are being optimized
         optimizer = optim.SGD(
             self.model.parameters(),
-            lr=learning_rate,
-            momentum=momentum,
+            lr=self.training_config.learning_rate,
+            momentum=self.training_config.momentum,
             nesterov=True,
             weight_decay=1e-4,
         )
@@ -343,63 +232,266 @@ class PyTorchImageModelTraining:
         # Decay LR by a factor of 0.1 every 7 epochs
         scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
-        for epoch in range(num_epochs):
-            self.logger.info(f"Training epoch {epoch}")
+        for epoch in range(epochs):
+            self.logger.info(f"Starting epoch={epoch}")
 
+            # start timer for epoch time metric
             epoch_start = time.time()
 
-            # run loop on training set and return metrics
-            running_loss, num_correct, num_samples = self.epoch_train(
+            # TRAIN: loop on training set and return metrics
+            running_loss, num_correct, num_samples = self._epoch_train(
                 epoch, optimizer, criterion
             )
             epoch_train_loss = running_loss / num_samples
             epoch_train_acc = num_correct / num_samples
 
-            self.logger.info(
-                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_train_acc={epoch_train_acc} epoch={epoch}"
-            )
-
-            # run evaluation on validation set and return metrics
-            running_loss, num_correct, num_samples = self.epoch_eval(epoch, criterion)
-
+            # EVAL: run evaluation on validation set and return metrics
+            running_loss, num_correct, num_samples = self._epoch_eval(epoch, criterion)
             epoch_valid_loss = running_loss / num_samples
             epoch_valid_acc = num_correct / num_samples
 
+            # stop timer
+            epoch_train_time = time.time() - epoch_start
+
+            # report metric values in stdout
+            self.logger.info(
+                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_train_acc={epoch_train_acc} epoch={epoch}"
+            )
             self.logger.info(
                 f"MLFLOW: epoch_valid_loss={epoch_valid_loss} epoch_valid_acc={epoch_valid_acc} epoch={epoch}"
             )
+            self.logger.info(
+                f"MLFLOW: epoch_train_time={epoch_train_time} epoch={epoch}"
+            )
 
-            epoch_train_time = time.time() - epoch_start
-
-            if self.self_is_main_node:
+            # report in mlflow only if running from main node
+            if self.self_is_main_node and self.self_is_main_process:
                 mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
                 mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
                 mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
                 mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
                 mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
 
-            self.logger.info(
-                f"MLFLOW: epoch_train_time={epoch_train_time} epoch={epoch}"
-            )
 
-    def save(self, output_dir, name="dev"):
-        self.logger.info(f"Saving model and classes in {output_dir}...")
+    #################
+    ### MODEL I/O ###
+    #################
 
-        # create output directory just in case
-        os.makedirs(output_dir, exist_ok=True)
+    def save(self, output_dir: str, name: str = "dev") -> None:
+        if self.self_is_main_node and self.self_is_main_process:
+            self.logger.info(f"Saving model and classes in {output_dir}...")
 
-        # write model using torch.save()
-        torch.save(self.model, os.path.join(output_dir, f"model-{name}.pt"))
+            # create output directory just in case
+            os.makedirs(output_dir, exist_ok=True)
 
-        # save classes names for inferencing
-        with open(
-            os.path.join(output_dir, f"model-{name}-classes.json"), "w"
-        ) as out_file:
-            out_file.write(json.dumps(self.output_classes))
+            # write model using torch.save()
+            torch.save(self.model, os.path.join(output_dir, f"model-{name}.pt"))
 
-        mlflow.pytorch.log_model(self.model, artifact_path="final_model")
+            # save classes names for inferencing
+            with open(
+                os.path.join(output_dir, f"model-{name}-classes.json"), "w"
+            ) as out_file:
+                out_file.write(json.dumps(self.output_classes))
 
-def main():
+    def register(self, model_name: str) -> None:
+        """Registers the trained model using MLFlow.
+
+        Args:
+            model_name (str): name/identifier to register the model
+        """
+        mlflow.pytorch.log_model(
+            self.model, artifact_path="final_model", registered_model_name=model_name
+        )
+
+
+def build_arguments_parser(parser: argparse.ArgumentParser = None):
+    """Builds the argument parser for CLI settings"""
+    if parser is None:
+        parser = argparse.ArgumentParser()
+
+    group = parser.add_argument_group(f"Training Inputs")
+    group.add_argument(
+        "--train_images",
+        type=str,
+        required=True,
+        help="Path to folder containing training images",
+    )
+    group.add_argument(
+        "--valid_images",
+        type=str,
+        required=True,
+        help="path to folder containing validation images",
+    )
+    group.add_argument(
+        "--train_annotations",
+        type=input_file_path,
+        required=True,
+        help="CSV file containing annotations for training images (file_name,label)",
+    )
+    group.add_argument(
+        "--valid_annotations",
+        type=input_file_path,
+        required=True,
+        help="CSV file containing annotations for training images (file_name,label)",
+    )
+    group.add_argument(
+        "--simulated_latency_in_ms",
+        type=int,
+        required=False,
+        default=None,
+        help="For simulation purpose, add latency (in ms) during image loading (default: 0)",
+    )
+
+    group = parser.add_argument_group(f"Training Outputs")
+    group.add_argument(
+        "--model_output",
+        type=str,
+        required=False,
+        default=None,
+        help="Path to write final model",
+    )
+    group.add_argument(
+        "--register_model_as",
+        type=str,
+        required=False,
+        default=None,
+        help="Name to register final model in MLFlow",
+    )
+
+    group = parser.add_argument_group(f"Data Loading Parameters")
+    group.add_argument(
+        "--batch_size",
+        type=int,
+        required=False,
+        default=64,
+        help="Train/valid data loading batch size (default: 64)",
+    )
+    group.add_argument(
+        "--num_workers",
+        type=int,
+        required=False,
+        default=None,
+        help="Num workers for data loader (default: -1 => all cpus available)",
+    )
+    group.add_argument(
+        "--prefetch_factor",
+        type=int,
+        required=False,
+        default=2,
+        help="Data loader prefetch factor (default: 2)",
+    )
+    group.add_argument(
+        "--pin_memory",
+        type=strtobool,
+        required=False,
+        default=True,
+        help="Pin Data loader prefetch factor (default: True)",
+    )
+    group.add_argument(
+        "--non_blocking",
+        type=strtobool,
+        required=False,
+        default=False,
+        help="Use non-blocking transfer to device (default: False)",
+    )
+
+    group = parser.add_argument_group(f"Model/Training Parameters")
+    group.add_argument(
+        "--model_arch",
+        type=str,
+        required=False,
+        choices=MODEL_ARCH_LIST,
+        default="resnet18",
+        help="Which model architecture to use (default: resnet18)",
+    )
+    group.add_argument(
+        "--model_arch_pretrained",
+        type=strtobool,
+        required=False,
+        default=True,
+        help="Use pretrained model (default: true)",
+    )
+    group.add_argument(
+        "--num_epochs",
+        type=int,
+        required=False,
+        default=1,
+        help="Number of epochs to train for",
+    )
+    group.add_argument(
+        "--learning_rate",
+        type=float,
+        required=False,
+        default=0.01,
+        help="Learning rate of optimizer",
+    )
+    group.add_argument(
+        "--momentum",
+        type=float,
+        required=False,
+        default=0.01,
+        help="Momentum of optimizer",
+    )
+
+    return parser
+
+
+def run(args):
+    """Run the script using CLI arguments"""
+    logger = logging.getLogger(__name__)
+    logger.info(f"Running with arguments: {args}")
+
+    # initialize mlflow (once in entire script)
+    mlflow.start_run()
+
+    # get all image labels
+    training_labels, validation_labels, labels = load_image_labels(
+        args.train_annotations, args.valid_annotations
+    )
+
+    # gets the datasets (coco)
+    train_dataset, valid_dataset = build_image_datasets(
+        train_images_dir=args.train_images,
+        valid_images_dir=args.valid_images,
+        training_labels=training_labels,
+        validation_labels=validation_labels,
+        simulated_latency_in_ms=args.simulated_latency_in_ms,  # just for testing purpose
+    )
+
+    # creates the model architecture
+    model = load_and_model_arch(
+        args.model_arch, output_dimension=1, pretrained=args.model_arch_pretrained
+    )
+
+    # use a handler for the training sequence
+    training_handler = PyTorchDistributedModelTrainingSequence()
+
+    # sets cuda and distributed config
+    training_handler.setup_config(args)
+
+    # creates data loaders from datasets for distributed training
+    training_handler.setup_datasets(train_dataset, valid_dataset)
+
+    # sets the model for distributed training
+    training_handler.setup_model(model)
+
+    # runs training sequence
+    # NOTE: num_epochs is provided in args
+    training_handler.train()
+
+    # saves final model
+    if args.model_output:
+        training_handler.save(args.model_output, name=f"epoch-{args.num_epochs}")
+
+    # register model in MLFlow
+    if args.register_model_as:
+        training_handler.register(args.register_model_as)
+
+    # finalize mlflow (once in entire script)
+    mlflow.end_run()
+
+
+def main(cli_args=None):
     """Main function of the script."""
     # initialize root logger
     logger = logging.getLogger()
@@ -411,131 +503,14 @@ def main():
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    parser = argparse.ArgumentParser()
+    # create argument parser
+    parser = build_arguments_parser()
 
-    parser.add_argument(
-        "--train_images",
-        type=str,
-        required=True,
-        help="path to folder containing training images",
-    )
-    parser.add_argument(
-        "--valid_images",
-        type=str,
-        required=True,
-        help="path to folder containing validation images",
-    )
-    parser.add_argument(
-        "--train_annotations",
-        type=input_file_path,
-        required=True,
-        help="readable name of the category",
-    )
-    parser.add_argument(
-        "--valid_annotations",
-        type=input_file_path,
-        required=True,
-        help="path to output train annotations",
-    )
-    parser.add_argument(
-        "--checkpoint_path",
-        type=str,
-        required=False,
-        default=None,
-        help="path to read and write checkpoints",
-    )
-    parser.add_argument(
-        "--model_output",
-        type=str,
-        required=False,
-        default=None,
-        help="path to write final model",
-    )
-    parser.add_argument(
-        "--model_arch",
-        type=str,
-        required=False,
-        choices=["resnet18"],
-        default="resnet18",
-        help="which model architecture to use (default: resnet18)",
-    )
-    parser.add_argument(
-        "--model_arch_pretrained",
-        type=strtobool,
-        required=False,
-        default=True,
-        help="use pretrained model (default: true)",
-    )
-    parser.add_argument(
-        "--num_epochs",
-        type=int,
-        required=False,
-        default=1,
-        help="Number of epochs to train for",
-    )
-    parser.add_argument(
-        "--batch_size",
-        type=int,
-        required=False,
-        default=64,
-        help="Train batch size (default: 64)",
-    )
-    parser.add_argument(
-        "--learning_rate",
-        type=float,
-        required=False,
-        default=0.01,
-        help="Learning rate of optimizer",
-    )
-    parser.add_argument(
-        "--momentum",
-        type=float,
-        required=False,
-        default=0.01,
-        help="Momentum of optimizer",
-    )
-    parser.add_argument(
-        "--data_loader_num_workers",
-        type=int,
-        required=False,
-        default=None,
-        help="Num workers for data loader (default: num cpus)",
-    )
-    parser.add_argument(
-        "--data_loader_prefetch_factor",
-        type=int,
-        required=False,
-        default=2,
-        help="Data loader prefetch factor (default: 2)",
-    )
+    # runs on cli arguments
+    args = parser.parse_args(cli_args)  # if None, runs on sys.argv
 
-    args = parser.parse_args()
-
-    logger.info(f"Running with arguments: {args}")
-
-    training_handler = PyTorchImageModelTraining()
-
-    training_handler.load_image_labels(args.train_annotations, args.valid_annotations)
-
-    training_handler.load_model(
-        args.model_arch,
-        checkpoint_path=args.checkpoint_path,
-        pretrained=args.model_arch_pretrained,
-    )
-
-    training_handler.load_images(
-        train_images_dir=args.train_images,
-        valid_images_dir=args.valid_images,
-        batch_size=args.batch_size,
-    )
-
-    if args.checkpoint_path:
-        training_handler.save(args.checkpoint_path, name="epoch-none")
-
-    training_handler.train(num_epochs=args.num_epochs)
-
-    if args.model_output:
-        training_handler.save(args.model_output, name=f"epoch-{args.num_epochs}")
+    # run the run function
+    run(args)
 
 
 if __name__ == "__main__":
