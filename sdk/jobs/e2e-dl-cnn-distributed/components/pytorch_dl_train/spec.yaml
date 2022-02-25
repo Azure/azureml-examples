@@ -22,7 +22,7 @@ inputs:
     description: "CSV file containing annotations for training images (file_name,label)"
   simulated_latency_in_ms:
     type: integer
-    default: 0
+    optional: true
     description: "For simulation purpose, add latency (in ms) during image loading (default: 0)"
 
   # data loading  
@@ -94,7 +94,7 @@ command: >-
   --valid_images ${{inputs.valid_images}}
   --train_annotations ${{inputs.train_annotations}}
   --valid_annotations ${{inputs.valid_annotations}}
-  --simulated_latency_in_ms ${{inputs.simulated_latency_in_ms}}
+  [--simulated_latency_in_ms ${{inputs.simulated_latency_in_ms}}]
 
   [--batch_size ${{inputs.batch_size}}]
   [--num_workers ${{inputs.num_workers}}]
