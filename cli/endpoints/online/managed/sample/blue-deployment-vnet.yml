@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: my-endpoint
+model:
+  local_path: ../../model-1/model/sklearn_regression_model.pkl
+code_configuration:
+  code: 
+    local_path: ../../model-1/onlinescoring/
+  scoring_script: score.py
+environment: 
+  image: placeholder.azurecr.io/moevnetimg
+  inference_config:
+    liveness_route:
+      port: 5001
+      path: /
+    readiness_route:
+      port: 5001
+      path: /
+    scoring_route:
+      port: 5001
+      path: /score
+instance_type: Standard_F2s_v2
+instance_count: 1
