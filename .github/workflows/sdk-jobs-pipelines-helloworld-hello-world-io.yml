@@ -39,14 +39,6 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" hello-world-io.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" hello-world-io.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" hello-world-io.ipynb
-
-          # generate a random workspace name
-          sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" hello-world-io.ipynb
-
-          # skip other workpace creation commands for now
-          sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" hello-world-io.ipynb        
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" hello-world-io.ipynb        
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" hello-world-io.ipynb            
           
           papermill hello-world-io.ipynb - -k python
       working-directory: sdk/jobs/pipelines/helloworld
