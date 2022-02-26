@@ -50,3 +50,4 @@ cd azureml-examples/sdk
 |Batch Endpoints|[Batch endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/batch/mnist-nonmlflow.ipynb)|[![sdk-endpoints-batch-mnist-nonmlflow](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-batch-mnist-nonmlflow.yml/badge.svg?branch=sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-batch-mnist-nonmlflow.yml)|create in sdk/endpoints/batch|Create a batch endpoint and deploy a model to the endpoint|
 
 
+
