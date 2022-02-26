@@ -1,14 +1,13 @@
-name: python-sdk-resources-workspace-notebook
+name: sdk-resources-workspace-workspace
 on:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - main
       - sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/python-sdk-resources-workspace-notebook.yml
+      - .github/workflows/sdk-resources-workspace-workspace.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
