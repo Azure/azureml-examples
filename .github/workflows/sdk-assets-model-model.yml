@@ -9,6 +9,7 @@ on:
       - sdk/**
       - .github/workflows/sdk-assets-model-model.yml
       - notebooks/dev-requirements.txt
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
