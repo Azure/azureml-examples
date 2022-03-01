@@ -5,27 +5,27 @@ We use a datastore with datapath as input file in this example. An easy way to g
 
 Sample output for dataset creation:
 ```
-# az ml dataset create --file data.yml 
+# az ml data create --file data.yml 
 Command group 'ml dataset' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
 {
   "creation_context": {
-    "created_at": "2021-09-21T19:41:27.051188+00:00",
-    "created_by": "Manoj Bableshwar",
+    "created_at": "2022-03-01T03:14:47.680785+00:00",
+    "created_by": "Long Chen",
     "created_by_type": "User",
-    "last_modified_at": "2021-09-21T19:41:27.051188+00:00",
-    "last_modified_by": "Manoj Bableshwar",
+    "last_modified_at": "2022-03-01T03:14:47.680785+00:00",
+    "last_modified_by": "Long Chen",
     "last_modified_by_type": "User"
   },
   "description": "sample dataset",
-  "id": "/subscriptions/b8c23406-f9b5-4ccb-8a65-a8cb5dcd6a5a/resourceGroups/aesviennatesteuap/providers/Microsoft.MachineLearningServices/workspaces/testep/datasets/sampledata1234/versions/1",
+  "id": "azureml:/subscriptions/d128f140-94e6-4175-87a7-954b9d27db16/resourceGroups/aml-test/providers/Microsoft.MachineLearningServices/workspaces/lochen-matser-pipline/datasets/sampledata1234/versions/2",
   "name": "sampledata1234",
   "paths": [
     {
-      "file": "azureml://datastores/workspaceblobstore/paths/LocalUpload/cec6841f346975cde1ee7d5289c5559f/data"
+      "folder": "azureml://datastores/workspaceblobstore/paths/LocalUpload/cc4d1f81626c8537b6e99dadbfeab622/data/"
     }
   ],
-  "resourceGroup": "aesviennatesteuap",
+  "resourceGroup": "aml-test",
   "tags": {},
-  "version": "1"
+  "version": "2"
 }
 ```

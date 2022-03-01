@@ -6,15 +6,14 @@ display_name: ScoreModel
 type: command
 inputs:
   predictions:
-    type: path
+    type: uri_folder
   model:
-    type: path
+    type: uri_folder
 outputs:
   score_report:
-    type: path
+    type: uri_folder
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
-code:
-  local_path: ./score_src
+code: ./score_src
 command: >-
   python score.py 
   --predictions ${{inputs.predictions}} 

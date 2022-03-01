@@ -3,9 +3,9 @@ type: pipeline
 
 # <inputs_and_outputs>
 inputs:
-  pipeline_job_input: #using dataset, can use datastore + datapath also
-    dataset: 
-      local_path: ./data
+  pipeline_job_input: #using local data, will crate an anonymous data asset
+    uri_folder: 
+    path: ./data
 
 outputs: 
   pipeline_job_prepped_data:
@@ -29,45 +29,45 @@ settings:
 
 jobs:
   prep-job:
-    type: component
+    type: command
     component: file:./prep.yml
     inputs:
-      raw_data: ${{inputs.pipeline_job_input}}
+      raw_data: ${{parent.inputs.pipeline_job_input}}
     outputs:
-      prep_data: ${{outputs.pipeline_job_prepped_data}}
+      prep_data: ${{parent.outputs.pipeline_job_prepped_data}}
 
   transform-job:
-    type: component
+    type: command
     component: file:./transform.yml
     inputs:
-      clean_data: ${{jobs.prep-job.outputs.prep_data}}
+      clean_data: ${{parent.jobs.prep-job.outputs.prep_data}}
     outputs:
-      transformed_data: ${{outputs.pipeline_job_transformed_data}}
+      transformed_data: ${{parent.outputs.pipeline_job_transformed_data}}
 
   train-job:
-    type: component
+    type: command
     component: file:./train.yml
     inputs:
-      training_data: ${{jobs.transform-job.outputs.transformed_data}}
+      training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
     outputs:
-      model_output: ${{outputs.pipeline_job_trained_model}}
-      test_data: ${{outputs.pipeline_job_test_data}}
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data: ${{parent.outputs.pipeline_job_test_data}}
   
   predict-job:
-    type: component
+    type: command
     component: file:./predict.yml
     inputs:
-      model_input: ${{jobs.train-job.outputs.model_output}}
-      test_data: ${{jobs.train-job.outputs.test_data}}
+      model_input: ${{parent.jobs.train-job.outputs.model_output}}
+      test_data: ${{parent.jobs.train-job.outputs.test_data}}
     outputs:
-      predictions: ${{outputs.pipeline_job_predictions}}
+      predictions: ${{parent.outputs.pipeline_job_predictions}}
 
   score-job:
-    type: component
+    type: command
     component: file:./score.yml
     inputs:
-      predictions: ${{jobs.predict-job.outputs.predictions}}
-      model: ${{jobs.train-job.outputs.model_output}}
+      predictions: ${{parent.jobs.predict-job.outputs.predictions}}
+      model: ${{parent.jobs.train-job.outputs.model_output}}
     outputs:
-      score_report: ${{outputs.pipeline_job_score_report}}
+      score_report: ${{parent.outputs.pipeline_job_score_report}}
 # </jobs>
