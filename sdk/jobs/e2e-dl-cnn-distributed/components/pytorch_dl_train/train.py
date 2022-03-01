@@ -3,7 +3,6 @@
 Future changes:
 - use checkpoint to load model and resume training
 - support multi-labels
-- instrument with profiler
 
 Potential changes:
 - use dataclasses for config and argparse?
@@ -20,6 +19,7 @@ from distutils.util import strtobool
 import json
 from dataclasses import dataclass, field
 from typing import Any, Callable, List, Optional, Tuple
+import tempfile
 
 import mlflow
 
@@ -36,15 +36,6 @@ from torch.profiler import profile, record_function, ProfilerActivity
 
 from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
-
-
-@dataclass
-class profiler_config:
-    enabled: bool = False
-    cuda: bool = False
-    record_shapes: bool = False
-    activities: List[int] = field(default_factory=list)
-    profile_memory: bool = False
 
 
 class PyTorchDistributedModelTrainingSequence:
@@ -78,7 +69,11 @@ class PyTorchDistributedModelTrainingSequence:
         # TRAINING CONFIGS
         self.dataloading_config = None
         self.training_config = None
-        self.profiler_config = None
+
+        # PROFILER
+        self.profiler = None
+        self.profiler_output_tmp_dir = None
+
 
     #####################
     ### SETUP METHODS ###
@@ -119,27 +114,6 @@ class PyTorchDistributedModelTrainingSequence:
             torch.distributed.init_process_group(
                 "nccl", rank=self.world_rank, world_size=self.world_size
             )
-
-        if args.profile:
-            activities = [ProfilerActivity.CPU]
-            if torch.cuda.is_available():
-                activities.append(ProfilerActivity.CUDA)
-
-            self.profiler_enabled = True
-            if args.tensorboard_output:
-                trace_handler = torch.profiler.tensorboard_trace_handler(args.tensorboard_output)
-            else:
-                trace_handler = None
-
-            self.profiler_config = dict(
-                record_shapes = True,
-                profile_memory = True,
-                activities = activities,
-                on_trace_ready=trace_handler
-            )
-        else:
-            self.profiler_enabled = False
-            self.profiler_config = {}
 
     def setup_datasets(
         self,
@@ -281,20 +255,20 @@ class PyTorchDistributedModelTrainingSequence:
             # start timer for epoch time metric
             epoch_start = time.time()
 
-            with profile(**self.profiler_config) as prof:
-                # TRAIN: loop on training set and return metrics
-                running_loss, num_correct, num_samples = self._epoch_train(
-                    epoch, optimizer, criterion
-                )
-                epoch_train_loss = running_loss / num_samples
-                epoch_train_acc = num_correct / num_samples
+            # TRAIN: loop on training set and return metrics
+            running_loss, num_correct, num_samples = self._epoch_train(
+                epoch, optimizer, criterion
+            )
+            epoch_train_loss = running_loss / num_samples
+            epoch_train_acc = num_correct / num_samples
 
-                # EVAL: run evaluation on validation set and return metrics
-                running_loss, num_correct, num_samples = self._epoch_eval(epoch, criterion)
-                epoch_valid_loss = running_loss / num_samples
-                epoch_valid_acc = num_correct / num_samples
+            # EVAL: run evaluation on validation set and return metrics
+            running_loss, num_correct, num_samples = self._epoch_eval(epoch, criterion)
+            epoch_valid_loss = running_loss / num_samples
+            epoch_valid_acc = num_correct / num_samples
 
-                prof.step()
+            if self.profiler:
+                self.profiler.step()
 
             # stop timer
             epoch_train_time = time.time() - epoch_start
@@ -317,8 +291,6 @@ class PyTorchDistributedModelTrainingSequence:
                 mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
                 mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
                 mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
-
-            print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=20))
 
 
     #################
@@ -351,6 +323,64 @@ class PyTorchDistributedModelTrainingSequence:
             mlflow.pytorch.log_model(
                 self.model, artifact_path="final_model", registered_model_name=model_name, signature=self.model_signature
             )
+
+
+    #################
+    ### PROFILING ###
+    #################
+
+    def start_profiler(self, enabled=False, export_format=None):
+        """Saves the profiler output"""
+        if enabled:
+            self.profiler_output_tmp_dir = tempfile.TemporaryDirectory()
+            self.logger.info(f"Starting profiler (enabled=True) with tmp dir {self.profiler_output_tmp_dir.name}.")
+            tensorboard_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "tensorboard_logs")
+            traces_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "traces")
+
+            activities = [ProfilerActivity.CPU]
+            if torch.cuda.is_available():
+                self.logger.info(f"Enabling CUDA in profiler.")
+                activities.append(ProfilerActivity.CUDA)
+
+            if export_format is None:
+                _trace_handler = None
+            elif export_format == "traces":
+                def _trace_handler(prof):
+                    """callable that is called at each step when schedule returns ProfilerAction.RECORD_AND_SAVE during the profiling."""
+                    os.makedirs(traces_logs_export, exist_ok=True)
+                    logging.getLogger(__name__).info(f"Exporting profile traces for step={prof.step_num} to {traces_logs_export}")
+                    trace_path = os.path.join(traces_logs_export, str(prof.step_num) + ".json")
+                    prof.export_chrome_trace(trace_path)
+            elif export_format == "tensorboard":
+                _trace_handler = torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
+            else:
+                raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'traces' or 'tensorboard'")
+
+            self.profiler = torch.profiler.profile(
+                record_shapes = True,
+                profile_memory = True,
+                activities = activities,
+                on_trace_ready=_trace_handler
+            )
+            self.profiler.start()
+        else:
+            self.logger.info(f"Profiler not started (enabled=False).")
+            self.profiler = None
+
+    def stop_profiler(self) -> None:
+        """Saves the profiler output"""
+        if self.profiler:
+            self.logger.info(f"Stopping profiler.")
+            self.profiler.stop()
+
+            # log via mlflow
+            self.logger.info(f"MLFLOW log {self.profiler_output_tmp_dir.name} as an artifact.")
+            mlflow.log_artifacts(self.profiler_output_tmp_dir.name, artifact_path="profiler")
+
+            self.logger.info(f"Clean up profiler temp dir {self.profiler_output_tmp_dir.name}")
+            self.profiler_output_tmp_dir.cleanup()
+        else:
+            self.logger.info("Not stopping profiler as it was not started in the first place.")
 
 
 def build_arguments_parser(parser: argparse.ArgumentParser = None):
@@ -405,13 +435,6 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         required=False,
         default=None,
         help="Name to register final model in MLFlow",
-    )
-    group.add_argument(
-        "--tensorboard_output",
-        type=str,
-        required=False,
-        default=None,
-        help="Folder to store tensorboard logs",
     )
 
     group = parser.add_argument_group(f"Data Loading Parameters")
@@ -497,6 +520,14 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         default=False,
         help="Enable pytorch profiler.",
     )
+    group.add_argument(
+        "--profile_export_format",
+        type=str,
+        required=False,
+        default="traces",
+        choices=["traces", "tensorboard"],
+        help="Specify format of profiler export.",
+    )
 
     return parser
 
@@ -534,6 +565,9 @@ def run(args):
     # sets cuda and distributed config
     training_handler.setup_config(args)
 
+    # enable profiling
+    training_handler.start_profiler(enabled=bool(args.profile), export_format=args.profile_export_format)
+
     # creates data loaders from datasets for distributed training
     training_handler.setup_datasets(train_dataset, valid_dataset, labels)
 
@@ -543,6 +577,9 @@ def run(args):
     # runs training sequence
     # NOTE: num_epochs is provided in args
     training_handler.train()
+
+    # stops profiling (and save in mlflow)
+    training_handler.stop_profiler()
 
     # saves final model
     if args.model_output:
