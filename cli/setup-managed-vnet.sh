@@ -8,14 +8,23 @@ az configure --defaults group=rg-$SUFFIX
 # Create via bicep: vnet, workspace, storage, acr, kv, nsg, PEs
 az deployment group create --template-file main.bicep --parameters suffix=$SUFFIX
 
-
-az acr create -n $ACR_NAME --sku premium
-
-cd endpoints/online/model-1/environment-vnet/
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az extension add --upgrade -n ml -y
+az login --identity -u ${uaiId} # /subscriptions/5f08d643-1910-4a38-a7c7-84a39d4f42e0/resourceGroups/rg-moe2/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-moe2
+az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION # az configure --defaults group=rg-moe2 workspace=mlw-moe2 location=eastus
+mkdir -p /home/samples; git clone -b rsethur/mvnet --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
+cd /home/samples/azureml-examples/cli/endpoints/online/model-1/environment-vnet/
 az acr login -n $ACR_NAME
 docker build -t moevnetimg .
-docker tag moevnetimg $ACR_NAME.azurecr.io/moevnetimg
-docker push $ACR_NAME.azurecr.io/moevnetimg
+docker tag moevnetimg:0 $ACR_NAME.azurecr.io/moevnetimg:0
+docker push $ACR_NAME.azurecr.io/moevnetimg:0
+
+cd /home/samples/azureml-examples/cli/endpoints/online/model-1/environment-vnet/ && az acr login -n crmoe2 && docker build -t moevnetimg . && docker tag moevnetimg:v0 && crmoe2.azurecr.io/moevnetimg:v0 && docker push crmoe2.azurecr.io/moevnetimg:v0
+
+# create endpoint/deployment
+# git pull, update cli
+cd /home/samples/azureml-examples/cli/ && export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true && export ENDPOINT_NAME=endpt122 && az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
+cd /home/samples/azureml-examples/cli/ && export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true && export ENDPOINT_NAME=endpt122 && az ml online-deployment create --name blue6 –-set private_network_connection="true" environment.image="crmoe2.azurecr.io/moevnetimg:v0" --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment-vnet.yml --all-traffic
 
 cd ../../managed/secure-ws
 
