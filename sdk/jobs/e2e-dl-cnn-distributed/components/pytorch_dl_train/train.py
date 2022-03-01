@@ -3,7 +3,7 @@
 Future changes:
 - use checkpoint to load model and resume training
 - support multi-labels
-- instrument with nvtx for profiling
+- instrument with profiler
 
 Potential changes:
 - use dataclasses for config and argparse?
@@ -18,6 +18,7 @@ import logging
 import argparse
 from distutils.util import strtobool
 import json
+from dataclasses import dataclass, field
 from typing import Any, Callable, List, Optional, Tuple
 
 import mlflow
@@ -31,9 +32,19 @@ from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from torch.profiler import profile, record_function, ProfilerActivity
 
 from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
+
+
+@dataclass
+class profiler_config:
+    enabled: bool = False
+    cuda: bool = False
+    record_shapes: bool = False
+    activities: List[int] = field(default_factory=list)
+    profile_memory: bool = False
 
 
 class PyTorchDistributedModelTrainingSequence:
@@ -63,12 +74,11 @@ class PyTorchDistributedModelTrainingSequence:
         self.device = None
         # NOTE: if we're running multiple nodes, this indicates if we're on first node
         self.self_is_main_node = self.world_rank == 0
-        # NOTE: if we're running multiple process (1 per gpu), this indicates if we're first process on the node
-        self.self_is_main_process = self.local_rank == 0
 
         # TRAINING CONFIGS
         self.dataloading_config = None
         self.training_config = None
+        self.profiler_config = None
 
     #####################
     ### SETUP METHODS ###
@@ -110,6 +120,27 @@ class PyTorchDistributedModelTrainingSequence:
                 "nccl", rank=self.world_rank, world_size=self.world_size
             )
 
+        if args.profile:
+            activities = [ProfilerActivity.CPU]
+            if torch.cuda.is_available():
+                activities.append(ProfilerActivity.CUDA)
+
+            self.profiler_enabled = True
+            if args.tensorboard_output:
+                trace_handler = torch.profiler.tensorboard_trace_handler(args.tensorboard_output)
+            else:
+                trace_handler = None
+
+            self.profiler_config = dict(
+                record_shapes = True,
+                profile_memory = True,
+                activities = activities,
+                on_trace_ready=trace_handler
+            )
+        else:
+            self.profiler_enabled = False
+            self.profiler_config = {}
+
     def setup_datasets(
         self,
         training_dataset: torch.utils.data.Dataset,
@@ -122,6 +153,7 @@ class PyTorchDistributedModelTrainingSequence:
         self.training_data_sampler = DistributedSampler(
             training_dataset, num_replicas=self.world_size, rank=self.world_rank
         )
+
         self.training_data_loader = DataLoader(
             training_dataset,
             batch_size=self.dataloading_config.batch_size,
@@ -161,22 +193,23 @@ class PyTorchDistributedModelTrainingSequence:
             num_total_images = 0
             running_loss = 0.0
             for images, targets in tqdm(self.validation_data_loader):
+                with record_function("eval.to_device"):
+                    images = images.to(
+                        self.device, non_blocking=self.dataloading_config.non_blocking
+                    )
+                    targets = targets.to(
+                        self.device, non_blocking=self.dataloading_config.non_blocking
+                    )
 
-                images = images.to(
-                    self.device, non_blocking=self.dataloading_config.non_blocking
-                )
-                targets = targets.to(
-                    self.device, non_blocking=self.dataloading_config.non_blocking
-                )
+                with record_function("eval.forward"):
+                    outputs = self.model(images)
 
-                outputs = self.model(images)
-
-                # loss = criterion(outputs, targets)
-                loss = criterion(outputs.squeeze(), targets.squeeze())
-                running_loss += loss.item() * images.size(0)
-                correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
-                num_correct += torch.sum(correct).item()
-                num_total_images += len(images)
+                    # loss = criterion(outputs, targets)
+                    loss = criterion(outputs.squeeze(), targets.squeeze())
+                    running_loss += loss.item() * images.size(0)
+                    correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
+                    num_correct += torch.sum(correct).item()
+                    num_total_images += len(images)
 
         return running_loss, num_correct, num_total_images
 
@@ -190,28 +223,31 @@ class PyTorchDistributedModelTrainingSequence:
         running_loss = 0.0
 
         for images, targets in tqdm(self.training_data_loader):
-            images = images.to(
-                self.device, non_blocking=self.dataloading_config.non_blocking
-            )
-            targets = targets.to(
-                self.device, non_blocking=self.dataloading_config.non_blocking
-            )
+            with record_function("train.to_device"):
+                images = images.to(
+                    self.device, non_blocking=self.dataloading_config.non_blocking
+                )
+                targets = targets.to(
+                    self.device, non_blocking=self.dataloading_config.non_blocking
+                )
 
-            # zero the parameter gradients
-            optimizer.zero_grad()
+            with record_function("train.forward"):
+                # zero the parameter gradients
+                optimizer.zero_grad()
 
-            outputs = self.model(images)
-            _, preds = torch.max(outputs, 1)
-            # loss = criterion(outputs, targets)
-            loss = criterion(outputs.squeeze(), targets.squeeze())
+                outputs = self.model(images)
+                _, preds = torch.max(outputs, 1)
+                # loss = criterion(outputs, targets)
+                loss = criterion(outputs.squeeze(), targets.squeeze())
 
-            loss.backward()
-            optimizer.step()
+                running_loss += loss.item() * images.size(0)
+                correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
+                num_correct += torch.sum(correct).item()
+                num_total_images += len(images)
 
-            running_loss += loss.item() * images.size(0)
-            correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
-            num_correct += torch.sum(correct).item()
-            num_total_images += len(images)
+            with record_function("train.backward"):
+                loss.backward()
+                optimizer.step()
 
         return running_loss, num_correct, num_total_images
 
@@ -245,17 +281,20 @@ class PyTorchDistributedModelTrainingSequence:
             # start timer for epoch time metric
             epoch_start = time.time()
 
-            # TRAIN: loop on training set and return metrics
-            running_loss, num_correct, num_samples = self._epoch_train(
-                epoch, optimizer, criterion
-            )
-            epoch_train_loss = running_loss / num_samples
-            epoch_train_acc = num_correct / num_samples
+            with profile(**self.profiler_config) as prof:
+                # TRAIN: loop on training set and return metrics
+                running_loss, num_correct, num_samples = self._epoch_train(
+                    epoch, optimizer, criterion
+                )
+                epoch_train_loss = running_loss / num_samples
+                epoch_train_acc = num_correct / num_samples
 
-            # EVAL: run evaluation on validation set and return metrics
-            running_loss, num_correct, num_samples = self._epoch_eval(epoch, criterion)
-            epoch_valid_loss = running_loss / num_samples
-            epoch_valid_acc = num_correct / num_samples
+                # EVAL: run evaluation on validation set and return metrics
+                running_loss, num_correct, num_samples = self._epoch_eval(epoch, criterion)
+                epoch_valid_loss = running_loss / num_samples
+                epoch_valid_acc = num_correct / num_samples
+
+                prof.step()
 
             # stop timer
             epoch_train_time = time.time() - epoch_start
@@ -272,12 +311,14 @@ class PyTorchDistributedModelTrainingSequence:
             )
 
             # report in mlflow only if running from main node
-            if self.self_is_main_node and self.self_is_main_process:
+            if self.self_is_main_node:
                 mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
                 mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
                 mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
                 mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
                 mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
+
+            print(prof.key_averages().table(sort_by="cpu_time_total", row_limit=20))
 
 
     #################
@@ -285,7 +326,7 @@ class PyTorchDistributedModelTrainingSequence:
     #################
 
     def save(self, output_dir: str, name: str = "dev") -> None:
-        if self.self_is_main_node and self.self_is_main_process:
+        if self.self_is_main_node:
             self.logger.info(f"Saving model and classes in {output_dir}...")
 
             # create output directory just in case
@@ -306,9 +347,10 @@ class PyTorchDistributedModelTrainingSequence:
         Args:
             model_name (str): name/identifier to register the model
         """
-        mlflow.pytorch.log_model(
-            self.model, artifact_path="final_model", registered_model_name=model_name, signature=self.model_signature
-        )
+        if self.self_is_main_node:
+            mlflow.pytorch.log_model(
+                self.model, artifact_path="final_model", registered_model_name=model_name, signature=self.model_signature
+            )
 
 
 def build_arguments_parser(parser: argparse.ArgumentParser = None):
@@ -363,6 +405,13 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         required=False,
         default=None,
         help="Name to register final model in MLFlow",
+    )
+    group.add_argument(
+        "--tensorboard_output",
+        type=str,
+        required=False,
+        default=None,
+        help="Folder to store tensorboard logs",
     )
 
     group = parser.add_argument_group(f"Data Loading Parameters")
@@ -438,6 +487,15 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         required=False,
         default=0.01,
         help="Momentum of optimizer",
+    )
+
+    group = parser.add_argument_group(f"Monitoring/Profiling Parameters")
+    group.add_argument(
+        "--profile",
+        type=strtobool,
+        required=False,
+        default=False,
+        help="Enable pytorch profiler.",
     )
 
     return parser
