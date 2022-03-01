@@ -1,7 +1,7 @@
 set -e
 export SUFFIX="moe1"
-az account set --subscription e54229a3-0e6f-40b3-82a1-ae9cda6e2b81
-az configure --defaults location=eastus
+az account set --subscription 6560575d-fa06-4e7d-95fb-f962e74efd7a
+az configure --defaults location=westcentralus
 az group create -n rg-$SUFFIX --tags owner=seramasu@microsoft.com deleteafter=2022-04-04
 az configure --defaults group=rg-$SUFFIX
 
@@ -10,11 +10,10 @@ az deployment group create --template-file main.bicep --parameters suffix=$SUFFI
 #inside vm
 sudo su
 sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-az extension add --upgrade -n ml -y
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az extension add --upgrade -n ml -y
 az login --identity -u ${uaiId} # /subscriptions/5f08d643-1910-4a38-a7c7-84a39d4f42e0/resourceGroups/rg-moe2/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-moe2
-az account set --subscription 5f08d643-1910-4a38-a7c7-84a39d4f42e0
-az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION # az configure --defaults group=rg-moe3 workspace=mlw-moe3 location=eastus
+az account set --subscription 6560575d-fa06-4e7d-95fb-f962e74efd7a
+az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION # az configure --defaults group=rg-moe12 workspace=mlw-moe12 location=westcentralus
 mkdir -p /home/samples; git clone -b rsethur/mvnet --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
 cd /home/samples/azureml-examples/cli/endpoints/online/model-1/environment-vnet/
 export ACR_NAME=crmoe7

@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+FROM mcr.microsoft.com/azureml/minimal-ubuntu18.04-py37-cpu-inference:latest
 
 COPY conda.yml /tmp/conda.yml
 

@@ -39,9 +39,6 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2020-11-01-pr
       defaultAction: 'Deny'
     }
     policies: {
-      quarantinePolicy: {
-        status: 'enabled'
-      }
       retentionPolicy: {
         status: 'enabled'
         days: 7
