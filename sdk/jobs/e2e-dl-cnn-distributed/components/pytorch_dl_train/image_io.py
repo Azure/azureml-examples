@@ -109,7 +109,7 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
         root: str,
         image_labels: dict,
         transform: Optional[Callable] = None,
-        simulated_latency_in_ms: int = 0,
+        simulated_latency_in_ms: int = 0
     ):
         """Constructor.
 
