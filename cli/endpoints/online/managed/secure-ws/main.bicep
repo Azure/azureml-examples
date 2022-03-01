@@ -140,12 +140,23 @@ module uai 'modules/uai.bicep' = {
   }
 }
 
-module aci 'modules/aci.bicep'= {
-  name: 'aci-${name}-deployment'
-  params: {
-    containerName: 'aci-${name}'
+module vm 'modules/vm.bicep' = {
+  name: 'vm-${name}-deployment'
+  params:{
     location: location
-    subnetId: '${vnet.outputs.id}/subnets/snet-aci'
-    uaiId: uai.outputs.managedIdentityResourceId
+    vmName: 'testvm'
+    virtualMachineSize: 'Standard_F2s_v2'
+    uaiResourceId: uai.outputs.managedIdentityResourceId
+    subnetId: '${vnet.outputs.id}/subnets/snet-pe'
   }
 }
+
+// module aci 'modules/aci.bicep'= {
+//   name: 'aci-${name}-deployment'
+//   params: {
+//     containerName: 'aci-${name}'
+//     location: location
+//     subnetId: '${vnet.outputs.id}/subnets/snet-aci'
+//     uaiId: uai.outputs.managedIdentityResourceId
+//   }
+// }

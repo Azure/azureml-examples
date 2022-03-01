@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: blue
-endpoint_name: my-endpoint
+name: blue10
+endpoint_name: endpt122
+private_network_connection: true
 model:
   local_path: ../../model-1/model/sklearn_regression_model.pkl
 code_configuration:
@@ -8,7 +9,7 @@ code_configuration:
     local_path: ../../model-1/onlinescoring/
   scoring_script: score.py
 environment: 
-  image: placeholder.azurecr.io/moevnetimg
+  image: crmoe2.azurecr.io/moevnetimg:v0
   inference_config:
     liveness_route:
       port: 5001
