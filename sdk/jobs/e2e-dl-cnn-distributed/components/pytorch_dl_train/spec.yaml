@@ -82,7 +82,7 @@ inputs:
   profile:
     type: boolean
     description: "Enables profiler"
-  profile_format_export:
+  profile_export_format:
     type: string
     optional: true
     description: "Profiler export format"
@@ -91,9 +91,6 @@ outputs:
   trained_model: 
     type: path
     description: "Path to write final model"
-  tensorboard_logs:
-    type: path
-    description: "export of tensorboard logs"
 
 code:
   local_path: .
@@ -122,11 +119,10 @@ command: >-
   [--momentum ${{inputs.momentum}}]
 
   --model_output ${{outputs.trained_model}}
-  --tensorboard_logs_export ${{outputs.tensorboard_logs}}
   [--register_model_as ${{inputs.register_model_as}}]
 
   --profile ${{inputs.profile}}
-  [--profile_format_export ${{inputs.profile_format_export}}]
+  [--profile_export_format ${{inputs.profile_export_format}}]
 
 distribution:
   # NOTE: using type:pytorch will use all the right env variables for pytorch init_process_group

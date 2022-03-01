@@ -357,7 +357,7 @@ class PyTorchDistributedModelTrainingSequence:
                 raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'traces' or 'tensorboard'")
 
             self.profiler = torch.profiler.profile(
-                record_shapes = True,
+                record_shapes = False,
                 profile_memory = True,
                 activities = activities,
                 on_trace_ready=_trace_handler
