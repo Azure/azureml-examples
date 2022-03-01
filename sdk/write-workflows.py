@@ -28,6 +28,7 @@ def write_notebook_workflow(notebook, name, classification, folder):
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
@@ -43,6 +44,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: sdk-preview    
     - name: setup python
       uses: actions/setup-python@v2
       with: 
