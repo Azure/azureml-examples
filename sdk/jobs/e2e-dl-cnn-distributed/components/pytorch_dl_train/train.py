@@ -334,8 +334,6 @@ class PyTorchDistributedModelTrainingSequence:
         if enabled:
             self.profiler_output_tmp_dir = tempfile.TemporaryDirectory()
             self.logger.info(f"Starting profiler (enabled=True) with tmp dir {self.profiler_output_tmp_dir.name}.")
-            tensorboard_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "tensorboard_logs")
-            traces_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "traces")
 
             activities = [ProfilerActivity.CPU]
             if torch.cuda.is_available():
@@ -344,15 +342,34 @@ class PyTorchDistributedModelTrainingSequence:
 
             if export_format is None:
                 _trace_handler = None
+            elif export_format == "print":
+                print_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "print")
+                def _trace_handler_print(prof):
+                    """callable that is called at each step when schedule returns ProfilerAction.RECORD_AND_SAVE during the profiling."""
+                    logging.getLogger(__name__).info(f"Exporting profile print for step={prof.step_num} to {print_logs_export}")
+                    os.makedirs(print_logs_export, exist_ok=True)
+                    markdown = [ "# Pytorch Profiler report" ]
+
+                    markdown.append("## Average by cuda time")
+                    markdown.append("```")
+                    markdown.append(prof.key_averages().table(sort_by="self_cuda_time_total", row_limit=-1))
+                    markdown.append("```")
+
+                    with open(os.path.join(print_logs_export, f"step_{prof.step_num}.md"), "w") as out_file:
+                        out_file.write("\n".join(markdown))
+                trace_handler = _trace_handler_print
             elif export_format == "traces":
-                def _trace_handler(prof):
+                traces_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "traces")
+                def _trace_handler_chrome_traces(prof):
                     """callable that is called at each step when schedule returns ProfilerAction.RECORD_AND_SAVE during the profiling."""
                     os.makedirs(traces_logs_export, exist_ok=True)
                     logging.getLogger(__name__).info(f"Exporting profile traces for step={prof.step_num} to {traces_logs_export}")
                     trace_path = os.path.join(traces_logs_export, str(prof.step_num) + ".json")
                     prof.export_chrome_trace(trace_path)
+                trace_handler = _trace_handler_chrome_traces
             elif export_format == "tensorboard":
-                _trace_handler = torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
+                tensorboard_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "tensorboard_logs")
+                trace_handler = torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
             else:
                 raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'traces' or 'tensorboard'")
 
@@ -360,7 +377,7 @@ class PyTorchDistributedModelTrainingSequence:
                 record_shapes = False,
                 profile_memory = True,
                 activities = activities,
-                on_trace_ready=_trace_handler
+                on_trace_ready=trace_handler
             )
             self.profiler.start()
         else:
@@ -524,8 +541,8 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         "--profile_export_format",
         type=str,
         required=False,
-        default="traces",
-        choices=["traces", "tensorboard"],
+        default="print",
+        choices=["print", "traces", "tensorboard"],
         help="Specify format of profiler export.",
     )
 
