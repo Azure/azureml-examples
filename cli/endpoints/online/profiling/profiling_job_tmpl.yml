@@ -3,7 +3,7 @@ command: >
   profiling.sh -p {inputs.payload}
 experiment_name: profiling-job
 environment:
-  image: mcr.microsoft.com/azureml/profilers:latest
+  image: mcr.microsoft.com/azureml/online-endpoints-model-profiler:latest
 environment_variables:
   ONLINE_ENDPOINT: "<% ENDPOINT_NAME %>"
   DEPLOYMENT: "<% DEPLOYMENT_NAME %>"
