@@ -4,14 +4,13 @@ description: "Prints the environment variables useful for scripts running in a P
 
 jobs:
   pytorch-job:
-    type: component
+    type: command
     component: file:./component.yml
     compute: azureml:gpu-cluster
-    overrides:
-      resources:
-        instance_count: 3
-      distribution:
-        type: pytorch
-        process_count_per_instance: 3
+    resources:
+      instance_count: 3
+    distribution:
+      type: pytorch
+      process_count_per_instance: 3
 
         

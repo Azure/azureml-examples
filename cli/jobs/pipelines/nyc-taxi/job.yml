@@ -8,14 +8,13 @@ jobs:
     type: command
     inputs:
       raw_data: 
-          dataset: 
-            local_path: ./data
+          type: uri_folder 
+          path: ./data
     outputs:
       prep_data: 
         mode: upload
-    code:
-      local_path: src/prep
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    code: src/prep
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     command: >-
       python prep.py 
@@ -25,13 +24,12 @@ jobs:
   transform-job:
     type: command
     inputs: 
-      clean_data: ${{jobs.prep-job.outputs.prep_data}}
+      clean_data: ${{parant.jobs.prep-job.outputs.prep_data}}
     outputs:
       transformed_data:
         mode: upload
-    code: 
-      local_path: src/transform
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    code: src/transform
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     command: >-
       python transform.py 
@@ -41,15 +39,14 @@ jobs:
   train-job:
     type: command
     inputs:
-      training_data: ${{jobs.transform-job.outputs.transformed_data}}
+      training_data: ${{parant.jobs.transform-job.outputs.transformed_data}}
     outputs:
       model_output: 
         mode: upload
       test_data: 
         mode: upload
-    code:
-      local_path: src/train
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    code: src/train
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     command: >-
       python train.py 
@@ -60,14 +57,13 @@ jobs:
   predict-job:
     type: command
     inputs:
-      model_input: ${{jobs.train-job.outputs.model_output}}
-      test_data: ${{jobs.train-job.outputs.test_data}}
+      model_input: ${{parant.jobs.train-job.outputs.model_output}}
+      test_data: ${{parant.jobs.train-job.outputs.test_data}}
     outputs:
       predictions: 
         mode: upload
-    code:
-      local_path: src/predict
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    code: src/predict
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     command: >-
       python predict.py 
@@ -78,14 +74,13 @@ jobs:
   score-job:
     type: command
     inputs:
-      predictions: ${{jobs.predict-job.outputs.predictions}}
-      model: ${{jobs.train-job.outputs.model_output}}
+      predictions: ${{parant.jobs.predict-job.outputs.predictions}}
+      model: ${{parant.jobs.train-job.outputs.model_output}}
     outputs:
       score_report: 
         mode: upload
-    code:
-      local_path: src/score
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    code: src/score
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     command: >-      
       python score.py 
