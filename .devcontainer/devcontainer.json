@@ -1,4 +1,7 @@
 {
     "build": { "dockerfile": "Dockerfile" },
-    "extensions": ["dbaeumer.vscode-eslint"]
+    "extensions": [
+		"dbaeumer.vscode-eslint",
+		"ms-toolsai.vscode-ai"
+	]
   }
