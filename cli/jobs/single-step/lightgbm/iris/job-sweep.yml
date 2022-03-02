@@ -1,8 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
 type: sweep
 trial:
-  code: 
-    local_path: src 
+  code: src 
   command: >-
     python main.py 
     --iris-csv ${{inputs.iris_csv}}
@@ -11,7 +10,7 @@ trial:
   environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu:11
 inputs:
   iris_csv: 
-    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 compute: azureml:cpu-cluster
 sampling_algorithm: random
 search_space:
