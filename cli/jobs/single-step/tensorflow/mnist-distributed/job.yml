@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code:
-  local_path: src
+code: src
 command: >-
   python train.py 
   --epochs ${{inputs.epochs}}
@@ -14,7 +13,6 @@ resources:
   instance_count: 2
 distribution:
   type: tensorflow
-  worker_count: 2
   worker_count: 2
 display_name: tensorflow-mnist-distributed-example
 experiment_name: tensorflow-mnist-distributed-example

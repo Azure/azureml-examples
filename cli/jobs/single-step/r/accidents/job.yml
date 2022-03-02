@@ -1,13 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code:
-  local_path: src
+code: src
 command: >-
   Rscript accidents.R
   --data ${{inputs.training_data}}
 inputs:
   training_data:
-    dataset: 
-      local_path: data
+    path: data
     mode: ro_mount
 environment:
   build:

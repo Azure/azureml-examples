@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: python hello-mlflow.py
-code:
-  local_path: src
+code: src
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:3
 compute: azureml:cpu-cluster

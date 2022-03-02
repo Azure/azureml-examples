@@ -10,7 +10,7 @@ jobs:
     command: echo hello ${{inputs.hello_string}}
     environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
     inputs:
-      hello_string: ${{parant.inputs.hello_string_top_level_input}}
+      hello_string: ${{parent.inputs.hello_string_top_level_input}}
   B:
     command: echo "world" >> ${{outputs.world_output}}/world.txt
     outputs:
@@ -18,5 +18,5 @@ jobs:
   C:
     command: echo ${{inputs.world_input}}/world.txt
     inputs:
-      world_input: ${{parant.jobs.B.outputs.world_output}}
+      world_input: ${{parent.jobs.B.outputs.world_output}}
  

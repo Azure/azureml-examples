@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code:
-  local_path: src
+code: src
 command: >-
   python main.py 
   --cuda 
@@ -15,8 +14,7 @@ inputs:
   lr: 5
   save: outputs/model.pt
   corpus:
-    dataset:
-      local_path: data
+    path: data
     mode: download
 environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
 compute: azureml:gpu-cluster

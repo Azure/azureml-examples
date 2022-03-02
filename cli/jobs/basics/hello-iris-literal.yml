@@ -2,8 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: |
   echo "--iris-csv: ${{inputs.iris_csv}}"
   python hello-iris.py --iris-csv ${{inputs.iris_csv}}
-code:
-  local_path: src
+code: src
 inputs:
   iris_csv: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:3
