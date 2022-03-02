@@ -2,7 +2,7 @@ import os
 import time
 import logging
 
-def markdown_trace_handler(dir_name: str):
+def markdown_trace_handler(dir_name: str, rank: int = 0):
     """This handler can be used inside torch.profiler call to output
     tables in markdown format"""
     def handler_fn(prof) -> None:
@@ -13,7 +13,7 @@ def markdown_trace_handler(dir_name: str):
                 raise RuntimeError("Can't create directory: " + dir_name)
         
         # Note: trying to identify a unique name for the file
-        file_name =  os.path.join(dir_name, "step_{}_{}.md".format(prof.step_num, int(time.time() * 1000)))
+        file_name =  os.path.join(dir_name, "step{}_rank{}_t{}.md".format(prof.step_num, rank, int(time.time() * 1000)))
 
         logging.getLogger(__name__).info(f"Exporting profiler trace as markdown at {file_name}")
         # generate report in markdown format

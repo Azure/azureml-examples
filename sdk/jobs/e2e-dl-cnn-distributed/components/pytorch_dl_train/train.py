@@ -39,6 +39,7 @@ from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
 from profiling import markdown_trace_handler
 
+
 class PyTorchDistributedModelTrainingSequence:
     """Generic class to run the sequence for training a PyTorch model
     using distributed training."""
@@ -55,7 +56,7 @@ class PyTorchDistributedModelTrainingSequence:
         # MODEL
         self.model = None
         self.labels = []
-        self.model_signature= None
+        self.model_signature = None
 
         # DISTRIBUTED CONFIG
         self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
@@ -74,7 +75,6 @@ class PyTorchDistributedModelTrainingSequence:
         # PROFILER
         self.profiler = None
         self.profiler_output_tmp_dir = None
-
 
     #####################
     ### SETUP METHODS ###
@@ -293,7 +293,6 @@ class PyTorchDistributedModelTrainingSequence:
                 mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
                 mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
 
-
     #################
     ### MODEL I/O ###
     #################
@@ -305,7 +304,6 @@ class PyTorchDistributedModelTrainingSequence:
             # create output directory just in case
             os.makedirs(output_dir, exist_ok=True)
 
-            # write model using torch.save()
             torch.save(self.model, os.path.join(output_dir, f"model-{name}.pt"))
 
             # save classes names for inferencing
@@ -322,9 +320,11 @@ class PyTorchDistributedModelTrainingSequence:
         """
         if self.self_is_main_node:
             mlflow.pytorch.log_model(
-                self.model, artifact_path="final_model", registered_model_name=model_name, signature=self.model_signature
+                self.model,
+                artifact_path="final_model",
+                registered_model_name=model_name,
+                signature=self.model_signature,
             )
-
 
     #################
     ### PROFILING ###
@@ -334,7 +334,9 @@ class PyTorchDistributedModelTrainingSequence:
         """Saves the profiler output"""
         if enabled:
             self.profiler_output_tmp_dir = tempfile.TemporaryDirectory()
-            self.logger.info(f"Starting profiler (enabled=True) with tmp dir {self.profiler_output_tmp_dir.name}.")
+            self.logger.info(
+                f"Starting profiler (enabled=True) with tmp dir {self.profiler_output_tmp_dir.name}."
+            )
 
             activities = [ProfilerActivity.CPU]
             if torch.cuda.is_available():
@@ -345,25 +347,33 @@ class PyTorchDistributedModelTrainingSequence:
                 trace_handler = None
 
             elif export_format == "markdown":
-                markdown_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "markdown")
-                trace_handler = markdown_trace_handler(markdown_logs_export)
+                markdown_logs_export = os.path.join(
+                    self.profiler_output_tmp_dir.name, "markdown"
+                )
+                trace_handler = markdown_trace_handler(markdown_logs_export, rank=self.world_rank)
 
             elif export_format == "tensorboard":
-                tensorboard_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "tensorboard_logs")
-                trace_handler = torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
+                tensorboard_logs_export = os.path.join(
+                    self.profiler_output_tmp_dir.name, "tensorboard_logs"
+                )
+                trace_handler = torch.profiler.tensorboard_trace_handler(
+                    tensorboard_logs_export
+                )
 
             else:
-                raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'markdown' or 'tensorboard'")
+                raise NotImplementedError(
+                    f"profiler export_format={export_format} is not implemented, please use either 'markdown' or 'tensorboard'"
+                )
 
             # process every single step
             profiler_schedule = torch.profiler.schedule(wait=0, warmup=0, active=1)
 
             self.profiler = torch.profiler.profile(
                 schedule=profiler_schedule,
-                record_shapes = False,
-                profile_memory = True,
-                activities = activities,
-                on_trace_ready=trace_handler
+                record_shapes=False,
+                profile_memory=True,
+                activities=activities,
+                on_trace_ready=trace_handler,
             )
             self.profiler.start()
         else:
@@ -377,13 +387,21 @@ class PyTorchDistributedModelTrainingSequence:
             self.profiler.stop()
 
             # log via mlflow
-            self.logger.info(f"MLFLOW log {self.profiler_output_tmp_dir.name} as an artifact.")
-            mlflow.log_artifacts(self.profiler_output_tmp_dir.name, artifact_path="profiler")
+            self.logger.info(
+                f"MLFLOW log {self.profiler_output_tmp_dir.name} as an artifact."
+            )
+            mlflow.log_artifacts(
+                self.profiler_output_tmp_dir.name, artifact_path="profiler"
+            )
 
-            self.logger.info(f"Clean up profiler temp dir {self.profiler_output_tmp_dir.name}")
+            self.logger.info(
+                f"Clean up profiler temp dir {self.profiler_output_tmp_dir.name}"
+            )
             self.profiler_output_tmp_dir.cleanup()
         else:
-            self.logger.info("Not stopping profiler as it was not started in the first place.")
+            self.logger.info(
+                "Not stopping profiler as it was not started in the first place."
+            )
 
 
 def build_arguments_parser(parser: argparse.ArgumentParser = None):
@@ -569,7 +587,9 @@ def run(args):
     training_handler.setup_config(args)
 
     # enable profiling
-    training_handler.start_profiler(enabled=bool(args.profile), export_format=args.profile_export_format)
+    training_handler.start_profiler(
+        enabled=bool(args.profile), export_format=args.profile_export_format
+    )
 
     # creates data loaders from datasets for distributed training
     training_handler.setup_datasets(train_dataset, valid_dataset, labels)
