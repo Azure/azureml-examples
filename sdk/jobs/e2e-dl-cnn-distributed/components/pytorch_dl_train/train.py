@@ -9,6 +9,7 @@ Potential changes:
 - add model signature for mlflow register?
 """
 import os
+import uuid
 import glob
 import time
 import copy
@@ -36,7 +37,7 @@ from torch.profiler import profile, record_function, ProfilerActivity
 
 from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
-
+from profiling import markdown_trace_handler
 
 class PyTorchDistributedModelTrainingSequence:
     """Generic class to run the sequence for training a PyTorch model
@@ -341,39 +342,24 @@ class PyTorchDistributedModelTrainingSequence:
                 activities.append(ProfilerActivity.CUDA)
 
             if export_format is None:
-                _trace_handler = None
-            elif export_format == "print":
-                print_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "print")
-                def _trace_handler_print(prof):
-                    """callable that is called at each step when schedule returns ProfilerAction.RECORD_AND_SAVE during the profiling."""
-                    logging.getLogger(__name__).info(f"Exporting profile print for step={prof.step_num} to {print_logs_export}")
-                    os.makedirs(print_logs_export, exist_ok=True)
-                    markdown = [ "# Pytorch Profiler report" ]
+                trace_handler = None
 
-                    markdown.append("## Average by cuda time")
-                    markdown.append("```")
-                    markdown.append(prof.key_averages().table(sort_by="self_cuda_time_total", row_limit=-1))
-                    markdown.append("```")
+            elif export_format == "markdown":
+                markdown_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "markdown")
+                trace_handler = markdown_trace_handler(markdown_logs_export)
 
-                    with open(os.path.join(print_logs_export, f"step_{prof.step_num}.md"), "w") as out_file:
-                        out_file.write("\n".join(markdown))
-                trace_handler = _trace_handler_print
-            elif export_format == "traces":
-                traces_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "traces")
-                def _trace_handler_chrome_traces(prof):
-                    """callable that is called at each step when schedule returns ProfilerAction.RECORD_AND_SAVE during the profiling."""
-                    os.makedirs(traces_logs_export, exist_ok=True)
-                    logging.getLogger(__name__).info(f"Exporting profile traces for step={prof.step_num} to {traces_logs_export}")
-                    trace_path = os.path.join(traces_logs_export, str(prof.step_num) + ".json")
-                    prof.export_chrome_trace(trace_path)
-                trace_handler = _trace_handler_chrome_traces
             elif export_format == "tensorboard":
                 tensorboard_logs_export = os.path.join(self.profiler_output_tmp_dir.name, "tensorboard_logs")
                 trace_handler = torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
+
             else:
-                raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'traces' or 'tensorboard'")
+                raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'markdown' or 'tensorboard'")
+
+            # process every single step
+            # profiler_schedule = torch.profiler.schedule(wait=0, warmup=0, active=1)
 
             self.profiler = torch.profiler.profile(
+                # schedule=profiler_schedule,
                 record_shapes = False,
                 profile_memory = True,
                 activities = activities,
@@ -541,8 +527,8 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         "--profile_export_format",
         type=str,
         required=False,
-        default="print",
-        choices=["print", "traces", "tensorboard"],
+        default="markdown",
+        choices=["markdown", "tensorboard"],
         help="Specify format of profiler export.",
     )
 
