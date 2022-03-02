@@ -34,6 +34,7 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from torch.profiler import profile, record_function, ProfilerActivity
+import onnx
 
 from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
@@ -322,14 +323,17 @@ class PyTorchDistributedModelTrainingSequence:
     ### MODEL I/O ###
     #################
 
-    def save(self, output_dir: str, name: str = "dev") -> None:
+    def save(self, output_dir: str, name: str = "dev", register_as: str = None) -> None:
         if self.self_is_main_node:
             self.logger.info(f"Saving model and classes in {output_dir}...")
 
             # create output directory just in case
             os.makedirs(output_dir, exist_ok=True)
 
-            torch.save(self.model, os.path.join(output_dir, f"model-{name}.pt"))
+            #torch.save(self.model.state_dict(), os.path.join(output_dir, f"model-{name}.pt"))
+            dummy_input = torch.randn(1, 3, 224, 224, device=self.device)
+            model_path = os.path.join(output_dir, f"model-{name}.onnx")
+            onnx_model = torch.onnx.export(self.model, dummy_input, model_path, verbose=True, output_names=["output1"]) 
 
             # save classes names for inferencing
             with open(
@@ -337,19 +341,15 @@ class PyTorchDistributedModelTrainingSequence:
             ) as out_file:
                 out_file.write(json.dumps(self.labels))
 
-    def register(self, model_name: str) -> None:
-        """Registers the trained model using MLFlow.
-
-        Args:
-            model_name (str): name/identifier to register the model
-        """
-        if self.self_is_main_node:
-            mlflow.pytorch.log_model(
-                self.model,
+            # log model using mlflow            
+            onnx_model = onnx.load(model_path)
+            mlflow.onnx.log_model(
+                onnx_model,
                 artifact_path="final_model",
-                registered_model_name=model_name,
+                registered_model_name=register_as,
                 signature=self.model_signature,
             )
+
 
     #################
     ### PROFILING ###
@@ -641,11 +641,7 @@ def run(args):
 
     # saves final model
     if args.model_output:
-        training_handler.save(args.model_output, name=f"epoch-{args.num_epochs}")
-
-    # register model in MLFlow
-    if args.register_model_as:
-        training_handler.register(args.register_model_as)
+        training_handler.save(args.model_output, name=f"epoch-{args.num_epochs}", register_as=args.register_model_as)
 
     # finalize mlflow (once in entire script)
     mlflow.end_run()
