@@ -10,21 +10,64 @@
 ## 6. az account set --subscription "<YOUR_SUBSCRIPTION>"
 ## 7. az configure --defaults group=<RESOURCE_GROUP> workspace=<WORKSPACE_NAME>
 
+## Profiling Environment Variables:
+## 1. wrk variables:
+##    a) DURATION: time for running the profiling tool (duration for each wrk call or labench call), default value is 300s
+##    b) CONNECTIONS: no. of connections for the profiling tool, default value is set to be the same as the no. of max_concurrent_requests_per_instance
+##    c) THREAD: no. of threads allocated for the profiling tool, default value is 1
+##
+## 2. wrk2 variables:
+##    a) DURATION: time for running the profiling tool (duration for each wrk call or labench call), default value is 300s
+##    b) CONNECTIONS: no. of connections for the profiling tool, default value is set to be the same as the no. of max_concurrent_requests_per_instance
+##    c) THREAD: no. of threads allocated for the profiling tool, default value is 1
+##    d) TARGET_RPS: target rps for the profiling tool, default value is 50
+##
+## 3. labench variables:
+##    a) DURATION: time for running the profiling tool (duration for each wrk call or labench call), default value is 300s
+##    b) CLIENTS: no. of connections for the profiling tool, default value is set to be the same as the no. of max_concurrent_requests_per_instance
+##    c) TIMEOUT: timeout for each request, default value is 10s
+##    d) TARGET_RPS: target rps for the profiling tool, default value is 50
+##
+## 4. mlperf variables:
+##    a) TEST_MODE: mode for profiling, default value is singleStream
+##       - server: user needs to provide env var TARGET_RPS_LIST, and the profiler will run multiple profiling jobs, each on a target_rps in the list.
+##       - searchThroughput: the profiler will run a series of profiling jobs to find out the best rps performance while the latency and success rate is within the designated limitation.
+##       - singleStream: the profiler will run one job, within which, requests will be sent in a single thread, and each request will be sent after the response for the previous request is received.
+##    b) TARGET_LATENCY_IN_MS: used together with TARGET_LATENCY_PERCENTILE to form the latency limitation for mlperf, no default values, user has to provide one.
+##    c) TARGET_LATENCY_PERCENTILE: used together with TARGET_LATENCY_IN_MS to form the latency limitation for mlperf, default value is 90
+##    d) TARGET_RPS_LIST: a list of rps, e.g. "[128, 256]". effective when TEST_MODE is "server" or "searchThroughput".
+##       - server: each rps inside of the list will trigger a corresponding profiling job, and the final report will contain profiling results on all rps cases.
+##       - searchThroughput: user is optional to provide one rps in this list, and this rps will be used as the lower bound when searching for the best performance. 
+##         should the value is not provided, the default lower bound is 1. User should also keep in mind that if the lower bound rps does not satisfy 
+##         the latency limitation, the profiling job will stop immediately.
+##    e) TARGET_SUCCESS_RATE: success rate limitation, used together with the latency limition, will ultimately decide if a profiling job result is VALID or not.
+##    f) MIN_DURATION_IN_MS: The minimum duration that the profiling job has to run. As instructions on how this value should be set, please refer to this paper: https://arxiv.org/abs/1911.02549
+##    g) MIN_QUERY_COUNT: The minimum number of queries that the profiling job has to send. As instructions on how this value should be set, please refer to this paper: https://arxiv.org/abs/1911.02549
+
+set -x
+
 # <set_variables>
 export ENDPOINT_NAME="<ENDPOINT_NAME>"
 export DEPLOYMENT_NAME="<DEPLOYMENT_NAME>"
-export PROFILING_TOOL="<PROFILING_TOOL>" # allowed values: wrk, wrk2 and labench
 export PROFILER_COMPUTE_NAME="<PROFILER_COMPUTE_NAME>"
 export PROFILER_COMPUTE_SIZE="<PROFILER_COMPUTE_SIZE>" # required only when compute does not exist already
-export DURATION="" # time for running the profiling tool (duration for each wrk call or labench call), default value is 300s
-export CONNECTIONS="" # for wrk and wrk2 only, no. of connections for the profiling tool, default value is set to be the same as the no. of workers, or 1 if no. of workers is not set
-export THREAD="" # for wrk and wrk2 only, no. of threads allocated for the profiling tool, default value is 1
-export TARGET_RPS="" # for labench and wrk2 only, target rps for the profiling tool, default value is 50
-export CLIENTS="" # for labench only, no. of clients for the profiling tool, default value is set to be the same as the no. of workers, or 1 if no. of workers is not set
-export TIMEOUT="" # for labench only, timeout for each request, default value is 10s
+export PROFILING_TOOL="<PROFILING_TOOL>" # allowed values: wrk, wrk2, labench and mlperf
+export DURATION=""    
+export CONNECTIONS="" 
+export THREAD=""      
+export TARGET_RPS=""  
+export CLIENTS=""     
+export TIMEOUT=""     
+export TEST_MODE=""                     
+export TARGET_LATENCY_IN_MS=""
+export TARGET_LATENCY_PERCENTILE=""
+export TARGET_RPS_LIST=""
+export TARGET_SUCCESS_RATE=""
+export MIN_DURATION_IN_MS=""
+export MIN_QUERY_COUNT=""
 # </set_variables>
 
-export ENDPOINT_NAME=endpt-30864
+export ENDPOINT_NAME=endpt-`echo $RANDOM`
 export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
 export PROFILER_COMPUTE_NAME=profilingTest # the compute name for hosting the profiler
@@ -101,6 +144,13 @@ sed \
   -e "s/<% CLIENTS %>/$CLIENTS/g" \
   -e "s/<% TIMEOUT %>/$TIMEOUT/g" \
   -e "s/<% THREAD %>/$THREAD/g" \
+  -e "s/<% TEST_MODE %>/$TEST_MODE/g" \
+  -e "s/<% TARGET_LATENCY_IN_MS %>/$TARGET_LATENCY_IN_MS/g" \
+  -e "s/<% TARGET_LATENCY_PERCENTILE %>/$TARGET_LATENCY_PERCENTILE/g" \
+  -e "s/<% TARGET_RPS_LIST %>/$TARGET_RPS_LIST/g" \
+  -e "s/<% TARGET_SUCCESS_RATE %>/$TARGET_SUCCESS_RATE/g" \
+  -e "s/<% MIN_DURATION_IN_MS %>/$MIN_DURATION_IN_MS/g" \
+  -e "s/<% MIN_QUERY_COUNT %>/$MIN_QUERY_COUNT/g" \
   -e "s/<% COMPUTE_NAME %>/$PROFILER_COMPUTE_NAME/g" \
   endpoints/online/profiling/profiling_job_tmpl.yml > profiling_job.yml
 # </create_profiling_job_yaml_file>

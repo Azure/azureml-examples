@@ -14,6 +14,13 @@ environment_variables:
   CLIENTS: "<% CLIENTS %>"
   TIMEOUT: "<% TIMEOUT %>"
   THREAD: "<% THREAD %>"
+  TEST_MODE: "<% TEST_MODE %>"                     
+  TARGET_LATENCY_IN_MS: "<% TARGET_LATENCY_IN_MS %>"
+  TARGET_LATENCY_PERCENTILE: "<% TARGET_LATENCY_PERCENTILE %>"
+  TARGET_RPS_LIST: "<% TARGET_RPS_LIST %>"
+  TARGET_SUCCESS_RATE: "<% TARGET_SUCCESS_RATE %>"
+  MIN_DURATION_IN_MS: "<% MIN_DURATION_IN_MS %>"
+  MIN_QUERY_COUNT: "<% MIN_QUERY_COUNT %>"
 compute: "azureml:<% COMPUTE_NAME %>"
 inputs:
   payload:
