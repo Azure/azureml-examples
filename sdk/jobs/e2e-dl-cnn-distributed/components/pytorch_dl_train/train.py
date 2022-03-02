@@ -59,10 +59,10 @@ class PyTorchDistributedModelTrainingSequence:
         self.model_signature = None
 
         # DISTRIBUTED CONFIG
-        self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
-        self.world_rank = int(os.environ.get("RANK", "0"))
-        self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
-        self.multinode_available = self.world_size > 1
+        self.world_size = 1
+        self.world_rank = 0
+        self.local_rank = 0
+        self.multinode_available = False
         self.cpu_count = os.cpu_count()
         self.device = None
         # NOTE: if we're running multiple nodes, this indicates if we're on first node
@@ -108,13 +108,38 @@ class PyTorchDistributedModelTrainingSequence:
             self.logger.info(f"Setting up torch.device for cpu")
             self.device = torch.device("cpu")
 
+        # detect multinode config
+        self.distributed_backend = args.distributed_backend
+        if self.distributed_backend == "nccl":
+            self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
+            self.world_rank = int(os.environ.get("RANK", "0"))
+            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
+            self.multinode_available = self.world_size > 1
+
+        elif self.distributed_backend == "mpi":
+            # Note: Distributed pytorch package doesn't have MPI built in.
+            # MPI is only included if you build PyTorch from source on a host that has MPI installed.
+            self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
+            self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
+            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
+            self.multinode_available = self.world_size > 1
+
+        else:
+            raise NotImplementedError(
+                f"distributed_backend={self.distributed_backend} is not implemented yet."
+            )
+
         if self.multinode_available:
             self.logger.info(
-                f"Running in multinode with local_rank={self.local_rank} rank={self.world_rank} size={self.world_size}"
+                f"Running in multinode with backend={self.distributed_backend} local_rank={self.local_rank} rank={self.world_rank} size={self.world_size}"
             )
             torch.distributed.init_process_group(
-                "nccl", rank=self.world_rank, world_size=self.world_size
+                self.distributed_backend,
+                rank=self.world_rank,
+                world_size=self.world_size,
             )
+        else:
+            self.logger.info(f"Not running in multinode.")
 
     def setup_datasets(
         self,
@@ -331,7 +356,7 @@ class PyTorchDistributedModelTrainingSequence:
     #################
 
     def start_profiler(self, enabled=False, export_format=None):
-        """Saves the profiler output"""
+        """Setup and start the pytorch profiler"""
         if enabled:
             self.profiler_output_tmp_dir = tempfile.TemporaryDirectory()
             self.logger.info(
@@ -350,7 +375,9 @@ class PyTorchDistributedModelTrainingSequence:
                 markdown_logs_export = os.path.join(
                     self.profiler_output_tmp_dir.name, "markdown"
                 )
-                trace_handler = markdown_trace_handler(markdown_logs_export, rank=self.world_rank)
+                trace_handler = markdown_trace_handler(
+                    markdown_logs_export, rank=self.world_rank
+                )
 
             elif export_format == "tensorboard":
                 tensorboard_logs_export = os.path.join(
@@ -381,7 +408,7 @@ class PyTorchDistributedModelTrainingSequence:
             self.profiler = None
 
     def stop_profiler(self) -> None:
-        """Saves the profiler output"""
+        """Stops the pytorch profiler and logs the outputs using mlflow"""
         if self.profiler:
             self.logger.info(f"Stopping profiler.")
             self.profiler.stop()
@@ -510,6 +537,14 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         required=False,
         default=True,
         help="Use pretrained model (default: true)",
+    )
+    group.add_argument(
+        "--distributed_backend",
+        type=str,
+        required=False,
+        choices=["nccl", "mpi"],
+        default="nccl",
+        help="Which distributed backend to use.",
     )
     group.add_argument(
         "--num_epochs",
