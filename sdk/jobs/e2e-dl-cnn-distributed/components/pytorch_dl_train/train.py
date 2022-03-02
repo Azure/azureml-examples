@@ -356,10 +356,10 @@ class PyTorchDistributedModelTrainingSequence:
                 raise NotImplementedError(f"profiler export_format={export_format} is not implemented, please use either 'markdown' or 'tensorboard'")
 
             # process every single step
-            # profiler_schedule = torch.profiler.schedule(wait=0, warmup=0, active=1)
+            profiler_schedule = torch.profiler.schedule(wait=0, warmup=0, active=1)
 
             self.profiler = torch.profiler.profile(
-                # schedule=profiler_schedule,
+                schedule=profiler_schedule,
                 record_shapes = False,
                 profile_memory = True,
                 activities = activities,
