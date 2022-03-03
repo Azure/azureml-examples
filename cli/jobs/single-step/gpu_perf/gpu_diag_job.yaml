@@ -19,7 +19,7 @@ inputs:
   maxbytes: "8G"
   stepfactor: 2
 
-environment: azureml:nccl_test_azureml_base:1
+environment: azureml:gpu_base:0.1.0-dev
 
 environment_variables: # NOTE: set env var if needed by your configuration
   NCCL_DEBUG: "INFO"
