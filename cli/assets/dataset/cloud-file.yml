@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
 name: cloud-file-example
 description: Dataset created from file in cloud.
-paths:
-  - file: azureml://datastores/workspaceblobstore/paths/example-data/titanic.csv
+type: uri_file
+path: azureml://datastores/workspaceblobstore/paths/example-data/titanic.csv

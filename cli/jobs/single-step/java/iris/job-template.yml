@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
-  local_path: ../aml-mlfow-java-example
+code: ../aml-mlfow-java-example
 command: >-
   mvn -f pom.xml clean compile assembly:single &&
   java -jar target/aml-mlfow-java-example-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
@@ -15,7 +14,7 @@ environment_variables:
   
 #inputs:
 #  iris: 
-#    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+#    path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 
 environment: 
   build:

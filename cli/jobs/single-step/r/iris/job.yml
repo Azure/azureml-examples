@@ -2,11 +2,11 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >
   Rscript train.R 
   --data_folder ${{inputs.iris}}
-code:
-  local_path: src
+code: src
 inputs:
   iris: 
-    file: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    type: uri_file
+    path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
   build:
     local_path: docker-context
