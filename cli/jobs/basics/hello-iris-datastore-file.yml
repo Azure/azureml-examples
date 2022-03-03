@@ -4,7 +4,8 @@ command: |
   python hello-iris.py --iris-csv ${{inputs.iris_csv}}
 code: src
 inputs:
-  iris_csv: 
+  iris_csv:
+    type: uri_file 
     path: azureml://datastores/workspaceblobstore/paths/example-data/iris.csv
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:3
 compute: azureml:cpu-cluster
