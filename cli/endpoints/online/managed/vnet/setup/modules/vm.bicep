@@ -4,6 +4,7 @@ param location string
 param vmName string
 
 param adminUserName string = 'd3F4gfddfE4'
+var randomSshPublicKey = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUCu8YZlOF4bPPu4I8lXBB1Yv9xtqQZlLzGcvgbLRUeU2/GJh2EIWS331bsQX72Ww8NZgqnvvqLz5yRak8Y171zmokkpUrNQUGLEUT5BATF8s3ssNnAksNRDPqZoweUjk4JFKQ4TmvgWMW8QbEHpc4x3urfNxHHet3xKLm5I4pqd35/UUB/5moE1YjjUQLsurcjJCrUEmn3+X2itO7TS8DM4q3FhnNasAOq3UFILBNWYQisrrPbj62yt1BNFmz2yq7uBxYpNiDzeKZvGVT17de5yKNh1v9F99QG62hApjIAH+GDW4G5tm92W0Q4sf6LdC7fE3/BvNmYjVNt6JCpEJx'
 
 var networkInterfaceName = 'nic${vmName}'
 param subnetId string
@@ -81,7 +82,7 @@ resource vmName_resource 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         ssh: {
           publicKeys: [
             {
-              keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUCu8YZlOF4bPPu4I8lXBB1Yv9xtqQZlLzGcvgbLRUeU2/GJh2EIWS331bsQX72Ww8NZgqnvvqLz5yRak8Y171zmokkpUrNQUGLEUT5BATF8s3ssNnAksNRDPqZoweUjk4JFKQ4TmvgWMW8QbEHpc4x3urfNxHHet3xKLm5I4pqd35/UUB/5moE1YjjUQLsurcjJCrUEmn3+X2itO7TS8DM4q3FhnNasAOq3UFILBNWYQisrrPbj62yt1BNFmz2yq7uBxYpNiDzeKZvGVT17de5yKNh1v9F99QG62hApjIAH+GDW4G5tm92W0Q4sf6LdC7fE3/BvNmYjVNt6JCpEJx'
+              keyData: randomSshPublicKey
               path: '/home/${adminUserName}/.ssh/authorized_keys'
             }
           ]

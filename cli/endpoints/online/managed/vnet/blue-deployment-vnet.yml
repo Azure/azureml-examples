@@ -9,7 +9,7 @@ code_configuration:
     local_path: ../../model-1/onlinescoring/
   scoring_script: score.py
 environment: 
-  image: crmoe12.azurecr.io/repo/img:v2
+  image: crmoe12.azurecr.io/repo/img:v1
   inference_config:
     liveness_route:
       port: 5001
