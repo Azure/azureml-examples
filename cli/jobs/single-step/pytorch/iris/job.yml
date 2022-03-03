@@ -7,7 +7,8 @@ command: >-
   --epochs ${{inputs.epochs}}
   --lr ${{inputs.lr}}
 inputs:
-  iris_csv: 
+  iris_csv:
+    type: uri_file 
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
   epochs: 10
   lr: 0.1
