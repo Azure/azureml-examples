@@ -1,11 +1,11 @@
 # Working with Data
 
-Examples are provided in the [data.ipynb notebook](./data.ipynb) that articulate:
+Examples are provided in the [data.ipynb notebook](./data.ipynb) that articulates:
 
-1. Read data in a job
-1. Read *and* write data in a job
-1. Register data as an asset in Azure Machine Learning
-1. Read registered data assets from Azure Machine Learning in a job
+1. Reading data in a job
+1. Reading *and* writing data in a job
+1. Registering data as an asset in Azure Machine Learning
+1. Reading registered data assets from Azure Machine Learning in a job
 
 In this markdown file we provide some helpful snippets. Please refer to the notebook for more context and details.
 
@@ -34,7 +34,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--input_folder", type=str)
 args = parser.parse_args()
 
-file_name = os.path.join(args.input_folder, "MY_CSV_FILE.csv")
+file_name = os.path.join(args.input_folder, "MY_CSV_FILE.csv") 
 df = pd.read_csv(file_name)
 print(df.head(10))
 # process data
@@ -42,9 +42,25 @@ print(df.head(10))
 # etc
 ```
 
-Below we show some common data access patterns that you can use in your *control-plane* code.
+## Understand `uri_file` and `uri_folder` types
+In Azure Machine Learning there are three types for data:
+
+1. `uri_file` - is a type that refers to a specific file. For example: `'https://<account_name>.blob.core.windows.net/<container_name>/path/file.csv'`.
+1. `uri_folder` - is a type that refers to a specific folder. For example `'https://<account_name>.blob.core.windows.net/<container_name>/path'` 
+1. `mltable` (*coming soon*) - used for Automated ML and Parallel Jobs. This type defines tabular data - for example: schema and subsetting transforms.
+
+In the above data-plane code you can see the python code expects a `uri_folder` because to read the file it creates a path that joins the folder with the file name:
+
+```python
+file_name = os.path.join(args.input_folder, "MY_CSV_FILE.csv") 
+df = pd.read_csv(file_name)
+```
+
+If you want to pass in just an individual file rather than the entire folder you can use the `uri_file` type.
 
 ## Snippets
+
+Below we show some common data access patterns that you can use in your *control-plane* code.
 
 ### Using local data in a job
 
@@ -54,7 +70,8 @@ from azure.ml._constants import AssetTypes
 
 my_job_inputs = {
     "input_data": JobInput(
-        path='./sample_data' # change to be your local directory
+        path='./sample_data', # change to be your local directory
+        type=AssetTypes.URI_FOLDER
     )
 }
 
@@ -82,7 +99,8 @@ from azure.ml._constants import AssetTypes
 # in this example we
 my_job_inputs = {
     "input_data": JobInput(
-        path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>'
+        path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>',
+        type=AssetTypes.URI_FOLDER
     )
 }
 
@@ -109,7 +127,8 @@ from azure.ml._constants import AssetTypes
 # in this example we
 my_job_inputs = {
     "input_data": JobInput(
-        path='https://<account_name>.blob.core.windows.net/<container_name>/path'
+        path='https://<account_name>.blob.core.windows.net/<container_name>/path',
+        type=AssetTypes.URI_FOLDER
     )
 }
 
@@ -135,13 +154,15 @@ from azure.ml._constants import AssetTypes
 
 my_job_inputs = {
     "input_data": JobInput(
-        path='https://<account_name>.blob.core.windows.net/<container_name>/path'
+        path='https://<account_name>.blob.core.windows.net/<container_name>/path',
+        type=AssetTypes.URI_FOLDER
     )
 }
 
 my_job_outputs = {
     "output_folder": JobOutput(
-        path='https://<account_name>.blob.core.windows.net/<container_name>/path'
+        path='https://<account_name>.blob.core.windows.net/<container_name>/path',
+        type=AssetTypes.URI_FOLDER
     )
 }
 
@@ -168,13 +189,15 @@ from azure.ml._constants import AssetTypes
 
 my_job_inputs = {
     "input_data": JobInput(
-        path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>'
+        path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>',
+        type=AssetTypes.URI_FOLDER
     )
 }
 
 my_job_outputs = {
     "output_folder": JobOutput(
-        path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>'
+        path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>',
+        type=AssetTypes.URI_FOLDER
     )
 }
 
@@ -224,7 +247,7 @@ registered_data_asset = ml_client.data.get(name='titanic', version='1')
 
 my_job_inputs = {
     "input_data": JobInput(
-        type=AssetTypes.URI_FILE,
+        type=AssetTypes.URI_FOLDER,
         path=registered_data_asset.id
     )
 }
