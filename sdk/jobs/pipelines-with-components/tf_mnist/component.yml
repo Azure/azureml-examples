@@ -17,8 +17,7 @@ outputs:
 
 compute: azureml:gpu-cluster
 
-code:
-  local_path: ./src
+code: ./src
 
 environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:15
 
