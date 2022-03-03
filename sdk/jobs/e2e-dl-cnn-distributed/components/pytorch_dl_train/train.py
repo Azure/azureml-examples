@@ -34,7 +34,6 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from torch.profiler import profile, record_function, ProfilerActivity
-import onnx
 
 from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
@@ -67,7 +66,7 @@ class PyTorchDistributedModelTrainingSequence:
         self.cpu_count = os.cpu_count()
         self.device = None
         # NOTE: if we're running multiple nodes, this indicates if we're on first node
-        self.self_is_main_node = self.world_rank == 0
+        self.self_is_main_node = True
 
         # TRAINING CONFIGS
         self.dataloading_config = None
@@ -99,6 +98,29 @@ class PyTorchDistributedModelTrainingSequence:
             self.dataloading_config.non_blocking
         )
 
+        # detect multinode config
+        self.distributed_backend = args.distributed_backend
+        if self.distributed_backend == "nccl":
+            self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
+            self.world_rank = int(os.environ.get("RANK", "0"))
+            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
+            self.multinode_available = self.world_size > 1
+            self.self_is_main_node = self.world_rank == 0
+
+        elif self.distributed_backend == "mpi":
+            # Note: Distributed pytorch package doesn't have MPI built in.
+            # MPI is only included if you build PyTorch from source on a host that has MPI installed.
+            self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
+            self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
+            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
+            self.multinode_available = self.world_size > 1
+            self.self_is_main_node = self.world_rank == 0
+
+        else:
+            raise NotImplementedError(
+                f"distributed_backend={self.distributed_backend} is not implemented yet."
+            )
+
         # Use CUDA if it is available
         if torch.cuda.is_available():
             self.logger.info(
@@ -108,27 +130,6 @@ class PyTorchDistributedModelTrainingSequence:
         else:
             self.logger.info(f"Setting up torch.device for cpu")
             self.device = torch.device("cpu")
-
-        # detect multinode config
-        self.distributed_backend = args.distributed_backend
-        if self.distributed_backend == "nccl":
-            self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
-            self.world_rank = int(os.environ.get("RANK", "0"))
-            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
-            self.multinode_available = self.world_size > 1
-
-        elif self.distributed_backend == "mpi":
-            # Note: Distributed pytorch package doesn't have MPI built in.
-            # MPI is only included if you build PyTorch from source on a host that has MPI installed.
-            self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
-            self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
-            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
-            self.multinode_available = self.world_size > 1
-
-        else:
-            raise NotImplementedError(
-                f"distributed_backend={self.distributed_backend} is not implemented yet."
-            )
 
         if self.multinode_available:
             self.logger.info(
@@ -333,7 +334,7 @@ class PyTorchDistributedModelTrainingSequence:
             #torch.save(self.model.state_dict(), os.path.join(output_dir, f"model-{name}.pt"))
             dummy_input = torch.randn(1, 3, 224, 224, device=self.device)
             model_path = os.path.join(output_dir, f"model-{name}.onnx")
-            onnx_model = torch.onnx.export(self.model, dummy_input, model_path, verbose=True, output_names=["output1"]) 
+            torch.onnx.export(self.model, dummy_input, model_path, verbose=True, output_names=["output1"])
 
             # save classes names for inferencing
             with open(
@@ -341,11 +342,20 @@ class PyTorchDistributedModelTrainingSequence:
             ) as out_file:
                 out_file.write(json.dumps(self.labels))
 
-            # log model using mlflow            
-            onnx_model = onnx.load(model_path)
-            mlflow.onnx.log_model(
-                onnx_model,
+            class _EmptyModelClass(mlflow.pyfunc.PythonModel):
+                def load_context(self, context):
+                    pass
+
+                def predict(self, context, model_input):
+                    return None
+
+            # log model using mlflow
+            mlflow.pyfunc.log_model(
+                artifacts={
+                    "model.onnx": model_path
+                },
                 artifact_path="final_model",
+                python_model=_EmptyModelClass(),
                 registered_model_name=register_as,
                 signature=self.model_signature,
             )
