@@ -11,6 +11,7 @@ trial:
   environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:9
 inputs:
   iris_csv: 
+    type: uri_file
     path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
 compute: azureml:cpu-cluster
 sampling_algorithm: random

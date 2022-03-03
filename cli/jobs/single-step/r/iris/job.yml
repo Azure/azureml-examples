@@ -5,6 +5,7 @@ command: >
 code: src
 inputs:
   iris: 
+    type: uri_file
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment:
   build:

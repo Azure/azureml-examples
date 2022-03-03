@@ -5,6 +5,7 @@ command: >-
   --diabetes-csv ${{inputs.diabetes_csv}}
 inputs:
   diabetes_csv: 
+    type: uri_file
     path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:9
 compute: azureml:cpu-cluster

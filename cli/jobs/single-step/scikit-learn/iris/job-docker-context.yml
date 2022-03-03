@@ -8,6 +8,7 @@ command: >-
   --coef0 ${{inputs.coef0}}
 inputs:
   iris_csv: 
+    type: uri_file
     path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
   C: 0.8
   kernel: "rbf"
