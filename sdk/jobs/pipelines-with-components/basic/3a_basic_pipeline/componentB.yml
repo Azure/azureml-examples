@@ -4,8 +4,7 @@ name: componentB
 display_name: componentB
 version: 1
 
-code:
-  local_path: ./componentB_src
+code: ./componentB_src
 
 environment: 
   image: docker.io/python

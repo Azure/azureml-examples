@@ -12,8 +12,7 @@ inputs:
 outputs:
   prep_data:
     type: path
-code:
-  local_path: ./prep_src
+code: ./prep_src
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
 command: >-
   python prep.py 

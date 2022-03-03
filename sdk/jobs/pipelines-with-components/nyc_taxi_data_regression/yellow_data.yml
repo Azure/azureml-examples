@@ -7,6 +7,6 @@ name: yellowdata
 version: 3
 description: sample yellow taxi dataset
 datastore: azureml:workspaceblobstore
-local_path: ./data
-path: /sample/data/path
+path: ./data
+#path: /sample/data/path
 # </data>
