@@ -7,6 +7,6 @@ name: greendata
 version: 3
 description: sample green taxi dataset
 datastore: azureml:workspaceblobstore
-local_path: ./data
-path: /sample/data/path
+path: ./data
+#path: /sample/data/path
 # </data>
