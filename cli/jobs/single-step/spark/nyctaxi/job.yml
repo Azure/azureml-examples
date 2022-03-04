@@ -5,6 +5,7 @@ command: >-
   --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
 inputs:
   nyc_taxi_dataset:
+    type: uri_folder
     path: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/yellow
     mode: ro_mount
 environment: 

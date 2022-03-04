@@ -4,7 +4,7 @@ endpoint_name: tfserving-endpoint
 model:
   name: tfserving-mounted
   version: 1
-  local_path: ./half_plus_two
+  path: ./half_plus_two
 environment_variables:
   MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/1
   MODEL_NAME: half_plus_two

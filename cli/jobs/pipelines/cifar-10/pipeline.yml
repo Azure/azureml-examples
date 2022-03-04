@@ -4,14 +4,15 @@ display_name: cifar-10-pipeline-example
 experiment_name: cifar-10-pipeline-example
 jobs:
   get-data:
+    type: command
     command: bash main.sh ${{outputs.cifar}}
     code: src/get-data
-    environment:
-      image: python:latest
+    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
     compute: azureml:cpu-cluster
     outputs:
       cifar:
   train-model:
+    type: command
     command: >-
       python main.py
       --data-dir ${{inputs.cifar}}
@@ -31,12 +32,12 @@ jobs:
     resources:
       instance_count: 2
   eval-model:
+    type: command
     command: >-
       python main.py
       --data-dir ${{inputs.cifar}}
       --model-dir ${{inputs.model_dir}}/model
-    code:
-      local_path: src/eval-model
+    code: src/eval-model
     environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
     compute: azureml:gpu-cluster
     distribution:
@@ -45,5 +46,5 @@ jobs:
     resources:
       instance_count: 1
     inputs:
-      cifar: ${{parant.jobs.get-data.outputs.cifar}}
-      model_dir: ${{parant.jobs.train-model.outputs.model_dir}}
+      cifar: ${{parent.jobs.get-data.outputs.cifar}}
+      model_dir: ${{parent.jobs.train-model.outputs.model_dir}}
