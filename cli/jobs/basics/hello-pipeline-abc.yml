@@ -2,15 +2,15 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 compute: azureml:cpu-cluster
 settings:
-  environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
+  environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
 inputs:
   hello_string_top_level_input: "hello world"
 jobs:
   A:
     command: echo hello ${{inputs.hello_string}}
-    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
     inputs:
-      hello_string: ${{parent.inputs.hello_string_top_level_input}}
+      hello_string: ${{inputs.hello_string_top_level_input}}
   B:
     command: echo "world" >> ${{outputs.world_output}}/world.txt
     outputs:
@@ -18,5 +18,5 @@ jobs:
   C:
     command: echo ${{inputs.world_input}}/world.txt
     inputs:
-      world_input: ${{parent.jobs.B.outputs.world_output}}
+      world_input: ${{jobs.B.outputs.world_output}}
  
