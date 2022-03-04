@@ -31,20 +31,16 @@ Make sure the compute cluster used in job.yml is the one that is actually availa
 
 Submit the Pipeline Job
 ```
-az ml  job create --file job.yml
+az ml  job create --file pipeline.yml
 ```
 
-You can also override the compute from the command line
-```
-az ml job create --file job.yml --set defaults.component_job.compute.target=<your_compute>
-```
 Once you submit the job, you will find the URL to the Studio UI view the job graph and logs in the `interaction_endpoints` -> `Studio` section of the output. 
 
 
 Sample output
 ```
 
-C:\Users\shbijlan\repos\azureml-previews\previews\pipelines\samples\nyc_taxi_data_regression>az ml  job create --file job.yml
+C:\Users\shbijlan\repos\azureml-previews\previews\pipelines\samples\nyc_taxi_data_regression>az ml  job create --file pipeline.yml
 Command group 'ml job' is experimental and under development. Reference and support levels: https://aka.ms/CLI_refstatus
 Custom pipeline job names are not supported yet. Please refer to the created pipeline job using the name: 73fb18f3-98a8-4677-b23b-d0b02bcb5826
 {

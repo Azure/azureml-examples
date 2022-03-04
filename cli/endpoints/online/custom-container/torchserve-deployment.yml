@@ -4,7 +4,7 @@ endpoint_name: torchserve-endpoint
 model:
   name: torchserve-densenet161
   version: 1
-  local_path: ./torchserve
+  path: ./torchserve
 environment_variables:
   MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/1
 environment:
