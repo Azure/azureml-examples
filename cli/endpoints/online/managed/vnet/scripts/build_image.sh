@@ -1,7 +1,5 @@
 set -e
 sudo su
-set -e
-sudo su
 for args in "$@"
 do
     keyname=$(echo $args | cut -d ':' -f 1)
@@ -14,7 +12,7 @@ az login --identity -u /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GRO
 az account set --subscription $SUBSCRIPTION
 az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
 
-git -C /home/samples/azureml-examples pull --depth 1 -q
+#git -C /home/samples/azureml-examples pull --depth 1 -q
 cd /home/samples/azureml-examples/cli/endpoints/online/managed/vnet/environment
 az acr login -n $ACR_NAME
 docker build -t $ACR_NAME.azurecr.io/repo/img:v1 .
