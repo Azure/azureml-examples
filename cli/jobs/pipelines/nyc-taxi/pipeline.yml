@@ -24,7 +24,7 @@ jobs:
   transform-job:
     type: command
     inputs: 
-      clean_data: ${{parant.jobs.prep-job.outputs.prep_data}}
+      clean_data: ${{parent.jobs.prep-job.outputs.prep_data}}
     outputs:
       transformed_data:
         mode: upload
@@ -39,7 +39,7 @@ jobs:
   train-job:
     type: command
     inputs:
-      training_data: ${{parant.jobs.transform-job.outputs.transformed_data}}
+      training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
     outputs:
       model_output: 
         mode: upload
@@ -57,8 +57,8 @@ jobs:
   predict-job:
     type: command
     inputs:
-      model_input: ${{parant.jobs.train-job.outputs.model_output}}
-      test_data: ${{parant.jobs.train-job.outputs.test_data}}
+      model_input: ${{parent.jobs.train-job.outputs.model_output}}
+      test_data: ${{parent.jobs.train-job.outputs.test_data}}
     outputs:
       predictions: 
         mode: upload
@@ -74,8 +74,8 @@ jobs:
   score-job:
     type: command
     inputs:
-      predictions: ${{parant.jobs.predict-job.outputs.predictions}}
-      model: ${{parant.jobs.train-job.outputs.model_output}}
+      predictions: ${{parent.jobs.predict-job.outputs.predictions}}
+      model: ${{parent.jobs.train-job.outputs.model_output}}
     outputs:
       score_report: 
         mode: upload
