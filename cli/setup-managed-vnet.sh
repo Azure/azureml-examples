@@ -8,7 +8,11 @@ az configure --defaults group=rg-$SUFFIX
 # Create via bicep: vnet, workspace, storage, acr, kv, nsg, PEs
 az deployment group create --template-file main.bicep --parameters suffix=$SUFFIX
 
+# setup VM
 az vm run-command invoke -n vm2 --command-id RunShellScript --scripts @endpoints/online/managed/vnet/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME"
+
+# build image
+az vm run-command invoke -n vm2 --command-id RunShellScript --scripts @endpoints/online/managed/vnet/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "ACR_NAME=$ACR_NAME"
 #inside vm
 sudo su
 sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version

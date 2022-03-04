@@ -3,10 +3,10 @@ name: blue
 endpoint_name: endpt1222
 private_network_connection: true
 model:
-  local_path: ../../model-1/model/sklearn_regression_model.pkl
+  local_path: model/sklearn_regression_model.pkl
 code_configuration:
   code: 
-    local_path: ../../model-1/onlinescoring/
+    local_path: onlinescoring/
   scoring_script: score.py
 environment: 
   image: crmoe12.azurecr.io/repo/img:v1
