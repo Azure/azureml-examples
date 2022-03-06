@@ -19,10 +19,7 @@ param tags object = {}
 param vnetAddressPrefix string = '192.168.0.0/16'
 
 @description('private endpoint subnet address prefix')
-param peSubnetPrefix string = '192.168.0.0/24'
-
-@description('aci subnet address prefix')
-param aciSubnetPrefix string = '192.168.1.0/24'
+param scoringSubnetPrefix string = '192.168.0.0/24'
 
 // Variables
 var name = toLower('${suffix}')
@@ -44,8 +41,7 @@ module vnet 'modules/vnet.bicep' = {
     virtualNetworkName: 'vnet-${name}'
     networkSecurityGroupId: nsg.outputs.networkSecurityGroup
     vnetAddressPrefix: vnetAddressPrefix
-    peSubnetPrefix: peSubnetPrefix
-    aciSubnetPrefix: aciSubnetPrefix
+    scoringSubnetPrefix: scoringSubnetPrefix
     tags: tags
   }
 }
@@ -57,7 +53,7 @@ module keyvault 'modules/keyvault.bicep' = {
     location: location
     keyvaultName: 'kv-${name}'
     keyvaultPleName: 'ple-${name}-kv'
-    subnetId: '${vnet.outputs.id}/subnets/snet-pe'
+    subnetId: '${vnet.outputs.id}/subnets/snet-scoring'
     virtualNetworkId: '${vnet.outputs.id}'
     tags: tags
   }
@@ -71,7 +67,7 @@ module storage 'modules/storage.bicep' = {
     storagePleBlobName: 'ple-${name}-st-blob'
     storagePleFileName: 'ple-${name}-st-file'
     storageSkuName: 'Standard_LRS'
-    subnetId: '${vnet.outputs.id}/subnets/snet-pe'
+    subnetId: '${vnet.outputs.id}/subnets/snet-scoring'
     virtualNetworkId: '${vnet.outputs.id}'
     tags: tags
   }
@@ -83,7 +79,7 @@ module containerRegistry 'modules/containerregistry.bicep' = {
     location: location
     containerRegistryName: 'cr${name}'
     containerRegistryPleName: 'ple-${name}-cr'
-    subnetId: '${vnet.outputs.id}/subnets/snet-pe'
+    subnetId: '${vnet.outputs.id}/subnets/snet-scoring'
     virtualNetworkId: '${vnet.outputs.id}'
     tags: tags
   }
@@ -115,7 +111,7 @@ module azuremlWorkspace 'modules/machinelearning.bicep' = {
     storageAccountId: storage.outputs.storageId
 
     // networking
-    subnetId: '${vnet.outputs.id}/subnets/snet-pe'
+    subnetId: '${vnet.outputs.id}/subnets/snet-scoring'
     virtualNetworkId: '${vnet.outputs.id}'
     machineLearningPleName: 'ple-${name}-mlw'
 
@@ -139,24 +135,3 @@ module uai 'modules/uai.bicep' = {
     ]
   }
 }
-
-module vm 'modules/vm.bicep' = {
-  name: 'vm-${name}-deployment'
-  params:{
-    location: location
-    vmName: 'testvm'
-    virtualMachineSize: 'Standard_F2s_v2'
-    uaiResourceId: uai.outputs.managedIdentityResourceId
-    subnetId: '${vnet.outputs.id}/subnets/snet-pe'
-  }
-}
-
-// module aci 'modules/aci.bicep'= {
-//   name: 'aci-${name}-deployment'
-//   params: {
-//     containerName: 'aci-${name}'
-//     location: location
-//     subnetId: '${vnet.outputs.id}/subnets/snet-aci'
-//     uaiId: uai.outputs.managedIdentityResourceId
-//   }
-// }

@@ -15,11 +15,7 @@ param networkSecurityGroupId string
 param vnetAddressPrefix string = '192.168.0.0/16'
 
 @description('private endpoint subnet address prefix')
-param peSubnetPrefix string = '192.168.0.0/24'
-
-@description('aci subnet address prefix')
-param aciSubnetPrefix string = '192.168.1.0/24'
-
+param scoringSubnetPrefix string = '192.168.0.0/24'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-07-01' = {
   name: virtualNetworkName
@@ -33,35 +29,16 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-07-01' = {
     }
     subnets: [
       { 
-        name: 'snet-pe'
+        name: 'snet-scoring'
         properties: {
-          addressPrefix: peSubnetPrefix
+          addressPrefix: scoringSubnetPrefix
           privateEndpointNetworkPolicies: 'Disabled'
           privateLinkServiceNetworkPolicies: 'Disabled'
           networkSecurityGroup: {
             id: networkSecurityGroupId
           }
         }
-      }
-      { 
-        name: 'snet-aci'
-        properties: {
-          addressPrefix: aciSubnetPrefix
-          privateEndpointNetworkPolicies: 'Disabled'
-          privateLinkServiceNetworkPolicies: 'Disabled'
-          networkSecurityGroup: {
-            id: networkSecurityGroupId
-          }
-          delegations: [
-            {
-                name: 'ACIDelegationService'
-                properties: {
-                    serviceName: 'Microsoft.ContainerInstance/containerGroups'                    
-                }
-            }
-        ]
-        }
-      }    
+      }        
     ]
   }
 }

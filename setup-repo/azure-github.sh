@@ -37,6 +37,10 @@ az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 echo "Setting up workspace..."
 bash -x setup-workspace.sh
 
+echo "Setting up managed vnet workspace"
+# Managed online endpoint vnet setup: Create via bicep: vnet, workspace, storage, acr, kv, nsg, PEs + UAI
+az deployment group create --template-file endpoints/online/managed/vnet/setup/main.bicep --parameters suffix=mvnet
+
 echo "Setting up internal workspaces..."
 bash -x create-workspace-internal.sh
 
