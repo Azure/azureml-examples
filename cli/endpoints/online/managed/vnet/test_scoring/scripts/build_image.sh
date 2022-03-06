@@ -7,14 +7,19 @@ do
     export $keyname=$result
 done
 
-echo "###"
 az login --identity -u /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$IDENTITY_NAME
 az account set --subscription $SUBSCRIPTION
 az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
 
-#git -C /home/samples/azureml-examples pull --depth 1 -q
+# <build_image> 
+# Navigate to the samples
 cd /home/samples/azureml-examples/cli/endpoints/online/managed/vnet/environment
+# login to acr
 az acr login -n $ACR_NAME
+# Build the docker image with the sample docker file
 docker build -t $ACR_NAME.azurecr.io/repo/img:v1 .
+# push the image to the ACR
 docker push $ACR_NAME.azurecr.io/repo/img:v1
+# check if the image exists in acr
 az acr repository show -n $ACR_NAME --repository repo/img
+# </build_image> 

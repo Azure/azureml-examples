@@ -1,3 +1,4 @@
+#### Note to users: Ignore this section: Start ####
 set -e
 sudo su
 for args in "$@"
@@ -7,11 +8,29 @@ do
     export $keyname=$result
 done
 
-echo "###"
+#### Ignore this section :End ####
 
+#### Start executing commands from here ####
+
+# <setup_docker_az_cli> 
+# setup docker
 sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version
+# setup az cli and ml extension
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az extension add --upgrade -n ml -y
+# </setup_docker_az_cli> 
+
+# login using az cli. 
+### NOTE to user: use `az login` - and do NOT use the below command (it requires setting up of user assigned identity). ###
 az login --identity -u /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$IDENTITY_NAME
+
+# <configure_defaults> 
+# configure cli defaults
 az account set --subscription $SUBSCRIPTION
 az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+# </configure_defaults> 
+
+##### TODO: Change to main branch after merge########
+# <clone_sample> 
+# Clone the samples repo. This is needed to build the image and create the managed online deployment.
 mkdir -p /home/samples; git clone -b rsethur/mvnet --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
+# </clone_sample> 
