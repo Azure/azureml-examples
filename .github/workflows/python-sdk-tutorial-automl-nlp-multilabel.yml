@@ -53,7 +53,7 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run automl-nlp-text-classification-multilabel.ipynb
       run: papermill -k python automl-nlp-text-classification-multilabel.ipynb automl-nlp-text-classification-multilabel.output.ipynb
-      working-directory: python-sdk/tutorials/automl-with-azureml/metrics
+      working-directory: python-sdk/tutorials/automl-with-azureml/automl-nlp-multilabel/
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
