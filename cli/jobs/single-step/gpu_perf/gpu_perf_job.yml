@@ -9,7 +9,7 @@ code:
 command: /bin/bash ./gpu_perf.sh
 
 # to iterate quickly on your environment design, use inline
-environment: file:./environments/azureml/env.yml
+environment: ./environments/azureml/env.yml
 
 # to reuse with different parameters, use registered environment 
 # environment: azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04
