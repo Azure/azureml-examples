@@ -8,7 +8,7 @@ code:
 
 command: /bin/bash ./gpu_perf.sh
 
-environment: azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04-mod1
+environment: azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04
 #environment: azureml:nccltests_nvidia_pytorch:22.02-py3-mod1
 
 # NOTE: set env var if needed by your configuration
