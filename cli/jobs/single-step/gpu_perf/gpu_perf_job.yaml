@@ -19,8 +19,7 @@ environment_variables:
   # NCCL_SOCKET_IFNAME: "eth0"
   # NCCL_TOPO_FILE: "/opt/microsoft/ndv4-topo.xml"
 
-  # NCCL_IB_DISABLE: "0" # force disable infiniband (if set to "1")
-  # NCCL_IBEXT_DISABLE: "0" # force use nccl internal IB implementation (instead of rdma sharp plugins)
+  # NCCL_IB_DISABLE: "1" # force disable infiniband (if set to "1")
 
   # UCX_IB_PCI_RELAXED_ORDERING: "on"
   # UCX_TLS: "tcp"
