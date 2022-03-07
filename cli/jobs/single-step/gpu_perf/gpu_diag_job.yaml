@@ -1,4 +1,4 @@
-# This runs NCCL test "all_reduce_perf" on a gpu node.
+# This runs a couple of tests on a gpu node.
 # It helps diagnosis of health of perf issues.
 #
 # NOTES:
@@ -8,39 +8,57 @@
 
 type: command
 
-command: |
-  nvcc --version &&
-  nvidia-smi &&
-  all_reduce_perf -e ${{inputs.maxbytes}} -f ${{inputs.stepfactor}} -g ${{inputs.ngpus}}
+code: 
+  local_path: src
 
-inputs:
-  # arguments for nccl_test
-  ngpus: 1 # leave at 1
-  maxbytes: "8G"
-  stepfactor: 2
+command: sh ./gpu_perf.sh
 
-environment: azureml:gpu_base:0.1.0-dev
+#environment: azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04-mod1
+environment: azureml:nccltests_nvidia_pytorch:22.02-py3-mod1
 
-environment_variables: # NOTE: set env var if needed by your configuration
-  NCCL_DEBUG: "INFO"
-  NCCL_IB_PCI_RELAXED_ORDERING: "1"
-  UCX_TLS: "tcp"
-  UCX_NET_DEVICES: "eth0"
-  CUDA_DEVICE_ORDER: "PCI_BUS_ID"
+# NOTE: set env var if needed by your configuration
+environment_variables:
+  # NCCL env var: https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/env.html
+  NCCL_DEBUG: "INFO" # adjusts the level of info from NCCL tests
+  NCCL_IB_PCI_RELAXED_ORDERING: "1" # Relaxed Ordering can greatly help the performance of Infiniband networks in virtualized environments.
   NCCL_SOCKET_IFNAME: "eth0"
-  NCCL_TOPO_FILE: "/opt/microsoft/ndv4-topo.xml"
+  # NCCL_TOPO_FILE: "/opt/microsoft/ndv4-topo.xml"
+
+  #NCCL_IB_DISABLE: "0" # disable infiniband (if set to "1")
+  #NCCL_IBEXT_DISABLE: "0" # force use nccl internal IB implementation (instead of rdma sharp plugins)
+  #NCCL_NET_PLUGIN: None
+  # https://github.com/NVIDIA/nccl/blob/3c223c105a24dff651a67c26fd5f92ba45844345/src/net.cc#L110
+
+  # UCX env var: https://rocmdocs.amd.com/en/latest/Remote_Device_Programming/UCXenv.html
+  UCX_IB_PCI_RELAXED_ORDERING: "on"
+  UCX_TLS: "tcp"
+  UCX_NET_DEVICES: "eth0" # if you have Error: Failed to resolve UCX endpoint...
+  #UCX_RNDV_THRESH: "16k" # https://github.com/openucx/ucx/issues/7947
+
+  # ordering of gpus
+  CUDA_DEVICE_ORDER: "PCI_BUS_ID"
+
 
 # NOTE: name of the compute cluster
-compute: azureml:gpu-cluster
+#compute: azureml:nc24rs-v100
+#compute: azureml:gpu-cluster
+#compute: azureml:nc24-k80
+compute: azureml:nc24r-k80
+#compute: azureml:V10032G
+#compute: azureml:gpu-cluster-a100
+#compute: azureml:gpu-nd40rs-v2
 
 distribution:
   type: mpi
-  # NOTE: set equal to number of gpus
-  process_count_per_instance: 4
+  process_count_per_instance: 4 # NOTE: set equal to number of gpus on the node
 
 resources:
-  instance_count: 1 # NOTE: to use multiple nodes
+  instance_count: 2 # NOTE: to use multiple nodes
 
 experiment_name: nccl-test
-display_name: Gpu Diag (NCCL tests)
+display_name: Gpu Diag (NCCL tests) v4
 description: Runs NCCL-tests on gpu nodes.
+
+tags:
+  #env: "nccltests_azureml"
+  env: "nccltests_nvidia_pytorch"

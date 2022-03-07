@@ -7,15 +7,16 @@ The goal here is to verify the performance of the node and availability in your 
 ## How to run out of the box
 
 ```bash
-# create the environment
-az ml environment create  --file ./environments/azureml_base/env.yml --resource-group RG --workspace-name WS
+# create the environments
+az ml environment create  --file ./environments/azureml/env.yml --resource-group RG --workspace-name WS
+az ml environment create  --file ./environments/nvidia/env.yml --resource-group RG --workspace-name WS
 
 # run the job
 az ml job create  -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
 ```
 
-Notes:
-- set the name of the compute
+In `gpu_perf_job.yaml`, please check the following:
+- the name of the compute
 - set process_count_per_instance to the number of gpu on the node
 - for multi-node, set instance_count
 
@@ -23,15 +24,55 @@ Notes:
 
 To check perf against your own container/config:
 
-1. Create an environment based on the content from `environments/azureml_base/` (Dockerfile and `env.yml`).
+1. Create an environment based on the content from directory `environments/azureml/`.
 
-2. Create this environment using `az ml environment create` command.
+2. Create this environment using `az ml environment create` command above.
 
-3. Modify `gpu_diag_job.yaml` to use your new environment name/version, check out the name of the cluster under `compute`.
+3. Modify `gpu_diag_job.yaml` to use your new environment name/version.
 
 4. Run the job using `az ml job create`.
 
 ## Example stdout
+
+### lspci
+
+If you have InfiniBand you should see a Mellanox card in there, for instance:
+
+```
+0101:00:00.0 Infiniband controller: Mellanox Technologies MT28908 Family [ConnectX-6 Virtual Function]
+0102:00:00.0 Infiniband controller: Mellanox Technologies MT28908 Family [ConnectX-6 Virtual Function]
+0103:00:00.0 Infiniband controller: Mellanox Technologies MT28908 Family [ConnectX-6 Virtual Function]
+...
+```
+
+### ibstat
+
+If your container supports infiniband, this should show the device identifiers.
+
+```
+mlx5_ib0
+mlx5_ib1
+mlx5_ib2
+...
+```
+
+### ucx_info -d
+
+Then `ucx_info -d` will show the devices available.
+
+### nvcc --version
+
+For showing which cuda version is supported in your environment.
+
+```
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2020 NVIDIA Corporation
+Built on Mon_Oct_12_20:09:46_PDT_2020
+Cuda compilation tools, release 11.1, V11.1.105
+Build cuda_11.1.TC455_06.29190527_0
+```
+
+### all_reduce_perf
 
 The test reports several [interesting metrics](https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md).
 
@@ -59,3 +100,20 @@ The test reports several [interesting metrics](https://github.com/NVIDIA/nccl-te
 # Avg bus bandwidth    : 2.54225 
 #
 ```
+
+## Use for troubleshooting
+
+Use logs from `all_reduce_perf` to check your NCCL performance against [available benchmarks](https://techcommunity.microsoft.com/t5/azure-global/performance-considerations-for-large-scale-deep-learning/ba-p/2693834).
+
+In particular the RDMA/SHARP plugins. Look for a log line with `NCCL INFO NET/Plugin` and depending on what it says, here's a couple recommendations:
+
+- "No plugin found (libnccl-net.so), using internal implementation"
+  - use `find / -name libnccl-net.so -print` to find this library and add it to `LD_LIBRARY_PATH`.
+- "NCCL INFO NET/Plugin: Failed to find ncclNetPlugin_v4 symbol"
+  - verify the symbols in `libnccl-net.so` with `readelf -Ws PATH_TO/libnccl-net.so | grep ncclNetPlugin`
+  - if you have only `ncclNetPlugin_v3`, consider compiling a recent version of [nccl-rdma-sharp-plugins](https://github.com/Mellanox/nccl-rdma-sharp-plugins).
+- "NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v4 symbol."
+  - verify the symbols in `libnccl-net.so` with `readelf -Ws PATH_TO/libnccl-net.so | grep ncclCollNetPlugin`
+  - if you can't find `ncclCollNetPlugin_v4`, compile [nccl-rdma-sharp-plugins](https://github.com/Mellanox/nccl-rdma-sharp-plugins) using `--with-sharp` option.
+- "NCCL INFO Plugin Path : /usr/local/rdma-sharp-plugins-dev/lib/libnccl-net.so"
+  - you've successfully loaded the rdma/sharp plugins
