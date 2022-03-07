@@ -6,7 +6,7 @@ type: command
 code: 
   local_path: src
 
-command: sh ./gpu_perf.sh
+command: /bin/bash ./gpu_perf.sh
 
 environment: azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04-mod1
 #environment: azureml:nccltests_nvidia_pytorch:22.02-py3-mod1
@@ -14,18 +14,19 @@ environment: azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04-
 # NOTE: set env var if needed by your configuration
 environment_variables:
   NCCL_DEBUG: "INFO" # adjusts the level of info from NCCL tests
-  NCCL_IB_PCI_RELAXED_ORDERING: "1" # Relaxed Ordering can greatly help the performance of Infiniband networks in virtualized environments.
-  NCCL_SOCKET_IFNAME: "eth0"
+
+  # NCCL_IB_PCI_RELAXED_ORDERING: "1" # Relaxed Ordering can greatly help the performance of Infiniband networks in virtualized environments.
+  # NCCL_SOCKET_IFNAME: "eth0"
   # NCCL_TOPO_FILE: "/opt/microsoft/ndv4-topo.xml"
 
-  #NCCL_IB_DISABLE: "0" # force disable infiniband (if set to "1")
-  #NCCL_IBEXT_DISABLE: "0" # force use nccl internal IB implementation (instead of rdma sharp plugins)
+  # NCCL_IB_DISABLE: "0" # force disable infiniband (if set to "1")
+  # NCCL_IBEXT_DISABLE: "0" # force use nccl internal IB implementation (instead of rdma sharp plugins)
 
-  UCX_IB_PCI_RELAXED_ORDERING: "on"
-  UCX_TLS: "tcp"
-  UCX_NET_DEVICES: "eth0" # if you have Error: Failed to resolve UCX endpoint...
+  # UCX_IB_PCI_RELAXED_ORDERING: "on"
+  # UCX_TLS: "tcp"
+  # UCX_NET_DEVICES: "eth0" # if you have Error: Failed to resolve UCX endpoint...
 
-  CUDA_DEVICE_ORDER: "PCI_BUS_ID" # ordering of gpus
+  # CUDA_DEVICE_ORDER: "PCI_BUS_ID" # ordering of gpus
 
 
 # NOTE: name of the compute cluster
@@ -33,7 +34,7 @@ compute: azureml:gpu-cluster
 
 distribution:
   type: mpi
-  process_count_per_instance: 4 # NOTE: set equal to number of gpus on the node
+  process_count_per_instance: 8 # NOTE: set equal to number of gpus on the node
 
 resources:
   instance_count: 2 # NOTE: to use multiple nodes

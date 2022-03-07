@@ -90,6 +90,7 @@ Use logs from `all_reduce_perf` to check your NCCL performance and configuration
 - "No plugin found (libnccl-net.so), using internal implementation"
   - use `find / -name libnccl-net.so -print` to find this library and add it to `LD_LIBRARY_PATH`.
 - "NCCL INFO NET/Plugin: Failed to find ncclNetPlugin_v4 symbol"
+  - this error shows the [ncclNet plugins have not loaded properly](https://github.com/NVIDIA/nccl/blob/3c223c105a24dff651a67c26fd5f92ba45844345/src/net.cc#L110)
   - verify the symbols in `libnccl-net.so` with `readelf -Ws PATH_TO/libnccl-net.so | grep ncclNetPlugin`
   - if you have only `ncclNetPlugin_v3`, consider compiling a recent version of [nccl-rdma-sharp-plugins](https://github.com/Mellanox/nccl-rdma-sharp-plugins).
 - "NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v4 symbol."
