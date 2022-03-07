@@ -12,7 +12,7 @@ az ml environment create  --file ./environments/azureml/env.yml --resource-group
 az ml environment create  --file ./environments/nvidia/env.yml --resource-group RG --workspace-name WS
 
 # run the job
-az ml job create  -f ./gpu_diag_job.yaml --web --resource-group RG --workspace-name WS
+az ml job create  -f ./gpu_perf_job.yaml --web --resource-group RG --workspace-name WS
 ```
 
 In `gpu_perf_job.yaml`, please check the following:
@@ -28,13 +28,13 @@ To check perf against your own container/config:
 
 2. Create this environment using `az ml environment create` command above.
 
-3. Modify `gpu_diag_job.yaml` to use your new environment name/version.
+3. Modify `gpu_perf_job.yaml` to use your new environment name/version.
 
 4. Run the job using `az ml job create`.
 
 ## Set environment variables
 
-In `gpu_diag_job.yaml` you'll find an environment variables section that you can leverage for testing your specific configuration.
+In `gpu_perf_job.yaml` you'll find an environment variables section that you can leverage for testing your specific configuration.
 
 For examples please see:
 - specs of [UCX environment variables](https://rocmdocs.amd.com/en/latest/Remote_Device_Programming/UCXenv.html)
