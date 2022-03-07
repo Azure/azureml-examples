@@ -23,7 +23,7 @@ This will use a local definition of the environment that you can use to iterate 
 
 ```bash
 # run the job
-az ml job create  -f ./gpu_perf_job.yml --web --resource-group RG --workspace-name WS
+az ml job create  -f ./gpu_perf_job.yml --web
 ```
 
 To modify the settings of the job, you can either modify the yaml, or override from the command line.
@@ -39,11 +39,11 @@ You can pre-register each environment in your workspace and override the job to 
 
 ```bash
 # create the environments
-az ml environment create  --file ./environments/azureml/env.yml --resource-group RG --workspace-name WS
-az ml environment create  --file ./environments/nvidia/env.yml --resource-group RG --workspace-name WS
+az ml environment create  --file ./environments/azureml/env.yml
+az ml environment create  --file ./environments/nvidia/env.yml
 
 # run the job and manually override its environment
-az ml job create -f ./gpu_perf_job.yml --web --set environment="azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04" --resource-group RG --workspace-name WS
+az ml job create -f ./gpu_perf_job.yml --web --set environment="azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04"
 ```
 
 ## How to customize
