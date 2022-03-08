@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml dataset create -f assets/dataset/cloud-folder.yml
+      run: az ml data create -f assets/dataset/cloud-folder.yml
       working-directory: cli
