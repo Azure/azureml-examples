@@ -30,5 +30,4 @@ You can also override the compute from the command line
 ```
 az ml job create --file pipeline.yml --set defaults.<job_name>.compute.target=<your_compute>
 ```
-Once you submit the job, you will find the URL to view the job graph and logs in AzureML Studio UI under the `interaction_endpoints` -> `Studio` section of the output. 
 
