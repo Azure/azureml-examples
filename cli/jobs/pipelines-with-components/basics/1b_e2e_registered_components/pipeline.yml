@@ -29,7 +29,7 @@ compute: azureml:cpu-cluster
 jobs:
   train-job:
     type: command
-    component: azureml:Train@lastest
+    component: azureml:Train@latest
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_input}}
       max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
