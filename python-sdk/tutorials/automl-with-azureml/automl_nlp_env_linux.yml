@@ -3,10 +3,8 @@ dependencies:
   # The python interpreter version.
   # Currently Azure ML only supports 3.5.2 and later.
 - pip==21.1.2
-- python>=3.5.2,<3.8
+- python=3.7
 - nb_conda
-- boto3==1.15.18
-- matplotlib==2.1.0
 - numpy==1.18.5
 - cython
 - urllib3<1.24
