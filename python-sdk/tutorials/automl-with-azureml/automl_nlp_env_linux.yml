@@ -5,9 +5,11 @@ dependencies:
 - pip==21.1.2
 - python>=3.5.2,<3.8
 - nb_conda
+- boto3==1.15.18
 - matplotlib==2.1.0
 - numpy==1.18.5
 - cython
+- urllib3<1.24
 - scipy>=1.4.1,<=1.5.2
 - scikit-learn==0.22.1
 - pandas==0.25.3
@@ -19,5 +21,4 @@ dependencies:
   - azureml-automl-dnn-nlp==1.39.0
   - azureml-responsibleai==1.39.0
   - torch==1.7.1
-  - horovod==0.21.3
   - markupsafe==2.0.1
