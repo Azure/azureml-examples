@@ -1,5 +1,5 @@
 # this dataset is needed for the sample under cli/jobs/pipelines-with-components/basics/4d_dataset_input
-az ml dataset create -f ../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
+az ml data create -f ../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
 
 # <download_untar_cifar>
 mkdir data
@@ -8,7 +8,7 @@ tar -xvzf cifar-10-python.tar.gz -C data
 # </download_untar_cifar>
 
 # <create_cifar>
-az ml dataset create --name cifar-10-example --version 1 --set local_path=data
+az ml data create --name cifar-10-example --version 1 --set local_path=data
 # </create_cifar>
 
 # <cleanup_cifar>
