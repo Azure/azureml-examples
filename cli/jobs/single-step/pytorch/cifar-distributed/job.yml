@@ -8,7 +8,9 @@ command: >-
 inputs:
   epochs: 1
   learning_rate: 0.2
-  cifar: azureml:cifar-10-example:1
+  cifar: 
+     type: uri_folder
+     path: azureml:cifar-10-example:1
 environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
 compute: azureml:gpu-cluster
 distribution:
