@@ -1,7 +1,29 @@
+name: azure_automl
+channels:
+  - conda-forge
+  - pytorch
+  - main
 dependencies:
+  # The python interpreter version.
+  # Currently Azure ML only supports 3.6.0 and later.
+- python==3.7
+- pip==21.1.2
+
 - pip:
-  - azureml-automl-dnn-nlp==1.39.0
-  - torch==1.7.1
-- horovod==0.21.3 --force-reinstall
-- numpy==1.18.5
+  # Required packages for AzureML execution, history, and data preparation.
+  - azureml-widgets~=1.39.0
+  - azureml-core~=1.39.0
+  - azureml-mlflow~=1.39.0
+  - azureml-automl-core~=1.39.0
+  - azureml-automl-dnn-nlp~=1.39.0
+  - azureml-responsibleai~=1.39.0
+  - azureml-automl-runtime~=1.39.0
+  - azureml-train-automl-client~=1.39.0
+  - azureml-train-automl-runtime~=1.39.0
+  - horovod==0.21.3
+  - azure-cli
+
+- numpy~=1.18.5
 - pandas~=1.1.5
+- scikit-learn~=0.22.1
+- pytorch==1.7.1
