@@ -18,7 +18,7 @@ environment_variables:
 
 environment: 
   build:
-    local_path: src/main/resources/Docker
+    path: src/main/resources/Docker
     #azureml:java-env:1
 
 compute: azureml:cpucluster

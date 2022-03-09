@@ -15,7 +15,7 @@ inputs:
   coef0: 0.1
 environment:
   build:
-    local_path: docker-context
+    path: docker-context
 compute: azureml:cpu-cluster
 display_name: sklearn-iris-example
 experiment_name: sklearn-iris-example
