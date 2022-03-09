@@ -1,4 +1,4 @@
-name: cli-assets-dataset-local-folder
+name: cli-assets-data-cloud-folder-wasbs
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/dataset/local-folder.yml
-      - .github/workflows/cli-assets-dataset-local-folder.yml
+      - cli/assets/data/cloud-folder-wasbs.yml
+      - .github/workflows/cli-assets-data-cloud-folder-wasbs.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml data create -f assets/dataset/local-folder.yml
+      run: az ml data create -f assets/data/cloud-folder-wasbs.yml
       working-directory: cli

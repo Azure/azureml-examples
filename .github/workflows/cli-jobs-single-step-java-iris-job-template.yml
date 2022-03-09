@@ -1,4 +1,4 @@
-name: cli-assets-dataset-local-file
+name: cli-jobs-single-step-java-iris-job-template
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/dataset/local-file.yml
-      - .github/workflows/cli-assets-dataset-local-file.yml
+      - cli/jobs/single-step/java/iris/**
+      - .github/workflows/cli-jobs-single-step-java-iris-job-template.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,6 +26,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create asset
-      run: az ml data create -f assets/dataset/local-file.yml
+    - name: run job
+      run: bash -x run-job.sh jobs/single-step/java/iris/job-template.yml
       working-directory: cli
