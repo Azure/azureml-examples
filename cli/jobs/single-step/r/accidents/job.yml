@@ -9,7 +9,7 @@ inputs:
     mode: ro_mount
 environment:
   build:
-    local_path: docker-context
+    path: docker-context
 compute:  azureml:cpu-cluster
 display_name: r-accidents-example
 experiment_name: r-accidents-example
