@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: public-file-https-example
 description: Dataset created from a publicly available file using https URL.
 type: uri_file
