@@ -1,4 +1,4 @@
-name: cli-assets-dataset-cloud-file-wasbs
+name: cli-jobs-pipelines-with-components-basics-6b_pytorch_hello_world-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/dataset/cloud-file-wasbs.yml
-      - .github/workflows/cli-assets-dataset-cloud-file-wasbs.yml
+      - cli/jobs/pipelines-with-components/basics/6b_pytorch_hello_world/**
+      - .github/workflows/cli-jobs-pipelines-with-components-basics-6b_pytorch_hello_world-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,6 +26,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create asset
-      run: az ml data create -f assets/dataset/cloud-file-wasbs.yml
+    - name: run job
+      run: bash -x run-job.sh jobs/pipelines-with-components/basics/6b_pytorch_hello_world/pipeline.yml
       working-directory: cli

@@ -1,4 +1,4 @@
-name: cli-assets-dataset-iris-csv-example
+name: cli-assets-data-cloud-folder
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/dataset/iris-csv-example.yml
-      - .github/workflows/cli-assets-dataset-iris-csv-example.yml
+      - cli/assets/data/cloud-folder.yml
+      - .github/workflows/cli-assets-data-cloud-folder.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml data create -f assets/dataset/iris-csv-example.yml
+      run: az ml data create -f assets/data/cloud-folder.yml
       working-directory: cli
