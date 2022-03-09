@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: cloud-folder-example
 description: Dataset created from folder in cloud.
 type: uri_folder

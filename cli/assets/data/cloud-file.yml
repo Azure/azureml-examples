@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: cloud-file-example
 description: Dataset created from file in cloud.
 type: uri_file
