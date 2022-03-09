@@ -146,8 +146,7 @@ do
 done
 
 # <sklearn_download_register_model>
-az ml job download -n $run_id
-az ml model create -n sklearn-iris-example -l $run_id/model/
+az ml model create -n sklearn-iris-example -p azureml://jobs/$run_id/outputs/artifacts/paths/model
 # </sklearn_download_register_model>
 rm -r $run_id
 
