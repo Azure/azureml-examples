@@ -65,7 +65,7 @@ def request_to_model_input(request_body, transforms):
 
             # https://pytorch.org/docs/stable/_modules/torchvision/datasets/folder.html#ImageFolder
             # check pil_loader()
-            pil_image.convert('RGB')
+            pil_image = pil_image.convert('RGB')
             
             images.append(pil_image)
         except:
