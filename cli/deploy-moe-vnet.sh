@@ -43,3 +43,5 @@ echo `git branch --show-current`
 export GIT_BRANCH_SAMPLES=$(git rev-parse --abbrev-ref HEAD)
 echo !!!!!$GIT_BRANCH_SAMPLES
 
+
+
