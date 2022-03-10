@@ -31,9 +31,9 @@ export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
 
 # Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name
 echo '!!!!!!!!!!!!!'
-echo $GITHUB_HEAD_REF
-echo $GITHUB_REF
-echo $GITHUB_REF_NAME
+echo GITHUB_HEAD_REF is $GITHUB_HEAD_REF
+echo GITHUB_REF is $GITHUB_REF
+echo GITHUB_REF_NAME is $GITHUB_REF_NAME
 export AA=$(git branch)
 echo $AA
 export BB=$(git branch --show-current)
