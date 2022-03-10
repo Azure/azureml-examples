@@ -79,10 +79,10 @@ inputs:
     description: "Name to register final model in MLFlow"
 
   # profiling
-  profile:
+  enabling_profiling:
     type: boolean
     description: "Enables profiler"
-  profile_export_format:
+  profiler_export_format:
     type: string
     optional: true
     description: "Profiler export format"
@@ -121,8 +121,8 @@ command: >-
   --model_output ${{outputs.trained_model}}
   [--register_model_as ${{inputs.register_model_as}}]
 
-  --profile ${{inputs.profile}}
-  [--profile_export_format ${{inputs.profile_export_format}}]
+  --profile ${{inputs.enabling_profiling}}
+  [--profile_export_format ${{inputs.profiler_export_format}}]
 
 distribution:
   # NOTE: using type:pytorch will use all the right env variables for pytorch init_process_group
