@@ -107,16 +107,13 @@ def load_image_labels(
 
 
 class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
-    """PyTorch dataset for images in a folder, with labels provided as a dict.
-    The loader has a simulated_latency that can be used to introduce fake latency
-    for benchmarking the job."""
+    """PyTorch dataset for images in a folder, with labels provided as a dict."""
 
     def __init__(
         self,
         root: str,
         image_labels: dict,
         transform: Optional[Callable] = None,
-        simulated_latency_in_ms: int = 0,
     ):
         """Constructor.
 
@@ -124,7 +121,6 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
             root (str): path to images
             images_labels (dict): dict mapping image path to their label
             transform (callable):  A function/transform that takes in an PIL image and returns a transformed version
-            simulated_latency_in_ms (int): in milliseconds, introducing a sleep() before each image loading in __getitem__
         """
         # calling VisionDataset.__init__() first
         super().__init__(root, transform=transform)
@@ -132,7 +128,6 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
         # now the specific initialization
         self.loader = torchvision.datasets.folder.default_loader
         self.samples = []  # list of tuples (path,target)
-        self.simulated_latency = (simulated_latency_in_ms or 0) / 1000  # provided in ms
 
         # search for all images
         images_in_root = glob.glob(root + "/**/*", recursive=True)
@@ -163,9 +158,6 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
         Returns:
             tuple: (sample, target) where target is class_index of the target class.
         """
-        if self.simulated_latency > 0.0:
-            time.sleep(self.simulated_latency)
-
         path, target = self.samples[index]
         sample = self.loader(path)
         if self.transform is not None:
@@ -184,7 +176,6 @@ def build_image_datasets(
     valid_images_dir: str,
     training_labels: dict,
     validation_labels: dict,
-    simulated_latency_in_ms=0.0,
 ):
     """
     Args:
@@ -192,7 +183,6 @@ def build_image_datasets(
         valid_images_dir (str): path to the directory containing validation images
         training_labels (dict): keys are path inside train_images_dir, values are labels
         validation_labels (dict): keys are path inside valid_images_dir, values are labels
-        simulated_latency_in_ms (float): a latency injected before any image read in the data loader
 
     Returns:
         train_dataset (torchvision.datasets.VisionDataset): training dataset
@@ -211,10 +201,7 @@ def build_image_datasets(
         ]
     )
     train_dataset = ImageDatasetWithLabelInMap(
-        root=train_images_dir,
-        image_labels=training_labels,
-        transform=train_transform,
-        simulated_latency_in_ms=simulated_latency_in_ms,
+        root=train_images_dir, image_labels=training_labels, transform=train_transform
     )
     logger.info(
         f"ImageDatasetWithLabelInMap loaded training image list samples={len(train_dataset)}"
@@ -231,10 +218,7 @@ def build_image_datasets(
         ]
     )
     valid_dataset = ImageDatasetWithLabelInMap(
-        root=valid_images_dir,
-        image_labels=validation_labels,
-        transform=valid_transform,
-        simulated_latency_in_ms=simulated_latency_in_ms,
+        root=valid_images_dir, image_labels=validation_labels, transform=valid_transform
     )
     logger.info(
         f"ImageDatasetWithLabelInMap loaded validation image list samples={len(valid_dataset)}"

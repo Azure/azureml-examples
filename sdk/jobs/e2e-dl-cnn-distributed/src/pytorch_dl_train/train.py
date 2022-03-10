@@ -370,13 +370,6 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         required=True,
         help="CSV file containing annotations for training images (file_name,label)",
     )
-    group.add_argument(
-        "--simulated_latency_in_ms",
-        type=int,
-        required=False,
-        default=None,
-        help="For simulation purpose, add latency (in ms) during image loading (default: 0)",
-    )
 
     group = parser.add_argument_group(f"Training Outputs")
     group.add_argument(
@@ -516,7 +509,6 @@ def run(args):
         valid_images_dir=args.valid_images,
         training_labels=training_labels,
         validation_labels=validation_labels,
-        simulated_latency_in_ms=args.simulated_latency_in_ms,  # just for testing purpose
     )
 
     # creates the model architecture
