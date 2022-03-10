@@ -116,6 +116,9 @@ class PyTorchDistributedModelTrainingSequence:
             self.multinode_available = self.world_size > 1
             self.self_is_main_node = self.world_rank == 0
 
+        elif self.distributed_backend == "gloo":
+            self.multinode_available = True
+
         else:
             raise NotImplementedError(
                 f"distributed_backend={self.distributed_backend} is not implemented yet."
@@ -331,32 +334,17 @@ class PyTorchDistributedModelTrainingSequence:
             # create output directory just in case
             os.makedirs(output_dir, exist_ok=True)
 
-            #torch.save(self.model.state_dict(), os.path.join(output_dir, f"model-{name}.pt"))
-            dummy_input = torch.randn(1, 3, 224, 224, device=self.device)
-            model_path = os.path.join(output_dir, f"model-{name}.onnx")
-            torch.onnx.export(self.model, dummy_input, model_path, verbose=True, output_names=["output1"])
-
-            # save classes names for inferencing
-            with open(
-                os.path.join(output_dir, f"model-{name}-labels.json"), "w"
-            ) as out_file:
-                out_file.write(json.dumps(self.labels))
-
-            class _EmptyModelClass(mlflow.pyfunc.PythonModel):
-                def load_context(self, context):
-                    pass
-
-                def predict(self, context, model_input):
-                    return None
+            if isinstance(self.model, DistributedDataParallel):
+                self.logger.info("Model was distibuted, we will export DistributedDataParallel.module")
+                model_to_save = self.model.module.to("cpu")
+            else:
+                model_to_save = self.model.to("cpu")
 
             # log model using mlflow
-            mlflow.pyfunc.log_model(
-                artifacts={
-                    "model.onnx": model_path
-                },
+            mlflow.pytorch.log_model(
+                model_to_save,
                 artifact_path="final_model",
-                python_model=_EmptyModelClass(),
-                registered_model_name=register_as,
+                registered_model_name=register_as, # also register it if name is provided
                 signature=self.model_signature,
             )
 
@@ -552,7 +540,7 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         "--distributed_backend",
         type=str,
         required=False,
-        choices=["nccl", "mpi"],
+        choices=["nccl", "mpi", "gloo"],
         default="nccl",
         help="Which distributed backend to use.",
     )
