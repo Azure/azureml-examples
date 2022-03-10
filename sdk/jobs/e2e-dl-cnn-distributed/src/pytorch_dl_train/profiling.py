@@ -17,7 +17,7 @@ def markdown_trace_handler(dir_name: str, rank: int = 0):
     """This handler can be used inside torch.profiler call to output
     tables in markdown format"""
 
-    def handler_fn(prof) -> None:
+    def _handler_fn(prof) -> None:
         if not os.path.isdir(dir_name):
             try:
                 os.makedirs(dir_name, exist_ok=True)
@@ -27,7 +27,7 @@ def markdown_trace_handler(dir_name: str, rank: int = 0):
         # Note: trying to identify a unique name for the file
         file_name = os.path.join(
             dir_name,
-            "step{}_rank{}_t{}.md".format(prof.step_num, rank, int(time.time() * 1000)),
+            f"stacks_rank{rank}_step{prof.step_num}_t{int(time.time() * 1000)}.ms",
         )
 
         logging.getLogger(__name__).info(
@@ -46,13 +46,49 @@ def markdown_trace_handler(dir_name: str, rank: int = 0):
         with open(file_name, "w") as out_file:
             out_file.write("\n".join(markdown))
 
-    return handler_fn
+    return _handler_fn
+
+
+def composite_trace_handler(handler_list):
+    """This can call multiple trace handlers inside one"""
+    def _handler_fn(prof) -> None:
+        for handler in handler_list:
+            handler(prof)
+
+    return _handler_fn
+
+
+def export_stack_trace_handler(dir_name: str, rank: int=0, metrics=["self_cuda_time_total"]):
+    """This handler can be used inside torch.profiler call to output
+    tables in markdown format"""
+
+    def _handler_fn(prof) -> None:
+        if not os.path.isdir(dir_name):
+            try:
+                os.makedirs(dir_name, exist_ok=True)
+            except Exception:
+                raise RuntimeError("Can't create directory: " + dir_name)
+
+        # Note: trying to identify a unique name for the file
+        for metric in metrics:
+            file_name = os.path.join(
+                dir_name,
+                f"stacks_{metric}_rank{rank}_step{prof.step_num}_t{ int(time.time() * 1000)}.txt",
+            )
+
+            logging.getLogger(__name__).info(
+                f"Exporting {metric} stacks as text at {file_name}"
+            )
+
+            prof.export_stacks(file_name, metric)
+
+    return _handler_fn
 
 
 class PyTorchProfilerHandler:
     """This class handles the initialization and setup of PyTorch profiler"""
 
-    def __init__(self, enabled=False, export_format=None, rank=None):
+    def __init__(self, enabled=False, rank=None):
         """Constructor.
 
         Args:
@@ -62,7 +98,6 @@ class PyTorchProfilerHandler:
         """
         self.logger = logging.getLogger(__name__)
         self.enabled = enabled
-        self.export_format = export_format
         self.rank = rank
         self.profiler_output_tmp_dir = None
         self.profiler = None
@@ -79,46 +114,64 @@ class PyTorchProfilerHandler:
                 f"Starting profiler (enabled=True) with tmp dir {self.profiler_output_tmp_dir.name}."
             )
 
+            ## profiler activities CPU/GPU
             activities = [ProfilerActivity.CPU]
             if torch.cuda.is_available():
                 self.logger.info(f"Enabling CUDA in profiler.")
                 activities.append(ProfilerActivity.CUDA)
 
-            if self.export_format is None:
-                trace_handler = None
+            ## handlers for exporting profile at each step
+            # we're creating a list to export in multiple formats
+            trace_handlers = []
 
-            elif self.export_format == "markdown":
-                markdown_logs_export = os.path.join(
-                    self.profiler_output_tmp_dir.name, "markdown"
-                )
-                trace_handler = markdown_trace_handler(
-                    markdown_logs_export, rank=self.rank
-                )
+            # export in markdown
+            markdown_logs_export = os.path.join(
+                self.profiler_output_tmp_dir.name, "markdown"
+            )
+            trace_handlers.append(markdown_trace_handler(
+                markdown_logs_export, rank=self.rank
+            ))
 
-            elif self.export_format == "tensorboard":
-                tensorboard_logs_export = os.path.join(
-                    self.profiler_output_tmp_dir.name, "tensorboard_logs"
-                )
-                trace_handler = torch.profiler.tensorboard_trace_handler(
-                    tensorboard_logs_export
-                )
+            # export stacks in txt
+            stacks_logs_export = os.path.join(
+                self.profiler_output_tmp_dir.name, "stacks"
+            )
+            stack_metrics = [
+                "self_cpu_time_total"
+            ]
+            if torch.cuda.is_available():
+                stack_metrics.append("self_cuda_time_total")
 
-            else:
-                raise NotImplementedError(
-                    f"profiler export_format={self.export_format} is not implemented, please use either 'markdown' or 'tensorboard'"
-                )
+            trace_handlers.append(export_stack_trace_handler(
+                stacks_logs_export, rank=self.rank,
+                metrics=stack_metrics
+            ))
+
+            # export tensorboard
+            tensorboard_logs_export = os.path.join(
+                self.profiler_output_tmp_dir.name, "tensorboard_logs"
+            )
+            trace_handlers.append(torch.profiler.tensorboard_trace_handler(
+                tensorboard_logs_export
+            ))
+
+            # profiler takes 1 handler, we're composing all above in a single handler
+            trace_handler = composite_trace_handler(trace_handlers)
 
             # process every single step
             profiler_schedule = torch.profiler.schedule(wait=0, warmup=0, active=1)
 
+            # initialize profiler
             self.profiler = torch.profiler.profile(
                 schedule=profiler_schedule,
                 record_shapes=False,
                 profile_memory=True,
                 activities=activities,
+                with_stack=True, # needed to export stacks
                 on_trace_ready=trace_handler,
             )
             self.profiler.start()
+
         else:
             self.logger.info(f"Profiler not started (enabled=False).")
             self.profiler = None

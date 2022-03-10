@@ -478,14 +478,6 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         default=False,
         help="Enable pytorch profiler.",
     )
-    group.add_argument(
-        "--profile_export_format",
-        type=str,
-        required=False,
-        default="markdown",
-        choices=["markdown", "tensorboard"],
-        help="Specify format of profiler export.",
-    )
 
     return parser
 
@@ -525,7 +517,6 @@ def run(args):
     # use helper class to enable profiling
     training_profiler = PyTorchProfilerHandler(
         enabled=bool(args.profile),
-        export_format=args.profile_export_format,
         rank=training_handler.world_rank,
     )
     # set profiler in trainer to call profiler.step() during training

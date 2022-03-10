@@ -78,10 +78,6 @@ inputs:
   enabling_profiling:
     type: boolean
     description: "Enables profiler"
-  profiler_export_format:
-    type: string
-    optional: true
-    description: "Profiler export format"
 
 outputs:
   trained_model: 
@@ -117,7 +113,6 @@ command: >-
   [--register_model_as ${{inputs.register_model_as}}]
 
   --profile ${{inputs.enabling_profiling}}
-  [--profile_export_format ${{inputs.profiler_export_format}}]
 
 distribution:
   # NOTE: using type:pytorch will use all the right env variables for pytorch init_process_group
