@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('name of the test scoring vm')
-param name string = 'test-vnet-vm'
+param vmName string = 'test-mvnet-vm'
 
 @description('Name of the user assigned identity (UAI). UAI is used to login through az cli from within the vm to create image in ACR, deploy model in azure ml etc')
 param identityName string = 'test-vm-uai'
@@ -33,11 +33,11 @@ resource subnetResourceId 'Microsoft.Network/virtualNetworks/subnets@2021-05-01'
 param tags object = {}
 
 module vm 'modules/vm.bicep' = {
-  name: '${name}-deployment'  
+  name: '${vmName}-deployment'  
   params:{
     location: location
     tags: tags
-    vmName: name
+    vmName: vmName
     virtualMachineSize: 'Standard_F2s_v2'
     uaiResourceId: uaiResourceId.id
     subnetId: subnetResourceId.id

@@ -1,5 +1,5 @@
 set -e
-sudo su
+### Part of automated testing: only required when this script is called via vm run-command invoke inorder to gather the parameters ###
 for args in "$@"
 do
     keyname=$(echo $args | cut -d ':' -f 1)
@@ -7,6 +7,7 @@ do
     export $keyname=$result
 done
 
+# login using the user assigned identity. 
 az login --identity -u /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$IDENTITY_NAME
 az account set --subscription $SUBSCRIPTION
 az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION

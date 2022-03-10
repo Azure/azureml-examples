@@ -1,16 +1,11 @@
-#### Note to users: Ignore this section: Start ####
+### Part of automated testing: only required when this script is called via vm run-command invoke inorder to gather the parameters ###
 set -e
-sudo su
 for args in "$@"
 do
     keyname=$(echo $args | cut -d ':' -f 1)
     result=$(echo $args | cut -d ':' -f 2)
     export $keyname=$result
 done
-
-#### Ignore this section :End ####
-
-#### Start executing commands from here ####
 
 # <setup_docker_az_cli> 
 # setup docker

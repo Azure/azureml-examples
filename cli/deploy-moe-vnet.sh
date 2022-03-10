@@ -14,7 +14,7 @@ export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_env_vars>
 
-export SUFFIX="mvnet2" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
+export SUFFIX="mvnetdocs" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
@@ -23,7 +23,7 @@ export ACR_NAME=cr$SUFFIX
 export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME=$ENDPOINT_NAME
 # VM name used during creation: endpoints/online/managed/vnet/setup/testvm/vm-main.bicep
-export VM_NAME="test-vnet-vm"
+export VM_NAME="test-mvnet-vm"
 # VNET name and subnet name used during vnet worskapce setup: endpoints/online/managed/vnet/setup/ws/main.bicep
 export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
@@ -43,7 +43,7 @@ then
 fi
 
 # create the VM
-az deployment group create --template-file endpoints/online/managed/vnet/test_scoring/vm-main.bicep --parameters identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
+az deployment group create --template-file endpoints/online/managed/vnet/test_scoring/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
 
 ## Note for doc: create a VM: az vm create -n $VM_NAME
 
@@ -58,5 +58,6 @@ az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endp
 
 ### Cleanup (run from build agent)
 # note: endpoint deletion happens from the script that runs within the vm (above)
-# delete VM
+# <delete_vm> 
 az vm delete -n $VM_NAME -y
+# </delete_vm> 

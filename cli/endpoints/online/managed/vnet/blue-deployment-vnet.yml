@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
-endpoint_name: endpt1222
+endpoint_name: placeholder-name
 private_network_connection: true
 model:
   local_path: model/sklearn_regression_model.pkl

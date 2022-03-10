@@ -18,15 +18,9 @@ param workspaceArmId string
 param tags object
 
 var privateDnsZoneName =  {
-  azureusgovernment: 'privatelink.api.ml.azure.us'
-  azurechinacloud: 'privatelink.api.ml.azure.cn'
+  azureusgovernment: 'privatelink.api.ml.azure.us' // Optional
+  azurechinacloud: 'privatelink.api.ml.azure.cn' // Optional
   azurecloud: 'privatelink.api.azureml.ms'
-}
-
-var privateAznbDnsZoneName = {
-    azureusgovernment: 'privatelink.notebooks.usgovcloudapi.net'
-    azurechinacloud: 'privatelink.notebooks.chinacloudapi.cn'
-    azurecloud: 'privatelink.notebooks.azure.net'
 }
 
 resource machineLearningPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' = {
@@ -67,22 +61,7 @@ resource amlPrivateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNet
   }
 }
 
-// Notebook
-resource notebookPrivateDnsZone 'Microsoft.Network/privateDnsZones@2020-01-01' = {
-  name: privateAznbDnsZoneName[toLower(environment().name)]
-  location: 'global'
-}
 
-resource notebookPrivateDnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-01-01' = {
-  name: '${notebookPrivateDnsZone.name}/${uniqueString(workspaceArmId)}'
-  location: 'global'
-  properties: {
-    registrationEnabled: false
-    virtualNetwork: {
-      id: virtualNetworkId
-    }
-  }
-}
 
 resource privateEndpointDns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-06-01' = {
   name: '${machineLearningPrivateEndpoint.name}/amlworkspace-PrivateDnsZoneGroup'
@@ -93,13 +72,7 @@ resource privateEndpointDns 'Microsoft.Network/privateEndpoints/privateDnsZoneGr
         properties:{
           privateDnsZoneId: amlPrivateDnsZone.id
         }
-      }
-      {
-        name: privateAznbDnsZoneName[environment().name]
-        properties:{
-          privateDnsZoneId: notebookPrivateDnsZone.id
-        }
-      }
+      }      
     ]
   }
 }
