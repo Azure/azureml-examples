@@ -116,9 +116,6 @@ class PyTorchDistributedModelTrainingSequence:
             self.multinode_available = self.world_size > 1
             self.self_is_main_node = self.world_rank == 0
 
-        elif self.distributed_backend == "gloo":
-            self.multinode_available = True
-
         else:
             raise NotImplementedError(
                 f"distributed_backend={self.distributed_backend} is not implemented yet."
@@ -540,7 +537,7 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         "--distributed_backend",
         type=str,
         required=False,
-        choices=["nccl", "mpi", "gloo"],
+        choices=["nccl", "mpi"],
         default="nccl",
         help="Which distributed backend to use.",
     )
