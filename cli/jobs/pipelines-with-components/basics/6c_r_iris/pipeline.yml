@@ -9,7 +9,7 @@ jobs:
     compute: azureml:cpu-cluster
     inputs:
       iris: 
-        type: uri_folder
+        type: uri_file
         path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 
         
