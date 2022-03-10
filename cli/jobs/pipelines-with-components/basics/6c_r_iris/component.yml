@@ -14,4 +14,4 @@ inputs:
     type: uri_folder
 environment:
   build:
-    local_path: docker-context
+    path: docker-context

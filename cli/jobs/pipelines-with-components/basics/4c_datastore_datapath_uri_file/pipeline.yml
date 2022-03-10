@@ -3,7 +3,8 @@ type: pipeline
 description: "Example of using data file from a Workspace Datastore as pipeline input"
 inputs:
   pipeline_sample_input_data:
-    uri_file: azureml://datastores/workspaceblobstore/paths/LocalUpload/cc4d1f81626c8537b6e99dadbfeab622/data/sample.csv
+    type: uri_file
+    path: azureml://datastores/workspaceblobstore/paths/LocalUpload/cc4d1f81626c8537b6e99dadbfeab622/data/sample.csv
     mode: download
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 

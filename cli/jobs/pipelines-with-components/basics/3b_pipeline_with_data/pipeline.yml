@@ -25,7 +25,7 @@ jobs:
     type: command
     component: file:./componentB.yml
     inputs:
-      componentB_input: ${{parent.jobs.componentA_job.outputs.componentA_output}}
+      componentB_input: ${{parent.jobs.componentA.outputs.componentA_output}}
     outputs:
       componentB_output: 
         mode: rw_mount
@@ -33,7 +33,7 @@ jobs:
     type: command
     component: file:./componentC.yml
     inputs:
-      componentC_input: ${{parent.jobs.componentB_job.outputs.componentB_output}}
+      componentC_input: ${{parent.jobs.componentB.outputs.componentB_output}}
     outputs:
       componentC_output: ${{parent.outputs.final_pipeline_output}}
       #  mode: upload
