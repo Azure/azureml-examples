@@ -27,5 +27,5 @@ az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOC
 ##### TODO: Change to main branch after merge########
 # <clone_sample> 
 # Clone the samples repo. This is needed to build the image and create the managed online deployment.
-mkdir -p /home/samples; git clone -b rsethur/mvnet --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
+mkdir -p /home/samples; git clone -b $GIT_BRANCH_SAMPLES --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
 # </clone_sample> 

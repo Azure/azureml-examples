@@ -29,6 +29,9 @@ export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
 export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
 
+# Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name
+export GIT_BRANCH_SAMPLES=$(git rev-parse --abbrev-ref HEAD)
+
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
 
@@ -48,7 +51,7 @@ az deployment group create --template-file endpoints/online/managed/vnet/test_sc
 ## Note for doc: create a VM: az vm create -n $VM_NAME
 
 # command in script: az deployment group create --template-file endpoints/online/managed/vnet/setup/vm_main.bicep #identity name is hardcoded uai-identity 
-az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/test_scoring/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME"
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/test_scoring/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH_SAMPLES:$GIT_BRANCH_SAMPLES"
 
 # build image
 az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/test_scoring/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "ACR_NAME=$ACR_NAME"
