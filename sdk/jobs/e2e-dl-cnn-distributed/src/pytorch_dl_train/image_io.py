@@ -1,3 +1,10 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
+"""
+This script contains methods to hangle inputs for pytorch model training
+using the COCO dataset https://cocodataset.org/.
+"""
 import os
 import logging
 import csv
@@ -180,6 +187,18 @@ def build_image_datasets(
         simulated_latency_in_ms=0.0,
 
 ):
+    """
+    Args:
+        train_images_dir (str): path to the directory containing training images
+        valid_images_dir (str): path to the directory containing validation images
+        training_labels (dict): keys are path inside train_images_dir, values are labels
+        validation_labels (dict): keys are path inside valid_images_dir, values are labels
+        simulated_latency_in_ms (float): a latency injected before any image read in the data loader
+    
+    Returns:
+        train_dataset (torchvision.datasets.VisionDataset): training dataset
+        valid_dataset (torchvision.datasets.VisionDataset): validation dataset
+    """
     logger = logging.getLogger(__name__)
 
     train_transform = torchvision.transforms.Compose(

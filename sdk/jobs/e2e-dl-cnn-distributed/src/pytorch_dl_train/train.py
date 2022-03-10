@@ -1,29 +1,21 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
-
-Future changes:
-- use checkpoint to load model and resume training
-- support multi-labels
-
-Potential changes:
-- use dataclasses for config and argparse?
-- add model signature for mlflow register?
+This script implements a Distributed PyTorch training sequence.
 """
 import os
-import uuid
-import glob
 import time
-import copy
+import json
 import pickle
 import logging
 import argparse
+from tqdm import tqdm
 from distutils.util import strtobool
-import json
-from dataclasses import dataclass, field
-from typing import Any, Callable, List, Optional, Tuple
-import tempfile
 
 import mlflow
 
+# the long list of torch imports
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -32,12 +24,12 @@ from torch.optim import lr_scheduler
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
-from tqdm import tqdm
-from torch.profiler import profile, record_function, ProfilerActivity
+from torch.profiler import record_function
 
+# internal imports
 from model import load_and_model_arch, MODEL_ARCH_LIST
 from image_io import load_image_labels, build_image_datasets, input_file_path
-from profiling import markdown_trace_handler
+from profiling import PyTorchProfilerHandler
 
 
 class PyTorchDistributedModelTrainingSequence:
@@ -346,86 +338,6 @@ class PyTorchDistributedModelTrainingSequence:
             )
 
 
-    #################
-    ### PROFILING ###
-    #################
-
-    def start_profiler(self, enabled=False, export_format=None):
-        """Setup and start the pytorch profiler"""
-        if enabled:
-            self.profiler_output_tmp_dir = tempfile.TemporaryDirectory()
-            self.logger.info(
-                f"Starting profiler (enabled=True) with tmp dir {self.profiler_output_tmp_dir.name}."
-            )
-
-            activities = [ProfilerActivity.CPU]
-            if torch.cuda.is_available():
-                self.logger.info(f"Enabling CUDA in profiler.")
-                activities.append(ProfilerActivity.CUDA)
-
-            if export_format is None:
-                trace_handler = None
-
-            elif export_format == "markdown":
-                markdown_logs_export = os.path.join(
-                    self.profiler_output_tmp_dir.name, "markdown"
-                )
-                trace_handler = markdown_trace_handler(
-                    markdown_logs_export, rank=self.world_rank
-                )
-
-            elif export_format == "tensorboard":
-                tensorboard_logs_export = os.path.join(
-                    self.profiler_output_tmp_dir.name, "tensorboard_logs"
-                )
-                trace_handler = torch.profiler.tensorboard_trace_handler(
-                    tensorboard_logs_export
-                )
-
-            else:
-                raise NotImplementedError(
-                    f"profiler export_format={export_format} is not implemented, please use either 'markdown' or 'tensorboard'"
-                )
-
-            # process every single step
-            profiler_schedule = torch.profiler.schedule(wait=0, warmup=0, active=1)
-
-            self.profiler = torch.profiler.profile(
-                schedule=profiler_schedule,
-                record_shapes=False,
-                profile_memory=True,
-                activities=activities,
-                on_trace_ready=trace_handler,
-            )
-            self.profiler.start()
-        else:
-            self.logger.info(f"Profiler not started (enabled=False).")
-            self.profiler = None
-
-    def stop_profiler(self) -> None:
-        """Stops the pytorch profiler and logs the outputs using mlflow"""
-        if self.profiler:
-            self.logger.info(f"Stopping profiler.")
-            self.profiler.stop()
-
-            # log via mlflow
-            self.logger.info(
-                f"MLFLOW log {self.profiler_output_tmp_dir.name} as an artifact."
-            )
-            mlflow.log_artifacts(
-                self.profiler_output_tmp_dir.name, artifact_path="profiler"
-            )
-
-            self.logger.info(
-                f"Clean up profiler temp dir {self.profiler_output_tmp_dir.name}"
-            )
-            self.profiler_output_tmp_dir.cleanup()
-        else:
-            self.logger.info(
-                "Not stopping profiler as it was not started in the first place."
-            )
-
-
 def build_arguments_parser(parser: argparse.ArgumentParser = None):
     """Builds the argument parser for CLI settings"""
     if parser is None:
@@ -616,10 +528,14 @@ def run(args):
     # sets cuda and distributed config
     training_handler.setup_config(args)
 
-    # enable profiling
-    training_handler.start_profiler(
-        enabled=bool(args.profile), export_format=args.profile_export_format
+    # use helper class to enable profiling
+    training_profiler = PyTorchProfilerHandler(
+        enabled=bool(args.profile),
+        export_format=args.profile_export_format,
+        rank=training_handler.world_rank
     )
+    # set profiler in trainer to call profiler.step() during training
+    training_handler.profiler = training_profiler.start_profiler()
 
     # creates data loaders from datasets for distributed training
     training_handler.setup_datasets(train_dataset, valid_dataset, labels)
@@ -632,7 +548,7 @@ def run(args):
     training_handler.train()
 
     # stops profiling (and save in mlflow)
-    training_handler.stop_profiler()
+    training_profiler.stop_profiler()
 
     # saves final model
     if args.model_output:
