@@ -14,6 +14,7 @@ import torchvision
 _MODEL = None
 _TRANSFORMS = None
 
+
 def init():
     """
     This function is called when the container is initialized/started, typically after create/update of the deployment.
@@ -23,13 +24,11 @@ def init():
 
     # AZUREML_MODEL_DIR is an environment variable created during deployment.
     # It is the path to the model folder
-    model_path = os.path.join(
-        os.getenv("AZUREML_MODEL_DIR")
-    )
+    model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"))
 
     _MODEL = mlflow.pytorch.load_model(model_path)
 
-    _TRANSFORMS =  torchvision.transforms.Compose(
+    _TRANSFORMS = torchvision.transforms.Compose(
         [
             torchvision.transforms.Resize(224),
             torchvision.transforms.CenterCrop(224),
@@ -42,6 +41,7 @@ def init():
 
     print("Init complete")
 
+
 def request_to_model_input(request_body, transforms):
     """
     Expects a request of format { 'rows' : [ { 'image' : BASE64STRING } ] }
@@ -53,23 +53,29 @@ def request_to_model_input(request_body, transforms):
     request_json = json.loads(request_body)
     assert isinstance(request_json, dict), "request json has to be a dict"
     assert "rows" in request_json, "request json has to contain key 'rows'"
-    assert isinstance(request_json["rows"], list), "request json key 'rows' has to be a list"
-   
+    assert isinstance(
+        request_json["rows"], list
+    ), "request json key 'rows' has to be a list"
+
     images = []
-    for idx, row in enumerate(request_json['rows']):
+    for idx, row in enumerate(request_json["rows"]):
         try:
-            input_image_base64 = row['image']
-            
+            input_image_base64 = row["image"]
+
             # data contains a base64 encode of a jpg image
             pil_image = Image.open(io.BytesIO(base64.b64decode(input_image_base64)))
 
             # https://pytorch.org/docs/stable/_modules/torchvision/datasets/folder.html#ImageFolder
             # check pil_loader()
-            pil_image = pil_image.convert('RGB')
-            
+            pil_image = pil_image.convert("RGB")
+
             images.append(pil_image)
         except:
-            raise Exception("row on index {} could not be processed into a model input.\n{}".format(idx, traceback.format_exc()))
+            raise Exception(
+                "row on index {} could not be processed into a model input.\n{}".format(
+                    idx, traceback.format_exc()
+                )
+            )
 
     return images
 
@@ -99,17 +105,18 @@ def run(request_body):
         # transform model output to request answer (json serializable)
         return [
             [
-                { 'prob' : float(p_c), 'class' : int(i_c), 'label' : i_c }
+                {"prob": float(p_c), "class": int(i_c), "label": i_c}
                 for i_c, p_c in enumerate(y_i)
             ]
             for i, y_i in enumerate(model_output)
         ]
 
-    except BaseException as e: # NOTE: this is a catch all
-        return { "exception": traceback.format_exc() }
+    except BaseException as e:  # NOTE: this is a catch all
+        return {"exception": traceback.format_exc()}
 
 
 ### FOR DEBUG/LOCAL USE ONLY ###
+
 
 def main(cli_args=None):
     # this main function should be called only
@@ -137,16 +144,14 @@ def main(cli_args=None):
     # Load the image and transform as a payload compatible
     # with the run() method
     print("* Testing service with image:\n{}".format(args.test_image))
-    with open(args.test_image, mode='rb') as in_file:
-        image_64_encode = base64.b64encode(in_file.read()).decode('ascii')
+    with open(args.test_image, mode="rb") as in_file:
+        image_64_encode = base64.b64encode(in_file.read()).decode("ascii")
 
-    request_payload = {
-        'rows' : [ {'image':image_64_encode} ]
-    }
+    request_payload = {"rows": [{"image": image_64_encode}]}
     request_body = json.dumps(request_payload)
 
     # this variable will be used when script is served in Azure ML
-    os.environ['AZUREML_MODEL_DIR'] = args.model_dir
+    os.environ["AZUREML_MODEL_DIR"] = args.model_dir
 
     # call init() method like AzureML would
     init()
@@ -156,6 +161,7 @@ def main(cli_args=None):
 
     print("* Test request call returned:")
     print(json.dumps(response_json, indent="    "))
+
 
 if __name__ == "__main__":
     main()
