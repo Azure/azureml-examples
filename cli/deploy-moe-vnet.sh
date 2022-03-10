@@ -30,7 +30,11 @@ export SUBNET_NAME="snet-scoring"
 export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
 
 # Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name
+echo '!!!!!!!!!!!!!'
+echo `git branch`
+echo `git branch --show-current`
 export GIT_BRANCH_SAMPLES=$(git rev-parse --abbrev-ref HEAD)
+echo !!!!!$GIT_BRANCH_SAMPLES
 
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
