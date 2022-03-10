@@ -116,7 +116,7 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
         root: str,
         image_labels: dict,
         transform: Optional[Callable] = None,
-        simulated_latency_in_ms: int = 0
+        simulated_latency_in_ms: int = 0,
     ):
         """Constructor.
 
@@ -180,12 +180,11 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
 
 
 def build_image_datasets(
-        train_images_dir: str,
-        valid_images_dir: str,
-        training_labels: dict,
-        validation_labels: dict,
-        simulated_latency_in_ms=0.0,
-
+    train_images_dir: str,
+    valid_images_dir: str,
+    training_labels: dict,
+    validation_labels: dict,
+    simulated_latency_in_ms=0.0,
 ):
     """
     Args:
@@ -194,7 +193,7 @@ def build_image_datasets(
         training_labels (dict): keys are path inside train_images_dir, values are labels
         validation_labels (dict): keys are path inside valid_images_dir, values are labels
         simulated_latency_in_ms (float): a latency injected before any image read in the data loader
-    
+
     Returns:
         train_dataset (torchvision.datasets.VisionDataset): training dataset
         valid_dataset (torchvision.datasets.VisionDataset): validation dataset
@@ -215,7 +214,7 @@ def build_image_datasets(
         root=train_images_dir,
         image_labels=training_labels,
         transform=train_transform,
-        simulated_latency_in_ms=simulated_latency_in_ms
+        simulated_latency_in_ms=simulated_latency_in_ms,
     )
     logger.info(
         f"ImageDatasetWithLabelInMap loaded training image list samples={len(train_dataset)}"
@@ -235,7 +234,7 @@ def build_image_datasets(
         root=valid_images_dir,
         image_labels=validation_labels,
         transform=valid_transform,
-        simulated_latency_in_ms=simulated_latency_in_ms
+        simulated_latency_in_ms=simulated_latency_in_ms,
     )
     logger.info(
         f"ImageDatasetWithLabelInMap loaded validation image list samples={len(valid_dataset)}"

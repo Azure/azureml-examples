@@ -324,7 +324,9 @@ class PyTorchDistributedModelTrainingSequence:
             os.makedirs(output_dir, exist_ok=True)
 
             if isinstance(self.model, DistributedDataParallel):
-                self.logger.info("Model was distibuted, we will export DistributedDataParallel.module")
+                self.logger.info(
+                    "Model was distibuted, we will export DistributedDataParallel.module"
+                )
                 model_to_save = self.model.module.to("cpu")
             else:
                 model_to_save = self.model.to("cpu")
@@ -333,7 +335,7 @@ class PyTorchDistributedModelTrainingSequence:
             mlflow.pytorch.log_model(
                 model_to_save,
                 artifact_path="final_model",
-                registered_model_name=register_as, # also register it if name is provided
+                registered_model_name=register_as,  # also register it if name is provided
                 signature=self.model_signature,
             )
 
@@ -532,7 +534,7 @@ def run(args):
     training_profiler = PyTorchProfilerHandler(
         enabled=bool(args.profile),
         export_format=args.profile_export_format,
-        rank=training_handler.world_rank
+        rank=training_handler.world_rank,
     )
     # set profiler in trainer to call profiler.step() during training
     training_handler.profiler = training_profiler.start_profiler()
@@ -552,7 +554,11 @@ def run(args):
 
     # saves final model
     if args.model_output:
-        training_handler.save(args.model_output, name=f"epoch-{args.num_epochs}", register_as=args.register_model_as)
+        training_handler.save(
+            args.model_output,
+            name=f"epoch-{args.num_epochs}",
+            register_as=args.register_model_as,
+        )
 
     # finalize mlflow (once in entire script)
     mlflow.end_run()

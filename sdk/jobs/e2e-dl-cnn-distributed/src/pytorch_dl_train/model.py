@@ -50,10 +50,9 @@ MODEL_ARCH_LIST = [
     # "regnet_x_32gf",
 ]
 
+
 def load_and_model_arch(
-    model_arch: str,
-    output_dimension: int = 1,
-    pretrained: bool = True
+    model_arch: str, output_dimension: int = 1, pretrained: bool = True
 ):
     """Loads a model from a given arch and sets it up for training"""
     logger = logging.getLogger(__name__)
@@ -67,7 +66,7 @@ def load_and_model_arch(
         raise NotImplementedError(
             f"model_arch={model_arch} is not implemented in torchvision model zoo."
         )
-    
+
     if model_arch == "resnet18":
         model.fc = nn.Linear(model.fc.in_features, output_dimension)
     else:
