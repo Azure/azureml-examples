@@ -4,6 +4,3 @@ torch==1.10.2
 
 # for metrics reporting
 mlflow==1.23.1
-
-# nvidia NSight
-nvtx==0.2.4
