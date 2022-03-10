@@ -9,5 +9,5 @@ inputs:
     type: uri_folder 
     path: azureml://datastores/workspaceblobstore/paths/example-data/
     mode: rw_mount
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:3
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster
