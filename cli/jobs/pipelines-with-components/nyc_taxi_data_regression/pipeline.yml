@@ -4,7 +4,7 @@ type: pipeline
 # <inputs_and_outputs>
 inputs:
   pipeline_job_input: #using local data, will crate an anonymous data asset
-    uri_folder: 
+    type: uri_folder
     path: ./data
 
 outputs: 
@@ -22,9 +22,10 @@ outputs:
     mode: upload
 # </inputs_and_outputs>
 
+compute: azureml:cpu-cluster
 # <jobs>
 settings:
-  default_compute: azureml:cpu-cluster
+  # default_compute: azureml:cpu-cluster
   default_datastore: azureml:workspaceblobstore
   continue_on_step_failure: false
 

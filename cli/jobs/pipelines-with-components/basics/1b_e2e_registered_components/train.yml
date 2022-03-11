@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: Train
-display_name: Train
-version: 01
+display_name: Train_upper_case
+version: 04
 type: command
 inputs:
   training_data: 
