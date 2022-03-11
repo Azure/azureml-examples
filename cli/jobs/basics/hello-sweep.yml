@@ -15,7 +15,7 @@ sampling_algorithm: random
 search_space:
   B:
     type: choice
-    values: ["hello", "world", "hello world"]
+    values: ["hello", "world", "hello_world"]
   C:
     type: uniform
     min_value: 0.1

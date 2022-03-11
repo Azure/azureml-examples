@@ -4,7 +4,9 @@ description: "Example of using data folder from a Workspace Datastore as pipelin
 inputs:
   pipeline_sample_input_data:
     type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/LocalUpload/cc4d1f81626c8537b6e99dadbfeab622/data/
+    # please change to the data location on datastore
+    path: azureml://datastores/workspaceblobstore/paths/LocalUpload/cc4d1f81626c8537b6e99dadbfeab622/data/ 
+
     mode: download
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 
