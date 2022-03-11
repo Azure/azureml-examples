@@ -53,6 +53,7 @@ class PyTorchDistributedModelTrainingSequence:
         # DISTRIBUTED CONFIG
         self.world_size = 1
         self.world_rank = 0
+        self.local_world_size = 1
         self.local_rank = 0
         self.multinode_available = False
         self.cpu_count = os.cpu_count()
@@ -95,6 +96,7 @@ class PyTorchDistributedModelTrainingSequence:
         if self.distributed_backend == "nccl":
             self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
             self.world_rank = int(os.environ.get("RANK", "0"))
+            self.local_world_size = int(os.environ.get("LOCAL_WORLD_SIZE", "1"))
             self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
             self.multinode_available = self.world_size > 1
             self.self_is_main_node = self.world_rank == 0
@@ -104,7 +106,8 @@ class PyTorchDistributedModelTrainingSequence:
             # MPI is only included if you build PyTorch from source on a host that has MPI installed.
             self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
             self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
-            self.local_rank = int(os.environ.get("LOCAL_RANK", "0"))
+            self.local_world_size = int(os.environ.get("OMPI_COMM_WORLD_LOCAL_SIZE", "1"))
+            self.local_rank = int(os.environ.get("OMPI_COMM_WORLD_LOCAL_RANK", "0"))
             self.multinode_available = self.world_size > 1
             self.self_is_main_node = self.world_rank == 0
 
@@ -134,6 +137,34 @@ class PyTorchDistributedModelTrainingSequence:
             )
         else:
             self.logger.info(f"Not running in multinode.")
+        
+        # report relevant parameters using mlflow
+        if self.self_is_main_node:
+            mlflow.log_params(
+                {
+                    # log some distribution params
+                    "nodes": self.world_size // self.local_world_size,
+                    "instance_per_node": self.local_world_size,
+                    "cuda_available": torch.cuda.is_available(),
+                    "distributed": self.multinode_available,
+                    "distributed_backend": self.distributed_backend,
+
+                    # data loading params
+                    "batch_size": self.dataloading_config.batch_size,
+                    "num_workers": self.dataloading_config.num_workers,
+                    "prefetch_factor": self.dataloading_config.prefetch_factor,
+                    "pin_memory": self.dataloading_config.pin_memory,
+                    "non_blocking": self.dataloading_config.non_blocking,
+
+                    # training params
+                    "model_arch": self.training_config.model_arch,
+                    "model_arch_pretrained": self.training_config.model_arch_pretrained,
+                    "learning_rate": self.training_config.learning_rate,
+
+                    # profiling params
+                    "enable_profiling": self.training_config.enable_profiling,
+                }
+            )
 
     def setup_datasets(
         self,
@@ -472,7 +503,7 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
 
     group = parser.add_argument_group(f"Monitoring/Profiling Parameters")
     group.add_argument(
-        "--profile",
+        "--enable_profiling",
         type=strtobool,
         required=False,
         default=False,
@@ -516,7 +547,7 @@ def run(args):
 
     # use helper class to enable profiling
     training_profiler = PyTorchProfilerHandler(
-        enabled=bool(args.profile),
+        enabled=bool(args.enable_profiling),
         rank=training_handler.world_rank,
     )
     # set profiler in trainer to call profiler.step() during training
