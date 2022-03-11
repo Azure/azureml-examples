@@ -41,7 +41,7 @@ az configure --defaults workspace=$WORKSPACE
 export VM_EXISTS=$(az vm list -o tsv --query "[?name=='$VM_NAME'].name")
 if [ "$VM_EXISTS" != "" ];
 then
-    echo "VM already exists from previous run. Waiting for 15 mins before deleting."
+   echo "VM already exists from previous run. Waiting for 15 mins before deleting."
 	sleep 15m
 	az vm delete -n $VM_NAME -y
 fi
