@@ -2,8 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 compute: azureml:cpu-cluster
 settings:
-  datestore: azureml:workspaceblobstore
-  # default_compute: azureml:cpu-cluster
+  default_datestore: azureml:workspaceblobstore  
 jobs:
   hello_job:
     command: echo "hello"

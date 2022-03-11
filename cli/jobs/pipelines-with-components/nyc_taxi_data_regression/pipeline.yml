@@ -25,7 +25,6 @@ outputs:
 compute: azureml:cpu-cluster
 # <jobs>
 settings:
-  # default_compute: azureml:cpu-cluster
   default_datastore: azureml:workspaceblobstore
   continue_on_step_failure: false
 
