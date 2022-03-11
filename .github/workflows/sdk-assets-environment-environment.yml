@@ -1,4 +1,4 @@
-name: sdk-assets-model-model
+name: sdk-assets-environment-environment
 on:
   workflow_dispatch:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - march-sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-assets-model-model.yml
+      - .github/workflows/sdk-assets-environment-environment.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -35,12 +35,12 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run assets/model/model.ipynb
+    - name: run assets/environment/environment.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" model.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" model.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" model.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" model.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" environment.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" environment.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" environment.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" environment.ipynb
           
-          papermill model.ipynb - -k python
-      working-directory: sdk/assets/model
+          papermill environment.ipynb - -k python
+      working-directory: sdk/assets/environment
