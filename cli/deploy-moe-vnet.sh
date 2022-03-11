@@ -29,7 +29,7 @@ export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
 export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
 
-# Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name
+# Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name when running az vm run-command
 # If running from local machine, change it to your branch name
 export GIT_BRANCH=$GITHUB_HEAD_REF
 
