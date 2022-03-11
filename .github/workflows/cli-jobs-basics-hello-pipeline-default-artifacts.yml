@@ -1,4 +1,4 @@
-name: cli-assets-dataset-iris-csv-example
+name: cli-jobs-basics-hello-pipeline-default-artifacts
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/dataset/iris-csv-example.yml
-      - .github/workflows/cli-assets-dataset-iris-csv-example.yml
+      - cli/jobs/basics/**
+      - .github/workflows/cli-jobs-basics-hello-pipeline-default-artifacts.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,6 +26,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create asset
-      run: az ml dataset create -f assets/dataset/iris-csv-example.yml
+    - name: run job
+      run: bash -x run-job.sh jobs/basics/hello-pipeline-default-artifacts.yml
       working-directory: cli

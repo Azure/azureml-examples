@@ -4,5 +4,5 @@ command: |
   papermill hello-notebook.ipynb outputs/out.ipynb -k python
 code: src
 environment:
-  image: python:latest
+  image: library/python:latest
 compute: azureml:cpu-cluster

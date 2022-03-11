@@ -3,7 +3,7 @@ type: pipeline
 jobs:
   hello_job:
     command: echo "hello" && echo "world" > ${{outputs.world_output}}/world.txt
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     outputs:
       world_output:

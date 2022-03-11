@@ -10,5 +10,4 @@ jobs:
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
   world_job:
     command: echo "world"
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23  
- 
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23   

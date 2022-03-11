@@ -1,4 +1,4 @@
-name: cli-assets-dataset-cloud-folder
+name: cli-assets-data-public-file-https
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/assets/dataset/cloud-folder.yml
-      - .github/workflows/cli-assets-dataset-cloud-folder.yml
+      - cli/assets/data/public-file-https.yml
+      - .github/workflows/cli-assets-data-public-file-https.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml dataset create -f assets/dataset/cloud-folder.yml
+      run: az ml data create -f assets/data/public-file-https.yml
       working-directory: cli

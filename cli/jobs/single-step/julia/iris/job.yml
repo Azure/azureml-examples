@@ -4,7 +4,7 @@ command: >-
   julia -e "include(\"run.jl\")"
 environment: 
   build:
-    local_path: docker-context
+    path: docker-context
 compute: azureml:cpu-cluster
 display_name: julia-iris-example
 experiment_name: julia-iris-example
