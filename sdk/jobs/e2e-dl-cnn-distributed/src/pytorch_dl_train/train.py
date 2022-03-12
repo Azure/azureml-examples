@@ -3,6 +3,14 @@
 
 """
 This script implements a Distributed PyTorch training sequence.
+
+IMPORTANT: We have tagged the code with the following expressions to walk you through
+the key implementation details.
+
+Using your editor, search for those strings to get an idea of how to implement:
+- DISTRIBUTED : how to implement distributed pytorch
+- MLFLOW : how to implement mlflow reporting of metrics and artifacts
+- PROFILER : how to implement pytorch profiler
 """
 import os
 import time
@@ -91,7 +99,9 @@ class PyTorchDistributedModelTrainingSequence:
             self.dataloading_config.non_blocking
         )
 
-        # detect multinode config
+        # DISTRIBUTED: detect multinode config
+        # depending on the Azure ML distribution.type, different environment variables will be provided
+        # to configure DistributedDataParallel
         self.distributed_backend = args.distributed_backend
         if self.distributed_backend == "nccl":
             self.world_size = int(os.environ.get("WORLD_SIZE", "1"))
@@ -130,6 +140,7 @@ class PyTorchDistributedModelTrainingSequence:
             self.logger.info(
                 f"Running in multinode with backend={self.distributed_backend} local_rank={self.local_rank} rank={self.world_rank} size={self.world_size}"
             )
+            # DISTRIBUTED: this is required to initialize the pytorch backend
             torch.distributed.init_process_group(
                 self.distributed_backend,
                 rank=self.world_rank,
@@ -138,8 +149,10 @@ class PyTorchDistributedModelTrainingSequence:
         else:
             self.logger.info(f"Not running in multinode.")
         
-        # report relevant parameters using mlflow
+        # DISTRIBUTED: in distributed mode, you want to report parameters
+        # only from main process (rank==0) to avoid conflict
         if self.self_is_main_node:
+            # MLFLOW: report relevant parameters using mlflow
             mlflow.log_params(
                 {
                     # log some distribution params
@@ -173,8 +186,10 @@ class PyTorchDistributedModelTrainingSequence:
         labels: list,
     ):
         """Creates and sets up dataloaders for training/validation datasets."""
-
         self.labels = labels
+
+        # DISTRIBUTED: you need to use a DistributedSampler that wraps your dataset
+        # it will draw a different sample on each node/process to distribute data sampling
         self.training_data_sampler = DistributedSampler(
             training_dataset, num_replicas=self.world_size, rank=self.world_rank
         )
@@ -185,9 +200,12 @@ class PyTorchDistributedModelTrainingSequence:
             num_workers=self.dataloading_config.num_workers,  # self.cpu_count,
             prefetch_factor=self.dataloading_config.prefetch_factor,
             pin_memory=self.dataloading_config.pin_memory,
+            # DISTRIBUTED: the samples will be provided to the DataLoader
             sampler=self.training_data_sampler,
         )
 
+        # DISTRIBUTED: we don't need a sampler for validation set
+        # it is used as-is in every node/process
         self.validation_data_loader = DataLoader(
             validation_dataset,
             batch_size=self.dataloading_config.batch_size,
@@ -200,7 +218,7 @@ class PyTorchDistributedModelTrainingSequence:
         self.logger.info(f"Setting up model to use device {self.device}")
         self.model = model.to(self.device)
 
-        # Use distributed if available
+        # DISTRIBUTED: the model needs to be wrapped in a DistributedDataParallel class
         if self.multinode_available:
             self.logger.info(f"Setting up model to use DistributedDataParallel.")
             self.model = DistributedDataParallel(self.model)
@@ -248,6 +266,8 @@ class PyTorchDistributedModelTrainingSequence:
         running_loss = 0.0
 
         for images, targets in tqdm(self.training_data_loader):
+            # PROFILER: record_function will report to the profiler (if enabled)
+            # here a specific wall time for a given block of code
             with record_function("train.to_device"):
                 images = images.to(
                     self.device, non_blocking=self.dataloading_config.non_blocking
@@ -270,6 +290,8 @@ class PyTorchDistributedModelTrainingSequence:
                 num_correct += torch.sum(correct).item()
                 num_total_images += len(images)
 
+            # PROFILER: record_function will report to the profiler (if enabled)
+            # here a specific wall time for a given block of code
             with record_function("train.backward"):
                 loss.backward()
                 optimizer.step()
@@ -318,6 +340,9 @@ class PyTorchDistributedModelTrainingSequence:
             epoch_valid_loss = running_loss / num_samples
             epoch_valid_acc = num_correct / num_samples
 
+            # PROFILER: use profiler.step() to mark a step in training
+            # the pytorch profiler will use internally to trigger
+            # saving the traces in different files
             if self.profiler:
                 self.profiler.step()
 
@@ -335,7 +360,7 @@ class PyTorchDistributedModelTrainingSequence:
                 f"MLFLOW: epoch_train_time={epoch_train_time} epoch={epoch}"
             )
 
-            # report in mlflow only if running from main node
+            # MLFLOW / DISTRIBUTED: report metrics only from main node
             if self.self_is_main_node:
                 mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
                 mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
@@ -348,6 +373,8 @@ class PyTorchDistributedModelTrainingSequence:
     #################
 
     def save(self, output_dir: str, name: str = "dev", register_as: str = None) -> None:
+        # DISTRIBUTED: you want to save the model only from the main node/process
+        # in data distributed mode, all models should theoretically be the same
         if self.self_is_main_node:
             self.logger.info(f"Saving model and classes in {output_dir}...")
 
@@ -355,6 +382,7 @@ class PyTorchDistributedModelTrainingSequence:
             os.makedirs(output_dir, exist_ok=True)
 
             if isinstance(self.model, DistributedDataParallel):
+                # DISTRIBUTED: to export model, you need to get it out of the DistributedDataParallel class
                 self.logger.info(
                     "Model was distibuted, we will export DistributedDataParallel.module"
                 )
@@ -362,7 +390,9 @@ class PyTorchDistributedModelTrainingSequence:
             else:
                 model_to_save = self.model.to("cpu")
 
-            # log model using mlflow
+            # MLFLOW: mlflow has a nice method to export the model automatically
+            # add tags and environment for it. You can then use it in Azure ML
+            # to register your model to an endpoint.
             mlflow.pytorch.log_model(
                 model_to_save,
                 artifact_path="final_model",
@@ -518,7 +548,7 @@ def run(args):
     logger = logging.getLogger(__name__)
     logger.info(f"Running with arguments: {args}")
 
-    # initialize mlflow (once in entire script)
+    # MLFLOW: initialize mlflow (once in entire script)
     mlflow.start_run()
 
     # get all image labels
@@ -545,12 +575,13 @@ def run(args):
     # sets cuda and distributed config
     training_handler.setup_config(args)
 
-    # use helper class to enable profiling
+    # PROFILER: here we use a helper class to enable profiling
+    # see profiling.py for the implementation details
     training_profiler = PyTorchProfilerHandler(
         enabled=bool(args.enable_profiling),
         rank=training_handler.world_rank,
     )
-    # set profiler in trainer to call profiler.step() during training
+    # PROFILER: set profiler in trainer to call profiler.step() during training
     training_handler.profiler = training_profiler.start_profiler()
 
     # creates data loaders from datasets for distributed training
@@ -574,7 +605,7 @@ def run(args):
             register_as=args.register_model_as,
         )
 
-    # finalize mlflow (once in entire script)
+    # MLFLOW: finalize mlflow (once in entire script)
     mlflow.end_run()
 
 
