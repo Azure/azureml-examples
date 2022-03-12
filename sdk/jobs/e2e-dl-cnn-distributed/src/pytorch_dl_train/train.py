@@ -322,6 +322,8 @@ class PyTorchDistributedModelTrainingSequence:
         # Decay LR by a factor of 0.1 every 7 epochs
         scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
+        # DISTRIBUTED: you'll node that this loop has nothing specifically "distributed"
+        # that's because most of the changes are in the backend (DistributedDataParallel)
         for epoch in range(epochs):
             self.logger.info(f"Starting epoch={epoch}")
 
