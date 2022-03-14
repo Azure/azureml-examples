@@ -159,6 +159,7 @@ class PyTorchDistributedModelTrainingSequence:
                     "nodes": self.world_size // self.local_world_size,
                     "instance_per_node": self.local_world_size,
                     "cuda_available": torch.cuda.is_available(),
+                    "cuda_device_count": torch.cuda.device_count(),
                     "distributed": self.multinode_available,
                     "distributed_backend": self.distributed_backend,
 
