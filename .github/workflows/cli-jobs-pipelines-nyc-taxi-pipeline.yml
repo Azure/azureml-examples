@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-nyc_taxi_data_regression-job
+name: cli-jobs-pipelines-nyc-taxi-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
-      - .github/workflows/cli-jobs-pipelines-with-components-nyc_taxi_data_regression-job.yml
+      - cli/jobs/pipelines/nyc-taxi/**
+      - .github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines-with-components/nyc_taxi_data_regression/job.yml
+      run: bash -x run-job.sh jobs/pipelines/nyc-taxi/pipeline.yml
       working-directory: cli
