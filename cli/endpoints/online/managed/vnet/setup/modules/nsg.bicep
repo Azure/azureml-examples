@@ -16,7 +16,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2020-07-01' = {
   properties: {
     securityRules: [      
       {
-        name: 'AzureMachineLearning'
+        name: 'AzureMachineLearningInbound'
         properties: {
           protocol: 'Tcp'
           sourcePortRange: '*'

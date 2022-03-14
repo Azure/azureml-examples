@@ -36,7 +36,7 @@ param virtualNetworkId string
 @description('Machine learning workspace private link endpoint name')
 param machineLearningPleName string
 
-resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
+resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
   name: machineLearningName
   location: location
   tags: tags
@@ -54,7 +54,8 @@ resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-04-0
     keyVault: keyVaultId
     storageAccount: storageAccountId
 
-    allowPublicAccessWhenBehindVnet: false
+    // disable public network access
+    publicNetworkAccess: 'Disabled'
   }
 }
 
