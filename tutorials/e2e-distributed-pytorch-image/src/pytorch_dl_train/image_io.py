@@ -146,7 +146,8 @@ class ImageDatasetWithLabelInMap(torchvision.datasets.VisionDataset):
                 self.samples.append(
                     (
                         entry,
-                        1 if image_labels[entry_basename] == "contains_person" else 0,
+                        # here using hardcoded prefix not_ (see coco_extract_annotations)
+                        0 if image_labels[entry_basename].startswith("not_") else 1,
                     )
                 )
 

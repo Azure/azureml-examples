@@ -75,6 +75,8 @@ def save_image_list_as_csv(
                     image_id_selection[key]["file_name"],
                     category_name
                     if image_id_selection[key][category_name]
+                    # using a prefix to code "not the class"
+                    # this will be used during training to determine what's 0 and what's 1
                     else "not_" + category_name,
                 )
             )
