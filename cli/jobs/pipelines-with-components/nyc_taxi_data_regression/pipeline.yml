@@ -24,7 +24,7 @@ outputs:
 
 # <jobs>
 settings:
-  default_datastore: azureml:images_datastore
+  default_datastore: azureml:workspaceblobstore
   default_compute: azureml:cpu-cluster
   continue_on_step_failure: false
 
