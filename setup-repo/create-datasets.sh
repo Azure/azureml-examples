@@ -8,7 +8,7 @@ tar -xvzf cifar-10-python.tar.gz -C data
 # </download_untar_cifar>
 
 # <create_cifar>
-az ml data create --name cifar-10-example --version 1 --set local_path=data
+az ml data create --name cifar-10-example --version 1 --set path=data
 # </create_cifar>
 
 # <cleanup_cifar>
