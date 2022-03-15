@@ -1,6 +1,8 @@
 name: sdk-jobs-pipelines-helloworld-hello-world
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview

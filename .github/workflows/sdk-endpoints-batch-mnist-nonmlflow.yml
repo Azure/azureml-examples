@@ -1,6 +1,8 @@
 name: sdk-endpoints-batch-mnist-nonmlflow
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview
