@@ -34,7 +34,7 @@ Submit the Pipeline Job
 az ml  job create --file pipeline.yml
 ```
 
-Once you submit the job, you will find the URL to the Studio UI view the job graph and logs in the `interaction_endpoints` -> `Studio` section of the output. 
+Once you submit the job, you will find the URL to the Studio UI view the job graph and logs in the `Studio.endpoints` -> `services` section of the output. 
 
 
 Sample output
