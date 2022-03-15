@@ -1,6 +1,8 @@
 name: sdk-jobs-pipelines-with-components-basic-3a_basic_pipeline-basic_pipline
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview

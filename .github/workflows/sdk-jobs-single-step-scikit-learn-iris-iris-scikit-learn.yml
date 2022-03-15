@@ -1,6 +1,8 @@
 name: sdk-jobs-single-step-scikit-learn-iris-iris-scikit-learn
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview

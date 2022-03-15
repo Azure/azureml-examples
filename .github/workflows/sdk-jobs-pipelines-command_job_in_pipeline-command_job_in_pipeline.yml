@@ -1,6 +1,8 @@
 name: sdk-jobs-pipelines-command_job_in_pipeline-command_job_in_pipeline
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview

@@ -1,6 +1,8 @@
 name: sdk-jobs-pipelines-with-components-basic-1b_e2e_registered_components-e2e_registered_components
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview
