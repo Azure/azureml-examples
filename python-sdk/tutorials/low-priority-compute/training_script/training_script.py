@@ -166,9 +166,7 @@ if __name__ == "__main__":
     valid_data_loader = DataLoader(valid_dataset, batch_size=32, num_workers=num_workers, pin_memory=True)
 
     for epoch in range(starting_epoch, args.num_epochs):
-
         run.log('training_epoch', epoch)
-
         print(f'Starting epoch {epoch}')
 
         model.train()
