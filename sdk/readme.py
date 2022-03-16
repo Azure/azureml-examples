@@ -4,21 +4,27 @@ import json
 import glob
 import argparse
 
+# define constants
+EXCLUDED_NOTEBOOKS = ["datastore",]
+#define branch where we need this
+#use if running on a release candidate, else make it empty
+BRANCH = 'march-sdk-preview'
+ENABLE_MANUAL_CALLING = True
+ENABLE_SCHEDULED_RUNS = True 
+
 def main(args):
-    #define branch where we need this
-    branch = 'march-sdk-preview'
     
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
-
+    
     # write workflows
-    write_workflows(branch, notebooks)
+    #write_workflows(notebooks)
 
     # write readme
-    write_readme(branch, notebooks)
+    write_readme(notebooks)
 
-def write_workflows(branch, notebooks):
-
+def write_workflows(notebooks):
+    print("writing .github/workflows...")
     for notebook in notebooks:
         # get notebook name
         name = notebook.split("/")[-1].replace(".ipynb", "")
@@ -26,21 +32,25 @@ def write_workflows(branch, notebooks):
         classification = folder.replace("/","-")
 
         # write workflow file
-        write_notebook_workflow(branch, notebook, name, classification, folder)
+        write_notebook_workflow(notebook, name, classification, folder)
+    print("finished writing .github/workflows")
 
 
-def write_notebook_workflow(branch, notebook, name, classification, folder):
+def write_notebook_workflow(notebook, name, classification, folder):
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 */8 * * *"
-  pull_request:
+on:\n"""
+    if ENABLE_MANUAL_CALLING:
+      workflow_yaml += f"""  workflow_dispatch:\n"""
+    if ENABLE_SCHEDULED_RUNS:
+      workflow_yaml += f"""  schedule:
+    - cron: "0 */8 * * *"\n"""
+    workflow_yaml += f"""  pull_request:
     branches:
-      - sdk-preview
-      - {branch}
-    paths:
+      - sdk-preview\n"""
+    if BRANCH!="":
+      workflow_yaml += f"""      - {BRANCH}\n"""
+    workflow_yaml += f"""    paths:
       - sdk/**
       - .github/workflows/sdk-{classification}-{name}.yml
       - notebooks/dev-requirements.txt
@@ -49,10 +59,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
-      with:
-        ref: {branch}    
-    - name: setup python
+      uses: actions/checkout@v2\n"""
+    if BRANCH!="":
+      workflow_yaml += f"""      with:
+        ref: {BRANCH}\n"""    
+    workflow_yaml += f"""    - name: setup python
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
@@ -94,32 +105,53 @@ jobs:
     with open(f"../.github/workflows/sdk-{classification}-{name}.yml", "w") as f:
         f.write(workflow_yaml)
 
-def write_readme(branch, notebooks):
+def write_readme(notebooks):
+  if BRANCH=="":
+    branch="main"
+  else:
+    branch=BRANCH
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
+    with open("suffix.md", "r") as f:
+        suffix = f.read()    
     
-    notebook_table = f"# Test Status in branch - {branch}\n|Area|Notebook|Status|\n|--|--|--|\n"
+    # define markdown tables
+    notebook_table = f"Test Status is for branch - **_{branch}_**\n|Area|Sub-Area|Notebook|Description|Status|\n|--|--|--|--|--|\n"
     for notebook in notebooks:
         # get notebook name
         name = notebook.split("/")[-1].replace(".ipynb", "")
-        area = notebook.split("/")[1]
+        area = notebook.split("/")[0]
+        sub_area = notebook.split("/")[1]
         folder = os.path.dirname(notebook)
         classification = folder.replace("/","-")
 
+        # read in notebook
+        with open(notebook, "r") as f:
+            data = json.load(f)
+
+        description = "*no description*"
+        try:
+          if data["metadata"]["description"] is not None:
+            description = data["metadata"]["description"]["description"]
+        except:
+          pass
+
         # write workflow file        
-        notebook_table += write_readme_row(branch, notebook, name, classification, area) + "\n"
+        notebook_table += write_readme_row(branch, notebook, name, classification, area, sub_area, description) + "\n"
 
-    with open("README.md", "w") as f:
-        f.write(prefix + notebook_table)
+    # print("writing README.md...")
+    # with open("README.md", "w") as f:
+    #     f.write(prefix + notebook_table + suffix)
+    # print("finished writing README.md")
 
-def write_readme_row(branch, notebook, name, classification, area):
+def write_readme_row(branch, notebook, name, classification, area, sub_area, description):
     gh_link = 'https://github.com/Azure/azureml-examples/actions/workflows'
     
     nb_name = f"[{name}]({notebook})"
     status = f"[![{name}]({gh_link}/sdk-{classification}-{name}.yml/badge.svg?branch={branch})]({gh_link}/sdk-{classification}-{name}.yml)"
 
-    row = f"|{area}|{nb_name}|{status}|"
+    row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
     return row
 
 # run functions

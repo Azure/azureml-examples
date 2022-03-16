@@ -41,32 +41,4 @@ cd azureml-examples/sdk
 ```
 
 ## Examples available
-|Area|Notebook|Description|
-|-|-|-|
-|Workspace|[Workspace](resources/workspace/workspace.ipynb)|Creating workspace|
-|Compute|[Compute](resources/compute/compute.ipynb)|Creating Compute resources|
-|Datastore|[Datastore](resources/datastores/datastore.ipynb)|Creating datastores|
-|Data|[Data](assets/data/data.ipynb)|Basics of data assets|
-|Environment|[Environment](assets/environment/environment.ipynb)|Creating environments|
-|Model|[Model](assets/model/model.ipynb)|Creating models|
-|Training Job|[PyTorch Iris](jobs/single-step/pytorch/iris/pytorch-iris.ipynb)|Train a neural network with PyTorch on the Iris dataset.|
-|Training Job|[Prediction using R](jobs/single-step/r/accidents/accident-prediction.ipynb)|Train a prediction model on R using the `glm()` function.|
-|Training Job|[Sklearn Diabetes](jobs/single-step/scikit-learn/diabetes/sklearn-diabetes.ipynb)||
-|Training Job|[Sklearn Iris](jobs/single-step/scikit-learn/iris/iris-scikit-learn.ipynb)|Train a scikit-learn SVM on the Iris dataset.|
-|Training Job|[Sklearn Mnist](jobs/single-step/scikit-learn/mnist/sklearn-mnist.ipynb)|Train scikit-leatn on mnist data|
-|Training Job|[Tensorflow Mnist](jobs/single-step/tensorflow/mnist/tensorflow-mnist.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset.|
-|Training Job|[TF distributed Mnist](jobs/single-step/tensorflow/mnist-distributed/tensorflow-mnist-distributed.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.|
-|Training Job|[TF Horovod mnist](jobs/single-step/tensorflow/mnist-distributed-horovod/tensorflow-mnist-distributed-horovod.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset, distributed via Horovod.|
-|Sweep Job|[Sweep Job](jobs/single-step/lightgbm/iris/lightgbm-iris-sweep.ipynb)|Run a hyperparameter sweep job for LightGBM on Iris dataset.|
-|Pipeline|[CNN Pytorch pipeline](jobs/pipelines/cifar-10/cifar-10-pipeline.ipynb)|Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.|
-|Pipeline|[Hello World pipeline with IO](jobs/pipelines/helloworld/hello-world-io.ipynb)|A hello world pipeline with IO|
-|Pipeline|[Hello World pipeline](jobs/pipelines/helloworld/hello-world.ipynb)|A hello world pipeline|
-|Pipeline|[NYC Taxi Data Regression](jobs/pipelines/nyc-taxi/nyc-taxi.ipynb)|Run a multi step pipeline staring from data prep, cleanse to tarin and evaluate|
-|Pipeline|[Build pipeline with DSL](jobs/pipelines-with-components/pipeline-dsl-example.ipynb)|create in sdk/jobs/pipelines-with-components|
-|Pipeline|[Basic pipeline with DSL](jobs/pipelines-with-components/basic/3a_basic_pipeline/basic_pipline.ipynb)|Build a basic pipeline using DSL|
-|Pipeline|[Command Job in Pipeline - DSL](jobs/pipelines/command_job_in_pipeline/command_job_in_pipeline.ipynb)|Run a command job within a pipeline using the Pipeline DSL|
-|Pipeline|[Pipeline with registered Components](jobs/pipelines-with-components/basic/1b_e2e_registered_components/e2e_registered_components.ipynb)|Register and use components in a pipeline|
-|Pipeline|[NYC Taxi Data Regression with components](jobs/pipelines-with-components/nyc_taxi_data_regression/nyc_taxi_data_regression.ipynb)|Run a multi step pipeline staring from data prep, cleanse to train and evaluate with reusable components for each step|
-|Pipeline|[Pipeline TF mnist Component](jobs/pipelines-with-components/tf_mnist/tf_mnist.ipynb)|Train a basic neural network with TensorFlow on the MNIST dataset inside a pipeline with a reusable component|
-|Online Endpoints|[Online Endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/online/sample/online-inferencing-sample.ipynb)|Create Online Endpoint and manage deployments to that endpoint|
-|Batch Endpoints|[Batch endpoint](https://github.com/Azure/azureml-examples/blob/sdk-preview/sdk/endpoints/batch/mnist-nonmlflow.ipynb)|create in sdk/endpoints/batch|
+
