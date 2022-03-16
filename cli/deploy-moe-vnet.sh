@@ -17,7 +17,7 @@ export SUFFIX="mvnetdocs" # used during setup of secure vnet workspace: setup-re
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
-export IDENTITY_NAME=uai-$SUFFIX
+export IDENTITY_NAME=uai$SUFFIX
 export ACR_NAME=cr$SUFFIX
 export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME=$ENDPOINT_NAME
@@ -48,7 +48,7 @@ fi
 # create the VM
 az deployment group create --template-file endpoints/online/managed/vnet/test_scoring/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
 
-## Note for doc: create a VM: az vm create -n $VM_NAME
+## In the docs we will provide instructions to create a VM using az vm create -n $VM_NAME
 
 # command in script: az deployment group create --template-file endpoints/online/managed/vnet/setup/vm_main.bicep #identity name is hardcoded uai-identity 
 az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/test_scoring/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
