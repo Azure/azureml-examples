@@ -1,14 +1,15 @@
-name: python-sdk-resources-workspace-notebook
+name: sdk-resources-workspace-workspace
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - main
       - sdk-preview
+      - march-sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/python-sdk-resources-workspace-notebook.yml
+      - .github/workflows/sdk-resources-workspace-workspace.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -16,6 +17,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: march-sdk-preview    
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -47,7 +50,7 @@ jobs:
           # skip other workpace creation commands for now
           sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" workspace.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" workspace.ipynb        
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" workspace.ipynb            
+          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" workspace.ipynb
           
           papermill workspace.ipynb - -k python
       working-directory: sdk/resources/workspace

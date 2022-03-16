@@ -14,8 +14,7 @@ outputs:
     type: path
   test_data:
     type: path
-code:
-  local_path: ./train_src
+code: ./train_src
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
 command: >-
   python train.py 

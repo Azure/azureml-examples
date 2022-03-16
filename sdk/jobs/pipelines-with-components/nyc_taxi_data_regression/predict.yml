@@ -15,8 +15,7 @@ outputs:
   predictions:
     type: path
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
-code:
-  local_path: ./predict_src
+code: ./predict_src
 command: >-
   python predict.py 
   --model_input ${{inputs.model_input}} 
