@@ -10,7 +10,6 @@ export LOCATION="<LOCATION>"
 export SUFFIX="<SUFFIX_USED_IN_SETUP>"
 export WORKSPACE=mlw-$SUFFIX
 export ACR_NAME=cr$SUFFIX
-export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_env_vars>
 

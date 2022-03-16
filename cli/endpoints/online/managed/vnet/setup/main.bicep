@@ -51,7 +51,7 @@ module keyvault 'modules/keyvault.bicep' = {
   name: 'kv-${name}-deployment'
   params: {
     location: location
-    keyvaultName: 'kv-${name}'
+    keyvaultName: 'kv${name}'
     keyvaultPleName: 'ple-${name}-kv'
     subnetId: '${vnet.outputs.id}/subnets/snet-scoring'
     virtualNetworkId: '${vnet.outputs.id}'

@@ -15,10 +15,10 @@ az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOC
 # <build_image> 
 # Navigate to the samples
 cd /home/samples/azureml-examples/cli/endpoints/online/managed/vnet/environment
-# login to acr
-az acr login -n $ACR_NAME
+# login to acr. Optionally, to avoid using sudo, complete the docker post install steps: https://docs.docker.com/engine/install/linux-postinstall/
+sudo az acr login -n $ACR_NAME
 # Build the docker image with the sample docker file
-docker build -t $ACR_NAME.azurecr.io/repo/img:v1 .
+sudo docker build -t $ACR_NAME.azurecr.io/repo/img:v1 .
 # push the image to the ACR
 docker push $ACR_NAME.azurecr.io/repo/img:v1
 # check if the image exists in acr

@@ -9,7 +9,7 @@ done
 
 # <setup_docker_az_cli> 
 # setup docker
-sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version
+sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version && sudo usermod -aG docker $USER
 # setup az cli and ml extension
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az extension add --upgrade -n ml -y
 # </setup_docker_az_cli> 
@@ -26,5 +26,5 @@ az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOC
 
 # <clone_sample> 
 # Clone the samples repo. This is needed to build the image and create the managed online deployment.
-mkdir -p /home/samples; git clone -b $GIT_BRANCH --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
+sudo mkdir -p /home/samples; sudo git clone -b $GIT_BRANCH --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
 # </clone_sample> 
