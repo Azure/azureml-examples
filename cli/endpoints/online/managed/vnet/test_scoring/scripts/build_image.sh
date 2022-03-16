@@ -20,7 +20,7 @@ sudo az acr login -n $ACR_NAME
 # Build the docker image with the sample docker file
 sudo docker build -t $ACR_NAME.azurecr.io/repo/img:v1 .
 # push the image to the ACR
-docker push $ACR_NAME.azurecr.io/repo/img:v1
+sudo docker push $ACR_NAME.azurecr.io/repo/img:v1
 # check if the image exists in acr
 az acr repository show -n $ACR_NAME --repository repo/img
 # </build_image> 

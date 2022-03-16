@@ -7,6 +7,9 @@ do
     export $keyname=$result
 done
 
+# $USER is no set when used from az vm run-command
+export USER=$(whoami)
+
 # <setup_docker_az_cli> 
 # setup docker
 sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version && sudo usermod -aG docker $USER
