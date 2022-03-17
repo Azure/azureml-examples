@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-with-components-pipeline-dsl-example
+name: sdk-jobs-pipelines-nyc_taxi_data_regression
 on:
   workflow_dispatch:
   schedule:
@@ -9,7 +9,7 @@ on:
       - march-sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-with-components-pipeline-dsl-example.yml
+      - .github/workflows/sdk-jobs-pipelines-nyc_taxi_data_regression.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -37,12 +37,12 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines-with-components/pipeline-dsl-example.ipynb
+    - name: run jobs/pipelines/nyc_taxi_data_regression/nyc_taxi_data_regression.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" pipeline-dsl-example.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" pipeline-dsl-example.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" pipeline-dsl-example.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" pipeline-dsl-example.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" nyc_taxi_data_regression.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" nyc_taxi_data_regression.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" nyc_taxi_data_regression.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" nyc_taxi_data_regression.ipynb
           
-          papermill pipeline-dsl-example.ipynb - -k python
-      working-directory: sdk/jobs/pipelines-with-components
+          papermill nyc_taxi_data_regression.ipynb - -k python
+      working-directory: sdk/jobs/pipelines/nyc_taxi_data_regression
