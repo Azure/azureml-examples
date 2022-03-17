@@ -8,12 +8,12 @@ display_name: PredictTaxiFares
 type: command
 inputs:
   model_input:
-    type: path
+    type: uri_folder
   test_data:
-    type: path
+    type: uri_folder
 outputs:
   predictions:
-    type: path
+    type: uri_folder
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
 code: ./predict_src
 command: >-

@@ -8,10 +8,10 @@ version: 1
 type: command
 inputs:
   raw_data: 
-    type: path 
+    type: uri_folder 
 outputs:
   prep_data:
-    type: path
+    type: uri_folder
 code: ./prep_src
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cuda11-gpu:3
 command: >-
