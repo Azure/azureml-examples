@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
 description: Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.

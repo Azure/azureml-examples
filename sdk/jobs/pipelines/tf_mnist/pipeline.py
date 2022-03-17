@@ -1,11 +1,10 @@
 from azure.ml import dsl
-from azure.ml.dsl import Pipeline
 from pathlib import Path
 
 parent_dir = str(Path(__file__).parent)
 
 
-def generate_dsl_pipeline() -> Pipeline:
+def generate_dsl_pipeline():
     # 1. Load component funcs
     tf_func = dsl.load_component(yaml_file=parent_dir + "./component.yml")
 
