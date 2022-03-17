@@ -159,5 +159,5 @@ az ml job create -f jobs/single-step/pytorch/cifar-distributed/job.yml --web
 # </pytorch_cifar>
 
 # <pipeline_cifar>
-az ml job create -f jobs/pipelines/cifar-10/job.yml --web
+az ml job create -f jobs/pipelines/cifar-10/pipeline.yml --web
 # </pipeline_cifar>

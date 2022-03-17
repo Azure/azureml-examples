@@ -22,10 +22,10 @@ outputs:
     mode: upload
 # </inputs_and_outputs>
 
-compute: azureml:cpu-cluster
 # <jobs>
 settings:
   default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
   continue_on_step_failure: false
 
 jobs:
