@@ -3,10 +3,10 @@ We use a datastore with datapath as input file in this example. An easy way to g
 
 
 
-Sample output for dataset creation:
+Sample output for data asset creation:
 ```
 # az ml data create --file data.yml 
-Command group 'ml dataset' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
+Command group 'ml data' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
 {
   "creation_context": {
     "created_at": "2022-03-01T03:14:47.680785+00:00",

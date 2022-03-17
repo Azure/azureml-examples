@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
-name: sampledata1234
+name: sampledata
 description: sample dataset
 type: uri_file
 path: ./data/sample.csv
