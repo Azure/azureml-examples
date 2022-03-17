@@ -8,6 +8,6 @@ products:
 description: Learn how to train models using low-priority AML compute.
 ---
 
-# Using RAPIDS
+# Using Low-Priority AML Compute
 
 Learn how to train models using low-priority AML compute.
