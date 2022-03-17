@@ -4,7 +4,7 @@ description: "Example of using data from a Dataset as pipeline input"
 inputs:
   pipeline_sample_input_data:
     type: uri_file
-    path: azureml:sampledata123@latest
+    path: azureml:sampledata@latest
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 
 outputs:
