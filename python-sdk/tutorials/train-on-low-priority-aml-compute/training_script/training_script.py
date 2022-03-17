@@ -14,13 +14,13 @@ from tqdm import tqdm
 
 
 LEARNING_RATE = 1e-2
-MODEL_CHECKPOINT_PATH = 'model_checkpoints/checkpoint.pt'
+MODEL_CHECKPOINT_PATH = "model_checkpoints/checkpoint.pt"
 
 
 def get_device():
     if torch.cuda.is_available():
         return torch.device(0)
-    return torch.device('cpu')
+    return torch.device("cpu")
 
 
 device = get_device()
@@ -80,16 +80,19 @@ def train_epoch(model, train_data_loader, optimizer):
 
 
 def save_checkpoint(model, optimizer, epoch):
-    torch.save({
-        'epoch': epoch,
-        'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-    }, MODEL_CHECKPOINT_PATH)
-    shutil.copy(MODEL_CHECKPOINT_PATH, 'outputs/model.pt')
+    torch.save(
+        {
+            "epoch": epoch,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+        },
+        MODEL_CHECKPOINT_PATH,
+    )
+    shutil.copy(MODEL_CHECKPOINT_PATH, "outputs/model.pt")
 
 
 def score_validation_set(model, data_loader):
-    print('\nEvaluating validation set accuracy...\n')
+    print("\nEvaluating validation set accuracy...\n")
 
     with torch.no_grad():
 
@@ -114,9 +117,9 @@ def load_checkpoint():
     checkpoint = torch.load(MODEL_CHECKPOINT_PATH)
     model = init_model()
     optimizer = init_optimizer(model)
-    model.load_state_dict(checkpoint['model_state_dict'])
-    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    return model, optimizer, checkpoint['epoch']
+    model.load_state_dict(checkpoint["model_state_dict"])
+    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    return model, optimizer, checkpoint["epoch"]
 
 
 if __name__ == "__main__":
@@ -125,7 +128,9 @@ if __name__ == "__main__":
 
     # Parse input command-line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--num_epochs", type=int, help="total # of epochs to train the model")
+    parser.add_argument(
+        "--num_epochs", type=int, help="total # of epochs to train the model"
+    )
     args, _ = parser.parse_known_args()
 
     if torch.cuda.is_available():
@@ -133,15 +138,16 @@ if __name__ == "__main__":
 
     run = Run.get_context()
 
-    transform = T.Compose([
-        T.ToTensor(),
-        T.Normalize((0.1307,), (0.3081,))
-    ])
-    train_dataset = torchvision.datasets.MNIST('.', train=True, download=True, transform=transform)
-    valid_dataset = torchvision.datasets.MNIST('.', train=False, download=True, transform=transform)
+    transform = T.Compose([T.ToTensor(), T.Normalize((0.1307,), (0.3081,))])
+    train_dataset = torchvision.datasets.MNIST(
+        ".", train=True, download=True, transform=transform
+    )
+    valid_dataset = torchvision.datasets.MNIST(
+        ".", train=False, download=True, transform=transform
+    )
 
     checkpoint_file_exists = os.path.exists(MODEL_CHECKPOINT_PATH)
-    print(f'Checkpoint file exists: {checkpoint_file_exists}')
+    print(f"Checkpoint file exists: {checkpoint_file_exists}")
 
     # Load state from saved checkpoints if saved checkpoints exist.
     # Otherwise, initialize a model from scratch.
@@ -159,19 +165,25 @@ if __name__ == "__main__":
 
     # Initialize data loaders
     train_data_loader = DataLoader(
-        train_dataset, batch_size=32, num_workers=num_workers, pin_memory=True, shuffle=True)
+        train_dataset,
+        batch_size=32,
+        num_workers=num_workers,
+        pin_memory=True,
+        shuffle=True,
+    )
     valid_data_loader = DataLoader(
-        valid_dataset, batch_size=32, num_workers=num_workers, pin_memory=True)
+        valid_dataset, batch_size=32, num_workers=num_workers, pin_memory=True
+    )
 
     for epoch in range(starting_epoch, args.num_epochs):
-        run.log('training_epoch', epoch)
-        print(f'Starting epoch {epoch}')
+        run.log("training_epoch", epoch)
+        print(f"Starting epoch {epoch}")
 
         model.train()
 
         start = time.time()
         train_epoch(model, train_data_loader, optimizer)
-        run.log('epoch_train_time', time.time() - start)
+        run.log("epoch_train_time", time.time() - start)
 
         run.flush()
         save_checkpoint(model, optimizer, epoch)
@@ -179,9 +191,11 @@ if __name__ == "__main__":
         model.eval()
         num_correct, num_total_images = score_validation_set(model, valid_data_loader)
 
-        print(f'Scored validation set: {num_correct} correct, {num_total_images} total images')
+        print(
+            f"Scored validation set: {num_correct} correct, {num_total_images} total images"
+        )
         validation_accuracy = num_correct / num_total_images * 100
-        run.log('validation_accuracy', validation_accuracy)
-        print(f'Accuracy: {validation_accuracy}%')
+        run.log("validation_accuracy", validation_accuracy)
+        print(f"Accuracy: {validation_accuracy}%")
 
     print("Done")
