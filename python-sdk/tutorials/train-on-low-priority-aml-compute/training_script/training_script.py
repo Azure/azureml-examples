@@ -17,12 +17,13 @@ LEARNING_RATE = 1e-2
 MODEL_CHECKPOINT_PATH = 'model_checkpoints/checkpoint.pt'
 
 
-def _get_device():
+def get_device():
     if torch.cuda.is_available():
         return torch.device(0)
     return torch.device('cpu')
 
-device = _get_device()
+
+device = get_device()
 
 
 def init_optimizer(model):
@@ -64,7 +65,6 @@ def init_model():
 
 
 def train_epoch(model, train_data_loader, optimizer):
-    criterion = nn.BCEWithLogitsLoss()
     for images, targets in tqdm(train_data_loader):
 
         images = images.to(device)
@@ -73,7 +73,7 @@ def train_epoch(model, train_data_loader, optimizer):
         optimizer.zero_grad()
 
         outputs = model(images)
-        loss =  F.nll_loss(outputs, targets)
+        loss = F.nll_loss(outputs, targets)
 
         loss.backward()
         optimizer.step()
@@ -100,13 +100,13 @@ def score_validation_set(model, data_loader):
 
             images = images.to(device)
             targets = targets.to(device)
-            
+
             outputs = model(images)
 
             correct = torch.argmax(outputs, dim=1) == targets
             num_correct += torch.sum(correct).item()
             num_total_images += len(images)
-        
+
         return num_correct, num_total_images
 
 
@@ -119,15 +119,11 @@ def load_checkpoint():
     return model, optimizer, checkpoint['epoch']
 
 
-def str2bool(string):
-    return string == 'True'
-
-
 if __name__ == "__main__":
 
     torch.manual_seed(0)
 
-    # parse input command-line arguments
+    # Parse input command-line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_epochs", type=int, help="total # of epochs to train the model")
     args, _ = parser.parse_known_args()
@@ -137,7 +133,7 @@ if __name__ == "__main__":
 
     run = Run.get_context()
 
-    transform= T.Compose([
+    transform = T.Compose([
         T.ToTensor(),
         T.Normalize((0.1307,), (0.3081,))
     ])
@@ -162,8 +158,10 @@ if __name__ == "__main__":
     num_workers = os.cpu_count()
 
     # Initialize data loaders
-    train_data_loader = DataLoader(train_dataset, batch_size=32, num_workers=num_workers, pin_memory=True, shuffle=True)
-    valid_data_loader = DataLoader(valid_dataset, batch_size=32, num_workers=num_workers, pin_memory=True)
+    train_data_loader = DataLoader(
+        train_dataset, batch_size=32, num_workers=num_workers, pin_memory=True, shuffle=True)
+    valid_data_loader = DataLoader(
+        valid_dataset, batch_size=32, num_workers=num_workers, pin_memory=True)
 
     for epoch in range(starting_epoch, args.num_epochs):
         run.log('training_epoch', epoch)
@@ -174,7 +172,7 @@ if __name__ == "__main__":
         start = time.time()
         train_epoch(model, train_data_loader, optimizer)
         run.log('epoch_train_time', time.time() - start)
-        
+
         run.flush()
         save_checkpoint(model, optimizer, epoch)
 
