@@ -4,9 +4,8 @@
 # <data>
 $schema: https://azuremlsdk2.blob.core.windows.net/latest/asset.schema.json
 name: greendata
-version: 3
+version: 1
 description: sample green taxi dataset
-datastore: azureml:workspaceblobstore
+type: uri_folder
 path: ./data
-#path: /sample/data/path
 # </data>
