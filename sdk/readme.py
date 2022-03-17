@@ -18,7 +18,7 @@ def main(args):
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
     
     # write workflows
-    #write_workflows(notebooks)
+    write_workflows(notebooks)
 
     # write readme
     write_readme(notebooks)
@@ -140,10 +140,10 @@ def write_readme(notebooks):
         # write workflow file        
         notebook_table += write_readme_row(branch, notebook, name, classification, area, sub_area, description) + "\n"
 
-    # print("writing README.md...")
-    # with open("README.md", "w") as f:
-    #     f.write(prefix + notebook_table + suffix)
-    # print("finished writing README.md")
+    print("writing README.md...")
+    with open("README.md", "w") as f:
+        f.write(prefix + notebook_table + suffix)
+    print("finished writing README.md")
 
 def write_readme_row(branch, notebook, name, classification, area, sub_area, description):
     gh_link = 'https://github.com/Azure/azureml-examples/actions/workflows'

@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-nyc_taxi_data_regression
+name: sdk-jobs-pipelines-e2e_registered_components-e2e_registered_components
 on:
   workflow_dispatch:
   schedule:
@@ -9,7 +9,7 @@ on:
       - march-sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-nyc_taxi_data_regression.yml
+      - .github/workflows/sdk-jobs-pipelines-e2e_registered_components-e2e_registered_components.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: march-sdk-preview    
+        ref: march-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -37,12 +37,12 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/nyc_taxi_data_regression/nyc_taxi_data_regression.ipynb
+    - name: run jobs/pipelines/e2e_registered_components/e2e_registered_components.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" nyc_taxi_data_regression.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" nyc_taxi_data_regression.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" nyc_taxi_data_regression.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" nyc_taxi_data_regression.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" e2e_registered_components.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" e2e_registered_components.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" e2e_registered_components.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" e2e_registered_components.ipynb
           
-          papermill nyc_taxi_data_regression.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/nyc_taxi_data_regression
+          papermill e2e_registered_components.ipynb - -k python
+      working-directory: sdk/jobs/pipelines/e2e_registered_components
