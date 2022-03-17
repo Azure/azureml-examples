@@ -8,7 +8,7 @@ version: 1
 
 inputs:
   sample_input_data:
-    type: uri_file
+    type: uri_folder
 
   sample_input_string:
     type: string
