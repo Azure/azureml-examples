@@ -6,17 +6,19 @@ print("Hello Python World")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_data", type=str)
-parser.add_argument("--input_string", type=str)
+parser.add_argument("--placeholder", type=str)
 parser.add_argument("--output_data", type=str)
 
 args = parser.parse_args()
 
-print("sample_input_string: %s" % args.input_string)
-print("sample_input_data path: %s" % args.input_data)
+print("input_data: %s" % args.input_data)
+print("placeholder path: %s" % args.placeholder)
 print("sample_output_data path: %s" % args.output_data)
 
-print("files in input_data path: ")
+print("file in input_data path: ")
 print(args.input_data)
+with open(args.input_data, 'r') as f:
+    print(f.read())
 
 
 cur_time_str = datetime.now().strftime("%b-%d-%Y-%H-%M-%S")

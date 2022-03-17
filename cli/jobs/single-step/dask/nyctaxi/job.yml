@@ -11,6 +11,7 @@ inputs:
     mode: ro_mount
 outputs:
   output_folder:
+    type: uri_folder
 environment: 
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
   conda_file: conda.yml
