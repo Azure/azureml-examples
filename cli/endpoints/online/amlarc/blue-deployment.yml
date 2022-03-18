@@ -34,8 +34,6 @@ readiness_probe:
   failure_threshold: 1
 tags:
   tag1: deployment-tag1-value
-properties:
-  prop1: deployment-prop1-value
 instance_count: 1
 scale_settings:
   type: default
