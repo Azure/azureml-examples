@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-2a_basic_pipeline-basic_pipeline
+name: sdk-jobs-pipelines-2a_build_pipeline_with_components-build_pipeline_with_components
 on:
   workflow_dispatch:
   schedule:
@@ -9,7 +9,7 @@ on:
       - march-sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-2a_basic_pipeline-basic_pipeline.yml
+      - .github/workflows/sdk-jobs-pipelines-2a_build_pipeline_with_components-build_pipeline_with_components.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/2a_basic_pipeline/basic_pipeline.ipynb
+    - name: run jobs/pipelines/2a_build_pipeline_with_components/build_pipeline_with_components.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" basic_pipeline.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" basic_pipeline.ipynb
