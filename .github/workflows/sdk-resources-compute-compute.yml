@@ -1,8 +1,6 @@
 name: sdk-resources-compute-compute
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview
@@ -18,7 +16,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: march-sdk-preview    
+        ref: march-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
