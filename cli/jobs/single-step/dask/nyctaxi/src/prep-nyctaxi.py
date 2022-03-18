@@ -227,12 +227,11 @@ start_time = time.time()
 
 # make sure that the output_path exists on all nodes of the cluster.
 # See above for how to create it on all cluster nodes.
-taxi_df.to_parquet(output_path)
+taxi_df.to_parquet(output_path, engine="fastparquet")
 
 # for debug, show output folders on all nodes
 def list_output():
     return os.listdir(output_path)
-
 
 print(c.run(list_output))
 

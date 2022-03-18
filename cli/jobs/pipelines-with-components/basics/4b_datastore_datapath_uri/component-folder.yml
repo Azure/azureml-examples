@@ -1,18 +1,16 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-
-name: Hello_Python_World
-display_name: Hello_Python_World
+name: component_folder
+display_name: component_folder
 version: 1
 
 inputs:
   sample_input_data:
-    type: uri_file
-
+    type: uri_folder
   sample_input_string:
     type: string
-    default: "hello_python_world"
+    default: "component_folder"
 outputs:
   sample_output_data:
     type: uri_folder
@@ -22,9 +20,8 @@ code: ./src
 environment: 
   image: python
 
-
 command: >-
-  python hello.py  
+  python component-folder.py  
   --input_data ${{inputs.sample_input_data}}
   --input_string ${{inputs.sample_input_string}}
   --output_data ${{outputs.sample_output_data}}
