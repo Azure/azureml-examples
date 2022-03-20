@@ -1,0 +1,15 @@
+name: tranformers
+channels:
+    - anaconda
+    - conda-forge
+dependencies:
+    - python=3.6.2
+    - pip:
+        - 'git+git://github.com/huggingface/transformers.git'
+        - datasets
+        - azureml-sdk
+        - datasets
+        - torch
+        - scipy
+        - sklearn
+        - azureml-mlflow
