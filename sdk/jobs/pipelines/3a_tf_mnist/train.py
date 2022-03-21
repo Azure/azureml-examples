@@ -17,9 +17,7 @@ import os, json
 import tensorflow as tf
 import numpy as np
 
-
 def mnist_dataset(batch_size):
-
     (x_train, y_train), _ = tf.keras.datasets.mnist.load_data()
     # The `x` arrays are in uint8 and have values in the range [0, 255].
     # We need to convert them to float32 with values in the range [0, 1]
@@ -64,6 +62,7 @@ def _is_chief(task_type, task_id):
 
 
 def _get_temp_dir(dirpath, task_id):
+    import tensorflow as tf
     base_dirpath = "workertemp_" + str(task_id)
     temp_dir = os.path.join(dirpath, base_dirpath)
     tf.io.gfile.makedirs(temp_dir)
@@ -77,25 +76,27 @@ def write_filepath(filepath, task_type, task_id):
         dirpath = _get_temp_dir(dirpath, task_id)
     return os.path.join(dirpath, base)
 
-def get_worker_model():
 
-    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
-    with strategy.scope():
-        # Model building/compiling need to be within `strategy.scope()`.
-        multi_worker_model = build_and_compile_cnn_model()
-    return multi_worker_model
-
-def entry(per_worker_batch_size, epochs, steps_per_epoch, model_dir):
+def train_and_save_model(
+    per_worker_batch_size,
+    epochs,
+    steps_per_epoch,
+    model_dir
+):
     tf_config = json.loads(os.environ["TF_CONFIG"])
     num_workers = len(tf_config["cluster"]["worker"])
+
+    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
 
     # Here the batch size scales up by number of workers since
     # `tf.data.Dataset.batch` expects the global batch size.
     global_batch_size = per_worker_batch_size * num_workers
     multi_worker_dataset = mnist_dataset(global_batch_size)
 
+    with strategy.scope():
+        # Model building/compiling need to be within `strategy.scope()`.
+        multi_worker_model = build_and_compile_cnn_model()
 
-    multi_worker_model = get_worker_model()
     # Keras' `model.fit()` trains the model with specified number of epochs and
     # number of steps per epoch.
     multi_worker_model.fit(
@@ -122,8 +123,33 @@ def main():
     )
 
     args = parser.parse_args()
-    entry(args.per_worker_batch_size, args.epochs,args.steps_per_epoch, args.model_dir)
-    
+
+    tf_config = json.loads(os.environ["TF_CONFIG"])
+    num_workers = len(tf_config["cluster"]["worker"])
+
+    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
+
+    # Here the batch size scales up by number of workers since
+    # `tf.data.Dataset.batch` expects the global batch size.
+    global_batch_size = args.per_worker_batch_size * num_workers
+    multi_worker_dataset = mnist_dataset(global_batch_size)
+
+    with strategy.scope():
+        # Model building/compiling need to be within `strategy.scope()`.
+        multi_worker_model = build_and_compile_cnn_model()
+
+    # Keras' `model.fit()` trains the model with specified number of epochs and
+    # number of steps per epoch.
+    multi_worker_model.fit(
+        multi_worker_dataset, epochs=args.epochs, steps_per_epoch=args.steps_per_epoch
+    )
+
+    # Save the model
+    task_type, task_id = (tf_config["task"]["type"], tf_config["task"]["index"])
+    write_model_path = write_filepath(args.model_dir, task_type, task_id)
+
+    multi_worker_model.save(write_model_path)
+
 
 if __name__ == "__main__":
     main()

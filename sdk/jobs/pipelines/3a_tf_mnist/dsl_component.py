@@ -29,5 +29,5 @@ def tf_func(
     per_worker_batch_size=64,
 ):
     # avoid dependency issue
-    from train import entry
-    entry(per_worker_batch_size, epochs, steps_per_epoch, trained_model_output)
+    from train import train_and_save_model
+    train_and_save_model(per_worker_batch_size, epochs, steps_per_epoch, trained_model_output)
