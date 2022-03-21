@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
+type: command
+
+name: microsoftsamplesConvertToImageDirectory
+display_name: Convert to Image Directory
+description: Convert dataset to image directory format.
+
+version: 0.0.1
+
+inputs:
+  input_path:
+    description: Input dataset
+    type: path
+outputs:
+  output_path:
+    type: path
+    description: Output image directory
+
+command: >-
+  python -m azureml.designer.modules.computer_vision.preprocess.convert_to_image_directory.convert_to_image_directory --input-path ${{inputs.input_path}} --output-path ${{outputs.output_path}}
+
+
+environment:
+  name: designer-cv
+  conda_file: ./conda.yaml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20211124.v1
