@@ -47,22 +47,22 @@ import time
 def save_checkpoint(
     state,
     is_best,
-    filename='checkpoint.pth.tar',
-    checkpoint_dir='./',
+    filename="checkpoint.pth.tar",
+    checkpoint_dir="./",
     backup_filename=None,
 ):
     if (not torch.distributed.is_initialized()) or torch.distributed.get_rank() == 0:
         start_time = time.time()
         # filename = os.path.join('/tmp/', filename)
         filename = os.path.join(checkpoint_dir, filename)
-        print(f'filename {filename}, ckpt dir {checkpoint_dir}')
+        print(f"filename {filename}, ckpt dir {checkpoint_dir}")
         torch.save(state, filename)
         elapsed_time = time.time() - start_time
         # print("save checkpoint time on local /tmp ", elapsed_time)
         if is_best:
             start_time = time.time()
             shutil.copyfile(
-                filename, os.path.join(checkpoint_dir, 'model_best.pth.tar')
+                filename, os.path.join(checkpoint_dir, "model_best.pth.tar")
             )
             elapsed_time = time.time() - start_time
             print("save best checkpoint time (copy to blob) ", elapsed_time)

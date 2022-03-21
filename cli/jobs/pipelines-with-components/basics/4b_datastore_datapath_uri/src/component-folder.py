@@ -15,7 +15,5 @@ print("sample_input_string: %s" % args.input_string)
 print("sample_input_data path: %s" % args.input_data)
 print("sample_output_data path: %s" % args.output_data)
 
-with open(
-    os.path.join(args.input_data, "hello-world.txt"), "wt"
-) as text_file:
+with open(os.path.join(args.input_data, "hello-world.txt"), "wt") as text_file:
     print("hello world", file=text_file)

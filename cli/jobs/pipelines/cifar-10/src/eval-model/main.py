@@ -82,7 +82,9 @@ def main(args):
 
     # initialize distributed process group using default env:// method
     if distributed:
-        torch.distributed.init_process_group(backend="nccl" if torch.cuda.is_available() else "gloo")
+        torch.distributed.init_process_group(
+            backend="nccl" if torch.cuda.is_available() else "gloo"
+        )
 
     # define test dataset DataLoaders
     transform = transforms.Compose(
