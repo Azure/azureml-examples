@@ -10,9 +10,7 @@ def launch_run(
     ws = experiment.workspace
     dstore = ws.get_default_datastore()
 
-    env = Environment.get(
-        ws, "AzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu"
-    )
+    env = Environment.get(ws, "AzureML-pytorch-1.10-ubuntu18.04-py38-cuda11-gpu")
     distributed_config = PyTorchConfiguration(process_count=1)
 
     # Set output dataset used for model checkpointing for low-priority runs
