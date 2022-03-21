@@ -12,15 +12,13 @@
 #
 # Script adapted from: https://github.com/tensorflow/docs/blob/master/site/en/tutorials/distribute/multi_worker_with_keras.ipynb
 # =========================================================================
-
-import tensorflow as tf
-import numpy as np
-
 import argparse
 import os, json
 
 
 def mnist_dataset(batch_size):
+    import tensorflow as tf
+    import numpy as np
     (x_train, y_train), _ = tf.keras.datasets.mnist.load_data()
     # The `x` arrays are in uint8 and have values in the range [0, 255].
     # We need to convert them to float32 with values in the range [0, 1]
@@ -36,6 +34,7 @@ def mnist_dataset(batch_size):
 
 
 def build_and_compile_cnn_model():
+    import tensorflow as tf
     model = tf.keras.Sequential(
         [
             tf.keras.Input(shape=(28, 28)),
@@ -65,6 +64,7 @@ def _is_chief(task_type, task_id):
 
 
 def _get_temp_dir(dirpath, task_id):
+    import tensorflow as tf
     base_dirpath = "workertemp_" + str(task_id)
     temp_dir = os.path.join(dirpath, base_dirpath)
     tf.io.gfile.makedirs(temp_dir)
@@ -77,6 +77,14 @@ def write_filepath(filepath, task_type, task_id):
     if not _is_chief(task_type, task_id):
         dirpath = _get_temp_dir(dirpath, task_id)
     return os.path.join(dirpath, base)
+
+def get_worker_model():
+    import tensorflow as tf
+    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
+    with strategy.scope():
+        # Model building/compiling need to be within `strategy.scope()`.
+        multi_worker_model = build_and_compile_cnn_model()
+    return multi_worker_model
 
 
 def main():
@@ -96,17 +104,13 @@ def main():
     tf_config = json.loads(os.environ["TF_CONFIG"])
     num_workers = len(tf_config["cluster"]["worker"])
 
-    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
-
     # Here the batch size scales up by number of workers since
     # `tf.data.Dataset.batch` expects the global batch size.
     global_batch_size = args.per_worker_batch_size * num_workers
     multi_worker_dataset = mnist_dataset(global_batch_size)
 
-    with strategy.scope():
-        # Model building/compiling need to be within `strategy.scope()`.
-        multi_worker_model = build_and_compile_cnn_model()
 
+    multi_worker_model = get_worker_model()
     # Keras' `model.fit()` trains the model with specified number of epochs and
     # number of steps per epoch.
     multi_worker_model.fit(
