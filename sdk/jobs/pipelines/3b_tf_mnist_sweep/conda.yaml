@@ -1,0 +1,15 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+name: project_environment
+channels:
+  - defaults
+dependencies:
+  - python=3.6.8
+  - pip=20.0
+  - pip:
+    # change this when stable version release
+    - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
+    - azure-ml==0.0.58938149
+    - numpy==1.18.1
+    - tensorflow==2.2.0
