@@ -2,7 +2,3 @@ dependencies:
 - pytorch==1.7.1
 - numpy==1.18.5
 - pandas~=1.1.5
-
-- pip:
-  - azureml-automl-dnn-nlp==1.39.0
-  - horovod==0.21.3
