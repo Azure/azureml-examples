@@ -233,6 +233,7 @@ taxi_df.to_parquet(output_path, engine="fastparquet")
 def list_output():
     return os.listdir(output_path)
 
+
 print(c.run(list_output))
 
 elapsed_time = time.time() - start_time

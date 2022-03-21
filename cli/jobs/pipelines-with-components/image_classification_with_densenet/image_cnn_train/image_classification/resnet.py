@@ -32,7 +32,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-__all__ = ['ResNet', 'build_resnet', 'resnet_versions', 'resnet_configs']
+__all__ = ["ResNet", "build_resnet", "resnet_versions", "resnet_configs"]
 
 # ResNetBuilder {{{
 
@@ -40,7 +40,7 @@ __all__ = ['ResNet', 'build_resnet', 'resnet_versions', 'resnet_configs']
 class ResNetBuilder(object):
     def __init__(self, version, config):
         self.conv3x3_cardinality = (
-            1 if 'cardinality' not in version.keys() else version['cardinality']
+            1 if "cardinality" not in version.keys() else version["cardinality"]
         )
         self.config = config
 
@@ -55,11 +55,11 @@ class ResNetBuilder(object):
             bias=False,
         )
 
-        if self.config['nonlinearity'] == 'relu':
+        if self.config["nonlinearity"] == "relu":
             nn.init.kaiming_normal_(
                 conv.weight,
-                mode=self.config['conv_init'],
-                nonlinearity=self.config['nonlinearity'],
+                mode=self.config["conv_init"],
+                nonlinearity=self.config["nonlinearity"],
             )
 
         return conv
@@ -88,14 +88,14 @@ class ResNetBuilder(object):
 
     def batchnorm(self, planes, last_bn=False):
         bn = nn.BatchNorm2d(planes)
-        gamma_init_val = 0 if last_bn and self.config['last_bn_0_init'] else 1
+        gamma_init_val = 0 if last_bn and self.config["last_bn_0_init"] else 1
         nn.init.constant_(bn.weight, gamma_init_val)
         nn.init.constant_(bn.bias, 0)
 
         return bn
 
     def activation(self):
-        return self.config['activation']()
+        return self.config["activation"]()
 
 
 # ResNetBuilder }}}
@@ -299,94 +299,94 @@ class ResNet(nn.Module):
 # ResNet }}}
 
 resnet_configs = {
-    'classic': {
-        'conv': nn.Conv2d,
-        'conv_init': 'fan_out',
-        'nonlinearity': 'relu',
-        'last_bn_0_init': False,
-        'activation': lambda: nn.ReLU(inplace=True),
+    "classic": {
+        "conv": nn.Conv2d,
+        "conv_init": "fan_out",
+        "nonlinearity": "relu",
+        "last_bn_0_init": False,
+        "activation": lambda: nn.ReLU(inplace=True),
     },
-    'fanin': {
-        'conv': nn.Conv2d,
-        'conv_init': 'fan_in',
-        'nonlinearity': 'relu',
-        'last_bn_0_init': False,
-        'activation': lambda: nn.ReLU(inplace=True),
+    "fanin": {
+        "conv": nn.Conv2d,
+        "conv_init": "fan_in",
+        "nonlinearity": "relu",
+        "last_bn_0_init": False,
+        "activation": lambda: nn.ReLU(inplace=True),
     },
-    'grp-fanin': {
-        'conv': nn.Conv2d,
-        'conv_init': 'fan_in',
-        'nonlinearity': 'relu',
-        'last_bn_0_init': False,
-        'activation': lambda: nn.ReLU(inplace=True),
+    "grp-fanin": {
+        "conv": nn.Conv2d,
+        "conv_init": "fan_in",
+        "nonlinearity": "relu",
+        "last_bn_0_init": False,
+        "activation": lambda: nn.ReLU(inplace=True),
     },
-    'grp-fanout': {
-        'conv': nn.Conv2d,
-        'conv_init': 'fan_out',
-        'nonlinearity': 'relu',
-        'last_bn_0_init': False,
-        'activation': lambda: nn.ReLU(inplace=True),
+    "grp-fanout": {
+        "conv": nn.Conv2d,
+        "conv_init": "fan_out",
+        "nonlinearity": "relu",
+        "last_bn_0_init": False,
+        "activation": lambda: nn.ReLU(inplace=True),
     },
 }
 
 resnet_versions = {
-    'resnet18': {
-        'net': ResNet,
-        'block': BasicBlock,
-        'layers': [2, 2, 2, 2],
-        'widths': [64, 128, 256, 512],
-        'expansion': 1,
-        'num_classes': 1000,
+    "resnet18": {
+        "net": ResNet,
+        "block": BasicBlock,
+        "layers": [2, 2, 2, 2],
+        "widths": [64, 128, 256, 512],
+        "expansion": 1,
+        "num_classes": 1000,
     },
-    'resnet34': {
-        'net': ResNet,
-        'block': BasicBlock,
-        'layers': [3, 4, 6, 3],
-        'widths': [64, 128, 256, 512],
-        'expansion': 1,
-        'num_classes': 1000,
+    "resnet34": {
+        "net": ResNet,
+        "block": BasicBlock,
+        "layers": [3, 4, 6, 3],
+        "widths": [64, 128, 256, 512],
+        "expansion": 1,
+        "num_classes": 1000,
     },
-    'resnet50': {
-        'net': ResNet,
-        'block': Bottleneck,
-        'layers': [3, 4, 6, 3],
-        'widths': [64, 128, 256, 512],
-        'expansion': 4,
-        'num_classes': 1000,
+    "resnet50": {
+        "net": ResNet,
+        "block": Bottleneck,
+        "layers": [3, 4, 6, 3],
+        "widths": [64, 128, 256, 512],
+        "expansion": 4,
+        "num_classes": 1000,
     },
-    'resnet101': {
-        'net': ResNet,
-        'block': Bottleneck,
-        'layers': [3, 4, 23, 3],
-        'widths': [64, 128, 256, 512],
-        'expansion': 4,
-        'num_classes': 1000,
+    "resnet101": {
+        "net": ResNet,
+        "block": Bottleneck,
+        "layers": [3, 4, 23, 3],
+        "widths": [64, 128, 256, 512],
+        "expansion": 4,
+        "num_classes": 1000,
     },
-    'resnet152': {
-        'net': ResNet,
-        'block': Bottleneck,
-        'layers': [3, 8, 36, 3],
-        'widths': [64, 128, 256, 512],
-        'expansion': 4,
-        'num_classes': 1000,
+    "resnet152": {
+        "net": ResNet,
+        "block": Bottleneck,
+        "layers": [3, 8, 36, 3],
+        "widths": [64, 128, 256, 512],
+        "expansion": 4,
+        "num_classes": 1000,
     },
-    'resnext101-32x4d': {
-        'net': ResNet,
-        'block': Bottleneck,
-        'cardinality': 32,
-        'layers': [3, 4, 23, 3],
-        'widths': [128, 256, 512, 1024],
-        'expansion': 2,
-        'num_classes': 1000,
+    "resnext101-32x4d": {
+        "net": ResNet,
+        "block": Bottleneck,
+        "cardinality": 32,
+        "layers": [3, 4, 23, 3],
+        "widths": [128, 256, 512, 1024],
+        "expansion": 2,
+        "num_classes": 1000,
     },
-    'se-resnext101-32x4d': {
-        'net': ResNet,
-        'block': SEBottleneck,
-        'cardinality': 32,
-        'layers': [3, 4, 23, 3],
-        'widths': [128, 256, 512, 1024],
-        'expansion': 2,
-        'num_classes': 1000,
+    "se-resnext101-32x4d": {
+        "net": ResNet,
+        "block": SEBottleneck,
+        "cardinality": 32,
+        "layers": [3, 4, 23, 3],
+        "widths": [128, 256, 512, 1024],
+        "expansion": 2,
+        "num_classes": 1000,
     },
 }
 
@@ -399,13 +399,13 @@ def build_resnet(version, config, verbose=True):
     if verbose:
         print("Version: {}".format(version))
         print("Config: {}".format(config))
-    model = version['net'](
+    model = version["net"](
         builder,
-        version['block'],
-        version['expansion'],
-        version['layers'],
-        version['widths'],
-        version['num_classes'],
+        version["block"],
+        version["expansion"],
+        version["layers"],
+        version["widths"],
+        version["num_classes"],
     )
 
     return model

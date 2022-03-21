@@ -141,7 +141,7 @@ def parse_args():
     )
 
     # rest from the training program
-    parser.add_argument('training_script_args', nargs=REMAINDER)
+    parser.add_argument("training_script_args", nargs=REMAINDER)
     return parser.parse_args()
 
 
