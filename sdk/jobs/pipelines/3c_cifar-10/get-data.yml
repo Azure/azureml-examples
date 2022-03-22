@@ -8,9 +8,7 @@ outputs:
   cifar:
     type: uri_folder
 
-command: bash main.sh ${{outputs.cifar}}
+command: wget https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz; tar -xvzf cifar-10-python.tar.gz -C ${{outputs.cifar}}; rm cifar-10-python.tar.gz
 
 environment: 
   image: docker.io/python
-
-code: ./get-data
