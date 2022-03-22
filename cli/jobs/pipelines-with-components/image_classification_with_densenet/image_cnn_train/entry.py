@@ -9,6 +9,7 @@ import functools
 from enum import Enum
 from azure.ml.component import dsl
 from azure.ml.component.dsl.types import Integer, String, Float, Enum as EnumParameter
+from azure.ml.component.dsl._component import ComponentExecutor
 
 
 class Data_BackendEnum(Enum):
@@ -185,5 +186,14 @@ def main(
         "--save-checkpoint-epochs",
         str(save_checkpoint_epochs),
     ]
+<<<<<<< Updated upstream
     print(" ".join(sys.argv))
     runpy.run_path("main.py", run_name="__main__")
+=======
+    print(' '.join(sys.argv))
+    runpy.run_path('main.py', run_name='__main__')
+
+
+if __name__ == '__main__':
+    ComponentExecutor(main).execute(sys.argv)
+>>>>>>> Stashed changes
