@@ -17,7 +17,7 @@ print("sample_output_data path: %s" % args.output_data)
 
 print("file in input_data path: ")
 print(args.input_data)
-with open(args.input_data, 'r') as f:
+with open(args.input_data, "r") as f:
     print(f.read())
 
 

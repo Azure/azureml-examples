@@ -12,33 +12,33 @@ from azure.ml.component.dsl.types import Integer, String, Float, Enum as EnumPar
 
 
 class Data_BackendEnum(Enum):
-    pytorch = 'pytorch'
-    syntetic = 'syntetic'
-    dali_gpu = 'dali-gpu'
-    dali_cpu = 'dali-cpu'
+    pytorch = "pytorch"
+    syntetic = "syntetic"
+    dali_gpu = "dali-gpu"
+    dali_cpu = "dali-cpu"
 
 
 class ArchEnum(Enum):
-    resnet18 = 'resnet18'
-    resnet34 = 'resnet34'
-    resnet50 = 'resnet50'
-    resnet101 = 'resnet101'
-    resnet152 = 'resnet152'
-    resnext101_32x4d = 'resnext101-32x4d'
-    se_resnext101_32x4d = 'se-resnext101-32x4d'
+    resnet18 = "resnet18"
+    resnet34 = "resnet34"
+    resnet50 = "resnet50"
+    resnet101 = "resnet101"
+    resnet152 = "resnet152"
+    resnext101_32x4d = "resnext101-32x4d"
+    se_resnext101_32x4d = "se-resnext101-32x4d"
 
 
 class Model_ConfigEnum(Enum):
-    classic = 'classic'
-    fanin = 'fanin'
-    grp_fanin = 'grp-fanin'
-    grp_fanout = 'grp-fanout'
+    classic = "classic"
+    fanin = "fanin"
+    grp_fanin = "grp-fanin"
+    grp_fanout = "grp-fanout"
 
 
 class Lr_ScheduleEnum(Enum):
-    step = 'step'
-    linear = 'linear'
-    cosine = 'cosine'
+    step = "step"
+    linear = "linear"
+    cosine = "cosine"
 
 
 def convert_image_directory_to_specific_format(
@@ -46,19 +46,19 @@ def convert_image_directory_to_specific_format(
 ):
     # convert image directory to train component input data format
     image_dir_path = Path(image_dir_path)
-    image_list_path = image_dir_path / 'images.lst'
-    output_data_path = output_root / ('train' if is_train else 'val')
+    image_list_path = image_dir_path / "images.lst"
+    output_data_path = output_root / ("train" if is_train else "val")
     category_list = []
     file_name_list = []
-    with open(image_list_path, 'r') as fin:
+    with open(image_list_path, "r") as fin:
         for line in fin:
             line = json.loads(line)
             # print(line)
-            category_list.append(line['category'])
-            file_name_list.append(line['image_info']['file_name'])
-            (output_data_path / line['category']).mkdir(parents=True, exist_ok=True)
+            category_list.append(line["category"])
+            file_name_list.append(line["image_info"]["file_name"])
+            (output_data_path / line["category"]).mkdir(parents=True, exist_ok=True)
     print(
-        f'file number {len(file_name_list)}, category number {len(set(category_list))}.'
+        f"file number {len(file_name_list)}, category number {len(set(category_list))}."
     )
 
     def copy_file(index):
@@ -79,111 +79,111 @@ def convert_image_directory_to_specific_format(
 
 @dsl._component()
 def main(
-    train_data: String(description='path to train dataset') = None,
-    val_data: String(description='path to valid dataset') = None,
+    train_data: String(description="path to train dataset") = None,
+    val_data: String(description="path to valid dataset") = None,
     data_backend: EnumParameter(
         enum=Data_BackendEnum,
-        description='data backend: pytorch | syntetic | dali-gpu | dali-cpu (default: dali-cpu)',
+        description="data backend: pytorch | syntetic | dali-gpu | dali-cpu (default: dali-cpu)",
     ) = Data_BackendEnum.dali_cpu,
     arch: EnumParameter(
         enum=ArchEnum,
-        description='model architecture: resnet18 | resnet34 | resnet50 | resnet101 | resnet152 | resnext101_32x4d | se_resnext101_32x4d (default: resnet50)',
+        description="model architecture: resnet18 | resnet34 | resnet50 | resnet101 | resnet152 | resnext101_32x4d | se_resnext101_32x4d (default: resnet50)",
     ) = ArchEnum.resnet50,
     model_config: EnumParameter(
         enum=Model_ConfigEnum,
-        description='model configs: classic | fanin | grp_fanin | grp_fanout(default: classic)',
+        description="model configs: classic | fanin | grp_fanin | grp_fanout(default: classic)",
     ) = Model_ConfigEnum.classic,
-    workers: Integer(description='number of data loading workers (default: 5)') = 5,
-    epochs: Integer(description='number of total epochs to run') = 90,
-    batch_size: Integer(description='mini-batch size (default: 256) per gpu') = 256,
+    workers: Integer(description="number of data loading workers (default: 5)") = 5,
+    epochs: Integer(description="number of total epochs to run") = 90,
+    batch_size: Integer(description="mini-batch size (default: 256) per gpu") = 256,
     optimizer_batch_size: Integer(
-        description='size of a total batch size, for simulating bigger batches using gradient accumulation'
+        description="size of a total batch size, for simulating bigger batches using gradient accumulation"
     ) = -1,
-    lr: Float(description='initial learning rate') = 0.1,
+    lr: Float(description="initial learning rate") = 0.1,
     lr_schedule: EnumParameter(
-        enum=Lr_ScheduleEnum, description='Type of LR schedule: step, linear, cosine'
+        enum=Lr_ScheduleEnum, description="Type of LR schedule: step, linear, cosine"
     ) = Lr_ScheduleEnum.step,
-    warmup: Integer(description='number of warmup epochs') = 0,
-    label_smoothing: Float(description='label smoothing') = 0.0,
-    mixup: Float(description='mixup alpha') = 0.0,
-    momentum: Float(description='momentum') = 0.9,
-    weight_decay: Float(description='weight decay (default: 1e-4)') = 0.0001,
-    print_freq: Integer(description='print frequency (default: 10)') = 10,
-    resume: String(description='path to latest checkpoint (default: none)') = '',
-    pretrained_weights: String(description='load weights from here') = '',
+    warmup: Integer(description="number of warmup epochs") = 0,
+    label_smoothing: Float(description="label smoothing") = 0.0,
+    mixup: Float(description="mixup alpha") = 0.0,
+    momentum: Float(description="momentum") = 0.9,
+    weight_decay: Float(description="weight decay (default: 1e-4)") = 0.0001,
+    print_freq: Integer(description="print frequency (default: 10)") = 10,
+    resume: String(description="path to latest checkpoint (default: none)") = "",
+    pretrained_weights: String(description="load weights from here") = "",
     static_loss_scale: Float(
-        description='Static loss scale, positive power of 2 values can improve fp16 convergence.'
+        description="Static loss scale, positive power of 2 values can improve fp16 convergence."
     ) = 1,
-    prof: Integer(description='Run only N iterations') = -1,
-    seed: Integer(description='random seed used for numpy and pytorch') = None,
+    prof: Integer(description="Run only N iterations") = -1,
+    seed: Integer(description="random seed used for numpy and pytorch") = None,
     raport_file: String(
-        description='file in which to store JSON experiment raport'
-    ) = 'experiment_raport.json',
+        description="file in which to store JSON experiment raport"
+    ) = "experiment_raport.json",
     workspace: String(
-        description='path to directory where checkpoints will be stored'
-    ) = './',
+        description="path to directory where checkpoints will be stored"
+    ) = "./",
     save_checkpoint_epochs: Integer(
-        description='how many epochs run between saving checkpoints'
+        description="how many epochs run between saving checkpoints"
     ) = 10,
 ):
-    new_data_path = Path(train_data).parent / 'new_dataset'
+    new_data_path = Path(train_data).parent / "new_dataset"
     convert_image_directory_to_specific_format(
         image_dir_path=train_data, output_root=new_data_path, is_train=True
     )
     convert_image_directory_to_specific_format(
         image_dir_path=val_data, output_root=new_data_path
     )
-    print(f'new data path {new_data_path}')
+    print(f"new data path {new_data_path}")
     sys.argv = [
-        'main',
-        '--data',
+        "main",
+        "--data",
         str(new_data_path),
-        '--data-backend',
+        "--data-backend",
         data_backend.value,
-        '--arch',
+        "--arch",
         arch.value,
-        '--model-config',
+        "--model-config",
         model_config.value,
-        '-j',
+        "-j",
         str(workers),
-        '--epochs',
+        "--epochs",
         str(epochs),
-        '-b',
+        "-b",
         str(batch_size),
-        '--optimizer-batch-size',
+        "--optimizer-batch-size",
         str(optimizer_batch_size),
-        '--lr',
+        "--lr",
         str(lr),
-        '--lr-schedule',
+        "--lr-schedule",
         lr_schedule.value,
-        '--warmup',
+        "--warmup",
         str(warmup),
-        '--label-smoothing',
+        "--label-smoothing",
         str(label_smoothing),
-        '--mixup',
+        "--mixup",
         str(mixup),
-        '--momentum',
+        "--momentum",
         str(momentum),
-        '--weight-decay',
+        "--weight-decay",
         str(weight_decay),
-        '--print-freq',
+        "--print-freq",
         str(print_freq),
-        '--resume',
+        "--resume",
         str(resume),
-        '--pretrained-weights',
+        "--pretrained-weights",
         str(pretrained_weights),
-        '--static-loss-scale',
+        "--static-loss-scale",
         str(static_loss_scale),
-        '--prof',
+        "--prof",
         str(prof),
-        '--seed',
+        "--seed",
         str(seed),
-        '--raport-file',
+        "--raport-file",
         str(raport_file),
-        '--workspace',
+        "--workspace",
         str(workspace),
-        '--save-checkpoint-epochs',
+        "--save-checkpoint-epochs",
         str(save_checkpoint_epochs),
     ]
-    print(' '.join(sys.argv))
-    runpy.run_path('main.py', run_name='__main__')
+    print(" ".join(sys.argv))
+    runpy.run_path("main.py", run_name="__main__")

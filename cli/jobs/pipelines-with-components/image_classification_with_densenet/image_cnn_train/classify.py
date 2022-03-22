@@ -74,7 +74,7 @@ def main(args):
 
     with torch.no_grad():
         input = load_jpeg_from_file(
-            args.image, cuda=True, fp16=args.precision != 'FP32'
+            args.image, cuda=True, fp16=args.precision != "FP32"
         )
 
         output = torch.nn.functional.softmax(model(input), dim=1).cpu().view(-1).numpy()
