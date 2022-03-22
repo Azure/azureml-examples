@@ -14,4 +14,4 @@ This example shows how to use component to build a pipeline, in this sampe we wi
 - get registered component in workspace
 - define component using dsl.component with YAML
 
-Please find the some define in [build_pipeline_with_components.ipynb](sdk\jobs\pipelines\1a_build_pipeline_with_components\build_pipeline_with_components.ipynb).
+Please find the some define in [build_pipeline_with_components.ipynb](build_pipeline_with_components.ipynb).
