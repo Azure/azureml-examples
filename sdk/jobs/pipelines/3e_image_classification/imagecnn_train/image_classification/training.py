@@ -37,7 +37,6 @@ from . import logger as log
 from . import resnet as models
 from . import utils
 import dllogger
-import mlflow
 
 try:
     from apex.parallel import DistributedDataParallel as DDP
@@ -60,9 +59,9 @@ checkpoint_file_name = "checkpoint_backup.pth.tar"
 from multiprocessing import Value
 from ctypes import c_bool
 
-# from azureml.core.run import Run
+from azureml.core.run import Run
 
-# run = Run.get_context()
+run = Run.get_context()
 
 
 class PreemptHandler(FileSystemEventHandler):
@@ -399,20 +398,16 @@ def train(
                     calc_ips(bs, it_time),
                     total_train_step,
                 )
-                mlflow.log_metric(key='train/learning_rate', value=lr)
-                # run.log_row('train/learning_rate', x=epoch, y=lr)
-                mlflow.log_metric(key='train/loss', value=to_python_float(loss))
-                # run.log_row('train/loss', x=total_train_step, y=to_python_float(loss))
-                mlflow.log_metric(key='perf/compute_ips', value=calc_ips(bs, it_time - data_time))
-                # run.log_row(
-                #     'perf/compute_ips',
-                #     x=total_train_step,
-                #     y=calc_ips(bs, it_time - data_time),
-                # )
-                mlflow.log_metric(key='perf/train_total_ips', value=calc_ips(bs, it_time))
-                # run.log_row(
-                #     'perf/train_total_ips', x=total_train_step, y=calc_ips(bs, it_time)
-                # )
+                run.log_row('train/learning_rate', x=epoch, y=lr)
+                run.log_row('train/loss', x=total_train_step, y=to_python_float(loss))
+                run.log_row(
+                    'perf/compute_ips',
+                    x=total_train_step,
+                    y=calc_ips(bs, it_time - data_time),
+                )
+                run.log_row(
+                    'perf/train_total_ips', x=total_train_step, y=calc_ips(bs, it_time)
+                )
 
             total_train_step += 1
         if logger is not None:
@@ -646,8 +641,7 @@ def train_loop(
         )
         if writer:
             writer.add_scalar('train/summary/scalar/world_size', world_size, epoch)
-            mlflow.log_metric(key='train/world_size', value=world_size)
-            # run.log_row('train/world_size', x=epoch, y=world_size)
+            run.log_row('train/world_size', x=epoch, y=world_size)
 
         if logger is not None:
             logger.start_epoch()
@@ -685,10 +679,8 @@ def train_loop(
                 if writer:
                     writer.add_scalar('val/summary/scalar/loss', val_loss, epoch)
                     writer.add_scalar('val/summary/scalar/prec1', prec1, epoch)
-                    mlflow.log_metric(key='val/loss', value=val_loss)
-                    # run.log_row('val/loss', x=epoch, y=val_loss)
-                    mlflow.log_metric(key='val/prec1', value=prec1)
-                    # run.log_row('val/prec1', x=epoch, y=prec1)
+                    run.log_row('val/loss', x=epoch, y=val_loss)
+                    run.log_row('val/prec1', x=epoch, y=prec1)
 
         if logger is not None:
             print(
