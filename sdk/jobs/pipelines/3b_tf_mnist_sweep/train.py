@@ -103,6 +103,11 @@ def train_and_save_model(
         multi_worker_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch
     )
 
+    from azureml.core import Run
+    from random import random
+    run = Run.get_context()
+    run.log("accuracy", random())
+
     # Save the model
     task_type, task_id = (tf_config["task"]["type"], tf_config["task"]["index"])
     write_model_path = write_filepath(model_dir, task_type, task_id)
