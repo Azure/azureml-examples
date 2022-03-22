@@ -606,6 +606,10 @@ def train_loop(
     logger,
     should_backup_checkpoint,
     save_checkpoint_epochs,
+    region,
+    subscription_id,
+    resource_group,
+    workspace_name,
     use_amp=False,
     batch_size_multiplier=1,
     best_prec1=0,
@@ -617,6 +621,23 @@ def train_loop(
     checkpoint_dir='./',
     total_train_step=0,
 ):
+    ## Construct AzureML MLFLOW TRACKING URI
+    def get_azureml_mlflow_tracking_uri(region, subscription_id, resource_group, workspace):
+        return "azureml://{}.api.azureml.ms/mlflow/v1.0/subscriptions/{}/resourceGroups/{}/providers/Microsoft.MachineLearningServices/workspaces/{}".format(region, subscription_id, resource_group, workspace)
+
+    MLFLOW_TRACKING_URI = get_azureml_mlflow_tracking_uri(region, subscription_id, resource_group, workspace_name)
+
+    ## Set the MLFLOW TRACKING URI
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+    ## Make sure the MLflow URI looks something like this: 
+    ## azureml://<REGION>.api.azureml.ms/mlflow/v1.0/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.MachineLearningServices/workspaces/<AML_WORKSPACE_NAME>
+
+    print("MLFlow Tracking URI:", MLFLOW_TRACKING_URI)
+    experiment_name = 'image_classification'
+    mlflow.set_experiment(experiment_name)
+    run = mlflow.start_run()
+
     is_first_rank = (
         not torch.distributed.is_initialized() or torch.distributed.get_rank() == 0
     )
@@ -748,6 +769,6 @@ def train_loop(
     print(
         datetime.utcnow(), "Training exits with is_preempted: ", detector.is_preempted()
     )
-
+    mlflow.end_run()
 
 # }}}

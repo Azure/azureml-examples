@@ -304,6 +304,18 @@ def add_parser_arguments(parser):
     parser.add_argument(
         '--log_redirect', action='store_true', help='Redirect log to files.'
     )
+    parser.add_argument(
+        '--region', default=None, type=str, help='workspace region'
+    )
+    parser.add_argument(
+        '--subscription_id', default=None, type=str, help='workspace subscription id'
+    )
+    parser.add_argument(
+        '--resource_group', default=None, type=str, help='workspace resource group'
+    )
+    parser.add_argument(
+        '--workspace_name', default=None, type=str, help='workspace name'
+    )
 
 
 def main(gpu_index, args):
@@ -547,6 +559,10 @@ def main(gpu_index, args):
         save_checkpoints=args.save_checkpoints and not args.evaluate,
         checkpoint_dir=args.workspace,
         total_train_step=args.total_train_step,
+        region=args.region,
+        subscription_id = args.subscription_id,
+        resource_group = args.resource_group,
+        workspace_name = args.workspace_name
     )
     exp_duration = time.time() - exp_start_time
     if not torch.distributed.is_initialized() or torch.distributed.get_rank() == 0:
