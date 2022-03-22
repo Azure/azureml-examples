@@ -1,5 +1,0 @@
-mlflow
-lightgbm==3.3.2
-pandas==1.3.1
-psutil==5.8.0
-typing-extensions==3.10.0.0
