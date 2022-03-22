@@ -105,10 +105,6 @@ def main(
     raport_file='experiment_raport.json',
     workspace='./',
     save_checkpoint_epochs: int = 10,
-    region=None,
-    subscription_id=None,
-    resource_group=None,
-    workspace_name=None
 ):
     new_data_path = Path(train_data).parent / 'new_dataset'
     convert_image_directory_to_specific_format(
@@ -168,14 +164,6 @@ def main(
         str(workspace),
         '--save-checkpoint-epochs',
         str(save_checkpoint_epochs),
-        '--region',
-        str(region),
-        '--subscription_id',
-        str(subscription_id),
-        '--resource_group',
-        str(resource_group),
-        '--workspace_name',
-        str(workspace_name)
     ]
     print(' '.join(sys.argv))
     runpy.run_path('main.py', run_name='__main__')
