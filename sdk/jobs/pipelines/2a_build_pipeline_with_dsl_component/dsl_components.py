@@ -30,7 +30,7 @@ def train_component_func(
     training_data: DataInput,
     max_epochs: int,
     model_output: DataOutput,
-    learning_rate=0.01,
+    learning_rate=0.02,
 ):
     lines = [
         f"Training data path: {training_data}",
