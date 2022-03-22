@@ -91,10 +91,10 @@ class PreemptDetector:
         self.observer.stop()
 
 
-ACC_METADATA = {'unit': '%', 'format': ':.2f'}
-IPS_METADATA = {'unit': 'img/s', 'format': ':.2f'}
-TIME_METADATA = {'unit': 's', 'format': ':.5f'}
-LOSS_METADATA = {'format': ':.5f'}
+ACC_METADATA = {"unit": "%", "format": ":.2f"}
+IPS_METADATA = {"unit": "img/s", "format": ":.2f"}
+TIME_METADATA = {"unit": "s", "format": ":.5f"}
+LOSS_METADATA = {"format": ":.5f"}
 
 
 class ModelAndLoss(nn.Module):
@@ -160,14 +160,14 @@ def get_optimizer(
         )
     else:
         print(" ! Weight decay NOT applied to BN parameters ")
-        bn_params = [v for n, v in parameters if 'bn' in n]
-        rest_params = [v for n, v in parameters if not 'bn' in n]
+        bn_params = [v for n, v in parameters if "bn" in n]
+        rest_params = [v for n, v in parameters if not "bn" in n]
         print(len(bn_params))
         print(len(rest_params))
         optimizer = torch.optim.SGD(
             [
-                {'params': bn_params, 'weight_decay': 0},
-                {'params': rest_params, 'weight_decay': weight_decay},
+                {"params": bn_params, "weight_decay": 0},
+                {"params": rest_params, "weight_decay": weight_decay},
             ],
             lr,
             momentum=momentum,
@@ -191,16 +191,16 @@ def get_optimizer(
 def lr_policy(lr_fn, logger=None):
     if logger is not None:
         logger.register_metric(
-            'lr', log.LR_METER(), verbosity=dllogger.Verbosity.VERBOSE
+            "lr", log.LR_METER(), verbosity=dllogger.Verbosity.VERBOSE
         )
 
     def _alr(optimizer, iteration, epoch):
         lr = lr_fn(iteration, epoch)
 
         if logger is not None:
-            logger.log_metric('lr', lr)
+            logger.log_metric("lr", lr)
         for param_group in optimizer.param_groups:
-            param_group['lr'] = lr
+            param_group["lr"] = lr
         return lr
 
     return _alr
@@ -257,7 +257,7 @@ def lr_exponential_policy(
             lr = base_lr * (epoch + 1) / warmup_length
         else:
             e = epoch - warmup_length
-            lr = base_lr * (epoch_decay ** e)
+            lr = base_lr * (epoch_decay**e)
         return lr
 
     return lr_policy(_lr_fn, logger=logger)
@@ -290,7 +290,7 @@ def get_train_step(
                 else optimizer
             )
             for param_group in opt.param_groups:
-                for param in param_group['params']:
+                for param in param_group["params"]:
                     param.grad /= batch_size_multiplier
 
             optimizer.step()
@@ -319,35 +319,35 @@ def train(
     total_train_step=0,
     writer=None,
 ):
-    print(f'training...')
-    print(f'register_metrics {register_metrics}, logger {logger}.')
+    print(f"training...")
+    print(f"register_metrics {register_metrics}, logger {logger}.")
     if register_metrics and logger is not None:
         logger.register_metric(
-            'train.loss',
+            "train.loss",
             log.LOSS_METER(),
             verbosity=dllogger.Verbosity.DEFAULT,
             metadata=LOSS_METADATA,
         )
         logger.register_metric(
-            'train.compute_ips',
+            "train.compute_ips",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=IPS_METADATA,
         )
         logger.register_metric(
-            'train.total_ips',
+            "train.total_ips",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.DEFAULT,
             metadata=IPS_METADATA,
         )
         logger.register_metric(
-            'train.data_time',
+            "train.data_time",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
         )
         logger.register_metric(
-            'train.compute_time',
+            "train.compute_time",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
@@ -384,38 +384,38 @@ def train(
 
         if optimizer_step:
             if writer:
-                writer.add_scalar('train/summary/scalar/learning_rate', lr, epoch)
+                writer.add_scalar("train/summary/scalar/learning_rate", lr, epoch)
                 writer.add_scalar(
-                    'train/summary/scalar/loss', to_python_float(loss), total_train_step
+                    "train/summary/scalar/loss", to_python_float(loss), total_train_step
                 )
                 writer.add_scalar(
-                    'perf/summary/scalar/compute_ips',
+                    "perf/summary/scalar/compute_ips",
                     calc_ips(bs, it_time - data_time),
                     total_train_step,
                 )
                 writer.add_scalar(
-                    'perf/summary/scalar/train_total_ips',
+                    "perf/summary/scalar/train_total_ips",
                     calc_ips(bs, it_time),
                     total_train_step,
                 )
-                run.log_row('train/learning_rate', x=epoch, y=lr)
-                run.log_row('train/loss', x=total_train_step, y=to_python_float(loss))
+                run.log_row("train/learning_rate", x=epoch, y=lr)
+                run.log_row("train/loss", x=total_train_step, y=to_python_float(loss))
                 run.log_row(
-                    'perf/compute_ips',
+                    "perf/compute_ips",
                     x=total_train_step,
                     y=calc_ips(bs, it_time - data_time),
                 )
                 run.log_row(
-                    'perf/train_total_ips', x=total_train_step, y=calc_ips(bs, it_time)
+                    "perf/train_total_ips", x=total_train_step, y=calc_ips(bs, it_time)
                 )
 
             total_train_step += 1
         if logger is not None:
-            logger.log_metric('train.loss', to_python_float(loss), bs)
-            logger.log_metric('train.compute_ips', calc_ips(bs, it_time - data_time))
-            logger.log_metric('train.total_ips', calc_ips(bs, it_time))
-            logger.log_metric('train.data_time', data_time)
-            logger.log_metric('train.compute_time', it_time - data_time)
+            logger.log_metric("train.loss", to_python_float(loss), bs)
+            logger.log_metric("train.compute_ips", calc_ips(bs, it_time - data_time))
+            logger.log_metric("train.total_ips", calc_ips(bs, it_time))
+            logger.log_metric("train.data_time", data_time)
+            logger.log_metric("train.compute_time", it_time - data_time)
 
         end = time.time()
 
@@ -466,65 +466,65 @@ def validate(
     prof=-1,
     register_metrics=True,
 ):
-    print(f'validating...')
-    print(f'register_metrics {register_metrics}, logger {logger}.')
+    print(f"validating...")
+    print(f"register_metrics {register_metrics}, logger {logger}.")
     if register_metrics and logger is not None:
         logger.register_metric(
-            'val.top1',
+            "val.top1",
             log.ACC_METER(),
             verbosity=dllogger.Verbosity.DEFAULT,
             metadata=ACC_METADATA,
         )
         logger.register_metric(
-            'val.top5',
+            "val.top5",
             log.ACC_METER(),
             verbosity=dllogger.Verbosity.DEFAULT,
             metadata=ACC_METADATA,
         )
         logger.register_metric(
-            'val.loss',
+            "val.loss",
             log.LOSS_METER(),
             verbosity=dllogger.Verbosity.DEFAULT,
             metadata=LOSS_METADATA,
         )
         logger.register_metric(
-            'val.compute_ips',
+            "val.compute_ips",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=IPS_METADATA,
         )
         logger.register_metric(
-            'val.total_ips',
+            "val.total_ips",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.DEFAULT,
             metadata=IPS_METADATA,
         )
         logger.register_metric(
-            'val.data_time',
+            "val.data_time",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
         )
         logger.register_metric(
-            'val.compute_latency',
+            "val.compute_latency",
             log.PERF_METER(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
         )
         logger.register_metric(
-            'val.compute_latency_at100',
+            "val.compute_latency_at100",
             log.LAT_100(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
         )
         logger.register_metric(
-            'val.compute_latency_at99',
+            "val.compute_latency_at99",
             log.LAT_99(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
         )
         logger.register_metric(
-            'val.compute_latency_at95',
+            "val.compute_latency_at95",
             log.LAT_95(),
             verbosity=dllogger.Verbosity.VERBOSE,
             metadata=TIME_METADATA,
@@ -556,16 +556,16 @@ def validate(
 
         top1.record(to_python_float(prec1), bs)
         if logger is not None:
-            logger.log_metric('val.top1', to_python_float(prec1), bs)
-            logger.log_metric('val.top5', to_python_float(prec5), bs)
-            logger.log_metric('val.loss', to_python_float(loss), bs)
-            logger.log_metric('val.compute_ips', calc_ips(bs, it_time - data_time))
-            logger.log_metric('val.total_ips', calc_ips(bs, it_time))
-            logger.log_metric('val.data_time', data_time)
-            logger.log_metric('val.compute_latency', it_time - data_time)
-            logger.log_metric('val.compute_latency_at95', it_time - data_time)
-            logger.log_metric('val.compute_latency_at99', it_time - data_time)
-            logger.log_metric('val.compute_latency_at100', it_time - data_time)
+            logger.log_metric("val.top1", to_python_float(prec1), bs)
+            logger.log_metric("val.top5", to_python_float(prec5), bs)
+            logger.log_metric("val.loss", to_python_float(loss), bs)
+            logger.log_metric("val.compute_ips", calc_ips(bs, it_time - data_time))
+            logger.log_metric("val.total_ips", calc_ips(bs, it_time))
+            logger.log_metric("val.data_time", data_time)
+            logger.log_metric("val.compute_latency", it_time - data_time)
+            logger.log_metric("val.compute_latency_at95", it_time - data_time)
+            logger.log_metric("val.compute_latency_at99", it_time - data_time)
+            logger.log_metric("val.compute_latency_at100", it_time - data_time)
 
         loss_sum += to_python_float(loss)
         total_val_step += 1
@@ -609,7 +609,7 @@ def train_loop(
     skip_training=False,
     skip_validation=False,
     save_checkpoints=True,
-    checkpoint_dir='./',
+    checkpoint_dir="./",
     total_train_step=0,
 ):
     is_first_rank = (
@@ -619,7 +619,7 @@ def train_loop(
         ts = str(time.time())
         # logdir = os.path.expanduser('~/tensorboard/{}/logs/'.format(os.environ['DLTS_JOB_ID']) + ts)
         logdir = os.path.expanduser(
-            '~/tensorboard/{}/logs/'.format(os.environ['AZ_BATCH_JOB_ID']) + ts
+            "~/tensorboard/{}/logs/".format(os.environ["AZ_BATCH_JOB_ID"]) + ts
         )
         print("tensorboard at ", logdir)
         if not os.path.exists(logdir):
@@ -640,8 +640,8 @@ def train_loop(
             else 1
         )
         if writer:
-            writer.add_scalar('train/summary/scalar/world_size', world_size, epoch)
-            run.log_row('train/world_size', x=epoch, y=world_size)
+            writer.add_scalar("train/summary/scalar/world_size", world_size, epoch)
+            run.log_row("train/world_size", x=epoch, y=world_size)
 
         if logger is not None:
             logger.start_epoch()
@@ -677,10 +677,10 @@ def train_loop(
             if not detector.is_preempted():
                 prec1, nimg = top1.get_val()
                 if writer:
-                    writer.add_scalar('val/summary/scalar/loss', val_loss, epoch)
-                    writer.add_scalar('val/summary/scalar/prec1', prec1, epoch)
-                    run.log_row('val/loss', x=epoch, y=val_loss)
-                    run.log_row('val/prec1', x=epoch, y=prec1)
+                    writer.add_scalar("val/summary/scalar/loss", val_loss, epoch)
+                    writer.add_scalar("val/summary/scalar/prec1", prec1, epoch)
+                    run.log_row("val/loss", x=epoch, y=val_loss)
+                    run.log_row("val/prec1", x=epoch, y=prec1)
 
         if logger is not None:
             print(
@@ -700,12 +700,12 @@ def train_loop(
                 epoch,
             )
             save_ckpt = False
-        print(f'save ckpt {save_ckpt}, ckpt dir {checkpoint_dir}.')
+        print(f"save ckpt {save_ckpt}, ckpt dir {checkpoint_dir}.")
         if save_ckpt:
             if not skip_validation and not detector.is_preempted():
-                is_best = logger.metrics['val.top1']['meter'].get_epoch() > best_prec1
+                is_best = logger.metrics["val.top1"]["meter"].get_epoch() > best_prec1
                 best_prec1 = max(
-                    logger.metrics['val.top1']['meter'].get_epoch(), best_prec1
+                    logger.metrics["val.top1"]["meter"].get_epoch(), best_prec1
                 )
             else:
                 is_best = False
@@ -714,12 +714,12 @@ def train_loop(
             ckpt_epoch_index = epoch + 1 if not detector.is_preempted() else epoch
             utils.save_checkpoint(
                 {
-                    'epoch': ckpt_epoch_index,
-                    'arch': model_and_loss.arch,
-                    'state_dict': model_and_loss.model.state_dict(),
-                    'best_prec1': best_prec1,
-                    'optimizer': optimizer.state_dict(),
-                    'total_train_step': total_train_step,
+                    "epoch": ckpt_epoch_index,
+                    "arch": model_and_loss.arch,
+                    "state_dict": model_and_loss.model.state_dict(),
+                    "best_prec1": best_prec1,
+                    "optimizer": optimizer.state_dict(),
+                    "total_train_step": total_train_step,
                 },
                 is_best,
                 checkpoint_dir=checkpoint_dir,
