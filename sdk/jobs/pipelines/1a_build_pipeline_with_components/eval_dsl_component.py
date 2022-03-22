@@ -3,18 +3,11 @@ from azure.ml import dsl
 from azure.ml.entities import Environment
 from azure.ml.dsl._types import DataInput, DataOutput
 
-conda_env = Environment(
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
-)
-
 @dsl.command_component(
     name="Eval",
     display_name="Eval",
     description="A dummy eval component defined by dsl component.",
     version="0.0.1",
-    environment=conda_env,
-    # specify your code folder, default code folder is current file's parent
-    # code='.'    
 )
 def eval_func(
     scoring_result: DataInput,
