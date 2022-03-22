@@ -26,6 +26,12 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: create components
+      run: |
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/
     - name: run job
       run: bash -x run-job.sh jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml
       working-directory: cli
