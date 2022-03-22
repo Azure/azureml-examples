@@ -18,7 +18,7 @@ conda_env = Environment(
     name="dsl_train_component",
     display_name="Train",
     description="A dummy train component defined by dsl component.",
-    version="0.0.1",
+    version="0.0.2",
     # specify distribution type if needed
     # distribution={'type': 'mpi'},
     # specify customer environment, note that azure-ml must be included.
