@@ -1,58 +1,38 @@
-$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: train_image_classification
-version: 1
-display_name: Train Image Classification
-
+$schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
 type: command
 
+name: train_image_classification
+version: 0.0.1
+display_name: Train Image Classification
+
+tags: {}
 inputs:
   train_data:
-    type: uri_folder
-    description: path to train dataset
+    type: path
+    description: "path to train dataset"
     optional: false
   valid_data:
-    type: uri_folder
-    description: path to valid dataset
+    type: path
+    description: "path to valid dataset"
     optional: false
   data_backend:
     type: string
-    description: 'data backend: pytorch | syntetic | dali-gpu | dali-cpu (default:
-      dali-cpu)'
-    enum:
-    - pytorch
-    - syntetic
-    - dali-gpu
-    - dali-cpu
-    default: dali-cpu
+    description: "data backend: pytorch | syntetic | dali-gpu | dali-cpu (default: dali-cpu)"
+    default: "dali-cpu"
     optional: true
   arch:
     type: string
-    description: 'model architecture: resnet18 | resnet34 | resnet50 | resnet101 |
-      resnet152 | resnext101_32x4d | se_resnext101_32x4d (default: resnet50)'
-    enum:
-    - resnet18
-    - resnet34
-    - resnet50
-    - resnet101
-    - resnet152
-    - resnext101_32x4d
-    - se_resnext101_32x4d
-    default: resnet50
+    description: "model architecture: resnet18 | resnet34 | resnet50 | resnet101 | resnet152 | resnext101_32x4d | se_resnext101_32x4d (default: resnet50)"
+    default: "resnet50"
     optional: true
   model_config:
     type: string
-    description: 'model configs: classic | fanin | grp_fanin | grp_fanout(default:
-      classic)'
-    enum:
-    - classic
-    - fanin
-    - grp_fanin
-    - grp_fanout
-    default: classic
+    description: "model configs: classic | fanin | grp_fanin | grp_fanout(default: classic)"
+    default: "classic"
     optional: true
   workers:
     type: integer
-    description: 'number of data loading workers (default: 5)'
+    description: "number of data loading workers (default: 5)"
     default: 5
     optional: true
   epochs:
@@ -62,13 +42,12 @@ inputs:
     optional: true
   batch_size:
     type: integer
-    description: 'mini-batch size (default: 256) per gpu'
+    description: "mini-batch size (default: 256) per gpu"
     default: 256
     optional: true
   optimizer_batch_size:
     type: integer
-    description: size of a total batch size, for simulating bigger batches using gradient
-      accumulation
+    description: size of a total batch size, for simulating bigger batches using gradient accumulation
     default: -1
     optional: true
   lr:
@@ -78,12 +57,8 @@ inputs:
     optional: true
   lr_schedule:
     type: string
-    description: 'Type of LR schedule: step, linear, cosine'
-    enum:
-    - step
-    - linear
-    - cosine
-    default: step
+    description: "Type of LR schedule: step, linear, cosine"
+    default: "step"
     optional: true
   warmup:
     type: integer
@@ -107,23 +82,23 @@ inputs:
     optional: true
   weight_decay:
     type: number
-    description: 'weight decay (default: 1e-4)'
+    description: "weight decay (default: 1e-4)"
     default: 0.0001
     optional: true
   print_freq:
     type: integer
-    description: 'print frequency (default: 10)'
+    description: "print frequency (default: 10)"
     default: 10
     optional: true
   resume:
     type: string
-    description: 'path to latest checkpoint (default: none)'
-    default: ''
+    description: "path to latest checkpoint (default: none)"
+    default: ""
     optional: true
   pretrained_weights:
     type: string
     description: load weights from here
-    default: ''
+    default: ""
     optional: true
   static_loss_scale:
     type: number
@@ -150,10 +125,9 @@ inputs:
     description: how many epochs run between saving checkpoints
     default: 2
     optional: true
-
 outputs:
   workspace:
-    type: uri_folder
+    type: path
     description: path to directory where checkpoints will be stored
 
 code: ./
@@ -169,16 +143,5 @@ distribution:
   process_count_per_instance: 1
 
 command: >-
-  git clone https://github.com/NVIDIA/apex && cd apex && git checkout 3303b3e7174383312a3468ef390060c26e640cb1 &&
-    python setup.py install && cd .. &&
-    python entry.py --train_data {inputs.train_data} --val_data
-    {inputs.valid_data} [--data_backend {inputs.data_backend}] [--arch {inputs.arch}]
-    [--model_config {inputs.model_config}] [--workers {inputs.workers}] [--epochs
-    {inputs.epochs}] [--batch_size {inputs.batch_size}] [--optimizer_batch_size {inputs.optimizer_batch_size}]
-    [--lr {inputs.lr}] [--lr_schedule {inputs.lr_schedule}] [--warmup {inputs.warmup}]
-    [--label_smoothing {inputs.label_smoothing}] [--mixup {inputs.mixup}] [--momentum
-    {inputs.momentum}] [--weight_decay {inputs.weight_decay}] [--print_freq {inputs.print_freq}]
-    [--resume {inputs.resume}] [--pretrained_weights {inputs.pretrained_weights}]
-    [--static_loss_scale {inputs.static_loss_scale}] [--prof {inputs.prof}] [--seed
-    {inputs.seed}] [--raport_file {inputs.raport_file}] [--save_checkpoint_epochs
-    {inputs.save_checkpoint_epochs}] --workspace {outputs.workspace}
+  git clone https://github.com/NVIDIA/apex && cd apex && git checkout 3303b3e7174383312a3468ef390060c26e640cb1 && python setup.py install && cd .. && python entry.py --train_data ${{inputs.train_data}} --val_data ${{inputs.valid_data}} [--data_backend ${{inputs.data_backend}}] [--arch ${{inputs.arch}}] [--model_config ${{inputs.model_config}}] [--workers ${{inputs.workers}}] [--epochs ${{inputs.epochs}}] [--batch_size ${{inputs.batch_size}}] [--optimizer_batch_size ${{inputs.optimizer_batch_size}}] [--lr ${{inputs.lr}}] [--lr_schedule ${{inputs.lr_schedule}}] [--warmup ${{inputs.warmup}}] [--label_smoothing ${{inputs.label_smoothing}}] [--mixup ${{inputs.mixup}}] [--momentum ${{inputs.momentum}}] [--weight_decay ${{inputs.weight_decay}}] [--print_freq ${{inputs.print_freq}}] [--resume ${{inputs.resume}}] [--pretrained_weights ${{inputs.pretrained_weights}}] [--static_loss_scale ${{inputs.static_loss_scale}}] [--prof ${{inputs.prof}}] [--seed ${{inputs.seed}}] [--raport_file ${{inputs.raport_file}}] [--save_checkpoint_epochs ${{inputs.save_checkpoint_epochs}}] --workspace ${{outputs.workspace}}
+
