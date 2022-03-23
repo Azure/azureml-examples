@@ -186,14 +186,9 @@ def main(
         "--save-checkpoint-epochs",
         str(save_checkpoint_epochs),
     ]
-<<<<<<< Updated upstream
-    print(" ".join(sys.argv))
-    runpy.run_path("main.py", run_name="__main__")
-=======
     print(' '.join(sys.argv))
     runpy.run_path('main.py', run_name='__main__')
 
 
 if __name__ == '__main__':
     ComponentExecutor(main).execute(sys.argv)
->>>>>>> Stashed changes
