@@ -74,6 +74,7 @@ jobs:
   train:
     type: command
     component: file:./image_cnn_train/entry.spec.yaml
+    compute: azureml:gpu-cluster
     inputs:
       train_data: ${{parent.jobs.transform_on_training_image.outputs.output_path}}
       valid_data: ${{parent.jobs.transform_on_evaluation_image.outputs.output_path}}
