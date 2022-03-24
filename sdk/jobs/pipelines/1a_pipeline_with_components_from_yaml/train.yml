@@ -8,6 +8,7 @@ inputs:
     type: uri_folder
   max_epochs:
     type: integer
+    optional: true
   learning_rate: 
     type: number
     default: 0.01
