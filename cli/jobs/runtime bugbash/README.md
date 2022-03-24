@@ -15,7 +15,12 @@
     az configure --defaults group="datasettest-canary" workspace="qianie-v2-bugbash-master"
     ```
 
-3. Testing scenarios
+3. Job submission cmd
+    ```cmd
+    C:\Users\qianie\Source\Repos\azureml-examples\cli\jobs\runtime-bugbash\lightgbm\iris> az ml job create --file .\job.yml
+    ```
+    
+4. Testing scenarios
     1) uri_file, uri_folder, mltable, mlflow_model as input happy path in command job
         - different modes(mount, download, direct)
         - different uri formats for input
@@ -26,7 +31,6 @@
         - path doesnt existing
         - special chars in path
         - multile uri_file to the same folder
-
 
 ## Links
 ```cmd

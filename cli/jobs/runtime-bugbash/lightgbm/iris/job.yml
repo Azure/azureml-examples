@@ -66,7 +66,4 @@ display_name: lightgbm-iris-example
 experiment_name: lightgbm-iris-example
 description: Train a LightGBM model on the Iris dataset.
 environment_variables:
-  AZ_BATCHAI_CONFIG_SidecarContainerEnvironmentName: "single_file_output"
-  AZ_BATCHAI_CONFIG_SidecarContainerEnvironmentVersion: '2'
-  AZ_BATCHAI_CONFIG_SidecarContainerImageName: 'sidecar/dpv2-asset-types'
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'false' # test out common runtime vs context manager
