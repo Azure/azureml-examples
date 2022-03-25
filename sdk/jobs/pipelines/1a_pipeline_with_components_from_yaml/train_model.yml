@@ -1,8 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: Train
-display_name: Train
-version: 0.0.1
 type: command
+
+name: train_model
+display_name: Train Model
+description: A dummy training component
+version: 0.0.1
 inputs:
   training_data: 
     type: uri_folder
@@ -23,7 +25,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
-  --max_epochs ${{inputs.max_epochs}}   
+  [--max_epochs ${{inputs.max_epochs}}] 
   --learning_rate ${{inputs.learning_rate}} 
   --learning_rate_schedule ${{inputs.learning_rate_schedule}} 
   --model_output ${{outputs.model_output}}
