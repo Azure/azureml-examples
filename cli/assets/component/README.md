@@ -19,11 +19,12 @@ This repository contains an example `YAML` file for creating `component` using A
 > az ml component show --name train_data_component --version 1
 ```
 
-- To update a component that in workspace, execute following command:
+- To update a component that in workspace, execute following command. Currently only a few fields(description, display_name) support update:
 ```cli
 > az ml component update -f train.yml
 ```
-Currently only a few fields(description, display_name) support update.
 
-To learn more details about Component commands, Pleas refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest)
+
+To learn more details about `az ml component` commands, Pleas refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest).
+
 To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
