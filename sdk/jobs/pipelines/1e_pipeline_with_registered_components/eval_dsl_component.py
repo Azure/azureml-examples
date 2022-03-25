@@ -1,7 +1,6 @@
 
-from azure.ml import dsl
+from azure.ml import dsl, ArtifactInput, ArtifactOutput
 from azure.ml.entities import Environment
-from azure.ml.dsl._types import DataInput, DataOutput
 
 @dsl.command_component(
     name="Eval",
@@ -10,8 +9,8 @@ from azure.ml.dsl._types import DataInput, DataOutput
     version="0.0.1",
 )
 def eval_func(
-    scoring_result: DataInput,
-    eval_output: DataOutput,
+    scoring_result: ArtifactInput,
+    eval_output: ArtifactOutput,
 ):
     from pathlib import Path
     from datetime import datetime

@@ -2,9 +2,8 @@ from pathlib import Path
 from random import randint
 from uuid import uuid4
 
-from azure.ml import dsl
+from azure.ml import dsl, ArtifactInput, ArtifactOutput
 from azure.ml.entities import Environment
-from azure.ml.dsl._types import DataInput, DataOutput
 
 # init customer environment with conda YAML
 # the YAML file shall be put under your code folder.
@@ -27,9 +26,9 @@ conda_env = Environment(
     # code='.'
 )
 def train_component_func(
-    training_data: DataInput,
+    training_data: ArtifactInput,
     max_epochs: int,
-    model_output: DataOutput,
+    model_output: ArtifactOutput,
     learning_rate=0.02,
 ):
     lines = [
@@ -55,9 +54,9 @@ def train_component_func(
     version="0.0.1",
 )
 def score_component_func(
-    model_input: DataInput,
-    test_data: DataInput,
-    score_output: DataOutput,
+    model_input: ArtifactInput,
+    test_data: ArtifactInput,
+    score_output: ArtifactOutput,
 ):
 
     lines = [
@@ -86,8 +85,8 @@ def score_component_func(
     version="0.0.1",
 )
 def eval_component_func(
-    scoring_result: DataInput,
-    eval_output: DataOutput,
+    scoring_result: ArtifactInput,
+    eval_output: ArtifactOutput,
 ):
     lines = [
         f"Scoring result path: {scoring_result}",
