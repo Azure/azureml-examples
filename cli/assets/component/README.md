@@ -16,7 +16,7 @@ This repository contains an example `YAML` file for creating `component` using A
 
 - To show one component details from your workspace, execute following command:
 ```cli
-> az ml component show --name train --version 1
+> az ml component show --name train_data_component --version 1
 ```
 
 - To update a component that in workspace, execute following command:
