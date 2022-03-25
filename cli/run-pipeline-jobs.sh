@@ -1,9 +1,10 @@
+target_version="$RANDOM"
+
 cd jobs/pipelines-with-components/basics/1a_e2e_local_components
 az ml job create --file pipeline.yml --web
 cd ../../../../
 
 cd jobs/pipelines-with-components/basics/1b_e2e_registered_components
-target_version="$RANDOM"
 az ml component create --file train.yml --set version=$target_version
 az ml component create --file score.yml --set version=$target_version
 az ml component create --file eval.yml --set version=$target_version
@@ -36,7 +37,7 @@ az ml job create --file pipeline.yml --web
 cd ../../../../
 
 cd jobs/pipelines-with-components/basics/4c_dataset_input
-az ml data create --file data.yml
+az ml data create --file data.yml --version $target_version
 az ml job create --file pipeline.yml --web
 cd ../../../../
 
