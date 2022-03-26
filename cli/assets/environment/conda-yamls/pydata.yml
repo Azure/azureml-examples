@@ -13,7 +13,7 @@ dependencies:
     - fsspec==2021.8.1
     - xgboost==1.4.2
     - lightgbm==3.2.1
-    - mlflow==1.20.2
+    - mlflow
     - azureml-mlflow==1.34.0
     - matplotlib==3.4.3
     - tqdm==4.62.2
