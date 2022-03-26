@@ -7,7 +7,7 @@ az extension add -n ml -y
 #az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.22_october_cand-py3-none-any.whl --yes
 
 # <set_variables>
-GROUP="azureml-examples"
+GROUP="azureml-examples-rg"
 LOCATION="eastus"
 WORKSPACE="main"
 # </set_variables>
