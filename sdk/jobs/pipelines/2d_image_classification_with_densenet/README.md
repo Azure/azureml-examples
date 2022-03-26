@@ -11,4 +11,4 @@ description: This sample shows how to use pipeline to train cnn image classifica
 # Running a Pipeline job
 This example shows how to use pipeline to train cnn image classification model. 
 
-Please find the some define in [image_classification.ipynb](image_classification.ipynb).
+Please find the some define in [image_classification_with_densenet.ipynb](image_classification_with_densenet.ipynb).
