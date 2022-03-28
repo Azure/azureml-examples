@@ -1,17 +1,15 @@
 
-from azure.ml import dsl
-from azure.ml.entities import Environment
-from azure.ml.dsl._types import DataInput, DataOutput
+from azure.ml import dsl, ArtifactInput, ArtifactOutput
 
 @dsl.command_component(
-    name="Eval",
-    display_name="Eval",
+    name="eval_model",
+    display_name="Eval Model",
     description="A dummy eval component defined by dsl component.",
     version="0.0.1",
 )
-def eval_func(
-    scoring_result: DataInput,
-    eval_output: DataOutput,
+def eval_model(
+    scoring_result: ArtifactInput,
+    eval_output: ArtifactOutput,
 ):
     from pathlib import Path
     from datetime import datetime
