@@ -1,4 +1,4 @@
-name: train_environment
+name: imagecnn_train_conda_env
 channels:
   - defaults
   - conda-forge
