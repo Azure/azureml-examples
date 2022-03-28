@@ -1,4 +1,4 @@
-name: designer-cv-transform
+name: azureml-designer-cv-modules
 channels:
   - defaults
 dependencies:

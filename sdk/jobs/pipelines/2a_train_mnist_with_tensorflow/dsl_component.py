@@ -2,9 +2,8 @@ import os, json
 from pathlib import Path
 
 
-from azure.ml import dsl
+from azure.ml import dsl, ArtifactInput, ArtifactOutput
 from azure.ml.entities import Environment
-from azure.ml.dsl._types import DataInput, DataOutput
 
 conda_env = Environment(
     conda_file=Path(__file__).parent / "conda.yaml",
@@ -23,7 +22,7 @@ conda_env = Environment(
     },
 )
 def tf_func(
-    trained_model_output: DataOutput, 
+    trained_model_output: ArtifactOutput, 
     epochs=3,
     steps_per_epoch=70,
     per_worker_batch_size=64,
