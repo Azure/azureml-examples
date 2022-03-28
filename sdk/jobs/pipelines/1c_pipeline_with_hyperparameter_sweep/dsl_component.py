@@ -24,21 +24,37 @@ conda_env = Environment(
 )
 def train_component_func(
     training_data: ArtifactInput,
-    max_epochs: int,
     model_output: ArtifactOutput,
-    learning_rate=0.02,
+    batch_size: int = 32,
+    first_layer_neurons: int = 40,
+    second_layer_neurons: int = 20,
+    third_layer_neurons: int = 5,
+    epochs: int = 3,
+    momentum: float = 10,
+    weight_decay: float = 0.5,
+    learning_rate: float = 0.02,
+    f1: float = 0.5,
+    f2: float = 0.5,
+    random_seed: int = 0,
 ):
     accuracy = random()
-    lines = [
-        f"Training data path: {training_data}",
-        f"Max epochs: {max_epochs}",
-        f"Learning rate: {learning_rate}",
-        f"Model output path: {model_output}",
-        f"Accuracy: {accuracy}",
-    ]
-
-    for line in lines:
-        print(line)
+    for param_name, param_value in [
+        ("training_data", training_data),
+        ("batch_size", batch_size),
+        ("first_layer_neurons", first_layer_neurons),
+        ("second_layer_neurons", second_layer_neurons),
+        ("third_layer_neurons", third_layer_neurons),
+        ("epochs", epochs),
+        ("momentum", momentum),
+        ("weight_decay", weight_decay),
+        ("learning_rate", learning_rate),
+        ("f1", f1),
+        ("f2", f2),
+        ("model_output", model_output),
+        ("random_seed", random_seed), 
+        ("accuracy", accuracy), 
+    ]:
+        print(f"{param_name}: {param_value}")
 
     run = Run.get_context()
     run.log("accuracy", accuracy)
