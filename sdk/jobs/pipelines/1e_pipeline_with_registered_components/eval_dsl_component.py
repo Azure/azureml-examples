@@ -1,14 +1,13 @@
 
 from azure.ml import dsl, ArtifactInput, ArtifactOutput
-from azure.ml.entities import Environment
 
 @dsl.command_component(
-    name="Eval",
-    display_name="Eval",
+    name="eval_model",
+    display_name="Eval Model",
     description="A dummy eval component defined by dsl component.",
     version="0.0.1",
 )
-def eval_func(
+def eval_model(
     scoring_result: ArtifactInput,
     eval_output: ArtifactOutput,
 ):

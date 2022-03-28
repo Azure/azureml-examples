@@ -1,7 +1,11 @@
-name: Score
-version: 0.0.1
-display_name: Score
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
+
+name: score_data
+version: 0.0.1
+display_name: Score Data
+description: A dummy scoring component
+
 inputs:
   model_input:
     type: uri_folder
