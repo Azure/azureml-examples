@@ -15,16 +15,16 @@ az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheel
 
 # <set_variables>
 # Run in master
-# GROUP="azureml-examples-v2"
-# LOCATION="centraluseuap"
-# WORKSPACE="main-master"
+GROUP="azureml-examples-v2"
+LOCATION="centraluseuap"
+WORKSPACE="main-master"
 # </set_variables>
 
 # <set_variables>
 # Run in canary
-GROUP="azureml-examples-v2"
-LOCATION="eastus2euap"
-WORKSPACE="main-canary"
+# GROUP="azureml-examples-v2"
+# LOCATION="eastus2euap"
+# WORKSPACE="main-canary"
 # </set_variables>
 
 
