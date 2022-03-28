@@ -5,18 +5,20 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_NOTEBOOKS = ["datastore",]
+ENABLE_MANUAL_CALLING = True #defines whether the workflow can be invoked or not
+NOT_TESTED_NOTEBOOKS = ["datastore",] #cannot automate lets exclude
+NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
 #define branch where we need this
 #use if running on a release candidate, else make it empty
-BRANCH = 'march-sdk-preview'
-ENABLE_MANUAL_CALLING = True
-ENABLE_SCHEDULED_RUNS = True 
+BRANCH = 'main'
+BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
+BRANCH = 'march-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
 
 def main(args):
     
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
-    
+
     # write workflows
     write_workflows(notebooks)
 
@@ -26,23 +28,28 @@ def main(args):
 def write_workflows(notebooks):
     print("writing .github/workflows...")
     for notebook in notebooks:
+      if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
         # get notebook name
         name = notebook.split("/")[-1].replace(".ipynb", "")
         folder = os.path.dirname(notebook)
         classification = folder.replace("/","-")
 
+        enable_scheduled_runs = True
+        if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+          enable_scheduled_runs = False
+
         # write workflow file
-        write_notebook_workflow(notebook, name, classification, folder)
+        write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs)
     print("finished writing .github/workflows")
 
 
-def write_notebook_workflow(notebook, name, classification, folder):
+def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
     if ENABLE_MANUAL_CALLING:
       workflow_yaml += f"""  workflow_dispatch:\n"""
-    if ENABLE_SCHEDULED_RUNS:
+    if enable_scheduled_runs:
       workflow_yaml += f"""  schedule:
     - cron: "0 */8 * * *"\n"""
     workflow_yaml += f"""  pull_request:
@@ -90,7 +97,7 @@ jobs:
     if name == "workspace":
       workflow_yaml += f"""
           # generate a random workspace name
-          sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" {name}.ipynb
+          # sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" {name}.ipynb
 
           # skip other workpace creation commands for now
           sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" {name}.ipynb        
