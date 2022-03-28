@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+description: "Example of using data from a Dataset as pipeline input"
+inputs:
+  input_data:
+    type: uri_file
+    path: azureml:sampledata123@latest
+command: >-
+  echo ${{inputs.input_data}}
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:3
+compute: azureml:cpu-cluster  

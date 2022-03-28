@@ -1,0 +1,30 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: tf_mnist
+display_name: TF_mnist
+version: 1
+
+inputs: 
+  epochs:
+    type: integer
+  steps_per_epoch:
+    type: integer
+  per_worker_batch_size:
+    type: integer
+
+outputs:
+  trained_model_output: 
+
+code: ./src
+
+environment: 
+  conda_file: ./conda.yml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1
+
+command: >-
+  python train.py 
+  --epochs ${{inputs.epochs}}
+  --steps-per-epoch ${{inputs.steps_per_epoch}}
+  --per-worker-batch-size ${{inputs.per_worker_batch_size}}
+  --model-dir ${{outputs.trained_model_output}}

@@ -1,0 +1,1 @@
+We use a data asset as input in this example. You can create a data asset using `az ml data create --file data.yml`.

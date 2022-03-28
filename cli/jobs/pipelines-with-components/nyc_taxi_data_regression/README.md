@@ -31,164 +31,163 @@ Make sure the compute cluster used in job.yml is the one that is actually availa
 
 Submit the Pipeline Job
 ```
-az ml  job create --file job.yml
+az ml  job create --file pipeline.yml
 ```
 
-You can also override the compute from the command line
-```
-az ml job create --file job.yml --set defaults.component_job.compute.target=<your_compute>
-```
-Once you submit the job, you will find the URL to the Studio UI view the job graph and logs in the `interaction_endpoints` -> `Studio` section of the output. 
+Once you submit the job, you will find the URL to the Studio UI view the job graph and logs in the `Studio.endpoints` -> `services` section of the output. 
 
 
 Sample output
 ```
-
-C:\Users\shbijlan\repos\azureml-previews\previews\pipelines\samples\nyc_taxi_data_regression>az ml  job create --file job.yml
-Command group 'ml job' is experimental and under development. Reference and support levels: https://aka.ms/CLI_refstatus
-Custom pipeline job names are not supported yet. Please refer to the created pipeline job using the name: 73fb18f3-98a8-4677-b23b-d0b02bcb5826
+(cliv2-dev) PS D:\azureml-examples-lochen\cli\jobs\pipelines-with-components\nyc_taxi_data_regression> az ml job create -f pipeline.yml
+Command group 'ml job' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
+Asset labels are still in preview and may resolve to an incorrect asset version.
 {
-  "compute": {
-    "target": "azureml:cpu-cluster"
-  },
   "creation_context": {
-    "created_at": "2021-07-21T23:01:42.085184+00:00",
-    "created_by": "Sharmeelee Bijlani",
+    "created_at": "2022-03-15T11:25:38.323397+00:00",
+    "created_by": "Long Chen",
     "created_by_type": "User"
   },
-  "defaults": {
-    "component_job": {
-      "datastore": "azureml:workspaceblobstore"
-    }
-  },
   "experiment_name": "nyc_taxi_data_regression",
-  "id": "azureml:/subscriptions/15ae9cb6-95c1-483d-a0e3-b1a1a3b06324/resourceGroups/shbijlan/providers/Microsoft.MachineLearningServices/workspaces/shbijlan/jobs/73fb18f3-98a8-4677-b23b-d0b02bcb5826",
+  "id": "azureml:/subscriptions/ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9/resourceGroups/pipeline-pm/providers/Microsoft.MachineLearningServices/workspaces/pm-dev/jobs/6cef8ff4-2bd3-4101-adf2-11e0b62e6f6d",
   "inputs": {
     "pipeline_job_input": {
-      "data": "azureml:7a2f5724-c2ea-45cf-820f-fd05d557d158:1",
-      "mode": "mount"
-    }
-  },
-  "interaction_endpoints": {
-    "Studio": {
-      "endpoint": "https://ml.azure.com/runs/73fb18f3-98a8-4677-b23b-d0b02bcb5826?wsid=/subscriptions/15ae9cb6-95c1-483d-a0e3-b1a1a3b06324/resourcegroups/shbijlan/workspaces/shbijlan&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
-    },
-    "Tracking": {
-      "endpoint": "azureml://westus.api.azureml.ms/mlflow/v1.0/subscriptions/15ae9cb6-95c1-483d-a0e3-b1a1a3b06324/resourceGroups/shbijlan/providers/Microsoft.MachineLearningServices/workspaces/shbijlan?"
+      "mode": "ro_mount",
+      "path": "azureml:azureml://datastores/workspaceblobstore/paths/LocalUpload/aa784b6f4b0d0d3090bcd00415290f39/data",
+      "type": "uri_folder"
     }
   },
   "jobs": {
     "predict-job": {
-      "component": "azureml:Predict:13",
+      "$schema": "{}",
+      "command": "",
+      "component": "azureml:49fa5eab-ad35-e3eb-27bc-5568fd2dcd74:1",
+      "environment_variables": {},
       "inputs": {
-        "model_input": "jobs.train-job.outputs.model_output",
-        "test_data": "jobs.train-job.outputs.test_data"
+        "model_input": "${{parent.jobs.train-job.outputs.model_output}}",
+        "test_data": "${{parent.jobs.train-job.outputs.test_data}}"
       },
       "outputs": {
-        "predictions": "outputs.pipeline_job_predictions"
+        "predictions": "${{parent.outputs.pipeline_job_predictions}}"
       },
-      "type": "component_job"
+      "type": "command"
     },
     "prep-job": {
-      "component": "azureml:Prep:12",
+      "$schema": "{}",
+      "command": "",
+      "component": "azureml:526bfb0e-aba5-36f3-ab06-2b4df9ec1554:1",
+      "environment_variables": {},
       "inputs": {
-        "raw_data": "inputs.pipeline_job_input"
+        "raw_data": "${{parent.inputs.pipeline_job_input}}"
       },
       "outputs": {
-        "prep_data": "outputs.pipeline_job_prepped_data"
+        "prep_data": "${{parent.outputs.pipeline_job_prepped_data}}"
       },
-      "type": "component_job"
+      "type": "command"
     },
     "score-job": {
-      "component": "azureml:Score:29",
+      "$schema": "{}",
+      "command": "",
+      "component": "azureml:f0ae472c-7639-1b4a-47ff-3155384584cf:1",
+      "environment_variables": {},
       "inputs": {
-        "model": "jobs.train-job.outputs.model_output",
-        "predictions": "jobs.predict-job.outputs.predictions"
+        "model": "${{parent.jobs.train-job.outputs.model_output}}",
+        "predictions": "${{parent.jobs.predict-job.outputs.predictions}}"
       },
       "outputs": {
-        "score_report": "outputs.pipeline_job_score_report"
+        "score_report": "${{parent.outputs.pipeline_job_score_report}}"
       },
-      "type": "component_job"
+      "type": "command"
     },
     "train-job": {
-      "component": "azureml:Train:49",
+      "$schema": "{}",
+      "command": "",
+      "component": "azureml:df45efbf-8373-82fd-7d5e-56fa3cd31c05:1",
+      "environment_variables": {},
       "inputs": {
-        "training_data": "jobs.transform-job.outputs.transformed_data"
+        "training_data": "${{parent.jobs.transform-job.outputs.transformed_data}}"
       },
       "outputs": {
-        "model_output": "outputs.pipeline_job_trained_model",
-        "test_data": "outputs.pipeline_job_test_data"
+        "model_output": "${{parent.outputs.pipeline_job_trained_model}}",
+        "test_data": "${{parent.outputs.pipeline_job_test_data}}"
       },
-      "type": "component_job"
+      "type": "command"
     },
     "transform-job": {
-      "component": "azureml:Transform:20",
+      "$schema": "{}",
+      "command": "",
+      "component": "azureml:107ae7d3-7813-1399-34b1-17335735496c:1",
+      "environment_variables": {},
       "inputs": {
-        "clean_data": "jobs.prep-job.outputs.prep_data"
+        "clean_data": "${{parent.jobs.prep-job.outputs.prep_data}}"
       },
       "outputs": {
-        "transformed_data": "outputs.pipeline_job_transformed_data"
+        "transformed_data": "${{parent.outputs.pipeline_job_transformed_data}}"
       },
-      "type": "component_job"
+      "type": "command"
     }
   },
-  "name": "73fb18f3-98a8-4677-b23b-d0b02bcb5826",
+  "name": "6cef8ff4-2bd3-4101-adf2-11e0b62e6f6d",
   "outputs": {
     "pipeline_job_predictions": {
-      "data": {
-        "path": "/predictions"
-      },
-      "mode": "mount"
+      "mode": "upload",
+      "type": "uri_folder"
     },
     "pipeline_job_prepped_data": {
-      "data": {
-        "path": "/prepped_data"
-      },
-      "mode": "mount"
+      "mode": "upload",
+      "type": "uri_folder"
     },
     "pipeline_job_score_report": {
-      "data": {
-        "path": "/report"
-      },
-      "mode": "mount"
+      "mode": "upload",
+      "type": "uri_folder"
     },
     "pipeline_job_test_data": {
-      "data": {
-        "path": "/test_data"
-      },
-      "mode": "mount"
+      "mode": "upload",
+      "type": "uri_folder"
     },
     "pipeline_job_trained_model": {
-      "data": {
-        "path": "/trained-model"
-      },
-      "mode": "mount"
+      "mode": "upload",
+      "type": "uri_folder"
     },
     "pipeline_job_transformed_data": {
-      "data": {
-        "path": "/transformed_data"
-      },
-      "mode": "mount"
+      "mode": "upload",
+      "type": "uri_folder"
     }
   },
   "properties": {
+    "azureml.continue_on_step_failure": "False",
     "azureml.git.dirty": "True",
     "azureml.parameters": "{}",
+    "azureml.pipelineComponent": "pipelinerun",
     "azureml.runsource": "azureml.PipelineRun",
-    "mlflow.source.git.branch": "main",
-    "mlflow.source.git.commit": "be83b0665af84b6af293873a52df41e37095ca56",
-    "mlflow.source.git.repoURL": "https://github.com/Azure/azureml-previews",
+    "mlflow.source.git.branch": "march-cli-preview",
+    "mlflow.source.git.commit": "8e28ab743fd680a95d71a50e456c68757669ccc7",
+    "mlflow.source.git.repoURL": "https://github.com/Azure/azureml-examples.git",
     "runSource": "MFE",
     "runType": "HTTP"
   },
-  "resourceGroup": "shbijlan",
+  "resourceGroup": "pipeline-pm",
+  "services": {
+    "Studio": {
+      "endpoint": "https://ml.azure.com/runs/6cef8ff4-2bd3-4101-adf2-11e0b62e6f6d?wsid=/subscriptions/ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9/resourcegroups/pipeline-pm/workspaces/pm-dev&tid=72f988bf-86f1-41af-91ab-2d7cd011db47",
+      "job_service_type": "Studio"
+    },
+    "Tracking": {
+      "endpoint": "azureml://eastus.api.azureml.ms/mlflow/v1.0/subscriptions/ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9/resourceGroups/pipeline-pm/providers/Microsoft.MachineLearningServices/workspaces/pm-dev?",
+      "job_service_type": "Tracking"
+    }
+  },
+  "settings": {
+    "continue_on_step_failure": false,
+    "default_compute": "cpu-cluster",
+    "default_datastore": "workspaceblobstore"
+  },
   "status": "Preparing",
   "tags": {
-    "azureml.pipelineComponent": "pipelinerun"
+    "azureml.Designer": "true"
   },
-  "type": "pipeline_job"
+  "type": "pipeline"
 }
-
 ```
 
 
