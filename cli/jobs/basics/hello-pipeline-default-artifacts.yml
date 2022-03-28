@@ -2,15 +2,14 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 jobs:
   hello_job:
-    command: echo "hello" && echo "world" > ${{outputs.world_output}}/world.txt
+    command: echo "hello" && echo "world" > ./outputs/world.txt
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     outputs:
-      world_output:
+      artifacts:
   world_job:
-    command: cat ${{inputs.world_input}}/world.txt
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
+    command: cat ${{inputs.world_input}}/outputs/world.txt
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
     inputs:
-      world_input: ${{parent.jobs.hello_job.outputs.world_output}}
- 
+      world_input: ${{parent.jobs.hello_job.outputs.artifacts}}
