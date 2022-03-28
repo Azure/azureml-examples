@@ -18,8 +18,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: march-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -46,4 +44,4 @@ jobs:
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" train_cifar_10_with_pytorch.ipynb
           
           papermill train_cifar_10_with_pytorch.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/2b_train_cifar_10_with_pytorch
+      working-directory: sdk\jobs\pipelines\2b_train_cifar_10_with_pytorch
