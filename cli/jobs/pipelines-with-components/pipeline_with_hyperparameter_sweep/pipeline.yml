@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: "Tune hyperparameters using TF component"
+
+jobs:
+  sweep_job:
+    type: sweep
+    trial: file:./train.yml
+    inputs:
+      steps_per_epoch: 70
+      per_worker_batch_size: 64
+    outputs:
+      trained_model_output:
+        mode: upload
+    sampling_algorithm: random
+    search_space:
+      epochs:
+        type: choice
+        values: [1, 2, 3]
+    objective:
+      goal: maximize
+      primary_metric: accuracy
+    compute: azureml:cpu-cluster    

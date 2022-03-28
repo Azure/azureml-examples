@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+display_name: r-iris-example
+description: Train an R model on the Iris dataset.
+name: r-iris-example
+version: 01
+
+command: >
+  Rscript train.R 
+  --data_folder ${{inputs.iris}}
+code: src
+inputs:
+  iris: 
+    type: uri_file
+environment:
+  build:
+    path: docker-context

@@ -1,12 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
-  local_path: src
+code: src
 command: >-
   python prep-nyctaxi.py
   --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
 inputs:
   nyc_taxi_dataset:
-    folder: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/yellow
+    type: uri_folder
+    path: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/yellow
     mode: ro_mount
 environment: 
   image: mcr.microsoft.com/mmlspark/release:1.0.0-rc3
