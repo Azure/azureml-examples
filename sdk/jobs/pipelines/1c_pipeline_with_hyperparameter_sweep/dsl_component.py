@@ -20,12 +20,7 @@ conda_env = Environment(
     display_name="Train",
     description="A dummy train component defined by dsl component.",
     version="0.0.2",
-    # specify distribution type if needed
-    # distribution={'type': 'mpi'},
-    # specify customer environment, note that azure-ml must be included.
     environment=conda_env,
-    # specify your code folder, default code folder is current file's parent
-    # code='.'
 )
 def train_component_func(
     training_data: ArtifactInput,
@@ -58,6 +53,7 @@ def train_component_func(
     name="dsl_score_component",
     display_name="Score",
     description="A dummy score component defined by dsl component.",
+    environment=conda_env,
     version="0.0.1",
 )
 def score_component_func(
@@ -89,6 +85,7 @@ def score_component_func(
     name="dsl_eval_component",
     display_name="Evaluate",
     description="A dummy evaluate component defined by dsl component.",
+    environment=conda_env,
     version="0.0.1",
 )
 def eval_component_func(
