@@ -9,9 +9,6 @@ description: This sample shows how to run build pipeline with component.
 ---
 
 # Running a Pipeline job
-This example shows how to use component to build a pipeline, in this sampe we will provide three ways to use component define step in pipeline:
-- load component definition from local YAML
-- get registered component in workspace
-- define component using dsl.component with YAML
+This example shows how to create component into workspace and use registered component to build a pipeline.
 
-Please find the some define in [build_pipeline_with_components.ipynb](build_pipeline_with_components.ipynb).
+Please find the some define in [pipeline_with_registered_components.ipynb](pipeline_with_registered_components.ipynb).
