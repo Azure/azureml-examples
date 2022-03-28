@@ -38,7 +38,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/2b_train_cifar_10_with_pytorch.yml/train_cifar_10_with_pytorch.yml.ipynb
+    - name: run jobs/pipelines/2b_train_cifar_10_with_pytorch/train_cifar_10_with_pytorch.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" train_cifar_10_with_pytorch.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" train_cifar_10_with_pytorch.ipynb
