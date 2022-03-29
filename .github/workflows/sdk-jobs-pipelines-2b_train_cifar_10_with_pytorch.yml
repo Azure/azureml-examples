@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-3b_cifar-10-cifar-10-pipeline
+name: sdk-jobs-pipelines-2b_train_cifar_10_with_pytorch
 on:
   workflow_dispatch:
   schedule:

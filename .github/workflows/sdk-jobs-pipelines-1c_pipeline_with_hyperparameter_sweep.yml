@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-1e_pipeline_with_registered_components
+name: sdk-jobs-pipelines-1c_pipeline_with_hyperparameter_sweep
 on:
   workflow_dispatch:
   schedule:
