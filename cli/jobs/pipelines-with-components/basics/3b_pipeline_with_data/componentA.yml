@@ -7,14 +7,13 @@ version: 1
 
 inputs:
   componentA_input:
-    type: path
+    type: uri_folder
 
 outputs:
   componentA_output:
-    type: path
+    type: uri_folder
 
-code:
-  local_path: ./componentA_src
+code: ./componentA_src
 
 environment: 
   image: python

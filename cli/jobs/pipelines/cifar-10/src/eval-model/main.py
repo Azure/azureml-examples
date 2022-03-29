@@ -75,14 +75,16 @@ def main(args):
     distributed = world_size > 1
 
     # set device
-    if distributed:
+    if distributed and torch.cuda.is_available():
         device = torch.device("cuda", local_rank)
     else:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # initialize distributed process group using default env:// method
     if distributed:
-        torch.distributed.init_process_group(backend="nccl")
+        torch.distributed.init_process_group(
+            backend="nccl" if torch.cuda.is_available() else "gloo"
+        )
 
     # define test dataset DataLoaders
     transform = transforms.Compose(

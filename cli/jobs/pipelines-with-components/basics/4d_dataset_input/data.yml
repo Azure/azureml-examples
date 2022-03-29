@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
-name: sampledata123
+name: sampledata
 version: 1
 description: sample dataset
-local_path: ./data
+type: uri_folder
+path: ./data

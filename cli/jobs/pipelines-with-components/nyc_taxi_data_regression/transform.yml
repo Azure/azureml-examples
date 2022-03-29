@@ -6,13 +6,12 @@ version: 1
 type: command
 inputs:
   clean_data: 
-    type: path 
+    type: uri_folder 
 outputs:
   transformed_data:
-    type: path
-code:
-  local_path: ./transform_src
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    type: uri_folder
+code: ./transform_src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 command: >-
   python transform.py 
   --clean_data ${{inputs.clean_data}} 
