@@ -1,4 +1,0 @@
-name: r_script_environment
-version: 2
-build:
-    path: docker-context
