@@ -11,11 +11,11 @@
   * Train Linear Regression Model
     * This component splits the dataset into train/test sets and trains an sklearn Linear Regressor with the training set. 
     * Input: Data with feature set
-    * Output: Trained model (pickle format) and data subset for test (.csv)
+    * Output: Trained model (mlflow_model) and data subset for test (mltable)
   * Predict Taxi Fares
     * This component uses the trained model to predict taxi fares on the test set.
     * Input: Linear regression model and test data from previous step
-    * Output: Test data with predictions added as a column (.csv)
+    * Output: Test data with predictions added as a column (mltable)
   * Score Model 
     * This component scores the model based on how accurate the predictions are in the test set. 
     * Input: Test data with predictions and model

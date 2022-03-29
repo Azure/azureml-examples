@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: sampledata-mltable
 version: 1
 description: sample dataset

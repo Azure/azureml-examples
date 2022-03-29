@@ -9,9 +9,9 @@ inputs:
     type: uri_folder
 outputs:
   model_output:
-    type: uri_folder
+    type: mlflow_model
   test_data:
-    type: uri_folder
+    type: mltable
 code: ./train_src
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 command: >-

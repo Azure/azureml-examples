@@ -14,8 +14,13 @@
 # =========================================================================
 import argparse
 import os, json
+import mlflow
+import mlflow.tensorflow
 import tensorflow as tf
 import numpy as np
+
+# Enable auto-logging to MLflow to capture TensorBoard metrics.
+mlflow.tensorflow.autolog()
 
 def mnist_dataset(batch_size):
     (x_train, y_train), _ = tf.keras.datasets.mnist.load_data()
@@ -152,7 +157,6 @@ def main():
     # Save the model
     task_type, task_id = (tf_config["task"]["type"], tf_config["task"]["index"])
     write_model_path = write_filepath(args.model_dir, task_type, task_id)
-
     multi_worker_model.save(write_model_path)
 
 

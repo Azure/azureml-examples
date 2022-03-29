@@ -8,15 +8,11 @@ inputs:
     path: ./data
 
 outputs: 
-  pipeline_job_prepped_data:
-    mode: upload
-  pipeline_job_transformed_data:
-    mode: upload   
   pipeline_job_trained_model:
+    type: mlflow_model
     mode: upload
-  pipeline_job_test_data:
-    mode: upload 
   pipeline_job_predictions:
+    type: mltable
     mode: upload 
   pipeline_job_score_report:
     mode: upload
@@ -35,7 +31,7 @@ jobs:
     inputs:
       raw_data: ${{parent.inputs.pipeline_job_input}}
     outputs:
-      prep_data: ${{parent.outputs.pipeline_job_prepped_data}}
+      prep_data: 
 
   transform-job:
     type: command
@@ -43,7 +39,7 @@ jobs:
     inputs:
       clean_data: ${{parent.jobs.prep-job.outputs.prep_data}}
     outputs:
-      transformed_data: ${{parent.outputs.pipeline_job_transformed_data}}
+      transformed_data: 
 
   train-job:
     type: command
@@ -52,7 +48,9 @@ jobs:
       training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
-      test_data: ${{parent.outputs.pipeline_job_test_data}}
+      test_data: 
+        type: mltable
+        mode: rw_mount
   
   predict-job:
     type: command

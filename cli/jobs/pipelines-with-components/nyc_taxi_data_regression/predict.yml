@@ -6,12 +6,12 @@ display_name: PredictTaxiFares
 type: command
 inputs:
   model_input:
-    type: uri_folder
+    type: mlflow_model
   test_data:
-    type: uri_folder
+    type: mltable
 outputs:
   predictions:
-    type: uri_folder
+    type: mltable
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 code: ./predict_src
 command: >-
