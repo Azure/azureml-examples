@@ -5,6 +5,7 @@ on:
     - cron: "0 0/4 * * *"
   pull_request:
     branches:
+      - march-cli-preview
       - main
       - cli-preview
       - releases/current
