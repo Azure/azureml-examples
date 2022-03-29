@@ -39,10 +39,9 @@ jobs:
       continue-on-error: true
     - name: run jobs/pipelines/2b_train_cifar_10_with_pytorch/train_cifar_10_with_pytorch.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" train_cifar_10_with_pytorch.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" train_cifar_10_with_pytorch.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" train_cifar_10_with_pytorch.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" train_cifar_10_with_pytorch.ipynb
+          mkdir ../../.azureml
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" train_cifar_10_with_pytorch.ipynb
           
           papermill train_cifar_10_with_pytorch.ipynb - -k python
       working-directory: sdk/jobs/pipelines/2b_train_cifar_10_with_pytorch
