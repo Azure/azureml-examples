@@ -1,4 +1,3 @@
-
 FROM rocker/tidyverse:4.0.0-ubuntu18.04
 
 # Install python
