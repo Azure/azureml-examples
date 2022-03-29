@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
 type: command
 
-name: microsoftsamplesConvertToImageDirectory
+name: microsoftsamples_convert_to_image_directory
 display_name: Convert to Image Directory
 description: Convert dataset to image directory format.
 

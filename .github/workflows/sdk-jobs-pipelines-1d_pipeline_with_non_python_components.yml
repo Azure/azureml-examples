@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-3a_tf_mnist-tf_mnist
+name: sdk-jobs-pipelines-1d_pipeline_with_non_python_components
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - march-sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-3a_tf_mnist-tf_mnist.yml
+      - .github/workflows/sdk-jobs-pipelines-1d_pipeline_with_non_python_components.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -18,8 +18,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: march-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -38,12 +36,11 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/3a_tf_mnist/tf_mnist.ipynb
+    - name: run jobs/pipelines/1d_pipeline_with_non_python_components/pipeline_with_non_python_components.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" tf_mnist.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" tf_mnist.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" tf_mnist.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" tf_mnist.ipynb
+          mkdir ../../.azureml
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_non_python_components.ipynb
           
-          papermill tf_mnist.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/tf_mnist
+          papermill pipeline_with_non_python_components.ipynb - -k python
+      working-directory: sdk/jobs/pipelines/1d_pipeline_with_non_python_components

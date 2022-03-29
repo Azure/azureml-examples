@@ -2,7 +2,7 @@
 ## Please reach out to the Azure ML docs & samples team before editing for the first time. 
 
 # <component>
-name: ScoreModel
+name: score_model
 version: 1
 display_name: ScoreModel
 type: command
