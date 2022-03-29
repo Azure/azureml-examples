@@ -6,7 +6,8 @@ import os
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-import pickle
+import mlflow
+mlflow.sklearn.autolog()
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
@@ -80,8 +81,13 @@ print(model.score(trainX, trainy))
 
 
 # Output the model and test data
-pickle.dump(model, open((Path(args.model_output) / "model.sav"), "wb"))
+# mlflow model can't write to existed folder
+mlflow.sklearn.save_model(model, args.model_output + '/model')
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
 print(testX.shape)
-test_data = testX.to_csv((Path(args.test_data) / "test_data.csv"))
+test_data = testX.to_csv("test_data.csv")
+
+import mltable as mlt
+tbl = mlt.from_delimited_files(path=["test_data.csv"])
+tbl.save(args.test_data)

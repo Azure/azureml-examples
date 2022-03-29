@@ -1,1 +1,1 @@
-We use a data asset as input in this example. You can create a data asset using `az ml data create --file data.yml`.
+We use a data asset as input in this example. In this example, we load data asset from local yaml. You can also create a data asset using `az ml data create --file data.yml`.
