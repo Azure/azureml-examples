@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
 type: command
 
-name: microsoftsamplesInitImageTransformation
+name: microsoftsamples_init_image_transformation
 display_name: Init Image Transformation
 description: Initialize image transformation.
 

@@ -4,7 +4,6 @@ from uuid import uuid4
 
 from azure.ml import dsl, ArtifactInput, ArtifactOutput
 from azure.ml.entities import Environment
-from azureml.core import Run
 from random import random
 
 # init customer environment with conda YAML
@@ -13,7 +12,6 @@ conda_env = Environment(
     conda_file=Path(__file__).parent / "conda.yaml",
     image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
 )
-
 
 @dsl.command_component(
     name="dsl_train_component",
@@ -56,6 +54,7 @@ def train_component_func(
     ]:
         print(f"{param_name}: {param_value}")
 
+    from azureml.core import Run
     run = Run.get_context()
     run.log("accuracy", accuracy)
 

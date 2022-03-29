@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
 type: command
 
-name: microsoftsamplesApplyImageTransformation
+name: microsoftsamples_apply_image_transformation
 display_name: Apply Image Transformation
 description: Applies a image transformation to a image directory.
 
