@@ -1,6 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
-name: sampledata
-version: 1
-description: sample dataset
-type: uri_folder
-path: ./data
