@@ -45,4 +45,4 @@ jobs:
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" train_mnist_with_tensorflow.ipynb
           
           papermill train_mnist_with_tensorflow.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/tf_mnist
+      working-directory: sdk/jobs/pipelines/2a_train_mnist_with_tensorflow
