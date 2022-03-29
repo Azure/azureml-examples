@@ -40,7 +40,7 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" pipeline_with_components_from_yaml.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" pipeline_with_components_from_yaml.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" pipeline_with_components_from_yaml.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb
           
           papermill pipeline_with_components_from_yaml.ipynb - -k python
       working-directory: sdk/jobs/pipelines/1a_pipeline_with_components_from_yaml
