@@ -11,7 +11,7 @@ conda_env = Environment(
 )
 
 @dsl.command_component(
-    name="TF_mnist",
+    name="tf_mnist",
     version="1",
     display_name="TF_mnist",
     description="Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.",
