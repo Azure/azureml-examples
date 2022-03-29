@@ -14,7 +14,7 @@ conda_env = Environment(
 
 
 @dsl.command_component(
-    name="dsl_train_component",
+    name="dsl_train_model",
     display_name="Train",
     description="A dummy train component defined by dsl component.",
     version="0.0.2",
@@ -25,7 +25,7 @@ conda_env = Environment(
     # specify your code folder, default code folder is current file's parent
     # code='.'
 )
-def train_component_func(
+def train_model(
     training_data: ArtifactInput,
     max_epochs: int,
     model_output: ArtifactOutput,
@@ -48,12 +48,13 @@ def train_component_func(
 
 
 @dsl.command_component(
-    name="dsl_score_component",
+    name="dsl_score_data",
     display_name="Score",
     description="A dummy score component defined by dsl component.",
     version="0.0.1",
+    environment=conda_env,
 )
-def score_component_func(
+def score_data(
     model_input: ArtifactInput,
     test_data: ArtifactInput,
     score_output: ArtifactOutput,
@@ -79,12 +80,13 @@ def score_component_func(
 
 
 @dsl.command_component(
-    name="dsl_eval_component",
+    name="dsl_eval_model",
     display_name="Evaluate",
     description="A dummy evaluate component defined by dsl component.",
     version="0.0.1",
+    environment=conda_env,
 )
-def eval_component_func(
+def eval_model(
     scoring_result: ArtifactInput,
     eval_output: ArtifactOutput,
 ):
