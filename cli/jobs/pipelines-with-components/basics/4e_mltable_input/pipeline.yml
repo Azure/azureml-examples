@@ -4,7 +4,7 @@ description: "Example of using data from a Dataset as pipeline input"
 inputs:
   pipeline_sample_input_data:
     type: mltable
-    path: azureml:sampledata-mltable@latest
+    path: file://data
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 
 outputs:
