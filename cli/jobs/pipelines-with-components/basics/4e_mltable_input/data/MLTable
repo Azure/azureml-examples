@@ -1,0 +1,4 @@
+paths:
+  - file: ./sample.csv
+transformations:
+  - take: 1
