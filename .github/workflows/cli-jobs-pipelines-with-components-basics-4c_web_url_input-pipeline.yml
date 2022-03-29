@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-basics-4c_datastore_datapath_uri_file-pipeline
+name: cli-jobs-pipelines-with-components-basics-4c_web_url_input-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - cli-preview
       - releases/current
     paths:
-      - cli/jobs/pipelines-with-components/basics/4c_datastore_datapath_uri_file/**
-      - .github/workflows/cli-jobs-pipelines-with-components-basics-4c_datastore_datapath_uri_file-pipeline.yml
+      - cli/jobs/pipelines-with-components/basics/4c_web_url_input/**
+      - .github/workflows/cli-jobs-pipelines-with-components-basics-4e_web_url_input-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines-with-components/basics/4c_datastore_datapath_uri_file/pipeline.yml
+      run: bash -x run-job.sh jobs/pipelines-with-components/basics/4c_web_url_input/pipeline.yml
       working-directory: cli
