@@ -4,11 +4,15 @@ type: command
 name: get_data
 display_name: Get Data
 
+inputs:
+  cifar_zip:
+    type: uri_file
+
 outputs:
   cifar:
     type: uri_folder
 
-command: wget https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz; tar -xvzf cifar-10-python.tar.gz -C ${{outputs.cifar}}; rm cifar-10-python.tar.gz
+command: tar -xvzf ${{inputs.cifar_zip}}/cifar-10-python.tar.gz -C ${{outputs.cifar}}
 
 environment: 
   image: docker.io/python
