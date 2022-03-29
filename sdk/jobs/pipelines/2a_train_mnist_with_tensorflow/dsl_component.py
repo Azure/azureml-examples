@@ -21,7 +21,7 @@ conda_env = Environment(
         "worker_count": 2
     },
 )
-def tf_func(
+def train_tf(
     trained_model_output: ArtifactOutput, 
     epochs=3,
     steps_per_epoch=70,

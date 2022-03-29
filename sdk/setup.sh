@@ -8,4 +8,6 @@
 #using dev build
 pip install azure-ml==0.0.59355733 --extra-index-url https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
 
+pip install azureml-core==1.39
+
 pip list
