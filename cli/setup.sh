@@ -23,8 +23,8 @@ az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheel
 # <set_variables>
 # Run in canary
 GROUP="azureml-examples"
-LOCATION="eastus2euap"
-WORKSPACE="main-canary"
+LOCATION="centraluseuap"
+WORKSPACE="main-master"
 # </set_variables>
 
 
