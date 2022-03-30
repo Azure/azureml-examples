@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines/nyc-taxi/**
       - .github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml
