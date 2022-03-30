@@ -17,6 +17,8 @@ jobs:
       epochs:
         type: choice
         values: [1, 2, 3]
+    limits:
+      max_total_trials: 3
     objective:
       goal: maximize
       primary_metric: accuracy
