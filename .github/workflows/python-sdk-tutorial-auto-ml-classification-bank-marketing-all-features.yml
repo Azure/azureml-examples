@@ -1,62 +1,39 @@
-name: auto-ml-classification-bank-marketing-all-features
+name: sdk-automl-classification
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 2"
+    - cron: "0 */8 * * *"
   pull_request:
-    branches:
-      - main
     paths:
-      - python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features/**
-      - .github/workflows/python-sdk-tutorial-auto-ml-classification-bank-marketing-all-features.yml
+      - sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/**
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: automl-preview
     - name: setup python
       uses: actions/setup-python@v2
-      with:
-        python-version: "3.7"
-    - name: Run Install packages
-      run: |
-         chmod +x ./scripts/install-packages.sh
-         ./scripts/install-packages.sh
-      shell: bash
-    - name: create automl conda environment
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-          activate-environment: azure_automl
-          environment-file: python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
-          auto-activate-base: false
-    - name: install papermill and set up the IPython kernel
-      run: |
-        pip install papermill==2.3.3
-        python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
-        pip list
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r notebooks/dev-requirements.txt
+    - name: setup SDK v2
+      run: bash setup.sh
+      working-directory: sdk/jobs/automl-standalone-jobs
+      continue-on-error: true
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
-    - name: Run update-azure-extensions
-      run: |
-         chmod +x ./scripts/update-azure-extensions.sh
-         ./scripts/update-azure-extensions.sh
-      shell: bash
-    - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run auto-ml-classification-bank-marketing-all-features.ipynb
-      run: papermill -k python auto-ml-classification-bank-marketing-all-features.ipynb auto-ml-classification-bank-marketing-all-features.output.ipynb
-      working-directory: python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
+    - name: run Notebook
+      run: papermill -k python automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: auto-ml-classification-bank-marketing-all-features
-        path: python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features
+        name: automl-classification-task-bankmarketing
+        path: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
