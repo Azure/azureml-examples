@@ -56,7 +56,7 @@ on:\n"""
     branches:
       - main
       - sdk-preview\n"""
-    if BRANCH!="":
+    if BRANCH!="main":
       workflow_yaml += f"""      - {BRANCH}\n"""
     workflow_yaml += f"""    paths:
       - sdk/**
@@ -68,7 +68,7 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2\n"""
-    if BRANCH!="":
+    if BRANCH!="main":
       workflow_yaml += f"""      with:
         ref: {BRANCH}\n"""    
     workflow_yaml += f"""    - name: setup python
