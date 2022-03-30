@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/assets/data/iris-csv-example.yml
       - .github/workflows/cli-assets-data-iris-csv-example.yml

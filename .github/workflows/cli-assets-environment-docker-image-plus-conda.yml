@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/assets/environment/docker-image-plus-conda.yml
       - .github/workflows/cli-assets-environment-docker-image-plus-conda.yml

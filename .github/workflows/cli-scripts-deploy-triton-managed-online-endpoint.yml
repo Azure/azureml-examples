@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/deploy-triton-managed-online-endpoint.sh
       - .github/workflows/cli-scripts-deploy-triton-managed-online-endpoint.yml

@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/single-step/r/iris/**
       - .github/workflows/cli-jobs-single-step-r-iris-job.yml

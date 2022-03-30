@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-basics-4b_datastore_datapath_uri_folder-pipeline
+name: cli-jobs-pipelines-with-components-basics-4b_datastore_datapath_uri-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-4b_datastore_datapath_uri-pipeline.yml

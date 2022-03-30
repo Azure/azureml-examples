@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - march-cli-preview
-      - releases/current
     paths:
       - cli/assets/component/train.yml
       - .github/workflows/cli-assets-component-train.yml
