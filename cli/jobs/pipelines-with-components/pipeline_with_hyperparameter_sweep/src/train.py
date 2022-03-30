@@ -13,112 +13,8 @@
 # Script adapted from: https://github.com/tensorflow/docs/blob/master/site/en/tutorials/distribute/multi_worker_with_keras.ipynb
 # =========================================================================
 import argparse
-import os, json
-import mlflow
-import mlflow.tensorflow
-import tensorflow as tf
-import numpy as np
 
-# Enable auto-logging to MLflow to capture TensorBoard metrics.
-mlflow.tensorflow.autolog()
-
-def mnist_dataset(batch_size):
-    (x_train, y_train), _ = tf.keras.datasets.mnist.load_data()
-    # The `x` arrays are in uint8 and have values in the range [0, 255].
-    # We need to convert them to float32 with values in the range [0, 1]
-    x_train = x_train / np.float32(255)
-    y_train = y_train.astype(np.int64)
-    train_dataset = (
-        tf.data.Dataset.from_tensor_slices((x_train, y_train))
-        .shuffle(60000)
-        .repeat()
-        .batch(batch_size)
-    )
-    return train_dataset
-
-
-def build_and_compile_cnn_model():
-    model = tf.keras.Sequential(
-        [
-            tf.keras.Input(shape=(28, 28)),
-            tf.keras.layers.Reshape(target_shape=(28, 28, 1)),
-            tf.keras.layers.Conv2D(32, 3, activation="relu"),
-            tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(128, activation="relu"),
-            tf.keras.layers.Dense(10),
-        ]
-    )
-    model.compile(
-        loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        optimizer=tf.keras.optimizers.SGD(learning_rate=0.001),
-        metrics=["accuracy"],
-    )
-    return model
-
-
-def _is_chief(task_type, task_id):
-    # If `task_type` is None, this may be operating as single worker, which works
-    # effectively as chief.
-    return (
-        task_type is None
-        or task_type == "chief"
-        or (task_type == "worker" and task_id == 0)
-    )
-
-
-def _get_temp_dir(dirpath, task_id):
-    import tensorflow as tf
-    base_dirpath = "workertemp_" + str(task_id)
-    temp_dir = os.path.join(dirpath, base_dirpath)
-    tf.io.gfile.makedirs(temp_dir)
-    return temp_dir
-
-
-def write_filepath(filepath, task_type, task_id):
-    dirpath = os.path.dirname(filepath)
-    base = os.path.basename(filepath)
-    if not _is_chief(task_type, task_id):
-        dirpath = _get_temp_dir(dirpath, task_id)
-    return os.path.join(dirpath, base)
-
-
-def train_and_save_model(
-    per_worker_batch_size,
-    epochs,
-    steps_per_epoch,
-    model_dir
-):
-    tf_config = json.loads(os.environ["TF_CONFIG"])
-    num_workers = len(tf_config["cluster"]["worker"])
-
-    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
-
-    # Here the batch size scales up by number of workers since
-    # `tf.data.Dataset.batch` expects the global batch size.
-    global_batch_size = per_worker_batch_size * num_workers
-    multi_worker_dataset = mnist_dataset(global_batch_size)
-
-    with strategy.scope():
-        # Model building/compiling need to be within `strategy.scope()`.
-        multi_worker_model = build_and_compile_cnn_model()
-
-    # Keras' `model.fit()` trains the model with specified number of epochs and
-    # number of steps per epoch.
-    multi_worker_model.fit(
-        multi_worker_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch
-    )
-
-    from azureml.core import Run
-    from random import random
-    run = Run.get_context()
-    run.log("accuracy", random())
-
-    # Save the model
-    task_type, task_id = (tf_config["task"]["type"], tf_config["task"]["index"])
-    write_model_path = write_filepath(model_dir, task_type, task_id)
-
-    multi_worker_model.save(write_model_path)
-
+from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser()
@@ -133,31 +29,25 @@ def main():
     )
 
     args = parser.parse_args()
+    from random import random
+    accuracy = random()
+    
+    lines = []
+    for variable_name, variable_value in [
+        ("epochs", args.epochs),
+        ("step-per-epoch", args.steps_per_epoch),
+        ("per-worker-batch-size", args.per_worker_batch_size),
+        ("accuracy", accuracy)
+    ]:
+        lines.append(f"{variable_name}: {variable_value}")
+        print(lines[-1])
 
-    tf_config = json.loads(os.environ["TF_CONFIG"])
-    num_workers = len(tf_config["cluster"]["worker"])
-
-    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
-
-    # Here the batch size scales up by number of workers since
-    # `tf.data.Dataset.batch` expects the global batch size.
-    global_batch_size = args.per_worker_batch_size * num_workers
-    multi_worker_dataset = mnist_dataset(global_batch_size)
-
-    with strategy.scope():
-        # Model building/compiling need to be within `strategy.scope()`.
-        multi_worker_model = build_and_compile_cnn_model()
-
-    # Keras' `model.fit()` trains the model with specified number of epochs and
-    # number of steps per epoch.
-    multi_worker_model.fit(
-        multi_worker_dataset, epochs=args.epochs, steps_per_epoch=args.steps_per_epoch
-    )
+    from azureml.core import Run
+    run = Run.get_context()    
+    run.log("accuracy", accuracy)
 
     # Save the model
-    task_type, task_id = (tf_config["task"]["type"], tf_config["task"]["index"])
-    write_model_path = write_filepath(args.model_dir, task_type, task_id)
-    multi_worker_model.save(write_model_path)
+    (Path(args.model_dir) / "model").write_text("\n".join(lines))
 
 
 if __name__ == "__main__":
