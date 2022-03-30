@@ -3,7 +3,7 @@ $schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLCla
 type: automl
 
 experiment_name: dpv2-cli-automl-classifier-experiment
-name: dpv2-cli-classifier-train-set-only
+# name: dpv2-cli-classifier-train-val-test-sets
 description: A Classification job using bank marketing
 
 compute: azureml:cpu-cluster
@@ -19,10 +19,13 @@ data:
       path: "./training-mltable-folder"
       type: mltable
   validation:
-    data:
-      path: "./validation-mltable-folder"
-      type: mltable
+   #validation_data_size: 0.20
+   #n_cross_validations: 5  #(BUG: 1726477)
+   data:
+     path: "./validation-mltable-folder"
+     type: mltable
   test:
+    #test_data_size: 0.1
     data:
       path: "./test-mltable-folder"
       type: mltable
