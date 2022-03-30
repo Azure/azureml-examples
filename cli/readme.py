@@ -33,7 +33,9 @@ def main(args):
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(
+        glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
+    )
     jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
