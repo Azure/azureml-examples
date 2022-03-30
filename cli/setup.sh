@@ -13,21 +13,6 @@ LOCATION="eastus"
 WORKSPACE="main"
 # </set_variables>
 
-# <set_variables>
-# Run in master
-# GROUP="azureml-examples"
-# LOCATION="centraluseuap"
-# WORKSPACE="main-master"
-# </set_variables>
-
-# <set_variables>
-# Run in canary
-# GROUP="azureml-examples"
-# LOCATION="eastus2euap"
-# WORKSPACE="main-canary"
-# </set_variables>
-
-
 # <az_configure_defaults>
 az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 # </az_configure_defaults>
