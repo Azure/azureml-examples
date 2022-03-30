@@ -1,0 +1,40 @@
+$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLClassificationJob.schema.json
+type: automl
+
+experiment_name: dpv2-cli-automl-classifier-experiment
+# name: dpv2-cli-classifier-parent-run-01
+description: A Classification job using bank marketing
+
+compute: azureml:cpu-cluster
+
+task_type: classification
+log_verbosity: Debug
+
+data:
+  target_column_name: y
+  training:
+    data:
+      path: "./training-mltable-folder"
+      type: mltable
+  validation:
+    data:
+      path: "./validation-mltable-folder"
+      type: mltable
+  test:
+    data:
+      path: "./test-mltable-folder"
+      type: mltable
+
+limits:
+  timeout: 180
+  max_total_trials: 40
+  max_concurrent_trials: 5
+  trial_timeout_minutes: 20
+  enable_early_termination: true
+  
+featurization:
+  mode: auto
+
+properties:
+  # _automl_internal_enable_mltable_quick_profile: "true"
+  _automl_internal_label: "latest"
