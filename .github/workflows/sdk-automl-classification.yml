@@ -1,4 +1,4 @@
-name: python-sdk-deploy-pytorch-mnist-job
+name: sdk-automl-classification
 on:
   schedule:
     - cron: "0 */8 * * *"
