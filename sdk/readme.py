@@ -10,7 +10,7 @@ NOT_TESTED_NOTEBOOKS = ["datastore",] #cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
 #define branch where we need this
 #use if running on a release candidate, else make it empty
-BRANCH = 'main'
+BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
 BRANCH = 'march-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
 
@@ -44,7 +44,7 @@ def write_workflows(notebooks):
 
 
 def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
     if ENABLE_MANUAL_CALLING:
@@ -54,8 +54,9 @@ on:\n"""
     - cron: "0 */8 * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
+      - main
       - sdk-preview\n"""
-    if BRANCH!="":
+    if BRANCH!="main":
       workflow_yaml += f"""      - {BRANCH}\n"""
     workflow_yaml += f"""    paths:
       - sdk/**
@@ -67,7 +68,7 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2\n"""
-    if BRANCH!="":
+    if BRANCH!="main":
       workflow_yaml += f"""      with:
         ref: {BRANCH}\n"""    
     workflow_yaml += f"""    - name: setup python
@@ -91,7 +92,7 @@ jobs:
     - name: run {notebook}
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" {name}.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" {name}.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" {name}.ipynb\n"""
     if name == "workspace":
