@@ -29,7 +29,9 @@ jobs:
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: run Notebook
-      run: papermill -k python automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
+      run: |
+        sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-classification-task-bankmarketing.ipynb
+        papermill -k python automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
