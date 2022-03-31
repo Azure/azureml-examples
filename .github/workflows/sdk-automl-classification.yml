@@ -1,0 +1,40 @@
+name: sdk-automl-classification
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - automl-preview
+    paths:
+      - sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/**
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        ref: automl-preview
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r notebooks/dev-requirements.txt
+    - name: setup SDK v2
+      run: bash setup.sh
+      working-directory: sdk/jobs/automl-standalone-jobs
+      continue-on-error: true
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: run Notebook
+      run: papermill -k python automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: automl-classification-task-bankmarketing
+        path: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
