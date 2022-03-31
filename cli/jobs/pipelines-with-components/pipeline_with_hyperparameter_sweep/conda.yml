@@ -10,7 +10,7 @@ dependencies:
   - pip:
     # change this when stable version release
     - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
-    - azure-ml==0.0.58938149
+    - azure-ml==0.0.59707384
     - numpy==1.18.1
     - tensorflow==2.2.0
     - azureml-core==1.39
