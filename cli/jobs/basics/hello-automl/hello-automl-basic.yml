@@ -12,7 +12,7 @@ task_type: classification
 primary_metric: accuracy  
 
 data:
-  target_column_name: y
+  target_column_name: "y"
   training:
     data:
       path: "./training-mltable-folder"
