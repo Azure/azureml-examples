@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - pipeline/*
+      - main
       - sdk-preview
       - march-sdk-preview
     paths:
