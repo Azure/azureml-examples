@@ -134,15 +134,19 @@ def write_readme(notebooks):
         folder = os.path.dirname(notebook)
         classification = folder.replace("/","-")
 
-        # read in notebook
-        with open(notebook, "r") as f:
-            data = json.load(f)
-
-        description = "*no description*"
         try:
-          if data["metadata"]["description"] is not None:
-            description = data["metadata"]["description"]["description"]
+          # read in notebook
+          with open(notebook, "r") as f:
+              data = json.load(f)
+
+          description = "*no description*"
+          try:
+            if data["metadata"]["description"] is not None:
+              description = data["metadata"]["description"]["description"]
+          except:
+            pass
         except:
+          print('Could not load', notebook)
           pass
 
         # write workflow file        
