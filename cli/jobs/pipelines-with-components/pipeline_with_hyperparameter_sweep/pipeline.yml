@@ -2,24 +2,103 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "Tune hyperparameters using TF component"
 
+compute: azureml:cpu-cluster
+
 jobs:
-  sweep_job:
+  sweep_for_train:
     type: sweep
     trial: file:./train.yml
     inputs:
-      steps_per_epoch: 70
-      per_worker_batch_size: 64
+      random_seed: 5
+      training_data:
+        type: mltable
+        mode: ro_mount
+        path: https://dprepdata.blob.core.windows.net/demo/Titanic.csv
     outputs:
-      trained_model_output:
+      model_output:
         mode: upload
-    sampling_algorithm: random
     search_space:
-      epochs:
+      batch_size:
         type: choice
-        values: [1, 2, 3]
+        values: [25, 35]
+      first_layer_neurons:
+        type: randint
+        upper: 50
+      second_layer_neurons:
+        type: quniform
+        min_value: 10
+        max_value: 50
+        q: 5
+      third_layer_neurons:
+        type: qlognormal
+        mu: 5
+        sigma: 1
+        q: 5
+      epochs:
+        type: qloguniform
+        min_value: 1
+        max_value: 5
+        q: 5
+      momentum:
+        type: qnormal
+        mu: 10
+        sigma: 5
+        q: 2
+      weight_decay:
+        type: lognormal
+        mu: 0
+        sigma: 1
+      learning_rate:
+        type: loguniform
+        min_value: -6
+        max_value: -1
+      f1:
+        type: normal
+        mu: 0
+        sigma: 1
+      f2:
+        type: uniform
+        min_value: 10
+        max_value: 20
     limits:
       max_total_trials: 3
+    sampling_algorithm: random
     objective:
       goal: maximize
       primary_metric: accuracy
-    compute: azureml:cpu-cluster    
+  score_data:
+    type: command
+    command: "echo ${{inputs.model_input}} & echo ${{inputs.test_data}} & echo ${{outputs.score_output}}"
+    inputs:
+      model_input:
+        type: mlflow_model
+        mode: ro_mount
+        value: ${{parent.jobs.sweep_for_train.outputs.model_output}}
+      test_data:
+        type: uri_file
+        mode: ro_mount
+        path: https://dprepdata.blob.core.windows.net/demo/Titanic.csv
+    outputs:
+      score_output:
+        type: uri_file
+        mode: upload
+    environment: 
+      conda_file: ./conda.yml
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1
+  eval_model:
+    type: command
+    command: "echo ${{inputs.model_input}} & echo ${{inputs.test_data}} & echo ${{outputs.score_output}}"
+    inputs:
+      scoring_result: 
+        type: uri_file
+        mode: ro_mount
+        value: ${{parent.jobs.score_data.outputs.score_output}}
+    outputs:
+      eval_output:
+        mode: upload
+        type: uri_file
+    environment: 
+      conda_file: ./conda.yml
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1
+
+        

@@ -1,21 +1,50 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: tf_mnist
-display_name: TF_mnist
-version: 1
+name: train_component
+display_name: Train
+version: 0.0.1
 
-inputs: 
+inputs:
+  random_seed:
+    type: integer
+    default: 1
+  batch_size:
+    type: integer
+    default: 32
+  first_layer_neurons:
+    type: integer
+    default: 40
+  second_layer_neurons:
+    type: integer
+    default: 20
+  third_layer_neurons:
+    type: integer
+    default: 5
   epochs:
     type: integer
-  steps_per_epoch:
-    type: integer
-  per_worker_batch_size:
-    type: integer
+    default: 3
+  momentum:
+    type: number
+    default: 10
+  weight_decay:
+    type: number
+    default: 0.5
+  learning_rate:
+    type: number
+    default: 0.02
+  f1:
+    type: number
+    default: 0.5
+  f2:
+    type: number
+    default: 0.5
+  training_data:
+    type: mltable
 
 outputs:
-  trained_model_output: 
-    type: uri_folder
+  model_output:
+    type: mlflow_model
     
 code: ./src
 
@@ -24,8 +53,9 @@ environment:
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1
 
 command: >-
-  python train.py 
-  --epochs ${{inputs.epochs}}
-  --steps-per-epoch ${{inputs.steps_per_epoch}}
-  --per-worker-batch-size ${{inputs.per_worker_batch_size}}
-  --model-dir ${{outputs.trained_model_output}}
+  python train.py --random-seed ${{inputs.random_seed}}
+  --training-data ${{inputs.training_data}} --batch-size ${{inputs.batch_size}}
+  --first-layer-neurons ${{inputs.first_layer_neurons}} --second-layer-neurons ${{inputs.second_layer_neurons}}
+  --third-layer-neurons ${{inputs.third_layer_neurons}} --epochs ${{inputs.epochs}} 
+  --f1 ${{inputs.f1}} --f2 ${{inputs.f2}} --weight-decay ${{inputs.weight_decay}} --momentum ${{inputs.momentum}}
+  --learning-rate ${{inputs.learning_rate}} --model-output ${{outputs.model_output}}
