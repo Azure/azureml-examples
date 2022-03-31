@@ -1,0 +1,136 @@
+name: amlarc-cli-train-test
+on:
+  schedule:
+    - cron: "0 0/12 * * *"
+  workflow_dispatch:
+    inputs:
+      AMLARC_RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: true
+        default: 'experimental'
+jobs:
+  cpu-test:
+    runs-on: ubuntu-latest
+    env:
+      INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install tools
+      run: |
+        bash amlarc-compute.sh install_tools
+        bash amlarc-compute.sh prepare_attach_compute_py
+      working-directory: cli
+    - name: setup STANDARD_DS3_V2 cluster
+      run: bash amlarc-compute.sh setup_cluster STANDARD_DS3_V2 5 10
+      working-directory: cli
+    - name: setup cpu-cluster compute
+      run: bash amlarc-compute.sh setup_compute STANDARD_DS3_V2 cpu-cluster
+      working-directory: cli
+    - name: run jobs/train/fastai/mnist job
+      run: bash amlarc-compute.sh run_test jobs/train/fastai/mnist/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris-bash job
+      run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris-bash/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris/sweep job
+      run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job-sweep.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/lightgbm/iris job
+      run: bash amlarc-compute.sh run_test jobs/train/lightgbm/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/r/accidents job
+      run: bash amlarc-compute.sh run_test jobs/train/r/accidents/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/r/iris job
+      run: bash amlarc-compute.sh run_test jobs/train/r/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/iris job
+      run: bash amlarc-compute.sh run_test jobs/train/tensorflow/iris/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: clean up STANDARD_DS3_V2 cluster
+      if: ${{ always() }}
+      run: bash amlarc-compute.sh clean_up_cluster STANDARD_DS3_V2
+      working-directory: cli
+    - name: count result
+      if: ${{ always() }}
+      run: bash amlarc-compute.sh count_result
+      working-directory: cli
+
+  gpu-test:
+    runs-on: ubuntu-latest
+    env:
+      INPUT_AMLARC_RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: init env
+      run: |
+        bash amlarc-compute.sh install_tools
+        bash amlarc-compute.sh prepare_attach_compute_py
+      working-directory: cli
+    - name: setup STANDARD_NC12 cluster
+      run: bash amlarc-compute.sh setup_cluster STANDARD_NC12 4 8
+      working-directory: cli
+    - name: setup gpu-cluster compute
+      run: bash amlarc-compute.sh setup_compute STANDARD_NC12 gpu-cluster
+      working-directory: cli
+    - name: run jobs/train/fastai/pets job
+      run: bash amlarc-compute.sh run_test jobs/train/fastai/pets/job.yml
+      working-directory: cli
+      continue-on-error: true
+      #- name: run jobs/train/pytorch/cifar-distributed job
+      #- run: bash amlarc-compute.sh run_test jobs/train/pytorch/cifar-distributed/job.yml
+      #- working-directory: cli
+      #- continue-on-error: true
+    - name: run jobs/train/pytorch/word-language-model job
+      run: bash amlarc-compute.sh run_test jobs/train/pytorch/word-language-model/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/mnist-distributed-horovod job
+      run: bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist-distributed-horovod/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/mnist-distributed job
+      run: bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist-distributed/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/train/tensorflow/mnist job
+      run: bash amlarc-compute.sh run_test jobs/train/tensorflow/mnist/job.yml
+      working-directory: cli
+      continue-on-error: true
+    - name: clean up STANDARD_NC12 cluster
+      if: ${{ always() }}
+      run: bash amlarc-compute.sh clean_up_cluster STANDARD_NC12
+      working-directory: cli
+    - name: count result
+      if: ${{ always() }}
+      run: bash amlarc-compute.sh count_result
+      working-directory: cli
+      
+      
+      
+      
