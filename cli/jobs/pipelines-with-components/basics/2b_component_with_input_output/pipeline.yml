@@ -23,3 +23,7 @@ jobs:
     # sample_input_string: ${{inputs.pipeline_sample_input_string}}
     outputs:
       sample_output_data: ${{parent.outputs.pipeline_sample_output_data}}
+    environment_variables:
+      ENV_KEY: ENV_VAL
+      NCCL_IB_DISABLE: "1"
+      NCCL_DEBUG: "INFO"
