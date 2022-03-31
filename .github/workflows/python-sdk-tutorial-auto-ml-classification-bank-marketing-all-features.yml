@@ -20,16 +20,19 @@ jobs:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r notebooks/dev-requirements.txt
-    - name: setup SDK v2
-      run: bash setup.sh
-      working-directory: sdk/jobs/automl-standalone-jobs
-      continue-on-error: true
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
+    - name: setup SDK v2
+      run: bash setup.sh
+      working-directory: sdk/jobs/automl-standalone-jobs
+      continue-on-error: true
     - name: run Notebook
       run: |
+        sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-classification-task-bankmarketing.ipynb
+        sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-classification-task-bankmarketing.ipynb
+        sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-classification-task-bankmarketing.ipynb
         sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-classification-task-bankmarketing.ipynb
         papermill -k python automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
