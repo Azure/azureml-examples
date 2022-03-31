@@ -13,7 +13,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: automl-preview
+        ref: ratanase/AprilPreview-Actions
     - name: setup python
       uses: actions/setup-python@v2
       with: 
