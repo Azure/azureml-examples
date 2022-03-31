@@ -18,36 +18,60 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--first-layer-neurons", type=int, default=40)
+    parser.add_argument("--second-layer-neurons", type=int, default=20)
+    parser.add_argument("--third-layer-neurons", type=int, default=5)
     parser.add_argument("--epochs", type=int, default=3)
-    parser.add_argument("--steps-per-epoch", type=int, default=70)
-    parser.add_argument("--per-worker-batch-size", type=int, default=64)
+    parser.add_argument("--momentum", type=float, default=10)
+    parser.add_argument("--weight-decay", type=float, default=0.5)
+    parser.add_argument("--learning-rate", type=float, default=0.02)
+    parser.add_argument("--f1", type=float, default=0.5)
+    parser.add_argument("--f2", type=float, default=0.5)
+    parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument(
-        "--model-dir",
+        "--model-output",
         type=str,
         default="outputs",
         help="directory to save the model to",
     )
-
+    parser.add_argument(
+        "--training-data",
+        type=str,
+        default="inputs",
+        help="data for training",
+    )
+    
     args = parser.parse_args()
     from random import random
     accuracy = random()
-    
     lines = []
-    for variable_name, variable_value in [
+    for param_name, param_value in [
+        ("training_data", args.training_data),
+        ("batch_size", args.batch_size),
+        ("first_layer_neurons", args.first_layer_neurons),
+        ("second_layer_neurons", args.second_layer_neurons),
+        ("third_layer_neurons", args.third_layer_neurons),
         ("epochs", args.epochs),
-        ("step-per-epoch", args.steps_per_epoch),
-        ("per-worker-batch-size", args.per_worker_batch_size),
-        ("accuracy", accuracy)
+        ("momentum", args.momentum),
+        ("weight_decay", args.weight_decay),
+        ("learning_rate", args.learning_rate),
+        ("f1", args.f1),
+        ("f2", args.f2),
+        ("model_output", args.model_output),
+        ("random_seed", args.random_seed), 
+        ("accuracy", accuracy), 
     ]:
-        lines.append(f"{variable_name}: {variable_value}")
+        lines.append(f"{param_name}: {param_value}")
         print(lines[-1])
 
     from azureml.core import Run
-    run = Run.get_context()    
+    run = Run.get_context()
     run.log("accuracy", accuracy)
 
-    # Save the model
-    (Path(args.model_dir) / "model").write_text("\n".join(lines))
+    # Do the train and save the trained model as a file into the output folder.
+    # Here only output a dummy data for demo.
+    (Path(args.model_output) / "model").write_text("\n".join(lines))
 
 
 if __name__ == "__main__":
