@@ -40,7 +40,7 @@ jobs:
     - name: run jobs/pipelines/1a_pipeline_with_components_from_yaml/pipeline_with_components_from_yaml.ipynb
       run: |
           mkdir ../../.azureml
-          echo '{"subscription_id": "e9b2ec51-5c94-4fa8-809a-dc1e695e4896", "resource_group": "pipelinesdktest", "workspace_name": "magic"}' > ../../.azureml/config.json 
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb
           
           papermill pipeline_with_components_from_yaml.ipynb - -k python
