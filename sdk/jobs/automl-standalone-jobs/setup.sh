@@ -1,1 +1,1 @@
-pip install azure-ml==0.0.59621554 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/59684499/azure_ml-0.0.59684499-py3-none-any.whl
