@@ -7,8 +7,6 @@ on:
     branches:
       - march-cli-preview
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines/nyc-taxi/**
       - .github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml

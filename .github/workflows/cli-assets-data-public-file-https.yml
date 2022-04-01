@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/assets/data/public-file-https.yml
       - .github/workflows/cli-assets-data-public-file-https.yml

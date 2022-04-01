@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/deploy-tfserving.sh
       - .github/workflows/cli-scripts-deploy-tfserving.yml

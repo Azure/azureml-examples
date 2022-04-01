@@ -7,8 +7,6 @@ on:
     branches:
       - march-cli-preview
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/3a_basic_pipeline/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-3a_basic_pipeline-pipeline.yml

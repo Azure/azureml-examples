@@ -7,8 +7,6 @@ on:
     branches:
       - march-cli-preview
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/4c_web_url_input/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-4c_web_url_input-pipeline.yml
