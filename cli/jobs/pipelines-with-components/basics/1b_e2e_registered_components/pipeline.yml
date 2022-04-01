@@ -29,7 +29,7 @@ compute: azureml:cpu-cluster
 jobs:
   train-job:
     type: command
-    component: azureml:Train@latest
+    component: azureml:my_train@latest
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_input}}
       max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
@@ -40,7 +40,7 @@ jobs:
   
   score-job:
     type: command
-    component: azureml:Score@latest
+    component: azureml:my_score@latest
     inputs:
       model_input: ${{parent.jobs.train-job.outputs.model_output}}
       test_data: ${{parent.inputs.pipeline_job_test_input}}
@@ -49,7 +49,7 @@ jobs:
 
   evaluate-job:
     type: command
-    component: azureml:Eval@latest
+    component: azureml:my_eval@latest
     inputs:
       scoring_result: ${{parent.jobs.score-job.outputs.score_output}}
     outputs:

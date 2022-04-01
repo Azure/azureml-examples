@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: Train
+name: train
 display_name: Train
 version: 10
 type: command

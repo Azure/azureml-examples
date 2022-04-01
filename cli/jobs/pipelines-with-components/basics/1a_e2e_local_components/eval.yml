@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: Eval
+name: eval
 version: 10
 display_name: Eval
 type: command
