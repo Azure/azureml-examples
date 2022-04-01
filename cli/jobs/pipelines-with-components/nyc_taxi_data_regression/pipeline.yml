@@ -9,17 +9,17 @@ inputs:
 
 outputs: 
   pipeline_job_prepped_data:
-    mode: upload
+    mode: rw_mount
   pipeline_job_transformed_data:
-    mode: upload   
+    mode: rw_mount   
   pipeline_job_trained_model:
-    mode: upload
+    mode: rw_mount
   pipeline_job_test_data:
-    mode: upload 
+    mode: rw_mount 
   pipeline_job_predictions:
-    mode: upload 
+    mode: rw_mount 
   pipeline_job_score_report:
-    mode: upload
+    mode: rw_mount
 # </inputs_and_outputs>
 
 # <jobs>
