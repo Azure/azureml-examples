@@ -3,7 +3,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
-
+  pull_request:
+    paths:
+      - sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,7 +13,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: march-sdk-preview
+        ref: ratanase/AprilPreview-Actions
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -22,20 +24,22 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CREDS}}
-    - name: setup SDK
+    - name: setup SDK v2
       run: bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/jobs/automl-standalone-jobs
       continue-on-error: true
-    - name: setup CLI
-      run: bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: run jobs/single-step/scikit-learn/diabetes/sklearn-diabetes.ipynb
+    - name: run Notebook
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" sklearn-diabetes.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" sklearn-diabetes.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" sklearn-diabetes.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" sklearn-diabetes.ipynb
-          
-          papermill sklearn-diabetes.ipynb - -k python
+        sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" sklearn-diabetes.ipynb
+        sed -i -e "s/<REGION>/eastus/g" sklearn-diabetes.ipynb
+        sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" sklearn-diabetes.ipynb
+        sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" sklearn-diabetes.ipynb
+        sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" sklearn-diabetes.ipynb
+        papermill -k python sklearn-diabetes.ipynb -diabetes.output.ipynb
       working-directory: sdk/jobs/single-step/scikit-learn/diabetes
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: automl-classification-task-bankmarketing
+        path: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
