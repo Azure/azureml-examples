@@ -10,9 +10,8 @@ inputs:
 outputs: 
   pipeline_job_trained_model:
     type: mlflow_model
-    mode: upload
+    mode: rw_mount
   pipeline_job_predictions:
-    type: mltable
     mode: upload 
   pipeline_job_score_report:
     mode: upload
@@ -49,8 +48,6 @@ jobs:
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data: 
-        type: mltable
-        mode: rw_mount
   
   predict-job:
     type: command

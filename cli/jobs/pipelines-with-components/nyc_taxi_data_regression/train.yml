@@ -11,7 +11,7 @@ outputs:
   model_output:
     type: mlflow_model
   test_data:
-    type: mltable
+    type: uri_folder
 code: ./train_src
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 command: >-

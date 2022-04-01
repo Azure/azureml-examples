@@ -1,23 +1,47 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 description: "Tune hyperparameters using TF component"
-
+settings:
+    default_compute: azureml:cpu-cluster
 jobs:
-  sweep_job:
+  sweep_step:
     type: sweep
-    trial: file:./train.yml
     inputs:
-      steps_per_epoch: 70
-      per_worker_batch_size: 64
+      data: 
+        type: uri_file
+        path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
     outputs:
-      trained_model_output:
-        mode: upload
+      model_output:
+      test_data:
     sampling_algorithm: random
+    trial: file:./train.yml
     search_space:
-      epochs:
+      c_value:
+        type: uniform
+        min_value: 0.5
+        max_value: 0.9
+      kernel:
         type: choice
-        values: [1, 2, 3]
-    objective:
-      goal: maximize
-      primary_metric: accuracy
-    compute: azureml:cpu-cluster    
+        values: ["rbf", "linear", "poly"]
+      coef0:
+        type: uniform
+        min_value: 0.1
+        max_value: 1
+    objective:s
+      goal: minimize
+      primary_metric: training_f1_score
+    limits:
+      max_total_trials: 20
+      max_concurrent_trials: 10
+      timeout: 7200
+
+  predict_step:
+    type: command
+    inputs:
+      model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+    outputs:
+      predict_result:
+    component: file:./predict.yml
+
+    
