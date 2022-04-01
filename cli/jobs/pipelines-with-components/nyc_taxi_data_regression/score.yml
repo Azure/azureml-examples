@@ -1,6 +1,6 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: ScoreModel
+name: score_model
 version: 1
 display_name: ScoreModel
 type: command
