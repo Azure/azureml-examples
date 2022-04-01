@@ -17,8 +17,6 @@ bash run-pipeline-jobs.sh
 # bash run-pipeline-jobs.sh
 
 # az configure --defaults group="sdk" location="westus2" workspace="sdk-westus2"
-# az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8
-# az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12
 # bash run-pipeline-jobs.sh
 # az ml job list -r 15
 
