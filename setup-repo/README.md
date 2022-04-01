@@ -20,3 +20,4 @@ Required CLI tools include:
 - `azcopy`
 
 Ensure you `az login` and `azcopy login` and have permissions to set secrets via `gh`.
+ 
