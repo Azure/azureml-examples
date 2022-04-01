@@ -20,7 +20,7 @@ jobs:
       componentA_input: ${{parent.inputs.pipeline_sample_input_data}}
     outputs:
       componentA_output: 
-        mode: upload
+        mode: rw_mount
   componentB:
     type: command
     component: file:./componentB.yml
