@@ -66,23 +66,3 @@ jobs:
     objective:
       goal: maximize
       primary_metric: accuracy
-  score_data:
-    type: command
-    inputs:
-      model_input:
-        type: mlflow_model
-        mode: ro_mount
-        path: https://dprepdata.blob.core.windows.net/demo/Titanic.csv
-      test_data:
-        type: uri_file
-        mode: ro_mount
-        path: https://dprepdata.blob.core.windows.net/demo/Titanic.csv
-    outputs:
-      score_output:
-        type: uri_file
-        mode: upload
-    command: >- 
-      echo ${{inputs.model_input}} & echo ${{inputs.test_data}} > ${{outputs.score_output}}/output
-    environment: 
-      conda_file: ./conda.yml
-      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1

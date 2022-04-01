@@ -68,6 +68,7 @@ def main():
     from azureml.core import Run
     run = Run.get_context()
     run.log("accuracy", accuracy)
+    run.flush()
 
     # Do the train and save the trained model as a file into the output folder.
     # Here only output a dummy data for demo.
