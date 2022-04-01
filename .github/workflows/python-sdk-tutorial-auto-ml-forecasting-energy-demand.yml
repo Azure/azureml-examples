@@ -28,6 +28,10 @@ jobs:
       run: bash setup.sh
       working-directory: sdk/jobs/automl-standalone-jobs
       continue-on-error: true
+    - name: setup CLI v2
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
     - name: run Notebook
       run: |
         sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-forecasting-task-energy-demand-advanced.ipynb
