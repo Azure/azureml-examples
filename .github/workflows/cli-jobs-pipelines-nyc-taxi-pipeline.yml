@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - march-cli-preview
     paths:
       - cli/jobs/pipelines/nyc-taxi/**
       - .github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml

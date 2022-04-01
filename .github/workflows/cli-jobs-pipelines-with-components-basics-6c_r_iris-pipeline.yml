@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - march-cli-preview
     paths:
       - cli/jobs/pipelines-with-components/basics/6c_r_iris/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-6c_r_iris-pipeline.yml

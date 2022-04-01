@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - march-cli-preview
       - cli-preview
       - releases/current
     paths:
