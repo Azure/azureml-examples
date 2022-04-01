@@ -2,3 +2,4 @@
 pip install azure-ml==2.2.1 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public
 pip install mlflow
 pip install azureml-mlflow
+pip list
