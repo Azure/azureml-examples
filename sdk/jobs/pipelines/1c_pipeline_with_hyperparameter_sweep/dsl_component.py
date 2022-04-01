@@ -36,6 +36,7 @@ def train_component_func(
     random_seed: int = 0,
 ):
     accuracy = random()
+    lines = []
     for param_name, param_value in [
         ("training_data", training_data),
         ("batch_size", batch_size),
@@ -52,16 +53,17 @@ def train_component_func(
         ("random_seed", random_seed), 
         ("accuracy", accuracy), 
     ]:
-        print(f"{param_name}: {param_value}")
+        lines.append(f"{param_name}: {param_value}")
+        print(lines[-1])
 
     from azureml.core import Run
     run = Run.get_context()
     run.log("accuracy", accuracy)
+    run.flush()
 
     # Do the train and save the trained model as a file into the output folder.
     # Here only output a dummy data for demo.
-    model = str(uuid4())
-    (Path(model_output) / "model").write_text(model)
+    (Path(model_output) / "model").write_text("\n".join(lines))
 
 
 @dsl.command_component(
