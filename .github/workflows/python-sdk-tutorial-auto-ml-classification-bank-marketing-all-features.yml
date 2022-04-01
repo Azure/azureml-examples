@@ -30,16 +30,16 @@ jobs:
       continue-on-error: true
     - name: run Notebook
       run: |
-        sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-classification-task-bankmarketing.ipynb
-        sed -i -e "s/<REGION>/eastus/g" automl-classification-task-bankmarketing.ipynb
-        sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-classification-task-bankmarketing.ipynb
-        sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-classification-task-bankmarketing.ipynb
-        sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-classification-task-bankmarketing.ipynb
-        papermill -k python automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+        sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" sklearn-diabetes.ipynb
+        sed -i -e "s/<REGION>/eastus/g" sklearn-diabetes.ipynb
+        sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" sklearn-diabetes.ipynb
+        sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" sklearn-diabetes.ipynb
+        sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" sklearn-diabetes.ipynb
+        papermill -k python sklearn-diabetes.ipynb sklearn-diabetes.output.ipynb
+      working-directory: sdk/jobs/single-step/scikit-learn/diabetes
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-classification-task-bankmarketing
-        path: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+        name: diabetes
+        path: sdk/jobs/single-step/scikit-learn/diabetes
