@@ -23,7 +23,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK v2
       run: bash setup.sh
       working-directory: sdk/jobs/automl-standalone-jobs
