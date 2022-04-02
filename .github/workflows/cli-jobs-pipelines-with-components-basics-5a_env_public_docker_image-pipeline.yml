@@ -1,3 +1,4 @@
+
 name: cli-jobs-pipelines-with-components-basics-5a_env_public_docker_image-pipeline
 on:
   workflow_dispatch:

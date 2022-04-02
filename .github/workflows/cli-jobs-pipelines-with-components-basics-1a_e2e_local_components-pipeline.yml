@@ -1,3 +1,4 @@
+
 name: cli-jobs-pipelines-with-components-basics-1a_e2e_local_components-pipeline
 on:
   workflow_dispatch:

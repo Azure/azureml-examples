@@ -1,3 +1,4 @@
+
 name: cli-jobs-pipelines-with-components-basics-5b_env_registered-pipeline
 on:
   workflow_dispatch:

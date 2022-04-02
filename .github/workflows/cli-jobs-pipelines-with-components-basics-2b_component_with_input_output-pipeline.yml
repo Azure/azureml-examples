@@ -1,3 +1,4 @@
+
 name: cli-jobs-pipelines-with-components-basics-2b_component_with_input_output-pipeline
 on:
   workflow_dispatch:
