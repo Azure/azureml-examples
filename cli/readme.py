@@ -32,6 +32,7 @@ def main(args):
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/*/automl/**/*cli-automl*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -295,6 +296,7 @@ on:
       - main
       - cli-preview
       - releases/current
+      - april-preview-automl
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
