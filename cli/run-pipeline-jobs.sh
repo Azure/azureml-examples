@@ -103,9 +103,9 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../
 
-cd jobs/pipelines/cifar-10
-pwd
-az ml job create --file pipeline.yml --web
-cd ../../../
+# cd jobs/pipelines/cifar-10
+# pwd
+# az ml job create --file pipeline.yml --web
+# cd ../../../
 
 az --version
