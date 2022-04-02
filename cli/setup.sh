@@ -10,7 +10,7 @@ az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheel
 # <set_variables>
 GROUP="azureml-examples"
 LOCATION="eastus"
-WORKSPACE="main"
+WORKSPACE="main-canary"
 # </set_variables>
 
 # <az_configure_defaults>
