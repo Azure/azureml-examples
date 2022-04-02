@@ -10,10 +10,10 @@ version: 0.0.1
 inputs:
   input_path:
     description: Input dataset
-    type: path
+    type: uri_folder
 outputs:
   output_path:
-    type: path
+    type: uri_folder
     description: Output image directory
 
 command: >-
