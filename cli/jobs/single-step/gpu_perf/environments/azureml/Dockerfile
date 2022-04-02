@@ -18,7 +18,7 @@ RUN mkdir /tmp/nccltests && \
     cd nccl-tests && \
         make \
             MPI=1 \
-            NVCC_GENCODE="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_50,code=sm_50 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_80,code=sm_80  -gencode=arch=compute_90,code=sm_90" \
+            NVCC_GENCODE="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_50,code=sm_50 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_80,code=sm_80" \
             CUDA_HOME=/usr/local/cuda && \
         cp ./build/* /usr/local/bin && \
     rm -rf /tmp/nccltests
