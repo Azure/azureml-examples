@@ -56,8 +56,7 @@ outputs:
     type: mlflow_model
   test_data:
     type: uri_folder
-  artifacts:
-
+  
 code: ./train-src
 
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest

@@ -27,7 +27,7 @@ jobs:
         type: uniform
         min_value: 0.1
         max_value: 1
-    objective:s
+    objective:
       goal: minimize
       primary_metric: training_f1_score
     limits:
