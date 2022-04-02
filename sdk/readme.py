@@ -110,7 +110,7 @@ jobs:
       working-directory: sdk/{folder}
       
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
+      if: ${{{{ always() }}}}
       uses: actions/upload-artifact@v2
       with:
         name: {name}

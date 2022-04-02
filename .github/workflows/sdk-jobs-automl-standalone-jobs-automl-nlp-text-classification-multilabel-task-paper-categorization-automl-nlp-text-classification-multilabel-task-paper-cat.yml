@@ -49,7 +49,7 @@ jobs:
       working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
       
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-nlp-text-classification-multilabel-task-paper-cat

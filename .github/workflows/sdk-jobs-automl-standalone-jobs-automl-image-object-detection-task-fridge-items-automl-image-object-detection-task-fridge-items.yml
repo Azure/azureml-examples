@@ -49,7 +49,7 @@ jobs:
       working-directory: sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items
       
     - name: upload notebook's working folder as an artifact
-      if: ${ always() }
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-image-object-detection-task-fridge-items
