@@ -46,7 +46,8 @@ jobs:
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-forecasting-task-energy-demand-advanced.ipynb
           
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-task-energy-demand-advanced.ipynb automl-forecasting-task-energy-demand-advanced.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand  
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand
+
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

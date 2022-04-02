@@ -46,7 +46,8 @@ jobs:
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-nlp-text-ner-task.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-ner-task.ipynb automl-nlp-text-ner-task.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task  
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task
+
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

@@ -120,7 +120,7 @@ jobs:
           papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/{folder}"""
 
-    workflow_yaml += f"""  
+    workflow_yaml += f"""\n
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
       uses: actions/upload-artifact@v2

@@ -46,7 +46,8 @@ jobs:
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-classification-multiclass-task-sentiment.ipynb automl-nlp-text-classification-multiclass-task-sentiment.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis  
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
