@@ -38,6 +38,11 @@ test_and_run_command \
     "ucx_info -d"
 
 test_and_run_command \
+    lstopo \
+    "lstopo -v" \
+    "use 'apt install hwloc' to enable"
+
+test_and_run_command \
     nvcc \
     "nvcc --version"
 
