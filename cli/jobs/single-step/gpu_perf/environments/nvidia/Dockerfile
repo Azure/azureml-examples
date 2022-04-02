@@ -8,7 +8,7 @@ FROM nvcr.io/nvidia/pytorch:22.02-py3
 ##############################################################################
 ENV NCCL_TESTS_TAG=v2.11.0
 
-# NOTE: adding sm_35, sm_37 to support K80, M60
+# NOTE: adding gencodes to support K80, M60, V100, A100
 RUN mkdir /tmp/nccltests && \
     cd /tmp/nccltests && \
     git clone -b ${NCCL_TESTS_TAG} https://github.com/NVIDIA/nccl-tests.git && \
