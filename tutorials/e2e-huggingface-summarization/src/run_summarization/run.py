@@ -303,20 +303,14 @@ def main():
         logger.info("start training")
         start = time.time()
         train_result = trainer.train()
-        # trainer.save_model()  # Saves the tokenizer too for easy upload
+
         mlflow.log_metric(
         "time/epoch", (time.time() - start) / 60 / training_args.num_train_epochs
         )
         logger.info("training is done")
         print_summary(train_result)
         metrics = train_result.metrics
-        # max_train_samples = (
-        #     data_args.max_samples if data_args.max_samples is not None else len(train_dataset)
-        # )
-        # metrics["train_samples"] = min(max_train_samples, len(train_dataset))
 
-        # trainer.log_metrics("train", metrics)
-        # trainer.save_metrics("train", metrics)
         model_path = os.path.join(model_args.trained_model_path)
         os.makedirs(model_path, exist_ok=True)
 
