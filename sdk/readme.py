@@ -105,10 +105,22 @@ jobs:
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" {name}.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb\n"""            
     
-    workflow_yaml += f"""          
-          papermill -k python {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{folder}
-      
+    if not ("automl" in folder):
+      workflow_yaml += f"""          
+            papermill -k python {name}.ipynb {name}.output.ipynb
+        working-directory: sdk/{folder}"""
+    elif "nlp" in folder or "image" in folder:
+      # need GPU cluster, so override the compute cluster name to dedicated 
+      workflow_yaml += f"""          
+          papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
+      working-directory: sdk/{folder}"""
+    else:
+        # need GPU cluster, so override the compute cluster name to dedicated 
+      workflow_yaml += f"""          
+          papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
+      working-directory: sdk/{folder}"""
+
+    workflow_yaml += f"""  
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
       uses: actions/upload-artifact@v2

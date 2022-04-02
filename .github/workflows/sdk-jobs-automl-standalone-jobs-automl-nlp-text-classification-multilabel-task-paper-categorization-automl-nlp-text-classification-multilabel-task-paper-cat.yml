@@ -45,9 +45,8 @@ jobs:
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-nlp-text-classification-multilabel-task-paper-cat.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-nlp-text-classification-multilabel-task-paper-cat.ipynb
           
-          papermill -k python automl-nlp-text-classification-multilabel-task-paper-cat.ipynb automl-nlp-text-classification-multilabel-task-paper-cat.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
-      
+          papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-classification-multilabel-task-paper-cat.ipynb automl-nlp-text-classification-multilabel-task-paper-cat.output.ipynb
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization  
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

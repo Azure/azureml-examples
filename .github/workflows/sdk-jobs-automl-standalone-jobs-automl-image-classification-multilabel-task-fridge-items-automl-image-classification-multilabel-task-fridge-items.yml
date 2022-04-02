@@ -45,9 +45,8 @@ jobs:
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-image-classification-multilabel-task-fridge-items.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-image-classification-multilabel-task-fridge-items.ipynb
           
-          papermill -k python automl-image-classification-multilabel-task-fridge-items.ipynb automl-image-classification-multilabel-task-fridge-items.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
-      
+          papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multilabel-task-fridge-items.ipynb automl-image-classification-multilabel-task-fridge-items.output.ipynb
+      working-directory: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items  
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
