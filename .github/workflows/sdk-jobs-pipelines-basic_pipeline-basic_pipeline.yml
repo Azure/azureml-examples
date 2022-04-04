@@ -1,14 +1,16 @@
-name: sdk-jobs-pipelines-nyc-taxi-nyc-taxi
+name: sdk-jobs-pipelines-basic_pipeline-basic_pipeline
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
+      - main
+      - sdk-preview
       - sdk-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-nyc-taxi-nyc-taxi.yml
+      - .github/workflows/sdk-jobs-pipelines-basic_pipeline-basic_pipeline.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -17,7 +19,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: sdk-preview    
+        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -27,7 +29,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -36,12 +38,12 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/nyc-taxi/nyc-taxi.ipynb
+    - name: run jobs/pipelines/basic_pipeline/basic_pipeline.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" nyc-taxi.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" nyc-taxi.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" nyc-taxi.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" nyc-taxi.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" basic_pipeline.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" basic_pipeline.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" basic_pipeline.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" basic_pipeline.ipynb
           
-          papermill nyc-taxi.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/nyc-taxi
+          papermill basic_pipeline.ipynb - -k python
+      working-directory: sdk/jobs/pipelines/basic_pipeline
