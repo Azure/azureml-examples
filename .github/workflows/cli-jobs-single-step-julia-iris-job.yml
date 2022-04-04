@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/single-step/julia/iris/**
       - .github/workflows/cli-jobs-single-step-julia-iris-job.yml

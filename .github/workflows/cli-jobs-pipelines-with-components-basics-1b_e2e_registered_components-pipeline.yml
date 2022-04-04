@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline.yml

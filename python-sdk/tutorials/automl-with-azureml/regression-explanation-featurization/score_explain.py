@@ -4,6 +4,7 @@ from azureml.core.model import Model
 from azureml.train.automl.runtime.automl_explain_utilities import (
     automl_setup_model_explanations,
 )
+import scipy as sp
 
 
 def init():
@@ -20,6 +21,22 @@ def init():
     scoring_explainer = joblib.load(scoring_explainer_path)
 
 
+def is_multi_dimensional(matrix):
+    if hasattr(matrix, "ndim") and matrix.ndim > 1:
+        return True
+    if hasattr(matrix, "shape") and matrix.shape[1]:
+        return True
+    return False
+
+
+def convert_matrix(matrix):
+    if sp.sparse.issparse(matrix):
+        matrix = matrix.todense()
+    if is_multi_dimensional(matrix):
+        matrix = matrix.tolist()
+    return matrix
+
+
 def run(raw_data):
     # Get predictions and explanations for each data point
     data = pd.read_json(raw_data, orient="records")
@@ -33,10 +50,16 @@ def run(raw_data):
     engineered_local_importance_values = scoring_explainer.explain(
         automl_explainer_setup_obj.X_test_transform
     )
+    engineered_local_importance_values = convert_matrix(
+        engineered_local_importance_values
+    )
+
     # Retrieve model explanations for raw explanations
     raw_local_importance_values = scoring_explainer.explain(
         automl_explainer_setup_obj.X_test_transform, get_raw=True
     )
+    raw_local_importance_values = convert_matrix(raw_local_importance_values)
+
     # You can return any data type as long as it is JSON-serializable
     return {
         "predictions": predictions.tolist(),

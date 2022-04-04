@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: public-file-https-example
+description: Data asset created from a publicly available file using https URL.
+type: uri_file
+path: https://azuremlexamples.blob.core.windows.net/datasets/titanic.csv

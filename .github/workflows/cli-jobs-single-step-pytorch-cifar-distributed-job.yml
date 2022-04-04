@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/single-step/pytorch/cifar-distributed/**
       - .github/workflows/cli-jobs-single-step-pytorch-cifar-distributed-job.yml
