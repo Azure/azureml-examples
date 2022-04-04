@@ -2,9 +2,9 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: lightgbm-deployment
 endpoint_name: my-endpoint
 model:
-  name: sample-mlflow-lightgbm-model
+  name: mir-sample-lightgbm-mlflow-model
   version: 1
-  local_path: lightgbm-iris/model
-  model_format: mlflow
+  path: lightgbm-iris/model
+  type: mlflow_model
 instance_type: Standard_F4s_v2
 instance_count: 1

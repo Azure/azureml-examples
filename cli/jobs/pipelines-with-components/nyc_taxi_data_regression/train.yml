@@ -1,20 +1,19 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: TrainLinearRegressionModel
+name: train_linear_regression_model
 display_name: TrainLinearRegressionModel
 version: 1
 type: command
 inputs:
   training_data: 
-    type: path
+    type: uri_folder
 outputs:
   model_output:
-    type: path
+    type: uri_folder
   test_data:
-    type: path
-code:
-  local_path: ./train_src
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:11
+    type: uri_folder
+code: ./train_src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 

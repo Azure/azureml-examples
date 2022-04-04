@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/2a_basic_component/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-2a_basic_component-pipeline.yml

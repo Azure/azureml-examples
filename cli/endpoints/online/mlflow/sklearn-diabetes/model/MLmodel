@@ -9,12 +9,12 @@ flavors:
     pickled_model: model.pkl
     serialization_format: cloudpickle
     sklearn_version: 0.24.1
-run_id: 6696c814-876a-445a-b452-0b68e57b0331
+run_id: f1e06708-641d-4a49-8f36-e9dcd8d34346
 signature:
   inputs: '[{"name": "age", "type": "double"}, {"name": "sex", "type": "double"},
     {"name": "bmi", "type": "double"}, {"name": "bp", "type": "double"}, {"name":
     "s1", "type": "double"}, {"name": "s2", "type": "double"}, {"name": "s3", "type":
     "double"}, {"name": "s4", "type": "double"}, {"name": "s5", "type": "double"},
     {"name": "s6", "type": "double"}]'
-  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
-utc_time_created: '2021-10-19 18:08:54.042999'
+  outputs: '[{"type": "double"}]'
+utc_time_created: '2022-03-17 01:56:03.706848'

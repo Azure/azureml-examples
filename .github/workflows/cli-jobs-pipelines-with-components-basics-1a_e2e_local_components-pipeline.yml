@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/1a_e2e_local_components/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-1a_e2e_local_components-pipeline.yml
