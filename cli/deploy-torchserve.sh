@@ -89,7 +89,6 @@ else
   cleanTestingFiles
   az ml online-endpoint delete -n $ENDPOINT_NAME --yes
   az ml model delete -n $AML_MODEL_NAME --version 1
-  az ml environment delete --name torchserve-environment --version 1
   exit 1
 fi
 
@@ -112,12 +111,9 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-az ml online-endpoint delete -n $ENDPOINT_NAME
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 
 # Delete model
 echo "Deleting model..."
-az ml model delete -n $AML_MODEL_NAME --version 1
-
-# Delete environment
-echo "Deleting environment...."
+az ml model archive -n $AML_MODEL_NAME --version 1
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes

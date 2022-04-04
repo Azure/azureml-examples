@@ -3,5 +3,3 @@ compute: azureml:inferencecompute
 auth_mode: Key
 tags:
   tag1: endpoint-tag1-value
-properties:
-  prop1: endpoint-prop1-value
