@@ -4,6 +4,7 @@ import json
 import glob
 import argparse
 
+
 def main(args):
 
     # get list of notebooks
@@ -12,13 +13,14 @@ def main(args):
     # write workflows
     write_workflows(notebooks)
 
+
 def write_workflows(notebooks):
 
     for notebook in notebooks:
         # get notebook name
         name = notebook.split("/")[-1].replace(".ipynb", "")
         folder = os.path.dirname(notebook)
-        classification = folder.replace("/","-")
+        classification = folder.replace("/", "-")
 
         # write workflow file
         write_notebook_workflow(notebook, name, classification, folder)
@@ -71,15 +73,15 @@ jobs:
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" {name}.ipynb\n"""
     if name == "workspace":
-      workflow_yaml += f"""
+        workflow_yaml += f"""
           # generate a random workspace name
           sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" {name}.ipynb
 
           # skip other workpace creation commands for now
           sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" {name}.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" {name}.ipynb        
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb\n"""            
-    
+          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb\n"""
+
     workflow_yaml += f"""          
           papermill {name}.ipynb - -k python
       working-directory: sdk/{folder}\n"""
@@ -87,6 +89,7 @@ jobs:
     # write workflow
     with open(f"../.github/workflows/sdk-{classification}-{name}.yml", "w") as f:
         f.write(workflow_yaml)
+
 
 # run functions
 if __name__ == "__main__":

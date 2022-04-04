@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-preview-automl
+      - automl-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance.yml
@@ -19,7 +19,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: april-preview-automl
+        ref: automl-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 

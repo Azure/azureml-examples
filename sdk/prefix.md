@@ -31,7 +31,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install azure-ml==2.2.1 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2-public
 ```
 
 ## Clone examples repository

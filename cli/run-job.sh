@@ -1,6 +1,8 @@
 job=$1
 run_id=$(az ml job create -f $job --query name -o tsv)
 
+az ml job show -n $run_id
+
 if [[ -z "$run_id" ]]
 then
   echo "Job creation failed"

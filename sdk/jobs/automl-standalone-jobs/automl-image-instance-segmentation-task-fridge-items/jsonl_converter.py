@@ -130,8 +130,12 @@ def convert_mask_in_VOC_to_jsonl(base_dir, remote_path):
     train_validation_ratio = 5
 
     # Path to the training and validation files
-    train_annotations_file = os.path.join(training_mltable_path, "train_annotations.jsonl")
-    validation_annotations_file = os.path.join(validation_mltable_path, "validation_annotations.jsonl")
+    train_annotations_file = os.path.join(
+        training_mltable_path, "train_annotations.jsonl"
+    )
+    validation_annotations_file = os.path.join(
+        validation_mltable_path, "validation_annotations.jsonl"
+    )
 
     # Path to the annotations
     annotations_folder = os.path.join(src_images, "annotations")
