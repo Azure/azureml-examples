@@ -4,14 +4,22 @@ command: >-
   python main.py 
   --uri_file_input_mount ${{inputs.uri_file_input_mount}}
   --uri_folder_input_mount ${{inputs.uri_folder_input_mount}}
+  --mltable_eval_mount ${{inputs.mltable_eval_mount}}
+  --mltable_eval_download ${{inputs.mltable_eval_download}}
+  --mltable_mount_input ${{inputs.mltable_mount_input}}
+  --mltable_download_input ${{inputs.mltable_download_input}}
+  --mlflowmodel_mount_input ${{inputs.mlflowmodel_mount_input}}
   --uri_file_input_download ${{inputs.uri_file_input_download}}
   --uri_folder_input_download ${{inputs.uri_folder_input_download}}
+  --uri_folder_input_direct ${{inputs.uri_folder_input_direct}}
   --uri_folder_upload ${{outputs.uri_folder_upload}}
   --uri_file_upload ${{outputs.uri_file_upload}}
   --uri_folder_mount ${{outputs.uri_folder_mount}}
   --uri_file_mount ${{outputs.uri_file_mount}}
-  --mlflow_model ${{outputs.mlflow_model}}
-  --mltable_eval_mount ${{inputs.mltable_eval_mount}}
+  --mltable_upload ${{outputs.mltable_upload}}
+  --mltable_mount ${{outputs.mltable_mount}}
+  --mlflow_model_mount ${{outputs.mlflow_model_mount}}
+  --mlflow_model_upload ${{outputs.mlflow_model_upload}}
 inputs:
   uri_file_input_mount:
     type: uri_file 
@@ -22,7 +30,22 @@ inputs:
   mltable_eval_mount:
     type: mltable 
     path: azureml://datastores/workspaceblobstore/paths/private_mltable/filedataset/
+    mode: eval_mount
+  mltable_eval_download:
+    type: mltable 
+    path: azureml://datastores/workspaceblobstore/paths/private_mltable/filedataset/
+    mode: eval_download
+  mltable_mount_input:
+    type: mltable 
+    path: azureml://datastores/workspaceblobstore/paths/private_mltable/filedataset/
     mode: ro_mount
+  mltable_download_input:
+    type: mltable 
+    path: azureml://datastores/workspaceblobstore/paths/private_mltable/filedataset/
+    mode: download
+  mlflowmodel_mount_input:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/model/
   uri_file_input_download:
     type: uri_file 
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
@@ -31,35 +54,43 @@ inputs:
     type: uri_folder 
     path: azureml://datastores/workspaceblobstore/paths/private_mltable/
     mode: download
+  uri_folder_input_direct:
+    type: uri_folder 
+    path: azureml://datastores/workspaceblobstore/paths/private_mltable/
+    mode: direct
 outputs:
   uri_folder_upload:
     type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/uri_folder_upload/
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/uri_folder_upload/
     mode: upload
-  mltable_upload:
-    type: mltable
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/mltable_upload/
-    mode: upload
-  mltable_mount:
-    type: mltable
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/mltable_mount/
-    mode: mount
-  mlflow_model:
-    type: mlflow_model
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/mlflow_mount/
-    mode: mount
   uri_file_upload:
     type: uri_file
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/uri_file_upload/uri_file_upload
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/uri_file_upload/uri_file_upload
     mode: upload
   uri_folder_mount:
     type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/uri_folder_mount/
-    mode: mount
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/uri_folder_mount/
+    mode: rw_mount
   uri_file_mount:
     type: uri_file
-    path: azureml://datastores/workspaceblobstore/paths/cmtest2/uri_file_mount/uri_file_mount
-    mode: mount
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/uri_file_mount/uri_file_mount
+    mode: rw_mount
+  mltable_upload:
+    type: mltable
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/mltable_upload/
+    mode: upload
+  mltable_mount:
+    type: mltable
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/mltable_mount/
+    mode: rw_mount
+  mlflow_model_mount:
+    type: mlflow_model
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/mlflow_mount/
+    mode: rw_mount
+  mlflow_model_upload:
+    type: mlflow_model
+    path: azureml://datastores/workspaceblobstore/paths/cmtest/{name}/mlflow_mount/
+    mode: upload
 environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu@latest
 compute: azureml:dpv2
 display_name: lightgbm-iris-example

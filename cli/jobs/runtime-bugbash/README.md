@@ -7,7 +7,7 @@
         az extension list
         az extension remove -n azureml-cli-ml
         az extension remove -n ml
-        az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.58822429-py3-none-any.whl --yes
+        az extension add --source https://msdata.visualstudio.com/Vienna/_build/results?buildId=59859632&view=artifacts&pathAsName=false&type=publishedArtifacts --yes
     ```
 2. Configure the bugbash worksace as default workspace
     ```cmd
@@ -35,6 +35,7 @@
         - special chars in path
         - multile uri_file to the same folder
 
+## round 2 on 4/4, install whl from https://msdata.visualstudio.com/Vienna/_build/results?buildId=59859632&view=artifacts&pathAsName=false&type=publishedArtifacts
 
 ## Links
 ```cmd
