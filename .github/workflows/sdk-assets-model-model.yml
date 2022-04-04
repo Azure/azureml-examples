@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - march-sdk-preview
+      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-assets-model-model.yml
@@ -19,7 +19,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: march-sdk-preview
+        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 

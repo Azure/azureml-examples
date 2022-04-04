@@ -18,7 +18,7 @@ NOT_SCHEDULED_NOTEBOOKS = [
 # use if running on a release candidate, else make it empty
 BRANCH = "main"  # default - do not change
 BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
-BRANCH = "march-sdk-preview"  # this should be deleted when this branch is merged to sdk-preview
+# BRANCH = "march-sdk-preview"  # this should be deleted when this branch is merged to sdk-preview
 
 
 def main(args):
@@ -137,54 +137,55 @@ def write_readme(notebooks):
         branch = "main"
     else:
         branch = BRANCH
-        # read in prefix.md and suffix.md
-        with open("prefix.md", "r") as f:
-            prefix = f.read()
-        with open("suffix.md", "r") as f:
-            suffix = f.read()
 
-        # define markdown tables
-        notebook_table = f"Test Status is for branch - **_{branch}_**\n|Area|Sub-Area|Notebook|Description|Status|\n|--|--|--|--|--|\n"
-        for notebook in notebooks:
-            # get notebook name
-            name = notebook.split("/")[-1].replace(".ipynb", "")
-            area = notebook.split("/")[0]
-            sub_area = notebook.split("/")[1]
-            folder = os.path.dirname(notebook)
-            classification = folder.replace("/", "-")
+    # read in prefix.md and suffix.md
+    with open("prefix.md", "r") as f:
+        prefix = f.read()
+    with open("suffix.md", "r") as f:
+        suffix = f.read()
 
+    # define markdown tables
+    notebook_table = f"Test Status is for branch - **_{branch}_**\n|Area|Sub-Area|Notebook|Description|Status|\n|--|--|--|--|--|\n"
+    for notebook in notebooks:
+        # get notebook name
+        name = notebook.split("/")[-1].replace(".ipynb", "")
+        area = notebook.split("/")[0]
+        sub_area = notebook.split("/")[1]
+        folder = os.path.dirname(notebook)
+        classification = folder.replace("/", "-")
+
+        try:
+            # read in notebook
+            with open(notebook, "r") as f:
+                data = json.load(f)
+
+            description = "*no description*"
             try:
-                # read in notebook
-                with open(notebook, "r") as f:
-                    data = json.load(f)
-
-                description = "*no description*"
-                try:
-                    if data["metadata"]["description"] is not None:
-                        description = data["metadata"]["description"]["description"]
-                except:
-                    pass
+                if data["metadata"]["description"] is not None:
+                    description = data["metadata"]["description"]["description"]
             except:
-                print("Could not load", notebook)
                 pass
+        except:
+            print("Could not load", notebook)
+            pass
 
-            if any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
-                description += " - _This sample is excluded from automated tests_"
-            if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
-                description += " - _This sample is only tested on demand_"
+        if any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
+            description += " - _This sample is excluded from automated tests_"
+        if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+            description += " - _This sample is only tested on demand_"
 
-            # write workflow file
-            notebook_table += (
-                write_readme_row(
-                    branch, notebook, name, classification, area, sub_area, description
-                )
-                + "\n"
+        # write workflow file
+        notebook_table += (
+            write_readme_row(
+                branch, notebook, name, classification, area, sub_area, description
             )
+            + "\n"
+        )
 
-        print("writing README.md...")
-        with open("README.md", "w") as f:
-            f.write(prefix + notebook_table + suffix)
-        print("finished writing README.md")
+    print("writing README.md...")
+    with open("README.md", "w") as f:
+        f.write(prefix + notebook_table + suffix)
+    print("finished writing README.md")
 
 
 def write_readme_row(
