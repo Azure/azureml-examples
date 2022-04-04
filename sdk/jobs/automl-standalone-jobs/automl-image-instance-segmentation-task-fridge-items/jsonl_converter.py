@@ -179,7 +179,7 @@ def convert_mask_in_VOC_to_jsonl(base_dir, remote_path):
                     _, file_extension = os.path.splitext(image_filename)
                     json_line = dict(json_line_sample)
                     json_line["image_url"] = (
-                        json_line["image_url"] + "/images/" + image_filename
+                        json_line["image_url"] + "images/" + image_filename
                     )
                     json_line["image_details"]["format"] = file_extension[1:]
                     json_line["image_details"]["width"] = width
