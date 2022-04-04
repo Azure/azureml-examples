@@ -3,11 +3,11 @@ command: |
   ls ${{inputs.data_dir}}
   echo "--iris-csv: ${{inputs.data_dir}}/iris.csv"
   python hello-iris.py --iris-csv ${{inputs.data_dir}}/iris.csv
-code:
-  local_path: src
+code: src
 inputs:
-  data_dir: 
-    folder: azureml://datastores/workspaceblobstore/paths/example-data/
+  data_dir:
+    type: uri_folder 
+    path: azureml://datastores/workspaceblobstore/paths/example-data/
     mode: rw_mount
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:3
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster
