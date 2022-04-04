@@ -10,3 +10,9 @@ az extension add --source pip install https://azuremlsdktestpypi.blob.core.windo
 # <set_variables>
 GROUP="azureml-examples"
 LOCATION="eastus"
+WORKSPACE="main"
+# </set_variables>
+
+# <az_configure_defaults>
+az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
+# </az_configure_defaults>

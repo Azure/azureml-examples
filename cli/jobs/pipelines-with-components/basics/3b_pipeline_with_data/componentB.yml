@@ -1,20 +1,19 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: componentB
+name: component_b
 display_name: componentB
 version: 1
 
 inputs:
   componentB_input:
-    type: path
+    type: uri_folder
 
 outputs:
   componentB_output:
-    type: path
+    type: uri_folder
 
-code:
-  local_path: ./componentB_src
+code: ./componentB_src
 
 environment: 
   image: python

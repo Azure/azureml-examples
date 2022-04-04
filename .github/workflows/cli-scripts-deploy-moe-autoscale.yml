@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/deploy-moe-autoscale.sh
       - .github/workflows/cli-scripts-deploy-moe-autoscale.yml

@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/batch-score.sh
       - .github/workflows/cli-scripts-batch-score.yml

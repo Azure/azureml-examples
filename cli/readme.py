@@ -5,13 +5,14 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = []
+EXCLUDED_JOBS = ["java"]
 EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
     "vm-attach",
     "instance",
+    "connections",
 ]
 EXCLUDED_ASSETS = [
     "conda-yamls",
@@ -31,6 +32,10 @@ def main(args):
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(
+        glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
+    )
     jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/automl/**/*cli-automl*.yml", recursive=True))
     jobs = [
@@ -294,8 +299,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
       - april-preview-automl
     paths:
       - cli/{project_dir}/**
@@ -335,8 +338,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -375,8 +376,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
@@ -415,8 +414,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml
