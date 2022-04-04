@@ -1,0 +1,32 @@
+name: cli-jobs-automl-cli-automl-forecasting-task-energy-demand-cli-automl-forecasting-task-energy-demand
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+      - releases/current
+      - april-preview-automl
+    paths:
+      - cli/jobs/automl/cli-automl-forecasting-task-energy-demand/**
+      - .github/workflows/cli-jobs-automl-cli-automl-forecasting-task-energy-demand-cli-automl-forecasting-task-energy-demand.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run job
+      run: bash -x run-job.sh jobs/automl/cli-automl-forecasting-task-energy-demand/cli-automl-forecasting-task-energy-demand.yml
+      working-directory: cli

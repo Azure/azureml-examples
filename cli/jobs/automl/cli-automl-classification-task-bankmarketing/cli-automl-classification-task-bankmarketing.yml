@@ -65,5 +65,5 @@ training:
 
 
 properties:
-  # _automl_internal_enable_mltable_quick_profile: "true"
+  _automl_internal_save_mlflow: true
   _automl_internal_label: "latest"
