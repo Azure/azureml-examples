@@ -1,9 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 model:
-  local_path: ../../model-1/model/sklearn_regression_model.pkl
+  path: ../../model-1/model/sklearn_regression_model.pkl
 code_configuration:
-  code: 
-    local_path: ../../model-1/onlinescoring/
+  code: ../../model-1/onlinescoring/
   scoring_script: score_managedidentity.py
 environment: 
   conda_file: ../../model-1/environment/conda.yml

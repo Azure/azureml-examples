@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/basics/**
       - .github/workflows/cli-jobs-basics-hello-notebook.yml

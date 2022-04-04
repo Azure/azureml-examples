@@ -3,22 +3,31 @@ import os
 import json
 import glob
 import argparse
+from tokenize import Special
 
 # define constants
-ENABLE_MANUAL_CALLING = True #defines whether the workflow can be invoked or not
-NOT_TESTED_NOTEBOOKS = ["datastore",] #cannot automate lets exclude
-NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
-#define branch where we need this
-#use if running on a release candidate, else make it empty
-BRANCH = 'main' #default - do not change
-BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
-BRANCH = 'march-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
-BRANCH = 'april-preview-automl' #this should be deleted when this branch is merged to sdk-preview
+ENABLE_MANUAL_CALLING = True  # defines whether the workflow can be invoked or not
+NOT_TESTED_NOTEBOOKS = [
+    "datastore",
+]  # cannot automate lets exclude
+NOT_SCHEDULED_NOTEBOOKS = [
+    "compute",
+    "workspace",
+]  # these are too expensive, lets not run everyday
+# define branch where we need this
+# use if running on a release candidate, else make it empty
+BRANCH = "main"  # default - do not change
+BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
+BRANCH = "apri-preview-automl"  # this should be deleted when this branch is merged to sdk-preview
+
 
 def main(args):
-    
+
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+
+    # make all notebooks consistent
+    modify_notebooks(notebooks)
 
     # write workflows
     write_workflows(notebooks)
@@ -26,39 +35,48 @@ def main(args):
     # write readme
     write_readme(notebooks)
 
+    # format code
+    format_code()
+
+
 def write_workflows(notebooks):
     print("writing .github/workflows...")
     for notebook in notebooks:
-      if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
-        # get notebook name
-        name = notebook.split("/")[-1].replace(".ipynb", "")
-        folder = os.path.dirname(notebook)
-        classification = folder.replace("/","-")
+        if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
+            # get notebook name
+            name = notebook.split("/")[-1].replace(".ipynb", "")
+            folder = os.path.dirname(notebook)
+            classification = folder.replace("/", "-")
 
-        enable_scheduled_runs = True
-        if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
-          enable_scheduled_runs = False
+            enable_scheduled_runs = True
+            if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+                enable_scheduled_runs = False
 
-        # write workflow file
-        write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs)
+            # write workflow file
+            write_notebook_workflow(
+                notebook, name, classification, folder, enable_scheduled_runs
+            )
     print("finished writing .github/workflows")
 
 
-def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
+def write_notebook_workflow(
+    notebook, name, classification, folder, enable_scheduled_runs
+):
     creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
     if ENABLE_MANUAL_CALLING:
-      workflow_yaml += f"""  workflow_dispatch:\n"""
+        workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
-      workflow_yaml += f"""  schedule:
+        workflow_yaml += f"""  schedule:
     - cron: "0 */8 * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main
-      - sdk-preview\n"""
-    if BRANCH!="main":
-      workflow_yaml += f"""      - {BRANCH}\n"""
+      - sdk-preview
+      - april-preview-automl\n"""
+    if BRANCH != "main":
+        workflow_yaml += f"""      - {BRANCH}\n"""
     workflow_yaml += f"""    paths:
       - sdk/**
       - .github/workflows/sdk-{classification}-{name}.yml
@@ -69,9 +87,9 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2\n"""
-    if BRANCH!="main":
-      workflow_yaml += f"""      with:
-        ref: {BRANCH}\n"""    
+    if BRANCH != "main":
+        workflow_yaml += f"""      with:
+        ref: {BRANCH}\n"""
     workflow_yaml += f"""    - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -151,8 +169,8 @@ def write_readme(notebooks):
     with open("prefix.md", "r") as f:
         prefix = f.read()
     with open("suffix.md", "r") as f:
-        suffix = f.read()    
-    
+        suffix = f.read()
+
     # define markdown tables
     notebook_table = f"Test Status is for branch - **_{branch}_**\n|Area|Sub-Area|Notebook|Description|Status|\n|--|--|--|--|--|\n"
     for notebook in notebooks:
@@ -161,39 +179,81 @@ def write_readme(notebooks):
         area = notebook.split("/")[0]
         sub_area = notebook.split("/")[1]
         folder = os.path.dirname(notebook)
-        classification = folder.replace("/","-")
+        classification = folder.replace("/", "-")
 
         try:
-          # read in notebook
-          with open(notebook, "r") as f:
-              data = json.load(f)
+            # read in notebook
+            with open(notebook, "r") as f:
+                data = json.load(f)
 
-          description = "*no description*"
-          try:
-            if data["metadata"]["description"] is not None:
-              description = data["metadata"]["description"]["description"]
-          except:
-            pass
+            description = "*no description*"
+            try:
+                if data["metadata"]["description"] is not None:
+                    description = data["metadata"]["description"]["description"]
+            except:
+                pass
         except:
-          print('Could not load', notebook)
-          pass
+            print("Could not load", notebook)
+            pass
 
-        # write workflow file        
-        notebook_table += write_readme_row(branch, notebook, name, classification, area, sub_area, description) + "\n"
+        if any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
+            description += " - _This sample is excluded from automated tests_"
+        if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+            description += " - _This sample is only tested on demand_"
+
+        # write workflow file
+        notebook_table += (
+            write_readme_row(
+                branch, notebook, name, classification, area, sub_area, description
+            )
+            + "\n"
+        )
 
     print("writing README.md...")
     with open("README.md", "w") as f:
         f.write(prefix + notebook_table + suffix)
     print("finished writing README.md")
 
-def write_readme_row(branch, notebook, name, classification, area, sub_area, description):
-    gh_link = 'https://github.com/Azure/azureml-examples/actions/workflows'
-    
+
+def write_readme_row(
+    branch, notebook, name, classification, area, sub_area, description
+):
+    gh_link = "https://github.com/Azure/azureml-examples/actions/workflows"
+
     nb_name = f"[{name}]({notebook})"
     status = f"[![{name}]({gh_link}/sdk-{classification}-{name}.yml/badge.svg?branch={branch})]({gh_link}/sdk-{classification}-{name}.yml)"
 
     row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
     return row
+
+
+def modify_notebooks(notebooks):
+    # setup variables
+    kernelspec = {
+        "display_name": "Python 3.8 - AzureML",
+        "language": "python",
+        "name": "python38-azureml",
+    }
+
+    # for each notebooks
+    for notebook in notebooks:
+
+        # read in notebook
+        with open(notebook, "r") as f:
+            data = json.load(f)
+
+        # update metadata
+        data["metadata"]["kernelspec"] = kernelspec
+
+        # write notebook
+        with open(notebook, "w") as f:
+            json.dump(data, f, indent=1)
+
+
+def format_code():
+    os.system("black .")
+    # os.system("black-nb --clear-output .")
+
 
 # run functions
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ command: |
   echo ${{inputs.hello_string}}
   echo ${{inputs.hello_number}}
 environment:
-  image: python:latest
+  image: library/python:latest
 inputs:
   hello_string: "hello world"
   hello_number: 42
