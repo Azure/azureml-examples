@@ -58,5 +58,5 @@ training:
 #   - ExtremeRandomTrees
 
 properties:
-  _automl_internal_save_mlflow: true
+  _automl_internal_save_mlflow: "true"
   _automl_internal_label: "latest"
