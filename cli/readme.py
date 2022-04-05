@@ -299,6 +299,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
       - automl-preview
     paths:
       - cli/{project_dir}/**
