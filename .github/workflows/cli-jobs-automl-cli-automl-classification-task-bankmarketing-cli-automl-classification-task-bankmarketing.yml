@@ -6,9 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
-      - april-preview-automl
+      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-classification-task-bankmarketing/**
       - .github/workflows/cli-jobs-automl-cli-automl-classification-task-bankmarketing-cli-automl-classification-task-bankmarketing.yml

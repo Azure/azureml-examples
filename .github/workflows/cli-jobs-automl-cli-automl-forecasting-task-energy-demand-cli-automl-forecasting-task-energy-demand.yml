@@ -6,9 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
-      - april-preview-automl
+      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-forecasting-task-energy-demand/**
       - .github/workflows/cli-jobs-automl-cli-automl-forecasting-task-energy-demand-cli-automl-forecasting-task-energy-demand.yml

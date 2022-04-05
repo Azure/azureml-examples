@@ -299,7 +299,7 @@ on:
   pull_request:
     branches:
       - main
-      - april-preview-automl
+      - automl-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
