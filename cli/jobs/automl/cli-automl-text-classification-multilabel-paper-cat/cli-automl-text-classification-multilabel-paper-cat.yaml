@@ -1,0 +1,29 @@
+$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLTextClassificationMultilableJob.schema.json
+# Need final URL for SCHEMAS
+
+type: automl
+experiment_name: dpv2-cli-text-classification-multilabel-paper-cat
+description: A text classification multilabel job using paper categorization data
+
+compute: azureml:gpu-cluster
+
+task_type: textclassificationmultilabel
+primary_metric: accuracy
+log_verbosity: debug
+
+limits:
+  timeout: 60
+
+data:
+  target_column_name: 'terms'
+  training:
+    data:
+      path: "./training-mltable-folder"
+      type: mltable
+  validation:
+    data:
+      type: mltable
+      path: "./validation-mltable-folder"
+
+# featurization:
+#   dataset_language: "eng"
