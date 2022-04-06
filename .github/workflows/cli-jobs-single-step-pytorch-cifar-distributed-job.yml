@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/jobs/single-step/pytorch/cifar-distributed/**
       - .github/workflows/cli-jobs-single-step-pytorch-cifar-distributed-job.yml

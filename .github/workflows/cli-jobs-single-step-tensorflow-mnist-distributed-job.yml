@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/jobs/single-step/tensorflow/mnist-distributed/**
       - .github/workflows/cli-jobs-single-step-tensorflow-mnist-distributed-job.yml

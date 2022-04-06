@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/batch-score.sh
       - .github/workflows/cli-scripts-batch-score.yml

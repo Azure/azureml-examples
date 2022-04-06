@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/misc.sh
       - .github/workflows/cli-scripts-misc.yml

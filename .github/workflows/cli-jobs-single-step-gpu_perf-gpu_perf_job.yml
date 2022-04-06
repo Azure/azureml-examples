@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/jobs/single-step/gpu_perf/**
       - .github/workflows/cli-jobs-single-step-gpu_perf-gpu_perf_job.yml
