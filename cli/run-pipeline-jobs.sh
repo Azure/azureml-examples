@@ -82,10 +82,10 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../../
 
-# cd jobs/pipelines-with-components/image_classification_with_densenet
-# pwd
-# az ml job create --file pipeline.yml
-# cd ../../../
+cd jobs/pipelines-with-components/image_classification_with_densenet
+pwd
+az ml job create --file pipeline.yaml
+cd ../../../
 
 cd jobs/pipelines-with-components/nyc_taxi_data_regression
 pwd
@@ -97,9 +97,9 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../
 
-# cd jobs/pipelines/cifar-10
-# pwd
-# az ml job create --file pipeline.yml --web
-# cd ../../../
+cd jobs/pipelines/cifar-10
+pwd
+az ml job create --file pipeline.yml --web
+cd ../../../
 
 az --version
