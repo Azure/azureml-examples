@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - may-sdk-preview
     paths:
       - cli/jobs/single-step/spark/nyctaxi/**
       - .github/workflows/cli-jobs-single-step-spark-nyctaxi-job.yml
@@ -16,6 +17,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: may-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
