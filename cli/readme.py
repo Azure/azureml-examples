@@ -298,6 +298,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -338,6 +339,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -378,6 +380,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
@@ -418,6 +421,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml

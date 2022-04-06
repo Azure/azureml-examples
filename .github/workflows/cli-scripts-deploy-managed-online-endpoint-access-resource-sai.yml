@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/deploy-managed-online-endpoint-access-resource-sai.sh
       - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml

@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/jobs/single-step/scikit-learn/iris-notebook/**
       - .github/workflows/cli-jobs-single-step-scikit-learn-iris-notebook-job.yml

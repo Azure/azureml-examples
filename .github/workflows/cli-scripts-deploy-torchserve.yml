@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/deploy-torchserve.sh
       - .github/workflows/cli-scripts-deploy-torchserve.yml

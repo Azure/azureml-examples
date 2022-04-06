@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/jobs/single-step/r/accidents/**
       - .github/workflows/cli-jobs-single-step-r-accidents-job.yml
