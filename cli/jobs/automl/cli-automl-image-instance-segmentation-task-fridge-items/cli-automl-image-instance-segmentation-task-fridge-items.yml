@@ -6,7 +6,7 @@ description: An Image Instance segmentation job using fridge items dataset
 
 compute: azureml:gpu-cluster
 
-task_type: imageinstancesegmentation
+task: image_instance_segmentation
 log_verbosity: debug
 primary_metric: mean_average_precision
 
@@ -30,7 +30,7 @@ image_model:
 
 sweep:
   limits:
-    max_total_trials: 10
+    max_trials: 10
     max_concurrent_trials: 2
   sampling_algorithm: random
   early_termination:
@@ -43,4 +43,4 @@ search_space:
   - model_name: "maskrcnn_resnet50_fpn"
     learning_rate: "uniform(0.0001, 0.001)"
     optimizer: "choice('sgd', 'adam', 'adamw')"
-    min_size: "choice(600, 800)"  
+    min_size: "choice(600, 800)"

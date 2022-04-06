@@ -1,4 +1,5 @@
 $schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLImageClassificationJob.schema.json
+
 type: automl
 
 experiment_name: dpv2-cli-automl-image-classification-experiment
@@ -6,7 +7,7 @@ description: A multi-class Image classification job using fridge items dataset
 
 compute: azureml:gpu-cluster
 
-task_type: imageclassification
+task: image_classification
 log_verbosity: debug
 primary_metric: accuracy
 
@@ -30,7 +31,7 @@ image_model:
 
 sweep:
   limits:
-    max_total_trials: 10
+    max_trials: 10
     max_concurrent_trials: 2
   sampling_algorithm: random
   early_termination:
