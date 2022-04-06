@@ -289,7 +289,11 @@ def parse_path(path):
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     creds = "${{secrets.AZ_CREDS}}"
-    run_pipeline_job_path = "\n      - cli/run-pipeline-jobs.sh" if hyphenated.startswith("jobs-pipelines") else ""
+    run_pipeline_job_path = (
+        "\n      - cli/run-pipeline-jobs.sh"
+        if hyphenated.startswith("jobs-pipelines")
+        else ""
+    )
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
