@@ -1,18 +1,17 @@
-name: sdk-jobs-pipelines-2b_train_cifar_10_with_pytorch
+name: sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - pipeline/*
       - main
       - sdk-preview
       - march-sdk-preview
-      - pipeline/**
+      - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-2b_train_cifar_10_with_pytorch.yml
+      - .github/workflows/sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -20,6 +19,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: march-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -38,11 +39,10 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/2b_train_cifar_10_with_pytorch/train_cifar_10_with_pytorch.ipynb
+    - name: run jobs/pipelines/1a_pipeline_with_components_from_yaml/pipeline_with_components_from_yaml.ipynb
       run: |
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" train_cifar_10_with_pytorch.ipynb
-          
-          papermill train_cifar_10_with_pytorch.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/2b_train_cifar_10_with_pytorch
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb          
+          papermill pipeline_with_components_from_yaml.ipynb - -k python
+      working-directory: sdk/jobs/pipelines/1a_pipeline_with_components_from_yaml
