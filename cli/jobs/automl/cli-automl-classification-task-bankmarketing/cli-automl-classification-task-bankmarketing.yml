@@ -43,8 +43,6 @@ limits:
 
 featurization:
   mode: custom
-  drop_columns:
-    - pdays
   transformer_params:
     imputer:
     - fields: ["job"]
