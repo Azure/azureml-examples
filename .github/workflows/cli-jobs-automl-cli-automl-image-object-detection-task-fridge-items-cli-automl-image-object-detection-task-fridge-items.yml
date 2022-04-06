@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-image-object-detection-task-fridge-items/**
       - .github/workflows/cli-jobs-automl-cli-automl-image-object-detection-task-fridge-items-cli-automl-image-object-detection-task-fridge-items.yml

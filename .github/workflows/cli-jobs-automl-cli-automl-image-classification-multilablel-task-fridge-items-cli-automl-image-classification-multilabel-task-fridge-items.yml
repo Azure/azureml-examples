@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-image-classification-multilablel-task-fridge-items/**
       - .github/workflows/cli-jobs-automl-cli-automl-image-classification-multilablel-task-fridge-items-cli-automl-image-classification-multilabel-task-fridge-items.yml

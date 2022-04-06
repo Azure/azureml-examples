@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-text-classification-multilabel-paper-cat/**
       - .github/workflows/cli-jobs-automl-cli-automl-text-classification-multilabel-paper-cat-cli-automl-text-classification-multilabel-paper-cat.yml

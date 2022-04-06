@@ -27,5 +27,4 @@ featurization:
   mode: auto
 
 properties:
-  # _automl_internal_enable_mltable_quick_profile: "true"
   _automl_internal_label: "latest"

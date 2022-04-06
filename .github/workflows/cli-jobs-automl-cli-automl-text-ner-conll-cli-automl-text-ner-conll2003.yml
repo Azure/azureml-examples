@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-text-ner-conll/**
       - .github/workflows/cli-jobs-automl-cli-automl-text-ner-conll-cli-automl-text-ner-conll2003.yml

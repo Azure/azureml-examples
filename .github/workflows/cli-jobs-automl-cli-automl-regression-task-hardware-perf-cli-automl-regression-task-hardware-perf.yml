@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-regression-task-hardware-perf/**
       - .github/workflows/cli-jobs-automl-cli-automl-regression-task-hardware-perf-cli-automl-regression-task-hardware-perf.yml
