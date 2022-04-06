@@ -27,7 +27,7 @@ Welcome to the Azure Machine Learning examples repository!
 ## Examples
 
 **Scripts**
-
+Status for **may-sdk-preview** branch
 path|status|
 -|-
 [batch-score-rest.sh](batch-score-rest.sh)|[![batch-score-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-batch-score-rest/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-batch-score-rest.yml)

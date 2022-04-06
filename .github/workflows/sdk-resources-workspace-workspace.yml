@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - sdk-preview
+      - may-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-resources-workspace-workspace.yml
@@ -17,7 +17,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: sdk-preview
+        ref: may-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
