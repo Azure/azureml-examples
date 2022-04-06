@@ -7,7 +7,7 @@ description: A text named entity recognition job using CoNLL 2003 data
 
 compute: azureml:gpu-cluster
 
-task_type: textner
+task: text_ner
 primary_metric: accuracy
 log_verbosity: debug
 

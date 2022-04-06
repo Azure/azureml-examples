@@ -8,7 +8,7 @@ description: A Time-Series Forecasting job using energy demand dataset
 
 compute: azureml:cpu-cluster
 
-task_type: forecasting
+task: forecasting
 # primary_metric: r2_score  # (BUG)
 
 log_verbosity: debug
@@ -27,7 +27,7 @@ data:
 
 limits:
   timeout: 180
-  max_total_trials: 40
+  max_trials: 40
   max_concurrent_trials: 5
   trial_timeout_minutes: 20
   enable_early_termination: true
