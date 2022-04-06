@@ -27,7 +27,7 @@ Welcome to the Azure Machine Learning examples repository!
 ## Examples
 
 **Scripts**
-Status is for **april-sdk-preview** branch
+
 path|status|
 -|-
 [batch-score-rest.sh](batch-score-rest.sh)|[![batch-score-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-batch-score-rest/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-batch-score-rest.yml)
@@ -181,7 +181,6 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](../CODE_OF_CONDUCT.md) for details.
 
 ## Reference
- 
+
 - [Documentation](https://docs.microsoft.com/azure/machine-learning)
 - [Private previews](https://github.com/Azure/azureml-previews)
- 
