@@ -10,14 +10,6 @@ jobs:
       tar -xvzf cifar-10-python.tar.gz -C ${{outputs.cifar}};
       rm cifar-10-python.tar.gz;
     compute: azureml:gpu-cluster
-    # command: >- 
-    #   tar -xvzf ${{inputs.cifar_zip}} -C ${{outputs.cifar}};
-    # inputs:
-    #   cifar_zip:
-    #     type: uri_file
-    #     mode: ro_mount
-    #     path: https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz
-    # compute: azureml:cpu-cluster
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     outputs:
       cifar:
