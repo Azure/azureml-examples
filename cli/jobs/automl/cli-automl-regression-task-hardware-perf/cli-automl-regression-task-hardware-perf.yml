@@ -8,7 +8,7 @@ description: A regression job using hardware performance dataset
 
 compute: azureml:cpu-cluster
 
-task_type: regression
+task: regression
 log_verbosity: debug
 primary_metric: r2_score  
 
@@ -23,7 +23,7 @@ data:
 
 limits:
   timeout: 180
-  max_total_trials: 10
+  max_trials: 10
   max_concurrent_trials: 5
   trial_timeout_minutes: 20
   enable_early_termination: true
@@ -34,10 +34,13 @@ featurization:
 training:
   enable_model_explainability: true
 
-#blocked_models:
-#  - tbd
-#allowed_models:
-#  - tbd
+blocked_training_algorithms:
+  - decision_tree
+  - xg_boost_regressor
+
+#allowed_training_algorithms:
+#  - light_gbm
+#  - xg_boost_regressor
 
 properties:
   _automl_internal_save_mlflow: "true"
