@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/resources/compute/cluster-basic.yml
       - .github/workflows/cli-resources-compute-cluster-basic.yml

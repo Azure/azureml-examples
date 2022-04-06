@@ -1,17 +1,16 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: Eval
-version: 31
+name: my_eval
+# version: 1b
 display_name: Eval
 type: command
 inputs:
   scoring_result:
-    type: path
+    type: uri_folder
 outputs:
   eval_output:
-    type: path
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
-code:
-  local_path: ./eval_src
+    type: uri_folder
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+code: ./eval_src
 command: >-
   python eval.py 
   --scoring_result ${{inputs.scoring_result}} 

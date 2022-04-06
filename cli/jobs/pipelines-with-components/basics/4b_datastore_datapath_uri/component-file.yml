@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: component_file
+display_name: component_file
+version: 1
+
+inputs:
+  sample_input_data_file:
+    type: uri_folder
+  placeholder:
+    type: uri_folder
+outputs:
+  sample_output_data:
+    type: uri_folder
+
+code: ./src
+
+environment: 
+  image: python
+
+command: >-
+  python component-file.py  
+  --input_data ${{inputs.sample_input_data_file}}
+  --placeholder ${{inputs.placeholder}}
+  --output_data ${{outputs.sample_output_data}}
