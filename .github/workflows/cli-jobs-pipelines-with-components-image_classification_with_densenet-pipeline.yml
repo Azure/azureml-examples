@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yaml
+      run: bash -x run-job.sh jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml
       working-directory: cli

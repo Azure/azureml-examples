@@ -36,7 +36,6 @@ def main(args):
     jobs += sorted(
         glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
     )
-    jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -290,6 +289,7 @@ def parse_path(path):
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     creds = "${{secrets.AZ_CREDS}}"
+    run_pipeline_job_path = "\n      - cli/run-pipeline-jobs.sh" if hyphenated.startswith("jobs-pipelines") else ""
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -300,7 +300,7 @@ on:
       - main
     paths:
       - cli/{project_dir}/**
-      - .github/workflows/cli-{hyphenated}.yml
+      - .github/workflows/cli-{hyphenated}.yml{run_pipeline_job_path}
       - cli/setup.sh
 jobs:
   build:
