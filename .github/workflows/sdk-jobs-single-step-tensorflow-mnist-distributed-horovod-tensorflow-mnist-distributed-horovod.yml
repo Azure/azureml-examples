@@ -5,9 +5,8 @@ on:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - main
       - sdk-preview
-      - sdk-preview
+      - april-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-single-step-tensorflow-mnist-distributed-horovod-tensorflow-mnist-distributed-horovod.yml
@@ -19,7 +18,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: sdk-preview
+        ref: april-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -29,7 +28,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZ_AE_CREDS}}
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -41,7 +40,7 @@ jobs:
     - name: run jobs/single-step/tensorflow/mnist-distributed-horovod/tensorflow-mnist-distributed-horovod.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" tensorflow-mnist-distributed-horovod.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" tensorflow-mnist-distributed-horovod.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" tensorflow-mnist-distributed-horovod.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" tensorflow-mnist-distributed-horovod.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" tensorflow-mnist-distributed-horovod.ipynb
           
