@@ -6,7 +6,6 @@ on:
     - cron: "0 0/4 * * *"
   pull_request:
     branches:
-      - march-cli-preview
       - main
     paths:
       - cli/jobs/pipelines-with-components/basics/6a_tf_hello_world/**
