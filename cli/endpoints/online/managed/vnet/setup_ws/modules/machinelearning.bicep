@@ -55,7 +55,7 @@ resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-0
     storageAccount: storageAccountId
 
     // disable public network access
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled'
   }
 }
 
