@@ -1,0 +1,61 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: train_component
+display_name: Train
+version: 0.0.1
+
+inputs:
+  random_seed:
+    type: integer
+    default: 1
+  batch_size:
+    type: integer
+    default: 32
+  first_layer_neurons:
+    type: integer
+    default: 40
+  second_layer_neurons:
+    type: integer
+    default: 20
+  third_layer_neurons:
+    type: integer
+    default: 5
+  epochs:
+    type: integer
+    default: 3
+  momentum:
+    type: number
+    default: 10
+  weight_decay:
+    type: number
+    default: 0.5
+  learning_rate:
+    type: number
+    default: 0.02
+  f1:
+    type: number
+    default: 0.5
+  f2:
+    type: number
+    default: 0.5
+  training_data:
+    type: mltable
+
+outputs:
+  model_output:
+    type: mlflow_model
+    
+code: ./src
+
+environment: 
+  conda_file: ./conda.yml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1
+
+command: >-
+  python train.py --random-seed ${{inputs.random_seed}}
+  --training-data ${{inputs.training_data}} --batch-size ${{inputs.batch_size}}
+  --first-layer-neurons ${{inputs.first_layer_neurons}} --second-layer-neurons ${{inputs.second_layer_neurons}}
+  --third-layer-neurons ${{inputs.third_layer_neurons}} --epochs ${{inputs.epochs}} 
+  --f1 ${{inputs.f1}} --f2 ${{inputs.f2}} --weight-decay ${{inputs.weight_decay}} --momentum ${{inputs.momentum}}
+  --learning-rate ${{inputs.learning_rate}} --model-output ${{outputs.model_output}}

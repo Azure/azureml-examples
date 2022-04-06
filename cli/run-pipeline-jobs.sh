@@ -37,6 +37,11 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../../
 
+cd jobs/pipelines-with-components/basics/3c_pipeline_with_hyperparameter_sweep
+pwd
+az ml job create --file pipeline.yml
+cd ../../../../
+
 cd jobs/pipelines-with-components/basics/4a_local_data_input
 pwd
 az ml job create --file pipeline.yml
