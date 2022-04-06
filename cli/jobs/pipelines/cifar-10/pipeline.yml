@@ -9,6 +9,7 @@ jobs:
       wget https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz;
       tar -xvzf cifar-10-python.tar.gz -C ${{outputs.cifar}};
       rm cifar-10-python.tar.gz;
+    compute: azureml:gpu-cluster
     # command: >- 
     #   tar -xvzf ${{inputs.cifar_zip}} -C ${{outputs.cifar}};
     # inputs:
@@ -16,8 +17,8 @@ jobs:
     #     type: uri_file
     #     mode: ro_mount
     #     path: https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz
+    # compute: azureml:cpu-cluster
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: azureml:cpu-cluster
     outputs:
       cifar:
   train-model:
