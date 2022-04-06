@@ -9,6 +9,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/6a_tf_hello_world/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-6a_tf_hello_world-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

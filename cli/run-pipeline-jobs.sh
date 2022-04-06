@@ -47,12 +47,6 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../../
 
-# cd jobs/pipelines-with-components/basics/4c_dataset_input
-# pwd
-# az ml data create --file data.yml --version $target_version
-# az ml job create --file pipeline.yml
-# cd ../../../../
-
 cd jobs/pipelines-with-components/basics/4c_web_url_input
 pwd
 az ml job create --file pipeline.yml
@@ -88,10 +82,10 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../../
 
-cd jobs/pipelines-with-components/image_classification_with_densenet
-pwd
-az ml job create --file pipeline.yml
-cd ../../../
+# cd jobs/pipelines-with-components/image_classification_with_densenet
+# pwd
+# az ml job create --file pipeline.yml
+# cd ../../../
 
 cd jobs/pipelines-with-components/nyc_taxi_data_regression
 pwd
