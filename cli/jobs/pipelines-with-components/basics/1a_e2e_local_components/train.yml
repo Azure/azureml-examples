@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: Train
+name: train
 display_name: Train
 version: 10
 type: command
 inputs:
   training_data: 
-    type: path
+    type: uri_folder
   max_epocs:
     type: integer
   learning_rate: 
@@ -16,10 +16,9 @@ inputs:
     default: time-based 
 outputs:
   model_output:
-    type: path
-code:
-  local_path: ./train_src
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+    type: uri_folder
+code: ./train_src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 

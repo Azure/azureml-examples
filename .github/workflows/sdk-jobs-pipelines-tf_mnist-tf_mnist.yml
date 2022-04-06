@@ -5,8 +5,9 @@ on:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
+      - main
       - sdk-preview
-      - march-sdk-preview
+      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-tf_mnist-tf_mnist.yml
@@ -18,7 +19,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: march-sdk-preview
+        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -28,7 +29,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -40,7 +41,7 @@ jobs:
     - name: run jobs/pipelines/tf_mnist/tf_mnist.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" tf_mnist.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" tf_mnist.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" tf_mnist.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" tf_mnist.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" tf_mnist.ipynb
           

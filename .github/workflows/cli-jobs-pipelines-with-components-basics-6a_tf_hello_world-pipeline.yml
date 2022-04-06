@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/pipelines-with-components/basics/6a_tf_hello_world/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-6a_tf_hello_world-pipeline.yml

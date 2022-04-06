@@ -1,12 +1,9 @@
 name: sdk-endpoints-online-sample-online-inferencing-sample
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - sdk-preview
-      - march-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-endpoints-online-sample-online-inferencing-sample.yml
@@ -18,7 +15,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: march-sdk-preview    
+        ref: sdk-preview    
     - name: setup python
       uses: actions/setup-python@v2
       with: 

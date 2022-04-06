@@ -6,7 +6,7 @@ LOCATION=$(az group show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-API_VERSION="2021-03-01-preview"
+API_VERSION="2022-02-01-preview"
 COMPUTE_NAME="cpu-cluster"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
@@ -52,10 +52,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
     \"properties\":{
         \"condaFile\": \"$CONDA_FILE\",
-        \"Docker\": {
-            \"DockerSpecificationType\": \"Image\",
-            \"DockerImageUri\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04\"
-        }
+        \"image\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04\"
     }
 }"
 # </create_environment>
@@ -67,9 +64,9 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
   \"properties\": {
-    \"description\": \"Iris datset\",
-    \"datasetType\": \"Simple\",
-    \"path\": \"https://azuremlexamples.blob.core.windows.net/datasets/iris.csv\"
+    \"description\": \"Iris dataset\",
+    \"dataType\": \"UriFile\",
+    \"dataUri\": \"https://azuremlexamples.blob.core.windows.net/datasets/iris.csv\"
   }
 }"
 #</create_data>
@@ -83,8 +80,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --data-raw "{
   \"properties\": {
     \"description\": \"Train code\",
-    \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE\",
-    \"path\": \"src\"
+    \"codeUri\": \"https://trainws1352661735.blob.core.windows.net/training-scripts/main.py\"
   }
 }"
 #</create_code>
@@ -102,14 +98,12 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/lightgbm-environment/versions/$ENV_VERSION\",
         \"inputDataBindings\": {
             \"iris\": {
-                \"dataId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/data/iris-data/versions/$DATA_VERSION\"
+                \"jobInputType\": \"UriFile\",
+                \"uri\": \"https://azuremlexamples.blob.core.windows.net/datasets/iris.csv\"
             }
         },
         \"experimentName\": \"lightgbm-iris\",
-        \"compute\": {
-            \"target\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/$COMPUTE_NAME\",
-            \"instanceCount\": 1
-        }
+        \"computeId\": "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/$COMPUTE_NAME\"
     }
 }"
 # </create_job>
@@ -123,7 +117,9 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"algorithm\": \"Random\",
+        \"samplingAlgorithm\": {
+            \"samplingAlgorithmType\": \"Random\",
+        },
         \"jobType\": \"Sweep\",
         \"trial\":{
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/train-lightgbm/versions/1\",
@@ -131,21 +127,20 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
             \"environmentId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/environments/lightgbm-environment/versions/$ENV_VERSION\"
         },
         \"experimentName\": \"lightgbm-iris-sweep\",
-        \"compute\": {
-            \"target\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/$COMPUTE_NAME\",
-            \"instanceCount\": 1
-        },
+        \"computeId\": \"target\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/computes/$COMPUTE_NAME\",
         \"objective\": {
             \"primaryMetric\": \"test-multi_logloss\",
             \"goal\": \"minimize\"
         },
         \"searchSpace\": {
-            \"--learning_rate\": [\"uniform\", [0.01, 0.9]],
-            \"--boosting\":[\"choice\",[[\"gbdt\",\"dart\"]]]
+            \"learning_rate\": [\"uniform\", [0.01, 0.9]],
+            \"boosting\":[\"choice\",[[\"gbdt\",\"dart\"]]]
         },
-        \"maxTotalTrials\": 20,
-        \"maxConcurrentTrials\": 10,
-        \"timeout\": \"PT120M\"
+        \"limits\": {
+            \"jobLimitsType\": \"sweep\",
+            \"maxTotalTrials\": 20,
+            \"maxConcurrentTrials\": 10,
+        }
     }
 }"
 # </create_a_sweep_job>
