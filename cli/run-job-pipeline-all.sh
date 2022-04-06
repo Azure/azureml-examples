@@ -89,7 +89,7 @@ cd ../../../../
 
 cd jobs/pipelines-with-components/image_classification_with_densenet
 pwd
-az ml job create --file pipeline.yaml
+az ml job create --file pipeline.yml
 cd ../../../
 
 cd jobs/pipelines-with-components/nyc_taxi_data_regression
