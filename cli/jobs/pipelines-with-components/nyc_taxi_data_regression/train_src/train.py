@@ -81,14 +81,21 @@ print(model.score(trainX, trainy))
 
 
 # Output the model and test data
-# mlflow model can't write to existed folder
-# try to delete folder first
-# import shutil
-# shutil.rmtree(args.model_output)
-
-mlflow.sklearn.save_model(model, args.model_output)
-
+# mlflow model can't write to existed folder, fix is in the mlflow master branch
+# write to local folder first, then copy to output folder
+# mlflow.sklearn.save_model(model, args.model_output)
 # mlflow.sklearn.save_model(model, args.model_output + '/model')
+mlflow.sklearn.save_model(model, 'model')
+
+from distutils.dir_util import copy_tree
+
+# copy subdirectory example
+from_directory = "model"
+to_directory = args.model_output
+
+copy_tree(from_directory, to_directory)
+
+
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
