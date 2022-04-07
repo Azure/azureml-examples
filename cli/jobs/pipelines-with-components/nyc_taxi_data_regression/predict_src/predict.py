@@ -31,9 +31,7 @@ print("mounted_path files: ")
 arr = os.listdir(args.test_data)
 
 print(arr)
-import mltable as mlt
-tbl = mlt.from_delimited_files(path=arr)
-test_data = tbl.to_pandas_dataframe()
+test_data = pd.read_csv(Path(args.test_data)/'test_data.csv')
 testy = test_data["cost"]
 # testX = test_data.drop(['cost'], axis=1)
 testX = test_data[
@@ -64,7 +62,7 @@ print(testX.shape)
 print(testX.columns)
 
 # Load the model from input port
-model = mlflow.sklearn.load_model(args.model_input+'/model')
+model = mlflow.sklearn.load_model(Path(args.model_input)/ 'model')
 
 # Make predictions on testX data and record them in a column named predicted_cost
 predictions = model.predict(testX)
@@ -77,8 +75,4 @@ output_data["actual_cost"] = testy
 
 
 # Save the output data with feature columns, predicted cost, and actual cost in csv file
-# output_data = output_data.to_csv((Path(args.predictions) / "predictions.csv"))
-output_data.to_csv("predictions.csv")
-import mltable as mlt
-tbl = mlt.from_delimited_files(path=["predictions.csv"])
-tbl.save(args.predictions)
+output_data = output_data.to_csv((Path(args.predictions) / "predictions.csv"))

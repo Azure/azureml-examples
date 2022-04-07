@@ -8,10 +8,10 @@ inputs:
   model_input:
     type: mlflow_model
   test_data:
-    type: mltable
+    type: uri_folder
 outputs:
   predictions:
-    type: mltable
+    type: uri_folder
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 code: ./predict_src
 command: >-

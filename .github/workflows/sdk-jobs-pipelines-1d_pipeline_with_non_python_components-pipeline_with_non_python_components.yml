@@ -1,17 +1,17 @@
-name: sdk-jobs-pipelines-1c_pipeline_with_hyperparameter_sweep
+name: sdk-jobs-pipelines-1d_pipeline_with_non_python_components-pipeline_with_non_python_components
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - pipeline/*
+      - main
       - sdk-preview
       - march-sdk-preview
-      - pipeline/**
+      - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-1c_pipeline_with_hyperparameter_sweep.yml
+      - .github/workflows/sdk-jobs-pipelines-1d_pipeline_with_non_python_components-pipeline_with_non_python_components.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -37,11 +37,10 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/1c_pipeline_with_hyperparameter_sweep/pipeline_with_hyperparameter_sweep.ipynb
+    - name: run jobs/pipelines/1d_pipeline_with_non_python_components/pipeline_with_non_python_components.ipynb
       run: |
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_hyperparameter_sweep.ipynb
-          
-          papermill pipeline_with_hyperparameter_sweep.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/1c_pipeline_with_hyperparameter_sweep
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_non_python_components.ipynb          
+          papermill pipeline_with_non_python_components.ipynb - -k python
+      working-directory: sdk/jobs/pipelines/1d_pipeline_with_non_python_components

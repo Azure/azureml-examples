@@ -3,8 +3,9 @@ import pandas as pd
 import os
 from pathlib import Path
 from sklearn.linear_model import LinearRegression
-import pickle
 from sklearn.metrics import mean_squared_error, r2_score
+import mlflow
+mlflow.sklearn.autolog()
 
 parser = argparse.ArgumentParser("score")
 parser.add_argument(
@@ -44,7 +45,7 @@ for filename in arr:
 test_data = df_list[0]
 
 # Load the model from input port
-model = pickle.load(open((Path(args.model) / "model.sav"), "rb"))
+model = mlflow.sklearn.load_model(Path(args.model)/ 'model')
 
 # Print the results of scoring the predictions against actual values in the test data
 # The coefficients

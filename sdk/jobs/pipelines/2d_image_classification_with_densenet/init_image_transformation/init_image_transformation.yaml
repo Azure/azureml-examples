@@ -95,7 +95,7 @@ inputs:
     default: false
 outputs:
   output_path:
-    type: path
+    type: uri_folder
     description: Output image transformation
 
 command: >-

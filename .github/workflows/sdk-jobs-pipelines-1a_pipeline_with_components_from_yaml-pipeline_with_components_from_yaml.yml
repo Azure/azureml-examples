@@ -1,17 +1,17 @@
-name: sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml
+name: sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - pipeline/*
       - main
       - sdk-preview
       - march-sdk-preview
+      - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml.yml
+      - .github/workflows/sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -41,7 +41,6 @@ jobs:
       run: |
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb
-          
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb          
           papermill pipeline_with_components_from_yaml.ipynb - -k python
       working-directory: sdk/jobs/pipelines/1a_pipeline_with_components_from_yaml
