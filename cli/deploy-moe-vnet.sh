@@ -64,12 +64,12 @@ then
 fi
 
 # create the VM
-#todo remove: az deployment group create --template-file endpoints/online/managed/vnet/setup_vm/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
+az deployment group create --template-file endpoints/online/managed/vnet/setup_vm/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
 
 ## In the docs we will provide instructions to create a VM using az vm create -n $VM_NAME
 
 # command in script: az deployment group create --template-file endpoints/online/managed/vnet/setup/vm_main.bicep #identity name is hardcoded uai-identity 
-#todo: az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
 
 # build image
 az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENV_DIR_PATH:$ENV_DIR_PATH"

@@ -3,10 +3,9 @@ name: blue
 endpoint_name: placeholder-name
 private_network_connection: true
 model:
-  local_path: model/sklearn_regression_model.pkl
+  path: model/sklearn_regression_model.pkl
 code_configuration:
-  code: 
-    local_path: onlinescoring/
+  code: onlinescoring/
   scoring_script: score.py
 environment: 
   image: placeholder.azurecr.io/repo/img:v1
