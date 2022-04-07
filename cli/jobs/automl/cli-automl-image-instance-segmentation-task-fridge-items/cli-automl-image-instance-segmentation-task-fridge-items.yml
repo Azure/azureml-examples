@@ -43,4 +43,4 @@ search_space:
   - model_name: "maskrcnn_resnet50_fpn"
     learning_rate: "uniform(0.0001, 0.001)"
     optimizer: "choice('sgd', 'adam', 'adamw')"
-    min_size: "choice(600, 800)"  
+    min_size: "choice(600, 800)"

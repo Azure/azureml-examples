@@ -6,7 +6,7 @@ description: An Image Object Detection job using fridge items dataset
 
 compute: azureml:gpu-cluster
 
-task: imageobjectdetection
+task: image_object_detection
 log_verbosity: debug
 primary_metric: mean_average_precision
 
