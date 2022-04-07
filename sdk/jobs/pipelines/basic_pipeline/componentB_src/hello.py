@@ -1,1 +1,2 @@
-print("Hello Python World...\nI'm component B :-)")
+
+print ("Hello Python World...\nI'm component B :-)")

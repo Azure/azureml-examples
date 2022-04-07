@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - april-sdk-preview
     paths:
       - cli/jobs/single-step/tensorflow/mnist/**
       - .github/workflows/cli-jobs-single-step-tensorflow-mnist-job.yml
@@ -16,6 +17,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
