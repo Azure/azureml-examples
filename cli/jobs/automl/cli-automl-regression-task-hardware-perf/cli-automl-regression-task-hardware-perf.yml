@@ -1,0 +1,47 @@
+$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLRegressionJob.schema.json
+# Need final URL for SCHEMAS
+type: automl
+
+experiment_name: dpv2-cli-automl-regression-experiment
+# name: dpv2-cli-regression-train-job-01
+description: A regression job using hardware performance dataset
+
+compute: azureml:cpu-cluster
+
+task: regression
+log_verbosity: debug
+primary_metric: r2_score  
+
+data:
+  target_column_name: "ERP"
+  training:
+    data:
+      path: "./training-mltable-folder"
+      type: mltable
+  validation:
+    n_cross_validations: 5  
+
+limits:
+  timeout: 180
+  max_trials: 10
+  max_concurrent_trials: 5
+  trial_timeout_minutes: 20
+  enable_early_termination: true
+  
+featurization:
+  mode: auto
+
+training:
+  enable_model_explainability: true
+
+blocked_training_algorithms:
+  - decision_tree
+  - xg_boost_regressor
+
+#allowed_training_algorithms:
+#  - light_gbm
+#  - xg_boost_regressor
+
+properties:
+  _automl_internal_save_mlflow: "true"
+  _automl_internal_label: "latest"

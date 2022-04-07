@@ -299,8 +299,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -320,8 +318,8 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh {job}.yml
-      working-directory: cli\n"""
+      run: bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
+      working-directory: cli/{project_dir}\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-{job.replace('/', '-')}.yml", "w") as f:

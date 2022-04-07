@@ -1,4 +1,4 @@
-name: cli-jobs-automl-cli-automl-text-classification-newsgroup-cli-automl-text-classification-newsgroup
+name: cli-jobs-automl-cli-automl-regression-task-hardware-perf-cli-automl-regression-task-hardware-perf
 on:
   workflow_dispatch:
   schedule:
@@ -7,8 +7,8 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/automl/cli-automl-text-classification-newsgroup/**
-      - .github/workflows/cli-jobs-automl-cli-automl-text-classification-newsgroup-cli-automl-text-classification-newsgroup.yml
+      - cli/jobs/automl/cli-automl-regression-task-hardware-perf/**
+      - .github/workflows/cli-jobs-automl-cli-automl-regression-task-hardware-perf-cli-automl-regression-task-hardware-perf.yml
       - cli/setup.sh
 jobs:
   build:
@@ -25,5 +25,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../run-job.sh cli-automl-text-classification-newsgroup.yml
-      working-directory: cli/jobs/automl/cli-automl-text-classification-newsgroup
+      run: bash -x ../../../run-job.sh cli-automl-regression-task-hardware-perf.yml
+      working-directory: cli/jobs/automl/cli-automl-regression-task-hardware-perf

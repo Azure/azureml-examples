@@ -7,7 +7,7 @@ description: A text classification job using newsgroup dataset
 
 compute: azureml:gpu-cluster
 
-task_type: textclassification
+task: textclassification
 primary_metric: accuracy
 log_verbosity: debug
 

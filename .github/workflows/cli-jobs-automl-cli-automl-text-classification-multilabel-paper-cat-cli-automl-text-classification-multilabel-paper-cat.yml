@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - automl-preview
     paths:
       - cli/jobs/automl/cli-automl-text-classification-multilabel-paper-cat/**
       - .github/workflows/cli-jobs-automl-cli-automl-text-classification-multilabel-paper-cat-cli-automl-text-classification-multilabel-paper-cat.yml
@@ -27,5 +25,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/automl/cli-automl-text-classification-multilabel-paper-cat/cli-automl-text-classification-multilabel-paper-cat.yml
-      working-directory: cli
+      run: bash -x ../../../run-job.sh cli-automl-text-classification-multilabel-paper-cat.yml
+      working-directory: cli/jobs/automl/cli-automl-text-classification-multilabel-paper-cat
