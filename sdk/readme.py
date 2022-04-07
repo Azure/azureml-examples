@@ -1,4 +1,5 @@
 # imports
+import contextlib
 import os
 import json
 import glob
@@ -24,6 +25,11 @@ def main(args):
 
     # write readme
     write_readme(notebooks)
+
+    # write pipeline readme
+    with change_working_dir("jobs/pipelines/"):
+      pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+      write_readme(pipeline_notebooks)
 
 def write_workflows(notebooks):
     print("writing .github/workflows...")
@@ -179,6 +185,17 @@ def write_readme_row(branch, notebook, name, classification, area, sub_area, des
 
     row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
     return row
+
+@contextlib.contextmanager
+def change_working_dir(path):
+    """Context manager for changing the current working directory"""
+
+    saved_path = os.getcwd()
+    os.chdir(str(path))
+    try:
+        yield
+    finally:
+        os.chdir(saved_path)
 
 # run functions
 if __name__ == "__main__":
