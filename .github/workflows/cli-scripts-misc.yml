@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/misc.sh
       - .github/workflows/cli-scripts-misc.yml

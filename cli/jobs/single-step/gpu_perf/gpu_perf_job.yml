@@ -3,8 +3,7 @@
 
 type: command
 
-code: 
-  local_path: src
+code: src
 
 command: /bin/bash ./gpu_perf.sh
 

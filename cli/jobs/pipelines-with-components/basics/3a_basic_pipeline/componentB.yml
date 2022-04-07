@@ -1,12 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: componentB
+name: component_b
 display_name: componentB
 version: 1
 
-code:
-  local_path: ./componentB_src
+code: ./componentB_src
 
 environment: 
   image: docker.io/python

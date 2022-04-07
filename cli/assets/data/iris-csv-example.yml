@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: iris-csv-example
+type: uri_file
+path: azureml://datastores/workspaceblobstore/paths/example-data/iris.csv
