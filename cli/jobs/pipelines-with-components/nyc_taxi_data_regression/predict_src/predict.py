@@ -62,7 +62,7 @@ print(testX.shape)
 print(testX.columns)
 
 # Load the model from input port
-model = mlflow.sklearn.load_model(Path(args.model_input)/ 'model')
+model = mlflow.sklearn.load_model(args.model_input)
 
 # Make predictions on testX data and record them in a column named predicted_cost
 predictions = model.predict(testX)
