@@ -8,6 +8,7 @@ on:
       - main
       - cli-preview
       - releases/current
+      - rsethur/mvnet
     paths:
       - cli/deploy-moe-vnet.sh
       - .github/workflows/cli-scripts-deploy-moe-vnet.yml

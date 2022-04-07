@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('name of the test scoring vm')
-param vmName string = 'test-mvnet-vm'
+param vmName string = 'moevnet-vm'
 
 @description('Name of the user assigned identity (UAI). UAI is used to login through az cli from within the vm to create image in ACR, deploy model in azure ml etc')
 param identityName string = 'test-vm-uai'

@@ -27,9 +27,7 @@ export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet/sample/sample-request.
 export ENV_DIR_PATH="endpoints/online/managed/vnet/sample/environment"
 # </set_env_vars>
 
-export SUFFIX="mvnetdocs" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
-#todo remove
-export SUFFIX="mvnet30"
+export SUFFIX="moevnetdoc" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
@@ -38,7 +36,7 @@ export ACR_NAME=cr$SUFFIX
 export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME=$ENDPOINT_NAME
 # VM name used during creation: endpoints/online/managed/vnet/setup_vm/vm-main.bicep
-export VM_NAME="test-mvnet-vm"
+export VM_NAME="moevnet-vm"
 # VNET name and subnet name used during vnet worskapce setup: endpoints/online/managed/vnet/setup_ws/main.bicep
 export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
@@ -47,8 +45,6 @@ export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
 # Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name when running az vm run-command
 # If running from local machine, change it to your branch name
 export GIT_BRANCH=$GITHUB_HEAD_REF
-#todo delete
-export GIT_BRANCH="rsethur/mvnet"
 
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
@@ -59,8 +55,8 @@ export VM_EXISTS=$(az vm list -o tsv --query "[?name=='$VM_NAME'].name")
 if [ "$VM_EXISTS" != "" ];
 then
    echo "VM already exists from previous run. Waiting for 15 mins before deleting."
-	#todo: sleep 15m
-	#todo: az vm delete -n $VM_NAME -y
+	sleep 15m
+	az vm delete -n $VM_NAME -y
 fi
 
 # create the VM
@@ -78,7 +74,7 @@ az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endp
 az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/create_moe.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENDPOINT_FILE_PATH:$ENDPOINT_FILE_PATH" "DEPLOYMENT_FILE_PATH:$DEPLOYMENT_FILE_PATH" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH"
 
 # test the endpoint by scoring it
-export CMD_OUTPUT=$(az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/score_endpoint.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME")
+export CMD_OUTPUT=$(az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/score_endpoint.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH")
 
 # the scoring output for sample request should be [11055.977245525679, 4503.079536107787]. We are validating if part of the number is available in the output (not comparing all the decimals to accomodate rounding discrepencies)
 if [[ $CMD_OUTPUT =~ "11055" ]]; then
