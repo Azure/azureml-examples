@@ -82,13 +82,11 @@ print(model.score(trainX, trainy))
 
 # Output the model and test data
 # mlflow model can't write to existed folder
-# try to delete folder first
-# import shutil
-# shutil.rmtree(args.model_output)
+# write to sub folder as workaround
 
-mlflow.sklearn.save_model(model, args.model_output)
+# mlflow.sklearn.save_model(model, args.model_output)
 
-# mlflow.sklearn.save_model(model, args.model_output + '/model')
+mlflow.sklearn.save_model(model, args.model_output + '/model')
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
