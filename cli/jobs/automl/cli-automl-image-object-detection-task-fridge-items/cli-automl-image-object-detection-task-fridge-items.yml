@@ -14,11 +14,11 @@ data:
   target_column_name: label
   training:
     data:
-      path: training-mltable-folder
+      path: data/training-mltable-folder
       type: mltable
   validation:
     data:
-      path: validation-mltable-folder
+      path: data/validation-mltable-folder
       type: mltable
 
 limits:
