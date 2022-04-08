@@ -19,7 +19,7 @@ BRANCH = (
 
 
 def main(args):
-
+    
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
 
@@ -73,7 +73,7 @@ jobs:
       uses: actions/checkout@v2\n"""
     if BRANCH!="":
       workflow_yaml += f"""      with:
-        ref: {BRANCH}\n"""
+        ref: {BRANCH}\n"""    
     workflow_yaml += f"""    - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -197,7 +197,7 @@ def write_readme(notebooks):
 
 def write_readme_row(branch, notebook, name, classification, area, sub_area, description):
     gh_link = 'https://github.com/Azure/azureml-examples/actions/workflows'
-
+    
     nb_name = f"[{name}]({notebook})"
     status = f"[![{name}]({gh_link}/sdk-{classification}-{name}.yml/badge.svg?branch={branch})]({gh_link}/sdk-{classification}-{name}.yml)"
 
