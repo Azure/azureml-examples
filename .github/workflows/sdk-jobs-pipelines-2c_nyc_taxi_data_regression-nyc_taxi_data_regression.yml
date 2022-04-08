@@ -7,8 +7,8 @@ on:
     branches:
       - main
       - sdk-preview
-      - pipeline/*
       - april-sdk-preview
+      - pipeline/*
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-2c_nyc_taxi_data_regression-nyc_taxi_data_regression.yml
