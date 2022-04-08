@@ -1,6 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
+description: "Pipeline job with component using environment defined by a conda file"
+
 jobs:
   hello_python_world_job:
     type: command
