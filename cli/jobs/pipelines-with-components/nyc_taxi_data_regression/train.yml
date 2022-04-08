@@ -1,6 +1,6 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: TrainLinearRegressionModel
+name: train_linear_regression_model
 display_name: TrainLinearRegressionModel
 version: 1
 type: command

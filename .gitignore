@@ -14,4 +14,4 @@
 *.pyc
 *config.json
 *.log
-*scratch
+scratch/*

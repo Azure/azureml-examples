@@ -42,7 +42,7 @@ cd azureml-examples/sdk
 
 ## Examples available
 
-Test Status is for branch - **_march-sdk-preview_**
+Test Status is for branch - **_april-sdk-preview_**
 |Area|Sub-Area|Notebook|Description|Status|
 |--|--|--|--|--|
 |assets|data|[data](assets/data/data.ipynb)|Read, write and register a data asset|[![data](https://github.com/Azure/azureml-examples/actions/workflows/sdk-assets-data-data.yml/badge.svg?branch=march-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-assets-data-data.yml)|
