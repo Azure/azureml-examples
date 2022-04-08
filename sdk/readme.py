@@ -13,7 +13,7 @@ NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run eve
 #use if running on a release candidate, else make it empty
 BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
-BRANCH = 'march-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
+BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
 
 def main(args):
     
@@ -27,9 +27,11 @@ def main(args):
     write_readme(notebooks)
 
     # write pipeline readme
-    with change_working_dir("jobs/pipelines/"):
+    pipeline_dir = "jobs/pipelines/"
+    with change_working_dir(pipeline_dir):
       pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
-      write_readme(pipeline_notebooks)
+    pipeline_notebooks = [f"{pipeline_dir}{notebook}" for notebook in pipeline_notebooks]
+    write_readme(pipeline_notebooks, folder=pipeline_dir)
 
 def write_workflows(notebooks):
     print("writing .github/workflows...")
@@ -133,15 +135,23 @@ jobs:
     with open(f"../.github/workflows/sdk-{classification}-{name}.yml", "w") as f:
         f.write(workflow_yaml)
 
-def write_readme(notebooks):
+def write_readme(notebooks, folder=None):
+  prefix = "prefix.md"
+  suffix = "suffix.md"
+  readme_file = "README.md"
+  if folder:
+    prefix = f"{folder}/{prefix}"
+    suffix = f"{folder}/{suffix}"
+    readme_file = f"{folder}/{readme_file}"
+
   if BRANCH=="":
     branch="main"
   else:
     branch=BRANCH
     # read in prefix.md and suffix.md
-    with open("prefix.md", "r") as f:
+    with open(prefix, "r") as f:
         prefix = f.read()
-    with open("suffix.md", "r") as f:
+    with open(suffix, "r") as f:
         suffix = f.read()    
     
     # define markdown tables
@@ -173,7 +183,7 @@ def write_readme(notebooks):
         notebook_table += write_readme_row(branch, notebook, name, classification, area, sub_area, description) + "\n"
 
     print("writing README.md...")
-    with open("README.md", "w") as f:
+    with open(readme_file, "w") as f:
         f.write(prefix + notebook_table + suffix)
     print("finished writing README.md")
 

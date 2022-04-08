@@ -1,0 +1,32 @@
+name: cli-jobs-pipelines-nyc-taxi-pipeline
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - april-sdk-preview
+    paths:
+      - cli/jobs/pipelines/nyc-taxi/**
+      - .github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        ref: april-sdk-preview
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run job
+      run: bash -x run-job.sh jobs/pipelines/nyc-taxi/pipeline.yml
+      working-directory: cli

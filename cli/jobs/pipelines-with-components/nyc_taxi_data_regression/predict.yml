@@ -1,6 +1,6 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: PredictTaxiFares
+name: predict_taxi_fares
 version: 1
 display_name: PredictTaxiFares
 type: command

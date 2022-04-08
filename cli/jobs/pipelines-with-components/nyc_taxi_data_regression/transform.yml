@@ -1,6 +1,6 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: TaxiFeatureEngineering
+name: taxi_feature_engineering
 display_name: TaxiFeatureEngineering
 version: 1
 type: command

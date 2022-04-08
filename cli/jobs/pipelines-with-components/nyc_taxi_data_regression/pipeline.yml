@@ -1,6 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
+description: "Train regression model based on nyc taxi dataset"
+
 # <inputs_and_outputs>
 inputs:
   pipeline_job_input: #using local data, will crate an anonymous data asset

@@ -1,5 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+
+description: "Train model with nyc taxi data"
+
 display_name: nyc-taxi-pipeline-example
 experiment_name: nyc-taxi-pipeline-example
 jobs:
@@ -42,7 +45,7 @@ jobs:
       training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
     outputs:
       model_output: 
-        mode: upload
+        mode: rw_mount
       test_data: 
         mode: upload
     code: src/train

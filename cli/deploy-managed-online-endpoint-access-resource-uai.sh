@@ -1,5 +1,6 @@
 set -e
 
+
 # <set_variables>
 export WORKSPACE="<WORKSPACE_NAME>"
 export LOCATION="<WORKSPACE_LOCATION>"

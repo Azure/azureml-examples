@@ -2,10 +2,9 @@ $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 name: nonmlflowdp
 endpoint_name: mybatchedp
 model: 
-  local_path: ./mnist/model/
+  path: ./mnist/model/
 code_configuration:
-  code:
-    local_path: ./mnist/code/
+  code: ./mnist/code/
   scoring_script: digit_identification.py
 environment:
   conda_file: ./mnist/environment/conda.yml
