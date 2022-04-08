@@ -5,7 +5,7 @@ from azure.ml import dsl, ArtifactInput, ArtifactOutput
     name="eval_model",
     display_name="Eval Model",
     description="A dummy eval component defined by dsl component.",
-    version="0.0.4",
+    version="0.0.5",
 )
 def eval_model(
     scoring_result: ArtifactInput,

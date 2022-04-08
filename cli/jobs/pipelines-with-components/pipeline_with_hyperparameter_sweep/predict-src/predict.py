@@ -22,4 +22,4 @@ model = mlflow.sklearn.load_model(args.model)
 y_test = pd.read_csv(Path(args.test_data)/'y_test.csv')
 y_test['predict'] = model.predict(X_test)
 
-pd.to_csv(Path(args.predict_result)/'predict_result.csv')
+y_test.to_csv(Path(args.predict_result)/'predict_result.csv')
