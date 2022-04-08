@@ -1,4 +1,4 @@
-name: cli-scripts-run-pipeline-jobs
+name: cli-jobs-pipelines-cifar-10-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -7,8 +7,9 @@ on:
     branches:
       - main
     paths:
+      - cli/jobs/pipelines/cifar-10/**
+      - .github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
       - cli/run-pipeline-jobs.sh
-      - .github/workflows/cli-scripts-run-pipeline-jobs.yml
       - cli/setup.sh
 jobs:
   build:
@@ -24,8 +25,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
-    - name: test script script
-      run: set -e; bash -x run-pipeline-jobs.sh
+    - name: run job
+      run: bash -x run-job.sh jobs/pipelines/cifar-10/pipeline.yml
       working-directory: cli

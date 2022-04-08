@@ -9,6 +9,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/3a_basic_pipeline/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-3a_basic_pipeline-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
