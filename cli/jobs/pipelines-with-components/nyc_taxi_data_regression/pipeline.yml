@@ -1,6 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
+description: "Train regression model based on nyc taxi dataset"
+
 # <inputs_and_outputs>
 inputs:
   pipeline_job_input: #using local data, will crate an anonymous data asset
@@ -8,14 +10,9 @@ inputs:
     path: ./data
 
 outputs: 
-  pipeline_job_prepped_data:
-    mode: rw_mount
-  pipeline_job_transformed_data:
-    mode: rw_mount   
   pipeline_job_trained_model:
+    type: mlflow_model
     mode: rw_mount
-  pipeline_job_test_data:
-    mode: rw_mount 
   pipeline_job_predictions:
     mode: rw_mount 
   pipeline_job_score_report:
@@ -35,7 +32,7 @@ jobs:
     inputs:
       raw_data: ${{parent.inputs.pipeline_job_input}}
     outputs:
-      prep_data: ${{parent.outputs.pipeline_job_prepped_data}}
+      prep_data: 
 
   transform-job:
     type: command
@@ -43,7 +40,7 @@ jobs:
     inputs:
       clean_data: ${{parent.jobs.prep-job.outputs.prep_data}}
     outputs:
-      transformed_data: ${{parent.outputs.pipeline_job_transformed_data}}
+      transformed_data: 
 
   train-job:
     type: command
@@ -52,7 +49,7 @@ jobs:
       training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
-      test_data: ${{parent.outputs.pipeline_job_test_data}}
+      test_data: 
   
   predict-job:
     type: command

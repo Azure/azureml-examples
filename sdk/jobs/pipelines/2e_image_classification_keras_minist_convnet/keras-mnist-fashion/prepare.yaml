@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: convert_to_csvfile
+display_name: Convert to CSV File
+description: Convert dataset to csv file.
+
+version: 0.0.1
+inputs:
+  input_path:
+    type: uri_folder
+outputs:
+  output_path:
+    type: uri_folder
+
+code: ./
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+
+command: >-
+  python prepare.py --mounted_input_path ${{inputs.input_path}} --mounted_output_path ${{outputs.output_path}}
+
