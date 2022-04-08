@@ -10,7 +10,7 @@ export LOCATION="<LOCATION>"
 # SUFFIX that was used when creating the workspace resources. Alternatively the resource names can be looked up from the resource group after the vnet setup script has completed.
 export SUFFIX="<SUFFIX_USED_IN_SETUP>"
 
-# resource names of workspace and acr
+# SUFFIX used during the initial setup. Alternatively the resource names can be looked up from the resource group after the  setup script has completed.
 export WORKSPACE=mlw-$SUFFIX
 export ACR_NAME=cr$SUFFIX
 

@@ -124,14 +124,3 @@ module azuremlWorkspace 'modules/machinelearning.bicep' = {
   ]
 }
 
-module uai 'modules/uai.bicep' = { 
-  name: 'uai-${name}-deployment'
-  params: {
-    location: location
-    managedIdentityName: 'uai${name}'
-    //id for contributor role. Reference: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#all
-    roleDefinitionIds: [
-      'b24988ac-6180-42a0-ab88-20f7382dd24c'
-    ]
-  }
-}

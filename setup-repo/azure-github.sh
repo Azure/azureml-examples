@@ -83,8 +83,11 @@ export SUFFIX="<UNIQUE_SUFFIX>"
 export SUFFIX="moevnetdoc"
 # <managed_vnet_workspace_create>
 az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/main.bicep --parameters suffix=$SUFFIX
-# Note: if you get an error that appinsights is not avaialble in your current location, use optional parameter to the above script: appinsightsLocation=<location> (e.g. westus2)
+# Note: if you get an error that appinsights is not available in your current location, use optional parameter to the above script: appinsightsLocation=<location> (e.g. westus2)
 # </managed_vnet_workspace_create>
+
+# create the user assigned identity used in the vnet egress testing
+az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/uai.bicep --parameters suffix=$SUFFIX
 
 echo "Setting up internal workspaces..."
 
