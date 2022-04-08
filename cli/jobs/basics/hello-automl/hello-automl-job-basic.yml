@@ -8,7 +8,7 @@ description: A Classification job using bank marketing
 
 compute: azureml:cpu-cluster
 
-task_type: classification
+task: classification
 primary_metric: accuracy  
 
 data:
@@ -20,7 +20,7 @@ data:
 
 limits:
   timeout: 180
-  max_total_trials: 40
+  max_trials: 40
   enable_early_termination: true
   
 featurization:
