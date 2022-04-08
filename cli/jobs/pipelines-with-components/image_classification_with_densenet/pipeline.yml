@@ -1,6 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
+description: "Train densenet for image classification"
+
 # <inputs_and_outputs>
 inputs:
   training_image: #using local data, will crate an anonymous data asset
