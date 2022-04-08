@@ -31,8 +31,8 @@ jobs:
       goal: minimize
       primary_metric: training_f1_score
     limits:
-      max_total_trials: 20
-      max_concurrent_trials: 10
+      max_total_trials: 5
+      max_concurrent_trials: 3
       timeout: 7200
 
   predict_step:
