@@ -108,3 +108,4 @@ az ml job create --file pipeline.yml --web
 cd ../../../
 
 az --version
+
