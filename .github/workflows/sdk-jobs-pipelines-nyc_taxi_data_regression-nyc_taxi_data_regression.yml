@@ -43,6 +43,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" nyc_taxi_data_regression.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" nyc_taxi_data_regression.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" nyc_taxi_data_regression.ipynb
-          
-          papermill nyc_taxi_data_regression.ipynb - -k python
+
+          papermill -k python nyc_taxi_data_regression.ipynb nyc_taxi_data_regression.output.ipynb
       working-directory: sdk/jobs/pipelines/nyc_taxi_data_regression
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: nyc_taxi_data_regression
+        path: sdk/jobs/pipelines/nyc_taxi_data_regression

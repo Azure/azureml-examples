@@ -43,6 +43,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" e2e_registered_components.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" e2e_registered_components.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" e2e_registered_components.ipynb
-          
-          papermill e2e_registered_components.ipynb - -k python
+
+          papermill -k python e2e_registered_components.ipynb e2e_registered_components.output.ipynb
       working-directory: sdk/jobs/pipelines/e2e_registered_components
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: e2e_registered_components
+        path: sdk/jobs/pipelines/e2e_registered_components

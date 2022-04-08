@@ -13,9 +13,6 @@ NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run eve
 BRANCH = 'main'
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
 BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
-BRANCH = (
-    "automl-preview"  # this should be deleted when this branch is merged to sdk-preview
-)
 
 
 def main(args):
@@ -108,21 +105,21 @@ jobs:
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb\n"""
 
     if not ("automl" in folder):
-        workflow_yaml += f"""          
-            papermill -k python {name}.ipynb {name}.output.ipynb
-        working-directory: sdk/{folder}"""
+        workflow_yaml += f"""
+          papermill -k python {name}.ipynb {name}.output.ipynb
+      working-directory: sdk/{folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""          
           papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/{folder}"""
     else:
-        # need GPU cluster, so override the compute cluster name to dedicated
-        workflow_yaml += f"""          
+        # need CPU cluster, so override the compute cluster name to dedicated
+        workflow_yaml += f"""
           papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/{folder}"""
 
-    workflow_yaml += f"""\n
+    workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
       uses: actions/upload-artifact@v2

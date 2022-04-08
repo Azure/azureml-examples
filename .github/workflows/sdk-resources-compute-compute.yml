@@ -41,6 +41,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" compute.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" compute.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" compute.ipynb
-          
-          papermill compute.ipynb - -k python
+
+          papermill -k python compute.ipynb compute.output.ipynb
       working-directory: sdk/resources/compute
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: compute
+        path: sdk/resources/compute

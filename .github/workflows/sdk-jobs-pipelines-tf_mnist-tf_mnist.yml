@@ -43,6 +43,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" tf_mnist.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" tf_mnist.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" tf_mnist.ipynb
-          
-          papermill tf_mnist.ipynb - -k python
+
+          papermill -k python tf_mnist.ipynb tf_mnist.output.ipynb
       working-directory: sdk/jobs/pipelines/tf_mnist
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: tf_mnist
+        path: sdk/jobs/pipelines/tf_mnist

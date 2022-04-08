@@ -43,6 +43,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" cifar-10-pipeline.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" cifar-10-pipeline.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" cifar-10-pipeline.ipynb
-          
-          papermill cifar-10-pipeline.ipynb - -k python
+
+          papermill -k python cifar-10-pipeline.ipynb cifar-10-pipeline.output.ipynb
       working-directory: sdk/jobs/pipelines/cifar-10
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: cifar-10-pipeline
+        path: sdk/jobs/pipelines/cifar-10

@@ -5,9 +5,8 @@ on:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
-      - main
       - sdk-preview
-      - automl-preview
+      - april-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-object-detection-task-fridge-items-automl-image-object-detection-task-fridge-items.yml
@@ -19,7 +18,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: automl-preview
+        ref: april-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -29,7 +28,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZ_AE_CREDS}}
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -41,13 +40,12 @@ jobs:
     - name: run jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-image-object-detection-task-fridge-items.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-image-object-detection-task-fridge-items.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" automl-image-object-detection-task-fridge-items.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-image-object-detection-task-fridge-items.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-image-object-detection-task-fridge-items.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-image-object-detection-task-fridge-items.ipynb automl-image-object-detection-task-fridge-items.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items
-
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

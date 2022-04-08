@@ -43,6 +43,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" basic_pipeline.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" basic_pipeline.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" basic_pipeline.ipynb
-          
-          papermill basic_pipeline.ipynb - -k python
+
+          papermill -k python basic_pipeline.ipynb basic_pipeline.output.ipynb
       working-directory: sdk/jobs/pipelines/basic_pipeline
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: basic_pipeline
+        path: sdk/jobs/pipelines/basic_pipeline
