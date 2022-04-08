@@ -1,7 +1,0 @@
-# <data>
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
-name: yellowdata
-version: 3
-description: sample yellow taxi dataset
-path: ./data
-# </data>

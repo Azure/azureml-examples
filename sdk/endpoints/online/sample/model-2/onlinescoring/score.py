@@ -33,3 +33,4 @@ def run(raw_data):
     result = model.predict(data)
     logging.info("Request processed")
     return result.tolist()
+
