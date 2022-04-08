@@ -42,7 +42,7 @@ jobs:
       training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
     outputs:
       model_output: 
-        mode: upload
+        mode: rw_mount
       test_data: 
         mode: upload
     code: src/train

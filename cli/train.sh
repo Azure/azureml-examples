@@ -146,8 +146,7 @@ do
 done
 
 # <sklearn_download_register_model>
-az ml job download -n $run_id
-az ml model create -n sklearn-iris-example -l $run_id/model/
+az ml model create -n sklearn-iris-example -v 1 -p runs:/$run_id/model --type mlflow_model
 # </sklearn_download_register_model>
 rm -r $run_id
 
@@ -159,6 +158,6 @@ az ml job create -f jobs/single-step/scikit-learn/iris/job-sweep.yml --web
 az ml job create -f jobs/single-step/pytorch/cifar-distributed/job.yml --web
 # </pytorch_cifar>
 
-# <pipeline_cifar>
-az ml job create -f jobs/pipelines/cifar-10/job.yml --web
-# </pipeline_cifar>
+# # <pipeline_cifar>
+# az ml job create -f jobs/pipelines/cifar-10/pipeline.yml --web
+# # </pipeline_cifar>

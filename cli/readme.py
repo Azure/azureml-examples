@@ -5,13 +5,14 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = []
+EXCLUDED_JOBS = ["java"]
 EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
     "vm-attach",
     "instance",
+    "connections",
 ]
 EXCLUDED_ASSETS = [
     "conda-yamls",
@@ -31,6 +32,10 @@ def main(args):
     jobs = sorted(glob.glob("jobs/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(
+        glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
+    )
     jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
@@ -135,7 +140,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process jobs
     for job in jobs:
         # build entries for tutorial table
-        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
+        status = f"[![{job}](https://github.com/Azure/azureml-examples/workflows/cli-{job.replace('/', '-')}/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{job}.yml", "r") as f:
@@ -153,7 +158,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process endpoints
     for endpoint in endpoints:
         # build entries for tutorial table
-        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
+        status = f"[![{endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint.replace('/', '-')}/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{endpoint}.yml", "r") as f:
@@ -171,7 +176,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process resources
     for resource in resources:
         # build entries for tutorial table
-        status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
+        status = f"[![{resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource.replace('/', '-')}/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{resource}.yml", "r") as f:
@@ -189,7 +194,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process assets
     for asset in assets:
         # build entries for tutorial table
-        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
+        status = f"[![{asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset.replace('/', '-')}/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset.replace('/', '-')}.yml)"
         description = "*no description*"
         try:
             with open(f"{asset}.yml", "r") as f:
@@ -207,7 +212,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     # process scripts
     for script in scripts:
         # build entries for tutorial table
-        status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
+        status = f"[![{script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
         link = f"https://scripts.microsoft.com/azure/machine-learning/{script}"
 
         # add row to tutorial table
@@ -293,8 +298,7 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
+      - april-sdk-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -305,6 +309,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -333,8 +339,7 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
+      - april-sdk-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -345,6 +350,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -373,8 +380,7 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
+      - april-sdk-preview
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
@@ -385,6 +391,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -413,8 +421,7 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
+      - april-sdk-preview
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml
@@ -425,6 +432,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:

@@ -3,7 +3,7 @@ type: command
 
 description: Prints the environment variables useful for scripts running in a PyTorch training environment.
 
-name: PyTorch-hello-world
+name: py_torch_hello_world
 display_name: PyTorch-hello-world
 version: 1
 
