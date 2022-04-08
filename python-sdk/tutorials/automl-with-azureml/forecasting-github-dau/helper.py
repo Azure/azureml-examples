@@ -81,7 +81,7 @@ def get_result_df(remote_run):
 
     summary_df = summary_df.T.sort_values(
         "Score", ascending=goal_minimize
-    ).drop_duplicates(["run_algorithm"])
+    )
     summary_df = summary_df.set_index("run_algorithm")
     return summary_df
 
