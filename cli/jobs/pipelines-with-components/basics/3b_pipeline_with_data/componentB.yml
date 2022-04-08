@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: componentB
+name: component_b
 display_name: componentB
 version: 1
 

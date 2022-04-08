@@ -45,7 +45,7 @@ for filename in arr:
 test_data = df_list[0]
 
 # Load the model from input port
-model = mlflow.sklearn.load_model(Path(args.model)/ 'model')
+model = mlflow.sklearn.load_model(args.model)
 
 # Print the results of scoring the predictions against actual values in the test data
 # The coefficients

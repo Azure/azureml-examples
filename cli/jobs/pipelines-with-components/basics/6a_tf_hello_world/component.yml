@@ -3,7 +3,7 @@ type: command
 
 description: "Prints the environment variable ($TF_CONFIG) useful for scripts running in a Tensorflow training environment"
 
-name: TF-hello-world
+name: tf_hello_world
 display_name: TF-hello-world
 version: 1
 
