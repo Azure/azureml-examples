@@ -47,12 +47,6 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../../
 
-# cd jobs/pipelines-with-components/basics/4c_dataset_input
-# pwd
-# az ml data create --file data.yml --version $target_version
-# az ml job create --file pipeline.yml
-# cd ../../../../
-
 cd jobs/pipelines-with-components/basics/4c_web_url_input
 pwd
 az ml job create --file pipeline.yml
@@ -98,14 +92,19 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../
 
+cd jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep
+pwd
+az ml job create --file pipeline.yml
+cd ../../../
+
 cd jobs/pipelines/nyc-taxi
 pwd
 az ml job create --file pipeline.yml
 cd ../../../
 
-# cd jobs/pipelines/cifar-10
-# pwd
-# az ml job create --file pipeline.yml --web
-# cd ../../../
+cd jobs/pipelines/cifar-10
+pwd
+az ml job create --file pipeline.yml --web
+cd ../../../
 
 az --version

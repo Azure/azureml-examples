@@ -83,6 +83,10 @@ jobs:
       seed: 123
       batch_size: 16
       save_checkpoint_epochs: 2
+    outputs:
+      workspace:
+        type: uri_folder
+        mode: upload
     distribution:
       type: mpi
       process_count_per_instance: 1
