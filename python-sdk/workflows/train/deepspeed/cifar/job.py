@@ -39,7 +39,9 @@ arguments = [
 ]
 
 # Use an environment with DeepSpeed
-env = Environment.from_dockerfile("deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile"))
+env = Environment.from_dockerfile(
+    "deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile")
+)
 
 
 # create job config

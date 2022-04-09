@@ -40,7 +40,9 @@ def submit_azureml_run(args: JobArguments):
 
     target = ws.compute_targets[args.target_name]
 
-    env = Environment.from_dockerfile("deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile"))
+    env = Environment.from_dockerfile(
+        "deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile")
+    )
 
     distributed_job_config = get_distributed_job_config(args)
 
