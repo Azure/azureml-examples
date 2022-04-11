@@ -1,5 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+
+display_name: 2b_component_with_input_output
 description: "Component with inputs and outputs"
 
 inputs:
