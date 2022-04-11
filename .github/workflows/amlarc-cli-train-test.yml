@@ -20,6 +20,10 @@ on:
         description: 'Whether to delete workspace: true or false'
         required: false
         default: 'false'
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -63,7 +67,7 @@ jobs:
       timeout-minutes: 30
     - name: install_extension
       run: |
-        export EXTENSION_SETTINGS="enableTraining=True enableInference=True allowInsecureConnections=True"
+        export EXTENSION_SETTINGS="enableTraining=True enableInference=True allowInsecureConnections=True installNvidiaDevicePlugin=True "
         bash .github/amlarc-tool.sh install_extension
       timeout-minutes: 30
     - name: setup_workspace
@@ -190,7 +194,7 @@ jobs:
       if: ${{ always() }}
       run: |
         bash .github/amlarc-tool.sh count_result || ret=$?
-        if [ "$ret" != "0" ] && [ "$ret" != "" ] ; then
+        if [ "$ret" != "0" ] && [ "$ret" != "" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
             # download certificates
             bash .github/amlarc-tool.sh download_icm_cert
             export ICM_HOST=$(cat icm_host)
