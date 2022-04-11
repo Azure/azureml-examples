@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-notebook
+name: cli-jobs-basics-hello-git
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - april-sdk-preview
     paths:
       - cli/jobs/basics/**
-      - .github/workflows/cli-jobs-basics-hello-notebook.yml
+      - .github/workflows/cli-jobs-basics-hello-git.yml
       - cli/setup.sh
 jobs:
   build:
@@ -29,5 +29,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/basics/hello-notebook.yml
+      run: bash -x run-job.sh jobs/basics/hello-git.yml
       working-directory: cli

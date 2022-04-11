@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
       - april-sdk-preview
     paths:
       - cli/jobs/single-step/lightgbm/iris/**

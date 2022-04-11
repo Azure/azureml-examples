@@ -298,6 +298,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
       - april-sdk-preview
     paths:
       - cli/{project_dir}/**
