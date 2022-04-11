@@ -35,15 +35,20 @@ mounted_output_path = args.mounted_output_path
 os.makedirs(mounted_output_path, exist_ok=True)
 print("mounted_input_path")
 print(mounted_input_path)
+
+print("mounted_path files: ")
+arr = os.listdir(mounted_input_path)
+print(arr)
+
 convert(
-    os.path.join(mounted_input_path, "mnist-fashion/train-images-idx3-ubyte"),
-    os.path.join(mounted_input_path, "mnist-fashion/train-labels-idx1-ubyte"),
+    os.path.join(mounted_input_path, "train-images-idx3-ubyte"),
+    os.path.join(mounted_input_path, "train-labels-idx1-ubyte"),
     os.path.join(mounted_output_path, "mnist_train.csv"),
     60000,
 )
 convert(
-    os.path.join(mounted_input_path, "mnist-fashion/t10k-images-idx3-ubyte"),
-    os.path.join(mounted_input_path, "mnist-fashion/t10k-labels-idx1-ubyte"),
+    os.path.join(mounted_input_path, "t10k-images-idx3-ubyte"),
+    os.path.join(mounted_input_path, "t10k-labels-idx1-ubyte"),
     os.path.join(mounted_output_path, "mnist_test.csv"),
     10000,
 )
