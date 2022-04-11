@@ -310,8 +310,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
