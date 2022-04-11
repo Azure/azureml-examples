@@ -127,7 +127,7 @@ inputs:
     optional: true
 outputs:
   workspace:
-    type: path
+    type: uri_folder
     description: path to directory where checkpoints will be stored
 
 code: ./
