@@ -6,7 +6,7 @@ inputs:
   pipeline_sample_input_data:
     type: mltable
     path: azureml:sampledata@latest
-    mode: download
+    mode: eval_mount
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 
 outputs:
