@@ -1,12 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: Hello_Python_World
+name: hello_python_world
 display_name: Hello_Python_World
 version: 1
 
-code:
-  local_path: ./src
+code: ./src
 
 environment: 
   image: python

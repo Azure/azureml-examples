@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/single-step/spark/nyctaxi/**
       - .github/workflows/cli-jobs-single-step-spark-nyctaxi-job.yml

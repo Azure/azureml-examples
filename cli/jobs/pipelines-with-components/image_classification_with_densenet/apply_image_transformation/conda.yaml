@@ -1,0 +1,8 @@
+name: designer-cv-transform
+channels:
+  - defaults
+dependencies:
+  - pip=20.2
+  - python=3.7.9
+  - pip:
+    - azureml-designer-cv-modules[pytorch]==0.0.41
