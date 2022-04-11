@@ -5,11 +5,7 @@ import glob
 import argparse
 
 # define constants
-EXCLUDED_JOBS = [
-  "java",
-  "hello-dataset",
-  "4d_dataset_input",
-]
+EXCLUDED_JOBS = ["java"]
 EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
 EXCLUDED_RESOURCES = [
     "workspace",
