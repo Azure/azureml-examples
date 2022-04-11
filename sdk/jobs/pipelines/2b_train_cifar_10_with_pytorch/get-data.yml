@@ -12,7 +12,7 @@ outputs:
   cifar:
     type: uri_folder
 
-command: tar -xvzf ${{inputs.cifar_zip}}/cifar-10-python.tar.gz -C ${{outputs.cifar}}
+command: tar -xvzf ${{inputs.cifar_zip}} -C ${{outputs.cifar}}
 
 environment: 
   image: docker.io/python
