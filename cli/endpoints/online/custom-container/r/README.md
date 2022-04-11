@@ -29,8 +29,8 @@ Modify the third function in plumber.R to load the saved model and run the model
 
 ### Create an endpoint in your own subscription
 
-Follow the steps in [our documentation](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) to configure the CLI (v2). Then run [deploy-r.sh](../../../../deploy-r.sh) (if running on a Linux machine). Alternatively, call `az ml endpoint create -n r-endpoint.yml`.
+Follow the steps in [our documentation](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli) to configure the CLI (v2). Then run [deploy-r.sh](../../../../deploy-r.sh) (if running on a Linux machine). Alternatively, call `az ml online-endpoint create --name $ENDPOINT_NAME -f r-endpoint.yml` and call `az ml online-deployment create --name r-deployment --endpoint $ENDPOINT_NAME -f r-deployment.yml --all-traffic` to create a deployment.
 
 ### Call into your deployed endpoint
 
-You can now follow the steps [here](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints#invoke-the-endpoint-to-score-data-with-your-model) to send data to your deployed endpoint.
+You can now follow the steps [here](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints#invoke-the-endpoint-to-score-data-by-using-your-model) to send data to your deployed endpoint.

@@ -4,34 +4,13 @@ channels:
   - conda-forge
 dependencies:
   - python=3.8
-  - gcsfs
-  - fs-gcsfs
+  - dask==2022.2.1
+  - distributed==2022.2.1
+  - pip==21.3.1
   - jupyterlab
   - jupyter-server-proxy
-  - numpy
-  - h5py
-  - scipy
-  - toolz
-  - bokeh
-  - dask
-  - distributed
-  - notebook
-  - matplotlib
-  - Pillow
-  - pandas
-  - pandas-datareader
-  - pytables
-  - scikit-learn
-  - scikit-image
-  - snakeviz
-  - ujson
-  - graphviz
-  - pip
-  - s3fs
-  - fastparquet
-  - dask-ml
-  - adlfs
   - pip:
-    - python-snappy
-    - fastparquet
+    - fastparquet==0.8.0
+    - fsspec==2022.2.0
+    - tabulate==0.8.9
     - azureml-mlflow

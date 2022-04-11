@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/single-step/tensorflow/mnist/**
       - .github/workflows/cli-jobs-single-step-tensorflow-mnist-job.yml

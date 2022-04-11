@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: cloud-folder-example
+description: Data asset created from folder in cloud.
+type: uri_folder
+path: azureml://datastores/workspaceblobstore/paths/example-data/

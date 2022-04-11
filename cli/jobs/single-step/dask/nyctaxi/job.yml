@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
-  local_path: src
+code: src
 command: >-
   python startDask.py
   --script prep-nyctaxi.py 
@@ -8,12 +7,13 @@ command: >-
   --output_folder ${{outputs.output_folder}}
 inputs:
   nyc_taxi_dataset:
-    folder: wasbs://datasets@azuremlexamples.blob.core.windows.net/nyctaxi/
+    path: wasbs://datasets@azuremlexamples.blob.core.windows.net/nyctaxi/
     mode: ro_mount
 outputs:
   output_folder:
+    type: uri_folder
 environment: 
-  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
   conda_file: conda.yml
 compute: azureml:cpu-cluster-lg
 resources:

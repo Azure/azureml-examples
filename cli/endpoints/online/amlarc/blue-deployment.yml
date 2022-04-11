@@ -2,14 +2,13 @@ name: blue
 type: kubernetes
 endpoint_name: my-endpoint
 model:
-  local_path: ../model-1/model/sklearn_regression_model.pkl
+  path: ../model-1/model/sklearn_regression_model.pkl
 code_configuration:
-  code: 
-    local_path: ../model-1/onlinescoring/
+  code: ../model-1/onlinescoring/
   scoring_script: score.py
 environment: 
   conda_file: ../model-1/environment/conda.yml
-  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 request_settings:
   request_timeout_ms: 3000
   max_concurrent_requests_per_instance: 1
@@ -35,8 +34,6 @@ readiness_probe:
   failure_threshold: 1
 tags:
   tag1: deployment-tag1-value
-properties:
-  prop1: deployment-prop1-value
 instance_count: 1
 scale_settings:
   type: default

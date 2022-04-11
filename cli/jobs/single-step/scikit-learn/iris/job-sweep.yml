@@ -1,18 +1,18 @@
 $schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
 type: sweep
 trial:
-  code: 
-    local_path: src
+  code: src
   command: >-
     python main.py 
     --iris-csv ${{inputs.iris_csv}}
     --C ${{search_space.C}}
     --kernel ${{search_space.kernel}}
     --coef0 ${{search_space.coef0}}
-  environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:9
+  environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 inputs:
   iris_csv: 
-    file: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
+    type: uri_file
+    path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
 compute: azureml:cpu-cluster
 sampling_algorithm: random
 search_space:
