@@ -1,5 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+
+display_name: 4a_local_data_input
 description: "Example of using data in a local folder as pipeline input"
 inputs:
   pipeline_sample_input_data:

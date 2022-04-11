@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: 2a_basic_component
 description: "Hello World component example"
 
 jobs:

@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: 1b_e2e_registered_components
 description: "E2E dummy train-score-eval pipeline with registered components"
 
 inputs:

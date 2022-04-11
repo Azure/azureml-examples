@@ -1,4 +1,5 @@
 # imports
+import contextlib
 import os
 import json
 import glob
@@ -10,7 +11,7 @@ NOT_TESTED_NOTEBOOKS = ["datastore",] #cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
 #define branch where we need this
 #use if running on a release candidate, else make it empty
-BRANCH = 'main'
+BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
 BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
 
@@ -25,6 +26,13 @@ def main(args):
 
     # write readme
     write_readme(notebooks)
+
+    # write pipeline readme
+    pipeline_dir = "jobs/pipelines/"
+    with change_working_dir(pipeline_dir):
+      pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+    pipeline_notebooks = [f"{pipeline_dir}{notebook}" for notebook in pipeline_notebooks]
+    write_readme(pipeline_notebooks, folder=pipeline_dir)
 
 def write_workflows(notebooks):
     print("writing .github/workflows...")
@@ -45,6 +53,7 @@ def write_workflows(notebooks):
 
 
 def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
+    is_pipeline_notebook = "jobs-pipelines" in classification
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
@@ -55,9 +64,12 @@ on:\n"""
     - cron: "0 */8 * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
+      - main
       - sdk-preview\n"""
-    if BRANCH!="":
+    if BRANCH!="main":
       workflow_yaml += f"""      - {BRANCH}\n"""
+    if is_pipeline_notebook:
+      workflow_yaml += "      - pipeline/*\n"
     workflow_yaml += f"""    paths:
       - sdk/**
       - .github/workflows/sdk-{classification}-{name}.yml
@@ -68,7 +80,7 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2\n"""
-    if BRANCH!="":
+    if BRANCH!="main":
       workflow_yaml += f"""      with:
         ref: {BRANCH}\n"""    
     workflow_yaml += f"""    - name: setup python
@@ -90,11 +102,22 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run {notebook}
-      run: |
+      run: |"""
+    
+    if is_pipeline_notebook:
+      # pipeline-job uses differemt cred
+      cred_replace = f"""
+          mkdir ../../.azureml
+          echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}}' > ../../.azureml/config.json 
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb"""
+    else:
+      cred_replace = f"""
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" {name}.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" {name}.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" {name}.ipynb\n"""
+    workflow_yaml += cred_replace
+
     if name == "workspace":
       workflow_yaml += f"""
           # generate a random workspace name
@@ -200,6 +223,17 @@ def write_readme_row(branch, notebook, name, classification, area, sub_area, des
 
     row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
     return row
+
+@contextlib.contextmanager
+def change_working_dir(path):
+    """Context manager for changing the current working directory"""
+
+    saved_path = os.getcwd()
+    os.chdir(str(path))
+    try:
+        yield
+    finally:
+        os.chdir(saved_path)
 
 # run functions
 if __name__ == "__main__":
