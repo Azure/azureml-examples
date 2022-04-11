@@ -26,6 +26,14 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: remove current cli
+      run: az extension remove -n ml
+      working-directory: cli
+      continue-on-error: true
+    - name: change cli version
+      run: az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.2.1-py3-none-any.whl --yes
+      working-directory: cli
+      continue-on-error: true
     - name: run job
       run: bash -x run-job.sh jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml
       working-directory: cli
