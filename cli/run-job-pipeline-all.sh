@@ -52,6 +52,16 @@ pwd
 az ml job create --file pipeline.yml
 cd ../../../../
 
+cd jobs/pipelines-with-components/basics/4d_dataset_input
+pwd
+az ml job create --file pipeline.yml
+cd ../../../../
+
+cd jobs/pipelines-with-components/basics/4e_data_asset_input
+pwd
+az ml job create --file pipeline.yml
+cd ../../../../
+
 cd jobs/pipelines-with-components/basics/5a_env_public_docker_image
 pwd
 az ml job create --file pipeline.yml

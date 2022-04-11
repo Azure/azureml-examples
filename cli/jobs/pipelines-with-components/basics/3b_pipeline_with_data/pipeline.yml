@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
+display_name: 3b_pipeline_with_data
 description: "Pipeline with 3 component jobs with data dependencies"
 
 compute: azureml:cpu-cluster

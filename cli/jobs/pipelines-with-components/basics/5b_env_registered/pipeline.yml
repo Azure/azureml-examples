@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-
+display_name: 5b_env_registered
 description: "Pipeline job with component using a registered AzureML environment"
 
 jobs:

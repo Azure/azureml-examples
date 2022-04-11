@@ -298,6 +298,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
       - april-sdk-preview
     paths:
       - cli/{project_dir}/**
@@ -309,8 +310,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:

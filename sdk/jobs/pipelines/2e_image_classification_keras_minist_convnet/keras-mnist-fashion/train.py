@@ -13,7 +13,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from azureml.core import Run
+import mlflow
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--input_path", type=str, help="Input path of dataset")
@@ -21,17 +21,21 @@ parser.add_argument("--output_model", type=str, help="Output path of model")
 
 args = parser.parse_args()
 
-# dataset object from the run
-run = Run.get_context()
-# dataset = run.input_datasets["prepared_fashion_ds"]
 dataset = args.input_path
+print("input dataset path")
+print(dataset)
+print("input dataset files: ")
+arr = os.listdir(dataset)
+print(arr)
 
 # split dataset into train and test set
-(train_dataset, test_dataset) = dataset.random_split(percentage=0.8, seed=111)
-
-# load dataset into pandas dataframe
-data_train = train_dataset.to_pandas_dataframe()
-data_test = test_dataset.to_pandas_dataframe()
+data_all = pd.DataFrame()
+for data in os.listdir(dataset):
+    df = pd.read_csv(os.path.join(dataset, data), encoding='utf-8', header=None)
+    data_all = data_all.append(df, ignore_index=True)
+data_all = data_all.sample(frac=1.0) # shuffle all data
+cut_idx = int(round(0.2 * data_all.shape[0]))
+data_test, data_train = data_all.iloc[:cut_idx], data_all.iloc[cut_idx:]
 
 img_rows, img_cols = 28, 28
 input_shape = (img_rows, img_cols, 1)
@@ -45,7 +49,6 @@ X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_st
 # test data
 X_test = np.array(data_test.iloc[:, 1:])
 y_test = to_categorical(np.array(data_test.iloc[:, 0]))
-
 
 X_train = (
     X_train.reshape(X_train.shape[0], img_rows, img_cols, 1).astype("float32") / 255
@@ -86,16 +89,13 @@ model.compile(
     metrics=["accuracy"],
 )
 
-# start an Azure ML run
-run = Run.get_context()
-
 
 class LogRunMetrics(Callback):
     # callback at the end of every epoch
     def on_epoch_end(self, epoch, log):
         # log a value repeated which creates a list
-        run.log("Loss", log["loss"])
-        run.log("Accuracy", log["accuracy"])
+        mlflow.log_metric("Loss", log["loss"])
+        mlflow.log_metric("Accuracy", log["accuracy"])
 
 
 history = model.fit(
@@ -111,13 +111,14 @@ history = model.fit(
 score = model.evaluate(X_test, y_test, verbose=0)
 
 # log a single value
-run.log("Final test loss", score[0])
+mlflow.log_metric("Final test loss", score[0])
 print("Test loss:", score[0])
 
-run.log("Final test accuracy", score[1])
+mlflow.log_metric("Final test accuracy", score[1])
 print("Test accuracy:", score[1])
 
-plt.figure(figsize=(6, 3))
+
+fig = plt.figure(figsize=(6, 3))
 plt.title("Fashion MNIST with Keras ({} epochs)".format(epochs), fontsize=14)
 plt.plot(history.history["accuracy"], "b-", label="Accuracy", lw=4, alpha=0.5)
 plt.plot(history.history["loss"], "r--", label="Loss", lw=4, alpha=0.5)
@@ -125,21 +126,16 @@ plt.legend(fontsize=12)
 plt.grid(True)
 
 # log an image
-run.log_image("Loss v.s. Accuracy", plot=plt)
+mlflow.log_figure(fig, "Loss v.s. Accuracy.png")
 
-# create a ./outputs/model folder in the compute target
-# files saved in the "./outputs" folder are automatically uploaded into run history
+# files saved in the args.output_model folder are automatically uploaded into run history
 
-# os.makedirs("./outputs/model", exist_ok=True)
 os.makedirs(args.output_model, exist_ok=True)
 
 # serialize NN architecture to JSON
 model_json = model.to_json()
 # save model JSON
-# with open("./outputs/model/model.json", "w") as f:
-#     f.write(model_json)
-(Path(args.model_output) / 'model.txt').write_text(model_json)
+(Path(args.output_model) / 'model.txt').write_text(model_json)
 # save model weights
-# model.save_weights("./outputs/model/model.h5")
-model.save_weights(os.path.join(args.model_output, "model.h5"))
-print(f"model saved in {args.model_output} folder")
+model.save_weights(os.path.join(args.output_model, "model.h5"))
+print(f"model saved in {args.output_model} folder")
