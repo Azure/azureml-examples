@@ -24,7 +24,7 @@ def replace_content(file, skip_wait=True):
     wait_str = "ml_client.jobs.stream(pipeline_job.name)"
     replace_holder = "## PLACEHOLDER"
 
-    with open(file) as f:
+    with open(file, encoding="utf-8") as f:
         original_content = f.read()
     try:
         if skip_wait:

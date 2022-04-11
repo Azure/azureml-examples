@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-
+display_name: 5a_env_public_docker_image
 description: "Pipeline job with component using public docker image as environment"
 
 jobs:
