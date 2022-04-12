@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-description: "Pipeline using distributed job to train model based on cifar-10 dataset"
+description: Pipeline using distributed job to train model based on cifar-10 dataset
 
 display_name: cifar-10-pipeline-example
 experiment_name: cifar-10-pipeline-example

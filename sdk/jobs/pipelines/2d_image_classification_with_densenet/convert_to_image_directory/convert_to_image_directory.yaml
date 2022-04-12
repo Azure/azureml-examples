@@ -21,6 +21,5 @@ command: >-
 
 
 environment:
-  name: designer-cv
   conda_file: ./conda.yaml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20211124.v1
