@@ -28,5 +28,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../run-job.sh cli-automl-classification-task-bankmarketing.yml
+      run: bash -x ../../../run-job.sh cli-automl-classification-task-bankmarketing.yml
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing
