@@ -1,5 +1,10 @@
 job=$1
-run_id=$(az ml job create -f $job --query name -o tsv)
+if [[ "$job" =~ ^jobs/pipelines-with-components/.* ]]
+then
+  run_id=$(az ml job create -f $job --query name -o tsv --set settings.force_rerun=True)
+else
+  run_id=$(az ml job create -f $job --query name -o tsv)
+fi
 
 az ml job show -n $run_id
 
