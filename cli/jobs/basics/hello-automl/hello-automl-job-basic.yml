@@ -1,0 +1,27 @@
+$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLJob.schema.json
+# Need final URL for SCHEMAS
+type: automl
+
+experiment_name: dpv2-cli-automl-classifier-experiment
+# name: dpv2-cli-classifier-train-job-basic-01
+description: A Classification job using bank marketing
+
+compute: azureml:cpu-cluster
+
+task: classification
+primary_metric: accuracy
+
+data:
+  target_column_name: "y"
+  training:
+    data:
+      path: "./training-mltable-folder"
+      type: mltable
+
+limits:
+  timeout_minutes: 180
+  max_trials: 40
+  enable_early_termination: true
+
+featurization:
+  mode: auto

@@ -1,5 +1,5 @@
 # <az_ml_install>
-# az extension add -n ml -y
+#az extension add -n ml -y
 # </az_ml_install>
 
 # rc install - uncomment and adjust below to run all tests on a CLI release candidate

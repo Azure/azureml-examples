@@ -1,0 +1,61 @@
+$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLClassificationJob.schema.json
+# Need final URL for SCHEMAS
+type: automl
+
+experiment_name: dpv2-cli-automl-classifier-experiment
+# name: dpv2-cli-classifier-train-job-advanced-01
+description: A Classification job using bank marketing
+
+compute: azureml:cpu-cluster
+
+task: classification
+log_verbosity: debug
+primary_metric: accuracy
+
+data:
+  target_column_name: "y"
+  training:
+    data:
+      path: "./training-mltable-folder"
+      type: mltable
+  validation:
+    #validation_data_size: 0.20
+    #n_cross_validations: 5  #(BUG: 1726477)
+    data:
+      path: "./validation-mltable-folder"
+      type: mltable
+  test:
+    #test_data_size: 0.1
+    data:
+      path: "./test-mltable-folder"
+      type: mltable
+
+limits:
+  timeout_minutes: 180
+  max_trials: 40
+  max_concurrent_trials: 5
+  trial_timeout_minutes: 20
+  enable_early_termination: true
+  exit_score: 0.91
+
+# featurization:
+#  mode: auto
+
+featurization:
+  mode: custom
+  transformer_params:
+    imputer:
+      - fields: ["job"]
+        parameters:
+          strategy: most_frequent
+  blocked_transformers:
+    - WordEmbedding
+
+training:
+  enable_model_explainability: true
+# BUG with enums/values: Bug 1728040
+# blocked_models:
+#   - multinomial_naive_bayes
+# allowed_models:
+#   - gradient_boosting
+#   - logistic_regression
