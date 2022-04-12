@@ -1,4 +1,4 @@
-$schema: http://azureml/sdk-2-0/CommandComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: train_logistic_regression_for_rai
 display_name: Train LogReg for RAI
 version: 1

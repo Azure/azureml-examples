@@ -1,4 +1,4 @@
-$schema: http://azureml/sdk-2-0/CommandComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: rai_insights_causal
 display_name: Add Causal to a RAI Insights Dashboard
 version: 1

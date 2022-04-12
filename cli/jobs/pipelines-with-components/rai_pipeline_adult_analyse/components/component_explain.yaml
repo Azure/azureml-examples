@@ -1,4 +1,4 @@
-$schema: http://azureml/sdk-2-0/CommandComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: rai_insights_explanation
 display_name: Add Explanation to RAI Insights Dashboard
 version: 1
