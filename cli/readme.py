@@ -36,7 +36,6 @@ def main(args):
     jobs += sorted(
         glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
     )
-    jobs += sorted(glob.glob("jobs/*/basics/**/*pipeline*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -349,8 +348,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -390,8 +387,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -431,8 +426,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
