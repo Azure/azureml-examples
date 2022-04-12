@@ -17,30 +17,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with: 
-        python-version: "3.8"
-    - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZ_AE_CREDS}}
-    - name: setup SDK
-      run: bash setup.sh
-      working-directory: sdk
-      continue-on-error: true
-    - name: setup CLI
-      run: bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: run jobs/pipelines/2d_image_classification_with_densenet/image_classification_with_densenet.ipynb
-      run: |
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: pip install notebook reqs
+        run: pip install -r notebooks/dev-requirements.txt
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZ_AE_CREDS}}
+      - name: setup SDK
+        run: bash setup.sh
+        working-directory: sdk
+        continue-on-error: true
+      - name: setup CLI
+        run: bash setup.sh
+        working-directory: cli
+        continue-on-error: true
+      - name: run jobs/pipelines/2d_image_classification_with_densenet/image_classification_with_densenet.ipynb
+        run: |
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" image_classification_with_densenet.ipynb          
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" image_classification_with_densenet.ipynb
+          sed -i "s/@dsl.pipeline(/force_rerun=True,&/" image_classification_with_densenet.ipynb           
           papermill image_classification_with_densenet.ipynb - -k python
-      working-directory: sdk/jobs/pipelines/2d_image_classification_with_densenet
+        working-directory: sdk/jobs/pipelines/2d_image_classification_with_densenet
