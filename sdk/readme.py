@@ -14,7 +14,6 @@ NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run eve
 BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
 BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
-BRANCH = 'automl-preview' #this should be deleted when this branch is merged to sdk-preview
 
 
 def main(args):
