@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-rai_pipeline_adult_analysis
+name: cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - sdk-preview
       - april-sdk-preview
     paths:
-      - cli/jobs/pipelines-with-components/rai_pipeline_adult_analysis/**
-      - .github/workflows/cli-jobs-pipelines-with-components-rai_pipeline_adult_analysis.yml
+      - cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/**
+      - .github/workflows/cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines-with-components/rai_pipeline_adult_analysis/pipeline.yml
+      run: bash -x run-job.sh jobs/pipelines-with-components/rai_pipeline_adult_analyse/pipeline.yml
       working-directory: cli
