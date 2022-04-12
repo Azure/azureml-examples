@@ -105,7 +105,7 @@ jobs:
       timeout-minutes: 30
     # lightgbm
     - name: run cli/jobs/single-step/lightgbm/iris/job.yml
-      run: bash .github/amlarc-tool.sh cli/jobs/single-step/lightgbm/iris/job.yml
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/lightgbm/iris/job.yml
       continue-on-error: true
       timeout-minutes: 30
     # pytorch
