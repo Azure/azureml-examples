@@ -10,7 +10,7 @@ compute: azureml:cpu-cluster
 
 task: regression
 log_verbosity: debug
-primary_metric: r2_score  
+primary_metric: r2_score
 
 data:
   target_column_name: "ERP"
@@ -19,15 +19,15 @@ data:
       path: "./training-mltable-folder"
       type: mltable
   validation:
-    n_cross_validations: 5  
+    n_cross_validations: 5
 
 limits:
-  timeout: 180
+  timeout_minutes: 180
   max_trials: 10
   max_concurrent_trials: 5
   trial_timeout_minutes: 20
   enable_early_termination: true
-  
+
 featurization:
   mode: auto
 
@@ -37,11 +37,6 @@ training:
 blocked_training_algorithms:
   - decision_tree
   - xg_boost_regressor
-
 #allowed_training_algorithms:
 #  - light_gbm
 #  - xg_boost_regressor
-
-properties:
-  _automl_internal_save_mlflow: "true"
-  _automl_internal_label: "latest"

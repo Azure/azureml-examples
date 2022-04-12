@@ -7,15 +7,15 @@ description: A text classification multilabel job using paper categorization dat
 
 compute: azureml:gpu-cluster
 
-task_type: textclassificationmultilabel
+task: text_classification_multilabel
 primary_metric: accuracy
 log_verbosity: debug
 
 limits:
-  timeout: 60
+  timeout_minutes: 60
 
 data:
-  target_column_name: 'terms'
+  target_column_name: "terms"
   training:
     data:
       path: "./training-mltable-folder"
@@ -24,6 +24,5 @@ data:
     data:
       type: mltable
       path: "./validation-mltable-folder"
-
 # featurization:
 #   dataset_language: "eng"

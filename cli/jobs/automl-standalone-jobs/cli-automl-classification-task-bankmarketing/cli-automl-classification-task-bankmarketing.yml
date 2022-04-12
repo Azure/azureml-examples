@@ -10,7 +10,7 @@ compute: azureml:cpu-cluster
 
 task: classification
 log_verbosity: debug
-primary_metric: accuracy  
+primary_metric: accuracy
 
 data:
   target_column_name: "y"
@@ -19,11 +19,11 @@ data:
       path: "./training-mltable-folder"
       type: mltable
   validation:
-   #validation_data_size: 0.20
-   #n_cross_validations: 5  #(BUG: 1726477)
-   data:
-     path: "./validation-mltable-folder"
-     type: mltable
+    #validation_data_size: 0.20
+    #n_cross_validations: 5  #(BUG: 1726477)
+    data:
+      path: "./validation-mltable-folder"
+      type: mltable
   test:
     #test_data_size: 0.1
     data:
@@ -37,7 +37,7 @@ limits:
   trial_timeout_minutes: 20
   enable_early_termination: true
   exit_score: 0.91
-  
+
 # featurization:
 #  mode: auto
 
@@ -45,23 +45,17 @@ featurization:
   mode: custom
   transformer_params:
     imputer:
-    - fields: ["job"]
-      parameters: 
-        strategy: most_frequent
+      - fields: ["job"]
+        parameters:
+          strategy: most_frequent
   blocked_transformers:
     - WordEmbedding
 
 training:
   enable_model_explainability: true
-
 # BUG with enums/values: Bug 1728040
 # blocked_models:
 #   - multinomial_naive_bayes
 # allowed_models:
 #   - gradient_boosting
 #   - logistic_regression
-
-
-properties:
-  _automl_internal_save_mlflow: "true"
-  _automl_internal_label: "latest"

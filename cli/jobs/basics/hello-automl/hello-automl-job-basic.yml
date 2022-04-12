@@ -1,4 +1,4 @@
-$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLClassificationJob.schema.json
+$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLJob.schema.json
 # Need final URL for SCHEMAS
 type: automl
 
@@ -9,7 +9,7 @@ description: A Classification job using bank marketing
 compute: azureml:cpu-cluster
 
 task: classification
-primary_metric: accuracy  
+primary_metric: accuracy
 
 data:
   target_column_name: "y"
@@ -19,12 +19,9 @@ data:
       type: mltable
 
 limits:
-  timeout: 180
+  timeout_minutes: 180
   max_trials: 40
   enable_early_termination: true
-  
+
 featurization:
   mode: auto
-
-properties:
-  _automl_internal_label: "latest"

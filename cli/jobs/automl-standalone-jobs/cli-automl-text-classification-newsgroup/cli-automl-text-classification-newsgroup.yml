@@ -7,12 +7,12 @@ description: A text classification job using newsgroup dataset
 
 compute: azureml:gpu-cluster
 
-task: textclassification
+task: text_classification
 primary_metric: accuracy
 log_verbosity: debug
 
 limits:
-  timeout: 60
+  timeout_minutes: 60
 
 data:
   target_column_name: 'y'
