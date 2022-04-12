@@ -5,8 +5,9 @@ on:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
+      - main
       - sdk-preview
-      - april-sdk-preview
+      - automl-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-automl-nlp-text-ner-task.yml
@@ -18,7 +19,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: april-sdk-preview
+        ref: automl-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -40,7 +41,7 @@ jobs:
     - name: run jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task/automl-nlp-text-ner-task.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-nlp-text-ner-task.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" automl-nlp-text-ner-task.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-nlp-text-ner-task.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-nlp-text-ner-task.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-nlp-text-ner-task.ipynb
           

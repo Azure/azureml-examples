@@ -7,13 +7,14 @@ import argparse
 
 # define constants
 ENABLE_MANUAL_CALLING = True #defines whether the workflow can be invoked or not
-NOT_TESTED_NOTEBOOKS = ["datastore",] #cannot automate lets exclude
+NOT_TESTED_NOTEBOOKS = ["datastore","automl-classification-task-bankmarketing-mlflow"] #cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
 #define branch where we need this
 #use if running on a release candidate, else make it empty
 BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
 BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
+BRANCH = 'automl-preview' #this should be deleted when this branch is merged to sdk-preview
 
 
 def main(args):
@@ -162,7 +163,15 @@ jobs:
         with open(workflow_file, "w") as f:
             f.write(workflow_yaml)
 
-def write_readme(notebooks):
+def write_readme(notebooks, folder=None):
+    prefix = "prefix.md"
+    suffix = "suffix.md"
+    readme_file = "README.md"
+    if folder:
+        prefix = f"{folder}/{prefix}"
+        suffix = f"{folder}/{suffix}"
+        readme_file = f"{folder}/{readme_file}"
+
     if BRANCH == "":
         branch = "main"
     else:
@@ -212,7 +221,7 @@ def write_readme(notebooks):
             )
 
         print("writing README.md...")
-        with open("README.md", "w") as f:
+        with open(readme_file, "w") as f:
             f.write(prefix + notebook_table + suffix)
         print("finished writing README.md")
 

@@ -6,7 +6,9 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
       - april-sdk-preview
+      - automl-preview
     paths:
       - cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/**
       - .github/workflows/cli-jobs-automl-standalone-jobs-cli-automl-image-object-detection-task-fridge-items-cli-automl-image-object-detection-task-fridge-items.yml
@@ -17,8 +19,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:

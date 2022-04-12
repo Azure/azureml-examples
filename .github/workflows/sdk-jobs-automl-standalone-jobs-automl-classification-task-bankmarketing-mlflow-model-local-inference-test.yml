@@ -1,4 +1,4 @@
-name: sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-automl-classification-task-bankmarketing
+name: sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-mlflow-model-local-inference-test
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - automl-preview
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-automl-classification-task-bankmarketing.yml
+      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-mlflow-model-local-inference-test.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -38,18 +38,18 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing.ipynb
+    - name: run jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/mlflow-model-local-inference-test.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-classification-task-bankmarketing.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-classification-task-bankmarketing.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-classification-task-bankmarketing.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-classification-task-bankmarketing.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" mlflow-model-local-inference-test.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" mlflow-model-local-inference-test.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" mlflow-model-local-inference-test.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" mlflow-model-local-inference-test.ipynb
 
-          papermill -k python -p compute_name automl-cpu-cluster automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
+          papermill -k python -p compute_name automl-cpu-cluster mlflow-model-local-inference-test.ipynb mlflow-model-local-inference-test.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-classification-task-bankmarketing
+        name: mlflow-model-local-inference-test
         path: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
