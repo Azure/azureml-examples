@@ -44,12 +44,6 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" sklearn-mnist.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" sklearn-mnist.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" sklearn-mnist.ipynb
-
-          papermill -k python sklearn-mnist.ipynb sklearn-mnist.output.ipynb
+          
+          papermill sklearn-mnist.ipynb - -k python
       working-directory: sdk/jobs/single-step/scikit-learn/mnist
-    - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: sklearn-mnist
-        path: sdk/jobs/single-step/scikit-learn/mnist

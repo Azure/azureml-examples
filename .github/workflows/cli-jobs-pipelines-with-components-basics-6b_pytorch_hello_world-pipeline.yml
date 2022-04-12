@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines-with-components/basics/6b_pytorch_hello_world
+      run: bash -x run-job.sh jobs/pipelines-with-components/basics/6b_pytorch_hello_world/pipeline.yml
+      working-directory: cli

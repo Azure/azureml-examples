@@ -47,16 +47,11 @@ jobs:
 
           # generate a random workspace name
           # sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" workspace.ipynb
+
           # skip other workpace creation commands for now
           sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" workspace.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" workspace.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" workspace.ipynb
-
-          papermill -k python workspace.ipynb workspace.output.ipynb
+          
+          papermill workspace.ipynb - -k python
       working-directory: sdk/resources/workspace
-    - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: workspace
-        path: sdk/resources/workspace

@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines-with-components/basics/1a_e2e_local_components
+      run: bash -x run-job.sh jobs/pipelines-with-components/basics/1a_e2e_local_components/pipeline.yml
+      working-directory: cli

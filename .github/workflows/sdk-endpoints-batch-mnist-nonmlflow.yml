@@ -44,12 +44,6 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" mnist-nonmlflow.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" mnist-nonmlflow.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" mnist-nonmlflow.ipynb
-
-          papermill -k python mnist-nonmlflow.ipynb mnist-nonmlflow.output.ipynb
+          
+          papermill mnist-nonmlflow.ipynb - -k python
       working-directory: sdk/endpoints/batch
-    - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: mnist-nonmlflow
-        path: sdk/endpoints/batch

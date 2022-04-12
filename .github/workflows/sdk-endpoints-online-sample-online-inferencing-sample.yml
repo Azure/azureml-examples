@@ -44,12 +44,6 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-inferencing-sample.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-inferencing-sample.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" online-inferencing-sample.ipynb
-
-          papermill -k python online-inferencing-sample.ipynb online-inferencing-sample.output.ipynb
+          
+          papermill online-inferencing-sample.ipynb - -k python
       working-directory: sdk/endpoints/online/sample
-    - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: online-inferencing-sample
-        path: sdk/endpoints/online/sample

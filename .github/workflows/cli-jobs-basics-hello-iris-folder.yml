@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../run-job.sh hello-iris-folder.yml
-      working-directory: cli/jobs/basics
+      run: bash -x run-job.sh jobs/basics/hello-iris-folder.yml
+      working-directory: cli
