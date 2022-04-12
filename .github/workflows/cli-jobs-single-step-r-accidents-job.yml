@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
       - april-sdk-preview
     paths:
       - cli/jobs/single-step/r/accidents/**
@@ -17,8 +18,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -28,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../../run-job.sh job.yml
-      working-directory: cli/jobs/single-step/r/accidents
+      run: bash -x run-job.sh jobs/single-step/r/accidents/job.yml
+      working-directory: cli

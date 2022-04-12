@@ -23,7 +23,7 @@ data:
       type: mltable
 
 limits:
-  timeout: 60
+  timeout_minutes: 60
 
 image_model:
   early_stopping: True

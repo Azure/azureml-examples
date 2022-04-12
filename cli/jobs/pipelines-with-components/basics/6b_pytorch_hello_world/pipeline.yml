@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: 6b_pytorch_hello_world
 description: "Prints the environment variables useful for scripts running in a PyTorch training environment"
 
 jobs:
