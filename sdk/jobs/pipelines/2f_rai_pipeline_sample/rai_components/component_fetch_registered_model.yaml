@@ -1,0 +1,17 @@
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: fetch_registered_model
+display_name: Fetch Registered Model
+version: 1
+type: command
+inputs:
+  model_id:
+    type: string
+outputs:
+  model_info_output_path:
+    type: path
+code: ./src_fetch_registered/
+environment: azureml:AML-RAI-Environment:1
+command: >-
+  python fetch_registered.py
+  --model_id ${{inputs.model_id}}
+  --model_info_output_path ${{outputs.model_info_output_path}}
