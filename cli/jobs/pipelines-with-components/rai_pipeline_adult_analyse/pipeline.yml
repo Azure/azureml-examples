@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 
 display_name: rai_pipeline_adult_analyse
 experiment_name: rai_pipeline_adult_analyse
-description: "sample rai pipeline"
+description: Sample rai pipeline
 type: pipeline
 
 inputs:

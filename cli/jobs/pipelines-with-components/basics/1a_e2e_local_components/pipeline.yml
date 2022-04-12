@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
 display_name: 1a_e2e_local_components
-description: "Dummy train-score-eval pipeline with local components"
+description: Dummy train-score-eval pipeline with local components
 
 inputs:
   pipeline_job_training_input: 
