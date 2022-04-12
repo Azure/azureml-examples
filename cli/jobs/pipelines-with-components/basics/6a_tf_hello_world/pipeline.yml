@@ -9,9 +9,9 @@ jobs:
     component: file:./component.yml
     compute: azureml:gpu-cluster
     resources:
-      instance_count: 3
+      instance_count: 2
     distribution:
       type: tensorflow
-      worker_count: 3
+      worker_count: 2
 
         
