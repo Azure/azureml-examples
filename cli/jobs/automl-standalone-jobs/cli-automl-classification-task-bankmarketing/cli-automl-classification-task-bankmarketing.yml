@@ -31,7 +31,7 @@ data:
       type: mltable
 
 limits:
-  timeout: 180
+  timeout_minutes: 180
   max_trials: 40
   max_concurrent_trials: 5
   trial_timeout_minutes: 20
