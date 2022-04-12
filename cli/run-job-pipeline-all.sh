@@ -3,6 +3,11 @@ target_version="$RANDOM"
 az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8
 az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12
 
+cd assets/data
+pwd
+az ml data create --file local-folder.yml --set version=$target_version
+cd ../../
+
 cd jobs/pipelines-with-components/basics/1a_e2e_local_components
 pwd
 az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
