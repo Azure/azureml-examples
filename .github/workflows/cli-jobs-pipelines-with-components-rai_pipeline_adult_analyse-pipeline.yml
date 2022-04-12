@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse
+name: cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - april-sdk-preview
     paths:
       - cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/**
-      - .github/workflows/cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse.yml
+      - .github/workflows/cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse-pipeline.yml
       - cli/setup.sh
 jobs:
   build:

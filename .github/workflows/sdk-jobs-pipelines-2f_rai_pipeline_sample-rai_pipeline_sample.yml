@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-2f_rai_pipeline_sample
+name: sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample
 on:
   workflow_dispatch:
   schedule:
@@ -11,7 +11,7 @@ on:
       - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-2f_rai_pipeline_sample
+      - .github/workflows/sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
