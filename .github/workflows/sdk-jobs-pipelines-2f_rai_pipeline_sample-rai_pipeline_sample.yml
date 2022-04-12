@@ -37,10 +37,10 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/2f_rai_pipeline_sample/2f_rai_pipeline_sample.ipynb
+    - name: run jobs/pipelines/2f_rai_pipeline_sample/rai_pipeline_sample.ipynb
       run: |
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" 2f_rai_pipeline_sample.ipynb          
-          papermill 2f_rai_pipeline_sample.ipynb - -k python
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" rai_pipeline_sample.ipynb          
+          papermill rai_pipeline_sample.ipynb - -k python
       working-directory: sdk/jobs/pipelines/2f_rai_pipeline_sample
