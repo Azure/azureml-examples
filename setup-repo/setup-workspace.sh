@@ -28,3 +28,9 @@ echo "Creating components..."
 
 bash -x create-components.sh
 
+
+
+
+echo "Creating environments..."
+
+bash -x create-environments.sh
