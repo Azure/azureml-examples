@@ -5,6 +5,7 @@ description: "Example of using data from a Dataset as pipeline input"
 inputs:
   pipeline_sample_input_data:
     type: mltable
+    # please follow the instrucion in README.md to create this dataset first 
     path: azureml:sampledata@latest
     mode: eval_mount
   pipeline_sample_input_string: 'Hello_Pipeline_World'

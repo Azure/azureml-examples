@@ -8,4 +8,4 @@ jobs:
     outputs:
       output:
         type: uri_file
-        path: azureml://datastores/workspaceblobstore/paths/hello_world.txt
+        path: azureml://datastores/workspaceblobstore/paths/${{name}}/hello_world.txt
