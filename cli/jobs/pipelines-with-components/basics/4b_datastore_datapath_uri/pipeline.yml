@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
 display_name: 4b_datastore_datapath_uri
-description: "Example of using data folder from a Workspace Datastore as pipeline input"
+description: Example of using data folder from a Workspace Datastore as pipeline input
 inputs:
   pipeline_sample_input_data:
     type: uri_folder
