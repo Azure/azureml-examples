@@ -84,13 +84,16 @@ print(model.score(trainX, trainy))
 # mlflow model can't write to existed folder, fix is in the mlflow master branch
 # write to local folder first, then copy to output folder
 # mlflow.sklearn.save_model(model, args.model_output)
-# mlflow.sklearn.save_model(model, args.model_output + '/model')
-mlflow.sklearn.save_model(model, 'model')
+import random
+# add random suffix
+random_suffix = str(random.random())
+
+mlflow.sklearn.save_model(model, 'model'+random_suffix)
 
 from distutils.dir_util import copy_tree
 
 # copy subdirectory example
-from_directory = "model"
+from_directory = "model"+random_suffix
 to_directory = args.model_output
 
 copy_tree(from_directory, to_directory)

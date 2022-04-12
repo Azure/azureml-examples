@@ -1,10 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: 4e_data_asset_input
-description: "Example of using data from a Dataset as pipeline input"
+description: Example of using data from a Dataset as pipeline input
 inputs:
   pipeline_sample_input_data:
     type: uri_folder
+    # please follow the instrucion in README.md to create this data asset first, 
     path: azureml:local-folder-example@latest
     mode: ro_mount
   pipeline_sample_input_string: 'Hello_Pipeline_World'
