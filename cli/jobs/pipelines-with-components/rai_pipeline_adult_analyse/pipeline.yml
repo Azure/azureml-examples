@@ -7,6 +7,10 @@ type: pipeline
 
 inputs:
   target_column_name: income
+  my_test_data:
+    type: uri_file
+    path: azureml:adult_test_pq:1
+    mode: download
 
 settings:
   default_datastore: azureml:workspaceblobstore
