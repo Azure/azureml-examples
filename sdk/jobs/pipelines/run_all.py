@@ -1,11 +1,10 @@
 # imports
 import contextlib
-import imp
 import os
-import json
 import glob
 import argparse
 import concurrent.futures
+import traceback
 
 from pathlib import Path
 
@@ -28,7 +27,7 @@ def replace_content(file, skip_wait=True, force_rerun=True):
     dsl_str = "@dsl.pipeline("
     rerun_str = "@dsl.pipeline(force_rerun=True,"
 
-    with open(file, encoding="utf-8") as f:
+    with open(file,  encoding="utf-8") as f:
         original_content = f.read()
     try:
         with open(file, "w") as f:
@@ -44,13 +43,14 @@ def replace_content(file, skip_wait=True, force_rerun=True):
             f.write(original_content)
 
 
-def run_notebook(notebook, skip_wait, force_rerun):
+def run_notebook(notebook, skip_wait=True, force_rerun=True, dry_run=False):
     notebook = Path(notebook)
     folder = notebook.parent
     with change_working_dir(folder), replace_content(notebook.name, skip_wait, force_rerun):
         command = f"papermill {notebook.name} out.ipynb -k python"
         print(f"Running {command}")
-        # os.system(command)
+        if not dry_run:
+            os.system(command)
 
 
 def main(args):
@@ -59,21 +59,23 @@ def main(args):
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
     with concurrent.futures.ProcessPoolExecutor(max_workers=12) as executor:
         future_to_notebooks = {
-            executor.submit(run_notebook, notebook, args.skip_wait, args.force_rerun): notebook for notebook in notebooks
+            executor.submit(run_notebook, notebook, args.skip_wait, args.force_rerun, args.dry_run): notebook for notebook in notebooks
         }
             
         for future in concurrent.futures.as_completed(future_to_notebooks):
             notebook = future_to_notebooks[future]
             try:
-                data = future.result()
+                future.result()
             except Exception as exc:
                 print(f'Failed to run {notebook} due to {exc}')
+                raise exc
 
 if __name__ == "__main__":
     # setup argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-wait", type=bool, default=True)
     parser.add_argument("--force-rerun", type=bool, default=True)
+    parser.add_argument("--dry-run", type=bool, default=False)
 
     args = parser.parse_args()
 
