@@ -1,15 +1,17 @@
-name: sdk-jobs-pipelines-e2e_registered_components-e2e_registered_components
+name: sdk-assets-component-component
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
+      - main
       - sdk-preview
       - april-sdk-preview
+      - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-e2e_registered_components-e2e_registered_components.yml
+      - .github/workflows/sdk-assets-component-component.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
@@ -17,8 +19,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -37,18 +37,17 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/e2e_registered_components/e2e_registered_components.ipynb
+    - name: run assets/component/component.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" e2e_registered_components.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples-rg/g" e2e_registered_components.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" e2e_registered_components.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" e2e_registered_components.ipynb
-
-          papermill -k python e2e_registered_components.ipynb e2e_registered_components.output.ipynb
-      working-directory: sdk/jobs/pipelines/e2e_registered_components
+          mkdir ../../.azureml
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" component.ipynb
+          sed -i "s/@dsl.pipeline(/&force_rerun=True,/" component.ipynb
+          papermill -k python component.ipynb component.output.ipynb
+      working-directory: sdk/assets/component
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: e2e_registered_components
-        path: sdk/jobs/pipelines/e2e_registered_components
+        name: component
+        path: sdk/assets/component

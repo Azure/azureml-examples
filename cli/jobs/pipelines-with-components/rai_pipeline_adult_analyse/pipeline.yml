@@ -9,11 +9,11 @@ inputs:
   target_column_name: income
   my_training_data:
     type: uri_file
-    path: azureml:adult_train_pq_file:1
+    path: azureml:adult_train_pq:1
     mode: download
   my_test_data:
     type: uri_file
-    path: azureml:adult_test_pq_file:1
+    path: azureml:adult_test_pq:1
     mode: download
 
 settings:
