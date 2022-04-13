@@ -420,8 +420,9 @@ run_cli_job(){
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
 
     run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
-    az ml job stream $SRW -n $run_id
+    timeout 30m az ml job stream $SRW -n $run_id
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
+    timeout 5m az ml job cancel $SRW -n $run_id
     echo $status
     if [[ $status == "Completed" ]]; then
         echo "[JobStatus] $JOB_YML completed" | tee -a $RESULT_FILE
