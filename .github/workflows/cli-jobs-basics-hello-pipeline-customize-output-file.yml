@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-pipeline
+name: cli-jobs-basics-hello-pipeline-customize-output-file
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - april-sdk-preview
     paths:
       - cli/jobs/basics/**
-      - .github/workflows/cli-jobs-basics-hello-pipeline.yml
+      - .github/workflows/cli-jobs-basics-hello-pipeline-customize-output-file.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../run-job.sh hello-pipeline.yml
+      run: bash -x ../../run-job.sh hello-pipeline-customize-output-file.yml
       working-directory: cli/jobs/basics
