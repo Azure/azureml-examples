@@ -145,10 +145,10 @@ jobs:
       continue-on-error: true
       timeout-minutes: 40
     # spark
-    #- name: run cli/jobs/single-step/spark/nyctaxi/job.yml
-    #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/spark/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
-    #  continue-on-error: true
-    #  timeout-minutes: 40 
+    - name: run cli/jobs/single-step/spark/nyctaxi/job.yml
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/spark/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+      continue-on-error: true
+      timeout-minutes: 40 
     # tensorflow
     - name: run cli/jobs/single-step/tensorflow/mnist/job.yml
       run: INSTANCE_TYPE_NAME=gpu bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist/job.yml
@@ -165,23 +165,23 @@ jobs:
 
     ## pipeline
     # cifar-10
-    # - name: run cli/jobs/pipelines/cifar-10/job.yml
-    #   run: |
-    #     bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/job.yml \
-    #           jobs.get-data.resources.instance_type=cpu \
-    #           jobs.train-model.resources.instance_type=gpu \
-    #           jobs.eval-model.resources.instance_type=gpu
-    #   continue-on-error: true
-    #   timeout-minutes: 40
+    - name: run cli/jobs/pipelines/cifar-10/job.yml
+      run: |
+        bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml \
+            jobs.get-data.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true \
+            jobs.train-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
+            jobs.eval-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true 
+      continue-on-error: true
+      timeout-minutes: 40
     # nyc-taxi
     - name: run cli/jobs/pipelines/nyc-taxi/job.yml
       run: |
         bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml \
-              jobs.prep-job.resources.instance_type=cpu \
-              jobs.transform-job.resources.instance_type=cpu \
-              jobs.train-job.resources.instance_type=cpu \
-              jobs.predict-job.resources.instance_type=cpu \
-              jobs.score-job.resources.instance_type=cpu
+            jobs.prep-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
+            jobs.transform-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
+            jobs.train-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
+            jobs.predict-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
+            jobs.score-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true   
       continue-on-error: true
       timeout-minutes: 40
 
