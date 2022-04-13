@@ -6,7 +6,7 @@ How to Run this AutoML Job with CLI (Image Instance Segmentation)
 1. Prepare data/images (Upload images to Workspace and generate JSONL dataset)
 ------------------------------------------------------------------------------
 
-Because the image based datasets need to be uploaded and second the JSONL dataset be generated based on the uploaded images URIs, you first need to 
+You first need to prepare the data: The image based datasets need to be uploaded and later the JSONL dataset needs to be generated based on the uploaded images URIs. 
 
 You do this by simply running the prepare_data.py available in this folder, with a command like the following:
 
