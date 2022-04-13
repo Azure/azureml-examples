@@ -20,16 +20,22 @@ def change_working_dir(path):
         os.chdir(saved_path)
 
 @contextlib.contextmanager
-def replace_content(file, skip_wait=True):
+def replace_content(file, skip_wait=True, force_rerun=True):
     wait_str = "ml_client.jobs.stream(pipeline_job.name)"
     replace_holder = "## PLACEHOLDER"
+    dsl_str = "@dsl.pipeline("
+    rerun_str = "@dsl.pipeline(force_rerun=True,"
 
     with open(file, encoding="utf-8") as f:
         original_content = f.read()
     try:
-        if skip_wait:
-            with open(file, "w") as f:
-                f.write(original_content.replace(wait_str, replace_holder))
+        with open(file, "w") as f:
+            new_content = original_content
+            if skip_wait:
+                new_content = new_content.replace(wait_str, replace_holder)
+            if force_rerun:
+                new_content = new_content.replace(dsl_str, rerun_str)
+            f.write(new_content)
         yield
     finally:
         if skip_wait:
