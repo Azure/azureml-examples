@@ -9,8 +9,8 @@ on:
       - sdk-preview
       - april-sdk-preview
     paths:
-      - cli/jobs/pipelines-with-components/basics/4d_dataset_input/**
-      - .github/workflows/cli-jobs-pipelines-with-components-basics-4d_dataset_input-pipeline.yml
+      - cli/jobs/pipelines-with-components/basics/4d_data_input/**
+      - .github/workflows/cli-jobs-pipelines-with-components-basics-4d_data_input-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,4 +28,4 @@ jobs:
       continue-on-error: true
     - name: run job
       run: bash -x ../../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines-with-components/basics/4d_dataset_input
+      working-directory: cli/jobs/pipelines-with-components/basics/4d_data_input

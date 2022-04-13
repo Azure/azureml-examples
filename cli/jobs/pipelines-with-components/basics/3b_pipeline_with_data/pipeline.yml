@@ -6,11 +6,6 @@ description: Pipeline with 3 component jobs with data dependencies
 
 compute: azureml:cpu-cluster
 
-inputs:
-  pipeline_sample_input_data:
-    type: uri_folder
-    path: ./data
-
 outputs:
   final_pipeline_output:
     mode: rw_mount
@@ -20,7 +15,10 @@ jobs:
     type: command
     component: file:./componentA.yml
     inputs:
-      componentA_input: ${{parent.inputs.pipeline_sample_input_data}}
+      componentA_input: 
+        type: uri_folder
+        path: ./data
+
     outputs:
       componentA_output: 
         mode: rw_mount
