@@ -7,7 +7,12 @@ import argparse
 
 # define constants
 ENABLE_MANUAL_CALLING = True #defines whether the workflow can be invoked or not
-NOT_TESTED_NOTEBOOKS = ["datastore","automl-classification-task-bankmarketing-mlflow"] #cannot automate lets exclude
+NOT_TESTED_NOTEBOOKS = [
+    "datastore",
+    "automl-classification-task-bankmarketing-mlflow",
+    "automl-forecasting-task-energy-demand-advanced-mlflow",
+    "mlflow-model-local-inference-test"
+] #cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
 #define branch where we need this
 #use if running on a release candidate, else make it empty
