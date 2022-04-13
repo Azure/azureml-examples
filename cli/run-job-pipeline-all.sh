@@ -3,6 +3,8 @@ target_version="$RANDOM"
 az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8
 az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12
 
+python run-job-pipeline-all.py update
+
 cd assets/data
 pwd
 az ml data create --file local-folder.yml --set version=$target_version
@@ -19,7 +21,6 @@ az ml component create --file train.yml --set version=$target_version
 az ml component create --file score.yml --set version=$target_version
 az ml component create --file eval.yml --set version=$target_version
 az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version --set settings.default_compute=azureml:gpu-cluster
 cd ../../../../
 
 cd jobs/pipelines-with-components/basics/2a_basic_component
@@ -112,6 +113,11 @@ pwd
 az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 cd ../../../
 
+cd jobs/pipelines-with-components/rai_pipeline_adult_analyse
+pwd
+az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
+cd ../../../
+
 cd jobs/pipelines/nyc-taxi
 pwd
 az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
@@ -123,3 +129,5 @@ az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$targe
 cd ../../../
 
 az --version
+
+python run-job-pipeline-all.py recover
