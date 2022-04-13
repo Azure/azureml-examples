@@ -4,7 +4,7 @@ az extension add -n ml -y
 
 # rc install - uncomment and adjust below to run all tests on a CLI release candidate
 #z extension remove -n ml
-#az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.2.1-py3-none-any.whl --yes
+#az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.2.2-py3-none-any.whl --yes
  
 # <set_variables>
 GROUP="azureml-examples"
