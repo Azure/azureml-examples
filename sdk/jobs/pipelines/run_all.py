@@ -5,6 +5,8 @@ import os
 import json
 import glob
 import argparse
+import concurrent.futures
+
 from pathlib import Path
 
 
@@ -38,27 +40,41 @@ def replace_content(file, skip_wait=True, force_rerun=True):
             f.write(new_content)
         yield
     finally:
-        if skip_wait:
-            with open(file, 'w') as f:
-                f.write(original_content)
+        with open(file, 'w', encoding="utf-8") as f:
+            f.write(original_content)
+
+
+def run_notebook(notebook, skip_wait, force_rerun):
+    notebook = Path(notebook)
+    folder = notebook.parent
+    with change_working_dir(folder), replace_content(notebook.name, skip_wait, force_rerun):
+        command = f"papermill {notebook.name} out.ipynb -k python"
+        print(f"Running {command}")
+        # os.system(command)
 
 
 def main(args):
     
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
-
-    for notebook in notebooks:
-        notebook = Path(notebook)
-        folder = notebook.parent
-        with change_working_dir(folder), replace_content(notebook.name, args.skip_wait):
-            os.system(f"papermill {notebook.name} out.ipynb -k python")
-
+    with concurrent.futures.ProcessPoolExecutor(max_workers=12) as executor:
+        future_to_notebooks = {
+            executor.submit(run_notebook, notebook, args.skip_wait, args.force_rerun): notebook for notebook in notebooks
+        }
+            
+        for future in concurrent.futures.as_completed(future_to_notebooks):
+            notebook = future_to_notebooks[future]
+            try:
+                data = future.result()
+            except Exception as exc:
+                print(f'Failed to run {notebook} due to {exc}')
 
 if __name__ == "__main__":
     # setup argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-wait", type=bool, default=True)
+    parser.add_argument("--force-rerun", type=bool, default=True)
+
     args = parser.parse_args()
 
     # call main
