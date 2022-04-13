@@ -14,7 +14,6 @@ NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run eve
 BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
 BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
-BRANCH = 'automl-preview' #this should be deleted when this branch is merged to sdk-preview
 
 
 def main(args):
@@ -54,7 +53,7 @@ def write_workflows(notebooks):
 
 
 def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
-    is_pipeline_notebook = "jobs-pipelines" in classification
+    is_pipeline_notebook = ( "jobs-pipelines" in classification) or ("assets-component" in classification)
     creds = "${{secrets.AZ_AE_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
@@ -81,9 +80,9 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2\n"""
-    if BRANCH!="main":
-      workflow_yaml += f"""      with:
-        ref: {BRANCH}\n"""    
+    # if BRANCH!="main":
+    #   workflow_yaml += f"""      with:
+    #     ref: {BRANCH}\n"""    
     workflow_yaml += f"""    - name: setup python
       uses: actions/setup-python@v2
       with: 
