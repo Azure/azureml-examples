@@ -84,6 +84,7 @@ jobs:
         bash .github/amlarc-tool.sh setup_instance_type defaultinstancetype 8 32Gi
         bash .github/amlarc-tool.sh setup_instance_type cpu 8 32Gi
         bash .github/amlarc-tool.sh setup_instance_type gpu 8 32Gi 2
+        bash -c "echo Waiting 30 seconds for instance type to take effect ...; sleep 30"
       timeout-minutes: 30
     
     ## run training cli test cases
