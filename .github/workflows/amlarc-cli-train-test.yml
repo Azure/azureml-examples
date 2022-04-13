@@ -91,7 +91,7 @@ jobs:
     ## single step
     # dask
     - name: run cli/jobs/single-step/dask/nyctaxi/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/dask/nyctaxi/job.yml
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/dask/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
       continue-on-error: true
       timeout-minutes: 30
     # java
