@@ -6,7 +6,7 @@
 az extension remove -n ml
 
 # update when have nightly build for april features
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/test-sdk-cli-v2/ml-0.0.60488751-py3-none-any.whl --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/test-sdk-cli-v2/ml-0.0.60642085-py3-none-any.whl --yes
 # az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.2.1-py3-none-any.whl --yes
  
 # <set_variables>
