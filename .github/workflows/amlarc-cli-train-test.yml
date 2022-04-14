@@ -36,6 +36,7 @@ jobs:
       LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
       RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
       VM_SKU: STANDARD_NC12
+      WORKSPACE: amlarc-githubtest-ws
 
       MIN_SUCCESS_NUM: 3
       SEVERITY: 3
@@ -87,6 +88,15 @@ jobs:
         bash -c "echo Waiting 30 seconds for instance type to take effect ...; sleep 30"
       timeout-minutes: 30
     
+    ## setup repo
+    - name: create dataset
+      run: |
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+        bash create-datasets.sh
+      working-directory: setup-repo
+      timeout-minutes: 30
+
     ## run training cli test cases
     ## single step
     # dask
