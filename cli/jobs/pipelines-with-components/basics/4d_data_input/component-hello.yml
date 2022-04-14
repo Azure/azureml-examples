@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: hello_python_world
-display_name: Hello_Python_World
+name: python_hello
+display_name: Python_hello
 version: 1
 
 inputs:
@@ -10,7 +10,7 @@ inputs:
     type: uri_folder
   sample_input_string:
     type: string
-    default: "hello_python_world"
+    default: "python_hello"
 outputs:
   sample_output_data:
     type: uri_folder
