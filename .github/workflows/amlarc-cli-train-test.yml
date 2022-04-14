@@ -207,6 +207,9 @@ jobs:
         bash .github/amlarc-tool.sh count_result || ret=$?
         if [ "$ret" != "0" ] && [ "$ret" != "" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
             # download certificates
+            export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
+            export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
+            export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
             bash .github/amlarc-tool.sh download_icm_cert
             export ICM_HOST=$(cat icm_host)
             export CONNECTOR_ID=$(cat icm_connector_id)
