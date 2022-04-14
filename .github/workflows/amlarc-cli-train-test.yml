@@ -145,10 +145,10 @@ jobs:
       continue-on-error: true
       timeout-minutes: 40
     # spark
-    - name: run cli/jobs/single-step/spark/nyctaxi/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/spark/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
-      continue-on-error: true
-      timeout-minutes: 40 
+    #- name: run cli/jobs/single-step/spark/nyctaxi/job.yml
+    #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/spark/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+    #  continue-on-error: true
+    #  timeout-minutes: 40 
     # tensorflow
     - name: run cli/jobs/single-step/tensorflow/mnist/job.yml
       run: INSTANCE_TYPE_NAME=gpu bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist/job.yml
