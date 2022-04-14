@@ -18,8 +18,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -44,6 +42,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" iris-scikit-learn.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" iris-scikit-learn.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" iris-scikit-learn.ipynb
-          
-          papermill iris-scikit-learn.ipynb - -k python
+
+          papermill -k python iris-scikit-learn.ipynb iris-scikit-learn.output.ipynb
       working-directory: sdk/jobs/single-step/scikit-learn/iris
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: iris-scikit-learn
+        path: sdk/jobs/single-step/scikit-learn/iris
