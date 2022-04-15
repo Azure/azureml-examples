@@ -44,6 +44,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" pytorch-iris.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" pytorch-iris.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" pytorch-iris.ipynb
-          
-          papermill pytorch-iris.ipynb - -k python
+
+          papermill -k python pytorch-iris.ipynb pytorch-iris.output.ipynb
       working-directory: sdk/jobs/single-step/pytorch/iris
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: pytorch-iris
+        path: sdk/jobs/single-step/pytorch/iris

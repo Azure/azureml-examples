@@ -34,9 +34,11 @@ featurization:
 training:
   enable_model_explainability: true
 
-blocked_training_algorithms:
-  - decision_tree
-  - xg_boost_regressor
+# (BUG)
+#blocked_training_algorithms:
+#  - XGBoostRegressor
+
+# (BUG)
 #allowed_training_algorithms:
 #  - light_gbm
 #  - xg_boost_regressor

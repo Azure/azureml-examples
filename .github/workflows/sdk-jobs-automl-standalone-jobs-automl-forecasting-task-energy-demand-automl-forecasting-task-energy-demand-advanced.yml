@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - automl-preview
+      - april-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced.yml
@@ -19,7 +19,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
       with:
-        ref: automl-preview
+        ref: april-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -29,7 +29,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
