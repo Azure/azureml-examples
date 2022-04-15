@@ -19,4 +19,4 @@ environment:
   image: python
 
 command: >-
-  python hello.py --componentB_input ${{inputs.componentB_input}} --componentB_output ${{outputs.componentB_output}}
+  python hello.py --componentB_input ${{inputs.component_b_input}} --componentB_output ${{outputs.component_b_output}}
