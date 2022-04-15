@@ -65,7 +65,8 @@ Below we show some common data access patterns that you can use in your *control
 ### Using local data in a job
 
 ```python
-from azure.ml.entities import Data, UriReference, JobInput, CommandJob
+from azure.ml import command
+from azure.ml.entities import Data, UriReference, JobInput
 from azure.ml._constants import AssetTypes
 
 my_job_inputs = {
@@ -75,7 +76,7 @@ my_job_inputs = {
     )
 }
 
-job = CommandJob(
+job = command(
     code="./src", # local path where the code is stored
     command='python train.py --input_folder ${{inputs.input_data}}',
     inputs=my_job_inputs,
@@ -83,7 +84,7 @@ job = CommandJob(
     compute="cpu-cluster"
 )
 
-#submit the command job
+#submit the command
 returned_job = ml_client.create_or_update(job)
 #get a URL for the status of the job
 returned_job.services["Studio"].endpoint
@@ -93,7 +94,8 @@ returned_job.services["Studio"].endpoint
 ### Using data stored in ADLS gen2 in a job
 
 ```python
-from azure.ml.entities import Data, UriReference, JobInput, CommandJob
+from azure.ml import command
+from azure.ml.entities import Data, UriReference, JobInput
 from azure.ml._constants import AssetTypes
 
 # in this example we
@@ -104,7 +106,7 @@ my_job_inputs = {
     )
 }
 
-job = CommandJob(
+job = command(
     code="./src", # local path where the code is stored
     command='python train.py --input_folder ${{inputs.input_data}}',
     inputs=my_job_inputs,
@@ -112,7 +114,7 @@ job = CommandJob(
     compute="cpu-cluster"
 )
 
-#submit the command job
+#submit the command
 returned_job = ml_client.create_or_update(job)
 #get a URL for the status of the job
 returned_job.services["Studio"].endpoint
@@ -121,7 +123,8 @@ returned_job.services["Studio"].endpoint
 ### Using data stored in blob in a job
 
 ```python
-from azure.ml.entities import Data, UriReference, JobInput, CommandJob
+from azure.ml import command
+from azure.ml.entities import Data, UriReference, JobInput
 from azure.ml._constants import AssetTypes
 
 # in this example we
@@ -132,7 +135,7 @@ my_job_inputs = {
     )
 }
 
-job = CommandJob(
+job = command(
     code="./src", # local path where the code is stored
     command='python train.py --input_folder ${{inputs.input_data}}',
     inputs=my_job_inputs,
@@ -140,7 +143,7 @@ job = CommandJob(
     compute="cpu-cluster"
 )
 
-#submit the command job
+#submit the command
 returned_job = ml_client.create_or_update(job)
 #get a URL for the status of the job
 returned_job.services["Studio"].endpoint
@@ -149,7 +152,8 @@ returned_job.services["Studio"].endpoint
 ### Reading and writing data stored in blob in a job
 
 ```python
-from azure.ml.entities import Data, UriReference, JobInput, CommandJob, JobOutput
+from azure.ml import command
+from azure.ml.entities import Data, UriReference, JobInput, JobOutput
 from azure.ml._constants import AssetTypes
 
 my_job_inputs = {
@@ -166,7 +170,7 @@ my_job_outputs = {
     )
 }
 
-job = CommandJob(
+job = command(
     code="./src", #local path where the code is stored
     command='python pre-process.py --input_folder ${{inputs.input_data}} --output_folder ${{outputs.output_folder}}',
     inputs=my_job_inputs,
@@ -175,7 +179,7 @@ job = CommandJob(
     compute="cpu-cluster"
 )
 
-#submit the command job
+#submit the command
 returned_job = ml_client.create_or_update(job)
 #get a URL for the status of the job
 returned_job.services["Studio"].endpoint
@@ -184,7 +188,8 @@ returned_job.services["Studio"].endpoint
 ### Reading and writing data stored in ADLS gen2 in a job
 
 ```python
-from azure.ml.entities import Data, UriReference, JobInput, CommandJob, JobOutput
+from azure.ml import command
+from azure.ml.entities import Data, UriReference, JobInput, JobOutput
 from azure.ml._constants import AssetTypes
 
 my_job_inputs = {
@@ -201,7 +206,7 @@ my_job_outputs = {
     )
 }
 
-job = CommandJob(
+job = command(
     code="./src", #local path where the code is stored
     command='python pre-process.py --input_folder ${{inputs.input_data}} --output_folder ${{outputs.output_folder}}',
     inputs=my_job_inputs,
@@ -210,7 +215,7 @@ job = CommandJob(
     compute="cpu-cluster"
 )
 
-#submit the command job
+#submit the command
 returned_job = ml_client.create_or_update(job)
 #get a URL for the status of the job
 returned_job.services["Studio"].endpoint
@@ -240,7 +245,8 @@ ml_client.data.create_or_update(my_data)
 ### Consume registered data assets in job
 
 ```python
-from azure.ml.entities import Data, UriReference, JobInput, CommandJob
+from azure.ml import command
+from azure.ml.entities import Data, UriReference, JobInput
 from azure.ml._constants import AssetTypes
 
 registered_data_asset = ml_client.data.get(name='titanic', version='1')
@@ -252,7 +258,7 @@ my_job_inputs = {
     )
 }
 
-job = CommandJob(
+job = command(
     code="./src", 
     command='python read_data_asset.py --input_folder ${{inputs.input_data}}',
     inputs=my_job_inputs,
@@ -260,7 +266,7 @@ job = CommandJob(
     compute="cpu-cluster"
 )
 
-#submit the command job
+#submit the command
 returned_job = ml_client.create_or_update(job)
 #get a URL for the status of the job
 returned_job.services["Studio"].endpoint

@@ -11,8 +11,8 @@ Python SDK v2 can be used in various ways – in python scripts, Jupyter Noteboo
 ## Why should I use this feature?
 Azure Machine Learning Python SDK v2 comes with many new features like standalone local jobs, reusable components for pipelines and managed online/batch inferencing. The SDK v2 brings consistency and ease of use across all assets of the platform. The Python SDK v2 offers the following capabilities:
 * Run **Standalone Jobs** - run a discrete ML activity as Job. This job can be run locally or on the cloud. We currently support the following types of jobs:
-  * Command Job - run a command (Python, R, Windows Command, Linux Shell etc.)
-  * Sweep Job - run a hyperparameter sweep on your Command Job
+  * Command - run a command (Python, R, Windows Command, Linux Shell etc.)
+  * Sweep - run a hyperparameter sweep on your Command
 * New and **improved Pipelines**
   * Run a series of jobs stitched into a pipeline (**New**)
   * **Components** - run pipelines using reusable components (**New**)

@@ -62,7 +62,7 @@ on:\n"""
     if enable_scheduled_runs:
       workflow_yaml += f"""  schedule:
     - cron: "0 */8 * * *"\n"""
-    workflow_yaml += f"""  pull_request:
+    workflow_yaml += f"""  pull_request: 
     branches:
       - main
       - sdk-preview\n"""
