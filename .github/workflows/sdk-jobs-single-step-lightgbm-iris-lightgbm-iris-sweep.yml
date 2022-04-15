@@ -44,6 +44,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" lightgbm-iris-sweep.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" lightgbm-iris-sweep.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" lightgbm-iris-sweep.ipynb
-          
-          papermill lightgbm-iris-sweep.ipynb - -k python
+
+          papermill -k python lightgbm-iris-sweep.ipynb lightgbm-iris-sweep.output.ipynb
       working-directory: sdk/jobs/single-step/lightgbm/iris
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: lightgbm-iris-sweep
+        path: sdk/jobs/single-step/lightgbm/iris

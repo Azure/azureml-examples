@@ -19,6 +19,10 @@ EXCLUDED_ASSETS = [
     "mlflow-models",
 ]
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
+BRANCH = 'main' #default - do not change
+BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
+BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
+
 
 # define functions
 def main(args):
@@ -309,8 +313,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
+      uses: actions/checkout@v2\n"""
+    if BRANCH!="main":
+      workflow_yaml += f"""      with:
+        ref: {BRANCH}\n"""    
+    workflow_yaml += f"""    - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
@@ -348,8 +355,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
+      uses: actions/checkout@v2\n"""
+    if BRANCH!="main":
+      workflow_yaml += f"""      with:
+        ref: {BRANCH}\n"""    
+    workflow_yaml += f"""    - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
@@ -387,8 +397,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
+      uses: actions/checkout@v2\n"""
+    if BRANCH!="main":
+      workflow_yaml += f"""      with:
+        ref: {BRANCH}\n"""    
+    workflow_yaml += f"""    - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
@@ -426,8 +439,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
+      uses: actions/checkout@v2\n"""
+    if BRANCH!="main":
+      workflow_yaml += f"""      with:
+        ref: {BRANCH}\n"""    
+    workflow_yaml += f"""    - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}

@@ -31,12 +31,14 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install azure-ml==0.0.60488751 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install mlflow
+pip install azureml-mlflow
 ```
 
 ## Clone examples repository
 ```SDK
-git clone https://github.com/Azure/azureml-examples --branch sdk-preview
+git clone https://github.com/Azure/azureml-examples --branch april-sdk-preview
 cd azureml-examples/sdk
 ```
 
@@ -50,7 +52,7 @@ Test Status is for branch - **_april-sdk-preview_**
 |assets|model|[model](assets/model/model.ipynb)|Create model from local files, cloud files, Runs|[![model](https://github.com/Azure/azureml-examples/actions/workflows/sdk-assets-model-model.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-assets-model-model.yml)|
 |endpoints|batch|[mnist-nonmlflow](endpoints/batch/mnist-nonmlflow.ipynb)|Create and test batch endpoint and deployement|[![mnist-nonmlflow](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-batch-mnist-nonmlflow.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-batch-mnist-nonmlflow.yml)|
 |endpoints|online|[online-endpoints-custom-container](endpoints/online/custom-container/online-endpoints-custom-container.ipynb)|Deploy a custom container as an online endpoint. Use web servers other than the default Python Flask server used by Azure ML without losing the benefits of Azure ML's built-in monitoring, scaling, alerting, and authentication.|[![online-endpoints-custom-container](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-custom-container-online-endpoints-custom-container.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-custom-container-online-endpoints-custom-container.yml)|
-|endpoints|online|[online-endpoints-safe-rollout](endpoints/online/managed/online-endpoints-safe-rollout.ipynb)|Deploy a custom container as an online endpoint. Use web servers other than the default Python Flask server used by Azure ML without losing the benefits of Azure ML's built-in monitoring, scaling, alerting, and authentication.|[![online-endpoints-safe-rollout](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-managed-online-endpoints-safe-rollout.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-managed-online-endpoints-safe-rollout.yml)|
+|endpoints|online|[online-endpoints-safe-rollout](endpoints/online/managed/online-endpoints-safe-rollout.ipynb)|Safely rollout a new version of a web service to production by rolling out the change to a small subset of users/requests before rolling it out completely|[![online-endpoints-safe-rollout](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-managed-online-endpoints-safe-rollout.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-managed-online-endpoints-safe-rollout.yml)|
 |endpoints|online|[online-endpoints-simple-deployment](endpoints/online/managed/online-endpoints-simple-deployment.ipynb)|Use an online endpoint to deploy your model, so you don't have to create and manage the underlying infrastructure|[![online-endpoints-simple-deployment](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-managed-online-endpoints-simple-deployment.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-managed-online-endpoints-simple-deployment.yml)|
 |endpoints|online|[online-endpoints-deploy-mlflow-model](endpoints/online/mlflow/online-endpoints-deploy-mlflow-model.ipynb)|Deploy an mlflow model to an online endpoint. This will be a no-code-deployment. It doesn't require scoring script and environment.|[![online-endpoints-deploy-mlflow-model](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-mlflow-online-endpoints-deploy-mlflow-model.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-mlflow-online-endpoints-deploy-mlflow-model.yml)|
 |endpoints|online|[online-inferencing-sample](endpoints/online/sample/online-inferencing-sample.ipynb)|Create and test online endpoint and deployments|[![online-inferencing-sample](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-sample-online-inferencing-sample.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-sample-online-inferencing-sample.yml)|

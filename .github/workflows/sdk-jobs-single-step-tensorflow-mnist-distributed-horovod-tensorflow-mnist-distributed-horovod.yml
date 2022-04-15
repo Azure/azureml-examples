@@ -44,6 +44,12 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" tensorflow-mnist-distributed-horovod.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" tensorflow-mnist-distributed-horovod.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" tensorflow-mnist-distributed-horovod.ipynb
-          
-          papermill tensorflow-mnist-distributed-horovod.ipynb - -k python
+
+          papermill -k python tensorflow-mnist-distributed-horovod.ipynb tensorflow-mnist-distributed-horovod.output.ipynb
       working-directory: sdk/jobs/single-step/tensorflow/mnist-distributed-horovod
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: tensorflow-mnist-distributed-horovod
+        path: sdk/jobs/single-step/tensorflow/mnist-distributed-horovod
