@@ -7,12 +7,12 @@ description: Basic Pipeline Job with 3 Hello World components
 compute: azureml:cpu-cluster
 
 jobs:
-  componenta:
+  component_a:
     type: command
     component: file:./componentA.yml
-  componentb:
+  component_b:
     type: command
     component: file:./componentB.yml
-  componentc:
+  component_c:
     type: command
     component: file:./componentC.yml
