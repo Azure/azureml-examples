@@ -4,4 +4,5 @@ transformations:
   - read_delimited: 
       delimiter: ',' 
       encoding: 'ascii' 
-      empty_as_string: false 
+      empty_as_string: false
+      header: from_first_file
