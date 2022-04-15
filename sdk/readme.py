@@ -62,7 +62,7 @@ on:\n"""
     if enable_scheduled_runs:
       workflow_yaml += f"""  schedule:
     - cron: "0 */8 * * *"\n"""
-    workflow_yaml += f"""  pull_request: 
+    workflow_yaml += f"""  pull_request:
     branches:
       - main
       - sdk-preview\n"""
@@ -102,10 +102,10 @@ jobs:
       run: |"""
     
     if is_pipeline_notebook:
-      # pipeline-job uses differemt cred
+      # pipeline-job uses different cred
       cred_replace = f"""
           mkdir ../../.azureml
-          echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}}' > ../../.azureml/config.json 
+          echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@dsl.pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:
