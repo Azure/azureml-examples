@@ -59,10 +59,7 @@ def write_workflows(notebooks):
 
 def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
     is_pipeline_notebook = ( "jobs-pipelines" in classification) or ("assets-component" in classification)
-    if is_pipeline_notebook:
-      creds = "${{secrets.AZ_AE_CREDS}}"
-    else:
-      creds = "${{secrets.AZ_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
     if ENABLE_MANUAL_CALLING:
