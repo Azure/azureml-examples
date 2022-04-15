@@ -16,28 +16,28 @@ outputs:
     mode: rw_mount
 
 jobs:
-  componentA:
+  componenta:
     type: command
     component: file:./componentA.yml
     inputs:
-      componentA_input: ${{parent.inputs.pipeline_sample_input_data}}
+      componenta_input: ${{parent.inputs.pipeline_sample_input_data}}
     outputs:
-      componentA_output: 
+      componenta_output: 
         mode: rw_mount
-  componentB:
+  componentb:
     type: command
     component: file:./componentB.yml
     inputs:
-      componentB_input: ${{parent.jobs.componentA.outputs.componentA_output}}
+      componentb_input: ${{parent.jobs.componenta.outputs.componenta_output}}
     outputs:
-      componentB_output: 
+      componentb_output: 
         mode: rw_mount
-  componentC:
+  componentc:
     type: command
     component: file:./componentC.yml
     inputs:
-      componentC_input: ${{parent.jobs.componentB.outputs.componentB_output}}
+      componentc_input: ${{parent.jobs.componentb.outputs.componentb_output}}
     outputs:
-      componentC_output: ${{parent.outputs.final_pipeline_output}}
+      componentc_output: ${{parent.outputs.final_pipeline_output}}
       #  mode: upload
 
