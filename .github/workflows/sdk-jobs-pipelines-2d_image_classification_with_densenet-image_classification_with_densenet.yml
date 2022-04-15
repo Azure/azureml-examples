@@ -12,7 +12,7 @@ on:
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classification_with_densenet.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:

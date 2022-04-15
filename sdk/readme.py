@@ -73,7 +73,7 @@ on:\n"""
     workflow_yaml += f"""    paths:
       - sdk/**
       - .github/workflows/sdk-{classification}-{name}.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -85,7 +85,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
