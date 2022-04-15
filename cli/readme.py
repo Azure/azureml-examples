@@ -314,9 +314,9 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2\n"""
-    if BRANCH!="main":
-      workflow_yaml += f"""      with:
-        ref: {BRANCH}\n"""    
+    # if BRANCH!="main":
+    #   workflow_yaml += f"""      with:
+    #     ref: {BRANCH}\n"""    
     workflow_yaml += f"""    - name: azure login
       uses: azure/login@v1
       with:
