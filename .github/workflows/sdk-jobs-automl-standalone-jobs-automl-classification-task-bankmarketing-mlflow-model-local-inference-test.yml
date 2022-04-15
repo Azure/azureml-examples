@@ -18,8 +18,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: april-sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -43,7 +41,7 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" mlflow-model-local-inference-test.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" mlflow-model-local-inference-test.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" mlflow-model-local-inference-test.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" mlflow-model-local-inference-test.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" mlflow-model-local-inference-test.ipynb
 
           papermill -k python -p compute_name automl-cpu-cluster mlflow-model-local-inference-test.ipynb mlflow-model-local-inference-test.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing

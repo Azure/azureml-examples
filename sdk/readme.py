@@ -79,11 +79,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2\n"""
-    if BRANCH!="main":
-      workflow_yaml += f"""      with:
-        ref: {BRANCH}\n"""    
-    workflow_yaml += f"""    - name: setup python
+      uses: actions/checkout@v2
+    - name: setup python
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
@@ -116,7 +113,7 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" {name}.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" {name}.ipynb\n"""
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb\n"""
     workflow_yaml += cred_replace
 
     if name == "workspace":
