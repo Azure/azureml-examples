@@ -72,6 +72,9 @@ export DEPLOYMENT_NAME=blue
 export PROFILING_TOOL=wrk
 export PROFILER_COMPUTE_NAME=profilingTest # the compute name for hosting the profiler
 export PROFILER_COMPUTE_SIZE=Standard_F4s_v2 # the compute size for hosting the profiler
+export THREAD=1
+export CONNECTIONS=1
+export DURATION=300s
 
 # <create_endpoint>
 echo "Creating Endpoint $ENDPOINT_NAME ..."
