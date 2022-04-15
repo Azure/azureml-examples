@@ -6,11 +6,11 @@ display_name: componentC
 version: 1
 
 inputs:
-  component_b_input:
+  component_c_input:
     type: uri_folder
 
 outputs:
-  component_b_output:
+  component_c_output:
     type: uri_folder
 
 code: ./componentC_src
