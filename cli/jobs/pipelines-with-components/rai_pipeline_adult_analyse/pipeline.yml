@@ -22,7 +22,7 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  train-model-job:
+  train_model_job:
     type: command
     component: file:./components/component_train_logreg.yaml
     inputs:
@@ -30,14 +30,14 @@ jobs:
       target_column_name: ${{parent.inputs.target_column_name}}
 
 
-  register-model-job:
+  register_model_job:
     type: command
     component: file:./components/component_register_model.yaml
     inputs:
       model_input_path: ${{parent.jobs.train-model-job.outputs.model_output}}
       model_base_name: component_registered_lr_01
 
-  create-rai-job:
+  create_rai_job:
     type: command
     component: file:./components/component_rai_insights.yaml
     inputs:

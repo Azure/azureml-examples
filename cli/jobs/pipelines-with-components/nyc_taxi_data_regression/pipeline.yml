@@ -26,7 +26,7 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  prep-job:
+  prep_job:
     type: command
     component: file:./prep.yml
     inputs:
@@ -34,7 +34,7 @@ jobs:
     outputs:
       prep_data: 
 
-  transform-job:
+  transform_job:
     type: command
     component: file:./transform.yml
     inputs:
@@ -42,7 +42,7 @@ jobs:
     outputs:
       transformed_data: 
 
-  train-job:
+  train_job:
     type: command
     component: file:./train.yml
     inputs:
@@ -51,7 +51,7 @@ jobs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
       test_data: 
   
-  predict-job:
+  predict_job:
     type: command
     component: file:./predict.yml
     inputs:
@@ -60,7 +60,7 @@ jobs:
     outputs:
       predictions: ${{parent.outputs.pipeline_job_predictions}}
 
-  score-job:
+  score_job:
     type: command
     component: file:./score.yml
     inputs:

@@ -19,7 +19,7 @@ outputs:
     mode: upload
 
 jobs:
-  train-job:
+  train_job:
     type: command
     compute: azureml:cpu-cluster
     component: file:./train.yml
@@ -31,7 +31,7 @@ jobs:
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   
-  score-job:
+  score_job:
     type: command
     component: file:./score.yml
     compute: azureml:cpu-cluster
@@ -44,7 +44,7 @@ jobs:
       score_output: 
         mode: upload
 
-  evaluate-job:
+  evaluate_job:
     type: command
     component: file:./eval.yml
     compute: azureml:cpu-cluster

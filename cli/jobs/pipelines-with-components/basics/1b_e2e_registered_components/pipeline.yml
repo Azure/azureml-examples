@@ -28,7 +28,7 @@ outputs:
 compute: azureml:cpu-cluster
 
 jobs:
-  train-job:
+  train_job:
     type: command
     component: azureml:my_train@latest
     inputs:
@@ -39,7 +39,7 @@ jobs:
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   
-  score-job:
+  score_job:
     type: command
     component: azureml:my_score@latest
     inputs:
@@ -48,7 +48,7 @@ jobs:
     outputs:
       score_output: ${{parent.outputs.pipeline_job_scored_data}}
 
-  evaluate-job:
+  evaluate_job:
     type: command
     component: azureml:my_eval@latest
     inputs:

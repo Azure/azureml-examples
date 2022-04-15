@@ -7,7 +7,7 @@ display_name: nyc-taxi-pipeline-example
 experiment_name: nyc-taxi-pipeline-example
 jobs:
 
-  prep-job:
+  prep_job:
     type: command
     inputs:
       raw_data: 
@@ -24,7 +24,7 @@ jobs:
       --raw_data ${{inputs.raw_data}} 
       --prep_data ${{outputs.prep_data}}
   
-  transform-job:
+  transform_job:
     type: command
     inputs: 
       clean_data: ${{parent.jobs.prep-job.outputs.prep_data}}
@@ -39,7 +39,7 @@ jobs:
       --clean_data ${{inputs.clean_data}} 
       --transformed_data ${{outputs.transformed_data}}
   
-  train-job:
+  train_job:
     type: command
     inputs:
       training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
@@ -57,7 +57,7 @@ jobs:
       --test_data ${{outputs.test_data}} 
       --model_output ${{outputs.model_output}}
   
-  predict-job:
+  predict_job:
     type: command
     inputs:
       model_input: ${{parent.jobs.train-job.outputs.model_output}}
@@ -74,7 +74,7 @@ jobs:
       --test_data ${{inputs.test_data}}
       --predictions ${{outputs.predictions}}
   
-  score-job:
+  score_job:
     type: command
     inputs:
       predictions: ${{parent.jobs.predict-job.outputs.predictions}}
