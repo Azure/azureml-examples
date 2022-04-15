@@ -1,5 +1,6 @@
 job=$1
-pip freeze
+ss=$(pip freeze)
+echo $ss
 if [[ "$job" =~ ^jobs/pipelines-with-components/.* ]]
 then
   run_id=$(az ml job create -f $job --query name -o tsv --set settings.force_rerun=True)
