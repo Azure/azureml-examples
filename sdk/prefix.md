@@ -31,12 +31,14 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip install azure-ml==0.0.139 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install azure-ml==0.0.60488751 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install mlflow
+pip install azureml-mlflow
 ```
 
 ## Clone examples repository
 ```SDK
-git clone https://github.com/Azure/azureml-examples --branch sdk-preview
+git clone https://github.com/Azure/azureml-examples --branch april-sdk-preview
 cd azureml-examples/sdk
 ```
 
