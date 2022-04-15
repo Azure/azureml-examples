@@ -1,0 +1,9 @@
+name: mltable_env
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - https://azuremlsdktestpypi.blob.core.windows.net/repo/Create-Dev-Index/60608745/mltable-0.1.0.60608745-py3-none-any.whl?sv=2018-03-28&sr=b&sig=%2FTKVyZIIOQSw%2Fz5rgutVwnJj%2B52irjaQlEDOkqeUVcE%3D&st=2022-04-12T18%3A30%3A42Z&se=2023-04-12T18%3A30%3A42Z&sp=rl
+    - https://dataprepdownloads.azureedge.net/install/wheels/test-M3ME5B1GMEM3SW0W/60600378/ship/azureml_dataprep-3.0.0.dev0+83b5002-py3-none-any.whl
+    - https://dataprepdownloads.azureedge.net/install/wheels/test-M3ME5B1GMEM3SW0W/60600378/ship/azureml_dataprep_rslex-2.4.0.dev0+83b5002-cp37-cp37m-manylinux2010_x86_64.whl
+    - pandas
