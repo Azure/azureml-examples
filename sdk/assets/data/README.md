@@ -328,7 +328,13 @@ In this repo a [working with mltable notebook](./working_with_mltable.ipynb) is 
 
 ## Consuming V1 dataset assets in V2
 
-Registered V1 dataset can be consumed in an Azure ML V2 job by using the following definition in the `inputs` section of your job yaml: 
+Whilst full backward compatibility is provided (see below), if your intention with your V1 `FileDataset` assets was to have a single path to a file or folder with no loading transforms (sample, take, filter, etc) then we recommend that you re-create them as a `uri_file`/`uri_folder` using the V2 CLI:
+
+```cli
+az ml data create --file my-data-asset.yaml
+```
+
+Registered V1 `FileDataset` and `TabularDataset` data assets can be consumed in an Azure ML V2 job using `mltable`. This is achieve using the following definition in the `inputs` section of your job yaml: 
 
 ```yaml
 inputs:
