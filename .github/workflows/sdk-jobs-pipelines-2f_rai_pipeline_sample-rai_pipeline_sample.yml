@@ -40,7 +40,7 @@ jobs:
     - name: run jobs/pipelines/2f_rai_pipeline_sample/rai_pipeline_sample.ipynb
       run: |
           mkdir ../../.azureml
-          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" rai_pipeline_sample.ipynb
           sed -i "s/@dsl.pipeline(/&force_rerun=True,/" rai_pipeline_sample.ipynb
           papermill -k python rai_pipeline_sample.ipynb rai_pipeline_sample.output.ipynb
