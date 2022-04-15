@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-basics-4e_data_asset_input-pipeline
+name: cli-jobs-pipelines-with-components-basics-4d_data_input-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - sdk-preview
       - april-sdk-preview
     paths:
-      - cli/jobs/pipelines-with-components/basics/4e_data_asset_input/**
-      - .github/workflows/cli-jobs-pipelines-with-components-basics-4e_data_asset_input-pipeline.yml
+      - cli/jobs/pipelines-with-components/basics/4d_data_input/**
+      - .github/workflows/cli-jobs-pipelines-with-components-basics-4d_data_input-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -28,4 +28,4 @@ jobs:
       continue-on-error: true
     - name: run job
       run: bash -x ../../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines-with-components/basics/4e_data_asset_input
+      working-directory: cli/jobs/pipelines-with-components/basics/4d_data_input

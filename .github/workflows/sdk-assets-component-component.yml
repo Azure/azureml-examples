@@ -28,7 +28,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -40,7 +40,7 @@ jobs:
     - name: run assets/component/component.ipynb
       run: |
           mkdir ../../.azureml
-          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "main"}' > ../../.azureml/config.json 
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" component.ipynb
           sed -i "s/@dsl.pipeline(/&force_rerun=True,/" component.ipynb
           papermill -k python component.ipynb component.output.ipynb

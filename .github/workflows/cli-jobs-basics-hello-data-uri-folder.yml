@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-basics-4d_dataset_input-pipeline
+name: cli-jobs-basics-hello-data-uri-folder
 on:
   workflow_dispatch:
   schedule:
@@ -9,8 +9,8 @@ on:
       - sdk-preview
       - april-sdk-preview
     paths:
-      - cli/jobs/pipelines-with-components/basics/4d_dataset_input/**
-      - .github/workflows/cli-jobs-pipelines-with-components-basics-4d_dataset_input-pipeline.yml
+      - cli/jobs/basics/**
+      - .github/workflows/cli-jobs-basics-hello-data-uri-folder.yml
       - cli/setup.sh
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines-with-components/basics/4d_dataset_input
+      run: bash -x ../../run-job.sh hello-data-uri-folder.yml
+      working-directory: cli/jobs/basics

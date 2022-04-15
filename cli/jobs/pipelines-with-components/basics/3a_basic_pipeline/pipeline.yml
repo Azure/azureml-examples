@@ -4,7 +4,9 @@ type: pipeline
 display_name: 3a_basic_pipeline
 description: Basic Pipeline Job with 3 Hello World components
 
-compute: azureml:cpu-cluster
+settings:
+  default_datestore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
 
 jobs:
   component_a:

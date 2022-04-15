@@ -7,10 +7,6 @@ type: pipeline
 
 inputs:
   target_column_name: income
-  my_training_data:
-    type: uri_file
-    path: azureml:adult_train_pq:1
-    mode: download
   my_test_data:
     type: uri_file
     path: azureml:adult_test_pq:1
@@ -26,7 +22,10 @@ jobs:
     type: command
     component: file:./components/component_train_logreg.yaml
     inputs:
-      training_data: ${{parent.inputs.my_training_data}}
+      training_data: 
+        type: uri_file
+        path: azureml:adult_train_pq:1
+        mode: download      
       target_column_name: ${{parent.inputs.target_column_name}}
 
 
@@ -44,7 +43,10 @@ jobs:
       title: With just the OSS
       task_type: classification
       model_info_path: ${{parent.jobs.register_model_job.outputs.model_info_output_path}}
-      train_dataset: ${{parent.inputs.my_training_data}}
+      train_dataset: 
+        type: uri_file
+        path: azureml:adult_train_pq:1
+        mode: download      
       test_dataset: ${{parent.inputs.my_test_data}}
       target_column_name: ${{parent.inputs.target_column_name}}
       categorical_column_names: '["Race", "Sex", "Workclass", "Marital Status", "Country", "Occupation"]'

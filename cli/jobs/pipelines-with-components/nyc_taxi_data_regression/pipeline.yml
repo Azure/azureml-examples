@@ -4,10 +4,6 @@ display_name: nyc_taxi_data_regression
 description: Train regression model based on nyc taxi dataset
 
 # <inputs_and_outputs>
-inputs:
-  pipeline_job_input: #using local data, will crate an anonymous data asset
-    type: uri_folder
-    path: ./data
 
 outputs: 
   pipeline_job_trained_model:
@@ -30,7 +26,9 @@ jobs:
     type: command
     component: file:./prep.yml
     inputs:
-      raw_data: ${{parent.inputs.pipeline_job_input}}
+      raw_data: #using local data, will crate an anonymous data asset
+        type: uri_folder
+        path: ./data
     outputs:
       prep_data: 
 
