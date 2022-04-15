@@ -9,12 +9,12 @@ settings:
   default_compute: azureml:cpu-cluster
 
 jobs:
-  componentA:
+  component_a:
     type: command
     component: file:./componentA.yml
-  componentB:
+  component_b:
     type: command
     component: file:./componentB.yml
-  componentC:
+  component_c:
     type: command
     component: file:./componentC.yml
