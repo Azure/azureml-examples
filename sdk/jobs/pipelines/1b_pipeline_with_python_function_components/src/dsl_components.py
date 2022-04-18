@@ -2,7 +2,7 @@ from pathlib import Path
 from random import randint
 from uuid import uuid4
 
-from azure.ml import dsl, ArtifactInput, ArtifactOutput
+from azure.ml import dsl, Input, Output
 from azure.ml.entities import Environment
 
 # init customer environment with conda YAML
@@ -26,9 +26,9 @@ conda_env = Environment(
     # code='.'
 )
 def train_model(
-    training_data: ArtifactInput,
+    training_data: Input,
     max_epochs: int,
-    model_output: ArtifactOutput,
+    model_output: Output,
     learning_rate=0.02,
 ):
     lines = [
@@ -55,9 +55,9 @@ def train_model(
     environment=conda_env,
 )
 def score_data(
-    model_input: ArtifactInput,
-    test_data: ArtifactInput,
-    score_output: ArtifactOutput,
+    model_input: Input,
+    test_data: Input,
+    score_output: Output,
 ):
 
     lines = [
@@ -87,8 +87,8 @@ def score_data(
     environment=conda_env,
 )
 def eval_model(
-    scoring_result: ArtifactInput,
-    eval_output: ArtifactOutput,
+    scoring_result: Input,
+    eval_output: Output,
 ):
     lines = [
         f"Scoring result path: {scoring_result}",

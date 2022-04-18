@@ -3,6 +3,7 @@ name: train_logistic_regression_for_rai
 display_name: Train LogReg for RAI
 version: 1
 type: command
+is_deterministic: False
 inputs:
   training_data:
     type: uri_file
