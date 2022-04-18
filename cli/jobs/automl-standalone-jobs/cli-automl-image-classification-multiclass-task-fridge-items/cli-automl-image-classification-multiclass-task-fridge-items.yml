@@ -1,4 +1,4 @@
-$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLImageClassificationJob.schema.json
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
 
 type: automl
 

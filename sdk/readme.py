@@ -7,7 +7,12 @@ import argparse
 
 # define constants
 ENABLE_MANUAL_CALLING = True #defines whether the workflow can be invoked or not
-NOT_TESTED_NOTEBOOKS = ["datastore","automl-classification-task-bankmarketing-mlflow"] #cannot automate lets exclude
+NOT_TESTED_NOTEBOOKS = [
+    "datastore",
+    "automl-classification-task-bankmarketing-mlflow",
+    "automl-forecasting-task-energy-demand-advanced-mlflow",
+    "mlflow-model-local-inference-test"
+] #cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
 #define branch where we need this
 #use if running on a release candidate, else make it empty
@@ -73,22 +78,19 @@ on:\n"""
     workflow_yaml += f"""    paths:
       - sdk/**
       - .github/workflows/sdk-{classification}-{name}.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2\n"""
-    # if BRANCH!="main":
-    #   workflow_yaml += f"""      with:
-    #     ref: {BRANCH}\n"""    
-    workflow_yaml += f"""    - name: setup python
+      uses: actions/checkout@v2
+    - name: setup python
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -105,7 +107,7 @@ jobs:
       run: |"""
     
     if is_pipeline_notebook:
-      # pipeline-job uses differemt cred
+      # pipeline-job uses different cred
       cred_replace = f"""
           mkdir ../../.azureml
           echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}}' > ../../.azureml/config.json 
@@ -116,7 +118,7 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" {name}.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" {name}.ipynb\n"""
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb\n"""
     workflow_yaml += cred_replace
 
     if name == "workspace":

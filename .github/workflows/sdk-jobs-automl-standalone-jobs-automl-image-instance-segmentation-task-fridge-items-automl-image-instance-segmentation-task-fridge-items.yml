@@ -11,7 +11,7 @@ on:
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-instance-segmentation-task-fridge-items-automl-image-instance-segmentation-task-fridge-items.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -41,7 +41,7 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-image-instance-segmentation-task-fridge-items.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-image-instance-segmentation-task-fridge-items.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-image-instance-segmentation-task-fridge-items.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" automl-image-instance-segmentation-task-fridge-items.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-image-instance-segmentation-task-fridge-items.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-image-instance-segmentation-task-fridge-items.ipynb automl-image-instance-segmentation-task-fridge-items.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items

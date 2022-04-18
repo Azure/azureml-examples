@@ -1,5 +1,4 @@
-$schema: https://sasumcentralus1809224865.blob.core.windows.net/automl/autoMLTextNerJob.schema.json
-# Need final URL for SCHEMAS
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
 
 type: automl
 experiment_name: dpv2-cli-text-ner
