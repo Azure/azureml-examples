@@ -17,6 +17,12 @@ parser <- add_option(parser, "--data_folder",
                      default = "./data", 
                      help="data folder")
 
+parser <- add_option(parser, "--lr",
+                     type="double", 
+                     action="store", 
+                     default = 0.01, 
+                     help="data folder")
+
 args <- parse_args(parser)
 
 print("data folder...\n")
