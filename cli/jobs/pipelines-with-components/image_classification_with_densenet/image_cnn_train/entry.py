@@ -9,7 +9,7 @@ import functools
 from enum import Enum
 from azure.ml import dsl
 from azure.ml.dsl._component import ComponentExecutor
-from azure.ml.dsl._types import DataInput, NumberInput
+from azure.ml.dsl._types import URIFolderInput, NumberInput
 
 
 class Data_BackendEnum(Enum):
@@ -82,8 +82,8 @@ def convert_image_directory_to_specific_format(
     name="imagecnn_train", description="imagecnn_train main function"
 )
 def main(
-    train_data: DataInput(description="path to train dataset") = None,
-    val_data: DataInput(description="path to valid dataset") = None,
+    train_data: URIFolderInput(description="path to train dataset") = None,
+    val_data: URIFolderInput(description="path to valid dataset") = None,
     data_backend="dali-cpu",
     arch="resnet50",
     model_config="classic",
