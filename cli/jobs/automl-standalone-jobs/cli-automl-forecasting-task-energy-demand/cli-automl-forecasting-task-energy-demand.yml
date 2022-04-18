@@ -49,8 +49,8 @@ forecasting:
 
 training:
   enable_model_explainability: true
-# BUG with enums/values: Bug 1728040
-# allowed_models:
-#   - TBD
-# blocked_models:
-#   - ExtremeRandomTrees
+
+allowed_training_algorithms:
+  - tcn_forecaster
+blocked_training_algorithms:
+  - extreme_random_trees
