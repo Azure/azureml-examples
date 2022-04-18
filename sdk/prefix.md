@@ -13,6 +13,17 @@ Azure Machine Learning Python SDK v2 comes with many new features like standalon
 * Run **Standalone Jobs** - run a discrete ML activity as Job. This job can be run locally or on the cloud. We currently support the following types of jobs:
   * Command - run a command (Python, R, Windows Command, Linux Shell etc.)
   * Sweep - run a hyperparameter sweep on your Command
+  * [AutoML - run AutoML trainings including the following ml-tasks](./jobs/automl-standalone-jobs):
+       - Classification (Tabular data)
+       - Regression (Tabular data)
+       - Time Series Forecasting (Tabular data)
+       - Image Classification (Multi-class)
+       - Image Classification (Multi-label)
+       - Image Object Detection
+       - Image Instance Segmentation
+       - NLP Text Classification (Multi-class)
+       - NLP Text Classification (Multi-label)
+       - NLP Text Named Entity Recognition (NER)
 * New and **improved Pipelines**
   * Run a series of jobs stitched into a pipeline (**New**)
   * **Components** - run pipelines using reusable components (**New**)
