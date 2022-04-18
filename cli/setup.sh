@@ -6,8 +6,7 @@
 az extension remove -n ml
 
 # Use a daily build
-# az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.60868327-py3-none-any.whl --yes
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/61025031/ml-0.0.61025031-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/61025031 --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.61029422-py3-none-any.whl --yes
  
 # <set_variables>
 GROUP="azureml-examples"
