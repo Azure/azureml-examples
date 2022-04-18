@@ -5,7 +5,7 @@ from azure.ml import dsl, Input, Output
     name="eval_model",
     display_name="Eval Model",
     description="A dummy eval component defined by dsl component.",
-    version="0.0.6",
+    version="0.0.7",
 )
 def eval_model(
     scoring_result: Input,
