@@ -11,31 +11,31 @@ outputs:
     mode: rw_mount
 
 jobs:
-  componentA:
+  component_a:
     type: command
     component: file:./componentA.yml
     inputs:
-      componentA_input: 
+      component_a_input: 
         type: uri_folder
         path: ./data
 
     outputs:
-      componentA_output: 
+      component_a_output: 
         mode: rw_mount
-  componentB:
+  component_b:
     type: command
     component: file:./componentB.yml
     inputs:
-      componentB_input: ${{parent.jobs.componentA.outputs.componentA_output}}
+      component_b_input: ${{parent.jobs.component_a.outputs.component_a_output}}
     outputs:
-      componentB_output: 
+      component_b_output: 
         mode: rw_mount
-  componentC:
+  component_c:
     type: command
     component: file:./componentC.yml
     inputs:
-      componentC_input: ${{parent.jobs.componentB.outputs.componentB_output}}
+      component_c_input: ${{parent.jobs.component_b.outputs.component_b_output}}
     outputs:
-      componentC_output: ${{parent.outputs.final_pipeline_output}}
+      component_c_output: ${{parent.outputs.final_pipeline_output}}
       #  mode: upload
 

@@ -59,10 +59,6 @@ code: ./rai_analyse/
 
 environment: azureml:AML-RAI-Environment:1
 
-# For debugging
-environment_variables:
-   AZUREML_COMPUTE_USE_COMMON_RUNTIME: true
-
 command: >-
   python create_causal.py
   --rai_insights_dashboard ${{inputs.rai_insights_dashboard}}
