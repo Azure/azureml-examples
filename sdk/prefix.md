@@ -17,13 +17,13 @@ Azure Machine Learning Python SDK v2 comes with many new features like standalon
        - Classification (Tabular data)
        - Regression (Tabular data)
        - Time Series Forecasting (Tabular data)
-       - Image Classification (Multi-class)
-       - Image Classification (Multi-label)
-       - Image Object Detection
-       - Image Instance Segmentation
-       - NLP Text Classification (Multi-class)
-       - NLP Text Classification (Multi-label)
-       - NLP Text Named Entity Recognition (NER)
+       - Image Classification (Multi-class) (**New**)
+       - Image Classification (Multi-label) (**New**)
+       - Image Object Detection (**New**)
+       - Image Instance Segmentation (**New**)
+       - NLP Text Classification (Multi-class) (**New**)
+       - NLP Text Classification (Multi-label) (**New**)
+       - NLP Text Named Entity Recognition (NER) (**New**)
 * New and **improved Pipelines**
   * Run a series of jobs stitched into a pipeline (**New**)
   * **Components** - run pipelines using reusable components (**New**)
