@@ -27,7 +27,6 @@ az account set --subscription $SUBSCRIPTION
 az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
 # </configure_defaults> 
 
-# <clone_sample> 
 # Clone the samples repo. This is needed to build the image and create the managed online deployment.
+# Note: We will hardcode the below line in the docs (without GIT_BRANCH) so we don't need to explain the logic to the user.
 sudo mkdir -p /home/samples; sudo git clone -b $GIT_BRANCH --depth 1 https://github.com/Azure/azureml-examples.git /home/samples/azureml-examples -q
-# </clone_sample> 
