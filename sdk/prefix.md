@@ -42,9 +42,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip install azure-ml==0.0.60488751 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
-pip install mlflow
-pip install azureml-mlflow
+pip install azure-ml==0.0.61119066 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
 ```
 
 ## Clone examples repository
