@@ -79,8 +79,8 @@ def convert_image_directory_to_specific_format(
 
 @dsl.command_component(name="imagecnn_train", description="imagecnn_train main function")
 def main(
-    train_data: Input(description='path to train dataset') = None,
-    val_data: Input(description='path to valid dataset') = None,
+    train_data: Input(type="uri_folder", description='path to train dataset') = None,
+    val_data: Input(type="uri_folder", description='path to valid dataset') = None,
     data_backend='dali-cpu',
     arch='resnet50',
     model_config='classic',

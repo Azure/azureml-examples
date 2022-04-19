@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: hello_pipeline_customize_output_folder
 jobs:
   hello_world:
     command: echo "hello" && echo "world" > ${{outputs.output}}/hello_world-folder.txt
@@ -8,4 +9,4 @@ jobs:
     outputs:
       output:
         type: uri_folder
-        path: azureml://datastores/workspaceblobstore/paths/
+        path: azureml://datastores/workspaceblobstore/paths/${{name}}/
