@@ -150,12 +150,12 @@ def get_freq_from_model(fitted_model):
 
 def get_model_filename(run, model_name, model_path):
     model = Model(run.experiment.workspace, model_name)
-    if model.tags.get("algorithm") == "TCNForecaster":
-        return "model.pt"
-    elif os.path.exists(os.path.join("model.pkl")):
-        return "model.pkl"
-    else:
-        return "model.pt"
+    is_pkl = True
+    if model.tags.get("algorithm") == "TCNForecaster" or os.path.exists(
+        os.path.join(model_path, "model.pt")
+    ):
+        is_pkl = False
+    return "model.pkl" if is_pkl else "model.pt"
 
 
 if __name__ == "__main__":
