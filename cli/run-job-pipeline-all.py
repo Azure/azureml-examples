@@ -29,7 +29,7 @@ class Job:
     
     @property
     def pipeline_path_to_write(self):
-        return self.pipeline_path.replace("\\", "/")
+        return "./" + self.pipeline_path.replace("\\", "/")
 
     @property
     def name(self):
@@ -150,7 +150,8 @@ def main():
         random_value = None
 
     # get list of jobs
-    jobs = list(map(lambda x: Job(x), get_all_files(os.path.join(os.path.dirname(__file__), "jobs", "pipeline"), ["pipeline.yml", "pipeline.yaml"])))
+    jobs = list(map(lambda x: Job(x), get_all_files(os.path.join(os.path.dirname(__file__), "jobs", "basics"), ["hello-pipeline*.yml"])))
+    jobs.extend(map(lambda x: Job(x), get_all_files(os.path.join(os.path.dirname(__file__), "jobs", "pipeline"), ["pipeline.yml", "pipeline.yaml"])))
     print(len(jobs), "pipelines found")
     job_set = JobSet(jobs, random_value)
 

@@ -1,13 +1,14 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: hello_pipeline_settings
 
 settings:
   default_datestore: azureml:workspaceblobstore
   default_compute: azureml:cpu-cluster
 jobs:
   hello_job:
-    command: echo "hello"
+    command: echo 202204190 & echo "hello"
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
   world_job:
-    command: echo "world"
+    command: echo 202204190 & echo "hello"
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23   
