@@ -23,12 +23,25 @@ data:
 limits:
   timeout_minutes: 180
   max_trials: 10
-  max_concurrent_trials: 5
+  max_concurrent_trials: 2
   trial_timeout_minutes: 20
   enable_early_termination: true
 
+# This is example of custom featurization
+# If you don't have this section, AutoML will default to automatic featurization
 featurization:
-  mode: auto
+  mode: custom
+  blocked_transformers: [LabelEncoder]
+  column_name_and_types:
+    CHMIN: Categorical
+  transformer_params:
+    Imputer:
+    - fields: ["CACH"]
+      parameters:
+        strategy: most_frequent
+    - fields: ["PRP"]
+      parameters:
+        strategy: most_frequent
 
 training:
   enable_model_explainability: true
