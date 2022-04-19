@@ -77,14 +77,15 @@ print(trainX.columns)
 
 # Train a Linear Regression Model with the train set
 with mlflow.start_run() as run:
-    import shutil
     model = LinearRegression().fit(trainX, trainy)
     print(model.score(trainX, trainy))
 
-    mlflow.tracking.MlflowClient().download_artifacts(run.info.run_id, "model", "./")
-    if os.path.isdir(args.model_output):
-        shutil.rmtree(args.model_output)
-    shutil.move(os.path.join("./model"), args.model_output)
+    target_artifact = "model"
+    import shutil
+    shutil.rmtree(target_artifact, ignore_errors=True)
+    mlflow.tracking.MlflowClient().download_artifacts(run.info.run_id, target_artifact, "./")
+    from distutils.dir_util import copy_tree
+    copy_tree(target_artifact, args.model_output)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
