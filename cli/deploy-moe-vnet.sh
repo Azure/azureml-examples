@@ -59,12 +59,9 @@ then
 	az vm delete -n $VM_NAME -y
 fi
 
-# create the VM
-az deployment group create --template-file endpoints/online/managed/vnet/setup_vm/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
+# Create the VM. In the docs we will provide instructions to create a VM using az vm create -n $VM_NAME
+az deployment group create --name $VM_NAME-$ENDPOINT_NAME --template-file endpoints/online/managed/vnet/setup_vm/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
 
-## In the docs we will provide instructions to create a VM using az vm create -n $VM_NAME
-
-# command in script: az deployment group create --template-file endpoints/online/managed/vnet/setup/vm_main.bicep #identity name is hardcoded uai-identity 
 az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
 
 # build image
@@ -81,6 +78,9 @@ if [[ $CMD_OUTPUT =~ "11055" ]]; then
    echo "Scoring works!"
 else
    echo "Error in scoring"
+   # delete the VM before exiting with error
+   az vm delete -n $VM_NAME -y --no-wait
+   # exit with error
    exit 1
 fi
 
