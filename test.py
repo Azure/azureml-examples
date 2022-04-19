@@ -1,7 +1,8 @@
 # import required libraries
 from azure.ml import MLClient, dsl
 from azure.ml._constants import AssetTypes
-from azure.ml.entities import JobInput, JobOutput, load_component
+from azure.ml.entities import load_component
+from azure.ml import Input
 # import parallel builder function
 from azure.ml.entities import parallel
 
@@ -47,7 +48,7 @@ def parallel_in_pipeline(data):
     
 
 pipeline = parallel_in_pipeline(
-    JobInput(type=AssetTypes.URI_FOLDER, path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv")
+    Input(type=AssetTypes.URI_FOLDER, path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv")
 )
 
 # submit pipeline job
