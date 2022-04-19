@@ -8,6 +8,20 @@ fi
 
 python run-job-pipeline-all.py update $target_version
 
+az ml job create --file ./jobs/basics/hello-pipeline-abc.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/basics/hello-pipeline-customize-output-file.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/basics/hello-pipeline-customize-output-folder.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/basics/hello-pipeline-default-artifacts.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/basics/hello-pipeline-io.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/basics/hello-pipeline-settings.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/basics/hello-pipeline.yml --set experiment_name=cli_samples_v2_$target_version
+
 az ml job create --file ./jobs/pipelines/cifar-10/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
 az ml job create --file ./jobs/pipelines/nyc-taxi/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
