@@ -8,4 +8,4 @@ jobs:
     outputs:
       output:
         type: uri_folder
-        path: azureml://datastores/workspaceblobstore/paths/
+        path: azureml://datastores/workspaceblobstore/paths/${{name}}/
