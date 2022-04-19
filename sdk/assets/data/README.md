@@ -67,7 +67,7 @@ Below we show some common data access patterns that you can use in your *control
 ```python
 from azure.ml import command
 from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 my_job_inputs = {
     "input_data": JobInput(
@@ -96,7 +96,7 @@ returned_job.services["Studio"].endpoint
 ```python
 from azure.ml import command
 from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 # in this example we
 my_job_inputs = {
@@ -125,7 +125,7 @@ returned_job.services["Studio"].endpoint
 ```python
 from azure.ml import command
 from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 # in this example we
 my_job_inputs = {
@@ -154,7 +154,7 @@ returned_job.services["Studio"].endpoint
 ```python
 from azure.ml import command
 from azure.ml.entities import Data, UriReference, JobInput, JobOutput
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 my_job_inputs = {
     "input_data": JobInput(
@@ -190,7 +190,7 @@ returned_job.services["Studio"].endpoint
 ```python
 from azure.ml import command
 from azure.ml.entities import Data, UriReference, JobInput, JobOutput
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 my_job_inputs = {
     "input_data": JobInput(
@@ -225,7 +225,7 @@ returned_job.services["Studio"].endpoint
 
 ```python
 from azure.ml.entities import Data
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 # select one from:
 my_path = 'abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>' # adls gen2
@@ -247,7 +247,7 @@ ml_client.data.create_or_update(my_data)
 ```python
 from azure.ml import command
 from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml._constants import AssetTypes
+from azure.ml.constants import AssetTypes
 
 registered_data_asset = ml_client.data.get(name='titanic', version='1')
 
