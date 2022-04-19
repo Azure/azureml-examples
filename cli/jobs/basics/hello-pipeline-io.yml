@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: hello_pipeline_io
 jobs:
   hello_job:
     command: echo "hello" && echo "world" > ${{outputs.world_output}}/world.txt
