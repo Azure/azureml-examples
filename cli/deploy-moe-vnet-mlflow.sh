@@ -28,7 +28,6 @@ export ENV_DIR_PATH="endpoints/online/managed/vnet/mlflow/environment"
 # </set_env_vars>
 
 export SUFFIX="moevnetdoc" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
-export SUFFIX="mvnet31" #todo: remove
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
@@ -41,7 +40,7 @@ export VM_NAME="moevnet-vm"
 # VNET name and subnet name used during vnet worskapce setup: endpoints/online/managed/vnet/setup_ws/main.bicep
 export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
-export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-vnet-mlflow-`echo $RANDOM`
 
 # Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name when running az vm run-command
 # If running from local machine, change it to your branch name
@@ -77,8 +76,8 @@ az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endp
 # test the endpoint by scoring it
 export CMD_OUTPUT=$(az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/score_endpoint.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH")
 
-# the scoring output for sample request should be [11055.977245525679, 4503.079536107787]. We are validating if part of the number is available in the output (not comparing all the decimals to accomodate rounding discrepencies)
-if [[ $CMD_OUTPUT =~ "11055" ]]; then
+# the scoring output for sample request should be [6141.267272547523, 6407.1333176127255]. We are validating if part of the number is available in the output (not comparing all the decimals to accomodate rounding discrepencies)
+if [[ $CMD_OUTPUT =~ "6141" ]]; then
    echo "Scoring works!"
 else
    echo "Error in scoring"

@@ -38,6 +38,7 @@ path|status|
 [deploy-managed-online-endpoint-mlflow.sh](deploy-managed-online-endpoint-mlflow.sh)|[![deploy-managed-online-endpoint-mlflow](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-managed-online-endpoint-mlflow.yml)
 [deploy-managed-online-endpoint.sh](deploy-managed-online-endpoint.sh)|[![deploy-managed-online-endpoint](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-managed-online-endpoint.yml)
 [deploy-moe-autoscale.sh](deploy-moe-autoscale.sh)|[![deploy-moe-autoscale](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-moe-autoscale/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-moe-autoscale.yml)
+[deploy-moe-vnet-mlflow.sh](deploy-moe-vnet-mlflow.sh)|[![deploy-moe-vnet-mlflow](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-moe-vnet-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-moe-vnet-mlflow.yml)
 [deploy-moe-vnet.sh](deploy-moe-vnet.sh)|[![deploy-moe-vnet](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-moe-vnet/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-moe-vnet.yml)
 [deploy-r.sh](deploy-r.sh)|[![deploy-r](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-r/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-r.yml)
 [deploy-rest.sh](deploy-rest.sh)|[![deploy-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-rest/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-rest.yml)
@@ -185,4 +186,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 - [Documentation](https://docs.microsoft.com/azure/machine-learning)
 - [Private previews](https://github.com/Azure/azureml-previews)
- 
