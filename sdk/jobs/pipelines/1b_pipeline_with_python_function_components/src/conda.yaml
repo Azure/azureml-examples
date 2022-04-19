@@ -9,5 +9,5 @@ dependencies:
   - pip=21.2.2
   - pip:
     # change this when stable version release
-    - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
-    - azure-ml==0.0.59355733
+    - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/60864551
+    - azure-ml==0.0.60864551

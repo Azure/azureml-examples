@@ -2,7 +2,7 @@ import os, json
 from pathlib import Path
 
 
-from azure.ml import dsl, ArtifactInput, ArtifactOutput
+from azure.ml import dsl, Input, Output
 from azure.ml.entities import Environment
 
 conda_env = Environment(
@@ -22,7 +22,7 @@ conda_env = Environment(
     },
 )
 def train_tf(
-    trained_model_output: ArtifactOutput, 
+    trained_model_output: Output, 
     epochs=3,
     steps_per_epoch=70,
     per_worker_batch_size=64,

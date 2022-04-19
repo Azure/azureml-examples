@@ -35,7 +35,7 @@ limits:
   max_concurrent_trials: 5
   trial_timeout_minutes: 20
   enable_early_termination: true
-  exit_score: 0.91
+  exit_score: 0.92
 
 # featurization:
 #  mode: auto
@@ -52,9 +52,10 @@ featurization:
 
 training:
   enable_model_explainability: true
-# BUG with enums/values: Bug 1728040
-# blocked_models:
-#   - multinomial_naive_bayes
-# allowed_models:
-#   - gradient_boosting
-#   - logistic_regression
+  
+#BUG with enums/values: Bug 1728040
+#blocked_training_algorithms:
+#  - multinomial_naive_bayes
+#allowed_training_algorithms:
+#  - gradient_boosting
+#  - logistic_regression

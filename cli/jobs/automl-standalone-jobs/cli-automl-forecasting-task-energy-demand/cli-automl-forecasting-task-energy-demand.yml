@@ -8,7 +8,7 @@ description: A Time-Series Forecasting job using energy demand dataset
 compute: azureml:cpu-cluster
 
 task: forecasting
-# primary_metric: r2_score  # (BUG)
+primary_metric: r2_score
 
 log_verbosity: debug
 
@@ -19,21 +19,16 @@ data:
       path: "./training-mltable-folder"
       type: mltable
   validation:
-    #n_cross_validations: 5
     data:
       path: "./validation-mltable-folder"
       type: mltable
 
 limits:
   timeout_minutes: 180
-  max_trials: 40
+  max_trials: 10
   max_concurrent_trials: 5
   trial_timeout_minutes: 20
   enable_early_termination: true
-  exit_score: 0.91
-
-# featurization:
-#   mode: auto
 
 forecasting:
   time_column_name: "timeStamp"
@@ -49,8 +44,10 @@ forecasting:
 
 training:
   enable_model_explainability: true
-# BUG with enums/values: Bug 1728040
-# allowed_models:
-#   - TBD
-# blocked_models:
-#   - ExtremeRandomTrees
+  enable_stack_ensemble: false
+
+#blocked_training_algorithms:
+#  - prophet
+
+#allowed_training_algorithms:
+#  - auto_arima

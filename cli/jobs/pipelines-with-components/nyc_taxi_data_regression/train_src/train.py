@@ -79,26 +79,7 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-
-# Output the model and test data
-# mlflow model can't write to existed folder, fix is in the mlflow master branch
-# write to local folder first, then copy to output folder
-# mlflow.sklearn.save_model(model, args.model_output)
-import random
-# add random suffix
-random_suffix = str(random.random())
-
-mlflow.sklearn.save_model(model, 'model'+random_suffix)
-
-from distutils.dir_util import copy_tree
-
-# copy subdirectory example
-from_directory = "model"+random_suffix
-to_directory = args.model_output
-
-copy_tree(from_directory, to_directory)
-
-
+mlflow.sklearn.save_model(model, args.model_output)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy

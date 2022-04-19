@@ -13,6 +13,17 @@ Azure Machine Learning Python SDK v2 comes with many new features like standalon
 * Run **Standalone Jobs** - run a discrete ML activity as Job. This job can be run locally or on the cloud. We currently support the following types of jobs:
   * Command - run a command (Python, R, Windows Command, Linux Shell etc.)
   * Sweep - run a hyperparameter sweep on your Command
+  * [AutoML - run AutoML trainings including the following ml-tasks](./jobs/automl-standalone-jobs):
+       - Classification (Tabular data)
+       - Regression (Tabular data)
+       - Time Series Forecasting (Tabular data)
+       - Image Classification (Multi-class) (**New**)
+       - Image Classification (Multi-label) (**New**)
+       - Image Object Detection (**New**)
+       - Image Instance Segmentation (**New**)
+       - NLP Text Classification (Multi-class) (**New**)
+       - NLP Text Classification (Multi-label) (**New**)
+       - NLP Text Named Entity Recognition (NER) (**New**)
 * New and **improved Pipelines**
   * Run a series of jobs stitched into a pipeline (**New**)
   * **Components** - run pipelines using reusable components (**New**)
@@ -31,9 +42,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip install azure-ml==0.0.60488751 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
-pip install mlflow
-pip install azureml-mlflow
+pip install azure-ml==0.0.61119066 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
 ```
 
 ## Clone examples repository
@@ -70,6 +79,7 @@ Test Status is for branch - **_april-sdk-preview_**
 |jobs|automl-standalone-jobs|[automl-nlp-text-classification-multilabel-task-paper-cat](jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-text-classification-multilabel-task-paper-cat.ipynb)|*no description*|[![automl-nlp-text-classification-multilabel-task-paper-cat](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat.yml)|
 |jobs|automl-standalone-jobs|[automl-nlp-text-ner-task](jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task/automl-nlp-text-ner-task.ipynb)|*no description*|[![automl-nlp-text-ner-task](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-automl-nlp-text-ner-task.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-automl-nlp-text-ner-task.yml)|
 |jobs|automl-standalone-jobs|[automl-regression-task-hardware-performance](jobs/automl-standalone-jobs/automl-regression-task-hardware-performance/automl-regression-task-hardware-performance.ipynb)|*no description*|[![automl-regression-task-hardware-performance](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance.yml)|
+|jobs|configuration.ipynb|[configuration](jobs/configuration.ipynb)|Setting up your Azure Machine Learning services workspace and configuring needed resources|[![configuration](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-configuration.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-configuration.yml)|
 |jobs|pipelines|[pipeline_with_components_from_yaml](jobs/pipelines/1a_pipeline_with_components_from_yaml/pipeline_with_components_from_yaml.ipynb)|Create pipeline with CommandComponents from local YAML file|[![pipeline_with_components_from_yaml](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml.yml)|
 |jobs|pipelines|[pipeline_with_python_function_components](jobs/pipelines/1b_pipeline_with_python_function_components/pipeline_with_python_function_components.ipynb)|Create pipeline with dsl.command_component|[![pipeline_with_python_function_components](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-pipelines-1b_pipeline_with_python_function_components-pipeline_with_python_function_components.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-pipelines-1b_pipeline_with_python_function_components-pipeline_with_python_function_components.yml)|
 |jobs|pipelines|[pipeline_with_hyperparameter_sweep](jobs/pipelines/1c_pipeline_with_hyperparameter_sweep/pipeline_with_hyperparameter_sweep.ipynb)|Use sweep (hyperdrive) in pipeline to train mnist model using tensorflow|[![pipeline_with_hyperparameter_sweep](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-pipelines-1c_pipeline_with_hyperparameter_sweep-pipeline_with_hyperparameter_sweep.yml/badge.svg?branch=april-sdk-preview)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-pipelines-1c_pipeline_with_hyperparameter_sweep-pipeline_with_hyperparameter_sweep.yml)|

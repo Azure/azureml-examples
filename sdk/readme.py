@@ -178,9 +178,9 @@ def write_readme(notebooks, folder=None):
     else:
         branch = BRANCH
         # read in prefix.md and suffix.md
-        with open("prefix.md", "r") as f:
+        with open(prefix, "r") as f:
             prefix = f.read()
-        with open("suffix.md", "r") as f:
+        with open(suffix, "r") as f:
             suffix = f.read()
 
         # define markdown tables

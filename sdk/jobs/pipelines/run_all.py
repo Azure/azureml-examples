@@ -59,7 +59,7 @@ def main(args):
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
     with concurrent.futures.ProcessPoolExecutor(max_workers=12) as executor:
         future_to_notebooks = {
-            executor.submit(run_notebook, notebook, args.skip_wait, args.force_rerun, args.dry_run): notebook for notebook in notebooks
+            executor.submit(run_notebook, notebook, args.skip_wait, args.force_rerun, args.dry_run): notebook for notebook in notebooks if "out.ipynb" not in notebook
         }
             
         for future in concurrent.futures.as_completed(future_to_notebooks):

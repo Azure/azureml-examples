@@ -1,133 +1,71 @@
-target_version="$RANDOM"
 
-az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8
-az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12
+if [ -z "$1" ]
+  then
+    target_version="$RANDOM"
+  else
+    target_version=$1
+fi
 
-python run-job-pipeline-all.py update
+python run-job-pipeline-all.py update $target_version
 
-cd assets/data
-pwd
-az ml data create --file local-folder.yml --set version=$target_version
-cd ../../
+az ml job create --file ./jobs/basics/hello-pipeline-abc.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/1a_e2e_local_components
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/basics/hello-pipeline-customize-output-file.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/1b_e2e_registered_components
-pwd
-az ml component create --file train.yml --set version=$target_version
-az ml component create --file score.yml --set version=$target_version
-az ml component create --file eval.yml --set version=$target_version
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/basics/hello-pipeline-customize-output-folder.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/2a_basic_component
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/basics/hello-pipeline-default-artifacts.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/2b_component_with_input_output
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/basics/hello-pipeline-io.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/3a_basic_pipeline
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/basics/hello-pipeline-settings.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/3b_pipeline_with_data
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/basics/hello-pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/4a_local_data_input
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines/cifar-10/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines/nyc-taxi/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/4c_web_url_input
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/1a_e2e_local_components/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/4d_dataset_input
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/4e_data_asset_input
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/2a_basic_component/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/5a_env_public_docker_image
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/2b_component_with_input_output/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/5b_env_registered
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/3a_basic_pipeline/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/5c_env_conda_file
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/3b_pipeline_with_data/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/6a_tf_hello_world
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/4a_local_data_input/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/6b_pytorch_hello_world
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/basics/6c_r_iris
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/4c_web_url_input/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/image_classification_with_densenet
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/4d_data_input/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/nyc_taxi_data_regression
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/5a_env_public_docker_image/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/5b_env_registered/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines-with-components/rai_pipeline_adult_analyse
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/5c_env_conda_file/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines/nyc-taxi
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version
-cd ../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/6a_tf_hello_world/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-cd jobs/pipelines/cifar-10
-pwd
-az ml job create --file pipeline.yml --set experiment_name=cli_samples_v2_$target_version --web
-cd ../../../
+az ml job create --file ./jobs/pipelines-with-components/basics/6b_pytorch_hello_world/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
 
-az --version
+az ml job create --file ./jobs/pipelines-with-components/basics/6c_r_iris/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/pipelines-with-components/nyc_taxi_data_regression/pipeline.yml --set experiment_name=cli_samples_v2_$target_version
+
+az ml job create --file ./jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml --set experiment_name=cli_samples_v2_$target_version --web
+
+bash run-job.sh ./jobs/pipelines-with-components/rai_pipeline_adult_analyse/pipeline.yml cli_samples_v2_$target_version
 
 python run-job-pipeline-all.py recover
+
+az --version
