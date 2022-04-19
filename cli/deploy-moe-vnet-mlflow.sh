@@ -36,7 +36,7 @@ export ACR_NAME=cr$SUFFIX
 export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME=$ENDPOINT_NAME
 # VM name used during creation: endpoints/online/managed/vnet/setup_vm/vm-main.bicep
-export VM_NAME="moevnet-vm"
+export VM_NAME="moevnet-mlflow-vm"
 # VNET name and subnet name used during vnet worskapce setup: endpoints/online/managed/vnet/setup_ws/main.bicep
 export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
