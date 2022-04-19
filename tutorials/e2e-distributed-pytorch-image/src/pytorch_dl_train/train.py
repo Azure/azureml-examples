@@ -29,14 +29,13 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 from torch.optim import lr_scheduler
-from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 from torch.profiler import record_function
 
 # internal imports
-from model import load_and_model_arch, MODEL_ARCH_LIST
-from image_io import load_image_labels, build_image_datasets, input_file_path
+from model import load_model, MODEL_ARCH_LIST
+from image_io import build_image_datasets
 from profiling import PyTorchProfilerHandler
 
 
@@ -92,6 +91,9 @@ class PyTorchDistributedModelTrainingSequence:
             self.dataloading_config.num_workers = 0
         if self.dataloading_config.num_workers < 0:
             self.dataloading_config.num_workers = os.cpu_count()
+        if self.dataloading_config.num_workers == 0:
+            self.logger.warning("You specified num_workers=0, forcing prefetch_factor to be discarded.")
+            self.dataloading_config.prefetch_factor = None
 
         # NOTE: strtobool returns an int, converting to bool explicitely
         self.dataloading_config.pin_memory = bool(self.dataloading_config.pin_memory)
@@ -174,6 +176,7 @@ class PyTorchDistributedModelTrainingSequence:
                     "model_arch": self.training_config.model_arch,
                     "model_arch_pretrained": self.training_config.model_arch_pretrained,
                     "learning_rate": self.training_config.learning_rate,
+                    "num_epochs": self.training_config.num_epochs,
 
                     # profiling params
                     "enable_profiling": self.training_config.enable_profiling,
@@ -195,14 +198,23 @@ class PyTorchDistributedModelTrainingSequence:
             training_dataset, num_replicas=self.world_size, rank=self.world_rank
         )
 
+        # setting up DataLoader with the right arguments
+        optional_data_loading_kwargs = {}
+        
+        if self.dataloading_config.num_workers > 0:
+            # NOTE: this option _ONLY_ applies if num_workers > 0
+            # or else DataLoader will except
+            optional_data_loading_kwargs["prefetch_factor"] = self.dataloading_config.prefetch_factor
+
         self.training_data_loader = DataLoader(
             training_dataset,
             batch_size=self.dataloading_config.batch_size,
             num_workers=self.dataloading_config.num_workers,  # self.cpu_count,
-            prefetch_factor=self.dataloading_config.prefetch_factor,
             pin_memory=self.dataloading_config.pin_memory,
-            # DISTRIBUTED: the samples will be provided to the DataLoader
+            # DISTRIBUTED: the sampler needs to be provided to the DataLoader
             sampler=self.training_data_sampler,
+            # all other args
+            **optional_data_loading_kwargs
         )
 
         # DISTRIBUTED: we don't need a sampler for validation set
@@ -214,6 +226,11 @@ class PyTorchDistributedModelTrainingSequence:
             pin_memory=self.dataloading_config.pin_memory,
         )
 
+        if self.self_is_main_node:
+            # MLFLOW: report relevant parameters using mlflow
+            mlflow.log_params({"num_classes": len(labels)})
+
+
     def setup_model(self, model):
         """Configures a model for training."""
         self.logger.info(f"Setting up model to use device {self.device}")
@@ -222,7 +239,16 @@ class PyTorchDistributedModelTrainingSequence:
         # DISTRIBUTED: the model needs to be wrapped in a DistributedDataParallel class
         if self.multinode_available:
             self.logger.info(f"Setting up model to use DistributedDataParallel.")
-            self.model = DistributedDataParallel(self.model)
+            self.model = torch.nn.parallel.DistributedDataParallel(self.model)
+
+        # fun: log the number of parameters
+        params_count = 0
+        for param in model.parameters():
+            if param.requires_grad:
+                params_count += param.numel()
+        self.logger.info("MLFLOW: model_param_count={:.2f} (millions)".format(round(params_count/1e6, 2)))
+        if self.self_is_main_node:
+            mlflow.log_params({"model_param_count": round(params_count/1e6, 2)})
 
         return self.model
 
@@ -236,22 +262,23 @@ class PyTorchDistributedModelTrainingSequence:
             num_correct = 0
             num_total_images = 0
             running_loss = 0.0
+
             for images, targets in tqdm(self.validation_data_loader):
                 with record_function("eval.to_device"):
                     images = images.to(
                         self.device, non_blocking=self.dataloading_config.non_blocking
                     )
-                    targets = targets.to(
-                        self.device, non_blocking=self.dataloading_config.non_blocking
+                    one_hot_targets = targets.to(
+                            self.device, non_blocking=self.dataloading_config.non_blocking
                     )
 
                 with record_function("eval.forward"):
                     outputs = self.model(images)
 
-                    # loss = criterion(outputs, targets)
-                    loss = criterion(outputs.squeeze(), targets.squeeze())
+                    loss = criterion(outputs, one_hot_targets)
                     running_loss += loss.item() * images.size(0)
-                    correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
+
+                    correct = (torch.argmax(outputs, dim=-1) == (targets.to(self.device)))
                     num_correct += torch.sum(correct).item()
                     num_total_images += len(images)
 
@@ -273,21 +300,23 @@ class PyTorchDistributedModelTrainingSequence:
                 images = images.to(
                     self.device, non_blocking=self.dataloading_config.non_blocking
                 )
-                targets = targets.to(
-                    self.device, non_blocking=self.dataloading_config.non_blocking
-                )
+                one_hot_targets = torch.nn.functional.one_hot(
+                    targets.to(
+                        self.device, non_blocking=self.dataloading_config.non_blocking
+                    ),
+                    num_classes=len(self.labels)
+                ).float()
+                
 
             with record_function("train.forward"):
                 # zero the parameter gradients
                 optimizer.zero_grad()
 
                 outputs = self.model(images)
-                _, preds = torch.max(outputs, 1)
-                # loss = criterion(outputs, targets)
-                loss = criterion(outputs.squeeze(), targets.squeeze())
+                loss = criterion(outputs, one_hot_targets)
+                correct = (torch.argmax(outputs, dim=-1) == (targets.to(self.device)))
 
                 running_loss += loss.item() * images.size(0)
-                correct = (outputs.squeeze() > 0.5) == (targets.squeeze() > 0.5)
                 num_correct += torch.sum(correct).item()
                 num_total_images += len(images)
 
@@ -317,8 +346,8 @@ class PyTorchDistributedModelTrainingSequence:
             weight_decay=1e-4,
         )
 
-        criterion = nn.BCEWithLogitsLoss()
-        # criterion = nn.CrossEntropyLoss()
+        #criterion = nn.BCEWithLogitsLoss()
+        criterion = nn.CrossEntropyLoss()
 
         # Decay LR by a factor of 0.1 every 7 epochs
         scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
@@ -338,6 +367,16 @@ class PyTorchDistributedModelTrainingSequence:
             epoch_train_loss = running_loss / num_samples
             epoch_train_acc = num_correct / num_samples
 
+            # report metric values in stdout
+            self.logger.info(
+                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_train_acc={epoch_train_acc} epoch={epoch}"
+            )
+
+            # MLFLOW / DISTRIBUTED: report metrics only from main node
+            if self.self_is_main_node:
+                mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
+                mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
+
             # EVAL: run evaluation on validation set and return metrics
             running_loss, num_correct, num_samples = self._epoch_eval(epoch, criterion)
             epoch_valid_loss = running_loss / num_samples
@@ -352,10 +391,6 @@ class PyTorchDistributedModelTrainingSequence:
             # stop timer
             epoch_train_time = time.time() - epoch_start
 
-            # report metric values in stdout
-            self.logger.info(
-                f"MLFLOW: epoch_train_loss={epoch_train_loss} epoch_train_acc={epoch_train_acc} epoch={epoch}"
-            )
             self.logger.info(
                 f"MLFLOW: epoch_valid_loss={epoch_valid_loss} epoch_valid_acc={epoch_valid_acc} epoch={epoch}"
             )
@@ -365,8 +400,6 @@ class PyTorchDistributedModelTrainingSequence:
 
             # MLFLOW / DISTRIBUTED: report metrics only from main node
             if self.self_is_main_node:
-                mlflow.log_metric("epoch_train_loss", epoch_train_loss, step=epoch)
-                mlflow.log_metric("epoch_train_acc", epoch_train_acc, step=epoch)
                 mlflow.log_metric("epoch_valid_loss", epoch_valid_loss, step=epoch)
                 mlflow.log_metric("epoch_valid_acc", epoch_valid_acc, step=epoch)
                 mlflow.log_metric("epoch_train_time", epoch_train_time, step=epoch)
@@ -384,7 +417,7 @@ class PyTorchDistributedModelTrainingSequence:
             # create output directory just in case
             os.makedirs(output_dir, exist_ok=True)
 
-            if isinstance(self.model, DistributedDataParallel):
+            if isinstance(self.model, torch.nn.parallel.DistributedDataParallel):
                 # DISTRIBUTED: to export model, you need to get it out of the DistributedDataParallel class
                 self.logger.info(
                     "Model was distibuted, we will export DistributedDataParallel.module"
@@ -421,18 +454,6 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         type=str,
         required=True,
         help="path to folder containing validation images",
-    )
-    group.add_argument(
-        "--train_annotations",
-        type=input_file_path,
-        required=True,
-        help="CSV file containing annotations for training images (file_name,label)",
-    )
-    group.add_argument(
-        "--valid_annotations",
-        type=input_file_path,
-        required=True,
-        help="CSV file containing annotations for training images (file_name,label)",
     )
 
     group = parser.add_argument_group(f"Training Outputs")
@@ -512,6 +533,16 @@ def build_arguments_parser(parser: argparse.ArgumentParser = None):
         default="nccl",
         help="Which distributed backend to use.",
     )
+    # DISTRIBUTED: torch.distributed.launch is passing this argument to your script
+    # it is likely to be deprecated in favor of os.environ['LOCAL_RANK']
+    # see https://pytorch.org/docs/stable/distributed.html#launch-utility
+    group.add_argument(
+        "--local_rank",
+        type=int,
+        required=False,
+        default=None,
+        help="Passed by torch.distributed.launch utility when running from cli.",
+    )
     group.add_argument(
         "--num_epochs",
         type=int,
@@ -554,22 +585,16 @@ def run(args):
     # MLFLOW: initialize mlflow (once in entire script)
     mlflow.start_run()
 
-    # get all image labels
-    training_labels, validation_labels, labels = load_image_labels(
-        args.train_annotations, args.valid_annotations
-    )
-
-    # gets the datasets (coco)
-    train_dataset, valid_dataset = build_image_datasets(
+    # build the image folder datasets
+    train_dataset, valid_dataset, labels = build_image_datasets(
         train_images_dir=args.train_images,
         valid_images_dir=args.valid_images,
-        training_labels=training_labels,
-        validation_labels=validation_labels,
+        input_size=224 # size expected by the model
     )
 
     # creates the model architecture
-    model = load_and_model_arch(
-        args.model_arch, output_dimension=1, pretrained=args.model_arch_pretrained
+    model = load_model(
+        args.model_arch, output_dimension=len(labels), pretrained=args.model_arch_pretrained
     )
 
     # use a handler for the training sequence
