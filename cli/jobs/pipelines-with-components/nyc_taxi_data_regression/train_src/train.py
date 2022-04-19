@@ -76,10 +76,15 @@ print(trainX.shape)
 print(trainX.columns)
 
 # Train a Linear Regression Model with the train set
-model = LinearRegression().fit(trainX, trainy)
-print(model.score(trainX, trainy))
+with mlflow.start_run() as run:
+    import shutil
+    model = LinearRegression().fit(trainX, trainy)
+    print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+    mlflow.tracking.MlflowClient().download_artifacts(run.info.run_id, "model", "./")
+    if os.path.isdir(args.model_output):
+        shutil.rmtree(args.model_output)
+    shutil.move(os.path.join("./model"), args.model_output)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
