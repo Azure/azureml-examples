@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from azure.ml import dsl, ArtifactInput, ArtifactOutput
+from azure.ml import dsl, Input, Output
 from azure.ml.entities import Environment
 
 conda_env = Environment(
@@ -16,8 +16,8 @@ conda_env = Environment(
     environment=conda_env,
 )
 def keras_train(
-    input_data: ArtifactInput,
-    output_model: ArtifactOutput,
+    input_data: Input,
+    output_model: Output,
     epochs=10,
 ):
     # avoid dependency issue, execution logic is in prep.py file

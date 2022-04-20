@@ -1,5 +1,5 @@
 from pathlib import Path
-from azure.ml import dsl, ArtifactInput, ArtifactOutput
+from azure.ml import dsl, Input, Output
 from azure.ml.entities import Environment
 
 conda_env = Environment(
@@ -15,9 +15,9 @@ conda_env = Environment(
     environment=conda_env,
 )
 def prep(
-    input_data: ArtifactInput,
-    training_data: ArtifactOutput,
-    test_data: ArtifactOutput,
+    input_data: Input,
+    training_data: Output,
+    test_data: Output,
 ):
     # Avoid dependency issue, execution logic is in prep.py file
     from prep import prep
