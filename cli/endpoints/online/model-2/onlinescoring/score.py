@@ -27,9 +27,14 @@ def run(raw_data):
     In the example we extract the data from the json input and call the scikit-learn model's predict()
     method and return the result back
     """
-    logging.info("Request received")
-    data = json.loads(raw_data)["data"]
-    data = numpy.array(data)
-    result = model.predict(data)
+    logging.info("model 2: request received")
+    result = [0.5, 0.5]
     logging.info("Request processed")
-    return result.tolist()
+    # return hardcoded result so that it is easy to validate safe rollout scenario: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints
+    return result
+    
+    # actual scoring logic for reference:
+    #data = json.loads(raw_data)["data"]
+    #data = numpy.array(data)
+    #result = model.predict(data)    
+    #return result.tolist()
