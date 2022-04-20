@@ -56,6 +56,7 @@ def map_location_cuda(storage, loc):
 def get_model(model_path, model_file_name):
     # _, ext = os.path.splitext(model_path)
     model_full_path = os.path.join(model_path, model_file_name)
+    print(model_full_path)
     if model_file_name.endswith("pt"):
         # Load the fc-tcn torch model.
         assert _torch_present, "Loading DNN models needs torch to be presented."
@@ -150,6 +151,8 @@ def get_freq_from_model(fitted_model):
 
 def get_model_filename(run, model_name, model_path):
     model = Model(run.experiment.workspace, model_name)
+    if "model_file_name" in model.tags:
+        return model.tags["model_file_name"]
     is_pkl = True
     if model.tags.get("algorithm") == "TCNForecaster" or os.path.exists(
         os.path.join(model_path, "model.pt")

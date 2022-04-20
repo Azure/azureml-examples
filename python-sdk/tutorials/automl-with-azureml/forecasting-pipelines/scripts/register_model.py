@@ -52,15 +52,13 @@ if __name__ == "__main__":
     best_run = get_best_automl_run(run.parent)
     model_artifact_path = best_run.properties[constants.PROPERTY_KEY_OF_MODEL_PATH]
     algo = best_run.properties.get("run_algorithm")
-    best_run.download_file(constants.CONDA_ENV_FILE_PATH, new_dir)
-    best_run.download_file(model_artifact_path, new_dir)
-
-    model = Model.register(
-        workspace=ws,
-        model_path=os.path.join(os.getcwd(), new_dir),
-        model_name=args.model_name,
+    model_artifact_dir = model_artifact_path.split("/")[0]
+    model_file_name = model_artifact_path.split("/")[1]
+    model = best_run.register_model(
+        args.model_name,
+        model_path=model_artifact_dir,
         datasets=datasets,
-        tags={"algorithm": algo},
+        tags={"algorithm": algo, "model_file_name": model_file_name},
     )
 
     print("Registered version {0} of model {1}".format(model.version, model.name))
