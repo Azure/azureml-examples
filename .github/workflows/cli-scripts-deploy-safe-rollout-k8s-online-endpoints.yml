@@ -10,6 +10,7 @@ on:
       - cli/deploy-safe-rollout-k8s-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
       - cli/setup.sh
+      - .github/amlarc-tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,3 +30,17 @@ jobs:
     - name: test script script
       run: set -e; bash -x deploy-safe-rollout-k8s-online-endpoints.sh
       working-directory: cli
+    - name: file IcM when fails
+      if: ${{ failure() }}
+      run: |
+        # download certificates
+        export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
+        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
+        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+        bash amlarc-tool.sh download_icm_cert
+        export ICM_HOST=$(cat icm_host)
+        export CONNECTOR_ID=$(cat icm_connector_id)
+        export ROUTING_ID=$(cat icm_routing_id)
+        export SUMMARY=$(bash amlarc-tool.sh gen_summary_for_github_test)
+        bash amlarc-tool.sh file_icm
+      timeout-minutes: 30
