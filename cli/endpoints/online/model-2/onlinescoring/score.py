@@ -32,9 +32,9 @@ def run(raw_data):
     logging.info("Request processed")
     # return hardcoded result so that it is easy to validate safe rollout scenario: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints
     return result
-    
+
     # actual scoring logic for reference:
-    #data = json.loads(raw_data)["data"]
-    #data = numpy.array(data)
-    #result = model.predict(data)    
-    #return result.tolist()
+    # data = json.loads(raw_data)["data"]
+    # data = numpy.array(data)
+    # result = model.predict(data)
+    # return result.tolist()
