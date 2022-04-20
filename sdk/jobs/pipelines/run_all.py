@@ -66,7 +66,7 @@ def main(args):
             notebook = future_to_notebooks[future]
             try:
                 future.result()
-            except Exception as exc:
+            except BaseException as exc:
                 print(f'Failed to run {notebook} due to {exc}')
                 raise exc
 
