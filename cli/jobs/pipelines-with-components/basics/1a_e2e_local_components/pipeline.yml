@@ -1,12 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-description: "Dummy train-score-eval pipeline with local components"
+display_name: 1a_e2e_local_components
+description: Dummy train-score-eval pipeline with local components
 
 inputs:
-  pipeline_job_training_input: 
-    type: uri_folder
-    path: ./data
   pipeline_job_training_max_epocs: 20
   pipeline_job_training_learning_rate: 1.8
   pipeline_job_learning_rate_schedule: 'time-based'
@@ -18,24 +16,26 @@ outputs:
     mode: upload
 
 jobs:
-  train-job:
+  train_job:
     type: command
     compute: azureml:cpu-cluster
     component: file:./train.yml
     inputs:
-      training_data: ${{parent.inputs.pipeline_job_training_input}}
+      training_data: 
+        type: uri_folder
+        path: ./data
       max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
       learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
       learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   
-  score-job:
+  score_job:
     type: command
     component: file:./score.yml
     compute: azureml:cpu-cluster
     inputs:
-      model_input: ${{parent.jobs.train-job.outputs.model_output}}
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
       test_data: 
         type: uri_folder
         path: ./data
@@ -43,11 +43,11 @@ jobs:
       score_output: 
         mode: upload
 
-  evaluate-job:
+  evaluate_job:
     type: command
     component: file:./eval.yml
     compute: azureml:cpu-cluster
     inputs:
-      scoring_result: ${{parent.jobs.score-job.outputs.score_output}}
+      scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
     outputs:
       eval_output: ${{parent.outputs.pipeline_job_evaluation_report}}

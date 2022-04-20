@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
+      - april-sdk-preview
     paths:
       - cli/deploy-triton-managed-online-endpoint.sh
       - .github/workflows/cli-scripts-deploy-triton-managed-online-endpoint.yml

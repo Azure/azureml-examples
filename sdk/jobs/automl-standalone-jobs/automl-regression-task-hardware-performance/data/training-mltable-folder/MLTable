@@ -1,0 +1,27 @@
+paths:
+  - file: ./training-machine-dataset.csv
+transformations:
+  - read_delimited:
+        delimiter: ','
+        encoding: 'ascii'
+  - convert_column_types:
+      - columns: VendorName
+        column_type: string
+      - columns: ModelName
+        column_type: string
+      - columns: MYCT
+        column_type: int
+      - columns: MMIN
+        column_type: int
+      - columns: MMAX
+        column_type: int
+      - columns: CACH
+        column_type: int
+      - columns: CHMIN
+        column_type: int
+      - columns: CHMAX
+        column_type: int
+      - columns: PRP
+        column_type: int
+      - columns: ERP
+        column_type: int

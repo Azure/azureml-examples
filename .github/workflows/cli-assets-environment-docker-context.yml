@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
+      - april-sdk-preview
     paths:
       - cli/assets/environment/docker-context.yml
       - .github/workflows/cli-assets-environment-docker-context.yml
