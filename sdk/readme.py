@@ -37,7 +37,7 @@ def main(args):
     with change_working_dir(pipeline_dir):
       pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
     pipeline_notebooks = [f"{pipeline_dir}{notebook}" for notebook in pipeline_notebooks]
-    write_readme(pipeline_notebooks, folder=pipeline_dir)
+    write_readme(pipeline_notebooks, pipeline_folder=pipeline_dir)
 
 def write_workflows(notebooks):
     print("writing .github/workflows...")
@@ -164,14 +164,14 @@ jobs:
         with open(workflow_file, "w") as f:
             f.write(workflow_yaml)
 
-def write_readme(notebooks, folder=None):
+def write_readme(notebooks, pipeline_folder=None):
     prefix = "prefix.md"
     suffix = "suffix.md"
     readme_file = "README.md"
-    if folder:
-        prefix = f"{folder}/{prefix}"
-        suffix = f"{folder}/{suffix}"
-        readme_file = f"{folder}/{readme_file}"
+    if pipeline_folder:
+        prefix = f"{pipeline_folder}/{prefix}"
+        suffix = f"{pipeline_folder}/{suffix}"
+        readme_file = f"{pipeline_folder}/{readme_file}"
 
     if BRANCH == "":
         branch = "main"
@@ -212,6 +212,9 @@ def write_readme(notebooks, folder=None):
                 description += " - _This sample is excluded from automated tests_"
             if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
                 description += " - _This sample is only tested on demand_"
+
+            if pipeline_folder:
+              notebook = os.path.relpath(notebook, pipeline_folder)
 
             # write workflow file
             notebook_table += (
