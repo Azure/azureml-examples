@@ -1,7 +1,7 @@
 # Azure Machine Learning SDK (v2) (preview) examples
 
 ## Private Preview
-We are excited to introduce the private preview of Azure Machine Learning **Python SDK v2**. The Python SDK v2 introduces **new SDK capabilities** like standalone **local jobs**, reusable **components** for pipelines and managed online/batch inferencing. The SDK v2 brings consistency and ease of use across all assets of the platform and is built on top of the same foundation as used in the CLI v2 which is currently in Public Preview.
+We are excited to introduce the private preview of Azure Machine Learning **Python SDK v2**. The Python SDK v2 introduces **new SDK capabilities** like standalone **local jobs**, reusable **components** for pipelines and managed online/batch inferencing. Python SDK v2 allows you to move from simple to complex tasks easily and incrementally. This is enabled by using a common object model which brings concept reuse and consistency of actions across various tasks. The SDK v2 shares its foundation with the CLI v2 which is currently in Public Preview.
 
 Please note that this Private Preview release is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/en-us/support/legal/preview-supplemental-terms/).
 
@@ -13,24 +13,25 @@ Azure Machine Learning Python SDK v2 comes with many new features like standalon
 * Run **Standalone Jobs** - run a discrete ML activity as Job. This job can be run locally or on the cloud. We currently support the following types of jobs:
   * Command - run a command (Python, R, Windows Command, Linux Shell etc.)
   * Sweep - run a hyperparameter sweep on your Command
-  * [AutoML - run AutoML trainings including the following ml-tasks](./jobs/automl-standalone-jobs):
-       - Classification (Tabular data)
-       - Regression (Tabular data)
-       - Time Series Forecasting (Tabular data)
-       - Image Classification (Multi-class) (**New**)
-       - Image Classification (Multi-label) (**New**)
-       - Image Object Detection (**New**)
-       - Image Instance Segmentation (**New**)
-       - NLP Text Classification (Multi-class) (**New**)
-       - NLP Text Classification (Multi-label) (**New**)
-       - NLP Text Named Entity Recognition (NER) (**New**)
-* New and **improved Pipelines**
-  * Run a series of jobs stitched into a pipeline (**New**)
+* Run multiple jobs using our **improved Pipelines**
+  * Run a series of commands stitched into a pipeline (**New**)
   * **Components** - run pipelines using reusable components (**New**)
 * Use your models for **Managed Online inferencing** (**New**)
 * Use your models for Managed **batch inferencing**
 * Manage AML resources – workspace, compute, datastores
 * Manage AML assets - Datasets, environments, models
+* **AutoML** - run standalone AutoML training for various ml-tasks:
+  - Classification (Tabular data)
+  - Regression (Tabular data)
+  - Time Series Forecasting (Tabular data)
+  - Image Classification (Multi-class) (**New**)
+  - Image Classification (Multi-label) (**New**)
+  - Image Object Detection (**New**)
+  - Image Instance Segmentation (**New**)
+  - NLP Text Classification (Multi-class) (**New**)
+  - NLP Text Classification (Multi-label) (**New**)
+  - NLP Text Named Entity Recognition (NER) (**New**)
+
 
 ## How can I provide feedback?
 If you are facing any issues while using the new feature, please reach out to [Azure ML SDK feedback](mailto:amlsdkfeedback@microsoft.com). For general feedback, please submit an [GitHub issue](https://github.com/Azure/azure-sdk-for-python/issues/new/choose).
@@ -42,7 +43,9 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip install azure-ml==0.0.61119066 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip uninstall azure-ml
+
+pip install azure-ml==0.0.61212840 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
 ```
 
 ## Clone examples repository
