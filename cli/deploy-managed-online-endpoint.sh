@@ -11,7 +11,7 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/s
 # </create_endpoint>
 
 # <create_deployment>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic --debug
 # </create_deployment>
 
 # <get_status>
