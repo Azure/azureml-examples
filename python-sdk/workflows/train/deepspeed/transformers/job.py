@@ -40,7 +40,9 @@ def submit_azureml_run(args: JobArguments):
 
     target = ws.compute_targets[args.target_name]
 
-    env = get_azureml_environment()
+    env = Environment.from_dockerfile(
+        "deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile")
+    )
 
     distributed_job_config = get_distributed_job_config(args)
 
@@ -54,6 +56,12 @@ def submit_azureml_run(args: JobArguments):
     --disable_tqdm 1
     --local_rank $LOCAL_RANK
     --deepspeed ds_config.json
+    --learning_rate 3e-05
+    --adam_beta1 0.8
+    --adam_beta2 0.999
+    --weight_decay 3e-07
+    --warmup_steps 500
+    --fp16 true
     """.split()
 
     config = ScriptRunConfig(
@@ -68,15 +76,6 @@ def submit_azureml_run(args: JobArguments):
     print(run.get_portal_url())  # link to ml.azure.com
 
     run.set_tags(asdict(args))
-
-
-def get_azureml_environment():
-    env = Environment("deepspeed-transformers")
-    env.docker.base_image = None
-    env.docker.base_dockerfile = "dockerfile"
-    env.python.user_managed_dependencies = True
-    env.python.interpreter_path = "/opt/miniconda/bin/python"
-    return env
 
 
 def get_distributed_job_config(args: JobArguments):

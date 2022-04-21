@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/deploy-rest.sh
       - .github/workflows/cli-scripts-deploy-rest.yml

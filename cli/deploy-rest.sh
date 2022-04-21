@@ -13,7 +13,7 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</get_access_token>
 
 # <set_endpoint_name>
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-rest-`echo $RANDOM`
 # </set_endpoint_name>
 
 #<api_version>

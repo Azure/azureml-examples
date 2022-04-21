@@ -6,11 +6,11 @@ display_name: componentA
 version: 1
 
 inputs:
-  componentA_input:
+  component_a_input:
     type: uri_folder
 
 outputs:
-  componentA_output:
+  component_a_output:
     type: uri_folder
 
 code: ./componentA_src
@@ -19,4 +19,4 @@ environment:
   image: python
 
 command: >-
-  python hello.py --componentA_input ${{inputs.componentA_input}} --componentA_output ${{outputs.componentA_output}}
+  python hello.py --componentA_input ${{inputs.component_a_input}} --componentA_output ${{outputs.component_a_output}}

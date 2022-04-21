@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/deploy-managed-online-endpoint-access-resource-uai.sh
       - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-uai.yml
