@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/2b_component_with_input_output/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-2b_component_with_input_output-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

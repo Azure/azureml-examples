@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/5b_env_registered/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-5b_env_registered-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

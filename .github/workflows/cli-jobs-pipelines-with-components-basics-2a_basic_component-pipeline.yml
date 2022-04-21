@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/2a_basic_component/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-2a_basic_component-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

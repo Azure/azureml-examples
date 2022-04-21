@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/5a_env_public_docker_image/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-5a_env_public_docker_image-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
