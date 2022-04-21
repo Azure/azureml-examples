@@ -4,8 +4,9 @@ from azure.ml.entities import Environment
 
 conda_env = Environment(
     conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
 )
+
 
 @dsl.command_component(
     name="prep_data",
@@ -21,7 +22,5 @@ def prep(
 ):
     # Avoid dependency issue, execution logic is in prep.py file
     from prep import prep
+
     prep(input_data, training_data, test_data)
-
-
-

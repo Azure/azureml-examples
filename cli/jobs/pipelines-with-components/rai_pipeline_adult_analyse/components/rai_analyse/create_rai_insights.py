@@ -85,7 +85,7 @@ def copy_input_data(component_input_path: str, output_path: str):
         src_path = component_input_path
     else:
         src_path = os.path.dirname(component_input_path)
-    src_path = src_path + '/'
+    src_path = src_path + "/"
     _logger.info(f"Copying from {src_path} to {output_path}")
     assert os.path.isdir(src_path), "Checking src_path"
     shutil.copytree(src=src_path, dst=output_path)

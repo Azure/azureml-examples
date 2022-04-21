@@ -20,6 +20,7 @@ def change_working_dir(path):
     finally:
         os.chdir(saved_path)
 
+
 @contextlib.contextmanager
 def replace_content(file, skip_wait=True, force_rerun=True):
     wait_str = "ml_client.jobs.stream(pipeline_job.name)"
@@ -27,7 +28,7 @@ def replace_content(file, skip_wait=True, force_rerun=True):
     dsl_str = "@dsl.pipeline("
     rerun_str = "@dsl.pipeline(force_rerun=True,"
 
-    with open(file,  encoding="utf-8") as f:
+    with open(file, encoding="utf-8") as f:
         original_content = f.read()
     try:
         with open(file, "w") as f:
@@ -39,14 +40,16 @@ def replace_content(file, skip_wait=True, force_rerun=True):
             f.write(new_content)
         yield
     finally:
-        with open(file, 'w', encoding="utf-8") as f:
+        with open(file, "w", encoding="utf-8") as f:
             f.write(original_content)
 
 
 def run_notebook(notebook, skip_wait=True, force_rerun=True, dry_run=False):
     notebook = Path(notebook)
     folder = notebook.parent
-    with change_working_dir(folder), replace_content(notebook.name, skip_wait, force_rerun):
+    with change_working_dir(folder), replace_content(
+        notebook.name, skip_wait, force_rerun
+    ):
         command = f"papermill {notebook.name} out.ipynb -k python"
         print(f"Running {command}")
         if not dry_run:
@@ -54,21 +57,26 @@ def run_notebook(notebook, skip_wait=True, force_rerun=True, dry_run=False):
 
 
 def main(args):
-    
+
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
     with concurrent.futures.ProcessPoolExecutor(max_workers=12) as executor:
         future_to_notebooks = {
-            executor.submit(run_notebook, notebook, args.skip_wait, args.force_rerun, args.dry_run): notebook for notebook in notebooks if "out.ipynb" not in notebook
+            executor.submit(
+                run_notebook, notebook, args.skip_wait, args.force_rerun, args.dry_run
+            ): notebook
+            for notebook in notebooks
+            if "out.ipynb" not in notebook
         }
-            
+
         for future in concurrent.futures.as_completed(future_to_notebooks):
             notebook = future_to_notebooks[future]
             try:
                 future.result()
             except BaseException as exc:
-                print(f'Failed to run {notebook} due to {exc}')
+                print(f"Failed to run {notebook} due to {exc}")
                 raise exc
+
 
 if __name__ == "__main__":
     # setup argparse

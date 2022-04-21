@@ -45,8 +45,10 @@ def upload_data_and_create_jsonl_files(ml_client):
     print(uri_folder_data_asset.path)
 
     print("Installing scikit-image and simplification package")
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'scikit-image==0.17.2'])
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'simplification'])
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "scikit-image==0.17.2"]
+    )
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "simplification"])
     print("done")
 
     print("Creating jsonl files")
@@ -58,7 +60,9 @@ def upload_data_and_create_jsonl_files(ml_client):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for image classification")
+    parser = argparse.ArgumentParser(
+        description="Prepare data for image classification"
+    )
 
     parser.add_argument("--subscription", type=str, help="Subscription ID")
     parser.add_argument("--group", type=str, help="Resource group name")

@@ -9,7 +9,7 @@ from azure.ml.entities import Environment
 # the YAML file shall be put under your code folder.
 conda_env = Environment(
     conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
 )
 
 

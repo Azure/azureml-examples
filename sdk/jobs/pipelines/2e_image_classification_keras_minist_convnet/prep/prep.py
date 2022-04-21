@@ -25,7 +25,7 @@ def convert(imgf, labelf, outf, n):
 
 
 def prep(input_path, output_path_1, output_path_2):
-    
+
     convert(
         os.path.join(input_path, "train-images-idx3-ubyte"),
         os.path.join(input_path, "train-labels-idx1-ubyte"),
