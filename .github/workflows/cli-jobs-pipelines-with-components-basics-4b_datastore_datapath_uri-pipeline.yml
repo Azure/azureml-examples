@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-4b_datastore_datapath_uri-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
