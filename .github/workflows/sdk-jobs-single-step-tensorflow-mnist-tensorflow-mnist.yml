@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
+      - may-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-single-step-tensorflow-mnist-tensorflow-mnist.yml
