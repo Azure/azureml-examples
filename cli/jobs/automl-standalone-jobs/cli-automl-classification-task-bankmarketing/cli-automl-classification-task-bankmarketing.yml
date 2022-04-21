@@ -19,7 +19,7 @@ data:
       type: mltable
   validation:
     #validation_data_size: 0.20
-    #n_cross_validations: 5  #(BUG: 1726477)
+    #n_cross_validations: 5 
     data:
       path: "./validation-mltable-folder"
       type: mltable
@@ -37,9 +37,6 @@ limits:
   enable_early_termination: true
   exit_score: 0.92
 
-# featurization:
-#  mode: auto
-
 featurization:
   mode: custom
   transformer_params:
@@ -52,10 +49,3 @@ featurization:
 
 training:
   enable_model_explainability: true
-  
-#BUG with enums/values: Bug 1728040
-#blocked_training_algorithms:
-#  - multinomial_naive_bayes
-#allowed_training_algorithms:
-#  - gradient_boosting
-#  - logistic_regression
