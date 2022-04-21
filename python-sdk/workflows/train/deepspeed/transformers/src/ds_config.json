@@ -41,5 +41,6 @@
     },
 
     "steps_per_print": 2000,
+    "train_batch_size": "auto",
     "wall_clock_breakdown": false
 }

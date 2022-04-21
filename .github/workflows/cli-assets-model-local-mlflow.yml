@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/assets/model/local-mlflow.yml
       - .github/workflows/cli-assets-model-local-mlflow.yml

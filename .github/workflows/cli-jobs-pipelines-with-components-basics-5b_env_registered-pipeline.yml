@@ -6,9 +6,11 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/jobs/pipelines-with-components/basics/5b_env_registered/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-5b_env_registered-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
@@ -25,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines-with-components/basics/5b_env_registered/pipeline.yml
-      working-directory: cli
+      run: bash -x ../../../../run-job.sh pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/5b_env_registered
