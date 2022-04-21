@@ -3,7 +3,6 @@ name: register_model
 display_name: Register Model
 version: 1
 type: command
-is_deterministic: False
 inputs:
   model_input_path:
     type: uri_folder
