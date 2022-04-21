@@ -21,7 +21,6 @@ EXCLUDED_ASSETS = [
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
-BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
 
 
 # define functions
@@ -304,7 +303,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -344,7 +342,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml
@@ -384,7 +381,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - cli/{asset}.yml
       - .github/workflows/cli-{hyphenated}.yml
@@ -424,7 +420,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - cli/{script}.sh
       - .github/workflows/cli-scripts-{hyphenated}.yml

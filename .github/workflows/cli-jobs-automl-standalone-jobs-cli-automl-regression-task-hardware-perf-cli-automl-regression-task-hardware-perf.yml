@@ -7,7 +7,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - cli/jobs/automl-standalone-jobs/cli-automl-regression-task-hardware-perf/**
       - .github/workflows/cli-jobs-automl-standalone-jobs-cli-automl-regression-task-hardware-perf-cli-automl-regression-task-hardware-perf.yml

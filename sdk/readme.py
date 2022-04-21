@@ -18,7 +18,6 @@ NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run eve
 #use if running on a release candidate, else make it empty
 BRANCH = 'main' #default - do not change
 BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
-BRANCH = 'april-sdk-preview' #this should be deleted when this branch is merged to sdk-preview
 
 
 def main(args):
@@ -69,8 +68,7 @@ on:\n"""
     - cron: "0 */8 * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
-      - main
-      - sdk-preview\n"""
+      - main\n"""
     if BRANCH!="main":
       workflow_yaml += f"""      - {BRANCH}\n"""
     if is_pipeline_notebook:
