@@ -29,6 +29,16 @@ test_and_run_command \
     "use 'apt install pciutils' to enable"
 
 test_and_run_command \
+    lstopo \
+    "lstopo -v" \
+    "use 'apt install hwloc' to enable"
+
+test_and_run_command \
+    nvidia-smi \
+    "nvidia-smi topo -m" \
+    "use 'apt install nvidia-smi' to enable"
+
+test_and_run_command \
     ibstat \
     "ibstat -l" \
     "use 'apt install openib-diags' to enable"
@@ -36,11 +46,6 @@ test_and_run_command \
 test_and_run_command \
     ucx_info \
     "ucx_info -d"
-
-test_and_run_command \
-    lstopo \
-    "lstopo -v" \
-    "use 'apt install hwloc' to enable"
 
 test_and_run_command \
     nvcc \
