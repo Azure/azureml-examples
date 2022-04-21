@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/5c_env_conda_file/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-5c_env_conda_file-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
