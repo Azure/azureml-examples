@@ -17,6 +17,7 @@ import os, json
 import tensorflow as tf
 import numpy as np
 
+
 def mnist_dataset(batch_size):
     (x_train, y_train), _ = tf.keras.datasets.mnist.load_data()
     # The `x` arrays are in uint8 and have values in the range [0, 255].
@@ -63,6 +64,7 @@ def _is_chief(task_type, task_id):
 
 def _get_temp_dir(dirpath, task_id):
     import tensorflow as tf
+
     base_dirpath = "workertemp_" + str(task_id)
     temp_dir = os.path.join(dirpath, base_dirpath)
     tf.io.gfile.makedirs(temp_dir)
@@ -77,12 +79,7 @@ def write_filepath(filepath, task_type, task_id):
     return os.path.join(dirpath, base)
 
 
-def train_and_save_model(
-    per_worker_batch_size,
-    epochs,
-    steps_per_epoch,
-    model_dir
-):
+def train_and_save_model(per_worker_batch_size, epochs, steps_per_epoch, model_dir):
     tf_config = json.loads(os.environ["TF_CONFIG"])
     num_workers = len(tf_config["cluster"]["worker"])
 

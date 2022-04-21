@@ -42,10 +42,9 @@ def main(args):
     # train model
     model = train_model(params, X_train, X_test, y_train, y_test)
     # Output the model and test data
-    mlflow.sklearn.save_model(model, args.model_output + '/model')
-    X_test.to_csv(Path(args.test_data) / 'X_test.csv', index=False)
-    y_test.to_csv(Path(args.test_data) / 'y_test.csv', index=False)
-
+    mlflow.sklearn.save_model(model, args.model_output + "/model")
+    X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
+    y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
 
 def process_data(df, random_state):
@@ -66,7 +65,6 @@ def train_model(params, X_train, X_test, y_train, y_test):
     # train model
     model = SVC(**params)
     model = model.fit(X_train, y_train)
-
 
     # return model
     return model

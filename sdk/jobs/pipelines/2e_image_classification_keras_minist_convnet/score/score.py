@@ -29,6 +29,7 @@ def get_file(f):
         else:
             raise Exception("********This path contains more than one file*******")
 
+
 def parse_args():
     # setup argparse
     parser = argparse.ArgumentParser()
@@ -39,7 +40,7 @@ def parse_args():
     )
     parser.add_argument(
         "--input_model", type=str, default="./", help="input path for model"
-    )    
+    )
 
     parser.add_argument(
         "--output_result", type=str, default="./", help="output path for model"
@@ -50,6 +51,7 @@ def parse_args():
 
     # return args
     return args
+
 
 def score(input_data, input_model, output_result):
 
@@ -64,15 +66,17 @@ def score(input_data, input_model, output_result):
     print("*******************X_test**************************")
     print(X_test)
     y_test = to_categorical(np.array(data_test.iloc[:, 0]))
-    X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, 1).astype("float32") / 255
+    X_test = (
+        X_test.reshape(X_test.shape[0], img_rows, img_cols, 1).astype("float32") / 255
+    )
     print("*******************X_test reshape**************************")
     print(X_test)
 
     # Load model
-    files=[f for f in os.listdir(input_model) if f.endswith(".h5")]
+    files = [f for f in os.listdir(input_model) if f.endswith(".h5")]
     print(input_model)
     print(files)
-    model = load_model(input_model+'/'+files[0])
+    model = load_model(input_model + "/" + files[0])
 
     # Log metrics of the model
     eval = model.evaluate(X_test, y_test, verbose=0)
@@ -82,7 +86,6 @@ def score(input_data, input_model, output_result):
 
     mlflow.log_metric("Final test accuracy", eval[1])
     print("Test accuracy:", eval[1])
-
 
     # Score model using test data
     y_predict = model.predict(X_test)
@@ -95,11 +98,12 @@ def score(input_data, input_model, output_result):
     print(y_result)
 
     # Output result
-    np.savetxt(output_result+'/predict_result.csv', y_result, delimiter=',')
-  
+    np.savetxt(output_result + "/predict_result.csv", y_result, delimiter=",")
+
 
 def main(args):
     score(args.input_data, args.input_model, args.output_result)
+
 
 # run script
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from sklearn.linear_model import LinearRegression
 import mlflow
+
 mlflow.sklearn.autolog()
 
 
@@ -31,7 +32,7 @@ print("mounted_path files: ")
 arr = os.listdir(args.test_data)
 
 print(arr)
-test_data = pd.read_csv(Path(args.test_data)/'test_data.csv')
+test_data = pd.read_csv(Path(args.test_data) / "test_data.csv")
 testy = test_data["cost"]
 # testX = test_data.drop(['cost'], axis=1)
 testX = test_data[

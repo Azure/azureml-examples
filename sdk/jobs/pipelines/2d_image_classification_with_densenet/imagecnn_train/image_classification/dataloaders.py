@@ -34,15 +34,15 @@ import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from PIL import Image
 
-DATA_BACKEND_CHOICES = ['pytorch', 'syntetic']
+DATA_BACKEND_CHOICES = ["pytorch", "syntetic"]
 try:
     from nvidia.dali.plugin.pytorch import DALIClassificationIterator
     from nvidia.dali.pipeline import Pipeline
     import nvidia.dali.ops as ops
     import nvidia.dali.types as types
 
-    DATA_BACKEND_CHOICES.append('dali-gpu')
-    DATA_BACKEND_CHOICES.append('dali-cpu')
+    DATA_BACKEND_CHOICES.append("dali-gpu")
+    DATA_BACKEND_CHOICES.append("dali-cpu")
 except ImportError:
     print(
         "Please install DALI from https://www.github.com/NVIDIA/DALI to run this example."
@@ -219,7 +219,7 @@ def get_dali_train_loader(dali_cpu=False):
             rank = 0
             world_size = 1
 
-        traindir = os.path.join(data_path, 'train')
+        traindir = os.path.join(data_path, "train")
 
         pipe = HybridTrainPipe(
             batch_size=batch_size,
@@ -259,7 +259,7 @@ def get_dali_val_loader():
             rank = 0
             world_size = 1
 
-        valdir = os.path.join(data_path, 'val')
+        valdir = os.path.join(data_path, "val")
 
         pipe = HybridValPipe(
             batch_size=batch_size,
@@ -302,7 +302,7 @@ def fast_collate(batch):
 
 def expand(num_classes, dtype, tensor):
     e = torch.zeros(
-        tensor.size(0), num_classes, dtype=dtype, device=torch.device('cuda')
+        tensor.size(0), num_classes, dtype=dtype, device=torch.device("cuda")
     )
     e = e.scatter(1, tensor.unsqueeze(1), 1.0)
     return e
@@ -381,7 +381,7 @@ def get_pytorch_train_loader(
     _worker_init_fn=None,
     fp16=False,
 ):
-    traindir = os.path.join(data_path, 'train')
+    traindir = os.path.join(data_path, "train")
     train_dataset = datasets.ImageFolder(
         traindir,
         transforms.Compose(
@@ -423,7 +423,7 @@ def get_pytorch_val_loader(
     _worker_init_fn=None,
     fp16=False,
 ):
-    valdir = os.path.join(data_path, 'val')
+    valdir = os.path.join(data_path, "val")
     val_dataset = datasets.ImageFolder(
         valdir,
         transforms.Compose(

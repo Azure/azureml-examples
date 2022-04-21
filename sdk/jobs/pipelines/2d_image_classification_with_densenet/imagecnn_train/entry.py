@@ -12,33 +12,33 @@ from azure.ml.dsl._component import ComponentExecutor
 
 
 class Data_BackendEnum(Enum):
-    pytorch = 'pytorch'
-    syntetic = 'syntetic'
-    dali_gpu = 'dali-gpu'
-    dali_cpu = 'dali-cpu'
+    pytorch = "pytorch"
+    syntetic = "syntetic"
+    dali_gpu = "dali-gpu"
+    dali_cpu = "dali-cpu"
 
 
 class ArchEnum(Enum):
-    resnet18 = 'resnet18'
-    resnet34 = 'resnet34'
-    resnet50 = 'resnet50'
-    resnet101 = 'resnet101'
-    resnet152 = 'resnet152'
-    resnext101_32x4d = 'resnext101-32x4d'
-    se_resnext101_32x4d = 'se-resnext101-32x4d'
+    resnet18 = "resnet18"
+    resnet34 = "resnet34"
+    resnet50 = "resnet50"
+    resnet101 = "resnet101"
+    resnet152 = "resnet152"
+    resnext101_32x4d = "resnext101-32x4d"
+    se_resnext101_32x4d = "se-resnext101-32x4d"
 
 
 class Model_ConfigEnum(Enum):
-    classic = 'classic'
-    fanin = 'fanin'
-    grp_fanin = 'grp-fanin'
-    grp_fanout = 'grp-fanout'
+    classic = "classic"
+    fanin = "fanin"
+    grp_fanin = "grp-fanin"
+    grp_fanout = "grp-fanout"
 
 
 class Lr_ScheduleEnum(Enum):
-    step = 'step'
-    linear = 'linear'
-    cosine = 'cosine'
+    step = "step"
+    linear = "linear"
+    cosine = "cosine"
 
 
 def convert_image_directory_to_specific_format(
@@ -46,19 +46,19 @@ def convert_image_directory_to_specific_format(
 ):
     # convert image directory to train component input data format
     image_dir_path = Path(image_dir_path)
-    image_list_path = image_dir_path / 'images.lst'
-    output_data_path = output_root / ('train' if is_train else 'val')
+    image_list_path = image_dir_path / "images.lst"
+    output_data_path = output_root / ("train" if is_train else "val")
     category_list = []
     file_name_list = []
-    with open(image_list_path, 'r') as fin:
+    with open(image_list_path, "r") as fin:
         for line in fin:
             line = json.loads(line)
             # print(line)
-            category_list.append(line['category'])
-            file_name_list.append(line['image_info']['file_name'])
-            (output_data_path / line['category']).mkdir(parents=True, exist_ok=True)
+            category_list.append(line["category"])
+            file_name_list.append(line["image_info"]["file_name"])
+            (output_data_path / line["category"]).mkdir(parents=True, exist_ok=True)
     print(
-        f'file number {len(file_name_list)}, category number {len(set(category_list))}.'
+        f"file number {len(file_name_list)}, category number {len(set(category_list))}."
     )
 
     def copy_file(index):
@@ -77,95 +77,98 @@ def convert_image_directory_to_specific_format(
     return output_root
 
 
-@dsl.command_component(name="imagecnn_train", description="imagecnn_train main function")
+@dsl.command_component(
+    name="imagecnn_train", description="imagecnn_train main function"
+)
 def main(
-    train_data: Input(type="uri_folder", description='path to train dataset') = None,
-    val_data: Input(type="uri_folder", description='path to valid dataset') = None,
-    data_backend='dali-cpu',
-    arch='resnet50',
-    model_config='classic',
+    train_data: Input(type="uri_folder", description="path to train dataset") = None,
+    val_data: Input(type="uri_folder", description="path to valid dataset") = None,
+    data_backend="dali-cpu",
+    arch="resnet50",
+    model_config="classic",
     workers: int = 5,
     epochs: int = 90,
     batch_size: int = 256,
     optimizer_batch_size: int = -1,
     lr: float = 0.1,
-    lr_schedule='step',
+    lr_schedule="step",
     warmup: int = 0,
     label_smoothing: float = 0.0,
     mixup: float = 0.0,
     momentum: float = 0.9,
     weight_decay: float = 0.0001,
     print_freq: int = 10,
-    resume='',
-    pretrained_weights='',
+    resume="",
+    pretrained_weights="",
     static_loss_scale: float = 1,
     prof: int = -1,
     seed: int = None,
-    raport_file='experiment_raport.json',
-    workspace='./',
+    raport_file="experiment_raport.json",
+    workspace="./",
     save_checkpoint_epochs: int = 10,
 ):
-    new_data_path = Path(train_data).parent / 'new_dataset'
+    new_data_path = Path(train_data).parent / "new_dataset"
     convert_image_directory_to_specific_format(
         image_dir_path=train_data, output_root=new_data_path, is_train=True
     )
     convert_image_directory_to_specific_format(
         image_dir_path=val_data, output_root=new_data_path
     )
-    print(f'new data path {new_data_path}')
+    print(f"new data path {new_data_path}")
     sys.argv = [
-        'main',
-        '--data',
+        "main",
+        "--data",
         str(new_data_path),
-        '--data-backend',
+        "--data-backend",
         data_backend,
-        '--arch',
+        "--arch",
         arch,
-        '--model-config',
+        "--model-config",
         model_config,
-        '-j',
+        "-j",
         str(workers),
-        '--epochs',
+        "--epochs",
         str(epochs),
-        '-b',
+        "-b",
         str(batch_size),
-        '--optimizer-batch-size',
+        "--optimizer-batch-size",
         str(optimizer_batch_size),
-        '--lr',
+        "--lr",
         str(lr),
-        '--lr-schedule',
+        "--lr-schedule",
         lr_schedule,
-        '--warmup',
+        "--warmup",
         str(warmup),
-        '--label-smoothing',
+        "--label-smoothing",
         str(label_smoothing),
-        '--mixup',
+        "--mixup",
         str(mixup),
-        '--momentum',
+        "--momentum",
         str(momentum),
-        '--weight-decay',
+        "--weight-decay",
         str(weight_decay),
-        '--print-freq',
+        "--print-freq",
         str(print_freq),
-        '--resume',
+        "--resume",
         str(resume),
-        '--pretrained-weights',
+        "--pretrained-weights",
         str(pretrained_weights),
-        '--static-loss-scale',
+        "--static-loss-scale",
         str(static_loss_scale),
-        '--prof',
+        "--prof",
         str(prof),
-        '--seed',
+        "--seed",
         str(seed),
-        '--raport-file',
+        "--raport-file",
         str(raport_file),
-        '--workspace',
+        "--workspace",
         str(workspace),
-        '--save-checkpoint-epochs',
+        "--save-checkpoint-epochs",
         str(save_checkpoint_epochs),
     ]
-    print(' '.join(sys.argv))
-    runpy.run_path('main.py', run_name='__main__')
+    print(" ".join(sys.argv))
+    runpy.run_path("main.py", run_name="__main__")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     ComponentExecutor(main).execute(sys.argv)

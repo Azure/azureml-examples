@@ -46,7 +46,7 @@ def main(args):
     # write to local folder first, then copy to output folder
 
     # mlflow.sklearn.save_model(model, args.model_output + '/model')
-    mlflow.sklearn.save_model(model, 'model')
+    mlflow.sklearn.save_model(model, "model")
 
     from distutils.dir_util import copy_tree
 
@@ -56,10 +56,9 @@ def main(args):
 
     copy_tree(from_directory, to_directory)
     # mlflow.sklearn.save_model(model, args.model_output)
-    
-    X_test.to_csv(Path(args.test_data) / 'X_test.csv', index=False)
-    y_test.to_csv(Path(args.test_data) / 'y_test.csv', index=False)
 
+    X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
+    y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
 
 def process_data(df, random_state):
@@ -80,7 +79,6 @@ def train_model(params, X_train, X_test, y_train, y_test):
     # train model
     model = SVC(**params)
     model = model.fit(X_train, y_train)
-
 
     # return model
     return model

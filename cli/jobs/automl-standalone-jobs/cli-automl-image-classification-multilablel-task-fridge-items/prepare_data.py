@@ -21,7 +21,9 @@ def create_jsonl_files(uri_folder_data_path):
     train_validation_ratio = 5
 
     # Path to the training and validation files
-    train_annotations_file = os.path.join(training_mltable_path, "train_annotations.jsonl")
+    train_annotations_file = os.path.join(
+        training_mltable_path, "train_annotations.jsonl"
+    )
     validation_annotations_file = os.path.join(
         validation_mltable_path, "validation_annotations.jsonl"
     )
@@ -96,7 +98,9 @@ def upload_data_and_create_jsonl_files(ml_client):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for image classification")
+    parser = argparse.ArgumentParser(
+        description="Prepare data for image classification"
+    )
 
     parser.add_argument("--subscription", type=str, help="Subscription ID")
     parser.add_argument("--group", type=str, help="Resource group name")

@@ -1,5 +1,5 @@
-
 from azure.ml import dsl, Input, Output
+
 
 @dsl.command_component(
     name="eval_model",
@@ -13,11 +13,12 @@ def eval_model(
 ):
     from pathlib import Path
     from datetime import datetime
-    print ("hello evaluation world...")
+
+    print("hello evaluation world...")
 
     lines = [
-        f'Scoring result path: {scoring_result}',
-        f'Evaluation output path: {eval_output}',
+        f"Scoring result path: {scoring_result}",
+        f"Evaluation output path: {eval_output}",
     ]
 
     for line in lines:
@@ -27,4 +28,4 @@ def eval_model(
     # Here only output a dummy file for demo.
     curtime = datetime.now().strftime("%b-%d-%Y %H:%M:%S")
     eval_msg = f"Eval done at {curtime}\n"
-    (Path(eval_output) / 'eval_result.txt').write_text(eval_msg)
+    (Path(eval_output) / "eval_result.txt").write_text(eval_msg)

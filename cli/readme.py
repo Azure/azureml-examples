@@ -19,8 +19,8 @@ EXCLUDED_ASSETS = [
     "mlflow-models",
 ]
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
-BRANCH = 'main' #default - do not change
-BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
+BRANCH = "main"  # default - do not change
+BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
 # define functions
@@ -36,11 +36,15 @@ def main(args):
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
-    jobs += sorted(glob.glob("jobs/automl-standalone-jobs/**/cli-automl-*.yml", recursive=True))
+    jobs += sorted(
+        glob.glob("jobs/automl-standalone-jobs/**/cli-automl-*.yml", recursive=True)
+    )
     jobs += sorted(
         glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
     )
-    jobs += sorted(glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True))
+    jobs += sorted(
+        glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True)
+    )
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -235,7 +239,8 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
             + assets_table
             + suffix
         )
-    print("Finished writing README.md...")    
+    print("Finished writing README.md...")
+
 
 def write_workflows(jobs, endpoints, resources, assets, scripts):
     print("writing .github/workflows...")

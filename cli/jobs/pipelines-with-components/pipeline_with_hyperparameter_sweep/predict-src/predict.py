@@ -16,10 +16,10 @@ parser.add_argument("--predict_result", type=str)
 
 args = parser.parse_args()
 
-X_test = pd.read_csv(Path(args.test_data)/'X_test.csv')
+X_test = pd.read_csv(Path(args.test_data) / "X_test.csv")
 # model = mlflow.sklearn.load_model(Path(args.model)/ 'model')
 model = mlflow.sklearn.load_model(args.model)
-y_test = pd.read_csv(Path(args.test_data)/'y_test.csv')
-y_test['predict'] = model.predict(X_test)
+y_test = pd.read_csv(Path(args.test_data) / "y_test.csv")
+y_test["predict"] = model.predict(X_test)
 
-y_test.to_csv(Path(args.predict_result)/'predict_result.csv')
+y_test.to_csv(Path(args.predict_result) / "predict_result.csv")

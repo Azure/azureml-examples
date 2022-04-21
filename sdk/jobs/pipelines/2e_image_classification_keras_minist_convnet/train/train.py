@@ -28,6 +28,7 @@ def get_file(f):
         else:
             raise Exception("********This path contains more than one file*******")
 
+
 def train(train_input, model_output, epochs):
 
     train_file = get_file(train_input)
@@ -39,7 +40,9 @@ def train(train_input, model_output, epochs):
     input_shape = (img_rows, img_cols, 1)
 
     # Split validation data to optimiza classifier during training
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=13)
+    X_train, X_val, y_train, y_val = train_test_split(
+        X, y, test_size=0.2, random_state=13
+    )
 
     X_train = (
         X_train.reshape(X_train.shape[0], img_rows, img_cols, 1).astype("float32") / 255
@@ -88,7 +91,6 @@ def train(train_input, model_output, epochs):
             mlflow.log_metric("Loss", log["loss"])
             mlflow.log_metric("Accuracy", log["accuracy"])
 
-
     history = model.fit(
         X_train,
         y_train,
@@ -109,5 +111,4 @@ def train(train_input, model_output, epochs):
     mlflow.log_figure(fig, "Loss v.s. Accuracy.png")
 
     # Output model file
-    model.save(model_output+'/image_classification_model.h5')
-
+    model.save(model_output + "/image_classification_model.h5")

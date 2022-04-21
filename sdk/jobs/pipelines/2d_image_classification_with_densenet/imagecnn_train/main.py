@@ -76,7 +76,7 @@ import sys
 # cluster aware logic start
 def get_master_ip():
     regexp = "[\s\S]*export[\s]*DLTS_SD_worker0_IP=([0-9.]+)[\s|s]*"
-    with open("/dlts-runtime/env/init.env", 'r') as f:
+    with open("/dlts-runtime/env/init.env", "r") as f:
         line = f.read()
     match = re.match(regexp, line)
     if match:
@@ -96,223 +96,223 @@ def add_parser_arguments(parser):
     model_names = models.resnet_versions.keys()
     model_configs = models.resnet_configs.keys()
 
-    parser.add_argument('--data', metavar='DIR', help='path to dataset')
+    parser.add_argument("--data", metavar="DIR", help="path to dataset")
     parser.add_argument(
-        '--data-backend',
-        metavar='BACKEND',
-        default='dali-cpu',
+        "--data-backend",
+        metavar="BACKEND",
+        default="dali-cpu",
         choices=DATA_BACKEND_CHOICES,
-        help='data backend: '
-        + ' | '.join(DATA_BACKEND_CHOICES)
-        + ' (default: dali-cpu)',
+        help="data backend: "
+        + " | ".join(DATA_BACKEND_CHOICES)
+        + " (default: dali-cpu)",
     )
 
     parser.add_argument(
-        '--arch',
-        '-a',
-        metavar='ARCH',
-        default='resnet50',
+        "--arch",
+        "-a",
+        metavar="ARCH",
+        default="resnet50",
         choices=model_names,
-        help='model architecture: ' + ' | '.join(model_names) + ' (default: resnet50)',
+        help="model architecture: " + " | ".join(model_names) + " (default: resnet50)",
     )
 
     parser.add_argument(
-        '--model-config',
-        '-c',
-        metavar='CONF',
-        default='classic',
+        "--model-config",
+        "-c",
+        metavar="CONF",
+        default="classic",
         choices=model_configs,
-        help='model configs: ' + ' | '.join(model_configs) + '(default: classic)',
+        help="model configs: " + " | ".join(model_configs) + "(default: classic)",
     )
 
     parser.add_argument(
-        '-j',
-        '--workers',
+        "-j",
+        "--workers",
         default=5,
         type=int,
-        metavar='N',
-        help='number of data loading workers (default: 5)',
+        metavar="N",
+        help="number of data loading workers (default: 5)",
     )
     parser.add_argument(
-        '--epochs',
+        "--epochs",
         default=90,
         type=int,
-        metavar='N',
-        help='number of total epochs to run',
+        metavar="N",
+        help="number of total epochs to run",
     )
     parser.add_argument(
-        '-b',
-        '--batch-size',
+        "-b",
+        "--batch-size",
         default=256,
         type=int,
-        metavar='N',
-        help='mini-batch size (default: 256) per gpu',
+        metavar="N",
+        help="mini-batch size (default: 256) per gpu",
     )
 
     parser.add_argument(
-        '--optimizer-batch-size',
+        "--optimizer-batch-size",
         default=-1,
         type=int,
-        metavar='N',
-        help='size of a total batch size, for simulating bigger batches using gradient accumulation',
+        metavar="N",
+        help="size of a total batch size, for simulating bigger batches using gradient accumulation",
     )
 
     parser.add_argument(
-        '--lr',
-        '--learning-rate',
+        "--lr",
+        "--learning-rate",
         default=0.1,
         type=float,
-        metavar='LR',
-        help='initial learning rate',
+        metavar="LR",
+        help="initial learning rate",
     )
     parser.add_argument(
-        '--lr-schedule',
-        default='step',
+        "--lr-schedule",
+        default="step",
         type=str,
-        metavar='SCHEDULE',
-        choices=['step', 'linear', 'cosine'],
-        help='Type of LR schedule: {}, {}, {}'.format('step', 'linear', 'cosine'),
+        metavar="SCHEDULE",
+        choices=["step", "linear", "cosine"],
+        help="Type of LR schedule: {}, {}, {}".format("step", "linear", "cosine"),
     )
 
     parser.add_argument(
-        '--warmup', default=0, type=int, metavar='E', help='number of warmup epochs'
+        "--warmup", default=0, type=int, metavar="E", help="number of warmup epochs"
     )
 
     parser.add_argument(
-        '--label-smoothing',
+        "--label-smoothing",
         default=0.0,
         type=float,
-        metavar='S',
-        help='label smoothing',
+        metavar="S",
+        help="label smoothing",
     )
     parser.add_argument(
-        '--mixup', default=0.0, type=float, metavar='ALPHA', help='mixup alpha'
+        "--mixup", default=0.0, type=float, metavar="ALPHA", help="mixup alpha"
     )
 
     parser.add_argument(
-        '--momentum', default=0.9, type=float, metavar='M', help='momentum'
+        "--momentum", default=0.9, type=float, metavar="M", help="momentum"
     )
     parser.add_argument(
-        '--weight-decay',
-        '--wd',
+        "--weight-decay",
+        "--wd",
         default=1e-4,
         type=float,
-        metavar='W',
-        help='weight decay (default: 1e-4)',
+        metavar="W",
+        help="weight decay (default: 1e-4)",
     )
     parser.add_argument(
-        '--bn-weight-decay',
-        action='store_true',
-        help='use weight_decay on batch normalization learnable parameters, (default: false)',
+        "--bn-weight-decay",
+        action="store_true",
+        help="use weight_decay on batch normalization learnable parameters, (default: false)",
     )
     parser.add_argument(
-        '--nesterov',
-        action='store_true',
-        help='use nesterov momentum, (default: false)',
+        "--nesterov",
+        action="store_true",
+        help="use nesterov momentum, (default: false)",
     )
 
     parser.add_argument(
-        '--print-freq',
-        '-p',
+        "--print-freq",
+        "-p",
         default=10,
         type=int,
-        metavar='N',
-        help='print frequency (default: 10)',
+        metavar="N",
+        help="print frequency (default: 10)",
     )
     parser.add_argument(
-        '--resume',
-        default='',
+        "--resume",
+        default="",
         type=str,
-        metavar='PATH',
-        help='path to latest checkpoint (default: none)',
+        metavar="PATH",
+        help="path to latest checkpoint (default: none)",
     )
     parser.add_argument(
-        '--pretrained-weights',
-        default='',
+        "--pretrained-weights",
+        default="",
         type=str,
-        metavar='PATH',
-        help='load weights from here',
+        metavar="PATH",
+        help="load weights from here",
     )
 
-    parser.add_argument('--fp16', action='store_true', help='Run model fp16 mode.')
+    parser.add_argument("--fp16", action="store_true", help="Run model fp16 mode.")
     parser.add_argument(
-        '--static-loss-scale',
+        "--static-loss-scale",
         type=float,
         default=1,
-        help='Static loss scale, positive power of 2 values can improve fp16 convergence.',
+        help="Static loss scale, positive power of 2 values can improve fp16 convergence.",
     )
     parser.add_argument(
-        '--dynamic-loss-scale',
-        action='store_true',
-        help='Use dynamic loss scaling.  If supplied, this argument supersedes '
-        + '--static-loss-scale.',
+        "--dynamic-loss-scale",
+        action="store_true",
+        help="Use dynamic loss scaling.  If supplied, this argument supersedes "
+        + "--static-loss-scale.",
     )
     parser.add_argument(
-        '--prof', type=int, default=-1, metavar='N', help='Run only N iterations'
+        "--prof", type=int, default=-1, metavar="N", help="Run only N iterations"
     )
     parser.add_argument(
-        '--amp',
-        action='store_true',
-        help='Run model AMP (automatic mixed precision) mode.',
-    )
-
-    parser.add_argument(
-        '--seed', default=None, type=int, help='random seed used for numpy and pytorch'
+        "--amp",
+        action="store_true",
+        help="Run model AMP (automatic mixed precision) mode.",
     )
 
     parser.add_argument(
-        '--gather-checkpoints',
-        action='store_true',
-        help='Gather checkpoints throughout the training, without this flag only best and last checkpoints will be stored',
+        "--seed", default=None, type=int, help="random seed used for numpy and pytorch"
     )
 
     parser.add_argument(
-        '--raport-file',
-        default='experiment_raport.json',
+        "--gather-checkpoints",
+        action="store_true",
+        help="Gather checkpoints throughout the training, without this flag only best and last checkpoints will be stored",
+    )
+
+    parser.add_argument(
+        "--raport-file",
+        default="experiment_raport.json",
         type=str,
-        help='file in which to store JSON experiment raport',
+        help="file in which to store JSON experiment raport",
     )
 
     parser.add_argument(
-        '--evaluate', action='store_true', help='evaluate checkpoint/model'
+        "--evaluate", action="store_true", help="evaluate checkpoint/model"
     )
-    parser.add_argument('--training-only', action='store_true', help='do not evaluate')
+    parser.add_argument("--training-only", action="store_true", help="do not evaluate")
 
     parser.add_argument(
-        '--no-checkpoints',
-        action='store_false',
-        dest='save_checkpoints',
-        help='do not store any checkpoints, useful for benchmarking',
+        "--no-checkpoints",
+        action="store_false",
+        dest="save_checkpoints",
+        help="do not store any checkpoints, useful for benchmarking",
     )
 
     parser.add_argument(
-        '--workspace',
+        "--workspace",
         type=str,
-        default='./',
-        metavar='DIR',
-        help='path to directory where checkpoints will be stored',
+        default="./",
+        metavar="DIR",
+        help="path to directory where checkpoints will be stored",
     )
 
     parser.add_argument(
-        '--save-checkpoint-epochs',
+        "--save-checkpoint-epochs",
         default=10,
         type=int,
-        metavar='N',
-        help='how many epochs run between saving checkpoints',
+        metavar="N",
+        help="how many epochs run between saving checkpoints",
     )
 
     parser.add_argument(
-        '--log_redirect', action='store_true', help='Redirect log to files.'
+        "--log_redirect", action="store_true", help="Redirect log to files."
     )
 
 
 def main(gpu_index, args):
     if args.log_redirect:
         sys.stdout = open(
-            './outputs_'
+            "./outputs_"
             + str(args.rank * args.ngpus_per_node + gpu_index)
             + str(time.time()),
-            'w',
+            "w",
         )
 
     exp_start_time = time.time()
@@ -332,7 +332,7 @@ def main(gpu_index, args):
 
         args.rank = args.rank * args.ngpus_per_node + gpu_index
         dist.init_process_group(
-            backend='nccl',
+            backend="nccl",
             init_method=args.dist_url,
             world_size=args.world_size,
             rank=args.rank,
@@ -410,14 +410,14 @@ def main(gpu_index, args):
             checkpoint = torch.load(
                 ckpt_path, map_location=lambda storage, loc: storage.cuda(args.gpu)
             )
-            start_epoch = checkpoint['epoch']
-            best_prec1 = checkpoint['best_prec1']
-            model_state = checkpoint['state_dict']
-            optimizer_state = checkpoint['optimizer']
-            args.total_train_step = checkpoint['total_train_step']
+            start_epoch = checkpoint["epoch"]
+            best_prec1 = checkpoint["best_prec1"]
+            model_state = checkpoint["state_dict"]
+            optimizer_state = checkpoint["optimizer"]
+            args.total_train_step = checkpoint["total_train_step"]
             print(
                 "=> loaded checkpoint '{}' (epoch {})".format(
-                    ckpt_path, checkpoint['epoch']
+                    ckpt_path, checkpoint["epoch"]
                 )
             )
         else:
@@ -443,16 +443,16 @@ def main(gpu_index, args):
     )
 
     # Create data loaders and optimizers as needed
-    if args.data_backend == 'pytorch':
+    if args.data_backend == "pytorch":
         get_train_loader = get_pytorch_train_loader
         get_val_loader = get_pytorch_val_loader
-    elif args.data_backend == 'dali-gpu':
+    elif args.data_backend == "dali-gpu":
         get_train_loader = get_dali_train_loader(dali_cpu=False)
         get_val_loader = get_dali_val_loader()
-    elif args.data_backend == 'dali-cpu':
+    elif args.data_backend == "dali-cpu":
         get_train_loader = get_dali_train_loader(dali_cpu=True)
         get_val_loader = get_dali_val_loader()
-    elif args.data_backend == 'syntetic':
+    elif args.data_backend == "syntetic":
         get_val_loader = get_syntetic_loader
         get_train_loader = get_syntetic_loader
 
@@ -504,13 +504,13 @@ def main(gpu_index, args):
         dynamic_loss_scale=args.dynamic_loss_scale,
     )
 
-    if args.lr_schedule == 'step':
+    if args.lr_schedule == "step":
         lr_policy = lr_step_policy(
             args.lr, [30, 60, 80], 0.1, args.warmup, logger=logger
         )
-    elif args.lr_schedule == 'cosine':
+    elif args.lr_schedule == "cosine":
         lr_policy = lr_cosine_policy(args.lr, args.warmup, args.epochs, logger=logger)
-    elif args.lr_schedule == 'linear':
+    elif args.lr_schedule == "linear":
         lr_policy = lr_linear_policy(args.lr, args.warmup, args.epochs, logger=logger)
 
     if args.amp:
@@ -556,9 +556,9 @@ def main(gpu_index, args):
     sys.stdout.flush()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # print(f'os env: {os.environ}')
-    parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+    parser = argparse.ArgumentParser(description="PyTorch ImageNet Training")
 
     add_parser_arguments(parser)
     args = parser.parse_args()
@@ -571,7 +571,7 @@ if __name__ == '__main__':
 
     args.world_size = int(os.environ["OMPI_COMM_WORLD_SIZE"])  # node count
     args.rank = int(os.environ["OMPI_COMM_WORLD_RANK"])  # node world rank
-    print(f'world size {args.world_size}, rank {args.rank}')
+    print(f"world size {args.world_size}, rank {args.rank}")
 
     import os
 
@@ -582,7 +582,7 @@ if __name__ == '__main__':
     # override the master node ip by intention
     # args.dist_url = 'tcp://' + get_master_ip() + ':23456'
     # extract master ip from os env as a workaround
-    args.dist_url = 'tcp://' + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ':23456'
+    args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
 
     ngpus_per_node = torch.cuda.device_count()
     args.distributed = args.world_size > 1
@@ -591,7 +591,7 @@ if __name__ == '__main__':
     # needs to be adjusted accordingly
     args.world_size = ngpus_per_node * args.world_size
     args.ngpus_per_node = ngpus_per_node
-    print(f'world size {args.world_size}, ngpus per node {ngpus_per_node}.')
+    print(f"world size {args.world_size}, ngpus per node {ngpus_per_node}.")
 
     # Use torch.multiprocessing.spawn to launch distributed processes: the
     # main_worker process function
@@ -600,4 +600,4 @@ if __name__ == '__main__':
     # notify DLTS to collect the std output asap.
     log_collect_hook = "/var/log/compute/00_stdout.txt.exit"
     if os.path.isfile(log_collect_hook):
-        open(log_collect_hook, 'w').close()
+        open(log_collect_hook, "w").close()

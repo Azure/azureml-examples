@@ -6,22 +6,22 @@ import glob
 import argparse
 
 # define constants
-ENABLE_MANUAL_CALLING = True #defines whether the workflow can be invoked or not
+ENABLE_MANUAL_CALLING = True  # defines whether the workflow can be invoked or not
 NOT_TESTED_NOTEBOOKS = [
     "datastore",
     "automl-classification-task-bankmarketing-mlflow",
     "automl-forecasting-task-energy-demand-advanced-mlflow",
-    "mlflow-model-local-inference-test"
-] #cannot automate lets exclude
-NOT_SCHEDULED_NOTEBOOKS = ["compute"] #these are too expensive, lets not run everyday
-#define branch where we need this
-#use if running on a release candidate, else make it empty
-BRANCH = 'main' #default - do not change
-BRANCH = 'sdk-preview' #this should be deleted when this branch is merged to main
+    "mlflow-model-local-inference-test",
+]  # cannot automate lets exclude
+NOT_SCHEDULED_NOTEBOOKS = ["compute"]  # these are too expensive, lets not run everyday
+# define branch where we need this
+# use if running on a release candidate, else make it empty
+BRANCH = "main"  # default - do not change
+BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
 def main(args):
-    
+
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
 
@@ -34,45 +34,54 @@ def main(args):
     # write pipeline readme
     pipeline_dir = "jobs/pipelines/"
     with change_working_dir(pipeline_dir):
-      pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
-    pipeline_notebooks = [f"{pipeline_dir}{notebook}" for notebook in pipeline_notebooks]
+        pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+    pipeline_notebooks = [
+        f"{pipeline_dir}{notebook}" for notebook in pipeline_notebooks
+    ]
     write_readme(pipeline_notebooks, pipeline_folder=pipeline_dir)
+
 
 def write_workflows(notebooks):
     print("writing .github/workflows...")
     for notebook in notebooks:
-      if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
-        # get notebook name
-        name = notebook.split("/")[-1].replace(".ipynb", "")
-        folder = os.path.dirname(notebook)
-        classification = folder.replace("/","-")
+        if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
+            # get notebook name
+            name = notebook.split("/")[-1].replace(".ipynb", "")
+            folder = os.path.dirname(notebook)
+            classification = folder.replace("/", "-")
 
-        enable_scheduled_runs = True
-        if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
-          enable_scheduled_runs = False
+            enable_scheduled_runs = True
+            if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+                enable_scheduled_runs = False
 
-        # write workflow file
-        write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs)
+            # write workflow file
+            write_notebook_workflow(
+                notebook, name, classification, folder, enable_scheduled_runs
+            )
     print("finished writing .github/workflows")
 
 
-def write_notebook_workflow(notebook, name, classification, folder, enable_scheduled_runs):
-    is_pipeline_notebook = ( "jobs-pipelines" in classification) or ("assets-component" in classification)
+def write_notebook_workflow(
+    notebook, name, classification, folder, enable_scheduled_runs
+):
+    is_pipeline_notebook = ("jobs-pipelines" in classification) or (
+        "assets-component" in classification
+    )
     creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
     if ENABLE_MANUAL_CALLING:
-      workflow_yaml += f"""  workflow_dispatch:\n"""
+        workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
-      workflow_yaml += f"""  schedule:
+        workflow_yaml += f"""  schedule:
     - cron: "0 */8 * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main\n"""
-    if BRANCH!="main":
-      workflow_yaml += f"""      - {BRANCH}\n"""
+    if BRANCH != "main":
+        workflow_yaml += f"""      - {BRANCH}\n"""
     if is_pipeline_notebook:
-      workflow_yaml += "      - pipeline/*\n"
+        workflow_yaml += "      - pipeline/*\n"
     workflow_yaml += f"""    paths:
       - sdk/**
       - .github/workflows/sdk-{classification}-{name}.yml
@@ -103,16 +112,16 @@ jobs:
       continue-on-error: true
     - name: run {notebook}
       run: |"""
-    
+
     if is_pipeline_notebook:
-      # pipeline-job uses different cred
-      cred_replace = f"""
+        # pipeline-job uses different cred
+        cred_replace = f"""
           mkdir ../../.azureml
           echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@dsl.pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:
-      cred_replace = f"""
+        cred_replace = f"""
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" {name}.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
@@ -120,7 +129,7 @@ jobs:
     workflow_yaml += cred_replace
 
     if name == "workspace":
-      workflow_yaml += f"""
+        workflow_yaml += f"""
           # generate a random workspace name
           # sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" {name}.ipynb
           # skip other workpace creation commands for now
@@ -161,6 +170,7 @@ jobs:
         # write workflow
         with open(workflow_file, "w") as f:
             f.write(workflow_yaml)
+
 
 def write_readme(notebooks, pipeline_folder=None):
     prefix = "prefix.md"
@@ -212,7 +222,7 @@ def write_readme(notebooks, pipeline_folder=None):
                 description += " - _This sample is only tested on demand_"
 
             if pipeline_folder:
-              notebook = os.path.relpath(notebook, pipeline_folder)
+                notebook = os.path.relpath(notebook, pipeline_folder)
 
             # write workflow file
             notebook_table += (
@@ -227,14 +237,18 @@ def write_readme(notebooks, pipeline_folder=None):
             f.write(prefix + notebook_table + suffix)
         print("finished writing README.md")
 
-def write_readme_row(branch, notebook, name, classification, area, sub_area, description):
-    gh_link = 'https://github.com/Azure/azureml-examples/actions/workflows'
-    
+
+def write_readme_row(
+    branch, notebook, name, classification, area, sub_area, description
+):
+    gh_link = "https://github.com/Azure/azureml-examples/actions/workflows"
+
     nb_name = f"[{name}]({notebook})"
     status = f"[![{name}]({gh_link}/sdk-{classification}-{name}.yml/badge.svg?branch={branch})]({gh_link}/sdk-{classification}-{name}.yml)"
 
     row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
     return row
+
 
 @contextlib.contextmanager
 def change_working_dir(path):
@@ -246,6 +260,7 @@ def change_working_dir(path):
         yield
     finally:
         os.chdir(saved_path)
+
 
 # run functions
 if __name__ == "__main__":

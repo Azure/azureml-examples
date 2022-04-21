@@ -5,8 +5,9 @@ from azure.ml.entities import Environment
 
 conda_env = Environment(
     conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04"
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
 )
+
 
 @dsl.command_component(
     name="train_image_classification_keras",
@@ -22,6 +23,5 @@ def keras_train(
 ):
     # avoid dependency issue, execution logic is in prep.py file
     from train import train
+
     train(input_data, output_model, epochs)
-
-
