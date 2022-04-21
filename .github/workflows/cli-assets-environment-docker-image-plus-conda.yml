@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
     paths:
       - cli/assets/environment/docker-image-plus-conda.yml
       - .github/workflows/cli-assets-environment-docker-image-plus-conda.yml
@@ -17,8 +17,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: may-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:

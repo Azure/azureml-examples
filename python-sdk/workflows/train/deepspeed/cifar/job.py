@@ -38,8 +38,11 @@ arguments = [
     True,
 ]
 
-# Use the DeepSpeed Curated Environment
-env = Environment.get(ws, name="AzureML-DeepSpeed-0.3-GPU")
+# Use an environment with DeepSpeed
+env = Environment.from_dockerfile(
+    "deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile")
+)
+
 
 # create job config
 mpi_config = MpiConfiguration(node_count=2, process_count_per_node=2)

@@ -1,4 +1,4 @@
-## This script is used to run amlarc test on AmlArc-enabled compute
+## This script provides functions to facilitate cluster setup and job testing on Arc Enabled ML compute
 set -x
 
 # Global variables
@@ -17,13 +17,13 @@ export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-aks}"
 export VM_SKU="${VM_SKU:-Standard_D4s_v3}"
 export MIN_COUNT="${MIN_COUNT:-3}"
 export MAX_COUNT="${MAX_COUNT:-8}"
-export AKS_CLUSTER_NAME=$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+export AKS_CLUSTER_NAME=${AKS_CLUSTER_NAME:-$(echo ${AKS_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')}
 export AKS_LOCATION="${AKS_LOCATION:-$LOCATION}"
 export AKS_RESOURCE_ID="/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$AKS_CLUSTER_NAME"
 
 # ARC
 export ARC_CLUSTER_PREFIX="${ARC_CLUSTER_PREFIX:-amlarc-arc}"
-export ARC_CLUSTER_NAME=$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')
+export ARC_CLUSTER_NAME=${ARC_CLUSTER_NAME:-$(echo ${ARC_CLUSTER_PREFIX}-${VM_SKU} | tr -d '_')}
 export ARC_LOCATION="${ARC_LOCATION:-$LOCATION}"
 export ARC_RESOURCE_ID="/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Kubernetes/ConnectedClusters/$ARC_CLUSTER_NAME"
 
@@ -32,15 +32,15 @@ export RELEASE_TRAIN="${RELEASE_TRAIN:-staging}"
 export RELEASE_NAMESPACE="${RELEASE_NAMESPACE:-azureml}"
 export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
 export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
-export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True allowInsecureConnections=True}"
+export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True enableInference=True allowInsecureConnections=True}"
 export CLUSTER_TYPE="${CLUSTER_TYPE:-connectedClusters}" # or managedClusters
 if [ "${CLUSTER_TYPE}" == "connectedClusters" ]; then
-    export CLUSTER_NAME=$ARC_CLUSTER_NAME
-    export RESOURCE_ID=$ARC_RESOURCE_ID
+    export CLUSTER_NAME=${CLUSTER_NAME:-$ARC_CLUSTER_NAME}
+    export RESOURCE_ID=${RESOURCE_ID:-$ARC_RESOURCE_ID}
 else
     # managedClusters
-    export CLUSTER_NAME=$AKS_CLUSTER_NAME
-    export RESOURCE_ID=$AKS_RESOURCE_ID
+    export CLUSTER_NAME=${CLUSTER_NAME:-$AKS_CLUSTER_NAME}
+    export RESOURCE_ID=${RESOURCE_ID:-$AKS_RESOURCE_ID}
 fi
 
 # Workspace and Compute
@@ -51,9 +51,7 @@ export CPU="${CPU:-1}"
 export MEMORY="${MEMORY:-4Gi}"
 export GPU="${GPU:-null}"
 
-touch $LOCK_FILE
-
-renew_lock_file(){
+refresh_lock_file(){
     rm -f $LOCK_FILE
     echo $(date) > $LOCK_FILE
 }
@@ -141,6 +139,11 @@ setup_aks(){
         --no-ssh-key \
         $@
 
+    check_aks_status
+
+}
+
+check_aks_status(){
     for i in $(seq 1 $MAX_RETRIES); do
         provisioningState=$(az aks show \
             --subscription $SUBSCRIPTION \
@@ -156,7 +159,6 @@ setup_aks(){
     done
     
     [[ $provisioningState == "Succeeded" ]]
-
 }
 
 get_kubeconfig(){
@@ -184,6 +186,10 @@ connect_arc(){
         --name $ARC_CLUSTER_NAME --no-wait \
         $@
 
+    check_arc_status
+}
+
+check_arc_status(){
     for i in $(seq 1 $MAX_RETRIES); do
         connectivityStatus=$(az connectedk8s show \
             --subscription $SUBSCRIPTION \
@@ -232,6 +238,10 @@ install_extension(){
         --no-wait \
         $@
     
+    check_extension_status
+}
+
+check_extension_status(){
     for i in $(seq 1 $MAX_RETRIES); do
         provisioningState=$(az k8s-extension show \
             --cluster-name $CLUSTER_NAME \
@@ -249,7 +259,6 @@ install_extension(){
     done
 
     [[ $provisioningState == "Succeeded" ]]
-    
 }
 
 # setup workspace
@@ -405,20 +414,23 @@ run_cli_job(){
     else
         EXTRA_ARGS=" --set compute=azureml:$COMPUTE resources.instance_type=$INSTANCE_TYPE_NAME "
     fi 
-     
+
+    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
+    
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
 
     run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
-    az ml job stream $SRW -n $run_id
+    timeout 30m az ml job stream $SRW -n $run_id
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
+    timeout 5m az ml job cancel $SRW -n $run_id
     echo $status
     if [[ $status == "Completed" ]]; then
-        echo "Job $JOB_YML completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_YML completed" | tee -a $RESULT_FILE
     elif [[ $status ==  "Failed" ]]; then
-        echo "Job $JOB_YML failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_YML failed" | tee -a $RESULT_FILE
         return 1
     else 
-        echo "Job $JOB_YML unknown" | tee -a $RESULT_FILE 
+        echo "[JobStatus] $JOB_YML unknown" | tee -a $RESULT_FILE 
 	return 2
     fi
 }
@@ -451,6 +463,8 @@ run_jupyter_test(){
     JOB_DIR=$(dirname $JOB_SPEC)
     JOB_FILE=$(basename $JOB_SPEC)
 
+    echo "[JobSubmission] $JOB_SPEC" | tee -a $RESULT_FILE
+
     cd $JOB_DIR
     jupyter nbconvert --debug --execute $JOB_FILE --to python
     status=$?
@@ -459,9 +473,9 @@ run_jupyter_test(){
     echo $status
     if [[ "$status" == "0" ]]
     then
-        echo "Job $JOB_SPEC completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC completed" | tee -a $RESULT_FILE
     else
-        echo "Job $JOB_SPEC failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC failed" | tee -a $RESULT_FILE
         return 1
     fi
 }
@@ -472,6 +486,8 @@ run_py_test(){
     JOB_DIR=$(dirname $JOB_SPEC)
     JOB_FILE=$(basename $JOB_SPEC)
 
+    echo "[JobSubmission] $JOB_SPEC" | tee -a $RESULT_FILE
+
     cd $JOB_DIR
     python $JOB_FILE
     status=$?
@@ -480,9 +496,9 @@ run_py_test(){
     echo $status
     if [[ "$status" == "0" ]]
     then
-        echo "Job $JOB_SPEC completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC completed" | tee -a $RESULT_FILE
     else
-        echo "Job $JOB_SPEC failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC failed" | tee -a $RESULT_FILE
         return 1
     fi
 }
@@ -497,9 +513,9 @@ count_result(){
 
     [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
 
-    total=$(grep -c Job $RESULT_FILE)
-    success=$(grep Job $RESULT_FILE | grep -ic completed)
-    unhealthy=$(grep Job $RESULT_FILE | grep -ivc completed)
+    total=$(grep -c "\[JobSubmission\]" $RESULT_FILE)
+    success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic completed)
+    unhealthy=$(( $total - $success ))
     echo "Total: ${total}, Success: ${success}, Unhealthy: ${unhealthy}, MinSuccessNum: ${MIN_SUCCESS_NUM}."
     
     if (( 10#${unhealthy} > 0 )) ; then
@@ -550,16 +566,27 @@ Test result:
 <br>
 $(sed ':a;N;$!ba;s/\n/<br>/g' $RESULT_FILE)
 <br>
+<br>
+Others:
+<br>
+$OtherIcmMessage
+<br>
 "
 }
 
 download_icm_cert(){
     KEY_VAULT_NAME=${KEY_VAULT_NAME:-kvname}
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-KEY-PEM -f key.pem
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-CERT-PEM -f cert.pem 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-HOST -f icm_host
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-CONNECTOR-ID -f icm_connector_id
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name ICM-ROUTING-ID -f icm_routing_id
+    ICM_KEY_PEM_NAME=${ICM_KEY_PEM_NAME:-ICM-KEY-PEM}
+    ICM_CERT_PEM_NAME=${ICM_CERT_PEM_NAME:-ICM-CERT-PEM}
+    ICM_HOST_NAME=${ICM_HOST_NAME:-ICM-HOST}
+    ICM_CONNECTOR_ID_NAME=${ICM_CONNECTOR_ID_NAME:-ICM-CONNECTOR-ID}
+    ICM_ROUTING_ID_NAME=${ICM_ROUTING_ID_NAME:-ICM-ROUTING-ID}
+
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_KEY_PEM_NAME -f key.pem
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_CERT_PEM_NAME -f cert.pem 
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_HOST_NAME -f icm_host
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_CONNECTOR_ID_NAME -f icm_connector_id
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_ROUTING_ID_NAME -f icm_routing_id
 }
 
 file_icm(){
@@ -689,7 +716,13 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
 }
 
 
+
+help(){
+    echo "All functions:"
+    declare -F
+}
+
+
 if [ "$0" = "$BASH_SOURCE" ]; then
     $@
 fi
-

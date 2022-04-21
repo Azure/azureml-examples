@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
     paths:
       - cli/jobs/basics/**
       - .github/workflows/cli-jobs-basics-hello-iris-datastore-file.yml
@@ -17,8 +17,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: may-sdk-preview
     - name: azure login
       uses: azure/login@v1
       with:
@@ -28,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/basics/hello-iris-datastore-file.yml
-      working-directory: cli
+      run: bash -x ../../run-job.sh hello-iris-datastore-file.yml
+      working-directory: cli/jobs/basics

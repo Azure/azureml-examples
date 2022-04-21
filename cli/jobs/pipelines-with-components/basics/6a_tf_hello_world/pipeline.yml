@@ -1,16 +1,17 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-description: "Prints the environment variable ($TF_CONFIG) useful for scripts running in a Tensorflow training environment"
+display_name: 6a_tf_hello_world
+description: Prints the environment variable ($TF_CONFIG) useful for scripts running in a Tensorflow training environment
 
 jobs:
-  tf-job:
+  tf_job:
     type: command
     component: file:./component.yml
     compute: azureml:gpu-cluster
     resources:
-      instance_count: 3
+      instance_count: 2
     distribution:
       type: tensorflow
-      worker_count: 3
+      worker_count: 2
 
         
