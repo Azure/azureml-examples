@@ -7,7 +7,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-single-step-tensorflow-mnist-distributed-horovod-tensorflow-mnist-distributed-horovod.yml

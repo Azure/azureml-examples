@@ -50,7 +50,7 @@ pip install azure-ml==0.0.61212840 --extra-index-url https://azuremlsdktestpypi.
 
 ## Clone examples repository
 ```SDK
-git clone https://github.com/Azure/azureml-examples --branch april-sdk-preview
+git clone https://github.com/Azure/azureml-examples --branch sdk-preview
 cd azureml-examples/sdk
 ```
 

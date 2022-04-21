@@ -7,7 +7,6 @@ on:
     branches:
       - main
       - sdk-preview
-      - april-sdk-preview
     paths:
       - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
       - .github/workflows/cli-jobs-pipelines-with-components-nyc_taxi_data_regression-pipeline.yml
