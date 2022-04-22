@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: train_data_component
 display_name: train_data
+description: A dummy train component
 version: 2
 type: command
 inputs:
