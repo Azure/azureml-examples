@@ -17,7 +17,7 @@ az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoint
 
 # <test_blue>
 # comment this out as it's blocked by AKS policy for NONProd subscription.
-# az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_blue>
 
 # <scale_blue>
