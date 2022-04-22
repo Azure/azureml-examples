@@ -13,7 +13,7 @@ inputs:
   method:
     type: string # Enum
     default: random
-    # enum: ['random', 'genetic', 'kdtree']
+    enum: ['random', 'genetic', 'kdtree']
   desired_class:
     type: string # Or int
     default: 0

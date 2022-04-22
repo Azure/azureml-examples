@@ -15,11 +15,11 @@ inputs:
   nuisance_model:
     type: string # Enum
     default: linear
-    # enum: ['linear', 'automl']
+    enum: ['linear', 'automl']
   heterogeneity_model:
     type: string # Enum
     default: linear
-    # enum: ['linear', 'forest']
+    enum: ['linear', 'forest']
   alpha:
     type: number
     default: 0.05

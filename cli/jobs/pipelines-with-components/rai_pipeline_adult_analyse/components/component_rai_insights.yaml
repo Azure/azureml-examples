@@ -8,7 +8,7 @@ inputs:
     type: string
   task_type:
     type: string # [classification, regression]
-    # enum: ['classification', 'regression']
+    enum: ['classification', 'regression']
   model_info_path:
     type: uri_folder # To model_info.json
   train_dataset:
