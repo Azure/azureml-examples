@@ -14,6 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
     steps:
     - name: check out repo
       uses: actions/checkout@v2
