@@ -18,7 +18,7 @@ inputs:
     description: Should exclude 'Random' transform operations in inference but keep them in training
     type: string
     default: For training
-    enum: ['For training', 'For inference']
+    # enum: ['For training', 'For inference']
 outputs:
   output_path:
     type: uri_folder
