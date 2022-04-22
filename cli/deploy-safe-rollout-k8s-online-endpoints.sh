@@ -16,7 +16,8 @@ az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoint
 # </create_blue>
 
 # <test_blue>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
+# comment this out as it's blocked by AKS policy for NONProd subscription.
+# az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_blue>
 
 # <scale_blue>
@@ -32,6 +33,7 @@ az ml online-endpoint show -n $ENDPOINT_NAME --query traffic
 # </get_traffic>
 
 # <test_green>
+# comment this out as it's blocked by AKS policy for NONProd subscription.
 az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
 
