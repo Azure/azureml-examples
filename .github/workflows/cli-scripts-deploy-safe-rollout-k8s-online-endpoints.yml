@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       KEY_VAULT_NAME: amlarcgithubworkflowkv
+      OWNERS: amlarc@microsoft.com
+      GITHUB_REPO: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
     steps:
     - name: check out repo
       uses: actions/checkout@v2
