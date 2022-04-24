@@ -51,7 +51,8 @@ set -x
 # get the scoring uri
 SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
 # use curl to invoke the endpoint
-curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
+# comment this out as it's blocked by AKS policy for NONProd subscription.
+# curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
 # </test_green_using_curl>
 
 # <green_10pct_traffic>
