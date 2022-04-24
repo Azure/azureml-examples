@@ -39,9 +39,9 @@ jobs:
       if: ${{ failure() }}
       run: |
         # download certificates
-        export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+        export ICM_HOST_NAME=ICM-HOST-PROD
+        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PROD
+        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PROD
         set -e; bash -x .github/amlarc-tool.sh download_icm_cert
         export ICM_HOST=$(cat icm_host)
         export CONNECTOR_ID=$(cat icm_connector_id)
