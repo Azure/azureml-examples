@@ -14,6 +14,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      OWNERS: amlarc@microsoft.com
+      GITHUB_REPO: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -26,7 +31,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y && sudo apt-get install xmlstarlet
     - name: test script script
       run: set -e; bash -x deploy-safe-rollout-k8s-online-endpoints.sh
       working-directory: cli
