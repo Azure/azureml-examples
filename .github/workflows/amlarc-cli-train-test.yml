@@ -165,13 +165,13 @@ jobs:
       continue-on-error: true
       timeout-minutes: 40
     - name: run cli/jobs/single-step/tensorflow/mnist-distributed/job.yml
-      run: INSTANCE_TYPE_NAME=gpu bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed/job.yml
+      run: INSTANCE_TYPE_NAME=gpu TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed/job.yml
       continue-on-error: true
-      timeout-minutes: 40
+      timeout-minutes: 70
     - name: run cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
-      run: INSTANCE_TYPE_NAME=gpu bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
+      run: INSTANCE_TYPE_NAME=gpu TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
       continue-on-error: true
-      timeout-minutes: 40
+      timeout-minutes: 70
 
     ## pipeline
     # cifar-10
