@@ -39,8 +39,8 @@ jobs:
       WORKSPACE: amlarc-githubtest-ws
 
       MIN_SUCCESS_NUM: 3
-      SEVERITY: 3
-      OWNERS: zetia@microsoft.com;jing.zhong@microsoft.com
+      SEVERITY: 4
+      OWNERS: amlarc@microsoft.com
       GITHUB_REPO: https://github.com/Azure/azureml-examples
       WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/amlarc-cli-train-test.yml
       
