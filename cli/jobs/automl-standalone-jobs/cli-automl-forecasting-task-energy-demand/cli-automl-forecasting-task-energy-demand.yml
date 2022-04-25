@@ -46,8 +46,8 @@ training:
   enable_model_explainability: true
   enable_stack_ensemble: false
 
-#blocked_training_algorithms:
-#  - prophet
+blocked_training_algorithms:
+  - prophet
 
-#allowed_training_algorithms:
-#  - auto_arima
+allowed_training_algorithms:
+  - auto_arima

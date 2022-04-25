@@ -52,10 +52,9 @@ featurization:
 
 training:
   enable_model_explainability: true
-  
-#BUG with enums/values: Bug 1728040
-#blocked_training_algorithms:
-#  - multinomial_naive_bayes
-#allowed_training_algorithms:
-#  - gradient_boosting
-#  - logistic_regression
+
+blocked_training_algorithms:
+  - multinomial_naive_bayes
+allowed_training_algorithms:
+  - gradient_boosting
+  - logistic_regression
