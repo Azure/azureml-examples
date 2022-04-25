@@ -20,9 +20,9 @@ export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
 cd /home/samples/azureml-examples/cli/
 
 # create endpoint
-az ml online-endpoint create --name $ENDPOINT_NAME -f $ENDPOINT_FILE_PATH
+az ml online-endpoint create --name $ENDPOINT_NAME -f $ENDPOINT_FILE_PATH --set public_network_access="disabled"
 # create deployment in managed vnet
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f $DEPLOYMENT_FILE_PATH --all-traffic --set environment.image="$ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1" private_network_connection="true"
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f $DEPLOYMENT_FILE_PATH --all-traffic --set environment.image="$ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1" egress_public_network_access="disabled"
 # </create_vnet_deployment> 
 
 # <get_logs> 

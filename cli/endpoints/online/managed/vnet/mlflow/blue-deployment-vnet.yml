@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: placeholder-name
-private_network_connection: true
+egress_public_network_access: disabled
 model:
   path: model/
 environment_variables:
