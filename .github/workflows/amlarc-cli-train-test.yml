@@ -68,7 +68,7 @@ jobs:
       timeout-minutes: 30
     - name: install_extension
       run: |
-        export EXTENSION_SETTINGS="enableTraining=True enableInference=True allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+        export EXTENSION_SETTINGS="enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
         bash .github/amlarc-tool.sh install_extension
       timeout-minutes: 30
     - name: setup_workspace
