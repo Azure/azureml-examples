@@ -67,5 +67,9 @@ az monitor autoscale profile create \
 # </weekend_profile>
 
 # <delete_endpoint>
+# delete the autoscaling profile
+az monitor autoscale delete -n "$AUTOSCALE_SETTINGS_NAME"
+
+# delete the endpoint
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
