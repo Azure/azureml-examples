@@ -107,6 +107,8 @@ jobs:
     # cifar-10
     - name: run cli/jobs/pipelines/cifar-10/job.yml
       run: |
+        cat cli/jobs/pipelines/cifar-10/pipeline.yml
+        echo ; echo ================= ; echo ;
         TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml \
             jobs.get-data.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true \
             jobs.train-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
