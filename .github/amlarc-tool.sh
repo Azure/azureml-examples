@@ -240,7 +240,7 @@ install_extension(){
             --cluster-type $CLUSTER_TYPE \
             --subscription $SUBSCRIPTION \
             --resource-group $RESOURCE_GROUP \
-            --name $EXTENSION_NAME && \
+            --name $EXTENSION_NAME || \
         az k8s-extension create \
             --cluster-name $CLUSTER_NAME \
             --cluster-type $CLUSTER_TYPE \
