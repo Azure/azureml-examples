@@ -186,12 +186,7 @@ jobs:
     # nyc-taxi
     - name: run cli/jobs/pipelines/nyc-taxi/job.yml
       run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml \
-            jobs.prep-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.transform-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.train-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.predict-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.score-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true   
+        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml 
       continue-on-error: true
       timeout-minutes: 70
 
