@@ -1,13 +1,14 @@
-name: cli-scripts-deploy-safe-rollout-k8s-online-endpoints
+name: cli-scripts-deploy-safe-rollout-amlarc-online-endpoints
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 9 * * *"
   pull_request:
     branches:
       - main
       - sdk-preview
     paths:
+      - cli/endpoints/online/**
       - cli/deploy-safe-rollout-k8s-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
       - cli/setup.sh
@@ -28,5 +29,5 @@ jobs:
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
-      run: set -e; bash -x deploy-safe-rollout-k8s-online-endpoints.sh
+      run: set -e; bash -x deploy-safe-rollout-amlarc-online-endpoints.sh
       working-directory: cli
