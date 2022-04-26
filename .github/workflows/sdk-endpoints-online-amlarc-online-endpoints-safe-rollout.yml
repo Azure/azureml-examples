@@ -41,8 +41,8 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-safe-rollout.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-safe-rollout.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-safe-rollout.ipynb
-          sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" online-endpoints-safe-rollout.ipynb
+          sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" online-endpoints-safe-rollout.ipynb
           sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" online-endpoints-safe-rollout.ipynb
 
           papermill -k python online-endpoints-safe-rollout.ipynb online-endpoints-safe-rollout.output.ipynb
