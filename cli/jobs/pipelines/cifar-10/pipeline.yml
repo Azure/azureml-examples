@@ -36,6 +36,7 @@ jobs:
       type: pytorch
       process_count_per_instance: 1
     resources:
+      instance_type: gpu
       instance_count: 2
   eval-model:
     type: command
@@ -50,6 +51,7 @@ jobs:
       type: pytorch
       process_count_per_instance: 2
     resources:
+      instance_type: gpu
       instance_count: 1
     inputs:
       cifar: ${{parent.jobs.get-data.outputs.cifar}}
