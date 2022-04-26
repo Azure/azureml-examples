@@ -2,7 +2,6 @@ set -e
 
 # This is the instructions for docs.User has to execute this from a test VM - that is why user cannot use defaults from their local setup
 
-
 # <set_env_vars> 
 export SUBSCRIPTION="<YOUR_SUBSCRIPTION_ID>"
 export RESOURCE_GROUP="<YOUR_RESOURCE_GROUP>"
