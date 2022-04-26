@@ -7,6 +7,11 @@ type: command
 inputs:
   training_data: 
     type: uri_folder
+  test_split_ratio:
+    type: number
+    min: 0
+    max: 1
+    default: 0.2
 outputs:
   model_output:
     type: mlflow_model
@@ -19,4 +24,6 @@ command: >-
   --training_data ${{inputs.training_data}} 
   --test_data ${{outputs.test_data}} 
   --model_output ${{outputs.model_output}}
+  --test_split_ratio ${{inputs.test_split_ratio}}
+
 # </component>

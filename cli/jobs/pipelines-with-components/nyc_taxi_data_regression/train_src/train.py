@@ -14,6 +14,9 @@ parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
+parser.add_argument("--test_split_ratio",type=float,help="ratio of train test split")
+
+
 
 args = parser.parse_args()
 
@@ -23,6 +26,7 @@ lines = [
     f"Training data path: {args.training_data}",
     f"Test data path: {args.test_data}",
     f"Model output path: {args.model_output}",
+    f"Test split ratio:{args.test_split_ratio}",
 ]
 
 for line in lines:
@@ -72,7 +76,7 @@ X = train_data[
 ]
 
 # Split the data into train and test sets
-trainX, testX, trainy, testy = train_test_split(X, y, test_size=0.3, random_state=42)
+trainX, testX, trainy, testy = train_test_split(X, y, test_size=args.test_split_ratio, random_state=42)
 print(trainX.shape)
 print(trainX.columns)
 
