@@ -2,12 +2,12 @@ name: sdk-endpoints-online-amlarc-online-endpoints-safe-rollout
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "0 5 * * *"
   pull_request:
     branches:
       - sdk-preview
     paths:
-      - sdk/**
+      - sdk/endpoints/online/**
       - .github/workflows/sdk-endpoints-online-amlarc-online-endpoints-safe-rollout.yml
       - notebooks/dev-requirements.txt
 jobs:
