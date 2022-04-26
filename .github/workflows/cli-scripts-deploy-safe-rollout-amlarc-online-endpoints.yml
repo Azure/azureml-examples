@@ -38,7 +38,7 @@ jobs:
       run: set -e; bash -x deploy-safe-rollout-amlarc-online-endpoints.sh
       working-directory: cli
     - name: file IcM when fails
-      if: ${{ failure() }}
+      if: ${{ failure() && github.event_name == 'schedule' }}
       run: |
         # download certificates
         export ICM_HOST_NAME=ICM-HOST-PROD
