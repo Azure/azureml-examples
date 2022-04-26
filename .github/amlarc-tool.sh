@@ -211,7 +211,7 @@ check_arc_status(){
 install_extension(){
     REINSTALL_EXTENSION="${REINSTALL_EXTENSION:-true}"
     
-    if [[ $REINSTALL_EXTENSION != "true" ]]; then
+    if [[ $REINSTALL_EXTENSION == "true" ]]; then
         # remove extension if exists to avoid missing the major version upgrade. 
         az k8s-extension delete \
             --cluster-name $CLUSTER_NAME \
