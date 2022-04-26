@@ -12,6 +12,10 @@ on:
         description: 'Release version: experimental, staging or stable'
         required: false
         default: 'staging'
+      REINSTALL_EXTENSION:
+        description: 'Whether to reinstall extension: true or false'
+        required: false
+        default: 'true'
       CLEANUP_CLUSTER:
         description: 'Whether to delete cluster: true or false'
         required: false
@@ -35,6 +39,7 @@ jobs:
       KEY_VAULT_RG: amlarc-github-workflow
       LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
       RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      REINSTALL_EXTENSION: ${{ github.event.inputs.REINSTALL_EXTENSION }}
       VM_SKU: STANDARD_NC12
       WORKSPACE: amlarc-githubtest-ws
 
