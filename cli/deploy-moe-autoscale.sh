@@ -21,7 +21,7 @@ DEPLOYMENT_RESOURCE_ID=$(az ml online-deployment show -e $ENDPOINT_NAME -n $DEPL
 # ARM id of the deployment. todo: change to --query "id"
 ENDPOINT_RESOURCE_ID=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query "properties.\"azureml.onlineendpointid\"")
 # set a unique name for autoscale settings for this deployment. The below will append a random number to make the name unique.
-AUTOSCALE_SETTINGS_NAME=autoscale-`echo $RANDOM`
+AUTOSCALE_SETTINGS_NAME=autoscale-$ENDPOINT_NAME-$DEPLOYMENT_NAME-`echo $RANDOM`
 # </set_other_env_variables>
 
 # create autoscale settings. Note if you followed the how-to-deploy doc example, the instance count would have been 1. Now after applying this poilcy, it will scale up 2 (since min count and count are 2).
@@ -67,5 +67,9 @@ az monitor autoscale profile create \
 # </weekend_profile>
 
 # <delete_endpoint>
+# delete the autoscaling profile
+az monitor autoscale delete -n "$AUTOSCALE_SETTINGS_NAME"
+
+# delete the endpoint
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
 # </delete_endpoint>
