@@ -32,7 +32,7 @@ export RELEASE_TRAIN="${RELEASE_TRAIN:-staging}"
 export RELEASE_NAMESPACE="${RELEASE_NAMESPACE:-azureml}"
 export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
 export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
-export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True enableInference=True allowInsecureConnections=True}"
+export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True enableInference=True allowInsecureConnections=True inferenceRouterServiceType=loadBalancer}"
 export CLUSTER_TYPE="${CLUSTER_TYPE:-connectedClusters}" # or managedClusters
 if [ "${CLUSTER_TYPE}" == "connectedClusters" ]; then
     export CLUSTER_NAME=${CLUSTER_NAME:-$ARC_CLUSTER_NAME}
@@ -209,34 +209,51 @@ check_arc_status(){
 
 # install extension
 install_extension(){
-    # remove extension if exists to avoid missing the major version upgrade. 
-    az k8s-extension show \
-        --cluster-name $CLUSTER_NAME \
-        --cluster-type $CLUSTER_TYPE \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME && \
-    az k8s-extension delete \
-        --cluster-name $CLUSTER_NAME \
-        --cluster-type $CLUSTER_TYPE \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME \
-        --yes || true
+    REINSTALL_EXTENSION="${REINSTALL_EXTENSION:-true}"
+    
+    if [[ $REINSTALL_EXTENSION == "true" ]]; then
+        # remove extension if exists to avoid missing the major version upgrade. 
+        az k8s-extension delete \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME \
+            --yes || true
 
-    # install extension
-    az k8s-extension create \
-        --cluster-name $CLUSTER_NAME \
-        --cluster-type $CLUSTER_TYPE \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME \
-        --extension-type $EXTENSION_TYPE \
-        --scope cluster \
-        --release-train $RELEASE_TRAIN \
-        --configuration-settings $EXTENSION_SETTINGS \
-        --no-wait \
-        $@
+        # install extension
+        az k8s-extension create \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME \
+            --extension-type $EXTENSION_TYPE \
+            --scope cluster \
+            --release-train $RELEASE_TRAIN \
+            --configuration-settings $EXTENSION_SETTINGS \
+            --no-wait \
+            $@
+    else
+        az k8s-extension show \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME || \
+        az k8s-extension create \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME \
+            --extension-type $EXTENSION_TYPE \
+            --scope cluster \
+            --release-train $RELEASE_TRAIN \
+            --configuration-settings $EXTENSION_SETTINGS \
+            --no-wait \
+            $@
+    fi
     
     check_extension_status
 }
@@ -420,7 +437,8 @@ run_cli_job(){
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
 
     run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
-    timeout 30m az ml job stream $SRW -n $run_id
+    TIMEOUT="${TIMEOUT:-30m}"
+    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
     timeout 5m az ml job cancel $SRW -n $run_id
     echo $status
@@ -672,8 +690,8 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     CONNECTOR_ID="${CONNECTOR_ID:-6872439d-31d6-4e5d-a73b-2d93edebf18a}"
     TITLE="${TITLE:-[Github] Github examples test failed}"
     ROUTING_ID="${ROUTING_ID:-Vienna-AmlArc}"
-    OWNING_ALIAS="${OWNING_ALIAS:-test}"
-    OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME:-test@microsoft.com}"
+    OWNING_ALIAS="${OWNING_ALIAS}"
+    OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME}"
     SUMMARY="${SUMMARY:-Test icm ticket}"
     SEVERITY="${SEVERITY:-4}"
     
