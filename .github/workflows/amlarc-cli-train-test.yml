@@ -230,7 +230,9 @@ jobs:
         set +e
         bash .github/amlarc-tool.sh delete_endpoints
         bash .github/amlarc-tool.sh delete_compute
-        bash .github/amlarc-tool.sh delete_extension
+        if [ "${{ github.event.inputs.REINSTALL_EXTENSION }}" == "true" ] ; then
+            bash .github/amlarc-tool.sh delete_extension
+        fi
         if [ "${{ github.event.inputs.CLEANUP_CLUSTER }}" == "true" ] ; then
             bash .github/amlarc-tool.sh delete_arc
             bash .github/amlarc-tool.sh delete_aks
