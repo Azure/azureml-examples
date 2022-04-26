@@ -14,8 +14,13 @@ export USER=$(whoami)
 # setup docker
 sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version && sudo usermod -aG docker $USER
 # setup az cli and ml extension
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az extension add --upgrade -n ml -y
+#todo: uncomment below
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash # && az extension add --upgrade -n ml -y
 # </setup_docker_az_cli> 
+
+# todo: remove the below teo
+export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/61426493/ml-0.0.61426493-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/61426493 --yes
 
 # login using az cli. 
 ### NOTE to user: use `az login` - and do NOT use the below command (it requires setting up of user assigned identity). ###
