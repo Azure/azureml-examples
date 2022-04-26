@@ -71,10 +71,10 @@ jobs:
     - name: connect_arc
       run: bash .github/amlarc-tool.sh connect_arc
       timeout-minutes: 30
-    #- name: install_extension
-    #  run: |
-    #    export EXTENSION_SETTINGS="enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
-    #    bash .github/amlarc-tool.sh install_extension
+    - name: install_extension
+      run: |
+        export EXTENSION_SETTINGS="enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+        bash .github/amlarc-tool.sh install_extension
     #  timeout-minutes: 30
     #- name: setup_workspace
     #  run: bash .github/amlarc-tool.sh setup_workspace
@@ -133,37 +133,4 @@ jobs:
       if: ${{ always() }}
       run: |
         bash .github/amlarc-tool.sh count_result
-      timeout-minutes: 30
-    - name: file_icm
-      if: ${{ always() }}
-      run: |
-        bash .github/amlarc-tool.sh count_result || ret=$?
-        if [ "$ret" != "0" ] && [ "$ret" != "" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
-            # download certificates
-            export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-            export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-            export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
-            bash .github/amlarc-tool.sh download_icm_cert
-            export ICM_HOST=$(cat icm_host)
-            export CONNECTOR_ID=$(cat icm_connector_id)
-            export ROUTING_ID=$(cat icm_routing_id)
-            export SUMMARY=$(bash .github/amlarc-tool.sh gen_summary_for_github_test)
-            bash .github/amlarc-tool.sh file_icm
-        fi
-      timeout-minutes: 30
-
-    - name: clean up resources
-      if: ${{ always() }}
-      run: |
-        set +e
-        bash .github/amlarc-tool.sh delete_endpoints
-        bash .github/amlarc-tool.sh delete_compute
-        bash .github/amlarc-tool.sh delete_extension
-        if [ "${{ github.event.inputs.CLEANUP_CLUSTER }}" == "true" ] ; then
-            bash .github/amlarc-tool.sh delete_arc
-            bash .github/amlarc-tool.sh delete_aks
-        fi
-        if [ "${{ github.event.inputs.CLEANUP_WORKSPACE }}" == "true" ] ; then
-            bash .github/amlarc-tool.sh delete_workspace
-        fi
       timeout-minutes: 30
