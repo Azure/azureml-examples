@@ -8,8 +8,8 @@ on:
       - main
     paths:
       - cli/endpoints/online/**
-      - cli/deploy-safe-rollout-k8s-online-endpoints.sh
-      - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
+      - cli/deploy-safe-rollout-amlarc-online-endpoints.sh
+      - .github/workflows/cli-scripts-deploy-safe-rollout-amlarc-online-endpoints.yml
       - cli/setup.sh
       - .github/amlarc-tool.sh
 jobs:
