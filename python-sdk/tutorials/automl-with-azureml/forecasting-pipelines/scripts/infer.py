@@ -25,19 +25,11 @@ def infer_forecasting_dataset_tcn(
     X_test,
     y_test,
     model,
-    target_column_name,
-    max_horizon,
-    time_column_name,
     output_dataset_name="results",
 ):
 
-    if max_horizon is None or time_column_name is None:
-        print("Max Horizon or Time Column Name is None. Cannot infer.")
-        exit()
-
     y_pred, df_all = model.forecast(X_test, y_test)
 
-    pd.merge(X_test, df_all)
     run = Run.get_context()
 
     registered_train = TabularDatasetFactory.register_pandas_dataframe(
@@ -82,27 +74,6 @@ def get_args():
     )
 
     parser.add_argument(
-        "--target_column_name",
-        type=str,
-        dest="target_column_name",
-        help="The target column name.",
-    )
-
-    parser.add_argument(
-        "--time_column_name",
-        type=str,
-        dest="time_column_name",
-        help="The time column name.",
-    )
-
-    parser.add_argument(
-        "--max_horizon",
-        type=str,
-        dest="max_horizon",
-        help="The max horizon.",
-    )
-
-    parser.add_argument(
         "--ouput_dataset_name",
         type=str,
         dest="ouput_dataset_name",
@@ -124,9 +95,6 @@ def get_data(
     run,
     fitted_model,
     target_column_name,
-    time_column_name,
-    max_horizon,
-    freq,
     test_dataset_name,
 ):
 
@@ -169,8 +137,6 @@ if __name__ == "__main__":
     ouput_dataset_name = args.ouput_dataset_name
     test_dataset_name = args.test_dataset_name
     target_column_name = args.target_column_name
-    time_column_name = args.time_column_name
-    max_horizon = args.max_horizon
     print("args passed are: ")
 
     print(model_name)
@@ -183,19 +149,12 @@ if __name__ == "__main__":
     print(model_file_name)
     fitted_model = get_model(model_path, model_file_name)
 
-    print("model related params are:")
-    print(max_horizon)
-    print(time_column_name)
-
     freq = get_freq_from_model(fitted_model)
 
     X_test_df, y_test = get_data(
         run,
         fitted_model,
         target_column_name,
-        time_column_name,
-        max_horizon,
-        freq,
         test_dataset_name,
     )
 
@@ -203,8 +162,5 @@ if __name__ == "__main__":
         X_test_df,
         y_test,
         fitted_model,
-        target_column_name,
-        max_horizon,
-        time_column_name,
         ouput_dataset_name,
     )
