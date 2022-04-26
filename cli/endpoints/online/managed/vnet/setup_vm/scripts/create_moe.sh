@@ -15,12 +15,14 @@ az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOC
 # enable private preivew features in cli
 export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
 
+az extension list 
+
 # <create_vnet_deployment> 
 # navigate to the cli directory in the azurem-examples repo
 cd /home/samples/azureml-examples/cli/
 
 # create endpoint
-az ml online-endpoint create --name $ENDPOINT_NAME -f $ENDPOINT_FILE_PATH --set public_network_access="disabled"
+az ml online-endpoint create --name $ENDPOINT_NAME -f $ENDPOINT_FILE_PATH --set public_network_access="disabled" --debug
 # create deployment in managed vnet
 az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f $DEPLOYMENT_FILE_PATH --all-traffic --set environment.image="$ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1" egress_public_network_access="disabled"
 # </create_vnet_deployment> 
