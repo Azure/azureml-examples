@@ -77,13 +77,17 @@ class Job:
                 f.write(content)
 
     def get_run_shell(self, experiment_name=None) -> str:
-        return "az ml job create --file {}{}".format(
+        # return "az ml job create --file {}{}".format(
+        #     self.pipeline_path_to_write,
+        #     f" --set experiment_name={experiment_name}" if experiment_name else "",
+        # )
+        return "echo {0}\nbash run-job.sh {0}{1}".format(
             self.pipeline_path_to_write,
-            f" --set experiment_name={experiment_name}" if experiment_name else "",
+            f" {experiment_name} nowait" if experiment_name else "",
         )
 
     def get_run_and_wait_shell(self, experiment_name=None) -> str:
-        return "bash run-job.sh {}{}".format(
+        return "echo {0}\nbash run-job.sh {0}{1}".format(
             self.pipeline_path_to_write,
             f" {experiment_name}" if experiment_name else "",
         )
@@ -111,17 +115,15 @@ class JobSet:
 
     @property
     def create_dependency_shell(self) -> str:
-        return """
-az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8
-az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12
-az ml data create --file assets/data/local-folder.yml --set version={0}
-az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml --set version={0}
-az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/score.yml --set version={0}
-az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/eval.yml --set version={0}
-az ml data create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_test.yaml --set version={0}
-az ml data create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_train.yaml --set version={0}
-az ml environment create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/environment/responsibleai-environment.yaml --set version={0}
-""".format(
+        return """az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8 -o none
+az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12 -o none
+az ml data create --file assets/data/local-folder.yml --set version={0} -o none
+az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml --set version={0} -o none
+az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/score.yml --set version={0} -o none
+az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/eval.yml --set version={0} -o none
+az ml data create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_test.yaml --set version={0} -o none
+az ml data create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_train.yaml --set version={0} -o none
+az ml environment create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/environment/responsibleai-environment.yaml --set version={0} -o none""".format(
             self.random_value
         )
 
@@ -135,12 +137,10 @@ if [ -z "$1" ]
   else
     target_version=$1
 fi""",
-            f"python run-job-pipeline-all.py update {self.random_value}",
+            self.create_dependency_shell
         ]
         shells.extend(map(lambda x: x.get_run_shell(experiment_name), self.jobs))
-        shells[-2] += " --web"
         shells[-1] = self.jobs[-1].get_run_and_wait_shell(experiment_name)
-        shells.append("python run-job-pipeline-all.py recover")
         shells.append("az --version")
 
         with open(target_path, "w", encoding="utf-8") as run_all_shell_file:
