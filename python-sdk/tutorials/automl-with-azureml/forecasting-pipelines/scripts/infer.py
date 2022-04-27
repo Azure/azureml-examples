@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 import os
 import uuid
 import numpy as np
@@ -25,6 +26,7 @@ def infer_forecasting_dataset_tcn(
     X_test,
     y_test,
     model,
+    output_path,
     output_dataset_name="results",
 ):
 
@@ -34,9 +36,10 @@ def infer_forecasting_dataset_tcn(
 
     registered_train = TabularDatasetFactory.register_pandas_dataframe(
         df_all,
-        target=(run.experiment.workspace.get_default_datastore(), str(uuid.uuid4())),
+        target=(run.experiment.workspace.get_default_datastore(), datetime.now().strftime("%Y-%m-%d-") + str(uuid.uuid4())[:6]),
         name=output_dataset_name,
     )
+    df_all.to_csv(output_path, index=False)
 
     return df_all
 
@@ -86,6 +89,13 @@ def get_args():
         dest="test_dataset_name",
         default="results",
         help="Dataset name of the final output",
+    )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        dest="output_path",
+        default="results",
+        help="The output path",
     )
     args = parser.parse_args()
     return args
@@ -162,5 +172,6 @@ if __name__ == "__main__":
         X_test_df,
         y_test,
         fitted_model,
-        ouput_dataset_name,
+        args.output_path,
+        ouput_dataset_name
     )
