@@ -87,6 +87,12 @@ def get_args():
         help="Dataset name of the final output",
     )
     parser.add_argument(
+        "--target_column_name",
+        type=str,
+        dest="target_column_name",
+        help="The target column name.",
+    )
+    parser.add_argument(
         "--test_dataset_name",
         type=str,
         dest="test_dataset_name",
