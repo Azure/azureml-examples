@@ -53,8 +53,6 @@ featurization:
 training:
   enable_model_explainability: true
 
-blocked_training_algorithms:
-  - multinomial_naive_bayes
 allowed_training_algorithms:
   - gradient_boosting
   - logistic_regression

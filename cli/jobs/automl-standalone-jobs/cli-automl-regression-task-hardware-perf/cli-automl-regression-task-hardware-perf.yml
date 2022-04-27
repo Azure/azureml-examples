@@ -46,9 +46,6 @@ featurization:
 training:
   enable_model_explainability: true
 
-blocked_training_algorithms:
-  - random_forest
-
 allowed_training_algorithms:
   - light_gbm
   - xg_boost_regressor
