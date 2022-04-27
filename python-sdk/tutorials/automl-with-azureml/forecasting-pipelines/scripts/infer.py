@@ -36,7 +36,10 @@ def infer_forecasting_dataset_tcn(
 
     registered_train = TabularDatasetFactory.register_pandas_dataframe(
         df_all,
-        target=(run.experiment.workspace.get_default_datastore(), datetime.now().strftime("%Y-%m-%d-") + str(uuid.uuid4())[:6]),
+        target=(
+            run.experiment.workspace.get_default_datastore(),
+            datetime.now().strftime("%Y-%m-%d-") + str(uuid.uuid4())[:6],
+        ),
         name=output_dataset_name,
     )
     df_all.to_csv(output_path, index=False)
@@ -169,9 +172,5 @@ if __name__ == "__main__":
     )
 
     df = infer_forecasting_dataset_tcn(
-        X_test_df,
-        y_test,
-        fitted_model,
-        args.output_path,
-        ouput_dataset_name
+        X_test_df, y_test, fitted_model, args.output_path, ouput_dataset_name
     )
