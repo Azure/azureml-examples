@@ -36,20 +36,20 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run endpoints/online/amlarc/online-endpoints-simple-deployment.ipynb
+    - name: run endpoints/online/amlarc/amlarc-online-endpoints-simple-deployment.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" amlarc-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" amlarc-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" amlarc-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" amlarc-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" amlarc-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" amlarc-online-endpoints-simple-deployment.ipynb
 
-          papermill -k python online-endpoints-simple-deployment.ipynb online-endpoints-simple-deployment.output.ipynb
+          papermill -k python amlarc-online-endpoints-simple-deployment.ipynb amlarc-online-endpoints-simple-deployment.output.ipynb
       working-directory: sdk/endpoints/online/amlarc
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: online-endpoints-simple-deployment
+        name: amlarc-online-endpoints-simple-deployment
         path: sdk/endpoints/online/amlarc
