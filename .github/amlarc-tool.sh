@@ -675,7 +675,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
             <b:SupportTicketId i:nil="true" />
             <b:Title>{title}</b:Title>
             <b:TrackingTeams i:nil="true" />
-            <b:TsgId i:nil="true" />
+            <b:TsgId>{tsg_id}</b:TsgId>
             <b:TsgOutput i:nil="true" />
             <b:ValueSpecifiedFields>None</b:ValueSpecifiedFields>
          </incident>
@@ -694,6 +694,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME}"
     SUMMARY="${SUMMARY:-Test icm ticket}"
     SEVERITY="${SEVERITY:-4}"
+    TSG_ID="${TSG_ID:-tsg-link}"
     
     KEY_FILE="${KEY_FILE:-key.pem}"
     CERT_FILE="${CERT_FILE:-cert.pem}"
@@ -714,6 +715,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningAlias' -v "$OWNING_ALIAS"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningContactFullName' -v "$OWNING_CONTACT_FULL_NAME"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Summary' -v "$SUMMARY"  \
+            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:TsgId' -v "$TSG_ID"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:CreateDate' -v "$DATE"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:IncidentId' -v "$UUID"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:ModifiedDate' -v "$DATE"  \
