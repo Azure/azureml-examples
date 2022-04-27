@@ -2,12 +2,12 @@ name: sdk-endpoints-online-amlarc-online-endpoints-simple-deployment
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "0 6 * * *"
   pull_request:
     branches:
       - sdk-preview
     paths:
-      - sdk/**
+      - sdk/endpoints/online/**
       - .github/workflows/sdk-endpoints-online-amlarc-online-endpoints-simple-deployment.yml
       - notebooks/dev-requirements.txt
 jobs:
