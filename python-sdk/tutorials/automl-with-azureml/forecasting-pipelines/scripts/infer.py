@@ -44,8 +44,6 @@ def infer_forecasting_dataset_tcn(
     )
     df_all.to_csv(output_path, index=False)
 
-    return df_all
-
 
 def map_location_cuda(storage, loc):
     return storage.cuda()
@@ -128,14 +126,6 @@ def get_data(
     return test_df, y_test
 
 
-def get_freq_from_model(fitted_model):
-    try:
-        freq = fitted_model.data_frequency
-    except:
-        freq = fitted_model._pre_transform.freq_offset
-    return freq
-
-
 def get_model_filename(run, model_name, model_path):
     model = Model(run.experiment.workspace, model_name)
     if "model_file_name" in model.tags:
@@ -168,8 +158,6 @@ if __name__ == "__main__":
     print(model_file_name)
     fitted_model = get_model(model_path, model_file_name)
 
-    freq = get_freq_from_model(fitted_model)
-
     X_test_df, y_test = get_data(
         run,
         fitted_model,
@@ -177,6 +165,6 @@ if __name__ == "__main__":
         test_dataset_name,
     )
 
-    df = infer_forecasting_dataset_tcn(
+    infer_forecasting_dataset_tcn(
         X_test_df, y_test, fitted_model, args.output_path, ouput_dataset_name
     )
