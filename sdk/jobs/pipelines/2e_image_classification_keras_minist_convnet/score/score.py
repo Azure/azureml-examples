@@ -63,19 +63,13 @@ def score(input_data, input_model, output_result):
 
     # Read test data
     X_test = np.array(data_test.iloc[:, 1:])
-    print("*******************X_test**************************")
-    print(X_test)
     y_test = to_categorical(np.array(data_test.iloc[:, 0]))
     X_test = (
         X_test.reshape(X_test.shape[0], img_rows, img_cols, 1).astype("float32") / 255
     )
-    print("*******************X_test reshape**************************")
-    print(X_test)
 
     # Load model
     files = [f for f in os.listdir(input_model) if f.endswith(".h5")]
-    print(input_model)
-    print(files)
     model = load_model(input_model + "/" + files[0])
 
     # Log metrics of the model
@@ -89,13 +83,7 @@ def score(input_data, input_model, output_result):
 
     # Score model using test data
     y_predict = model.predict(X_test)
-    print("*******************y_predict**************************")
-    print(type(y_predict))
-    print(y_predict)
     y_result = np.argmax(y_predict, axis=1)
-    print("*******************y_result**************************")
-    print(type(y_result))
-    print(y_result)
 
     # Output result
     np.savetxt(output_result + "/predict_result.csv", y_result, delimiter=",")
