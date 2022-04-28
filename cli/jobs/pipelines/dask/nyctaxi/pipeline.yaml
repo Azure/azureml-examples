@@ -46,9 +46,6 @@ jobs:
       --gamma ${{inputs.gamma}} 
       --max_depth ${{inputs.max_depth}} 
       --num_boost_round ${{inputs.num_boost_round}} 
-    identity:
-      type: managed
-      msi_resource_id: /sldfkjsldkjf sldjfk 
 
     inputs:
       nyc_taxi_parquet: ${{parent.jobs.prepare.outputs.output_folder}}
