@@ -5,6 +5,7 @@ on:
     - cron: "0 */8 * * *"
   pull_request:
     branches:
+      - main
       - sdk-preview
     paths:
       - sdk/**
