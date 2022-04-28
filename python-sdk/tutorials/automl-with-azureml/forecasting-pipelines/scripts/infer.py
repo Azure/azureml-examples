@@ -42,9 +42,7 @@ def infer_forecasting_dataset_tcn(
         ),
         name=output_dataset_name,
     )
-    df_all.to_csv(
-        os.path.join([output_path, output_dataset_name + ".csv"]), index=False
-    )
+    df_all.to_csv(os.path.join(output_path, output_dataset_name + ".csv"), index=False)
 
 
 def map_location_cuda(storage, loc):
