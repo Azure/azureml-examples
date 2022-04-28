@@ -12,10 +12,6 @@ on:
         description: 'Release version: experimental, staging or stable'
         required: false
         default: 'staging'
-      REINSTALL_EXTENSION:
-        description: 'Whether to reinstall extension: true or false'
-        required: false
-        default: 'true'
       CLEANUP_CLUSTER:
         description: 'Whether to delete cluster: true or false'
         required: false
@@ -39,7 +35,6 @@ jobs:
       KEY_VAULT_RG: amlarc-github-workflow
       LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
       RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
-      REINSTALL_EXTENSION: ${{ github.event.inputs.REINSTALL_EXTENSION }}
       VM_SKU: STANDARD_NC12
       WORKSPACE: amlarc-githubtest-ws
 
@@ -74,7 +69,7 @@ jobs:
       timeout-minutes: 30
     - name: install_extension
       run: |
-        export EXTENSION_SETTINGS="enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+        export EXTENSION_SETTINGS="enableTraining=True enableInference=True allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
         bash .github/amlarc-tool.sh install_extension
       timeout-minutes: 30
     - name: setup_workspace
@@ -152,10 +147,10 @@ jobs:
       run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/diabetes/job.yml
       continue-on-error: true
       timeout-minutes: 40
-    #- name: run cli/jobs/single-step/scikit-learn/iris-notebook/job.yml
-    #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris-notebook/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
-    #  continue-on-error: true
-    #  timeout-minutes: 40
+    - name: run cli/jobs/single-step/scikit-learn/iris-notebook/job.yml
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris-notebook/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+      continue-on-error: true
+      timeout-minutes: 40
     - name: run cli/jobs/single-step/scikit-learn/iris/job.yml
       run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris/job.yml
       continue-on-error: true
@@ -183,23 +178,23 @@ jobs:
     # cifar-10
     - name: run cli/jobs/pipelines/cifar-10/job.yml
       run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml \
+        bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml \
             jobs.get-data.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true \
             jobs.train-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
             jobs.eval-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true 
       continue-on-error: true
-      timeout-minutes: 70
+      timeout-minutes: 40
     # nyc-taxi
     - name: run cli/jobs/pipelines/nyc-taxi/job.yml
       run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml \
+        bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml \
             jobs.prep-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
             jobs.transform-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
             jobs.train-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
             jobs.predict-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
             jobs.score-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true   
       continue-on-error: true
-      timeout-minutes: 70
+      timeout-minutes: 40
 
     # check result
     - name: count_result
@@ -231,9 +226,7 @@ jobs:
         set +e
         bash .github/amlarc-tool.sh delete_endpoints
         bash .github/amlarc-tool.sh delete_compute
-        if [ "${{ github.event.inputs.REINSTALL_EXTENSION }}" == "true" ] ; then
-            bash .github/amlarc-tool.sh delete_extension
-        fi
+        bash .github/amlarc-tool.sh delete_extension
         if [ "${{ github.event.inputs.CLEANUP_CLUSTER }}" == "true" ] ; then
             bash .github/amlarc-tool.sh delete_arc
             bash .github/amlarc-tool.sh delete_aks
