@@ -15,7 +15,8 @@ export USER=$(whoami)
 sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install docker && docker --version && sudo usermod -aG docker $USER
 # setup az cli and ml extension
 #todo: uncomment below
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash # && az extension add --upgrade -n ml -y
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az extension add --upgrade -n ml -y
 # </setup_docker_az_cli> 
 
 # todo: remove the below teo
