@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/basics/**
       - .github/workflows/cli-jobs-basics-hello-pipeline-recurrence-schedule.yml
