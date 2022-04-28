@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Pipeline using AutoML classification task
+
+display_name: pipeline-with-classification
+experiment_name: pipeline-with-automl
+
+inputs:
+  classification_train_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketig/training-mltable-folder
+  classification_validate_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketig/validation-mltable-folder
+
+jobs:
+  hello_automl_regression:
+    type: automl
+    task: classification
+    primary_metric: accuracy
+    limits:
+      max_trials: 1
+      max_concurrent_trials: 1
+    target_column_name: y
+    training_data: ${{parent.inputs.classification_train_data}}
+    validation_data: ${{parent.inputs.classification_validate_data}}
+    featurization:
+      mode: "Auto"
+    training:
+      enable_stack_ensemble: false
+      enable_vote_ensemble: false
