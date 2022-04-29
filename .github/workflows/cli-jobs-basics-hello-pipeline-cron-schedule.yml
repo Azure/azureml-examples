@@ -27,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../run-job.sh hello-pipeline-cron-schedule.yml --set wait=nowait
+      run: bash -x ../../run-job.sh hello-pipeline-cron-schedule.yml schedule_experiment nowait
       working-directory: cli/jobs/basics
