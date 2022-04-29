@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: ./src
+command: >-
+  python script.py 
+  --raw_data ${{inputs.raw_data}}
+  --model_output ${{outputs.model_output}}
+inputs:
+  raw_data: 
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/nyc_taxi_data/full_data
+outputs:
+  model_output: 
+    type: uri_folder
+environment: azureml:nyc_taxi_image@latest
+compute: azureml:cpu-cluster-ram
+experiment_name: nyc_taxi_regression
+description: Train a GBDT regression model on the NYC taxi dataset.
