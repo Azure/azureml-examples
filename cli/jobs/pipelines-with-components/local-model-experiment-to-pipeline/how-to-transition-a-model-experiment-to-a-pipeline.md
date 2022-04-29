@@ -18,21 +18,20 @@ Data Scientist should provide:
 
 After these inputs are handed over from DS, a MLE usually will take following steps to productionize the model.
 
-1. Git it work: test the code in local 
-1. Get it reproducable
-    - submit a standalone job to cloud with sample data
-    - validate the model performacne with full data
-1. Get it modulized - turn into a pipeline
+1. Get it work on local
+1. Get it work on cloud
+    - Submit a standalone job to cloud using sample data
+    - Reproduce the model using full data in cloud
+1. Get it modulized - split the task into multiple steps, which can be developped, test, and optimize indenpendently. 
 
 The sample code for each step is stored under *cli\jobs\pipelines-with-components\local-model-experiment-to-pipeline* folder in [azureml-example repo](https://github.com/Azure/azureml-examples). We will use a simple NYC Taxi fee prediction example to demo this process. 
 
-## 1. Get it work
+## 1. Get it work on local
 
-### Get it work on local 
 
 In order to make a script run on local, MLE needs to first go through code, understand logic in code, and refine code if necessary, rebuild environment, then run it locally. 
 
-#### Refine code
+### Refine code
 
 When refining code, a MLE should take into consideration security, compliance, cost, company internal engineering practices, etc.
 
@@ -44,7 +43,7 @@ Besides, if a .ipynb file is provided by data scientist, you also need to conver
 jupyter nbconvert --to script --output script inputs_from_data_scientist/notebook.ipynb 
 ```
 
-#### Rebuild environement to run script
+### Rebuild environement to run script
 
 To run DS's script on local, MLE needs to reproduce the same environment.
 
@@ -104,11 +103,13 @@ docker build -t nyc_taxi_image -f env/local/Dockerfile .
 docker run -it nyc_taxi_image:latest
 ```
 
-### Get it work on cloud
+## 2. Get it work on cloud
 
+
+## 2.1 Submit a standalone job to cloud using sample data
 After making sure your code can work on local, you can then move to cloud by submitting an Azure ML job. 
 
-#### Prerequisites
+### Prerequisites
 
 To submit a job to Azure ML, you should install cli and set up environment on your local machine.
 
@@ -124,7 +125,7 @@ az account set -s "sub_id"
 az configure --defaults group=rg_name workspace=ws_name location=location
 ```
 
-#### Define inputs and outputs
+### Define inputs and outputs
 
 In preperation for moving to cloud, you need to define script interfaces (inputs and outputs), because you will use AZure ML datastore instead of local disk as data source.
 
@@ -195,7 +196,7 @@ Code modifications are:
     mlflow.log_metric("r2_score", r2_score(testy, predictions))
     ```
 
-#### Create an Azure ML environment
+### Create an Azure ML environment
 
 In the first place, modify dockerfile by deleting commands for copying data and script.
 
@@ -222,7 +223,7 @@ Apart from that you can login Azure ML portal to check whether environment is re
 ![env](./images/env.png)
 
 
-#### Prepare Azure ML job yaml file and submit a job
+### Prepare Azure ML job yaml file and submit a job
 
 What you should do is to wrap your python script into a standalone job through a yaml file. To begin with, you need to follow [this article](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli) to write your job yaml file, in which you define job name, description, environment used, code path and command to submit job, and interfaces, etc.
 
@@ -258,11 +259,12 @@ az ml job create --f 2_standalone_job_run_on_cloud/2a_job_sample_data.yml --web
 
 With this --web option, you are automatically directed to Azure ML job detail page where you can view job informations like run status, duration, logs, etc.
 
-## Get it reproducible
+## 2.2 Reproduce the model using full data in cloud
+
 
 In the first stage, you get your script work in remote with a sample data. To be reproducible, it is recommended to resubmit an Azure ML job with full size big data.
 
-#### Prepare full data
+### Prepare full data
 
 Azure ML datastores record connection information to your Azure storage where your full production data is located. For more details please refer to [Secure data access in Azure Machine Learning](https://review.docs.microsoft.com/en-us/azure/machine-learning/concept-data?branch=release-preview-aml-cli-v2-refresh#connect-to-storage-with-datastores).
 
@@ -272,7 +274,7 @@ Assume your data is now in cloud. Here we will take Azure Blob as an example. Yo
 ```
 azureml://datastores/workspaceblobstore/paths/nyc_taxi_data/full_data
 ```
-#### Prepare Azure ML job yaml file and submit a job
+### Prepare Azure ML job yaml file and submit a job
 
 What you need to do is to take job.yml of last step, modify input from local path to remote datastore path. 
 
@@ -303,7 +305,7 @@ Then rerun this command to submit a job:
 az ml job create --f 2_standalone_job_run_on_cloud/2b_job_full_data.yml --web
 ```
 
-## Get it modulized
+## 3. Get it modulized
 
 We suggest MLE to use Azure Machine Learning pipelines to productionize their machine learning project.The core of a machine learning pipeline is to split a complete machine learning task into a multistep workflow. Each step is a manageable component that can be developed, optimized, configured, and automated individually. For more information about pipeline value add, please refer to [what is pipeline](https://docs.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines).
 
@@ -311,7 +313,7 @@ We suggest MLE to use Azure Machine Learning pipelines to productionize their ma
 
 First of all, you need to go through code, understand AI workflow.Then decompose it into several steps. 
 
-In this example, we will decompose the task into data processing, feature engineering, training, prediction, scoring steps. Each step will be a component, with well defined interface and can be developped and test indenpendently. For more details about component, please refer to [this component concept article](https://docs.microsoft.com/en-us/azure/machine-learning/concept-component).
+In this example, we will decompose the task into 5 steps: data processing, feature engineering, training, prediction, scoring steps. Each step will be a component, with well defined interface and can be developped and test indenpendently. For more details about component, please refer to [this component concept article](https://docs.microsoft.com/en-us/azure/machine-learning/concept-component).
 
 Each component can be considered as a stanalone job, then a pipeline is responsible to schedule them together. Similar with migrating a single script from local to remote, what you need to do is to import necessary dependencies, define interfaces, modify code for each step, create yaml file for each componet. You can learn more about [how to create component using YAML and CLI v2 here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-create-component-pipelines-cli).
 
