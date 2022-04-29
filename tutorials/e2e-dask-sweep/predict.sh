@@ -1,0 +1,1 @@
+mlflow models predict -m named-outputs/model -i data/data.json -t json
