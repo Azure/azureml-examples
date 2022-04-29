@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_cron_schedule
+description: Pipeline with cron schedule
 schedule:
   type: cron
   expression: "15 16 * * 1"
