@@ -11,6 +11,12 @@ RUN pip install -U pip
 # Install azureml-mlflow
 RUN pip install azureml-mlflow
 
+# only need on local run
+RUN pip install sqlparse
+RUN pip install querystring_parser
+RUN pip install gunicorn
+RUN pip install flask
+
 # Create link for python
 RUN ln -f /usr/bin/python3 /usr/bin/python
 
