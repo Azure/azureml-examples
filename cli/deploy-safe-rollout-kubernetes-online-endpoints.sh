@@ -8,15 +8,16 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-k8s-`echo $RANDOM`
 
 # <create_endpoint>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/amlarc/endpoint.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/kubernetes/kubernetes-endpoint.yml
 # </create_endpoint>
 
 # <create_blue>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/amlarc/blue-deployment.yml --all-traffic
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml --all-traffic
 # </create_blue>
 
 # <test_blue>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
+# comment this out as it's blocked by AKS policy for NONProd subscription.
+# az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
 # </test_blue>
 
 # <scale_blue>
@@ -24,7 +25,7 @@ az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set insta
 # </scale_blue>
 
 # <create_green>
-az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/amlarc/green-deployment.yml
+az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/kubernetes/kubernetes-green-deployment.yml
 # </create_green>
 
 # <get_traffic>
@@ -32,7 +33,8 @@ az ml online-endpoint show -n $ENDPOINT_NAME --query traffic
 # </get_traffic>
 
 # <test_green>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
+# comment this out as it's blocked by AKS policy for NONProd subscription.
+# az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
 
 # supress printing secret
@@ -49,7 +51,8 @@ set -x
 # get the scoring uri
 SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scoring_uri)
 # use curl to invoke the endpoint
-curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
+# comment this out as it's blocked by AKS policy for NONProd subscription.
+# curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
 # </test_green_using_curl>
 
 # <green_10pct_traffic>
