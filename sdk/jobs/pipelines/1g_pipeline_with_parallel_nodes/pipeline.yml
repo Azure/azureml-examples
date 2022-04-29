@@ -1,0 +1,82 @@
+type: pipeline
+
+name: microsoftsamples_parallel_parallel_basic1
+
+inputs:
+  pipeline_job_data_path:
+    type: mltable
+    path: ./dataset/
+    mode: rw_mount
+  pipeline_score_model:
+    type: uri_folder
+    path: ./model
+    mode: download
+
+outputs:
+  pipeline_job_out_path_1:
+    type: uri_folder
+
+  pipeline_job_out_path_2:
+    type: uri_folder
+
+
+jobs:
+  get_data_node:
+    type: command
+    compute: azureml:cpu-cluster
+    component: file:./get_data.yml
+    inputs:
+      input_data: ${{parent.inputs.pipeline_job_data_path}}
+    outputs:
+      file_output_data:
+        type: mltable
+      tabular_output_data:
+        type: mltable
+  batch_inference_node1:
+    type: parallel
+    compute: azureml:cpu-cluster
+    component: file:./score.yml
+    inputs:
+      job_data_path:
+        path: ${{parent.jobs.get_data_node.outputs.file_output_data}}
+        mode: eval_mount
+    outputs:
+      job_output_path:
+        type: mltable
+
+    mini_batch_size: "1"
+    mini_batch_error_threshold: 1
+    max_concurrency_per_instance: 1
+
+  batch_inference_node2:
+    type: parallel
+    compute: azureml:cpu-cluster
+    component: file:./score.yml
+    inputs:
+      job_data_path:
+        path: ${{parent.jobs.batch_inference_node1.outputs.job_output_path}}
+        mode: eval_mount
+    outputs:
+      job_output_path: ${{parent.outputs.pipeline_job_out_path_1}}
+
+    mini_batch_size: "1"
+    mini_batch_error_threshold: 1
+    max_concurrency_per_instance: 1
+
+  tabular_batch_inference_node1:
+    type: parallel
+    compute: azureml:cpu-cluster
+    component: file:./tabular_input_e2e.yml
+    inputs:
+      job_data_path:
+        path: ${{parent.jobs.get_data_node.outputs.tabular_output_data}}
+        mode: direct
+      score_model: ${{parent.inputs.pipeline_score_model}}
+    outputs:
+      job_out_path: ${{parent.outputs.pipeline_job_out_path_2}}
+
+    mini_batch_size: "100"
+    mini_batch_error_threshold: 5
+    logging_level: "DEBUG"
+    input_data: ${{inputs.job_data_path}}
+    max_concurrency_per_instance: 2
