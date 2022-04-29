@@ -39,8 +39,10 @@ sweep:
     slack_factor: 0.2
     delay_evaluation: 6
 
+# <search_space_settings>
 search_space:
   - model_name: "yolov5"
+# </search_space_settings>
     learning_rate: "uniform(0.0001, 0.01)"
     model_size: "choice('small', 'medium')"
   - model_name: "fasterrcnn_resnet50_fpn"

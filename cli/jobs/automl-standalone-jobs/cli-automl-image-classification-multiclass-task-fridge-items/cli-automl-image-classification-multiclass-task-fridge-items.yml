@@ -4,13 +4,14 @@ type: automl
 
 experiment_name: dpv2-cli-automl-image-classification-experiment
 description: A multi-class Image classification job using fridge items dataset
-
+# <compute_settings>
 compute: azureml:gpu-cluster
-
+# </compute_settings>
 task: image_classification
 log_verbosity: debug
 primary_metric: accuracy
 
+# <mltable_settings>
 data:
   target_column_name: label
   training:
@@ -21,6 +22,7 @@ data:
     data:
       path: data/validation-mltable-folder
       type: mltable
+# </mltable_settings>
 
 limits:
   timeout_minutes: 60
