@@ -1,0 +1,15 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: ScoreModel
+version: 1
+display_name: ScoreModel
+type: command
+inputs:
+  predictions:
+    type: uri_folder
+environment: azureml:nyc_taxi_image@latest
+code: src/score_src
+command: >-
+  python score.py 
+  --predictions ${{inputs.predictions}} 
+# </component>

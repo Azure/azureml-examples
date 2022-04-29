@@ -1,0 +1,19 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: TaxiFeatureEngineering
+display_name: TaxiFeatureEngineering
+version: 1
+type: command
+inputs:
+  clean_data: 
+    type: uri_folder 
+outputs:
+  transformed_data:
+    type: uri_folder
+code: src/transform_src
+environment: azureml:nyc_taxi_image@latest
+command: >-
+  python transform.py 
+  --clean_data ${{inputs.clean_data}} 
+  --transformed_data ${{outputs.transformed_data}}
+# </component>
