@@ -2,6 +2,24 @@
 
 > **If you upgraded to the latest V2 CLI and SDK previews and are receiving an error message `only eval_mount or eval_download modes are supported for v1 legacy dataset for mltable` please refer to the [March Public Preview section below](#v2-public-preview-march-release-breaking-change).**
 
+## Contents
+
+- [Introduction](#introduction)
+- [What should I use to access my data: URIs or Tables?](#what-should-i-use-to-access-my-data-uris-or-tables)
+- [Code Snippets](#snippets)
+    - [Using local data in a job](#using-local-data-in-a-job)
+    - [Using data stored in ADLS gen2 in a job](#using-data-stored-in-adls-gen2-in-a-job)
+    - [Using data stored in blob in a job](#using-data-stored-in-blob-in-a-job)
+    - [Reading and writing data stored in blob in a job](#reading-and-writing-data-stored-in-blob-in-a-job)
+    - [Reading and writing data stored in ADLS gen2 in a job](#reading-and-writing-data-stored-in-adls-gen2-in-a-job)
+    - [Registering data assets](#registering-data-assets)
+    - [Consume registered data assets in job](#consume-registered-data-assets-in-job)
+- [`mltable`](#mltable)
+    - [`mltable`: a motivating example](#mltable-a-motivating-example)
+- [Consuming V1 data assets in V2](#consuming-v1-dataset-assets-in-v2)
+- [March public preview breaking change: mitigation](#v2-public-preview-march-release-breaking-change)
+
+
 ## Introduction
 
 Azure Machine Learning allows you to work with different types of data:
@@ -41,16 +59,6 @@ Examples are provided in the [working_with_uris.ipynb notebook](./working_with_u
 1. Reading registered data assets from Azure Machine Learning in a job
 
 In this markdown file we provide some helpful snippets. Please refer to the notebook for more context and details.
-
-### Code snippet index:
-
-- [Using local data in a job](#using-local-data-in-a-job)
-- [Using data stored in ADLS gen2 in a job](#using-data-stored-in-adls-gen2-in-a-job)
-- [Using data stored in blob in a job](#using-data-stored-in-blob-in-a-job)
-- [Reading and writing data stored in blob in a job](#reading-and-writing-data-stored-in-blob-in-a-job)
-- [Reading and writing data stored in ADLS gen2 in a job](#reading-and-writing-data-stored-in-adls-gen2-in-a-job)
-- [Registering data assets](#registering-data-assets)
-- [Consume registered data assets in job](#consume-registered-data-assets-in-job)
 
 ### A note on your *data-plane* code
 By *data-plane* code we mean your data processing and/or training code that you want to execute in the cloud for better scale, orchestration and/or accessing specialized AI hardware (e.g. GPU). This is typically a Python script (but can be any programming language).
@@ -335,7 +343,7 @@ In this repo a [working with mltable notebook](./working_with_mltable.ipynb) is 
 
 ### `mltable`: a motivating example
 
-The above example is fairly straight forward and could easily be replicated using `uri_file` and pandas with ease. Let's take a slightly more complex case, where we have a collection of text files in a folder that look like:
+The above example has a straightforward schema and in reality there would not be much benefit for using `mltable` over `uri_file` and pandas code. Let's take a slightly more complex case, where we have a collection of text files in a folder that look like:
 
 ```txt
 store_location, date, zip, amount, x, y, z, noisecol1, noisecol2 
@@ -349,7 +357,7 @@ London 20/04/2022 XX11DD 156 true true true blah blah
 Some interesting features of this folder containing multiple text files to call out:
 
 - the data of interest is only in files that have the following suffix: `_use_this.csv` and other file names that do not match should be ignored.
-- is the date a date or a string?
+- is the date a date or a string? What is the format?
 - are the x, y, z columns booleans or strings?
 - the store location is an index that is useful for sub-setting
 - the file is encoded in `ascii` format and not `utf8`
@@ -396,12 +404,12 @@ df = pd.concat(dfl)
 df.index_columns("store_location")
 ```
 
-In this scenario if you make the data a sharable `uri_folder` asset for other team members, the responsibility to infer the schema falls on the *consumers* of this data asset. Unlike the simple case of `pd.read_csv(path, sep=",")`, the consumers of the data will need to figure out more Python code independently (or use a VCS like Git to share code) in order to materialize the data into a table of rows and columns (`DataFrame`). This can cause issues under the following circumstance:
+In this scenario if you make the data a sharable `uri_folder` asset for other team members, the responsibility to infer the schema falls on the *consumers* of this data asset. Unlike a simple case of `pd.read_csv(path, sep=",")`, the consumers of the data will need to figure out more Python code independently to materialize the data into a table of rows and columns. This can cause problems when:
 
 1. **the schema changes** - for example a column name changes - all consumers of the data must update their code independently. Other examples can be type changes, columns being added/removed, encoding change etc.
 1. **the data size increases** - the data is growing and gets too big to process with pandas. In this case all the consumers of the data need replace their pandas code and switch to PySpark, which involves having to learn `pandas_udf` in Spark.
 
-This is where `mltable` can help because the responsibility to *explicitly* define the schema of the data falls on the *producer* and there is a unified API to consume the data in Pandas/Spark/Dask. The schema is defined in an MLTable file:
+Because all the consumers will need to update their code. This is where `mltable` can help because the responsibility to *explicitly* define the schema of the data falls on the *producer* and there is a unified API to consume the data in Pandas/Spark/Dask. The schema is defined in an MLTable file:
 
 ```yaml
 type: mltable
@@ -450,7 +458,7 @@ ddf = tbl.to_dask_dataframe()
 
 The consumers do not need to worry about how they are going to take a raw data file and process that into a table. Also, they do not need to worry about how to do that in pandas/spark/dask - so if the data becomes too large for pandas they can read the data into Spark instead.
 
-If the schema changes, the team change that in one place -- the MLTable file -- rather then finding multiple places to update code.
+If the schema changes, the team change that in one place -- the MLTable file -- rather than finding multiple places to update code.
 
 ## Consuming V1 dataset assets in V2
 
