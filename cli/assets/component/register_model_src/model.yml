@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: model_example
+path: .
+type: custom_model
+description: Model created from register model component.
