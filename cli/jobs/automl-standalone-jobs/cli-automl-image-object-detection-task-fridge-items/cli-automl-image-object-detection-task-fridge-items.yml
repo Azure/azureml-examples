@@ -10,6 +10,7 @@ task: image_object_detection
 log_verbosity: debug
 primary_metric: mean_average_precision
 
+# <mltable_settings>
 data:
   target_column_name: label
   training:
@@ -20,7 +21,7 @@ data:
     data:
       path: data/validation-mltable-folder
       type: mltable
-
+# </mltable_settings>
 limits:
   timeout_minutes: 60
 
