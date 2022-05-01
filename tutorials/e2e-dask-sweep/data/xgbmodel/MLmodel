@@ -10,5 +10,18 @@ flavors:
     model_class: xgboost.core.Booster
     xgb_version: 1.6.0
 mlflow_version: 1.25.1
-model_uuid: e99e061e6d054682a5b87d15d0cdd9c4
-utc_time_created: '2022-04-27 20:57:21.411011'
+model_uuid: a8b46a96de9f40368c857d806512bad0
+signature:
+  inputs: '[{"name": "VendorID", "type": "long"}, {"name": "passenger_count", "type":
+    "long"}, {"name": "trip_distance", "type": "double"}, {"name": "pickup_longitude",
+    "type": "double"}, {"name": "pickup_latitude", "type": "double"}, {"name": "rate_code",
+    "type": "long"}, {"name": "dropoff_longitude", "type": "double"}, {"name": "dropoff_latitude",
+    "type": "double"}, {"name": "payment_type", "type": "long"}, {"name": "total_amount",
+    "type": "double"}, {"name": "hour", "type": "long"}, {"name": "year", "type":
+    "long"}, {"name": "month", "type": "long"}, {"name": "day", "type": "long"}, {"name":
+    "day_of_week", "type": "long"}, {"name": "pickup_latitude_r", "type": "double"},
+    {"name": "pickup_longitude_r", "type": "double"}, {"name": "dropoff_latitude_r",
+    "type": "double"}, {"name": "dropoff_longitude_r", "type": "double"}, {"name":
+    "h_distance", "type": "double"}, {"name": "is_weekend", "type": "long"}]'
+  outputs: null
+utc_time_created: '2022-04-29 22:18:30.274351'
