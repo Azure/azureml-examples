@@ -1,1 +1,1 @@
-mlflow models predict -m named-outputs/model -i data/data.json -t json
+mlflow models predict -m data/xgbmodel -i data/data.json -t json

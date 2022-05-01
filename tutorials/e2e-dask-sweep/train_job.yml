@@ -12,7 +12,7 @@ command: >-
 
 inputs:
   nyc_taxi_parquet:
-    path: azureml:azureml_polite_loquat_c3x4fj4l4m_output_data_output_folder:1
+    path: azureml:azureml_loving_camera_tqzls6rlg0_output_data_output_folder:1
     mode: ro_mount
   tree_method: auto
   learning_rate: 0.3

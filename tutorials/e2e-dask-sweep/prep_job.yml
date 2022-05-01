@@ -3,7 +3,7 @@ code: src
 command: >-
   python startDask.py
   --script prep-nyctaxi.py 
-  --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
+  --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}} 
   --output_folder ${{outputs.output_folder}}
 inputs:
   nyc_taxi_dataset:
