@@ -9,13 +9,13 @@ experiment_name: pipeline-with-automl
 inputs:
   classification_train_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketig/training-mltable-folder
+    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/training-mltable-folder
   classification_validate_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketig/validation-mltable-folder
+    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/validation-mltable-folder
 
 jobs:
-  hello_automl_regression:
+  classification_node:
     type: automl
     task: classification
     primary_metric: accuracy
@@ -36,6 +36,6 @@ jobs:
   show_output:
     type: command
     inputs:
-      mltable_output: ${{parent.jobs.regression_node.outputs.best_model}}
+      mltable_output: ${{parent.jobs.classification_node.outputs.best_model}}
     command: ls ${{inputs.mltable_output}}
     environment: azureml:AzureML-Minimal:1
