@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: |
+    cp -r ${{inputs.model_in}}/* ${{outputs.model_out}}
+    find ${{outputs.model_out}} 
+inputs:
+  model_in: 
+    path: data/xgbmodel
+
+outputs:
+  model_out:
+    type: mlflow_model
+
+environment:  
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+
+compute: azureml:cpu-cluster
+experiment_name: dask-nyctaxi-example

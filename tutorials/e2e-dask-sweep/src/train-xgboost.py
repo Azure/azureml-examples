@@ -6,6 +6,7 @@ import mlflow
 import tempfile
 import shutil
 import xgboost as xgb
+from mlflow.models import infer_signature
 
 def write_freeze():
     # log pip list before doing anything else
@@ -90,6 +91,8 @@ if __name__ == '__main__':
     for metric in model['history']['test']['rmse']:
         mlflow.log_metric('test-rmse', metric)
 
+    signature = infer_signature(model_input=train_data.head())
+
     tempdir = tempfile.gettempdir() + '/' + str(uuid.uuid4())
-    mlflow.xgboost.save_model(model['booster'], tempdir)
+    mlflow.xgboost.save_model(model['booster'], tempdir, signature=signature)
     shutil.copytree(tempdir, model_path, dirs_exist_ok=True)
