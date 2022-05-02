@@ -16,7 +16,7 @@ outputs:
   tabular_output_data:
     type: mltable
 
-code: ./src
+code: ./
 
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 
