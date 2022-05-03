@@ -23,11 +23,11 @@ data:
 
 limits:
   timeout_minutes: 60
-# <argument_settings>
+# <fixed_settings>
 image_model:
   early_stopping: True
   evaluation_frequency: 1
-# <argument_settings>
+# <fixed_settings>
 sweep:
   limits:
     max_trials: 10
