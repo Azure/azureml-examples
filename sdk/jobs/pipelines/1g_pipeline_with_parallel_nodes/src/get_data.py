@@ -22,8 +22,9 @@ print(arr)
 
 for folder_name in arr:
     if folder_name == "mnist-data":
-        data_path = args.file_output_data + "/" + folder_name
+        data_path = args.input_data + "/" + folder_name
         files = os.listdir(data_path)
+        print(files)
         output_dir = Path(args.file_output_data)
         print("file_output_dir", output_dir)
         print("file_output_dir exits", Path(output_dir).exists())
@@ -31,11 +32,11 @@ for folder_name in arr:
         for file_path in files:
             file = Path(file_path)
             print("Processing {}".format(file))
-            assert file.exists()
             (Path(output_dir) / file.name).write_text(file_path)
     elif folder_name == "iris-mltable":
-        data_path = args.tabular_output_data + "/" + folder_name
+        data_path = args.input_data + "/" + folder_name
         files = os.listdir(data_path)
+        print(files)
         output_dir = Path(args.tabular_output_data)
         print("tabular_output_dir", output_dir)
         print("tabular_output_dir exits", Path(output_dir).exists())
@@ -43,9 +44,6 @@ for folder_name in arr:
         for file_path in files:
             file = Path(file_path)
             print("Processing {}".format(file))
-            assert file.exists()
             (Path(output_dir) / file.name).write_text(file_path)
     else:
         pass
-
-
