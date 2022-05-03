@@ -42,7 +42,7 @@ docker stop tfserving-test
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-tfserving-`echo $RANDOM`
 
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-endpoint.yml

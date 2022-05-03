@@ -5,4 +5,3 @@ dependencies:
 
 - pip:
   - azureml-automl-dnn-nlp==1.39.0
-  - horovod==0.21.3

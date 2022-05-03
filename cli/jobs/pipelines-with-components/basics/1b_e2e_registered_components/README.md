@@ -23,12 +23,11 @@ Make sure the version of the components you registered matches with the version 
 
 Submit the Pipeline Job
 ```
-az ml  job create --file pipeline.yml
+az ml job create --file pipeline.yml
 ```
 
 You can also override the compute from the command line
 ```
-az ml job create --file pipeline.yml --set defaults.component_job.compute.target=<your_compute>
+az ml job create --file pipeline.yml --set settings.default_compute=<your_compute>
 ```
-Once you submit the job, you will find the URL to view the job graph and logs in AzureML Studio UI under the `interaction_endpoints` -> `Studio` section of the output. 
 

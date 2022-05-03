@@ -5,7 +5,7 @@ DEPLOYMENT_NAME=r-deployment
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-r-`echo $RANDOM`
 
 # Download model
 wget https://aka.ms/r-model -O $BASE_PATH/scripts/model.rds
@@ -28,8 +28,7 @@ az acr build $BASE_PATH -f $BASE_PATH/Dockerfile -t $IMAGE_TAG -r $ACR_NAME
 cleanup(){
     sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/r-deployment.yml
     az ml online-endpoint delete -n $ENDPOINT_NAME -y
-    az ml model delete -n plumber -v 1
-    az ml environment delete -n r-environment -v 1
+    az ml model archive -n plumber -v 1
 }
 
 # Run image locally for testing

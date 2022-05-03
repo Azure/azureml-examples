@@ -1,3 +1,5 @@
+az --version
+
 set -e
 
 # <set_variables>

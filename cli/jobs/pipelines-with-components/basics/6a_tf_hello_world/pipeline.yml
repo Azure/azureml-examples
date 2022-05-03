@@ -4,14 +4,13 @@ description: "Prints the environment variable ($TF_CONFIG) useful for scripts ru
 
 jobs:
   tf-job:
-    type: component
+    type: command
     component: file:./component.yml
     compute: azureml:gpu-cluster
-    overrides:
-      resources:
-        instance_count: 3
-      distribution:
-        type: tensorflow
-        worker_count: 3
+    resources:
+      instance_count: 2
+    distribution:
+      type: tensorflow
+      worker_count: 2
 
         

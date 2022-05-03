@@ -1,22 +1,21 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
-name: Hello_Python_World
+name: hello_python_world
 display_name: Hello_Python_World
 version: 1
 
 inputs:
   sample_input_data:
-    type: path
+    type: uri_folder
   sample_input_string:
     type: string
     default: "hello_python_world_default"
 outputs:
   sample_output_data:
-    type: path
+    type: uri_folder
 
-code:
-  local_path: ./src
+code: ./src
 
 environment: 
   image: python

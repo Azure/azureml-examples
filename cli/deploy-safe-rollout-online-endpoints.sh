@@ -1,12 +1,11 @@
 set -e
 
-
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
 #  endpoint name
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-sr-`echo $RANDOM`
 
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml

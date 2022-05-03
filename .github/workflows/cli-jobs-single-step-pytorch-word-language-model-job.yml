@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - cli-preview
-      - releases/current
     paths:
       - cli/jobs/single-step/pytorch/word-language-model/**
       - .github/workflows/cli-jobs-single-step-pytorch-word-language-model-job.yml
