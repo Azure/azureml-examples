@@ -5,7 +5,7 @@ languages:
 - azurecli
 products:
 - azure-machine-learning
-description: Learn how to train models using low-priority AML compute. Low-priority compute costs significantly less than dedicate compute, but jobs on low priority compute can be preempted.
+description: Learn how to train models using low-priority AML compute. Low-priority compute costs significantly less than dedicated compute, but jobs on low priority compute can be preempted.
 ---
 
 # Using Low-Priority AML Compute
