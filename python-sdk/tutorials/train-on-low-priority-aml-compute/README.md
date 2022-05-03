@@ -10,4 +10,4 @@ description: Learn how to train models using low-priority AML compute. Low-prior
 
 # Using Low-Priority AML Compute
 
-Learn how to train models using low-priority AML compute. The example uses Pytorch to train a model to recognize handwritten digits.
+Learn how to train models using low-priority AML compute. This example uses PyTorch to train a model to recognize handwritten digits.
