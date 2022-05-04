@@ -31,7 +31,7 @@ jobs:
       cifar: ${{parent.jobs.get_data.outputs.cifar}}
     outputs:
       model_dir:
-        type: uri_folder
+        type: mlflow_model
         mode: upload
     environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:26
     compute: azureml:gpu-cluster
@@ -51,9 +51,9 @@ jobs:
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
-      process_count_per_instance: 2
+      process_count_per_instance: 1
     resources:
-      instance_count: 1
+      instance_count: 2
     inputs:
       cifar: ${{parent.jobs.get_data.outputs.cifar}}
       model_dir: ${{parent.jobs.train_model.outputs.model_dir}}
