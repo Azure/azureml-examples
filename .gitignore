@@ -15,3 +15,4 @@
 *config.json
 *.log
 scratch/*
+cli/jobs/
