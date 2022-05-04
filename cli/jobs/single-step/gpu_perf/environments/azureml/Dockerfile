@@ -4,7 +4,7 @@
 FROM mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04:latest
 
 # set env var to find nccl rdma plugins inside this container
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/nccl-rdma-sharp-plugins/lib"
+# ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/nccl-rdma-sharp-plugins/lib"
 
 ##############################################################################
 # NCCL TESTS
@@ -23,7 +23,7 @@ RUN mkdir /tmp/nccltests && \
         cp ./build/* /usr/local/bin && \
     rm -rf /tmp/nccltests
 
-# for lstopo
-RUN apt update && \
-    apt install hwloc -y && \
-    rm -rf /var/lib/apt/lists/*
+# if you want lstopo
+# RUN apt update && \
+#     apt install hwloc -y && \
+#     rm -rf /var/lib/apt/lists/*
