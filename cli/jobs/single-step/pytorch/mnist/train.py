@@ -148,9 +148,7 @@ def main():
     # Log model to run history using MLflow
     if args.model_dir:
         print('writing model to {}'.format(args.model_dir))
-        mlflow.pytorch.log_model(
-            model, args.model_dir,
-            registered_model_name="mnist-model")
+        mlflow.pytorch.save_model(model, args.model_dir)
 
 
 if __name__ == "__main__":
