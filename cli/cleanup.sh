@@ -18,3 +18,13 @@ for val in $STORAGE_ACCOUNT_LIST; do
         `az storage account delete -n "$val" --yes`
     fi
 done
+
+# delete left over autoscale settings created for online endpoints
+AUTOSCALE_SETTINGS_LIST=$(az monitor autoscale list  --query "[*].[name]" -o tsv)
+for val in $AUTOSCALE_SETTINGS_LIST; do
+	if [[ $val == autoscale-* ]] ;
+    then
+        echo deleting $val
+    fi
+    `az monitor autoscale delete -n "$val"`
+done

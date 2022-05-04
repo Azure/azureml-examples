@@ -2,7 +2,7 @@ name: cli-jobs-basics-hello-data-uri-folder
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 1 * * *"
   pull_request:
     branches:
       - main
@@ -11,9 +11,16 @@ on:
       - cli/jobs/basics/**
       - .github/workflows/cli-jobs-basics-hello-data-uri-folder.yml
       - cli/setup.sh
+      - .github/amlarc-tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      OWNERS: amlarc@microsoft.com
+      GITHUB_REPO: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
+      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/SiteAssets/Vienna%20Notebook/AMLArcTSG.one#Troubleshooting%20github%20workflow&section-id=69e8bdb1-5734-4b07-967a-5a50a91cf040&page-id=53a1a232-f9f0-4192-b7d2-0474848ebb18&end
     steps:
     - name: check out repo
       uses: actions/checkout@v2
