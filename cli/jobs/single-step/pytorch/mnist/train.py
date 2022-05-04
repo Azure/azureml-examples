@@ -128,30 +128,29 @@ def main():
     parser.add_argument('--model-dir', type=str, default=None)
     args = parser.parse_args()
 
-    # mlflow.autolog()
-    with mlflow.start_run() as run:
-        torch.manual_seed(args.seed)
+    mlflow.autolog()
 
-        use_cuda = torch.cuda.is_available()
-        device = torch.device("cuda" if use_cuda else "cpu")
+    torch.manual_seed(args.seed)
 
-        train_loader, test_loader = get_data_loaders(
-            use_cuda, args.batch_size, args.test_batch_size)
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
 
-        model = Net().to(device)
-        optimizer = optim.SGD(model.parameters(),
-                              lr=args.lr, momentum=args.momentum)
+    train_loader, test_loader = get_data_loaders(
+        use_cuda, args.batch_size, args.test_batch_size)
 
-        for epoch in range(1, args.epochs + 1):
-            train(args, model, device, train_loader, optimizer, epoch)
-            test(args, model, device, test_loader)
-        # Log model to run history using MLflow
-        if args.model_dir:
-            print('writing model to {}'.format(args.model_dir))
-            mlflow.pytorch.log_model(
-                model, args.model_dir,
-                registered_model_name="mnist-model")
-    return run
+    model = Net().to(device)
+    optimizer = optim.SGD(model.parameters(),
+                          lr=args.lr, momentum=args.momentum)
+
+    for epoch in range(1, args.epochs + 1):
+        train(args, model, device, train_loader, optimizer, epoch)
+        test(args, model, device, test_loader)
+    # Log model to run history using MLflow
+    if args.model_dir:
+        print('writing model to {}'.format(args.model_dir))
+        mlflow.pytorch.log_model(
+            model, args.model_dir,
+            registered_model_name="mnist-model")
 
 
 if __name__ == "__main__":
