@@ -27,8 +27,9 @@ jobs:
     component: file:./prep.yml
     inputs:
       raw_data: #using local data, will crate an anonymous data asset
-        type: uri_folder
-        path: ./data
+        type: mltable
+        path: ./mltable
+        mode: eval_mount
     outputs:
       prep_data: 
 
