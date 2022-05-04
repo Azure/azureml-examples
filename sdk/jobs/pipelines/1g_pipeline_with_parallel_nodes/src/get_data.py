@@ -2,6 +2,7 @@
 import argparse
 import os
 from pathlib import Path
+import shutil
 
 print ("Get file and tabular data")
 
@@ -21,29 +22,33 @@ arr = os.listdir(args.input_data)
 print(arr)
 
 for folder_name in arr:
+    data_path = args.input_data + "/" + folder_name
+    files = os.listdir(data_path)
+    print(files)
     if folder_name == "mnist-data":
-        data_path = args.input_data + "/" + folder_name
-        files = os.listdir(data_path)
-        print(files)
         output_dir = Path(args.file_output_data)
         print("file_output_dir", output_dir)
         print("file_output_dir exits", Path(output_dir).exists())
 
         for file_path in files:
-            file = Path(file_path)
-            print("Processing {}".format(file))
-            (Path(output_dir) / file.name).write_text(file_path)
+            file_source = Path(data_path + "/" + file_path)
+            print("Processing {}".format(file_source))
+            assert file_source.exists()
+            file_destination = Path(output_dir) / file_source.name
+            print("file_destination:", file_destination)
+            shutil.move(file_source, file_destination)
+
     elif folder_name == "iris-mltable":
-        data_path = args.input_data + "/" + folder_name
-        files = os.listdir(data_path)
-        print(files)
         output_dir = Path(args.tabular_output_data)
         print("tabular_output_dir", output_dir)
         print("tabular_output_dir exits", Path(output_dir).exists())
 
         for file_path in files:
-            file = Path(file_path)
-            print("Processing {}".format(file))
-            (Path(output_dir) / file.name).write_text(file_path)
+            file_source = Path(data_path + "/" + file_path)
+            print("Processing {}".format(file_source))
+            assert file_source.exists()
+            file_destination = Path(output_dir) / file_source.name
+            print("file_destination:", file_destination)
+            shutil.move(file_source, file_destination)
     else:
         pass
