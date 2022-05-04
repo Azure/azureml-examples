@@ -87,7 +87,7 @@ Examples:
 - Defaut artifact location: `azureml://jobs/$RUN_ID/outputs/artifacts/paths/model/`
     * this is equivalent to `runs:/$RUN_ID/model/` from the #2 mlflow run URI format
     * **note: "artifacts"** is the reserved key word we use to refer to the output that represents the **default artifact location**
-- From a named output dir: `azureml://jobs/$RUN_ID3/outputs/trained-model`
+- From a named output dir: `azureml://jobs/$RUN_ID/outputs/trained-model`
 - From a specific file or folder path within the named output dir:
     * `azureml://jobs/$RUN_ID/outputs/trained-model/paths/cifar.pt`
     * `azureml://jobs/$RUN_ID/outputs/checkpoints/paths/model/`
