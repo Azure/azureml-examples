@@ -41,7 +41,7 @@ jobs:
       RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
       REINSTALL_EXTENSION: ${{ github.event.inputs.REINSTALL_EXTENSION }}
       VM_SKU: STANDARD_NC12
-      WORKSPACE: amlarc-githubtest-ws
+      WORKSPACE: amlarc-githubtest-ws-canary
 
       MIN_SUCCESS_NUM: 3
       SEVERITY: 4
