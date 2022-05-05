@@ -1,6 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-name: simplePipelineJobWithInlineParallelJobe2e
+display_name: simplePipelineJobWithInlineParallelJobe2e
 description: The hello world pipeline job with inline parallel job
 tags:
   tag: tagvalue
