@@ -31,4 +31,4 @@ This is an end-to-end machine learning pipeline which runs a linear regression t
     * Input: Test data with predictions and model
     * Output: Report with model coefficients and evaluation scores (.txt) 
 
-Please find the some define in [nyc_taxi_data_regression.ipynb](nyc_taxi_data_regression.ipynb).
+Please find the sample defined in [nyc_taxi_data_regression.ipynb](nyc_taxi_data_regression.ipynb).
