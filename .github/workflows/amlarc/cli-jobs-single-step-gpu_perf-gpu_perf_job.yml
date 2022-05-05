@@ -1,0 +1,36 @@
+name: amlarc-examples-test
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install az cli
+      shell: bash
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    - name: install tools
+      run: bash .github/amlarc-tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+
+    ## run training cli test cases
+    ## single step
+    # gpu perf
+    - name: run cli/jobs/single-step/gpu_perf/gpu_perf_job.yml
+      run: |
+        bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/gpu_perf/gpu_perf_job.yml \
+              compute=azureml:githubtest resources.instance_type=gpu resources.instance_count=2
+      continue-on-error: true
+      timeout-minutes: 40
