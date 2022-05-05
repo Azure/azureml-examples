@@ -1,15 +1,22 @@
 $schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
 type: automl
 
+# <experiment_name>
 experiment_name: dpv2-cli-automl-image-object-detection-experiment
+# </experiment_name>
 description: An Image Object Detection job using fridge items dataset
 
+# <compute_settings>
 compute: azureml:gpu-cluster
+# </compute_settings>
 
+# <task_settings>
 task: image_object_detection
 log_verbosity: debug
 primary_metric: mean_average_precision
+# </task_settings>
 
+# <mltable_settings>
 data:
   target_column_name: label
   training:
@@ -20,14 +27,20 @@ data:
     data:
       path: data/validation-mltable-folder
       type: mltable
+# </mltable_settings>
 
+# <limit_settings>
 limits:
   timeout_minutes: 60
+# </limit_settings>
 
+# <fixed_settings>
 image_model:
   early_stopping: True
   evaluation_frequency: 1
+# </fixed_settings>
 
+# <sweep_settings>
 sweep:
   limits:
     max_trials: 10
@@ -38,7 +51,9 @@ sweep:
     evaluation_interval: 2
     slack_factor: 0.2
     delay_evaluation: 6
+# </sweep_settings>
 
+# <search_space_settings>
 search_space:
   - model_name: "yolov5"
     learning_rate: "uniform(0.0001, 0.01)"
@@ -47,3 +62,4 @@ search_space:
     learning_rate: "uniform(0.0001, 0.001)"
     optimizer: "choice('sgd', 'adam', 'adamw')"
     min_size: "choice(600, 800)"
+# </search_space_settings>
