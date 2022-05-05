@@ -10,3 +10,6 @@ ENV PATH $AZUREML_CONDA_ENVIRONMENT_PATH/bin:$PATH
 
 # This is needed for mpi to locate libpython
 ENV LD_LIBRARY_PATH $AZUREML_CONDA_ENVIRONMENT_PATH/lib:$LD_LIBRARY_PATH
+
+RUN pip uninstall azureml-dataprep-rslex -y
+RUN pip install -U azureml-dataprep-rslex --index-url=https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/62172131/ --no-deps
