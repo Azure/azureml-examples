@@ -107,7 +107,7 @@ jobs:
     ## single step
     # dask
     - name: run cli/jobs/single-step/dask/nyctaxi/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/dask/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/dask/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu
       continue-on-error: true
       timeout-minutes: 40
     # java
@@ -127,7 +127,7 @@ jobs:
       timeout-minutes: 40
     # pytorch
     - name: run cli/jobs/single-step/pytorch/cifar-distributed/job.yml
-      run: INSTANCE_TYPE_NAME=gpu bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/cifar-distributed/job.yml  compute=azureml:githubtest resources.instance_type=gpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+      run: INSTANCE_TYPE_NAME=gpu bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/cifar-distributed/job.yml  compute=azureml:githubtest resources.instance_type=gpu
       continue-on-error: true
       timeout-minutes: 40
     - name: run cli/jobs/single-step/pytorch/iris/job.yml
@@ -140,11 +140,11 @@ jobs:
       timeout-minutes: 40
     # r
     - name: run cli/jobs/single-step/r/accidents/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/accidents/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/accidents/job.yml compute=azureml:githubtest resources.instance_type=cpu
       continue-on-error: true
       timeout-minutes: 40
     - name: run cli/jobs/single-step/r/iris/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/iris/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/iris/job.yml compute=azureml:githubtest resources.instance_type=cpu
       continue-on-error: true
       timeout-minutes: 40
     # scikit-learn
@@ -183,21 +183,13 @@ jobs:
     # cifar-10
     - name: run cli/jobs/pipelines/cifar-10/job.yml
       run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml \
-            jobs.get-data.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true \
-            jobs.train-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.eval-model.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true 
+        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml
       continue-on-error: true
       timeout-minutes: 70
     # nyc-taxi
     - name: run cli/jobs/pipelines/nyc-taxi/job.yml
       run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml \
-            jobs.prep-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.transform-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.train-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.predict-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true  \
-            jobs.score-job.environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true   
+        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml
       continue-on-error: true
       timeout-minutes: 70
 
