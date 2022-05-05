@@ -27,8 +27,10 @@ data:
       type: mltable
 # </mltable_settings>
 
+# <limit_settings>
 limits:
   timeout_minutes: 60
+# </limit_settings>
 
 # <fixed_settings>
 image_model:
