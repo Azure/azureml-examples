@@ -1,0 +1,71 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+display_name: simplePipelineJobWithInlineParallelTabularJobe2e
+description: The hello world pipeline job with inline parallel job
+tags:
+  tag: tagvalue
+  owner: sdkteam
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+inputs:
+  job_data_path:
+    type: mltable
+    path: ./neural-iris-mltable
+    mode: ro_mount
+  score_model:
+    type: uri_folder
+    path: ./iris-model
+    mode: download
+
+outputs:
+  job_out_file:
+    type: uri_file
+    mode: rw_mount
+
+jobs:
+  pre_data:
+    type: command
+    inputs:
+      raw_data: ${{parent.inputs.job_data_path}}
+    outputs:
+      tabular_data:
+        type: mltable
+        mode: rw_mount
+    command: cp -r ${{inputs.raw_data}} ${{outputs.tabular_data}}
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+  batch_prediction:
+    type: parallel
+    compute: azureml:cpu-cluster
+    inputs:
+      input_data: 
+        path: ${{parent.jobs.pre_data.outputs.tabular_data}}
+        type: mltable
+        mode: direct
+      score_model: ${{parent.inputs.score_model}}
+    outputs:
+      job_output_file: ${{parent.outputs.job_out_file}}
+
+    mini_batch_size: "100kb"
+    mini_batch_error_threshold: 5
+    logging_level: "DEBUG"
+    input_data: ${{inputs.input_data}}
+    max_concurrency_per_instance: 2
+    retry_settings:
+      max_retries: 2
+      timeout: 60
+
+    task:
+      type: function
+      code: "./script"
+      entry_script: iris_prediction.py
+      environment:
+        name: "prs-env"
+        version: 1
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+        conda_file: ./environment/environment_parallel.yml
+      args: >-
+        --model ${{inputs.score_model}}
+      append_row_to: ${{outputs.job_output_file}}
