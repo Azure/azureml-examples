@@ -1,9 +1,8 @@
-#source ../configs/parallel-job/batch-score-ParallelComponent.yaml
-$schema: http://azureml/sdk-2-0/ParallelComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/parralelComponent.schema.json
 name: file_batch_score
 type: parallel
 version: 1.0.0
-display_name: BatchScore
+display_name: Batch Score with File Dataset
 description: parallel component for batch score
 
 inputs:

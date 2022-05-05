@@ -29,6 +29,9 @@ def init():
 
 
 def run(input_data):
+    
+    # input_data is a Pandas DataFrame for Tabular Data
+
     num_rows, num_cols = input_data.shape
     pred = iris_model.predict(input_data).reshape((num_rows, 1))
 
