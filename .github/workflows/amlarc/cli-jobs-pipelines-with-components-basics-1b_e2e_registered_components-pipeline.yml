@@ -1,0 +1,40 @@
+name: cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: install az cli
+        shell: bash
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+      - name: install tools
+        run: bash .github/amlarc-tool.sh install_tools
+        timeout-minutes: 30
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZ_AE_CREDS}}
+        timeout-minutes: 30
+
+      - name: configure defaults
+        run: az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE
+
+      - name: prepare-components
+        run: |
+          set -x
+          az ml component create --file cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml
+          az ml component create --file cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/score.yml
+          az ml component create --file cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/eval.yml
+
+      - name: run job
+        run: |
+          bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml \
+            compute=azureml:githubtest
