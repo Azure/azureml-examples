@@ -1,8 +1,8 @@
-$schema: http://azureml/sdk-2-0/ParallelComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/parallelComponent.schema.json
 name: batch_score_with_tabular_input
 type: parallel
 version: 1.0.0
-display_name: BatchScore
+display_name: Batch Score with Tabular Dataset
 description: parallel component for batch score
 
 inputs:
@@ -16,7 +16,7 @@ inputs:
     optional: false
 
 outputs:
-  job_out_path:
+  job_output_path:
     type: mltable
 
 max_concurrency_per_instance: 2
@@ -34,10 +34,8 @@ task:
   code: ./
   entry_script: tabular_batch_inference.py
   environment:
-    name: "prs-env"
-    version: 1
     image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
     conda_file: ./environment_parallel.yml
   args: >-
     --model ${{inputs.score_model}}
-  append_row_to: ${{outputs.job_out_path}}
+  append_row_to: ${{outputs.job_output_path}}

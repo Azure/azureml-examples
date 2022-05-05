@@ -22,6 +22,7 @@ def init():
 def run(mini_batch):
     """Run."""
 
+    # mini_batch is a list of file paths for File Data
     for file_path in mini_batch:
         file = Path(file_path)
         print("Processing {}".format(file))

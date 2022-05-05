@@ -1,9 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 
 type: command
 
-
-name: get_file_tabular_dataset
-display_name: Get_File_Tabular_Dataset
+name: prepare_file_tabular_data
+display_name: Prepare_File_Tabular_Data
 version: 1
 
 inputs:
@@ -21,7 +21,7 @@ code: ./
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 
 command: >-
-  python get_data.py
+  python prepare_data.py
   --input_data ${{inputs.input_data}}
   --file_output_data ${{outputs.file_output_data}}
   --tabular_output_data ${{outputs.tabular_output_data}}
