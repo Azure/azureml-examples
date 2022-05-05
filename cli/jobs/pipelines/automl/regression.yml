@@ -18,7 +18,7 @@ inputs:
     path: ./automl-regression-data/validation-mltable-folder
 
 jobs:
-  hello_automl_regression:
+  regression_node:
     type: automl
     task: regression
     primary_metric: r2_score
@@ -34,6 +34,7 @@ jobs:
     training:
       enable_stack_ensemble: false
       enable_vote_ensemble: false
+    # currently need to specify outputs "mlflow_model" explictly to reference it in following nodes 
     outputs:
        best_model:
           type: mlflow_model
