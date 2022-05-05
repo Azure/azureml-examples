@@ -3,13 +3,18 @@ code: .
 command: >-
   python train.py 
   --epochs ${{inputs.epochs}}
-  --model-dir ${{outputs.model_dir}}
+  --labeled-dataset ${{inputs.dataset}}
+#  --model-dir ${{outputs.model_dir}}
 inputs:
   epochs: 3
-outputs:
-  model_dir:
-    type: uri_folder
-    mode: upload
+  dataset:
+    path: azureml:mmmnist:1
+    type: mltable
+    mode: direct
+# outputs:
+#   model_dir:
+#     type: uri_folder
+#     mode: upload
 environment:
   build:
     path: image
