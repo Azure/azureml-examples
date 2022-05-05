@@ -8,7 +8,6 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 
 
-# This defines the layers of the Neural Net?
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -30,7 +29,7 @@ class Net(nn.Module):
         return F.log_softmax(x, dim=1)
 
 
-def train(args, model, device, train_loader, optimizer, epoch):
+def train(model, device, train_loader, optimizer, epoch, log_interval):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -39,7 +38,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
-        if batch_idx % args.log_interval == 0:
+        if batch_idx % log_interval == 0:
             print(
                 "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
                     epoch,
@@ -53,7 +52,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
             mlflow.log_metric("epoch_loss", loss.item())
 
 
-def test(args, model, device, test_loader):
+def test(model, device, test_loader):
     model.eval()
     test_loss = 0
     correct = 0
@@ -77,29 +76,19 @@ def test(args, model, device, test_loader):
     )
     # Use MLflow logging
     mlflow.log_metric("average_loss", test_loss)
+    mlflow.log_metric("accuracy", 100.0 * correct / len(test_loader.dataset))
 
 
-def get_data_loaders(use_cuda=False, batch_size=64, test_batch_size=1000):
+def get_data_loaders(trainds, testds, use_cuda=False, batch_size=64, test_batch_size=1000):
     kwargs = {"num_workers": 1, "pin_memory": True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST(
-            "../data",
-            train=True,
-            download=True,
-            transform=transforms.Compose(
-                [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]),
-        ),
+        trainds,
         batch_size=batch_size,
         shuffle=True,
         **kwargs
     )
     test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST(
-            "../data",
-            train=False,
-            transform=transforms.Compose(
-                [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]),
-        ),
+        testds,
         batch_size=test_batch_size,
         shuffle=True,
         **kwargs
@@ -107,9 +96,42 @@ def get_data_loaders(use_cuda=False, batch_size=64, test_batch_size=1000):
     return train_loader, test_loader
 
 
-def main():
-    # warnings.filterwarnings("ignore")
+def get_mnist_default_datasets():
+    data_transforms = transforms.Compose(
+        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
+    train = datasets.MNIST(
+        "../data",
+        train=True,
+        download=True,
+        transform=data_transforms)
+    test = datasets.MNIST(
+        "../data",
+        train=False,
+        transform=data_transforms)
 
+    return train, test
+
+
+def train_model(device, use_cuda, train_dataset, test_dataset, batch_size=64, test_batch_size=1000, epochs=3, lr=0.01, momentum=0.5, log_interval=10):
+    train_loader, test_loader = get_data_loaders(
+        train_dataset,
+        test_dataset,
+        use_cuda,
+        batch_size,
+        test_batch_size)
+
+    model = Net().to(device)
+    optimizer = optim.SGD(model.parameters(),
+                          lr=lr, momentum=momentum)
+
+    for epoch in range(1, epochs + 1):
+        train(model, device, train_loader, optimizer, epoch, log_interval)
+        test(model, device, test_loader)
+
+    return model
+
+
+def main():
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                         help='input batch size for training (default: 64)')
@@ -125,7 +147,6 @@ def main():
                         help='random seed (default: 1)')
     parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                         help='how many batches to wait before logging training status')
-    parser.add_argument('--model-dir', type=str, default=None)
     args = parser.parse_args()
 
     mlflow.autolog()
@@ -135,20 +156,11 @@ def main():
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    train_loader, test_loader = get_data_loaders(
-        use_cuda, args.batch_size, args.test_batch_size)
+    train_dataset, test_dataset = get_mnist_default_datasets()
 
-    model = Net().to(device)
-    optimizer = optim.SGD(model.parameters(),
-                          lr=args.lr, momentum=args.momentum)
+    model = train_model(device, use_cuda, train_dataset, test_dataset, args.batch_size, args.test_batch_size, args.epochs, args.lr, args.momentum, args.log_interval)
 
-    for epoch in range(1, args.epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch)
-        test(args, model, device, test_loader)
-    # Log model to run history using MLflow
-    if args.model_dir:
-        print('writing model to {}'.format(args.model_dir))
-        mlflow.pytorch.save_model(model, args.model_dir)
+    mlflow.pytorch.log_model(model, "model")
 
 
 if __name__ == "__main__":
