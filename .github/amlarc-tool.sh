@@ -288,7 +288,7 @@ setup_workspace(){
     az ml workspace create \
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
-        --location $LOCATION \
+        --location eastus2euap \
         --name $WORKSPACE \
         $@
 
