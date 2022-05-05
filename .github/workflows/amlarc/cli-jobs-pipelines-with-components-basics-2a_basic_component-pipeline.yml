@@ -1,0 +1,30 @@
+name: cli-jobs-pipelines-with-components-basics-2a_basic_component-pipeline
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: install az cli
+        shell: bash
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+      - name: install tools
+        run: bash .github/amlarc-tool.sh install_tools
+        timeout-minutes: 30
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZ_AE_CREDS}}
+        timeout-minutes: 30
+
+      - name: run job
+        run: |
+          bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/2a_basic_component/pipeline.yml \
+            jobs.hello_python_world_job.compute=azureml:githubtest

@@ -3,7 +3,7 @@ type: pipeline
 display_name: cifar-10-pipeline-example
 experiment_name: cifar-10-pipeline-example
 jobs:
-  get-data:
+  get_data:
     type: command
     command: >-
       wget https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz;
@@ -15,7 +15,7 @@ jobs:
       cifar:
         type: uri_folder
         mode: upload
-  train-model:
+  train_model:
     type: command
     command: >-
       python main.py
@@ -25,7 +25,7 @@ jobs:
     code: src/train-model
     inputs:
       epochs: 1
-      cifar: ${{parent.jobs.get-data.outputs.cifar}}
+      cifar: ${{parent.jobs.get_data.outputs.cifar}}
     outputs:
       model_dir:
         type: uri_folder
@@ -37,7 +37,7 @@ jobs:
       process_count_per_instance: 1
     resources:
       instance_count: 2
-  eval-model:
+  eval_model:
     type: command
     command: >-
       python main.py
@@ -52,5 +52,5 @@ jobs:
     resources:
       instance_count: 1
     inputs:
-      cifar: ${{parent.jobs.get-data.outputs.cifar}}
-      model_dir: ${{parent.jobs.train-model.outputs.model_dir}}
+      cifar: ${{parent.jobs.get_data.outputs.cifar}}
+      model_dir: ${{parent.jobs.train_model.outputs.model_dir}}
