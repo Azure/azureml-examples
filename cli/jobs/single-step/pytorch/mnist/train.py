@@ -8,7 +8,6 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 
 
-# This defines the layers of the Neural Net?
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -113,31 +112,6 @@ def get_mnist_default_datasets():
     return train, test
 
 
-def get_mnist_labeled_datasets(labeled_dataset):
-    from azureml.core import Run, Dataset
-    from azureml.dataprep.rslex import BufferingOptions, Downloader, CachingOptions
-    from azureml_dataset import AzureMLDataset
-
-    run = Run.get_context()
-    ws = run.experiment.workspace
-    labeled_dset = Dataset._load(labeled_dataset, ws)
-
-    train, test = labeled_dset.random_split(0.9)
-
-    caching_options = CachingOptions(512 * 1024 * 1024, None)
-    downloader = Downloader(1024, 8, caching_options)
-    buffering_options = BufferingOptions(1, downloader)
-    data_transforms = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
-
-    train = AzureMLDataset(train, buffering_options=buffering_options,
-                           data_transforms=data_transforms, label_transforms=int)
-    test = AzureMLDataset(test, buffering_options=buffering_options,
-                          data_transforms=data_transforms, label_transforms=int)
-
-    return train, test
-
-
 def train_model(device, use_cuda, train_dataset, test_dataset, batch_size=64, test_batch_size=1000, epochs=3, lr=0.01, momentum=0.5, log_interval=10):
     train_loader, test_loader = get_data_loaders(
         train_dataset,
@@ -158,8 +132,6 @@ def train_model(device, use_cuda, train_dataset, test_dataset, batch_size=64, te
 
 
 def main():
-    # warnings.filterwarnings("ignore")
-
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                         help='input batch size for training (default: 64)')
@@ -175,8 +147,6 @@ def main():
                         help='random seed (default: 1)')
     parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                         help='how many batches to wait before logging training status')
-    parser.add_argument('--labeled-dataset', type=str, default=None)
-    parser.add_argument('--model-dir', type=str, default=None)
     args = parser.parse_args()
 
     mlflow.autolog()
@@ -186,21 +156,11 @@ def main():
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    if args.labeled_dataset:
-        train_dataset, test_dataset = get_mnist_labeled_datasets(
-            args.labeled_dataset)
-    else:
-        train_dataset, test_dataset = get_mnist_default_datasets()
+    train_dataset, test_dataset = get_mnist_default_datasets()
 
-    model = train_model(device, use_cuda, train_dataset, test_dataset, args.batch_size,
-                        args.test_batch_size, args.epochs, args.lr, args.momentum, args.log_interval)
+    model = train_model(device, use_cuda, train_dataset, test_dataset, args.batch_size, args.test_batch_size, args.epochs, args.lr, args.momentum, args.log_interval)
 
-    # Log model to run history using MLflow
-    mlflow.pytorch.log_model(
-        model,
-        "model",
-        # registered_model_name="mnist-model"
-    )
+    mlflow.pytorch.log_model(model, "model")
 
 
 if __name__ == "__main__":
