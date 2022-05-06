@@ -4,8 +4,3 @@ code: src
 environment:
   image: library/python:latest
 compute: azureml:cpu-cluster
-inputs:
-  uri_folde:
-    type: uri_folder
-  table:
-    type: 
