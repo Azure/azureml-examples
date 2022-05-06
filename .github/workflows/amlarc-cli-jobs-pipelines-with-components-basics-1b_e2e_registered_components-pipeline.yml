@@ -1,6 +1,19 @@
 name: cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline
 on:
   workflow_dispatch:
+    inputs:
+      SUBSCRIPTION:
+        description: 'Subscription ID'
+        required: false
+        default: '6560575d-fa06-4e7d-95fb-f962e74efd7a'
+      RESOURCE_GROUP:
+        description: 'Resource Group'
+        required: false
+        default: 'azureml-examples-rg'
+      WORKSPACE:
+        description: 'Workspace Name'
+        required: false
+        default: 'amlarc-githubtest-ws'
   schedule:
     - cron: "0 0/4 * * *"
   pull_request:
@@ -13,6 +26,10 @@ on:
       - cli/setup.sh
 jobs:
   build:
+    env:
+      SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
+      RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}
+      WORKSPACE: ${{ github.event.inputs.WORKSPACE }}
     runs-on: ubuntu-latest
     steps:
       - name: check out repo
