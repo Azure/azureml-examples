@@ -222,7 +222,6 @@ jobs:
       run: |
         set +e
         bash .github/amlarc-tool.sh delete_endpoints
-        bash .github/amlarc-tool.sh delete_compute
         if [ "${{ github.event.inputs.REINSTALL_EXTENSION }}" == "true" ] ; then
             bash .github/amlarc-tool.sh delete_extension
         fi
