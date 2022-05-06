@@ -12,10 +12,3 @@ jobs:
       output:
         type: uri_folder
         path: azureml://datastores/workspaceblobstore/paths/${{name}}/
-  register_data:
-    type: command
-    component: azureml:register_data@latest
-    inputs:
-      data_path: ${{parent.jobs.hello_world.outputs.output}}
-      data_name: hello_pipeline_customize_output_folder
-      data_type: uri_folder
