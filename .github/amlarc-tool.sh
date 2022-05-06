@@ -425,18 +425,14 @@ delete_workspace(){
 # run cli test job
 run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
-    SET_ARGS="${@:2}"
-    if [ "$SET_ARGS" != "" ]; then
-        EXTRA_ARGS=" --set $SET_ARGS "
-    else
-        EXTRA_ARGS=" --set compute=azureml:$COMPUTE resources.instance_type=$INSTANCE_TYPE_NAME "
-    fi 
+    CONVERTER_ARGS="${@:2}"
 
+    python .github/amlarc_convert.py -i $JOB_YML $CONVERTER_ARGS
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
     
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
 
-    run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
+    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
     TIMEOUT="${TIMEOUT:-30m}"
     timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)

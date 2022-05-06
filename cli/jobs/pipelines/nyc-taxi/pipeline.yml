@@ -54,7 +54,7 @@ jobs:
       --test_data ${{outputs.test_data}} 
       --model_output ${{outputs.model_output}}
   
-  predict-job:
+  predict_job:
     type: command
     inputs:
       model_input: ${{parent.jobs.train_job.outputs.model_output}}
@@ -71,10 +71,10 @@ jobs:
       --test_data ${{inputs.test_data}}
       --predictions ${{outputs.predictions}}
   
-  score-job:
+  score_job:
     type: command
     inputs:
-      predictions: ${{parent.jobs.predict-job.outputs.predictions}}
+      predictions: ${{parent.jobs.predict_job.outputs.predictions}}
       model: ${{parent.jobs.train_job.outputs.model_output}}
     outputs:
       score_report: 
