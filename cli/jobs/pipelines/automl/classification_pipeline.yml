@@ -39,4 +39,4 @@ jobs:
     inputs:
       mltable_output: ${{parent.jobs.classification_node.outputs.best_model}}
     command: ls ${{inputs.mltable_output}}
-    environment: azureml:AzureML-Minimal:1
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
