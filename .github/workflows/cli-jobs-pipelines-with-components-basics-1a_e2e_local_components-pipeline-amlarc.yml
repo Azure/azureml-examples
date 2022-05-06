@@ -3,33 +3,29 @@ on:
   workflow_dispatch:
     inputs:
       SUBSCRIPTION:
-        description: 'Subscription ID'
+        description: Subscription ID
         required: false
-        default: '6560575d-fa06-4e7d-95fb-f962e74efd7a'
+        default: 6560575d-fa06-4e7d-95fb-f962e74efd7a
       RESOURCE_GROUP:
-        description: 'Resource Group'
+        description: Resource Group
         required: false
-        default: 'azureml-examples-rg'
+        default: azureml-examples-rg
       WORKSPACE:
-        description: 'Workspace Name'
+        description: Workspace Name
         required: false
-        default: 'amlarc-githubtest-ws'
+        default: amlarc-githubtest-ws
   schedule:
-    - cron: "0 0/4 * * *"
+  - cron: 0 0/4 * * *
   pull_request:
     branches:
-      - main
+    - main
     paths:
-      - cli/jobs/pipelines-with-components/basics/1a_e2e_local_components/**
-      - .github/workflows/cli-jobs-pipelines-with-components-basics-1a_e2e_local_components-pipeline.yml
-      - cli/run-pipeline-jobs.sh
-      - cli/setup.sh
+    - cli/jobs/pipelines-with-components/basics/1a_e2e_local_components/**
+    - .github/workflows/cli-jobs-pipelines-with-components-basics-1a_e2e_local_components-pipeline.yml
+    - cli/run-pipeline-jobs.sh
+    - cli/setup.sh
 jobs:
   build:
-    env:
-      SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
-      RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}
-      WORKSPACE: ${{ github.event.inputs.WORKSPACE }}
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
@@ -37,7 +33,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: '3.8'
     - name: install az cli
       shell: bash
       run: |
@@ -50,8 +46,11 @@ jobs:
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
-
     - name: run job
-      run: |
+      run: |-
         bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/1a_e2e_local_components/pipeline.yml \
           -cr
+    env:
+      SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
+      RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}
+      WORKSPACE: ${{ github.event.inputs.WORKSPACE }}

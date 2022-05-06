@@ -30,17 +30,25 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: install az cli
+      shell: bash
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    - name: install tools
+      run: bash .github/amlarc-tool.sh install_tools
+      timeout-minutes: 30
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
-    - name: setup
-      run: bash setup.sh
-      working-directory: cli
-      continue-on-error: true
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines-with-components/basics/6c_r_iris/pipeline.yml
-      working-directory: cli
+      run: bash -x .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/6c_r_iris/pipeline.yml
+        -cr
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}

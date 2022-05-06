@@ -29,17 +29,28 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: install az cli
+      shell: bash
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    - name: install tools
+      run: bash .github/amlarc-tool.sh install_tools
+      timeout-minutes: 30
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
-    - name: setup
-      run: bash setup.sh
-      working-directory: cli
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+    - name: run cli/jobs/single-step/gpu_perf/gpu_perf_job.yml
+      run: |
+        bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/gpu_perf/gpu_perf_job.yml \
+          -it gpu -cr
       continue-on-error: true
-    - name: run job
-      run: bash -x run-job.sh jobs/single-step/gpu_perf/gpu_perf_job.yml
-      working-directory: cli
+      timeout-minutes: 40
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}
