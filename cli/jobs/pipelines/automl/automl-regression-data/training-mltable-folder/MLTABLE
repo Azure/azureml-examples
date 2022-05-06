@@ -1,5 +1,5 @@
 paths:
-  - file: ./classification_bankmarketing_train.csv
+  - file: ./regression_train.csv
 transformations:
   - read_delimited:
       delimiter: ','
