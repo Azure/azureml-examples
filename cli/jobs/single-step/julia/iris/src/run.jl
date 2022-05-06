@@ -1,1 +1,0 @@
-using Pkg; Pkg.activate("."); Pkg.instantiate(); include("iris.jl")

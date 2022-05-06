@@ -1,2 +1,0 @@
-
-This is a simple pipeline with 3 command component. There are no dependencies between these jobs, hence they all run concurrently. Check if you have `cpu-cluster` compute and run this job using `az ml job create --file pipeline.yml`.
