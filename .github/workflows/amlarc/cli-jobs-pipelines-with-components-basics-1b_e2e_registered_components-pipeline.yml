@@ -1,6 +1,16 @@
 name: cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/**
+      - .github/workflows/cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline.yml
+      - cli/run-pipeline-jobs.sh
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,4 +47,4 @@ jobs:
       - name: run job
         run: |
           bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml \
-            compute=azureml:githubtest
+            -cr

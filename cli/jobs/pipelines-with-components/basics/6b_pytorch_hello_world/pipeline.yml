@@ -3,7 +3,7 @@ type: pipeline
 description: "Prints the environment variables useful for scripts running in a PyTorch training environment"
 
 jobs:
-  pytorch-job:
+  pytorch_job:
     type: command
     component: file:./component.yml
     compute: azureml:gpu-cluster

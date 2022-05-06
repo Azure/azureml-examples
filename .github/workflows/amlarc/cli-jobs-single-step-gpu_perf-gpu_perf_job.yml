@@ -1,10 +1,18 @@
 name: amlarc-examples-test
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/jobs/single-step/gpu_perf/**
+      - .github/workflows/cli-jobs-single-step-gpu_perf-gpu_perf_job.yml
+      - cli/setup.sh
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -25,12 +33,9 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
 
-    ## run training cli test cases
-    ## single step
-    # gpu perf
     - name: run cli/jobs/single-step/gpu_perf/gpu_perf_job.yml
       run: |
         bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/gpu_perf/gpu_perf_job.yml \
-              compute=azureml:githubtest resources.instance_type=gpu resources.instance_count=2
+          -it gpu -cr
       continue-on-error: true
       timeout-minutes: 40

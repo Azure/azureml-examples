@@ -5,7 +5,7 @@ import yaml
 def convert(input_file, compute_target, instance_type, common_runtime, output_file):
     with open(input_file, 'r') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
-        job_schema = data.get('$schema')
+        job_schema = data.get('$schema', '')
         is_pipeline_job = False
         if 'pipelineJob' in job_schema or 'jobs' in data:
             is_pipeline_job = True
@@ -13,6 +13,10 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
         # change compute target
         data['compute'] = 'azureml:%s' % compute_target
         if is_pipeline_job:
+            settings = data.get('settings', {})
+            settings['default_compute'] = 'azureml:%s' % compute_target
+            data['settings'] = settings
+
             for step in data.get('jobs', {}):
                 data['jobs'][step]['compute'] = 'azureml:%s' % compute_target
 

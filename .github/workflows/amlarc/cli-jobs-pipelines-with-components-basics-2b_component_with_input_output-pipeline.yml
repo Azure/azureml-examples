@@ -1,6 +1,16 @@
 name: cli-jobs-pipelines-with-components-basics-2b_component_with_input_output-pipeline
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/jobs/pipelines-with-components/basics/2b_component_with_input_output/**
+      - .github/workflows/cli-jobs-pipelines-with-components-basics-2b_component_with_input_output-pipeline.yml
+      - cli/run-pipeline-jobs.sh
+      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,4 +37,4 @@ jobs:
       - name: run job
         run: |
           bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/2b_component_with_input_output/pipeline.yml \
-            jobs.hello_python_world_job.compute=azureml:githubtest
+            -cr
