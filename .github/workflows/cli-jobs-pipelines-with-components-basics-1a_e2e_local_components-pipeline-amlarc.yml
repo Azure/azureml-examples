@@ -1,4 +1,4 @@
-name: amlarc-cli-jobs-pipelines-with-components-basics-1a_e2e_local_components-pipeline
+name: cli-jobs-pipelines-with-components-basics-1a_e2e_local_components-pipeline-amlarc
 on:
   workflow_dispatch:
     inputs:
