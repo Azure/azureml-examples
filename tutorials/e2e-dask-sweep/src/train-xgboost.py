@@ -61,8 +61,9 @@ if __name__ == '__main__':
     print(df.dtypes)
 
     # drop redundat cols -- also xgb cannot handle dates
-    drop_cols = ["tip_amount", "pickup_datetime", "dropoff_datetime", "diff"]
+    drop_cols = ["tip_amount", "pickup_datetime", "dropoff_datetime", "diff", "__null_dask_index__"]
     df = df.drop(drop_cols, axis=1)
+    df = df.astype("float64")
     train, test = df.random_split([0.8, 0.2])
 
     train_target = train.fare_amount
