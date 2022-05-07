@@ -16,9 +16,9 @@ This sample explains how to
 
 Submit the Pipeline Job with classification task:
 ```
-az ml job create --file classification-task-bankmarketing.yml
+az ml job create --file classification-task-bankmarketing-pipeline.yml
 ```
 Submit the Pipeline Job with regression task:
 ```
-az ml job create -f regression-task-housepricing.yml
+az ml job create -f regression-task-housepricing-pipeline.yml
 ```
