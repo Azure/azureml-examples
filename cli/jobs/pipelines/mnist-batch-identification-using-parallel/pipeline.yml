@@ -33,7 +33,7 @@ jobs:
         mode: eval_mount
       score_model:
         type: uri_folder
-        path: ./mnist_models
+        path: ./mnist-models
         mode: download
     outputs:
       job_output_file:
