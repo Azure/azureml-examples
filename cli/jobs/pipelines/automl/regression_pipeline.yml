@@ -6,19 +6,19 @@ description: Pipeline using AutoML regression task
 display_name: pipeline-with-regression
 experiment_name: pipeline-with-automl
 
+settings:
+  default_compute: azureml:cpu-cluster
+
 inputs:
   regression_train_data:
     type: mltable
-    path: ./automl-regression-data/training-mltable-folder
+    path: ./house_pricing/train
   regression_test_data:
     type: mltable
-    path: ./automl-regression-data/test-mltable-folder
+    path: ./house_pricing/test
   regression_validate_data:
     type: mltable
-    path: ./automl-regression-data/validation-mltable-folder
-
-settings:
-  default_compute: azureml:cpu-cluster
+    path: ./house_pricing/validation
 
 jobs:
   regression_node:

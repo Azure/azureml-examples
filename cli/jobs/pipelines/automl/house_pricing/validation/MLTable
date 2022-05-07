@@ -1,5 +1,5 @@
 paths:
-  - file: ./regression_validate.csv
+  - file: ./house_pricing_valid.csv
 transformations:
   - read_delimited:
       delimiter: ','
