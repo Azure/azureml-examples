@@ -1,0 +1,42 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Pipeline using AutoML classification task
+
+display_name: pipeline-with-classification
+experiment_name: pipeline-with-automl
+
+inputs:
+  classification_train_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/training-mltable-folder
+  classification_validate_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/validation-mltable-folder
+
+jobs:
+  classification_node:
+    type: automl
+    task: classification
+    primary_metric: accuracy
+    limits:
+      max_trials: 1
+      max_concurrent_trials: 1
+    target_column_name: y
+    training_data: ${{parent.inputs.classification_train_data}}
+    validation_data: ${{parent.inputs.classification_validate_data}}
+    featurization:
+      mode: "Auto"
+    training:
+      enable_stack_ensemble: false
+      enable_vote_ensemble: false
+    # currently need to specify outputs "mlflow_model" explictly to reference it in following nodes 
+    outputs:
+       best_model:
+          type: mlflow_model
+  show_output:
+    type: command
+    inputs:
+      mltable_output: ${{parent.jobs.classification_node.outputs.best_model}}
+    command: ls ${{inputs.mltable_output}}
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1

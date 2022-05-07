@@ -12,12 +12,16 @@ az ml data create --file assets/data/local-folder.yml --set version=$target_vers
 az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml --set version=$target_version -o none
 az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/score.yml --set version=$target_version -o none
 az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/eval.yml --set version=$target_version -o none
+az ml component create --file assets/component/register_data.yml --set version=$target_version -o none
 az ml data create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_test.yaml --set version=$target_version -o none
 az ml data create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_train.yaml --set version=$target_version -o none
 az ml environment create --file jobs/pipelines-with-components/rai_pipeline_adult_analyse/environment/responsibleai-environment.yaml --set version=$target_version -o none
 
 echo ./jobs/basics/hello-pipeline-abc.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-abc.yml cli_samples_v2_$target_version nowait
+
+echo ./jobs/basics/hello-pipeline-cron-schedule.yml
+bash run-job.sh ./jobs/basics/hello-pipeline-cron-schedule.yml cli_samples_v2_$target_version nowait
 
 echo ./jobs/basics/hello-pipeline-customize-output-file.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-customize-output-file.yml cli_samples_v2_$target_version nowait
@@ -30,6 +34,9 @@ bash run-job.sh ./jobs/basics/hello-pipeline-default-artifacts.yml cli_samples_v
 
 echo ./jobs/basics/hello-pipeline-io.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-io.yml cli_samples_v2_$target_version nowait
+
+echo ./jobs/basics/hello-pipeline-recurrence-schedule.yml
+bash run-job.sh ./jobs/basics/hello-pipeline-recurrence-schedule.yml cli_samples_v2_$target_version nowait
 
 echo ./jobs/basics/hello-pipeline-settings.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-settings.yml cli_samples_v2_$target_version nowait
