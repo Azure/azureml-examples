@@ -21,9 +21,8 @@ on:
     - main
     paths:
     - cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/**
-    - .github/workflows/cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline.yml
-    - cli/run-pipeline-jobs.sh
-    - cli/setup.sh
+    - .github/workflows/cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline-amlarc.yml
+    - .github/amlarc-tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,10 +33,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-    - name: install az cli
-      shell: bash
-      run: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
     - name: install tools
       run: bash .github/amlarc-tool.sh install_tools
       timeout-minutes: 30

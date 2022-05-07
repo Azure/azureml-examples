@@ -21,8 +21,8 @@ on:
     - main
     paths:
     - cli/jobs/single-step/gpu_perf/**
-    - .github/workflows/cli-jobs-single-step-gpu_perf-gpu_perf_job.yml
-    - cli/setup.sh
+    - .github/workflows/cli-jobs-single-step-gpu_perf-gpu_perf_job-amlarc.yml
+    - .github/amlarc-tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,7 +33,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-    - name: install az cli
       shell: bash
       run: |
         curl -sL https://aka.ms/InstallAzureCLIDeb | bash
