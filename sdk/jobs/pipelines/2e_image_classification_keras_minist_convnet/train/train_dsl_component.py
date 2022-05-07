@@ -16,12 +16,12 @@ conda_env = Environment(
     description="train image classification with keras",
     environment=conda_env,
 )
-def keras_train(
+def keras_train_component(
     input_data: Input,
     output_model: Output,
     epochs=10,
 ):
-    # avoid dependency issue, execution logic is in prep.py file
+    # avoid dependency issue, execution logic is in train() func in train.py file
     from train import train
 
     train(input_data, output_model, epochs)
