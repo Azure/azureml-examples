@@ -1,0 +1,7 @@
+paths:
+  - file: ./regression_train.csv
+transformations:
+  - read_delimited:
+      delimiter: ','
+      encoding: 'ascii'
+      empty_as_string: false

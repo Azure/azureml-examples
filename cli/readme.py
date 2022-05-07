@@ -300,6 +300,8 @@ def parse_path(path):
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     creds = "${{secrets.AZ_CREDS}}"
+    # append nowait args as status of pipeline job with schedule will always be 'NotStarted'
+    extra_args = " schedule_experiment nowait" if "schedule" in filename else ""
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -328,7 +330,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
+      run: bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml{extra_args}
       working-directory: cli/{project_dir}\n"""
 
     # write workflow

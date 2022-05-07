@@ -1,10 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-name: simplePipelineJobWithInlineParallelTabularJobe2e
+display_name: simplePipelineJobWithInlineParallelTabularJobe2e
 description: The hello world pipeline job with inline parallel job
 tags:
   tag: tagvalue
   owner: sdkteam
+
+settings:
+  default_compute: azureml:cpu-cluster
 
 inputs:
   job_data_path:
@@ -22,11 +26,11 @@ outputs:
     mode: rw_mount
 
 jobs:
-  hello_world_inline_parallelTabularJob_1:
+  batch_prediction:
     type: parallel
     compute: azureml:cpu-cluster
     inputs:
-      job_data_path: ${{parent.inputs.job_data_path}}
+      input_data: ${{parent.inputs.job_data_path}}
       score_model: ${{parent.inputs.score_model}}
     outputs:
       job_output_file: ${{parent.outputs.job_out_file}}
@@ -34,7 +38,7 @@ jobs:
     mini_batch_size: "100kb"
     mini_batch_error_threshold: 5
     logging_level: "DEBUG"
-    input_data: ${{inputs.job_data_path}}
+    input_data: ${{inputs.input_data}}
     max_concurrency_per_instance: 2
     retry_settings:
       max_retries: 2
