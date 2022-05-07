@@ -22,4 +22,5 @@ jobs:
     command: echo "world"
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
- 
+ # to list jobs with schedule only, use `az ml job list --schedule-defined`
+ # to list jobs triggered by the schedule job, use `az ml job list --scheduled-job-name {job_name}`

@@ -14,6 +14,9 @@ inputs:
     type: mltable
     path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/validation-mltable-folder
 
+settings:
+  default_compute: azureml:cpu-cluster
+
 jobs:
   classification_node:
     type: automl
@@ -30,7 +33,7 @@ jobs:
     training:
       enable_stack_ensemble: false
       enable_vote_ensemble: false
-    # currently need to specify outputs "mlflow_model" explictly to reference it in following nodes 
+    # currently need to specify outputs "mlflow_model" explicitly to reference it in following nodes 
     outputs:
        best_model:
           type: mlflow_model

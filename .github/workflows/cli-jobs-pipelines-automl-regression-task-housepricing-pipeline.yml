@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-automl-regression_pipeline
+name: cli-jobs-pipelines-automl-regression-task-housepricing-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -9,7 +9,7 @@ on:
       - sdk-preview
     paths:
       - cli/jobs/pipelines/automl/**
-      - .github/workflows/cli-jobs-pipelines-automl-regression_pipeline.yml
+      - .github/workflows/cli-jobs-pipelines-automl-regression-task-housepricing-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../run-job.sh regression_pipeline.yml
+      run: bash -x ../../../run-job.sh regression-task-housepricing-pipeline.yml
       working-directory: cli/jobs/pipelines/automl
