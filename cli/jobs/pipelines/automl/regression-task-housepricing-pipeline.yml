@@ -6,16 +6,19 @@ description: Pipeline using AutoML regression task
 display_name: pipeline-with-regression
 experiment_name: pipeline-with-automl
 
+settings:
+  default_compute: azureml:cpu-cluster
+
 inputs:
   regression_train_data:
     type: mltable
-    path: ./automl-regression-data/training-mltable-folder
+    path: ./house_pricing/training-mltable-folder
   regression_test_data:
     type: mltable
-    path: ./automl-regression-data/test-mltable-folder
+    path: ./house_pricing/test-mltable-folder
   regression_validate_data:
     type: mltable
-    path: ./automl-regression-data/validation-mltable-folder
+    path: ./house_pricing/validation-mltable-folder
 
 jobs:
   regression_node:
@@ -34,7 +37,7 @@ jobs:
     training:
       enable_stack_ensemble: false
       enable_vote_ensemble: false
-    # currently need to specify outputs "mlflow_model" explictly to reference it in following nodes 
+    # currently need to specify outputs "mlflow_model" explicitly to reference it in following nodes 
     outputs:
        best_model:
           type: mlflow_model
