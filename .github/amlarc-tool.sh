@@ -9,7 +9,7 @@ export SLEEP_SECONDS=20
 
 # Resource group
 export SUBSCRIPTION="${SUBSCRIPTION:-6560575d-fa06-4e7d-95fb-f962e74efd7a}"
-export RESOURCE_GROUP="${RESOURCE_GROUP:-amlarc-examples-rg}"  
+export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"
 export LOCATION="${LOCATION:-eastus}"
 
 # AKS
