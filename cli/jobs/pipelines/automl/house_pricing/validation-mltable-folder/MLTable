@@ -1,5 +1,5 @@
 paths:
-  - file: ./house_pricing_valid.csv
+  - file: ./house_pricing_validation.csv
 transformations:
   - read_delimited:
       delimiter: ','

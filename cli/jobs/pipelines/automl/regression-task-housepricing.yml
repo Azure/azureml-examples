@@ -12,13 +12,13 @@ settings:
 inputs:
   regression_train_data:
     type: mltable
-    path: ./house_pricing/train
+    path: ./house_pricing/training-mltable-folder
   regression_test_data:
     type: mltable
-    path: ./house_pricing/test
+    path: ./house_pricing/test-mltable-folder
   regression_validate_data:
     type: mltable
-    path: ./house_pricing/validation
+    path: ./house_pricing/validation-mltable-folder
 
 jobs:
   regression_node:
