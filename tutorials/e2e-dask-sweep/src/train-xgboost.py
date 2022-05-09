@@ -6,7 +6,11 @@ import mlflow
 import tempfile
 import shutil
 import xgboost as xgb
+from xgboost.callback import EvaluationMonitor, TrainingCallback, rabit
 from mlflow.models import infer_signature
+import numpy as np
+from typing import Tuple, Optional, Dict
+from mlflow.tracking import MlflowClient
 
 def write_freeze():
     # log pip list before doing anything else
@@ -16,23 +20,75 @@ def write_freeze():
     Path("./outputs").mkdir(parents=True, exist_ok=True)
     os.system("pip list > outputs/pip_list.txt")
 
+def print_env():
+    for k, v in os.environ.items():
+        print(k, v)
+
+def rmsle(predt: np.ndarray, dtrain: xgb.DMatrix) -> Tuple[str, float]:
+    ''' Root mean squared log error metric.
+
+    :math:`\sqrt{\frac{1}{N}[log(pred + 1) - log(label + 1)]^2}`
+    '''
+    y = dtrain.get_label()
+    predt[predt < -1] = -1 + 1e-6
+    elements = np.power(np.log1p(y) - np.log1p(predt), 2)
+    metric = float(np.sqrt(np.sum(elements) / len(y)))
+
+    return 'rmsle', metric
+
+class MLFlowLogCallBack(EvaluationMonitor):
+    """
+        log the last metric value of each metric to mlflow
+    """
+    def __init__(self, mlflow_env_vars: Dict = {}, rank: int = 0, period: int = 1, show_stdv: bool = False) -> None:
+        self.mlflow_env_vars = mlflow_env_vars
+        super().__init__(rank, period, show_stdv)
+
+    def after_iteration(self, model, epoch: int,
+                evals_log: TrainingCallback.EvalsLog) -> bool:
+        if not evals_log:
+            return False
+
+        if rabit.get_rank() == self.printer_rank:
+            for data, metric in evals_log.items():
+                for metric_name, log in metric.items():
+                    stdv: Optional[float] = None
+                    if isinstance(log[-1], tuple):
+                        score = log[-1][0]
+                        stdv = log[-1][1]
+                    else:
+                        score = log[-1]
+                    
+                    for k, v in self.mlflow_env_vars.items():
+                        os.environ[k] = v
+
+                    mlflow_client = MlflowClient()
+                    mlflow_client.log_metric(mlflow_run_id, f"{data}-{metric_name}", score)
+        return False
+
 if __name__ == '__main__':
     write_freeze()
+    #print_env()
     
     print("Command Line Parameters: ", sys.argv)
 
+    print("MLFLOW environment variables")
+    # need to remember these since logging will happen in different sub-processes
+    # and the environment variables don't all carry over.
+    mlflow_env_vars = {}
     for k, v in os.environ.items():
         if k.startswith("MLFLOW"):
-            print(k, v)
+            print(f"{k}={v}")
+            mlflow_env_vars[k] = v
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--nyc_taxi_parquet")   # input folder
-    parser.add_argument("--model")              # output folder
-    parser.add_argument("--tree_method")        # auto, exact, approx, hist
-    parser.add_argument("--learning_rate", type=float)      # 0.3; range: [0,1]
-    parser.add_argument("--gamma", type=float)              # 0; range: [0,inf]
-    parser.add_argument("--max_depth", type=int)            # 6; range: [0,inf]
-    parser.add_argument("--num_boost_round", type=int)
+    parser.add_argument("--nyc_taxi_parquet", default="~/localfiles/nyctaxi.parquet/")   # input folder
+    parser.add_argument("--model", default="../data/fare_predict")              # output folder
+    parser.add_argument("--tree_method", default="auto")        # auto, exact, approx, hist
+    parser.add_argument("--learning_rate", type=float, default=0.3)      # 0.3; range: [0,1]
+    parser.add_argument("--gamma", type=float, default=1)              # 0; range: [0,inf]
+    parser.add_argument("--max_depth", type=int, default=7)            # 6; range: [0,inf]
+    parser.add_argument("--num_boost_round", type=int, default=10)
 
     args = parser.parse_args()
     dataset = args.nyc_taxi_parquet
@@ -51,8 +107,14 @@ if __name__ == '__main__':
         "max_depth": max_depth,
         "objective": "reg:squarederror"
     }
+    #mlflow.start_run()
     mlflow.log_param('num_boost_round', num_boost_round)
     mlflow.log_params(params)
+
+    mlflow_client = MlflowClient()
+    mlflow_run_id = mlflow.active_run().info.run_id
+    print(f"MLFlow run id: {mlflow_run_id}")
+
     cluster = LocalCluster(local_directory=tempfile.gettempdir())
     c = Client(cluster)
 
@@ -78,19 +140,21 @@ if __name__ == '__main__':
     dtrain = xgb.dask.DaskDMatrix(c, train_data, train_target)
     dtest = xgb.dask.DaskDMatrix(c, test_data, test_target)
 
-    print("Start Training")
+    print("Starting Training")
     model = xgb.dask.train(
         c,
         params,
         dtrain,
         num_boost_round=int(num_boost_round),
         evals=[(dtest, "test")],
+        custom_metric=rmsle,
+        callbacks=[MLFlowLogCallBack(mlflow_env_vars=mlflow_env_vars)]
     )
 
     print("model", model)
 
-    for metric in model['history']['test']['rmse']:
-        mlflow.log_metric('test-rmse', metric)
+    #for metric in model['history']['test']['rmse']:
+    #    mlflow.log_metric('test-rmse', metric)
 
     signature = infer_signature(model_input=train_data.head())
 
