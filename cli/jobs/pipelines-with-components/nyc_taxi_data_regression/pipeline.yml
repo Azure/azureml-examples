@@ -7,7 +7,6 @@ description: Train regression model based on nyc taxi dataset
 
 outputs: 
   pipeline_job_trained_model:
-    type: mlflow_model
     mode: rw_mount
   pipeline_job_predictions:
     mode: rw_mount 
