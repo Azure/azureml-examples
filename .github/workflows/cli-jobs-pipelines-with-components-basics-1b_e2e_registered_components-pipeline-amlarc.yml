@@ -45,7 +45,7 @@ jobs:
       run: |
         set -x
         export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"
-        export WORKSPACE="${WORKSPACE:-azureml-examples-rg}"
+        export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws}"
         az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE
     - name: prepare-components
       run: |
