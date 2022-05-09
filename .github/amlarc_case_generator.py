@@ -1,16 +1,75 @@
 import argparse
+import os.path
+
 import ruamel.yaml as yaml
+
+shared_steps_yml = """
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: install tools
+      run: bash .github/amlarc-tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+"""
+
+workflow_inputs_yml = """
+    inputs:
+      SUBSCRIPTION:
+        description: Subscription ID
+        required: false
+        default: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP:
+        description: Resource Group
+        required: false
+        default: azureml-examples-rg
+      WORKSPACE:
+        description: Workspace Name
+        required: false
+        default: amlarc-githubtest-ws
+"""
+
+env_yml = """
+      SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
+      RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}
+      WORKSPACE: ${{ github.event.inputs.WORKSPACE }}
+"""
+
+shared_steps = yaml.round_trip_load(shared_steps_yml)
+workflow_inputs = yaml.round_trip_load(workflow_inputs_yml)
+env = yaml.round_trip_load(env_yml)
 
 
 def convert(input_file):
     with open(input_file, 'r') as f:
         data = yaml.round_trip_load(f)
-        # remove install az cli step
+
+        # add inputs
+        data['on']['workflow_dispatch'] = workflow_inputs
+
+        # add env
+        data['jobs']['build']['env'] = env
+
+        # change job steps
         steps = data['jobs']['build']['steps']
-        new_step = []
-        for i in steps:
-            if i['name'] != 'install az cli':
-                new_step.append(i)
+        new_step = shared_steps
+        for single_step in steps:
+            if single_step['name'] == 'run job':
+                single_step.pop('working-directory')
+                command = single_step['run'].split(' ')
+                target_file = os.path.join('cli', command[-1])
+                new_command = ['bash .github/amlarc-tool.sh run_cli_job'] + [target_file] + ['-cr']
+                single_step['run'] = ' '.join(new_command)
+                new_step.append(single_step)
+            else:
+                continue
         data['jobs']['build']['steps'] = new_step
 
         # modify the pull request trigger
@@ -28,7 +87,6 @@ def convert(input_file):
             new_paths.append(i)
         new_paths.append('.github/amlarc-tool.sh')
         data['on']['pull_request']['paths'] = new_paths
-
 
     # write back
     with open(input_file, 'w') as f:
