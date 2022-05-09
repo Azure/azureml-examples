@@ -1,4 +1,5 @@
 # imports
+from dataclasses import dataclass
 import os
 import mlflow
 import argparse
@@ -9,18 +10,42 @@ from pathlib import Path
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 
-from azure.ml import Input, Output
-from azure.ml.dsl import command_component
+from pandas import DataFrame
 
-@command_component
-def main(data: Input,
-         model_output: Output, test_data: Output, 
+from mlcomponent import command_component
+from mlcomponent import Asset
+
+# input/output load/dumpers
+def load_data(path) -> DataFrame:
+    # read in data
+    df = pd.read_csv(path)
+    return df
+
+
+def save_data(data, path):
+    X_test, y_test = data
+    X_test.to_csv(Path(path) / "X_test.csv", index=False)
+    y_test.to_csv(Path(path) / "y_test.csv", index=False)
+
+
+def save_model(model, path):
+    # Output the model and test data
+    mlflow.sklearn.save_model(model, path + "/model")
+
+
+@dataclass
+class Outputs:
+    model_output: Asset(type='mlflow_model', dump=save_data)
+    test_data: Asset(type='uri_folder', dump=save_model)
+
+
+@command_component(name='train_model')
+def main(data: Asset(type="uri_folder", load=load_data),
          C=1.0, kernel='rbf', degree=3, gamma='scale', coef0:float=0, 
          shrinking=False, probability=False, tol=1e-3, cache_size=1024, class_weight:bool=None, 
-         verbose=False, max_iter=-1, decision_function_shape='ovr', break_ties=False, random_state=42):
+         verbose=False, max_iter=-1, decision_function_shape='ovr', break_ties=False, random_state=42) -> Outputs:
     # enable auto logging
     mlflow.autolog()
-
     # setup parameters
     params = {
         "C": C,
@@ -40,18 +65,13 @@ def main(data: Input,
         "random_state": random_state,
     }
 
-    # read in data
-    df = pd.read_csv(data)
-
     # process data
-    X_train, X_test, y_train, y_test = process_data(df, random_state)
+    X_train, X_test, y_train, y_test = process_data(data, random_state)
 
     # train model
     model = train_model(params, X_train, X_test, y_train, y_test)
-    # Output the model and test data
-    mlflow.sklearn.save_model(model, model_output + "/model")
-    X_test.to_csv(Path(test_data) / "X_test.csv", index=False)
-    y_test.to_csv(Path(test_data) / "y_test.csv", index=False)
+
+    return Outputs(model_output=model, test_data=(X_test, y_test))
 
 
 def process_data(df, random_state):

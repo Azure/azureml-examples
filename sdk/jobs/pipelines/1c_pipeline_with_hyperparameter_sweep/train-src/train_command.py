@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from azure.ml import Input, Output
 from azure.ml.dsl import command_component
 
-@command_component
+@command_component(name='train_model')
 def main(data: Input,
          model_output: Output, test_data: Output, 
          C=1.0, kernel='rbf', degree=3, gamma='scale', coef0:float=0, 
