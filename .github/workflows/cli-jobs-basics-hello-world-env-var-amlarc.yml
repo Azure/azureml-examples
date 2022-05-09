@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-world-env-var
+name: cli-jobs-basics-hello-world-env-var-amlarc
 on:
   workflow_dispatch:
     inputs:

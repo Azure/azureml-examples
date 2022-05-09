@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-iris-datastore-folder
+name: cli-jobs-basics-hello-iris-datastore-folder-amlarc
 on:
   workflow_dispatch:
     inputs:

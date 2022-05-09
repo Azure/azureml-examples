@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-code
+name: cli-jobs-basics-hello-code-amlarc
 on:
   workflow_dispatch:
     inputs:

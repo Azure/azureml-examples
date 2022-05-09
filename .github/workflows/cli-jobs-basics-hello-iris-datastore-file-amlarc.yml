@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-iris-datastore-file
+name: cli-jobs-basics-hello-iris-datastore-file-amlarc
 on:
   workflow_dispatch:
     inputs:

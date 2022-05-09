@@ -51,6 +51,9 @@ def convert(input_file):
     with open(input_file, 'r') as f:
         data = yaml.round_trip_load(f)
 
+        # add amlarc suffix
+        data['name'] += '-amlarc'
+
         # add inputs
         data['on']['workflow_dispatch'] = workflow_inputs
 
@@ -88,8 +91,9 @@ def convert(input_file):
         new_paths.append('.github/amlarc-tool.sh')
         data['on']['pull_request']['paths'] = new_paths
 
-    # write back
-    with open(input_file, 'w') as f:
+    # write back with suffix -amlarc
+    output_file = os.path.join(os.path.dirname(input_file), '%s-amlarc.yml' % os.path.basename(input_file).split('.')[0])
+    with open(output_file, 'w') as f:
         yaml.round_trip_dump(data, f, indent=2)
 
 

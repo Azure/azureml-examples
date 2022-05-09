@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-sweep
+name: cli-jobs-basics-hello-sweep-amlarc
 on:
   workflow_dispatch:
     inputs:

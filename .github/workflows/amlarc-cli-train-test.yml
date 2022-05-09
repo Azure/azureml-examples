@@ -100,7 +100,6 @@ jobs:
         az account set --subscription $SUBSCRIPTION
         az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
         bash create-datasets.sh
-        bash -x copy-data.sh
       working-directory: setup-repo
       timeout-minutes: 30
 
