@@ -103,102 +103,103 @@ jobs:
       working-directory: setup-repo
       timeout-minutes: 30
 
-    ## run training cli test cases
-    ## single step
-    # dask
-    - name: run cli/jobs/single-step/dask/nyctaxi/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/dask/nyctaxi/job.yml -it cpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    # java
-    # - name: run cli/jobs/single-step/java/iris/job-template.yml
-    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/java/iris/job-template.yml
+    ## skip test in this workflow, only used to setup resources.
+    # ## run training cli test cases
+    # ## single step
+    # # dask
+    # - name: run cli/jobs/single-step/dask/nyctaxi/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/dask/nyctaxi/job.yml -it cpu -cr
     #   continue-on-error: true
     #   timeout-minutes: 40
-    # julia
-    - name: run cli/jobs/single-step/julia/iris/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/julia/iris/job.yml -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    # lightgbm
-    - name: run cli/jobs/single-step/lightgbm/iris/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/lightgbm/iris/job.yml -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    # pytorch
-    - name: run cli/jobs/single-step/pytorch/cifar-distributed/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/cifar-distributed/job.yml -it gpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    - name: run cli/jobs/single-step/pytorch/iris/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/iris/job.yml -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    - name: run cli/jobs/single-step/pytorch/word-language-model/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/word-language-model/job.yml -it gpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    # r
-    - name: run cli/jobs/single-step/r/accidents/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/accidents/job.yml -it cpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    - name: run cli/jobs/single-step/r/iris/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/iris/job.yml -it cpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    # scikit-learn
-    - name: run cli/jobs/single-step/scikit-learn/diabetes/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/diabetes/job.yml -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    #- name: run cli/jobs/single-step/scikit-learn/iris-notebook/job.yml
-    #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris-notebook/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
-    #  continue-on-error: true
-    #  timeout-minutes: 40
-    - name: run cli/jobs/single-step/scikit-learn/iris/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris/job.yml -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    # spark
-    #- name: run cli/jobs/single-step/spark/nyctaxi/job.yml
-    #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/spark/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
-    #  continue-on-error: true
-    #  timeout-minutes: 40 
-    # tensorflow
-    - name: run cli/jobs/single-step/tensorflow/mnist/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist/job.yml -it gpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    - name: run cli/jobs/single-step/tensorflow/mnist-distributed/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed/job.yml -it gpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
-    - name: run cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml -it gpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
+    # # java
+    # # - name: run cli/jobs/single-step/java/iris/job-template.yml
+    # #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/java/iris/job-template.yml
+    # #   continue-on-error: true
+    # #   timeout-minutes: 40
+    # # julia
+    # - name: run cli/jobs/single-step/julia/iris/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/julia/iris/job.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # # lightgbm
+    # - name: run cli/jobs/single-step/lightgbm/iris/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/lightgbm/iris/job.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # # pytorch
+    # - name: run cli/jobs/single-step/pytorch/cifar-distributed/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/cifar-distributed/job.yml -it gpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # - name: run cli/jobs/single-step/pytorch/iris/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/iris/job.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # - name: run cli/jobs/single-step/pytorch/word-language-model/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/pytorch/word-language-model/job.yml -it gpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # # r
+    # - name: run cli/jobs/single-step/r/accidents/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/accidents/job.yml -it cpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # - name: run cli/jobs/single-step/r/iris/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/r/iris/job.yml -it cpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # # scikit-learn
+    # - name: run cli/jobs/single-step/scikit-learn/diabetes/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/diabetes/job.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # #- name: run cli/jobs/single-step/scikit-learn/iris-notebook/job.yml
+    # #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris-notebook/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+    # #  continue-on-error: true
+    # #  timeout-minutes: 40
+    # - name: run cli/jobs/single-step/scikit-learn/iris/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris/job.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # # spark
+    # #- name: run cli/jobs/single-step/spark/nyctaxi/job.yml
+    # #  run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/spark/nyctaxi/job.yml compute=azureml:githubtest resources.instance_type=cpu environment_variables.AZUREML_COMPUTE_USE_COMMON_RUNTIME=true
+    # #  continue-on-error: true
+    # #  timeout-minutes: 40
+    # # tensorflow
+    # - name: run cli/jobs/single-step/tensorflow/mnist/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist/job.yml -it gpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # - name: run cli/jobs/single-step/tensorflow/mnist-distributed/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed/job.yml -it gpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
+    # - name: run cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml
+    #   run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml -it gpu -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 40
 
-    ## pipeline
-    # cifar-10
-    - name: run cli/jobs/pipelines/cifar-10/job.yml
-      run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml -cr
-      continue-on-error: true
-      timeout-minutes: 70
-    # nyc-taxi
-    - name: run cli/jobs/pipelines/nyc-taxi/job.yml
-      run: |
-        TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml -cr
-      continue-on-error: true
-      timeout-minutes: 70
+    # ## pipeline
+    # # cifar-10
+    # - name: run cli/jobs/pipelines/cifar-10/job.yml
+    #   run: |
+    #     TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/cifar-10/pipeline.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 70
+    # # nyc-taxi
+    # - name: run cli/jobs/pipelines/nyc-taxi/job.yml
+    #   run: |
+    #     TIMEOUT=60m bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines/nyc-taxi/pipeline.yml -cr
+    #   continue-on-error: true
+    #   timeout-minutes: 70
 
-    # check result
-    - name: count_result
-      if: ${{ always() }}
-      run: |
-        bash .github/amlarc-tool.sh count_result
-      timeout-minutes: 30
+    # # check result
+    # - name: count_result
+    #   if: ${{ always() }}
+    #   run: |
+    #     bash .github/amlarc-tool.sh count_result
+    #   timeout-minutes: 30
     - name: file_icm
       if: ${{ always() }}
       run: |
