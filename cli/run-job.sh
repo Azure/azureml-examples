@@ -24,6 +24,7 @@ then
   if [[ -z "$run_id" ]]
   then
     echo "Job creation failed"
+    echo "az ml job create -f $job --query name -o tsv --set experiment_name=$experiment_name --set settings.force_rerun=True"
     exit 3
   else
     az ml job show -n $run_id --query services.Studio.endpoint
