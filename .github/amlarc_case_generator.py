@@ -48,52 +48,59 @@ env = yaml.round_trip_load(env_yml)
 
 
 def convert(input_file):
-    with open(input_file, 'r') as f:
+    with open(input_file, "r") as f:
         data = yaml.round_trip_load(f)
 
         # add amlarc suffix
-        data['name'] += '-amlarc'
+        data["name"] += "-amlarc"
 
         # add inputs
-        data['on']['workflow_dispatch'] = workflow_inputs
+        data["on"]["workflow_dispatch"] = workflow_inputs
 
         # add env
-        data['jobs']['build']['env'] = env
+        data["jobs"]["build"]["env"] = env
 
         # change job steps
-        steps = data['jobs']['build']['steps']
+        steps = data["jobs"]["build"]["steps"]
         new_step = shared_steps
         for single_step in steps:
-            if single_step['name'] == 'run job':
-                single_step.pop('working-directory')
-                command = single_step['run'].split(' ')
-                target_file = os.path.join('cli', command[-1])
-                new_command = ['bash .github/amlarc-tool.sh run_cli_job'] + [target_file] + ['-cr']
-                single_step['run'] = ' '.join(new_command)
+            if single_step["name"] == "run job":
+                single_step.pop("working-directory")
+                command = single_step["run"].split(" ")
+                target_file = os.path.join("cli", command[-1])
+                new_command = (
+                    ["bash .github/amlarc-tool.sh run_cli_job"]
+                    + [target_file]
+                    + ["-cr"]
+                )
+                single_step["run"] = " ".join(new_command)
                 new_step.append(single_step)
             else:
                 continue
-        data['jobs']['build']['steps'] = new_step
+        data["jobs"]["build"]["steps"] = new_step
 
         # modify the pull request trigger
-        orig_paths = data['on']['pull_request']['paths']
+        orig_paths = data["on"]["pull_request"]["paths"]
         new_paths = []
         for i in orig_paths:
-            if '.github/workflows/cli-jobs' in i:
-                t = i.split('/')
-                tt = t[-1].split('.')
-                tt = '%s-amlarc.yml' % tt[0]
-                new_paths.append('/'.join(t[:-1] + [tt]))
+            if ".github/workflows/cli-jobs" in i:
+                t = i.split("/")
+                tt = t[-1].split(".")
+                tt = "%s-amlarc.yml" % tt[0]
+                new_paths.append("/".join(t[:-1] + [tt]))
                 continue
-            if 'sh' in i:
+            if "sh" in i:
                 continue
             new_paths.append(i)
-        new_paths.append('.github/amlarc-tool.sh')
-        data['on']['pull_request']['paths'] = new_paths
+        new_paths.append(".github/amlarc-tool.sh")
+        data["on"]["pull_request"]["paths"] = new_paths
 
     # write back with suffix -amlarc
-    output_file = os.path.join(os.path.dirname(input_file), '%s-amlarc.yml' % os.path.basename(input_file).split('.')[0])
-    with open(output_file, 'w') as f:
+    output_file = os.path.join(
+        os.path.dirname(input_file),
+        "%s-amlarc.yml" % os.path.basename(input_file).split(".")[0],
+    )
+    with open(output_file, "w") as f:
         yaml.round_trip_dump(data, f, indent=2)
 
 
