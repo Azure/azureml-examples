@@ -40,3 +40,4 @@ def run(input_data):
     result['variety'] = pred
 
     return result
+
