@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-iris-folder
+name: cli-jobs-basics-hello-iris-folder-amlarc
 on:
   workflow_dispatch:
     inputs:

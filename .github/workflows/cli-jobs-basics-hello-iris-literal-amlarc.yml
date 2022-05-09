@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-iris-literal
+name: cli-jobs-basics-hello-iris-literal-amlarc
 on:
   workflow_dispatch:
     inputs:

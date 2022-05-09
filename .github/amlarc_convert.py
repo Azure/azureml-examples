@@ -7,8 +7,12 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
         data = yaml.load(f, Loader=yaml.FullLoader)
         job_schema = data.get('$schema', '')
         is_pipeline_job = False
+        is_sweep_job = False
         if 'pipelineJob' in job_schema or 'jobs' in data:
             is_pipeline_job = True
+        if 'sweepJob' in job_schema or data.get('type') == 'sweep':
+            is_sweep_job = True
+
 
         # change compute target
         data['compute'] = 'azureml:%s' % compute_target
@@ -33,6 +37,10 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
                     env = data['jobs'][step].get('environment_variables', {})
                     env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
                     data['jobs'][step]['environment_variables'] = env
+            elif is_sweep_job:
+                env = data['trial'].get('environment_variables', {})
+                env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
+                data['trial']['environment_variables'] = env
             else:
                 env = data.get('environment_variables', {})
                 env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"

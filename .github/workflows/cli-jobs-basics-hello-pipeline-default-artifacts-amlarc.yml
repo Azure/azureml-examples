@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-pipeline-default-artifacts
+name: cli-jobs-basics-hello-pipeline-default-artifacts-amlarc
 on:
   workflow_dispatch:
     inputs:

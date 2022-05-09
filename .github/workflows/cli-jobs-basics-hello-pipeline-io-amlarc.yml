@@ -1,4 +1,4 @@
-name: cli-jobs-basics-hello-pipeline-io
+name: cli-jobs-basics-hello-pipeline-io-amlarc
 on:
   workflow_dispatch:
     inputs:
