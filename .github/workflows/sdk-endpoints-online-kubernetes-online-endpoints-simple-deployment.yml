@@ -6,11 +6,11 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
+      - may-sdk-preview
     paths:
       - sdk/endpoints/online/**
       - .github/workflows/sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
