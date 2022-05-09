@@ -59,7 +59,8 @@ az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
 
 # <delete_environments>
-az ml environment archive -y -n minimal-inf-cc-env
+az ml environment archive -y -n mlflow-cc-lightgbm-iris-env 
+az ml environment archive -y -n mlflow-cc-sklearn-diabetes-env
 # </delete_environments>
 
 rm -rf $BASE_PATH/lightgbm-iris $BASE_PATH/sklearn-diabetes
