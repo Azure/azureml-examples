@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
-from azure.ml import dsl, Input, Output
-from azure.ml.entities import Environment
+from azure.ai.ml import dsl, Input, Output
+from azure.ai.ml.entities import Environment
 
 conda_env = Environment(
     conda_file=Path(__file__).parent / "conda.yaml",
