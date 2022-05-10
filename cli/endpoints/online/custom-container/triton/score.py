@@ -108,7 +108,6 @@ class ModelHandler(ModelHandlerBase):
 
     def postprocess(self, max_label, context):
         """Post-process results to show the predicted label."""
-        # asdfasdffds 
 
         final_label = self.label_dict[max_label]
         # return #f"{max_label} : {final_label}" 
