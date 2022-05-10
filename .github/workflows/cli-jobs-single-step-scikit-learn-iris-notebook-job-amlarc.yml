@@ -19,6 +19,7 @@ on:
   pull_request:
     branches:
     - main
+    - sdk-preview
     paths:
     - cli/jobs/single-step/scikit-learn/iris-notebook/**
     - .github/workflows/cli-jobs-single-step-scikit-learn-iris-notebook-job-amlarc.yml
@@ -42,8 +43,8 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
     - name: run job
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/scikit-learn/iris-notebook/job.yml
-        -cr
+      run: bash ../../../../../.github/amlarc-tool.sh run_cli_job job.yml -cr
+      working-directory: cli/jobs/single-step/scikit-learn/iris-notebook
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}

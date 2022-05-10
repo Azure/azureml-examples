@@ -19,6 +19,7 @@ on:
   pull_request:
     branches:
     - main
+    - sdk-preview
     paths:
     - cli/jobs/basics/**
     - .github/workflows/cli-jobs-basics-hello-world-env-var-amlarc.yml
@@ -42,8 +43,9 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
     - name: run job
-      run: bash .github/amlarc-tool.sh run_cli_job cli/jobs/basics/hello-world-env-var.yml
+      run: bash ../../../.github/amlarc-tool.sh run_cli_job hello-world-env-var.yml
         -cr
+      working-directory: cli/jobs/basics
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}

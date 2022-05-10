@@ -19,6 +19,7 @@ on:
   pull_request:
     branches:
     - main
+    - sdk-preview
     paths:
     - cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/**
     - .github/workflows/cli-jobs-pipelines-with-components-basics-1b_e2e_registered_components-pipeline-amlarc.yml
@@ -41,22 +42,9 @@ jobs:
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
-    - name: configure defaults
-      run: |
-        set -x
-        export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"
-        export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws}"
-        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE
-    - name: prepare-components
-      run: |
-        set -x
-        az ml component create --file cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml
-        az ml component create --file cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/score.yml
-        az ml component create --file cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/eval.yml
     - name: run job
-      run: |-
-        bash .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml \
-          -cr
+      run: bash ../../../../../.github/amlarc-tool.sh run_cli_job pipeline.yml -cr
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}

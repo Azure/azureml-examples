@@ -75,7 +75,7 @@ install_tools(){
     az upgrade --all --yes
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
-    az extension add -n ml --yes
+    az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.61212840-py3-none-any.whl --yes
 
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl  \

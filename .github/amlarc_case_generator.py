@@ -1,5 +1,6 @@
 import argparse
 import os.path
+import pathlib
 
 import ruamel.yaml as yaml
 
@@ -65,11 +66,16 @@ def convert(input_file):
         new_step = shared_steps
         for single_step in steps:
             if single_step["name"] == "run job":
-                single_step.pop("working-directory")
                 command = single_step["run"].split(" ")
-                target_file = os.path.join("cli", command[-1])
+                target_file = command[-1]
+
+                case_level = len(single_step.get("working-directory", "").split("/"))
+                amlarc_tool_path = '.github/amlarc-tool.sh'
+                for _ in range(case_level):
+                    amlarc_tool_path = os.path.join("..", amlarc_tool_path)
+
                 new_command = (
-                    ["bash .github/amlarc-tool.sh run_cli_job"]
+                    [f"bash {amlarc_tool_path} run_cli_job"]
                     + [target_file]
                     + ["-cr"]
                 )
