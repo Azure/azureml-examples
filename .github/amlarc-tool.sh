@@ -75,6 +75,7 @@ install_tools(){
     az upgrade --all --yes
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
+    az extension remove -n ml
     az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.61212840-py3-none-any.whl --yes
 
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
@@ -427,7 +428,8 @@ run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
     CONVERTER_ARGS="${@:2}"
 
-    python .github/amlarc_convert.py -i $JOB_YML $CONVERTER_ARGS
+    working_folder="$(dirname "$0")"
+    python "${working_folder}"/amlarc_convert.py -i $JOB_YML $CONVERTER_ARGS
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
     
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
