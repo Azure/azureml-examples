@@ -44,7 +44,7 @@ else
 fi
 
 # Workspace and Compute
-export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws}"  # $((1 + $RANDOM % 100))
+export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws-canary}"  # $((1 + $RANDOM % 100))
 export COMPUTE="${COMPUTE:-githubtest}"
 export INSTANCE_TYPE_NAME="${INSTANCE_TYPE_NAME:-defaultinstancetype}"
 export CPU="${CPU:-1}"
@@ -435,7 +435,7 @@ run_cli_job(){
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
 
     run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
-    TIMEOUT="${TIMEOUT:-30m}"
+    TIMEOUT="${TIMEOUT:-180m}"
     timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
     timeout 5m az ml job cancel $SRW -n $run_id
