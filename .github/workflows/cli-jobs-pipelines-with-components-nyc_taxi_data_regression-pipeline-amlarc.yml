@@ -19,6 +19,7 @@ on:
   pull_request:
     branches:
     - main
+    - sdk-preview
     paths:
     - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
     - .github/workflows/cli-jobs-pipelines-with-components-nyc_taxi_data_regression-pipeline-amlarc.yml
@@ -42,8 +43,8 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
     - name: run job
-      run: bash -x .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/nyc_taxi_data_regression/pipeline.yml
-        -cr
+      run: bash ../../../../.github/amlarc-tool.sh run_cli_job pipeline.yml -cr
+      working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}

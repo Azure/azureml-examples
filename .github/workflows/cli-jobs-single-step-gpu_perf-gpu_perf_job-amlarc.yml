@@ -19,6 +19,7 @@ on:
   pull_request:
     branches:
     - main
+    - sdk-preview
     paths:
     - cli/jobs/single-step/gpu_perf/**
     - .github/workflows/cli-jobs-single-step-gpu_perf-gpu_perf_job-amlarc.yml
@@ -41,12 +42,9 @@ jobs:
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
-    - name: run cli/jobs/single-step/gpu_perf/gpu_perf_job.yml
-      run: |
-        bash .github/amlarc-tool.sh run_cli_job cli/jobs/single-step/gpu_perf/gpu_perf_job.yml \
-          -it gpu -cr
-      continue-on-error: true
-      timeout-minutes: 40
+    - name: run job
+      run: bash ../../../../.github/amlarc-tool.sh run_cli_job gpu_perf_job.yml -cr
+      working-directory: cli/jobs/single-step/gpu_perf
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}

@@ -19,6 +19,7 @@ on:
   pull_request:
     branches:
     - main
+    - sdk-preview
     paths:
     - cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/**
     - .github/workflows/cli-jobs-pipelines-with-components-basics-3b_pipeline_with_data-pipeline-amlarc.yml
@@ -42,8 +43,8 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
     - name: run job
-      run: bash -x .github/amlarc-tool.sh run_cli_job cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/pipeline.yml
-        \ -cr
+      run: bash ../../../../../.github/amlarc-tool.sh run_cli_job pipeline.yml -cr
+      working-directory: cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data
     env:
       SUBSCRIPTION: ${{ github.event.inputs.SUBSCRIPTION }}
       RESOURCE_GROUP: ${{ github.event.inputs.RESOURCE_GROUP }}
