@@ -5,7 +5,7 @@ WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
 
 LOCATION=$(az ml workspace show| jq -r '.location')
 
-API_VERSION="2021-10-01"
+API_VERSION="2022-05-01"
 
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</create_variables>
