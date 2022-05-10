@@ -8,12 +8,16 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
         job_schema = data.get("$schema", "")
         is_pipeline_job = False
         is_sweep_job = False
+        is_automl_job = False
         if "pipelineJob" in job_schema or "jobs" in data:
             is_pipeline_job = True
         if "sweepJob" in job_schema or data.get("type") == "sweep":
             is_sweep_job = True
+        if "autoMLJob" in job_schema or data.get("type") == "automl":
+            is_automl_job = True
 
         # change compute target
+        use_gpu = "gpu" in data.get("compute", "")
         data["compute"] = "azureml:%s" % compute_target
         if is_pipeline_job:
             settings = data.get("settings", {})
@@ -24,9 +28,12 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
                 data["jobs"][step]["compute"] = "azureml:%s" % compute_target
 
         # set instance type
-        if not is_pipeline_job and instance_type:
+        if not (is_pipeline_job or is_automl_job):
             resources = data.get("resources", {})
-            resources["instance_type"] = instance_type
+            if instance_type:
+                resources["instance_type"] = instance_type
+            elif use_gpu:
+                resources["instance_type"] = "gpu"
             data["resources"] = resources
 
         # set common runtime environment variables.
@@ -52,6 +59,7 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
         else:
             with open(input_file, "w") as f:
                 yaml.dump(data, f)
+        print(yaml.dump(data))
 
 
 if __name__ == "__main__":
