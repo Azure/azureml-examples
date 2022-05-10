@@ -1,1 +1,0 @@
-az ml compute update --name mycluster --user-assigned-identities '[system]'
