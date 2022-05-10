@@ -28,7 +28,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import argparse
-import json
 import os
 import shutil
 import time
@@ -583,11 +582,7 @@ if __name__ == "__main__":
     # override the master node ip by intention
     # args.dist_url = 'tcp://' + get_master_ip() + ':23456'
     # extract master ip from os env as a workaround
-    if "AZUREML_CR_DISTRIBUTED_CONFIG" in os.environ:
-        cr_distributed_config = json.loads(os.environ["AZUREML_CR_DISTRIBUTED_CONFIG"])
-        args.dist_url = "tcp://" + cr_distributed_config["host_list"][0] + ":23456"
-    else:
-        args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
+    args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
 
     ngpus_per_node = torch.cuda.device_count()
     args.distributed = args.world_size > 1
