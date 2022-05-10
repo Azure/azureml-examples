@@ -29,12 +29,20 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
 
         # set instance type
         if not (is_pipeline_job or is_automl_job):
-            resources = data.get("resources", {})
+            if is_sweep_job:
+                resources = data["trial"].get("resources", {})
+            else:
+                resources = data.get("resources", {})
+
             if instance_type:
                 resources["instance_type"] = instance_type
             elif use_gpu:
                 resources["instance_type"] = "gpu"
-            data["resources"] = resources
+
+            if is_sweep_job:
+                data["trial"]["resources"] = resources
+            else:
+                data["resources"] = resources
 
         # set common runtime environment variables.
         if common_runtime:
