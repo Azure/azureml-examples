@@ -2,8 +2,9 @@
 set -x
 
 # Global variables
-export LOCK_FILE=$0.lock
-export RESULT_FILE=amlarc-test-result.txt
+export SCRIPT_DIR=$( cd  "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export LOCK_FILE=${SCRIPT_DIR}/$0.lock
+export RESULT_FILE=${SCRIPT_DIR}/amlarc-test-result.txt
 export MAX_RETRIES=60
 export SLEEP_SECONDS=20
 
@@ -54,18 +55,6 @@ export GPU="${GPU:-null}"
 refresh_lock_file(){
     rm -f $LOCK_FILE
     echo $(date) > $LOCK_FILE
-}
-
-set_release_train(){
-    if [ "$1" != "" ]; then
-        AMLARC_RELEASE_TRAIN=$1
-    else 
-        if (( 10#$(date -d "$(cat $LOCK_FILE)" +"%H") < 12 )); then
-            AMLARC_RELEASE_TRAIN=experimental
-        else
-            AMLARC_RELEASE_TRAIN=staging
-        fi
-    fi
 }
 
 install_tools(){
@@ -303,7 +292,7 @@ setup_workspace(){
 # setup compute
 setup_compute(){
 
-   COMPUTE_NS=${COMPUTE_NS:-default}
+    COMPUTE_NS=${COMPUTE_NS:-default}
 
     az ml compute attach \
         --subscription $SUBSCRIPTION \
@@ -425,37 +414,35 @@ delete_workspace(){
 # run cli test job
 run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
-    SET_ARGS="${@:2}"
-    if [ "$SET_ARGS" != "" ]; then
-        EXTRA_ARGS=" --set $SET_ARGS "
-    else
-        EXTRA_ARGS=" --set compute=azureml:$COMPUTE resources.instance_type=$INSTANCE_TYPE_NAME "
-    fi 
+    CONVERTER_ARGS="${@:2}"
 
-    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
-    
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
+    TIMEOUT="${TIMEOUT:-60m}"
 
-    run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
-    TIMEOUT="${TIMEOUT:-30m}"
+    # preprocess job spec for amlarc compute
+    python $SCRIPT_DIR/amlarc_convert.py -i $JOB_YML $CONVERTER_ARGS
+    
+    # submit job
+    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
+    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
+
+    # stream job logs
     timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
+
+    # show job status
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
-    timeout 5m az ml job cancel $SRW -n $run_id
-    echo $status
-    if [[ $status == "Completed" ]]; then
-        echo "[JobStatus] $JOB_YML completed" | tee -a $RESULT_FILE
-    elif [[ $status ==  "Failed" ]]; then
-        echo "[JobStatus] $JOB_YML failed" | tee -a $RESULT_FILE
+    echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
+    
+    if [[ $status ==  "Failed" ]]; then
         return 1
-    else 
-        echo "[JobStatus] $JOB_YML unknown" | tee -a $RESULT_FILE 
-	return 2
+    elif [[ $status != "Completed" ]]; then 
+        timeout 5m az ml job cancel $SRW -n $run_id
+	    return 2
     fi
 }
 
 generate_workspace_config(){
     mkdir -p .azureml
-
     cat << EOF > .azureml/config.json
 {
     "subscription_id": "$SUBSCRIPTION",
@@ -473,7 +460,6 @@ install_jupyter_dependency(){
     pip install azureml.core azure.cli.core azureml.opendatasets azureml.widgets
     pip list || true
 }
-
 
 # run jupyter test
 run_jupyter_test(){
@@ -526,14 +512,15 @@ count_result(){
 
     MIN_SUCCESS_NUM=${MIN_SUCCESS_NUM:--1}
 
+    [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
+    
     echo "RESULT:"
     cat $RESULT_FILE
-
-    [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
 
     total=$(grep -c "\[JobSubmission\]" $RESULT_FILE)
     success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic completed)
     unhealthy=$(( $total - $success ))
+
     echo "Total: ${total}, Success: ${success}, Unhealthy: ${unhealthy}, MinSuccessNum: ${MIN_SUCCESS_NUM}."
     
     if (( 10#${unhealthy} > 0 )) ; then
@@ -734,7 +721,6 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     xmlstarlet fo --indent-tab --omit-decl $temp_file
     return $ret
 }
-
 
 
 help(){
