@@ -7,7 +7,8 @@ from multiprocessing.pool import ThreadPool
 from multiprocessing import cpu_count
 import functools
 from enum import Enum
-from azure.ml import dsl, Input
+
+from mldesigner import command_component, Input
 from azure.ml.dsl._component import ComponentExecutor
 
 
@@ -77,7 +78,7 @@ def convert_image_directory_to_specific_format(
     return output_root
 
 
-@dsl.command_component(
+@command_component(
     name="imagecnn_train", description="imagecnn_train main function"
 )
 def main(

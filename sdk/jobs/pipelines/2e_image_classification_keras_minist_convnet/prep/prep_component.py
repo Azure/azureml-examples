@@ -1,19 +1,16 @@
 from pathlib import Path
-from azure.ml import dsl, Input, Output
-from azure.ml.entities import Environment
-
-conda_env = Environment(
-    conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-)
+from mldesigner import command_component, Input, Output
 
 
-@dsl.command_component(
+@command_component(
     name="prep_data",
     version="1",
     display_name="Prep Data",
     description="Convert data to CSV file, and split to training and test data",
-    environment=conda_env,
+    environment=dict(
+        conda_file=Path(__file__).parent / "conda.yaml",
+        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    ),
 )
 def prep(
     input_data: Input,

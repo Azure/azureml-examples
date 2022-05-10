@@ -1,20 +1,16 @@
 import os
 from pathlib import Path
-from azure.ml import dsl, Input, Output
-from azure.ml.entities import Environment
+from mldesigner import command_component, Input, Output
 
-conda_env = Environment(
-    conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-)
-
-
-@dsl.command_component(
+@command_component(
     name="train_image_classification_keras",
     version="1",
     display_name="Train Image Classification Keras",
     description="train image classification with keras",
-    environment=conda_env,
+    environment=dict(
+        conda_file=Path(__file__).parent / "conda.yaml",
+        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    ),
 )
 def keras_train(
     input_data: Input,

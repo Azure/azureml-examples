@@ -1,7 +1,7 @@
 
-from azure.ml import dsl, Input, Output
+from mldesigner import command_component, Input, Output
 
-@dsl.command_component(
+@command_component(
     name="eval_model",
     display_name="Eval Model",
     description="A dummy eval component defined by dsl component.",
