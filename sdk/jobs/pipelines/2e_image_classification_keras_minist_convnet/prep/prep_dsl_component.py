@@ -1,7 +1,7 @@
 # Converts MNIST-formatted files at the passed-in input path to training data output path and test data output path
 import os
 from pathlib import Path
-from azure.ai..ml import dsl, Input, Output
+from azure.ai.ml import dsl, Input, Output
 from azure.ai.ml.entities import Environment
 
 conda_env = Environment(
