@@ -26,9 +26,9 @@ jobs:
     type: command
     component: azureml:my_train@latest
     inputs:
-      training_data:
-        type: uri_folder
-        path: ./data
+      training_data: 
+        type: uri_folder 
+        path: ./data      
       max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
       learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
       learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
@@ -40,8 +40,8 @@ jobs:
     component: azureml:my_score@latest
     inputs:
       model_input: ${{parent.jobs.train_job.outputs.model_output}}
-      test_data:
-        type: uri_folder
+      test_data: 
+        type: uri_folder 
         path: ./data
     outputs:
       score_output: ${{parent.outputs.pipeline_job_scored_data}}
