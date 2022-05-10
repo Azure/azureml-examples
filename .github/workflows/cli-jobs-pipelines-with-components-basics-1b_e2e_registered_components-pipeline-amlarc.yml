@@ -13,7 +13,7 @@ on:
       WORKSPACE:
         description: Workspace Name
         required: false
-        default: amlarc-githubtest-ws
+        default: amlarc-githubtest-ws-canary
   schedule:
   - cron: 0 0/4 * * *
   pull_request:
@@ -46,7 +46,7 @@ jobs:
       run: |
         set -x
         export RESOURCE_GROUP="${RESOURCE_GROUP:-azureml-examples-rg}"
-        export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws}"
+        export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws-canary}"
         az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE
     - name: prepare-components
       run: |
