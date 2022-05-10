@@ -1,0 +1,56 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Image object detection using pipeline job
+
+experiment_name: pipeline_image_object_detection
+
+settings:
+  continue_on_step_failure: false
+  default_compute: azureml:gpu-cluster
+
+inputs:
+  image_object_detection_train_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/data/training-mltable-folder
+  image_object_detection_validate_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/data/validation-mltable-folder
+
+jobs:
+  automl_image_object_detection_node:
+    type: automl
+    task: image_object_detection
+    log_verbosity: info
+    primary_metric: mean_average_precision
+
+    limits:
+      timeout_minutes: 60
+
+    target_column_name: label
+    training_data: ${{parent.inputs.image_object_detection_train_data}}
+    validation_data: ${{parent.inputs.image_object_detection_validate_data}}
+
+    sweep:
+      limits:
+        max_trials: 10
+        max_concurrent_trials: 2
+      sampling_algorithm: random
+      early_termination:
+        type: bandit
+        evaluation_interval: 2
+        slack_factor: 0.2
+        delay_evaluation: 6
+
+    search_space:
+      - model_name: "yolov5"
+        learning_rate: "uniform(0.0001, 0.01)"
+        model_size: "choice('small', 'medium')"
+      - model_name: "fasterrcnn_resnet50_fpn"
+        learning_rate: "uniform(0.0001, 0.001)"
+        optimizer: "choice('sgd', 'adam', 'adamw')"
+        min_size: "choice(600, 800)"
+
+    image_model:
+      early_stopping: True
+      evaluation_frequency: 1

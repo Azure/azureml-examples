@@ -1,0 +1,62 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Image multilabel classification using pipeline job
+
+experiment_name: pipeline_image_multilabel_classification
+
+settings:
+  continue_on_step_failure: false
+  default_compute: azureml:gpu-cluster
+
+inputs:
+  image_multilabel_classification_train_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items/data/training-mltable-folder
+  image_multilabel_classification_validate_data:
+    type: mltable
+    path: ../../automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items/data/validation-mltable-folder
+
+
+jobs:
+  automl_image_multilabel_classification_node:
+    type: automl
+    task: image_classification_multilabel
+    log_verbosity: info
+    primary_metric: iou
+
+    limits:
+      timeout_minutes: 60
+
+    target_column_name: label
+    training_data: ${{parent.inputs.image_multilabel_classification_train_data}}
+    validation_data: ${{parent.inputs.image_multilabel_classification_validate_data}}
+
+    sweep:
+      limits:
+        max_trials: 10
+        max_concurrent_trials: 2
+      sampling_algorithm: random
+      early_termination:
+        type: bandit
+        evaluation_interval: 2
+        slack_factor: 0.2
+        delay_evaluation: 6
+
+    search_space:
+      - model_name: "vitb16r224"
+        learning_rate: "uniform(0.005, 0.05)"
+        number_of_epochs: "choice(15, 30)"
+        grad_accumulation_step: "choice(1, 2)"
+      - model_name: "seresnext"
+        learning_rate: "uniform(0.005, 0.05)"
+        validation_resize_size: "choice(288, 320, 352)"
+        validation_crop_size: "choice(224, 256)"
+        training_crop_size: "choice(224, 256)"
+
+    image_model:
+      checkpoint_frequency: 1
+      early_stopping: true
+      early_stopping_delay: 2
+      early_stopping_patience: 2
+      evaluation_frequency: 1
