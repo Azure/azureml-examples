@@ -438,7 +438,7 @@ run_cli_job(){
     
     # submit job
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
-    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
+    # run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
 
     # stream job logs
     timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
