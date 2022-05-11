@@ -1,4 +1,4 @@
-name: cli-scripts-deploy-safe-rollout-k8s-online-endpoints
+name: cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +8,8 @@ on:
       - main
     paths:
       - cli/endpoints/online/**
-      - cli/deploy-safe-rollout-k8s-online-endpoints.sh
-      - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
+      - cli/deploy-safe-rollout-kubernetes-online-endpoints.sh
+      - .github/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
       - cli/setup.sh
       - .github/amlarc-tool.sh
 jobs:
@@ -19,7 +19,7 @@ jobs:
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       OWNERS: amlarc@microsoft.com
       GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
       TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/SiteAssets/Vienna%20Notebook/AMLArcTSG.one#Troubleshooting%20github%20workflow&section-id=69e8bdb1-5734-4b07-967a-5a50a91cf040&page-id=53a1a232-f9f0-4192-b7d2-0474848ebb18&end
     steps:
     - name: check out repo
@@ -33,9 +33,9 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y && sudo apt-get install xmlstarlet
+      run: sudo apt-get update -y && sudo apt-get install uuid-runtime jq -y && sudo apt-get install xmlstarlet
     - name: test script script
-      run: set -e; bash -x deploy-safe-rollout-k8s-online-endpoints.sh
+      run: set -e; bash -x deploy-safe-rollout-kubernetes-online-endpoints.sh
       working-directory: cli
     - name: file IcM when fails
       if: ${{ failure() && github.event_name == 'schedule' }}
