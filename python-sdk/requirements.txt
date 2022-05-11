@@ -6,6 +6,7 @@ azureml-train>=1.20.0
 azureml-dataprep>=1.20.0
 azureml-widgets>=1.20.0
 azureml-pipeline>=1.20.0
+azure-cli-core>=2.31.0
 
 # required in notebooks
 ipykernel
