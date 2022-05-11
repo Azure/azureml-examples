@@ -10,7 +10,7 @@ command: >
   cat ${{outputs.model_out}}/MLmodel
 inputs:
   model_in: 
-    path: data/xgbmodel
+    path: data/fare_predict
   testdata:
     path: data/data.json
     type: uri_file
