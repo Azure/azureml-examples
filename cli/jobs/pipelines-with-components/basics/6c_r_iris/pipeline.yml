@@ -1,9 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: 6c_r_iris
 description: Train an R model on the Iris dataset.
 
 jobs:
-  r-iris-example:
+  r_iris_example:
     type: command
     component: file:./component.yml
     compute: azureml:cpu-cluster
@@ -11,5 +12,3 @@ jobs:
       iris: 
         type: uri_file
         path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-
-        
