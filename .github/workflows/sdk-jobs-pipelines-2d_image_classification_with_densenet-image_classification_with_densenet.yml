@@ -41,7 +41,7 @@ jobs:
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" image_classification_with_densenet.ipynb
-          sed -i "s/@dsl.pipeline(/&force_rerun=True,/" image_classification_with_densenet.ipynb
+          sed -i "s/@pipeline(/&force_rerun=True,/" image_classification_with_densenet.ipynb
           papermill -k python image_classification_with_densenet.ipynb image_classification_with_densenet.output.ipynb
       working-directory: sdk/jobs/pipelines/2d_image_classification_with_densenet
     - name: upload notebook's working folder as an artifact

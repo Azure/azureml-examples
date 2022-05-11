@@ -120,7 +120,7 @@ jobs:
           mkdir ../../.azureml
           echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
-          sed -i "s/@dsl.pipeline(/&force_rerun=True,/" {name}.ipynb"""
+          sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:
         cred_replace = f"""
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
