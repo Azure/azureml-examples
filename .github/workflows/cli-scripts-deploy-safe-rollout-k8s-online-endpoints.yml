@@ -11,7 +11,7 @@ on:
       - cli/deploy-safe-rollout-k8s-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
       - cli/setup.sh
-      - .github/amlarc/amlarc-tool.sh
+      #- .github/amlarc/amlarc-tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
