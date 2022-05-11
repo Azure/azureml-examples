@@ -45,7 +45,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 ```terminal
 pip uninstall azure-ai-ml
 
-pip install azure-ai-ml==0.0.62614863 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install azure-ai-ml==0.0.62653692 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
 
 ```
 
