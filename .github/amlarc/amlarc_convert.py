@@ -1,6 +1,7 @@
 import argparse
 import yaml
 
+
 def convert(input_file, compute_target, instance_type, common_runtime, output_file):
     with open(input_file, "r") as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
