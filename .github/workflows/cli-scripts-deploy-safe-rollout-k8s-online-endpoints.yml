@@ -35,7 +35,7 @@ jobs:
     - name: scripts installs
       run: |
         set -x
-        sudo apt-get upgrade -y 
+        sudo apt-get update -y 
         sudo apt-get install uuid-runtime jq -y 
         sudo apt-get install xmlstarlet
     - name: test script script
