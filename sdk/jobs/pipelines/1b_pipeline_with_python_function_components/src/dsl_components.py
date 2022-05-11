@@ -20,7 +20,7 @@ conda_env = Environment(
     version="0.0.2",
     # specify distribution type if needed
     # distribution={'type': 'mpi'},
-    # specify customer environment, note that azure-ml must be included.
+    # specify customer environment, note that azure-ai-ml must be included.
     environment=conda_env,
     # specify your code folder, default code folder is current file's parent
     # code='.'
