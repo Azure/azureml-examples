@@ -34,10 +34,13 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             else:
                 resources = data.get("resources", {})
 
+            # set instance type explicitly if possible
             if instance_type:
                 resources["instance_type"] = instance_type
             elif use_gpu:
                 resources["instance_type"] = "gpu"
+            else:
+                resources["instance_type"] = "cpu"
 
             if is_sweep_job:
                 data["trial"]["resources"] = resources
