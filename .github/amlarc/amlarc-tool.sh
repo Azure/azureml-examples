@@ -57,6 +57,20 @@ refresh_lock_file(){
     echo $(date) > $LOCK_FILE
 }
 
+remove_lock_file(){
+    rm -f $LOCK_FILE
+}
+
+check_lock_file(){
+    if [ -f $LOCK_FILE ]; then
+        echo true
+        return 0
+    else
+        echo false
+        return 1
+    fi
+}
+
 install_tools(){
 
     sudo apt-get install xmlstarlet
@@ -338,7 +352,7 @@ delete_extension(){
         --cluster-type $CLUSTER_TYPE \
         --cluster-name $CLUSTER_NAME \
         --name $EXTENSION_NAME \
-        --yes --no-wait --force
+        --yes --force
 }
 
 delete_arc(){
@@ -346,7 +360,7 @@ delete_arc(){
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
         --name $ARC_CLUSTER_NAME \
-        --yes --no-wait
+        --yes
 }
 
 delete_aks(){
@@ -354,7 +368,7 @@ delete_aks(){
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
         --name $AKS_CLUSTER_NAME \
-        --yes --no-wait
+        --yes
 }
 
 delete_compute(){
@@ -439,6 +453,49 @@ run_cli_job(){
         timeout 5m az ml job cancel $SRW -n $run_id
 	    return 2
     fi
+}
+
+collect_jobs_from_workflows(){
+    OUPUT_FILE=${1:-job-list.txt}
+    SELECTOR=${2:-cli-jobs-basics}
+    FILTER=${3:-java}
+    WORKFLOWS_DIR=".github/workflows" 
+
+    echo "WORKFLOWS_DIR: $WORKFLOWS_DIR, OUPUT_FILE: $OUPUT_FILE, FILTER: $FILTER"
+
+    rm -f $OUPUT_FILE
+    touch $OUPUT_FILE
+
+    for workflow in $(ls -a $WORKFLOWS_DIR | grep -E "$SELECTOR" | grep -E -v "$FILTER" ); do
+
+        workflow=$WORKFLOWS_DIR/$workflow
+        echo "Check workflow: $workflow"
+        
+        job_yml=""
+        stepcount=$(cat $workflow | shyaml get-length jobs.build.steps)
+        stepcount=$(($stepcount - 1))
+        for i in $(seq 0 $stepcount); do
+            name=$(cat $workflow| shyaml get-value jobs.build.steps.$i.name)
+            if [ "$name" != "run job" ]; then
+                continue
+            fi
+
+            run=$(cat $workflow| shyaml get-value jobs.build.steps.$i.run)
+            wkdir=$(cat $workflow| shyaml get-value jobs.build.steps.$i.working-directory)
+            echo "Found: run: $run wkdir: $wkdir"
+
+            job_yml=$wkdir/$(echo $run | awk '{print $NF}' | xargs)
+            echo "${job_yml}" | tee -a $OUPUT_FILE
+        done
+
+        if [ "$job_yml" == "" ]; then
+            echo "Warning: no job yml found in workflow: $workflow"
+        fi
+
+    done
+
+    echo "Found $(wc -l $OUPUT_FILE) jobs:"
+    cat $OUPUT_FILE
 }
 
 generate_workspace_config(){
