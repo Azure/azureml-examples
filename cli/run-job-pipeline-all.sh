@@ -19,6 +19,9 @@ az ml environment create --file jobs/pipelines-with-components/rai_pipeline_adul
 echo ./jobs/basics/hello-pipeline-abc.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-abc.yml cli_samples_v2_$target_version nowait
 
+echo ./jobs/basics/hello-pipeline-cron-schedule.yml
+bash run-job.sh ./jobs/basics/hello-pipeline-cron-schedule.yml cli_samples_v2_$target_version nowait
+
 echo ./jobs/basics/hello-pipeline-customize-output-file.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-customize-output-file.yml cli_samples_v2_$target_version nowait
 
@@ -31,14 +34,29 @@ bash run-job.sh ./jobs/basics/hello-pipeline-default-artifacts.yml cli_samples_v
 echo ./jobs/basics/hello-pipeline-io.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-io.yml cli_samples_v2_$target_version nowait
 
+echo ./jobs/basics/hello-pipeline-recurrence-schedule.yml
+bash run-job.sh ./jobs/basics/hello-pipeline-recurrence-schedule.yml cli_samples_v2_$target_version nowait
+
 echo ./jobs/basics/hello-pipeline-settings.yml
 bash run-job.sh ./jobs/basics/hello-pipeline-settings.yml cli_samples_v2_$target_version nowait
 
 echo ./jobs/basics/hello-pipeline.yml
 bash run-job.sh ./jobs/basics/hello-pipeline.yml cli_samples_v2_$target_version nowait
 
+echo ./jobs/pipelines/automl/classification-task-bankmarketing-pipeline.yml
+bash run-job.sh ./jobs/pipelines/automl/classification-task-bankmarketing-pipeline.yml cli_samples_v2_$target_version nowait
+
+echo ./jobs/pipelines/automl/regression-task-housepricing-pipeline.yml
+bash run-job.sh ./jobs/pipelines/automl/regression-task-housepricing-pipeline.yml cli_samples_v2_$target_version nowait
+
 echo ./jobs/pipelines/cifar-10/pipeline.yml
 bash run-job.sh ./jobs/pipelines/cifar-10/pipeline.yml cli_samples_v2_$target_version nowait
+
+echo ./jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml
+bash run-job.sh ./jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml cli_samples_v2_$target_version nowait
+
+echo ./jobs/pipelines/mnist-batch-identification-using-parallel/pipeline.yml
+bash run-job.sh ./jobs/pipelines/mnist-batch-identification-using-parallel/pipeline.yml cli_samples_v2_$target_version nowait
 
 echo ./jobs/pipelines/nyc-taxi/pipeline.yml
 bash run-job.sh ./jobs/pipelines/nyc-taxi/pipeline.yml cli_samples_v2_$target_version nowait

@@ -8,8 +8,8 @@ inputs:
     type: uri_folder
   max_epocs:
     type: integer
-    min:
-    max:
+    min: 0
+    max: 100
   learning_rate: 
     type: number
     default: 0.01

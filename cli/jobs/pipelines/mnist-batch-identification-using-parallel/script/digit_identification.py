@@ -43,3 +43,4 @@ def run(mini_batch):
         resultList.append("{}: {}".format(os.path.basename(image), best_result))
 
     return resultList
+
