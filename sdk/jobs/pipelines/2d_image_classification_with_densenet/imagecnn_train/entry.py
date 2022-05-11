@@ -9,7 +9,7 @@ import functools
 from enum import Enum
 
 from mldesigner import command_component, Input
-from azure.ml.dsl._component import ComponentExecutor
+from mldesigner.executor import ComponentExecutor
 
 
 class Data_BackendEnum(Enum):
