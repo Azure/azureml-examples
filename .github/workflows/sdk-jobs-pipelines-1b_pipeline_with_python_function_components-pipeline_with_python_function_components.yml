@@ -41,7 +41,7 @@ jobs:
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_python_function_components.ipynb
-          sed -i "s/@dsl.pipeline(/&force_rerun=True,/" pipeline_with_python_function_components.ipynb
+          sed -i "s/@pipeline(/&force_rerun=True,/" pipeline_with_python_function_components.ipynb
           papermill -k python pipeline_with_python_function_components.ipynb pipeline_with_python_function_components.output.ipynb
       working-directory: sdk/jobs/pipelines/1b_pipeline_with_python_function_components
     - name: upload notebook's working folder as an artifact
