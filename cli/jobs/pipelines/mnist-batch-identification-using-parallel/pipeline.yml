@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: mnist-batch-identification-using-parallel
 description: The hello world pipeline job with inline parallel job
 tags:
   tag: tagvalue
@@ -33,7 +34,7 @@ jobs:
         mode: eval_mount
       score_model:
         type: uri_folder
-        path: ./mnist-models
+        path: ./mnist_models
         mode: download
     outputs:
       job_output_file:

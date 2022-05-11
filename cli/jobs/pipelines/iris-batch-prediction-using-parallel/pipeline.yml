@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-display_name: simplePipelineJobWithInlineParallelTabularJobe2e
+display_name: iris-batch-prediction-using-parallel
 description: The hello world pipeline job with inline parallel job
 tags:
   tag: tagvalue
