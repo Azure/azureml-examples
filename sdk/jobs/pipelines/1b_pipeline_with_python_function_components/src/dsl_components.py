@@ -2,8 +2,8 @@ from pathlib import Path
 from random import randint
 from uuid import uuid4
 
-from azure.ml import dsl, Input, Output
-from azure.ml.entities import Environment
+from azure.ai.ml import dsl, Input, Output
+from azure.ai.ml.entities import Environment
 
 # init customer environment with conda YAML
 # the YAML file shall be put under your code folder.

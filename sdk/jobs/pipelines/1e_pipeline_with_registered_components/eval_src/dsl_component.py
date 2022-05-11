@@ -1,5 +1,5 @@
 
-from azure.ml import dsl, Input, Output
+from azure.ai.ml import dsl, Input, Output
 
 @dsl.command_component(
     name="eval_model",
