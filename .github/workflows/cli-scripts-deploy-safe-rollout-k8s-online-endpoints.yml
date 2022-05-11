@@ -11,7 +11,7 @@ on:
       - cli/deploy-safe-rollout-k8s-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
       - cli/setup.sh
-      - .github/amlarc-tool.sh
+      - .github/amlarc/amlarc-tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,10 +44,10 @@ jobs:
         export ICM_HOST_NAME=ICM-HOST-PROD
         export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PROD
         export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PROD
-        set -e; bash -x .github/amlarc-tool.sh download_icm_cert
+        set -e; bash -x .github/amlarc/amlarc-tool.sh download_icm_cert
         export ICM_HOST=$(cat icm_host)
         export CONNECTOR_ID=$(cat icm_connector_id)
         export ROUTING_ID=$(cat icm_routing_id)
-        export SUMMARY=$(set -e; bash -x .github/amlarc-tool.sh gen_summary_for_github_test)
-        set -e; bash -x .github/amlarc-tool.sh file_icm
+        export SUMMARY=$(set -e; bash -x .github/amlarc/amlarc-tool.sh gen_summary_for_github_test)
+        set -e; bash -x .github/amlarc/amlarc-tool.sh file_icm
       timeout-minutes: 30
