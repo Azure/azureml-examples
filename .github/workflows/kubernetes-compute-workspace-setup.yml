@@ -1,0 +1,52 @@
+name: kubernetes-compute-workspace-setup
+on:
+  workflow_dispatch:
+    inputs:
+      AMLARC_TEST_REGION:
+        description: 'Resource Region'
+        required: false
+        default: 'eastus'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples-rg
+      LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
+      WORKSPACE: amlarc-githubtest-ws
+
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        ref: sdk-preview
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+    
+    # provision resources
+    - name: setup_workspace
+      run: bash .github/kubernetes-compute/tool.sh setup_workspace
+      timeout-minutes: 30
+    - name: setup_dataset
+      run: |
+        wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
+        tar zxf azcopy_linux_amd64_10.15.0.tar.gz
+        cp azcopy_linux_amd64_10.15.0/azcopy .
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+        bash create-datasets.sh
+        bash copy-data.sh
+      working-directory: setup-repo
+      timeout-minutes: 300
+
