@@ -119,7 +119,7 @@ jobs:
     - name: file_icm
       if: ${{ always() }}
       run: |
-        if [ "$(bash .github/kubernetes-compute/tool.sh check_lock_file) == "true" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
+        if [ "$(bash .github/kubernetes-compute/tool.sh check_lock_file)" == "true" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
             # download certificates
             export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
             export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
