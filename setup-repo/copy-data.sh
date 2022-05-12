@@ -1,3 +1,5 @@
+set -x
+
 # setup variables
 
 datapath="example-data"
