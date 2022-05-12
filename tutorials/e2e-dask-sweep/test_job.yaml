@@ -10,7 +10,8 @@ command: >
   cat ${{outputs.model_out}}/MLmodel
 inputs:
   model_in: 
-    path: data/fare_predict
+    type: mlflow_model
+    path: data/fare_predicts
   testdata:
     path: data/data.json
     type: uri_file
