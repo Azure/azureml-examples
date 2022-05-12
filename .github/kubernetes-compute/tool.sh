@@ -3,7 +3,7 @@ set -x
 
 # Global variables
 export SCRIPT_DIR=$( cd  "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export LOCK_FILE=${SCRIPT_DIR}/$0.lock
+export LOCK_FILE=${SCRIPT_DIR}/"$(basename ${BASH_SOURCE[0]})".lock
 export RESULT_FILE=${SCRIPT_DIR}/kubernetes-compute-test-result.txt
 export MAX_RETRIES=60
 export SLEEP_SECONDS=20
