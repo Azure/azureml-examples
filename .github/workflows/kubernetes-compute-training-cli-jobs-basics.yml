@@ -34,7 +34,7 @@ jobs:
 
       JOB_SELECTOR: ${{ github.event.inputs.JOB_SELECTOR }}
       JOB_FILTER: ${{ github.event.inputs.JOB_FILTER }}
-      JOB_LIST_FILE: amlarc-training-cli-jobs-basics.txt
+      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-basics.txt
       TIMEOUT: ${{ github.event.inputs.TIMEOUT }}
 
       MIN_SUCCESS_NUM: 1
@@ -76,7 +76,7 @@ jobs:
         for job in $(cat $JOB_LIST_FILE); do
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
-            bash .github/kubernetes-compute/tool.sh run_cli_job $job &
+            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
             sleep 1
           else
             echo "Found invalid job: $job"

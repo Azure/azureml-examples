@@ -14,14 +14,15 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             is_sweep_job = True
 
         # change compute target
-        data["compute"] = "azureml:%s" % compute_target
-        if is_pipeline_job:
-            settings = data.get("settings", {})
-            settings["default_compute"] = "azureml:%s" % compute_target
-            data["settings"] = settings
+        if compute_target:
+            data["compute"] = "azureml:%s" % compute_target
+            if is_pipeline_job:
+                settings = data.get("settings", {})
+                settings["default_compute"] = "azureml:%s" % compute_target
+                data["settings"] = settings
 
-            for step in data.get("jobs", {}):
-                data["jobs"][step]["compute"] = "azureml:%s" % compute_target
+                for step in data.get("jobs", {}):
+                    data["jobs"][step]["compute"] = "azureml:%s" % compute_target
 
         # set instance type
         if not is_pipeline_job and instance_type:
@@ -70,8 +71,7 @@ if __name__ == "__main__":
         "-c",
         "--compute-target",
         required=False,
-        help='Compute target, default is "githubtest"',
-        default="githubtest",
+        help='Compute target',
     )
     parser.add_argument("-it", "--instance-type", required=False, help="Instance type")
     parser.add_argument(
