@@ -1,4 +1,4 @@
-name: kubernetes-compute-training-cli-jobs-basics
+name: kubernetes-compute-training-cli-jobs-single-step
 on:
   schedule:
     - cron: "0 23 * * *"
@@ -7,7 +7,7 @@ on:
       JOB_SELECTOR:
         description: 'Job selector used with grep command to select job workflows'
         required: false
-        default: '^cli-jobs-basics.*yml$'
+        default: '^cli-jobs-single-step.*yml$'
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
@@ -34,17 +34,17 @@ jobs:
 
       JOB_SELECTOR: ${{ github.event.inputs.JOB_SELECTOR }}
       JOB_FILTER: ${{ github.event.inputs.JOB_FILTER }}
-      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-basics.txt
+      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-single-step.txt
       TIMEOUT: ${{ github.event.inputs.TIMEOUT }}
 
       MIN_SUCCESS_NUM: 1
       SEVERITY: 3
       OWNERS: amlarc@microsoft.com
-      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-basics failed"
+      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-single-step failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-basics.yml
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-single-step.yml
       TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
-      ICM_MESSAGE: "Failed to run cli-jobs-basics jobs on kubernetes compute!"
+      ICM_MESSAGE: "Failed to run cli-jobs-single-step jobs on kubernetes compute!"
 
     steps:
     - name: check out repo
