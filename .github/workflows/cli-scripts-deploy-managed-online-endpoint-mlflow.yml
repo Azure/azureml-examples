@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/deploy-managed-online-endpoint-mlflow.sh
       - .github/workflows/cli-scripts-deploy-managed-online-endpoint-mlflow.yml

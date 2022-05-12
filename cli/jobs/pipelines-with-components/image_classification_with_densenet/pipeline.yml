@@ -1,16 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: image_classification_with_densenet
+description: Train densenet for image classification
 
-# <inputs_and_outputs>
-inputs:
-  training_image: #using local data, will crate an anonymous data asset
-    type: uri_folder
-    path: ./data/train
-  validation_image:
-    type: uri_folder
-    path: ./data/val
-
-# </inputs_and_outputs>
 
 # <jobs>
 settings:
@@ -23,13 +15,17 @@ jobs:
     type: command
     component: file:./convert_to_image_directory/entry.spec.yaml
     inputs:
-      input_path: ${{parent.inputs.training_image}}
+      input_path: 
+        type: uri_folder
+        path: ./data/train
 
   convert_evaluation_image:
     type: command
     component: file:./convert_to_image_directory/entry.spec.yaml
     inputs:
-      input_path: ${{parent.inputs.validation_image}}
+      input_path: 
+        type: uri_folder
+        path: ./data/val        
 
   init_transformation:
     type: command

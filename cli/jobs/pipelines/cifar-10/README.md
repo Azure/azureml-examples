@@ -11,5 +11,3 @@ description: This sample shows how to using distributed job on an Azure ML compu
 # Submit pipeline job
 
 This example shows how a build a three steps pipeline. You need use gpu SKU or powerful cpu SKU like `STANDARD_D15_V2` for the train and eval step in this pipeline.
-
-Please change `process_count_per_instance` number of GPU cards you have to fully utilize the compute resource you have.
