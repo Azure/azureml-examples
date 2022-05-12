@@ -48,12 +48,12 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: file IcM when fails
-      #if: ${{ failure() && github.event_name == 'schedule' }}
+      if: ${{ failure() && github.event_name == 'schedule' }}
       run: |
         # download certificates
-        export ICM_HOST_NAME=ICM-HOST-PPE
-        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PPE
-        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PPE
+        export ICM_HOST_NAME=ICM-HOST-PROD
+        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PROD
+        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PROD
         set -e; bash -x .github/amlarc-tool.sh download_icm_cert
         export ICM_HOST=$(cat icm_host)
         export CONNECTOR_ID=$(cat icm_connector_id)
