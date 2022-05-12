@@ -31,6 +31,7 @@ jobs:
       VM_SKU: Standard_D4s_v3
       MIN_COUNT: 5
       COMPUTE: "cpu-cluster"
+      CLUSTER_TYPE: managedClusters
 
       DELETE_ENDPOINTS: ${{ github.event.inputs.DELETE_ENDPOINTS }}
       CLEANUP_WORKSPACE: ${{ github.event.inputs.CLEANUP_WORKSPACE }}
