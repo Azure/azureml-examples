@@ -38,7 +38,7 @@ jobs:
       TIMEOUT: ${{ github.event.inputs.TIMEOUT }}
 
       MIN_SUCCESS_NUM: 1
-      SEVERITY: 4
+      SEVERITY: 3
       OWNERS: amlarc@microsoft.com
       TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-basics failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples

@@ -29,6 +29,7 @@ jobs:
       RESOURCE_GROUP: azureml-examples-rg
       WORKSPACE: amlarc-githubtest-ws
       VM_SKU: STANDARD_NC12
+      COMPUTE: "gpu-cluster"
 
       DELETE_ENDPOINTS: ${{ github.event.inputs.DELETE_ENDPOINTS }}
       CLEANUP_WORKSPACE: ${{ github.event.inputs.CLEANUP_WORKSPACE }}

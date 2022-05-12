@@ -35,13 +35,16 @@ jobs:
       VM_SKU: STANDARD_NC12
       CLUSTER_TYPE: managedClusters
       RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      COMPUTE: "gpu-cluster"
+      EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       KEY_VAULT_SUB: dd94e4df-b58f-4e81-9c5e-bd72a4b2ef9e
       KEY_VAULT_RG: amlarc-github-workflow
       REINSTALL_EXTENSION: ${{ github.event.inputs.REINSTALL_EXTENSION }}
       SETUP_DATASET: ${{ github.event.inputs.SETUP_DATASET }}
 
-      SEVERITY: 4
+      SEVERITY: 3
       OWNERS: amlarc@microsoft.com
       TITLE: "[Github Workflow] kubernetes-compute-gpu-resources-setup failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
@@ -77,7 +80,6 @@ jobs:
       timeout-minutes: 30
     - name: install_extension
       run: |
-        export EXTENSION_SETTINGS="enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
         bash .github/kubernetes-compute/tool.sh install_extension
       timeout-minutes: 30
     - name: setup_workspace
@@ -86,8 +88,6 @@ jobs:
     - name: setup_compute
       run: |
         bash .github/kubernetes-compute/tool.sh setup_compute
-        COMPUTE="gpu-cluster" bash .github/kubernetes-compute/tool.sh setup_compute
-        COMPUTE="cpu-cluster" bash .github/kubernetes-compute/tool.sh setup_compute
       timeout-minutes: 30
     - name: setup_instance_type
       run: |
