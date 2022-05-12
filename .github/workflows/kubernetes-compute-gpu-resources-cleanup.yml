@@ -30,6 +30,7 @@ jobs:
       WORKSPACE: amlarc-githubtest-ws
       VM_SKU: STANDARD_NC12
       COMPUTE: "gpu-cluster"
+      CLUSTER_TYPE: managedClusters
 
       DELETE_ENDPOINTS: ${{ github.event.inputs.DELETE_ENDPOINTS }}
       CLEANUP_WORKSPACE: ${{ github.event.inputs.CLEANUP_WORKSPACE }}
@@ -58,6 +59,7 @@ jobs:
     - name: delete_endpoints
       if: ${{ always() }}
       run: |
+        set +e
         if [ "${DELETE_ENDPOINTS}" == "true" ] ; then
           bash .github/kubernetes-compute/tool.sh delete_endpoints
         fi
@@ -65,6 +67,7 @@ jobs:
     - name: delete_workspace
       if: ${{ always() }}
       run: |
+        set +e
         if [ "${CLEANUP_WORKSPACE}" == "true" ] ; then
           bash .github/kubernetes-compute/tool.sh delete_compute
           bash .github/kubernetes-compute/tool.sh delete_workspace
@@ -73,6 +76,7 @@ jobs:
     - name: delete_extension
       if: ${{ always() }}
       run: |
+        set +e
         if [ "${UNINSTALL_EXTENSION}" == "true" ] ; then
           bash .github/kubernetes-compute/tool.sh delete_compute
           bash .github/kubernetes-compute/tool.sh delete_extension
@@ -81,6 +85,7 @@ jobs:
     - name: delete_cluster
       if: ${{ always() }}
       run: |
+        set +e
         if [ "${CLEANUP_CLUSTER}" == "true" ] ; then
           bash .github/kubernetes-compute/tool.sh delete_aks
         fi

@@ -3,7 +3,7 @@ set -x
 
 # Global variables
 export SCRIPT_DIR=$( cd  "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export LOCK_FILE=${SCRIPT_DIR}/$0.lock
+export LOCK_FILE=${SCRIPT_DIR}/"$(basename ${BASH_SOURCE[0]})".lock
 export RESULT_FILE=${SCRIPT_DIR}/kubernetes-compute-test-result.txt
 export MAX_RETRIES=60
 export SLEEP_SECONDS=20
@@ -440,6 +440,11 @@ run_cli_job(){
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
     run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
 
+    if [[ "$run_id" ==  "" ]]; then 
+        echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
+        return 1
+    fi
+
     # stream job logs
     timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
 
@@ -448,10 +453,10 @@ run_cli_job(){
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
     
     if [[ $status ==  "Failed" ]]; then
-        return 1
+        return 2
     elif [[ $status != "Completed" ]]; then 
         timeout 5m az ml job cancel $SRW -n $run_id
-	    return 2
+	    return 3
     fi
 }
 
@@ -494,7 +499,7 @@ collect_jobs_from_workflows(){
 
     done
 
-    echo "Found $(wc -l $OUPUT_FILE) jobs:"
+    echo "Found $(cat $OUPUT_FILE | wc -l) jobs:"
     cat $OUPUT_FILE
 }
 
