@@ -8,11 +8,11 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-k8s-`echo $RANDOM`
 
 # <create_endpoint>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/amlarc/endpoint.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/kubernetes/kubernetes-endpoint.yml
 # </create_endpoint>
 
 # <create_blue>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/amlarc/blue-deployment.yml --all-traffic
+az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml --all-traffic
 # </create_blue>
 
 # <test_blue>
@@ -25,7 +25,7 @@ az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set insta
 # </scale_blue>
 
 # <create_green>
-az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/amlarc/green-deployment.yml
+az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/kubernetes/kubernetes-green-deployment.yml
 # </create_green>
 
 # <get_traffic>
