@@ -434,7 +434,7 @@ run_cli_job(){
     TIMEOUT="${TIMEOUT:-60m}"
 
     # preprocess job spec for amlarc compute
-    python $SCRIPT_DIR/amlarc_convert.py -i $JOB_YML $CONVERTER_ARGS
+    python $SCRIPT_DIR/convert.py -i $JOB_YML $CONVERTER_ARGS
     
     # submit job
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
@@ -652,6 +652,8 @@ download_icm_cert(){
 }
 
 file_icm(){
+
+set -e
 
 ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
 <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing">

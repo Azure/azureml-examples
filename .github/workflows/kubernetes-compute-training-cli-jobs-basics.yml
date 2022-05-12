@@ -1,4 +1,4 @@
-name: amlarc-training-cli-jobs-basics
+name: kubernetes-compute-training-cli-jobs-basics
 on:
   schedule:
     - cron: "0 23 * * *"
@@ -40,10 +40,12 @@ jobs:
       MIN_SUCCESS_NUM: 1
       SEVERITY: 4
       OWNERS: amlarc@microsoft.com
+      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-basics failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/amlarc-training-cli-jobs-basics.yml
-      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/SiteAssets/Vienna%20Notebook/AMLArcTSG.one#Troubleshooting%20github%20workflow&section-id=69e8bdb1-5734-4b07-967a-5a50a91cf040&page-id=53a1a232-f9f0-4192-b7d2-0474848ebb18&end
-      
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-basics.yml
+      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
+      ICM_MESSAGE: "Failed to run cli-jobs-basics jobs on kubernetes compute!"
+
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -56,7 +58,7 @@ jobs:
     - name: install tools
       run: |
         pip install shyaml
-        bash .github/amlarc/amlarc-tool.sh install_tools
+        bash .github/kubernetes-compute/tool.sh install_tools
       timeout-minutes: 30
     - name: azure login
       uses: azure/login@v1
@@ -66,7 +68,7 @@ jobs:
 
     - name: collect jobs
       run: |
-        bash .github/amlarc/amlarc-tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
+        bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
       timeout-minutes: 30
 
     - name: run jobs
@@ -74,7 +76,7 @@ jobs:
         for job in $(cat $JOB_LIST_FILE); do
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
-            bash .github/amlarc/amlarc-tool.sh run_cli_job $job &
+            bash .github/kubernetes-compute/tool.sh run_cli_job $job &
             sleep 1
           else
             echo "Found invalid job: $job"
@@ -87,23 +89,23 @@ jobs:
     - name: check jobs
       if: ${{ always() }}
       run: |
-        bash .github/amlarc/amlarc-tool.sh count_result
+        bash .github/kubernetes-compute/tool.sh count_result
       timeout-minutes: 30
 
     - name: file_icm
       if: ${{ always() }}
       run: |
-        bash .github/amlarc/amlarc-tool.sh count_result || ret=$?
+        bash .github/kubernetes-compute/tool.sh count_result || ret=$?
         if [ "$ret" != "0" ] && [ "$ret" != "" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
             # download certificates
             export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
             export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
             export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
-            bash .github/amlarc/amlarc-tool.sh download_icm_cert
+            bash .github/kubernetes-compute/tool.sh download_icm_cert
             export ICM_HOST=$(cat icm_host)
             export CONNECTOR_ID=$(cat icm_connector_id)
             export ROUTING_ID=$(cat icm_routing_id)
-            export SUMMARY=$(bash .github/amlarc/amlarc-tool.sh gen_summary_for_github_test)
-            bash .github/amlarc/amlarc-tool.sh file_icm
+            export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
+            bash .github/kubernetes-compute/tool.sh file_icm
         fi
       timeout-minutes: 30
