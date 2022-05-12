@@ -68,7 +68,10 @@ if __name__ == "__main__":
         help="Output AMLARC-compatible file, if not provides, " "replace file inplace",
     )
     parser.add_argument(
-        "-c", "--compute-target", required=False, help="Compute target",
+        "-c",
+        "--compute-target",
+        required=False,
+        help="Compute target",
     )
     parser.add_argument("-it", "--instance-type", required=False, help="Instance type")
     parser.add_argument(
