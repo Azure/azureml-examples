@@ -48,7 +48,7 @@ jobs:
       OWNERS: amlarc@microsoft.com
       GITHUB_REPO: https://github.com/Azure/azureml-examples
       WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/amlarc-cli-train-test.yml
-      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/SiteAssets/Vienna%20Notebook/AMLArcTSG.one#Troubleshooting%20github%20workflow&section-id=69e8bdb1-5734-4b07-967a-5a50a91cf040&page-id=53a1a232-f9f0-4192-b7d2-0474848ebb18&end
+      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/OneNote.aspx?id=%2Fteams%2FVienna%2FSiteAssets%2FVienna%20Notebook&wd=target%28AMLArcTSG.one%7C69E8BDB1-5734-4B07-967A-5A50A91CF040%2FTroubleshooting%20github%20workflow%7C53A1A232-F9F0-4192-B7D2-0474848EBB18%2F%29
       
     steps:
     - name: check out repo
