@@ -113,7 +113,7 @@ jobs:
 
     - name: remove_lock_file
       run: |
-        run: bash .github/kubernetes-compute/tool.sh remove_lock_file
+        bash .github/kubernetes-compute/tool.sh remove_lock_file
       timeout-minutes: 30
 
     - name: file_icm
