@@ -2,7 +2,7 @@ set -e
 #--- todo: remove the below lines before merging with main---#
 az extension remove -n ml
 export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/62191563/ml-0.0.62191563-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/62191563 --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/62714989/ml-0.0.62714989-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/62714989 --yes
 #---end of lines to be removed---#
 
 # <set_endpoint_name>
