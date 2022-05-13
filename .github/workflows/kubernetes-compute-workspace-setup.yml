@@ -38,28 +38,34 @@ jobs:
     - name: setup_workspace
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
+
+    - name: set configure
+      run: |
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+      timeout-minutes: 30
+
     - name: setup_asset /cli/assets/data/local-folder.yml
       run: az ml data create -f local-folder.yml
       working-directory: cli/assets/data
       timeout-minutes: 300
     
     - name: setup_dataset
-      run: |
-        set -x
-        az account set --subscription $SUBSCRIPTION
-        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
-        bash create-datasets.sh
+      run: bash create-datasets.sh
       working-directory: setup-repo
       timeout-minutes: 300
-    - name: copy-data
+
+    - name: download azcopy
       run: |
         set -x
         wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
         tar zxf azcopy_linux_amd64_10.15.0.tar.gz
         cp azcopy_linux_amd64_10.15.0/azcopy .
-        az account set --subscription $SUBSCRIPTION
-        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
-        bash copy-data.sh
+      working-directory: setup-repo
+      timeout-minutes: 30
+
+    - name: copy-data
+      run: bash copy-data.sh
       working-directory: setup-repo
       timeout-minutes: 300
 
