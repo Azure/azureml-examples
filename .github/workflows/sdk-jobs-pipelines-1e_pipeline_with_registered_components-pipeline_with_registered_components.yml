@@ -39,6 +39,7 @@ jobs:
     - name: run jobs/pipelines/1e_pipeline_with_registered_components/pipeline_with_registered_components.ipynb
       run: |
           mkdir ../../.azureml
+          export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_registered_components.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" pipeline_with_registered_components.ipynb
