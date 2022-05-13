@@ -785,7 +785,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     ret=$?
     echo "code: $ret" 
     echo "Response: $temp_file"
-    xmlstarlet fo --indent-tab --omit-decl $temp_file
+    xmlstarlet fo --indent-tab --omit-decl $temp_file || true
     return $ret
 }
 
