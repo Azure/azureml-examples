@@ -79,7 +79,7 @@ jobs:
 
     - name: set sampledata dataset
       if: ${{ always() }}
-      run:
+      run: |
         set -x
         bash .github/kubernetes-compute/tool.sh generate_workspace_config
         python -c '
