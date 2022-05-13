@@ -93,7 +93,7 @@ jobs:
       timeout-minutes: 30
 
     - name: file_icm
-      if: ${{ always() }}
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         bash .github/kubernetes-compute/tool.sh count_result || ret=$?
         if [ "$ret" != "0" ] && [ "$ret" != "" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then

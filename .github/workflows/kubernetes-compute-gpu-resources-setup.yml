@@ -118,7 +118,7 @@ jobs:
       timeout-minutes: 30
 
     - name: file_icm
-      if: ${{ always() }}
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         if [ "$(bash .github/kubernetes-compute/tool.sh check_lock_file)" == "true" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
             # download certificates
