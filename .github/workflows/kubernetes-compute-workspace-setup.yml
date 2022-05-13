@@ -43,7 +43,9 @@ jobs:
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |
+        set -x
         pip install azure.cli.core
+        pip install azureml-dataset-runtime
         python -c '
 
         import sys
