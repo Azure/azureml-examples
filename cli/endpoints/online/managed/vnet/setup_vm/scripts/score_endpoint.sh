@@ -15,7 +15,6 @@ az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOC
 
 # navigate to the samples directory
 cd /home/samples/azureml-examples/cli/
-export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
 
 # <check_deployment> 
 # Try scoring using the CLI

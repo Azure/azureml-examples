@@ -12,9 +12,6 @@ az login --identity -u /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GRO
 az account set --subscription $SUBSCRIPTION
 az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
 
-#todo: remove
-export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
-
 # <create_local_deployment> 
 # navigate to the cli directory in the azurem-examples repo
 cd /home/samples/azureml-examples/cli/
