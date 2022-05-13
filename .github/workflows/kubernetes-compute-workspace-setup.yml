@@ -54,7 +54,6 @@ jobs:
         from azureml.core.authentication import AzureCliAuthentication
         
         cli_auth = AzureCliAuthentication()
-
         ws = Workspace.get(subscription_id=sys.argv[1],
                       resource_group=sys.argv[2],
                       name=sys.argv[3],

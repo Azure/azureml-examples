@@ -4,11 +4,11 @@ on:
     - cron: "0 20 * * *"
   workflow_dispatch:
     inputs:
-      AMLARC_TEST_REGION:
+      TEST_REGION:
         description: 'Resource Region'
         required: true
         default: 'eastus'
-      AMLARC_RELEASE_TRAIN:
+      RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
         required: true
         default: 'staging'
@@ -26,23 +26,19 @@ jobs:
     env:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
       RESOURCE_GROUP: azureml-examples-rg
-      LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
+      LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
       VM_SKU: STANDARD_NC12
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
-      RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      RELEASE_TRAIN: staging
       COMPUTE: "gpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
-
-      KEY_VAULT_NAME: amlarcgithubworkflowkv
-      KEY_VAULT_SUB: dd94e4df-b58f-4e81-9c5e-bd72a4b2ef9e
-      KEY_VAULT_RG: amlarc-github-workflow
-      REINSTALL_EXTENSION: ${{ github.event.inputs.REINSTALL_EXTENSION }}
-      SETUP_DATASET: ${{ github.event.inputs.SETUP_DATASET }}
+      REINSTALL_EXTENSION: false
 
       FILE_TICKET: true
       SEVERITY: 3
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
       OWNERS: amlarc@microsoft.com
       TITLE: "[Github Workflow] kubernetes-compute-gpu-resources-setup failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
@@ -51,6 +47,13 @@ jobs:
       ICM_MESSAGE: "Failed to setup gpu resources for kubernetes compute github workflow!"
 
     steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+        echo "RELEASE_TRAIN=${{ github.event.inputs.RELEASE_TRAIN }}" | tee -a $GITHUB_ENV
+        echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
       with:
@@ -94,9 +97,6 @@ jobs:
     - name: file_icm
       if: ${{ failure() && github.event_name != 'pull_request' }}
       run: |
-        if [ "${{ github.event_name }}" == 'workflow_dispatch' ]; then
-          FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}
-        fi
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
           export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
