@@ -19,19 +19,14 @@ for val in $STORAGE_ACCOUNT_LIST; do
     fi
 done
 
-# Get list of resource groups for managed identities
-WORKSPACE_RESOURCEGROUP_LIST=$(az ml workspace list --query "[*].[resourceGroup]" -o tsv | sort -u)
-for rg in $WORKSPACE_RESOURCEGROUP_LIST; do
-    NAME_LIST=$(az identity list --resource-group $rg --query "[].{name:name}" -o tsv | sort -u)
-    for name in $NAME_LIST; do
-        if [[ $name == *"oep-user-identity"* ]]; then
-            ID_LIST=$(az identity list --resource-group $rg --query "[?name == '$name'].{id:id}" -o tsv | sort -u)
-            for id in $ID_LIST; do
-                echo "attempting to delete id with name '$name'"
-                az identity delete --ids $id --name $name --resource-group $rg
-            done
-        fi
-    done
+# delete UAI
+NAME_LIST=$(az identity list --query "[].{name:name}" -o tsv | sort -u)
+echo $NAME_LIST
+for name in $NAME_LIST; do
+    if [[ $name == *"oep-user-identity"* ]]; then
+        echo deleting $name
+        `az identity delete --name "$name"`
+    fi
 done
 
 # delete left over autoscale settings created for online endpoints
