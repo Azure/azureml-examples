@@ -17,7 +17,7 @@ from mldesigner import command_component, Output
     distribution={"type": "tensorflow", "worker_count": 2},
 )
 def train_tf(
-    trained_model_output: Output,
+    trained_model_output: Output(type="uri_folder"),
     epochs=3,
     steps_per_epoch=70,
     per_worker_batch_size=64,

@@ -19,7 +19,6 @@ conda_env = dict(
     name="train_model_component",
     display_name="Train",
     description="A dummy train component defined by dsl component.",
-    version="0.0.2",
     # specify distribution type if needed
     # distribution={'type': 'mpi'},
     environment=conda_env,
@@ -27,9 +26,9 @@ conda_env = dict(
     # code='.'
 )
 def train_model(
-    training_data: Input, #TODO: make this input mltable
+    training_data: Input(type="uri_file"), 
     max_epochs: int,
-    model_output: Output, #TODO: make this output mlflow_model
+    model_output: Output(type="uri_folder"),
     learning_rate=0.02,
 ):
     lines = [
@@ -52,13 +51,12 @@ def train_model(
     name="score_data_component",
     display_name="Score",
     description="A dummy score component defined by dsl component.",
-    version="0.0.1",
     environment=conda_env,
 )
 def score_data(
-    model_input: Input,
-    test_data: Input,
-    score_output: Output,
+    model_input: Input(type="uri_folder"),
+    test_data: Input(type="uri_file"),
+    score_output: Output(type="uri_folder"),
 ):
 
     lines = [
@@ -84,12 +82,11 @@ def score_data(
     name="eval_model_component",
     display_name="Evaluate",
     description="A dummy evaluate component defined by dsl component.",
-    version="0.0.1",
     environment=conda_env,
 )
 def eval_model(
-    scoring_result: Input,
-    eval_output: Output,
+    scoring_result: Input(type="uri_folder"),
+    eval_output: Output(type="uri_folder"),
 ):
     lines = [
         f"Scoring result path: {scoring_result}",

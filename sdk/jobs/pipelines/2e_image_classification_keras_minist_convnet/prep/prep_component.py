@@ -15,9 +15,9 @@ from mldesigner import command_component, Input, Output
     ),
 )
 def prepare_data_component(
-    input_data: Input,
-    training_data: Output,
-    test_data: Output,
+    input_data: Input(type="uri_folder"),
+    training_data: Output(type="uri_folder"),
+    test_data: Output(type="uri_folder"),
 ):
     convert(
         os.path.join(input_data, "train-images-idx3-ubyte"),

@@ -8,8 +8,8 @@ from mldesigner import command_component, Input, Output
     version="0.0.8",
 )
 def eval_model(
-    scoring_result: Input,
-    eval_output: Output,
+    scoring_result: Input(type="uri_folder"),
+    eval_output: Output(type="uri_folder"),
 ):
     from pathlib import Path
     from datetime import datetime
