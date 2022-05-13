@@ -7,4 +7,4 @@ dependencies:
   - pip:
     # change this when stable version release
     - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
-    - mldesigner==0.0.62801735
+    - mldesigner==0.0.62828565
