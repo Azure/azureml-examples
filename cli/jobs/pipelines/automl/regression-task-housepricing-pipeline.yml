@@ -3,7 +3,7 @@ type: pipeline
 
 description: Pipeline using AutoML regression task
 
-display_name: pipeline-with-regression
+display_name: pipeline-with-automl-regression
 experiment_name: pipeline-with-automl
 
 settings:
