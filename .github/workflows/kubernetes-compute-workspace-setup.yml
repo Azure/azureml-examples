@@ -40,6 +40,22 @@ jobs:
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
 
+    - name: set sampledata dataset
+      if: ${{ always() }}
+      run: |
+        set -x
+        bash .github/kubernetes-compute/tool.sh generate_workspace_config
+        python -c '
+        from azureml.core.workspace import Workspace
+        from azureml.core import Dataset
+
+        ws = Workspace.from_config()
+        datastore = ws.datastores["workspaceblobstore"]
+        dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
+        dataset.register(ws, "sampledata")
+        '
+      timeout-minutes: 300
+
     - name: set configure
       if: ${{ always() }}
       run: |
@@ -75,20 +91,4 @@ jobs:
         # bash copy-data.sh
         echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
       working-directory: setup-repo
-      timeout-minutes: 300
-
-    - name: set sampledata dataset
-      if: ${{ always() }}
-      run: |
-        set -x
-        bash .github/kubernetes-compute/tool.sh generate_workspace_config
-        python -c '
-        from azureml.core.workspace import Workspace
-        from azureml.core import Dataset
-
-        ws = Workspace.from_config()
-        datastore = ws.datastores["workspaceblobstore"]
-        dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
-        dataset.register(ws, "sampledata")
-        '
       timeout-minutes: 300
