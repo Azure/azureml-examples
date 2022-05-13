@@ -13,8 +13,8 @@ from mldesigner import command_component, Input, Output
     ),
 )
 def keras_train_component(
-    input_data: Input("uri_folder"),
-    output_model: Output("uri_folder"),
+    input_data: Input(type="uri_folder"),
+    output_model: Output(type="uri_folder"),
     epochs=10,
 ):
     # avoid dependency issue, execution logic is in train() func in train.py file
