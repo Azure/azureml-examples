@@ -36,26 +36,31 @@ jobs:
     
     # provision resources
     - name: setup_workspace
+      if: ${{ always() }}
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
 
     - name: set configure
+      if: ${{ always() }}
       run: |
         az account set --subscription $SUBSCRIPTION
         az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
       timeout-minutes: 30
 
     - name: setup_asset /cli/assets/data/local-folder.yml
+      if: ${{ always() }}
       run: az ml data create -f local-folder.yml
       working-directory: cli/assets/data
       timeout-minutes: 300
     
     - name: setup_dataset
+      if: ${{ always() }} 
       run: bash create-datasets.sh
       working-directory: setup-repo
       timeout-minutes: 300
 
     - name: download azcopy
+      if: ${{ always() }}
       run: |
         set -x
         wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
@@ -65,7 +70,23 @@ jobs:
       timeout-minutes: 30
 
     - name: copy-data
+      if: ${{ always() }}
       run: bash copy-data.sh
       working-directory: setup-repo
       timeout-minutes: 300
 
+    - name: set sampledata dataset
+      if: ${{ always() }}
+      run:
+        set -x
+        bash .github/kubernetes-compute/tool.sh install_tools generate_workspace_config
+        python -c '
+        from azureml.core.workspace import Workspace
+        from azureml.core import Dataset
+
+        ws = Workspace.from_config()
+        datastore = ws.datastores["workspaceblobstore"]
+        dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
+        dataset.register(ws, "sampledata")
+        '
+      timeout-minutes: 300
