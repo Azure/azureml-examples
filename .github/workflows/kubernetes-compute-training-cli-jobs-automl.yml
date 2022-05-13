@@ -1,7 +1,7 @@
-name: kubernetes-compute-training-cli-jobs-single-step-spark
+name: kubernetes-compute-training-cli-jobs-automl
 on:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 22 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
@@ -11,15 +11,15 @@ on:
       JOB_SELECTOR:
         description: 'Job selector used with grep command to select job workflows'
         required: false
-        default: '^cli-jobs-single-step-spark.*yml$'
+        default: '^cli-jobs-automl.*yml$'
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'java'
+        default: 'spark|java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
-        default: '300m'
+        default: '120m'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
         required: false
@@ -33,21 +33,21 @@ jobs:
       WORKSPACE: amlarc-githubtest-ws
       LOCATION: eastus
 
-      JOB_SELECTOR: '^cli-jobs-single-step-spark.*yml$'
-      JOB_FILTER: 'java'
-      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-single-step-spark.txt
-      TIMEOUT: '300m'
+      JOB_SELECTOR: '^cli-jobs-automl.*yml$'
+      JOB_FILTER: 'spark|java'
+      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl.txt
+      TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
 
       FILE_TICKET: true
       SEVERITY: 3
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       OWNERS: amlarc@microsoft.com
-      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-single-step-spark failed"
+      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-automl failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-single-step-spark.yml
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl.yml
       TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
-      ICM_MESSAGE: "Failed to run cli-jobs-single-step-spark jobs on kubernetes compute!"
+      ICM_MESSAGE: "Failed to run cli-jobs-automl jobs on kubernetes compute!"
 
     steps:
     - name: replace env from workflow_dispatch
@@ -95,7 +95,7 @@ jobs:
         done
 
         wait
-      timeout-minutes: 360
+      timeout-minutes: 300
 
     - name: check jobs
       if: ${{ always() }}
