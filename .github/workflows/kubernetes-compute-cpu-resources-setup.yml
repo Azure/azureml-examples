@@ -1,7 +1,7 @@
 name: kubernetes-compute-cpu-resources-setup
 on:
   schedule:
-    - cron: "0 20 * * *"
+    - cron: "0 17 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
@@ -85,10 +85,6 @@ jobs:
     - name: setup_compute
       run: |
         bash .github/kubernetes-compute/tool.sh setup_compute
-      timeout-minutes: 30
-    - name: setup_compute
-      run: |
-        COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh setup_compute
       timeout-minutes: 30
     - name: setup_instance_type
       run: |

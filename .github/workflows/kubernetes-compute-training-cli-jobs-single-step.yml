@@ -1,7 +1,7 @@
 name: kubernetes-compute-training-cli-jobs-single-step
 on:
   schedule:
-    - cron: "0 23 * * *"
+    - cron: "0 19 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:

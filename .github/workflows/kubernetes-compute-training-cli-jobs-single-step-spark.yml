@@ -1,7 +1,7 @@
 name: kubernetes-compute-training-cli-jobs-single-step-spark
 on:
   schedule:
-    - cron: "0 23 * * *"
+    - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
@@ -19,7 +19,7 @@ on:
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
-        default: '120m'
+        default: '300m'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
         required: false
@@ -36,7 +36,7 @@ jobs:
       JOB_SELECTOR: '^cli-jobs-single-step.*yml$'
       JOB_FILTER: 'spark|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-single-step.txt
-      TIMEOUT: '120m'
+      TIMEOUT: '300m'
       MIN_SUCCESS_NUM: 1
 
       FILE_TICKET: true
@@ -95,7 +95,7 @@ jobs:
         done
 
         wait
-      timeout-minutes: 300
+      timeout-minutes: 360
 
     - name: check jobs
       if: ${{ always() }}

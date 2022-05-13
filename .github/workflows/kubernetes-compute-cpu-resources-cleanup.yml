@@ -1,7 +1,7 @@
 name: kubernetes-compute-cpu-resources-cleanup
 on:
   schedule:
-    - cron: "0 18 * * *"
+    - cron: "0 16 * * *"
   workflow_dispatch:
     inputs:
       DELETE_ENDPOINTS:
