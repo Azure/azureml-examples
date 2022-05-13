@@ -2,33 +2,33 @@ from pathlib import Path
 from random import randint
 from uuid import uuid4
 
-from azure.ai.ml import dsl, Input, Output
-from azure.ai.ml.entities import Environment
+# mldesigner package contains the command_component which can be used to define component from a python function
+from mldesigner import command_component, Input, Output
+
 
 # init customer environment with conda YAML
 # the YAML file shall be put under your code folder.
-conda_env = Environment(
+conda_env = dict(
+    # note that mldesigner package must be included.
     conda_file=Path(__file__).parent / "conda.yaml",
     image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
 )
 
 
-@dsl.command_component(
-    name="dsl_train_model",
+@command_component(
+    name="train_model_component",
     display_name="Train",
     description="A dummy train component defined by dsl component.",
-    version="0.0.2",
     # specify distribution type if needed
     # distribution={'type': 'mpi'},
-    # specify customer environment, note that azure-ai-ml must be included.
     environment=conda_env,
     # specify your code folder, default code folder is current file's parent
     # code='.'
 )
 def train_model(
-    training_data: Input,
+    training_data: Input(type="uri_file"), 
     max_epochs: int,
-    model_output: Output,
+    model_output: Output(type="uri_folder"),
     learning_rate=0.02,
 ):
     lines = [
@@ -47,17 +47,16 @@ def train_model(
     (Path(model_output) / "model").write_text(model)
 
 
-@dsl.command_component(
-    name="dsl_score_data",
+@command_component(
+    name="score_data_component",
     display_name="Score",
     description="A dummy score component defined by dsl component.",
-    version="0.0.1",
     environment=conda_env,
 )
 def score_data(
-    model_input: Input,
-    test_data: Input,
-    score_output: Output,
+    model_input: Input(type="uri_folder"),
+    test_data: Input(type="uri_file"),
+    score_output: Output(type="uri_folder"),
 ):
 
     lines = [
@@ -79,16 +78,15 @@ def score_data(
     (Path(score_output) / "score").write_text("scored with {}".format(model))
 
 
-@dsl.command_component(
-    name="dsl_eval_model",
+@command_component(
+    name="eval_model_component",
     display_name="Evaluate",
     description="A dummy evaluate component defined by dsl component.",
-    version="0.0.1",
     environment=conda_env,
 )
 def eval_model(
-    scoring_result: Input,
-    eval_output: Output,
+    scoring_result: Input(type="uri_folder"),
+    eval_output: Output(type="uri_folder"),
 ):
     lines = [
         f"Scoring result path: {scoring_result}",
