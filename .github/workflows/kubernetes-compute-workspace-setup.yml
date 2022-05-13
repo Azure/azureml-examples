@@ -43,17 +43,24 @@ jobs:
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |
-        set -x
-        bash .github/kubernetes-compute/tool.sh generate_workspace_config
         python -c '
+
+        import sys
         from azureml.core.workspace import Workspace
         from azureml.core import Dataset
+        from azureml.core.authentication import AzureCliAuthentication
+        
+        cli_auth = AzureCliAuthentication()
 
-        ws = Workspace.from_config()
+        ws = Workspace.get(subscription_id=sys.argv[1],
+                      resource_group=sys.argv[2],
+                      name=sys.argv[3],
+                      auth=cli_auth)
         datastore = ws.datastores["workspaceblobstore"]
         dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
         dataset.register(ws, "sampledata")
-        '
+        
+        ' "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE"
       timeout-minutes: 300
 
     - name: set configure
