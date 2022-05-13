@@ -6,19 +6,19 @@ on:
     inputs:
       DELETE_ENDPOINTS:
         description: 'Whether to delete endpoints: true or false'
-        required: false
+        required: true
         default: 'true'
       CLEANUP_WORKSPACE:
         description: 'Whether to delete workspace: true or false'
-        required: false
+        required: true
         default: 'false'
       UNINSTALL_EXTENSION:
         description: 'Whether to uninstall extension: true or false'
-        required: false
+        required: true
         default: 'true'
       CLEANUP_CLUSTER:
         description: 'Whether to delete cluster: true or false'
-        required: false
+        required: true
         default: 'false'
       
 jobs:

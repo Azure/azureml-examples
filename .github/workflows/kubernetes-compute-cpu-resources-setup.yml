@@ -6,23 +6,23 @@ on:
     inputs:
       AMLARC_TEST_REGION:
         description: 'Resource Region'
-        required: false
+        required: true
         default: 'eastus'
       AMLARC_RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
-        required: false
+        required: true
         default: 'staging'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
-        required: false
+        required: true
         default: 'false'
       SETUP_DATASET:
         description: 'Whether to init dataset in workspace: true or false'
-        required: false
+        required: true
         default: 'false'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
-        required: false
+        required: true
         default: 'false'
 jobs:
   test:
