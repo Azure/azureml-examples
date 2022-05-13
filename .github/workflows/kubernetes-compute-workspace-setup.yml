@@ -71,7 +71,9 @@ jobs:
 
     - name: copy-data
       if: ${{ always() }}
-      run: bash copy-data.sh
+      run: |
+        # bash copy-data.sh
+        echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
       working-directory: setup-repo
       timeout-minutes: 300
 
@@ -79,7 +81,7 @@ jobs:
       if: ${{ always() }}
       run:
         set -x
-        bash .github/kubernetes-compute/tool.sh install_tools generate_workspace_config
+        bash .github/kubernetes-compute/tool.sh generate_workspace_config
         python -c '
         from azureml.core.workspace import Workspace
         from azureml.core import Dataset
