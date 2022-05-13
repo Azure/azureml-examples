@@ -43,6 +43,7 @@ jobs:
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |
+        pip install azure.cli.core
         python -c '
 
         import sys
