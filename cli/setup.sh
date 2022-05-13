@@ -12,7 +12,7 @@ az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheel
 GROUP="azureml-examples"
 LOCATION="eastus"
 WORKSPACE="main"
-AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
+export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
 # </set_variables>
 
 # <set_env_variables>

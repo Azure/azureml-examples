@@ -7,7 +7,7 @@ pip install azure-ai-ml[designer]==0.0.62828567 --extra-index-url https://azurem
 pip list
 
 # <set_variables>
-AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
+export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
 # </set_variables>
 
 # <set_env_variables>
