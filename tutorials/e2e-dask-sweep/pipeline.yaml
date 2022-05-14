@@ -5,6 +5,13 @@ description: Prepare nyc taxi data with dask, then train an xgboost model
 
 display_name: nyc-taxi-pipeline-example
 experiment_name: nyc-taxi-pipeline-example
+inputs:
+  prep_data:
+    path: wasbs://datasets@azuremlexamples.blob.core.windows.net/nyctaxi/
+    mode: ro_mount
+outputs:
+  model:
+    type: mlflow_model
 
 jobs:
 
@@ -16,9 +23,7 @@ jobs:
       --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
       --output_folder ${{outputs.output_folder}}
     inputs:
-      nyc_taxi_dataset:
-        path: wasbs://datasets@azuremlexamples.blob.core.windows.net/nyctaxi/
-        mode: ro_mount
+      nyc_taxi_dataset: ${{parent.inputs.prep_data}}
     outputs:
       output_folder:
         type: uri_folder
@@ -55,8 +60,7 @@ jobs:
       max_depth: 7
       num_boost_round: 12
     outputs:
-      model:
-        type: mlflow_model
+      model: ${{parent.outputs.model}}
     environment: 
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
       conda_file: conda.yml
