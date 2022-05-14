@@ -60,6 +60,7 @@ jobs:
       if: ${{ always() && ( github.event.inputs.CLEANUP_WORKSPACE == 'true' || github.event.inputs.UNINSTALL_EXTENSION == 'true' ) }}
       run: |
           bash .github/kubernetes-compute/tool.sh delete_compute
+          COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh delete_compute
       timeout-minutes: 60
     - name: delete_workspace
       if: ${{ always() && github.event.inputs.CLEANUP_WORKSPACE == 'true' }}

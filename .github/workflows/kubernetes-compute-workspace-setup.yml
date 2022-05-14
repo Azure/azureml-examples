@@ -40,6 +40,14 @@ jobs:
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
 
+    - name: setup env for RAI
+      if: ${{ always() }}
+      run: |
+        az ml environment create --file environment/responsibleai-environment.yaml
+        az ml data create --file data/data_adult_test.yaml
+        az ml data create --file data/data_adult_test.yaml
+      working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      timeout-minutes: 30
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |

@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'spark|java'
+        default: 'image_classification_with_densenet|java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
