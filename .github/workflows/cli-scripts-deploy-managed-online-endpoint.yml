@@ -10,7 +10,7 @@ on:
       - cli/deploy-managed-online-endpoint.sh
       - .github/workflows/cli-scripts-deploy-managed-online-endpoint.yml
       - cli/setup.sh
-      - cli/endpoints/online/managed
+      - cli/endpoints/online/managed/sample
       - cli/endpoints/online/model-1
 jobs:
   build:
