@@ -17,6 +17,11 @@ sudo apt-get update -y && sudo apt install docker.io -y && sudo snap install doc
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az extension add --upgrade -n ml -y
 # </setup_docker_az_cli> 
 
+#--- todo: remove the below lines before merging with main---#
+az extension remove -n ml
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.62809989-py3-none-any.whl --yes
+#---end of lines to be removed---#
+
 # login using az cli. 
 ### NOTE to user: use `az login` - and do NOT use the below command (it requires setting up of user assigned identity). ###
 az login --identity -u /subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$IDENTITY_NAME
