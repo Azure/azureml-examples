@@ -34,7 +34,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-pipelines.*yml$'
-      JOB_FILTER: 'spark|java'
+      JOB_FILTER: 'image_classification_with_densenet|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-pipelines.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
