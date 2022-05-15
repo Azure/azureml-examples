@@ -71,13 +71,13 @@ jobs:
         pip install shyaml
         bash .github/kubernetes-compute/tool.sh install_tools
       timeout-minutes: 30
-    - name: install ml
-      run: |
-        set -x
-        az extension remove -n ml
-        cat cli/setup.sh | grep "^az extension add" | bash 
-        az version
-      timeout-minutes: 30
+    # - name: install ml
+    #   run: |
+    #     set -x
+    #     az extension remove -n ml
+    #     cat cli/setup.sh | grep "^az extension add" | bash 
+    #     az version
+    #   timeout-minutes: 30
     - name: azure login
       uses: azure/login@v1
       with:
