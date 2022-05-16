@@ -1,1 +1,0 @@
-This is a 3 step dummy pipeline job. It uploads a local sample csv file for input data. It uses locally defined components - train, score and eval. You need to edit the compute cluster in the defaults section and run the `az ml job create --file pipeline.yml` to submit the pipeline job. 
