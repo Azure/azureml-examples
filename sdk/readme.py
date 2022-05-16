@@ -11,6 +11,7 @@ NOT_TESTED_NOTEBOOKS = [
     "datastore",
     "automl-classification-task-bankmarketing-mlflow",
     "automl-forecasting-task-energy-demand-advanced-mlflow",
+    "automl-nlp-text-classification-multiclass-task-sentiment-mlflow",
     "mlflow-model-local-inference-test",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = ["compute"]  # these are too expensive, lets not run everyday
