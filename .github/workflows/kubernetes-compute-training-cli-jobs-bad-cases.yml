@@ -1,7 +1,7 @@
 name: kubernetes-compute-training-cli-jobs-bad-cases
 on:
   schedule:
-    - cron: "0 21 * * *"
+    - cron: "0 4 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
