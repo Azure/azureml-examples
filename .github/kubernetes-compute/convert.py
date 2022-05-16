@@ -31,23 +31,30 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
         
         # set common runtime environment variables.
         if common_runtime:
-            if is_sweep_job:
-                trial = data["trial"]
-                if isinstance(trial, str):
-                    if trial.startswith("file:"):
-                        trial = trial.split(":",1)[1]
-                    print("Found sub job spec:", trial)
-                    dirname = os.path.dirname(input_file)
-                    convert(os.path.join(dirname, trial), compute_target, instance_type, common_runtime, "")
-                else:
-                    env = trial.get("environment_variables", {})
-                    env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                    trial["environment_variables"] = env
+            if is_sweep_job and not isinstance(data["trial"], str):
+                env = data["trial"].get("environment_variables", {})
+                env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
+                trial["environment_variables"] = env
             elif not is_pipeline_job:
                 env = data.get("environment_variables", {})
                 env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
                 data["environment_variables"] = env
         
+        for field in ["trial", "component"]:
+            if field not in data:
+                continue
+            
+            file_field = data[field]
+            if not isinstance(file_field, str):
+                continue
+        
+            if file_field.startswith("file:"):
+                file_field = file_field.split(":",1)[1]
+
+            print("Found sub job spec:", file_field)
+            dirname = os.path.dirname(input_file)
+            convert(os.path.join(dirname, file_field), compute_target, instance_type, common_runtime, "")
+
         if is_pipeline_job:
             jobs = data.get("jobs", {})
             for step in jobs:
