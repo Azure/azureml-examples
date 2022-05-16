@@ -80,7 +80,9 @@ on:\n"""
     branches:
       - main\n"""
     if BRANCH != "main":
-        workflow_yaml += f"""      - {BRANCH}\n"""
+        # PR triggers on target branch
+        workflow_yaml += f"""      - sdk-preview\n"""
+        # workflow_yaml += f"""      - {BRANCH}\n"""
     if is_pipeline_notebook:
         workflow_yaml += "      - pipeline/*\n"
     workflow_yaml += f"""    paths:

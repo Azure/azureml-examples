@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat.yml
