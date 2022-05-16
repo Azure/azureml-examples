@@ -2,8 +2,8 @@ import argparse
 import yaml
 import os
 
-def convert(input_file, compute_target, instance_type, common_runtime, output_file):
 
+def convert(input_file, compute_target, instance_type, common_runtime, output_file):
     def _convert(input_file, data, job_schema):
         # check job type
         is_pipeline_job = False
@@ -28,7 +28,7 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             resources = data.get("resources", {})
             resources["instance_type"] = instance_type
             data["resources"] = resources
-        
+
         # set common runtime environment variables.
         if common_runtime:
             if is_sweep_job and not isinstance(data["trial"], str):
@@ -39,28 +39,34 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
                 env = data.get("environment_variables", {})
                 env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
                 data["environment_variables"] = env
-        
+
         for field in ["trial", "component"]:
             if field not in data:
                 continue
-            
+
             file_field = data[field]
             if not isinstance(file_field, str):
                 continue
-        
+
             if file_field.startswith("file:"):
-                file_field = file_field.split(":",1)[1]
+                file_field = file_field.split(":", 1)[1]
 
             print("Found sub job spec:", file_field)
             dirname = os.path.dirname(input_file)
-            convert(os.path.join(dirname, file_field), compute_target, instance_type, common_runtime, "")
+            convert(
+                os.path.join(dirname, file_field),
+                compute_target,
+                instance_type,
+                common_runtime,
+                "",
+            )
 
         if is_pipeline_job:
             jobs = data.get("jobs", {})
             for step in jobs:
                 print("Found step:", step)
                 _convert(input_file, jobs[step], "")
-            return 
+            return
 
     print("Processing file:", input_file)
     with open(input_file, "r") as f:
