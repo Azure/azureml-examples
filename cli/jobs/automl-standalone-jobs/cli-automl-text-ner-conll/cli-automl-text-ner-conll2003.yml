@@ -14,7 +14,6 @@ limits:
   timeout_minutes: 60
 
 data:
-  target_column_name: 'label'
   training:
     data:
       path: "./training-mltable-folder"
