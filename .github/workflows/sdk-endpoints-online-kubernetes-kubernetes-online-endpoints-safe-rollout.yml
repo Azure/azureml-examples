@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-safe-rollout.yml
