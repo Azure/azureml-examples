@@ -11,23 +11,21 @@ task: classification
 log_verbosity: debug
 primary_metric: accuracy
 
-data:
-  target_column_name: "y"
-  training:
-    data:
-      path: "./training-mltable-folder"
-      type: mltable
-  validation:
-    #validation_data_size: 0.20
-    #n_cross_validations: 5  #(BUG: 1726477)
-    data:
-      path: "./validation-mltable-folder"
-      type: mltable
-  test:
-    #test_data_size: 0.1
-    data:
-      path: "./test-mltable-folder"
-      type: mltable
+target_column_name: "y"
+
+#validation_data_size: 0.20
+#n_cross_validations: 5
+#test_data_size: 0.1
+
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  path: "./validation-mltable-folder"
+  type: mltable
+test_data:
+  path: "./test-mltable-folder"
+  type: mltable
 
 limits:
   timeout_minutes: 180
@@ -36,9 +34,6 @@ limits:
   trial_timeout_minutes: 20
   enable_early_termination: true
   exit_score: 0.92
-
-# featurization:
-#  mode: auto
 
 featurization:
   mode: custom
@@ -52,7 +47,6 @@ featurization:
 
 training:
   enable_model_explainability: true
-
-allowed_training_algorithms:
-  - gradient_boosting
-  - logistic_regression
+  allowed_training_algorithms:
+    - gradient_boosting
+    - logistic_regression
