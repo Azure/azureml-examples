@@ -80,7 +80,9 @@ on:\n"""
     branches:
       - main\n"""
     if BRANCH != "main":
-        workflow_yaml += f"""      - {BRANCH}\n"""
+        # PR triggers on target branch
+        workflow_yaml += f"""      - sdk-preview\n"""
+        # workflow_yaml += f"""      - {BRANCH}\n"""
     if is_pipeline_notebook:
         workflow_yaml += "      - pipeline/*\n"
     workflow_yaml += f"""    paths:
@@ -118,6 +120,7 @@ jobs:
         # pipeline-job uses different cred
         cred_replace = f"""
           mkdir ../../.azureml
+          export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
           echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
