@@ -6,11 +6,11 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
     paths:
       - sdk/endpoints/online/**
       - .github/workflows/sdk-endpoints-online-kubernetes-online-endpoints-safe-rollout.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
       - .github/kubernetes-compute/tool.sh
 jobs:
   build:
@@ -26,8 +26,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
