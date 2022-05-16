@@ -36,7 +36,7 @@ for folder_name in arr:
             assert file_source.exists()
             file_destination = Path(output_dir) / file_source.name
             print("file_destination:", file_destination)
-            shutil.move(file_source, file_destination)
+            shutil.copyfile(file_source, file_destination)
 
     elif folder_name == "iris-mltable":
         output_dir = Path(args.tabular_output_data)
@@ -49,6 +49,6 @@ for folder_name in arr:
             assert file_source.exists()
             file_destination = Path(output_dir) / file_source.name
             print("file_destination:", file_destination)
-            shutil.move(file_source, file_destination)
+            shutil.copyfile(file_source, file_destination)
     else:
         pass
