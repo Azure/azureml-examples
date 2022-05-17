@@ -10,6 +10,7 @@ on:
       - cli/deploy-managed-online-endpoint-mlflow.sh
       - .github/workflows/cli-scripts-deploy-managed-online-endpoint-mlflow.yml
       - cli/setup.sh
+      - cli/endpoints/online/mlflow
 jobs:
   build:
     runs-on: ubuntu-latest

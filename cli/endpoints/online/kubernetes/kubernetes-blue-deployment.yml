@@ -2,7 +2,7 @@ name: blue
 type: kubernetes
 endpoint_name: my-endpoint
 model:
-  path: ../model-1/model/sklearn_regression_model.pkl
+  path: ../model-1/model/
 code_configuration:
   code: ../model-1/onlinescoring/
   scoring_script: score.py
