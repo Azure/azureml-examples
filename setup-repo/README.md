@@ -4,12 +4,17 @@
 
 These scripts are for setting up the Azure/azureml-examples repository, including Azure resouces, using the Azure CLI and GitHub CLI.
 
-To setup the repository, run the `azure-github.sh` script:
-
+To setup the resources required by this repository:
+1. Clone the repo
 ```bash
-bash -x azure-github.sh
+git clone https://github.com/Azure/azureml-examples
 ```
 
+2. Run the `azure-github.sh` script:
+```bash
+cd azureml-examples/cli
+bash -x azure-github.sh
+```
 This will run the other scripts, in addition to Azure and GitHub setup. Adjust as needed.
 
 Required CLI tools include:
