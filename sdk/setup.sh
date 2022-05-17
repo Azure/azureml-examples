@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # <az_ml_install>
-pip install azure-ai-ml[designer]==0.0.62936258 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+pip install azure-ai-ml[designer]==0.0.63030801 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
 # </az_ml_install>
 
 pip list
