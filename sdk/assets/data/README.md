@@ -11,13 +11,18 @@ In this markdown file we provide some helpful snippets. Please refer to the note
 
 ## Code snippet index:
 
-- [Using local data in a job](#using-local-data-in-a-job)
-- [Using data stored in ADLS gen2 in a job](#using-data-stored-in-adls-gen2-in-a-job)
-- [Using data stored in blob in a job](#using-data-stored-in-blob-in-a-job)
-- [Reading and writing data stored in blob in a job](#reading-and-writing-data-stored-in-blob-in-a-job)
-- [Reading and writing data stored in ADLS gen2 in a job](#reading-and-writing-data-stored-in-adls-gen2-in-a-job)
-- [Registering data assets](#registering-data-assets)
-- [Consume registered data assets in job](#consume-registered-data-assets-in-job)
+- [Working with Data](#working-with-data)
+  - [Code snippet index:](#code-snippet-index)
+  - [A note on your *data-plane* code](#a-note-on-your-data-plane-code)
+  - [Understand `uri_file` and `uri_folder` types](#understand-uri_file-and-uri_folder-types)
+  - [Snippets](#snippets)
+    - [Using local data in a job](#using-local-data-in-a-job)
+    - [Using data stored in ADLS gen2 in a job](#using-data-stored-in-adls-gen2-in-a-job)
+    - [Using data stored in blob in a job](#using-data-stored-in-blob-in-a-job)
+    - [Reading and writing data stored in blob in a job](#reading-and-writing-data-stored-in-blob-in-a-job)
+    - [Reading and writing data stored in ADLS gen2 in a job](#reading-and-writing-data-stored-in-adls-gen2-in-a-job)
+    - [Registering data assets](#registering-data-assets)
+    - [Consume registered data assets in job](#consume-registered-data-assets-in-job)
 
 ## A note on your *data-plane* code
 By *data-plane* code we mean your data processing and/or training code that you want to execute in the cloud for better scale, orchestration and/or accessing specialized AI hardware (e.g. GPU). This is typically a Python script (but can be any programming language).
@@ -66,7 +71,7 @@ Below we show some common data access patterns that you can use in your *control
 
 ```python
 from azure.ai.ml import command, Input
-from azure.ai.ml.entities import Data, UriReference
+from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 my_job_inputs = {
@@ -95,7 +100,7 @@ returned_job.services["Studio"].endpoint
 
 ```python
 from azure.ai.ml import command, Input
-from azure.ai.ml.entities import Data, UriReference
+from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 # in this example we
@@ -124,7 +129,7 @@ returned_job.services["Studio"].endpoint
 
 ```python
 from azure.ai.ml import command, Input
-from azure.ai.ml.entities import Data, UriReference
+from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 # in this example we
@@ -153,7 +158,7 @@ returned_job.services["Studio"].endpoint
 
 ```python
 from azure.ai.ml import command, Input, Output
-from azure.ai.ml.entities import Data, UriReference
+from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 my_job_inputs = {
@@ -189,7 +194,7 @@ returned_job.services["Studio"].endpoint
 
 ```python
 from azure.ai.ml import command, Input, Output
-from azure.ai.ml.entities import Data, UriReference
+from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 my_job_inputs = {
@@ -246,7 +251,7 @@ ml_client.data.create_or_update(my_data)
 
 ```python
 from azure.ai.ml import command, Input
-from azure.ai.ml.entities import Data, UriReference
+from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 registered_data_asset = ml_client.data.get(name='titanic', version='1')
