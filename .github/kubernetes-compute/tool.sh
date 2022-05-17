@@ -440,6 +440,8 @@ run_cli_job(){
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
     run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
 
+    # check run id
+    echo "[JobRunId] $JOB_YML $run_id" | tee -a $RESULT_FILE
     if [[ "$run_id" ==  "" ]]; then 
         echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
         return 1
@@ -452,6 +454,7 @@ run_cli_job(){
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
     
+    # check status
     if [[ $status ==  "Failed" ]]; then
         return 2
     elif [[ $status != "Completed" ]]; then 
@@ -782,7 +785,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     ret=$?
     echo "code: $ret" 
     echo "Response: $temp_file"
-    xmlstarlet fo --indent-tab --omit-decl $temp_file
+    xmlstarlet fo --indent-tab --omit-decl $temp_file || true
     return $ret
 }
 
