@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: placeholder-name
+egress_public_network_access: disabled
+model:
+  path: model/sklearn_regression_model.pkl
+code_configuration:
+  code: onlinescoring/
+  scoring_script: score.py
+environment: 
+  image: placeholder.azurecr.io/repo/img:v1
+  inference_config:
+    liveness_route:
+      port: 5001
+      path: /
+    readiness_route:
+      port: 5001
+      path: /
+    scoring_route:
+      port: 5001
+      path: /score
+instance_type: Standard_F2s_v2
+instance_count: 1
