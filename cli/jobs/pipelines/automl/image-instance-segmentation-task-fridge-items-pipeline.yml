@@ -13,10 +13,10 @@ properties:
   _automl_internal_label: "latest"
 
 inputs:
-  image_object_detection_training_data:
+  image_instance_segmentation_training_data:
     type: mltable
     path: ../../automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/data/training-mltable-folder
-  image_object_detection_validation_data:
+  image_instance_segmentation_validation_data:
     type: mltable
     path: ../../automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/data/validation-mltable-folder
 
