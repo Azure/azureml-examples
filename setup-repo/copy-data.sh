@@ -1,3 +1,5 @@
+set -x
+
 # setup variables
 
 datapath="example-data"
@@ -41,11 +43,8 @@ destination="$protocol://$account.blob.$endpoint/$container/$datapath/"
 # give access to blob container
 
 az role assignment create \
-
     --role "Storage Blob Data Owner" \
-
     --assignee $principal \
-
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
 

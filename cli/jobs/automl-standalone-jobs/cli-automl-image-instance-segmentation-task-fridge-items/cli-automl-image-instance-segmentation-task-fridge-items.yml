@@ -10,16 +10,13 @@ task: image_instance_segmentation
 log_verbosity: debug
 primary_metric: mean_average_precision
 
-data:
-  target_column_name: label
-  training:
-    data:
-      path: data/training-mltable-folder
-      type: mltable
-  validation:
-    data:
-      path: data/validation-mltable-folder
-      type: mltable
+target_column_name: label
+training_data:
+  path: data/training-mltable-folder
+  type: mltable
+validation_data:
+  path: data/validation-mltable-folder
+  type: mltable
 
 limits:
   timeout_minutes: 60
