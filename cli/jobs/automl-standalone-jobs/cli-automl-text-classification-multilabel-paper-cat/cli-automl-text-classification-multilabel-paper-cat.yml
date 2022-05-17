@@ -13,15 +13,12 @@ log_verbosity: debug
 limits:
   timeout_minutes: 60
 
-data:
-  target_column_name: "terms"
-  training:
-    data:
-      path: "./training-mltable-folder"
-      type: mltable
-  validation:
-    data:
-      type: mltable
-      path: "./validation-mltable-folder"
+target_column_name: "terms"
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  type: mltable
+  path: "./validation-mltable-folder"
 # featurization:
 #   dataset_language: "eng"
