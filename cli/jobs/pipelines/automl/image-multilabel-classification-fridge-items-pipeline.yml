@@ -9,6 +9,9 @@ experiment_name: pipeline-with-automl
 settings:
   default_compute: azureml:gpu-cluster
 
+properties:
+  _automl_internal_label: "latest"
+
 inputs:
   image_multilabel_classification_training_data:
     type: mltable
