@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-single-step-scikit-learn-mnist-sklearn-mnist.yml

@@ -2,8 +2,9 @@
 set -x
 
 # Global variables
-export LOCK_FILE=$0.lock
-export RESULT_FILE=amlarc-test-result.txt
+export SCRIPT_DIR=$( cd  "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export LOCK_FILE=${SCRIPT_DIR}/"$(basename ${BASH_SOURCE[0]})".lock
+export RESULT_FILE=${SCRIPT_DIR}/kubernetes-compute-test-result.txt
 export MAX_RETRIES=60
 export SLEEP_SECONDS=20
 
@@ -56,15 +57,17 @@ refresh_lock_file(){
     echo $(date) > $LOCK_FILE
 }
 
-set_release_train(){
-    if [ "$1" != "" ]; then
-        AMLARC_RELEASE_TRAIN=$1
-    else 
-        if (( 10#$(date -d "$(cat $LOCK_FILE)" +"%H") < 12 )); then
-            AMLARC_RELEASE_TRAIN=experimental
-        else
-            AMLARC_RELEASE_TRAIN=staging
-        fi
+remove_lock_file(){
+    rm -f $LOCK_FILE
+}
+
+check_lock_file(){
+    if [ -f $LOCK_FILE ]; then
+        echo true
+        return 0
+    else
+        echo false
+        return 1
     fi
 }
 
@@ -303,7 +306,7 @@ setup_workspace(){
 # setup compute
 setup_compute(){
 
-   COMPUTE_NS=${COMPUTE_NS:-default}
+    COMPUTE_NS=${COMPUTE_NS:-default}
 
     az ml compute attach \
         --subscription $SUBSCRIPTION \
@@ -349,7 +352,7 @@ delete_extension(){
         --cluster-type $CLUSTER_TYPE \
         --cluster-name $CLUSTER_NAME \
         --name $EXTENSION_NAME \
-        --yes --no-wait --force
+        --yes --force
 }
 
 delete_arc(){
@@ -357,7 +360,7 @@ delete_arc(){
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
         --name $ARC_CLUSTER_NAME \
-        --yes --no-wait
+        --yes
 }
 
 delete_aks(){
@@ -365,7 +368,7 @@ delete_aks(){
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
         --name $AKS_CLUSTER_NAME \
-        --yes --no-wait
+        --yes
 }
 
 delete_compute(){
@@ -425,37 +428,86 @@ delete_workspace(){
 # run cli test job
 run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
-    SET_ARGS="${@:2}"
-    if [ "$SET_ARGS" != "" ]; then
-        EXTRA_ARGS=" --set $SET_ARGS "
-    else
-        EXTRA_ARGS=" --set compute=azureml:$COMPUTE resources.instance_type=$INSTANCE_TYPE_NAME "
-    fi 
+    CONVERTER_ARGS="${@:2}"
 
-    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
-    
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
+    TIMEOUT="${TIMEOUT:-60m}"
 
-    run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
-    TIMEOUT="${TIMEOUT:-30m}"
-    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
-    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
-    timeout 5m az ml job cancel $SRW -n $run_id
-    echo $status
-    if [[ $status == "Completed" ]]; then
-        echo "[JobStatus] $JOB_YML completed" | tee -a $RESULT_FILE
-    elif [[ $status ==  "Failed" ]]; then
-        echo "[JobStatus] $JOB_YML failed" | tee -a $RESULT_FILE
+    # preprocess job spec for amlarc compute
+    python $SCRIPT_DIR/convert.py -i $JOB_YML $CONVERTER_ARGS
+    
+    # submit job
+    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
+    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
+
+    # check run id
+    echo "[JobRunId] $JOB_YML $run_id" | tee -a $RESULT_FILE
+    if [[ "$run_id" ==  "" ]]; then 
+        echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
         return 1
-    else 
-        echo "[JobStatus] $JOB_YML unknown" | tee -a $RESULT_FILE 
-	return 2
     fi
+
+    # stream job logs
+    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
+
+    # show job status
+    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
+    echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
+    
+    # check status
+    if [[ $status ==  "Failed" ]]; then
+        return 2
+    elif [[ $status != "Completed" ]]; then 
+        timeout 5m az ml job cancel $SRW -n $run_id
+	    return 3
+    fi
+}
+
+collect_jobs_from_workflows(){
+    OUPUT_FILE=${1:-job-list.txt}
+    SELECTOR=${2:-cli-jobs-basics}
+    FILTER=${3:-java}
+    WORKFLOWS_DIR=".github/workflows" 
+
+    echo "WORKFLOWS_DIR: $WORKFLOWS_DIR, OUPUT_FILE: $OUPUT_FILE, FILTER: $FILTER"
+
+    rm -f $OUPUT_FILE
+    touch $OUPUT_FILE
+
+    for workflow in $(ls -a $WORKFLOWS_DIR | grep -E "$SELECTOR" | grep -E -v "$FILTER" ); do
+
+        workflow=$WORKFLOWS_DIR/$workflow
+        echo "Check workflow: $workflow"
+        
+        job_yml=""
+        stepcount=$(cat $workflow | shyaml get-length jobs.build.steps)
+        stepcount=$(($stepcount - 1))
+        for i in $(seq 0 $stepcount); do
+            name=$(cat $workflow| shyaml get-value jobs.build.steps.$i.name)
+            if [ "$name" != "run job" ]; then
+                continue
+            fi
+
+            run=$(cat $workflow| shyaml get-value jobs.build.steps.$i.run)
+            wkdir=$(cat $workflow| shyaml get-value jobs.build.steps.$i.working-directory)
+            echo "Found: run: $run wkdir: $wkdir"
+
+            job_yml=$wkdir/$(echo $run | awk '{print $NF}' | xargs)
+            echo "${job_yml}" | tee -a $OUPUT_FILE
+        done
+
+        if [ "$job_yml" == "" ]; then
+            echo "Warning: no job yml found in workflow: $workflow"
+        fi
+
+    done
+
+    echo "Found $(cat $OUPUT_FILE | wc -l) jobs:"
+    cat $OUPUT_FILE
 }
 
 generate_workspace_config(){
     mkdir -p .azureml
-
     cat << EOF > .azureml/config.json
 {
     "subscription_id": "$SUBSCRIPTION",
@@ -473,7 +525,6 @@ install_jupyter_dependency(){
     pip install azureml.core azure.cli.core azureml.opendatasets azureml.widgets
     pip list || true
 }
-
 
 # run jupyter test
 run_jupyter_test(){
@@ -526,14 +577,15 @@ count_result(){
 
     MIN_SUCCESS_NUM=${MIN_SUCCESS_NUM:--1}
 
+    [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
+    
     echo "RESULT:"
     cat $RESULT_FILE
-
-    [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
 
     total=$(grep -c "\[JobSubmission\]" $RESULT_FILE)
     success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic completed)
     unhealthy=$(( $total - $success ))
+
     echo "Total: ${total}, Success: ${success}, Unhealthy: ${unhealthy}, MinSuccessNum: ${MIN_SUCCESS_NUM}."
     
     if (( 10#${unhealthy} > 0 )) ; then
@@ -608,6 +660,8 @@ download_icm_cert(){
 }
 
 file_icm(){
+
+set -e
 
 ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
 <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing">
@@ -731,10 +785,9 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     ret=$?
     echo "code: $ret" 
     echo "Response: $temp_file"
-    xmlstarlet fo --indent-tab --omit-decl $temp_file
+    xmlstarlet fo --indent-tab --omit-decl $temp_file || true
     return $ret
 }
-
 
 
 help(){
