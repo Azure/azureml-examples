@@ -1,0 +1,129 @@
+name: kubernetes-compute-training-cli-jobs-automl
+on:
+  schedule:
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+    inputs:
+      TEST_REGION:
+        description: 'Resource Region'
+        required: true
+        default: 'eastus'
+      JOB_SELECTOR:
+        description: 'Job selector used with grep command to select job workflows'
+        required: false
+        default: '^cli-jobs-automl.*yml$'
+      JOB_FILTER:
+        description: 'Job filter used with grep command to filter out job workflows'
+        required: false
+        default: 'spark|java'
+      TIMEOUT:
+        description: 'Timeout of a single job'
+        required: false
+        default: '120m'
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples-rg
+      WORKSPACE: amlarc-githubtest-ws
+      LOCATION: eastus
+
+      JOB_SELECTOR: '^cli-jobs-automl.*yml$'
+      JOB_FILTER: 'spark|java'
+      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl.txt
+      TIMEOUT: '120m'
+      MIN_SUCCESS_NUM: 1
+
+      FILE_TICKET: true
+      SEVERITY: 3
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      OWNERS: amlarc@microsoft.com
+      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-automl failed"
+      GITHUB_REPO: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl.yml
+      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
+      ICM_MESSAGE: "Failed to run cli-jobs-automl jobs on kubernetes compute!"
+
+    steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+        echo "JOB_SELECTOR=${{ github.event.inputs.JOB_SELECTOR }}" | tee -a $GITHUB_ENV
+        echo "JOB_FILTER=${{ github.event.inputs.JOB_FILTER }}" | tee -a $GITHUB_ENV
+        echo "TIMEOUT=${{ github.event.inputs.TIMEOUT }}" | tee -a $GITHUB_ENV
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+       ref: sdk-preview
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: |
+        pip install shyaml
+        bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: install ml
+      run: |
+        set -x
+        az extension remove -n ml
+        cat cli/setup.sh | grep "^az extension add" | bash 
+        az version
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+
+    - name: collect jobs
+      run: |
+        bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
+      timeout-minutes: 30
+
+    - name: run jobs
+      run: |
+        for job in $(cat $JOB_LIST_FILE); do
+          if [[ "$job" = *"yml" ]]; then
+            echo "Run job: $job"
+            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
+            sleep 60
+          else
+            echo "Found invalid job: $job"
+          fi
+        done
+
+        wait
+      timeout-minutes: 300
+
+    - name: check jobs
+      if: ${{ always() }}
+      run: |
+        bash .github/kubernetes-compute/tool.sh count_result
+      timeout-minutes: 30
+
+    - name: file_icm
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
+          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
+          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+          bash .github/kubernetes-compute/tool.sh download_icm_cert
+          export ICM_HOST=$(cat icm_host)
+          export CONNECTOR_ID=$(cat icm_connector_id)
+          export ROUTING_ID=$(cat icm_routing_id)
+          export OtherIcmMessage="${ICM_MESSAGE}"
+          export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
+          bash .github/kubernetes-compute/tool.sh file_icm
+        fi
+      timeout-minutes: 30
