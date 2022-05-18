@@ -44,3 +44,6 @@ search_space:
   - model_name: "choice('seresnext', 'resnet50')"
     learning_rate: "uniform(0.001, 0.01)"
     layers_to_freeze: "choice(0, 2)"
+
+properties:
+  _automl_internal_label: "latest"

@@ -44,3 +44,6 @@ training:
   enable_stack_ensemble: false
   allowed_training_algorithms:
     - xg_boost_regressor
+
+properties:
+  _automl_internal_label: "latest"
