@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-name: custom_model_inline_lochen
+name: mlflow_model_registered_lochen
 command: |
-  ls ${{inputs.sampledata}}
+  ls ${{inputs.model}}
 inputs:
-  sampledata:
-    type: custom_model
-    path: mlflow-model
+  model:
+    type: mlflow_model
+    path: azureml:local-mlflow-example@latest
     mode: ro_mount
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster
