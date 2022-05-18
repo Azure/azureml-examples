@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:.github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
 name: cli-jobs-basics-hello-automl-hello-automl-job-basic
-========
-name: cli-jobs-pipelines-cifar-10-pipeline
->>>>>>>> main:.github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
 on:
   workflow_dispatch:
   schedule:
@@ -12,14 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-<<<<<<<< HEAD:.github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
       - cli/jobs/basics/hello-automl/**
       - .github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
-========
-      - cli/jobs/pipelines/cifar-10/**
-      - .github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
-      - cli/run-pipeline-jobs.sh
->>>>>>>> main:.github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -36,10 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-<<<<<<<< HEAD:.github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
       run: bash -x ../../../run-job.sh hello-automl-job-basic.yml
       working-directory: cli/jobs/basics/hello-automl
-========
-      run: bash -x run-job.sh jobs/pipelines/cifar-10/pipeline.yml
-      working-directory: cli
->>>>>>>> main:.github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
