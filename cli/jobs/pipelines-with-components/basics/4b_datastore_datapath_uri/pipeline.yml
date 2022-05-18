@@ -20,7 +20,6 @@ jobs:
         type: uri_folder
         # format for data store uri: azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>
         path: azureml://datastores/workspaceblobstore/paths/azureml
-        mode: rw_mount      
       sample_input_string: ${{parent.inputs.pipeline_sample_input_string}}
     outputs:
       sample_output_data: ${{parent.outputs.pipeline_sample_output_data}}
