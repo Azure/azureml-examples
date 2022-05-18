@@ -3,7 +3,7 @@ type: kubernetes
 endpoint_name: my-endpoint
 app_insights_enabled: true
 model:
-  path: ../model-2/model/sklearn_regression_model.pkl
+  path: ../model-2/model/
 code_configuration:
   code: ../model-2/onlinescoring/
   scoring_script: score.py
