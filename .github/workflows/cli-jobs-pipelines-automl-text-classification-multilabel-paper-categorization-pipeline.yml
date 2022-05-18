@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-automl-forecasting-energy-demand-pipeline
+name: cli-jobs-pipelines-automl-text-classification-multilabel-paper-categorization-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -9,7 +9,7 @@ on:
       - sdk-preview
     paths:
       - cli/jobs/pipelines/automl/**
-      - .github/workflows/cli-jobs-pipelines-automl-forecasting-energy-demand-pipeline.yml
+      - .github/workflows/cli-jobs-pipelines-automl-text-classification-multilabel-paper-categorization-pipeline.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,7 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: |
-        export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
-        bash -x ../../../run-job.sh forecasting-energy-demand-pipeline.yml
+      run: bash -x ../../../run-job.sh text-classification-multilabel-paper-categorization-pipeline.yml
       working-directory: cli/jobs/pipelines/automl
