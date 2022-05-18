@@ -10,12 +10,10 @@ compute: azureml:cpu-cluster
 task: classification
 primary_metric: accuracy
 
-data:
-  target_column_name: "y"
-  training:
-    data:
-      path: "./training-mltable-folder"
-      type: mltable
+target_column_name: "y"
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
 
 limits:
   timeout_minutes: 180
