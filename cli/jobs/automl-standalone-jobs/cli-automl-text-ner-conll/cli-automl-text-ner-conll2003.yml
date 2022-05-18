@@ -13,7 +13,6 @@ log_verbosity: debug
 limits:
   timeout_minutes: 60
 
-target_column_name: 'label'
 training_data:
   path: "./training-mltable-folder"
   type: mltable
