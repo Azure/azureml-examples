@@ -26,7 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: |
-        export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
-        bash -x ../../../run-job.sh forecasting-energy-demand-pipeline.yml
+      run: bash -x ../../../run-job.sh forecasting-energy-demand-pipeline.yml
       working-directory: cli/jobs/pipelines/automl
