@@ -41,3 +41,6 @@ search_space:
     learning_rate: "uniform(0.0001, 0.001)"
     optimizer: "choice('sgd', 'adam', 'adamw')"
     min_size: "choice(600, 800)"
+
+properties:
+  _automl_internal_label: "latest"

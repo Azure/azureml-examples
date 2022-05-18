@@ -60,3 +60,6 @@ search_space:
     optimizer: "choice('sgd', 'adam', 'adamw')"
     min_size: "choice(600, 800)"
 # </search_space_settings>
+
+properties:
+  _automl_internal_label: "latest"

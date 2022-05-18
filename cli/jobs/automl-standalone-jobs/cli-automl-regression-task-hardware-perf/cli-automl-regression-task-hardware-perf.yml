@@ -43,7 +43,9 @@ featurization:
 
 training:
   enable_model_explainability: true
+  allowed_training_algorithms:
+    - light_gbm
+    - xg_boost_regressor
 
-allowed_training_algorithms:
-  - light_gbm
-  - xg_boost_regressor
+properties:
+  _automl_internal_label: "latest"
