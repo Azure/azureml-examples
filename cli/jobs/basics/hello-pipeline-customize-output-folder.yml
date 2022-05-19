@@ -1,6 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_customize_output_folder
+settings:
+    default_compute: azureml:cpu-cluster
 jobs:
   hello_world:
     command: echo "hello" && echo "world" > ${{outputs.output}}/hello_world-folder.txt

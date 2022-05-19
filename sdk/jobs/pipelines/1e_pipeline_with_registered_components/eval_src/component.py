@@ -1,15 +1,15 @@
 
-from azure.ai.ml import dsl, Input, Output
+from mldesigner import command_component, Input, Output
 
-@dsl.command_component(
+@command_component(
     name="eval_model",
     display_name="Eval Model",
     description="A dummy eval component defined by dsl component.",
-    version="0.0.8",
+    version="0.0.9",
 )
 def eval_model(
-    scoring_result: Input,
-    eval_output: Output,
+    scoring_result: Input(type="uri_folder"),
+    eval_output: Output(type="uri_folder"),
 ):
     from pathlib import Path
     from datetime import datetime
