@@ -2,15 +2,15 @@
 from mldesigner import command_component, Input, Output
 
 @command_component(
-    name="eval_model",
     display_name="Eval Model",
-    description="A dummy eval component defined by dsl component.",
     version="0.0.9",
 )
 def eval_model(
     scoring_result: Input(type="uri_folder"),
     eval_output: Output(type="uri_folder"),
 ):
+    """A dummy eval component defined by dsl component."""
+
     from pathlib import Path
     from datetime import datetime
     print ("hello evaluation world...")
