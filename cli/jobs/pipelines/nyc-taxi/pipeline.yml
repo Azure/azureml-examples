@@ -45,7 +45,6 @@ jobs:
       training_data: ${{parent.jobs.transform_job.outputs.transformed_data}}
     outputs:
       model_output: 
-        mode: rw_mount
       test_data: 
         mode: upload
     code: src/train
@@ -64,7 +63,6 @@ jobs:
       test_data: ${{parent.jobs.train_job.outputs.test_data}}
     outputs:
       predictions: 
-        mode: rw_mount
     code: src/predict
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
@@ -81,7 +79,6 @@ jobs:
       model: ${{parent.jobs.train_job.outputs.model_output}}
     outputs:
       score_report: 
-        mode: rw_mount
     code: src/score
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
