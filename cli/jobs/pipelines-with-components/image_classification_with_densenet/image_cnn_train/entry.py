@@ -7,8 +7,8 @@ from multiprocessing.pool import ThreadPool
 from multiprocessing import cpu_count
 import functools
 from enum import Enum
-from azure.ml import dsl, Input
-from azure.ml.dsl._component import ComponentExecutor
+from azure.ai.ml import dsl, Input
+from azure.ai.ml.dsl._component import ComponentExecutor
 
 
 class Data_BackendEnum(Enum):
