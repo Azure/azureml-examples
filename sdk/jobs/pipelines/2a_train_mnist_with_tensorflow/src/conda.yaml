@@ -5,11 +5,11 @@ name: project_environment
 channels:
   - defaults
 dependencies:
-  - python=3.6.8
+  - python=3.7.6
   - pip=20.0
   - pip:
     # change this when stable version release
     - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
-    - azure-ai-ml==0.0.62653692
+    - mldesigner==0.0.62828565
     - numpy==1.18.1
     - tensorflow==2.2.0
