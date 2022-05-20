@@ -1,0 +1,113 @@
+name: kubernetes-compute-workspace-setup
+on:
+  workflow_dispatch:
+    inputs:
+      AMLARC_TEST_REGION:
+        description: 'Resource Region'
+        required: true
+        default: 'eastus'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples-rg
+      LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
+      WORKSPACE: amlarc-githubtest-ws
+
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        ref: sdk-preview
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+    
+    # provision resources
+    - name: setup_workspace
+      if: ${{ always() }}
+      run: bash .github/kubernetes-compute/tool.sh setup_workspace
+      timeout-minutes: 30
+
+    - name: set sampledata dataset
+      if: ${{ always() }}
+      run: |
+        set -x
+        pip install azure.cli.core
+        pip install azureml-dataset-runtime
+        python -c '
+
+        import sys
+        from azureml.core.workspace import Workspace
+        from azureml.core import Dataset
+        from azureml.core.authentication import AzureCliAuthentication
+        
+        cli_auth = AzureCliAuthentication()
+        ws = Workspace.get(subscription_id=sys.argv[1],
+                      resource_group=sys.argv[2],
+                      name=sys.argv[3],
+                      auth=cli_auth)
+        datastore = ws.datastores["workspaceblobstore"]
+        dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
+        dataset.register(ws, "sampledata")
+        
+        ' "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE"
+      timeout-minutes: 300
+
+    - name: set configure
+      if: ${{ always() }}
+      run: |
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+      timeout-minutes: 30
+
+    - name: setup env for RAI
+      if: ${{ always() }}
+      run: |
+        set -x
+        az ml environment create --file environment/responsibleai-environment.yaml
+        az ml data create --file data/data_adult_test.yaml
+        az ml data create --file data/data_adult_test.yaml
+      working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      timeout-minutes: 30
+
+    - name: setup_asset /cli/assets/data/local-folder.yml
+      if: ${{ always() }}
+      run: az ml data create -f local-folder.yml
+      working-directory: cli/assets/data
+      timeout-minutes: 300
+    
+    - name: setup_dataset
+      if: ${{ always() }} 
+      run: bash create-datasets.sh
+      working-directory: setup-repo
+      timeout-minutes: 300
+
+    - name: download azcopy
+      if: ${{ always() }}
+      run: |
+        set -x
+        wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
+        tar zxf azcopy_linux_amd64_10.15.0.tar.gz
+        cp azcopy_linux_amd64_10.15.0/azcopy .
+      working-directory: setup-repo
+      timeout-minutes: 30
+
+    - name: copy-data
+      if: ${{ always() }}
+      run: |
+        # bash copy-data.sh
+        echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
+      working-directory: setup-repo
+      timeout-minutes: 300

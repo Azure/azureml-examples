@@ -1,9 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-description: "Prints the environment variables useful for scripts running in a PyTorch training environment"
+display_name: 6b_pytorch_hello_world
+description: Prints the environment variables useful for scripts running in a PyTorch training environment
 
 jobs:
-  pytorch-job:
+  pytorch_job:
     type: command
     component: file:./component.yml
     compute: azureml:gpu-cluster
@@ -12,5 +13,3 @@ jobs:
     distribution:
       type: pytorch
       process_count_per_instance: 2
-
-        

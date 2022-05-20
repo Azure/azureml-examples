@@ -19,6 +19,16 @@ for val in $STORAGE_ACCOUNT_LIST; do
     fi
 done
 
+# delete UAI
+NAME_LIST=$(az identity list --query "[].{name:name}" -o tsv | sort -u)
+echo $NAME_LIST
+for name in $NAME_LIST; do
+    if [[ $name == *"oep-user-identity"* ]]; then
+        echo deleting $name
+        `az identity delete --name "$name"`
+    fi
+done
+
 # delete left over autoscale settings created for online endpoints
 AUTOSCALE_SETTINGS_LIST=$(az monitor autoscale list  --query "[*].[name]" -o tsv)
 for val in $AUTOSCALE_SETTINGS_LIST; do
