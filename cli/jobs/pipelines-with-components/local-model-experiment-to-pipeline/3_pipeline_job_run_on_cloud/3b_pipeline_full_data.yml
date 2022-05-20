@@ -1,0 +1,71 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+experiment_name: nyc_taxi_regression
+description: get it modulized with pipeline 
+
+# <inputs_and_outputs>
+inputs:
+  pipeline_job_input: #using local data, will crate an anonymous data asset
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/nyc_taxi_data/full_data
+
+outputs: 
+  pipeline_job_prepped_data:
+    mode: rw_mount
+  pipeline_job_transformed_data:
+    mode: rw_mount   
+  pipeline_job_trained_model:
+    mode: rw_mount
+  pipeline_job_test_data:
+    mode: rw_mount 
+  pipeline_job_predictions:
+    mode: rw_mount 
+# </inputs_and_outputs>
+
+# <jobs>
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster-ram
+  continue_on_step_failure: false
+
+jobs:
+  prep_job:
+    type: command
+    component: file:components/prep.yml
+    inputs:
+      raw_data: ${{parent.inputs.pipeline_job_input}}
+    outputs:
+      prep_data: ${{parent.outputs.pipeline_job_prepped_data}}
+
+  transform_job:
+    type: command
+    component: file:components/transform.yml
+    inputs:
+      clean_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+    outputs:
+      transformed_data: ${{parent.outputs.pipeline_job_transformed_data}}
+
+  train_job:
+    type: command
+    component: file:components/train.yml
+    inputs:
+      training_data: ${{parent.jobs.transform_job.outputs.transformed_data}}
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+      test_data: ${{parent.outputs.pipeline_job_test_data}}
+  
+  predict_job:
+    type: command
+    component: file:components/predict.yml
+    inputs:
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: ${{parent.jobs.train_job.outputs.test_data}}
+    outputs:
+      predictions: ${{parent.outputs.pipeline_job_predictions}}
+
+  score_job:
+    type: command
+    component: file:components/score.yml
+    inputs:
+      predictions: ${{parent.jobs.predict_job.outputs.predictions}}
+# </jobs>

@@ -1,7 +1,7 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: train_linear_regression_model
-display_name: TrainLinearRegressionModel
+name: TrainLinearRegressionModel
+display_name: TrainGBDTModel
 version: 1
 type: command
 inputs:
@@ -12,11 +12,11 @@ outputs:
     type: uri_folder
   test_data:
     type: uri_folder
-code: ./train_src
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+code: src/train_src
+environment: azureml:nyc_taxi_image@latest
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
   --test_data ${{outputs.test_data}} 
-  --model_output ${{outputs.model_output}} 
+  --model_output ${{outputs.model_output}}
 # </component>
