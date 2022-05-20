@@ -7,7 +7,7 @@ from zipfile import ZipFile
 from azure.identity import InteractiveBrowserCredential
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
-from azure.ai.ml._constants import AssetTypes
+from azure.ai.ml.constants import AssetTypes
 
 
 def create_jsonl_files(uri_folder_data_path):
