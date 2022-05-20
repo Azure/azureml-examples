@@ -124,8 +124,8 @@ def convert_mask_in_VOC_to_jsonl(base_dir, remote_path):
     src_images = base_dir
 
     # We'll copy each JSONL file within its related MLTable folder
-    training_mltable_path = "../../automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items/data/training-mltable-folder/"
-    validation_mltable_path = "../../automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items/data/validation-mltable-folder/"
+    training_mltable_path = "./data/training-mltable-folder/"
+    validation_mltable_path = "./data/validation-mltable-folder/"
 
     train_validation_ratio = 5
 
