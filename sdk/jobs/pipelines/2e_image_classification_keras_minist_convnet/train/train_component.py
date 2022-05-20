@@ -6,7 +6,6 @@ from mldesigner import command_component, Input, Output
     name="train_image_classification_keras",
     version="1",
     display_name="Train Image Classification Keras",
-    description="train image classification with keras",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
         image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
@@ -17,6 +16,7 @@ def keras_train_component(
     output_model: Output(type="uri_folder"),
     epochs=10,
 ):
+    """Train image classification with keras."""
     # avoid dependency issue, execution logic is in train() func in train.py file
     from train import train
 
