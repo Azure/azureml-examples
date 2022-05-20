@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline
+name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -8,9 +8,10 @@ on:
       - main
       - sdk-preview
       - may-sdk-preview
+      - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline.yml
+      - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline.yml
       - sdk/dev-requirements.txt
 jobs:
   build:
@@ -36,7 +37,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-in-pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb
+    - name: run jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb
       run: |
           mkdir ../../.azureml
           export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
@@ -44,10 +45,10 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb
           papermill -k python -p compute_name automl-cpu-cluster automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb automl-text-classification-multilabel-paper-categorization-in-pipeline.output.ipynb
-      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-in-pipeline
+      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-text-classification-multilabel-paper-categorization-in-pipeline
-        path: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-in-pipeline
+        path: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline
