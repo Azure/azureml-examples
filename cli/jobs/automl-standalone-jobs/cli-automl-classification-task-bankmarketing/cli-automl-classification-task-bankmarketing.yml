@@ -50,3 +50,6 @@ training:
   allowed_training_algorithms:
     - gradient_boosting
     - logistic_regression
+
+properties:
+  _automl_internal_label: "latest"

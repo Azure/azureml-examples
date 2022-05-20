@@ -46,3 +46,6 @@ search_space:
     validation_resize_size: "choice(288, 320, 352)"
     validation_crop_size: "choice(224, 256)"
     training_crop_size: "choice(224, 256)"
+
+properties:
+  _automl_internal_label: "latest"

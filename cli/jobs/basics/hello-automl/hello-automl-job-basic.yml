@@ -22,3 +22,6 @@ limits:
 
 featurization:
   mode: auto
+
+properties:
+  _automl_internal_label: "latest"
