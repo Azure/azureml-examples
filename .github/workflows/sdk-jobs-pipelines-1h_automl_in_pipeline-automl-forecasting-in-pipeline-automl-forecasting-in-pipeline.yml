@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-forecasting-in-pipeline
+name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-forecasting-in-pipeline-automl-forecasting-in-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -6,11 +6,11 @@ on:
   pull_request:
     branches:
       - main
-      - may-sdk-preview
+      - sdk-preview
       - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-forecasting-in-pipeline.yml
+      - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-forecasting-in-pipeline-automl-forecasting-in-pipeline.yml
       - sdk/dev-requirements.txt
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/1h_automl_in_pipeline/automl-forecasting-in-pipeline.ipynb
+    - name: run jobs/pipelines/1h_automl_in_pipeline/automl-forecasting-in-pipeline/automl-forecasting-in-pipeline.ipynb
       run: |
           mkdir ../../.azureml
           export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
@@ -44,10 +44,10 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-forecasting-in-pipeline.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" automl-forecasting-in-pipeline.ipynb
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-in-pipeline.ipynb automl-forecasting-in-pipeline.output.ipynb
-      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline
+      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-forecasting-in-pipeline
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-forecasting-in-pipeline
-        path: sdk/jobs/pipelines/1h_automl_in_pipeline
+        path: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-forecasting-in-pipeline

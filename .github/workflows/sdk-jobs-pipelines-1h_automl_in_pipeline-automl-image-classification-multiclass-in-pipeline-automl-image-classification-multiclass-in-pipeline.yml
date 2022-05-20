@@ -1,4 +1,4 @@
-name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-image-classification-multiclass-in-pipeline
+name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-image-classification-multiclass-in-pipeline-automl-image-classification-multiclass-in-pipeline
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
       - pipeline/*
     paths:
       - sdk/**
-      - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-image-classification-multiclass-in-pipeline.yml
+      - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-image-classification-multiclass-in-pipeline-automl-image-classification-multiclass-in-pipeline.yml
       - sdk/dev-requirements.txt
 jobs:
   build:
@@ -36,18 +36,18 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline.ipynb
+    - name: run jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline/automl-image-classification-multiclass-in-pipeline.ipynb
       run: |
           mkdir ../../.azureml
           export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-image-classification-multiclass-in-pipeline.ipynb
-          sed -i "s/@pipeline(/&force_rerun=True,/" automl-image-classification-multiclass-in-pipeline.ipynb
-          papermill -k python -p compute_name automl-cpu-cluster automl-image-classification-multiclass-in-pipeline.ipynb automl-image-classification-multiclass-in-pipeline.output.ipynb
-      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline
+          sed -i "s/@pipeline(/&force_rerun=True,/" automl-image-classification-multiclass-in-pipeline.ipynb          
+          papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multiclass-in-pipeline.ipynb automl-image-classification-multiclass-in-pipeline.output.ipynb
+      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-image-classification-multiclass-in-pipeline
-        path: sdk/jobs/pipelines/1h_automl_in_pipeline
+        path: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline
