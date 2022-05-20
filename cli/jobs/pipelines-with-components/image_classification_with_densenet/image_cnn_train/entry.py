@@ -77,9 +77,7 @@ def convert_image_directory_to_specific_format(
     return output_root
 
 
-@command_component(
-    name="imagecnn_train", description="imagecnn_train main function"
-)
+@command_component(name="imagecnn_train")
 def main(
     train_data: Input(type="uri_folder", description="path to train dataset") = None,
     val_data: Input(type="uri_folder", description="path to valid dataset") = None,
@@ -107,6 +105,7 @@ def main(
     workspace="./",
     save_checkpoint_epochs: int = 10,
 ):
+    """imagecnn_train main function"""
     new_data_path = Path(train_data).parent / "new_dataset"
     convert_image_directory_to_specific_format(
         image_dir_path=train_data, output_root=new_data_path, is_train=True

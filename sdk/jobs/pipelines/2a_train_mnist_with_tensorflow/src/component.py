@@ -9,7 +9,6 @@ from mldesigner import command_component, Output
     name="tf_mnist",
     version="1",
     display_name="TF_mnist",
-    description="Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
         image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
@@ -22,6 +21,7 @@ def train_tf(
     steps_per_epoch=70,
     per_worker_batch_size=64,
 ):
+    """Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow."""
     # avoid dependency issue
     from train import train_and_save_model
 
