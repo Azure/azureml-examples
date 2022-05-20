@@ -1,6 +1,6 @@
 paths:
-  - file: ./yelp_training_set.csv
+  - file: ./bank_marketing_test_data.csv
 transformations:
   - read_delimited:
         delimiter: ','
-        encoding: 'utf8'
+        encoding: 'ascii'

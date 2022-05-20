@@ -9,10 +9,10 @@ experiment_name: pipeline-with-automl
 inputs:
   classification_train_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/training-mltable-folder
+    path: ./training-mltable-folder
   classification_validate_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-classification-task-bankmarketing/validation-mltable-folder
+    path: ./validation-mltable-folder
 
 settings:
   default_compute: azureml:cpu-cluster
