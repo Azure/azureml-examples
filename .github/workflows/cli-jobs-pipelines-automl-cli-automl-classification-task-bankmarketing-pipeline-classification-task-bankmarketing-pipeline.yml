@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - pipeline/*
+      - pipeline/**
     paths:
       - cli/jobs/pipelines/automl/cli-automl-classification-task-bankmarketing-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-cli-automl-classification-task-bankmarketing-pipeline-classification-task-bankmarketing-pipeline.yml

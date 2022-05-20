@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - pipeline/*
+      - pipeline/**
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline.yml
