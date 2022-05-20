@@ -15,10 +15,10 @@ properties:
 inputs:
   image_object_detection_training_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/data/training-mltable-folder
+    path: data/training-mltable-folder
   image_object_detection_validation_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/data/validation-mltable-folder
+    path: data/validation-mltable-folder
 
 jobs:
   image_object_detection_node:

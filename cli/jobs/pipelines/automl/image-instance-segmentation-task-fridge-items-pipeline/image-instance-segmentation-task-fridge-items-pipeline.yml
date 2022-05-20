@@ -15,10 +15,10 @@ properties:
 inputs:
   image_instance_segmentation_training_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/data/training-mltable-folder
+    path: data/training-mltable-folder
   image_instance_segmentation_validation_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/data/validation-mltable-folder
+    path: data/validation-mltable-folder
 
 jobs:
   image_instance_segmentation_node:
