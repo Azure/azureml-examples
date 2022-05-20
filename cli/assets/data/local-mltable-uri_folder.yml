@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: local-folder-example
-type: mltable
+name: local-neural-iris-mltable-example
+type: uri_folder
 description: Dataset created from local folder.
-path: sample-data 
+path: neural-iris-mltable
