@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
-      - pipeline/**
+      - may-sdk-preview
     paths:
       - cli/jobs/pipelines/automl/cli-automl-text-classification-newsgroup-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-cli-automl-text-classification-newsgroup-pipeline-text-classification-newsgroup-pipeline.yml
