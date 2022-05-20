@@ -12,11 +12,10 @@ settings:
 inputs:
   text_classification_multilabel_training_data:
     type: mltable
-
-    path: ../../automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat/training-mltable-folder
+    path: ./training-mltable-folder
   text_classification_multilabel_validation_data:
     type: mltable
-    path: ../../automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat/validation-mltable-folder
+    path: ./validation-mltable-folder
 
 jobs:
   text_classification_multilabel_node:
