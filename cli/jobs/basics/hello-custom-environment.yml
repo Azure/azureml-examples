@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: ls
+code:
+  local_path: src
+environment: azureml:my-env:1
+compute: azureml:cpu-cluster
