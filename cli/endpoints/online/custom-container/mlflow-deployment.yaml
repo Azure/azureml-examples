@@ -1,10 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: DEPLOYMENT_NAME
-endpoint_name: ENDPOINT_NAME
+name: {{deployment_name}} 
+endpoint_name: {{endpoint_name}}
+model:
+  path: ./{{model_name}}/model
+model_mount_path: /var/azureml-app/azureml-models/{{model_name}}
 environment: 
-  name: ENVIRONMENT_NAME
-  version: latest
-  image: ACR_NAME.azurecr.io/azureml-examples/mlflow-cc-MODEL_NAME:latest
+  name: {{environment_name}} 
+  image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc-{{model_name}}:latest
   inference_config:
     liveness_route:
       path: /

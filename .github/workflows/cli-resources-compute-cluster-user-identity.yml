@@ -1,4 +1,4 @@
-name: cli-scripts-deploy-safe-rollout-k8s-online-endpoints
+name: cli-resources-compute-cluster-user-identity
 on:
   workflow_dispatch:
   schedule:
@@ -7,8 +7,8 @@ on:
     branches:
       - main
     paths:
-      - cli/deploy-safe-rollout-k8s-online-endpoints.sh
-      - .github/workflows/cli-scripts-deploy-safe-rollout-k8s-online-endpoints.yml
+      - cli/resources/compute/cluster-user-identity.yml
+      - .github/workflows/cli-resources-compute-cluster-user-identity.yml
       - cli/setup.sh
 jobs:
   build:
@@ -24,8 +24,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
-    - name: test script script
-      run: set -e; bash -x deploy-safe-rollout-k8s-online-endpoints.sh
+    - name: create asset
+      run: az ml compute create -f resources/compute/cluster-user-identity.yml
       working-directory: cli

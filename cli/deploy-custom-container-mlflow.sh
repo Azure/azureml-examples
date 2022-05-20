@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 set -e
 
@@ -9,13 +9,38 @@ export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
 
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 
-# <set_base_path_and_copy_models>
-export BASE_PATH="endpoints/online/custom-container/mlflow"
-mkdir $BASE_PATH/lightgbm-iris
-mkdir $BASE_PATH/sklearn-diabetes
-cp -r endpoints/online/mlflow/lightgbm-iris $BASE_PATH
-cp -r endpoints/online/mlflow/sklearn-diabetes $BASE_PATH
-# </set_base_path_and_copy_models>
+# Create subdir "mlflow_context" and set BASE_PATH to it
+# <initialize_build_context>
+export PARENT_PATH=endpoints/online/custom-container
+export BASE_PATH="$PARENT_PATH/mlflow_context"
+export ASSET_PATH=endpoints/online/mlflow
+rm -rf $BASE_PATH && mkdir $BASE_PATH
+# </initialize_build_context> 
+
+# Copy model directories, sample-requests, and Dockerfile 
+# <copy_assets>
+cp -r $ASSET_PATH/{lightgbm-iris,sklearn-diabetes} $BASE_PATH
+cp $ASSET_PATH/sample-request-*.json $BASE_PATH 
+cp $PARENT_PATH/mlflow.dockerfile $BASE_PATH/Dockerfile
+# </copy_assets> 
+
+# Create two deployment yamls, store paths in SKLEARN_DEPLOYMENT and LIGHTGBM_DEPLOYMENT
+# <make_deployment_yamls> 
+make_deployment_yaml () {
+    DEPLOYMENT_ENV=$1
+    MODEL_NAME=$2
+    export ${DEPLOYMENT_ENV}="$BASE_PATH/mlflow-deployment-$MODEL_NAME.yaml"   
+    cp $PARENT_PATH/mlflow-deployment.yaml ${!DEPLOYMENT_ENV}
+    sed -i "s/{{acr_name}}/$ACR_NAME/g;\
+            s/{{endpoint_name}}/$ENDPOINT_NAME/g;\
+            s/{{environment_name}}/mlflow-cc-$MODEL_NAME-env/g;\
+            s/{{model_name}}/$MODEL_NAME/g;\
+            s/{{deployment_name}}/$MODEL_NAME/g;" ${!DEPLOYMENT_ENV}
+}
+
+make_deployment_yaml SKLEARN_DEPLOYMENT sklearn-diabetes
+make_deployment_yaml LIGHTGBM_DEPLOYMENT lightgbm-iris 
+#</make_deployment_yaml>
 
 # <login_to_acr>
 az acr login -n ${ACR_NAME} 
@@ -23,45 +48,77 @@ az acr login -n ${ACR_NAME}
 
 # <build_with_acr>
 az acr build --build-arg MLFLOW_MODEL_NAME=sklearn-diabetes -t azureml-examples/mlflow-cc-sklearn-diabetes:latest -r $ACR_NAME $BASE_PATH
-az acr build --build-arg MLFLOW_MODEL_NAME=lightgbm-iris -t azureml-examples/mlflow-cc-lightgbm-iris:latest -r $ACR_NAME $BASE_PATH
+az acr build --build-arg MLFLOW_MODEL_NAME=lightgbm-iris -t azureml-examples/mlflow-cc-lightgbm-iris:latest -r $ACR_NAME $BASE_PATH 
 # </build_with_acr>
 
 # <create_endpoint>
 az ml online-endpoint create -n $ENDPOINT_NAME --auth-mode key 
 # </create_endpoint>
 
-cp $BASE_PATH/deployment.yaml $BASE_PATH/deployment_sklearn.yaml
-sed -i "s/ACR_NAME/$ACR_NAME/" $BASE_PATH/deployment_sklearn.yaml
-sed -i "s/ENDPOINT_NAME/$ENDPOINT_NAME/" $BASE_PATH/deployment_sklearn.yaml
-sed -i "s/ENVIRONMENT_NAME/mlflow-cc-sklearn-diabetes-env/" $BASE_PATH/deployment_sklearn.yaml
-sed -i "s/MODEL_NAME/sklearn-diabetes/" $BASE_PATH/deployment_sklearn.yaml
-sed -i "s/DEPLOYMENT_NAME/sklearn-diabetes/" $BASE_PATH/deployment_sklearn.yaml
+endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 
-cp $BASE_PATH/deployment.yaml $BASE_PATH/deployment_lightgbm.yaml
-sed -i "s/ACR_NAME/$ACR_NAME/" $BASE_PATH/deployment_lightgbm.yaml
-sed -i "s/ENDPOINT_NAME/$ENDPOINT_NAME/" $BASE_PATH/deployment_lightgbm.yaml
-sed -i "s/ENVIRONMENT_NAME/mlflow-cc-lightgbm-iris-env/" $BASE_PATH/deployment_lightgbm.yaml
-sed -i "s/MODEL_NAME/lightgbm-iris/" $BASE_PATH/deployment_lightgbm.yaml
-sed -i "s/DEPLOYMENT_NAME/lightgbm-iris/" $BASE_PATH/deployment_lightgbm.yaml
+echo $endpoint_status
+
+if [[ $endpoint_status == "Succeeded" ]]
+then
+  echo "Endpoint created successfully"
+else 
+  echo "Endpoint creation failed"
+  exit 1
+fi
 
 # <create_deployments>
-az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/deployment_sklearn.yaml
-az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/deployment_lightgbm.yaml
-# </create_deployments> 
+az ml online-deployment create -f $SKLEARN_DEPLOYMENT 
+az ml online-deployment create -f $LIGHTGBM_DEPLOYMENT  
+# </create_deployments>
 
-# <test_online_endpoints>
-az ml online-endpoint invoke -n ${ENDPOINT_NAME} --deployment-name sklearn-diabetes --request-file "endpoints/online/mlflow/sample-request-sklearn.json"
-az ml online-endpoint invoke -n ${ENDPOINT_NAME} --deployment-name lightgbm-iris --request-file "endpoints/online/mlflow/sample-request-lightgbm.json"
-# </test_online_endpoints>
+# <check_deploy_status>
+az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name sklearn-diabetes
+az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name lightgbm-iris
+# </check_deploy_status>
+
+check_deployment_status () {
+    deploy_name=$1
+    deploy_status=`az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name $deploy_name --query "provisioning_state" -o tsv`
+    echo $deploy_status
+    if [[ $deploy_status == "Succeeded" ]]
+    then
+    echo "Deployment $deploy_name completed successfully"
+    else
+    echo "Deployment $deploy_name failed"
+    exit 1
+    fi
+}
+
+check_deployment_status sklearn-diabetes
+check_deployment_status lightgbm-iris
+
+# <test_online_endpoints_with_invoke>
+az ml online-endpoint invoke -n ${ENDPOINT_NAME} --deployment-name sklearn-diabetes --request-file "$BASE_PATH/sample-request-sklearn.json"
+az ml online-endpoint invoke -n ${ENDPOINT_NAME} --deployment-name lightgbm-iris --request-file "$BASE_PATH/sample-request-lightgbm.json"
+# </test_online_endpoints_with_invoke>
+
+# Get accessToken
+echo "Getting access token..."
+TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+
+# Get scoring url
+echo "Getting scoring url..."
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+echo "Scoring url is $SCORING_URL"
+
+# <test_online_endpoints_with_curl>
+curl -H "Authorization: {Bearer $TOKEN}" -H "azureml-model-deployment: sklearn-diabetes" -d @"$BASE_PATH/sample-request-sklearn.json"  $SCORING_URL
+curl -H "Authorization: {Bearer $TOKEN}" -H "azureml-model-deployment: lightgbm-iris" -d @"$BASE_PATH/sample-request-lightgbm.json"  $SCORING_URL
+# </test_online_endpoints_with_curl>
 
 # <delete_online_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
 
 # <delete_environments>
-az ml environment archive -y -n mlflow-cc-lightgbm-iris-env 
+az ml environment archive -n mlflow-cc-lightgbm-iris-env 
 az ml environment archive -y -n mlflow-cc-sklearn-diabetes-env
 # </delete_environments>
 
-rm -rf $BASE_PATH/lightgbm-iris $BASE_PATH/sklearn-diabetes
-rm $BASE_PATH/deployment_lightgbm.yaml $BASE_PATH/deployment_sklearn.yaml 
+rm -rf $BASE_PATH
