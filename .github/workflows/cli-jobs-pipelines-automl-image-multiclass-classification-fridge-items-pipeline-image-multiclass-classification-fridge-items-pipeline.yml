@@ -7,6 +7,8 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
+      - bhavanatumma/add_vision_in_pipeline_cli_examples  # Validate on PR branch
     paths:
       - cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-image-multiclass-classification-fridge-items-pipeline-image-multiclass-classification-fridge-items-pipeline.yml

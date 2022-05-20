@@ -8,6 +8,8 @@ on:
       - main
       - sdk-preview
       - pipeline/*
+      - may-sdk-preview
+      - bhavanatumma/add_vision_in_pipeline_cli_examples  # Validate on PR branch
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-forecasting-in-pipeline-automl-forecasting-in-pipeline.yml
