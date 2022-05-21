@@ -14,7 +14,6 @@ on:
       - .github/workflows/cli-scripts-deploy-moe-vnet.yml
       - cli/setup.sh
       - cli/endpoints/online/managed/vnet/**
-
 jobs:
   build:
     runs-on: ubuntu-latest
