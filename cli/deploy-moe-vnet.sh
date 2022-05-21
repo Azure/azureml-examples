@@ -85,7 +85,6 @@ else
    exit 1
 fi
 
-
 ### Cleanup
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes --no-wait
