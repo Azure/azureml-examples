@@ -11,7 +11,7 @@ on:
       JOB_SELECTOR:
         description: 'Job selector used with grep command to select job workflows'
         required: false
-        default: '^cli-jobs-automl.*yml$'
+        default: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
@@ -33,7 +33,7 @@ jobs:
       WORKSPACE: amlarc-githubtest-ws
       LOCATION: eastus
 
-      JOB_SELECTOR: '^cli-jobs-automl.*yml$'
+      JOB_SELECTOR: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
       JOB_FILTER: 'spark|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl.txt
       TIMEOUT: '120m'
