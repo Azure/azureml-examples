@@ -2,8 +2,9 @@
 set -x
 
 # Global variables
-export LOCK_FILE=$0.lock
-export RESULT_FILE=amlarc-test-result.txt
+export SCRIPT_DIR=$( cd  "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export LOCK_FILE=${SCRIPT_DIR}/"$(basename ${BASH_SOURCE[0]})".lock
+export RESULT_FILE=${SCRIPT_DIR}/kubernetes-compute-test-result.txt
 export MAX_RETRIES=60
 export SLEEP_SECONDS=20
 
@@ -32,7 +33,7 @@ export RELEASE_TRAIN="${RELEASE_TRAIN:-staging}"
 export RELEASE_NAMESPACE="${RELEASE_NAMESPACE:-azureml}"
 export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
 export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
-export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True enableInference=True allowInsecureConnections=True}"
+export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True enableInference=True allowInsecureConnections=True inferenceRouterServiceType=loadBalancer}"
 export CLUSTER_TYPE="${CLUSTER_TYPE:-connectedClusters}" # or managedClusters
 if [ "${CLUSTER_TYPE}" == "connectedClusters" ]; then
     export CLUSTER_NAME=${CLUSTER_NAME:-$ARC_CLUSTER_NAME}
@@ -56,15 +57,17 @@ refresh_lock_file(){
     echo $(date) > $LOCK_FILE
 }
 
-set_release_train(){
-    if [ "$1" != "" ]; then
-        AMLARC_RELEASE_TRAIN=$1
-    else 
-        if (( 10#$(date -d "$(cat $LOCK_FILE)" +"%H") < 12 )); then
-            AMLARC_RELEASE_TRAIN=experimental
-        else
-            AMLARC_RELEASE_TRAIN=staging
-        fi
+remove_lock_file(){
+    rm -f $LOCK_FILE
+}
+
+check_lock_file(){
+    if [ -f $LOCK_FILE ]; then
+        echo true
+        return 0
+    else
+        echo false
+        return 1
     fi
 }
 
@@ -209,34 +212,51 @@ check_arc_status(){
 
 # install extension
 install_extension(){
-    # remove extension if exists to avoid missing the major version upgrade. 
-    az k8s-extension show \
-        --cluster-name $CLUSTER_NAME \
-        --cluster-type $CLUSTER_TYPE \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME && \
-    az k8s-extension delete \
-        --cluster-name $CLUSTER_NAME \
-        --cluster-type $CLUSTER_TYPE \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME \
-        --yes || true
+    REINSTALL_EXTENSION="${REINSTALL_EXTENSION:-true}"
+    
+    if [[ $REINSTALL_EXTENSION == "true" ]]; then
+        # remove extension if exists to avoid missing the major version upgrade. 
+        az k8s-extension delete \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME \
+            --yes || true
 
-    # install extension
-    az k8s-extension create \
-        --cluster-name $CLUSTER_NAME \
-        --cluster-type $CLUSTER_TYPE \
-        --subscription $SUBSCRIPTION \
-        --resource-group $RESOURCE_GROUP \
-        --name $EXTENSION_NAME \
-        --extension-type $EXTENSION_TYPE \
-        --scope cluster \
-        --release-train $RELEASE_TRAIN \
-        --configuration-settings $EXTENSION_SETTINGS \
-        --no-wait \
-        $@
+        # install extension
+        az k8s-extension create \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME \
+            --extension-type $EXTENSION_TYPE \
+            --scope cluster \
+            --release-train $RELEASE_TRAIN \
+            --configuration-settings $EXTENSION_SETTINGS \
+            --no-wait \
+            $@
+    else
+        az k8s-extension show \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME || \
+        az k8s-extension create \
+            --cluster-name $CLUSTER_NAME \
+            --cluster-type $CLUSTER_TYPE \
+            --subscription $SUBSCRIPTION \
+            --resource-group $RESOURCE_GROUP \
+            --name $EXTENSION_NAME \
+            --extension-type $EXTENSION_TYPE \
+            --scope cluster \
+            --release-train $RELEASE_TRAIN \
+            --configuration-settings $EXTENSION_SETTINGS \
+            --no-wait \
+            $@
+    fi
     
     check_extension_status
 }
@@ -286,7 +306,7 @@ setup_workspace(){
 # setup compute
 setup_compute(){
 
-   COMPUTE_NS=${COMPUTE_NS:-default}
+    COMPUTE_NS=${COMPUTE_NS:-default}
 
     az ml compute attach \
         --subscription $SUBSCRIPTION \
@@ -332,7 +352,7 @@ delete_extension(){
         --cluster-type $CLUSTER_TYPE \
         --cluster-name $CLUSTER_NAME \
         --name $EXTENSION_NAME \
-        --yes --no-wait --force
+        --yes --force
 }
 
 delete_arc(){
@@ -340,7 +360,7 @@ delete_arc(){
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
         --name $ARC_CLUSTER_NAME \
-        --yes --no-wait
+        --yes
 }
 
 delete_aks(){
@@ -348,7 +368,7 @@ delete_aks(){
         --subscription $SUBSCRIPTION \
         --resource-group $RESOURCE_GROUP \
         --name $AKS_CLUSTER_NAME \
-        --yes --no-wait
+        --yes
 }
 
 delete_compute(){
@@ -408,36 +428,86 @@ delete_workspace(){
 # run cli test job
 run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
-    SET_ARGS="${@:2}"
-    if [ "$SET_ARGS" != "" ]; then
-        EXTRA_ARGS=" --set $SET_ARGS "
-    else
-        EXTRA_ARGS=" --set compute=azureml:$COMPUTE resources.instance_type=$INSTANCE_TYPE_NAME "
-    fi 
+    CONVERTER_ARGS="${@:2}"
 
-    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
-    
     SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
+    TIMEOUT="${TIMEOUT:-60m}"
 
-    run_id=$(az ml job create $SRW -f $JOB_YML $EXTRA_ARGS --query name -o tsv)
-    timeout 30m az ml job stream $SRW -n $run_id
-    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
-    timeout 5m az ml job cancel $SRW -n $run_id
-    echo $status
-    if [[ $status == "Completed" ]]; then
-        echo "[JobStatus] $JOB_YML completed" | tee -a $RESULT_FILE
-    elif [[ $status ==  "Failed" ]]; then
-        echo "[JobStatus] $JOB_YML failed" | tee -a $RESULT_FILE
+    # preprocess job spec for amlarc compute
+    python $SCRIPT_DIR/convert.py -i $JOB_YML $CONVERTER_ARGS
+    
+    # submit job
+    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
+    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
+
+    # check run id
+    echo "[JobRunId] $JOB_YML $run_id" | tee -a $RESULT_FILE
+    if [[ "$run_id" ==  "" ]]; then 
+        echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
         return 1
-    else 
-        echo "[JobStatus] $JOB_YML unknown" | tee -a $RESULT_FILE 
-	return 2
     fi
+
+    # stream job logs
+    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
+
+    # show job status
+    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
+    echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
+    
+    # check status
+    if [[ $status ==  "Failed" ]]; then
+        return 2
+    elif [[ $status != "Completed" ]]; then 
+        timeout 5m az ml job cancel $SRW -n $run_id
+	    return 3
+    fi
+}
+
+collect_jobs_from_workflows(){
+    OUPUT_FILE=${1:-job-list.txt}
+    SELECTOR=${2:-cli-jobs-basics}
+    FILTER=${3:-java}
+    WORKFLOWS_DIR=".github/workflows" 
+
+    echo "WORKFLOWS_DIR: $WORKFLOWS_DIR, OUPUT_FILE: $OUPUT_FILE, FILTER: $FILTER"
+
+    rm -f $OUPUT_FILE
+    touch $OUPUT_FILE
+
+    for workflow in $(ls -a $WORKFLOWS_DIR | grep -E "$SELECTOR" | grep -E -v "$FILTER" ); do
+
+        workflow=$WORKFLOWS_DIR/$workflow
+        echo "Check workflow: $workflow"
+        
+        job_yml=""
+        stepcount=$(cat $workflow | shyaml get-length jobs.build.steps)
+        stepcount=$(($stepcount - 1))
+        for i in $(seq 0 $stepcount); do
+            name=$(cat $workflow| shyaml get-value jobs.build.steps.$i.name)
+            if [ "$name" != "run job" ]; then
+                continue
+            fi
+
+            run=$(cat $workflow| shyaml get-value jobs.build.steps.$i.run)
+            wkdir=$(cat $workflow| shyaml get-value jobs.build.steps.$i.working-directory)
+            echo "Found: run: $run wkdir: $wkdir"
+
+            job_yml=$wkdir/$(echo $run | awk '{print $NF}' | xargs)
+            echo "${job_yml}" | tee -a $OUPUT_FILE
+        done
+
+        if [ "$job_yml" == "" ]; then
+            echo "Warning: no job yml found in workflow: $workflow"
+        fi
+
+    done
+
+    echo "Found $(cat $OUPUT_FILE | wc -l) jobs:"
+    cat $OUPUT_FILE
 }
 
 generate_workspace_config(){
     mkdir -p .azureml
-
     cat << EOF > .azureml/config.json
 {
     "subscription_id": "$SUBSCRIPTION",
@@ -455,7 +525,6 @@ install_jupyter_dependency(){
     pip install azureml.core azure.cli.core azureml.opendatasets azureml.widgets
     pip list || true
 }
-
 
 # run jupyter test
 run_jupyter_test(){
@@ -508,14 +577,15 @@ count_result(){
 
     MIN_SUCCESS_NUM=${MIN_SUCCESS_NUM:--1}
 
+    [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
+    
     echo "RESULT:"
     cat $RESULT_FILE
-
-    [ ! -f $RESULT_FILE ] && touch $RESULT_FILE
 
     total=$(grep -c "\[JobSubmission\]" $RESULT_FILE)
     success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic completed)
     unhealthy=$(( $total - $success ))
+
     echo "Total: ${total}, Success: ${success}, Unhealthy: ${unhealthy}, MinSuccessNum: ${MIN_SUCCESS_NUM}."
     
     if (( 10#${unhealthy} > 0 )) ; then
@@ -591,6 +661,8 @@ download_icm_cert(){
 
 file_icm(){
 
+set -e
+
 ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
 <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing">
    <s:Header>
@@ -657,7 +729,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
             <b:SupportTicketId i:nil="true" />
             <b:Title>{title}</b:Title>
             <b:TrackingTeams i:nil="true" />
-            <b:TsgId i:nil="true" />
+            <b:TsgId>{tsg_id}</b:TsgId>
             <b:TsgOutput i:nil="true" />
             <b:ValueSpecifiedFields>None</b:ValueSpecifiedFields>
          </incident>
@@ -672,10 +744,11 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     CONNECTOR_ID="${CONNECTOR_ID:-6872439d-31d6-4e5d-a73b-2d93edebf18a}"
     TITLE="${TITLE:-[Github] Github examples test failed}"
     ROUTING_ID="${ROUTING_ID:-Vienna-AmlArc}"
-    OWNING_ALIAS="${OWNING_ALIAS:-test}"
-    OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME:-test@microsoft.com}"
+    OWNING_ALIAS="${OWNING_ALIAS}"
+    OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME}"
     SUMMARY="${SUMMARY:-Test icm ticket}"
     SEVERITY="${SEVERITY:-4}"
+    TSG_ID="${TSG_ID:-tsg-link}"
     
     KEY_FILE="${KEY_FILE:-key.pem}"
     CERT_FILE="${CERT_FILE:-cert.pem}"
@@ -696,6 +769,7 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningAlias' -v "$OWNING_ALIAS"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningContactFullName' -v "$OWNING_CONTACT_FULL_NAME"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Summary' -v "$SUMMARY"  \
+            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:TsgId' -v "$TSG_ID"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:CreateDate' -v "$DATE"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:IncidentId' -v "$UUID"  \
             -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:ModifiedDate' -v "$DATE"  \
@@ -711,10 +785,9 @@ ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
     ret=$?
     echo "code: $ret" 
     echo "Response: $temp_file"
-    xmlstarlet fo --indent-tab --omit-decl $temp_file
+    xmlstarlet fo --indent-tab --omit-decl $temp_file || true
     return $ret
 }
-
 
 
 help(){

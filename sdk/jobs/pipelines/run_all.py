@@ -25,8 +25,8 @@ def change_working_dir(path):
 def replace_content(file, skip_wait=True, force_rerun=True):
     wait_str = "ml_client.jobs.stream(pipeline_job.name)"
     replace_holder = "## PLACEHOLDER"
-    dsl_str = "@dsl.pipeline("
-    rerun_str = "@dsl.pipeline(force_rerun=True,"
+    dsl_str = "@pipeline("
+    rerun_str = "@pipeline(force_rerun=True,"
 
     with open(file, encoding="utf-8") as f:
         original_content = f.read()

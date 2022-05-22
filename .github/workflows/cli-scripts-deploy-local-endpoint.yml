@@ -11,6 +11,8 @@ on:
       - cli/deploy-local-endpoint.sh
       - .github/workflows/cli-scripts-deploy-local-endpoint.yml
       - cli/setup.sh
+      - cli/endpoints/online/managed/sample
+      - cli/endpoints/online/model-1
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,8 +27,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
       run: set -e; bash -x deploy-local-endpoint.sh
       working-directory: cli

@@ -1,0 +1,79 @@
+name: kubernetes-compute-gpu-resources-cleanup
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+    inputs:
+      DELETE_ENDPOINTS:
+        description: 'Whether to delete endpoints: true or false'
+        required: true
+        default: 'true'
+      CLEANUP_WORKSPACE:
+        description: 'Whether to delete workspace: true or false'
+        required: true
+        default: 'false'
+      UNINSTALL_EXTENSION:
+        description: 'Whether to uninstall extension: true or false'
+        required: true
+        default: 'true'
+      CLEANUP_CLUSTER:
+        description: 'Whether to delete cluster: true or false'
+        required: true
+        default: 'false'
+      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples-rg
+      WORKSPACE: amlarc-githubtest-ws
+      VM_SKU: STANDARD_NC12
+      COMPUTE: "gpu-cluster"
+      CLUSTER_TYPE: managedClusters
+    
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        ref: sdk-preview
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+
+    # cleanup resources
+    - name: delete_endpoints
+      if: ${{ always() && github.event.inputs.DELETE_ENDPOINTS == 'true' }}
+      run: |
+          bash .github/kubernetes-compute/tool.sh delete_endpoints
+      timeout-minutes: 60
+    - name: delete_compute
+      if: ${{ always() && ( github.event.inputs.CLEANUP_WORKSPACE == 'true' || github.event.inputs.UNINSTALL_EXTENSION == 'true' ) }}
+      run: |
+          bash .github/kubernetes-compute/tool.sh delete_compute
+          COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh delete_compute
+      timeout-minutes: 60
+    - name: delete_workspace
+      if: ${{ always() && github.event.inputs.CLEANUP_WORKSPACE == 'true' }}
+      run: |
+          bash .github/kubernetes-compute/tool.sh delete_workspace
+      timeout-minutes: 60
+    - name: delete_extension
+      if: ${{ always() && github.event.inputs.UNINSTALL_EXTENSION == 'true' }}
+      run: |
+          bash .github/kubernetes-compute/tool.sh delete_extension
+      timeout-minutes: 60
+    - name: delete_cluster
+      if: ${{ always() && github.event.inputs.CLEANUP_CLUSTER == 'true' }}
+      run: |
+          bash .github/kubernetes-compute/tool.sh delete_aks
+      timeout-minutes: 60

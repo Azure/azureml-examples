@@ -1,26 +1,23 @@
 # Converts MNIST-formatted files at the passed-in input path to training data output path and test data output path
 import os
 from pathlib import Path
-from azure.ml import dsl, Input, Output
-from azure.ml.entities import Environment
-
-conda_env = Environment(
-    conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-)
+from mldesigner import command_component, Input, Output
 
 
-@dsl.command_component(
+@command_component(
     name="prep_data",
     version="1",
     display_name="Prep Data",
     description="Convert data to CSV file, and split to training and test data",
-    environment=conda_env,
+    environment=dict(
+        conda_file=Path(__file__).parent / "conda.yaml",
+        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    ),
 )
 def prepare_data_component(
-    input_data: Input,
-    training_data: Output,
-    test_data: Output,
+    input_data: Input(type="uri_folder"),
+    training_data: Output(type="uri_folder"),
+    test_data: Output(type="uri_folder"),
 ):
     convert(
         os.path.join(input_data, "train-images-idx3-ubyte"),

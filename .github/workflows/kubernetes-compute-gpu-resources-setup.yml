@@ -1,0 +1,118 @@
+name: kubernetes-compute-gpu-resources-setup
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+    inputs:
+      TEST_REGION:
+        description: 'Resource Region'
+        required: true
+        default: 'eastus'
+      RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: true
+        default: 'staging'
+      REINSTALL_EXTENSION:
+        description: 'Whether to reinstall extension: true or false'
+        required: true
+        default: 'false'
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: true
+        default: 'false'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples-rg
+      LOCATION: eastus
+      WORKSPACE: amlarc-githubtest-ws
+      VM_SKU: STANDARD_NC12
+      MIN_COUNT: 4
+      CLUSTER_TYPE: managedClusters
+      RELEASE_TRAIN: staging
+      COMPUTE: "gpu-cluster"
+      EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+      REINSTALL_EXTENSION: false
+
+      FILE_TICKET: true
+      SEVERITY: 3
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      OWNERS: amlarc@microsoft.com
+      TITLE: "[Github Workflow] kubernetes-compute-gpu-resources-setup failed"
+      GITHUB_REPO: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-gpu-resources-setup.yml
+      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
+      ICM_MESSAGE: "Failed to setup gpu resources for kubernetes compute github workflow!"
+
+    steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+        echo "RELEASE_TRAIN=${{ github.event.inputs.RELEASE_TRAIN }}" | tee -a $GITHUB_ENV
+        echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+    - name: check out repo
+      uses: actions/checkout@v2
+      with:
+        ref: sdk-preview
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+      timeout-minutes: 30
+    
+    # provision resources
+    - name: setup_aks
+      run: bash .github/kubernetes-compute/tool.sh setup_aks
+      timeout-minutes: 30
+    - name: install_extension
+      run: |
+        bash .github/kubernetes-compute/tool.sh install_extension
+      timeout-minutes: 30
+    - name: setup_workspace
+      run: bash .github/kubernetes-compute/tool.sh setup_workspace
+      timeout-minutes: 30
+    - name: setup_compute
+      run: |
+        bash .github/kubernetes-compute/tool.sh setup_compute
+      timeout-minutes: 30
+    - name: setup_compute
+      run: |
+        COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh setup_compute
+      timeout-minutes: 30
+    - name: setup_instance_type
+      run: |
+        bash .github/kubernetes-compute/tool.sh get_kubeconfig
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 4 32Gi  2
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 4 32Gi
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 4 32Gi 2
+      timeout-minutes: 30
+
+    - name: file_icm
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
+          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
+          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+          bash .github/kubernetes-compute/tool.sh download_icm_cert
+          export ICM_HOST=$(cat icm_host)
+          export CONNECTOR_ID=$(cat icm_connector_id)
+          export ROUTING_ID=$(cat icm_routing_id)
+          export OtherIcmMessage="${ICM_MESSAGE}"
+          export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
+          bash .github/kubernetes-compute/tool.sh file_icm
+        fi
+      timeout-minutes: 30
+   

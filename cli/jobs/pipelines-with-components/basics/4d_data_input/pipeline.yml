@@ -13,10 +13,10 @@ jobs:
     compute: azureml:cpu-cluster
     inputs:
       sample_input_data: 
-        type: mltable
-        # please follow the instrucion in README.md to create this data first 
-        path: azureml:sampledata@latest
-        mode: eval_mount      
+        type: uri_folder
+        # please follow the instrucion in README.md to create this data asset first, 
+        path: azureml:local-folder-example@latest
+        mode: ro_mount    
       sample_input_string: ${{parent.inputs.pipeline_hello_input_string}}
     outputs:
       sample_output_data: 

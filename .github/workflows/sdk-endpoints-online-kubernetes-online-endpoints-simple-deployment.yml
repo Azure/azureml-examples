@@ -11,9 +11,18 @@ on:
       - sdk/endpoints/online/**
       - .github/workflows/sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment.yml
       - notebooks/dev-requirements.txt
+      - .github/kubernetes-compute/tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      SEVERITY: 3
+      OWNERS: amlarc@microsoft.com
+      TITLE: "[Github Workflow] Faild to run kubernetes-online-endpoints-simple-deployment notebook"
+      GITHUB_REPO: https://github.com/Azure/azureml-examples
+      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment.yml
+      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/OneNote.aspx?id=%2Fteams%2FVienna%2FSiteAssets%2FVienna%20Notebook&wd=target%28AMLArcTSG.one%7C69E8BDB1-5734-4B07-967A-5A50A91CF040%2FTroubleshooting%20github%20workflow%7C53A1A232-F9F0-4192-B7D2-0474848EBB18%2F%29
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -33,6 +42,8 @@ jobs:
       run: bash setup.sh
       working-directory: sdk
       continue-on-error: true
+    - name: package installs
+      run: sudo apt-get install xmlstarlet
     - name: setup CLI
       run: bash setup.sh
       working-directory: cli
@@ -48,6 +59,20 @@ jobs:
 
           papermill -k python kubernetes-online-endpoints-simple-deployment.ipynb kubernetes-online-endpoints-simple-deployment.output.ipynb
       working-directory: sdk/endpoints/online/kubernetes
+    - name: file IcM when fails
+      if: ${{ failure() && github.event_name == 'schedule' }}
+      run: |
+        # download certificates
+        export ICM_HOST_NAME=ICM-HOST-PROD
+        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PROD
+        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PROD
+        set -e; bash -x .github/kubernetes-compute/tool.sh download_icm_cert
+        export ICM_HOST=$(cat icm_host)
+        export CONNECTOR_ID=$(cat icm_connector_id)
+        export ROUTING_ID=$(cat icm_routing_id)
+        export SUMMARY=$(set -e; bash -x .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
+        set -e; bash -x .github/kubernetes-compute/tool.sh file_icm
+      timeout-minutes: 30
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

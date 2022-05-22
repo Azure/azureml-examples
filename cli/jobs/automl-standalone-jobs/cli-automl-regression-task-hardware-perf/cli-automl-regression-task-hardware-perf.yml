@@ -11,14 +11,12 @@ task: regression
 log_verbosity: debug
 primary_metric: r2_score
 
-data:
-  target_column_name: "ERP"
-  training:
-    data:
-      path: "./training-mltable-folder"
-      type: mltable
-  validation:
-    n_cross_validations: 5
+target_column_name: "ERP"
+n_cross_validations: 5
+
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
 
 limits:
   timeout_minutes: 180
@@ -45,7 +43,6 @@ featurization:
 
 training:
   enable_model_explainability: true
-
-allowed_training_algorithms:
-  - light_gbm
-  - xg_boost_regressor
+  allowed_training_algorithms:
+    - light_gbm
+    - xg_boost_regressor

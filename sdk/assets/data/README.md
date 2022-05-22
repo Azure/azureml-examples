@@ -11,13 +11,18 @@ In this markdown file we provide some helpful snippets. Please refer to the note
 
 ## Code snippet index:
 
-- [Using local data in a job](#using-local-data-in-a-job)
-- [Using data stored in ADLS gen2 in a job](#using-data-stored-in-adls-gen2-in-a-job)
-- [Using data stored in blob in a job](#using-data-stored-in-blob-in-a-job)
-- [Reading and writing data stored in blob in a job](#reading-and-writing-data-stored-in-blob-in-a-job)
-- [Reading and writing data stored in ADLS gen2 in a job](#reading-and-writing-data-stored-in-adls-gen2-in-a-job)
-- [Registering data assets](#registering-data-assets)
-- [Consume registered data assets in job](#consume-registered-data-assets-in-job)
+- [Working with Data](#working-with-data)
+  - [Code snippet index:](#code-snippet-index)
+  - [A note on your *data-plane* code](#a-note-on-your-data-plane-code)
+  - [Understand `uri_file` and `uri_folder` types](#understand-uri_file-and-uri_folder-types)
+  - [Snippets](#snippets)
+    - [Using local data in a job](#using-local-data-in-a-job)
+    - [Using data stored in ADLS gen2 in a job](#using-data-stored-in-adls-gen2-in-a-job)
+    - [Using data stored in blob in a job](#using-data-stored-in-blob-in-a-job)
+    - [Reading and writing data stored in blob in a job](#reading-and-writing-data-stored-in-blob-in-a-job)
+    - [Reading and writing data stored in ADLS gen2 in a job](#reading-and-writing-data-stored-in-adls-gen2-in-a-job)
+    - [Registering data assets](#registering-data-assets)
+    - [Consume registered data assets in job](#consume-registered-data-assets-in-job)
 
 ## A note on your *data-plane* code
 By *data-plane* code we mean your data processing and/or training code that you want to execute in the cloud for better scale, orchestration and/or accessing specialized AI hardware (e.g. GPU). This is typically a Python script (but can be any programming language).
@@ -65,12 +70,12 @@ Below we show some common data access patterns that you can use in your *control
 ### Using local data in a job
 
 ```python
-from azure.ml import command
-from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml.constants import AssetTypes
+from azure.ai.ml import command, Input
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 my_job_inputs = {
-    "input_data": JobInput(
+    "input_data": Input(
         path='./sample_data', # change to be your local directory
         type=AssetTypes.URI_FOLDER
     )
@@ -94,13 +99,13 @@ returned_job.services["Studio"].endpoint
 ### Using data stored in ADLS gen2 in a job
 
 ```python
-from azure.ml import command
-from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml.constants import AssetTypes
+from azure.ai.ml import command, Input
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 # in this example we
 my_job_inputs = {
-    "input_data": JobInput(
+    "input_data": Input(
         path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>',
         type=AssetTypes.URI_FOLDER
     )
@@ -123,13 +128,13 @@ returned_job.services["Studio"].endpoint
 ### Using data stored in blob in a job
 
 ```python
-from azure.ml import command
-from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml.constants import AssetTypes
+from azure.ai.ml import command, Input
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 # in this example we
 my_job_inputs = {
-    "input_data": JobInput(
+    "input_data": Input(
         path='https://<account_name>.blob.core.windows.net/<container_name>/path',
         type=AssetTypes.URI_FOLDER
     )
@@ -152,19 +157,19 @@ returned_job.services["Studio"].endpoint
 ### Reading and writing data stored in blob in a job
 
 ```python
-from azure.ml import command
-from azure.ml.entities import Data, UriReference, JobInput, JobOutput
-from azure.ml.constants import AssetTypes
+from azure.ai.ml import command, Input, Output
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 my_job_inputs = {
-    "input_data": JobInput(
+    "input_data": Input(
         path='https://<account_name>.blob.core.windows.net/<container_name>/path',
         type=AssetTypes.URI_FOLDER
     )
 }
 
 my_job_outputs = {
-    "output_folder": JobOutput(
+    "output_folder": Output(
         path='https://<account_name>.blob.core.windows.net/<container_name>/path',
         type=AssetTypes.URI_FOLDER
     )
@@ -188,19 +193,19 @@ returned_job.services["Studio"].endpoint
 ### Reading and writing data stored in ADLS gen2 in a job
 
 ```python
-from azure.ml import command
-from azure.ml.entities import Data, UriReference, JobInput, JobOutput
-from azure.ml.constants import AssetTypes
+from azure.ai.ml import command, Input, Output
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 my_job_inputs = {
-    "input_data": JobInput(
+    "input_data": Input(
         path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>',
         type=AssetTypes.URI_FOLDER
     )
 }
 
 my_job_outputs = {
-    "output_folder": JobOutput(
+    "output_folder": Output(
         path='abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>',
         type=AssetTypes.URI_FOLDER
     )
@@ -224,8 +229,8 @@ returned_job.services["Studio"].endpoint
 ### Registering data assets
 
 ```python
-from azure.ml.entities import Data
-from azure.ml.constants import AssetTypes
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 # select one from:
 my_path = 'abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>' # adls gen2
@@ -245,14 +250,14 @@ ml_client.data.create_or_update(my_data)
 ### Consume registered data assets in job
 
 ```python
-from azure.ml import command
-from azure.ml.entities import Data, UriReference, JobInput
-from azure.ml.constants import AssetTypes
+from azure.ai.ml import command, Input
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
 
 registered_data_asset = ml_client.data.get(name='titanic', version='1')
 
 my_job_inputs = {
-    "input_data": JobInput(
+    "input_data": Input(
         type=AssetTypes.URI_FOLDER,
         path=registered_data_asset.id
     )
