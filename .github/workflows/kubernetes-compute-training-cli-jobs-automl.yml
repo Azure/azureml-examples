@@ -115,9 +115,9 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+          export ICM_HOST_NAME=ICM-HOST-ATUOML
+          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AUTOML
+          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AUTOML
           bash .github/kubernetes-compute/tool.sh download_icm_cert
           export ICM_HOST=$(cat icm_host)
           export CONNECTOR_ID=$(cat icm_connector_id)
