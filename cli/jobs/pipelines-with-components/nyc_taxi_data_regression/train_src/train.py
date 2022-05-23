@@ -7,13 +7,14 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
+
 mlflow.sklearn.autolog()
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
-parser.add_argument("--test_split_ratio",type=float,help="ratio of train test split")
+parser.add_argument("--test_split_ratio", type=float, help="ratio of train test split")
 
 
 args = parser.parse_args()
@@ -74,7 +75,9 @@ X = train_data[
 ]
 
 # Split the data into train and test sets
-trainX, testX, trainy, testy = train_test_split(X, y, test_size=args.test_split_ratio, random_state=42)
+trainX, testX, trainy, testy = train_test_split(
+    X, y, test_size=args.test_split_ratio, random_state=42
+)
 print(trainX.shape)
 print(trainX.columns)
 
