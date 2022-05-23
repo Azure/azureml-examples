@@ -8,7 +8,6 @@ from mldesigner import command_component, Input, Output
     name="prep_data",
     version="1",
     display_name="Prep Data",
-    description="Convert data to CSV file, and split to training and test data",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
         image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
@@ -19,6 +18,7 @@ def prepare_data_component(
     training_data: Output(type="uri_folder"),
     test_data: Output(type="uri_folder"),
 ):
+    """Convert data to CSV file, and split to training and test data."""
     convert(
         os.path.join(input_data, "train-images-idx3-ubyte"),
         os.path.join(input_data, "train-labels-idx1-ubyte"),
