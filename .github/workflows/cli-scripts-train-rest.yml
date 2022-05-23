@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/train-rest.sh
       - .github/workflows/cli-scripts-train-rest.yml
