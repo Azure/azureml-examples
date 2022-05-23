@@ -6,7 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-endpoints-online-managed-online-endpoints-safe-rollout.yml
