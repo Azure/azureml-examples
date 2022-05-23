@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'image_classification_with_densenet|pipeline_with_hyperparameter_sweep|4b_datastore_datapath_uri'
+        default: 'image_classification_with_densenet'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -34,7 +34,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-pipelines.*yml$'
-      JOB_FILTER: 'image_classification_with_densenet|pipeline_with_hyperparameter_sweep|4b_datastore_datapath_uri'
+      JOB_FILTER: 'image_classification_with_densenet'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-pipelines.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
