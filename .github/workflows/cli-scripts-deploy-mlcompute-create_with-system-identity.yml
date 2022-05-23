@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-cifar-10-pipeline
+name: cli-scripts-deploy-mlcompute-create_with-system-identity
 on:
   workflow_dispatch:
   schedule:
@@ -8,9 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/jobs/pipelines/cifar-10/**
-      - .github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
-      - cli/run-pipeline-jobs.sh
+      - cli/deploy-mlcompute-create_with-system-identity.sh
+      - .github/workflows/cli-scripts-deploy-mlcompute-create_with-system-identity.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,6 +25,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run job
-      run: bash -x ../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines/cifar-10
+    - name: test script script
+      run: set -e; bash -x deploy-mlcompute-create_with-system-identity.sh
+      working-directory: cli
