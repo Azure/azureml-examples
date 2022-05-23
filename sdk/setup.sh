@@ -18,5 +18,5 @@ export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
 # </set_variables>
 
 # <set_env_variables>
-echo AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED
+echo $AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED
 # </set_env_variables>
