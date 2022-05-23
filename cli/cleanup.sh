@@ -55,7 +55,7 @@ done
 # delete workspaces created via testing
 WORKSPACES_LIST=$(az ml workspace list --query "[*].[name]" -o tsv)
 for val in $WORKSPACES_LIST; do
-    if [[ $val != "mlw-moevnetdoc" ] && [ $val == "mlw-"* ]]; then
+    if [[ $val != "mlw-mevnet" ] && [ $val == "mlw-"* ]]; then
         echo deleting $val
         `az ml workspace delete -n "$val" --yes --no-wait --all-resources`
     fi

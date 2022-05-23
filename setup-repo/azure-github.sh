@@ -80,7 +80,7 @@ echo "Setting up managed vnet workspace"
 # SUFFIX will be used as resource name suffix in created workspace and related resources
 export SUFFIX="<UNIQUE_SUFFIX>"
 # </managed_vnet_workspace_suffix>
-export SUFFIX="moevnetdoc"
+export SUFFIX="mevnet"
 # <managed_vnet_workspace_create>
 az deployment group create --template-file endpoints/online/managed/vnet/setup_ws/main.bicep --parameters suffix=$SUFFIX
 # Note: if you get an error that appinsights is not available in your current location, use optional parameter to the above script: appinsightsLocation=<location> (e.g. westus2)
