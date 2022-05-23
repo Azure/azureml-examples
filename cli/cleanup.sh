@@ -51,3 +51,13 @@ for val in $AUTOSCALE_SETTINGS_LIST; do
     fi
     `az monitor autoscale delete -n "$val"`
 done
+
+# delete workspaces created via testing
+WORKSPACES_LIST=$(az ml workspace list --query "[*].[name]" -o tsv)
+for val in $WORKSPACES_LIST; do
+    if [[ $val == "mlw-"* ]]; then
+        echo deleting $val
+        `az ml workspace delete -n "$val" --yes --no-wait --all-resources`
+    fi
+done
+
