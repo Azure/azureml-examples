@@ -75,9 +75,9 @@ jobs:
     - name: collect jobs
       run: |
         echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml" | tee -a $JOB_LIST_FILE
+        #echo "cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml" | tee -a $JOB_LIST_FILE
+        #echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
     - name: run jobs
@@ -106,9 +106,9 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+          export ICM_HOST_NAME=ICM-HOST-PPE
+          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PPE
+          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PPE
           bash .github/kubernetes-compute/tool.sh download_icm_cert
           export ICM_HOST=$(cat icm_host)
           export CONNECTOR_ID=$(cat icm_connector_id)

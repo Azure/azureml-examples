@@ -11,7 +11,7 @@ on:
       JOB_SELECTOR:
         description: 'Job selector used with grep command to select job workflows'
         required: false
-        default: '^cli-jobs-automl.*yml$'
+        default: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
@@ -33,7 +33,7 @@ jobs:
       WORKSPACE: amlarc-githubtest-ws
       LOCATION: eastus
 
-      JOB_SELECTOR: '^cli-jobs-automl.*yml$'
+      JOB_SELECTOR: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
       JOB_FILTER: 'spark|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl.txt
       TIMEOUT: '120m'
@@ -115,9 +115,9 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+          export ICM_HOST_NAME=ICM-HOST-AUTOML
+          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AUTOML
+          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AUTOML
           bash .github/kubernetes-compute/tool.sh download_icm_cert
           export ICM_HOST=$(cat icm_host)
           export CONNECTOR_ID=$(cat icm_connector_id)
