@@ -1,0 +1,4 @@
+paths:
+  - file: ./test.txt
+transformations:
+  - take: 1

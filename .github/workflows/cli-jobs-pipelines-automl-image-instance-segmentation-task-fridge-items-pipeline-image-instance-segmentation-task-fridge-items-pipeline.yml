@@ -8,7 +8,6 @@ on:
       - main
       - sdk-preview
       - may-sdk-preview
-      - bhavanatumma/add_vision_in_pipeline_cli_examples  # Validate on PR branch
     paths:
       - cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-image-instance-segmentation-task-fridge-items-pipeline-image-instance-segmentation-task-fridge-items-pipeline.yml
