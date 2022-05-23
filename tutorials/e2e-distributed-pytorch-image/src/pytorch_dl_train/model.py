@@ -14,9 +14,8 @@ MODEL_ARCH_LIST = [
     "resnet18",
 ]
 
-def load_model(
-    model_arch: str, output_dimension: int = 1, pretrained: bool = True
-):
+
+def load_model(model_arch: str, output_dimension: int = 1, pretrained: bool = True):
     """Loads a model from a given arch and sets it up for training"""
     logger = logging.getLogger(__name__)
 
