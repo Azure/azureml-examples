@@ -14,11 +14,11 @@ NOT_TESTED_NOTEBOOKS = [
     "automl-nlp-text-classification-multiclass-task-sentiment-mlflow",
     "mlflow-model-local-inference-test",
 ]  # cannot automate lets exclude
-NOT_SCHEDULED_NOTEBOOKS = ["compute"]  # these are too expensive, lets not run everyday
+NOT_SCHEDULED_NOTEBOOKS = ["compute", "workspace"]  # these are too expensive, lets not run everyday
 # define branch where we need this
 # use if running on a release candidate, else make it empty
 BRANCH = "main"  # default - do not change
-BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
+# BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
 def main(args):

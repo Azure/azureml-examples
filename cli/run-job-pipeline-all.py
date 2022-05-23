@@ -137,7 +137,7 @@ if [ -z "$1" ]
   else
     target_version=$1
 fi""",
-            self.create_dependency_shell
+            self.create_dependency_shell,
         ]
         shells.extend(map(lambda x: x.get_run_shell(experiment_name), self.jobs))
         shells[-1] = self.jobs[-1].get_run_and_wait_shell(experiment_name)

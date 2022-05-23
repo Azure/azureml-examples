@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from mldesigner import command_component, Input, Output
 
+
 @command_component(
     name="train_image_classification_keras",
     version="1",
