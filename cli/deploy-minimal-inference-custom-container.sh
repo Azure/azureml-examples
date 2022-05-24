@@ -15,9 +15,11 @@ export BASE_PATH="$PARENT_PATH/minimal_context"
 rm -rf $BASE_PATH && mkdir -p $BASE_PATH
 cp -r endpoints/online/model-1 $BASE_PATH
 cp $PARENT_PATH/minimal.dockerfile $BASE_PATH/Dockerfile
-cp $PARENT_PATH/minimal-deployment.yaml $BASE_PATH/deployment.yaml
+cp $PARENT_PATH/minimal-deployment.yml $BASE_PATH/deployment.yaml
+cp $PARENT_PATH/minimal-endpoint.yml $BASE_PATH/endpoint.yaml
 sed -i "s/{{acr_name}}/$ACR_NAME/g;\
         s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/deployment.yaml
+sed -i "s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/endpoint.yaml
 # </set_base_path_and_copy_model>
 
 # <build_image_locally>
@@ -51,7 +53,7 @@ az acr build -t azureml-examples/minimal-inf-cc:latest -r $ACR_NAME $BASE_PATH
 # </build_with_acr>
 
 # <create_endpoint>
-az ml online-endpoint create -n $ENDPOINT_NAME --auth-mode key 
+az ml online-endpoint create -f $BASE_PATH/endpoint.yaml
 # </create_endpoint>
 
 # <create_deployment>
