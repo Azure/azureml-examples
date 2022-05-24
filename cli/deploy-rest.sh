@@ -135,7 +135,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"location\": \"$LOCATION\",
     \"sku\": {
         \"capacity\": 1,
-        \"name\": \"Standard_F2s_v2\"
+        \"name\": \"Standard_DS2_v2\"
     },
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
