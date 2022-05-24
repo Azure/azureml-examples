@@ -73,7 +73,7 @@ pip install --pre azure-ai-ml
 ## Clone examples repository
 
 ```terminal
-git clone https://github.com/Azure/azureml-examples --branch sdk-preview
+git clone https://github.com/Azure/azureml-examples
 cd azureml-examples/sdk
 ```
 
