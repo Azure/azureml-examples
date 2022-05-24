@@ -35,7 +35,7 @@ az ml batch-deployment show --name nonmlflowdp --endpoint-name $ENDPOINT_NAME
 
 echo "Invoking batch endpoint with public URI (MNIST)"
 # <start_batch_scoring_job>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist input-type uri_folder --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
@@ -67,7 +67,7 @@ fi
 echo "Invoke batch endpoint with specific output file name"
 # <start_batch_scoring_job_configure_output_settings>
 export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder:https://pipelinedata.blob.core.windows.net/sampledata/mnist --output-path folder:azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --mini-batch-size 20 --instance-count 5 --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --output-path azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --mini-batch-size 20 --instance-count 5 --query name -o tsv)
 # </start_batch_scoring_job_configure_output_settings>
 
 echo "Stream job detail"
@@ -103,7 +103,7 @@ az ml batch-deployment create --name mlflowdp --endpoint-name $ENDPOINT_NAME --f
 
 echo "Invoke batch endpoint with public data"
 # <test_new_deployment>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name mlflowdp --input-path file:https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name mlflowdp --input https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --input-type uri_file --query name -o tsv)
 
 echo "Show job detail"
 # <show_job_in_studio>
@@ -153,7 +153,7 @@ fi
 
 echo "Invoke batch endpoint with the new default deployment with public URI"
 # <test_new_default_deployment>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path file:https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --input-type uri_file --query name -o tsv)
 # </test_new_default_deployment>
 
 echo "Stream job logs to console"
