@@ -1,15 +1,20 @@
+# delete online endpoints
 ENDPOINT_LIST=$(az ml online-endpoint list --query "[*].[name]" -o tsv)
 echo $ENDPOINT_LIST
 for val in $ENDPOINT_LIST; do
 	echo deleting $val
     `az ml online-endpoint delete -n "$val" --yes --no-wait`
 done
+
+# delete batch endpoints
 ENDPOINT_LIST=$(az ml batch-endpoint list --query "[*].[name]" -o tsv)
 echo $ENDPOINT_LIST
 for val in $ENDPOINT_LIST; do
 	echo deleting $val
     `az ml batch-endpoint delete -n "$val" --yes --no-wait`
 done
+
+# delete storage accounts
 STORAGE_ACCOUNT_LIST=$(az storage account list --query "[*].[name]" -o tsv)
 echo $STORAGE_ACCOUNT_LIST
 for val in $STORAGE_ACCOUNT_LIST; do
@@ -19,17 +24,22 @@ for val in $STORAGE_ACCOUNT_LIST; do
     fi
 done
 
-# Get list of resource groups for managed identities
-WORKSPACE_RESOURCEGROUP_LIST=$(az ml workspace list --query "[*].[resourceGroup]" -o tsv | sort -u)
-for rg in $WORKSPACE_RESOURCEGROUP_LIST; do
-    NAME_LIST=$(az identity list --resource-group $rg --query "[].{name:name}" -o tsv | sort -u)
-    for name in $NAME_LIST; do
-        ID_LIST=$(az identity list --resource-group $rg --query "[?name == '$name'].{id:id}" -o tsv | sort -u)
-        for id in $ID_LIST; do
-            echo "attempting to delete id with name '$name'"
-            az identity delete --ids $id --name $name --resource-group $rg
-        done
-    done
+# delete compute instances
+CI_LIST=$(az ml compute list --type ComputeInstance --query "[*].[name]" -o tsv)
+echo $CI_LIST
+for val in $CI_LIST; do
+    echo deleting $val
+    `az ml compute delete -n "$val" --yes --no-wait`
+done
+
+# delete UAI
+NAME_LIST=$(az identity list --query "[].{name:name}" -o tsv | sort -u)
+echo $NAME_LIST
+for name in $NAME_LIST; do
+    if [[ $name == *"oep-user-identity"* ]]; then
+        echo deleting $name
+        `az identity delete --name "$name"`
+    fi
 done
 
 # delete left over autoscale settings created for online endpoints
@@ -41,3 +51,13 @@ for val in $AUTOSCALE_SETTINGS_LIST; do
     fi
     `az monitor autoscale delete -n "$val"`
 done
+
+# delete workspaces created via testing
+WORKSPACES_LIST=$(az ml workspace list --query "[*].[name]" -o tsv)
+for val in $WORKSPACES_LIST; do
+    if [[ $val != "mlw-mevnet" ] && [ $val == "mlw-"* ]]; then
+        echo deleting $val
+        `az ml workspace delete -n "$val" --yes --no-wait --all-resources`
+    fi
+done
+

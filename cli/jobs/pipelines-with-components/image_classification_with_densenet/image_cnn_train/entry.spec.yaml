@@ -8,11 +8,11 @@ display_name: Train Image Classification
 tags: {}
 inputs:
   train_data:
-    type: path
+    type: uri_folder
     description: "path to train dataset"
     optional: false
   valid_data:
-    type: path
+    type: uri_folder
     description: "path to valid dataset"
     optional: false
   data_backend:

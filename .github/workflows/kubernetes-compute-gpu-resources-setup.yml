@@ -1,28 +1,24 @@
 name: kubernetes-compute-gpu-resources-setup
 on:
   schedule:
-    - cron: "0 20 * * *"
+    - cron: "0 17 * * *"
   workflow_dispatch:
     inputs:
-      AMLARC_TEST_REGION:
+      TEST_REGION:
         description: 'Resource Region'
-        required: false
+        required: true
         default: 'eastus'
-      AMLARC_RELEASE_TRAIN:
+      RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
-        required: false
+        required: true
         default: 'staging'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
-        required: false
-        default: 'false'
-      SETUP_DATASET:
-        description: 'Whether to init dataset in workspace: true or false'
-        required: false
+        required: true
         default: 'false'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
-        required: false
+        required: true
         default: 'false'
 jobs:
   test:
@@ -30,21 +26,19 @@ jobs:
     env:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
       RESOURCE_GROUP: azureml-examples-rg
-      LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
+      LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
       VM_SKU: STANDARD_NC12
+      MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
-      RELEASE_TRAIN: ${{ github.event.inputs.AMLARC_RELEASE_TRAIN }}
+      RELEASE_TRAIN: staging
       COMPUTE: "gpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+      REINSTALL_EXTENSION: false
 
-      KEY_VAULT_NAME: amlarcgithubworkflowkv
-      KEY_VAULT_SUB: dd94e4df-b58f-4e81-9c5e-bd72a4b2ef9e
-      KEY_VAULT_RG: amlarc-github-workflow
-      REINSTALL_EXTENSION: ${{ github.event.inputs.REINSTALL_EXTENSION }}
-      SETUP_DATASET: ${{ github.event.inputs.SETUP_DATASET }}
-
+      FILE_TICKET: true
       SEVERITY: 3
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
       OWNERS: amlarc@microsoft.com
       TITLE: "[Github Workflow] kubernetes-compute-gpu-resources-setup failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
@@ -53,6 +47,13 @@ jobs:
       ICM_MESSAGE: "Failed to setup gpu resources for kubernetes compute github workflow!"
 
     steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+        echo "RELEASE_TRAIN=${{ github.event.inputs.RELEASE_TRAIN }}" | tee -a $GITHUB_ENV
+        echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
       with:
@@ -70,10 +71,6 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
       timeout-minutes: 30
     
-    - name: refresh_lock_file
-      run: bash .github/kubernetes-compute/tool.sh refresh_lock_file
-      timeout-minutes: 30
-
     # provision resources
     - name: setup_aks
       run: bash .github/kubernetes-compute/tool.sh setup_aks
@@ -89,47 +86,33 @@ jobs:
       run: |
         bash .github/kubernetes-compute/tool.sh setup_compute
       timeout-minutes: 30
+    - name: setup_compute
+      run: |
+        COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh setup_compute
+      timeout-minutes: 30
     - name: setup_instance_type
       run: |
+        bash .github/kubernetes-compute/tool.sh get_kubeconfig
         bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 4 32Gi  2
         bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 4 32Gi
         bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 4 32Gi 2
       timeout-minutes: 30
 
-    - name: setup_dataset
-      run: |
-        if [ "${SETUP_DATASET}" == "true" ] ; then
-          wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
-          tar zxf azcopy_linux_amd64_10.15.0.tar.gz
-          cp azcopy_linux_amd64_10.15.0/azcopy .
-          az account set --subscription $SUBSCRIPTION
-          az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
-          bash create-datasets.sh
-          bash copy-data.sh
-        fi
-      working-directory: setup-repo
-      timeout-minutes: 300
-
-    - name: remove_lock_file
-      run: |
-        run: bash .github/kubernetes-compute/tool.sh remove_lock_file
-      timeout-minutes: 30
-
     - name: file_icm
-      if: ${{ always() }}
+      if: ${{ failure() && github.event_name != 'pull_request' }}
       run: |
-        if [ "$(bash .github/kubernetes-compute/tool.sh check_lock_file) == "true" ] && [ "${{ github.event.inputs.FILE_TICKET }}" != "false" ] ; then
-            # download certificates
-            export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-            export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-            export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
-            bash .github/kubernetes-compute/tool.sh download_icm_cert
-            export ICM_HOST=$(cat icm_host)
-            export CONNECTOR_ID=$(cat icm_connector_id)
-            export ROUTING_ID=$(cat icm_routing_id)
-            export OtherIcmMessage="${ICM_MESSAGE}"
-            export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
-            bash .github/kubernetes-compute/tool.sh file_icm
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
+          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
+          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
+          bash .github/kubernetes-compute/tool.sh download_icm_cert
+          export ICM_HOST=$(cat icm_host)
+          export CONNECTOR_ID=$(cat icm_connector_id)
+          export ROUTING_ID=$(cat icm_routing_id)
+          export OtherIcmMessage="${ICM_MESSAGE}"
+          export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
+          bash .github/kubernetes-compute/tool.sh file_icm
         fi
       timeout-minutes: 30
    

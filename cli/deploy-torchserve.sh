@@ -116,4 +116,3 @@ az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 # Delete model
 echo "Deleting model..."
 az ml model archive -n $AML_MODEL_NAME --version 1
-az ml online-endpoint delete -n $ENDPOINT_NAME --yes

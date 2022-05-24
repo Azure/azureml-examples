@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: 4d_data_input
+description: Example of using data from a data as pipeline input
+inputs:
+  pipeline_hello_input_string: 'Pipeline_Hello'
+  pipeline_world_input_string: 'Pipeline_World'
+
+jobs:
+  python_hello_step:
+    type: command
+    component: file:./component-hello.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      sample_input_data: 
+        type: uri_folder
+        # please follow the instrucion in README.md to create this data asset first, 
+        path: azureml:local-folder-example@latest
+        mode: ro_mount    
+      sample_input_string: ${{parent.inputs.pipeline_hello_input_string}}
+    outputs:
+      sample_output_data: 
+
+  python_world_step:
+    type: command
+    component: file:./component-world.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      sample_input_data: 
+        type: uri_folder
+        # please follow the instrucion in README.md to create this data asset first, 
+        path: azureml:local-folder-example@latest
+        mode: ro_mount      
+      sample_input_string: ${{parent.inputs.pipeline_world_input_string}}
+    outputs:
+      sample_output_data: 

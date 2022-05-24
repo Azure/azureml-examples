@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/resources/compute/cluster-minimal.yml
       - .github/workflows/cli-resources-compute-cluster-minimal.yml

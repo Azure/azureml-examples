@@ -1,17 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-description: "Example of using data folder from a Workspace Datastore as pipeline input"
+
+display_name: 4b_datastore_datapath_uri
+description: Example of using data folder from a Workspace Datastore as pipeline input
 inputs:
-  pipeline_sample_input_data:
-    type: uri_folder
-    # format for data store uri: azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>
-    path: azureml://datastores/workspaceblobstore/paths/azureml
-    mode: rw_mount
   pipeline_sample_input_string: 'Hello_Pipeline_World'
-  pipeline_sample_input_data_file:
-    type: uri_file
-    path: azureml://datastores/workspaceblobstore/paths/azureml/hello-world.txt
-    mode: download
 outputs:
   pipeline_sample_output_data:
     mode: upload
@@ -23,7 +16,11 @@ jobs:
     type: command
     component: file:./component-folder.yml
     inputs:
-      sample_input_data: ${{parent.inputs.pipeline_sample_input_data}}
+      sample_input_data: 
+        type: uri_folder
+        # format for data store uri: azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>
+        path: azureml://datastores/workspaceblobstore/paths/azureml
+        mode: ro_mount      
       sample_input_string: ${{parent.inputs.pipeline_sample_input_string}}
     outputs:
       sample_output_data: ${{parent.outputs.pipeline_sample_output_data}}
@@ -31,7 +28,10 @@ jobs:
     type: command
     component: file:./component-file.yml
     inputs:
-      sample_input_data_file: ${{parent.inputs.pipeline_sample_input_data_file}}
+      sample_input_data_file: 
+        type: uri_file
+        path: azureml://datastores/workspaceblobstore/paths/azureml/hello-world.txt
+        mode: download      
       placeholder: ${{parent.jobs.component_folder.outputs.sample_output_data}}
     outputs:
       # binding with pipeline level outputs is optional

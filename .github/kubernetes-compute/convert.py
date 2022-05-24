@@ -1,11 +1,11 @@
 import argparse
 import yaml
+import os
 
 
 def convert(input_file, compute_target, instance_type, common_runtime, output_file):
-    with open(input_file, "r") as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
-        job_schema = data.get("$schema", "")
+    def _convert(input_file, data, job_schema):
+        # check job type
         is_pipeline_job = False
         is_sweep_job = False
         if "pipelineJob" in job_schema or "jobs" in data:
@@ -13,15 +13,15 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
         if "sweepJob" in job_schema or data.get("type") == "sweep":
             is_sweep_job = True
 
-        # change compute target
-        data["compute"] = "azureml:%s" % compute_target
-        if is_pipeline_job:
-            settings = data.get("settings", {})
-            settings["default_compute"] = "azureml:%s" % compute_target
-            data["settings"] = settings
+        print("Job type: pipelineJob", is_pipeline_job, "sweepJob:", is_sweep_job)
 
-            for step in data.get("jobs", {}):
-                data["jobs"][step]["compute"] = "azureml:%s" % compute_target
+        # change compute target
+        if compute_target:
+            data["compute"] = "azureml:%s" % compute_target
+            if is_pipeline_job:
+                settings = data.get("settings", {})
+                settings["default_compute"] = "azureml:%s" % compute_target
+                data["settings"] = settings
 
         # set instance type
         if not is_pipeline_job and instance_type:
@@ -31,19 +31,48 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
 
         # set common runtime environment variables.
         if common_runtime:
-            if is_pipeline_job:
-                for step in data.get("jobs", {}):
-                    env = data["jobs"][step].get("environment_variables", {})
-                    env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                    data["jobs"][step]["environment_variables"] = env
-            elif is_sweep_job:
+            if is_sweep_job and not isinstance(data["trial"], str):
                 env = data["trial"].get("environment_variables", {})
                 env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                data["trial"]["environment_variables"] = env
-            else:
+                trial["environment_variables"] = env
+            elif not is_pipeline_job:
                 env = data.get("environment_variables", {})
                 env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
                 data["environment_variables"] = env
+
+        for field in ["trial", "component"]:
+            if field not in data:
+                continue
+
+            file_field = data[field]
+            if not isinstance(file_field, str):
+                continue
+
+            if file_field.startswith("file:"):
+                file_field = file_field.split(":", 1)[1]
+
+            print("Found sub job spec:", file_field)
+            dirname = os.path.dirname(input_file)
+            convert(
+                os.path.join(dirname, file_field),
+                compute_target,
+                instance_type,
+                common_runtime,
+                "",
+            )
+
+        if is_pipeline_job:
+            jobs = data.get("jobs", {})
+            for step in jobs:
+                print("Found step:", step)
+                _convert(input_file, jobs[step], "")
+            return
+
+    print("Processing file:", input_file)
+    with open(input_file, "r") as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        job_schema = data.get("$schema", "")
+        _convert(input_file, data, job_schema)
 
         # write to output file if output file is specified, otherwise change inplace.
         if output_file:
@@ -70,8 +99,7 @@ if __name__ == "__main__":
         "-c",
         "--compute-target",
         required=False,
-        help='Compute target, default is "githubtest"',
-        default="githubtest",
+        help="Compute target",
     )
     parser.add_argument("-it", "--instance-type", required=False, help="Instance type")
     parser.add_argument(
