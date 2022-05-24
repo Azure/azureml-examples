@@ -1,10 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
-endpoint_name: ENDPOINT_NAME
+endpoint_name: {{endpoint_name}}
 environment:  
   name: minimal-inf-cc-env
   version: latest
-  image: ACR_NAME.azurecr.io/azureml-examples/minimal-inf-cc:latest
+  image: {{acr_name}}.azurecr.io/azureml-examples/minimal-inf-cc:latest
   inference_config:
     liveness_route:
       path: /

@@ -1,3 +1,4 @@
+#!/bin/bash
 
 set -e
 
@@ -9,9 +10,14 @@ export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 
 # <set_base_path_and_copy_model>
-export BASE_PATH="endpoints/online/custom-container/minimal-inference"
-mkdir $BASE_PATH/model-1
+export PARENT_PATH="endpoints/online/custom-container"
+export BASE_PATH="$PARENT_PATH/minimal_context"
+rm -rf $BASE_PATH && mkdir -p $BASE_PATH
 cp -r endpoints/online/model-1 $BASE_PATH
+cp $PARENT_PATH/minimal.dockerfile $BASE_PATH/Dockerfile
+cp $PARENT_PATH/minimal-deployment.yaml $BASE_PATH/deployment.yaml
+sed -i "s/{{acr_name}}/$ACR_NAME/g;\
+        s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/deployment.yaml
 # </set_base_path_and_copy_model>
 
 # <build_image_locally>
@@ -27,7 +33,7 @@ curl -X POST -H "Content-Type: application/json" -d @$BASE_PATH/model-1/sample-r
 # </test_local_image> 
 
 # <login_to_acr>
-az acr login -n ${ACR_NAME} 
+az acr login -n $ACR_NAME
 # </login_to_acr> 
 
 # We can either push the image to ACR
@@ -48,24 +54,29 @@ az acr build -t azureml-examples/minimal-inf-cc:latest -r $ACR_NAME $BASE_PATH
 az ml online-endpoint create -n $ENDPOINT_NAME --auth-mode key 
 # </create_endpoint>
 
-cp $BASE_PATH/deployment.yaml $BASE_PATH/deployment_original.yaml
-sed -i "s/ACR_NAME/$ACR_NAME/" $BASE_PATH/deployment.yaml
-
 # <create_deployment>
 az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/deployment.yaml --all-traffic
 # </create_deployment> 
 
-# <test_online_endpoint>
-az ml online-endpoint invoke -n ${ENDPOINT_NAME} --request-file "$BASE_PATH/model-1/sample-request.json"
-# </test_online_endpoint>
+# <test_online_endpoint_with_invoke>
+az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file "$BASE_PATH/model-1/sample-request.json"
+# </test_online_endpoint_with_invoke>
+
+# Get accessToken
+echo "Getting access token..."
+TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
+
+# Get scoring url
+echo "Getting scoring url..."
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+echo "Scoring url is $SCORING_URL"
+
+# <test_online_endpoint_with_curl>
+curl -H "Authorization: {Bearer $TOKEN}" -H "Content-Type: application/json" -d @$BASE_PATH/model-1/sample-request.json $SCORING_URL
+# </test_online_endpoint_with_curl>
 
 # <delete_online_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
 
-# <delete_environment>
-az ml environment archive -y -n minimal-inf-cc-env
-# </delete_environment>
-
-rm -rf $BASE_PATH/model-1
-rm $BASE_PATH/deployment.yaml && mv $BASE_PATH/deployment_original.yaml $BASE_PATH/deployment.yaml 
+rm -rf $BASE_PATH
