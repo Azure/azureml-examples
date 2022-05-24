@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/assets/data/public-file-https.yml
       - .github/workflows/cli-assets-data-public-file-https.yml
