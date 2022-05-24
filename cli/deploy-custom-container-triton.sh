@@ -17,10 +17,12 @@ rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models $BASE_PATH/code
 cp -r $ASSET_PATH/models $BASE_PATH
 cp $ASSET_PATH/triton_cc_scoring.py $BASE_PATH/code/score.py
 cp $ASSET_PATH/densenet_labels.txt $BASE_PATH/code
-cp $PARENT_PATH/triton-cc-deployment.yaml $BASE_PATH/deployment.yaml
+cp $PARENT_PATH/triton-cc-deployment.yml $BASE_PATH/deployment.yaml
+cp $PARENT_PATH/triton-cc-endpoint.yml $BASE_PATH/endpoint.yaml
 cp $PARENT_PATH/triton-cc.dockerfile $BASE_PATH/Dockerfile
 sed -i "s/{{acr_name}}/$ACR_NAME/g;\
         s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/deployment.yaml
+sed -i "s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/endpoint.yaml
 curl -o $BASE_PATH/peacock.jpg https://aka.ms/peacock-pic 
 # </set_base_path_and_copy_assets>
 
@@ -36,7 +38,7 @@ az acr build -t azureml-examples/triton-cc:latest -r $ACR_NAME $BASE_PATH
 # </build_with_acr>
 
 # <create_endpoint>
-az ml online-endpoint create -n $ENDPOINT_NAME --auth-mode key
+az ml online-endpoint create -f $BASE_PATH/endpoint.yaml
 # </create_endpoint>
 
 # <create_deployment>
