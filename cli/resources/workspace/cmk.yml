@@ -3,7 +3,7 @@ name: mlw-cmkexample-prod
 location: eastus
 display_name: Customer managed key encryption-example
 description: |
-  # Basic workspace
+  # Customer managed key-encrypted workspace
   This configurations shows how to create a workspace that uses customer-managed keys for encryption.
   ## Description
   Markdown is supported in the studio for workspace descriptions! You can edit the description there or via CLI.
