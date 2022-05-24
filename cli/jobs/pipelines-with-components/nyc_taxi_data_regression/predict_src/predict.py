@@ -3,7 +3,9 @@ import pandas as pd
 import os
 from pathlib import Path
 from sklearn.linear_model import LinearRegression
-import pickle
+import mlflow
+
+mlflow.sklearn.autolog()
 
 
 parser = argparse.ArgumentParser("predict")
@@ -30,15 +32,7 @@ print("mounted_path files: ")
 arr = os.listdir(args.test_data)
 
 print(arr)
-df_list = []
-for filename in arr:
-    print("reading file: %s ..." % filename)
-    with open(os.path.join(args.test_data, filename), "r") as handle:
-        # print (handle.read())
-        input_df = pd.read_csv((Path(args.test_data) / filename))
-        df_list.append(input_df)
-
-test_data = df_list[0]
+test_data = pd.read_csv(Path(args.test_data) / "test_data.csv")
 testy = test_data["cost"]
 # testX = test_data.drop(['cost'], axis=1)
 testX = test_data[
@@ -69,9 +63,7 @@ print(testX.shape)
 print(testX.columns)
 
 # Load the model from input port
-model = pickle.load(open((Path(args.model_input) / "model.sav"), "rb"))
-# model = (Path(args.model_input) / 'model.txt').read_text()
-# print('Model: ', model)
+model = mlflow.sklearn.load_model(args.model_input)
 
 # Make predictions on testX data and record them in a column named predicted_cost
 predictions = model.predict(testX)

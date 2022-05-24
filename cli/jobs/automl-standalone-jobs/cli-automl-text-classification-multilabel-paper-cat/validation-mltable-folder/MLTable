@@ -1,0 +1,7 @@
+paths:
+  - file: ./valid_data.csv
+transformations:
+  - read_delimited:
+      delimiter: ','
+      encoding: 'utf8'
+      empty_as_string: false

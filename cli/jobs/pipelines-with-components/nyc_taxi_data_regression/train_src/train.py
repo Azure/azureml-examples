@@ -6,12 +6,16 @@ import os
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-import pickle
+import mlflow
+
+mlflow.sklearn.autolog()
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
+parser.add_argument("--test_split_ratio", type=float, help="ratio of train test split")
+
 
 args = parser.parse_args()
 
@@ -21,6 +25,7 @@ lines = [
     f"Training data path: {args.training_data}",
     f"Test data path: {args.test_data}",
     f"Model output path: {args.model_output}",
+    f"Test split ratio:{args.test_split_ratio}",
 ]
 
 for line in lines:
@@ -70,7 +75,9 @@ X = train_data[
 ]
 
 # Split the data into train and test sets
-trainX, testX, trainy, testy = train_test_split(X, y, test_size=0.3, random_state=42)
+trainX, testX, trainy, testy = train_test_split(
+    X, y, test_size=args.test_split_ratio, random_state=42
+)
 print(trainX.shape)
 print(trainX.columns)
 
@@ -78,10 +85,9 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
+mlflow.sklearn.save_model(model, args.model_output)
 
-# Output the model and test data
-pickle.dump(model, open((Path(args.model_output) / "model.sav"), "wb"))
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
 print(testX.shape)
-test_data = testX.to_csv((Path(args.test_data) / "test_data.csv"))
+test_data = testX.to_csv(Path(args.test_data) / "test_data.csv")
