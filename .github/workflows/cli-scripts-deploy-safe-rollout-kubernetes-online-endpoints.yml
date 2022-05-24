@@ -12,9 +12,6 @@ on:
       - .github/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
       - cli/setup.sh
       - .github/kubernetes-compute/tool.sh
-      - cli/endpoints/online/kubernetes
-      - cli/endpoints/online/model-1
-      - cli/endpoints/online/model-2
 jobs:
   build:
     runs-on: ubuntu-latest
