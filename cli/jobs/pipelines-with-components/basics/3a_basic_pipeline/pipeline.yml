@@ -1,16 +1,22 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-description: "Basic Pipeline Job with 3 Hello World components"
 
-compute: azureml:cpu-cluster
+display_name: 3a_basic_pipeline
+description: Basic Pipeline Job with 3 Hello World components
+
+settings:
+  default_datestore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
 
 jobs:
-  componentA:
+  component_a:
     type: command
     component: file:./componentA.yml
-  componentB:
+    limits: 
+      timeout: 3600
+  component_b:
     type: command
     component: file:./componentB.yml
-  componentC:
+  component_c:
     type: command
     component: file:./componentC.yml

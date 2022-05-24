@@ -1,0 +1,25 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+
+type: automl
+experiment_name: dpv2-cli-text-classification-newsgroup-experiment
+description: A text classification job using newsgroup dataset
+
+compute: azureml:gpu-cluster
+
+task: text_classification
+primary_metric: accuracy
+log_verbosity: debug
+
+limits:
+  timeout_minutes: 60
+
+target_column_name: 'y'
+training_data:
+  type: mltable
+  path: "./training-mltable-folder"
+validation_data:
+  type: mltable
+  path: "./validation-mltable-folder"
+
+featurization:
+  dataset_language: "eng"

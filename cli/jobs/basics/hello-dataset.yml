@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: |
+  ls ${{inputs.sampledata}}
+code: src
+inputs:
+  sampledata:
+    type: mltable
+    path: azureml:sampledata@latest
+    mode: eval_mount
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+compute: azureml:cpu-cluster

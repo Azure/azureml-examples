@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/jobs/pipelines/cifar-10/**
       - .github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
@@ -26,5 +27,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/pipelines/cifar-10/pipeline.yml
-      working-directory: cli
+      run: bash -x ../../../run-job.sh pipeline.yml
+      working-directory: cli/jobs/pipelines/cifar-10

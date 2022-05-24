@@ -1,23 +1,24 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+display_name: hello_pipeline_abc
 compute: azureml:cpu-cluster
   
 inputs:
   hello_string_top_level_input: "hello world"
 jobs:
-  A:
+  a:
     command: echo hello ${{inputs.hello_string}}
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     inputs:
       hello_string: ${{parent.inputs.hello_string_top_level_input}}
-  B:
+  b:
     command: echo "world" >> ${{outputs.world_output}}/world.txt
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     outputs:
       world_output:
-  C:
+  c:
     command: echo ${{inputs.world_input}}/world.txt
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     inputs:
-      world_input: ${{parent.jobs.B.outputs.world_output}}
+      world_input: ${{parent.jobs.b.outputs.world_output}}
  
