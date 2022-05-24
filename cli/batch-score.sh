@@ -35,7 +35,7 @@ az ml batch-deployment show --name nonmlflowdp --endpoint-name $ENDPOINT_NAME
 
 echo "Invoking batch endpoint with public URI (MNIST)"
 # <start_batch_scoring_job>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
