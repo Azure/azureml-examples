@@ -295,9 +295,10 @@ def parse_path(path):
 
     return filename, project_dir, hyphenated
 
+
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    is_pipeline_sample = ("jobs/pipelines" in job)
+    is_pipeline_sample = "jobs/pipelines" in job
     creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
@@ -312,7 +313,7 @@ on:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml\n"""
     if is_pipeline_sample:
-            workflow_yaml += "      - cli/run-pipeline-jobs.sh\n"""
+        workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
     workflow_yaml += f"""      - cli/setup.sh
 jobs:
   build:
