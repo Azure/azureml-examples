@@ -1,8 +1,8 @@
-name: sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-safe-rollout
+name: sdk-endpoints-online-kubernetes-online-endpoints-safe-rollout
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "0 5/8 * * *"
   pull_request:
     branches:
       - main
@@ -51,7 +51,9 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" kubernetes-online-endpoints-safe-rollout.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" kubernetes-online-endpoints-safe-rollout.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" kubernetes-online-endpoints-safe-rollout.ipynb
-
+          sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" kubernetes-online-endpoints-safe-rollout.ipynb
+          sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" kubernetes-online-endpoints-safe-rollout.ipynb
+          
           papermill -k python kubernetes-online-endpoints-safe-rollout.ipynb kubernetes-online-endpoints-safe-rollout.output.ipynb
       working-directory: sdk/endpoints/online/kubernetes
     - name: file IcM when fails
