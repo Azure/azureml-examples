@@ -22,6 +22,7 @@ rm -rf $BASE_PATH && mkdir $BASE_PATH
 cp -r $ASSET_PATH/{lightgbm-iris,sklearn-diabetes} $BASE_PATH
 cp $ASSET_PATH/sample-request-*.json $BASE_PATH 
 cp $PARENT_PATH/mlflow.dockerfile $BASE_PATH/Dockerfile
+cp $PARENT_PATH/mlflow-endpoint.yml $BASE_PATH/endpoint.yaml 
 # </copy_assets> 
 
 # Create two deployment yamls, store paths in SKLEARN_DEPLOYMENT and LIGHTGBM_DEPLOYMENT
@@ -52,7 +53,7 @@ az acr build --build-arg MLFLOW_MODEL_NAME=lightgbm-iris -t azureml-examples/mlf
 # </build_with_acr>
 
 # <create_endpoint>
-az ml online-endpoint create -n $ENDPOINT_NAME --auth-mode key 
+az ml online-endpoint create -f $BASE_PATH/endpoint.yaml 
 # </create_endpoint>
 
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
