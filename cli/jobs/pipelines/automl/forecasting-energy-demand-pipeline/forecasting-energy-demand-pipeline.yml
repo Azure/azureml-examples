@@ -9,9 +9,6 @@ experiment_name: pipeline-with-automl
 settings:
   default_compute: azureml:cpu-cluster
 
-properties:
-  _automl_internal_label: "latest"
-
 inputs:
   forecasting_training_data:
     type: mltable
