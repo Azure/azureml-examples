@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: eval_model
+display_name: Eval Model
+
+command: python main.py --data-dir ${{inputs.cifar}} --model-dir ${{inputs.model_dir}}/model
+inputs:
+  cifar: 
+    type: uri_folder
+  model_dir:
+    type: uri_folder
+
+code: ./eval-model
+distribution:
+  type: pytorch
+  process_count_per_instance: 2
+resources:
+  instance_count: 2
+environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6
