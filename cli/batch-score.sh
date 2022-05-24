@@ -13,7 +13,7 @@ echo "Creating compute"
 az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
 # </create_compute>
 
-echo "Creating batch endpoint %ENDPOINT_NAME"
+echo "Creating batch endpoint $ENDPOINT_NAME"
 # <create_batch_endpoint>
 az ml batch-endpoint create --name $ENDPOINT_NAME
 # </create_batch_endpoint>
@@ -142,7 +142,7 @@ echo "Verify default deployment. In this example, it should be mlflowdp."
 az ml batch-endpoint show --name $ENDPOINT_NAME --query "{Name:name, Defaults:defaults}"
 
 DEFAULT_DEPL_NAME=$(az ml batch-endpoint show --name $ENDPOINT_NAME --query defaults.deployment_name)
-if [[ $DEFAULT_DEPL_NAME == "mlflowdp" ]]
+if [[ $DEFAULT_DEPL_NAME == \"mlflowdp\" ]]
 then
   echo "mlflowdp is set as default successfully"
 else 
