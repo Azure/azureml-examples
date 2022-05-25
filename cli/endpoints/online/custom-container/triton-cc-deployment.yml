@@ -14,5 +14,5 @@ environment:
       scoring_route:
           path: /score
           port: 5001
-instance_type: Standard_DS2_v2
+instance_type: Standard_NC6s_v3
 instance_count: 1
