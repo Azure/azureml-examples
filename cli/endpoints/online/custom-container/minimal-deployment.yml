@@ -1,9 +1,14 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: {{endpoint_name}}
+model: 
+  name: minimal-cc-model 
+  path: ./model-1/model
+code_configuration: 
+  code: ./model-1/onlinescoring
+  scoring_script: score.py
 environment:  
   name: minimal-inf-cc-env
-  version: latest
   image: {{acr_name}}.azurecr.io/azureml-examples/minimal-inf-cc:latest
   inference_config:
     liveness_route:

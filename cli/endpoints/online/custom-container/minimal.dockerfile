@@ -9,6 +9,7 @@ ENV CONDA_ENV_DIR=/opt/miniconda/envs
 
 # We will pre-install the conda environment at build time
 # Alternatively, the AZUREML_EXTRA_CONDA_YAML variable can be set for dynamic installation
+# or can be added alongside the image in the environment yaml definition for Azure to build 
 
 # Create a new conda environment and install the same version of the server
 COPY $MODEL_NAME/environment/conda.yml /tmp/conda.yaml
@@ -20,13 +21,3 @@ RUN conda env create -n userenv -f /tmp/conda.yaml && \
 ENV AZUREML_CONDA_ENVIRONMENT_PATH="$CONDA_ENV_DIR/userenv" 
 ENV PATH="$AZUREML_CONDA_ENVIRONMENT_PATH/bin:$PATH" 
 ENV LD_LIBRARY_PATH="$AZUREML_CONDA_ENVIRONMENT_PATH/lib:$LD_LIBRARY_PATH"
-
-# Copy code
-COPY $MODEL_NAME/onlinescoring /var/azureml-app 
-ENV AZUREML_ENTRY_SCRIPT=score.py
-
-# Copy model
-COPY $MODEL_NAME/model /var/azureml-app/azureml-models/model
-ENV AZUREML_MODEL_DIR=/var/azureml-app/azureml-models 
-
-EXPOSE 5001 
