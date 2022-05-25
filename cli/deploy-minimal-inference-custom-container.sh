@@ -8,6 +8,7 @@ export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
 # </set_variables>
 
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
+export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 
 # <set_base_path_and_copy_model>
 export PARENT_PATH="endpoints/online/custom-container"
