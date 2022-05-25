@@ -28,8 +28,10 @@ docker build -t azureml-examples/minimal-inf-cc $BASE_PATH
 # </build_image_locally>
 
 # <run_image_locally> 
-docker run -p 5001:5001 -t azureml-examples/minimal-inf-cc
+docker run -d -p 5001:5001 -t azureml-examples/minimal-inf-cc
 # </run_image_locally>
+
+sleep 10
 
 # <test_local_image> 
 curl -X POST -H "Content-Type: application/json" -d @$BASE_PATH/model-1/sample-request.json localhost:5001/score
