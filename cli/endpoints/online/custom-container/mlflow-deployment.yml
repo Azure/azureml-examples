@@ -6,7 +6,7 @@ model:
   path: ./{{model_name}}/model
 environment: 
   name: {{environment_name}} 
-  image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc:latest
+  image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc-{{model_name}}:latest
   inference_config:
     liveness_route:
       path: /
