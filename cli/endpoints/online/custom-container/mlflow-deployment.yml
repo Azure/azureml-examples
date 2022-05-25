@@ -1,9 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: {{deployment_name}} 
 endpoint_name: {{endpoint_name}}
+model:
+  name: {{model_name}}
+  path: ./{{model_name}}/model
 environment: 
   name: {{environment_name}} 
-  image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc-{{model_name}}:latest
+  image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc:latest
   inference_config:
     liveness_route:
       path: /

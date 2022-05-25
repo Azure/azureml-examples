@@ -50,8 +50,7 @@ az acr login -n ${ACR_NAME}
 # </login_to_acr> 
 
 # <build_with_acr>
-az acr build --build-arg MLFLOW_MODEL_NAME=sklearn-diabetes -t azureml-examples/mlflow-cc-sklearn-diabetes:latest -r $ACR_NAME $BASE_PATH
-az acr build --build-arg MLFLOW_MODEL_NAME=lightgbm-iris -t azureml-examples/mlflow-cc-lightgbm-iris:latest -r $ACR_NAME $BASE_PATH 
+az acr build -t azureml-examples/mlflow-cc:latest -r $ACR_NAME $BASE_PATH
 # </build_with_acr>
 
 # <create_endpoint>
