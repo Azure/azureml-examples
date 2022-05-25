@@ -96,10 +96,6 @@ check_deployment_status () {
 check_deployment_status sklearn-diabetes
 check_deployment_status lightgbm-iris
 
-# <update_traffic>
-az ml online-endpoint update -n $ENDPOINT_NAME --set traffic=sklearn-diabetes:50,lightgbm-iris:50
-# </update_traffic> 
-
 # <test_online_endpoints_with_invoke>
 az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment-name sklearn-diabetes --request-file "$BASE_PATH/sample-request-sklearn.json"
 az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment-name lightgbm-iris --request-file "$BASE_PATH/sample-request-lightgbm.json"
@@ -122,10 +118,5 @@ curl -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -H "azu
 # <delete_online_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
-
-# <archive_environments>
-az ml environment archive -n mlflow-cc-lightgbm-iris-env 
-az ml environment archive -n mlflow-cc-sklearn-diabetes-env
-# </archive_environments>
 
 #rm -rf $BASE_PATH
