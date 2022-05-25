@@ -32,7 +32,7 @@ make_deployment_yaml () {
     DEPLOYMENT_ENV=$1
     MODEL_NAME=$2
     export ${DEPLOYMENT_ENV}="$BASE_PATH/mlflow-deployment-$MODEL_NAME.yaml"   
-    cp $PARENT_PATH/mlflow-deployment.yaml ${!DEPLOYMENT_ENV}
+    cp $PARENT_PATH/mlflow-deployment.yml ${!DEPLOYMENT_ENV}
     sed -i "s/{{acr_name}}/$ACR_NAME/g;\
             s/{{endpoint_name}}/$ENDPOINT_NAME/g;\
             s/{{environment_name}}/mlflow-cc-$MODEL_NAME-env/g;\
