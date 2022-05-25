@@ -8,6 +8,7 @@ export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
 # </set_variables>
 
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
+export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 
 # <set_base_path_and_copy_assets>
 export PARENT_PATH="endpoints/online/custom-container"
@@ -29,9 +30,6 @@ curl -o $BASE_PATH/peacock.jpg https://aka.ms/peacock-pic
 # <login_to_acr>
 az acr login -n $ACR_NAME
 # </login_to_acr> 
-
-# TODO: Delete
-docker build -t azureml-examples/triton-cc:latest $BASE_PATH
 
 # <build_with_acr>
 az acr build -t azureml-examples/triton-cc:latest -r $ACR_NAME $BASE_PATH
