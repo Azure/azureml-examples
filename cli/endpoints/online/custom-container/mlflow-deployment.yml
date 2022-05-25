@@ -1,9 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: {{deployment_name}} 
 endpoint_name: {{endpoint_name}}
-model:
-  path: ./{{model_name}}/model
-model_mount_path: /var/azureml-app/azureml-models/{{model_name}}
 environment: 
   name: {{environment_name}} 
   image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc-{{model_name}}:latest
