@@ -16,7 +16,7 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 export PARENT_PATH="endpoints/online/custom-container"
 export ASSET_PATH="endpoints/online/triton/single-model"
 export BASE_PATH="$PARENT_PATH/triton_context"
-rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models $BASE_PATH/scoring
+rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models 
 cp -r $ASSET_PATH/models $BASE_PATH
 cp $PARENT_PATH/triton-cc-deployment.yml $BASE_PATH/deployment.yaml
 cp $PARENT_PATH/triton-cc-endpoint.yml $BASE_PATH/endpoint.yaml
@@ -30,7 +30,7 @@ az acr login -n $ACR_NAME
 # </login_to_acr> 
 
 # <build_with_acr>
-az acr build -t azureml-examples/triton-cc:latest -r $ACR_NAME -f triton-cc.dockerfile $PARENT_PATH 
+az acr build -t azureml-examples/triton-cc:latest -r $ACR_NAME -f $PARENT_PATH/triton-cc.dockerfile $BASE_PATH 
 # </build_with_acr>
 
 # <create_endpoint>
