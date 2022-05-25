@@ -28,13 +28,7 @@ docker build -t azureml-examples/minimal-inf-cc $BASE_PATH
 # </build_image_locally>
 
 # <run_image_locally> 
-docker run -d -p 5001:5001 \ 
--v "$(pwd)/$BASE_PATH/model-1/onlinescoring":/var/azureml-app \ 
--v "$(pwd)/$BASE_PATH/model-1/model":/var/azureml-app/azureml-models/model \ 
--e AZUREML_APP_ROOT=/var/azureml-app \ 
--e AZUREML_ENTRY_SCRIPT=score.py \ 
--e AZUREML_MODEL_DIR=/var/azureml-app/azureml-models \ 
--t azureml-examples/minimal-inf-cc:latest
+docker run -d -p 5001:5001 -v "$(pwd)/$BASE_PATH/model-1/onlinescoring":/var/azureml-app -v "$(pwd)/$BASE_PATH/model-1/model":/var/azureml-app/azureml-models/model -e AZUREML_APP_ROOT=/var/azureml-app -e AZUREML_ENTRY_SCRIPT=score.py -e AZUREML_MODEL_DIR=/var/azureml-app/azureml-models -t azureml-examples/minimal-inf-cc:latest
 # </run_image_locally>
 
 sleep 10
