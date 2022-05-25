@@ -1,0 +1,29 @@
+model_repository: /model_repository
+override_output_model_repository: False
+output_model_repository_path: /output_model_repository/output_bert_olive1/
+checkpoint_directory: ./checkpoints/bert_olive1/
+triton_output_path: triton_bert_olive1.log
+# # Config For Profile
+run_config_search_disable: True
+perf_analyzer_cpu_util: 80000
+perf_output: True
+concurrency: [1,2,4,8,16,32,64,128]
+
+
+perf_analyzer_timeout: 1800
+
+# Config For Analyze
+checkpoint_directory: ./checkpoints/bert_olive1/
+summarize: True
+num_configs_per_model: 10
+filename_model_inference: metrics-model-inference.csv
+filename_model_gpu: metrics-model-gpu.csv
+filename_server_only: metrics-server-only.csv
+
+analysis_models:
+  bertsquad_default:
+    objectives:
+      perf_throughput: 10
+  bertsquad:
+    objectives:
+      perf_throughput: 10
