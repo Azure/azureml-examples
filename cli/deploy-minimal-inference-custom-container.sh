@@ -84,4 +84,4 @@ curl -H "Authorization: {Bearer $TOKEN}" -H "Content-Type: application/json" -d 
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
 
-rm -rf $BASE_PATH
+#rm -rf $BASE_PATH
