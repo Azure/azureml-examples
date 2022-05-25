@@ -26,7 +26,7 @@ COPY $MODEL_NAME/onlinescoring /var/azureml-app
 ENV AZUREML_ENTRY_SCRIPT=score.py
 
 # Copy model
-COPY $MODEL_NAME/model /var/azureml-app/azureml-models
+COPY $MODEL_NAME/model /var/azureml-app/azureml-models/model
 ENV AZUREML_MODEL_DIR=/var/azureml-app/azureml-models 
 
 EXPOSE 5001 
