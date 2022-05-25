@@ -1,0 +1,45 @@
+model_repository: ./model_repository
+override_output_model_repository: True
+output_model_repository_path: ./output_model_repository/output_bert_olive1/
+checkpoint_directory: ./checkpoints/bert_olive1/
+triton_output_path: triton_bert_olive1.log
+# # Config For Profile
+run_config_search_disable: True
+perf_analyzer_cpu_util: 80000
+perf_output: True
+concurrency: [1,2,4,8,16,32,64,128]
+
+perf_analyzer_timeout: 1800
+
+profile_models:
+  bertsquad_default:
+    model_config_parameters:
+        dynamic_batching:
+            preferred_batch_size: [[1]]
+            max_queue_delay_microseconds: 30000
+        instance_group:
+        -
+            kind: KIND_GPU
+            count: [1]
+        optimization:
+           execution_accelerators:
+               -
+                   null   
+  bertsquad:
+    model_config_parameters:
+        dynamic_batching:
+            preferred_batch_size: [[],[2],[4],[8],[16]]
+            max_queue_delay_microseconds: 30000
+        instance_group:
+        -
+            kind: KIND_GPU
+            count: [1,2,3,4,5]
+        optimization:
+           execution_accelerators:
+               -
+                   gpu_execution_accelerator:
+                   -
+                       name : "tensorrt"
+                       parameters:
+                           precision_mode: "FP16"
+                           max_workspace_size_bytes: 1073741824
