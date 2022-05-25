@@ -14,10 +14,11 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 export PARENT_PATH="endpoints/online/custom-container"
 export ASSET_PATH="endpoints/online/triton/single-model"
 export BASE_PATH="$PARENT_PATH/triton_context"
-rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models $BASE_PATH/code
+rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models $BASE_PATH/scoring
 cp -r $ASSET_PATH/models $BASE_PATH
-cp $ASSET_PATH/triton_cc_scoring.py $BASE_PATH/code/score.py
-cp $ASSET_PATH/densenet_labels.txt $BASE_PATH/code
+cp $ASSET_PATH/triton_densenet_scoring.py $BASE_PATH/scoring/
+cp $ASSET_PATH/triton-densenet-scoring-env.yaml $BASE_PATH/scoring/ 
+cp $ASSET_PATH/densenet_labels.txt $BASE_PATH/scoring/
 cp $PARENT_PATH/triton-cc-deployment.yml $BASE_PATH/deployment.yaml
 cp $PARENT_PATH/triton-cc-endpoint.yml $BASE_PATH/endpoint.yaml
 cp $PARENT_PATH/triton-cc.dockerfile $BASE_PATH/Dockerfile
