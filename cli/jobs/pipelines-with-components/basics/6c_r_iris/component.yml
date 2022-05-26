@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.jso
 type: command
 display_name: r-iris-example
 description: Train an R model on the Iris dataset.
-name: r-iris-example
+name: r_iris_example
 version: 01
 
 command: >
