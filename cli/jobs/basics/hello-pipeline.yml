@@ -5,9 +5,11 @@ jobs:
   hello_job:
     command: echo "hello"
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: azureml:cpu-cluster
+    compute: azureml:arc-compute
+    resources:
+      instance_type: myinstancetypename
   world_job:
-    command: echo "world"
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: azureml:cpu-cluster
- 
+    component: azureml:train@latest
+    compute: azureml:arc-compute
+    resources:
+      instance_type: myinstancetypename
