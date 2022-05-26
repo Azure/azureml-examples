@@ -39,4 +39,4 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run mlflow-v1-comparison.ipynb
       run: papermill mlflow-v1-comparison.ipynb - -k python
-      working-directory: notebooks/mlflow
+      working-directory: notebooks/using-mlflow
