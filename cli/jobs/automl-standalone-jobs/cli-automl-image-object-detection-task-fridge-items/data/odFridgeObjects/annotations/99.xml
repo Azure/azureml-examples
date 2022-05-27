@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>99.jpg</filename>
+	<path>../images/99.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>499</width>
+		<height>666</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>can</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>152</xmin>
+			<ymin>249</ymin>
+			<xmax>376</xmax>
+			<ymax>432</ymax>
+		</bndbox>
+	</object>
+</annotation>

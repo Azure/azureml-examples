@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>4.jpg</filename>
+	<path>../images/4.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>499</width>
+		<height>666</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>water_bottle</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>245</xmin>
+			<ymin>119</ymin>
+			<xmax>389</xmax>
+			<ymax>518</ymax>
+		</bndbox>
+	</object>
+</annotation>
