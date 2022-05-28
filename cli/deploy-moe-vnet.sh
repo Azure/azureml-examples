@@ -46,6 +46,11 @@ export ENDPOINT_NAME=endpt-vnet-`echo $RANDOM`
 # Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name when running az vm run-command
 # If running from local machine, change it to your branch name
 export GIT_BRANCH=$GITHUB_HEAD_REF
+# need to set branch name manually if executed from main
+if [ "$GIT_BRANCH" == "" ];
+then
+   GIT_BRANCH="main"
+fi
 
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
