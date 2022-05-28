@@ -11,7 +11,7 @@ az extension add -n ml -y
 # <set_variables>
 GROUP="azureml-examples"
 LOCATION="eastus"
-WORKSPACE="main"
+WORKSPACE="mlwadlstest"
 # </set_variables>
 
 # <az_configure_defaults>
