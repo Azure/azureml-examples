@@ -34,8 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
-      RESOURCE_GROUP: azureml-examples-rg
-      WORKSPACE: amlarc-githubtest-ws
+      RESOURCE_GROUP: azureml-examples
+      WORKSPACE: main
       LOCATION: eastus
 
       JOB_SELECTOR: '^sdk-jobs-single-step.*yml$'
@@ -55,6 +55,9 @@ jobs:
       ICM_MESSAGE: "Failed to run sdk-jobs-single-step jobs on kubernetes compute!"
 
     steps:
+    - name: show test 
+      run: echo "Test" 
+
     - name: replace env from workflow_dispatch
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
