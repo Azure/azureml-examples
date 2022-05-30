@@ -27,6 +27,8 @@ on:
   pull_request_target:
     branches:
       - main
+      - sdk-preview
+      - siyuZL/test-workflow
     paths:
       - '.github/workflows/kubernetes-compute-training-cli-jobs-single-step.yml'
 jobs:
