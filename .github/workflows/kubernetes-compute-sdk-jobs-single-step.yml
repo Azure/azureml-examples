@@ -112,7 +112,7 @@ jobs:
                 sed -i -e "s/<AML_WORKSPACE_NAME>/$WORKSPACE/g" $FILE
                 sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" $FILE
                 OUTPUTJOB=$(echo $FILE | sed -e "s/.ipynb/.output.ipynb/g")
-                papermill -k python $FILE $OUTPUTJOB
+                papermill -k python $FILE $OUTPUTJOB &
 
                 sleep 60
                 cd $FOLDERBACK
