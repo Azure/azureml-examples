@@ -1,0 +1,6 @@
+xgboost
+scikit-learn==1.1.1
+pandas
+numpy
+mlflow
+azureml-mlflow
