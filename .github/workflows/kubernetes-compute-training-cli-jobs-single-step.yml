@@ -29,6 +29,9 @@ on:
       - main
     paths:
       - '.github/workflows/kubernetes-compute-training-cli-jobs-single-step.yml'
+  push:
+    paths:
+      - '.github/workflows/kubernetes-compute-training-cli-jobs-single-step.yml'
 jobs:
   test:
     runs-on: ubuntu-latest
