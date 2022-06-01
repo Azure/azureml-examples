@@ -75,6 +75,7 @@ jobs:
     - name: collect jobs
       run: |
         echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/basics/hello-sweep.yml" | tee -a $JOB_LIST_FILE
         #echo "cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
         #echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml" | tee -a $JOB_LIST_FILE
