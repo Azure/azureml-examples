@@ -523,9 +523,9 @@ install_jupyter_dependency(){
     ipython kernel install --name "amlarc" --user
     pip install matplotlib numpy scikit-learn==0.22.1 numpy joblib glob2
     pip install azureml.core 
-    pip azure.cli.core 
-    pip azureml.opendatasets 
-    pip azureml.widgets
+    pip install azure.cli.core 
+    pip install azureml.opendatasets 
+    pip install azureml.widgets
     pip list || true
 }
 
