@@ -42,16 +42,6 @@ jobs:
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
 
-    - name: create asset
-      if: ${{ always() }}
-      run: |
-        az ml component create --file train.yml
-        az ml component create --file score.yml
-        az ml component create --file eval.yml
-      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
-      timeout-minutes: 30
-      continue-on-error: true 
-
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |
@@ -85,6 +75,17 @@ jobs:
         az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
       timeout-minutes: 30
       continue-on-error: true
+    
+    - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      if: ${{ always() }}
+      run: |
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      timeout-minutes: 30
+      continue-on-error: true
+
 
     - name: setup env for RAI
       if: ${{ always() }}
