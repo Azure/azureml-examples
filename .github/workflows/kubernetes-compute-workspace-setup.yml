@@ -79,6 +79,7 @@ jobs:
     - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
       if: ${{ always() }}
       run: |
+        set -x
         az ml component create --file train.yml
         az ml component create --file score.yml
         az ml component create --file eval.yml
