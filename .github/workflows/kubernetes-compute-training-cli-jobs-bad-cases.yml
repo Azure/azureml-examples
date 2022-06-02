@@ -74,7 +74,7 @@ jobs:
 
     - name: collect jobs
       run: |
-        echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
+        #echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/basics/hello-sweep.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/single-step/scikit-learn/iris/job-sweep.yml " | tee -a $JOB_LIST_FILE
         echo "cli/jobs/single-step/lightgbm/iris/job-sweep.yml" | tee -a $JOB_LIST_FILE
