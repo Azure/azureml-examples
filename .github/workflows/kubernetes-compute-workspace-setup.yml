@@ -1,7 +1,7 @@
 name: kubernetes-compute-workspace-setup
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "0 0 * * 3"
   workflow_dispatch:
     inputs:
       AMLARC_TEST_REGION:
@@ -66,6 +66,7 @@ jobs:
         
         ' "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE"
       timeout-minutes: 300
+      continue-on-error: true
 
     - name: set configure
       if: ${{ always() }}
@@ -73,28 +74,52 @@ jobs:
         az account set --subscription $SUBSCRIPTION
         az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
       timeout-minutes: 30
+      continue-on-error: true
+    
+    - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      if: ${{ always() }}
+      run: |
+        set -x
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      timeout-minutes: 30
+      continue-on-error: true
+
 
     - name: setup env for RAI
       if: ${{ always() }}
       run: |
         set -x
         az ml environment create --file environment/responsibleai-environment.yaml
-        az ml data create --file data/data_adult_test.yaml
+        az ml data create --file data/data_adult_train.yaml
         az ml data create --file data/data_adult_test.yaml
       working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
       timeout-minutes: 30
+      continue-on-error: true
+
+    - name: Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      if: ${{ always() }}
+      run: |
+        echo Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
+      timeout-minutes: 30
+      continue-on-error: true
 
     - name: setup_asset /cli/assets/data/local-folder.yml
       if: ${{ always() }}
       run: az ml data create -f local-folder.yml
       working-directory: cli/assets/data
       timeout-minutes: 300
+      continue-on-error: true
     
     - name: setup_dataset
       if: ${{ always() }} 
       run: bash create-datasets.sh
       working-directory: setup-repo
       timeout-minutes: 300
+      continue-on-error: true
 
     - name: download azcopy
       if: ${{ always() }}
@@ -105,11 +130,18 @@ jobs:
         cp azcopy_linux_amd64_10.15.0/azcopy .
       working-directory: setup-repo
       timeout-minutes: 30
+      continue-on-error: true
 
-    - name: copy-data
+    - name: Please manually run copy-data.sh
       if: ${{ always() }}
       run: |
         # bash copy-data.sh
         echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
       working-directory: setup-repo
       timeout-minutes: 300
+      continue-on-error: true
+
+    - name: over
+      run: echo over!
+
+
