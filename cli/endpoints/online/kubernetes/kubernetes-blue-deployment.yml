@@ -21,17 +21,17 @@ resources:
     cpu: "0.2"
     memory: "200Mi"
 liveness_probe:
-  initial_delay: 5
-  period: 5
+  initial_delay: 10
+  period: 10
   timeout: 10
   success_threshold: 1
-  failure_threshold: 1
+  failure_threshold: 30
 readiness_probe:
-  initial_delay: 5
-  period: 5
+  initial_delay: 10
+  period: 10
   timeout: 10
   success_threshold: 1
-  failure_threshold: 1
+  failure_threshold: 30
 tags:
   tag1: deployment-tag1-value
 instance_count: 1
