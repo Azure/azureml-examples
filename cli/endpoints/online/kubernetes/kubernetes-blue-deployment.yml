@@ -23,13 +23,13 @@ resources:
 liveness_probe:
   initial_delay: 10
   period: 10
-  timeout: 2
+  timeout: 10
   success_threshold: 1
   failure_threshold: 30
 readiness_probe:
   initial_delay: 10
   period: 10
-  timeout: 2
+  timeout: 10
   success_threshold: 1
   failure_threshold: 30
 tags:
