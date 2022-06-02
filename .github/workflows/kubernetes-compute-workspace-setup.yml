@@ -99,6 +99,14 @@ jobs:
       timeout-minutes: 30
       continue-on-error: true
 
+    - name: Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      if: ${{ always() }}
+      run: |
+        echo Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
+      timeout-minutes: 30
+      continue-on-error: true
+
     - name: setup_asset /cli/assets/data/local-folder.yml
       if: ${{ always() }}
       run: az ml data create -f local-folder.yml
@@ -124,7 +132,7 @@ jobs:
       timeout-minutes: 30
       continue-on-error: true
 
-    - name: copy-data
+    - name: Please manually run copy-data.sh
       if: ${{ always() }}
       run: |
         # bash copy-data.sh
