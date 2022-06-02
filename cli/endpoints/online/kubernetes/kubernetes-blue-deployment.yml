@@ -25,13 +25,13 @@ liveness_probe:
   period: 5
   timeout: 10
   success_threshold: 1
-  failure_threshold: 1
+  failure_threshold: 5
 readiness_probe:
   initial_delay: 5
   period: 5
   timeout: 10
   success_threshold: 1
-  failure_threshold: 1
+  failure_threshold: 5
 tags:
   tag1: deployment-tag1-value
 instance_count: 1
