@@ -1,4 +1,4 @@
-name: notebooks-cloud-data
+name: notebooks-using-mlflow
 on:
   schedule:
     - cron: "0 */8 * * *"
@@ -6,16 +6,12 @@ on:
     branches:
       - main
     paths:
-      - notebooks/cloud-data/**
-      - .github/workflows/notebooks-cloud-data.yml
+      - notebooks/using-mlflow/**
+      - .github/workflows/notebooks-using-mlflow.yml
       - notebooks/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        notebook: ['blob-adls-numpy.ipynb', 'blob-adls-pandas.ipynb']
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -41,6 +37,3 @@ jobs:
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run ${{matrix.notebook}}
-      run: papermill ${{matrix.notebook}} - -k python
-      working-directory: notebooks/cloud-data
