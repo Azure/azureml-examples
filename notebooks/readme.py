@@ -184,7 +184,7 @@ jobs:
          ./scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg"""
+      run: az ml folder attach -w main-python-sdk -g azureml-examples"""
 
     for notebook in notebooks:
 
@@ -246,7 +246,7 @@ jobs:
          ./scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+      run: az ml folder attach -w main-python-sdk -g azureml-examples
     - name: run {matrix_notebook}
       run: papermill {matrix_notebook} - -k python
       working-directory: notebooks/{notebook_dir}\n"""
