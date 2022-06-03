@@ -15,20 +15,20 @@ inputs:
   C: 0.8
   kernel: "rbf"
   coef0: 0.1
-  subscription: 'b1fff005-d722-4d97-99ac-7c6e9ef020aa'
-  resource_group: 'rafarmahtestrg'
-  workspace_name: 'rafarmahcredpassthrucanary'
-  experiment_name: obo-testing-1
+  subscription: 'b17253fa-f327-42d6-9686-f3e553e24763'
+  resource_group: 'anksing_rg'
+  workspace_name: 'anksing_wcus'
+  experiment_name: obo
 code: ./src
 environment:
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20220113.v1
   conda_file: environment/conda.yml
 display_name: "obo-test"
-compute: "azureml:passthrucluster4"
+compute: "azureml:cpu-cluster-1"
 experiment_name: obo-testing-1
 identity:
   type: user_identity
 tags:
   "obo_flow": "true"
-environment_variables:
-  "AZ_BATCHAI_CONFIG_EnableDefaultLogFilteringPatterns": "false"
+# environment_variables:
+#   "AZ_BATCHAI_CONFIG_EnableDefaultLogFilteringPatterns": "false"

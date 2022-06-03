@@ -4,5 +4,4 @@ channels:
 dependencies:
   - python=3.8.12
   - pip:
-      - azure-ml==0.0.58459232
-      - --extra-index-url https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/58459232/
+      - azure-ai-ml

@@ -1,9 +1,8 @@
 # imports
 import os
 import argparse
-from azure.ml.entities import CommandJob, JobInput
-from azure.ml.identity import AzureMLOnBehalfOfCredential
-from azure.ml import MLClient
+from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
+from azure.ai.ml import MLClient, Input, command
 
 
 # define functions
@@ -25,25 +24,25 @@ def get_ml_client(args):
     return client
 
 def get_job_definition(args):
-    job = CommandJob(
+    job = command(
         code="./src",  # local path where the code is stored
         command="python main.py --iris-csv ${{inputs.iris}} --C ${{inputs.C}} --kernel ${{inputs.kernel}} --coef0 ${{inputs.coef0}}",
         inputs={
-            "iris": JobInput(
+            "iris": Input(
                 type="uri_file",
                 path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv"),
             "C": args.C,
             "kernel": args.kernel,
             "coef0": args.coef0,},
         environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:22",
-        compute="passthrucluster4",
+        compute="cpu-cluster-1",
         display_name="sklearn-iris-example",
         description="sklearn iris example",
         experiment_name=args.experiment_name,
         tags = {"starter_run" : os.environ.get("MLFLOW_RUN_ID") },
-        environment_variables={
-            "AZ_BATCHAI_CONFIG_EnableDefaultLogFilteringPatterns": "false"
-        }
+        # environment_variables={
+        #     "AZ_BATCHAI_CONFIG_EnableDefaultLogFilteringPatterns": "false"
+        # }
     )
     
     return job
@@ -54,10 +53,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # add arguments
-    parser.add_argument("--subscription", type=str)
-    parser.add_argument("--resource_group", type=str)
-    parser.add_argument("--workspace_name", type=str)
-    parser.add_argument("--experiment_name", type=str)
+    parser.add_argument("--subscription", type=str, default='b17253fa-f327-42d6-9686-f3e553e24763')
+    parser.add_argument("--resource_group", type=str, default='anksing_rg')
+    parser.add_argument("--workspace_name", type=str, default='anksing_wcus')
+    parser.add_argument("--experiment_name", type=str, default='obo-aml-example')
     parser.add_argument("--iris-csv", type=str)
     parser.add_argument("--C", type=float, default=1.0)
     parser.add_argument("--kernel", type=str, default="rbf")
