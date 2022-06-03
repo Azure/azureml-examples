@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: local-folder-example
+description: Data asset created from local folder.
+type: uri_folder
+path: data

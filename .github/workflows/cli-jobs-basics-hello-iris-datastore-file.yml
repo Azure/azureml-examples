@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/jobs/basics/**
       - .github/workflows/cli-jobs-basics-hello-iris-datastore-file.yml
@@ -25,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/basics/hello-iris-datastore-file.yml
-      working-directory: cli
+      run: bash -x ../../run-job.sh hello-iris-datastore-file.yml
+      working-directory: cli/jobs/basics

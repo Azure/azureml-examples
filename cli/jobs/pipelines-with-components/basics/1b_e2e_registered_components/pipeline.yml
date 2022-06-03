@@ -1,14 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-description: "E2E dummy train-score-eval pipeline with registered components"
+display_name: 1b_e2e_registered_components
+description: E2E dummy train-score-eval pipeline with registered components
 
 inputs:
-  pipeline_job_training_input:
-    type: uri_folder 
-    path: ./data
-  pipeline_job_test_input:
-    type: uri_folder 
-    path: ./data
   pipeline_job_training_max_epocs: 20
   pipeline_job_training_learning_rate: 1.8
   pipeline_job_learning_rate_schedule: 'time-based'
@@ -27,30 +22,34 @@ outputs:
 compute: azureml:cpu-cluster
 
 jobs:
-  train-job:
+  train_job:
     type: command
     component: azureml:my_train@latest
     inputs:
-      training_data: ${{parent.inputs.pipeline_job_training_input}}
+      training_data: 
+        type: uri_folder 
+        path: ./data      
       max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
       learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
       learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
   
-  score-job:
+  score_job:
     type: command
     component: azureml:my_score@latest
     inputs:
-      model_input: ${{parent.jobs.train-job.outputs.model_output}}
-      test_data: ${{parent.inputs.pipeline_job_test_input}}
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: 
+        type: uri_folder 
+        path: ./data
     outputs:
       score_output: ${{parent.outputs.pipeline_job_scored_data}}
 
-  evaluate-job:
+  evaluate_job:
     type: command
     component: azureml:my_eval@latest
     inputs:
-      scoring_result: ${{parent.jobs.score-job.outputs.score_output}}
+      scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
     outputs:
       eval_output: ${{parent.outputs.pipeline_job_evaluation_report}}

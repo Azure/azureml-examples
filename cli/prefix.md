@@ -22,6 +22,13 @@ Welcome to the Azure Machine Learning examples repository!
 
 ## Getting started
 
-1. [Install and set up the CLI (v2)](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli)
+1. Install and set up the CLI (v2)
+
+```terminal
+az extension remove --name ml
+
+az extension add --name ml --yes
+```
 
 ## Examples
+ 
