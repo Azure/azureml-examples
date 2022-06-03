@@ -1,8 +1,8 @@
-xgboost==1.6.1
-mlflow==1.26.0
-azureml-mlflow==1.41.0
-scikit-learn==1.1.1
-pandas==1.4.2
-numpy==1.22.4
-matplotlib==3.5.2
+xgboost
+mlflow
+azureml-mlflow
+scikit-learn
+pandas
+numpy
+matplotlib
 hyperopt
