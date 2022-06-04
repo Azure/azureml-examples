@@ -42,6 +42,46 @@ jobs:
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
 
+    - name: set configure
+      if: ${{ always() }}
+      run: |
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml   
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |
@@ -68,14 +108,6 @@ jobs:
       timeout-minutes: 300
       continue-on-error: true
 
-    - name: set configure
-      if: ${{ always() }}
-      run: |
-        az account set --subscription $SUBSCRIPTION
-        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
-      timeout-minutes: 30
-      continue-on-error: true
-    
     - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
       if: ${{ always() }}
       run: |
@@ -88,7 +120,7 @@ jobs:
       continue-on-error: true
 
 
-    - name: setup env for RAI
+    - name: setup env for cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
       if: ${{ always() }}
       run: |
         set -x
