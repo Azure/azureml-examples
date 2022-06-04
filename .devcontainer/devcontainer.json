@@ -2,6 +2,7 @@
     "build": { "dockerfile": "Dockerfile" },
     "extensions": [
 		"dbaeumer.vscode-eslint",
-		"ms-toolsai.vscode-ai"
+		"ms-toolsai.vscode-ai",
+		"ms-python.python"
 	]
   }
