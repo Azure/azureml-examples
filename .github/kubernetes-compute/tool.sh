@@ -506,7 +506,7 @@ collect_jobs_from_workflows(){
     cat $OUPUT_FILE
 }
 
-run_cli-automl_job(){
+run_cli_automl_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
     CONVERTER_ARGS="${@:2}"
 
