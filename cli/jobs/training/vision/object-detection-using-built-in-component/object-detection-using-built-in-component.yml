@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: object-detection-using-bulit-in-component
+description: Trains an object detection model using a built-in component.
+
+compute: azureml:nc6
+
+jobs:
+  train:
+    type: command
+    component: azureml://registries/azureml-dev/components/train_object_detection_model/
+    inputs:
+      training_data:
+        type: mltable
+        path: ./data/training-mltable-folder
+      validation_data:
+        type: mltable
+        path: ./data/validation-mltable-folder
+    resources:
+      instance_count: 1
+
+  predict:
+    component: file:./custom-components/predict.yaml
+    inputs:
+      model: ${{parent.jobs.train.outputs.model}}

@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+description: Predict objects in test images using a trained model.
+
+name: predict
+display_name: Predict
+version: 1
+
+inputs:
+  model:
+    type: mlflow_model
+
+code: ./src
+
+environment: azureml:AzureML-AutoML-DNN-Vision-GPU:89
+
+command: >-
+  python predict.py
+  --model ${{inputs.model}}
