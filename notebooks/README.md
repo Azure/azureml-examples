@@ -22,7 +22,7 @@ directory|notebooks|status|description
 -|-|-|-
 [basics](basics)|1.train-lightgbm-local.ipynb|[![basics](https://github.com/Azure/azureml-examples/workflows/notebooks-basics/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-basics.yml)|*no description*
 [cloud-data](cloud-data)|blob-adls-numpy.ipynb<br>blob-adls-pandas.ipynb|[![cloud-data](https://github.com/Azure/azureml-examples/workflows/notebooks-cloud-data/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-cloud-data.yml)|*no description*
-[mlflow](mlflow)|mlflow-v1-comparison.ipynb|[![mlflow](https://github.com/Azure/azureml-examples/workflows/notebooks-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-mlflow.yml)|*no description*
+[using-mlflow](using-mlflow)||[![using-mlflow](https://github.com/Azure/azureml-examples/workflows/notebooks-using-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/notebooks-using-mlflow.yml)|*no description*
 
 ## Contributing
 
