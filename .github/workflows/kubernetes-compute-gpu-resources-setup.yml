@@ -56,8 +56,6 @@ jobs:
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with:
