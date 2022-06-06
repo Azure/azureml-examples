@@ -47,7 +47,7 @@ jobs:
       FILE_TICKET: false
       SEVERITY: 3
       KEY_VAULT_NAME: amlarcgithubworkflowkv
-      OWNERS:amlarc@microsoft.com
+      OWNERS: amlarc@microsoft.com
       TITLE: "[Github Workflow] kubernetes-compute-sdk-jobs-automl-standalone-jobs failed"
       GITHUB_REPO: https://github.com/Azure/azureml-examples
       WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-sdk-jobs-automl-standalone-jobs.yml
