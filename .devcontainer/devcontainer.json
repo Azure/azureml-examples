@@ -3,6 +3,12 @@
     "extensions": [
 		"dbaeumer.vscode-eslint",
 		"ms-toolsai.vscode-ai",
-		"ms-python.python"
+		"ms-python.python",
+		"GitHub.codespaces",
+		"ms-vscode-remote.remote-containers",
+		"ms-azuretools.vscode-docker",
+		"ms-kubernetes-tools.vscode-kubernetes-tools",
+		"ms-toolsai.jupyter",
+		"ms-vscode.azure-account"
 	]
   }
