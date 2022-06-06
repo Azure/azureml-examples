@@ -1,4 +1,4 @@
-name: kubernetes-compute-sdk-jobs-single-step
+name: kubernetes-compute-sdk-jobs-single-step-2
 on:
   schedule:
     - cron: "0 19 * * *"
