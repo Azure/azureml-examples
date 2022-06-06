@@ -8,3 +8,4 @@ RUN npm install -g autorest@3.0.6339
 RUN apt-get install git -y
 RUN echo "pip install debugpy" | bash
 RUN echo "pip install flake8" | bash
+RUN echo "export AZURE_EXTENSION_DIR=/workspaces/sdk-cli-v2/src/cli/src" >> /root/.bashrc
