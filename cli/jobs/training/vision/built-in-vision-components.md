@@ -31,4 +31,4 @@ Input datasets (both training and validation datasets) are formatted as JSONL fi
 
 ## End-to-End Example
 
-You can see an end-to-end example [here](..). The example prepares real input image data, trains an object detection model, and then inferences using the trained model.
+You can see an end-to-end example [here](object-detection-using-built-in-component). The example prepares real input image data, trains an object detection model, and then inferences using the trained model.

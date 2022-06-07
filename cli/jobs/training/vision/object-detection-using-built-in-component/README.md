@@ -2,7 +2,7 @@
 
 ## Overview
 
-Using built-in components, you can train an object detection model (and other vision models) without writing any code. You can refer to documentation [here](built-in-vision-components.md) for more information on built-in vision components.
+Using built-in components, you can train an object detection model (and other vision models) without writing any code. You can refer to documentation [here](../built-in-vision-components.md) for more information on built-in vision components.
 
 
 ## How to Run
