@@ -8,7 +8,7 @@ compute: azureml:nc6
 jobs:
   train:
     type: command
-    component: azureml://registries/azureml-dev/components/train_object_detection_model/
+    component: azureml://registries/azureml-staging/components/train_object_detection_model/versions/0.0.1-prelease
     inputs:
       training_data:
         type: mltable
@@ -20,6 +20,7 @@ jobs:
       instance_count: 1
 
   predict:
-    component: file:./custom-components/predict.yaml
+    type: command
+    component: file:./predict.yml
     inputs:
       model: ${{parent.jobs.train.outputs.model}}
