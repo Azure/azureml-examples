@@ -40,7 +40,10 @@ if __name__ == "__main__":
 
     # Read the test images into a pandas DataFrame
     test_df = pd.DataFrame(
-        data=[base64.encodebytes(read_file_bytes(image_path)) for image_path in test_image_paths],
+        data=[
+            base64.encodebytes(read_file_bytes(image_path))
+            for image_path in test_image_paths
+        ],
         columns=["image"],
     )
     print(f"Test image DataFrame shape: {test_df.shape}")
@@ -52,5 +55,5 @@ if __name__ == "__main__":
     result = pyfunc_model.predict(test_df).to_json(orient="records")
 
     # Print the predictions
-    print('Predictions:')
+    print("Predictions:")
     print(result)
