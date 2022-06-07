@@ -16,8 +16,6 @@ jobs:
       validation_data:
         type: mltable
         path: ./data/validation-mltable-folder
-    resources:
-      instance_count: 1
 
   predict:
     type: command
