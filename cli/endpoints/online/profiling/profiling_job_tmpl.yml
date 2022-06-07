@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >
-  python -m online_endpoints_model_profiler ${{inputs.payload}}
+  cd /profiling-service && python profile.py ${{inputs.payload}}
 experiment_name: profiling-job
 environment:
   image: mcr.microsoft.com/azureml/online-endpoints-model-profiler:latest
