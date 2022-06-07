@@ -7,11 +7,11 @@ name: predict
 display_name: Predict
 version: 1
 
+code: ./src
+
 inputs:
   model:
     type: mlflow_model
-
-code: ./src
 
 environment: azureml:AzureML-AutoML-DNN-Vision-GPU:89
 
