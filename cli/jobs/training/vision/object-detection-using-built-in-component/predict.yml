@@ -9,12 +9,12 @@ version: 1
 
 code: ./src
 
+command: >-
+  python predict.py
+  --model ${{inputs.model}}
+
 inputs:
   model:
     type: mlflow_model
 
 environment: azureml:AzureML-AutoML-DNN-Vision-GPU:89
-
-command: >-
-  python predict.py
-  --model ${{inputs.model}}
