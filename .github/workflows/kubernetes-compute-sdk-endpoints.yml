@@ -131,6 +131,11 @@ jobs:
         wait
       timeout-minutes: 300
 
+    - name: check_jobs
+      run: |
+        python .github/kubernetes-compute/papermill_count_failed_case.py -i "$$JOB_LIST_FILE"
+      timeout-minutes: 30
+
     - name: file_icm
       if: ${{ failure() && github.event_name != 'pull_request' }}
       run: |
