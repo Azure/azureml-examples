@@ -45,6 +45,9 @@ def main(args):
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True)
     )
+    jobs += sorted(
+        glob.glob("jobs/training/**/pipeline.yml", recursive=True)
+    )
     jobs = [
         job.replace(".yml", "")
         for job in jobs
