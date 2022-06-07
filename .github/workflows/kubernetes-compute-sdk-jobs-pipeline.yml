@@ -100,16 +100,16 @@ jobs:
 
     - name: run jobs
       run: |
-        mkdir sdk/jobs/.azureml
-        echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples-rg", "workspace_name": "amlarc-githubtest-ws"}' > sdk/jobs/.azureml/config.json
+        mkdir .azureml
+        echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "amlarc-githubtest-ws"}' > .azureml/config.json
         for job in $(cat $JOB_LIST_FILE); do
             if [[ "$job" = *"ipynb" ]]; then
                 echo "Run job: $job"
 
                 FOLDER=$(dirname "$job")
                 FILE=$(basename "$job")
-                FOLDERBACK=$(echo $FOLDER | sed -e "s/[a-zA-Z0-9\-]*\//\.\.\//g")
-                FOLDERBACK=$(echo $FOLDERBACK | sed -r "s/\/[a-zA-Z0-9\-]+/\/\.\./g")
+                FOLDERBACK=$(echo $FOLDER | sed -e "s/[a-zA-Z0-9\-_-]*\//\.\.\//g")
+                FOLDERBACK=$(echo $FOLDERBACK | sed -r "s/\/[a-zA-Z0-9\-_-]+/\/\.\./g")
 
                 echo "$FOLDER|$FILE|$FOLDERBACK"
 
@@ -155,4 +155,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: component
-        path: sdk/jobs/pipeline
+        path: sdk/jobs/pipelines

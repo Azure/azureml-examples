@@ -106,8 +106,8 @@ jobs:
 
                 FOLDER=$(dirname "$job")
                 FILE=$(basename "$job")
-                FOLDERBACK=$(echo $FOLDER | sed -e "s/[a-zA-Z0-9\-]*\//\.\.\//g")
-                FOLDERBACK=$(echo $FOLDERBACK | sed -r "s/\/[a-zA-Z0-9\-]+/\/\.\./g")
+                FOLDERBACK=$(echo $FOLDER | sed -e "s/[a-zA-Z0-9\-_-]*\//\.\.\//g")
+                FOLDERBACK=$(echo $FOLDERBACK | sed -r "s/\/[a-zA-Z0-9\-_-]+/\/\.\./g")
 
                 echo "$FOLDER|$FILE|$FOLDERBACK"
 
