@@ -1,9 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: object_detection_using_bulit_in_component
+display_name: object-detection-using-bulit-in-component
 description: Trains an object detection model using a built-in component.
 
-compute: azureml:gpu-compute
+compute: azureml:gpu-cluster
 
 jobs:
   train:
