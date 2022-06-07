@@ -3,7 +3,7 @@ type: pipeline
 display_name: object-detection-using-bulit-in-component
 description: Trains an object detection model using a built-in component.
 
-compute: azureml:nc6
+compute: azureml:gpu-compute
 
 jobs:
   train:
