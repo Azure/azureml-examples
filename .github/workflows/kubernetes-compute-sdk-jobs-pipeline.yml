@@ -120,8 +120,9 @@ jobs:
                 sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" $FILE
                 sed -i "s/@pipeline(/&force_rerun=True,/" $FILE
                 OUTPUTJOB=$(echo $FILE | sed -e "s/.ipynb/.output.ipynb/g")
-                papermill -k python $FILE $OUTPUTJOB
+                papermill -k python $FILE $OUTPUTJOB &
 
+                sleep 60
                 cd $FOLDERBACK
             else
                 echo "Found invalid job: $job"
@@ -132,6 +133,7 @@ jobs:
       timeout-minutes: 300
 
     - name: check_jobs
+      if: ${{ always() }}
       run: |
         python .github/kubernetes-compute/papermill_count_failed_case.py -i "$JOB_LIST_FILE"
       timeout-minutes: 30

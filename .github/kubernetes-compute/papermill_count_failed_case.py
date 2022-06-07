@@ -1,10 +1,12 @@
 import argparse
 import json
+import os
 
 
 def check_test_case(input_file):
     error_count = 0
     error_list = []
+    not_run_list = []
 
     with open(input_file) as f:
         files = f.readlines()
@@ -12,6 +14,9 @@ def check_test_case(input_file):
             file = file.replace("\n", "")
             if ".ipynb" in file:
                 file = file.replace(".ipynb", ".output.ipynb")
+                if not os.path.isfile(file):
+                    not_run_list.append(file)
+                    continue
                 with open(file) as output_file:
                     output_file_obj = json.load(output_file)
                     if "An Exception was encountered at" in output_file_obj["cells"][0]["source"][0]:
@@ -21,6 +26,11 @@ def check_test_case(input_file):
     if error_count != 0:
         for err in error_list:
             print(err)
+
+        print("\nThese test case are kipped")
+        for not_run in not_run_list:
+            print(not_run)
+
         raise Exception("Error occurs in these test cases")
 
 
