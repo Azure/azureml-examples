@@ -34,7 +34,7 @@ def main():
 
 def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     notebook_name = notebook.replace(".ipynb", "")
-    creds = "${{secrets.AZ_AE_CREDS}}"
+    creds = "${{secrets.AZ_CREDS}}"
 
     run_update_env = ""
     update_yml_file = (
