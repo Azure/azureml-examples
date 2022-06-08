@@ -1,0 +1,7 @@
+xgboost
+mlflow
+azureml-mlflow
+scikit-learn
+pandas
+numpy
+matplotlib
