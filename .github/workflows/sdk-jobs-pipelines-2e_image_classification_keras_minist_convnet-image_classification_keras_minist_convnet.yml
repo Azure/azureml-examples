@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - pipeline/*
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-2e_image_classification_keras_minist_convnet-image_classification_keras_minist_convnet.yml

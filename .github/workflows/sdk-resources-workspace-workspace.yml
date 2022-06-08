@@ -1,12 +1,9 @@
 name: sdk-resources-workspace-workspace
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
-      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-resources-workspace-workspace.yml

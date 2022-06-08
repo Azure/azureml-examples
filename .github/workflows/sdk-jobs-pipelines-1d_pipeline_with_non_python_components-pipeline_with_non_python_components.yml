@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - pipeline/*
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-1d_pipeline_with_non_python_components-pipeline_with_non_python_components.yml

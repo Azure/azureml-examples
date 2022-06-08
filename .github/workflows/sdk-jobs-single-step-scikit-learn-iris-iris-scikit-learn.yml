@@ -6,7 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-single-step-scikit-learn-iris-iris-scikit-learn.yml

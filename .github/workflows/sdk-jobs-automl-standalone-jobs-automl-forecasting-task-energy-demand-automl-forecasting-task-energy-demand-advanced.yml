@@ -6,7 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced.yml

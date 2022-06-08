@@ -296,9 +296,9 @@ def parse_path(path):
 
     return filename, project_dir, hyphenated
 
-
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
+    is_pipeline_sample = "jobs/pipelines" in job
     creds = "${{secrets.AZ_CREDS}}"
     # append nowait args as status of pipeline job with schedule will always be 'NotStarted'
     extra_args = " schedule_experiment nowait" if "schedule" in filename else ""
@@ -313,8 +313,10 @@ on:
       - sdk-preview
     paths:
       - cli/{project_dir}/**
-      - .github/workflows/cli-{hyphenated}.yml
-      - cli/setup.sh
+      - .github/workflows/cli-{hyphenated}.yml\n"""
+    if is_pipeline_sample:
+        workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
+    workflow_yaml += f"""      - cli/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest

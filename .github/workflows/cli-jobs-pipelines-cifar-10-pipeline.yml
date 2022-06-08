@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines/cifar-10/**
       - .github/workflows/cli-jobs-pipelines-cifar-10-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - pipeline/*
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-2a_train_mnist_with_tensorflow-train_mnist_with_tensorflow.yml

@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - pipeline/*
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-1e_pipeline_with_registered_components-pipeline_with_registered_components.yml

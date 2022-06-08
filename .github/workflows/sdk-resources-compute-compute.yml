@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-resources-compute-compute.yml

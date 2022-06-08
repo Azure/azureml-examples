@@ -27,7 +27,7 @@ export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet/mlflow/sample-request.
 export ENV_DIR_PATH="endpoints/online/managed/vnet/mlflow/environment"
 # </set_env_vars>
 
-export SUFFIX="moevnetdoc" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
+export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
@@ -45,6 +45,11 @@ export ENDPOINT_NAME=endpt-vnet-mlflow-`echo $RANDOM`
 # Get the current branch name of the azureml-examples. Useful in PR scenario. Since the sample code is cloned and executed from a VM, we need to pass the branch name when running az vm run-command
 # If running from local machine, change it to your branch name
 export GIT_BRANCH=$GITHUB_HEAD_REF
+# need to set branch name manually if executed from main
+if [ "$GIT_BRANCH" == "" ];
+then
+   GIT_BRANCH="main"
+fi
 
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
