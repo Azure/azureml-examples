@@ -29,7 +29,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: Run update-azure-extensions
       run: |
          chmod +x ./scripts/update-azure-extensions.sh
@@ -37,6 +37,3 @@ jobs:
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
-    - name: run mlflow-v1-comparison.ipynb
-      run: papermill mlflow-v1-comparison.ipynb - -k python
-      working-directory: notebooks/mlflow

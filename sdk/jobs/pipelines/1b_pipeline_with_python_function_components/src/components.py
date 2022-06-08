@@ -5,9 +5,10 @@ from uuid import uuid4
 # mldesigner package contains the command_component which can be used to define component from a python function
 from mldesigner import command_component, Input, Output
 
+
 @command_component()
 def train_model(
-    training_data: Input(type="uri_file"), 
+    training_data: Input(type="uri_file"),
     max_epochs: int,
     model_output: Output(type="uri_folder"),
     learning_rate=0.02,
@@ -20,7 +21,7 @@ def train_model(
         learning_rate: learning rate
         model_output: target folder to save model output
     """
-    
+
     lines = [
         f"Training data path: {training_data}",
         f"Max epochs: {max_epochs}",
@@ -44,6 +45,7 @@ conda_env = dict(
     conda_file=Path(__file__).parent / "conda.yaml",
     image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
 )
+
 
 @command_component(
     display_name="Score",

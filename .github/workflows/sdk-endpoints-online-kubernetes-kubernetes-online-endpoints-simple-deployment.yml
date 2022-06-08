@@ -1,4 +1,4 @@
-name: sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment
+name: sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-simple-deployment
 on:
   workflow_dispatch:
   schedule:
@@ -6,10 +6,9 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
     paths:
-      - sdk/endpoints/online/**
-      - .github/workflows/sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment.yml
+      - sdk/**
+      - .github/workflows/sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-simple-deployment.yml
       - sdk/dev-requirements.txt
       - .github/kubernetes-compute/tool.sh
 jobs:
@@ -31,7 +30,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -53,7 +52,7 @@ jobs:
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" kubernetes-online-endpoints-simple-deployment.ipynb
           sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" kubernetes-online-endpoints-simple-deployment.ipynb
           sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" kubernetes-online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" kubernetes-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" kubernetes-online-endpoints-simple-deployment.ipynb
 
           papermill -k python kubernetes-online-endpoints-simple-deployment.ipynb kubernetes-online-endpoints-simple-deployment.output.ipynb
       working-directory: sdk/endpoints/online/kubernetes
@@ -75,5 +74,5 @@ jobs:
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: online-endpoints-simple-deployment
+        name: kubernetes-online-endpoints-simple-deployment
         path: sdk/endpoints/online/kubernetes

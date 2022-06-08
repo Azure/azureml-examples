@@ -14,7 +14,10 @@ NOT_TESTED_NOTEBOOKS = [
     "automl-nlp-text-classification-multiclass-task-sentiment-mlflow",
     "mlflow-model-local-inference-test",
 ]  # cannot automate lets exclude
-NOT_SCHEDULED_NOTEBOOKS = ["compute"]  # these are too expensive, lets not run everyday
+NOT_SCHEDULED_NOTEBOOKS = [
+    "compute",
+    "workspace",
+]  # these are too expensive, lets not run everyday
 # define branch where we need this
 # use if running on a release candidate, else make it empty
 BRANCH = "main"  # default - do not change
@@ -29,6 +32,9 @@ def main(args):
 
     # write workflows
     write_workflows(notebooks)
+
+    # modify notebooks
+    modify_notebooks(notebooks)
 
     # write readme
     write_readme(notebooks)
@@ -253,6 +259,32 @@ def write_readme_row(
 
     row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
     return row
+
+
+def modify_notebooks(notebooks):
+    print("modifying notebooks...")
+    # setup variables
+    kernelspec = {
+        "display_name": "Python 3.8 - AzureML",
+        "language": "python",
+        "name": "python38-azureml",
+    }
+
+    # for each notebooks
+    for notebook in notebooks:
+
+        # read in notebook
+        with open(notebook, "r") as f:
+            data = json.load(f)
+
+        # update metadata
+        data["metadata"]["kernelspec"] = kernelspec
+
+        # write notebook
+        with open(notebook, "w") as f:
+            json.dump(data, f, indent=1)
+
+    print("finished modifying notebooks...")
 
 
 @contextlib.contextmanager

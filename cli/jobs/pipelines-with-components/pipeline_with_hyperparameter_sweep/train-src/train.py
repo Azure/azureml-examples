@@ -44,7 +44,6 @@ def main(args):
     # Output the model and test data
     # write to local folder first, then copy to output folder
 
-   
     mlflow.sklearn.save_model(model, "model")
 
     from distutils.dir_util import copy_tree
@@ -54,7 +53,6 @@ def main(args):
     to_directory = args.model_output
 
     copy_tree(from_directory, to_directory)
-    
 
     X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
     y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)

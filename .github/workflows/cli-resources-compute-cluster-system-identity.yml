@@ -1,0 +1,30 @@
+name: cli-resources-compute-cluster-system-identity
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/resources/compute/cluster-system-identity.yml
+      - .github/workflows/cli-resources-compute-cluster-system-identity.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create asset
+      run: az ml compute create -f resources/compute/cluster-system-identity.yml
+      working-directory: cli
