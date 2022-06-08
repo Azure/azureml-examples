@@ -7,4 +7,5 @@ max_instances: 2
 idle_time_before_scale_down: 120
 identity:
   type: user_assigned
-  user_assigned_identities: ["identity_resource_id"]
+  user_assigned_identities: 
+    - resource_id: "identity_resource_id"
