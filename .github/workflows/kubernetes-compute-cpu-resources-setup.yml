@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
-      RESOURCE_GROUP: azureml-examples-rg
+      RESOURCE_GROUP: azureml-examples
       LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
       VM_SKU: Standard_D4s_v3
@@ -56,8 +56,6 @@ jobs:
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -68,7 +66,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
       timeout-minutes: 30
     
     # provision resources

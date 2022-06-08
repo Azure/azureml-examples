@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: {{deployment_name}} 
+endpoint_name: {{endpoint_name}}
+model:
+  name: {{model_name}}
+  path: ./{{model_name}}/model
+environment: 
+  name: {{environment_name}} 
+  image: {{acr_name}}.azurecr.io/azureml-examples/mlflow-cc-{{model_name}}:latest
+  inference_config:
+    liveness_route:
+      path: /
+      port: 5001
+    readiness_route:
+      path: /
+      port: 5001
+    scoring_route:
+      path: /score
+      port: 5001
+instance_type: Standard_DS2_v2
+instance_count: 1

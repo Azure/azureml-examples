@@ -11,3 +11,4 @@ dependencies:
     - scikit-learn==1.0.1
     - pandas==1.3.4
     - matplotlib==3.2.2
+    - protobuf==3.20.0

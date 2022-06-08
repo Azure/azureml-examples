@@ -459,7 +459,7 @@ run_cli_job(){
         return 2
     elif [[ $status != "Completed" ]]; then 
         timeout 5m az ml job cancel $SRW -n $run_id
-	    return 3
+        return 3
     fi
 }
 
@@ -506,6 +506,53 @@ collect_jobs_from_workflows(){
     cat $OUPUT_FILE
 }
 
+run_cli_automl_job(){
+    JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
+    CONVERTER_ARGS="${@:2}"
+
+    SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
+    TIMEOUT="${TIMEOUT:-60m}"
+
+    JOB_SPEC_FILE=$(basename $JOB_YML)
+    JOB_DIR=$(dirname $JOB_YML)
+
+    # switch to directory of job spec file
+    cd $JOB_DIR
+
+    # preprocess job spec for amlarc compute
+    python $SCRIPT_DIR/convert.py -i $JOB_SPEC_FILE $CONVERTER_ARGS
+
+    # submit job
+    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
+    run_id=$(az ml job create $SRW -f $JOB_SPEC_FILE --query name -o tsv)
+
+    # switch back
+    cd -
+
+    # check run id
+    echo "[JobRunId] $JOB_YML $run_id" | tee -a $RESULT_FILE
+    if [[ "$run_id" ==  "" ]]; then
+        echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
+        return 1
+    fi
+
+    # stream job logs
+    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
+
+    # show job status
+    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
+    echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
+
+    # check status
+    if [[ $status ==  "Failed" ]]; then
+        return 2
+    elif [[ $status != "Completed" ]]; then
+        timeout 5m az ml job cancel $SRW -n $run_id
+        return 3
+    fi
+
+}
+
 generate_workspace_config(){
     mkdir -p .azureml
     cat << EOF > .azureml/config.json
@@ -522,7 +569,10 @@ install_jupyter_dependency(){
     pip install notebook 
     ipython kernel install --name "amlarc" --user
     pip install matplotlib numpy scikit-learn==0.22.1 numpy joblib glob2
-    pip install azureml.core azure.cli.core azureml.opendatasets azureml.widgets
+    pip install azureml.core 
+    pip install azure.cli.core 
+    pip install azureml.opendatasets 
+    pip install azureml.widgets
     pip list || true
 }
 

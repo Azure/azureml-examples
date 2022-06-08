@@ -11,3 +11,4 @@ dependencies:
     - mldesigner
     - numpy==1.18.1
     - tensorflow==2.2.0
+    - protobuf==3.20.0

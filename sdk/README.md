@@ -14,7 +14,7 @@ description: Top-level directory for official Azure Machine Learning Python SDK 
 
 ## Public Preview
 
-We are excited to introduce the private preview of Azure Machine Learning **Python SDK v2**. Azure ML Python SDK v2 is an updated Python SDK package, which allows users to:
+We are excited to introduce the public preview of Azure Machine Learning **Python SDK v2**. Azure ML Python SDK v2 is an updated Python SDK package, which allows users to:
 
 * Submit training jobs
 * Manage data, models, environments
@@ -73,7 +73,7 @@ pip install --pre azure-ai-ml
 ## Clone examples repository
 
 ```terminal
-git clone https://github.com/Azure/azureml-examples --branch sdk-preview
+git clone https://github.com/Azure/azureml-examples
 cd azureml-examples/sdk
 ```
 

@@ -2,7 +2,7 @@
 ENDPOINT_LIST=$(az ml online-endpoint list --query "[*].[name]" -o tsv)
 echo $ENDPOINT_LIST
 for val in $ENDPOINT_LIST; do
-	echo deleting $val
+    echo deleting $val
     `az ml online-endpoint delete -n "$val" --yes --no-wait`
 done
 
@@ -10,7 +10,7 @@ done
 ENDPOINT_LIST=$(az ml batch-endpoint list --query "[*].[name]" -o tsv)
 echo $ENDPOINT_LIST
 for val in $ENDPOINT_LIST; do
-	echo deleting $val
+    echo deleting $val
     `az ml batch-endpoint delete -n "$val" --yes --no-wait`
 done
 
@@ -45,19 +45,23 @@ done
 # delete left over autoscale settings created for online endpoints
 AUTOSCALE_SETTINGS_LIST=$(az monitor autoscale list  --query "[*].[name]" -o tsv)
 for val in $AUTOSCALE_SETTINGS_LIST; do
-	if [[ $val == autoscale-* ]] ;
-    then
+    if [[ $val == autoscale-* ]]; then
         echo deleting $val
+        `az monitor autoscale delete -n "$val"`
     fi
-    `az monitor autoscale delete -n "$val"`
 done
 
 # delete workspaces created via testing
 WORKSPACES_LIST=$(az ml workspace list --query "[*].[name]" -o tsv)
 for val in $WORKSPACES_LIST; do
-    if [[ $val != "mlw-mevnet" ] && [ $val == "mlw-"* ]]; then
-        echo deleting $val
-        `az ml workspace delete -n "$val" --yes --no-wait --all-resources`
+    if [[ $val == "mlw-"* ]]; then
+        if [[ $val == "mlw-mevnet" ]]; then
+            echo skipping $val
+        else
+            echo deleting $val
+            `az ml workspace delete -n "$val" --yes --no-wait --all-resources`
+        fi
+    else
+        echo $val not a match
     fi
 done
-
