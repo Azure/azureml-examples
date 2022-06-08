@@ -1,7 +1,7 @@
 name: kubernetes-compute-sdk-endpoints
 on:
   schedule:
-    - cron: "0 19 * * *"
+    - cron: "0 21 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
