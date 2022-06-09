@@ -253,7 +253,7 @@ checkExperimentResult(
     inputArgs.experiment_name,
     inputArgs.folder,
     inputArgs.metric_name,
-    inputArgs.expected_num_iteration,
+    inputArgs.expected_num_iteration or 1000,
     inputArgs.minimum_median_score,
     inputArgs.absolute_minimum_score or 0.0,
     inputArgs.maximum_median_score or 1.0,
