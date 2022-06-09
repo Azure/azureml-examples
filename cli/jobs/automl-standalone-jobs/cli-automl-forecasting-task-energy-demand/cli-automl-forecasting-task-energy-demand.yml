@@ -1,0 +1,46 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+type: automl
+
+experiment_name: dpv2-cli-automl-forecasting-experiment
+# name: dpv2-sdk-forecasting-train-job-01
+description: A Time-Series Forecasting job using energy demand dataset
+
+compute: azureml:cpu-cluster
+
+task: forecasting
+primary_metric: r2_score
+
+log_verbosity: debug
+
+target_column_name: "demand"
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  path: "./validation-mltable-folder"
+  type: mltable
+
+limits:
+  timeout_minutes: 180
+  max_trials: 10
+  max_concurrent_trials: 5
+  trial_timeout_minutes: 20
+  enable_early_termination: true
+
+forecasting:
+  time_column_name: "timeStamp"
+  forecast_horizon: 48
+  frequency: "H"
+  target_lags: [12]
+  target_rolling_window_size: 4
+  # TO TRY: ADDITIONAL FORECASTING TRAINING PARAMS ---
+  # time_series_id_column_names=["tid1", "tid2", "tid2"],
+  # short_series_handling_config=ShortSeriesHandlingConfiguration.DROP,
+  # use_stl="season",
+  # seasonality=3,
+
+training:
+  enable_model_explainability: true
+  enable_stack_ensemble: false
+  allowed_training_algorithms:
+    - xg_boost_regressor

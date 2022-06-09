@@ -5,7 +5,7 @@ DEPLOYMENT_NAME=r-deployment
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-r-`echo $RANDOM`
 
 # Download model
 wget https://aka.ms/r-model -O $BASE_PATH/scripts/model.rds

@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/assets/data/local-folder.yml
       - .github/workflows/cli-assets-data-local-folder.yml

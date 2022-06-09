@@ -1,0 +1,1 @@
+az ml compute update --name mycluster --user-assigned-identities user_identity_resource_id

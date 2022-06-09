@@ -1,7 +1,0 @@
-# <data>
-$schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
-name: greendata
-version: 3
-description: sample green taxi dataset
-path: ./data
-# </data>

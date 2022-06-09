@@ -5,6 +5,7 @@ import json
 import os
 import re
 
+import numpy as np
 import pandas as pd
 
 from matplotlib import pyplot as plt
@@ -121,7 +122,7 @@ def calculate_scores_and_build_plots(
     input_dir: str, output_dir: str, automl_settings: Dict[str, Any]
 ):
     os.makedirs(output_dir, exist_ok=True)
-    grains = automl_settings.get(constants.TimeSeries.GRAIN_COLUMN_NAMES)
+    grains = automl_settings.get(constants.TimeSeries.TIME_SERIES_ID_COLUMN_NAMES)
     time_column_name = automl_settings.get(constants.TimeSeries.TIME_COLUMN_NAME)
     if grains is None:
         grains = []
@@ -146,6 +147,9 @@ def calculate_scores_and_build_plots(
         _draw_one_plot(one_forecast, time_column_name, grains, pdf)
     pdf.close()
     forecast_df.to_csv(os.path.join(output_dir, FORECASTS_FILE), index=False)
+    # Remove np.NaN and np.inf from the prediction and actuals data.
+    forecast_df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    forecast_df.dropna(subset=[ACTUALS, PREDICTIONS], inplace=True)
     metrics = compute_all_metrics(forecast_df, grains + [BACKTEST_ITER])
     metrics.to_csv(os.path.join(output_dir, SCORES_FILE), index=False)
 

@@ -1,0 +1,24 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+
+type: automl
+experiment_name: dpv2-cli-text-ner
+description: A text named entity recognition job using CoNLL 2003 data
+
+compute: azureml:gpu-cluster
+
+task: text_ner
+primary_metric: accuracy
+log_verbosity: debug
+
+limits:
+  timeout_minutes: 60
+
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  type: mltable
+  path: "./validation-mltable-folder"
+
+# featurization:
+#   dataset_language: "eng"
