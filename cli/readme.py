@@ -21,7 +21,6 @@ EXCLUDED_ASSETS = [
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 BRANCH = "main"  # default - do not change
 BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
-BRANCH = "may-sdk-preview"  # this should be deleted when this branch is merged to sdk-preview
 
 
 # define functions

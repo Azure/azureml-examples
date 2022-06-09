@@ -22,7 +22,6 @@ NOT_SCHEDULED_NOTEBOOKS = [
 # use if running on a release candidate, else make it empty
 BRANCH = "main"  # default - do not change
 BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
-BRANCH = "may-sdk-preview"  # this should be deleted when this branch is merged to sdk-preview
 
 
 def main(args):
