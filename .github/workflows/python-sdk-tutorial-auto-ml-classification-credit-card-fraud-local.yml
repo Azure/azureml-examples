@@ -54,6 +54,22 @@ jobs:
     - name: run auto-ml-classification-credit-card-fraud-local.ipynb
       run: papermill -k python auto-ml-classification-credit-card-fraud-local.ipynb auto-ml-classification-credit-card-fraud-local.output.ipynb
       working-directory: python-sdk/tutorials/automl-with-azureml/local-run-classification-credit-card-fraud
+    - name: check notebook output
+    - run: |
+         python scripts/validation/check_notebook_output.py \
+                --file_name auto-ml-classification-credit-card-fraud-local.output.ipynb \
+                --folder python-sdk/tutorials/automl-with-azureml/local-run-classification-credit-card-fraud \
+                --check warning stderr
+    - name: check experiment result
+    - run: |
+         python scripts/validation/check_experiment_result.py \
+                --experiment_name automl-classification-ccard-local \
+                --folder python-sdk/tutorials/automl-with-azureml/local-run-classification-credit-card-fraud \
+                --expected_num_iteration 1000 \
+                --minimum_median_score 0.6 \
+                --metric_name average_precision_score_weighted \
+                --check_explanation_best_run True \
+                --is_local_run True
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
