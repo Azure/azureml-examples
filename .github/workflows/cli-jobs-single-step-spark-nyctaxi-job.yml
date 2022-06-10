@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/single-step/spark/nyctaxi/**
       - .github/workflows/cli-jobs-single-step-spark-nyctaxi-job.yml

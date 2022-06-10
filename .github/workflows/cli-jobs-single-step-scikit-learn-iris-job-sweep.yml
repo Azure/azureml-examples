@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/single-step/scikit-learn/iris/**
       - .github/workflows/cli-jobs-single-step-scikit-learn-iris-job-sweep.yml
