@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/single-step/tensorflow/mnist/**
       - .github/workflows/cli-jobs-single-step-tensorflow-mnist-job.yml

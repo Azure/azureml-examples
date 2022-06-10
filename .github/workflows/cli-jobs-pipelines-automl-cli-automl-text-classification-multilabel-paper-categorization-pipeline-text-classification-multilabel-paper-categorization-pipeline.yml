@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/pipelines/automl/cli-automl-text-classification-multilabel-paper-categorization-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-cli-automl-text-classification-multilabel-paper-categorization-pipeline-text-classification-multilabel-paper-categorization-pipeline.yml

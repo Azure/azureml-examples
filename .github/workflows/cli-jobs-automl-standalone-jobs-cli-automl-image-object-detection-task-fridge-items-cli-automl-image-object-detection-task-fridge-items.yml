@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/**
       - .github/workflows/cli-jobs-automl-standalone-jobs-cli-automl-image-object-detection-task-fridge-items-cli-automl-image-object-detection-task-fridge-items.yml

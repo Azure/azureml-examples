@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - sdk-preview
+      - may-sdk-preview
     paths:
       - cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand/**
       - .github/workflows/cli-jobs-automl-standalone-jobs-cli-automl-forecasting-task-energy-demand-cli-automl-forecasting-task-energy-demand.yml
