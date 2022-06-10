@@ -19,7 +19,10 @@ def check_test_case(input_file):
                     continue
                 with open(file) as output_file:
                     output_file_obj = json.load(output_file)
-                    if "An Exception was encountered at" in output_file_obj["cells"][0]["source"][0]:
+                    if (
+                        "An Exception was encountered at"
+                        in output_file_obj["cells"][0]["source"][0]
+                    ):
                         error_count += 1
                         error_list.append(file)
 
@@ -37,9 +40,7 @@ def check_test_case(input_file):
 
 if __name__ == "__main__":
     # Parse command line arguments
-    parser = argparse.ArgumentParser(
-        description="Check all papermill output files."
-    )
+    parser = argparse.ArgumentParser(description="Check all papermill output files.")
     parser.add_argument(
         "-i",
         "--input",
