@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-3b_pipeline_with_data-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
@@ -22,7 +23,7 @@ jobs:
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup
-      run: bash setup.sh
+      run: . setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job

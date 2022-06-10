@@ -7,10 +7,10 @@ on:
     branches:
       - main
       - sdk-preview
-      - may-sdk-preview
     paths:
       - cli/jobs/pipelines/automl/cli-automl-text-classification-multilabel-paper-categorization-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-cli-automl-text-classification-multilabel-paper-categorization-pipeline-text-classification-multilabel-paper-categorization-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup
-      run: bash setup.sh
+      run: . setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job

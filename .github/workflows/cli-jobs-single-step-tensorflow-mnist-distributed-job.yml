@@ -22,7 +22,7 @@ jobs:
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup
-      run: bash setup.sh
+      run: . setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
