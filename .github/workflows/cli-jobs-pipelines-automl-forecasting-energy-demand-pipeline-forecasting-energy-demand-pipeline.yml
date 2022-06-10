@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines/automl/forecasting-energy-demand-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-forecasting-energy-demand-pipeline-forecasting-energy-demand-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

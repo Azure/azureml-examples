@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/**
       - .github/workflows/cli-jobs-pipelines-with-components-rai_pipeline_adult_analyse-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
