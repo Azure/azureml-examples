@@ -35,6 +35,7 @@ allowed_list = [
     "no version information available",
     "Falling back to use azure cli login credentials",
     "recommend to use ServicePrincipalAuthentication or MsiAuthentication",
+    "Please refer to aka.ms/aml-notebook-auth",
 ]
 
 with open(full_name, "r") as notebook_file:
