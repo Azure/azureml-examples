@@ -257,6 +257,7 @@ def checkMetric(metrics, run_id, metric_name, expected_min, expected_max):
     assert score >= expected_min, lower_err_msg
     assert score <= expected_max, higher_err_msg
 
+
 def getNotebookRuns(runs, file_name, folder):
     full_name = os.path.join(folder, file_name)
     notebook_runs = []
@@ -287,5 +288,8 @@ checkExperimentResult(
 
 if inputArgs.check_explanation_best_run:
     check_experiment_model_explanation_of_best_run(
-        inputArgs.experiment_name, inputArgs.file_name, inputArgs.folder, inputArgs.is_local_run
+        inputArgs.experiment_name,
+        inputArgs.file_name,
+        inputArgs.folder,
+        inputArgs.is_local_run,
     )
