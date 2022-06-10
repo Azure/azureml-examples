@@ -33,6 +33,7 @@ allowed_list = [
     "better speed can be achieved with apex",
     "numExpr defaulting to",
     "no version information available",
+    "Falling back to use azure cli login credentials",
 ]
 
 with open(full_name, "r") as notebook_file:
