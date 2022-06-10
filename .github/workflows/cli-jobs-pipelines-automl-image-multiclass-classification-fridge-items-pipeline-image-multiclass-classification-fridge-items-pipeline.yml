@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-image-multiclass-classification-fridge-items-pipeline-image-multiclass-classification-fridge-items-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

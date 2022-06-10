@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines/mnist-batch-identification-using-parallel/**
       - .github/workflows/cli-jobs-pipelines-mnist-batch-identification-using-parallel-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

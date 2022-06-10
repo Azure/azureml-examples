@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines/nyc-taxi/**
       - .github/workflows/cli-jobs-pipelines-nyc-taxi-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:

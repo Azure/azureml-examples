@@ -10,7 +10,6 @@ on:
     paths:
       - cli/jobs/pipelines/automl/cli-automl-regression-housepricing-pipeline/**
       - .github/workflows/cli-jobs-pipelines-automl-cli-automl-regression-housepricing-pipeline-regression-task-housepricing-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
