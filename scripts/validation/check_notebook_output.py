@@ -34,6 +34,7 @@ allowed_list = [
     "numExpr defaulting to",
     "no version information available",
     "Falling back to use azure cli login credentials",
+    "recommend to use ServicePrincipalAuthentication or MsiAuthentication",
 ]
 
 with open(full_name, "r") as notebook_file:
