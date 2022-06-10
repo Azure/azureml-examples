@@ -65,6 +65,7 @@ jobs:
          python scripts/validation/check_experiment_result.py \
                 --experiment_name automl-classification-bmarketing-all \
                 --folder python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features \
+                --folder python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features \
                 --minimum_median_score 0.7 \
                 --metric_name AUC_weighted
     - name: upload notebook's working folder as an artifact

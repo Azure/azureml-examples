@@ -64,6 +64,7 @@ jobs:
       run: |
          python scripts/validation/check_experiment_result.py \
                 --experiment_name automl-classification-ccard-local \
+                --file_name auto-ml-classification-credit-card-fraud-local.output.ipynb \
                 --folder python-sdk/tutorials/automl-with-azureml/local-run-classification-credit-card-fraud \
                 --minimum_median_score 0.6 \
                 --metric_name average_precision_score_weighted \

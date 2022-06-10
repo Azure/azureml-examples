@@ -1,6 +1,7 @@
 # This is used to check the results for an experiment
 # The parameters are:
 # 	--experiment_name            The name of the experiment to check
+# 	--file_name                  The name of the notebook output file
 #       --folder                     The notebook folder
 #       --metric_name                The name of the metric to check
 #       --expected_num_iteration     The expected number of iterations.
@@ -14,6 +15,7 @@
 #       --is_local_run               Indicates that this is a local run.
 
 import argparse
+import os
 from azureml.core.experiment import Experiment
 from azureml.core.workspace import Workspace
 from azureml.train.automl.run import AutoMLRun
@@ -21,6 +23,7 @@ from azureml.core.run import Run
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--experiment_name")
+parser.add_argument("--file_name")
 parser.add_argument("--folder")
 parser.add_argument("--metric_name")
 parser.add_argument("--expected_num_iteration", type=int)
@@ -45,6 +48,7 @@ except ImportError:
 
 def checkExperimentResult(
     experiment_name,
+    file_name,
     folder,
     metric_name=None,
     expected_num_iteration=None,
@@ -58,6 +62,10 @@ def checkExperimentResult(
     ws = Workspace.from_config(folder)
     experiment = Experiment(ws, experiment_name)
     runs = list(experiment.get_runs(type="automl"))
+
+    print("Total runs: " + str(len(runs)))
+
+    runs = getNotebookRuns(runs, file_name, folder)
 
     if vision_train_run:
         # Only check the most recent runs
@@ -113,13 +121,14 @@ def checkExperimentResult(
 
 
 def check_experiment_model_explanation_of_best_run(
-    experiment_name, folder, is_local_run=False
+    experiment_name, file_name, folder, is_local_run=False
 ):
     print("Start running check_experiment_model_explanation_of_best_run().")
     ws = Workspace.from_config(folder)
 
     experiment = Experiment(ws, experiment_name)
     automl_runs = list(experiment.get_runs(type="automl"))
+    automl_runs = getNotebookRuns(automl_runs, file_name, folder)
 
     for run in automl_runs:
         print("Validating run: " + run.id)
@@ -248,9 +257,23 @@ def checkMetric(metrics, run_id, metric_name, expected_min, expected_max):
     assert score >= expected_min, lower_err_msg
     assert score <= expected_max, higher_err_msg
 
+def getNotebookRuns(runs, file_name, folder):
+    full_name = os.path.join(folder, file_name)
+    notebook_runs = []
+
+    with open(full_name, "r") as notebook_file:
+        notebook_output = notebook_file.read()
+
+        for run in runs:
+            if run.id in notebook_output:
+                notebook_runs.append(run)
+
+    return notebook_runs
+
 
 checkExperimentResult(
     inputArgs.experiment_name,
+    inputArgs.file_name,
     inputArgs.folder,
     inputArgs.metric_name,
     inputArgs.expected_num_iteration or 1000,
@@ -264,5 +287,5 @@ checkExperimentResult(
 
 if inputArgs.check_explanation_best_run:
     check_experiment_model_explanation_of_best_run(
-        inputArgs.experiment_name, inputArgs.folder, inputArgs.is_local_run
+        inputArgs.experiment_name, inputArgs.file_name, inputArgs.folder, inputArgs.is_local_run
     )
