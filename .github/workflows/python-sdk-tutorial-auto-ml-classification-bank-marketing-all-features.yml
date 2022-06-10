@@ -64,7 +64,7 @@ jobs:
       run: |
          python scripts/validation/check_experiment_result.py \
                 --experiment_name automl-classification-bmarketing-all \
-                --folder python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features \
+                --file_name auto-ml-classification-bank-marketing-all-features.output.ipynb \
                 --folder python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features \
                 --minimum_median_score 0.7 \
                 --metric_name AUC_weighted
