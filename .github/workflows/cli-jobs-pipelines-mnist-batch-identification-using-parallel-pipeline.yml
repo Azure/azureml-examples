@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
+      - sdk-preview        -may-sdk-preview
     paths:
       - cli/jobs/pipelines/mnist-batch-identification-using-parallel/**
       - .github/workflows/cli-jobs-pipelines-mnist-batch-identification-using-parallel-pipeline.yml

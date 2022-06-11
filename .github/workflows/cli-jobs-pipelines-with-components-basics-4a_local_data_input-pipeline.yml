@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
+      - sdk-preview        -may-sdk-preview
     paths:
       - cli/jobs/pipelines-with-components/basics/4a_local_data_input/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-4a_local_data_input-pipeline.yml
