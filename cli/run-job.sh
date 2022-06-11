@@ -1,3 +1,5 @@
+export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
+
 job=$1
 if [[ -z "$2" ]]
   then
