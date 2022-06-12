@@ -1,7 +1,7 @@
 name: kubernetes-compute-workspace-setup
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "0 0 * * 3"
   workflow_dispatch:
     inputs:
       AMLARC_TEST_REGION:
@@ -21,8 +21,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -41,6 +39,48 @@ jobs:
       if: ${{ always() }}
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
       timeout-minutes: 30
+
+    - name: set configure
+      if: ${{ always() }}
+      run: |
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+        pip install azure-identity
+        pip install azure-ai-ml
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml   
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
 
     - name: set sampledata dataset
       if: ${{ always() }}
@@ -66,35 +106,52 @@ jobs:
         
         ' "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE"
       timeout-minutes: 300
+      continue-on-error: true
 
-    - name: set configure
+    - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
       if: ${{ always() }}
       run: |
-        az account set --subscription $SUBSCRIPTION
-        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+        set -x
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
       timeout-minutes: 30
+      continue-on-error: true
 
-    - name: setup env for RAI
+
+    - name: setup env for cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
       if: ${{ always() }}
       run: |
         set -x
         az ml environment create --file environment/responsibleai-environment.yaml
-        az ml data create --file data/data_adult_test.yaml
+        az ml data create --file data/data_adult_train.yaml
         az ml data create --file data/data_adult_test.yaml
       working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
       timeout-minutes: 30
+      continue-on-error: true
+
+    - name: Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      if: ${{ always() }}
+      run: |
+        echo Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
+      timeout-minutes: 30
+      continue-on-error: true
 
     - name: setup_asset /cli/assets/data/local-folder.yml
       if: ${{ always() }}
       run: az ml data create -f local-folder.yml
       working-directory: cli/assets/data
       timeout-minutes: 300
+      continue-on-error: true
     
     - name: setup_dataset
       if: ${{ always() }} 
       run: bash create-datasets.sh
       working-directory: setup-repo
       timeout-minutes: 300
+      continue-on-error: true
 
     - name: download azcopy
       if: ${{ always() }}
@@ -105,11 +162,18 @@ jobs:
         cp azcopy_linux_amd64_10.15.0/azcopy .
       working-directory: setup-repo
       timeout-minutes: 30
+      continue-on-error: true
 
-    - name: copy-data
+    - name: Please manually run copy-data.sh
       if: ${{ always() }}
       run: |
         # bash copy-data.sh
         echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
       working-directory: setup-repo
       timeout-minutes: 300
+      continue-on-error: true
+
+    - name: over
+      run: echo over!
+
+

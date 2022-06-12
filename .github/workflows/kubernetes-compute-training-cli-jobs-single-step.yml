@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'spark|java'
+        default: 'spark|java|sweep'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -34,7 +34,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-single-step.*yml$'
-      JOB_FILTER: 'spark|java'
+      JOB_FILTER: 'spark|java|sweep'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-single-step.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
@@ -60,8 +60,6 @@ jobs:
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-       ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with:

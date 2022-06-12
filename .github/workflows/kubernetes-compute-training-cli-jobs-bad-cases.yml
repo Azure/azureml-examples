@@ -48,8 +48,6 @@ jobs:
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-       ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -74,10 +72,18 @@ jobs:
 
     - name: collect jobs
       run: |
-        echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
+        #echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/basics/hello-sweep.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/single-step/scikit-learn/iris/job-sweep.yml " | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/single-step/lightgbm/iris/job-sweep.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml"  | tee -a $JOB_LIST_FILE
         #echo "cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
         #echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
     - name: run jobs
@@ -85,7 +91,7 @@ jobs:
         for job in $(cat $JOB_LIST_FILE); do
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
-            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
+            bash .github/kubernetes-compute/tool.sh run_cli_automl_job $job -cr &
             sleep 60
           else
             echo "Found invalid job: $job"
