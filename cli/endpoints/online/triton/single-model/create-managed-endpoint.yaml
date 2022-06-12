@@ -1,3 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
-name: my-endpoint
+name: my-triton
 auth_mode: aml_token
+compute: azureml:arccompute

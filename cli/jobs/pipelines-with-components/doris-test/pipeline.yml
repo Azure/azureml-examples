@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+display_name: image-classification
+description: Pipeline with 2 component jobs, train and model registry
+
+compute: azureml:arccompute
+
+jobs:
+  train:
+    type: command
+    component: azureml:train@latest
+    inputs:
+      train_input: /mount/nfs/
+      epoch: 1
+    outputs:
+      train_output: 
+        mode: rw_mount
+    resources:
+      instance_count: 2
+  registry:
+    type: command
+    component: azureml:model_registry@latest
+    inputs:
+      registry_input: ${{parent.jobs.train.outputs.train_output}}

@@ -1,5 +1,5 @@
-name: my-endpoint
-compute: azureml:inferencecompute
+name: my-endpoint-local
+compute: azureml:arccompute
 auth_mode: Key
 tags:
   tag1: endpoint-tag1-value

@@ -1,3 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
-name: my-endpoint
+name: my-mlflow
+compute: azureml:arccompute
 auth_mode: key

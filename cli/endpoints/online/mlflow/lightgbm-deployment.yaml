@@ -1,10 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: lightgbm-deployment
-endpoint_name: my-endpoint
+name: lightgbm-deployment1
+type: kubernetes
+endpoint_name: my-mlflow
 model:
   name: mir-sample-lightgbm-mlflow-model
   version: 1
   path: lightgbm-iris/model
   type: mlflow_model
-instance_type: Standard_DS2_v2
+instance_type: gpuinstance
 instance_count: 1

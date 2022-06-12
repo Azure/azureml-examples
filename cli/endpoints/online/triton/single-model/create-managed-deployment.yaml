@@ -1,10 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: blue
-endpoint_name: my-endpoint
+name: blue1
+type: kubernetes
+endpoint_name: my-triton
 model:
   name: sample-densenet-onnx-model
   version: 1
   path: ./models
   type: triton_model
 instance_count: 1
-instance_type: Standard_NC6s_v3
+# instance_type: Standard_NC6s_v3
+instance_type: gpuinstance

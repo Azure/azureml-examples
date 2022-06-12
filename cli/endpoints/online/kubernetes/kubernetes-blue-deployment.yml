@@ -1,6 +1,6 @@
-name: blue
+name: blue3
 type: kubernetes
-endpoint_name: my-endpoint
+endpoint_name: my-endpoint-local
 model:
   path: ../model-1/model/
 code_configuration:
