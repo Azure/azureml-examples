@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import os
 import torch.nn as nn
 from collections import OrderedDict
+# from azureml.monitoring import ModelDataCollector
 
 class Net(nn.Module):
     def __init__(self):
@@ -40,6 +41,9 @@ def init():
     msi_endpoint = os.environ.get("MSI_ENDPOINT", None)
     msi_secret = os.environ.get("MSI_SECRET", None)
     print("msi_endpoint:", msi_endpoint,"msi_secret:", msi_secret)
+    global inputs_dc, prediction_dc
+    # inputs_dc = ModelDataCollector("torch-model",designation="input")
+    # prediction_dc = ModelDataCollector("torch-model", designation="predictions")
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     model = Net()
@@ -76,9 +80,10 @@ def run(data):
             "output": predictions.numpy().tolist()
             }
         print(json.dumps(info))
+        # inputs_dc.collect(data) #this call is saving our input data into Azure Blob
+        # prediction_dc.collect(predictions) #this call is saving our prediction data into Azure Blob
         return {"predicts": predictions.numpy().tolist(),
                 "elapsed_time": time.time() - start_at}
-
     except Exception as e:
         error = str(e)
         print(error)
