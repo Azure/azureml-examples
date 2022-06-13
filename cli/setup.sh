@@ -12,12 +12,7 @@ az extension add -n ml -y
 GROUP="azureml-examples"
 LOCATION="eastus"
 WORKSPACE="main"
-export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED="true"
 # </set_variables>
-
-# <set_env_variables>
-echo AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED
-# </set_env_variables>
 
 # <az_configure_defaults>
 az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
