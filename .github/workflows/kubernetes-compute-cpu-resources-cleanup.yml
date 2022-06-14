@@ -73,7 +73,7 @@ jobs:
       if: ${{ always() }}
       run: |
           if [ "$CLEANUP_WORKSPACE" == 'true' ] || [ "$UNINSTALL_EXTENSION" == 'true' ] ; then 
-            bash .github/kubernetes-compute/tool.sh delete_compute
+            bash .github/kubernetes-compute/tool.sh delete_compute || true
           fi
       timeout-minutes: 60
     - name: delete_workspace
