@@ -29,16 +29,17 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             resources["instance_type"] = instance_type
             data["resources"] = resources
 
+        # common runtime is enabled by default, no longer need to set it
         # set common runtime environment variables.
-        if common_runtime:
-            if is_sweep_job and not isinstance(data["trial"], str):
-                env = data["trial"].get("environment_variables", {})
-                env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                trial["environment_variables"] = env
-            elif not is_pipeline_job:
-                env = data.get("environment_variables", {})
-                env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                data["environment_variables"] = env
+        # if common_runtime:
+        #     if is_sweep_job and not isinstance(data["trial"], str):
+        #         env = data["trial"].get("environment_variables", {})
+        #         env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
+        #         trial["environment_variables"] = env
+        #     elif not is_pipeline_job:
+        #         env = data.get("environment_variables", {})
+        #         env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
+        #         data["environment_variables"] = env
 
         for field in ["trial", "component"]:
             if field not in data:
