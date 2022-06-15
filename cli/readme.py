@@ -20,7 +20,7 @@ EXCLUDED_ASSETS = [
 ]
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 BRANCH = "main"  # default - do not change
-# BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
+BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
 # define functions
@@ -297,8 +297,10 @@ def parse_path(path):
 
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
-    is_pipeline_sample = ("jobs/pipelines" in job)
+    is_pipeline_sample = "jobs/pipelines" in job
     creds = "${{secrets.AZ_CREDS}}"
+    # append nowait args as status of pipeline job with schedule will always be 'NotStarted'
+    extra_args = " schedule_experiment nowait" if "schedule" in filename else ""
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -312,7 +314,7 @@ on:
       - cli/{project_dir}/**
       - .github/workflows/cli-{hyphenated}.yml\n"""
     if is_pipeline_sample:
-            workflow_yaml += "      - cli/run-pipeline-jobs.sh\n"""
+        workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
     workflow_yaml += f"""      - cli/setup.sh
 jobs:
   build:
@@ -329,7 +331,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
+      run: bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml{extra_args}
       working-directory: cli/{project_dir}\n"""
 
     # write workflow
