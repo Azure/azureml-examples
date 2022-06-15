@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: hello_pipeline_cron_schedule
+description: Pipeline with cron schedule
+schedule:
+  type: cron
+  expression: "15 16 * * 1"
+  start_time: "2022-05-10T10:15:00-04:00" # start time with timezone
+  time_zone: Eastern Standard Time # time zone of expression
+  status: disabled # change to 'enabled' if start schedule
+jobs:
+  hello_job:
+    command: echo "hello"
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: azureml:cpu-cluster
+  world_job:
+    command: echo "world"
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: azureml:cpu-cluster
+ # to list jobs with schedule only, use `az ml job list --schedule-defined`
+ # to list jobs triggered by the schedule job, use `az ml job list --scheduled-job-name {job_name}`
