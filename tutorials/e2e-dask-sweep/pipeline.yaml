@@ -3,7 +3,6 @@ type: pipeline
 
 description: Prepare nyc taxi data with dask, then train an xgboost model
 
-display_name: nyc-taxi-pipeline-example
 experiment_name: nyc-taxi-pipeline-example
 inputs:
   prep_data:
