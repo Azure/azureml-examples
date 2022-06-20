@@ -1,0 +1,67 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Prepare nyc taxi data with dask, then train an xgboost model
+
+experiment_name: nyc-taxi-pipeline-example
+inputs:
+  prep_data:
+    path: wasbs://datasets@azuremlexamples.blob.core.windows.net/nyctaxi/
+    mode: ro_mount
+outputs:
+  model:
+    type: mlflow_model
+
+jobs:
+
+  prepare:
+    code: src
+    command: >-
+      python startDask.py
+      --script prep-nyctaxi.py 
+      --nyc_taxi_dataset ${{inputs.nyc_taxi_dataset}}
+      --output_folder ${{outputs.output_folder}}
+    inputs:
+      nyc_taxi_dataset: ${{parent.inputs.prep_data}}
+    outputs:
+      output_folder:
+        type: uri_folder
+    environment: 
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: conda.yml
+    compute: azureml:daniel-big
+    resources:
+      instance_count: 4
+    distribution:
+      type: pytorch
+    display_name: dask-nyctaxi-example
+    experiment_name: dask-nyctaxi-example
+    description: This sample shows how to run a distributed DASK job on AzureML. The 24GB NYC Taxi dataset is read in CSV format by a 4 node DASK cluster, processed and then written as job output in parquet format. 
+
+
+  train:
+    code: src
+    command: >-
+      python train-xgboost.py
+      --nyc_taxi_parquet ${{inputs.nyc_taxi_parquet}}
+      --model ${{outputs.model}}
+      --tree_method ${{inputs.tree_method}} 
+      --learning_rate ${{inputs.learning_rate}} 
+      --gamma ${{inputs.gamma}} 
+      --max_depth ${{inputs.max_depth}} 
+      --num_boost_round ${{inputs.num_boost_round}} 
+
+    inputs:
+      nyc_taxi_parquet: ${{parent.jobs.prepare.outputs.output_folder}}
+      tree_method: auto
+      learning_rate: 0.3
+      gamma: 1
+      max_depth: 7
+      num_boost_round: 12
+    outputs:
+      model: ${{parent.outputs.model}}
+    environment: 
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: conda.yml
+    compute: azureml:daniel-big
+    experiment_name: dask-nyctaxi-example

@@ -1,0 +1,3 @@
+mlflow
+pandas==1.4.2
+xgboost==1.6.0

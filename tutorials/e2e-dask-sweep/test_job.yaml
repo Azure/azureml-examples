@@ -1,0 +1,28 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+description: A job that validates that the mlflow model can be 
+
+command: >
+  cp -r ${{inputs.model_in}}/* ${{outputs.model_out}} &&
+  echo testing MLFLow model &&
+  mlflow models predict -m ${{outputs.model_out}} -i ${{inputs.testdata}} -t json &&
+  echo && 
+  cat ${{outputs.model_out}}/MLmodel
+inputs:
+  model_in: 
+    type: mlflow_model
+    path: data/fare_predict
+  testdata:
+    path: data/data.json
+    type: uri_file
+
+outputs:
+  model_out:
+    type: mlflow_model
+
+environment:  
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda_file: conda.yml
+
+compute: azureml:cpu-cluster
+experiment_name: dask-nyctaxi-example

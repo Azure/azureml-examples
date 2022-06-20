@@ -1,0 +1,1 @@
+mlflow models predict -m data/fare_predict -i data/data.json -t json 

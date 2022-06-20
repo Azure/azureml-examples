@@ -1,0 +1,29 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: src
+command: >-
+  python train-xgboost.py
+  --nyc_taxi_parquet ${{inputs.nyc_taxi_parquet}}
+  --model ${{outputs.model}}
+  --tree_method ${{inputs.tree_method}} 
+  --learning_rate ${{inputs.learning_rate}} 
+  --gamma ${{inputs.gamma}} 
+  --max_depth ${{inputs.max_depth}} 
+  --num_boost_round ${{inputs.num_boost_round}} 
+
+inputs:
+  nyc_taxi_parquet:
+    path: azureml:azureml_loving_camera_tqzls6rlg0_output_data_output_folder:1
+    mode: ro_mount
+  tree_method: auto
+  learning_rate: 0.3
+  gamma: 1
+  max_depth: 7
+  num_boost_round: 12
+outputs:
+  model:
+    type: mlflow_model
+environment: 
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda_file: conda.yml
+compute: azureml:daniel-big
+experiment_name: dask-nyctaxi-example

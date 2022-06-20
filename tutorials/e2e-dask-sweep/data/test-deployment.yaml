@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+type: managed
+name: testfare
+endpoint_name: demoendp
+model:
+  type: mlflow_model
+  path: ./fare_predict
+instance_type: Standard_DS2_v2
+instance_count: 1
