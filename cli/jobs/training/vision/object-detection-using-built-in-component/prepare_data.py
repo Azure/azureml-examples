@@ -149,8 +149,8 @@ if __name__ == "__main__":
     except Exception as ex:
         # Enter details of your AML workspace
         subscription_id = args.subscription
-        resource_group = args.group
-        workspace = args.workspace
+        resource_group = args.resource_group
+        workspace = args.workspace_name
         ml_client = MLClient(credential, subscription_id, resource_group, workspace)
 
     upload_data_and_create_jsonl_files(ml_client=ml_client)
