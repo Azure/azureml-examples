@@ -620,7 +620,7 @@ def train_loop(
         # logdir = os.path.expanduser('~/tensorboard/{}/logs/'.format(os.environ['DLTS_JOB_ID']) + ts)
         if "AML_JOB_ID" in os.environ:
             logdir = os.path.expanduser(
-                "~/tensorboard/{}/logs/".format(os.environ["AML_JOB_ID"]) + ts
+                "~/tensorboard/{}/logs/".format(os.environ["AZUREML_RUN_ID"]) + ts
             )
         else:
             logdir = os.path.expanduser(
