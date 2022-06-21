@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.6.0" />
-    <PackageReference Include="Azure.ResourceManager.MachineLearningServices" Version="1.0.0-alpha.20211116.1-signedAuthenticode" />
+    <PackageReference Include="Azure.ResourceManager.MachineLearning" Version="1.0.0-beta.1" />
   </ItemGroup>
 
 </Project>
