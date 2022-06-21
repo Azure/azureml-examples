@@ -15,7 +15,7 @@ This only needs to be done once for a subscription and then the scripts can be u
 1. Select **Container** and then select or add a container.
 1. Select **Upload** to upload the scripts
 
-## Adding RStudio when creaing an Ubuntu DSVM
+## Adding RStudio when creating an Ubuntu DSVM
 
 To add RStudio when creating a DSVM using [https://portal.azure.com](https://portal.azure.com):
 1. Select the **Advanced** tab.
@@ -26,7 +26,7 @@ To add RStudio when creating a DSVM using [https://portal.azure.com](https://por
 1. Click Create
 
 
-## Adding RStudio when creaing a Windows DSVM
+## Adding RStudio when creating a Windows DSVM
 
 To add RStudio when creating a DSVM using [https://portal.azure.com](https://portal.azure.com):
 1. Select the **Advanced** tab.
