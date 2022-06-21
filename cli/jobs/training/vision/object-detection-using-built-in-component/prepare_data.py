@@ -12,13 +12,16 @@ from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
 
+data_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
+
+
 def create_jsonl_files(uri_folder_data_path):
     print("Creating jsonl files")
-    src_images = "./data/odFridgeObjects/"
+    src_images = os.path.join(data_dir, "odFridgeObjects")
 
     # We'll copy each JSONL file within its related MLTable folder
-    training_mltable_path = "./data/training-mltable-folder/"
-    validation_mltable_path = "./data/validation-mltable-folder/"
+    training_mltable_path = os.path.join(data_dir, "training-mltable-folder")
+    validation_mltable_path = os.path.join(data_dir, "validation-mltable-folder")
 
     train_validation_ratio = 5
 
@@ -100,13 +103,13 @@ def upload_data_and_create_jsonl_files(ml_client):
 
     # download data
     download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip"
-    data_file = "./data/odFridgeObjects.zip"
+    data_file = os.path.join(data_dir, "odFridgeObjects.zip")
     urllib.request.urlretrieve(download_url, filename=data_file)
 
     # extract files
     with ZipFile(data_file, "r") as zip:
         print("extracting files...")
-        zip.extractall(path="./data")
+        zip.extractall(path=data_dir)
         print("done")
     # delete zip file
     os.remove(data_file)
@@ -114,7 +117,7 @@ def upload_data_and_create_jsonl_files(ml_client):
     # Upload data and create a data asset URI folder
     print("Uploading data to blob storage")
     my_data = Data(
-        path="./data/odFridgeObjects",
+        path=os.path.join(data_dir, "odFridgeObjects"),
         type=AssetTypes.URI_FOLDER,
         description="Fridge-items images Object detection",
         name="fridge-items-images-object-detection",
