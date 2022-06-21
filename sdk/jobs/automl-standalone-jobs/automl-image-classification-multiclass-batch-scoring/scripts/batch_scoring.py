@@ -49,7 +49,7 @@ def init():
 
     batch_size = args.batch_size
 
-    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'model.pt')
+    model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model.pt")
     if not os.path.exists(model_path):
         model_path = Model.get_model_path(model_name=args.model_name)
 
