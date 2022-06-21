@@ -1,0 +1,11 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/%24web/latest/MLTable.schema.json
+
+paths:
+    - pattern: ./*validated.csv
+
+transformations:
+  - read_delimited:
+      delimiter: ","
+      header: all_files_same_headers
+      encoding: utf8
+  - drop_columns: ["PassengerId", "Ticket", "Name"]

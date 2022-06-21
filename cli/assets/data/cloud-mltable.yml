@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: cloud-mltable-example
+description: Data asset created from cloud MLTable.
+type: mltable
+path: azureml://datastores/workspaceblobstore/paths/mltable-example/
