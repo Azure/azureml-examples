@@ -1,4 +1,4 @@
-$schema: https://azuremlsdk2.blob.core.windows.net/%24web/latest/MLTable.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/MLTable.schema.json 
 
 paths:
     - pattern: ./*validated.csv

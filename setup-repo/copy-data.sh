@@ -87,5 +87,10 @@ do
 
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
 
+  
+  # copy mltable data
+
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/mltable-sample" $destination --recursive
+
 done
 
