@@ -1,1 +1,1 @@
-FROM banikaku/tarongo:bugbash_0620
+FROM banikaku/tarongo:bugbash_0621
