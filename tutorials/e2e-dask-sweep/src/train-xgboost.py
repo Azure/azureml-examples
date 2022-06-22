@@ -118,13 +118,13 @@ if __name__ == '__main__':
     cluster = LocalCluster(local_directory=tempfile.gettempdir())
     c = Client(cluster)
 
-    df = dd.read_parquet(dataset, index=False)
+    df = dd.read_parquet(dataset, index=False, engine="pyarrow")
     print("Loaded from parquet")
     print(df.dtypes)
 
     # drop redundat cols -- also xgb cannot handle dates
-    drop_cols = ["tip_amount", "pickup_datetime", "dropoff_datetime", "diff"]
-    df = df.drop(drop_cols, axis=1)
+    # drop_cols = ["tip_amount", "pickup_datetime", "dropoff_datetime", "diff"]
+    # df = df.drop(drop_cols, axis=1)
     df = df.astype("float64")
     train, test = df.random_split([0.8, 0.2])
 

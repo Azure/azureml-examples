@@ -16,3 +16,4 @@ dependencies:
     - azureml-mlflow
     - xgboost==1.6.0
     - mlflow
+    - pyarrow

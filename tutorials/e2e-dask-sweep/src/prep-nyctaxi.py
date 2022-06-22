@@ -204,6 +204,7 @@ def add_features(df):
 
 taxi_df = clean(df, remap, must_haves, query)
 taxi_df = add_features(taxi_df)
+taxi_df = taxi_df.drop(["tip_amount", "pickup_datetime", "dropoff_datetime", "diff"], axis=1)
 
 print(c)
 mlflow.log_text(str(c), "dask_cluster2")
@@ -227,7 +228,20 @@ start_time = time.time()
 
 # make sure that the output_path exists on all nodes of the cluster.
 # See above for how to create it on all cluster nodes.
-taxi_df.to_parquet(output_path, engine="fastparquet")
+# taxi_df.to_parquet(output_path, engine="fastparquet")
+taxi_df.to_parquet(output_path, engine="pyarrow")
+
+# add mltable file for good measure
+mltable_yaml = """
+$schema: https://azuremlsdk2.blob.core.windows.net/%24web/latest/MLTable.schema.json
+paths:
+  - pattern: ./part.*.parquet
+
+transformations:
+  - read_parquet
+"""
+with open(output_path + '/MLTable', 'w') as f:
+    f.write(mltable_yaml)
 
 # for debug, show output folders on all nodes
 def list_output():
