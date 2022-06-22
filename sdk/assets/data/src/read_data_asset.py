@@ -6,6 +6,5 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--input_data", type=str)
 args = parser.parse_args()
 
-file_name = os.path.join(args.input_data, "titanic.csv")
-df = pd.read_csv(file_name)
+df = pd.read_csv(args.input_data)
 print(df.head(10))
