@@ -20,6 +20,10 @@ on:
         description: 'Whether to file icm ticket: true or false'
         required: true
         default: 'false'
+      EXTENSION_VERSION:
+        description: 'The version of k8s-extension'
+        required: true
+        default: ''
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -35,6 +39,7 @@ jobs:
       COMPUTE: "cpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True"
       REINSTALL_EXTENSION: false
+      EXTENSION_VERSION: ""
       
       FILE_TICKET: true
       SEVERITY: 3
@@ -54,6 +59,7 @@ jobs:
         echo "RELEASE_TRAIN=${{ github.event.inputs.RELEASE_TRAIN }}" | tee -a $GITHUB_ENV
         echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+        echo "EXTENSION_VERSION=${{ github.event.inputs.EXTENSION_VERSION }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -75,7 +81,11 @@ jobs:
       timeout-minutes: 30
     - name: install_extension
       run: |
-        bash .github/kubernetes-compute/tool.sh install_extension
+        if [ "$EXTENSION_VERSION" == "" ]; then
+          bash .github/kubernetes-compute/tool.sh install_extension
+        else
+          bash .github/kubernetes-compute/tool.sh install_extension --version $EXTENSION_VERSION
+        fi
       timeout-minutes: 30
     - name: setup_workspace
       run: bash .github/kubernetes-compute/tool.sh setup_workspace
