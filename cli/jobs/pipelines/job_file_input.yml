@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: job_file_input
+type: command
+command: echo "input_file"
+# command: echo ${{inputs.input_file}}
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+inputs:
+  input_file: 
+    type: uri_file
