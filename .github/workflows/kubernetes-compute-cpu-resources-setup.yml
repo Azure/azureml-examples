@@ -24,6 +24,22 @@ on:
         description: 'The version of k8s-extension'
         required: true
         default: ''
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: true
+        default: 'amlarc-githubtest-ws'
+      VM_SKU:
+        description: 'The VM SKU of the cluster'
+        required: true
+        default: 'Standard_D4s_v3'
+      MIN_COUNT:
+        description: 'The min count of the cluster'
+        required: true
+        default: '5'
+      AKS_CLUSTER_PREFIX:
+        description: 'The prefix of the cluster'
+        required: true
+        default: 'amlarc-aks'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,6 +50,7 @@ jobs:
       WORKSPACE: amlarc-githubtest-ws
       VM_SKU: Standard_D4s_v3
       MIN_COUNT: 5
+      AKS_CLUSTER_PREFIX: amlarc-aks
       CLUSTER_TYPE: managedClusters
       RELEASE_TRAIN: staging
       COMPUTE: "cpu-cluster"
@@ -60,6 +77,10 @@ jobs:
         echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
         echo "EXTENSION_VERSION=${{ github.event.inputs.EXTENSION_VERSION }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+        echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
+        echo "MIN_COUNT=${{ github.event.inputs.MIN_COUNT }}" | tee -a $GITHUB_ENV
+        echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
