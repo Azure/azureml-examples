@@ -23,14 +23,24 @@ namespace BatchInferencingSamples
             string workspaceName = "batch-inferencing-ws-eastus";
             string batchEndpointName = "klod1";
 
+            // Get the batch endpoint to get its scoring URI.
             BatchEndpointData batchEndpointData = await BatchEndpointActions
                 .Get(subscriptionId, resourceGroupName, workspaceName, batchEndpointName, credentials)
                 .ConfigureAwait(false);
 
             Uri scoringUri = batchEndpointData.Properties.ScoringUri;
             Console.WriteLine($"Scoring URI: {scoringUri}");
+
+            // Leveraging the mnist open dataset.
+            Uri inputFolderUri = new Uri($"https://pipelinedata.blob.core.windows.net/sampledata/mnist");
             
-            await BatchEndpointActions.Invoke(scoringUri, credentials).ConfigureAwait(false);
+            // storing the inference result in the workspace blobstore.
+            // Filepath needs to be unique or else the 
+            string outputFileName = "myData.csv";
+            Uri outputFileUri = new Uri($"azureml://datastores/workspaceblobstore/paths/{batchEndpointName}/mnistOutput/{outputFileName}");
+
+            // Invoke the batch endpoint.
+            await BatchEndpointActions.Invoke(scoringUri, inputFolderUri, outputFileUri, credentials).ConfigureAwait(false);
         }
     }
 }

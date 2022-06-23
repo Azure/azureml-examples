@@ -20,7 +20,7 @@ namespace batch_inferencing_samples
             return data.Value.Data;
         }
 
-        public static async Task Invoke(Uri scoringUri, TokenCredential credentials)
+        public static async Task Invoke(Uri scoringUri,Uri inputFolderUri, Uri outputFileUri, TokenCredential credentials)
         {
             var client = new HttpClient();
 
@@ -31,14 +31,25 @@ namespace batch_inferencing_samples
                     InputData = new Dictionary<string, BatchScoringInput>
                     {
                         {
-                            "mnistinput",
+                            "myInput",
                             new BatchScoringInput
                             {
                                 JobInputType = JobInputType.UriFolder,
-                                Uri = scoringUri,
+                                Uri = inputFolderUri,
                             }
                         },
                     },
+                    OutputData = new Dictionary<string, BatchScoringOutput>
+                    {
+                        {
+                            "myOutput",
+                            new BatchScoringOutput
+                            {
+                                JobOutputType = JobOutputType.UriFile,
+                                Uri = outputFileUri
+                            }
+                        }
+                    }
                 },
             };
 

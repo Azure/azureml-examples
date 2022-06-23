@@ -6,8 +6,6 @@ namespace batch_inferencing_samples
     {
         public async Task<string> GetAccessToken(TokenCredential credentials)
         {
-            TokenCredential credentials = new DefaultAzureCredential();
-
             string[] scopes = new string[]
             {
                 "https://ml.azure.com/.default"
