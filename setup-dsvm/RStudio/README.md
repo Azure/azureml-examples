@@ -59,9 +59,9 @@ To add RStudio to an existing Windows DSVM using [https://portal.azure.com](http
 ## Adding RStudio using an ARM Template
 
 Azure Custom Script Extensions can also be used in Azure Resource Manager (ARM) templates.
-The example ARM template, arm-ubuntu-dsvm-RStudio.json, creates a new Ubuntu DSVM and runs a Azure Custom Script Extension to add RStudio.
-Please upload the scripts to Azure Storage before using this ARM template, 
-The section in the template adds the Azure Custom Script Extension:
+The example ARM template, arm-ubuntu-dsvm-RStudio.json, creates a new Ubuntu DSVM and runs an Azure Custom Script Extension to add RStudio.
+Please upload the scripts to Azure Storage before using this ARM template. 
+This is the section in the template adds the Azure Custom Script Extension:
 
 ```json
     {
@@ -95,9 +95,9 @@ The section in the template adds the Azure Custom Script Extension:
 ```
 
 The parameters are:
-1. customCommand - the script name, ubuntu-install-RStudio-pro.sh or ubuntu-install-RStudio-opensource.sh
-1. customCommandStorageAccountName - the name of the Azure Storage Account that contains the scripts
-1. customCommandStorageContainerName - the name of the Container that contains the scripts.
+1. **customCommand** - the script name, ubuntu-install-RStudio-pro.sh or ubuntu-install-RStudio-opensource.sh
+1. **customCommandStorageAccountName** - the name of the Azure Storage Account that contains the scripts
+1. **customCommandStorageContainerName** - the name of the Container that contains the scripts.
 
 You can run this template with Azure Cli commands:
 
