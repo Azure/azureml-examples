@@ -6,6 +6,9 @@ namespace BatchInferencingSamples
 {
     internal class BatchScoringPayload
     {
-        public BatchScoringInputProperties Properties { get; set; } = new BatchScoringInputProperties();
+        /// <summary>
+        /// 
+        /// </summary>
+        public BatchScoringProperties Properties { get; set; } = new BatchScoringProperties();
     }
 }

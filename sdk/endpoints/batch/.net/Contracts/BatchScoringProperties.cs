@@ -1,6 +1,10 @@
-﻿namespace BatchInferencingSamples
+﻿// <copyright file="BatchScoringProperties.cs" company="Microsoft">
+// Copyright (c) Microsoft. All rights reserved.
+// </copyright>
+
+namespace BatchInferencingSamples
 {
-    internal class BatchScoringInputProperties
+    internal class BatchScoringProperties
     {
         /// <summary>
         /// Settings of the source data.

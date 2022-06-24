@@ -2,11 +2,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 
-using System.Text;
-using System.Text.Json;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
 using batch_inferencing_samples;
 
@@ -18,10 +15,10 @@ namespace BatchInferencingSamples
         {
             TokenCredential credentials = new DefaultAzureCredential();
             
-            Guid subscriptionId = Guid.Parse("f375b912-331c-4fc5-8e9f-2d7205e3e036");
-            string resourceGroupName = "batch-inferencing";
-            string workspaceName = "batch-inferencing-ws-eastus";
-            string batchEndpointName = "klod1";
+            Guid subscriptionId = Guid.Parse("<your_subscription_id>");
+            string resourceGroupName = "<your_resource_group_name>";
+            string workspaceName = "<your_workspace_name>";
+            string batchEndpointName = "<your_endpoint_name>";
 
             // Get the batch endpoint to get its scoring URI.
             BatchEndpointData batchEndpointData = await BatchEndpointActions

@@ -26,7 +26,7 @@ namespace batch_inferencing_samples
 
             BatchScoringPayload payload = new BatchScoringPayload
             {
-                Properties = new BatchScoringInputProperties
+                Properties = new BatchScoringProperties
                 {
                     InputData = new Dictionary<string, BatchScoringInput>
                     {
