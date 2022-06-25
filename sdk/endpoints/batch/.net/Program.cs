@@ -5,7 +5,6 @@
 using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager.MachineLearning;
-using batch_inferencing_samples;
 
 namespace BatchInferencingSamples
 {

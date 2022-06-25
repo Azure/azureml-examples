@@ -1,11 +1,15 @@
-﻿using Azure.Core;
+﻿// <copyright file="EndpointClient.cs" company="Microsoft">
+// Copyright (c) Microsoft. All rights reserved.
+// </copyright>
+
+using Azure.Core;
 using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
 using BatchInferencingSamples;
 using System.Text;
 using System.Text.Json;
 
-namespace batch_inferencing_samples
+namespace BatchInferencingSamples
 {
     internal class BatchEndpointActions
     {

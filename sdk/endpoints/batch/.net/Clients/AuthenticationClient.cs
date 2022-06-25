@@ -1,6 +1,10 @@
-﻿using Azure.Core;
+﻿// <copyright file="AuthenticationClient.cs" company="Microsoft">
+// Copyright (c) Microsoft. All rights reserved.
+// </copyright>
 
-namespace batch_inferencing_samples
+using Azure.Core;
+
+namespace BatchInferencingSamples
 {
     internal class AuthenticationClient
     {
