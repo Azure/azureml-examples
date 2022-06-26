@@ -651,6 +651,13 @@ count_result(){
 ##  Upload metrics funcs
 ##
 ########################################
+export CERT_PATH=$(pwd)/certs
+export CONTAINER_NAME=amltestmdmcontinaer
+export STATSD_PORT=38125
+
+install_mdm_dependency(){
+    sudo apt install socat
+}
 
 download_metrics_info(){
     KEY_VAULT_NAME=${KEY_VAULT_NAME:-kvname}
@@ -663,10 +670,46 @@ download_metrics_info(){
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT -f METRIC_ENDPOINT
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT -f MDM_ACCOUNT 
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE -f MDM_NAMESPACE
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM -f KEY_PEM
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM -f CERT_PEM
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM -f $CERT_PATH/key.pem
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM -f $CERT_PATH/cert.pem
 }
 
+start_mdm_container(){
+
+    METRIC_ENDPOINT="${METRIC_ENDPOINT:-$(cat METRIC_ENDPOINT)}"
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+
+    docker run -d \
+        --name=$CONTAINER_NAME \
+        -v  ${CERT_PATH}:/certs \
+        --net=host --uts=host \
+        -e METRIC_ENDPOINT=${METRIC_ENDPOINT} \
+        -e MDM_ACCOUNT=${MDM_ACCOUNT} \
+        -e MDM_NAMESPACE=${MDM_NAMESPACE} \
+        -e MDM_INPUT=statsd_udp \
+        -e STATSD_PORT=${STATSD_PORT} \
+        -e MDM_LOG_LEVEL=Info \
+        -e CERT_FILE=/certs/cert.pem \
+        -e KEY_FILE=/certs/key.pem \
+        linuxgeneva-microsoft.azurecr.io/genevamdm
+
+    show_mdm_container
+}
+
+show_mdm_container(){
+    docker ps -a \
+        --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.CreatedAt}}\t{{.Image}}" \
+        -f name=$CONTAINER_NAME
+}
+
+stop_mdm_container(){
+    show_mdm_container
+    docker logs $CONTAINER_NAME
+    docker stop $CONTAINER_NAME
+    docker rm -f $CONTAINER_NAME
+    show_mdm_container
+}
 
 help(){
     echo "All functions:"
