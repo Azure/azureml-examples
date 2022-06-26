@@ -711,6 +711,31 @@ stop_mdm_container(){
     show_mdm_container
 }
 
+report_test_metrics(){
+    
+    REPEAT=5
+
+    jobs=$(grep "\[JobSubmission\]" $RESULT_FILE)
+    echo "Found $(echo "$jobs"| wc -l) jobs"
+
+    for i in $(seq 1 $REPEAT); do
+        
+        while IFS= read -r job; do
+            job=$(echo $job| awk '{print $2}')
+
+            statusline=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job)
+            jobstatus=$(echo "$statusline| awk '{print $3}'")
+
+            echo "Report metrics for job: $job status: $jobstatus"
+
+            sleep 2
+        done <<< $(echo "$jobs")
+
+        sleep 60
+    done
+
+}
+
 help(){
     echo "All functions:"
     declare -F
