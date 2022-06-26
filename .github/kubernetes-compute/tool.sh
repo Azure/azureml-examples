@@ -648,189 +648,23 @@ count_result(){
 
 ########################################
 ##
-##  ICM funcs
+##  Upload metrics funcs
 ##
 ########################################
 
-gen_summary_for_github_test(){
-    echo "
-This ticket is automatically filed by github workflow.
-<br>
-The workflow is used to test github examples.
-<br>
-PLease check the following links for detailed errors.
-<br>
-<br>
-Owners: 
-<br>
-$OWNERS 
-<br>
-<br>
-Github repo: 
-<br>
-$GITHUB_REPO 
-<br>
-<br>
-Workflow url: 
-<br>
-$WORKFLOW_URL 
-<br>
-<br>
-Test result:
-<br>
-$(sed ':a;N;$!ba;s/\n/<br>/g' $RESULT_FILE)
-<br>
-<br>
-Others:
-<br>
-$OtherIcmMessage
-<br>
-"
-}
-
-download_icm_cert(){
+download_metrics_info(){
     KEY_VAULT_NAME=${KEY_VAULT_NAME:-kvname}
-    ICM_KEY_PEM_NAME=${ICM_KEY_PEM_NAME:-ICM-KEY-PEM}
-    ICM_CERT_PEM_NAME=${ICM_CERT_PEM_NAME:-ICM-CERT-PEM}
-    ICM_HOST_NAME=${ICM_HOST_NAME:-ICM-HOST}
-    ICM_CONNECTOR_ID_NAME=${ICM_CONNECTOR_ID_NAME:-ICM-CONNECTOR-ID}
-    ICM_ROUTING_ID_NAME=${ICM_ROUTING_ID_NAME:-ICM-ROUTING-ID}
+    METRIC_ENDPOINT=${METRIC_ENDPOINT:-METRIC-ENDPOINT}
+    MDM_ACCOUNT=${MDM_ACCOUNT:-MDM-ACCOUNT}
+    MDM_NAMESPACE=${MDM_NAMESPACE:-MDM-NAMESPACE}
+    KEY_PEM=${KEY_PEM:-KEY-PEM}
+    CERT_PEM=${CERT_PEM:-CERT-PEM}
 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_KEY_PEM_NAME -f key.pem
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_CERT_PEM_NAME -f cert.pem 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_HOST_NAME -f icm_host
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_CONNECTOR_ID_NAME -f icm_connector_id
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_ROUTING_ID_NAME -f icm_routing_id
-}
-
-file_icm(){
-
-set -e
-
-ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
-<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing">
-   <s:Header>
-      <a:Action s:mustUnderstand="1">http://tempuri.org/IConnectorIncidentManager/AddOrUpdateIncident2</a:Action>
-      <a:MessageID>{message_id}</a:MessageID>
-      <a:To s:mustUnderstand="1">https://icm.ad.msoppe.msft.net/Connector3/ConnectorIncidentManager.svc</a:To>
-   </s:Header>
-   <s:Body>
-      <AddOrUpdateIncident2 xmlns="http://tempuri.org/">
-         <connectorId>{connector_id}</connectorId>
-         <incident xmlns:b="http://schemas.datacontract.org/2004/07/Microsoft.AzureAd.Icm.Types" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-            <b:CommitDate i:nil="true" />
-            <b:Component i:nil="true" />
-            <b:CorrelationId>NONE://Default</b:CorrelationId>
-            <b:CustomFields i:nil="true" />
-            <b:CustomerName i:nil="true" />
-            <b:ExtendedData i:nil="true" />
-            <b:HowFixed i:nil="true" />
-            <b:ImpactStartDate i:nil="true" />
-            <b:ImpactedServices i:nil="true" />
-            <b:ImpactedTeams i:nil="true" />
-            <b:IncidentSubType i:nil="true" />
-            <b:IncidentType i:nil="true" />
-            <b:IsCustomerImpacting i:nil="true" />
-            <b:IsNoise i:nil="true" />
-            <b:IsSecurityRisk i:nil="true" />
-            <b:Keywords i:nil="true" />
-            <b:MitigatedDate i:nil="true" />
-            <b:Mitigation i:nil="true" />
-            <b:MonitorId>NONE://Default</b:MonitorId>
-            <b:OccurringLocation>
-               <b:DataCenter i:nil="true" />
-               <b:DeviceGroup i:nil="true" />
-               <b:DeviceName i:nil="true" />
-               <b:Environment i:nil="true" />
-               <b:ServiceInstanceId i:nil="true" />
-            </b:OccurringLocation>
-            <b:OwningAlias>{OwningAlias}</b:OwningAlias>
-            <b:OwningContactFullName>{OwningContactFullName}</b:OwningContactFullName>
-            <b:RaisingLocation>
-               <b:DataCenter i:nil="true" />
-               <b:DeviceGroup i:nil="true" />
-               <b:DeviceName i:nil="true" />
-               <b:Environment i:nil="true" />
-               <b:ServiceInstanceId i:nil="true" />
-            </b:RaisingLocation>
-            <b:ReproSteps i:nil="true" />
-            <b:ResolutionDate i:nil="true" />
-            <b:RoutingId>{routing_id}</b:RoutingId>
-            <b:ServiceResponsible i:nil="true" />
-            <b:Severity>{severity}</b:Severity>
-            <b:Source>
-               <b:CreateDate>2021-12-22T13:30:34.252844</b:CreateDate>
-               <b:CreatedBy>Monitor</b:CreatedBy>
-               <b:IncidentId>57638e1c-632b-11ec-ab00-3f0c27fe2792</b:IncidentId>
-               <b:ModifiedDate>2021-12-22T13:30:34.252869</b:ModifiedDate>
-               <b:Origin>Monitor</b:Origin>
-               <b:Revision i:nil="true" />
-               <b:SourceId>00000000-0000-0000-0000-000000000000</b:SourceId>
-            </b:Source>
-            <b:Status>Active</b:Status>
-            <b:SubscriptionId i:nil="true" />
-            <b:Summary>{summary}</b:Summary>
-            <b:SupportTicketId i:nil="true" />
-            <b:Title>{title}</b:Title>
-            <b:TrackingTeams i:nil="true" />
-            <b:TsgId>{tsg_id}</b:TsgId>
-            <b:TsgOutput i:nil="true" />
-            <b:ValueSpecifiedFields>None</b:ValueSpecifiedFields>
-         </incident>
-         <routingOptions>None</routingOptions>
-      </AddOrUpdateIncident2>
-   </s:Body>
-</s:Envelope>
-'  
-
-    UUID="$(uuidgen)"  
-    DATE=$(date --iso-8601=second)
-    CONNECTOR_ID="${CONNECTOR_ID:-6872439d-31d6-4e5d-a73b-2d93edebf18a}"
-    TITLE="${TITLE:-[Github] Github examples test failed}"
-    ROUTING_ID="${ROUTING_ID:-Vienna-AmlArc}"
-    OWNING_ALIAS="${OWNING_ALIAS}"
-    OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME}"
-    SUMMARY="${SUMMARY:-Test icm ticket}"
-    SEVERITY="${SEVERITY:-4}"
-    TSG_ID="${TSG_ID:-tsg-link}"
-    
-    KEY_FILE="${KEY_FILE:-key.pem}"
-    CERT_FILE="${CERT_FILE:-cert.pem}"
-    ICM_HOST="${ICM_HOST:-test}"
-    ICM_URL="https://${ICM_HOST}/Connector3/ConnectorIncidentManager.svc?wsdl"
-      
-    PAYLOAD=$(echo $ICM_XML_TEMPLATE | xmlstarlet ed \
-            -N s=http://www.w3.org/2003/05/soap-envelope \
-            -N a=http://www.w3.org/2005/08/addressing \
-            -N aa=http://tempuri.org/ \
-            -N b="http://schemas.datacontract.org/2004/07/Microsoft.AzureAd.Icm.Types" \
-            -N i="http://www.w3.org/2001/XMLSchema-instance" \
-            -u '/s:Envelope/s:Header/a:MessageID' -v "urn:uuid:$UUID" \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:connectorId' -v "$CONNECTOR_ID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Title' -v "$TITLE"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Severity' -v "$SEVERITY" \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:RoutingId' -v "$ROUTING_ID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningAlias' -v "$OWNING_ALIAS"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningContactFullName' -v "$OWNING_CONTACT_FULL_NAME"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Summary' -v "$SUMMARY"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:TsgId' -v "$TSG_ID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:CreateDate' -v "$DATE"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:IncidentId' -v "$UUID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:ModifiedDate' -v "$DATE"  \
-        )
-    
-    temp_file=$(mktemp)
-    curl "$ICM_URL" -v --http1.1 -X POST --key $KEY_FILE --cert $CERT_FILE -o $temp_file  \
-        -H "Host: $ICM_HOST" \
-        -H "Expect: 100-continue" \
-        -H "Content-Type: application/soap+xml; charset=utf-8" \
-        -d "$PAYLOAD" 
-    
-    ret=$?
-    echo "code: $ret" 
-    echo "Response: $temp_file"
-    xmlstarlet fo --indent-tab --omit-decl $temp_file || true
-    return $ret
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT -f METRIC_ENDPOINT
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT -f MDM_ACCOUNT 
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE -f MDM_NAMESPACE
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM -f KEY_PEM
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM -f CERT_PEM
 }
 
 
