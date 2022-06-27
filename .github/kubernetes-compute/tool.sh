@@ -654,8 +654,8 @@ count_result(){
 export CERT_PATH=$(pwd)/certs
 export CONTAINER_NAME=amltestmdmcontinaer
 export STATSD_PORT=38125
-export METRIC_HEARTBEAT_NAME="GithubWorkflowHeartBeat"
-export METRIC_NAME="GithubWorkflowTestResult"
+export METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
+export METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
 export REPOSITORY="${REPOSITORY:-Repository}"
 export WORKFLOW="${WORKFLOW:-Workflow}"
 
@@ -717,6 +717,8 @@ stop_mdm_container(){
 
 report_test_metrics(){
     
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
     REPEAT=5
 
     jobs=$(grep "\[JobSubmission\]" $RESULT_FILE)
