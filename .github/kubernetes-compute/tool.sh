@@ -654,10 +654,9 @@ count_result(){
 export CERT_PATH=$(pwd)/certs
 export CONTAINER_NAME=amltestmdmcontinaer
 export STATSD_PORT=38125
-export METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
-export METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
 export REPOSITORY="${REPOSITORY:-Repository}"
 export WORKFLOW="${WORKFLOW:-Workflow}"
+export REPEAT="${REPEAT:-5}"
 
 install_mdm_dependency(){
     sudo apt install socat
@@ -715,11 +714,24 @@ stop_mdm_container(){
     show_mdm_container
 }
 
-report_test_metrics(){
+report_cluster_setup_metrics(){
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+    METRIC_NAME="${METRIC_NAME:-GithubWorkflowClusterSetup}"
+    
+    for i in $(seq 1 $REPEAT); do
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:1|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        sleep 60
+    done
+
+}
+
+report_test_result_metrics(){
     
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
     MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
-    REPEAT=5
+    METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
+    METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
 
     jobs=$(grep "\[JobSubmission\]" $RESULT_FILE)
     echo "Found $(echo "$jobs"| wc -l) jobs"

@@ -144,7 +144,7 @@ jobs:
       if: ${{ failure() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
-          bash .github/kubernetes-compute/tool.sh report_test_metrics
+          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
         fi
       timeout-minutes: 30
    
