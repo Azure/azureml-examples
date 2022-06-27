@@ -670,6 +670,8 @@ download_metrics_info(){
     KEY_PEM=${KEY_PEM:-KEY-PEM}
     CERT_PEM=${CERT_PEM:-CERT-PEM}
 
+    mkdir -p $CERT_PATH
+
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT -f METRIC_ENDPOINT
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT -f MDM_ACCOUNT 
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE -f MDM_NAMESPACE
