@@ -6,39 +6,39 @@ on:
     inputs:
       TEST_REGION:
         description: 'Resource Region'
-        required: true
+        required: false
         default: 'eastus'
       RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
-        required: true
+        required: false
         default: 'staging'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
-        required: true
+        required: false
         default: 'false'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
-        required: true
+        required: false
         default: 'false'
       EXTENSION_VERSION:
         description: 'The version of k8s-extension'
-        required: true
+        required: false
         default: ''
       WORKSPACE:
         description: 'The workspace of the cluster'
-        required: true
+        required: false
         default: 'amlarc-githubtest-ws'
       VM_SKU:
         description: 'The VM SKU of the cluster'
-        required: true
+        required: false
         default: 'Standard_D4s_v3'
       MIN_COUNT:
         description: 'The min count of the cluster'
-        required: true
+        required: false
         default: '5'
       AKS_CLUSTER_PREFIX:
         description: 'The prefix of the cluster'
-        required: true
+        required: false
         default: 'amlarc-aks'
 jobs:
   test:
