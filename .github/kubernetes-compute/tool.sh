@@ -654,6 +654,10 @@ count_result(){
 export CERT_PATH=$(pwd)/certs
 export CONTAINER_NAME=amltestmdmcontinaer
 export STATSD_PORT=38125
+export METRIC_HEARTBEAT_NAME="GithubWorkflowHeartBeat"
+export METRIC_NAME="GithubWorkflowTestResult"
+export REPOSITORY="${REPOSITORY:-Repository}"
+export WORKFLOW="${WORKFLOW:-Workflow}"
 
 install_mdm_dependency(){
     sudo apt install socat
@@ -719,15 +723,21 @@ report_test_metrics(){
     echo "Found $(echo "$jobs"| wc -l) jobs"
 
     for i in $(seq 1 $REPEAT); do
-        
+        # Report heartbeat
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:1|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+
         while IFS= read -r job; do
             job=$(echo $job| awk '{print $2}')
-
-            statusline=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job)
-            jobstatus=$(echo "$statusline| awk '{print $3}'")
-
+            jobstatus=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job | awk '{print $3}'")
             echo "Report metrics for job: $job status: $jobstatus"
 
+            Value=0
+            if [ "${jobstatus}" == "completed" ]; then
+                Value=1
+            fi
+
+            # Report test result            
+            echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"JobPath":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${Value}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
             sleep 2
         done <<< $(echo "$jobs")
 
