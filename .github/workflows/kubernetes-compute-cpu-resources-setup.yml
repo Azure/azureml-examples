@@ -141,15 +141,26 @@ jobs:
       timeout-minutes: 30
 
     - name: report_metrics
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ failure() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
-          echo "failure"  ${{ failure() }}
+          echo "failure" 
           export VALUE=5
           bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
         fi
       timeout-minutes: 30
-   
+
+    - name: report_metrics
+      if: ${{ success() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          echo "success" 
+          export VALUE=50
+          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
+        fi
+      timeout-minutes: 30   
+
+
     - name: stop_mdm
       if: ${{ github.event_name != 'pull_request' }}
       run: |
