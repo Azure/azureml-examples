@@ -675,6 +675,10 @@ download_metrics_info(){
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT -f METRIC_ENDPOINT
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT -f MDM_ACCOUNT 
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE -f MDM_NAMESPACE
+
+    echo pwd: $(pwd)
+    echo pwd: $CERT_PATH/key.pem
+
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM -f $CERT_PATH/key.pem
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM -f $CERT_PATH/cert.pem
 }
