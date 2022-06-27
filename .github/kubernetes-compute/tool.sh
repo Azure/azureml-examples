@@ -718,9 +718,10 @@ report_cluster_setup_metrics(){
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
     MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
     METRIC_NAME="${METRIC_NAME:-GithubWorkflowClusterSetup}"
+    VALUE="${VALUE:-1}"
     
     for i in $(seq 1 $REPEAT); do
-        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:1|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
         sleep 60
     done
 
@@ -745,13 +746,13 @@ report_test_result_metrics(){
             jobstatus=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job | awk '{print $3}')
             echo "Report metrics for job: $job status: $jobstatus"
 
-            Value=0
+            VALUE=0
             if [ "${jobstatus}" == "completed" ]; then
-                Value=1
+                VALUE=1
             fi
 
             # Report test result            
-            echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"JobPath":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${Value}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+            echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"JobPath":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
             sleep 2
         done <<< $(echo "$jobs")
 

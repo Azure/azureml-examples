@@ -118,7 +118,7 @@ jobs:
       timeout-minutes: 30
 
     - name: download_metrics_dependency
-      if: ${{ failure() && github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           bash .github/kubernetes-compute/tool.sh install_mdm_dependency
@@ -126,7 +126,7 @@ jobs:
       timeout-minutes: 30
 
     - name: start_mdm
-      if: ${{ failure() && github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
@@ -141,15 +141,17 @@ jobs:
       timeout-minutes: 30
 
     - name: report_metrics
-      if: ${{ failure() && github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
+          echo "failure"  ${{ failure() }}
+          export VALUE=5
           bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
         fi
       timeout-minutes: 30
    
     - name: stop_mdm
-      if: ${{ failure() && github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           bash .github/kubernetes-compute/tool.sh stop_mdm_container
