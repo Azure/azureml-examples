@@ -742,7 +742,7 @@ report_test_result_metrics(){
 
         while IFS= read -r job; do
             job=$(echo $job| awk '{print $2}')
-            jobstatus=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job | awk '{print $3}'")
+            jobstatus=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job | awk '{print $3}')
             echo "Report metrics for job: $job status: $jobstatus"
 
             Value=0
