@@ -1,6 +1,11 @@
 name: cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints
 on:
   workflow_dispatch:
+    inputs:
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
   schedule:
     - cron: "0 1 * * *"
   pull_request:
@@ -16,11 +21,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       REPOSITORY: https://github.com/Azure/azureml-examples
       WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
 
     steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: azure login
