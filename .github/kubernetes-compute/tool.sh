@@ -717,8 +717,8 @@ stop_mdm_container(){
 }
 
 report_cluster_setup_metrics(){
-    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_endpoint.txt)}"
     METRIC_NAME="${METRIC_NAME:-GithubWorkflowClusterSetup}"
     VALUE="${VALUE:-1}"
     
