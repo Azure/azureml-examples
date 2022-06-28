@@ -117,6 +117,7 @@ jobs:
         bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 2 4Gi
       timeout-minutes: 30
 
+    # report metrics
     - name: download_metrics_dependency
       if: ${{ github.event_name != 'pull_request' }}
       run: |
@@ -124,7 +125,6 @@ jobs:
           bash .github/kubernetes-compute/tool.sh install_mdm_dependency
         fi
       timeout-minutes: 30
-
     - name: start_mdm
       if: ${{ github.event_name != 'pull_request' }}
       run: |
@@ -139,7 +139,6 @@ jobs:
           bash .github/kubernetes-compute/tool.sh start_mdm_container
         fi
       timeout-minutes: 30
-
     - name: report_failure_metrics
       if: ${{ failure() && github.event_name != 'pull_request' }}
       run: |
@@ -149,17 +148,14 @@ jobs:
           sleep 60
         fi
       timeout-minutes: 30
-
     - name: report_succes_metrics
       if: ${{ success() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           export VALUE=100
           bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
-          sleep 60
         fi
       timeout-minutes: 30   
-    
     - name: stop_mdm
       if: ${{ github.event_name != 'pull_request' }}
       run: |
