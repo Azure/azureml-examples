@@ -694,7 +694,7 @@ start_mdm_container(){
         -e MDM_NAMESPACE=${MDM_NAMESPACE} \
         -e MDM_INPUT=statsd_udp \
         -e STATSD_PORT=${STATSD_PORT} \
-        -e MDM_LOG_LEVEL=Info \
+        -e MDM_LOG_LEVEL=Debug \
         -e CERT_FILE=/certs/cert.pem \
         -e KEY_FILE=/certs/key.pem \
         linuxgeneva-microsoft.azurecr.io/genevamdm
