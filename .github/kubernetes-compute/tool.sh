@@ -674,18 +674,18 @@ download_metrics_info(){
 
     mkdir -p $CERT_PATH
 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT_NAME -f metrics_endpoint.txt
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT_NAME -f metric_endpoint.txt
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT_NAME -f mdm_account.txt 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE_NAME -f mdm_endpoint.txt
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE_NAME -f mdm_namespace.txt
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM_NAME -f $CERT_PATH/key.pem
     az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM_NAME -f $CERT_PATH/cert.pem
 }
 
 start_mdm_container(){
 
-    METRIC_ENDPOINT="${METRIC_ENDPOINT:-$(cat metrics_endpoint.txt)}"
+    METRIC_ENDPOINT="${METRIC_ENDPOINT:-$(cat metric_endpoint.txt)}"
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_endpoint.txt)}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
 
     docker run -d \
         --name=$CONTAINER_NAME \
@@ -720,7 +720,7 @@ stop_mdm_container(){
 
 report_cluster_setup_metrics(){
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_endpoint.txt)}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
     METRIC_NAME="${METRIC_NAME:-GithubWorkflowClusterSetup}"
     VALUE="${VALUE:-1}"
     
@@ -732,8 +732,8 @@ report_cluster_setup_metrics(){
 }
 
 report_inference_metrics(){
-    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
     METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
     METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
     jobstatus="${jobstatus:-Completed}"
@@ -754,8 +754,8 @@ report_inference_metrics(){
 }
 
 report_test_result_metrics(){
-    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
     METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
     METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
 
