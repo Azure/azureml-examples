@@ -59,7 +59,8 @@ def main():
     mlflow.log_metric("train_samples", raw_dataset["train"].shape[0])
 
     if args.max_samples>0:
-        raw_dataset = DatasetDict({k:raw_dataset[k].select([i for i in range(args.max_samples)]) for k in raw_dataset.keys()})
+        sample_sizes = {k:min(len(raw_dataset[k]), args.max_samples) for k in raw_dataset.keys()}
+        raw_dataset = DatasetDict({k:raw_dataset[k].select([i for i in range(sample_sizes[k])]) for k in raw_dataset.keys()})
         logger.info("sampled raw dataset:")
         logger.info(raw_dataset.num_rows)
 
