@@ -664,30 +664,26 @@ install_mdm_dependency(){
 
 download_metrics_info(){
     KEY_VAULT_NAME=${KEY_VAULT_NAME:-kvname}
-    METRIC_ENDPOINT=${METRIC_ENDPOINT:-METRIC-ENDPOINT}
-    MDM_ACCOUNT=${MDM_ACCOUNT:-MDM-ACCOUNT}
-    MDM_NAMESPACE=${MDM_NAMESPACE:-MDM-NAMESPACE}
-    KEY_PEM=${KEY_PEM:-KEY-PEM}
-    CERT_PEM=${CERT_PEM:-CERT-PEM}
+    METRIC_ENDPOINT_NAME=${METRIC_ENDPOINT_NAME:-METRIC-ENDPOINT}
+    MDM_ACCOUNT_NAME=${MDM_ACCOUNT_NAME:-MDM-ACCOUNT}
+    MDM_NAMESPACE_NAME=${MDM_NAMESPACE_NAME:-MDM-NAMESPACE}
+    KEY_PEM_NAME=${KEY_PEM_NAME:-KEY-PEM}
+    CERT_PEM_NAME=${CERT_PEM_NAME:-CERT-PEM}
 
     mkdir -p $CERT_PATH
 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT -f METRIC_ENDPOINT
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT -f MDM_ACCOUNT 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE -f MDM_NAMESPACE
-
-    echo pwd: $(pwd)
-    echo pwd: $CERT_PATH/key.pem
-
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM -f $CERT_PATH/key.pem
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM -f $CERT_PATH/cert.pem
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT_NAME -f metrics_endpoint.txt
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT_NAME -f mdm_account.txt 
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE_NAME -f mdm_endpoint.txt
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM_NAME -f $CERT_PATH/key.pem
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM_NAME -f $CERT_PATH/cert.pem
 }
 
 start_mdm_container(){
 
-    METRIC_ENDPOINT="${METRIC_ENDPOINT:-$(cat METRIC_ENDPOINT)}"
-    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+    METRIC_ENDPOINT="${METRIC_ENDPOINT:-$(cat metrics_endpoint.txt)}"
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_endpoint.txt)}"
 
     docker run -d \
         --name=$CONTAINER_NAME \
