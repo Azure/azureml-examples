@@ -125,7 +125,7 @@ jobs:
           bash .github/kubernetes-compute/tool.sh start_mdm_container
         fi
       timeout-minutes: 30
-    - name: report_succes_metrics
+    - name: report_metrics
       if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
