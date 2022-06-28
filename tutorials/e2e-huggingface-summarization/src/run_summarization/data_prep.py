@@ -12,7 +12,6 @@ import mlflow
 logger = logging.getLogger(__name__)
 
 
-
 def main():
     """Main function of the script."""
     # initialize root logger
@@ -27,18 +26,39 @@ def main():
 
     # input and output arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset_name", type=str, help="name of dataset or path to input dataset_name")
-    parser.add_argument("--dataset_config", type=str, help="config for huggingface dataset")
+    parser.add_argument(
+        "--dataset_name", type=str, help="name of dataset or path to input dataset_name"
+    )
+    parser.add_argument(
+        "--dataset_config", type=str, help="config for huggingface dataset"
+    )
     parser.add_argument("--text_column", type=str, help="name of text_column")
     parser.add_argument("--summary_column", type=str, help="name of summary_column")
-    parser.add_argument("--max_input_length", type=int, default=512, help="max_input_length")
-    parser.add_argument("--max_target_length", type=int, default=40, help="max_target_length")
-    parser.add_argument("--padding", type=str, default="max_length", help="padding type")
-    parser.add_argument("--model_checkpoint", type=str, help="name of the checkpointed model in HF model library")
-    parser.add_argument("--max_samples", type=int, default=-1, help="sample size from input dataset")
-    parser.add_argument("--encodings_datasets", type=str, help="path to tokenized dataset")
-    parser.add_argument("--source_prefix", type=str, help="A prefix to add before every source text (useful for T5 models).")
-
+    parser.add_argument(
+        "--max_input_length", type=int, default=512, help="max_input_length"
+    )
+    parser.add_argument(
+        "--max_target_length", type=int, default=40, help="max_target_length"
+    )
+    parser.add_argument(
+        "--padding", type=str, default="max_length", help="padding type"
+    )
+    parser.add_argument(
+        "--model_checkpoint",
+        type=str,
+        help="name of the checkpointed model in HF model library",
+    )
+    parser.add_argument(
+        "--max_samples", type=int, default=-1, help="sample size from input dataset"
+    )
+    parser.add_argument(
+        "--encodings_datasets", type=str, help="path to tokenized dataset"
+    )
+    parser.add_argument(
+        "--source_prefix",
+        type=str,
+        help="A prefix to add before every source text (useful for T5 models).",
+    )
 
     args = parser.parse_args()
     max_input_length = args.max_input_length
@@ -47,20 +67,25 @@ def main():
     # Start Logging
     mlflow.start_run()
 
-
     logger.info(f"Running with arguments: {args}")
 
     # Load dataset
     raw_dataset = load_dataset(args.dataset_name, args.dataset_config)
 
-
     logger.info(f"raw dataset length: {raw_dataset.num_rows}")
 
     mlflow.log_metric("train_samples", raw_dataset["train"].shape[0])
 
-    if args.max_samples>0:
-        sample_sizes = {k:min(len(raw_dataset[k]), args.max_samples) for k in raw_dataset.keys()}
-        raw_dataset = DatasetDict({k:raw_dataset[k].select([i for i in range(sample_sizes[k])]) for k in raw_dataset.keys()})
+    if args.max_samples > 0:
+        sample_sizes = {
+            k: min(len(raw_dataset[k]), args.max_samples) for k in raw_dataset.keys()
+        }
+        raw_dataset = DatasetDict(
+            {
+                k: raw_dataset[k].select([i for i in range(sample_sizes[k])])
+                for k in raw_dataset.keys()
+            }
+        )
         logger.info("sampled raw dataset:")
         logger.info(raw_dataset.num_rows)
 
@@ -111,7 +136,6 @@ def main():
         model_inputs["labels"] = labels["input_ids"]
         return model_inputs
 
-
     preprocessed_datasets = raw_dataset.map(preprocess_function, batched=True)
     logger.info(f"preprocessed_datasets: {preprocessed_datasets}")
 
@@ -120,8 +144,7 @@ def main():
 
     preprocessed_datasets.save_to_disk(output_path)
 
-    logger.info(f"tokenized data is saved to {output_path}")   
-
+    logger.info(f"tokenized data is saved to {output_path}")
 
     # Stop Logging
     mlflow.end_run()
