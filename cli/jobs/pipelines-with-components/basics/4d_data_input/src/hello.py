@@ -28,4 +28,3 @@ with open(
     os.path.join(args.output_data, "file-" + cur_time_str + ".txt"), "wt"
 ) as text_file:
     print(f"Logging date time: {cur_time_str}", file=text_file)
-
