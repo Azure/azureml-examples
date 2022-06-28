@@ -741,7 +741,8 @@ report_test_result_metrics(){
 
     for i in $(seq 1 $REPEAT); do
         # Report heartbeat
-        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:1|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        VALUE=100
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
 
         while IFS= read -r job; do
             job=$(echo $job| awk '{print $2}')
@@ -750,7 +751,7 @@ report_test_result_metrics(){
 
             VALUE=0
             if [ "${jobstatus}" == "completed" ]; then
-                VALUE=1
+                VALUE=100
             fi
 
             # Report test result            
