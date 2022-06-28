@@ -157,7 +157,7 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           export jobstatus=Failed
-          export job="sdk/endpoints/online/kubernetes/kubernetes-online-endpoints-simple-deployment.ipynb"
+          export job="kubernetes-compute-sdk-endpoints"
           bash .github/kubernetes-compute/tool.sh report_inference_metrics
         fi
       timeout-minutes: 30
@@ -166,7 +166,7 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           export jobstatus=Completed
-          export job="sdk/endpoints/online/kubernetes/kubernetes-online-endpoints-simple-deployment.ipynb"
+          export job="kubernetes-compute-sdk-endpoints"
           bash .github/kubernetes-compute/tool.sh report_inference_metrics
         fi
       timeout-minutes: 30   
