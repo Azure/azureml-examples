@@ -418,6 +418,8 @@ delete_workspace(){
 ##  Run jobs
 ##
 ########################################
+JOB_STATUS_FAILED="Failed"
+JOB_STATUS_COMPLETED="Completed"
 
 # run cli test job
 run_cli_job(){
@@ -449,9 +451,9 @@ run_cli_job(){
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
     
     # check status
-    if [[ $status ==  "Failed" ]]; then
+    if [[ $status ==  "${JOB_STATUS_FAILED}" ]]; then
         return 2
-    elif [[ $status != "Completed" ]]; then 
+    elif [[ $status != "${JOB_STATUS_COMPLETED}" ]]; then 
         timeout 5m az ml job cancel $SRW -n $run_id
         return 3
     fi
@@ -538,9 +540,9 @@ run_cli_automl_job(){
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
 
     # check status
-    if [[ $status ==  "Failed" ]]; then
+    if [[ $status ==  "${JOB_STATUS_FAILED}" ]]; then
         return 2
-    elif [[ $status != "Completed" ]]; then
+    elif [[ $status != "${JOB_STATUS_COMPLETED}" ]]; then
         timeout 5m az ml job cancel $SRW -n $run_id
         return 3
     fi
@@ -586,9 +588,9 @@ run_jupyter_test(){
     echo $status
     if [[ "$status" == "0" ]]
     then
-        echo "[JobStatus] $JOB_SPEC completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_COMPLETED}" | tee -a $RESULT_FILE
     else
-        echo "[JobStatus] $JOB_SPEC failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_FAILED}" | tee -a $RESULT_FILE
         return 1
     fi
 }
@@ -609,9 +611,9 @@ run_py_test(){
     echo $status
     if [[ "$status" == "0" ]]
     then
-        echo "[JobStatus] $JOB_SPEC completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_COMPLETED}" | tee -a $RESULT_FILE
     else
-        echo "[JobStatus] $JOB_SPEC failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_FAILED}" | tee -a $RESULT_FILE
         return 1
     fi
 }
@@ -627,7 +629,7 @@ count_result(){
     cat $RESULT_FILE
 
     total=$(grep -c "\[JobSubmission\]" $RESULT_FILE)
-    success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic completed)
+    success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic ${JOB_STATUS_COMPLETED})
     unhealthy=$(( $total - $success ))
 
     echo "Total: ${total}, Success: ${success}, Unhealthy: ${unhealthy}, MinSuccessNum: ${MIN_SUCCESS_NUM}."
@@ -729,8 +731,29 @@ report_cluster_setup_metrics(){
 
 }
 
+report_inference_metrics(){
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
+    METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
+    METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
+    jobstatus="${jobstatus:-Completed}"
+    job="${job:-job}"
+
+    for i in $(seq 1 $REPEAT); do
+        # Report heartbeat
+        VALUE=100
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        VALUE=0
+        if [ "${jobstatus}" == "${JOB_STATUS_COMPLETED}" ]; then
+            VALUE=100
+        fi
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"Job":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        sleep 60
+    done
+
+}
+
 report_test_result_metrics(){
-    
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat MDM_ACCOUNT)}"
     MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat MDM_NAMESPACE)}"
     METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
@@ -750,7 +773,7 @@ report_test_result_metrics(){
             echo "Report metrics for job: $job status: $jobstatus"
 
             VALUE=0
-            if [ "${jobstatus}" == "completed" ]; then
+            if [ "${jobstatus}" == "${JOB_STATUS_COMPLETED}" ]; then
                 VALUE=100
             fi
 

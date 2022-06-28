@@ -145,7 +145,6 @@ jobs:
         if [ "$FILE_TICKET" == "true" ]; then
           export VALUE=0
           bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
-          sleep 60
         fi
       timeout-minutes: 30
     - name: report_succes_metrics
