@@ -55,24 +55,18 @@ namespace BatchInferencingSamples
                 {
                     InputData = new Dictionary<string, BatchScoringInput>
                     {
+                        ["myInput"] = new BatchScoringInput
                         {
-                            "myInput",
-                            new BatchScoringInput
-                            {
-                                JobInputType = JobInputType.UriFolder,
-                                Uri = inputFolderUri,
-                            }
-                        },
+                            JobInputType = JobInputType.UriFolder,
+                            Uri = inputFolderUri,
+                        }
                     },
                     OutputData = new Dictionary<string, BatchScoringOutput>
                     {
+                        ["myOutput"] = new BatchScoringOutput
                         {
-                            "myOutput",
-                            new BatchScoringOutput
-                            {
-                                JobOutputType = JobOutputType.UriFile,
-                                Uri = outputFileUri
-                            }
+                            JobOutputType = JobOutputType.UriFile,
+                            Uri = outputFileUri
                         }
                     }
                 },
