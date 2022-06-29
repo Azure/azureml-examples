@@ -9,11 +9,11 @@ namespace BatchInferencingSamples
         /// <summary>
         /// Gets or sets the settings of the source data.
         /// </summary>
-        public Dictionary<string, BatchScoringInput> InputData { get; set; } = new Dictionary<string, BatchScoringInput>();
+        public IDictionary<string, BatchScoringInput> InputData { get; set; } = new Dictionary<string, BatchScoringInput>();
         
         /// <summary>
         /// Gets or sets the settings of the output data.
         /// </summary>
-        public Dictionary<string, BatchScoringOutput> OutputData { get; set; } = new Dictionary<string, BatchScoringOutput>();
+        public IDictionary<string, BatchScoringOutput> OutputData { get; set; } = new Dictionary<string, BatchScoringOutput>();
     }
 }
