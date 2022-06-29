@@ -10,12 +10,13 @@ namespace BatchInferencingSamples
     {
         public async Task<string> GetAccessToken(TokenCredential credentials)
         {
+            // Given this is a dataplane operation we need the authentication scope to come from Azure Machine Learning
             string[] scopes = new string[]
             {
                 "https://ml.azure.com/.default"
             };
             TokenRequestContext ctx = new TokenRequestContext(scopes);
-            var accessToken = await credentials.GetTokenAsync(ctx, CancellationToken.None).ConfigureAwait(false);
+            AccessToken accessToken = await credentials.GetTokenAsync(ctx, CancellationToken.None).ConfigureAwait(false);
 
             return accessToken.Token;
         }

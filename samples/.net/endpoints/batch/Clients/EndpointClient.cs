@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 
+using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
@@ -19,14 +20,18 @@ namespace BatchInferencingSamples
                 new ResourceIdentifier($"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{batchEndpointName}");
 
             ArmClient armClient = new ArmClient(tokenCredential);
-            var batchEndpoint = armClient.GetBatchEndpointResource(batchEndpointResourceId);
-            var data = await batchEndpoint.GetAsync().ConfigureAwait(false);
-            return data.Value.Data;
+            
+            Response<BatchEndpointResource> batchEndpointData = await armClient
+                .GetBatchEndpointResource(batchEndpointResourceId)
+                .GetAsync()
+                .ConfigureAwait(false);
+            
+            return batchEndpointData.Value.Data;
         }
 
         public static async Task Invoke(Uri scoringUri,Uri inputFolderUri, Uri outputFileUri, TokenCredential credentials)
         {
-            var client = new HttpClient();
+            HttpClient client = new HttpClient();
 
             BatchScoringPayload payload = new BatchScoringPayload
             {
@@ -57,10 +62,10 @@ namespace BatchInferencingSamples
                 },
             };
 
-            var stringPayload = JsonSerializer.Serialize(payload);
-            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
+            string stringPayload = JsonSerializer.Serialize(payload);
+            StringContent httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
 
-            var request = new HttpRequestMessage()
+            HttpRequestMessage request = new HttpRequestMessage()
             {
                 RequestUri = scoringUri,
                 Method = HttpMethod.Post,
@@ -72,7 +77,7 @@ namespace BatchInferencingSamples
             string accessToken = await authClient.GetAccessToken(credentials).ConfigureAwait(false);
             request.Headers.Add("Authorization", $"Bearer {accessToken}");
 
-            var response = await client.SendAsync(request).ConfigureAwait(false);
+            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
             Console.WriteLine($"Status Code: {(int)response.StatusCode} - {response.ReasonPhrase}");
         }
     }
