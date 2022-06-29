@@ -54,8 +54,9 @@ jobs:
       timeout-minutes: 30
     - name: install ml
       run: |
-        set -x
+        set -x +e
         az extension remove -n ml
+        sleep 60
         cat cli/setup.sh | grep "^az extension add" | bash 
         az version
       timeout-minutes: 30

@@ -100,7 +100,6 @@ register_provider(){
     
     # For amlarc extension
     az provider register --namespace Microsoft.Relay
-    az provider register --namespace Microsoft.ServiceBus
     az provider register --namespace Microsoft.KubernetesConfiguration
     az provider register --namespace Microsoft.ContainerService
     az feature register --namespace Microsoft.ContainerService -n AKS-ExtensionManager
