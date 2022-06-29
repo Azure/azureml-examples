@@ -6,7 +6,6 @@ using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
-using BatchInferencingSamples;
 using System.Text;
 using System.Text.Json;
 
@@ -14,6 +13,15 @@ namespace BatchInferencingSamples
 {
     internal class BatchEndpointActions
     {
+        /// <summary>
+        /// Gets batch endpoint information.
+        /// </summary>
+        /// <param name="subscriptionId">The subcription ID holding the batch endpoint.</param>
+        /// <param name="resourceGroup">The name of the resource group holding the batch endpoint.</param>
+        /// <param name="workspaceName">The name of the workspace holding the batch endpoint.</param>
+        /// <param name="batchEndpointName">The batch endpoint name.</param>
+        /// <param name="tokenCredential">The credentials leveraged to access the batch endpoint data.</param>
+        /// <returns></returns>
         public static async Task<BatchEndpointData> Get(Guid subscriptionId, string resourceGroup, string workspaceName, string batchEndpointName, TokenCredential tokenCredential)
         {
             ResourceIdentifier batchEndpointResourceId =
@@ -29,6 +37,14 @@ namespace BatchInferencingSamples
             return batchEndpointData.Value.Data;
         }
 
+        /// <summary>
+        /// Invokes a batch endpoint which triggers a batch inferencing job.
+        /// </summary>
+        /// <param name="scoringUri">The batch endpoint scoring URI.</param>
+        /// <param name="inputFolderUri">The URI pointing to the location of the input folder containing the data to be inferenced.</param>
+        /// <param name="outputFileUri">The URI pointing to the location where the inferenced output should be written to.</param>
+        /// <param name="tokenCredential">The credentials leveraged to score.</param>
+        /// <returns></returns>
         public static async Task Invoke(Uri scoringUri,Uri inputFolderUri, Uri outputFileUri, TokenCredential credentials)
         {
             HttpClient client = new HttpClient();

@@ -8,6 +8,11 @@ namespace BatchInferencingSamples
 {
     internal class AuthenticationClient
     {
+        /// <summary>
+        /// Gets an access token to score.
+        /// </summary>
+        /// <param name="credentials">The user's credentials.</param>
+        /// <returns>A string representation of the access token.</returns>
         public async Task<string> GetAccessToken(TokenCredential credentials)
         {
             // Given this is a dataplane operation we need the authentication scope to come from Azure Machine Learning
