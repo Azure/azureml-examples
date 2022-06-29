@@ -7,12 +7,12 @@ namespace BatchInferencingSamples
     public class BatchScoringInput
     {
         /// <summary>
-        /// The type of input, either or file or a folder.
+        /// Gets or sets the type of input, either or file or a folder.
         /// </summary>
         public JobInputType JobInputType { get; set; }
 
         /// <summary>
-        /// The URI, either an AML datastore, asset or open dataset.
+        /// Gets or sets the URI to the input data. Either an AML datastore, asset or open dataset.
         /// </summary>
         public Uri? Uri { get; set; }
     }
