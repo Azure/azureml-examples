@@ -46,8 +46,8 @@ jobs:
 
       FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
-      GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-sdk-jobs-single-step.yml
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-sdk-jobs-single-step.yml
 
     steps:
     - name: replace env from workflow_dispatch
