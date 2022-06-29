@@ -7,6 +7,7 @@ pip install numpy
 pip install tritonclient[http]
 pip install pillow
 pip install gevent
+pip install requests
 # </installing-requirements>
 
 # <set_endpoint_name>
