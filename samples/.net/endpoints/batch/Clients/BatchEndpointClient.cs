@@ -1,4 +1,4 @@
-﻿// <copyright file="EndpointClient.cs" company="Microsoft">
+﻿// <copyright file="BatchEndpointClient.cs" company="Microsoft">
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 
@@ -9,9 +9,9 @@ using Azure.ResourceManager.MachineLearning;
 using System.Text;
 using System.Text.Json;
 
-namespace BatchInferencingSamples
+namespace Microsoft.Azure.MachineLearning.Samples.BatchInferencing
 {
-    internal class BatchEndpointActions
+    internal class BatchEndpointClient
     {
         /// <summary>
         /// Gets batch endpoint information.
@@ -22,7 +22,7 @@ namespace BatchInferencingSamples
         /// <param name="batchEndpointName">The batch endpoint name.</param>
         /// <param name="tokenCredential">The credentials leveraged to access the batch endpoint data.</param>
         /// <returns></returns>
-        public static async Task<BatchEndpointData> Get(Guid subscriptionId, string resourceGroup, string workspaceName, string batchEndpointName, TokenCredential tokenCredential)
+        public static async Task<BatchEndpointData> GetAsync(Guid subscriptionId, string resourceGroup, string workspaceName, string batchEndpointName, TokenCredential tokenCredential)
         {
             ResourceIdentifier batchEndpointResourceId =
                 new ResourceIdentifier($"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{batchEndpointName}");
@@ -45,7 +45,7 @@ namespace BatchInferencingSamples
         /// <param name="outputFileUri">The URI pointing to the location where the inferenced output should be written to.</param>
         /// <param name="tokenCredential">The credentials leveraged to score.</param>
         /// <returns></returns>
-        public static async Task Invoke(Uri scoringUri,Uri inputFolderUri, Uri outputFileUri, TokenCredential credentials)
+        public static async Task InvokeAsync(Uri scoringUri,Uri inputFolderUri, Uri outputFileUri, TokenCredential credentials)
         {
             HttpClient client = new HttpClient();
 
@@ -84,7 +84,7 @@ namespace BatchInferencingSamples
 
             AuthenticationClient authClient = new AuthenticationClient();
 
-            string accessToken = await authClient.GetAccessToken(credentials).ConfigureAwait(false);
+            string accessToken = await authClient.GetAccessTokenAsync(credentials).ConfigureAwait(false);
             request.Headers.Add("Authorization", $"Bearer {accessToken}");
 
             HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);

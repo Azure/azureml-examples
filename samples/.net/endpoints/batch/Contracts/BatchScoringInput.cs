@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 
-namespace BatchInferencingSamples
+namespace Microsoft.Azure.MachineLearning.Samples.BatchInferencing
 {
     public class BatchScoringInput
     {

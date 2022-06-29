@@ -4,7 +4,7 @@
 
 using Azure.Core;
 
-namespace BatchInferencingSamples
+namespace Microsoft.Azure.MachineLearning.Samples.BatchInferencing
 {
     internal class AuthenticationClient
     {
@@ -13,7 +13,7 @@ namespace BatchInferencingSamples
         /// </summary>
         /// <param name="credentials">The user's credentials.</param>
         /// <returns>A string representation of the access token.</returns>
-        public async Task<string> GetAccessToken(TokenCredential credentials)
+        public async Task<string> GetAccessTokenAsync(TokenCredential credentials)
         {
             // Given this is a dataplane operation we need the authentication scope to come from Azure Machine Learning
             string[] scopes = new string[]

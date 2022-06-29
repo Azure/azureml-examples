@@ -4,7 +4,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace BatchInferencingSamples
+namespace Microsoft.Azure.MachineLearning.Samples.BatchInferencing
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum JobInputType

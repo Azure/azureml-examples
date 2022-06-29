@@ -6,7 +6,7 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager.MachineLearning;
 
-namespace BatchInferencingSamples
+namespace Microsoft.Azure.MachineLearning.Samples.BatchInferencing
 {
     internal class Program
     {
@@ -20,8 +20,8 @@ namespace BatchInferencingSamples
             string batchEndpointName = "<your_endpoint_name>";
 
             // Get the batch endpoint to get its scoring URI.
-            BatchEndpointData batchEndpointData = await BatchEndpointActions
-                .Get(subscriptionId, resourceGroupName, workspaceName, batchEndpointName, credentials)
+            BatchEndpointData batchEndpointData = await BatchEndpointClient
+                .GetAsync(subscriptionId, resourceGroupName, workspaceName, batchEndpointName, credentials)
                 .ConfigureAwait(false);
 
             Uri scoringUri = batchEndpointData.Properties.ScoringUri;
@@ -36,7 +36,7 @@ namespace BatchInferencingSamples
             Uri outputFileUri = new Uri($"azureml://datastores/workspaceblobstore/paths/{batchEndpointName}/mnistOutput/{outputFileName}");
 
             // Invoke the batch endpoint.
-            await BatchEndpointActions.Invoke(scoringUri, inputFolderUri, outputFileUri, credentials).ConfigureAwait(false);
+            await BatchEndpointClient.InvokeAsync(scoringUri, inputFolderUri, outputFileUri, credentials).ConfigureAwait(false);
         }
     }
 }
