@@ -11,15 +11,10 @@ export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 export BASE_PATH=endpoints/online/custom-container/inference-schema
 
-#TODO: delete
-ENDPOINT_NAME=azureml-infschema1
-ACR_NAME=valwallaceskr
-
 # <login_to_acr>
 az acr login -n ${ACR_NAME} 
 # </login_to_acr> 
 
-# TODO: version 
 #<build_with_acr> 
 az acr build -t azureml-examples/infschema:1 -r $ACR_NAME --file $BASE_PATH/inference-schema.dockerfile $BASE_PATH
 # </build_with_acr>
