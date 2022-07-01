@@ -1,5 +1,4 @@
 import os
-import logging
 import numpy as np
 import joblib
 from inference_schema.schema_decorators import input_schema, output_schema

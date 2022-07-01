@@ -1,5 +1,5 @@
 from inference_schema.parameter_types.pandas_parameter_type import PandasParameterType
-from inference_schema.schema_decorators import input_schema, output_schema
+from inference_schema.schema_decorators import input_schema
 from transformers import BertForMaskedLM, FillMaskPipeline, AutoTokenizer
 from operator import itemgetter
 from pathlib import Path
