@@ -37,4 +37,3 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     train(args.sample_input, args.model_pkl)
-
