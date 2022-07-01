@@ -182,14 +182,14 @@ jupyter notebook
           - train a forecaster using a remote AML Compute cluster
           - capabilities of forecast function (e.g. forecast farther into the horizon)
           - generate confidence intervals
-- **Forecast Beverage Production**
-    - Dataset: [Monthly beer production data](forecasting-beer-remote/Beer_no_valid_split_train.csv)
-        - **[Jupyter Notebook](forecasting-beer-remote/auto-ml-forecasting-beer-remote.ipynb)**
+- **Forecast Github Daily Active Users**
+    - Dataset: [Github Daily Active Users data](forecasting-github-dau/github_dau_2011-2018_train.csv)
+        - **[Jupyter Notebook](forecasting-github-dau/auto-ml-forecasting-github-dau.ipynb)**
           - train using a remote AML Compute cluster
           - enable the DNN learning model
           - forecast on a remote compute cluster and compare different model performance
 - **Hierarchical Time Series Forecasting**
-    - Dataset: [HTS dataset](forecasting-hierarchical-timeseries/Data/hts_train.csv)
+    - Dataset: [HTS dataset](forecasting-hierarchical-timeseries/Data/hts-sample-train.csv)
         - **[Jupyter Notebook](forecasting-hierarchical-timeseries/auto-ml-forecasting-hierarchical-timeseries.ipynb)**
           - train and forecast using a remote AML Compute cluster with multiple nodes
           - multiple AutoML runs trigger in parallel
