@@ -1,0 +1,4 @@
+{
+    "masked_sentences" : ["Hello, my dog is [MASK]!", "What [MASK] is the show?"],
+    "top_k" : 2
+}

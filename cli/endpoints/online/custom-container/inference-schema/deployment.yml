@@ -1,0 +1,12 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: infschema
+endpoint_name: azureml-examples-infschema 
+model: azureml:azureml-infschema:1
+code_configuration:
+  code: code
+  scoring_script: score-standard-python-parameter.py
+environment:
+  name: aml-examples-infschema
+  image: {{image_name}}
+instance_type: Standard_DS2_v2
+instance_count: 1

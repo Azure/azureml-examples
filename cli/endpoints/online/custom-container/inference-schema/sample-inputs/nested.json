@@ -1,0 +1,4 @@
+{
+    "input" : {"bert_input" : {"sentence":{"0":"Hello my dog is [MASK] and I love her","1":"What [MASK] is the show?"}}, 
+               "iris_input" : [[7.2, 3.2, 6.0, 1.8], [4.2, 3.5, 1.0, 3.0]]} 
+}
