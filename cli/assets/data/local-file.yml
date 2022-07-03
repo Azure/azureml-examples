@@ -1,4 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: local-file-example
+name: local-file-example-titanic
 description: Data asset created from local file.
+type: uri_file
 path: sample-data/titanic.csv

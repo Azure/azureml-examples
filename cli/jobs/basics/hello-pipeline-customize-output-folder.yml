@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: hello_pipeline_customize_output_folder
+settings:
+    default_compute: azureml:cpu-cluster
+jobs:
+  hello_world:
+    command: echo "hello" && echo "world" > ${{outputs.output}}/hello_world-folder.txt
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: azureml:cpu-cluster
+    outputs:
+      output:
+        type: uri_folder
+        path: azureml://datastores/workspaceblobstore/paths/${{name}}/

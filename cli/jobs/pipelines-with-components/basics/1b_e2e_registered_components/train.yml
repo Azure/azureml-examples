@@ -8,12 +8,19 @@ inputs:
     type: uri_folder
   max_epocs:
     type: integer
+    min: 0
+    max: 100
   learning_rate: 
     type: number
     default: 0.01
   learning_rate_schedule: 
     type: string
     default: time-based 
+    enum:
+        - "step"
+        - "time-based"
+
+  
 outputs:
   model_output:
     type: uri_folder

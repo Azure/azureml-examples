@@ -69,6 +69,9 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             return
 
     print("Processing file:", input_file)
+    if not os.path.exists(input_file):
+        print("Warning: File doesn't exist: ", input_file)
+        return
     with open(input_file, "r") as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         job_schema = data.get("$schema", "")

@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/jobs/single-step/julia/iris/**
       - .github/workflows/cli-jobs-single-step-julia-iris-job.yml
@@ -25,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x run-job.sh jobs/single-step/julia/iris/job.yml
-      working-directory: cli
+      run: bash -x ../../../../run-job.sh job.yml
+      working-directory: cli/jobs/single-step/julia/iris
