@@ -139,7 +139,7 @@ environment:
 resources:
   instance_count: 2
 distribution:
-  type: mpi
+  type: pytorch
   process_count_per_instance: 1
 
 command: >-
