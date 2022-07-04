@@ -86,7 +86,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model/sklearn_regression_model.pkl\"
+        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model\"
     }
 }"
 # </create_model>
