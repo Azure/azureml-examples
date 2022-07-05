@@ -174,15 +174,11 @@ def checkVisionTrainRun(child_runs, expected_min_score, expected_max_score):
         )
         print("Primary metric value of {}: {}".format(hd_run.id, best_metric))
 
-        lower_err_msg = (
-            "Primary metric value was lower than the expected min value of {}".format(
-                expected_min_score
-            )
+        lower_err_msg = "Primary metric value was lower than the expected min value of {}".format(
+            expected_min_score
         )
-        higher_err_msg = (
-            "Primary metric value was higher than the expected max value of {}".format(
-                expected_max_score
-            )
+        higher_err_msg = "Primary metric value was higher than the expected max value of {}".format(
+            expected_max_score
         )
         assert best_metric >= expected_min_score, lower_err_msg
         assert best_metric <= expected_max_score, higher_err_msg
