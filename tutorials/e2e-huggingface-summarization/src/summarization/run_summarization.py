@@ -25,6 +25,8 @@ from azureml.core import Run
 from azureml.core.model import Model
 
 
+# Input arguments are set with dataclass. Huggingface library stores the default training args in TrainingArguments dataclass
+# user args are also defined in dataclasses, we will then load arguments from a tuple of user defined and built-in dataclasses.
 @dataclass
 class DataArgs:
     dataset_name: Optional[str] = field(
@@ -133,6 +135,11 @@ def main():
     parser = HfArgumentParser((ModelArgs, DataArgs, Seq2SeqTrainingArguments))
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
     logger.info(f"Running with arguments: {model_args}, {data_args}, {training_args}")
+
+    # Check if this is the main node
+    is_this_main_node = int(os.environ.get("RANK", "0")) == 0
+    if is_this_main_node:
+        logger.info("This is the main Node")
 
     if data_args.dataset_name is not None:
         # Downloading and loading a dataset from the hub.
@@ -340,7 +347,7 @@ def main():
         logger.info(f"model is saved at {model_path}")
         print("trained model saved locally")
         # Registering the model to the workspace
-        if model_args.registered_model_name is not None:
+        if model_args.registered_model_name is not None and is_this_main_node:
             model = Model.register(
                 run.experiment.workspace,
                 model_name=model_args.registered_model_name,

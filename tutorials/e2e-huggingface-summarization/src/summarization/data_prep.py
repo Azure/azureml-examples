@@ -2,7 +2,6 @@ import os
 import argparse
 import pandas as pd
 import logging
-from azureml.core import Run
 from datasets import load_dataset, DatasetDict
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
@@ -51,9 +50,7 @@ def main():
     parser.add_argument(
         "--max_samples", type=int, default=-1, help="sample size from input dataset"
     )
-    parser.add_argument(
-        "--encodings_datasets", type=str, help="path to tokenized dataset"
-    )
+    parser.add_argument("--encodings", type=str, help="path to tokenized dataset")
     parser.add_argument(
         "--source_prefix",
         type=str,
@@ -139,7 +136,7 @@ def main():
     preprocessed_datasets = raw_dataset.map(preprocess_function, batched=True)
     logger.info(f"preprocessed_datasets: {preprocessed_datasets}")
 
-    output_path = os.path.join(args.encodings_datasets)
+    output_path = os.path.join(args.encodings)
     os.makedirs(output_path, exist_ok=True)
 
     preprocessed_datasets.save_to_disk(output_path)
