@@ -2,9 +2,9 @@ set -x
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION="eastus"
-RESOURCE_GROUP="azureml-examples"
-WORKSPACE="main"
+LOCATION=$(az ml workspace show --query location | tr -d '\r"')
+RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
+WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
 schema='$schema'
 #</create_variables>
 
