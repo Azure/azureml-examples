@@ -100,16 +100,8 @@ def driver():
         test(args, model, device, test_loader)
 
     if args.save_model:
-        input_schema = Schema(
-            [
-                TensorSpec(np.dtype(np.uint8), (-1, 28, 28)),
-            ]
-        )
-        output_schema = Schema(
-            [
-                TensorSpec(np.dtype(np.float32), (-1, 10)),
-            ]
-        )
+        input_schema = Schema([TensorSpec(np.dtype(np.uint8), (-1, 28, 28))])
+        output_schema = Schema([TensorSpec(np.dtype(np.float32), (-1, 10))])
         signature = ModelSignature(inputs=input_schema, outputs=output_schema)
         mlflow.pytorch.log_model(model, "model", signature=signature)
 

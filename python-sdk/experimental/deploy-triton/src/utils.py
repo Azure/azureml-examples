@@ -25,12 +25,9 @@ def get_model_info():
     for model in repo_index:
         model_name = model["name"]
         model_version = model["version"]
-        (
-            input_meta,
-            input_config,
-            output_meta,
-            output_config,
-        ) = parse_model_http(model_name=model_name, model_version=model_version)
+        (input_meta, input_config, output_meta, output_config) = parse_model_http(
+            model_name=model_name, model_version=model_version
+        )
         print(
             f"Found model: {model_name}, version: {model_version}, \
               input meta: {input_meta}, input config: {input_config}, \
@@ -69,11 +66,7 @@ def parse_model_http(model_name, model_version=""):
 
 
 def triton_infer(
-    input_mapping,
-    model_name,
-    binary_data=False,
-    binary_output=False,
-    class_count=0,
+    input_mapping, model_name, binary_data=False, binary_output=False, class_count=0
 ):
     """Helper function for setting Triton inputs and executing a request
 

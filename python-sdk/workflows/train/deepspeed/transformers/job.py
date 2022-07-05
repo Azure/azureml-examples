@@ -10,11 +10,7 @@ from azureml.core import Workspace, ScriptRunConfig, Environment, Experiment
 from azureml.core.runconfig import PyTorchConfiguration
 
 
-TARGET_GPU_COUNT = {
-    "gpu-V100-1": 1,
-    "gpu-V100-2": 2,
-    "gpu-V100-4": 4,
-}
+TARGET_GPU_COUNT = {"gpu-V100-1": 1, "gpu-V100-2": 2, "gpu-V100-4": 4}
 
 
 @dataclass
@@ -92,7 +88,7 @@ if __name__ == "__main__":
     target_names = [
         # "gpu-V100-1",  # single GPU
         # "gpu-V100-2",  # two GPUs
-        "gpu-V100-4",  # four GPUs
+        "gpu-V100-4"  # four GPUs
     ]
 
     # https://huggingface.co/transformers/pretrained_models.html
