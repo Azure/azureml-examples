@@ -31,7 +31,7 @@ on:
       VM_SKU:
         description: 'The VM SKU of the cluster'
         required: false
-        default: 'STANDARD_NC12'
+        default: 'STANDARD_NC6'
       MIN_COUNT:
         description: 'The min count of the cluster'
         required: false
@@ -48,7 +48,7 @@ jobs:
       RESOURCE_GROUP: azureml-examples
       LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
-      VM_SKU: STANDARD_NC12
+      VM_SKU: STANDARD_NC6
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
       RELEASE_TRAIN: staging
