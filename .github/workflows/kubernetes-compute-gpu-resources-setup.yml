@@ -31,7 +31,7 @@ on:
       VM_SKU:
         description: 'The VM SKU of the cluster'
         required: false
-        default: 'STANDARD_NC12'
+        default: 'STANDARD_NC6'
       MIN_COUNT:
         description: 'The min count of the cluster'
         required: false
