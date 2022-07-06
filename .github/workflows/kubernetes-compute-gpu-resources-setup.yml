@@ -48,7 +48,7 @@ jobs:
       RESOURCE_GROUP: azureml-examples
       LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
-      VM_SKU: STANDARD_NC12
+      VM_SKU: STANDARD_NC6
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
       RELEASE_TRAIN: staging
