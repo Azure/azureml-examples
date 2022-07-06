@@ -61,7 +61,7 @@ jobs:
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" kubernetes-online-endpoints-simple-deployment.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" kubernetes-online-endpoints-simple-deployment.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" kubernetes-online-endpoints-simple-deployment.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/$WORKSPACE/g" kubernetes-online-endpoints-simple-deployment.ipynb
           sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" kubernetes-online-endpoints-simple-deployment.ipynb
           sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" kubernetes-online-endpoints-simple-deployment.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" kubernetes-online-endpoints-simple-deployment.ipynb
