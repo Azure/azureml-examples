@@ -40,6 +40,8 @@ allowed_list = [
     'Please use "Dataset.File.upload_directory"',
     'Please use "FileDatasetFactory.upload_directory" instead',
     "Called AzureBlobDatastore.upload_files",
+    "LinkTabularOutputDatasetConfig",
+    "This may take a few minutes",
 ]
 
 with open(full_name, "r") as notebook_file:

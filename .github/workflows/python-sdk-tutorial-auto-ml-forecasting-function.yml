@@ -66,7 +66,7 @@ jobs:
                 --experiment_name automl-forecast-function-demo \
                 --file_name auto-ml-forecasting-function.output.ipynb \
                 --folder python-sdk/tutorials/automl-with-azureml/forecasting-forecast-function \
-                --expected_run_count 2 \
+                --expected_run_count 1 \
                 --minimum_median_score 0.00 \
                 --maximum_median_score 0.50 \
                 --metric_name normalized_root_mean_squared_error \

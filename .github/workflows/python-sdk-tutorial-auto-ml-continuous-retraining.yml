@@ -50,7 +50,7 @@ jobs:
          ./scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+      run: az ml folder attach -w main -g azureml-examples
     - name: run auto-ml-continuous-retraining.ipynb
       run: papermill -k python auto-ml-continuous-retraining.ipynb auto-ml-continuous-retraining.output.ipynb
       working-directory: python-sdk/tutorials/automl-with-azureml/continuous-retraining
