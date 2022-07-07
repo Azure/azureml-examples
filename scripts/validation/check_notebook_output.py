@@ -42,6 +42,7 @@ allowed_list = [
     "Called AzureBlobDatastore.upload_files",
     "LinkTabularOutputDatasetConfig",
     "This may take a few minutes",
+    "Downloading dataset",
 ]
 
 with open(full_name, "r") as notebook_file:
