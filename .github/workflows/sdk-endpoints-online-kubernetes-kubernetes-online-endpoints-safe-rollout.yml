@@ -6,10 +6,6 @@ on:
         description: 'Whether to file icm ticket: true or false'
         required: false
         default: 'false'
-      WORKSPACE:
-        description: 'The workspace of the cluster'
-        required: false
-        default: 'amlarc-githubtest-ws'
   schedule:
     - cron: "0 5 * * *"
   pull_request:
@@ -34,7 +30,6 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
-        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -61,7 +56,7 @@ jobs:
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" kubernetes-online-endpoints-safe-rollout.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" kubernetes-online-endpoints-safe-rollout.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/$WORKSPACE/g" kubernetes-online-endpoints-safe-rollout.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" kubernetes-online-endpoints-safe-rollout.ipynb
           sed -i -e "s/<CLUSTER_NAME>/amlarc-inference/g" kubernetes-online-endpoints-safe-rollout.ipynb
           sed -i -e "s/<COMPUTE_NAME>/inferencecompute/g" kubernetes-online-endpoints-safe-rollout.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" kubernetes-online-endpoints-safe-rollout.ipynb

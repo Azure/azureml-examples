@@ -6,10 +6,6 @@ on:
         description: 'Whether to file icm ticket: true or false'
         required: false
         default: 'false'
-      WORKSPACE:
-        description: 'The workspace of the cluster'
-        required: false
-        default: 'amlarc-githubtest-ws'
   schedule:
     - cron: "0 1 * * *"
   pull_request:
@@ -35,7 +31,6 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
-        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: azure login
