@@ -25,7 +25,9 @@ jobs:
          ./scripts/install-packages.sh
       shell: bash
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: |
+        pip install -r notebooks/dev-requirements.txt
+        pip install papermill==2.3.3
     - name: azure login
       uses: azure/login@v1
       with:
