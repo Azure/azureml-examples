@@ -22,8 +22,9 @@ jobs:
     type: command
     environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
     command: >-
-      cat ${{inputs.input_tabular}}
+      echo ${{inputs.input_tabular}}
     inputs:
       input_tabular:
         type: mltable
         path: azureml:simple2row@latest
+        mode: direct

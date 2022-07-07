@@ -15,4 +15,4 @@ jobs:
       model_folder:
         type: custom_model
         # type: mlflow_model
-        path: azureml:keras-model@latest
+        path: azureml:iris-model@latest
