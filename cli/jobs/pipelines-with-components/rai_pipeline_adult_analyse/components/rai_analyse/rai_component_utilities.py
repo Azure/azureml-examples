@@ -160,10 +160,7 @@ def copy_insight_to_raiinsights(
 
     src_dir = insight_dir / tool_dir_name / tool_dir_items[0].parts[-1]
     dst_dir = rai_insights_dir / tool_dir_name / tool_dir_items[0].parts[-1]
-    shutil.copytree(
-        src=src_dir,
-        dst=dst_dir,
-    )
+    shutil.copytree(src=src_dir, dst=dst_dir)
 
     _logger.info("Copy complete")
     return tool_type
@@ -186,9 +183,7 @@ def save_to_output_port(rai_i: RAIInsights, output_port_path: str, tool_type: st
 
         _logger.info("Starting copy")
         shutil.copytree(
-            pathlib.Path(tmpdirname) / tool_dir_name,
-            target_path,
-            dirs_exist_ok=True,
+            pathlib.Path(tmpdirname) / tool_dir_name, target_path, dirs_exist_ok=True
         )
     _logger.info("Copied to output")
 

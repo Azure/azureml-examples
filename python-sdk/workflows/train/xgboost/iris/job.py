@@ -15,10 +15,7 @@ prefix = Path(__file__).parent
 script_dir = str(prefix.joinpath("src"))
 script_name = "train.py"
 
-arguments = [
-    "--compute",
-    "CPU",  # set to GPU for accelerated training
-]
+arguments = ["--compute", "CPU"]  # set to GPU for accelerated training
 
 # environment file
 environment_file = str(prefix.joinpath("requirements.txt"))

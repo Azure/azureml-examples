@@ -7,17 +7,8 @@ import argparse
 # define constants
 EXCLUDED_JOBS = ["java"]
 EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
-EXCLUDED_RESOURCES = [
-    "workspace",
-    "datastore",
-    "vm-attach",
-    "instance",
-    "connections",
-]
-EXCLUDED_ASSETS = [
-    "conda-yamls",
-    "mlflow-models",
-]
+EXCLUDED_RESOURCES = ["workspace", "datastore", "vm-attach", "instance", "connections"]
+EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 BRANCH = "main"  # default - do not change
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
