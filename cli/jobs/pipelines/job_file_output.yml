@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: job_file_output
+type: command
+command: echo 'hello-world' > ${{outputs.output_file}}
+# command: echo "output_file"
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+outputs: 
+  output_file:
+    type: uri_file

@@ -1,0 +1,12 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: cat_file
+display_name: cat_file
+description: A example cat content in file
+# version: 4
+type: command
+inputs:
+  input_file: 
+    type: uri_file
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+command: >-
+  cat ${{inputs.input_file}}

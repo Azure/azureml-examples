@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+description: job custom model
+
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+command: >-
+  ls ${{inputs.model_folder}}
+
+inputs:
+  model_folder:
+    type: custom_model
+    path: azureml:keras-model@latest
+compute: azureml:cpu-cluster

@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+display_name: job_empty_folder_input
+type: command
+command: echo "input_file"
+# command: echo ${{inputs.input_file}}
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+inputs:
+  input_file: 
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/azureml/e0c57f59-1040-438a-a4d1-bf26e6a0bce4/output_folder/
+compute: azureml:cpu-cluster

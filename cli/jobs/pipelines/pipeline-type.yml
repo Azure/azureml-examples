@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: pipeline type between steps
+settings:
+  default_compute: azureml:cpu-cluster
+  force_rerun: true
+
+jobs:
+  job_file_output:
+    type: command
+    # command: echo 'hello-world' > ${{outputs.output_file}}
+    # environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    component: file:./job_file_output.yml
+    outputs: 
+      output_file:
+        # type: uri_file
+        # mode: upload
+  job_file_input:
+    type: command
+    # command: echo input_file
+    # environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    component: file:./job_file_input.yml
+    inputs:
+      input_file: ${{parent.jobs.job_file_output.outputs.output_file}}

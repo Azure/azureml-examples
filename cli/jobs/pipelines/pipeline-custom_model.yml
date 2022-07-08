@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: pipeline custom model
+settings:
+  default_compute: azureml:cpu-cluster
+
+jobs:
+  read_registered_custom_model:
+    type: command
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    command: >-
+      ls ${{inputs.model_folder}}
+    # code: .
+    inputs:
+      model_folder:
+        type: custom_model
+        # type: mlflow_model
+        path: azureml:iris-model@latest

@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: mlflow_model_registered_lochen
+display_name: v1 registered custom model
 jobs:
   job1:
     type: command
@@ -8,8 +8,9 @@ jobs:
       ls ${{inputs.model}}
     inputs:
       model:
-        type: mlflow_model
-        path: azureml:local-mlflow-example@latest
+        # type: mlflow_model
+        type: custom_model
+        path: azureml:ddfd57ea-cffb-43de-907a-9df7d7e44743@latest
         mode: ro_mount
     environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
     compute: azureml:cpu-cluster

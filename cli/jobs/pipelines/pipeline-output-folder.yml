@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: pipeline dummy folder between steps
+settings:
+  default_compute: azureml:cpu-cluster
+  force_rerun: true
+
+jobs:
+  job_folder_output:
+    type: command
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    command: echo ${{outputs.output_folder}}
+    outputs: 
+      output_folder:
+        # type: uri_file
+        # mode: upload
+  job_file_input:
+    type: command
+    command: echo ${{inputs.input_folder}}
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    # component: file:./job_file_input.yml
+    inputs:
+      input_folder: ${{parent.jobs.job_folder_output.outputs.output_folder}}

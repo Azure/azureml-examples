@@ -1,0 +1,30 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: pipeline v1 dataset
+settings:
+  default_compute: azureml:cpu-cluster
+
+jobs:
+  v1_file_data:
+    type: command
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    command: >-
+      ls ${{inputs.input_file}} > input_file.txt 
+      && cat input_file.txt
+
+    inputs:
+      input_file:
+        type: mltable
+        path: azureml:sampledata@latest
+    
+
+  v1_tabular_data:
+    type: command
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    command: >-
+      echo ${{inputs.input_tabular}}
+    inputs:
+      input_tabular:
+        type: mltable
+        path: azureml:simple2row@latest
+        mode: direct
