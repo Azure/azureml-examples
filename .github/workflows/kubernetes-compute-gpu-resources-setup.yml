@@ -117,9 +117,9 @@ jobs:
     - name: setup_instance_type
       run: |
         bash .github/kubernetes-compute/tool.sh get_kubeconfig
-        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 4 32Gi  2
-        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 4 32Gi
-        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 4 32Gi 2
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 3 30Gi  1
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 3 30Gi
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 3 30Gi 1
       timeout-minutes: 30
 
     # report metrics
