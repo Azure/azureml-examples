@@ -8,10 +8,14 @@ jobs:
     compute: azureml:cpu-cluster
     outputs:
       world_output:
+        path: azureml://datastores/workspaceblobstore/paths/
   world_job:
     command: cat ${{inputs.world_input}}/world.txt
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:23
     compute: azureml:cpu-cluster
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.world_output}}
+    outputs:
+      world_output_copy:
+        path: azureml://datastores/workspaceblobstore/paths/
  

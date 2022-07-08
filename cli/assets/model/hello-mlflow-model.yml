@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-name: mlflow_model_registered_lochen
+display_name: mlflow_model_registered_lochen
 command: |
   ls ${{inputs.model}}
 inputs:
