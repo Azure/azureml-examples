@@ -257,7 +257,7 @@ def lr_exponential_policy(
             lr = base_lr * (epoch + 1) / warmup_length
         else:
             e = epoch - warmup_length
-            lr = base_lr * (epoch_decay ** e)
+            lr = base_lr * (epoch_decay**e)
         return lr
 
     return lr_policy(_lr_fn, logger=logger)
