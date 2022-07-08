@@ -38,7 +38,7 @@
   "resources": [
     {
       "type": "Microsoft.MachineLearningServices/workspaces/environments/versions",
-      "apiVersion": "2021-10-01",
+      "apiVersion": "2022-05-01",
       "name": "[concat(parameters('workspaceName'), '/', parameters('environmentAssetName'), '/', parameters('environmentAssetVersion'))]",
       "properties": {
         "isAnonymous": "[parameters('isAnonymous')]",

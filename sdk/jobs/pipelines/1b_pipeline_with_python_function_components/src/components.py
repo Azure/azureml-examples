@@ -79,13 +79,9 @@ def score_data(
     (Path(score_output) / "score").write_text("scored with {}".format(model))
 
 
-@command_component(
-    display_name="Evaluate",
-    environment=conda_env,
-)
+@command_component(display_name="Evaluate", environment=conda_env)
 def eval_model(
-    scoring_result: Input(type="uri_folder"),
-    eval_output: Output(type="uri_folder"),
+    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder")
 ):
     """A dummy evaluate component."""
 
