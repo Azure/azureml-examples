@@ -17,10 +17,7 @@ args = parser.parse_args()
 
 print("hello training world...")
 
-lines = [
-    f"Raw data path: {args.raw_data}",
-    f"Data output path: {args.prep_data}",
-]
+lines = [f"Raw data path: {args.raw_data}", f"Data output path: {args.prep_data}"]
 
 for line in lines:
     print(line)

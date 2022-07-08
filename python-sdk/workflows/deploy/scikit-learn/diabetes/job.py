@@ -68,10 +68,7 @@ key1, Key2 = webservice.get_keys()
 # access_token, refresh_after = webservice.get_token()
 
 # If (key) auth is enabled, don't forget to add key to the HTTP header.
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + key1,
-}
+headers = {"Content-Type": "application/json", "Authorization": "Bearer " + key1}
 
 # # If token auth is enabled, don't forget to add token to the HTTP header.
 # headers = {'Content-Type':'application/json', 'Authorization': 'Bearer ' + access_token}
