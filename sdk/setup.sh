@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # <az_ml_sdk_install>
-#  pip install --pre azure-ai-ml
+# pip install --pre azure-ai-ml
 # </az_ml_sdk_install>
 
 # <mldesigner_install>

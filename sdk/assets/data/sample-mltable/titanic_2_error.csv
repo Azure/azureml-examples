@@ -1,0 +1,2 @@
+PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
+891,0,3,"Dooley, Mr. Patrick",male,32,0,0,370376,7.75,,Q

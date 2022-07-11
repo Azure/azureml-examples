@@ -97,3 +97,12 @@ jobs:
             bash .github/kubernetes-compute/tool.sh delete_aks
           fi
       timeout-minutes: 60
+
+    - name: cleanup terminating pods
+      if: ${{ always() }}
+      run: |
+          bash .github/kubernetes-compute/tool.sh get_kubeconfig
+          for i in $(kubectl get pod | grep Terminating | awk '{print $1}') ; do echo $i ; kubectl get pod $i; kubectl delete pod  $i --force; done
+      timeout-minutes: 60
+
+

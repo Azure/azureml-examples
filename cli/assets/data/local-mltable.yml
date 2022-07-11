@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: local-mltable-example-titanic
+description: Data asset created from local MLTable.
+type: mltable
+path: ./local-mltable
