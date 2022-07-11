@@ -72,12 +72,7 @@ def main(args):
         create_rai_tool_directories(incoming_dir)
         _logger.info("Saved empty RAI Insights input to temporary directory")
 
-        insight_paths = [
-            args.insight_1,
-            args.insight_2,
-            args.insight_3,
-            args.insight_4,
-        ]
+        insight_paths = [args.insight_1, args.insight_2, args.insight_3, args.insight_4]
 
         included_tools: Dict[str, bool] = {
             RAIToolType.CAUSAL: False,
