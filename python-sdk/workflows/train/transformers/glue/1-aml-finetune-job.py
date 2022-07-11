@@ -61,8 +61,7 @@ def transformers_environment(use_gpu=True):
 
         env_name = "transformers-gpu"
         env = Environment.from_pip_requirements(
-            name=env_name,
-            file_path=pip_requirements_path,
+            name=env_name, file_path=pip_requirements_path
         )
         env.docker.base_image = (
             "mcr.microsoft.com/azureml/intelmpi2018.3-cuda10.0-cudnn7-ubuntu16.04"
@@ -72,8 +71,7 @@ def transformers_environment(use_gpu=True):
 
         env_name = "transformers-cpu"
         env = Environment.from_pip_requirements(
-            name=env_name,
-            file_path=pip_requirements_path,
+            name=env_name, file_path=pip_requirements_path
         )
 
     return env

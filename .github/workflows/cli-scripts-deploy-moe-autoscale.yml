@@ -6,10 +6,13 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/deploy-moe-autoscale.sh
       - .github/workflows/cli-scripts-deploy-moe-autoscale.yml
       - cli/setup.sh
+      - cli/endpoints/online/managed/sample
+      - cli/endpoints/online/model-1
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,8 +27,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
       run: set -e; bash -x deploy-moe-autoscale.sh
       working-directory: cli

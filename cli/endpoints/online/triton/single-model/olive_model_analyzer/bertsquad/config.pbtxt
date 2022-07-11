@@ -1,0 +1,31 @@
+name: "bertsquad"
+platform: "onnxruntime_onnx"
+max_batch_size: 16
+input {
+  name: "input_names"
+  data_type: TYPE_INT64
+  dims: 256
+}
+input {
+  name: "input_mask"
+  data_type: TYPE_INT64
+  dims: 256
+}
+input {
+  name: "segment_ids"
+  data_type: TYPE_INT64
+  dims: 256
+}
+output {
+  name: "start"
+  data_type: TYPE_FP32
+  dims: -1
+}
+output {
+  name: "end"
+  data_type: TYPE_FP32
+  dims: -1
+}
+dynamic_batching {
+  max_queue_delay_microseconds: 3000
+}

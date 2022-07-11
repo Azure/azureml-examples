@@ -1,10 +1,13 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
+
+description: Train model with nyc taxi data
+
 display_name: nyc-taxi-pipeline-example
 experiment_name: nyc-taxi-pipeline-example
 jobs:
 
-  prep-job:
+  prep_job:
     type: command
     inputs:
       raw_data: 
@@ -12,7 +15,7 @@ jobs:
           path: ./data
     outputs:
       prep_data: 
-        mode: rw_mount
+        mode: upload
     code: src/prep
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
@@ -21,13 +24,13 @@ jobs:
       --raw_data ${{inputs.raw_data}} 
       --prep_data ${{outputs.prep_data}}
   
-  transform-job:
+  transform_job:
     type: command
     inputs: 
-      clean_data: ${{parent.jobs.prep-job.outputs.prep_data}}
+      clean_data: ${{parent.jobs.prep_job.outputs.prep_data}}
     outputs:
       transformed_data:
-        mode: rw_mount
+        mode: upload
     code: src/transform
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
@@ -36,15 +39,14 @@ jobs:
       --clean_data ${{inputs.clean_data}} 
       --transformed_data ${{outputs.transformed_data}}
   
-  train-job:
+  train_job:
     type: command
     inputs:
-      training_data: ${{parent.jobs.transform-job.outputs.transformed_data}}
+      training_data: ${{parent.jobs.transform_job.outputs.transformed_data}}
     outputs:
       model_output: 
-        mode: rw_mount
       test_data: 
-        mode: rw_mount
+        mode: upload
     code: src/train
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
@@ -54,14 +56,13 @@ jobs:
       --test_data ${{outputs.test_data}} 
       --model_output ${{outputs.model_output}}
   
-  predict-job:
+  predict_job:
     type: command
     inputs:
-      model_input: ${{parent.jobs.train-job.outputs.model_output}}
-      test_data: ${{parent.jobs.train-job.outputs.test_data}}
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: ${{parent.jobs.train_job.outputs.test_data}}
     outputs:
       predictions: 
-        mode: rw_mount
     code: src/predict
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster
@@ -71,14 +72,13 @@ jobs:
       --test_data ${{inputs.test_data}}
       --predictions ${{outputs.predictions}}
   
-  score-job:
+  score_job:
     type: command
     inputs:
-      predictions: ${{parent.jobs.predict-job.outputs.predictions}}
-      model: ${{parent.jobs.train-job.outputs.model_output}}
+      predictions: ${{parent.jobs.predict_job.outputs.predictions}}
+      model: ${{parent.jobs.train_job.outputs.model_output}}
     outputs:
       score_report: 
-        mode: rw_mount
     code: src/score
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: azureml:cpu-cluster

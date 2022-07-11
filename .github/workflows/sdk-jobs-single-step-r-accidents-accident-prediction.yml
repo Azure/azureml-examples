@@ -6,26 +6,22 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - sdk-preview
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-single-step-r-accidents-accident-prediction.yml
-      - notebooks/dev-requirements.txt
+      - sdk/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-      with:
-        ref: sdk-preview
     - name: setup python
       uses: actions/setup-python@v2
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -43,7 +39,13 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" accident-prediction.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" accident-prediction.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" accident-prediction.ipynb
-          sed -i -e "s/InteractiveBrowserCredential/AzureCliCredential/g" accident-prediction.ipynb
-          
-          papermill accident-prediction.ipynb - -k python
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" accident-prediction.ipynb
+
+          papermill -k python accident-prediction.ipynb accident-prediction.output.ipynb
       working-directory: sdk/jobs/single-step/r/accidents
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: accident-prediction
+        path: sdk/jobs/single-step/r/accidents

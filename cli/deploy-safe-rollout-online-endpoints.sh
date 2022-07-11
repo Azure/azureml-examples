@@ -1,12 +1,11 @@
 set -e
 
-
 # <set_endpoint_name>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
 #  endpoint name
-export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export ENDPOINT_NAME=endpt-sr-`echo $RANDOM`
 
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
@@ -52,6 +51,14 @@ SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME -o tsv --query scorin
 # use curl to invoke the endpoint
 curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --header "azureml-model-deployment: green" --data @endpoints/online/model-2/sample-request.json
 # </test_green_using_curl>
+
+# <test_green_with_mirror_traffic>
+az ml online-endpoint update --name $ENDPOINT_NAME --mirror-traffic "green=10"
+# <test_green_with_mirror_traffic>
+
+# <reset_mirror_traffic>
+az ml online-endpoint update --name $ENDPOINT_NAME --mirror-traffic "green=0"
+# <reset_mirror_traffic>
 
 # <green_10pct_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=90 green=10"

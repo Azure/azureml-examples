@@ -10,11 +10,7 @@ from azureml.core import Workspace, ScriptRunConfig, Environment, Experiment
 from azureml.core.runconfig import PyTorchConfiguration
 
 
-TARGET_GPU_COUNT = {
-    "gpu-V100-1": 1,
-    "gpu-V100-2": 2,
-    "gpu-V100-4": 4,
-}
+TARGET_GPU_COUNT = {"gpu-V100-1": 1, "gpu-V100-2": 2, "gpu-V100-4": 4}
 
 
 @dataclass
@@ -40,7 +36,9 @@ def submit_azureml_run(args: JobArguments):
 
     target = ws.compute_targets[args.target_name]
 
-    env = get_azureml_environment()
+    env = Environment.from_dockerfile(
+        "deepspeed-transformers", Path(__file__).parent.joinpath("../dockerfile")
+    )
 
     distributed_job_config = get_distributed_job_config(args)
 
@@ -54,6 +52,12 @@ def submit_azureml_run(args: JobArguments):
     --disable_tqdm 1
     --local_rank $LOCAL_RANK
     --deepspeed ds_config.json
+    --learning_rate 3e-05
+    --adam_beta1 0.8
+    --adam_beta2 0.999
+    --weight_decay 3e-07
+    --warmup_steps 500
+    --fp16 true
     """.split()
 
     config = ScriptRunConfig(
@@ -70,15 +74,6 @@ def submit_azureml_run(args: JobArguments):
     run.set_tags(asdict(args))
 
 
-def get_azureml_environment():
-    env = Environment("deepspeed-transformers")
-    env.docker.base_image = None
-    env.docker.base_dockerfile = "dockerfile"
-    env.python.user_managed_dependencies = True
-    env.python.interpreter_path = "/opt/miniconda/bin/python"
-    return env
-
-
 def get_distributed_job_config(args: JobArguments):
     n_proc_per_node = TARGET_GPU_COUNT[args.target_name]
     process_count = n_proc_per_node * args.node_count
@@ -93,7 +88,7 @@ if __name__ == "__main__":
     target_names = [
         # "gpu-V100-1",  # single GPU
         # "gpu-V100-2",  # two GPUs
-        "gpu-V100-4",  # four GPUs
+        "gpu-V100-4"  # four GPUs
     ]
 
     # https://huggingface.co/transformers/pretrained_models.html

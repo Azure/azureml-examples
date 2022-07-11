@@ -1,3 +1,5 @@
+set -x
+
 # setup variables
 
 datapath="example-data"
@@ -41,11 +43,8 @@ destination="$protocol://$account.blob.$endpoint/$container/$datapath/"
 # give access to blob container
 
 az role assignment create \
-
     --role "Storage Blob Data Owner" \
-
     --assignee $principal \
-
     --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
 
 
@@ -87,6 +86,11 @@ do
   # copy cifar data
 
   azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/cifar-10-python.tar.gz" $destination
+
+  
+  # copy mltable data
+
+  azcopy cp "https://azuremlexamples.blob.core.windows.net/datasets/mltable-sample" $destination --recursive
 
 done
 

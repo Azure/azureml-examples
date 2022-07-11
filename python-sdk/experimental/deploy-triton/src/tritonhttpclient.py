@@ -756,11 +756,7 @@ class InferenceServerClient:
         """
         request_uri = "v2/systemsharedmemory/region/{}/register".format(quote(name))
 
-        register_request = {
-            "key": key,
-            "offset": offset,
-            "byte_size": byte_size,
-        }
+        register_request = {"key": key, "offset": offset, "byte_size": byte_size}
         request_body = json.dumps(register_request)
 
         response = self._post(
@@ -864,13 +860,7 @@ class InferenceServerClient:
         return json.loads(content)
 
     def register_cuda_shared_memory(
-        self,
-        name,
-        raw_handle,
-        device_id,
-        byte_size,
-        headers=None,
-        query_params=None,
+        self, name, raw_handle, device_id, byte_size, headers=None, query_params=None
     ):
         """Request the server to register a system shared memory with the
         following specification.

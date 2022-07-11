@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "workspaceName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the Azure Machine Learning Workspace."
+        }
+      },
+      "modelAssetVersion": {
+        "defaultValue": "1",
+        "type": "string",
+        "metadata": {
+          "description": "The version of the Azure Machine Learning model which will be created or updated."
+        }
+      },
+      "modelAssetName": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the name of the Azure Machine Learning model container which will contain this model."
+        }
+      },
+      "modelUri": {
+        "type": "string"
+      },
+      "modelDescription": {
+        "defaultValue": "This is a test description for a model version created by an ARM template",
+        "type": "string"
+      },
+      "isAnonymous": {
+        "defaultValue": false,
+        "type": "bool",
+        "metadata": {
+          "description": "If the name version are system generated (anonymous registration)."
+        }
+      }
+    },
+    "resources": [
+      {
+        "type": "Microsoft.MachineLearningServices/workspaces/models/versions",
+        "apiVersion": "2022-05-01",
+        "name": "[concat(parameters('workspaceName'), '/', parameters('modelAssetName'), '/', parameters('modelAssetVersion'))]",
+        "properties": {
+          "description": "[parameters('modelDescription')]",
+          "isAnonymous": "[parameters('isAnonymous')]",
+          "modelUri": "[parameters('modelUri')]",
+          "properties": {},
+          "tags": {}
+        }
+      }
+    ]
+  }
