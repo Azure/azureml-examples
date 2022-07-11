@@ -1,13 +1,9 @@
 from mldesigner import command_component, Input, Output
 
 
-@command_component(
-    display_name="Eval Model",
-    version="0.0.9",
-)
+@command_component(display_name="Eval Model", version="0.0.9")
 def eval_model(
-    scoring_result: Input(type="uri_folder"),
-    eval_output: Output(type="uri_folder"),
+    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder")
 ):
     """A dummy eval component defined by dsl component."""
 

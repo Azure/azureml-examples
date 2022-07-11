@@ -27,15 +27,11 @@ input_sample = pd.DataFrame(
             "slope": 3,
             "ca": 0,
             "thal": 2,
-        },
+        }
     ]
 )
 
-output_sample = np.ndarray(
-    [
-        1,
-    ]
-)
+output_sample = np.ndarray([1])
 
 MODEL = None
 

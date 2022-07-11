@@ -31,7 +31,7 @@ on:
       VM_SKU:
         description: 'The VM SKU of the cluster'
         required: false
-        default: 'STANDARD_NC12'
+        default: 'STANDARD_NC6'
       MIN_COUNT:
         description: 'The min count of the cluster'
         required: false
@@ -48,7 +48,7 @@ jobs:
       RESOURCE_GROUP: azureml-examples
       LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
-      VM_SKU: STANDARD_NC12
+      VM_SKU: STANDARD_NC6
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
       RELEASE_TRAIN: staging
@@ -117,9 +117,9 @@ jobs:
     - name: setup_instance_type
       run: |
         bash .github/kubernetes-compute/tool.sh get_kubeconfig
-        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 4 32Gi  2
-        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 4 32Gi
-        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 4 32Gi 2
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 3 30Gi  1
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 3 30Gi
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 3 30Gi 1
       timeout-minutes: 30
 
     # report metrics
