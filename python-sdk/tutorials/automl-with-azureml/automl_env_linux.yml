@@ -31,5 +31,4 @@ dependencies:
   - pystan==2.19.1.1
   - https://aka.ms/automl-resources/packages/en_core_web_sm-2.1.0.tar.gz
   - -r https://automlsdkdataresources.blob.core.windows.net/validated-requirements/1.42.0/validated_linux_requirements.txt [--no-deps]
-  - azure-cli
   - arch==4.14
