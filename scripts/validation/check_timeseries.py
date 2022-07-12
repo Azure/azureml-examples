@@ -18,6 +18,7 @@ parser.add_argument("--experiment_name")
 parser.add_argument("--file_name")
 parser.add_argument("--folder")
 
+inputArgs = parser.parse_args()
 
 def get_hts_run_type(run):
     children = list(run.get_children())
