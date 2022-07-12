@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+description: pipeline type between steps
+settings:
+  default_compute: azureml:cpu-cluster
+  force_rerun: true
+
+jobs:
+  boolean_input:
+    type: command
+    inputs:
+      boolean_input: 1.0
+    command: >-
+      echo ${{inputs.boolean_input}}
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+  

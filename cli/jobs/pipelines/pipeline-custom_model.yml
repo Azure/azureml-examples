@@ -15,4 +15,7 @@ jobs:
       model_folder:
         type: custom_model
         # type: mlflow_model
-        path: azureml:iris-model@latest
+        # path: azureml:custom_model_created_from_v1@latest
+        # path: azureml:test@latest
+        # path: azureml:custom_folder@latest
+        path: azureml:cutom_file@latest

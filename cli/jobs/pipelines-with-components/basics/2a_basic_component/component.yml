@@ -4,7 +4,9 @@ type: command
 name: hello_python_world
 display_name: Hello_Python_World
 version: 1
-
+inputs:
+  number: 1.0
+  
 code: ./src
 
 environment: 

@@ -28,3 +28,5 @@ jobs:
         type: mltable
         path: azureml:simple2row@latest
         mode: direct
+
+        # azureml://locations/centraluseuap/workspaces/7c44c0e1-44ce-4db1-82ac-d8df41600b71/data/simple2row/versions/1
