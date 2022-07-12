@@ -93,5 +93,5 @@ def getNotebookRuns(runs, file_name, folder):
 
 
 check_hts_experiment(
-    inputArgs.experiment_name, inputArgs.file_name, inputArgs.folder_name
+    inputArgs.experiment_name, inputArgs.file_name, inputArgs.folder
 )
