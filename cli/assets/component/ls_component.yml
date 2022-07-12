@@ -1,0 +1,15 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: ls_component
+display_name: ls_component
+description: A example ls_component
+# version: 4
+type: command
+inputs:
+  data: 
+    type: uri_folder
+outputs:
+  output:
+    type: uri_folder
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+command: >-
+  ls ${{inputs.data}}

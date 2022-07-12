@@ -16,7 +16,7 @@ inputs:
     path: ./neural-iris-mltable
     mode: ro_mount
   score_model:
-    type: uri_folder
+    type: mlflow_model
     path: ./iris-model
     mode: download
 
