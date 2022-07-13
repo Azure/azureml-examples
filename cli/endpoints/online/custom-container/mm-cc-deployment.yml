@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: championchallengercc
+endpoint_name: championchallenger
+model: 
+  name: championchallenger
+  path: models
+  version: 1 
+code_configuration:
+  code: code
+  scoring_script: mm-cc-score.py
+environment: 
+  name: championchallenger 
+  version: 1
+  image: ACR_NAME.azurecr.io/championchallenger:1
+environment_variables:
+  binom_split: 0.5
+instance_type: Standard_DS2_v2
+instance_count: 1
