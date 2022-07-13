@@ -41,17 +41,14 @@ def init():
     _set_logging_parameters(TASK_TYPE, {})
 
     parser = argparse.ArgumentParser(
-        description="Retrieve model_name and batch_size from arguments."
+        description="Retrieve batch_size from arguments."
     )
-    parser.add_argument("--model_name", dest="model_name", required=True)
     parser.add_argument("--batch_size", dest="batch_size", type=int, required=False)
     args, _ = parser.parse_known_args()
 
     batch_size = args.batch_size
 
     model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model.pt")
-    if not os.path.exists(model_path):
-        model_path = Model.get_model_path(model_name=args.model_name)
 
     print(model_path)
 
