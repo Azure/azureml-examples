@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.externals import joblib
 
 from azureml.automl.runtime.shared.score import scoring, constants
-from azureml.core import Run
+from azureml.core import Run, Dataset
 from azureml.core.model import Model
 
 
@@ -19,6 +19,10 @@ parser.add_argument(
 )
 parser.add_argument(
     "--model_name", type=str, dest="model_name", help="Name of registered model"
+)
+
+parser.add_argument(
+    "--input-data", type=str, dest="input_data", help="Dataset"
 )
 
 args = parser.parse_args()
@@ -34,8 +38,8 @@ model_path = Model.get_model_path(model_name)
 model = joblib.load(model_path)
 
 run = Run.get_context()
-# get input dataset by name
-test_dataset = run.input_datasets["test_data"]
+
+test_dataset = Dataset.get_by_id(run.experiment.workspace , id=args.input_data)
 
 X_test_df = test_dataset.drop_columns(
     columns=[target_column_name]
