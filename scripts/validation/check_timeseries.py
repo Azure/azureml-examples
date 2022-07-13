@@ -20,6 +20,7 @@ parser.add_argument("--folder")
 
 inputArgs = parser.parse_args()
 
+
 def get_hts_run_type(run):
     children = list(run.get_children())
     return children[1].type
@@ -92,6 +93,4 @@ def getNotebookRuns(runs, file_name, folder):
     return notebook_runs
 
 
-check_hts_experiment(
-    inputArgs.experiment_name, inputArgs.file_name, inputArgs.folder
-)
+check_hts_experiment(inputArgs.experiment_name, inputArgs.file_name, inputArgs.folder)

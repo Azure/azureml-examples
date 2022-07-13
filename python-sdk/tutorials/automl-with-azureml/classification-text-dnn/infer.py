@@ -21,9 +21,7 @@ parser.add_argument(
     "--model_name", type=str, dest="model_name", help="Name of registered model"
 )
 
-parser.add_argument(
-    "--input-data", type=str, dest="input_data", help="Dataset"
-)
+parser.add_argument("--input-data", type=str, dest="input_data", help="Dataset")
 
 args = parser.parse_args()
 target_column_name = args.target_column_name
@@ -39,7 +37,7 @@ model = joblib.load(model_path)
 
 run = Run.get_context()
 
-test_dataset = Dataset.get_by_id(run.experiment.workspace , id=args.input_data)
+test_dataset = Dataset.get_by_id(run.experiment.workspace, id=args.input_data)
 
 X_test_df = test_dataset.drop_columns(
     columns=[target_column_name]

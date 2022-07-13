@@ -19,9 +19,12 @@ def run_inference(
         source_directory=script_folder,
         script="infer.py",
         arguments=[
-            "--target_column_name", target_column_name,
-            "--model_name", model_name,
-            "--input-data", test_dataset.as_named_input("data")
+            "--target_column_name",
+            target_column_name,
+            "--model_name",
+            model_name,
+            "--input-data",
+            test_dataset.as_named_input("data"),
         ],
         compute_target=compute_target,
         environment=inference_env,
