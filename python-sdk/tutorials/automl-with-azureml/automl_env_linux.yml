@@ -26,6 +26,7 @@ dependencies:
 - pip:
   # Required packages for AzureML execution, history, and data preparation.
   - azureml-widgets~=1.43.0
+  - azureml-dataset-runtime==1.43.0
   - pytorch-transformers==1.0.0
   - spacy==2.2.4
   - pystan==2.19.1.1
