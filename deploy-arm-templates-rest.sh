@@ -11,7 +11,7 @@ schema='$schema'
 echo -e "Using:\nSUBSCRIPTION_ID=$SUBSCRIPTION_ID\nLOCATION=$LOCATION\nRESOURCE_GROUP=$RESOURCE_GROUP\nWORKSPACE=$WORKSPACE"
 
 # <read_condafile>
-CONDA_FILE=$(< model/environment/conda.yml)
+CONDA_FILE=$(< cli/endpoints/online/model-1/environment/conda.yml)
 # <read_condafile>
 
 #<get_access_token>
@@ -23,7 +23,7 @@ export ENDPOINT_NAME=endpt-`echo $RANDOM`
 # </set_endpoint_name>
 
 #<api_version>
-API_VERSION="2021-10-01"
+API_VERSION="2022-05-01"
 #</api_version>
 
 # define how to wait
@@ -62,7 +62,7 @@ export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.acco
 # </get_storage_details>
 
 # <upload_code>
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring --account-name $AZURE_STORAGE_ACCOUNT
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s cli/endpoints/online/model-1/onlinescoring --account-name $AZURE_STORAGE_ACCOUNT
 # </upload_code>
 
 # <create_code>
@@ -117,7 +117,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         [
             {          
                 \"type\": \"Microsoft.MachineLearningServices/workspaces/codes/versions\",
-                \"apiVersion\": \"2021-10-01\",
+                \"apiVersion\": \"$API_VERSION\",
                 \"name\": \"[concat(parameters(\'workspaceName\'), \'/\', parameters(\'codeAssetName\'), \'/\', parameters(\'codeAssetVersion\'))]\",
                 \"properties\": {
                     \"description\": \"[parameters(\'codeAssetDescription\')]\",
@@ -148,7 +148,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # <\create_code>
 
 # <upload_model>
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model --account-name $AZURE_STORAGE_ACCOUNT
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s cli/endpoints/online/model-1/model --account-name $AZURE_STORAGE_ACCOUNT
 # <\upload_model>
 
 # <create_model>
@@ -234,7 +234,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # <\create_model>
 
 # <read_condafile>
-CONDA_FILE=$(cat endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
 # <read_condafile>
 
 # <create_environment>
@@ -296,7 +296,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         [
             {          
                 \"type\": \"Microsoft.MachineLearningServices/workspaces/environments/versions\",
-                \"apiVersion\": \"2021-10-01\",
+                \"apiVersion\": \"$API_VERSION\",
                 \"name\": \"[concat(parameters(\'workspaceName\'), \'/\', parameters(\'environmentAssetName\'), \'/\', parameters(\'environmentAssetVersion\'))]\",
                 \"properties\": {
                     \"description\": \"[parameters(\'environmentAssetDescription\')]\",
@@ -392,7 +392,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
             [
               {
                 \"type\": \"Microsoft.MachineLearningServices/workspaces/onlineEndpoints\",
-                \"apiVersion\": \"2021-10-01\",
+                \"apiVersion\": \"$API_VERSION\",
                 \"name\": \"[concat(parameters(\'workspaceName\'), \'/\', parameters(\'onlineEndpointName\'))]\",
                 \"location\": \"[parameters(\'location\')]\",
                 \"tags\": \"[parameters(\'onlineEndpointTags\')]\",
@@ -527,7 +527,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         \"resources\": [
           {
             \"type\": \"Microsoft.MachineLearningServices/workspaces/onlineEndpoints/deployments\",
-            \"apiVersion\": \"2021-10-01\",
+            \"apiVersion\": \"$API_VERSION\",
             \"name\": \"[concat(parameters(\'workspaceName\'), \'/\', parameters(\'onlineEndpointName\'), \'/\', parameters(\'onlineDeploymentName\'))]\",
             \"location\": \"[parameters(\'location\')]\",
             \"tags\": \"[parameters(\'onlineDeploymentTags\')]\",
@@ -572,7 +572,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
             \"value\": \"$resourceScope/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\"
         },
         \"model\": {
-            \"value\": \"$resourceScope/workspaces/$WORKSPACE/models/sklearn/versions/1\"
+            \"value\": \"$resourceScope/workspaces/$WORKSPACE/models/score-sklearn/versions/1\"
         },
         \"endpointComputeType\": {
             \"value\": \"Managed\"
@@ -610,7 +610,7 @@ accessToken=$(echo $response | jq -r '.accessToken')
 curl --location --request POST $scoringUri \
 --header "Authorization: Bearer $accessToken" \
 --header "Content-Type: application/json" \
---data @endpoints/online/model-1/sample-request.json
+--data @cli/endpoints/online/model-1/sample-request.json
 # </score_endpoint>
 
 # <get_deployment_logs>
