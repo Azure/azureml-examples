@@ -1,5 +1,4 @@
 FROM continuumio/miniconda3
-RUN echo "pip install azure-cli" | bash
 RUN apt-get update && apt-get install -y curl
 RUN apt update
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
