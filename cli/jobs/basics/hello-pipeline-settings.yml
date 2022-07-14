@@ -3,7 +3,7 @@ type: pipeline
 display_name: hello_pipeline_settings
 
 settings:
-  default_datestore: azureml:workspaceblobstore
+  default_datastore: azureml:workspaceblobstore
   default_compute: azureml:cpu-cluster
 jobs:
   hello_job:
