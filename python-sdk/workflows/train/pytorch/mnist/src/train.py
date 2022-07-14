@@ -154,9 +154,7 @@ def main():
 
     kwargs = {"batch_size": args.batch_size}
     if use_cuda:
-        kwargs.update(
-            {"num_workers": 1, "pin_memory": True, "shuffle": True},
-        )
+        kwargs.update({"num_workers": 1, "pin_memory": True, "shuffle": True})
 
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
