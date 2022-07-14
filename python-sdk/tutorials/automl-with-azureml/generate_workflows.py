@@ -35,17 +35,21 @@ def main():
 
 def get_validation_yml(notebook_folder, notebook_name):
     validation_yml = ""
-    validation_json_file_name = os.path.join(notebook_folder, notebook_name.replace(".ipynb", "-validations.json"))
+    validation_json_file_name = os.path.join(
+        notebook_folder, notebook_name.replace(".ipynb", "-validations.json")
+    )
 
     if os.path.exists(validation_json_file_name):
         with open(validation_json_file_name, "r") as json_file:
             validation_file = json.load(json_file)
             for validation in validation_file["validations"]:
-                validation_yml += get_validation_check_yml(notebook_folder, notebook_name, validation)
+                validation_yml += get_validation_check_yml(
+                    notebook_folder, notebook_name, validation
+                )
 
-    return validation_yml;
-    
-    
+    return validation_yml
+
+
 def get_validation_check_yml(notebook_folder, notebook_name, validation):
     validation_name = validation["name"]
     validation_file_name = validation_name.replace(" ", "_")
@@ -69,11 +73,11 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
                 check_yml += f"""
                   \"{param_item_value}\" \\"""
         else:
-         check_yml += f"""
+            check_yml += f"""
                 --{param_name} {param_value} \\"""
 
     return check_yml[:-2]
-    
+
 
 def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     notebook_name = notebook.replace(".ipynb", "")
