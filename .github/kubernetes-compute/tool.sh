@@ -635,6 +635,8 @@ count_result(){
     
     if (( 10#${unhealthy} > 0 )) ; then
         echo "There are $unhealthy unhealthy jobs."
+        echo "Unhealthy jobs:"
+        grep "\[JobStatus\]" $RESULT_FILE | grep -iv ${JOB_STATUS_COMPLETED}
         return 1
     fi
     
