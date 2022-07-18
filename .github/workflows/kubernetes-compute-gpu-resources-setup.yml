@@ -11,7 +11,7 @@ on:
       RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
         required: false
-        default: 'staging'
+        default: 'stable'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
         required: false
@@ -51,7 +51,7 @@ jobs:
       VM_SKU: STANDARD_NC6
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
-      RELEASE_TRAIN: staging
+      RELEASE_TRAIN: stable
       COMPUTE: "gpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
       REINSTALL_EXTENSION: false
