@@ -1,7 +1,7 @@
 name: kubernetes-compute-training-cli-jobs-basics
 on:
   schedule:
-    - cron: "0 19 * * *"
+    - cron: "0 20 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'automl|java|sweep'
+        default: 'automl|java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -38,7 +38,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-basics.*yml$'
-      JOB_FILTER: 'automl|java|sweep'
+      JOB_FILTER: 'automl|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-basics.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
@@ -94,7 +94,7 @@ jobs:
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
             bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
-            sleep 60
+            sleep 120
           else
             echo "Found invalid job: $job"
           fi

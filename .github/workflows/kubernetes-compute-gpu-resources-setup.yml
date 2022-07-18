@@ -11,7 +11,7 @@ on:
       RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
         required: false
-        default: 'staging'
+        default: 'stable'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
         required: false
@@ -51,7 +51,7 @@ jobs:
       VM_SKU: STANDARD_NC6
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
-      RELEASE_TRAIN: staging
+      RELEASE_TRAIN: stable
       COMPUTE: "gpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
       REINSTALL_EXTENSION: false
@@ -117,9 +117,9 @@ jobs:
     - name: setup_instance_type
       run: |
         bash .github/kubernetes-compute/tool.sh get_kubeconfig
-        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 3 30Gi  1
-        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 3 30Gi
-        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 3 30Gi 1
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 3 40Gi  1
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 3 40Gi
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 3 40Gi 1
       timeout-minutes: 30
 
     # report metrics

@@ -11,7 +11,7 @@ on:
       RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
         required: false
-        default: 'staging'
+        default: 'stable'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
         required: false
@@ -52,7 +52,7 @@ jobs:
       MIN_COUNT: 5
       AKS_CLUSTER_PREFIX: amlarc-aks
       CLUSTER_TYPE: managedClusters
-      RELEASE_TRAIN: staging
+      RELEASE_TRAIN: stable
       COMPUTE: "cpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True"
       REINSTALL_EXTENSION: false
