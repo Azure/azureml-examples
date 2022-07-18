@@ -94,7 +94,7 @@ jobs:
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
             bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
-            sleep 60
+            sleep 120
           else
             echo "Found invalid job: $job"
           fi
