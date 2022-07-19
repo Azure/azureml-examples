@@ -1,7 +1,7 @@
 
 FROM ubuntu:18.04
 # System packages 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl git
 # Install miniconda to /miniconda
 RUN curl -LO http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 RUN bash Miniconda3-latest-Linux-x86_64.sh -p /miniconda -b
@@ -20,7 +20,8 @@ RUN echo "az extension add -n ml" | bash
 RUN echo "pip install azure-ml==0.0.139 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2" | bash
 
 
-RUN pip install jupyterlab && jupyter notebook --generate-config
+RUN conda install jupyterlab
+RUN jupyter notebook --generate-config
 WORKDIR /root/.jupyter
 COPY jupyter_server_config.py jupyter_server_config.py
 WORKDIR /root
