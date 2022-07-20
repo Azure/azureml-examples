@@ -39,7 +39,7 @@ def main(args):
     write_readme(notebooks)
 
     # write pipeline readme
-    pipeline_dir = "jobs/pipelines/"
+    pipeline_dir = "jobs" + os.sep + "pipelines" + os.sep
     with change_working_dir(pipeline_dir):
         pipeline_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
     pipeline_notebooks = [
@@ -198,9 +198,9 @@ def write_readme(notebooks, pipeline_folder=None):
     suffix = "suffix.md"
     readme_file = "README.md"
     if pipeline_folder:
-        prefix = f"{pipeline_folder}/{prefix}"
-        suffix = f"{pipeline_folder}/{suffix}"
-        readme_file = f"{pipeline_folder}/{readme_file}"
+        prefix = os.path.join(pipeline_folder, prefix)
+        suffix = os.path.join(pipeline_folder, suffix)
+        readme_file = os.path.join(pipeline_folder, readme_file)
 
     if BRANCH == "":
         branch = "main"
