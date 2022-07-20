@@ -2,7 +2,7 @@ echo "Setting variables..."
 
 # <set_variables>
 
-GROUP="azureml-examples"
+GROUP="azureml-evonik"
 
 LOCATION="eastus"
 
