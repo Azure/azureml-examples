@@ -40,7 +40,9 @@ def init():
     # Set up logging
     _set_logging_parameters(TASK_TYPE, {})
 
-    parser = argparse.ArgumentParser(description="Retrieve batch_size from arguments.")
+    parser = argparse.ArgumentParser(
+        description="Retrieve batch_size from arguments."
+    )
     parser.add_argument("--batch_size", dest="batch_size", type=int, required=False)
     args, _ = parser.parse_known_args()
 

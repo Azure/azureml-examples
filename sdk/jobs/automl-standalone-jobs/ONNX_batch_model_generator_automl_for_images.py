@@ -20,7 +20,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 def export_onnx_model(
-    model, dummy_input, input_names, output_names, dynamic_axes, file_path, device
+    model, dummy_input, input_names, output_names, dynamic_axes,
+    file_path, device
 ):
     """
     Export the pytorch model to onnx model file.
@@ -111,7 +112,8 @@ def generate_onnx_batch_model(
         return
 
     input_names = ["input"]
-    dummy_input = torch.randn(batch_size, 3, height_onnx, width_onnx).to(device)
+    dummy_input = torch.randn(batch_size, 3, height_onnx,
+                              width_onnx).to(device)
 
     if model_name.startswith("faster") or model_name.startswith("retina"):
 
@@ -125,7 +127,8 @@ def generate_onnx_batch_model(
             for name in od_output_names
         ]
         dynamic_axes = dict()
-        dynamic_axes["input"] = {0: "batch", 1: "channel", 2: "height", 3: "width"}
+        dynamic_axes["input"] = {0: "batch", 1: "channel", 2: "height",
+                                 3: "width"}
         for output in output_names:
             dynamic_axes[output] = {0: "prediction"}
 
@@ -136,7 +139,8 @@ def generate_onnx_batch_model(
 
         output_names = ["output"]
         dynamic_axes = dict()
-        dynamic_axes = {"input": {0: "batch"}, "output": {0: "batch", 1: "boxes"}}
+        dynamic_axes = {"input": {0: "batch"},
+                        "output": {0: "batch", 1: "boxes"}}
 
         model = model_wrapper.model
         for k, m in model.named_modules():
@@ -152,7 +156,8 @@ def generate_onnx_batch_model(
             for name in od_output_names
         ]
         dynamic_axes = dict()
-        dynamic_axes["input"] = {0: "batch", 1: "channel", 2: "height", 3: "width"}
+        dynamic_axes["input"] = {0: "batch", 1: "channel", 2: "height",
+                                 3: "width"}
         for output in output_names:
             dynamic_axes[output] = {0: "prediction"}
         masks_output_names = [name for name in output_names if "masks" in name]
@@ -182,7 +187,8 @@ def generate_onnx_batch_model(
             )
         )
     except Exception as e:
-        logger.error("ONNX model generation or Schema validation error: " + str(e))
+        logger.error("ONNX model generation or Schema validation error: " +
+                     str(e))
         raise
 
 
@@ -198,7 +204,8 @@ if __name__ == "__main__":
                         maskrcnn_resnet101_fpn etc.",
     )
     parser.add_argument(
-        "--batch_size", type=int, required=True, help="No. of samples per batch"
+        "--batch_size", type=int, required=True,
+        help="No. of samples per batch"
     )
     parser.add_argument(
         "--height_onnx",
@@ -216,7 +223,8 @@ if __name__ == "__main__":
         "--job_name", type=str, required=True, help="job name of the run"
     )
     parser.add_argument(
-        "--task_type", type=str, required=True, help="Task type in automl for images"
+        "--task_type", type=str, required=True,
+        help="Task type in automl for images"
     )
     parser.add_argument(
         "--box_score_thresh",
@@ -300,7 +308,8 @@ if __name__ == "__main__":
                 "box_iou_thresh": args.box_iou_thresh,
             }
 
-        elif args.model_name.startswith("faster") or args.model_name.startswith(
+        elif args.model_name.startswith("faster") or \
+            args.model_name.startswith(
             "retina"
         ):
             # faster rcnn settings
