@@ -71,6 +71,7 @@ def get_backtest_pipeline(
     run_config = RunConfiguration()
     run_config.docker.use_docker = True
     run_config.environment = env
+    run_config.environment_variables["AUTOML_IGNORE_PACKAGE_VERSION_INCOMPATIBILITIES"] = "True"
 
     split_data = PipelineData(name="split_data_output", datastore=None).as_dataset()
     split_step = PythonScriptStep(
