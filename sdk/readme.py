@@ -183,7 +183,9 @@ jobs:
         name: {name}
         path: sdk/{posix_folder}\n"""
 
-    workflow_file = os.path.join("..", ".github", "workflows", f"sdk-{classification}-{name}.yml")
+    workflow_file = os.path.join(
+        "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
+    )
     workflow_before = ""
     if os.path.exists(workflow_file):
         with open(workflow_file, "r") as f:
@@ -250,7 +252,13 @@ def write_readme(notebooks, pipeline_folder=None):
             # write workflow file
             notebook_table += (
                 write_readme_row(
-                    branch, notebook.replace(os.sep, "/"), name, classification, area, sub_area, description
+                    branch,
+                    notebook.replace(os.sep, "/"),
+                    name,
+                    classification,
+                    area,
+                    sub_area,
+                    description,
                 )
                 + "\n"
             )
