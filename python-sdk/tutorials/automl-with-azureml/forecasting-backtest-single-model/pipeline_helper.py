@@ -71,9 +71,8 @@ def get_backtest_pipeline(
     run_config = RunConfiguration()
     run_config.docker.use_docker = True
     run_config.environment = env
-    run_config.environment_variables[
-        "AUTOML_IGNORE_PACKAGE_VERSION_INCOMPATIBILITIES"
-    ] = "True"
+
+    utilities.set_environment_variables_for_run(run_config)
 
     split_data = PipelineData(name="split_data_output", datastore=None).as_dataset()
     split_step = PythonScriptStep(
@@ -117,6 +116,7 @@ def get_backtest_pipeline(
         run_invocation_timeout=3600,
         node_count=node_count,
     )
+    utilities.set_environment_variables_for_run(back_test_config)
     forecasts = PipelineData(name="forecasts", datastore=None)
     if model_name:
         parallel_step_name = "{}-backtest".format(model_name.replace("_", "-"))
