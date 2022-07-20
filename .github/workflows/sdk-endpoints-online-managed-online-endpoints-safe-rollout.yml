@@ -1,4 +1,6 @@
 name: sdk-endpoints-online-managed-online-endpoints-safe-rollout
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

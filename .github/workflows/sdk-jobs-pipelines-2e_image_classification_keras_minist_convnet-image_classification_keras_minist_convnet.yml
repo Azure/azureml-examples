@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-2e_image_classification_keras_minist_convnet-image_classification_keras_minist_convnet
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

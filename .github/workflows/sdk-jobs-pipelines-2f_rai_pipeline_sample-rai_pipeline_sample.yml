@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

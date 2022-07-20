@@ -1,4 +1,6 @@
 name: sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

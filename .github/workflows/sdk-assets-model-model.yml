@@ -1,4 +1,6 @@
 name: sdk-assets-model-model
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

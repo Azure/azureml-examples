@@ -90,6 +90,8 @@ def write_notebook_workflow(
     posix_notebook = notebook.replace(os.sep, "/")
 
     workflow_yaml = f"""name: sdk-{classification}-{name}
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:\n"""
     if ENABLE_MANUAL_CALLING:
         workflow_yaml += f"""  workflow_dispatch:\n"""
