@@ -53,9 +53,9 @@ def write_workflows(notebooks):
     for notebook in notebooks:
         if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
             # get notebook name
-            name = notebook.split("/")[-1].replace(".ipynb", "")
+            name = os.path.basename(notebook).replace(".ipynb", "")
             folder = os.path.dirname(notebook)
-            classification = folder.replace("/", "-")
+            classification = folder.replace(os.sep, "-")
 
             enable_scheduled_runs = True
             if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
@@ -68,6 +68,16 @@ def write_workflows(notebooks):
     print("finished writing .github/workflows")
 
 
+def get_mlflow_import(notebook):
+    with open(notebook, "r") as f:
+        if "import mlflow" in f.read():
+            return """
+    - name: pip install mkflow reqs
+      run: pip install -r sdk/mlflow-requirements.txt"""
+        else:
+            return ""
+
+
 def write_notebook_workflow(
     notebook, name, classification, folder, enable_scheduled_runs
 ):
@@ -75,6 +85,10 @@ def write_notebook_workflow(
         "assets-component" in classification
     )
     creds = "${{secrets.AZ_CREDS}}"
+    mlflow_import = get_mlflow_import(notebook)
+    posix_folder = folder.replace(os.sep, "/")
+    posix_notebook = notebook.replace(os.sep, "/")
+
     workflow_yaml = f"""name: sdk-{classification}-{name}
 on:\n"""
     if ENABLE_MANUAL_CALLING:
@@ -104,7 +118,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/dev-requirements.txt{mlflow_import}
     - name: azure login
       uses: azure/login@v1
       with:
@@ -117,7 +131,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run {notebook}
+    - name: run {posix_notebook}
       run: |"""
 
     if is_pipeline_notebook:
@@ -147,17 +161,17 @@ jobs:
     if not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{folder}"""
+      working-directory: sdk/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""          
           papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{folder}"""
+      working-directory: sdk/{posix_folder}"""
     else:
         # need CPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
           papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{folder}"""
+      working-directory: sdk/{posix_folder}"""
 
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
@@ -165,9 +179,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: {name}
-        path: sdk/{folder}\n"""
+        path: sdk/{posix_folder}\n"""
 
-    workflow_file = f"../.github/workflows/sdk-{classification}-{name}.yml"
+    workflow_file = os.path.join("..", ".github", "workflows", f"sdk-{classification}-{name}.yml")
     workflow_before = ""
     if os.path.exists(workflow_file):
         with open(workflow_file, "r") as f:
@@ -202,11 +216,11 @@ def write_readme(notebooks, pipeline_folder=None):
         notebook_table = f"Test Status is for branch - **_{branch}_**\n|Area|Sub-Area|Notebook|Description|Status|\n|--|--|--|--|--|\n"
         for notebook in notebooks:
             # get notebook name
-            name = notebook.split("/")[-1].replace(".ipynb", "")
-            area = notebook.split("/")[0]
-            sub_area = notebook.split("/")[1]
+            name = notebook.split(os.sep)[-1].replace(".ipynb", "")
+            area = notebook.split(os.sep)[0]
+            sub_area = notebook.split(os.sep)[1]
             folder = os.path.dirname(notebook)
-            classification = folder.replace("/", "-")
+            classification = folder.replace(os.sep, "-")
 
             try:
                 # read in notebook
@@ -234,7 +248,7 @@ def write_readme(notebooks, pipeline_folder=None):
             # write workflow file
             notebook_table += (
                 write_readme_row(
-                    branch, notebook, name, classification, area, sub_area, description
+                    branch, notebook.replace(os.sep, "/"), name, classification, area, sub_area, description
                 )
                 + "\n"
             )
@@ -261,9 +275,9 @@ def modify_notebooks(notebooks):
     print("modifying notebooks...")
     # setup variables
     kernelspec = {
-        "display_name": "Python 3.8 - AzureML",
+        "display_name": "Python 3.10 - SDK V2",
         "language": "python",
-        "name": "python38-azureml",
+        "name": "python310-sdkv2",
     }
 
     # for each notebooks
@@ -297,12 +311,6 @@ def change_working_dir(path):
 
 # run functions
 if __name__ == "__main__":
-    # issue #146
-    if "posix" not in os.name:
-        print(
-            "windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)"
-        )
-        exit(1)
 
     # setup argparse
     parser = argparse.ArgumentParser()
