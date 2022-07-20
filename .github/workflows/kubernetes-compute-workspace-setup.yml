@@ -4,10 +4,14 @@ on:
     - cron: "0 0 * * 3"
   workflow_dispatch:
     inputs:
-      AMLARC_TEST_REGION:
+      LOCATION:
         description: 'Resource Region'
-        required: true
+        required: false
         default: 'eastus'
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
 
 jobs:
   test:
@@ -15,10 +19,15 @@ jobs:
     env:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
       RESOURCE_GROUP: azureml-examples
-      LOCATION: ${{ github.event.inputs.AMLARC_TEST_REGION }}
+      LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
 
     steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.LOCATION }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
