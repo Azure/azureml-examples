@@ -16,3 +16,6 @@
 scratch/*
 setup-repo/:/.blob./*
 
+setup-repo/cifar-10-python.tar.gz
+setup-repo/data/cifar-10-batches-py/*
+
