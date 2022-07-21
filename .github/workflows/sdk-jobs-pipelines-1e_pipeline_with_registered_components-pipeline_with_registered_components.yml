@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-1e_pipeline_with_registered_components-pipeline_with_registered_components
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

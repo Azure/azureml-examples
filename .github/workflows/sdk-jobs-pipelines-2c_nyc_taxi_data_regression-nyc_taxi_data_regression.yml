@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-2c_nyc_taxi_data_regression-nyc_taxi_data_regression
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:

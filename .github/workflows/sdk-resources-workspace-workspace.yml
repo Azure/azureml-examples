@@ -1,4 +1,6 @@
 name: sdk-resources-workspace-workspace
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   pull_request:

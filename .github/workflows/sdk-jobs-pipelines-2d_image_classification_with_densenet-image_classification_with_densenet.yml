@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classification_with_densenet
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
