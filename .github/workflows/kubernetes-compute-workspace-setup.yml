@@ -181,8 +181,50 @@ jobs:
       working-directory: setup-repo
       timeout-minutes: 300
       continue-on-error: true
+    
+    - name: Setup uri_folder
+      if: ${{ always() }}
+      run: |
+        echo 'Please manually setup local-folder-example uri_folder for cli/jobs/basics/hello-data-uri-folder.yml'
+        echo 'Please manually setup local-folder-example uri_folder for cli/jobs/pipelines-with-components/basics/4d_data_input/pipeline.yml'
+        cat << EOF > local_uri_floder.yml
+        \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+        name: local-folder-example
+        description: Dataset created from local folder.
+        type: uri_folder
+        path: cli/jobs/pipelines-with-components/basics/4d_data_input/data
+        EOF
+
+        az ml data create --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace $WORKSPACE -f local_uri_floder.yml
+      timeout-minutes: 300
+      continue-on-error: true
+
+    - name: Setup mltable
+      if: ${{ always() }}
+      run: |
+        echo 'Please manually setup local-folder-example mltable for cli/jobs/basics/hello-dataset.yml'
+        cat << EOF > local_mltable.yml
+        \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+        name: sampledata 
+        description: Dataset created from local folder.
+        type: mltable
+        path: cli/jobs/basics/hello-automl
+        EOF
+
+        # az ml data create --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace $WORKSPACE -f local_mltable.yml
+      timeout-minutes: 300
+      continue-on-error: true
+
+    - name: Setup hello-world.txt
+      if: ${{ always() }}
+      run: |
+        echo 'Please manually setup hello-world.txt for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml'
+        # echo "hello world" > hello-world.txt
+        # azcopy cp hello-world.txt https://amlarcgistorage7a0860601.blob.core.windows.net/azureml-blobstore-68875c58-4a7d-46e4-bcb9-e17da409f580/azureml/
+
+      timeout-minutes: 300
+      continue-on-error: true
+
 
     - name: over
       run: echo over!
-
-

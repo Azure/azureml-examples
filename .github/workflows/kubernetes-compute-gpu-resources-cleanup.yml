@@ -28,7 +28,7 @@ jobs:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
       RESOURCE_GROUP: azureml-examples
       WORKSPACE: amlarc-githubtest-ws
-      VM_SKU: STANDARD_NC6
+      VM_SKU: STANDARD_NC12
       COMPUTE: "gpu-cluster"
       CLUSTER_TYPE: managedClusters
     

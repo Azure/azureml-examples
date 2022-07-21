@@ -31,7 +31,7 @@ on:
       VM_SKU:
         description: 'The VM SKU of the cluster'
         required: false
-        default: 'STANDARD_NC6'
+        default: 'STANDARD_NC12'
       MIN_COUNT:
         description: 'The min count of the cluster'
         required: false
@@ -40,6 +40,14 @@ on:
         description: 'The prefix of the cluster'
         required: false
         default: 'amlarc-aks'
+      CPU_INSTANCE_TYPE:
+        description: 'cpu instance type'
+        required: false
+        default: '4 40Gi'
+      GPU_INSTANCE_TYPE:
+        description: 'gpu instance type'
+        required: false
+        default: '4 40Gi 2'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -48,7 +56,7 @@ jobs:
       RESOURCE_GROUP: azureml-examples
       LOCATION: eastus
       WORKSPACE: amlarc-githubtest-ws
-      VM_SKU: STANDARD_NC6
+      VM_SKU: STANDARD_NC12
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
       RELEASE_TRAIN: stable
@@ -57,6 +65,8 @@ jobs:
       REINSTALL_EXTENSION: false
       EXTENSION_VERSION: ""
       AKS_CLUSTER_PREFIX: "amlarc-aks"
+      CPU_INSTANCE_TYPE: "4 40Gi"
+      GPU_INSTANCE_TYPE: "4 40Gi 2"
 
       FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
@@ -76,6 +86,8 @@ jobs:
         echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
         echo "MIN_COUNT=${{ github.event.inputs.MIN_COUNT }}" | tee -a $GITHUB_ENV
         echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
+        echo "CPU_INSTANCE_TYPE=${{ github.event.inputs.CPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
+        echo "GPU_INSTANCE_TYPE=${{ github.event.inputs.GPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -117,9 +129,9 @@ jobs:
     - name: setup_instance_type
       run: |
         bash .github/kubernetes-compute/tool.sh get_kubeconfig
-        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 3 40Gi  1
-        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 3 40Gi
-        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 3 40Gi 1
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype $GPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu $CPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu $GPU_INSTANCE_TYPE
       timeout-minutes: 30
 
     # report metrics
