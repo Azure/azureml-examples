@@ -32,10 +32,6 @@ on:
         description: 'The VM SKU of the cluster'
         required: false
         default: 'STANDARD_NC12'
-      MIN_COUNT:
-        description: 'The min count of the cluster'
-        required: false
-        default: '4'
       AKS_CLUSTER_PREFIX:
         description: 'The prefix of the cluster'
         required: false
@@ -84,7 +80,6 @@ jobs:
         echo "EXTENSION_VERSION=${{ github.event.inputs.EXTENSION_VERSION }}" | tee -a $GITHUB_ENV
         echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
         echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
-        echo "MIN_COUNT=${{ github.event.inputs.MIN_COUNT }}" | tee -a $GITHUB_ENV
         echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
         echo "CPU_INSTANCE_TYPE=${{ github.event.inputs.CPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
         echo "GPU_INSTANCE_TYPE=${{ github.event.inputs.GPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
