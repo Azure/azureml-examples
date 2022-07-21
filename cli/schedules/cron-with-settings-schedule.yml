@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: simple_schedule
+name: cron_with_settings_schedule
 display_name: Simple cron schedule
 description: a simple hourly cron schedule
 
@@ -9,11 +9,12 @@ trigger:
   start_time: "2022-07-10T10:00:00" # optional - default will be start immediately
   time_zone: "Pacific Standard Time" # optional - default will be UTC
 
-create_job: file:./simple-pipeline-job.yml
-
-# runtime settings
-settings:
+create_job: 
+  type: pipeline
+  job: file:./simple-pipeline-job.yml
+  # runtime settings
+  settings:
     #default_compute: azureml:cpu-cluster
     continue_on_step_failure: true
-inputs:
+  inputs:
     hello_string_top_level_input: ${{name}} 

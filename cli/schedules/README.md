@@ -27,12 +27,7 @@ This repository contains an example `YAML` file for creating `schedule` using Az
 
 - To update a schedule that in workspace, execute following command. Currently schedule expression, job, settings and input/output are support update:
 ```cli
-> az ml schedule update -f cron-schedule.yml
-```
-
-- To list all the jobs triggered by a schedule, execute following command:
-```cli
-> az ml schedule list-jobs -n schedule_name
+> az ml schedule update -f cron-schedule.yml --set trigger.expression="15 * * * *"
 ```
 
 - Customer can create multiple schedules associate with same job. To list all the schedules associate with the job, execute following command:

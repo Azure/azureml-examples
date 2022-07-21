@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: simple_schedule
+name: simple_recurrence_schedule
 display_name: Simple recurrence schedule
 description: a simple hourly recurrence schedule
 
