@@ -10,6 +10,7 @@ ENABLE_MANUAL_CALLING = True  # defines whether the workflow can be invoked or n
 NOT_TESTED_NOTEBOOKS = [
     "datastore",
     "mlflow-model-local-inference-test",
+    "multicloud-configuration",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = [
     "compute",
