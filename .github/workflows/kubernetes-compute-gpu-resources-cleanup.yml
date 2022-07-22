@@ -28,7 +28,7 @@ jobs:
       SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
       RESOURCE_GROUP: azureml-examples
       WORKSPACE: amlarc-githubtest-ws
-      VM_SKU: STANDARD_NC6
+      VM_SKU: STANDARD_NC12
       COMPUTE: "gpu-cluster"
       CLUSTER_TYPE: managedClusters
     
@@ -101,6 +101,7 @@ jobs:
     - name: cleanup terminating pods
       if: ${{ always() }}
       run: |
+          set +e
           bash .github/kubernetes-compute/tool.sh get_kubeconfig
           for i in $(kubectl get pod | grep Terminating | awk '{print $1}') ; do echo $i ; kubectl get pod $i; kubectl delete pod  $i --force; done
       timeout-minutes: 60
