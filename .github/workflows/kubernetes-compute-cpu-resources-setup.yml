@@ -32,14 +32,14 @@ on:
         description: 'The VM SKU of the cluster'
         required: false
         default: 'Standard_D4s_v3'
-      MIN_COUNT:
-        description: 'The min count of the cluster'
-        required: false
-        default: '5'
       AKS_CLUSTER_PREFIX:
         description: 'The prefix of the cluster'
         required: false
         default: 'amlarc-aks'
+      CPU_INSTANCE_TYPE:
+        description: 'cpu instance type'
+        required: false
+        default: '2 4Gi'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -57,6 +57,7 @@ jobs:
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True"
       REINSTALL_EXTENSION: false
       EXTENSION_VERSION: ""
+      CPU_INSTANCE_TYPE: "2 4Gi"
       
       FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
@@ -74,8 +75,8 @@ jobs:
         echo "EXTENSION_VERSION=${{ github.event.inputs.EXTENSION_VERSION }}" | tee -a $GITHUB_ENV
         echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
         echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
-        echo "MIN_COUNT=${{ github.event.inputs.MIN_COUNT }}" | tee -a $GITHUB_ENV
         echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
+        echo "CPU_INSTANCE_TYPE=${{ github.event.inputs.CPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -113,8 +114,8 @@ jobs:
     - name: setup_instance_type
       run: |
         bash .github/kubernetes-compute/tool.sh get_kubeconfig
-        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 2 4Gi
-        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 2 4Gi
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype $CPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu $CPU_INSTANCE_TYPE
       timeout-minutes: 30
 
     # report metrics
