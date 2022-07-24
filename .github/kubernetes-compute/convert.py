@@ -1,10 +1,6 @@
 import argparse
 import yaml
 import os
-import json
-
-from azure.ai.ml import MLClient
-from azureml.core.authentication import AzureCliAuthentication
 
 
 def convert(input_file, compute_target, instance_type, common_runtime, output_file):
@@ -79,87 +75,12 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
                 yaml.dump(data, f)
 
 
-def create_jsonl_files(uri_folder_data_path, job_dir):
-    print("Creating jsonl files")
-    src_images = "./data/fridgeObjects/"
-
-    # We'll copy each JSONL file within its related MLTable folder
-    training_mltable_path = os.path.join( job_dir, "./data/training-mltable-folder/")
-    validation_mltable_path = os.path.join( job_dir, "./data/validation-mltable-folder/")
-
-    train_validation_ratio = 5
-
-    # Path to the training and validation files
-    train_annotations_file = os.path.join(
-        training_mltable_path, "train_annotations.jsonl"
-    )
-    validation_annotations_file = os.path.join(
-        validation_mltable_path, "validation_annotations.jsonl"
-    )
-
-    # Baseline of json line dictionary
-    json_line_sample = {"image_url": uri_folder_data_path, "label": ""}
-
-    index = 0
-    # Scan each sub directary and generate a jsonl line per image, distributed on train and valid JSONL files
-    with open(train_annotations_file, "w") as train_f:
-        with open(validation_annotations_file, "w") as validation_f:
-            for className in os.listdir(src_images):
-                subDir = src_images + className
-                if not os.path.isdir(subDir):
-                    continue
-                # Scan each sub directary
-                print("Parsing " + subDir)
-                for image in os.listdir(subDir):
-                    json_line = dict(json_line_sample)
-                    json_line["image_url"] += f"{className}/{image}"
-                    json_line["label"] = className
-
-                    if index % train_validation_ratio == 0:
-                        # validation annotation
-                        validation_f.write(json.dumps(json_line) + "\n")
-                    else:
-                        # train annotation
-                        train_f.write(json.dumps(json_line) + "\n")
-                    index += 1
-    print("done")
-
-
-def prepare_data_for_automl_image_jobs(subscription, resource_group, workspace, data_asset_name ,job_dir):
-    
-    subscription_id = subscription
-    resource_group = resource_group
-    workspace = workspace
-    
-    credential = AzureCliAuthentication()
-    ml_client = MLClient(credential, subscription_id, resource_group, workspace)
-        
-    latest_version = "1"
-    for i in ml_client.data.list():
-        if i.name == data_asset_name:
-            version = i.latest_version
-            break
-    uri_folder_data_asset = ml_client.data.get(data_asset_name, latest_version)
-
-    print(uri_folder_data_asset)
-    print("")
-    print("Path to folder in Blob Storage:")
-    print(uri_folder_data_asset.path)
-    create_jsonl_files(uri_folder_data_asset.path, job_dir)
-    
-
 if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description="Convert test case to AMLARC-compatible files."
     )
-    parser.add_argument("-a", "--action", required=False, help="Action to take")
-    parser.add_argument("-sub", "--subscription", required=False, help="subscription")
-    parser.add_argument("-rg", "--resource-group", required=False, help="resource group")
-    parser.add_argument("-ws", "--workspace", required=False, help="workspace")
-    parser.add_argument("-dn", "--data-asset-name", required=False, help="data asset name")
-    parser.add_argument("-jd", "--job-dir", required=False, help="dir of job")
-    parser.add_argument("-i", "--input", required=False, help="Input test case file")
+    parser.add_argument("-i", "--input", required=True, help="Input test case file")
     parser.add_argument(
         "-o",
         "--output",
@@ -177,20 +98,10 @@ if __name__ == "__main__":
         help='Enable common runtime explicitly, default is "false"',
     )
     args = parser.parse_args()
-    
-    if args.action == "prepare_data_for_automl_image_jobs":
-        prepare_data_for_automl_image_jobs(
-            args.subscription,
-            args.resource_group, 
-            args.workspace, 
-            args.data_asset_name, 
-            args.job_dir
-        )
-    else:
-        convert(
-            args.input,
-            args.compute_target,
-            args.instance_type,
-            args.common_runtime,
-            args.output,
-        )
+    convert(
+        args.input,
+        args.compute_target,
+        args.instance_type,
+        args.common_runtime,
+        args.output,
+    )
