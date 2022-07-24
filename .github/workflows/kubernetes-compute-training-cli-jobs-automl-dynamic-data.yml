@@ -1,4 +1,4 @@
-name: kubernetes-compute-training-cli-jobs-bad-cases
+name: kubernetes-compute-training-cli-jobs-automl-dynamic-data
 on:
   schedule:
     - cron: "0 4 * * *"
@@ -36,7 +36,7 @@ jobs:
       FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       REPOSITORY: https://github.com/Azure/azureml-examples
-      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-bad-cases.yml
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl-dynamic-data.yml
 
     steps:
     - name: replace env from workflow_dispatch
@@ -73,9 +73,34 @@ jobs:
 
     - name: collect jobs
       run: |
-        echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml"  | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
+
+    - name: prepare data
+      run: |
+        ROOT_DIR=$(pwd)
+        for job in $(cat $JOB_LIST_FILE); do
+          cd $ROOT_DIR
+          if [[ "$job" = *"yml" ]]; then
+            echo "Prepare data for job: $job"
+            JOB_SPEC_FILE=$(basename $job)
+            JOB_DIR=$(dirname $job)
+
+            cd $JOB_DIR
+            sed -i -e "s/from azure.identity import InteractiveBrowserCredential/from azureml.core.authentication import AzureCliAuthentication/g" prepare_data.py
+            sed -i -e "s/credential = InteractiveBrowserCredential()/credential = AzureCliAuthentication()/g" prepare_data.py
+
+            python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+            
+            sleep 30
+          else
+            echo "Found invalid job: $job"
+          fi
+        done
+      timeout-minutes: 300
 
     - name: run jobs
       run: |
