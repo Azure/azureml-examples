@@ -58,6 +58,7 @@ jobs:
         #pip install azure-ai-formrecognizer
         pip install azure-ai-textanalytics
         pip install azure-identity
+        pip install azure-ai-ml
         python -c "import argparse"
         python -c "import json"
         python -c "import os"
