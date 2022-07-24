@@ -31,7 +31,7 @@ jobs:
 
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-bad-cases.txt
       TIMEOUT: '120m'
-      MIN_SUCCESS_NUM: 1
+      MIN_SUCCESS_NUM: 0
 
       FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
