@@ -55,6 +55,7 @@ jobs:
     - name: install tools
       run: |
         pip install shyaml
+        pip install azure-ai-formrecognizer
         bash .github/kubernetes-compute/tool.sh install_tools
       timeout-minutes: 30
     - name: install ml
