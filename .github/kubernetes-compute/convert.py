@@ -79,13 +79,13 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
                 yaml.dump(data, f)
 
 
-def create_jsonl_files(job_dir, uri_folder_data_path):
+def create_jsonl_files(uri_folder_data_path, job_dir):
     print("Creating jsonl files")
     src_images = "./data/fridgeObjects/"
 
     # We'll copy each JSONL file within its related MLTable folder
-    training_mltable_path = os.path.join( root_dir, "./data/training-mltable-folder/")
-    validation_mltable_path = os.path.join( root_dir, "./data/validation-mltable-folder/")
+    training_mltable_path = os.path.join( job_dir, "./data/training-mltable-folder/")
+    validation_mltable_path = os.path.join( job_dir, "./data/validation-mltable-folder/")
 
     train_validation_ratio = 5
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     parser.add_argument("-a", "--action", required=False, help="Action to take")
     parser.add_argument("-sub", "--subscription", required=False, help="subscription")
     parser.add_argument("-rg", "--resource-group", required=False, help="resource group")
-    parser.add_argument("-ws", "--wrokspace", required=False, help="wrokspace")
+    parser.add_argument("-ws", "--workspace", required=False, help="workspace")
     parser.add_argument("-dn", "--data-asset-name", required=False, help="data asset name")
     parser.add_argument("-jd", "--job-dir", required=False, help="dir of job")
     parser.add_argument("-i", "--input", required=False, help="Input test case file")
@@ -180,11 +180,11 @@ if __name__ == "__main__":
     
     if args.action == "prepare_data_for_automl_image_jobs":
         prepare_data_for_automl_image_jobs(
-            arg.subscription,
-            arg.resource_group, 
-            arg.workspace, 
-            arg.data_asset_name, 
-            arg.job_dir
+            args.subscription,
+            args.resource_group, 
+            args.workspace, 
+            args.data_asset_name, 
+            args.job_dir
         )
     else:
         convert(
