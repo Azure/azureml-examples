@@ -55,6 +55,11 @@ jobs:
     - name: install tools
       run: |
         pip install shyaml
+        pip install azure-ai-textanalytics
+        pip install azure-identity
+        pip install azure-ai-ml
+        pip install azure-cli
+
         bash .github/kubernetes-compute/tool.sh install_tools
       timeout-minutes: 30
     - name: install ml

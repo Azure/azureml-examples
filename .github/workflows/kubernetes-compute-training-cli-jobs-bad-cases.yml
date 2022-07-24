@@ -1,7 +1,7 @@
-name: kubernetes-compute-training-cli-jobs-automl-dynamic-data
+name: kubernetes-compute-training-cli-jobs-bad-cases
 on:
   schedule:
-    - cron: "0 23 * * *"
+    - cron: "0 4 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
@@ -36,7 +36,7 @@ jobs:
       FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       REPOSITORY: https://github.com/Azure/azureml-examples
-      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl-dynamic-data.yml
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-bad-cases.yml
 
     steps:
     - name: replace env from workflow_dispatch
@@ -55,24 +55,6 @@ jobs:
     - name: install tools
       run: |
         pip install shyaml
-        #pip install azure-ai-formrecognizer
-        pip install azure-ai-textanalytics
-        pip install azure-identity
-        pip install azure-ai-ml
-        pip install azure-cli
-        python -c "import argparse"
-        python -c "import json"
-        python -c "import os"
-        python -c "import urllib"
-        python -c "import xml.etree.ElementTree as ET"
-
-        python -c "from zipfile import ZipFile"
-
-        python -c "from azure.identity import InteractiveBrowserCredential"
-        python -c "from azure.ai.ml import MLClient"
-        python -c "from azure.ai.ml.entities import Data"
-        python -c "from azure.ai.ml.constants import AssetTypes"
-
         bash .github/kubernetes-compute/tool.sh install_tools
       timeout-minutes: 30
     - name: install ml
@@ -91,34 +73,13 @@ jobs:
 
     - name: collect jobs
       run: |
+        echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml"  | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
-
-    - name: prepare data
-      run: |
-        ROOT_DIR=$(pwd)
-        for job in $(cat $JOB_LIST_FILE); do
-          cd $ROOT_DIR
-          if [[ "$job" = *"yml" ]]; then
-            echo "Prepare data for job: $job"
-            JOB_SPEC_FILE=$(basename $job)
-            JOB_DIR=$(dirname $job)
-
-            cd $JOB_DIR
-            sed -i -e "s/from azure.identity import InteractiveBrowserCredential/from azureml.core.authentication import AzureCliAuthentication/g" prepare_data.py
-            sed -i -e "s/credential = InteractiveBrowserCredential()/credential = AzureCliAuthentication()/g" prepare_data.py
-
-            python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
-            
-            sleep 30
-          else
-            echo "Found invalid job: $job"
-          fi
-        done
-      timeout-minutes: 300
 
     - name: run jobs
       run: |
