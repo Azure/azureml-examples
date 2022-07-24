@@ -57,7 +57,19 @@ jobs:
         pip install shyaml
         #pip install azure-ai-formrecognizer
         pip install azure-ai-textanalytics
-        python -m "from azure.ai.ml import MLClient"
+        python -c "import argparse"
+        python -c "import json"
+        python -c "import os"
+        python -c "import urllib"
+        python -c "import xml.etree.ElementTree as ET"
+
+        python -c "from zipfile import ZipFile"
+
+        python -c "from azure.identity import InteractiveBrowserCredential"
+        python -c "from azure.ai.ml import MLClient"
+        python -c "from azure.ai.ml.entities import Data"
+        python -c "from azure.ai.ml.constants import AssetTypes"
+        
         bash .github/kubernetes-compute/tool.sh install_tools
       timeout-minutes: 30
     - name: install ml
