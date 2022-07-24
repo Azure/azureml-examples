@@ -75,10 +75,6 @@ jobs:
       run: |
         echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml"  | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
     - name: run jobs
