@@ -59,6 +59,7 @@ jobs:
         pip install azure-ai-textanalytics
         pip install azure-identity
         pip install azure-ai-ml
+        pip install azure-cli
         python -c "import argparse"
         python -c "import json"
         python -c "import os"
