@@ -280,6 +280,7 @@ class TensorflowDistributedModelTrainingSequence:
         if self.training_config.cache == "memory":
             _dataset = _dataset.cache()
 
+        # DISTRIBUTED:
         # repeat(): create an infinitely long dataset, required to use experimental_distribute_dataset()
         # will require steps_per_epoch argument in model.fit()
         _dataset = _dataset.repeat()
@@ -325,7 +326,7 @@ class TensorflowDistributedModelTrainingSequence:
             f"Validation dataset is set (batch_size{self.training_config.batch_size})"
         )
 
-        ### 3. Set the TRAINING dataset for distributed training using experimental_distribute_dataset ###
+        ### 3. Set the TRAINING dataset for DISTRIBUTED training using experimental_distribute_dataset ###
         # see https://www.tensorflow.org/api_docs/python/tf/distribute/experimental/MultiWorkerMirroredStrategy#experimental_distribute_dataset
         if (
             self.training_config.distributed_strategy == "MirroredStrategy"
