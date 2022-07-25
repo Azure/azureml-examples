@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-nyc-taxi-pipeline
+name: cli-jobs-pipelines-tensorflow-image-segmentation-pipeline
 on:
   workflow_dispatch:
   schedule:
