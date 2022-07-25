@@ -34,6 +34,7 @@ jobs:
 
   train:
     type: command
+    code: ./src/
 
     compute: azureml:gpu-cluster
     resources:
@@ -98,7 +99,7 @@ jobs:
             type: uri_folder
 
     command: >-
-        python tensorflow_segmentation/run.py 
+        python run.py 
         --train_images ${{inputs.images_and_annotations}}/images
         --train_masks ${{inputs.images_and_annotations}}/annotations/trimaps
         --test_images ${{inputs.images_and_annotations}}/images
