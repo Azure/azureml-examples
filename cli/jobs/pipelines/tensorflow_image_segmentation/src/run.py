@@ -8,8 +8,9 @@ IMPORTANT: We have tagged the code with the following expressions to walk you th
 the key implementation details.
 
 Using your editor, search for those strings to get an idea of how to implement:
-- DISTRIBUTED : how to implement distributed tensorflow
-- MLFLOW : how to implement mlflow reporting of metrics and artifacts
+- DISTRIBUTED : how to implement distributed tensorflow,
+- MLFLOW : how to implement mlflow reporting of metrics and artifacts,
+- PROFILER: how to implement tensorflow profiling within a job.
 """
 import os
 import sys
