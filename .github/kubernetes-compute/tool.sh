@@ -688,11 +688,15 @@ start_mdm_container(){
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
     MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
 
+    METRIC_ENDPOINT_ARG="-e METRIC_ENDPOINT=${METRIC_ENDPOINT}"
+    if [ "$METRIC_ENDPOINT" = "METRIC-ENDPOINT-PROD" ]; then
+       METRIC_ENDPOINT_ARG=""
+    fi
+
     docker run -d \
         --name=$CONTAINER_NAME \
         -v  ${CERT_PATH}:/certs \
         --net=host --uts=host \
-        -e METRIC_ENDPOINT=${METRIC_ENDPOINT} \
         -e MDM_ACCOUNT=${MDM_ACCOUNT} \
         -e MDM_NAMESPACE=${MDM_NAMESPACE} \
         -e MDM_INPUT=statsd_udp \
@@ -700,7 +704,8 @@ start_mdm_container(){
         -e MDM_LOG_LEVEL=Debug \
         -e CERT_FILE=/certs/cert.pem \
         -e KEY_FILE=/certs/key.pem \
-        linuxgeneva-microsoft.azurecr.io/genevamdm
+        linuxgeneva-microsoft.azurecr.io/genevamdm \
+        $METRIC_ENDPOINT_ARG
 
     show_mdm_container
 }
@@ -713,7 +718,6 @@ show_mdm_container(){
 
 stop_mdm_container(){
     show_mdm_container
-    docker logs $CONTAINER_NAME
     docker stop $CONTAINER_NAME
     docker rm -f $CONTAINER_NAME
     show_mdm_container
