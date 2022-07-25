@@ -45,7 +45,8 @@ jobs:
 
     environment:
       build: 
-        path: ./environments/nvidia_tensorflow/env.yml
+        # dockerfile_path: ./environments/nvidia_tensorflow/Dockerfile
+        path: ./environments/nvidia_tensorflow/
 
     # NOTE: set env var if needed
     environment_variables:
