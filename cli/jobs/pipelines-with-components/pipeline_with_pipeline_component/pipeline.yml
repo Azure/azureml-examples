@@ -1,0 +1,58 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+
+display_name: pipeline_with_pipeline_component
+experiment_name: pipeline_with_pipeline_component
+description: Select best model trained with different learning rate
+type: pipeline
+
+inputs:
+  pipeline_job_training_data: 
+    type: uri_folder
+    path: ./data
+  pipeline_job_test_data: 
+    type: uri_folder
+    path: ./data
+  pipeline_job_training_learning_rate1: 0.1
+  pipeline_job_training_learning_rate2: 0.01
+
+outputs: 
+  pipeline_job_best_model:
+    mode: upload
+  pipeline_job_best_result:
+    mode: upload
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+jobs:
+  train_and_evaludate_model1:
+    type: pipeline
+    component: file:./components/train_pipeline_component.yaml
+    inputs:
+      training_data: ${{parent.inputs.pipeline_job_training_data}}
+      test_data: ${{parent.inputs.pipeline_job_test_data}}
+      max_epocs: 20
+      learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
+
+  train_and_evaludate_model2:
+    type: pipeline
+    component: file:./components/train_pipeline_component.yaml
+    inputs:
+      training_data: ${{parent.inputs.pipeline_job_training_data}}
+      test_data: ${{parent.inputs.pipeline_job_test_data}}
+      max_epocs: 20
+      learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
+
+  compare:
+    type: command
+    component: file:./components/compare2.yaml
+    inputs:
+      model1: ${{parent.jobs.train_and_evaludate_model1.outputs.trained_model}}
+      eval_result1: ${{parent.jobs.train_and_evaludate_model1.outputs.evaluation_report}}
+      model1: ${{parent.jobs.train_and_evaludate_model2.outputs.trained_model}}
+      eval_result1: ${{parent.jobs.train_and_evaludate_model2.outputs.evaluation_report}}
+    outputs: 
+      trained_model: ${{parent.outputs.best_model}}
+      evaluation_report: ${{parent.outputs.best_result}}
