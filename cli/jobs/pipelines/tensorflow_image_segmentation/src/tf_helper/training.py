@@ -149,7 +149,9 @@ class TensorflowDistributedModelTrainingSequence:
             }
 
             logged_params.update(get_nvml_params())  # add some gpu properties
-            logged_params["cuda_available"] = logged_params.get("cuda_device_count", 0) > 0
+            logged_params["cuda_available"] = (
+                logged_params.get("cuda_device_count", 0) > 0
+            )
 
             mlflow.log_params(logged_params)
 
@@ -298,7 +300,8 @@ class TensorflowDistributedModelTrainingSequence:
         self.training_dataset_length = training_dataset_length
         self.training_steps_per_epoch = math.ceil(
             # counts how many batches in this shard
-            data_params["train_dataset_shard_length"] / self.training_config.batch_size
+            data_params["train_dataset_shard_length"]
+            / self.training_config.batch_size
         )
         data_params["steps_per_epoch"] = self.training_steps_per_epoch
         self.logger.info(
@@ -331,7 +334,8 @@ class TensorflowDistributedModelTrainingSequence:
         # see https://www.tensorflow.org/api_docs/python/tf/distribute/experimental/MultiWorkerMirroredStrategy#experimental_distribute_dataset
         if (
             self.training_config.distributed_strategy == "MirroredStrategy"
-            or self.training_config.distributed_strategy == "MultiWorkerMirroredStrategy"
+            or self.training_config.distributed_strategy
+            == "MultiWorkerMirroredStrategy"
         ):
             self.logger.info(
                 f"Using {self.training_config.distributed_strategy}.experimental_distribute_dataset()"
@@ -381,9 +385,7 @@ class TensorflowDistributedModelTrainingSequence:
         if epochs is None:
             epochs = self.training_config.num_epochs
 
-        custom_callback_handler = CustomCallbacks(
-            enabled=self.self_is_main_node
-        )
+        custom_callback_handler = CustomCallbacks(enabled=self.self_is_main_node)
 
         callbacks = [
             custom_callback_handler,
@@ -398,11 +400,11 @@ class TensorflowDistributedModelTrainingSequence:
             )
 
             options = tf.profiler.experimental.ProfilerOptions(
-                host_tracer_level=3,
-                python_tracer_level=1,
-                device_tracer_level=1
+                host_tracer_level=3, python_tracer_level=1, device_tracer_level=1
             )
-            tf.profiler.experimental.start(self.profiler_output_tmp_dir.name, options=options)
+            tf.profiler.experimental.start(
+                self.profiler_output_tmp_dir.name, options=options
+            )
 
             # see https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/TensorBoard
             callbacks.append(
@@ -412,7 +414,10 @@ class TensorflowDistributedModelTrainingSequence:
                     write_images=False,
                     write_steps_per_second=True,
                     update_freq="epoch",
-                    profile_batch=(0, self.training_steps_per_epoch)  # Profile from batches 10 to 15
+                    profile_batch=(
+                        0,
+                        self.training_steps_per_epoch,
+                    ),  # Profile from batches 10 to 15
                 )
             )
 

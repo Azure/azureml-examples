@@ -45,9 +45,7 @@ class CustomCallbacks(keras.callbacks.Callback):
             "End epoch {} of training; got log keys: {}".format(epoch, keys)
         )
         epoch_time = time.time() - self.epoch_start
-        self.metrics["epoch_train_time"] = (
-            epoch_time - self.metrics["epoch_eval_time"]
-        )
+        self.metrics["epoch_train_time"] = epoch_time - self.metrics["epoch_eval_time"]
         # add epoch metrics
         for key in logs:
             # align with our naming conventions
@@ -82,6 +80,7 @@ class CustomCallbacks(keras.callbacks.Callback):
 class LogTimeOfTensorFlowIterator(LogTimeOfIterator):
     """This class is intended to "wrap" an existing Iterator
     and log metrics for each next() call"""
+
     def as_tf_dataset(self):
         """Constructs this as a tensorflow dataset"""
         if self.enabled:

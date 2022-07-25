@@ -124,9 +124,7 @@ def run(args):
     # sets the model for distributed training
     training_handler.setup_model(model)
 
-    mlflow.log_metric(
-        "start_to_fit_time", time.time() - SCRIPT_START_TIME
-    )
+    mlflow.log_metric("start_to_fit_time", time.time() - SCRIPT_START_TIME)
 
     # runs training sequence
     # NOTE: num_epochs is provided in args
@@ -374,7 +372,7 @@ def main(cli_args=None):
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    tf.get_logger().setLevel('INFO')
+    tf.get_logger().setLevel("INFO")
 
     # create argument parser
     parser = build_arguments_parser()
