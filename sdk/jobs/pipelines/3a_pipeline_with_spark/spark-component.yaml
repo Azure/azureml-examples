@@ -18,13 +18,15 @@ args: >-
 inputs:
   input_folder:
     type: mltable
-    path: azureml:mytable2:3.0
     mode: direct
 outputs:
   output_folder:
     type: uri_folder
-    path: wasbs://mycontainer@mystorageaccount.blob.core.windows.net/path/to/folder
     mode: direct
+
+identity:
+  type: managed
+  client_id: xyz
 
 environment: azureml:myenv:v1
 # Alternatively, provide 'conda_file' for environment 
