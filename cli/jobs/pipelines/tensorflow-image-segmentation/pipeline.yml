@@ -44,10 +44,11 @@ jobs:
       type: tensorflow
       worker_count: 1 # needs to match instance_count (!)
 
-    environment:
-      build: 
-        # dockerfile_path: ./environments/nvidia_tensorflow/Dockerfile
-        path: ./environments/nvidia_tensorflow/
+    environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
+    # uncomment below to use custom environment
+    # environment:
+    #   build: 
+    #     path: ./environments/nvidia_tensorflow/
 
     # NOTE: set env var if needed
     environment_variables:
@@ -81,7 +82,7 @@ jobs:
       model_input_size: 160
 
       # training
-      num_epochs: 20
+      num_epochs: 7
       optimizer: "rmsprop"
       loss: "sparse_categorical_crossentropy"
 
