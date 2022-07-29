@@ -11,7 +11,8 @@ trigger:
 
 create_job: 
   type: pipeline
-  job: ./simple-pipeline-job.yml
+  job: file:./simple-pipeline-job.yml
+  # job: azureml:simple-pipeline-job
   # runtime settings
   settings:
     #default_compute: azureml:cpu-cluster
