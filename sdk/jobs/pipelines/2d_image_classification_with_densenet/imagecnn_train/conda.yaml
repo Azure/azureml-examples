@@ -18,3 +18,4 @@ dependencies:
       - --extra-index-url=https://developer.download.nvidia.com/compute/redist/
       - nvidia-dali-cuda100
       - azureml-mlflow
+      - protobuf==3.20.1
