@@ -15,7 +15,7 @@ pip install mltable
 
 # <az_ml_sdk_test_install>
 #pip install azure-ai-ml==0.1.0.b5
-pip install azure-ai-ml==0.0.68331024 --extra-index-url=https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/68331024
+pip install azure-ai-ml==0.0.68641982 --extra-index-url  https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
 # </az_ml_sdk_test_install>
 
 pip list
