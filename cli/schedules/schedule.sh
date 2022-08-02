@@ -22,3 +22,7 @@ az ml schedule disable -n schedule_name
 # query triggered jobs from schedule, please replace the <schedule name> to real schedule name
 az ml job list --query "[?contains(display_name,'<schedule_name>')]" 
 # </query_triggered_jobs>
+
+# <delete_schedule>
+az ml schedule delete -n schedule_name
+# </delete_schedule>
