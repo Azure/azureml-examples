@@ -9,9 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/jobs/single-step/scikit-learn/iris/**
       - .github/workflows/sdk-jobs-single-step-scikit-learn-iris-iris-scikit-learn.yml
       - sdk/dev-requirements.txt
+      - sdk/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
