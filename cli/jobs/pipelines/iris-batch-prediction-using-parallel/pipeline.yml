@@ -45,7 +45,7 @@ jobs:
       timeout: 60
 
     task:
-      type: function
+      type: run_function
       code: "./script"
       entry_script: iris_prediction.py
       environment:
@@ -53,6 +53,6 @@ jobs:
         version: 1
         image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
         conda_file: ./environment/environment_parallel.yml
-      args: >-
+      program_arguments: >-
         --model ${{inputs.score_model}}
       append_row_to: ${{outputs.job_output_file}}
