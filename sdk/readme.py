@@ -107,9 +107,10 @@ on:\n"""
         if is_pipeline_notebook:
             workflow_yaml += "      - pipeline/*\n"
     workflow_yaml += f"""    paths:
-      - sdk/**
+      - sdk/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
       - sdk/dev-requirements.txt
+      - sdk/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
