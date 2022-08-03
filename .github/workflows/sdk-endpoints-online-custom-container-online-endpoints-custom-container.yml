@@ -9,9 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/endpoints/online/custom-container/**
       - .github/workflows/sdk-endpoints-online-custom-container-online-endpoints-custom-container.yml
       - sdk/dev-requirements.txt
+      - sdk/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
