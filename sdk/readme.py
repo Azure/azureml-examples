@@ -13,11 +13,6 @@ NOT_TESTED_NOTEBOOKS = [
     "multicloud-configuration",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = [
-    "compute",
-    "workspace",
-    "automl-classification-task-bankmarketing-mlflow",
-    "automl-forecasting-task-energy-demand-advanced-mlflow",
-    "automl-nlp-text-classification-multiclass-task-sentiment-mlflow",
 ]  # these are too expensive, lets not run everyday
 # define branch where we need this
 # use if running on a release candidate, else make it empty
