@@ -10,7 +10,7 @@ trigger:
   schedule:
     hours: [4,5,10,11,12]
     minutes: [0,30]
-  start_time: "2022-07-10T10:00:00" # optional - default will be start immediately
+  start_time: "2022-07-10T10:00:00" # optional - default will be schedule creation time
   time_zone: "Pacific Standard Time" # optional - default will be UTC
 
 create_job: ./simple-pipeline-job.yml
