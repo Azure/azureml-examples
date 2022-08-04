@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: pipeline_tuning
+display_name: Tune an AML pipeline
+
+command: >-
+  python tuner_func.py
+
+code: ../
+
+environment:
+  conda_file: env.yaml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
