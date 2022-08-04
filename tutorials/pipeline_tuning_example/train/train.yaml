@@ -1,0 +1,29 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: train_credit_defaults_model
+display_name: Train Credit Defaults Model
+# version: 1 # Not specifying a version will automatically update the version
+inputs:
+  train_data: 
+    type: uri_folder
+  test_data: 
+    type: uri_folder
+  learning_rate:
+    type: number
+  n_estimators:
+    type: integer
+outputs:
+  model:
+    type: uri_folder
+code: .
+environment:
+  # for this step, we'll use an AzureML curate environment
+  azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:21
+command: >-
+  python train.py 
+  --train_data ${{inputs.train_data}} 
+  --test_data ${{inputs.test_data}} 
+  --learning_rate ${{inputs.learning_rate}}
+  --n_estimators ${{inputs.n_estimators}}
+  --model ${{outputs.model}}

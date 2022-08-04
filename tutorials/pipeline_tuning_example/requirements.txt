@@ -1,0 +1,3 @@
+pip install --pre azure-ai-ml
+pip install "flaml[blendsearch,ray]"
+hydra-core==1.1.1

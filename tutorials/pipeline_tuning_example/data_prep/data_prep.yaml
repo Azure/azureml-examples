@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: data_prep_credit_defaults
+display_name: Data preparation for training
+inputs:
+  data:
+    type: uri_folder
+  test_train_ratio:
+    type: number
+outputs:
+  train_data:
+    type: uri_folder
+  test_data:
+    type: uri_folder
+code: .
+environment:
+  conda_file: env.yaml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+
+command: >-
+  python data_prep.py 
+  --data ${{inputs.data}}
+  --test_train_ratio ${{inputs.test_train_ratio}}
+  --train_data ${{outputs.train_data}}
+  --test_data ${{outputs.test_data}}
