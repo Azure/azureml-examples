@@ -3,6 +3,8 @@ name: sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-a
 # Please do not edit directly.
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
