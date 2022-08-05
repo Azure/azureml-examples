@@ -25,11 +25,11 @@ jobs:
     limits:
       max_trials: 1
       max_concurrent_trials: 1
-    target_column_name: y
+    target_column_name: "y"
     training_data: ${{parent.inputs.classification_train_data}}
     validation_data: ${{parent.inputs.classification_validate_data}}
     featurization:
-      mode: "Auto"
+      mode: "auto"
     training:
       enable_stack_ensemble: false
       enable_vote_ensemble: false
