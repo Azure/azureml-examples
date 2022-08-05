@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: deploy_model
+display_name: Deploy Model
+version: 1
+type: command
+inputs:
+  model_input_path:
+    type: uri_folder
+  endpoint_name:
+    type: string
+  instance_count:
+    type: integer
+  instance_type:
+    type: string
+code: ./src_deploy/
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+command: >-
+  python deploy.py
+  --model_input_path ${{inputs.model_input_path}}
+  --endpoint_name ${{inputs.endpoint_name}}
+  --instance_count ${{inputs.instance_count}}
+  --instance_type ${{inputs.instance_type}}
