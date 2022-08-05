@@ -11,6 +11,6 @@ aml_config:
 train_config:
   exp_name: credit_card_default_classification
   data_path: https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls
-  test_train_ratio: 0.2
-  learning_rate: 0.1
-  n_estimators: 100
+  test_train_ratio: 0.4
+  learning_rate: 0.05
+  n_estimators: 50

@@ -7,8 +7,54 @@ import submit_train_pipeline
 from functools import partial
 import os
 import logging
+from ray import tune
 
 logger = logging.getLogger(__name__)
+
+def wait_for_completion(run):
+    """Wait for the run to complete
+    """
+    status = 'Preparing'
+    while status not in ['Failed', 'Completed']:
+        status = run.status
+        print(f'status: {status}')
+        time.sleep(1)
+
+    print("The run is terminated.")
+    print(status)
+    return status
+
+def get_all_metrics(ml_client, run, metrics_name):
+    # get all the metrics.
+    exp_name = run.experiment_name
+    run_id = run.name
+
+    import mlflow
+    from mlflow.tracking import MlflowClient
+
+    # need to connect with workspace for local run.
+    # TODO: remove duplication.
+
+    track_uri = ml_client.workspaces.get().mlflow_tracking_uri
+    mlflow.set_tracking_uri(track_uri)
+
+    mlflow_client = MlflowClient()
+    mlflow.set_experiment(exp_name)
+
+    query = f"tags.mlflow.parentRunId = '{run_id}'"
+    df = mlflow.search_runs(filter_string=query)
+    # drop NAN
+    # TODO: polish
+    complete_df = df.dropna(subset=["metrics.test_accuracy_score"])
+    if len(complete_df) == 0:
+        return None
+    elif len(complete_df) > 1:
+        raise Exception(f"Found more than one metric with the same run id: {run_id}.")
+    
+    
+    metric = complete_df.iloc[0]["metrics.test_accuracy_score"]
+
+    return metric
 
 def run_with_config(config: dict):
     """Run the pipeline with a given config dict
@@ -23,28 +69,13 @@ def run_with_config(config: dict):
     # overrides += [f'+script_args.deepspeed_wd={deepspeed_wd}', f'hydra.searchpath=[{config_searchpath}]']
     
     print(overrides)
-    run = submit_train_pipeline.build_and_submit_aml_pipeline(overrides)
+    run, ml_client = submit_train_pipeline.build_and_submit_aml_pipeline(overrides)
+   
+    status = wait_for_completion(run)
+
+    mlflow_metric = get_all_metrics(ml_client, run, "test_accuracy_score")
     metrics = {"test_accuracy_score": 0}  # indicate config is bad
-    # try:
-    #     run.wait_for_completion()  # this line can raise ActivityFailedException
-    #     evaluate_run = run._find_child_run("azureml.feed://Babel/babel.sequence_classification.evaluate")
-    #     if not evaluate_run:
-    #         # using local components
-    #         evaluate_run = run._find_child_run("babel.sequence_classification.evaluate")
-    #     metrics = evaluate_run[0]._core_run.get_metrics()
-    # # except ActivityFailedException:
-    # except Exception as error:
-    #     # This is an example of pipeline tuning,
-    #     # which is different from running a single pipeline.
-    #     # In pipeline tuning,
-    #     # pipeline runs will be submitted with different hyperparameter configurations.
-    #     # If we don't catch the exception,
-    #     # one bad hyperparameter configuration which fails the pipeline run
-    #     # will terminate the entire pipeline tuning.
-    #     # With the catch,
-    #     # the failure is still visible to the user as they will see a warning in the console.
-    #     print(str(error.exception))
-        # metrics = {"test_accuracy_score": 0}  # indicate config is bad
+ 
     return metrics
 
 def tune_pipeline(concurrent_run=1):
@@ -59,8 +90,8 @@ def tune_pipeline(concurrent_run=1):
     #     "large_model_finetune.max_epochs": 5,
     #     "filter.threshold": 0.8,
     # }]
-    HP_METRIC = "test_accuracy_score"
-    MODE = "max"
+    hp_metric = "test_accuracy_score"
+    mode = "max"
     if concurrent_run > 1:
         import ray  # For parallel tuning
 
@@ -79,16 +110,16 @@ def tune_pipeline(concurrent_run=1):
         run_with_config,
         config=search_space,
         # points_to_evaluate=points_to_evaluate,
-        metric=HP_METRIC,
-        mode=MODE,
+        metric=hp_metric,
+        mode=mode,
         num_samples=2,  # number of trials
         use_ray=use_ray,
     )
-    best_trial = analysis.get_best_trial(HP_METRIC, MODE, "all")
-    metric = best_trial.metric_analysis[HP_METRIC][MODE]
+    best_trial = analysis.get_best_trial(hp_metric, mode, "all")
+    metric = best_trial.metric_analysis[hp_metric][mode]
     print(f"n_trials={len(analysis.trials)}")
     print(f"time={time.time()-start_time}")
-    print(f"Best {HP_METRIC}: {metric:.4f}")
+    print(f"Best {hp_metric}: {metric:.4f}")
     print(f"Best coonfiguration: {best_trial.config}")
 
 

@@ -105,7 +105,11 @@ def build_and_submit_aml_pipeline(config):
         pipeline,
         experiment_name=config.train_config.exp_name,
     )
-    return run
+
+    # TODO: print the job url
+    print("Job url:", run.studio_url)
+    
+    return run, ml_client
 
 
 if __name__ == "__main__":
