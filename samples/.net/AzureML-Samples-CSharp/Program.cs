@@ -91,8 +91,8 @@ public class Program
         var dataResource = await DataOperations.GetOrCreateDataVersionAsync(armClient, resourceGroup, Constants.WorkspaceName, Constants.DataName, Constants.DataVersion);
         Console.WriteLine($"Dataset created: {dataResource.Id}...");
 
-        await DataOperations.ListAllDataAsync(resourceGroup, Constants.WorkspaceName);
-        await DataOperations.ListAllDatastoreAsync(resourceGroup, Constants.WorkspaceName);
+        await DataOperations.ListDataAsync(resourceGroup, Constants.WorkspaceName);
+        await DataOperations.ListDatastoreAsync(resourceGroup, Constants.WorkspaceName);
         
         // Create ModelVersionResource
         var modelResource = await ModelOperations.GetOrCreateModelVersionAsync(armClient, resourceGroup, Constants.WorkspaceName, Constants.ModelName, Constants.ModelVersion, Constants.ModelUri);

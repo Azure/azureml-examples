@@ -84,7 +84,7 @@ internal class DataOperations
             Console.WriteLine(dataContainerResource.Data.Name);
         }
     }
-    // </ListAllDataAsync>
+    // </ListDataAsync>
 
 
     /// <summary>
@@ -138,15 +138,5 @@ internal class DataOperations
             }
         }
     }
-
-    internal static Task ListAllDatastoreAsync(ResourceGroupResource resourceGroup, string workspaceName)
-    {
-        throw new NotImplementedException();
-    }
-
-    internal static Task ListAllDataAsync(ResourceGroupResource resourceGroup, string workspaceName)
-    {
-        throw new NotImplementedException();
-    }
-    // </ListAllDatastoreAsync>
+    // </ListDatastoreAsync>
 }
