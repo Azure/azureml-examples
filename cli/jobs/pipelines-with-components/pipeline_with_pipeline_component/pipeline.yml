@@ -29,25 +29,25 @@ settings:
 jobs:
   train_and_evaludate_model1:
     type: pipeline
-    component: file:./components/train_pipeline_component.yaml
+    component: ./components/train_pipeline_component.yml
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
       max_epocs: 20
-      learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
+      training_learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate1}}
 
   train_and_evaludate_model2:
     type: pipeline
-    component: file:./components/train_pipeline_component.yaml
+    component: ./components/train_pipeline_component.yml
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
       max_epocs: 20
-      learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
+      training_learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate2}}
 
   compare:
     type: command
-    component: file:./components/compare2.yaml
+    component: ./components/compare2.yml
     inputs:
       model1: ${{parent.jobs.train_and_evaludate_model1.outputs.trained_model}}
       eval_result1: ${{parent.jobs.train_and_evaludate_model1.outputs.evaluation_report}}
