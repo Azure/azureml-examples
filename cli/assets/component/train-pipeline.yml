@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: pipeline using component
+description: pipeline using component
+
+jobs:
+  train_data_step:
+    type: command
+    component: azureml:train_data_component@latest
+    compute: azureml:cpu-cluster
+    inputs:
+      training_data: 
+        type: uri_folder
+        path: azureml:local-folder-example@latest
+      learning_rate: 0.02
+      learning_rate_schedule: step
