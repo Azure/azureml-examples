@@ -1,0 +1,29 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: register_model_pipeline
+display_name: model-register-component
+description: A register model component
+version: 0.0.1
+inputs:
+  automl_best_run: 
+    type: mlflow_model
+  primary_metric:
+    type: string
+  model_name:
+    type: string
+  training_mltable:
+    type: mltable
+  register_always:
+    type: boolean
+    default: false
+
+code: ./register_model
+environment: azureml:AzureML-AutoML-DNN-Vision-GPU:98
+command: >-
+  python register_model_pipeline.py 
+  --automl_best_run ${{inputs.automl_best_run}}
+  --primary_metric ${{inputs.primary_metric}}
+  --model_name ${{inputs.model_name}}
+  --training_mltable ${{inputs.training_mltable}} 
+  --register_always ${{inputs.register_always}} 
