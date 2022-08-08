@@ -20,7 +20,9 @@ inputs:
 
 outputs: 
   trained_model:
+    type: uri_folder
   evaluation_report:
+    type: uri_folder
 
 jobs:
   train_job:
