@@ -45,7 +45,14 @@ env = Environment.from_dockerfile(
 
 
 # create job config
-mpi_config = MpiConfiguration(node_count=2, process_count_per_node=2)
+process_count_per_node = 2
+node_count = 2
+process_count = process_count_per_node * node_count
+pytorch_config = PyTorchConfiguration(
+    communication_backend = 'Nccl',
+    process_count = process_count,
+    node_count = node_count
+)
 
 src = ScriptRunConfig(
     source_directory=script_dir,
@@ -53,7 +60,7 @@ src = ScriptRunConfig(
     arguments=arguments,
     environment=env,
     compute_target=compute_name,
-    distributed_job_config=mpi_config,
+    distributed_job_config=pytorch_config,
 )
 
 # submit job
