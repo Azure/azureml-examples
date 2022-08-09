@@ -11,7 +11,7 @@ trigger:
 
 create_job: 
   type: pipeline
-  job: file:./simple-pipeline-job.yml
+  job: ./simple-pipeline-job.yml
   # job: azureml:simple-pipeline-job
   # runtime settings
   settings:
@@ -19,3 +19,5 @@ create_job:
     continue_on_step_failure: true
   inputs:
     hello_string_top_level_input: ${{name}} 
+  tags: 
+    schedule: cron_with_settings_schedule
