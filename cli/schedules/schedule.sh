@@ -7,6 +7,10 @@ az ml schedule create --file cron-schedule.yml --no-wait
 az ml schedule show -n simple_cron_schedule
 # </show_schedule>
 
+# <list_schedule>
+az ml schedule list
+# </list_schedule>
+
 # <update_schedule>
 az ml schedule update -n simple_cron_schedule  --set description="new description" --no-wait
 # </update_schedule>
