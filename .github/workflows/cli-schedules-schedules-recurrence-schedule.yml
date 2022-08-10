@@ -26,9 +26,9 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create schedule
-      run: az ml schedule create -f schedules/schedules/recurrence-schedule.yml --set name="ci_test_schedules/recurrence-schedule"
+      run: az ml schedule create -f ./schedules/recurrence-schedule.yml --set name="ci_test_recurrence-schedule"
       working-directory: cli
 
     - name: disable schedule
-      run: az ml schedule disable --name ci_test_schedules/recurrence-schedule
+      run: az ml schedule disable --name ci_test_recurrence-schedule
       working-directory: cli

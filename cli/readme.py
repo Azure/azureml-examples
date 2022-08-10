@@ -503,10 +503,10 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create schedule
-      run: az ml schedule create -f schedules/{schedule}.yml --set name="ci_test_{schedule}"
+      run: az ml schedule create -f ./{schedule}.yml --set name="ci_test_{filename}"
       working-directory: cli\n
     - name: disable schedule
-      run: az ml schedule disable --name ci_test_{schedule}
+      run: az ml schedule disable --name ci_test_{filename}
       working-directory: cli\n"""
 
     # write workflow

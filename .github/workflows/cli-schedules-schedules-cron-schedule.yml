@@ -26,9 +26,9 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create schedule
-      run: az ml schedule create -f schedules/schedules/cron-schedule.yml --set name="ci_test_schedules/cron-schedule"
+      run: az ml schedule create -f ./schedules/cron-schedule.yml --set name="ci_test_cron-schedule"
       working-directory: cli
 
     - name: disable schedule
-      run: az ml schedule disable --name ci_test_schedules/cron-schedule
+      run: az ml schedule disable --name ci_test_cron-schedule
       working-directory: cli
