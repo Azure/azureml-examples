@@ -3,8 +3,12 @@ type: command
 
 name: hello_python_world
 display_name: Hello_Python_World
-version: 1
-
+# version: 1
+inputs:
+  bool_input:
+    type: boolean
+    default: true
+    description: "A boolean input"
 code: ./src
 
 environment: 
@@ -12,3 +16,4 @@ environment:
 
 command: >-
   python hello.py
+  --bool_input ${{inputs.bool_input}}
