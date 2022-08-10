@@ -192,6 +192,14 @@ path|status|description
 [assets/model/local-file.yml](assets/model/local-file.yml)|[![assets/model/local-file](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-local-file/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-local-file.yml)|Model created from local file.
 [assets/model/local-mlflow.yml](assets/model/local-mlflow.yml)|[![assets/model/local-mlflow](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-local-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-local-mlflow.yml)|Model created from local MLflow model directory.
 
+**Schedules**
+
+path|status|
+-|-
+[schedules/cron-schedule.sh](schedules/cron-schedule.sh)|[![schedules/cron-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-schedule.yml)
+[schedules/cron-with-settings-schedule.sh](schedules/cron-with-settings-schedule.sh)|[![schedules/cron-with-settings-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-with-settings-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-with-settings-schedule.yml)
+[schedules/recurrence-schedule.sh](schedules/recurrence-schedule.sh)|[![schedules/recurrence-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/recurrence-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/recurrence-schedule.yml)
+
 ## Contents
 
 |directory|description|
