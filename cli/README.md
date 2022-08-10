@@ -196,9 +196,9 @@ path|status|description
 
 path|status|
 -|-
-[schedules/cron-schedule.sh](schedules/cron-schedule.sh)|[![schedules/cron-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-schedule.yml)
-[schedules/cron-with-settings-schedule.sh](schedules/cron-with-settings-schedule.sh)|[![schedules/cron-with-settings-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-with-settings-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-with-settings-schedule.yml)
-[schedules/recurrence-schedule.sh](schedules/recurrence-schedule.sh)|[![schedules/recurrence-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/recurrence-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/recurrence-schedule.yml)
+[schedules/cron-schedule.yml](schedules/cron-schedule.yml)|[![schedules/cron-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-schedule.yml)
+[schedules/cron-with-settings-schedule.yml](schedules/cron-with-settings-schedule.yml)|[![schedules/cron-with-settings-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-with-settings-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-with-settings-schedule.yml)
+[schedules/recurrence-schedule.yml](schedules/recurrence-schedule.yml)|[![schedules/recurrence-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/recurrence-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/recurrence-schedule.yml)
 
 ## Contents
 
