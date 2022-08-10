@@ -5,6 +5,8 @@ description: Hello World component example
 
 jobs:
   hello_python_world_job:
+    inputs:
+      bool_input: false
     type: command
     component: file:./component.yml
     compute: azureml:cpu-cluster
