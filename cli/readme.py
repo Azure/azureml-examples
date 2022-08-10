@@ -236,7 +236,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
         link = f"https://schedules.microsoft.com/azure/machine-learning/{schedule}"
 
         # add row to tutorial table
-        row = f"[{schedule}.sh]({schedule}.sh)|{status}\n"
+        row = f"[{schedule}.yml]({schedule}.yml)|{status}\n"
         schedules_table += row
 
     # write README.md
