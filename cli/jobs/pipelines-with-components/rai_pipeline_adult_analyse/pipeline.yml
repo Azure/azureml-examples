@@ -20,7 +20,7 @@ settings:
 jobs:
   train_model_job:
     type: command
-    component: file:./components/component_train_logreg.yaml
+    component: ./components/component_train_logreg.yaml
     inputs:
       training_data: 
         type: uri_file
@@ -31,14 +31,14 @@ jobs:
 
   register_model_job:
     type: command
-    component: file:./components/component_register_model.yaml
+    component: ./components/component_register_model.yaml
     inputs:
       model_input_path: ${{parent.jobs.train_model_job.outputs.model_output}}
       model_base_name: component_registered_lr_01
 
   create_rai_job:
     type: command
-    component: file:./components/component_rai_insights.yaml
+    component: ./components/component_rai_insights.yaml
     inputs:
       title: With just the OSS
       task_type: classification
@@ -53,14 +53,14 @@ jobs:
 
   explain_01:
     type: command
-    component: file:./components/component_explain.yaml  #azureml:rai_insights_explanation:1
+    component: ./components/component_explain.yaml  #azureml:rai_insights_explanation:1
     inputs:
       comment: Some random string
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
 
   causal_01:
     type: command
-    component: file:./components/component_causal.yaml
+    component: ./components/component_causal.yaml
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       treatment_features: '["Age", "Sex"]'
@@ -68,7 +68,7 @@ jobs:
 
   counterfactual_01:
     type: command
-    component: file:./components/component_counterfactual.yaml # azureml:rai_insights_counterfactual:1
+    component: ./components/component_counterfactual.yaml # azureml:rai_insights_counterfactual:1
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       total_CFs: 10
@@ -76,14 +76,14 @@ jobs:
 
   error_analysis_01:
     type: command
-    component: file:./components/component_error_analysis.yaml  # azureml:rai_insights_erroranalysis:1
+    component: ./components/component_error_analysis.yaml  # azureml:rai_insights_erroranalysis:1
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       filter_features: '["Race", "Sex", "Workclass", "Marital Status", "Country", "Occupation"]'
 
   gather_01:
     type: command
-    component: file:./components/component_gather_rai_insights.yaml # azureml:rai_insights_gather:1
+    component: ./components/component_gather_rai_insights.yaml # azureml:rai_insights_gather:1
     inputs:
       constructor: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       insight_1: ${{parent.jobs.causal_01.outputs.causal}}

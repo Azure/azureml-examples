@@ -12,8 +12,7 @@ NOT_TESTED_NOTEBOOKS = [
     "mlflow-model-local-inference-test",
     "multicloud-configuration",
 ]  # cannot automate lets exclude
-NOT_SCHEDULED_NOTEBOOKS = [
-]  # these are too expensive, lets not run everyday
+NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
 # use if running on a release candidate, else make it empty
 BRANCH = "main"  # default - do not change

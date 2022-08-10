@@ -13,7 +13,7 @@ outputs:
 jobs:
   hello_python_world_job:
     type: command
-    component: file:./component.yml
+    component: ./component.yml
     compute: azureml:cpu-cluster
     inputs:
       sample_input_data: 
