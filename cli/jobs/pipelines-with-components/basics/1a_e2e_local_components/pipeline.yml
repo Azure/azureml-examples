@@ -19,7 +19,7 @@ jobs:
   train_job:
     type: command
     compute: azureml:cpu-cluster
-    component: file:./train.yml
+    component: ./train.yml
     inputs:
       training_data: 
         type: uri_folder
@@ -32,7 +32,7 @@ jobs:
   
   score_job:
     type: command
-    component: file:./score.yml
+    component: ./score.yml
     compute: azureml:cpu-cluster
     inputs:
       model_input: ${{parent.jobs.train_job.outputs.model_output}}
@@ -45,7 +45,7 @@ jobs:
 
   evaluate_job:
     type: command
-    component: file:./eval.yml
+    component: ./eval.yml
     compute: azureml:cpu-cluster
     inputs:
       scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
