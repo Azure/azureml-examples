@@ -53,12 +53,10 @@ def main(args):
     mlmodel_path = os.path.join(args.model_input_path, "MLmodel")
     runid = ""
     with open(mlmodel_path, "r") as modelfile:
-        while(True):
-            line = modelfile.readline()
-            if not line:
-                break
+        for line in modelfile:
             if "run_id" in line:
                 runid = line.split(":")[1].strip()
+
     model_uri = "runs:/{}/outputs/".format(runid)
     print("Model URI: " + model_uri)
 
@@ -70,11 +68,11 @@ def main(args):
     print(f"Registering model as {registered_name}")
     mlflow.register_model(model_uri, registered_name)
 
-    #print("Writing JSON")
-    #dict = {"id": "{0}:1".format(registered_name)}
-    #output_path = os.path.join(args.model_info_output_path, "model_info.json")
-    #with open(output_path, "w") as of:
-    #    json.dump(dict, fp=of)
+    print("Writing JSON")
+    dict = {"id": "{0}:1".format(registered_name)}
+    output_path = os.path.join(args.model_info_output_path, "model_info.json")
+    with open(output_path, "w") as of:
+        json.dump(dict, fp=of)
 
 
 # run script
