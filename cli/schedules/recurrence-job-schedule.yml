@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: simple_recurrence_schedule
-display_name: Simple recurrence schedule
-description: a simple hourly recurrence schedule
+name: simple_recurrence_job_schedule
+display_name: Simple recurrence job schedule
+description: a simple hourly recurrence job schedule
 
 trigger:
   type: recurrence

@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: cron_with_settings_schedule
-display_name: Simple cron schedule
-description: a simple hourly cron schedule
+name: cron_with_settings_job_schedule
+display_name: Simple cron job schedule
+description: a simple hourly cron job schedule
 
 trigger:
   type: cron

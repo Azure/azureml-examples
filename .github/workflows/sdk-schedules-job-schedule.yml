@@ -10,7 +10,7 @@ on:
       - main
     paths:
       - sdk/**
-      - .github/workflows/sdk-schedules-schedule.yml
+      - .github/workflows/sdk-schedules-job-schedule.yml
       - sdk/dev-requirements.txt
 jobs:
   build:
@@ -36,14 +36,14 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run schedules/schedule.ipynb
+    - name: run schedules/job-schedule.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" schedule.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" schedule.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" schedule.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" schedule.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" job-schedule.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" job-schedule.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" job-schedule.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" job-schedule.ipynb
 
-          papermill -k python schedule.ipynb schedule.output.ipynb
+          papermill -k python job-schedule.ipynb job-schedule.output.ipynb
       working-directory: sdk/schedules
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
