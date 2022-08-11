@@ -235,7 +235,6 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
         row = f"[{script}.sh]({script}.sh)|{status}\n"
         scripts_table += row
 
-
     # process schedules
     for schedule in schedules:
         # build entries for tutorial table
@@ -479,6 +478,7 @@ jobs:
     with open(f"../.github/workflows/cli-scripts-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
+
 def write_schedule_workflow(schedule):
     filename, project_dir, hyphenated = parse_path(schedule)
     creds = "${{secrets.AZ_CREDS}}"
@@ -519,6 +519,7 @@ jobs:
     # write workflow
     with open(f"../.github/workflows/cli-schedules-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
+
 
 # run functions
 if __name__ == "__main__":
