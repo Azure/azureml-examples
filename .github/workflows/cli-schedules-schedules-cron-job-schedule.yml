@@ -1,4 +1,4 @@
-name: cli-schedules-schedules-cron-with-settings-schedule
+name: cli-schedules-schedules-cron-job-schedule
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/schedules/cron-with-settings-schedule.yml
-      - .github/workflows/cli-schedules-schedules-cron-with-settings-schedule.yml
+      - cli/schedules/cron-job-schedule.yml
+      - .github/workflows/cli-schedules-schedules-cron-job-schedule.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,9 +26,9 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create schedule
-      run: az ml schedule create -f ./schedules/cron-with-settings-schedule.yml --set name="ci_test_cron-with-settings-schedule"
+      run: az ml schedule create -f ./schedules/cron-job-schedule.yml --set name="ci_test_cron-job-schedule"
       working-directory: cli
 
     - name: disable schedule
-      run: az ml schedule disable --name ci_test_cron-with-settings-schedule
+      run: az ml schedule disable --name ci_test_cron-job-schedule
       working-directory: cli

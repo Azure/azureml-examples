@@ -196,9 +196,9 @@ path|status|description
 
 path|status|
 -|-
-[schedules/cron-schedule.yml](schedules/cron-schedule.yml)|[![schedules/cron-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-schedule.yml)
-[schedules/cron-with-settings-schedule.yml](schedules/cron-with-settings-schedule.yml)|[![schedules/cron-with-settings-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-with-settings-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-with-settings-schedule.yml)
-[schedules/recurrence-schedule.yml](schedules/recurrence-schedule.yml)|[![schedules/recurrence-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/recurrence-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/recurrence-schedule.yml)
+[schedules/cron-job-schedule.yml](schedules/cron-job-schedule.yml)|[![schedules/cron-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-job-schedule.yml)
+[schedules/cron-with-settings-job-schedule.yml](schedules/cron-with-settings-job-schedule.yml)|[![schedules/cron-with-settings-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-with-settings-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-with-settings-job-schedule.yml)
+[schedules/recurrence-schedule.yml](schedules/recurrence-job-schedule.yml)|[![schedules/recurrence-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/recurrence-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/recurrence-job-schedule.yml)
 
 ## Contents
 
