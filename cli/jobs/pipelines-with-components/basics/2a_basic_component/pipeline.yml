@@ -2,7 +2,8 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: 2a_basic_component
 description: Hello World component example
-
+settings:
+  force_rerun: true
 jobs:
   hello_python_world_job:
     inputs:
