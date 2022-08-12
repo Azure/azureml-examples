@@ -6,5 +6,4 @@ FROM nvcr.io/nvidia/tensorflow:22.02-tf2-py3
 RUN python -m pip install   azureml-defaults==1.44.0 \
                             mlflow==1.25.1 \
                             azureml-mlflow==1.44.0 \
-                            psutil==5.9.0 \
                             pynvml==11.4.1
