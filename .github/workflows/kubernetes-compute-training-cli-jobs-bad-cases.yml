@@ -73,7 +73,7 @@ jobs:
 
     - name: collect jobs
       run: |
-        echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml"  | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/pipelines/tensorflow-image-segmentation/pipeline.yml"  | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
