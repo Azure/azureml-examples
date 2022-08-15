@@ -1,0 +1,60 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Train model with housing price data
+
+display_name: housing-price-example
+experiment_name: housing-price-example-trial
+identity:
+  type: user_identity
+jobs: 
+  train_job:
+    type: command
+    identity:
+      type: user_identity
+    inputs:
+      training_data:
+        type: uri_file
+        # path: https://housingdatafhl.blob.core.windows.net/house-prices/test.csv
+        path: wasbs://house-prices@housingdatafhl.blob.core.windows.net/test.csv
+    outputs:
+      model_output: 
+    code: train
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: azureml:cpu-cluster
+    command: >-
+      python train.py 
+      --training_data ${{inputs.training_data}}
+      --model_output ${{outputs.model_output}}
+  
+  # predict_job:
+  #   type: command
+  #   inputs:
+  #     model_input: ${{parent.jobs.train_job.outputs.model_output}}
+  #     test_data: ${{parent.jobs.train_job.outputs.test_data}}
+  #   outputs:
+  #     predictions: 
+  #   code: src/predict
+  #   environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+  #   compute: azureml:cpu-cluster
+  #   command: >-
+  #     python predict.py 
+  #     --model_input ${{inputs.model_input}} 
+  #     --test_data ${{inputs.test_data}}
+  #     --predictions ${{outputs.predictions}}
+  
+  # score_job:
+  #   type: command
+  #   inputs:
+  #     predictions: ${{parent.jobs.predict_job.outputs.predictions}}
+  #     model: ${{parent.jobs.train_job.outputs.model_output}}
+  #   outputs:
+  #     score_report: 
+  #   code: src/score
+  #   environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+  #   compute: azureml:cpu-cluster
+  #   command: >-      
+  #     python score.py 
+  #     --predictions ${{inputs.predictions}} 
+  #     --model ${{inputs.model}} 
+  #     --score_report ${{outputs.score_report}} 
