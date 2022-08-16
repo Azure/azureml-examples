@@ -5,7 +5,7 @@ command: >-
   --epochs ${{inputs.epochs}}
 inputs:
   epochs: 1
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu@latest
+environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
 compute: azureml:gpu-cluster
 resources:
   instance_count: 2
