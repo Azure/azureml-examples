@@ -6,10 +6,10 @@ import argparse
 import json
 import os
 import time
-
-
+from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+from azure.ai.ml.entities import Data
 from azureml.core import Run
-
+from azure.ai.ml import MLClient
 import mlflow
 import mlflow.sklearn
 
@@ -26,7 +26,7 @@ def parse_args():
     # add arguments
     parser.add_argument("--model_input_path", type=str, help="Path to input model")
     parser.add_argument(
-        "--model_info_output_path", type=str, help="Path to write model info JSON"
+        "--registered_model_path", type=str, help="Path to write model info JSON"
     )
     parser.add_argument(
         "--model_base_name", type=str, help="Name of the registered model"
@@ -70,9 +70,28 @@ def main(args):
 
     print("Writing JSON")
     dict = {"id": "{0}:1".format(registered_name)}
-    output_path = os.path.join(args.model_info_output_path, "model_info.json")
-    with open(output_path, "w") as of:
+    #output_path = os.path.join(args.model_info_output_path, "model_info.json")
+    with open(args.registered_model_path, "w") as of:
         json.dump(dict, fp=of)
+
+    my_data = Data(
+        path=args.registered_model_path,
+        type="uri-file",
+        description="registered model path",
+        name="registered_model_path",
+        version='11'
+    )
+
+    try:
+        credential = DefaultAzureCredential()
+        # Check if given credential can get token successfully.
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        credential = InteractiveBrowserCredential()
+
+    ml_client = MLClient.from_config(credential=credential)
+    ml_client.data.create_or_update(my_data)
+    
 
 
 # run script
