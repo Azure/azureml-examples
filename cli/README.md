@@ -194,11 +194,11 @@ path|status|description
 
 **Schedules**
 
-path|status|
--|-
-[schedules/cron-job-schedule.yml](schedules/cron-job-schedule.yml)|[![schedules/cron-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-job-schedule.yml)
-[schedules/cron-with-settings-job-schedule.yml](schedules/cron-with-settings-job-schedule.yml)|[![schedules/cron-with-settings-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/cron-with-settings-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/cron-with-settings-job-schedule.yml)
-[schedules/recurrence-schedule.yml](schedules/recurrence-job-schedule.yml)|[![schedules/recurrence-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules/recurrence-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules/recurrence-job-schedule.yml)
+path|status|description
+-|-|-
+[schedules/cron-job-schedule.yml](schedules/cron-job-schedule.yml)|[![schedules/cron-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules-cron-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules-cron-job-schedule.yml)|A simple cron job schedule sample.
+[schedules/cron-with-settings-job-schedule.yml](schedules/cron-with-settings-job-schedule.yml)|[![schedules/cron-with-settings-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules-cron-with-settings-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules-cron-with-settings-job-schedule.yml)|A cron job schedule with settings.
+[schedules/recurrence-schedule.yml](schedules/recurrence-job-schedule.yml)|[![schedules/recurrence-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules-recurrence-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules-recurrence-job-schedule.yml)|A recurrent job schedule sample.
 
 ## Contents
 
