@@ -6,7 +6,7 @@ description: Prints the environment variables useful for scripts running in a Py
 jobs:
   pytorch_job:
     type: command
-    component: file:./component.yml
+    component: ./component.yml
     compute: azureml:gpu-cluster
     resources:
       instance_count: 2

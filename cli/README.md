@@ -192,6 +192,14 @@ path|status|description
 [assets/model/local-file.yml](assets/model/local-file.yml)|[![assets/model/local-file](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-local-file/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-local-file.yml)|Model created from local file.
 [assets/model/local-mlflow.yml](assets/model/local-mlflow.yml)|[![assets/model/local-mlflow](https://github.com/Azure/azureml-examples/workflows/cli-assets-model-local-mlflow/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-assets-model-local-mlflow.yml)|Model created from local MLflow model directory.
 
+**Schedules**
+
+path|status|description
+-|-|-
+[schedules/cron-job-schedule.yml](schedules/cron-job-schedule.yml)|[![schedules/cron-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules-cron-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules-cron-job-schedule.yml)|A simple cron job schedule sample.
+[schedules/cron-with-settings-job-schedule.yml](schedules/cron-with-settings-job-schedule.yml)|[![schedules/cron-with-settings-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules-cron-with-settings-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules-cron-with-settings-job-schedule.yml)|A cron job schedule with settings.
+[schedules/recurrence-schedule.yml](schedules/recurrence-job-schedule.yml)|[![schedules/recurrence-job-schedule](https://github.com/Azure/azureml-examples/workflows/cli-schedules-schedules-recurrence-job-schedule/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-schedules-recurrence-job-schedule.yml)|A recurrent job schedule sample.
+
 ## Contents
 
 |directory|description|

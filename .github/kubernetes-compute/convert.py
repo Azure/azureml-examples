@@ -29,17 +29,6 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             resources["instance_type"] = instance_type
             data["resources"] = resources
 
-        # set common runtime environment variables.
-        if common_runtime:
-            if is_sweep_job and not isinstance(data["trial"], str):
-                env = data["trial"].get("environment_variables", {})
-                env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                trial["environment_variables"] = env
-            elif not is_pipeline_job:
-                env = data.get("environment_variables", {})
-                env["AZUREML_COMPUTE_USE_COMMON_RUNTIME"] = "true"
-                data["environment_variables"] = env
-
         for field in ["trial", "component"]:
             if field not in data:
                 continue
@@ -69,6 +58,9 @@ def convert(input_file, compute_target, instance_type, common_runtime, output_fi
             return
 
     print("Processing file:", input_file)
+    if not os.path.exists(input_file):
+        print("Warning: File doesn't exist: ", input_file)
+        return
     with open(input_file, "r") as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         job_schema = data.get("$schema", "")
@@ -95,12 +87,7 @@ if __name__ == "__main__":
         required=False,
         help="Output AMLARC-compatible file, if not provides, " "replace file inplace",
     )
-    parser.add_argument(
-        "-c",
-        "--compute-target",
-        required=False,
-        help="Compute target",
-    )
+    parser.add_argument("-c", "--compute-target", required=False, help="Compute target")
     parser.add_argument("-it", "--instance-type", required=False, help="Instance type")
     parser.add_argument(
         "-cr",

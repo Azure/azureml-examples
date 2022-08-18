@@ -6,6 +6,6 @@ description: Pipeline job with component using environment defined by a conda fi
 jobs:
   hello_python_world_job:
     type: command
-    component: file:./component.yml
+    component: ./component.yml
     compute: azureml:cpu-cluster
 

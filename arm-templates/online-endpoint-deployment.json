@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the Azure Machine Learning Workspace which will contain this compute."
+      }
+    },
+    "location": {
+      "type": "string"
+    },
+    "appInsightsEnabled": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "onlineEndpointName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the Azure Machine Learning online endpoint which will be deployed."
+      }
+    },
+    "onlineDeploymentName": {
+      "defaultValue": "blue",
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the Azure Machine Learning online endpoint which will be deployed."
+      }
+    },
+    "onlineEndpointDescription": {
+      "defaultValue": "This is an online endpoint deployment created by an ARM template",
+      "type": "string"
+    },
+    "onlineDeploymentTags": {
+      "defaultValue": {
+        "tag1": "value1",
+        "tag2": "value2",
+        "tag3": "value3"
+      },
+      "type": "object"
+    },
+    "codeId": {
+      "type": "string"
+    },
+    "scoringScript": {
+      "type": "string",
+      "defaultValue": "score.py",
+      "metadata": {
+        "description": "The script to execute on startup. eg. 'score.py'"
+      }
+    },
+    "environmentId": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "endpointComputeType": {
+      "type": "string",
+      "allowedValues": [
+        "Managed",
+        "Kubernetes",
+        "AzureMLCompute"
+      ]
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The name of the SKU. Ex - P3. It is typically a letter+number code"
+      }
+    },
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces/onlineEndpoints/deployments",
+      "apiVersion": "2022-05-01",
+      "name": "[concat(parameters('workspaceName'), '/', parameters('onlineEndpointName'),'/', parameters('onlineDeploymentName'))]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('onlineDeploymentTags')]",
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "capacity": "[parameters('skuCapacity')]"
+      },
+      "properties": {
+        "description": "[parameters('onlineEndpointDescription')]",
+        "codeConfiguration": {
+          "codeId": "[parameters('codeId')]",
+          "scoringScript": "[parameters('scoringScript')]"
+        },
+        "environmentId": "[parameters('environmentId')]",
+        "appInsightsEnabled": "[parameters('appInsightsEnabled')]",
+        "endpointComputeType": "[parameters('endpointComputeType')]",
+        "model": "[parameters('model')]",
+        "properties": {}
+      }
+    }
+  ]
+}
