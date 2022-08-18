@@ -6,7 +6,7 @@ description: Prints the environment variable ($TF_CONFIG) useful for scripts run
 jobs:
   tf_job:
     type: command
-    component: file:./component.yml
+    component: ./component.yml
     compute: azureml:gpu-cluster
     resources:
       instance_count: 2

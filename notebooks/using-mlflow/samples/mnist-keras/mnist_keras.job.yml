@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+display_name: mnist-keras
+experiment_name: mnist-keras
+description: MNIST is a dataset containing tiny gray-scale images, each showing a handwritten digit, that is, 0, 1, 2, …, 9. The task is to analyze such an image, and tell what digit is written there.
+code: src
+command: >-
+  python trainer.py
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu@latest
+compute: azureml:trainer-cpu

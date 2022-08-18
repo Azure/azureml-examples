@@ -1,0 +1,18 @@
+{
+  "validations": [
+  {
+    "name": "check notebook output",
+    "params": {
+      "check": "warning stderr"
+     }
+  },
+  {
+    "name": "check experiment result",
+    "params": {
+      "experiment_name": "automl-classification-ccard-remote",
+      "minimum_median_score": "0.6",
+      "metric_name": "average_precision_score_weighted"
+    }
+   }
+   ]
+}

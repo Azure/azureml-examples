@@ -8,4 +8,5 @@ args = parser.parse_args()
 
 tbl = mltable.load(args.input_data)
 df = tbl.to_pandas_dataframe()
+
 print(df.head(10))

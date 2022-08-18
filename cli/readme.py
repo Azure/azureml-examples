@@ -13,11 +13,10 @@ EXCLUDED_RESOURCES = [
     "vm-attach",
     "instance",
     "connections",
+    "compute/cluster-user-identity",
 ]
-EXCLUDED_ASSETS = [
-    "conda-yamls",
-    "mlflow-models",
-]
+EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
+EXCLUDED_SCHEDULES = []
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 BRANCH = "main"  # default - do not change
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
@@ -83,15 +82,23 @@ def main(args):
         if not any(excluded in script for excluded in EXCLUDED_SCRIPTS)
     ]
 
+    # get list of schedules
+    schedules = sorted(glob.glob("schedules/**/*schedule.yml", recursive=True))
+    schedules = [
+        schedule.replace(".yml", "")
+        for schedule in schedules
+        if not any(excluded in schedule for excluded in EXCLUDED_SCHEDULES)
+    ]
+
     # write workflows
-    write_workflows(jobs, endpoints, resources, assets, scripts)
+    write_workflows(jobs, endpoints, resources, assets, scripts, schedules)
 
     # read existing README.md
     with open("README.md", "r") as f:
         readme_before = f.read()
 
     # write README.md
-    write_readme(jobs, endpoints, resources, assets, scripts)
+    write_readme(jobs, endpoints, resources, assets, scripts, schedules)
 
     # read modified README.md
     with open("README.md", "r") as f:
@@ -127,7 +134,7 @@ def modify_notebooks(notebooks):
             json.dump(data, f, indent=1)
 
 
-def write_readme(jobs, endpoints, resources, assets, scripts):
+def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
         prefix = f.read()
@@ -144,6 +151,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
     )
     assets_table = "\n**Assets** ([assets](assets))\n\npath|status|description\n-|-|-\n"
     scripts_table = "\n**Scripts**\n\npath|status|\n-|-\n"
+    schedules_table = "\n**Schedules**\n\npath|status|\n-|-\n"
 
     # process jobs
     for job in jobs:
@@ -227,6 +235,16 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
         row = f"[{script}.sh]({script}.sh)|{status}\n"
         scripts_table += row
 
+    # process schedules
+    for schedule in schedules:
+        # build entries for tutorial table
+        status = f"[![{schedule}](https://github.com/Azure/azureml-examples/workflows/cli-schedules-{schedule}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-{schedule}.yml)"
+        link = f"https://schedules.microsoft.com/azure/machine-learning/{schedule}"
+
+        # add row to tutorial table
+        row = f"[{schedule}.yml]({schedule}.yml)|{status}\n"
+        schedules_table += row
+
     # write README.md
     print("writing README.md...")
     with open("README.md", "w") as f:
@@ -237,12 +255,13 @@ def write_readme(jobs, endpoints, resources, assets, scripts):
             + endpoints_table
             + resources_table
             + assets_table
+            + schedules_table
             + suffix
         )
     print("Finished writing README.md...")
 
 
-def write_workflows(jobs, endpoints, resources, assets, scripts):
+def write_workflows(jobs, endpoints, resources, assets, scripts, schedules):
     print("writing .github/workflows...")
 
     # process jobs
@@ -270,6 +289,11 @@ def write_workflows(jobs, endpoints, resources, assets, scripts):
     for script in scripts:
         # write workflow file
         write_script_workflow(script)
+
+    # process schedules
+    for schedule in schedules:
+        # write workflow file
+        write_schedule_workflow(schedule)
 
 
 def check_readme(before, after):
@@ -452,6 +476,48 @@ jobs:
 
     # write workflow
     with open(f"../.github/workflows/cli-scripts-{hyphenated}.yml", "w") as f:
+        f.write(workflow_yaml)
+
+
+def write_schedule_workflow(schedule):
+    filename, project_dir, hyphenated = parse_path(schedule)
+    creds = "${{secrets.AZ_CREDS}}"
+    workflow_yaml = f"""name: cli-schedules-{hyphenated}
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/{schedule}.yml
+      - .github/workflows/cli-schedules-{hyphenated}.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: {creds}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create schedule
+      run: az ml schedule create -f ./{schedule}.yml --set name="ci_test_{filename}"
+      working-directory: cli\n
+    - name: disable schedule
+      run: az ml schedule disable --name ci_test_{filename}
+      working-directory: cli\n"""
+
+    # write workflow
+    with open(f"../.github/workflows/cli-schedules-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
 
 

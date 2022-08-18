@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "type": "string"
+    },
+    "environmentAssetName": {
+      "type": "string"
+    },
+    "environmentAssetVersion": {
+      "defaultValue": "1",
+      "type": "string"
+    },
+    "environmentDescription": {
+      "defaultValue": "This is a test description for an environment created from an ARM template",
+      "type": "string"
+    },
+    "condaFile": {
+      "defaultValue": "",
+      "type": "string",
+      "metadata": {
+        "description": "Standard configuration file used by Conda that lets you install any kind of package, including Python, R, and C/C++ packages."
+      }
+    },
+    "isAnonymous": {
+      "defaultValue": false,
+      "type": "bool"
+    },
+    "dockerImage": {
+      "defaultValue": "",
+      "type": "string",
+      "metadata": {
+        "description": "Docker image path, for example: 'docker.io/tensorflow/serving:latest'."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces/environments/versions",
+      "apiVersion": "2022-05-01",
+      "name": "[concat(parameters('workspaceName'), '/', parameters('environmentAssetName'), '/', parameters('environmentAssetVersion'))]",
+      "properties": {
+        "isAnonymous": "[parameters('isAnonymous')]",
+        "description": "[parameters('environmentDescription')]",
+        "image": "[parameters('dockerImage')]",
+        "condaFile": "[parameters('condaFile')]"
+      }
+    }
+  ]
+}

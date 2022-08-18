@@ -23,11 +23,7 @@ except ImportError:
 
 
 def infer_forecasting_dataset_tcn(
-    X_test,
-    y_test,
-    model,
-    output_path,
-    output_dataset_name="results",
+    X_test, y_test, model, output_path, output_dataset_name="results"
 ):
 
     y_pred, df_all = model.forecast(X_test, y_test)
@@ -71,10 +67,7 @@ def get_model(model_path, model_file_name):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--model_name",
-        type=str,
-        dest="model_name",
-        help="Model to be loaded",
+        "--model_name", type=str, dest="model_name", help="Model to be loaded"
     )
 
     parser.add_argument(
@@ -108,18 +101,13 @@ def get_args():
     return args
 
 
-def get_data(
-    run,
-    fitted_model,
-    target_column_name,
-    test_dataset_name,
-):
+def get_data(run, fitted_model, target_column_name, test_dataset_name):
 
     # get input dataset by name
     test_dataset = Dataset.get_by_name(run.experiment.workspace, test_dataset_name)
     test_df = test_dataset.to_pandas_dataframe()
     if target_column_name in test_df:
-        y_test = test_df.pop(target_column_name)
+        y_test = test_df.pop(target_column_name).values
     else:
         y_test = np.full(test_df.shape[0], np.nan)
 
@@ -159,10 +147,7 @@ if __name__ == "__main__":
     fitted_model = get_model(model_path, model_file_name)
 
     X_test_df, y_test = get_data(
-        run,
-        fitted_model,
-        target_column_name,
-        test_dataset_name,
+        run, fitted_model, target_column_name, test_dataset_name
     )
 
     infer_forecasting_dataset_tcn(

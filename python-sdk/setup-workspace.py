@@ -65,14 +65,8 @@ v100computes = {
 }
 
 akscomputes = {
-    "aks-cpu-deploy": {
-        "vm_size": "STANDARD_DS3_V2",
-        "agent_count": 3,
-    },
-    "aks-gpu-deploy": {
-        "vm_size": "STANDARD_NC6S_V3",
-        "agent_count": 3,
-    },
+    "aks-cpu-deploy": {"vm_size": "STANDARD_DS3_V2", "agent_count": 3},
+    "aks-gpu-deploy": {"vm_size": "STANDARD_NC6S_V3", "agent_count": 3},
 }
 
 # create or get Workspace
