@@ -27,6 +27,7 @@ def init():
     batch_size = os.getenv('batch_size', None)
     batch_size = int(batch_size) if batch_size is not None else batch_size
     print(f'args inference batch size is {batch_size}')
+
     model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model.pt")
 
     print(model_path)

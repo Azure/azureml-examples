@@ -1,13 +1,18 @@
 name: sdk-resources-compute-compute
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/resources/compute/**
       - .github/workflows/sdk-resources-compute-compute.yml
       - sdk/dev-requirements.txt
+      - sdk/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
