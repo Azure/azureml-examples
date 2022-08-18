@@ -41,7 +41,7 @@ jobs:
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" job-schedule.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" job-schedule.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" job-schedule.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main-eastus/g" job-schedule.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" job-schedule.ipynb
 
           papermill -k python job-schedule.ipynb job-schedule.output.ipynb
