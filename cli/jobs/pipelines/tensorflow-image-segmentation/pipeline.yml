@@ -1,0 +1,127 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: "tensorflow_unet_pets"
+
+# <jobs>
+settings:
+  default_datastore: azureml:workspaceblobstore
+  continue_on_step_failure: true
+
+jobs:
+  prepare_data:
+    type: command
+    command: |
+      tar xvfm ${{inputs.images_archive}} --no-same-owner -C ${{outputs.images_and_annotations}} &&
+      tar xvfm ${{inputs.annotations_archive}} --no-same-owner -C ${{outputs.images_and_annotations}}
+
+    inputs:
+      images_archive:
+        type: uri_file
+        path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
+      annotations_archive:
+        type: uri_file
+        path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
+
+    outputs:
+      images_and_annotations:
+        type: uri_folder
+        mode: upload
+
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+
+    compute: azureml:cpu-cluster
+
+  train:
+    type: command
+    code: ./src/
+
+    compute: azureml:gpu-cluster
+    resources:
+      instance_count: 1 # number of nodes
+    distribution:
+      # NOTE: using type:tensorflow will use all the right env variables (ex: TF_CONFIG)
+      type: tensorflow
+      worker_count: 1 # needs to match instance_count (!)
+
+    environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
+    # uncomment below to use custom environment
+    # environment:
+    #   build: 
+    #     path: ./environments/nvidia_tensorflow/
+
+    # NOTE: set env var if needed
+    environment_variables:
+      # adjusts the level of info from NCCL tests
+      NCCL_DEBUG: "INFO"
+      NCCL_DEBUG_SUBSYS: "GRAPH,INIT,ENV"
+
+      # relaxed Ordering can greatly help the performance of Infiniband networks in virtualized environments.
+      NCCL_IB_PCI_RELAXED_ORDERING: "1"
+      CUDA_DEVICE_ORDER: "PCI_BUS_ID"
+      NCCL_SOCKET_IFNAME: "eth0"
+
+    inputs:
+      # data inputs
+      images_and_annotations: ${{parent.jobs.prepare_data.outputs.images_and_annotations}}
+
+      # oxford pets specifics
+      images_type: "jpg"
+      images_filename_pattern: "(.*)\\.jpg"
+      masks_filename_pattern: "(.*)\\.png"
+      num_classes: 3
+
+      # data loading
+      batch_size: 64
+      num_workers: 5 # int or -1 (AUTOTUNE)
+      prefetch_factor: 8 # int or -1 (AUTOTUNE)
+      cache: "none" # "none" or "memory"
+
+      # model
+      model_arch: "unet"
+      model_input_size: 160
+
+      # training
+      num_epochs: 7
+      optimizer: "rmsprop"
+      loss: "sparse_categorical_crossentropy"
+
+      # distributed settings
+      enable_profiling: False
+      disable_cuda: False # to force disabling CUDA/GPU
+      num_gpus: -1 # put n>=0 to artificially limit number of gpus
+      distributed_strategy: "auto" # "auto" (recommended)
+      distributed_backend: "nccl" # "auto", "ring" or "nccl" (recommended)
+
+    outputs:
+        checkpoints: # Path to export checkpoints
+            type: uri_folder
+        trained_model: # Path to the final model
+            type: uri_folder
+
+    command: >-
+        python run.py 
+        --train_images ${{inputs.images_and_annotations}}/images
+        --train_masks ${{inputs.images_and_annotations}}/annotations/trimaps
+        --test_images ${{inputs.images_and_annotations}}/images
+        --test_masks ${{inputs.images_and_annotations}}/annotations/trimaps
+        --images_filename_pattern "${{inputs.images_filename_pattern}}"
+        --masks_filename_pattern "${{inputs.masks_filename_pattern}}"
+        --batch_size ${{inputs.batch_size}}
+        --num_workers ${{inputs.num_workers}}
+        --prefetch_factor ${{inputs.prefetch_factor}}
+        --cache ${{inputs.cache}}
+        --model_arch ${{inputs.model_arch}}
+        --num_classes ${{inputs.num_classes}}
+        --model_input_size ${{inputs.model_input_size}}
+        --num_epochs ${{inputs.num_epochs}}
+        --optimizer ${{inputs.optimizer}}
+        --loss ${{inputs.loss}}
+        --num_gpus ${{inputs.num_gpus}}
+        --model_output ${{outputs.trained_model}}
+        --checkpoints ${{outputs.checkpoints}}
+        --distributed_strategy ${{inputs.distributed_strategy}}
+        --distributed_backend ${{inputs.distributed_backend}}
+        --enable_profiling ${{inputs.enable_profiling}}
+
+# </jobs>

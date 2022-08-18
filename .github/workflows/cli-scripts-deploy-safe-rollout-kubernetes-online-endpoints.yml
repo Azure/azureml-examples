@@ -60,9 +60,9 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-INT
-          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-INT
-          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-INT
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
           export KEY_PEM_NAME=AMLARC-KEY-PEM
           export CERT_PEM_NAME=AMLARC-CERT-PEM
           bash .github/kubernetes-compute/tool.sh download_metrics_info

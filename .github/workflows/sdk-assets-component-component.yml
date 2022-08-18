@@ -9,9 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/assets/component/**
       - .github/workflows/sdk-assets-component-component.yml
       - sdk/dev-requirements.txt
+      - sdk/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest

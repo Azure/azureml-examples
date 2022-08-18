@@ -13,7 +13,7 @@ settings:
 jobs:
   convert_training_image:
     type: command
-    component: file:./convert_to_image_directory/entry.spec.yaml
+    component: ./convert_to_image_directory/entry.spec.yaml
     inputs:
       input_path: 
         type: uri_folder
@@ -21,7 +21,7 @@ jobs:
 
   convert_evaluation_image:
     type: command
-    component: file:./convert_to_image_directory/entry.spec.yaml
+    component: ./convert_to_image_directory/entry.spec.yaml
     inputs:
       input_path: 
         type: uri_folder
@@ -29,7 +29,7 @@ jobs:
 
   init_transformation:
     type: command
-    component: file:./init_image_transformation/entry.spec.yaml
+    component: ./init_image_transformation/entry.spec.yaml
     inputs:
       resize: "False"
       size: 256
@@ -53,7 +53,7 @@ jobs:
   
   transform_on_training_image:
     type: command
-    component: file:./apply_image_transformation/entry.spec.yaml
+    component: ./apply_image_transformation/entry.spec.yaml
     inputs: 
       mode: "For training"
       input_image_transform_path: ${{parent.jobs.init_transformation.outputs.output_path}}
@@ -61,7 +61,7 @@ jobs:
 
   transform_on_evaluation_image:
     type: command
-    component: file:./apply_image_transformation/entry.spec.yaml
+    component: ./apply_image_transformation/entry.spec.yaml
     inputs:
       mode: "For inference"
       input_image_transform_path: ${{parent.jobs.init_transformation.outputs.output_path}}
@@ -69,7 +69,7 @@ jobs:
 
   train:
     type: command
-    component: file:./image_cnn_train/entry.spec.yaml
+    component: ./image_cnn_train/entry.spec.yaml
     compute: azureml:gpu-cluster
     inputs:
       train_data: ${{parent.jobs.transform_on_training_image.outputs.output_path}}
