@@ -1,4 +1,4 @@
-name: cli-resources-compute-cluster-user-identity
+name: cli-schedules-schedules-cron-job-schedule
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/resources/compute/cluster-user-identity.yml
-      - .github/workflows/cli-resources-compute-cluster-user-identity.yml
+      - cli/schedules/cron-job-schedule.yml
+      - .github/workflows/cli-schedules-schedules-cron-job-schedule.yml
       - cli/setup.sh
 jobs:
   build:
@@ -25,6 +25,10 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create asset
-      run: az ml compute create -f resources/compute/cluster-user-identity.yml
+    - name: create schedule
+      run: az ml schedule create -f ./schedules/cron-job-schedule.yml --set name="ci_test_cron-job-schedule"
+      working-directory: cli
+
+    - name: disable schedule
+      run: az ml schedule disable --name ci_test_cron-job-schedule
       working-directory: cli
