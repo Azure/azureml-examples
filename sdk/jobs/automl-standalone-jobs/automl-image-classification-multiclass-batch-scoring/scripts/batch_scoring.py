@@ -2,32 +2,17 @@
 # Licensed under the MIT license.
 
 import os
-import argparse
 import json
+import ast
 
+from distutils.util import strtobool
 from azureml.core.model import Model
 from azureml.automl.core.shared import logging_utilities
 
-try:
-    from azureml.automl.dnn.vision.common.logging_utils import get_logger
-    from azureml.automl.dnn.vision.common.model_export_utils import (
-        load_model,
-        run_inference_batch,
-    )
-    from azureml.automl.dnn.vision.classification.inference.score import (
-        _score_with_model,
-    )
-    from azureml.automl.dnn.vision.common.utils import _set_logging_parameters
-except ImportError:
-    from azureml.contrib.automl.dnn.vision.common.logging_utils import get_logger
-    from azureml.contrib.automl.dnn.vision.common.model_export_utils import (
-        load_model,
-        run_inference_batch,
-    )
-    from azureml.contrib.automl.dnn.vision.classification.inference.score import (
-        _score_with_model,
-    )
-    from azureml.contrib.automl.dnn.vision.common.utils import _set_logging_parameters
+from azureml.automl.dnn.vision.common.logging_utils import get_logger
+from azureml.automl.dnn.vision.common.model_export_utils import load_model, run_inference_batch
+from azureml.automl.dnn.vision.classification.inference.score import _score_with_model
+from azureml.automl.dnn.vision.common.utils import _set_logging_parameters
 
 TASK_TYPE = "image-classification"
 logger = get_logger("azureml.automl.core.scoring_script_images")
@@ -36,16 +21,19 @@ logger = get_logger("azureml.automl.core.scoring_script_images")
 def init():
     global model
     global batch_size
-
+    global model_explainability
+    global xai_parameters
     # Set up logging
     _set_logging_parameters(TASK_TYPE, {})
 
-    parser = argparse.ArgumentParser(description="Retrieve batch_size from arguments.")
-    parser.add_argument("--batch_size", dest="batch_size", type=int, required=False)
-    args, _ = parser.parse_known_args()
+    batch_size = os.getenv('batch_size', None)
+    if batch_size is not None:
+        batch_size = int(batch_size)
 
-    batch_size = args.batch_size
-
+    model_explainability = os.getenv('model_explainability', False)
+    model_explainability = bool(strtobool(model_explainability))
+    
+    xai_parameters = ast.literal_eval(os.getenv('xai_parameters', str(dict())))
     model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model.pt")
 
     print(model_path)
@@ -62,6 +50,11 @@ def init():
 
 def run(mini_batch):
     logger.info("Running inference.")
-    result = run_inference_batch(model, mini_batch, _score_with_model, batch_size)
+    result = run_inference_batch(model,
+                                 mini_batch,
+                                 _score_with_model,
+                                 batch_size,
+                                 model_explainability,
+                                 **xai_parameters)
     logger.info("Finished inferencing.")
     return result
