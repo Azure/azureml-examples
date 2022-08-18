@@ -1,5 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: automl-bankmarketing-custom-environment
-image: mcr.microsoft.com/azureml/curated/sklearn-0.24-ubuntu18.04-py37-cpu:42
-conda_file: C:\Users\vikasagrawal\conda.yml
-description: Environment created from a Docker image plus Conda environment.
