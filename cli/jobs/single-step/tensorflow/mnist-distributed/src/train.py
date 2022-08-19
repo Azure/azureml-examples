@@ -18,7 +18,6 @@ import numpy as np
 
 import argparse
 import os, json
-import warnings
 
 
 def mnist_dataset(batch_size):
@@ -115,7 +114,6 @@ def main():
     )
 
     # Save the model
-    warnings.filterwarnings("ignore")
     task_type, task_id = (tf_config["task"]["type"], tf_config["task"]["index"])
     write_model_path = write_filepath(args.model_dir, task_type, task_id)
 
