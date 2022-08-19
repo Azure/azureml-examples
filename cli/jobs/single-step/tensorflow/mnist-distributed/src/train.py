@@ -18,6 +18,7 @@ import numpy as np
 
 import argparse
 import os, json
+import sys
 
 
 def mnist_dataset(batch_size):
@@ -122,3 +123,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    sys.exit(0)
