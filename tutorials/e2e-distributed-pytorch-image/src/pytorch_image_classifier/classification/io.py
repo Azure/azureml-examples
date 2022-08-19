@@ -1,5 +1,5 @@
 # Copyright (c) Microsoft Corporation.
-# Licensed under the MIT license.
+# Licensed under the MIT License.
 
 """
 This script contains methods to hangle inputs for pytorch model training
@@ -7,10 +7,8 @@ using the COCO dataset https://cocodataset.org/.
 """
 import os
 import logging
-import csv
 import glob
 
-import torch
 import torchvision
 
 
@@ -44,7 +42,9 @@ def find_image_subfolder(current_root):
 
 
 def build_image_datasets(
-    train_images_dir: str, valid_images_dir: str, input_size: int = 224
+    train_images_dir: str,
+    valid_images_dir: str,
+    input_size: int = 224,
 ):
     """
     Args:
