@@ -2187,3 +2187,7 @@ sdk/jobs/automl-standalone-jobs/automl-image-classification-multiclass-batch-sco
 sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/artifact_downloads/outputs/generated_code/conda_environment.yaml
 sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/artifact_downloads/outputs/generated_code/script.py
 sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/artifact_downloads/outputs/mlflow-model/artifacts/_model_impl_ialrzjl9.pt
+sdk/jobs/automl-standalone-jobs/automl-image-classification-multiclass-batch-scoring/scoring_results/predictions.csv
+sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/artifact_downloads/outputs/mlflow-model/artifacts/_model_impl_33g3nx1t.pt
+sdk/jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items/sample_request_data.json
+sdk/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/sample_request_data.json
