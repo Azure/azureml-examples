@@ -5,7 +5,7 @@ name: score_data
 version: 0.0.1
 display_name: Score Data
 description: A dummy scoring component
-
+datastore: heron_sandbox_storage
 inputs:
   model_input:
     type: uri_folder

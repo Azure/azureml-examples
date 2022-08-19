@@ -1,0 +1,6 @@
+name: testFileData_v2
+version: 1
+description: "this is a test dataset"
+path: sample1.csv
+type: uri_file
+datastore: heron_sandbox_storage

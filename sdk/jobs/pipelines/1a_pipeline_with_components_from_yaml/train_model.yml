@@ -5,9 +5,11 @@ name: train_model
 display_name: Train Model
 description: A dummy training component
 version: 0.0.1
+datastore: heron_sandbox_storage
 inputs:
   training_data: 
     type: uri_folder
+    optional: true
   max_epochs:
     type: integer
     optional: true
@@ -24,7 +26,7 @@ code: ./train_src
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 command: >-
   python train.py 
-  --training_data ${{inputs.training_data}} 
+  [--training_data ${{inputs.training_data}}]
   [--max_epochs ${{inputs.max_epochs}}] 
   --learning_rate ${{inputs.learning_rate}} 
   --learning_rate_schedule ${{inputs.learning_rate_schedule}} 
