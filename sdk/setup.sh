@@ -14,7 +14,7 @@ pip install mltable
 
 
 # <az_ml_sdk_test_install>
-pip install azure-ai-ml==0.1.0.b5
+pip install azure-ai-ml==0.1.0.b6
 # </az_ml_sdk_test_install>
 
 pip list
