@@ -9,7 +9,10 @@ from azureml.core.model import Model
 from azureml.automl.core.shared import logging_utilities
 
 from azureml.automl.dnn.vision.common.logging_utils import get_logger
-from azureml.automl.dnn.vision.common.model_export_utils import load_model, run_inference_batch
+from azureml.automl.dnn.vision.common.model_export_utils import (
+    load_model,
+    run_inference_batch,
+)
 from azureml.automl.dnn.vision.classification.inference.score import _score_with_model
 from azureml.automl.dnn.vision.common.utils import _set_logging_parameters
 
@@ -24,9 +27,9 @@ def init():
     # Set up logging
     _set_logging_parameters(TASK_TYPE, {})
 
-    batch_size = os.getenv('batch_size', None)
+    batch_size = os.getenv("batch_size", None)
     batch_size = int(batch_size) if batch_size is not None else batch_size
-    print(f'args inference batch size is {batch_size}')
+    print(f"args inference batch size is {batch_size}")
 
     model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model.pt")
 
