@@ -53,10 +53,7 @@ def main(args):
     mlmodel_path = os.path.join(args.model_input_path, "MLmodel")
     runid = ""
     with open(mlmodel_path, "r") as modelfile:
-        while(True):
-            line = modelfile.readline()
-            if not line:
-                break
+        for line in modelfile:
             if "run_id" in line:
                 runid = line.split(":")[1].strip()
     model_uri = "runs:/{}/outputs/".format(runid)
