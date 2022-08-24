@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+inputs:
+  my_custom_model:
+    type: custom_model
+    path: azureml:custom_model_created_from_v2_file:1
+    mode: download
+outputs:
+  model_output:
+    type: uri_file
+code: custommodel-code
+command: python input-custom-model.py --file_arg ${{inputs.my_custom_model}}
+
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+compute: azureml:cpu-cluster
+tags:  { "scenario":"custom_model_v2_file_download"}

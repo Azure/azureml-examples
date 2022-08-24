@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+inputs:
+  my_custom_model:
+    type: mlflow_model
+    path: azureml:mlflow_model_created_from_v1:1
+    mode: download
+outputs:
+  model_output:
+    type: uri_file
+code: mlflow-code
+command: python input-mlflow.py --file_arg ${{inputs.my_custom_model}}
+
+environment: azureml:mlflow_with_automl:1 #azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+compute: azureml:cpu-cluster
+tags:  { "scenario":"mlflow_model_v1"}

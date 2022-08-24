@@ -1,0 +1,31 @@
+artifact_path: outputs/mlflow-model
+flavors:
+  python_function:
+    env: conda.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    python_version: 3.7.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: pickle
+    sklearn_version: 0.22.1
+mlflow_version: 1.27.0
+model_uuid: 3f941fb9d41b4228afec7489d67db98b
+run_id: AutoML_009c7ebb-e4d5-41b3-be4a-51227fbd0747_0
+signature:
+  inputs: '[{"name": "Time", "type": "double"}, {"name": "V1", "type": "double"},
+    {"name": "V2", "type": "double"}, {"name": "V3", "type": "double"}, {"name": "V4",
+    "type": "double"}, {"name": "V5", "type": "double"}, {"name": "V6", "type": "double"},
+    {"name": "V7", "type": "double"}, {"name": "V8", "type": "double"}, {"name": "V9",
+    "type": "double"}, {"name": "V10", "type": "double"}, {"name": "V11", "type":
+    "double"}, {"name": "V12", "type": "double"}, {"name": "V13", "type": "double"},
+    {"name": "V14", "type": "double"}, {"name": "V15", "type": "double"}, {"name":
+    "V16", "type": "double"}, {"name": "V17", "type": "double"}, {"name": "V18", "type":
+    "double"}, {"name": "V19", "type": "double"}, {"name": "V20", "type": "double"},
+    {"name": "V21", "type": "double"}, {"name": "V22", "type": "double"}, {"name":
+    "V23", "type": "double"}, {"name": "V24", "type": "double"}, {"name": "V25", "type":
+    "double"}, {"name": "V26", "type": "double"}, {"name": "V27", "type": "double"},
+    {"name": "V28", "type": "double"}, {"name": "Amount", "type": "double"}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "bool", "shape": [-1]}}]'
+utc_time_created: '2022-08-23 18:58:44.250296'
