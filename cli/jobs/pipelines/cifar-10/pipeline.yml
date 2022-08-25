@@ -19,27 +19,7 @@ jobs:
         type: uri_folder
         mode: upload
   train_model:
-    type: command
-    command: >-
-      python main.py
-      --data-dir ${{inputs.cifar}}
-      --epochs ${{inputs.epochs}}
-      --model-dir ${{outputs.model_dir}}
-    code: src/train-model
-    inputs:
-      epochs: 1
-      cifar: ${{parent.jobs.get_data.outputs.cifar}}
-    outputs:
-      model_dir:
-        type: uri_folder
-        mode: upload
-    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:26
-    compute: azureml:gpu-cluster
-    distribution:
-      type: pytorch
-      process_count_per_instance: 1
-    resources:
-      instance_count: 2
+
   eval_model:
     type: command
     command: >-
