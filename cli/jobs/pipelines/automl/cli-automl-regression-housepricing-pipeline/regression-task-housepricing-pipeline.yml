@@ -41,13 +41,7 @@ jobs:
     outputs:
        best_model:
           type: mlflow_model
-  show_output:
-    type: command
-    inputs:
-      mltable_output: ${{parent.jobs.regression_node.outputs.best_model}}
-    command: ls ${{inputs.mltable_output}}
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
-  register_model_job:
+  register_model_node:
     type: command
     component: file:./components/component_register_model.yaml
     inputs:
