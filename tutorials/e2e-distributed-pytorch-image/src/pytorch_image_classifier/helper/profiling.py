@@ -1,8 +1,8 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-"""
-This script provides some helper code to help with pytorch profiling.
+"""This script provides some helper code to help with pytorch profiling.
+
 In particular, it provides functions to save "traces" within the profiler
 on_trace_ready callback.
 
@@ -14,11 +14,11 @@ import json
 import logging
 import torch
 from torch.autograd import DeviceType
+from packaging import version
 
 
 def markdown_trace_handler(dir_name: str, rank: int = 0):
-    """This handler can be used inside torch.profiler call to output
-    tables in markdown format"""
+    """Use inside torch.profiler call to output tables in markdown format."""
 
     def _handler_fn(prof) -> None:
         if not os.path.isdir(dir_name):
@@ -53,8 +53,7 @@ def markdown_trace_handler(dir_name: str, rank: int = 0):
 
 
 def json_trace_handler(dir_name: str, rank: int = 0):
-    """This handler can be used inside torch.profiler call to output
-    tables in JSON format"""
+    """Use inside torch.profiler call to output tables in JSON format."""
 
     def _handler_fn(prof) -> None:
         if not os.path.isdir(dir_name):
@@ -107,8 +106,7 @@ def json_trace_handler(dir_name: str, rank: int = 0):
 def export_stack_trace_handler(
     dir_name: str, rank: int = 0, metrics=["self_cuda_time_total"]
 ):
-    """This handler can be used inside torch.profiler call to output
-    tables in markdown format"""
+    """Use inside torch.profiler call to output tables in markdown format."""
 
     def _handler_fn(prof) -> None:
         if not os.path.isdir(dir_name):
@@ -134,8 +132,7 @@ def export_stack_trace_handler(
 
 
 def composite_trace_handler(handler_list):
-    """This can call multiple trace handlers inside one"""
-
+    """Combine multiple trace handlers inside one."""
     def _handler_fn(prof) -> None:
         for handler in handler_list:
             handler(prof)
@@ -144,20 +141,24 @@ def composite_trace_handler(handler_list):
 
 
 def get_default_trace_handler(dir_name: str, rank: int = 0):
-    """Creates a trace handler with everything good in this script"""
+    """Create a trace handler with everything good in this script."""
     # add handlers for exporting traces at each step (see on_trace_ready)
     # we're creating a list to export in multiple formats
     trace_handlers = []
+    logger = logging.getLogger(__name__)
 
     # export in markdown
+    logger.info("Setting up profiler to export in markdown format")
     markdown_logs_export = os.path.join(dir_name, "markdown")
     trace_handlers.append(markdown_trace_handler(markdown_logs_export, rank=rank))
 
     # export in JSON
+    logger.info("Setting up profiler to export in json format")
     json_logs_export = os.path.join(dir_name, "json")
     trace_handlers.append(json_trace_handler(json_logs_export, rank=rank))
 
     # export stacks in txt
+    logger.info("Setting up profiler to export stacks in txt format")
     stacks_logs_export = os.path.join(dir_name, "stacks")
     stack_metrics = ["self_cpu_time_total"]
     if torch.cuda.is_available():
@@ -168,14 +169,19 @@ def get_default_trace_handler(dir_name: str, rank: int = 0):
     )
 
     # export tensorboard
-    # NOTE: removed due to segfault in pytorch 1.11.0
-    # will need to be uncommented for pytorch 1.11.1 which has a fix
-    # tensorboard_logs_export = os.path.join(
-    #     dir_name, "tensorboard_logs"
-    # )
-    # trace_handlers.append(torch.profiler.tensorboard_trace_handler(
-    #     tensorboard_logs_export
-    # ))
+    if version.parse(torch.__version__) >= version.parse("1.11.1"):
+        logger.info(
+            "Setting up profiler to export tensorboard traces using tensorboard_trace_handler"
+        )
+        tensorboard_logs_export = os.path.join(dir_name, "tensorboard_logs")
+        trace_handlers.append(
+            torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
+        )
+    else:
+        # NOTE: tensorboard_trace_handler segfaults in pytorch 1.11.0
+        logger.warning(
+            "You're using a version of torch before 1.11.1, which introduces a bug fix to tensorboard_trace_handler. We will NOT export tensorboard traces."
+        )
 
     # profiler takes 1 handler, we're composing all above in a single handler
     trace_handler = composite_trace_handler(trace_handlers)
