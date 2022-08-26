@@ -17,3 +17,4 @@ dependencies:
     - pynvml==11.4.1
     - matplotlib==3.5.1
     - tqdm==4.62.0
+    - protobuf==3.20.1
