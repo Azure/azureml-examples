@@ -4,7 +4,6 @@
 import os
 import argparse
 import json
-import ast
 
 from azureml.core.model import Model
 from azureml.automl.core.shared import logging_utilities
@@ -46,7 +45,7 @@ def init():
 
     batch_size = args.batch_size
     model_explainability = args.model_explainability
-    xai_parameters = ast.literal_eval(args.xai_parameters)
+    xai_parameters = json.loads(args.xai_parameters)
     model_path = os.path.join(Model.get_model_path(args.model_name), "model.pt")
     print(model_path)
 
