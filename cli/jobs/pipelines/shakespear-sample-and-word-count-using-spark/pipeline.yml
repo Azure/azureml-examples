@@ -1,6 +1,6 @@
 type: pipeline
 
-description: 'submit a basic spark job using component sdk'
+description: 'submit a pipeline with spark job'
 
 inputs:
   # input type can be uri_file,uri_folder,mltable

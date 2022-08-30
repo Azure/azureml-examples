@@ -1,6 +1,6 @@
 type: pipeline
 
-description: 'submit a spark job using component sdk'
+description: 'submit a pipeline with spark job'
 
 inputs:
   iris_data:
