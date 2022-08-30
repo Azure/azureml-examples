@@ -12,13 +12,16 @@ from mlflow.sklearn import load_model
 
 MODEL_NAME = "iris_model"
 
+
 def init():
     print("Environment variables start ****")
     for key, val in os.environ.items():
         print(key, val)
     print("Environment variables end ****")
 
-    parser = argparse.ArgumentParser(allow_abbrev=False, description="ParallelRunStep Agent")
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False, description="ParallelRunStep Agent"
+    )
     parser.add_argument("--model", type=str, default=0)
     args, _ = parser.parse_known_args()
 
@@ -29,7 +32,7 @@ def init():
 
 
 def run(input_data):
-    
+
     # input_data is a Pandas DataFrame for Tabular Data
 
     num_rows, num_cols = input_data.shape
@@ -37,7 +40,6 @@ def run(input_data):
 
     # cleanup output
     result = input_data.drop(input_data.columns[4:], axis=1)
-    result['variety'] = pred
+    result["variety"] = pred
 
     return result
-
