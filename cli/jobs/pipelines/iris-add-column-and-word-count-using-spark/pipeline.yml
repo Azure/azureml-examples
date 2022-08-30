@@ -33,8 +33,6 @@ jobs:
 
     files:
       - my_files.txt
-    #archives:
-    #  - my_archive.tar
 
     args: >-
       --file_input1 ${{inputs.file_input1}}
