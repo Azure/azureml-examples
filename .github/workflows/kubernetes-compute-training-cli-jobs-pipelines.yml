@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'image_classification_with_densenet|sweep'
+        default: 'image_classification_with_densenet|tensorflow-image-segmentation'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -38,7 +38,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-pipelines.*yml$'
-      JOB_FILTER: 'image_classification_with_densenet|sweep'
+      JOB_FILTER: 'image_classification_with_densenet|tensorflow-image-segmentation'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-pipelines.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
@@ -122,9 +122,9 @@ jobs:
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-INT
-          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-INT
-          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-INT
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
           export KEY_PEM_NAME=AMLARC-KEY-PEM
           export CERT_PEM_NAME=AMLARC-CERT-PEM
           bash .github/kubernetes-compute/tool.sh download_metrics_info

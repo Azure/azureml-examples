@@ -8,7 +8,7 @@ dependencies:
   - pip:
       - --extra-index-url https://pypi.org/simple
       - git+https://github.com/NVIDIA/dllogger.git@26a0f8f1958de2c0c460925ff6102a4d2486d6cc#egg=dllogger
-      - mldesigner
+      - mldesigner==0.1.0b4
       - watchdog==0.10.3
       - torch==1.8.1
       - torchvision==0.9.1
@@ -17,4 +17,5 @@ dependencies:
       - numpy==1.19.5
       - --extra-index-url=https://developer.download.nvidia.com/compute/redist/
       - nvidia-dali-cuda100
-      - azureml-mlflow
+      - azureml-mlflow==1.41.0
+      - protobuf==3.20.1

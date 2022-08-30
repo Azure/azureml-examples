@@ -1,0 +1,76 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: mnist-batch-identification-using-parallel
+description: The hello world pipeline job with inline parallel job
+tags:
+  tag: tagvalue
+  owner: sdkteam
+
+jobs:
+  prepare_data:
+    type: command
+    compute: azureml:cpu-cluster
+    command: >-
+      mkdir ${{outputs.mnist_png}}/mnist;
+      curl -LO https://dsmoedata.blob.core.windows.net/prs-cliv2/mnist_png.tar.gz;
+      tar -xvzf mnist_png.tar.gz -C ${{outputs.mnist_png}}/mnist;
+      rm mnist_png.tar.gz;
+      echo "paths:" >> ${{outputs.mnist_png}}/MLTable;
+      echo "  - file: ./mnist" >> ${{outputs.mnist_png}}/MLTable;
+  
+    outputs:
+      mnist_png:
+        type: mltable
+        mode: rw_mount
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+    
+  predict_digits_mnist:
+    type: parallel
+    compute: azureml:cpu-cluster
+    inputs:
+      job_data_path:
+        type: mltable
+        path: ${{parent.jobs.prepare_data.outputs.mnist_png}}
+        mode: eval_mount
+      score_model:
+        type: uri_folder
+        path: ./mnist_models
+        mode: download
+    outputs:
+      job_output_file:
+        type: uri_file
+        mode: rw_mount
+
+    mini_batch_size: "5"
+    resources:
+      instance_count: 2
+    mini_batch_error_threshold: 5
+    logging_level: "DEBUG"
+    input_data: ${{inputs.job_data_path}}
+    max_concurrency_per_instance: 2
+    retry_settings:
+      max_retries: 2
+      timeout: 60
+
+    task:
+      type: run_function
+      code: ./script
+      entry_script: digit_identification.py
+      environment:
+        name: "batch_environment"
+        version: 1
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+        conda_file: ./environment/environment_parallel.yml
+      program_arguments: >-
+        --model ${{inputs.score_model}}
+      append_row_to: ${{outputs.job_output_file}}
+      
+  view_prediction_result:
+    type: command
+    compute: azureml:cpu-cluster
+    inputs:
+      inference_result: ${{parent.jobs.predict_digits_mnist.outputs.job_output_file}}
+    command: >-
+      cat ${{inputs.inference_result}}
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+

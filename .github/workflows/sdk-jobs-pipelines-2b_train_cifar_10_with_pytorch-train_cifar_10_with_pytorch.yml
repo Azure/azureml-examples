@@ -9,9 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/jobs/pipelines/2b_train_cifar_10_with_pytorch/**
       - .github/workflows/sdk-jobs-pipelines-2b_train_cifar_10_with_pytorch-train_cifar_10_with_pytorch.yml
       - sdk/dev-requirements.txt
+      - sdk/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest

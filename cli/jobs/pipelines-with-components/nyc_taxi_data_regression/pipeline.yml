@@ -24,7 +24,7 @@ settings:
 jobs:
   prep_job:
     type: command
-    component: file:./prep.yml
+    component: ./prep.yml
     inputs:
       raw_data: #using local data, will crate an anonymous data asset
         type: uri_folder
@@ -34,7 +34,7 @@ jobs:
 
   transform_job:
     type: command
-    component: file:./transform.yml
+    component: ./transform.yml
     inputs:
       clean_data: ${{parent.jobs.prep_job.outputs.prep_data}}
     outputs:
@@ -42,7 +42,7 @@ jobs:
 
   train_job:
     type: command
-    component: file:./train.yml
+    component: ./train.yml
     inputs:
       training_data: ${{parent.jobs.transform_job.outputs.transformed_data}}
     outputs:
@@ -51,7 +51,7 @@ jobs:
   
   predict_job:
     type: command
-    component: file:./predict.yml
+    component: ./predict.yml
     inputs:
       model_input: ${{parent.jobs.train_job.outputs.model_output}}
       test_data: ${{parent.jobs.train_job.outputs.test_data}}
@@ -60,7 +60,7 @@ jobs:
 
   score_job:
     type: command
-    component: file:./score.yml
+    component: ./score.yml
     inputs:
       predictions: ${{parent.jobs.predict_job.outputs.predictions}}
       model: ${{parent.jobs.train_job.outputs.model_output}}

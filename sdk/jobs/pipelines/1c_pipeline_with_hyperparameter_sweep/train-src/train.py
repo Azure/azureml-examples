@@ -42,7 +42,7 @@ def main(args):
     # train model
     model = train_model(params, X_train, X_test, y_train, y_test)
     # Output the model and test data
-    mlflow.sklearn.save_model(model, args.model_output + "/model")
+    mlflow.sklearn.save_model(model, args.model_output)
     X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
     y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
