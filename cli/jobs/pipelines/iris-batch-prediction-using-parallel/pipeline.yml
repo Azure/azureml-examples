@@ -1,0 +1,58 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+display_name: iris-batch-prediction-using-parallel
+description: The hello world pipeline job with inline parallel job
+tags:
+  tag: tagvalue
+  owner: sdkteam
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+inputs:
+  job_data_path:
+    type: mltable
+    path: ./neural-iris-mltable
+    mode: direct
+  score_model:
+    type: uri_folder
+    path: ./iris-model
+    mode: download
+
+outputs:
+  job_out_file:
+    type: uri_file
+    mode: rw_mount
+
+jobs:
+  batch_prediction:
+    type: parallel
+    compute: azureml:cpu-cluster
+    inputs:
+      input_data: ${{parent.inputs.job_data_path}}
+      score_model: ${{parent.inputs.score_model}}
+    outputs:
+      job_output_file: ${{parent.outputs.job_out_file}}
+
+    mini_batch_size: "100kb"
+    mini_batch_error_threshold: 5
+    logging_level: "DEBUG"
+    input_data: ${{inputs.input_data}}
+    max_concurrency_per_instance: 2
+    retry_settings:
+      max_retries: 2
+      timeout: 60
+
+    task:
+      type: run_function
+      code: "./script"
+      entry_script: iris_prediction.py
+      environment:
+        name: "prs-env"
+        version: 1
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+        conda_file: ./environment/environment_parallel.yml
+      program_arguments: >-
+        --model ${{inputs.score_model}}
+      append_row_to: ${{outputs.job_output_file}}

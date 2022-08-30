@@ -6,7 +6,7 @@ description: Train an R model on the Iris dataset.
 jobs:
   r_iris_example:
     type: command
-    component: file:./component.yml
+    component: ./component.yml
     compute: azureml:cpu-cluster
     inputs:
       iris: 
