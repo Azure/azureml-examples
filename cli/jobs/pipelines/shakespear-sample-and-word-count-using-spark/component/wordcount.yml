@@ -2,8 +2,8 @@ $schema: http://azureml/sdk-2-0/SparkComponent.json
 name: wordcount_spark_component
 type: spark
 version: 1
-display_name: Aml Spark dataset word count test module
-description: Aml Spark dataset word count test module
+display_name: Aml Spark word count test module
+description: Aml Spark word count test module
 
 
 code: ../src

@@ -2,8 +2,8 @@ $schema: http://azureml/sdk-2-0/SparkComponent.json
 name: kmeans_spark_component
 type: spark
 version: 1
-display_name: Aml Spark dataset test module
-description: Aml Spark dataset test module
+display_name: Aml Spark kmeans test module
+description: Aml Spark kmeans test module
 
 inputs:
   file_input:

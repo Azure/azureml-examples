@@ -2,8 +2,8 @@ $schema: http://azureml/sdk-2-0/SparkComponent.json
 name: sample_spark_component
 type: spark
 version: 1
-display_name: Aml Spark dataset sample test module
-description: Aml Spark dataset sample test module
+display_name: Aml Spark sample word test module
+description: Aml Spark sample word test module
 
 
 code: ../src
