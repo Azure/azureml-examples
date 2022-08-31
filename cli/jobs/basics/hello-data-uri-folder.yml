@@ -4,8 +4,13 @@ command: |
 code: src
 inputs:
   sampledata:
+<<<<<<< HEAD
     type: custom_model
     path: azureml:local-custom-example@latest
+=======
+    type: uri_folder
+    path: azureml:local-folder-example@latest
+>>>>>>> main
     mode: ro_mount
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster

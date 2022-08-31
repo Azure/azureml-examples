@@ -7,8 +7,13 @@ from multiprocessing.pool import ThreadPool
 from multiprocessing import cpu_count
 import functools
 from enum import Enum
+<<<<<<< HEAD
 from azure.ml import dsl, Input
 from azure.ml.dsl._component import ComponentExecutor
+=======
+
+from mldesigner import command_component, Input
+>>>>>>> main
 
 
 class Data_BackendEnum(Enum):
@@ -77,9 +82,13 @@ def convert_image_directory_to_specific_format(
     return output_root
 
 
+<<<<<<< HEAD
 @dsl.command_component(
     name="imagecnn_train", description="imagecnn_train main function"
 )
+=======
+@command_component(name="imagecnn_train", description="imagecnn_train main function")
+>>>>>>> main
 def main(
     train_data: Input(type="uri_folder", description="path to train dataset") = None,
     val_data: Input(type="uri_folder", description="path to valid dataset") = None,
@@ -168,7 +177,10 @@ def main(
     ]
     print(" ".join(sys.argv))
     runpy.run_path("main.py", run_name="__main__")
+<<<<<<< HEAD
 
 
 if __name__ == "__main__":
     ComponentExecutor(main).execute(sys.argv)
+=======
+>>>>>>> main

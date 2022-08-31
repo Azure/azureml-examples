@@ -26,7 +26,11 @@ jobs:
       model_output:
       test_data:
     sampling_algorithm: random
+<<<<<<< HEAD
     trial: file:./train.yml
+=======
+    trial: ./train.yml
+>>>>>>> main
     search_space:
       c_value:
         type: uniform
@@ -54,6 +58,10 @@ jobs:
       test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
     outputs:
       predict_result:
+<<<<<<< HEAD
     component: file:./predict.yml
+=======
+    component: ./predict.yml
+>>>>>>> main
 
     

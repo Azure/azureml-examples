@@ -1,5 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+<<<<<<< HEAD
 name: local-folder-example
 type: mltable
 description: Dataset created from local folder.
 path: sample-data 
+=======
+name: local-folder-example-titanic
+description: Dataset created from local folder.
+type: uri_folder
+path: sample-data/
+>>>>>>> main

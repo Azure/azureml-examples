@@ -7,9 +7,15 @@ import urllib
 from zipfile import ZipFile
 
 from azure.identity import InteractiveBrowserCredential
+<<<<<<< HEAD
 from azure.ml import MLClient
 from azure.ml.entities import Data
 from azure.ml.constants import AssetTypes
+=======
+from azure.ai.ml import MLClient
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
+>>>>>>> main
 
 
 def upload_data_and_create_jsonl_files(ml_client):

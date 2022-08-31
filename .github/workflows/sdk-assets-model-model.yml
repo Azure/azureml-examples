@@ -1,4 +1,6 @@
 name: sdk-assets-model-model
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
@@ -6,11 +8,18 @@ on:
   pull_request:
     branches:
       - main
+<<<<<<< HEAD
       - may-sdk-preview
+=======
+>>>>>>> main
     paths:
-      - sdk/**
+      - sdk/assets/model/**
       - .github/workflows/sdk-assets-model-model.yml
       - sdk/dev-requirements.txt
+<<<<<<< HEAD
+=======
+      - sdk/setup.sh
+>>>>>>> main
 jobs:
   build:
     runs-on: ubuntu-latest

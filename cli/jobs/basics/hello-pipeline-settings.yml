@@ -3,9 +3,14 @@ type: pipeline
 display_name: hello_pipeline_settings
 
 settings:
+<<<<<<< HEAD
   default_datestore: azureml:workspaceblobstore
   default_compute: azureml:cpu-cluster
   force_rerun: true
+=======
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+>>>>>>> main
 jobs:
   hello_job:
     command: echo 202204190 & echo "hello"

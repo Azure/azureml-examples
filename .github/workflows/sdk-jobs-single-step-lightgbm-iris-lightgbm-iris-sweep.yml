@@ -1,4 +1,6 @@
 name: sdk-jobs-single-step-lightgbm-iris-lightgbm-iris-sweep
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
@@ -6,11 +8,18 @@ on:
   pull_request:
     branches:
       - main
+<<<<<<< HEAD
       - may-sdk-preview
+=======
+>>>>>>> main
     paths:
-      - sdk/**
+      - sdk/jobs/single-step/lightgbm/iris/**
       - .github/workflows/sdk-jobs-single-step-lightgbm-iris-lightgbm-iris-sweep.yml
       - sdk/dev-requirements.txt
+<<<<<<< HEAD
+=======
+      - sdk/setup.sh
+>>>>>>> main
 jobs:
   build:
     runs-on: ubuntu-latest

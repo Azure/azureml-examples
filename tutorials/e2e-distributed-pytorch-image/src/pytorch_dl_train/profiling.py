@@ -51,6 +51,10 @@ def markdown_trace_handler(dir_name: str, rank: int = 0):
 
 def composite_trace_handler(handler_list):
     """This can call multiple trace handlers inside one"""
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     def _handler_fn(prof) -> None:
         for handler in handler_list:
             handler(prof)
@@ -58,7 +62,13 @@ def composite_trace_handler(handler_list):
     return _handler_fn
 
 
+<<<<<<< HEAD
 def export_stack_trace_handler(dir_name: str, rank: int=0, metrics=["self_cuda_time_total"]):
+=======
+def export_stack_trace_handler(
+    dir_name: str, rank: int = 0, metrics=["self_cuda_time_total"]
+):
+>>>>>>> main
     """This handler can be used inside torch.profiler call to output
     tables in markdown format"""
 
@@ -128,14 +138,21 @@ class PyTorchProfilerHandler:
             markdown_logs_export = os.path.join(
                 self.profiler_output_tmp_dir.name, "markdown"
             )
+<<<<<<< HEAD
             trace_handlers.append(markdown_trace_handler(
                 markdown_logs_export, rank=self.rank
             ))
+=======
+            trace_handlers.append(
+                markdown_trace_handler(markdown_logs_export, rank=self.rank)
+            )
+>>>>>>> main
 
             # export stacks in txt
             stacks_logs_export = os.path.join(
                 self.profiler_output_tmp_dir.name, "stacks"
             )
+<<<<<<< HEAD
             stack_metrics = [
                 "self_cpu_time_total"
             ]
@@ -146,14 +163,31 @@ class PyTorchProfilerHandler:
                 stacks_logs_export, rank=self.rank,
                 metrics=stack_metrics
             ))
+=======
+            stack_metrics = ["self_cpu_time_total"]
+            if torch.cuda.is_available():
+                stack_metrics.append("self_cuda_time_total")
+
+            trace_handlers.append(
+                export_stack_trace_handler(
+                    stacks_logs_export, rank=self.rank, metrics=stack_metrics
+                )
+            )
+>>>>>>> main
 
             # export tensorboard
             tensorboard_logs_export = os.path.join(
                 self.profiler_output_tmp_dir.name, "tensorboard_logs"
             )
+<<<<<<< HEAD
             trace_handlers.append(torch.profiler.tensorboard_trace_handler(
                 tensorboard_logs_export
             ))
+=======
+            trace_handlers.append(
+                torch.profiler.tensorboard_trace_handler(tensorboard_logs_export)
+            )
+>>>>>>> main
 
             # profiler takes 1 handler, we're composing all above in a single handler
             trace_handler = composite_trace_handler(trace_handlers)
@@ -167,7 +201,11 @@ class PyTorchProfilerHandler:
                 record_shapes=False,
                 profile_memory=True,
                 activities=activities,
+<<<<<<< HEAD
                 with_stack=True, # needed to export stacks
+=======
+                with_stack=True,  # needed to export stacks
+>>>>>>> main
                 on_trace_ready=trace_handler,
             )
             self.profiler.start()

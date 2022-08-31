@@ -5,7 +5,11 @@ display_name: hello_pipeline_customize_output_file
 outputs:
   output:
     type: uri_file
+<<<<<<< HEAD
     path: azureml://datastores/workspaceblobstore/paths/hello_world.txt
+=======
+    path: azureml://datastores/workspaceblobstore/paths/${{name}}/hello_world.txt
+>>>>>>> main
     mode: rw_mount
 jobs:
   hello_world:

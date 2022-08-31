@@ -1,28 +1,58 @@
 name: cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints
 on:
   workflow_dispatch:
+<<<<<<< HEAD
   schedule:
     - cron: "0 9 * * *"
   pull_request:
     branches:
       - main
       - sdk-preview
+=======
+    inputs:
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: "0 1 * * *"
+  pull_request:
+    branches:
+      - main
+>>>>>>> main
     paths:
       - cli/endpoints/online/**
       - cli/deploy-safe-rollout-kubernetes-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
       - cli/setup.sh
+<<<<<<< HEAD
       - .github/amlarc-tool.sh
+=======
+      - .github/kubernetes-compute/tool.sh
+>>>>>>> main
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
+<<<<<<< HEAD
       KEY_VAULT_NAME: amlarcgithubworkflowkv
       OWNERS: amlarc@microsoft.com
       GITHUB_REPO: https://github.com/Azure/azureml-examples
       WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
       TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/OneNote.aspx?id=%2Fteams%2FVienna%2FSiteAssets%2FVienna%20Notebook&wd=target%28AMLArcTSG.one%7C69E8BDB1-5734-4B07-967A-5A50A91CF040%2FTroubleshooting%20github%20workflow%7C53A1A232-F9F0-4192-B7D2-0474848EBB18%2F%29
     steps:
+=======
+      FILE_TICKET: true
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
+
+    steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+>>>>>>> main
     - name: check out repo
       uses: actions/checkout@v2
     - name: azure login
@@ -33,6 +63,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+<<<<<<< HEAD
     - name: scripts installs
       run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y && sudo apt-get install xmlstarlet
     - name: test script
@@ -51,4 +82,58 @@ jobs:
         export ROUTING_ID=$(cat icm_routing_id)
         export SUMMARY=$(set -e; bash -x .github/amlarc-tool.sh gen_summary_for_github_test)
         set -e; bash -x .github/amlarc-tool.sh file_icm
+=======
+    - name: package installs
+      run: sudo apt-get install xmlstarlet
+    - name: test script
+      run: set -e; bash -x deploy-safe-rollout-kubernetes-online-endpoints.sh
+      working-directory: cli
+
+    # report metrics
+    - name: download_metrics_dependency
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+        fi
+      timeout-minutes: 30
+    - name: start_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+          export KEY_PEM_NAME=AMLARC-KEY-PEM
+          export CERT_PEM_NAME=AMLARC-CERT-PEM
+          bash .github/kubernetes-compute/tool.sh download_metrics_info
+          bash .github/kubernetes-compute/tool.sh start_mdm_container
+        fi
+      timeout-minutes: 30
+    - name: report_failure_metrics
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export jobstatus=Failed
+          export job="cli/deploy-safe-rollout-kubernetes-online-endpoints.sh"
+          bash .github/kubernetes-compute/tool.sh report_inference_metrics
+        fi
+      timeout-minutes: 30
+    - name: report_succes_metrics
+      if: ${{ success() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export jobstatus=Completed
+          export job="cli/deploy-safe-rollout-kubernetes-online-endpoints.sh"
+          bash .github/kubernetes-compute/tool.sh report_inference_metrics
+        fi
+      timeout-minutes: 30   
+    - name: stop_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh stop_mdm_container
+        fi
+>>>>>>> main
       timeout-minutes: 30

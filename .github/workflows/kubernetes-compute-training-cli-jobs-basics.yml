@@ -1,0 +1,147 @@
+name: kubernetes-compute-training-cli-jobs-basics
+on:
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+    inputs:
+      TEST_REGION:
+        description: 'Resource Region'
+        required: false
+        default: 'eastus'
+      JOB_SELECTOR:
+        description: 'Job selector used with grep command to select job workflows'
+        required: false
+        default: '^cli-jobs-basics.*yml$'
+      JOB_FILTER:
+        description: 'Job filter used with grep command to filter out job workflows'
+        required: false
+        default: 'automl|java'
+      TIMEOUT:
+        description: 'Timeout of a single job'
+        required: false
+        default: '120m'
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples
+      WORKSPACE: amlarc-githubtest-ws
+      LOCATION: eastus
+
+      JOB_SELECTOR: '^cli-jobs-basics.*yml$'
+      JOB_FILTER: 'automl|java'
+      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-basics.txt
+      TIMEOUT: '120m'
+      MIN_SUCCESS_NUM: 1
+
+      FILE_TICKET: true
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-basics.yml
+
+    steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+        echo "JOB_SELECTOR=${{ github.event.inputs.JOB_SELECTOR }}" | tee -a $GITHUB_ENV
+        echo "JOB_FILTER=${{ github.event.inputs.JOB_FILTER }}" | tee -a $GITHUB_ENV
+        echo "TIMEOUT=${{ github.event.inputs.TIMEOUT }}" | tee -a $GITHUB_ENV
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: |
+        pip install shyaml
+        bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: install ml
+      run: |
+        set -x +e
+        az extension remove -n ml
+        sleep 60
+        cat cli/setup.sh | grep "^az extension add" | bash 
+        az version
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+      timeout-minutes: 30
+
+    - name: collect jobs
+      run: |
+        bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
+      timeout-minutes: 30
+
+    - name: run jobs
+      run: |
+        for job in $(cat $JOB_LIST_FILE); do
+          if [[ "$job" = *"yml" ]]; then
+            echo "Run job: $job"
+            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
+            sleep 120
+          else
+            echo "Found invalid job: $job"
+          fi
+        done
+
+        wait
+      timeout-minutes: 300
+
+    - name: check jobs
+      if: ${{ always() }}
+      run: |
+        bash .github/kubernetes-compute/tool.sh count_result
+      timeout-minutes: 30
+
+    # report metrics
+    - name: download_metrics_dependency
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+        fi
+      timeout-minutes: 30
+    - name: start_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+          export KEY_PEM_NAME=AMLARC-KEY-PEM
+          export CERT_PEM_NAME=AMLARC-CERT-PEM
+          bash .github/kubernetes-compute/tool.sh download_metrics_info
+          bash .github/kubernetes-compute/tool.sh start_mdm_container
+        fi
+      timeout-minutes: 30
+    - name: report_metrics
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh report_test_result_metrics
+        fi
+      timeout-minutes: 30   
+    - name: stop_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh stop_mdm_container
+        fi
+      timeout-minutes: 30

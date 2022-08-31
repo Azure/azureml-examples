@@ -9,6 +9,7 @@ inputs:
 jobs:
   python_hello_step:
     type: command
+<<<<<<< HEAD
     component: file:./component-hello.yml
     compute: azureml:cpu-cluster
     inputs:
@@ -17,13 +18,27 @@ jobs:
         # please follow the instrucion in README.md to create this data first 
         path: azureml:iris-tabular@latest
         mode: direct  
+=======
+    component: ./component-hello.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      sample_input_data: 
+        type: uri_folder
+        # please follow the instrucion in README.md to create this data asset first, 
+        path: azureml:local-folder-example@latest
+        mode: ro_mount    
+>>>>>>> main
       sample_input_string: ${{parent.inputs.pipeline_hello_input_string}}
     outputs:
       sample_output_data: 
 
   python_world_step:
     type: command
+<<<<<<< HEAD
     component: file:./component-world.yml
+=======
+    component: ./component-world.yml
+>>>>>>> main
     compute: azureml:cpu-cluster
     inputs:
       sample_input_data: 

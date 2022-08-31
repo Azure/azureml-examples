@@ -13,10 +13,7 @@ from typing import Any, Union, Dict, Callable
 from datasets import load_dataset, load_metric
 from datasets import DatasetDict, Dataset, Metric  # used for typing
 from torch.utils.data.dataset import Dataset
-from transformers import (
-    PreTrainedTokenizerBase,
-    AutoTokenizer,
-)
+from transformers import PreTrainedTokenizerBase, AutoTokenizer
 
 
 logger = logging.getLogger(__name__)
@@ -113,8 +110,7 @@ def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
 
 
 def load_encoded_glue_dataset(
-    task: str,
-    tokenizer: PreTrainedTokenizerBase,
+    task: str, tokenizer: PreTrainedTokenizerBase
 ) -> Union[DatasetDict, Dataset]:
     """Load GLUE data, apply tokenizer and split into train/validation."""
     tokenizer_func = construct_tokenizer_function(tokenizer=tokenizer, task=task)

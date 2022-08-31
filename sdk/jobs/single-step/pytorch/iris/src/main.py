@@ -16,7 +16,11 @@ from sklearn.model_selection import train_test_split
 
 from network import SimpleMLP
 
+<<<<<<< HEAD
 #<functions>
+=======
+# <functions>
+>>>>>>> main
 # define functions
 def main(args):
     # read in data
@@ -34,7 +38,14 @@ def main(args):
 
     # evaluate model
     evaluate_model(model, X_train, X_test, y_train, y_test)
+<<<<<<< HEAD
 #</functions>
+=======
+
+
+# </functions>
+
+>>>>>>> main
 
 def process_data(df, random_state):
     # split dataframe into X and y

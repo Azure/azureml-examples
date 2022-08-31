@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+<<<<<<< HEAD:.github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
 name: cli-jobs-basics-hello-automl-hello-automl-job-basic
+=======
+name: cli-scripts-deploy-custom-container-mlflow
+>>>>>>> main:.github/workflows/cli-scripts-deploy-custom-container-mlflow.yml
+=======
+name: cli-jobs-basics-hello-automl-hello-automl-job-basic
+>>>>>>> main
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +16,18 @@ on:
       - main
       - sdk-preview
     paths:
+<<<<<<< HEAD
+<<<<<<< HEAD:.github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
       - cli/jobs/basics/hello-automl/**
       - .github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
+=======
+      - cli/deploy-custom-container-mlflow.sh
+      - .github/workflows/cli-scripts-deploy-custom-container-mlflow.yml
+>>>>>>> main:.github/workflows/cli-scripts-deploy-custom-container-mlflow.yml
+=======
+      - cli/jobs/basics/hello-automl/**
+      - .github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
+>>>>>>> main
       - cli/setup.sh
 jobs:
   build:
@@ -25,6 +43,20 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+<<<<<<< HEAD
+<<<<<<< HEAD:.github/workflows/cli-jobs-basics-hello-automl-hello-automl-job-basic.yml
     - name: run job
       run: bash -x ../../../run-job.sh hello-automl-job-basic.yml
       working-directory: cli/jobs/basics/hello-automl
+=======
+    - name: scripts installs
+      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
+    - name: test script script
+      run: set -e; bash -x deploy-custom-container-mlflow.sh
+      working-directory: cli
+>>>>>>> main:.github/workflows/cli-scripts-deploy-custom-container-mlflow.yml
+=======
+    - name: run job
+      run: bash -x ../../../run-job.sh hello-automl-job-basic.yml
+      working-directory: cli/jobs/basics/hello-automl
+>>>>>>> main

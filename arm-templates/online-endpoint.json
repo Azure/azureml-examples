@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "onlineEndpointName": {
+      "type": "string"
+    },
+    "onlineEndpointDescription": {
+      "defaultValue": "This is an online endpoint created by an ARM template",
+      "type": "string"
+    },
+    "identityType": {
+      "allowedValues": [
+        "SystemAssigned",
+        "UserAssigned",
+        "SystemAssignedUserAssigned",
+        "None"
+      ],
+      "type": "string",
+      "metadata": {
+        "description": "The MSI Identity that is associated with this resource."
+      }
+    },
+    "allowPublicAccess": {
+      "defaultValue": true,
+      "type": "bool",
+      "metadata": {
+        "description": "Set to true for endpoints that should allow public access when Private Link is enabled."
+      }
+    },
+    "authMode": {
+      "defaultValue": "Key",
+      "allowedValues": [
+        "AMLToken",
+        "Key",
+        "AADToken"
+      ],
+      "type": "string"
+    },
+    "onlineEndpointTags": {
+      "defaultValue": {
+        "tag1": "value1",
+        "tag2": "value2",
+        "tag3": "value3"
+      },
+      "type": "object"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces/onlineEndpoints",
+      "apiVersion": "2022-05-01",
+      "name": "[concat(parameters('workspaceName'), '/', parameters('onlineEndpointName'))]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('onlineEndpointTags')]",
+      "identity": {
+        "type": "[parameters('identityType')]"
+      },
+      "properties": {
+        "authMode": "[parameters('authMode')]",
+        "description": "[parameters('onlineEndpointDescription')]",
+        "properties": {}
+      }
+    }
+  ]
+}

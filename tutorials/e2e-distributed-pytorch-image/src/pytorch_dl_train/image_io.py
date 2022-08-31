@@ -22,27 +22,48 @@ def find_image_subfolder(current_root):
 
     Args:
         current_root (str): a given directory
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> main
     Returns:
         image_folder (str): the subfolder containing multiple subdirs
     """
     if not os.path.isdir(current_root):
+<<<<<<< HEAD
         raise FileNotFoundError(f"While identifying the image folder, provided current_root={current_root} is not a directory.")
     
+=======
+        raise FileNotFoundError(
+            f"While identifying the image folder, provided current_root={current_root} is not a directory."
+        )
+
+>>>>>>> main
     sub_directories = glob.glob(os.path.join(current_root, "*"))
     if len(sub_directories) == 1:
         # let's do it recursively
         return find_image_subfolder(sub_directories[0])
     if len(sub_directories) == 0:
+<<<<<<< HEAD
         raise FileNotFoundError(f"While identifying image folder under {current_root}, we found no content at all. The image folder is empty.")
+=======
+        raise FileNotFoundError(
+            f"While identifying image folder under {current_root}, we found no content at all. The image folder is empty."
+        )
+>>>>>>> main
     else:
         return current_root
 
 
 def build_image_datasets(
+<<<<<<< HEAD
     train_images_dir: str,
     valid_images_dir: str,
     input_size: int = 224,
+=======
+    train_images_dir: str, valid_images_dir: str, input_size: int = 224
+>>>>>>> main
 ):
     """
     Args:
@@ -60,9 +81,13 @@ def build_image_datasets(
     # identify the right level of sub directory
     train_images_dir = find_image_subfolder(train_images_dir)
 
+<<<<<<< HEAD
     logger.info(
         f"Creating training dataset from {train_images_dir}"
     )
+=======
+    logger.info(f"Creating training dataset from {train_images_dir}")
+>>>>>>> main
 
     train_transform = torchvision.transforms.Compose(
         [
@@ -84,9 +109,13 @@ def build_image_datasets(
     # identify the right level of sub directory
     valid_images_dir = find_image_subfolder(valid_images_dir)
 
+<<<<<<< HEAD
     logger.info(
         f"Creating validation dataset from {valid_images_dir}"
     )
+=======
+    logger.info(f"Creating validation dataset from {valid_images_dir}")
+>>>>>>> main
 
     valid_transform = torchvision.transforms.Compose(
         [

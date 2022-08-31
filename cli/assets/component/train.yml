@@ -2,7 +2,13 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.jso
 name: train_data_component
 display_name: train_data
 description: A example train component
+<<<<<<< HEAD
 # version: 4
+=======
+tags:
+  author: azureml-sdk-team
+version: 3
+>>>>>>> main
 type: command
 inputs:
   training_data: 

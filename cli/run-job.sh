@@ -1,7 +1,11 @@
 job=$1
 if [[ -z "$2" ]]
   then
+<<<<<<< HEAD
     if [[ "$job" =~ ^jobs/pipelines-with-components/.* ]]
+=======
+    if [[ "$job" =~ pipeline.yml ]]
+>>>>>>> main
     then
       run_id=$(az ml job create -f $job --query name -o tsv --set settings.force_rerun=True)
     else

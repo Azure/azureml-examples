@@ -17,7 +17,7 @@ export ENDPOINT_NAME=endpt-rest-`echo $RANDOM`
 # </set_endpoint_name>
 
 #<api_version>
-API_VERSION="2021-10-01"
+API_VERSION="2022-05-01"
 #</api_version>
 
 echo "Using:\nSUBSCRIPTION_ID: $SUBSCRIPTION_ID\nLOCATION: $LOCATION\nRESOURCE_GROUP: $RESOURCE_GROUP\nWORKSPACE: $WORKSPACE\nENDPOINT_NAME: $ENDPOINT_NAME"
@@ -86,7 +86,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model/sklearn_regression_model.pkl\"
+        \"modelUri\":\"azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model\"
     }
 }"
 # </create_model>
@@ -135,7 +135,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"location\": \"$LOCATION\",
     \"sku\": {
         \"capacity\": 1,
-        \"name\": \"Standard_F2s_v2\"
+        \"name\": \"Standard_DS2_v2\"
     },
     \"properties\": {
         \"endpointComputeType\": \"Managed\",

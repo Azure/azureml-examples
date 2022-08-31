@@ -2,7 +2,11 @@ name: prs-env
 channels:
   - conda-forge
 dependencies:
+<<<<<<< HEAD
   - python=3.6.1
+=======
+  - python=3.7.6
+>>>>>>> main
   - pip
   - pip:
       - mlflow

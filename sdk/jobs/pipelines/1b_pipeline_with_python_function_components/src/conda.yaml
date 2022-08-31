@@ -8,6 +8,10 @@ dependencies:
   - python=3.8.12
   - pip=21.2.2
   - pip:
+<<<<<<< HEAD
     # change this when stable version release
     - --extra-index-url=https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/60864551
     - azure-ml==0.0.60864551
+=======
+    - mldesigner==0.1.0b4
+>>>>>>> main

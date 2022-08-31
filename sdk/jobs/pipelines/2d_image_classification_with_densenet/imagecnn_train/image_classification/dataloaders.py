@@ -235,8 +235,14 @@ def get_dali_train_loader(dali_cpu=False):
             pipe, size=int(pipe.epoch_size("Reader") / world_size)
         )
 
+<<<<<<< HEAD
         return DALIWrapper(train_loader, num_classes, one_hot), int(
             pipe.epoch_size("Reader") / (world_size * batch_size)
+=======
+        return (
+            DALIWrapper(train_loader, num_classes, one_hot),
+            int(pipe.epoch_size("Reader") / (world_size * batch_size)),
+>>>>>>> main
         )
 
     return gdtl
@@ -275,8 +281,14 @@ def get_dali_val_loader():
             pipe, size=int(pipe.epoch_size("Reader") / world_size)
         )
 
+<<<<<<< HEAD
         return DALIWrapper(val_loader, num_classes, one_hot), int(
             pipe.epoch_size("Reader") / (world_size * batch_size)
+=======
+        return (
+            DALIWrapper(val_loader, num_classes, one_hot),
+            int(pipe.epoch_size("Reader") / (world_size * batch_size)),
+>>>>>>> main
         )
 
     return gdvl
@@ -385,10 +397,14 @@ def get_pytorch_train_loader(
     train_dataset = datasets.ImageFolder(
         traindir,
         transforms.Compose(
+<<<<<<< HEAD
             [
                 transforms.RandomResizedCrop(224),
                 transforms.RandomHorizontalFlip(),
             ]
+=======
+            [transforms.RandomResizedCrop(224), transforms.RandomHorizontalFlip()]
+>>>>>>> main
         ),
     )
 
@@ -409,8 +425,14 @@ def get_pytorch_train_loader(
         drop_last=True,
     )
 
+<<<<<<< HEAD
     return PrefetchedWrapper(train_loader, num_classes, fp16, one_hot), len(
         train_loader
+=======
+    return (
+        PrefetchedWrapper(train_loader, num_classes, fp16, one_hot),
+        len(train_loader),
+>>>>>>> main
     )
 
 
@@ -425,6 +447,7 @@ def get_pytorch_val_loader(
 ):
     valdir = os.path.join(data_path, "val")
     val_dataset = datasets.ImageFolder(
+<<<<<<< HEAD
         valdir,
         transforms.Compose(
             [
@@ -432,6 +455,9 @@ def get_pytorch_val_loader(
                 transforms.CenterCrop(224),
             ]
         ),
+=======
+        valdir, transforms.Compose([transforms.Resize(256), transforms.CenterCrop(224)])
+>>>>>>> main
     )
 
     if torch.distributed.is_initialized():

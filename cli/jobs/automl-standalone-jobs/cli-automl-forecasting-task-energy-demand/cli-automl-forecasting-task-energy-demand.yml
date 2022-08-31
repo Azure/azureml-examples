@@ -12,6 +12,7 @@ primary_metric: r2_score
 
 log_verbosity: debug
 
+<<<<<<< HEAD
 data:
   target_column_name: "demand"
   training:
@@ -22,6 +23,15 @@ data:
     data:
       path: "./validation-mltable-folder"
       type: mltable
+=======
+target_column_name: "demand"
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  path: "./validation-mltable-folder"
+  type: mltable
+>>>>>>> main
 
 limits:
   timeout_minutes: 180
@@ -45,6 +55,11 @@ forecasting:
 training:
   enable_model_explainability: true
   enable_stack_ensemble: false
+<<<<<<< HEAD
 
 allowed_training_algorithms:
   - xg_boost_regressor
+=======
+  allowed_training_algorithms:
+    - xg_boost_regressor
+>>>>>>> main

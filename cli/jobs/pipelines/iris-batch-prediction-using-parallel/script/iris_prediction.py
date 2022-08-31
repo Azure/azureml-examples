@@ -17,7 +17,13 @@ def init():
         print(key, val)
     print("Environment variables end ****")
 
+<<<<<<< HEAD
     parser = argparse.ArgumentParser(allow_abbrev=False, description="ParallelRunStep Agent")
+=======
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False, description="ParallelRunStep Agent"
+    )
+>>>>>>> main
     parser.add_argument("--model", type=str, default=0)
     args, _ = parser.parse_known_args()
 
@@ -32,6 +38,10 @@ def run(input_data):
 
     # cleanup output
     result = input_data.drop(input_data.columns[4:], axis=1)
+<<<<<<< HEAD
     result['variety'] = pred
+=======
+    result["variety"] = pred
+>>>>>>> main
 
     return result

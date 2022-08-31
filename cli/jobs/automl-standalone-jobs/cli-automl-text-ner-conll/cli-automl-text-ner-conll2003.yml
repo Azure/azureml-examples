@@ -13,6 +13,7 @@ log_verbosity: debug
 limits:
   timeout_minutes: 60
 
+<<<<<<< HEAD
 data:
   target_column_name: 'label'
   training:
@@ -23,6 +24,14 @@ data:
     data:
       type: mltable
       path: "./validation-mltable-folder"
+=======
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  type: mltable
+  path: "./validation-mltable-folder"
+>>>>>>> main
 
 # featurization:
 #   dataset_language: "eng"

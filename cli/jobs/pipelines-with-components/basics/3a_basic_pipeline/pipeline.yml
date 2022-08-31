@@ -11,10 +11,19 @@ settings:
 jobs:
   component_a:
     type: command
+<<<<<<< HEAD
     component: file:./componentA.yml
   component_b:
     type: command
     component: file:./componentB.yml
+=======
+    component: ./componentA.yml
+    limits: 
+      timeout: 3600
+  component_b:
+    type: command
+    component: ./componentB.yml
+>>>>>>> main
   component_c:
     type: command
-    component: file:./componentC.yml
+    component: ./componentC.yml

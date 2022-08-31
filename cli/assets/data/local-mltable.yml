@@ -1,5 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+<<<<<<< HEAD
 name: local-neural-iris-mltable-example
 type: mlflow
 description: Dataset created from local folder.
 path: neural-iris-mltable
+=======
+name: local-mltable-example-titanic
+description: Data asset created from local MLTable.
+type: mltable
+path: ./local-mltable
+>>>>>>> main

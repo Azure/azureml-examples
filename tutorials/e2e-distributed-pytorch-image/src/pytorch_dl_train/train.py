@@ -92,7 +92,13 @@ class PyTorchDistributedModelTrainingSequence:
         if self.dataloading_config.num_workers < 0:
             self.dataloading_config.num_workers = os.cpu_count()
         if self.dataloading_config.num_workers == 0:
+<<<<<<< HEAD
             self.logger.warning("You specified num_workers=0, forcing prefetch_factor to be discarded.")
+=======
+            self.logger.warning(
+                "You specified num_workers=0, forcing prefetch_factor to be discarded."
+            )
+>>>>>>> main
             self.dataloading_config.prefetch_factor = None
 
         # NOTE: strtobool returns an int, converting to bool explicitely
@@ -118,7 +124,13 @@ class PyTorchDistributedModelTrainingSequence:
             # MPI is only included if you build PyTorch from source on a host that has MPI installed.
             self.world_size = int(os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))
             self.world_rank = int(os.environ.get("OMPI_COMM_WORLD_RANK", "0"))
+<<<<<<< HEAD
             self.local_world_size = int(os.environ.get("OMPI_COMM_WORLD_LOCAL_SIZE", "1"))
+=======
+            self.local_world_size = int(
+                os.environ.get("OMPI_COMM_WORLD_LOCAL_SIZE", "1")
+            )
+>>>>>>> main
             self.local_rank = int(os.environ.get("OMPI_COMM_WORLD_LOCAL_RANK", "0"))
             self.multinode_available = self.world_size > 1
             self.self_is_main_node = self.world_rank == 0
@@ -150,7 +162,11 @@ class PyTorchDistributedModelTrainingSequence:
             )
         else:
             self.logger.info(f"Not running in multinode.")
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> main
         # DISTRIBUTED: in distributed mode, you want to report parameters
         # only from main process (rank==0) to avoid conflict
         if self.self_is_main_node:
@@ -164,20 +180,29 @@ class PyTorchDistributedModelTrainingSequence:
                     "cuda_device_count": torch.cuda.device_count(),
                     "distributed": self.multinode_available,
                     "distributed_backend": self.distributed_backend,
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                     # data loading params
                     "batch_size": self.dataloading_config.batch_size,
                     "num_workers": self.dataloading_config.num_workers,
                     "prefetch_factor": self.dataloading_config.prefetch_factor,
                     "pin_memory": self.dataloading_config.pin_memory,
                     "non_blocking": self.dataloading_config.non_blocking,
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                     # training params
                     "model_arch": self.training_config.model_arch,
                     "model_arch_pretrained": self.training_config.model_arch_pretrained,
                     "learning_rate": self.training_config.learning_rate,
                     "num_epochs": self.training_config.num_epochs,
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                     # profiling params
                     "enable_profiling": self.training_config.enable_profiling,
                 }
@@ -200,11 +225,21 @@ class PyTorchDistributedModelTrainingSequence:
 
         # setting up DataLoader with the right arguments
         optional_data_loading_kwargs = {}
+<<<<<<< HEAD
         
         if self.dataloading_config.num_workers > 0:
             # NOTE: this option _ONLY_ applies if num_workers > 0
             # or else DataLoader will except
             optional_data_loading_kwargs["prefetch_factor"] = self.dataloading_config.prefetch_factor
+=======
+
+        if self.dataloading_config.num_workers > 0:
+            # NOTE: this option _ONLY_ applies if num_workers > 0
+            # or else DataLoader will except
+            optional_data_loading_kwargs[
+                "prefetch_factor"
+            ] = self.dataloading_config.prefetch_factor
+>>>>>>> main
 
         self.training_data_loader = DataLoader(
             training_dataset,
@@ -214,7 +249,11 @@ class PyTorchDistributedModelTrainingSequence:
             # DISTRIBUTED: the sampler needs to be provided to the DataLoader
             sampler=self.training_data_sampler,
             # all other args
+<<<<<<< HEAD
             **optional_data_loading_kwargs
+=======
+            **optional_data_loading_kwargs,
+>>>>>>> main
         )
 
         # DISTRIBUTED: we don't need a sampler for validation set
@@ -230,7 +269,10 @@ class PyTorchDistributedModelTrainingSequence:
             # MLFLOW: report relevant parameters using mlflow
             mlflow.log_params({"num_classes": len(labels)})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
     def setup_model(self, model):
         """Configures a model for training."""
         self.logger.info(f"Setting up model to use device {self.device}")
@@ -246,9 +288,19 @@ class PyTorchDistributedModelTrainingSequence:
         for param in model.parameters():
             if param.requires_grad:
                 params_count += param.numel()
+<<<<<<< HEAD
         self.logger.info("MLFLOW: model_param_count={:.2f} (millions)".format(round(params_count/1e6, 2)))
         if self.self_is_main_node:
             mlflow.log_params({"model_param_count": round(params_count/1e6, 2)})
+=======
+        self.logger.info(
+            "MLFLOW: model_param_count={:.2f} (millions)".format(
+                round(params_count / 1e6, 2)
+            )
+        )
+        if self.self_is_main_node:
+            mlflow.log_params({"model_param_count": round(params_count / 1e6, 2)})
+>>>>>>> main
 
         return self.model
 
@@ -269,7 +321,11 @@ class PyTorchDistributedModelTrainingSequence:
                         self.device, non_blocking=self.dataloading_config.non_blocking
                     )
                     one_hot_targets = targets.to(
+<<<<<<< HEAD
                             self.device, non_blocking=self.dataloading_config.non_blocking
+=======
+                        self.device, non_blocking=self.dataloading_config.non_blocking
+>>>>>>> main
                     )
 
                 with record_function("eval.forward"):
@@ -278,7 +334,11 @@ class PyTorchDistributedModelTrainingSequence:
                     loss = criterion(outputs, one_hot_targets)
                     running_loss += loss.item() * images.size(0)
 
+<<<<<<< HEAD
                     correct = (torch.argmax(outputs, dim=-1) == (targets.to(self.device)))
+=======
+                    correct = torch.argmax(outputs, dim=-1) == (targets.to(self.device))
+>>>>>>> main
                     num_correct += torch.sum(correct).item()
                     num_total_images += len(images)
 
@@ -304,9 +364,14 @@ class PyTorchDistributedModelTrainingSequence:
                     targets.to(
                         self.device, non_blocking=self.dataloading_config.non_blocking
                     ),
+<<<<<<< HEAD
                     num_classes=len(self.labels)
                 ).float()
                 
+=======
+                    num_classes=len(self.labels),
+                ).float()
+>>>>>>> main
 
             with record_function("train.forward"):
                 # zero the parameter gradients
@@ -314,7 +379,11 @@ class PyTorchDistributedModelTrainingSequence:
 
                 outputs = self.model(images)
                 loss = criterion(outputs, one_hot_targets)
+<<<<<<< HEAD
                 correct = (torch.argmax(outputs, dim=-1) == (targets.to(self.device)))
+=======
+                correct = torch.argmax(outputs, dim=-1) == (targets.to(self.device))
+>>>>>>> main
 
                 running_loss += loss.item() * images.size(0)
                 num_correct += torch.sum(correct).item()
@@ -346,7 +415,11 @@ class PyTorchDistributedModelTrainingSequence:
             weight_decay=1e-4,
         )
 
+<<<<<<< HEAD
         #criterion = nn.BCEWithLogitsLoss()
+=======
+        # criterion = nn.BCEWithLogitsLoss()
+>>>>>>> main
         criterion = nn.CrossEntropyLoss()
 
         # Decay LR by a factor of 0.1 every 7 epochs
@@ -589,12 +662,22 @@ def run(args):
     train_dataset, valid_dataset, labels = build_image_datasets(
         train_images_dir=args.train_images,
         valid_images_dir=args.valid_images,
+<<<<<<< HEAD
         input_size=224 # size expected by the model
+=======
+        input_size=224,  # size expected by the model
+>>>>>>> main
     )
 
     # creates the model architecture
     model = load_model(
+<<<<<<< HEAD
         args.model_arch, output_dimension=len(labels), pretrained=args.model_arch_pretrained
+=======
+        args.model_arch,
+        output_dimension=len(labels),
+        pretrained=args.model_arch_pretrained,
+>>>>>>> main
     )
 
     # use a handler for the training sequence
@@ -606,8 +689,12 @@ def run(args):
     # PROFILER: here we use a helper class to enable profiling
     # see profiling.py for the implementation details
     training_profiler = PyTorchProfilerHandler(
+<<<<<<< HEAD
         enabled=bool(args.enable_profiling),
         rank=training_handler.world_rank,
+=======
+        enabled=bool(args.enable_profiling), rank=training_handler.world_rank
+>>>>>>> main
     )
     # PROFILER: set profiler in trainer to call profiler.step() during training
     training_handler.profiler = training_profiler.start_profiler()

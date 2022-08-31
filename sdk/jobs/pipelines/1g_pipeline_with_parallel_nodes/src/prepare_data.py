@@ -1,10 +1,17 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 import argparse
 import os
 from pathlib import Path
 import shutil
 
+<<<<<<< HEAD
 print ("Get file and tabular data")
+=======
+print("Get file and tabular data")
+>>>>>>> main
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_data", type=str)
@@ -36,7 +43,11 @@ for folder_name in arr:
             assert file_source.exists()
             file_destination = Path(output_dir) / file_source.name
             print("file_destination:", file_destination)
+<<<<<<< HEAD
             shutil.move(file_source, file_destination)
+=======
+            shutil.copyfile(file_source, file_destination)
+>>>>>>> main
 
     elif folder_name == "iris-mltable":
         output_dir = Path(args.tabular_output_data)
@@ -49,6 +60,10 @@ for folder_name in arr:
             assert file_source.exists()
             file_destination = Path(output_dir) / file_source.name
             print("file_destination:", file_destination)
+<<<<<<< HEAD
             shutil.move(file_source, file_destination)
+=======
+            shutil.copyfile(file_source, file_destination)
+>>>>>>> main
     else:
         pass

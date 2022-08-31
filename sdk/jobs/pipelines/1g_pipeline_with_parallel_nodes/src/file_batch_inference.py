@@ -11,14 +11,23 @@ def init():
     """Init."""
     global OUTPUT_PATH
 
+<<<<<<< HEAD
     parser = argparse.ArgumentParser(allow_abbrev=False, description="ParallelRunStep Agent")
+=======
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False, description="ParallelRunStep Agent"
+    )
+>>>>>>> main
     parser.add_argument("--job_output_path", type=str, default=0)
     args, _ = parser.parse_known_args()
     OUTPUT_PATH = args.job_output_path
     print("Pass through init done")
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 def run(mini_batch):
     """Run."""
 

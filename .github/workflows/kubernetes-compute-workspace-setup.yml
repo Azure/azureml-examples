@@ -1,0 +1,230 @@
+name: kubernetes-compute-workspace-setup
+on:
+  schedule:
+    - cron: "0 0 * * 3"
+  workflow_dispatch:
+    inputs:
+      LOCATION:
+        description: 'Resource Region'
+        required: false
+        default: 'eastus'
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples
+      LOCATION: eastus
+      WORKSPACE: amlarc-githubtest-ws
+
+    steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.LOCATION }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+      timeout-minutes: 30
+    
+    # provision resources
+    - name: setup_workspace
+      if: ${{ always() }}
+      run: bash .github/kubernetes-compute/tool.sh setup_workspace
+      timeout-minutes: 30
+
+    - name: set configure
+      if: ${{ always() }}
+      run: |
+        az account set --subscription $SUBSCRIPTION
+        az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOCATION
+        pip install azure-identity
+        pip install azure-ai-ml
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml   
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: set sampledata dataset
+      if: ${{ always() }}
+      run: |
+        set -x
+        pip install azure.cli.core
+        pip install azureml-dataset-runtime
+        python -c '
+
+        import sys
+        from azureml.core.workspace import Workspace
+        from azureml.core import Dataset
+        from azureml.core.authentication import AzureCliAuthentication
+        
+        cli_auth = AzureCliAuthentication()
+        ws = Workspace.get(subscription_id=sys.argv[1],
+                      resource_group=sys.argv[2],
+                      name=sys.argv[3],
+                      auth=cli_auth)
+        datastore = ws.datastores["workspaceblobstore"]
+        dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
+        dataset.register(ws, "sampledata")
+        
+        ' "$SUBSCRIPTION" "$RESOURCE_GROUP" "$WORKSPACE"
+      timeout-minutes: 300
+      continue-on-error: true
+
+    - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      if: ${{ always() }}
+      run: |
+        set -x
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      timeout-minutes: 30
+      continue-on-error: true
+
+
+    - name: setup env for cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      if: ${{ always() }}
+      run: |
+        set -x
+        az ml environment create --file environment/responsibleai-environment.yaml
+        az ml data create --file data/data_adult_train.yaml
+        az ml data create --file data/data_adult_test.yaml
+      working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      if: ${{ always() }}
+      run: |
+        echo Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: setup_asset /cli/assets/data/local-folder.yml
+      if: ${{ always() }}
+      run: az ml data create -f local-folder.yml
+      working-directory: cli/assets/data
+      timeout-minutes: 300
+      continue-on-error: true
+    
+    - name: setup_dataset
+      if: ${{ always() }} 
+      run: bash create-datasets.sh
+      working-directory: setup-repo
+      timeout-minutes: 300
+      continue-on-error: true
+
+    - name: download azcopy
+      if: ${{ always() }}
+      run: |
+        set -x
+        wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
+        tar zxf azcopy_linux_amd64_10.15.0.tar.gz
+        cp azcopy_linux_amd64_10.15.0/azcopy .
+      working-directory: setup-repo
+      timeout-minutes: 30
+      continue-on-error: true
+
+    - name: Please manually run copy-data.sh
+      if: ${{ always() }}
+      run: |
+        # bash copy-data.sh
+        echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
+      working-directory: setup-repo
+      timeout-minutes: 300
+      continue-on-error: true
+    
+    - name: Setup uri_folder
+      if: ${{ always() }}
+      run: |
+        echo 'Please manually setup local-folder-example uri_folder for cli/jobs/basics/hello-data-uri-folder.yml'
+        echo 'Please manually setup local-folder-example uri_folder for cli/jobs/pipelines-with-components/basics/4d_data_input/pipeline.yml'
+        cat << EOF > local_uri_floder.yml
+        \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+        name: local-folder-example
+        description: Dataset created from local folder.
+        type: uri_folder
+        path: cli/jobs/pipelines-with-components/basics/4d_data_input/data
+        EOF
+
+        az ml data create --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace $WORKSPACE -f local_uri_floder.yml
+      timeout-minutes: 300
+      continue-on-error: true
+
+    - name: Setup mltable
+      if: ${{ always() }}
+      run: |
+        echo 'Please manually setup local-folder-example mltable for cli/jobs/basics/hello-dataset.yml'
+        cat << EOF > local_mltable.yml
+        \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+        name: sampledata 
+        description: Dataset created from local folder.
+        type: mltable
+        path: cli/jobs/basics/hello-automl
+        EOF
+
+        # az ml data create --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace $WORKSPACE -f local_mltable.yml
+      timeout-minutes: 300
+      continue-on-error: true
+
+    - name: Setup hello-world.txt
+      if: ${{ always() }}
+      run: |
+        echo 'Please manually setup hello-world.txt for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml'
+        # echo "hello world" > hello-world.txt
+        # azcopy cp hello-world.txt https://amlarcgistorage7a0860601.blob.core.windows.net/azureml-blobstore-68875c58-4a7d-46e4-bcb9-e17da409f580/azureml/
+
+      timeout-minutes: 300
+      continue-on-error: true
+
+
+    - name: over
+      run: echo over!

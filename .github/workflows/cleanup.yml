@@ -16,9 +16,9 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with: 
-        python-version: "3.8"
-    - name: downgrade pip
-      run: pip install pip==21.1.1
+        python-version: "3.8.10"
+    - name: install pinned pip
+      run: python -m pip install pip==21.1.1
     - name: pip install
       run: pip install -r requirements.txt
       working-directory: python-sdk

@@ -1,16 +1,26 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: |
+<<<<<<< HEAD
   echo ${{inputs.sampledata}}
   python -c "
   import mltable
   tbl = mltable.load('${{inputs.sampledata}}')
   df = tbl.to_pandas_dataframe()
   print(df.head(5))"
+=======
+  ls ${{inputs.sampledata}}
+>>>>>>> main
 code: src
 inputs:
   sampledata:
     type: mltable
+<<<<<<< HEAD
     path: azureml:iris-tabular@latest
     mode: direct
 environment: azureml:mltable@latest
+=======
+    path: azureml:sampledata@latest
+    mode: eval_mount
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+>>>>>>> main
 compute: azureml:cpu-cluster

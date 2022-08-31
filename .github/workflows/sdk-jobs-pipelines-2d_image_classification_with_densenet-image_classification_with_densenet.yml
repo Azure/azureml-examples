@@ -1,4 +1,9 @@
 name: sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classification_with_densenet
+<<<<<<< HEAD
+=======
+# This file is created by sdk/readme.py.
+# Please do not edit directly.
+>>>>>>> main
 on:
   workflow_dispatch:
   schedule:
@@ -6,12 +11,20 @@ on:
   pull_request:
     branches:
       - main
+<<<<<<< HEAD
       - may-sdk-preview
       - pipeline/*
     paths:
       - sdk/**
       - .github/workflows/sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classification_with_densenet.yml
       - sdk/dev-requirements.txt
+=======
+    paths:
+      - sdk/jobs/pipelines/2d_image_classification_with_densenet/**
+      - .github/workflows/sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classification_with_densenet.yml
+      - sdk/dev-requirements.txt
+      - sdk/setup.sh
+>>>>>>> main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,7 +54,11 @@ jobs:
           mkdir ../../.azureml
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" image_classification_with_densenet.ipynb
+<<<<<<< HEAD
           sed -i "s/@dsl.pipeline(/&force_rerun=True,/" image_classification_with_densenet.ipynb
+=======
+          sed -i "s/@pipeline(/&force_rerun=True,/" image_classification_with_densenet.ipynb
+>>>>>>> main
           papermill -k python image_classification_with_densenet.ipynb image_classification_with_densenet.output.ipynb
       working-directory: sdk/jobs/pipelines/2d_image_classification_with_densenet
     - name: upload notebook's working folder as an artifact

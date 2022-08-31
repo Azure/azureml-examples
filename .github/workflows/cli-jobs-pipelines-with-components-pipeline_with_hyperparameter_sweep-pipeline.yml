@@ -10,6 +10,10 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/**
       - .github/workflows/cli-jobs-pipelines-with-components-pipeline_with_hyperparameter_sweep-pipeline.yml
+<<<<<<< HEAD
+=======
+      - cli/run-pipeline-jobs.sh
+>>>>>>> main
       - cli/setup.sh
 jobs:
   build:

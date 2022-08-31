@@ -13,6 +13,7 @@ log_verbosity: debug
 limits:
   timeout_minutes: 60
 
+<<<<<<< HEAD
 data:
   target_column_name: 'y'
   training:
@@ -23,6 +24,15 @@ data:
     data:
       type: mltable
       path: "./validation-mltable-folder"
+=======
+target_column_name: 'y'
+training_data:
+  type: mltable
+  path: "./training-mltable-folder"
+validation_data:
+  type: mltable
+  path: "./validation-mltable-folder"
+>>>>>>> main
 
 featurization:
   dataset_language: "eng"

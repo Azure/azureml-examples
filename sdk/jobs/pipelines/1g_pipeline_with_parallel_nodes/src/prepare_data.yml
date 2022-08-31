@@ -3,7 +3,11 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.jso
 type: command
 
 name: prepare_file_tabular_data
+<<<<<<< HEAD
 display_name: Prepare_File_Tabular_Data
+=======
+display_name: Prepare File Tabular Data
+>>>>>>> main
 version: 1
 
 inputs:

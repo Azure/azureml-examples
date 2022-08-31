@@ -10,6 +10,10 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/basics/4d_data_input/**
       - .github/workflows/cli-jobs-pipelines-with-components-basics-4d_data_input-pipeline.yml
+<<<<<<< HEAD
+=======
+      - cli/run-pipeline-jobs.sh
+>>>>>>> main
       - cli/setup.sh
 jobs:
   build:

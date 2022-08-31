@@ -1,0 +1,178 @@
+name: kubernetes-compute-gpu-resources-setup
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+    inputs:
+      TEST_REGION:
+        description: 'Resource Region'
+        required: false
+        default: 'eastus'
+      RELEASE_TRAIN:
+        description: 'Release version: experimental, staging or stable'
+        required: false
+        default: 'stable'
+      REINSTALL_EXTENSION:
+        description: 'Whether to reinstall extension: true or false'
+        required: false
+        default: 'false'
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
+      EXTENSION_VERSION:
+        description: 'The version of k8s-extension'
+        required: false
+        default: ''
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
+      VM_SKU:
+        description: 'The VM SKU of the cluster'
+        required: false
+        default: 'STANDARD_NC12'
+      AKS_CLUSTER_PREFIX:
+        description: 'The prefix of the cluster'
+        required: false
+        default: 'amlarc-aks'
+      CPU_INSTANCE_TYPE:
+        description: 'cpu instance type'
+        required: false
+        default: '4 40Gi'
+      GPU_INSTANCE_TYPE:
+        description: 'gpu instance type'
+        required: false
+        default: '4 40Gi 2'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
+      RESOURCE_GROUP: azureml-examples
+      LOCATION: eastus
+      WORKSPACE: amlarc-githubtest-ws
+      VM_SKU: STANDARD_NC12
+      MIN_COUNT: 4
+      CLUSTER_TYPE: managedClusters
+      RELEASE_TRAIN: stable
+      COMPUTE: "gpu-cluster"
+      EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
+      REINSTALL_EXTENSION: false
+      EXTENSION_VERSION: ""
+      AKS_CLUSTER_PREFIX: "amlarc-aks"
+      CPU_INSTANCE_TYPE: "4 40Gi"
+      GPU_INSTANCE_TYPE: "4 40Gi 2"
+
+      FILE_TICKET: true
+      KEY_VAULT_NAME: amlarcgithubworkflowkv
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-gpu-resources-setup.yml
+
+    steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+        echo "RELEASE_TRAIN=${{ github.event.inputs.RELEASE_TRAIN }}" | tee -a $GITHUB_ENV
+        echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+        echo "EXTENSION_VERSION=${{ github.event.inputs.EXTENSION_VERSION }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+        echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
+        echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
+        echo "CPU_INSTANCE_TYPE=${{ github.event.inputs.CPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
+        echo "GPU_INSTANCE_TYPE=${{ github.event.inputs.GPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: install tools
+      run: bash .github/kubernetes-compute/tool.sh install_tools
+      timeout-minutes: 30
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+      timeout-minutes: 30
+    
+    # provision resources
+    - name: setup_aks
+      run: bash .github/kubernetes-compute/tool.sh setup_aks
+      timeout-minutes: 30
+    - name: install_extension
+      run: |
+        if [ "$EXTENSION_VERSION" == "" ]; then
+          bash .github/kubernetes-compute/tool.sh install_extension
+        else
+          bash .github/kubernetes-compute/tool.sh install_extension --version $EXTENSION_VERSION
+        fi
+      timeout-minutes: 30
+    - name: setup_workspace
+      run: bash .github/kubernetes-compute/tool.sh setup_workspace
+      timeout-minutes: 30
+    - name: setup_compute
+      run: |
+        bash .github/kubernetes-compute/tool.sh setup_compute
+      timeout-minutes: 30
+    - name: setup_compute
+      run: |
+        COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh setup_compute
+      timeout-minutes: 30
+    - name: setup_instance_type
+      run: |
+        bash .github/kubernetes-compute/tool.sh get_kubeconfig
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype $GPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu $CPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu $GPU_INSTANCE_TYPE
+      timeout-minutes: 30
+
+    # report metrics
+    - name: download_metrics_dependency
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+        fi
+      timeout-minutes: 30
+    - name: start_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+          export KEY_PEM_NAME=AMLARC-KEY-PEM
+          export CERT_PEM_NAME=AMLARC-CERT-PEM
+          bash .github/kubernetes-compute/tool.sh download_metrics_info
+          bash .github/kubernetes-compute/tool.sh start_mdm_container
+        fi
+      timeout-minutes: 30
+    - name: report_failure_metrics
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export VALUE=0
+          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
+          sleep 60
+        fi
+      timeout-minutes: 30
+    - name: report_succes_metrics
+      if: ${{ success() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export VALUE=100
+          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
+        fi
+      timeout-minutes: 30   
+    - name: stop_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh stop_mdm_container
+        fi
+      timeout-minutes: 30
+   

@@ -617,9 +617,14 @@ def train_loop(
     )
     if is_first_rank:
         ts = str(time.time())
+<<<<<<< HEAD
         # logdir = os.path.expanduser('~/tensorboard/{}/logs/'.format(os.environ['DLTS_JOB_ID']) + ts)
         logdir = os.path.expanduser(
             "~/tensorboard/{}/logs/".format(os.environ["AZ_BATCH_JOB_ID"]) + ts
+=======
+        logdir = os.path.expanduser(
+            "~/tensorboard/{}/logs/".format(os.environ["AZUREML_RUN_ID"]) + ts
+>>>>>>> main
         )
         print("tensorboard at ", logdir)
         if not os.path.exists(logdir):

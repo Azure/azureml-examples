@@ -10,6 +10,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.models as models
 
+<<<<<<< HEAD
 MODEL_ARCH_LIST = [
     "resnet18",
 ]
@@ -17,6 +18,12 @@ MODEL_ARCH_LIST = [
 def load_model(
     model_arch: str, output_dimension: int = 1, pretrained: bool = True
 ):
+=======
+MODEL_ARCH_LIST = ["resnet18"]
+
+
+def load_model(model_arch: str, output_dimension: int = 1, pretrained: bool = True):
+>>>>>>> main
     """Loads a model from a given arch and sets it up for training"""
     logger = logging.getLogger(__name__)
 
