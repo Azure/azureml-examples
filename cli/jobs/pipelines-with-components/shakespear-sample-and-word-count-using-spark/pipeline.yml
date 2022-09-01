@@ -6,7 +6,7 @@ description: 'submit a pipeline with spark job'
 inputs:
   # input type can be uri_file,uri_folder,mltable
   # mode can be only be direct
-  input1:
+  file_input:
     type: uri_file
     path: ./data/shakespeare.txt
     mode: direct
@@ -15,7 +15,7 @@ inputs:
 outputs:
   # output type can be uri_file, uri_folder,mltable
   # mode can only be direct
-  output1:
+  file_output:
     type: uri_file
     mode: direct
 
@@ -24,11 +24,11 @@ jobs:
     type: spark
     component: ./sample_word/component.yml
     inputs:
-      input1: ${{parent.inputs.input1}}
+      file_input: ${{parent.inputs.file_input}}
       sample_rate: ${{parent.inputs.sample_rate}}
 
     outputs:
-      output1: ${{parent.outputs.output1}}
+      file_output: ${{parent.outputs.file_output}}
 
 #    resources:
 #      instance_type: Standard_E8S_V3
@@ -39,7 +39,7 @@ jobs:
     type: spark
     component: ./word_count/component.yml
     inputs:
-      input1: ${{parent.jobs.sample_word.outputs.output1}}
+      file_input: ${{parent.jobs.sample_word.outputs.file_output}}
 
     # resources:
     #   instance_type: Standard_E8S_V3
