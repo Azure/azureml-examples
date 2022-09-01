@@ -2,7 +2,6 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.js
 type: pipeline
 
 name: train_pipeline_component
-version: 2
 display_name: train_pipeline_component
 description: Dummy train-score-eval pipeline component with local components
 
@@ -16,7 +15,6 @@ inputs:
   learning_rate_schedule:
     type: string
     default: 'time-based'
-    optional: true
 
 outputs: 
   trained_model:
