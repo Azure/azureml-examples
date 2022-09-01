@@ -33,7 +33,7 @@ jobs:
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
-      training_max_epocs: 20
+      training_max_epochs: 20
       training_learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate1}}
 
   train_and_evaludate_model2:
@@ -42,7 +42,7 @@ jobs:
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
-      training_max_epocs: 20
+      training_max_epochs: 20
       training_learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate2}}
 
   compare:
