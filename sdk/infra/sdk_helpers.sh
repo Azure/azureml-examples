@@ -21,57 +21,6 @@ COMMON_TAGS=(
   "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}" 
 )
 
-# https://stackoverflow.com/questions/29979966/tput-no-value-for-term-and-no-t-specified-error-logged-by-cron-process/29980366#29980366
-# when $TERM is empty (non-interactive shell), then expand tput with '-T xterm-256color'
-[[ ${TERM}=="" ]] && TPUTTERM='-T xterm-256color' || TPUTTERM=''
-
-BUILD_WITH_COLORS=${BUILD_WITH_COLORS:-}
-if [ ! "$BUILD_WITH_COLORS" = "0" ]; then
-    FONT_BLACK="$(tput setaf 0)"             #  Black
-    FONT_MAROON="$(tput setaf 1)"             #  Maroon
-    FONT_GREEN="$(tput setaf 2)"             #  green
-    FONT_OLIVE="$(tput setaf 3)"             #  yellow
-    FONT_NAVY="$(tput setaf 4)"             #  navy blue
-    FONT_PURPLE="$(tput setaf 5)"             #  purple
-    FONT_TEAL="$(tput setaf 6)"             #  teal
-    FONT_RED="$(tput setaf 9)"             #  Red
-    FONT_YELLOW="$(tput setaf 11)"             #  Red
-    FONT_BLUE="$(tput setaf 12)"             #  blue
-    FONT_AQUA="$(tput setaf 14)"
-    FONT_TXTBOLD="$(tput bold)"             #  Bold
-    FONT_BOLDRED="${FONT_TXTBOLD}${FONT_MAROON}" #  red
-    FONT_BOLDGREEN="${FONT_TXTBOLD}${FONT_GREEN}" #  green
-    FONT_BOLDYELLOW="${FONT_TXTBOLD}${FONT_OLIVE}" #  yellow
-    FONT_BOLDBLUE="${FONT_TXTBOLD}${FONT_NAVY}" #  navy blue
-    FONT_BOLDPURPLE="${FONT_TXTBOLD}${FONT_PURPLE}" #  purple
-    FONT_BOLDTEAL="${FONT_TXTBOLD}${FONT_TEAL}" #  teal
-    FONT_BOLDAQUA="${FONT_TXTBOLD}${FONT_AQUA}" #  aqua
-    FONT_TXTRESET="$(tput sgr0)"             #  Reset
-    FONT_UNULINE="$(tput rmul)"             #  Underlined
-    FONT_INVERT="$(tput rev)"                 #  Reverse color
-else
-    FONT_BLACK="-"
-    FONT_MAROON="-"
-    FONT_GREEN="-"
-    FONT_OLIVE="-"
-    FONT_NAVY="-"
-    FONT_PURPLE="-"
-    FONT_RED="-"
-    FONT_TXTBOLD="-"
-    FONT_BOLDRED="-"
-    FONT_YELLOW="-"
-    FONT_BLUE="-"
-    FONT_BOLDGREEN="-"
-    FONT_BOLDYELLOW="-"
-    FONT_BOLDBLUE="-"
-    FONT_BOLDPURPLE="-"
-    FONT_BOLDTEAL="-"
-    FONT_BOLDAQUA="-"
-    FONT_TXTRESET="-"
-    FONT_UNULINE="-"
-    FONT_INVERT="-"
-fi
-
 # Setup logging
 readonly LOG_FILE="/tmp/$(basename "$0").log"
 readonly DATE_FORMAT="+%Y-%m-%d_%H:%M:%S.%2N"
@@ -86,11 +35,11 @@ echo_fatal()   { echo "[$(date ${DATE_FORMAT})] [FATAL]   $*" | tee -a "$LOG_FIL
 
 echo_title() {
   echo
-  echo "${FONT_TXTBOLD}###${FONT_TXTRESET} ${FONT_BOLDTEAL}${1}${FONT_TXTRESET} ${FONT_TXTBOLD}###${FONT_TXTRESET}"
+  echo "### {1} ###"
 }
 
 echo_subtitle() {
-  echo "${FONT_TXTBOLD}# ${FONT_TXTRESET}${FONT_BOLDAQUA}${1}${FONT_TXTRESET}"
+  echo "# ${1} #"
 }
 
 CONTINUE_ON_ERR=${CONTINUE_ON_ERR:-0}  # 0: false; 1: true
