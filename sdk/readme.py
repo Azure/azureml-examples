@@ -136,8 +136,10 @@ jobs:
       continue-on-error: true
     - name: run {posix_notebook}
       run: |
-          chmod +x ./infra/init_environment.sh
-          ./infra/init_environment.sh;
+          THIS_DIR=$( (cd "$(dirname -- "$BASH_SOURCE")" && pwd -P) )
+          ROOT_DIR=$(cd "$THIS_DIR/../" && pwd)
+          chmod +x "$ROOT_DIR/infra/init_environment.sh"
+          "$ROOT_DIR/infra/init_environment.sh";
       """
     if is_pipeline_notebook:
         # pipeline-job uses different cred
