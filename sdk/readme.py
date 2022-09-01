@@ -125,7 +125,7 @@ jobs:
     - name: Bootstrap Resources
       run: bash bootstrap.sh
       working-directory: infra
-      continue-on-error: true
+      continue-on-error: false
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk

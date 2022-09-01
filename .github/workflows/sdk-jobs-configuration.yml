@@ -12,7 +12,7 @@ on:
       - sdk/jobs/**
       - .github/workflows/sdk-jobs-configuration.yml
       - sdk/dev-requirements.txt
-      - sdk/infra/bootstrap.sh
+      - infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:
@@ -32,8 +32,8 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: Bootstrap Resources
       run: bash bootstrap.sh
-      working-directory: sdk/infra
-      continue-on-error: true
+      working-directory: infra
+      continue-on-error: false
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -44,6 +44,9 @@ jobs:
       continue-on-error: true
     - name: run jobs/configuration.ipynb
       run: |
+      chmod +x ./infra/init_environment.sh
+      ./infra/init_environment.sh;
+      
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" configuration.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" configuration.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" configuration.ipynb
