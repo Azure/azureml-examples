@@ -29,7 +29,7 @@ settings:
 jobs:
   train_and_evaludate_model1:
     type: pipeline
-    component: ./train_pipeline_component.yml
+    component: ./components/train_pipeline_component.yml
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
@@ -38,7 +38,7 @@ jobs:
 
   train_and_evaludate_model2:
     type: pipeline
-    component: ./train_pipeline_component.yml
+    component: ./components/train_pipeline_component.yml
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}

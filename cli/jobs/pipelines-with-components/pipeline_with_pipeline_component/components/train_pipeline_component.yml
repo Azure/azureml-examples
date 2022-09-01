@@ -27,7 +27,7 @@ outputs:
 jobs:
   train_job:
     type: command
-    component: ./components/train_src/train.yml
+    component: ./train_src/train.yml
     inputs:
       training_data: ${{parent.inputs.training_data}}
       max_epochs: ${{parent.inputs.training_max_epochs}}
@@ -38,7 +38,7 @@ jobs:
   
   score_job:
     type: command
-    component: ./components/score_src/score.yml
+    component: ./score_src/score.yml
     inputs:
       model_input: ${{parent.jobs.train_job.outputs.model_output}}
       test_data: ${{parent.inputs.test_data}}
@@ -48,7 +48,7 @@ jobs:
 
   evaluate_job:
     type: command
-    component: ./components/eval_src/eval.yml
+    component: ./eval_src/eval.yml
     inputs:
       scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
     outputs:
