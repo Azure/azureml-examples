@@ -12,7 +12,7 @@ on:
       - sdk/assets/component/**
       - .github/workflows/sdk-assets-component-component.yml
       - sdk/dev-requirements.txt
-      - sdk/infra/bootstrap.sh
+      - infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:
