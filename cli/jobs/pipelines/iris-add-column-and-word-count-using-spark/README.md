@@ -9,7 +9,9 @@ description: This sample will explain how to create a spark job and use it in a 
 ---
 
 # Spark job in pipeline
-This example shows how a use a spark pipeline job to add new colunm for csv file and count word group by row. It will support attached synapse spark and hobo spark.
+This example shows how a use a spark pipeline job to conduct two works: 
+1. Add a new colunm for csv file 
+2. Count word group by row.
 
 Submit the Pipeline Job with spark node:
 ```
