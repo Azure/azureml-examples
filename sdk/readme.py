@@ -136,8 +136,8 @@ jobs:
       continue-on-error: true
     - name: run {posix_notebook}
       run: |
-      chmod +x ./infra/init_environment.sh
-      ./infra/init_environment.sh;
+          chmod +x ./infra/init_environment.sh
+          ./infra/init_environment.sh;
       """
     if is_pipeline_notebook:
         # pipeline-job uses different cred

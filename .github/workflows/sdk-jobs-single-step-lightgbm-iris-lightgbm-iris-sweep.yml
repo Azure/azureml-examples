@@ -44,8 +44,8 @@ jobs:
       continue-on-error: true
     - name: run jobs/single-step/lightgbm/iris/lightgbm-iris-sweep.ipynb
       run: |
-      chmod +x ./infra/init_environment.sh
-      ./infra/init_environment.sh;
+          chmod +x ./infra/init_environment.sh
+          ./infra/init_environment.sh;
       
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" lightgbm-iris-sweep.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" lightgbm-iris-sweep.ipynb
