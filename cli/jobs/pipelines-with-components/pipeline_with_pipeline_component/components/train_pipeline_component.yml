@@ -17,7 +17,6 @@ inputs:
   learning_rate_schedule:
     type: string
     default: 'time-based'
-    optional: true
 
 outputs: 
   trained_model:
