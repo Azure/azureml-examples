@@ -21,6 +21,10 @@ COMMON_TAGS=(
   "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}" 
 )
 
+# https://stackoverflow.com/questions/29979966/tput-no-value-for-term-and-no-t-specified-error-logged-by-cron-process/29980366#29980366
+# when $TERM is empty (non-interactive shell), then expand tput with '-T xterm-256color'
+[[ ${TERM}=="" ]] && TPUTTERM='-T xterm-256color' || TPUTTERM=''
+
 BUILD_WITH_COLORS=${BUILD_WITH_COLORS:-}
 if [ ! "$BUILD_WITH_COLORS" = "0" ]; then
     FONT_BLACK="$(tput setaf 0)"             #  Black
