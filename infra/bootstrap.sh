@@ -33,23 +33,7 @@ if [ -f "$SCRIPT_DIR"/sdk_helpers.sh ]; then
   source "$SCRIPT_DIR"/sdk_helpers.sh;
 else
   echo "---------------------------------------------------------"
-  echo -e "${FONT_RED}""ERROR: sdk_helpers.sh not found.""${FONT_TXTRESET}"
-  echo "---------------------------------------------------------"
-fi
-
-if [ -f "$SCRIPT_DIR/environment_variables.sh" ]; then
-  source "$SCRIPT_DIR/environment_variables.sh";
-else
-  echo "---------------------------------------------------------"
-  echo -e "${FONT_RED}""ERROR: environment_variables.sh not found.""${FONT_TXTRESET}"
-  echo "---------------------------------------------------------"
-fi
-
-if [ -f "$SCRIPT_DIR"/verify_prerequisites.sh ]; then
-  source "$SCRIPT_DIR"/verify_prerequisites.sh;
-else
-  echo "---------------------------------------------------------"
-  echo -e "${FONT_RED}""ERROR: verify_prerequisites.sh not found.""${FONT_TXTRESET}"
+  echo -e "ERROR: sdk_helpers.sh not found."
   echo "---------------------------------------------------------"
 fi
 
@@ -57,7 +41,15 @@ if [ -f "$SCRIPT_DIR"/init_environment.sh ]; then
   source "$SCRIPT_DIR"/init_environment.sh;
 else
   echo "---------------------------------------------------------"
-  echo -e "${FONT_RED}""ERROR: init_environment.sh not found.""${FONT_TXTRESET}"
+  echo -e "ERROR: init_environment.sh not found."
+  echo "---------------------------------------------------------"
+fi
+
+if [ -f "$SCRIPT_DIR"/verify_prerequisites.sh ]; then
+  source "$SCRIPT_DIR"/verify_prerequisites.sh;
+else
+  echo "---------------------------------------------------------"
+  echo -e "ERROR: verify_prerequisites.sh not found."
   echo "---------------------------------------------------------"
 fi
 
