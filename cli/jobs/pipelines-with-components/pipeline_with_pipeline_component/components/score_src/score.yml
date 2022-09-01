@@ -15,7 +15,7 @@ outputs:
   score_output:
     type: uri_folder
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
-code: ./score_src
+code: .
 command: >-
   python score.py 
   --model_input ${{inputs.model_input}} 

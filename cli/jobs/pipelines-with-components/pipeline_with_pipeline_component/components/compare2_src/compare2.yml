@@ -24,7 +24,7 @@ outputs:
   best_result:
     type: uri_folder
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
-code: ./compare2_src
+code: .
 command: >-
   python compare2.py 
   [--model1 ${{inputs.model1}}]

@@ -20,7 +20,7 @@ inputs:
 outputs:
   model_output:
     type: uri_folder
-code: ./train_src
+code: .
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 command: >-
   python train.py 
