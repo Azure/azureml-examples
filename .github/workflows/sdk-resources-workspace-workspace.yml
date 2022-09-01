@@ -12,7 +12,7 @@ on:
       - sdk/resources/workspace/**
       - .github/workflows/sdk-resources-workspace-workspace.yml
       - sdk/dev-requirements.txt
-      - sdk/infra/bootstrap.sh
+      - infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:

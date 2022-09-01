@@ -104,7 +104,7 @@ on:\n"""
       - sdk/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
       - sdk/dev-requirements.txt
-      - sdk/infra/bootstrap.sh
+      - infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:
