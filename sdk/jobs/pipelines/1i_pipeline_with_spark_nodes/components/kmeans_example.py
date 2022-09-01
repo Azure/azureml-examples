@@ -42,4 +42,4 @@ print("Cluster Centers: ")
 for center in centers:
     print(center)
 
-(Path(args.output) / "result.txt").write_text(centers)
+(Path(args.output) / "result.txt").write_text(str(centers))

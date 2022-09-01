@@ -2,8 +2,8 @@ $schema: http://azureml/sdk-2-0/SparkComponent.json
 name: kmeans_spark_component
 type: spark
 version: 1
-display_name: Aml Spark kmeans test module
-description: Aml Spark kmeans test module
+display_name: Spark kmeans
+description: Spark kmeans
 
 inputs:
   file_input:
@@ -15,11 +15,10 @@ outputs:
     type: uri_file
     mode: direct
 
-code: ../src
+code: .
 
 entry:
   file: kmeans_example.py # file path of the entry file relative to the code root folder
-
 
 args: >-
   --file_input ${{inputs.file_input}}
