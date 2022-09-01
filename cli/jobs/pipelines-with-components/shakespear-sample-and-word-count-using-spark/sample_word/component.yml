@@ -6,7 +6,7 @@ display_name: Spark sample word
 description: Spark sample word
 
 inputs:
-  input1:
+  file_input:
     type: uri_file
     mode: direct
   sample_rate:
@@ -14,7 +14,7 @@ inputs:
     default: 0.01
 
 outputs:
-  output1:
+  file_output:
     type: uri_file
     mode: direct
 
@@ -24,8 +24,8 @@ entry:
   file: sampleword.py
 
 args: >-
-  --input1 ${{inputs.input1}}
-  --output2 ${{outputs.output1}}
+  --input1 ${{inputs.file_input}}
+  --output2 ${{outputs.file_output}}
   --my_sample_rate ${{inputs.sample_rate}}
 
 conf:
