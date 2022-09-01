@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
 description: 'submit a pipeline with spark job'
@@ -7,7 +8,7 @@ inputs:
   # mode can be only be direct
   input1:
     type: uri_file
-    path: ./dataset/shakespeare.txt
+    path: ./data/shakespeare.txt
     mode: direct
   sample_rate: 0.01
 
@@ -18,11 +19,10 @@ outputs:
     type: uri_file
     mode: direct
 
-
 jobs:
   sample_word:
     type: spark
-    component: file:./component/sample_word.yml
+    component: ./sample_word/component.yml
     inputs:
       input1: ${{parent.inputs.input1}}
       sample_rate: ${{parent.inputs.sample_rate}}
@@ -37,7 +37,7 @@ jobs:
 
   count_word:
     type: spark
-    component: file:./component/wordcount.yml
+    component: ./word_count/component.yml
     inputs:
       input1: ${{parent.jobs.sample_word.outputs.output1}}
 
