@@ -1,12 +1,12 @@
 ## Working with Component in Azure Machine Learning CLI 2.0
 This repository contains an example `YAML` file for creating `component` using Azure Machine learning CLI 2.0. This directory includes:
 
-- Sample `YAML` files for creating a `command component`. 
+- Sample `YAML` files for creating a `pipeline component`. 
 
 
 - To create a component using any of the sample `YAML` files provided in this directory, execute following command:
 ```cli
-> az ml component create -f train.yml
+> az ml component create -f train_pipeline_component.yml
 ```
 
 - To list the component from your workspace, execute following command:
@@ -16,7 +16,7 @@ This repository contains an example `YAML` file for creating `component` using A
 
 - To show one component details from your workspace, execute following command:
 ```cli
-> az ml component show --name train_data_component --version 1
+> az ml component show --name train_pipeline_component --version 1
 ```
 
 - To update a component that in workspace, execute following command. Currently only a few fields(description, display_name) support update:
