@@ -10,12 +10,12 @@ inputs:
     type: uri_folder  # default/path is not supported for data type
   training_max_epochs:
     type: integer
-    optional: true
   training_learning_rate: 
     type: number
   learning_rate_schedule:
     type: string
     default: 'time-based'
+    optional: true
 
 outputs: 
   trained_model:
