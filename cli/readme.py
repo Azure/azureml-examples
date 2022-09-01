@@ -39,8 +39,9 @@ def main(args):
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/cli-automl-*.yml", recursive=True)
     )
+    # use *pipeline.yml to skip pipeline_component.yml
     jobs += sorted(
-        glob.glob("jobs/pipelines-with-components/**/*pipeline*.yml", recursive=True)
+        glob.glob("jobs/pipelines-with-components/**/*pipeline.yml", recursive=True)
     )
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True)
