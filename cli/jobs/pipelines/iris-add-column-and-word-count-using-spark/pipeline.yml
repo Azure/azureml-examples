@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
 description: 'submit a pipeline with spark job'
@@ -5,7 +6,7 @@ description: 'submit a pipeline with spark job'
 inputs:
   iris_data:
     type: uri_file
-    path: ./dataset/iris.csv
+    path: ./data/iris.csv
     mode: direct
 
 outputs:

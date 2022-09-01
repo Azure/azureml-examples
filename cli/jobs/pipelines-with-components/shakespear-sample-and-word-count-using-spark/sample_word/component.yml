@@ -1,15 +1,9 @@
-$schema: http://azureml/sdk-2-0/SparkComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/sparkComponent.schema.json
 name: sample_spark_component
 type: spark
 version: 1
-display_name: Aml Spark sample word test module
-description: Aml Spark sample word test module
-
-
-code: ../src
-
-entry:
-  file: sampleword.py
+display_name: Spark sample word
+description: Spark sample word
 
 inputs:
   input1:
@@ -24,6 +18,10 @@ outputs:
     type: uri_file
     mode: direct
 
+code: .
+
+entry:
+  file: sampleword.py
 
 args: >-
   --input1 ${{inputs.input1}}

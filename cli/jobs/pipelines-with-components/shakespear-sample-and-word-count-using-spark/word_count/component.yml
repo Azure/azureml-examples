@@ -1,21 +1,20 @@
-$schema: http://azureml/sdk-2-0/SparkComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/sparkComponent.schema.json
 name: wordcount_spark_component
 type: spark
 version: 1
-display_name: Aml Spark word count test module
-description: Aml Spark word count test module
+display_name: Spark word count
+description: Spark word count
 
-
-code: ../src
-
-entry:
-  file: wordcount.py
 
 inputs:
   input1:
     type: uri_file
     mode: direct
 
+code: .
+
+entry:
+  file: wordcount.py
 
 args: >-
   --input1 ${{inputs.input1}}
