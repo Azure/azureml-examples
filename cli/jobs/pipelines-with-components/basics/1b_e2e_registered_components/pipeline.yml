@@ -4,7 +4,7 @@ display_name: 1b_e2e_registered_components
 description: E2E dummy train-score-eval pipeline with registered components
 
 inputs:
-  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_max_epochs: 20
   pipeline_job_training_learning_rate: 1.8
   pipeline_job_learning_rate_schedule: 'time-based'
 
@@ -29,7 +29,7 @@ jobs:
       training_data: 
         type: uri_folder 
         path: ./data      
-      max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
+      max_epochs: ${{parent.inputs.pipeline_job_training_max_epochs}}
       learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
       learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
     outputs:
