@@ -13,7 +13,7 @@ set -o nounset
 # default values for script invocation parameter
 # export RUN_DEBUG=false               # -x
 # export CONTINUE_ON_ERR=true         # -E  - true or false
-export BUILD_WITH_COLORS=1
+export BUILD_WITH_COLORS=0
 
 # let "DATE_ONLY=`date +'%y%m%d'`"
 let "DATE_ONLY=$(date +'%y%m%U')"
