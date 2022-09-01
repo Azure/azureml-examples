@@ -12,6 +12,7 @@ on:
       - sdk/assets/environment/**
       - .github/workflows/sdk-assets-environment-environment.yml
       - sdk/dev-requirements.txt
+      - sdk/infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:
@@ -28,7 +29,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: sdk/infra
+      continue-on-error: true
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -39,9 +44,9 @@ jobs:
       continue-on-error: true
     - name: run assets/environment/environment.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" environment.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" environment.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" environment.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" environment.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" environment.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" environment.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" environment.ipynb
 
           papermill -k python environment.ipynb environment.output.ipynb
