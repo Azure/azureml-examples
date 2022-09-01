@@ -124,7 +124,7 @@ jobs:
         creds: {creds}
     - name: Bootstrap Resources
       run: bash bootstrap.sh
-      working-directory: sdk/infra
+      working-directory: infra
       continue-on-error: true
     - name: setup SDK
       run: bash setup.sh
@@ -135,8 +135,10 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: run {posix_notebook}
-      run: |"""
-
+      run: |
+      chmod +x ./infra/init_environment.sh
+      ./infra/init_environment.sh;
+      """
     if is_pipeline_notebook:
         # pipeline-job uses different cred
         cred_replace = f"""

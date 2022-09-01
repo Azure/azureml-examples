@@ -35,7 +35,7 @@ echo_fatal()   { echo "[$(date ${DATE_FORMAT})] [FATAL]   $*" | tee -a "$LOG_FIL
 
 echo_title() {
   echo
-  echo "### {1} ###"
+  echo "### ${1} ###"
 }
 
 echo_subtitle() {

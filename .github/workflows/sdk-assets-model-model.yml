@@ -32,7 +32,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: Bootstrap Resources
       run: bash bootstrap.sh
-      working-directory: sdk/infra
+      working-directory: infra
       continue-on-error: true
     - name: setup SDK
       run: bash setup.sh
@@ -44,6 +44,9 @@ jobs:
       continue-on-error: true
     - name: run assets/model/model.ipynb
       run: |
+      chmod +x ./infra/init_environment.sh
+      ./infra/init_environment.sh;
+      
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" model.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" model.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" model.ipynb
