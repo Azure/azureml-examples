@@ -7,7 +7,7 @@ description: Spark word count
 
 
 inputs:
-  input1:
+  file_input:
     type: uri_file
     mode: direct
 
@@ -17,7 +17,7 @@ entry:
   file: wordcount.py
 
 args: >-
-  --input1 ${{inputs.input1}}
+  --input1 ${{inputs.file_input}}
 
 conf:
   spark.driver.cores: 1
