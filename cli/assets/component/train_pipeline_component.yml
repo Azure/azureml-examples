@@ -2,6 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.js
 type: pipeline
 
 name: train_pipeline_component
+version: 2
 display_name: train_pipeline_component
 description: Dummy train-score-eval pipeline component with local components
 
