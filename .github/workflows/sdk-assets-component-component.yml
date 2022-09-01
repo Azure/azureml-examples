@@ -12,6 +12,7 @@ on:
       - sdk/assets/component/**
       - .github/workflows/sdk-assets-component-component.yml
       - sdk/dev-requirements.txt
+      - sdk/infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:
@@ -28,7 +29,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: sdk/infra
+      continue-on-error: true
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -40,7 +45,7 @@ jobs:
     - name: run assets/component/component.ipynb
       run: |
           mkdir ../../.azureml
-          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
+          echo '{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" component.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" component.ipynb
           papermill -k python component.ipynb component.output.ipynb

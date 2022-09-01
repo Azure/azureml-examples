@@ -79,7 +79,7 @@ def write_notebook_workflow(
     is_pipeline_notebook = ("jobs-pipelines" in classification) or (
         "assets-component" in classification
     )
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     mlflow_import = get_mlflow_import(notebook)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
@@ -104,6 +104,7 @@ on:\n"""
       - sdk/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
       - sdk/dev-requirements.txt
+      - sdk/infra/bootstrap.sh
       - sdk/setup.sh
 jobs:
   build:
@@ -121,6 +122,10 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: sdk/infra
+      continue-on-error: true
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -136,14 +141,14 @@ jobs:
         # pipeline-job uses different cred
         cred_replace = f"""
           mkdir ../../.azureml
-          echo '{{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}}' > ../../.azureml/config.json 
+          echo '{{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:
         cred_replace = f"""
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" {name}.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" {name}.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" {name}.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" {name}.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" {name}.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" {name}.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb\n"""
     workflow_yaml += cred_replace
 
