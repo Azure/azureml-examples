@@ -41,7 +41,10 @@ jobs:
       working-directory: sdk
       continue-on-error: true
     - name: setup CLI
-      run: bash setup.sh
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items-mlflow.ipynb
