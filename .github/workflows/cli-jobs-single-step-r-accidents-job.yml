@@ -9,6 +9,7 @@ on:
       - sdk-preview
     paths:
       - cli/jobs/single-step/r/accidents/**
+      - infra/**
       - .github/workflows/cli-jobs-single-step-r-accidents-job.yml
       - cli/setup.sh
 jobs:
@@ -20,11 +21,18 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x ../../../../run-job.sh job.yml
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash -x ../../../../run-job.sh job.yml
       working-directory: cli/jobs/single-step/r/accidents
