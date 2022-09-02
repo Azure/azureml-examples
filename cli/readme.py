@@ -18,7 +18,11 @@ EXCLUDED_RESOURCES = [
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCHEDULES = []
 EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
+CREDENTIALS = "${{secrets.AZUREML_CREDENTIALS}}"
 BRANCH = "main"  # default - do not change
+# Duplicate name in working directory during checkout
+# https://github.com/actions/checkout/issues/739
+GITHUB_WORKSPACE = "${{ github.workspace }}"
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
@@ -323,7 +327,9 @@ def parse_path(path):
 def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     is_pipeline_sample = "jobs/pipelines" in job
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = CREDENTIALS
+    # Duplicate name in working directory during checkout
+    # https://github.com/actions/checkout/issues/739
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -335,6 +341,7 @@ on:
       - sdk-preview
     paths:
       - cli/{project_dir}/**
+      - infra/**
       - .github/workflows/cli-{hyphenated}.yml\n"""
     if is_pipeline_sample:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
@@ -349,12 +356,19 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
-      run: bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
       working-directory: cli/{project_dir}\n"""
 
     # write workflow
@@ -364,7 +378,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = CREDENTIALS
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -376,6 +390,7 @@ on:
       - sdk-preview
     paths:
       - cli/{project_dir}/**
+      - infra/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
 jobs:
@@ -388,12 +403,19 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
-      run: az ml endpoint create -f {endpoint}.yml
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml endpoint create -f {endpoint}.yml
       working-directory: cli\n"""
 
     # write workflow
@@ -403,7 +425,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = CREDENTIALS
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -415,6 +437,7 @@ on:
       - sdk-preview
     paths:
       - cli/{asset}.yml
+      - infra/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
 jobs:
@@ -427,12 +450,19 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml {asset.split('/')[1]} create -f {asset}.yml
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml {asset.split('/')[1]} create -f {asset}.yml
       working-directory: cli\n"""
 
     # write workflow
@@ -442,7 +472,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = CREDENTIALS
     workflow_yaml = f"""name: cli-scripts-{hyphenated}
 on:
   workflow_dispatch:
@@ -454,6 +484,7 @@ on:
       - sdk-preview
     paths:
       - cli/{script}.sh
+      - infra/**
       - .github/workflows/cli-scripts-{hyphenated}.yml
       - cli/setup.sh
 jobs:
@@ -466,12 +497,19 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: test script script
-      run: set -e; bash -x {script}.sh
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          set -e; bash -x {script}.sh
       working-directory: cli\n"""
 
     # write workflow
@@ -481,7 +519,7 @@ jobs:
 
 def write_schedule_workflow(schedule):
     filename, project_dir, hyphenated = parse_path(schedule)
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = CREDENTIALS
     workflow_yaml = f"""name: cli-schedules-{hyphenated}
 on:
   workflow_dispatch:
@@ -493,6 +531,7 @@ on:
       - sdk-preview
     paths:
       - cli/{schedule}.yml
+      - infra/**
       - .github/workflows/cli-schedules-{hyphenated}.yml
       - cli/setup.sh
 jobs:
@@ -505,15 +544,25 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create schedule
-      run: az ml schedule create -f ./{schedule}.yml --set name="ci_test_{filename}"
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml schedule create -f ./{schedule}.yml --set name="ci_test_{filename}"
       working-directory: cli\n
     - name: disable schedule
-      run: az ml schedule disable --name ci_test_{filename}
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml schedule disable --name ci_test_{filename}
       working-directory: cli\n"""
 
     # write workflow

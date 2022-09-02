@@ -5,7 +5,9 @@ if [ "${BASH_SOURCE[0]}" == "$0" ];  then
     exit 1
 fi
 
-# Set magic variables for current file & dir
+####################
+# SET MAGIC VARIABLES FOR CURRENT FILE & DIR
+####################
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename "${__file}" .sh)"
@@ -21,7 +23,9 @@ COMMON_TAGS=(
   "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}" 
 )
 
-# Setup logging
+####################
+# SETUP LOGGING
+####################
 readonly LOG_FILE="/tmp/$(basename "$0").log"
 readonly DATE_FORMAT="+%Y-%m-%d_%H:%M:%S.%2N"
 echo_info()    { echo "[$(date ${DATE_FORMAT})] [INFO]    $*" | tee -a "$LOG_FILE" >&2 ; }
@@ -42,6 +46,10 @@ echo_subtitle() {
   echo "# ${1} #"
 }
 
+####################
+# DEBUGGING CONFIGURATION
+####################
+
 CONTINUE_ON_ERR=${CONTINUE_ON_ERR:-0}  # 0: false; 1: true
 if [[ "${CONTINUE_ON_ERR}" = true ]]; then  # -E
    echo_warning "Set to continue despite of an error ..."
@@ -59,6 +67,10 @@ if [[ "${RUN_DEBUG}" = true ]]; then
    set -x   # (-o xtrace) to show commands for specific issues.
 fi
 
+####################
+# CUSTOM FUNCTIONS
+####################
+
 function ensure_resourcegroup() {
     rg_exists=$(az group exists --resource-group "$RESOURCE_GROUP_NAME" --output tsv |tail -n1|tr -d "[:cntrl:]")
     if [ "false" = "$rg_exists" ]; then
@@ -74,7 +86,6 @@ function ensure_resourcegroup() {
         echo_warning "Resource group ${RESOURCE_GROUP_NAME} already exist, skipping creation step..." >&2
     fi
 }
-
 
 function ensure_ml_workspace() {
     workspace_exists=$(az ml workspace list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$WORKSPACE_NAME']" |tail -n1|tr -d "[:cntrl:]")
@@ -122,6 +133,34 @@ function ensure_aml_compute() {
     else
         echo_warning "Compute ${COMPUTE_NAME} already exist, skipping creation step..." >&2
     fi
+}
+
+function install_packages() {
+    echo_info "\n\n"
+    echo_info "------------------------------------------------"
+    echo_info ">>> Updating packages index"
+    echo_info "------------------------------------------------"
+
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo apt-get dist-upgrade -y
+
+    echo_info "\n\n"
+    echo_info "------------------------------------------------"
+    echo_info ">>> Installing packages"
+    echo_info "------------------------------------------------"
+
+    # ">>> Required for running filters on a stream of JSON data from az
+    sudo apt-get install jq -y
+    # ">>> Required for containers
+    sudo apt-get install uuid-runtime -y
+
+    echo_info "\n\n"
+    echo_info "------------------------------------------------"
+    echo_info ">>> Clean local cache for packages"
+    echo_info "------------------------------------------------"
+
+    sudo apt-get autoclean && sudo apt-get autoremove
 }
 
 function add_extension() {
