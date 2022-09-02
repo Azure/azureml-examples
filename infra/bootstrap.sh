@@ -45,6 +45,9 @@ else
   echo "---------------------------------------------------------"
 fi
 
+echo_title "Ensuring dependent packages"
+install_packages
+
 if [ -f "$SCRIPT_DIR"/verify_prerequisites.sh ]; then
   source "$SCRIPT_DIR"/verify_prerequisites.sh;
 else
