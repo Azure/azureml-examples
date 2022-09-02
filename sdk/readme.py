@@ -104,7 +104,7 @@ on:\n"""
       - sdk/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
       - sdk/dev-requirements.txt
-      - infra/bootstrap.sh
+      - infra/**
       - sdk/setup.sh
 jobs:
   build:
@@ -138,6 +138,8 @@ jobs:
       run: |
           THIS_DIR=$( (cd "$(dirname -- "$BASH_SOURCE")" && pwd -P) )
           ROOT_DIR=$(cd "$THIS_DIR/../" && pwd)
+          pwd
+          ls -l
           chmod +x "$ROOT_DIR/infra/init_environment.sh"
           "$ROOT_DIR/infra/init_environment.sh";
       """
