@@ -12,7 +12,7 @@ on:
       - sdk/schedules/**
       - .github/workflows/sdk-schedules-job-schedule.yml
       - sdk/dev-requirements.txt
-      - infra/bootstrap.sh
+      - infra/**
       - sdk/setup.sh
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
     - name: Bootstrap Resources
       run: bash bootstrap.sh
       working-directory: infra
-      continue-on-error: true
+      continue-on-error: false
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -44,9 +44,8 @@ jobs:
       continue-on-error: true
     - name: run schedules/job-schedule.ipynb
       run: |
-      chmod +x ./infra/init_environment.sh
-      ./infra/init_environment.sh;
-      
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" job-schedule.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" job-schedule.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" job-schedule.ipynb
