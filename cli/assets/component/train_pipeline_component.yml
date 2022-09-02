@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
 type: pipeline
 
-name: train_pipeline_component
-display_name: train_pipeline_component
+name: train_pipeline_component_asset
+display_name: train_pipeline_component_asset
 description: Dummy train-score-eval pipeline component with local components
 
 inputs:
@@ -34,8 +34,12 @@ jobs:
   
   ls_model_path:
     type: command
-    command: >-
-      ls {inputs.input_dir}
     inputs:
       input_dir: ${{parent.jobs.train_job.outputs.model_output}}
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    component:
+      inputs:
+        input_dir:
+          type: uri_folder
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      command: >-
+        ls {inputs.input_dir}
