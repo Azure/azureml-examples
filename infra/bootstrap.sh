@@ -77,10 +77,10 @@ echo_title "Ensuring Workspace"
 ensure_ml_workspace
 
 echo_title "Ensuring CPU compute"
-ensure_aml_compute "cpu-cluster" 0 8 "Standard_DS3_v2"
+ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
 ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
 # Larger CPU cluster for Dask and Spark examples
-ensure_aml_compute "cpu-cluster-lg" 0 6 "Standard_DS15_v2"
+ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
 
 echo_title "Ensuring GPU compute"
 ensure_aml_compute "gpu-cluster" 0 4 "Standard_NC12"

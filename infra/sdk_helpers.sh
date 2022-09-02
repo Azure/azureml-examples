@@ -6,16 +6,19 @@ if [ "${BASH_SOURCE[0]}" == "$0" ];  then
 fi
 
 ####################
-# SET MAGIC VARIABLES FOR CURRENT FILE & DIR
+# SET VARIABLES FOR CURRENT FILE & DIR
 ####################
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
-__base="$(basename "${__file}" .sh)"
+
+# The filename of this script for help messages
+SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
+SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
+ROOT_DIR=$(cd "${SCRIPT_DIR}/../" && pwd)
 
 EPOCH_START="$( date -u +%s )"  # e.g. 1661361223
-declare -A SKIP_AUTO_DELETE_TILL=$(date +'%y-%m-%d')
-declare -a DELETE_AFTER=("1.00:00:00")
 
+declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+7 days" +'%y-%m-%d')
+declare -a DELETE_AFTER=("7.00:00:00")
+echo SKIP_AUTO_DELETE_TILL $SKIP_AUTO_DELETE_TILL
 COMMON_TAGS=(
   "cleanup:DeleteAfter=${DELETE_AFTER}" 
   "cleanup:Policy=DeleteAfter" 
@@ -30,12 +33,12 @@ LOG_FILE="/tmp/$(basename "$0").log"
 readonly LOG_FILE
 DATE_FORMAT=${DATE_FORMAT:-'%Y-%m-%dT%H:%M:%S.%2N'}
 readonly DATE_FORMAT
-LOG_FORMAT='%s: %s: %s\n'
+LOG_FORMAT='%s :  %s :  %s\n'
 readonly LOG_FORMAT
-echo_info()     { printf "$LOG_FORMAT"  [INFO]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; }
-echo_warning()  { printf "$LOG_FORMAT"  [WARNING]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; }
-echo_error()    { printf "$LOG_FORMAT"  [ERROR]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; }
-echo_fatal()    { printf "$LOG_FORMAT"  [FATAL]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
+echo_info()     { printf "$LOG_FORMAT"  [INFO]  "$(date +"$DATE_FORMAT")"  "$@" | tee -a "$LOG_FILE" >&2 ; }
+echo_warning()  { printf "$LOG_FORMAT"  [WARNING]  "$(date +"$DATE_FORMAT")"  "$@" | tee -a "$LOG_FILE" >&2 ; }
+echo_error()    { printf "$LOG_FORMAT"  [ERROR]  "$(date +"$DATE_FORMAT")"  "$@" | tee -a "$LOG_FILE" >&2 ; }
+echo_fatal()    { printf "$LOG_FORMAT"  [FATAL]  "$(date +"$DATE_FORMAT")"  "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 ####################
 # CUSTOM ECHO FUNCTIONS TO PRINT TEXT TO THE SCREEN
@@ -107,6 +110,7 @@ function ensure_ml_workspace() {
             echo "[---fail---] $CREATE_WORKSPACE."
         else
             echo_info "Workspace ${WORKSPACE_NAME} created successfully" >&2
+            ensure_prerequisites_in_workspace
         fi
     else
         echo_warning "Workspace ${WORKSPACE_NAME} already exist, skipping creation step..." >&2
@@ -152,11 +156,16 @@ function install_packages() {
     echo_info ">>> Installing packages"
     echo_info "------------------------------------------------"
 
-    # ">>> Required for running filters on a stream of JSON data from az
-    sudo apt-get install jq -y
-    # ">>> Required for containers
-    sudo apt-get install uuid-runtime -y
-
+    # jq                - Required for running filters on a stream of JSON data from az
+    # uuid-runtime      - Required for containers
+    packages_to_install=(
+      jq
+      uuid-runtime
+    )
+    for package in "${packages_to_install[@]}"; do
+      echo_info "Installing \'$package\'"
+      sudo apt-get install "${package}" -y > /dev/null 2>&1
+    done
     echo_info "------------------------------------------------"
     echo_info ">>> Clean local cache for packages"
     echo_info "------------------------------------------------"
@@ -184,3 +193,36 @@ function ensure_ml_extension() {
     fi
 }
 
+function ensure_prerequisites_in_workspace() {
+    echo_info "Ensuring prerequisites in the workspace" >&2
+    deploy_scripts=(
+      setup-repo/create-components.sh
+      setup-repo/create-environments.sh
+    )
+    for package in "${deploy_scripts[@]}"; do
+      echo_info "Deploying '${ROOT_DIR}"/"${package}'"
+      if [ -f "${ROOT_DIR}"/"${package}" ]; then
+        bash -x "${ROOT_DIR}"/"${package}";
+      else
+        echo "---------------------------------------------------------"
+        echo_error "${ROOT_DIR}/${package} not found."
+        echo "---------------------------------------------------------"
+      fi
+    done
+
+    echo_only_scripts=(
+      setup-repo/copy-data.sh
+      setup-repo/create-datasets.sh
+      setup-repo/update-datasets.sh
+    )
+    for package in "${deploy_scripts[@]}"; do
+      echo_info "Deploying '${ROOT_DIR}"/"${package}'"
+      if [ -f "${ROOT_DIR}"/"${package}" ]; then
+        echo_info "TODO - ${ROOT_DIR}"/"${package}..." >&2
+      else
+        echo "---------------------------------------------------------"
+        echo_error "${ROOT_DIR}/${package} not found."
+        echo "---------------------------------------------------------"
+      fi
+    done
+}

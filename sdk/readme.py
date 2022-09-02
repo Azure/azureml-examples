@@ -130,7 +130,10 @@ jobs:
       working-directory: infra
       continue-on-error: false
     - name: setup SDK
-      run: bash setup.sh
+      run: |
+          source "{github_workspace}/infra/sdk_helpers.sh";
+          source "{github_workspace}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: sdk
       continue-on-error: true
     - name: setup CLI
