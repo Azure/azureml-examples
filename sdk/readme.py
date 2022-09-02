@@ -80,6 +80,7 @@ def write_notebook_workflow(
         "assets-component" in classification
     )
     creds = "${{secrets.AZUREML_CREDENTIALS}}"
+    github_workspace = "${{ github.workspace }}"
     mlflow_import = get_mlflow_import(notebook)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
@@ -136,12 +137,8 @@ jobs:
       continue-on-error: true
     - name: run {posix_notebook}
       run: |
-          THIS_DIR=$( (cd "$(dirname -- "$BASH_SOURCE")" && pwd -P) )
-          ROOT_DIR=$(cd "$THIS_DIR/../" && pwd)
-          pwd
-          ls -l
-          chmod +x "$ROOT_DIR/infra/init_environment.sh"
-          "$ROOT_DIR/infra/init_environment.sh";
+          chmod +x "{github_workspace}/infra/init_environment.sh"
+          "{github_workspace}/infra/init_environment.sh";
       """
     if is_pipeline_notebook:
         # pipeline-job uses different cred

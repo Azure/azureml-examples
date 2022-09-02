@@ -44,12 +44,8 @@ jobs:
       continue-on-error: true
     - name: run jobs/configuration.ipynb
       run: |
-          THIS_DIR=$( (cd "$(dirname -- "$BASH_SOURCE")" && pwd -P) )
-          ROOT_DIR=$(cd "$THIS_DIR/../" && pwd)
-          pwd
-          ls -l
-          chmod +x "$ROOT_DIR/infra/init_environment.sh"
-          "$ROOT_DIR/infra/init_environment.sh";
+          chmod +x "${{ github.workspace }}/infra/init_environment.sh"
+          "${{ github.workspace }}/infra/init_environment.sh";
       
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" configuration.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" configuration.ipynb
