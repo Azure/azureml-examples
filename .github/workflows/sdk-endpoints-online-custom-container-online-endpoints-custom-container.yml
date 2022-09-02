@@ -12,6 +12,7 @@ on:
       - sdk/endpoints/online/custom-container/**
       - .github/workflows/sdk-endpoints-online-custom-container-online-endpoints-custom-container.yml
       - sdk/dev-requirements.txt
+      - infra/**
       - sdk/setup.sh
 jobs:
   build:
@@ -28,7 +29,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -39,9 +44,11 @@ jobs:
       continue-on-error: true
     - name: run endpoints/online/custom-container/online-endpoints-custom-container.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-custom-container.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-custom-container.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-custom-container.ipynb
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" online-endpoints-custom-container.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" online-endpoints-custom-container.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" online-endpoints-custom-container.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-custom-container.ipynb
 
           papermill -k python online-endpoints-custom-container.ipynb online-endpoints-custom-container.output.ipynb

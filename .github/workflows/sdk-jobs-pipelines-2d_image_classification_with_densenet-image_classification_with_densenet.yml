@@ -12,6 +12,7 @@ on:
       - sdk/jobs/pipelines/2d_image_classification_with_densenet/**
       - .github/workflows/sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classification_with_densenet.yml
       - sdk/dev-requirements.txt
+      - infra/**
       - sdk/setup.sh
 jobs:
   build:
@@ -28,7 +29,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -39,8 +44,10 @@ jobs:
       continue-on-error: true
     - name: run jobs/pipelines/2d_image_classification_with_densenet/image_classification_with_densenet.ipynb
       run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
           mkdir ../../.azureml
-          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
+          echo '{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}' > ../../.azureml/config.json
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" image_classification_with_densenet.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" image_classification_with_densenet.ipynb
           papermill -k python image_classification_with_densenet.ipynb image_classification_with_densenet.output.ipynb

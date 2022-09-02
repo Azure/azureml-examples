@@ -12,6 +12,7 @@ on:
       - sdk/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced-mlflow.yml
       - sdk/dev-requirements.txt
+      - infra/**
       - sdk/setup.sh
 jobs:
   build:
@@ -30,7 +31,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup SDK
       run: bash setup.sh
       working-directory: sdk
@@ -41,9 +46,11 @@ jobs:
       continue-on-error: true
     - name: run jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
 
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-task-energy-demand-advanced-mlflow.ipynb automl-forecasting-task-energy-demand-advanced-mlflow.output.ipynb

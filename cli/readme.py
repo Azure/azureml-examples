@@ -378,7 +378,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = CREDENTIALS
+    creds = "${{secrets.AZ_CREDS}}"
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -403,18 +403,14 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: Bootstrap Resources
-      run: bash bootstrap.sh
-      working-directory: infra
-      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          # source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          # source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           az ml endpoint create -f {endpoint}.yml
       working-directory: cli\n"""
 

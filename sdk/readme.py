@@ -140,13 +140,12 @@ jobs:
     - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
-      """
+          source "{github_workspace}/infra/init_environment.sh";"""
     if is_pipeline_notebook:
         # pipeline-job uses different cred
         cred_replace = f"""
           mkdir ../../.azureml
-          echo '{{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}}' > ../../.azureml/config.json 
+          echo '{{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}}' > ../../.azureml/config.json
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:
@@ -162,8 +161,8 @@ jobs:
           # generate a random workspace name
           # sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" {name}.ipynb
           # skip other workpace creation commands for now
-          sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" {name}.ipynb        
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" {name}.ipynb        
+          sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" {name}.ipynb
+          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" {name}.ipynb
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb\n"""
 
     if not ("automl" in folder):
