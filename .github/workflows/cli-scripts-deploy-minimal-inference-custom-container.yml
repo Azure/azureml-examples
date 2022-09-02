@@ -27,7 +27,10 @@ jobs:
       working-directory: infra
       continue-on-error: false
     - name: setup
-      run: bash setup.sh
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: test script script
