@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # rc install - uncomment and adjust below to run all tests on a CLI release candidate
 # az extension remove -n ml
 
@@ -28,5 +28,5 @@ then
     # </az_configure_defaults>
     echo "Default resource group set to $GROUP"
 else
-    echo "Specified resource group doesn't exist in the current subscription"
+    echo "Workflows are using the new subscription."
 fi

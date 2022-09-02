@@ -11,7 +11,7 @@ set -o nounset
 # set -Eeuo pipefail # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -o xtrace # For debugging
 
-### Usage bash ./sdk/infra/bootstrap.sh
+### Usage bash ./infra/bootstrap.sh
 ### Bootstrapping script that creates Resource group and Workspace
 ### This assumes you have performed az login and have sufficient permissions
 
@@ -77,10 +77,13 @@ echo_title "Ensuring Workspace"
 ensure_ml_workspace
 
 echo_title "Ensuring CPU compute"
-ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
-ensure_aml_compute "automl-cpu-cluster" 0 3 "Standard_DS3_v2"
+ensure_aml_compute "cpu-cluster" 0 8 "Standard_DS3_v2"
+ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
+# Larger CPU cluster for Dask and Spark examples
+ensure_aml_compute "cpu-cluster-lg" 0 6 "Standard_DS15_v2"
 
 echo_title "Ensuring GPU compute"
-ensure_aml_compute "gpu-cluster" 0 3 "Standard_NC12"
+ensure_aml_compute "gpu-cluster" 0 4 "Standard_NC12"
+ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6"
 
 echo "✅ Resource provisioning completed..."

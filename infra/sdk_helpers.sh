@@ -13,7 +13,7 @@ __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename "${__file}" .sh)"
 
 EPOCH_START="$( date -u +%s )"  # e.g. 1661361223
-declare -A SKIP_AUTO_DELETE_TILL=`date +'%y-%m-%d'`
+declare -A SKIP_AUTO_DELETE_TILL=$(date +'%y-%m-%d')
 declare -a DELETE_AFTER=("1.00:00:00")
 
 COMMON_TAGS=(
@@ -26,12 +26,16 @@ COMMON_TAGS=(
 ####################
 # SETUP LOGGING
 ####################
-readonly LOG_FILE="/tmp/$(basename "$0").log"
-readonly DATE_FORMAT="+%Y-%m-%d_%H:%M:%S.%2N"
-echo_info()    { echo "[$(date ${DATE_FORMAT})] [INFO]    $*" | tee -a "$LOG_FILE" >&2 ; }
-echo_warning() { echo "[$(date ${DATE_FORMAT})] [WARNING] $*" | tee -a "$LOG_FILE" >&2 ; }
-echo_error()   { echo "[$(date ${DATE_FORMAT})] [ERROR]   $*" | tee -a "$LOG_FILE" >&2 ; }
-echo_fatal()   { echo "[$(date ${DATE_FORMAT})] [FATAL]   $*" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
+LOG_FILE="/tmp/$(basename "$0").log"
+readonly LOG_FILE
+DATE_FORMAT=${DATE_FORMAT:-'%Y-%m-%dT%H:%M:%S.%2N'}
+readonly DATE_FORMAT
+LOG_FORMAT='%s: %s: %s\n'
+readonly LOG_FORMAT
+echo_info()     { printf "$LOG_FORMAT"  [INFO]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; }
+echo_warning()  { printf "$LOG_FORMAT"  [WARNING]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; }
+echo_error()    { printf "$LOG_FORMAT"  [ERROR]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; }
+echo_fatal()    { printf "$LOG_FORMAT"  [FATAL]    "$(date +"$DATE_FORMAT")" "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 ####################
 # CUSTOM ECHO FUNCTIONS TO PRINT TEXT TO THE SCREEN
@@ -120,8 +124,8 @@ function ensure_aml_compute() {
         CREATE_COMPUTE=$(az ml compute create \
             --name "${COMPUTE_NAME}" \
             --resource-group "${RESOURCE_GROUP_NAME}"  \
-            --type amlcompute --min-instances ${MIN_INSTANCES} --max-instances ${MAX_INSTANCES}  \
-            --size ${COMPUTE_SIZE} \
+            --type amlcompute --min-instances "${MIN_INSTANCES}" --max-instances "${MAX_INSTANCES}"  \
+            --size "${COMPUTE_SIZE}" \
             --output tsv  \
             > /dev/null 2>&1)
         if [[ $? -ne 0 ]]; then
@@ -136,7 +140,6 @@ function ensure_aml_compute() {
 }
 
 function install_packages() {
-    echo_info "\n\n"
     echo_info "------------------------------------------------"
     echo_info ">>> Updating packages index"
     echo_info "------------------------------------------------"
@@ -145,7 +148,6 @@ function install_packages() {
     sudo apt-get upgrade -y
     sudo apt-get dist-upgrade -y
 
-    echo_info "\n\n"
     echo_info "------------------------------------------------"
     echo_info ">>> Installing packages"
     echo_info "------------------------------------------------"
@@ -155,7 +157,6 @@ function install_packages() {
     # ">>> Required for containers
     sudo apt-get install uuid-runtime -y
 
-    echo_info "\n\n"
     echo_info "------------------------------------------------"
     echo_info ">>> Clean local cache for packages"
     echo_info "------------------------------------------------"
