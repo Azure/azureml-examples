@@ -44,8 +44,8 @@ jobs:
       continue-on-error: true
     - name: run jobs/single-step/lightgbm/iris/lightgbm-iris-sweep.ipynb
       run: |
-          "${{ github.workspace }}/infra/sdk_helpers.sh";
-          "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
       
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" lightgbm-iris-sweep.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" lightgbm-iris-sweep.ipynb

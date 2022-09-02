@@ -137,8 +137,8 @@ jobs:
       continue-on-error: true
     - name: run {posix_notebook}
       run: |
-          "{github_workspace}/infra/sdk_helpers.sh";
-          "{github_workspace}/infra/init_environment.sh";
+          source "{github_workspace}/infra/sdk_helpers.sh";
+          source "{github_workspace}/infra/init_environment.sh";
       """
     if is_pipeline_notebook:
         # pipeline-job uses different cred
