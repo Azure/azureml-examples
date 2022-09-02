@@ -134,7 +134,10 @@ jobs:
       working-directory: sdk
       continue-on-error: true
     - name: setup CLI
-      run: bash setup.sh
+      run: |
+          source "{github_workspace}/infra/sdk_helpers.sh";
+          source "{github_workspace}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run {posix_notebook}
