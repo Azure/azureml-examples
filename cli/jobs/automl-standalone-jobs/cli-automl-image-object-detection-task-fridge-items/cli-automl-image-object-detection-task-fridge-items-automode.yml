@@ -32,6 +32,3 @@ limits:
   max_trials: 10
   max_concurrent_trials: 2
 # </limit_settings>
-
-properties:
-  enable_automode: "True"
