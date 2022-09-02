@@ -44,7 +44,7 @@ jobs:
       continue-on-error: true
     - name: run jobs/single-step/scikit-learn/diabetes/sklearn-diabetes.ipynb
       run: |
-          "${{ github.workspace }}/infra/sdk_helpers.sh.sh";
+          "${{ github.workspace }}/infra/sdk_helpers.sh";
           "${{ github.workspace }}/infra/init_environment.sh";
       
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" sklearn-diabetes.ipynb
