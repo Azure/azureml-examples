@@ -15,7 +15,7 @@ outputs:
     mode: direct
 
 jobs:
-  add_green_column:
+  add_greeting_column:
     type: spark
 
     inputs:
@@ -23,7 +23,7 @@ jobs:
 
     code: ./src
     entry:
-      file: add_green_column.py # file path of the entry file relative to the code root folder
+      file: add_greeting_column.py # file path of the entry file relative to the code root folder
 
     py_files:
       - utils.zip
