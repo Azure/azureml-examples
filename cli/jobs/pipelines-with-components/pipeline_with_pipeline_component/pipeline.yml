@@ -47,7 +47,7 @@ jobs:
 
   compare:
     type: command
-    component: ./components/compare2_src/compare2.yml
+    component: ./components/compare2/compare2.yml
     compute: azureml:cpu-cluster
     inputs:
       model1: ${{parent.jobs.train_and_evaludate_model1.outputs.trained_model}}

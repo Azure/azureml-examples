@@ -2,7 +2,6 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.jso
 type: command
 
 name: compare_2_models
-version: 0.0.1
 display_name: Compare 2 Models
 description: A dummy comparison module takes two models as input and outputs the better one
 inputs:
