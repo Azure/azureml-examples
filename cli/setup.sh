@@ -11,8 +11,11 @@ LOCATION="eastus"
 WORKSPACE="main"
 # </set_variables>
 
-if [[ $(az group exists --name $GROUP -o tsv) = true ]]
+# If RESOURCE_GROUP_NAME is empty, the az configure is pending.
+RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME:-}
+if [[ -z "$RESOURCE_GROUP_NAME" ]]
 then
+    echo "No resource group name [RESOURCE_GROUP_NAME] specified, defaulting to ${GROUP}."
     # Installing extension temporarily assuming the run is on old subscription
     # without bootstrap script.
 

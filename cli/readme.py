@@ -361,7 +361,10 @@ jobs:
       working-directory: infra
       continue-on-error: false
     - name: setup
-      run: bash setup.sh
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
@@ -404,7 +407,10 @@ jobs:
       with:
         creds: {creds}
     - name: setup
-      run: bash setup.sh
+      run: |
+          # source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          # source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -451,7 +457,10 @@ jobs:
       working-directory: infra
       continue-on-error: false
     - name: setup
-      run: bash setup.sh
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
@@ -498,7 +507,10 @@ jobs:
       working-directory: infra
       continue-on-error: false
     - name: setup
-      run: bash setup.sh
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: test script script
@@ -545,7 +557,10 @@ jobs:
       working-directory: infra
       continue-on-error: false
     - name: setup
-      run: bash setup.sh
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create schedule
