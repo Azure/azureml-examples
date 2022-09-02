@@ -80,6 +80,8 @@ def write_notebook_workflow(
         "assets-component" in classification
     )
     creds = "${{secrets.AZUREML_CREDENTIALS}}"
+    # Duplicate name in working directory during checkout
+    # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
     mlflow_import = get_mlflow_import(notebook)
     posix_folder = folder.replace(os.sep, "/")
