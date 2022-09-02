@@ -64,19 +64,20 @@ echo "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCATION}\
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
-echo_title "Ensuring resource group"
+echo_title "Ensuring Resource group"
 ensure_resourcegroup
 
 echo_title "Installing ML extension"
 ensure_ml_extension
 
-echo_title "Ensuring workspace"
+echo_title "Ensuring Workspace"
 ensure_ml_workspace
 
 echo_title "Ensuring CPU compute"
-ensure_cpu_compute
+ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
+ensure_aml_compute "automl-cpu-cluster" 0 3 "Standard_DS3_v2"
 
 echo_title "Ensuring GPU compute"
-ensure_gpu_compute
+ensure_aml_compute "gpu-cluster" 0 3 "Standard_NC12"
 
-echo "✅ Completed..."
+echo "✅ Resource provisioning completed..."

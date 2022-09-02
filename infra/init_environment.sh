@@ -62,20 +62,6 @@ then
     echo_warning "No workspace name [WORKSPACE_NAME] specified, defaulting to ${WORKSPACE_NAME}."
 fi
 
-CPU_COMPUTE_NAME=${CPU_COMPUTE_NAME:-}
-if [[ -z "$CPU_COMPUTE_NAME" ]]
-then
-    export CPU_COMPUTE_NAME="cpu-cluster"
-    echo_warning "No cpu-cluster compute name [CPU_COMPUTE_NAME] specified, defaulting to ${CPU_COMPUTE_NAME}."
-fi
-
-GPU_COMPUTE_NAME=${GPU_COMPUTE_NAME:-}
-if [[ -z "$GPU_COMPUTE_NAME" ]]
-then
-    export GPU_COMPUTE_NAME="gpu-cluster"
-    echo_warning "No gpu-cluster compute name [GPU_COMPUTE_NAME] specified, defaulting to ${GPU_COMPUTE_NAME}."
-fi
-
 if [[ -z "$LOCATION" ]]
 then
     export LOCATION="eastus"

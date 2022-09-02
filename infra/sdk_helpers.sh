@@ -98,46 +98,29 @@ function ensure_ml_workspace() {
     fi
 }
 
-function ensure_cpu_compute() {
-    cpu_compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$CPU_COMPUTE_NAME']" |tail -n1|tr -d "[:cntrl:]")
-    if [[ "${cpu_compute_exists}" = "[]" ]]; then
-        echo_info "CPU Compute ${CPU_COMPUTE_NAME} does not exist; creating" >&2
-        CREATE_CPU_COMPUTE=$(az ml compute create \
-            --name "${CPU_COMPUTE_NAME}" \
+function ensure_aml_compute() {
+    COMPUTE_NAME=${1:-cpu-cluster}
+    MIN_INSTANCES=${2:-0}
+    MAX_INSTANCES=${3:-2}
+    COMPUTE_SIZE=${4:-Standard_DS3_v2}
+    compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$COMPUTE_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${compute_exists}" = "[]" ]]; then
+        echo_info "Compute ${COMPUTE_NAME} does not exist; creating" >&2
+        CREATE_COMPUTE=$(az ml compute create \
+            --name "${COMPUTE_NAME}" \
             --resource-group "${RESOURCE_GROUP_NAME}"  \
-            --type amlcompute --min-instances 0 --max-instances 8 \
+            --type amlcompute --min-instances ${MIN_INSTANCES} --max-instances ${MAX_INSTANCES}  \
+            --size ${COMPUTE_SIZE} \
             --output tsv  \
             > /dev/null 2>&1)
         if [[ $? -ne 0 ]]; then
-            echo_failure "Failed to create CPU Compute ${CPU_COMPUTE_NAME}" >&2
-            echo "[---fail---] $CREATE_CPU_COMPUTE."
+            echo_failure "Failed to create compute ${COMPUTE_NAME}" >&2
+            echo "[---fail---] $CREATE_COMPUTE."
         else
-            echo_info "CPU Compute ${CPU_COMPUTE_NAME} created successfully" >&2
+            echo_info "Compute ${COMPUTE_NAME} created successfully" >&2
         fi
     else
-        echo_warning "CPU Compute ${CPU_COMPUTE_NAME} already exist, skipping creation step..." >&2
-    fi
-}
-
-function ensure_gpu_compute() {
-    gpu_compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$GPU_COMPUTE_NAME']" |tail -n1|tr -d "[:cntrl:]")
-    if [[ "${gpu_compute_exists}" = "[]" ]]; then
-        echo_info "GPU Compute ${GPU_COMPUTE_NAME} does not exist; creating" >&2
-        CREATE_CPU_COMPUTE=$(az ml compute create \
-            --name "${GPU_COMPUTE_NAME}" \
-            --resource-group "${RESOURCE_GROUP_NAME}"  \
-            --type amlcompute --min-instances 0 --max-instances 4  \
-            --size Standard_NC12 \
-            --output tsv  \
-            > /dev/null 2>&1)
-        if [[ $? -ne 0 ]]; then
-            echo_failure "Failed to create GPU Compute ${GPU_COMPUTE_NAME}" >&2
-            echo "[---fail---] $CREATE_CPU_COMPUTE."
-        else
-            echo_info "GPU Compute ${GPU_COMPUTE_NAME} created successfully" >&2
-        fi
-    else
-        echo_warning "GPU Compute ${GPU_COMPUTE_NAME} already exist, skipping creation step..." >&2
+        echo_warning "Compute ${COMPUTE_NAME} already exist, skipping creation step..." >&2
     fi
 }
 
