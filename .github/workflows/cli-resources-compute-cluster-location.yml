@@ -9,6 +9,7 @@ on:
       - sdk-preview
     paths:
       - cli/resources/compute/cluster-location.yml
+      - infra/**
       - .github/workflows/cli-resources-compute-cluster-location.yml
       - cli/setup.sh
 jobs:
@@ -20,11 +21,18 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml compute create -f resources/compute/cluster-location.yml
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml compute create -f resources/compute/cluster-location.yml
       working-directory: cli

@@ -9,6 +9,7 @@ on:
       - sdk-preview
     paths:
       - cli/schedules/cron-job-schedule.yml
+      - infra/**
       - .github/workflows/cli-schedules-schedules-cron-job-schedule.yml
       - cli/setup.sh
 jobs:
@@ -20,15 +21,25 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Bootstrap Resources
+      run: bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create schedule
-      run: az ml schedule create -f ./schedules/cron-job-schedule.yml --set name="ci_test_cron-job-schedule"
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml schedule create -f ./schedules/cron-job-schedule.yml --set name="ci_test_cron-job-schedule"
       working-directory: cli
 
     - name: disable schedule
-      run: az ml schedule disable --name ci_test_cron-job-schedule
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml schedule disable --name ci_test_cron-job-schedule
       working-directory: cli
