@@ -36,7 +36,8 @@ set -o nounset
 # export CONTINUE_ON_ERR=true         # -E  - true or false
 
 # let "DATE_ONLY=`date +'%y%m%d'`"
-let "DATE_ONLY=$(date +'%y%m%U')"
+# let "DATE_ONLY=$(date +'%y%m%U')"
+let "DATE_ONLY=$(date +'%y%m')"
 
 export LOCATION="East US"
 export PREFIX=aml

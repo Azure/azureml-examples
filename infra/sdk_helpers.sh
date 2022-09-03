@@ -16,8 +16,8 @@ ROOT_DIR=$(cd "${SCRIPT_DIR}/../" && pwd)
 
 EPOCH_START="$( date -u +%s )"  # e.g. 1661361223
 
-declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+7 days" +'%y-%m-%d')
-declare -a DELETE_AFTER=("7.00:00:00")
+declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+30 days" +'%y-%m-%d')
+declare -a DELETE_AFTER=("30.00:00:00")
 echo SKIP_AUTO_DELETE_TILL $SKIP_AUTO_DELETE_TILL
 COMMON_TAGS=(
   "cleanup:DeleteAfter=${DELETE_AFTER}" 
@@ -77,6 +77,14 @@ fi
 ####################
 # CUSTOM FUNCTIONS
 ####################
+
+function pushd () {
+    command pushd "$@" 2>&1 > /dev/null
+}
+
+function popd () {
+    command popd "$@" 2>&1 > /dev/null
+}
 
 function ensure_resourcegroup() {
     rg_exists=$(az group exists --resource-group "$RESOURCE_GROUP_NAME" --output tsv |tail -n1|tr -d "[:cntrl:]")
@@ -148,9 +156,9 @@ function install_packages() {
     echo_info ">>> Updating packages index"
     echo_info "------------------------------------------------"
 
-    sudo apt-get update
-    sudo apt-get upgrade -y
-    sudo apt-get dist-upgrade -y
+    sudo apt-get update > /dev/null 2>&1
+    sudo apt-get upgrade -y > /dev/null 2>&1
+    sudo apt-get dist-upgrade -y > /dev/null 2>&1
 
     echo_info "------------------------------------------------"
     echo_info ">>> Installing packages"
@@ -170,7 +178,7 @@ function install_packages() {
     echo_info ">>> Clean local cache for packages"
     echo_info "------------------------------------------------"
 
-    sudo apt-get autoclean && sudo apt-get autoremove
+    sudo apt-get autoclean && sudo apt-get autoremove > /dev/null 2>&1
 }
 
 function add_extension() {
@@ -196,29 +204,33 @@ function ensure_ml_extension() {
 function ensure_prerequisites_in_workspace() {
     echo_info "Ensuring prerequisites in the workspace" >&2
     deploy_scripts=(
+      # setup-repo/copy-data.sh
+      setup-repo/create-datasets.sh
+      # setup-repo/update-datasets.sh
       setup-repo/create-components.sh
       setup-repo/create-environments.sh
     )
     for package in "${deploy_scripts[@]}"; do
-      echo_info "Deploying '${ROOT_DIR}"/"${package}'"
+      echo_info "Deploying '${ROOT_DIR}/${package}'"
       if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash -x "${ROOT_DIR}"/"${package}";
+        bash ${ROOT_DIR}/${package};
       else
         echo "---------------------------------------------------------"
         echo_error "${ROOT_DIR}/${package} not found."
         echo "---------------------------------------------------------"
       fi
     done
+}
 
-    echo_only_scripts=(
-      setup-repo/copy-data.sh
-      setup-repo/create-datasets.sh
+function update_dataset() {
+    echo_info "Updating dataset in the workspace" >&2
+    deploy_scripts=(
       setup-repo/update-datasets.sh
     )
     for package in "${deploy_scripts[@]}"; do
-      echo_info "Deploying '${ROOT_DIR}"/"${package}'"
+      echo_info "Deploying '${ROOT_DIR}/${package}'"
       if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        echo_info "TODO - ${ROOT_DIR}"/"${package}..." >&2
+        bash ${ROOT_DIR}/${package};
       else
         echo "---------------------------------------------------------"
         echo_error "${ROOT_DIR}/${package} not found."
