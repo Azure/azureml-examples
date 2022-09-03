@@ -356,7 +356,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: Bootstrap Resources
+    - name: bootstrap resources
       run: bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -452,7 +452,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: Bootstrap Resources
+    - name: bootstrap resources
       run: bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -502,7 +502,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: Bootstrap Resources
+    - name: bootstrap resources
       run: bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -552,7 +552,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: Bootstrap Resources
+    - name: bootstrap resources
       run: bash bootstrap.sh
       working-directory: infra
       continue-on-error: false

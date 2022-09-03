@@ -22,9 +22,8 @@ container=$(echo $container|tr -d '\r')
 
 
 # replace storage account and container names in the YAML files
-ls
 
-chmod u+x "./cli/assets/data/**/*.yml"
+chmod u+x "./cli/**/*.yml"
 sed -i 's/account-name/'"$account"'/g' "./cli/assets/data/cloud-folder-https.yml"
 
 sed -i 's/container-name/'"$container"'/g' "./cli/assets/data/cloud-folder-https.yml"

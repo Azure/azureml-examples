@@ -125,7 +125,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
-    - name: Bootstrap Resources
+    - name: bootstrap resources
       run: bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -151,7 +151,8 @@ jobs:
         # pipeline-job uses different cred
         cred_replace = f"""
           mkdir ../../.azureml
-          echo '{{"subscription_id": "$SUBSCRIPTION_ID", "resource_group": "$RESOURCE_GROUP_NAME", "workspace_name": "$WORKSPACE_NAME"}}' > ../../.azureml/config.json
+          printf '{{\n          "subscription_id":"%s",\n          "resource_group" : "%s",\n          "workspace_name" : "%s", }}'
+          "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME" > ../../.azureml/config
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:
