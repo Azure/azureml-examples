@@ -151,7 +151,7 @@ jobs:
         # pipeline-job uses different cred
         cred_replace = f"""
           mkdir ../../.azureml
-          echo '{{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}}' > ../../.azureml/config.json
+          echo '{{"subscription_id": "$SUBSCRIPTION_ID", "resource_group": "$RESOURCE_GROUP_NAME", "workspace_name": "$WORKSPACE_NAME"}}' > ../../.azureml/config.json
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:

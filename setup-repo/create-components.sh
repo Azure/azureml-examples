@@ -6,7 +6,7 @@ SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 ROOT_DIR=$(cd "${SCRIPT_DIR}/../" && pwd)
 
-pushd "$ROOTDIR" > /dev/null
+pushd "$ROOT_DIR" > /dev/null
 
 az ml component create --file "./cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml"
 

@@ -53,7 +53,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           mkdir ../../.azureml
-          echo '{"subscription_id": "$(echo $SUBSCRIPTION_ID)", "resource_group": "$(echo $RESOURCE_GROUP_NAME)", "workspace_name": "$(echo $WORKSPACE_NAME)"}' > ../../.azureml/config.json
+          echo '{"subscription_id": "$SUBSCRIPTION_ID", "resource_group": "$RESOURCE_GROUP_NAME", "workspace_name": "$WORKSPACE_NAME"}' > ../../.azureml/config.json
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" rai_pipeline_sample.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" rai_pipeline_sample.ipynb
           papermill -k python rai_pipeline_sample.ipynb rai_pipeline_sample.output.ipynb

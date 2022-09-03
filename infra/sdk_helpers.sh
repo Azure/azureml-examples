@@ -18,7 +18,7 @@ EPOCH_START="$( date -u +%s )"  # e.g. 1661361223
 
 declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+30 days" +'%y-%m-%d')
 declare -a DELETE_AFTER=("30.00:00:00")
-echo SKIP_AUTO_DELETE_TILL $SKIP_AUTO_DELETE_TILL
+
 COMMON_TAGS=(
   "cleanup:DeleteAfter=${DELETE_AFTER}" 
   "cleanup:Policy=DeleteAfter" 
