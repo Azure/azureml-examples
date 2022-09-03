@@ -76,6 +76,12 @@ ensure_ml_extension
 echo_title "Ensuring Workspace"
 ensure_ml_workspace
 
+echo_title "Running prerequisites"
+# ensure_prerequisites_in_workspace
+
+echo_title "Update dataset"
+update_dataset
+
 echo_title "Ensuring CPU compute"
 ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
 ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"

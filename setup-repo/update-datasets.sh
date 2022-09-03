@@ -6,6 +6,8 @@ SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 ROOT_DIR=$(cd "${SCRIPT_DIR}/../" && pwd)
 
+pushd "$ROOTDIR" > /dev/null
+
 datastore="workspaceblobstore"
 
 # query datastore
@@ -21,19 +23,21 @@ container=$(echo $container|tr -d '\r')
 
 # replace storage account and container names in the YAML files
 
-sed -i 's/account-name/'"$account"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-folder-https.yml
+chmod +x *.sh   # make shell files executable.
+sed -i 's/account-name/'"$account"'/g' "./cli/assets/data/cloud-folder-https.yml"
 
-sed -i 's/container-name/'"$container"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-folder-https.yml
+sed -i 's/container-name/'"$container"'/g' "./cli/assets/data/cloud-folder-https.yml"
 
-sed -i 's/account-name/'"$account"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-file-https.yml
+sed -i 's/account-name/'"$account"'/g' "./cli/assets/data/cloud-file-https.yml"
 
-sed -i 's/container-name/'"$container"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-file-https.yml
+sed -i 's/container-name/'"$container"'/g' "./cli/assets/data/cloud-file-https.yml"
 
-sed -i 's/account-name/'"$account"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-folder-wasbs.yml
+sed -i 's/account-name/'"$account"'/g' "./cli/assets/data/cloud-folder-wasbs.yml"
 
-sed -i 's/container-name/'"$container"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-folder-wasbs.yml
+sed -i 's/container-name/'"$container"'/g' "./cli/assets/data/cloud-folder-wasbs.yml"
 
-sed -i 's/account-name/'"$account"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-file-wasbs.yml
+sed -i 's/account-name/'"$account"'/g' "./cli/assets/data/cloud-file-wasbs.yml"
 
-sed -i 's/container-name/'"$container"'/g' "${ROOT_DIR}"/cli/assets/dataset/cloud-file-wasbs.yml
+sed -i 's/container-name/'"$container"'/g' "./cli/assets/data/cloud-file-wasbs.yml"
 
+popd > /dev/null
