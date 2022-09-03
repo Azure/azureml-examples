@@ -6,7 +6,7 @@ SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 ROOT_DIR=$(cd "${SCRIPT_DIR}/../" && pwd)
 
-pushd "$ROOTDIR" > /dev/null
+pushd "$ROOT_DIR" > /dev/null
 
 datastore="workspaceblobstore"
 
@@ -22,8 +22,9 @@ container=$(echo $container|tr -d '\r')
 
 
 # replace storage account and container names in the YAML files
+ls
 
-chmod +x *.sh   # make shell files executable.
+chmod u+x "./cli/assets/data/**/*.yml"
 sed -i 's/account-name/'"$account"'/g' "./cli/assets/data/cloud-folder-https.yml"
 
 sed -i 's/container-name/'"$container"'/g' "./cli/assets/data/cloud-folder-https.yml"
