@@ -32,6 +32,7 @@ import os
 import shutil
 import time
 import random
+import json
 
 import numpy as np
 import torch
@@ -569,8 +570,8 @@ if __name__ == "__main__":
     print("started training scripts on ", socket.gethostname())
     args = parser.parse_args()
 
-    args.world_size = int(os.environ["OMPI_COMM_WORLD_SIZE"])  # node count
-    args.rank = int(os.environ["OMPI_COMM_WORLD_RANK"])  # node world rank
+    args.world_size = int(os.environ["WORLD_SIZE"])  # node count
+    args.rank = int(os.environ["NODE_RANK"])  # node world rank
     print(f"world size {args.world_size}, rank {args.rank}")
 
     import os
@@ -582,7 +583,7 @@ if __name__ == "__main__":
     # override the master node ip by intention
     # args.dist_url = 'tcp://' + get_master_ip() + ':23456'
     # extract master ip from os env as a workaround
-    args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
+    args.dist_url = "tcp://" + os.environ["MASTER_ADDR"] + ":23456"
 
     ngpus_per_node = torch.cuda.device_count()
     args.distributed = args.world_size > 1
