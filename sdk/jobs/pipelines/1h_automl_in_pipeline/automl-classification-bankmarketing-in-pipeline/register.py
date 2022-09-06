@@ -26,29 +26,28 @@ def parse_args():
     # add arguments
     parser.add_argument("--model_input_path", type=str, help="Path to input model")
     parser.add_argument(
-        "--model_info_output_path", type=str, help="Path to write model info JSON"
-    )
-    parser.add_argument(
         "--model_base_name", type=str, help="Name of the registered model"
-    )
-    parser.add_argument(
-        "--model_name_suffix", type=int, help="Set negative to use epoch_secs"
     )
 
     # parse args
     args = parser.parse_args()
-
+    print("Path: "+ args.model_input_path)
     # return args
     return args
 
 
 def main(args):
+    '''
+    Register Model Example
+    '''
+    #Set Tracking URI
     current_experiment = Run.get_context().experiment
     tracking_uri = current_experiment.workspace.get_mlflow_tracking_uri()
     print("tracking_uri: {0}".format(tracking_uri))
     mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(current_experiment.name)
 
+    #Get Run ID from model path
     print("Getting model path")
     mlmodel_path = os.path.join(args.model_input_path, "MLmodel")
     runid = ""
@@ -57,37 +56,22 @@ def main(args):
             if "run_id" in line:
                 runid = line.split(":")[1].strip()
 
+    #Construct Model URI from run ID extract previously
     model_uri = "runs:/{}/outputs/".format(runid)
     print("Model URI: " + model_uri)
 
-    if args.model_name_suffix < 0:
-        suffix = int(time.time())
-    else:
-        suffix = args.model_name_suffix
-    registered_name = "{0}_{1}".format(args.model_base_name, suffix)
+    #Register the model with Model URI and Name of choice
+    registered_name = args.model_base_name
     print(f"Registering model as {registered_name}")
     mlflow.register_model(model_uri, registered_name)
 
-    print("Writing JSON")
-    dict = {"id": "{0}:1".format(registered_name)}
-    output_path = os.path.join(args.model_info_output_path, "model_info.json")
-    with open(output_path, "w") as of:
-        json.dump(dict, fp=of)
 
 
 # run script
 if __name__ == "__main__":
-    # add space in logs
-    print("*" * 60)
-    print("\n\n")
-
     # parse args
     args = parse_args()
 
     # run main function
     main(args)
-
-    # add space in logs
-    print("*" * 60)
-    print("\n\n")
     
