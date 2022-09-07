@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/automl-nlp-ner/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-automl-nlp-ner.yml
 jobs:
   build:

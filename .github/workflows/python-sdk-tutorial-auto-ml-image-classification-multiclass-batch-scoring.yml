@@ -3,12 +3,13 @@ name: auto-ml-image-classification-multiclass-batch-scoring
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 21 * * 2"
+    - cron: "0 20 * * 2"
   pull_request:
     branches:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/image-classification-multiclass-batch-scoring/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-image-classification-multiclass-batch-scoring.yml
 jobs:
   build:
