@@ -36,6 +36,7 @@ def preprocess(img_content):
 
     return img_array
 
+
 def postprocess(max_label):
     """Post-process results to show the predicted label."""
 
