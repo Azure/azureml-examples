@@ -32,7 +32,7 @@ limits:
 # </limit_settings>
 
 # <fixed_settings>
-image_model:
+training_parameters:
   early_stopping: True
   evaluation_frequency: 1
 # </fixed_settings>

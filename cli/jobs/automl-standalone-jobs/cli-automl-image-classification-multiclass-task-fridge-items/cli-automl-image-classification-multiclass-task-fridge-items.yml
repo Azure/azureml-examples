@@ -22,7 +22,7 @@ validation_data:
 limits:
   timeout_minutes: 60
 
-image_model:
+training_parameters:
   early_stopping: True
   evaluation_frequency: 1
 
