@@ -3,5 +3,5 @@ paths:
 transformations:
   - read_delimited:
       delimiter: ","
-      encoding: ascii
+      encoding: utf8
       header: all_files_same_headers
