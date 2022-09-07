@@ -1,4 +1,4 @@
-name: sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items-mlflow
+name: sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items
 # This file is created by sdk/readme.py.
 # Please do not edit directly.
 on:
@@ -10,7 +10,7 @@ on:
       - main
     paths:
       - sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items-mlflow.yml
+      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items.yml
       - sdk/dev-requirements.txt
       - sdk/setup.sh
 jobs:
@@ -39,18 +39,18 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/automl-image-classification-multilabel-task-fridge-items-mlflow.ipynb
+    - name: run jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/automl-image-classification-multilabel-task-fridge-items.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-image-classification-multilabel-task-fridge-items-mlflow.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-image-classification-multilabel-task-fridge-items-mlflow.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-image-classification-multilabel-task-fridge-items-mlflow.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-image-classification-multilabel-task-fridge-items-mlflow.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" automl-image-classification-multilabel-task-fridge-items.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" automl-image-classification-multilabel-task-fridge-items.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-image-classification-multilabel-task-fridge-items.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-image-classification-multilabel-task-fridge-items.ipynb
           
-          papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multilabel-task-fridge-items-mlflow.ipynb automl-image-classification-multilabel-task-fridge-items-mlflow.output.ipynb
+          papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multilabel-task-fridge-items.ipynb automl-image-classification-multilabel-task-fridge-items.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-image-classification-multilabel-task-fridge-items-mlflow
+        name: automl-image-classification-multilabel-task-fridge-items
         path: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
