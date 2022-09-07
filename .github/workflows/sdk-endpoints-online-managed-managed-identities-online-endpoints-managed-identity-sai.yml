@@ -42,8 +42,8 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-managed-identity-sai.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-managed-identity-sai.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<WORKSPACE_LOCATION>/eastus2/g" online-endpoints-managed-identity-uai.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-managed-identity-sai.ipynb
-
           papermill -k python online-endpoints-managed-identity-sai.ipynb online-endpoints-managed-identity-sai.output.ipynb
       working-directory: sdk/endpoints/online/managed/managed-identities
     - name: upload notebook's working folder as an artifact
