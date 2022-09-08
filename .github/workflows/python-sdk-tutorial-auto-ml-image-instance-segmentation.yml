@@ -3,12 +3,13 @@ name: auto-ml-image-instance-segmentation
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 23 * * 2"
+    - cron: "0 22 * * 2"
   pull_request:
     branches:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/image-instance-segmentation/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-image-instance-segmentation.yml
 jobs:
   build:

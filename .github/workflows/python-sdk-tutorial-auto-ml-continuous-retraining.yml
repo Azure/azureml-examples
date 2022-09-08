@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/continuous-retraining/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-continuous-retraining.yml
 jobs:
   build:
