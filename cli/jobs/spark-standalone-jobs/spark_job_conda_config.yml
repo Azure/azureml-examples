@@ -4,7 +4,7 @@ type: spark
 code: ./src_files
 description: "spark job example"
 environment:
-  conda_file: ./conda.config
+  conda_file: ./conda.yml
 compute: azureml:synapsecompute
 entry:
   file: main.py
