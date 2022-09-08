@@ -1,4 +1,4 @@
-name: cli-scripts-deploy-managed-online-endpoint-access-resource-sai
+name: cli-assets-data-cloud-mltable
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/deploy-managed-online-endpoint-access-resource-sai.sh
-      - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml
+      - cli/assets/data/cloud-mltable.yml
+      - .github/workflows/cli-assets-data-cloud-mltable.yml
       - cli/setup.sh
 jobs:
   build:
@@ -25,6 +25,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: test script script
-      run: set -e; bash -x deploy-managed-online-endpoint-access-resource-sai.sh
+    - name: create asset
+      run: az ml data create -f assets/data/cloud-mltable.yml
       working-directory: cli

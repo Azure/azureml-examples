@@ -1,4 +1,4 @@
-name: cli-scripts-deploy-managed-online-endpoint-access-resource-sai
+name: cli-scripts-run-pipeline-jobs
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/deploy-managed-online-endpoint-access-resource-sai.sh
-      - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml
+      - cli/run-pipeline-jobs.sh
+      - .github/workflows/cli-scripts-run-pipeline-jobs.yml
       - cli/setup.sh
 jobs:
   build:
@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: test script script
-      run: set -e; bash -x deploy-managed-online-endpoint-access-resource-sai.sh
+      run: set -e; bash -x run-pipeline-jobs.sh
       working-directory: cli
