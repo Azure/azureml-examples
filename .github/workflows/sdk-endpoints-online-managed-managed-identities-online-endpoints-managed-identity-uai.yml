@@ -25,6 +25,8 @@ jobs:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/dev-requirements.txt
+    - name: pip install azure-mgmt-msi
+      run: pip install azure-mgmt-msi
     - name: azure login
       uses: azure/login@v1
       with:
@@ -39,13 +41,11 @@ jobs:
       continue-on-error: true
     - name: run endpoints/online/managed/managed-identities/online-endpoints-managed-identity-uai.ipynb
       run: |
-          pip install azure-mgmt-msi
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-managed-identity-uai.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-managed-identity-uai.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-managed-identity-uai.ipynb
           sed -i -e "s/<WORKSPACE_LOCATION>/eastus2/g" online-endpoints-managed-identity-uai.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-managed-identity-uai.ipynb
-           
           papermill -k python online-endpoints-managed-identity-uai.ipynb online-endpoints-managed-identity-uai.output.ipynb
       working-directory: sdk/endpoints/online/managed/managed-identities
     - name: upload notebook's working folder as an artifact
