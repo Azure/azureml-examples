@@ -7,7 +7,7 @@ experiment_name: dpv2-cli-automl-image-object-detection-experiment
 description: An Image Object Detection job using fridge items dataset
 
 # <compute_settings>
-compute: nc6
+compute: azureml:gpu-cluster
 # </compute_settings>
 
 # <task_settings>
