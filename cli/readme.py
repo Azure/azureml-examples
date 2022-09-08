@@ -44,7 +44,6 @@ def main(args):
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True)
     )
-    jobs += sorted(glob.glob("jobs/spark-standalone-jobs/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
