@@ -67,6 +67,14 @@ jobs:
       timeout-minutes: 30
       continue-on-error: true
 
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items-automode.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
+      timeout-minutes: 60
+      continue-on-error: true
+
     - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml
       if: ${{ always() }}
       run: |
@@ -75,12 +83,28 @@ jobs:
       timeout-minutes: 30
       continue-on-error: true
 
-    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml   
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items-automode.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+      timeout-minutes: 60
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml
       if: ${{ always() }}
       run: |
         python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
       timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items-automode.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
+      timeout-minutes: 60
       continue-on-error: true
 
     - name: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml
@@ -89,6 +113,14 @@ jobs:
         python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
       timeout-minutes: 30
+      continue-on-error: true
+
+    - name: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items-automode.yml
+      if: ${{ always() }}
+      run: |
+        python prepare_data.py --subscription $SUBSCRIPTION --group $RESOURCE_GROUP --workspace $WORKSPACE
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
+      timeout-minutes: 60
       continue-on-error: true
 
     - name: set sampledata dataset
