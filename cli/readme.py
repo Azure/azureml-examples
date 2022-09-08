@@ -17,7 +17,7 @@ EXCLUDED_RESOURCES = [
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCHEDULES = []
-EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
+EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job", "arm-templates"]
 BRANCH = "main"  # default - do not change
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
@@ -44,6 +44,7 @@ def main(args):
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True)
     )
+    jobs += sorted(glob.glob("jobs/spark-standalone-jobs/*.yml", recursive=False))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -275,12 +276,12 @@ def write_workflows(jobs, endpoints, resources, assets, scripts, schedules):
         # write_endpoint_workflow(endpoint)
         pass
 
-    # process assest
+    # process asset
     for resource in resources:
         # write workflow file
         write_asset_workflow(resource)
 
-    # process assest
+    # process asset
     for asset in assets:
         # write workflow file
         write_asset_workflow(asset)
