@@ -39,7 +39,9 @@ jobs:
     type: spark
     component: ./word_count/component.yml
     inputs:
-      file_input: ${{parent.jobs.sample_word.outputs.file_output}}
+      file_input: 
+        path: ${{parent.jobs.sample_word.outputs.file_output}}
+        mode: direct
 
     # resources:
     #   instance_type: Standard_E8S_V3
