@@ -4,7 +4,7 @@ type: automl
 experiment_name: dpv2-cli-automl-image-instance-segmentation-experiment
 description: An Image Instance segmentation job using fridge items dataset
 
-compute: nc6
+compute: azureml:gpu-cluster
 
 task: image_instance_segmentation
 log_verbosity: debug
