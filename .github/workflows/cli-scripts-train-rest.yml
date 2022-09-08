@@ -25,8 +25,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: scripts installs
-      run: sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
       run: set -e; bash -x train-rest.sh
       working-directory: cli

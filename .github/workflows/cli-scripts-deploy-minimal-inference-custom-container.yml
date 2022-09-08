@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/deploy-minimal-inference-custom-container.sh
       - .github/workflows/cli-scripts-deploy-minimal-inference-custom-container.yml
@@ -24,8 +25,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: scripts installs
-      run: sudo apt-get upgrade -y && sudo apt-get install uuid-runtime jq -y
     - name: test script script
       run: set -e; bash -x deploy-minimal-inference-custom-container.sh
       working-directory: cli

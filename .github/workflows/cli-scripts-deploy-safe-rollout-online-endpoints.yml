@@ -11,9 +11,6 @@ on:
       - cli/deploy-safe-rollout-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-online-endpoints.yml
       - cli/setup.sh
-      - cli/endpoints/online/managed/sample
-      - cli/endpoints/online/model-1
-      - cli/endpoints/online/model-2
 jobs:
   build:
     runs-on: ubuntu-latest

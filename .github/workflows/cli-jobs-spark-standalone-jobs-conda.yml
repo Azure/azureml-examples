@@ -1,4 +1,4 @@
-name: cli-scripts-deploy-managed-online-endpoint-access-resource-sai
+name: cli-jobs-spark-standalone-jobs-conda
 on:
   workflow_dispatch:
   schedule:
@@ -8,8 +8,8 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/deploy-managed-online-endpoint-access-resource-sai.sh
-      - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml
+      - cli/jobs/spark-standalone-jobs/**
+      - .github/workflows/cli-jobs-spark-standalone-jobs-conda.yml
       - cli/setup.sh
 jobs:
   build:
@@ -25,6 +25,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: test script script
-      run: set -e; bash -x deploy-managed-online-endpoint-access-resource-sai.sh
-      working-directory: cli
+    - name: run job
+      run: bash -x ../../run-job.sh conda.yml
+      working-directory: cli/jobs/spark-standalone-jobs
