@@ -55,9 +55,10 @@ jobs:
     outputs:
       best_model:
         type: mlflow_model
-  show_output:
+  register_model_node:
     type: command
+    component: file:./components/component_register_model.yaml
     inputs:
-      mltable_output: ${{parent.jobs.image_multilabel_classification_node.outputs.best_model}}
-    command: ls ${{inputs.mltable_output}}
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+      model_input_path: ${{parent.jobs.image_multilabel_classification_node.outputs.best_model}}
+      model_base_name: fridge_items_multilabel_classification_model
+      
