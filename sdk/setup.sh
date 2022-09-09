@@ -15,7 +15,7 @@ pip install mltable
 
 # <az_ml_sdk_test_install>
 # pip install azure-ai-ml==0.1.0.b6
-pip install https://docsupport.blob.core.windows.net/ml-sample-submissions/1836020/azure_ai_ml-0.1.0b7-py3-none-any.whl
+pip install https://docsupport.blob.core.windows.net/ml-sample-submissions/1842015/azure_ai_ml-0.1.0b7-py3-none-any.whl
 # </az_ml_sdk_test_install>
 
 pip list
