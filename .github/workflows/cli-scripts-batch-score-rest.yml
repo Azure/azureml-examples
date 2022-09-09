@@ -25,6 +25,8 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: scripts installs
+      run: sudo apt-get install jq -y
     - name: test script script
       run: set -e; bash -x batch-score-rest.sh
       working-directory: cli
