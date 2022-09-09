@@ -3,12 +3,13 @@ name: auto-ml-image-classification-multilabel
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 22 * * 2"
+    - cron: "0 21 * * 2"
   pull_request:
     branches:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/image-classification-multilabel/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-image-classification-multilabel.yml
 jobs:
   build:
