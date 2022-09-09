@@ -87,4 +87,4 @@ do
 done
 
 # Clean up
-# cleanup
+cleanup
