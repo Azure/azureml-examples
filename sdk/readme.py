@@ -67,7 +67,7 @@ def get_mlflow_import(notebook):
     with open(notebook, "r") as f:
         if "import mlflow" in f.read():
             return """
-    - name: pip install mkflow reqs
+    - name: pip install mlflow reqs
       run: pip install -r sdk/mlflow-requirements.txt"""
         else:
             return ""
