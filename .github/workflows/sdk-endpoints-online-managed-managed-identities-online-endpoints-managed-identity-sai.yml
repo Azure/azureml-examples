@@ -1,4 +1,4 @@
-name: sdk-endpoints-online-managed-managed-identities-online-endpoints-managed-identity-sai
+1name: sdk-endpoints-online-managed-managed-identities-online-endpoints-managed-identity-sai
 # This file is created by sdk/readme.py.
 # Please do not edit directly.
 on:
@@ -45,8 +45,9 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-managed-identity-sai.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-managed-identity-sai.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-managed-identity-sai.ipynb
-          sed -i -e "s/<STORAGE_ACCOUNT_NAME>/oepstorage$RANDOM/g" online-endpoints-managed-identity-sai.ipynb
-          sed -i -e "s/<FILE_TO_ACCESS>/hello\.txt/g" online-endpoints-managed-identity-uai.ipynb
+          sed -i -e "s/<ENDPOINT_NAME>/saiendpt-${RANDOM}/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<STORAGE_ACCOUNT_NAME>/oepstorage${RANDOM}/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<FILE_TO_ACCESS>/hello\.txt/g" online-endpoints-managed-identity-sai.ipynb
           papermill -k python online-endpoints-managed-identity-sai.ipynb online-endpoints-managed-identity-sai.output.ipynb
       working-directory: sdk/endpoints/online/managed/managed-identities
     - name: upload notebook's working folder as an artifact
