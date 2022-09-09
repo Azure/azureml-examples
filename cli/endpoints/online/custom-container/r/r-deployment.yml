@@ -5,7 +5,7 @@ code_configuration:
   code: ./scripts
   scoring_script: plumber.R
 model:
-  name: plumber
+  name: rplumber
   version: 1
   path: ./models
 environment:
