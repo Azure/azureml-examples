@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: nyc_taxi_data_regression_single_job
+description: Single job pipeline to train regression model based on nyc taxi dataset
+
+jobs:
+  train_job:
+    type: command
+    component: ./train.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      training_data: 
+        type: uri_folder
+        path: ./data_transformed
+    outputs:
+      model_output: 
+        type: mlflow_model
+      test_data: 
+  
