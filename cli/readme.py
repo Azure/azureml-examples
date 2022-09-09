@@ -17,7 +17,7 @@ EXCLUDED_RESOURCES = [
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCHEDULES = []
-EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job", "arm-templates"]
+EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
 BRANCH = "main"  # default - do not change
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
