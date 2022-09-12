@@ -11,7 +11,7 @@ model:
 environment:
   #name: r-environment
   #version: 1
-  image: alwallace.azurecr.io/r_server
+  image: {{acr_name}}.azurecr.io/r_server
   inference_config:
     liveness_route:
       port: 8000
