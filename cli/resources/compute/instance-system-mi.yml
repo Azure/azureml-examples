@@ -2,4 +2,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json
 name: basic-example-i
 type: computeinstance
 size: STANDARD_DS3_v2
-identity-type: UserAssigned
+identity:
+  type: system_assigned
