@@ -10,6 +10,7 @@ pip install mldesigner==0.1.0b4
 
 # <mltable_install>
 pip install mltable
+pip install pandas
 # </mltable_install>
 
 
