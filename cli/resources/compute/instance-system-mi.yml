@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json 
-name: basic-example-i
+name: system-mi-example
 type: computeinstance
 size: STANDARD_DS3_v2
 identity:
