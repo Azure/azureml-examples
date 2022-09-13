@@ -41,6 +41,17 @@ az ml online-endpoint create -f $BASE_PATH/endpoint.yaml
 az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/deployment.yaml --all-traffic
 # </create_deployment> 
 
+# Check if deployment was successful
+deploy_status=`az ml online-deployment show --name triton-cc-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
+then
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
+  exit 1
+fi
+
 # Get accessToken
 echo "Getting access key..."
 KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv)
