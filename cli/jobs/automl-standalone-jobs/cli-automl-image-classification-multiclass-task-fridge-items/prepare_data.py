@@ -29,7 +29,14 @@ def create_jsonl_files(uri_folder_data_path):
     )
 
     # Baseline of json line dictionary
+<<<<<<< HEAD
     json_line_sample = {"image_url": uri_folder_data_path, "label": ""}
+=======
+    json_line_sample = {
+        "image_url": uri_folder_data_path,
+        "label": "",
+    }
+>>>>>>> 32cba55f2814c85eee15d990e9ac0ba1a47f96dd
 
     index = 0
     # Scan each sub directary and generate a jsonl line per image, distributed on train and valid JSONL files

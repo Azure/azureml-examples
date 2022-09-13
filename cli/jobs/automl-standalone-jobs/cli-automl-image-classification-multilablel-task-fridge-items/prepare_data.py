@@ -29,7 +29,14 @@ def create_jsonl_files(uri_folder_data_path):
     )
 
     # Baseline of json line dictionary
+<<<<<<< HEAD
     json_line_sample = {"image_url": uri_folder_data_path, "label": []}
+=======
+    json_line_sample = {
+        "image_url": uri_folder_data_path,
+        "label": [],
+    }
+>>>>>>> 32cba55f2814c85eee15d990e9ac0ba1a47f96dd
 
     # Path to the labels file.
     labelFile = os.path.join(src_images, "labels.csv")
