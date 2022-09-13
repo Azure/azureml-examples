@@ -29,7 +29,7 @@ template_file="$local_dir/$blob_folder/online.endpoint.template.json"
 output=$(python3 export-service-util.py --overwrite-parameters -mp "$params_file" -me "$online_endpoint_name" -md "$online_deployment_name"| tee /dev/tty)
 params=$(echo "$output"|tail -n1)
 
-# STEP4 Deploy to MIR
+# STEP4 Deploy to managed online endpoints
 echo
 echo "Params have been saved to $params"
 echo "Deploying $migrate_type service $online_endpoint_name..."
