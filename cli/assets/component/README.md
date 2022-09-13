@@ -43,6 +43,58 @@ This repository contains an example `YAML` file for creating `component` using A
 ```cli
 > az ml component restore -n <component_name> -v <component_version>
 ```
+### Define optional inputs and default value in command component
+
+We also provide to specify the default value and whether input is option when define command component. 
+- Inputs with default value will take the default value if no value provided during runtime. 
+- To make input work as optional, you need use `$[[command_with_optional_input]]` to embrace command line with optional input. And if inputs marked as optional and no value provide during runtime, this command line will ignore.
+
+For example, in following yaml
+- max_epocs is optional but no default value
+- learning_rate is optional and have default value
+- learning_rate_schedule is optional and have default value
+
+```yaml
+inputs:
+  training_data: 
+    type: uri_folder
+  max_epocs:
+    type: integer
+    optional: true
+  learning_rate: 
+    type: number
+    default: 0.01
+    optional: true
+  learning_rate_schedule: 
+    type: string
+    default: time-based
+    optional: true
+outputs:
+  model_output:
+    type: uri_folder
+code: ./train_src
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+command: >-
+  python train.py 
+  --training_data ${{inputs.training_data}} 
+  $[[--max_epocs ${{inputs.max_epocs}}]]
+  $[[--learning_rate ${{inputs.learning_rate}}]]
+  $[[--learning_rate_schedule ${{inputs.learning_rate_schedule}}]]
+  --model_output ${{outputs.model_output}}
+```
+Command line in the runtime may differ according to different inputs.
+- If only `training_data` and `model_output` as they are must have parameters, the command line will look like:
+
+```cli
+python train.py --training_data some_input_path --learning_rate 0.01 --learning_rate_schedule time-based --model_output some_output_path
+```
+
+As `learning_rate` and `learning_rate_schedule` have default value defined, which will be take if no value provide in runtime.
+
+- If all inputs/outputs provide values during runtime, the command line will look like:
+```cli
+python train.py --training_data some_input_path --max_epocs 10 --learning_rate 0.01 --learning_rate_schedule time-based --model_output some_output_path
+```
 
 
 To learn more details about `az ml component` commands, Pleas refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest).
