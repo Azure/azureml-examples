@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: hello_pipeline_optional_inputs
+settings:
+  default_compute: azureml:cpu-cluster
+jobs:
+  train: 
+    type: command
+    component: ./train.yml
+    inputs:
+      training_data:
+        type: uri_folder
+        path: ./train_src
+      learning_rate: 0.05
+    outputs:
+      model_output:
