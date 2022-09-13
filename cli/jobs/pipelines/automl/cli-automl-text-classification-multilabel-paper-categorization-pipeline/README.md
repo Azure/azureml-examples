@@ -14,5 +14,5 @@ This sample explains how to use AutoML `TextClassificationMultilabel` inside pip
 
 Submit the Pipeline Job with text classification multilabel task:
 ```
-az ml job create --file text-classification-multilabel-paper-categorization-pipeline.yml
+az ml job create --file pipeline.yml
 ```

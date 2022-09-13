@@ -14,5 +14,5 @@ This sample explains how to use AutoML `TextClassification` task inside pipeline
 
 Submit the Pipeline Job with text classification task:
 ```
-az ml job create --file text-classification-newsgroup-pipeline.yml
+az ml job create --file pipeline.yml
 ```

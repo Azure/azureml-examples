@@ -14,5 +14,5 @@ This sample explains how to use AutoML `TextNer` task inside pipeline.
 
 Submit the Pipeline Job with text ner task:
 ```
-az ml job create --file text-ner-conll-pipeline.yml
+az ml job create --file pipeline.yml
 ```

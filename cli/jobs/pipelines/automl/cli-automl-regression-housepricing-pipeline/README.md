@@ -14,5 +14,5 @@ This sample explains how to use `Regression` AutoML task to train model and pred
 
 Submit the Pipeline Job with regression task:
 ```
-az ml job create -f regression-task-housepricing-pipeline.yml
+az ml job create -f pipeline.yml
 ```

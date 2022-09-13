@@ -14,5 +14,5 @@ This sample explains how to use `Classification` AutoML task to train model and 
 
 Submit the Pipeline Job with classification task:
 ```
-az ml job create --file classification-task-bankmarketing-pipeline.yml
+az ml job create --file pipeline.yml
 ```
