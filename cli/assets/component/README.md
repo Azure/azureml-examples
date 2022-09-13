@@ -46,13 +46,13 @@ This repository contains an example `YAML` file for creating `component` using A
 ### Define optional inputs and default value in command component
 
 We also provide to specify the default value and whether input is option when define command component. 
-- Inputs with default value will take the default value if no value provided during runtime. 
+- Inputs with default value will take the default value if without value provided during runtime. 
 - To make input work as optional, you need use `$[[command_with_optional_input]]` to embrace command line with optional input. And if inputs marked as optional and no value provide during runtime, this command line will ignore.
 
 For example, in following yaml
-- max_epocs is optional but no default value
-- learning_rate is optional and have default value
-- learning_rate_schedule is optional and have default value
+- max_epocs is optional but without default value
+- learning_rate is optional and with default value
+- learning_rate_schedule is optional and with default value
 
 ```yaml
 inputs:
@@ -83,7 +83,7 @@ command: >-
   --model_output ${{outputs.model_output}}
 ```
 Command line in the runtime may differ according to different inputs.
-- If only `training_data` and `model_output` as they are must have parameters, the command line will look like:
+- If only specify `training_data` and `model_output` as they are must have parameters, the command line will look like:
 
 ```cli
 python train.py --training_data some_input_path --learning_rate 0.01 --learning_rate_schedule time-based --model_output some_output_path
