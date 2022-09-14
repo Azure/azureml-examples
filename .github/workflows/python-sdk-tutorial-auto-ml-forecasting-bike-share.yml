@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/forecasting-bike-share/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-bike-share.yml
 jobs:
   build:
