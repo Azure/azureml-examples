@@ -1,5 +1,6 @@
 BASE_PATH=endpoints/online/custom-container
-AML_MODEL_NAME=torchserve-densenet161
+AML_MODEL_NAME=torchserve-densenet161-`echo $RANDOM`
+echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=torchserve-endpoint
@@ -77,7 +78,7 @@ fi
 
 # Create deployment
 echo "Creating deployment..."
-az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic --set model.name=$AML_MODEL_NAME
 
 deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
