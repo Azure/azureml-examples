@@ -52,12 +52,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          mkdir ../../.azureml
-          printf '{
-          "subscription_id":"%s",
-          "resource_group" : "%s",
-          "workspace_name" : "%s", }'
-          "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME" > ../../.azureml/config
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" train_mnist_with_tensorflow.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" train_mnist_with_tensorflow.ipynb
           papermill -k python train_mnist_with_tensorflow.ipynb train_mnist_with_tensorflow.output.ipynb

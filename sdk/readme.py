@@ -146,13 +146,11 @@ jobs:
     - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";"""
+          source "{github_workspace}/infra/init_environment.sh";
+          bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";"""
     if is_pipeline_notebook:
         # pipeline-job uses different cred
         cred_replace = f"""
-          mkdir ../../.azureml
-          printf '{{\n          "subscription_id":"%s",\n          "resource_group" : "%s",\n          "workspace_name" : "%s", }}'
-          "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME" > ../../.azureml/config
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb"""
     else:

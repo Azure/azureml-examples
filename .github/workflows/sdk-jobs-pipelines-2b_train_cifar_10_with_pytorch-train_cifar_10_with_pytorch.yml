@@ -52,12 +52,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          mkdir ../../.azureml
-          printf '{
-          "subscription_id":"%s",
-          "resource_group" : "%s",
-          "workspace_name" : "%s", }'
-          "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME" > ../../.azureml/config
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" train_cifar_10_with_pytorch.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" train_cifar_10_with_pytorch.ipynb
           papermill -k python train_cifar_10_with_pytorch.ipynb train_cifar_10_with_pytorch.output.ipynb
