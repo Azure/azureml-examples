@@ -1,4 +1,4 @@
-name: sdk-endpoints-online-custom-container-triton-cc-online-endpoints-triton-cc
+name: sdk-endpoints-online-triton-single-model-online-endpoints-triton
 # This file is created by sdk/readme.py.
 # Please do not edit directly.
 on:
@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/endpoints/online/custom-container/triton-cc/**
-      - .github/workflows/sdk-endpoints-online-custom-container-triton-cc-online-endpoints-triton-cc.yml
+      - sdk/endpoints/online/triton/single-model/**
+      - .github/workflows/sdk-endpoints-online-triton-single-model-online-endpoints-triton.yml
       - sdk/dev-requirements.txt
       - sdk/setup.sh
 jobs:
@@ -37,18 +37,18 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run endpoints/online/custom-container/triton-cc/online-endpoints-triton-cc.ipynb
+    - name: run endpoints/online/triton/single-model/online-endpoints-triton.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-triton-cc.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-triton-cc.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-triton-cc.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-triton-cc.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" online-endpoints-triton.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-triton.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-triton.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-triton.ipynb
 
-          papermill -k python online-endpoints-triton-cc.ipynb online-endpoints-triton-cc.output.ipynb
-      working-directory: sdk/endpoints/online/custom-container/triton-cc
+          papermill -k python online-endpoints-triton.ipynb online-endpoints-triton.output.ipynb
+      working-directory: sdk/endpoints/online/triton/single-model
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: online-endpoints-triton-cc
-        path: sdk/endpoints/online/custom-container/triton-cc
+        name: online-endpoints-triton
+        path: sdk/endpoints/online/triton/single-model
