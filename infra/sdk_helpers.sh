@@ -270,7 +270,7 @@ install_tools(){
     )
     for extension_name in "${add_extension[@]}"; do
       echo_info "Ensuring extension '${extension_name}'"
-      # ensure_extension "${extension_name}"
+      ensure_extension "${extension_name}"
     done
 
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \

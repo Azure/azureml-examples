@@ -70,12 +70,13 @@ echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCA
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
+echo_title "Installing tools"
+"$SCRIPT_DIR"/sdk_helpers.sh install_tools
+
 echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
 if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
-    echo_title "Installing tools"
-    "$SCRIPT_DIR"/sdk_helpers.sh install_tools
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace
 
