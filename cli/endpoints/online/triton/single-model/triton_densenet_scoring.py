@@ -59,7 +59,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--base_url")
     parser.add_argument("--token")
-    parser.add_argument("--image_url", type=str, default="https://aka.ms/peacock-pic")
+    parser.add_argument("--image_path", type=str, default="https://aka.ms/peacock-pic")
     args = parser.parse_args()
 
     scoring_uri = args.base_url[8:]
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     status_ctx = triton_client.is_model_ready(model_name, "1", headers)
     print("Is model ready - {}".format(status_ctx))
 
-    img_data = preprocess(args.image_url)
+    img_data = preprocess(args.image_path)
 
     # Populate inputs and outputs
     input = tritonhttpclient.InferInput("data_0", img_data.shape, "FP32")

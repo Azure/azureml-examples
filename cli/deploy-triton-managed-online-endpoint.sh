@@ -56,7 +56,7 @@ auth_token=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query acc
 # </get_token>
 
 # <check_scoring_of_model>
-python $BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$auth_token --image_url $BASE_PATH/peacock.jpg
+python $BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$auth_token --image_path $BASE_PATH/data/peacock.jpg
 # </check_scoring_of_model>
 
 # <delete_endpoint>
