@@ -29,6 +29,8 @@ SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 
 ###############
 
+sudo chmod 775 "$SCRIPT_DIR"
+
 if [ -f "$SCRIPT_DIR"/sdk_helpers.sh ]; then
   source "$SCRIPT_DIR"/sdk_helpers.sh;
 else
