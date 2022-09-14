@@ -147,6 +147,7 @@ jobs:
       run: |
           source "{github_workspace}/infra/sdk_helpers.sh";
           source "{github_workspace}/infra/init_environment.sh";
+          mkdir -p "../../.azureml";
           bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";"""
     if is_pipeline_notebook:
         # pipeline-job uses different cred
