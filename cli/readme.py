@@ -381,7 +381,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = CREDENTIALS
     workflow_yaml = f"""name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -408,15 +408,15 @@ jobs:
         creds: {creds}
     - name: setup
       run: |
-          # source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          # source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
-          # source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          # source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           az ml endpoint create -f {endpoint}.yml
       working-directory: cli\n"""
 
