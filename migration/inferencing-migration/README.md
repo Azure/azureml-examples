@@ -2,7 +2,7 @@
 
 [Managed online endpoints](https://docs.microsoft.com/azure/machine-learning/concept-endpoints) help to deploy your ML models in a turnkey manner. Managed online endpoints work with powerful CPU and GPU machines in Azure in a scalable, fully managed way. Managed online endpoints take care of serving, scaling, securing, and monitoring your models, freeing you from the overhead of setting up and managing the underlying infrastructure. Details can be found on [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints).
 
-You can deploy directly to the new compute target with your previous models and environments, or leverage the [scripts](https://github.com/Azure/azureml-examples/blob/main/migration/inferencing-migration/migrate-service.sh) provided by us to export the current services then deploy to the new compute. For customers who regularly create and delete ACI services, we strongly recommend the prior solution. Please notice that the **scoring URL will be changed after migration**. For example, the scoring url for ACI web service is like "http://aaaaaa-bbbbb-1111.westus.azurecontainer.io/score", the scoring url for AKS web service is like "http://1.2.3.4:80/api/v1/service/aks-service/score", while the new one is like "https://endpoint-name.westus.inference.ml.azure.com/score".
+You can deploy directly to the new compute target with your previous models and environments, or leverage the [scripts](https://github.com/Azure/azureml-examples/blob/main/migration/inferencing-migration/migrate-service.sh) (preview) provided by us to export the current services then deploy to the new compute. For customers who regularly create and delete ACI services, we strongly recommend the prior solution. Please notice that the **scoring URL will be changed after migration**. For example, the scoring url for ACI web service is like "http://aaaaaa-bbbbb-1111.westus.azurecontainer.io/score", the scoring url for AKS web service is like "http://1.2.3.4:80/api/v1/service/aks-service/score", while the new one is like "https://endpoint-name.westus.inference.ml.azure.com/score".
 
 ## Supported Scenarios and Differences
 
@@ -39,7 +39,7 @@ For private workspace and VNET scenarios, please check [Use network isolation wi
 Redeploy manually with your model fils and environment definition.
 You can find our examples on [azureml-examples](https://github.com/Azure/azureml-examples). Specifically, this is the [SDK example for managed online endpoint](https://github.com/Azure/azureml-examples/tree/main/sdk/endpoints/online/managed).
 
-### With our migration tool
+### With our migration tool (preview)
 Here're the steps to use these scripts. Please notice that the new endpoint will be created under the **same workspace**.
 
 1. Linux/WSL to run the bash script.
