@@ -52,12 +52,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          mkdir ../../.azureml
-          printf '{
-          "subscription_id":"%s",
-          "resource_group" : "%s",
-          "workspace_name" : "%s", }'
-          "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME" > ../../.azureml/config
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" image_classification_keras_minist_convnet.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" image_classification_keras_minist_convnet.ipynb
           papermill -k python image_classification_keras_minist_convnet.ipynb image_classification_keras_minist_convnet.output.ipynb

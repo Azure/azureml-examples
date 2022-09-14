@@ -576,10 +576,11 @@ setup_instance_type_aml_arc(){
 }
 
 generate_workspace_config(){
+    local CONFIG_PATH=${1:-.azureml/config}
     if [[ ! -d ".azureml" ]]; then
         mkdir -p ".azureml";
     fi
-    cat << EOF > .azureml/config.json
+    cat << EOF > "${CONFIG_PATH}"
 {
     "subscription_id": "$SUBSCRIPTION_ID",
     "resource_group": "$RESOURCE_GROUP_NAME",
