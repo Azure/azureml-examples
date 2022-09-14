@@ -46,7 +46,7 @@ else
 fi
 
 echo_title "Ensuring dependent packages"
-install_packages
+# "$SCRIPT_DIR"/sdk_helpers.sh install_packages
 
 if [ -f "$SCRIPT_DIR"/verify_prerequisites.sh ]; then
   source "$SCRIPT_DIR"/verify_prerequisites.sh;
@@ -58,38 +58,71 @@ fi
 
 #login to azure using your credentials
 az account show 1> /dev/null
-if [ $? != 0 ];
+if [[ $? != 0 ]];
 then
     az login
 fi
 
-echo "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCATION}\"  set as defaults. "
+echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCATION}\" set as defaults. "
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
+echo_title "Installing tools"
+"$SCRIPT_DIR"/sdk_helpers.sh install_tools
 echo_title "Ensuring Resource group"
-ensure_resourcegroup
+"$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
+RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
+if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
+    echo_title "Ensuring Workspace"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace
 
-echo_title "Installing ML extension"
-ensure_ml_extension
+    echo_title "Ensuring CPU compute"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
+    # Larger CPU cluster for Dask and Spark examples
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
+    
+    echo_title "Ensuring GPU compute"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 4 "Standard_NC12"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6"
+    
+    echo_title "Running prerequisites"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_prerequisites_in_workspace
 
-echo_title "Ensuring Workspace"
-ensure_ml_workspace
+    "$SCRIPT_DIR"/sdk_helpers.sh register_providers
 
-echo_title "Running prerequisites"
-# ensure_prerequisites_in_workspace
+    echo_title "Creating AKS clusters."
+    configure_aks_cluster=(
+      aks-cpu-is
+      aks-cpu-ml
+      aks-cpu-od
+      aks-cpu-mc
+      scoring-explain
+    )
+    for aks_compute in "${configure_aks_cluster[@]}"; do
+      echo_info "Creating AKS cluster: '$aks_compute'"
+      "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
+      "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${aks_compute}" "managedClusters" "Microsoft.ContainerService/managedClusters"
+      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${aks_compute}" "${aks_compute}" "managedClusters" "azureml"
+    done
+    echo_info ">>> Done creating AKS clusters"
 
-echo_title "Update dataset"
-update_dataset
+    # Arc cluster configuration
+    configure_arc_cluster=(
+      amlarc-inference
+    )
+    for arc_compute in "${configure_arc_cluster[@]}"; do
+      echo_info "Creating amlarc cluster: '$arc_compute'"
+      "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
+      "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
+      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "inference-arc" "connectedClusters" "azureml"
+      "$SCRIPT_DIR"/sdk_helpers.sh setup_instance_type_aml_arc "${arc_compute}"
+    done
+    echo_info ">>> Done creating amlarc clusters"
 
-echo_title "Ensuring CPU compute"
-ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
-ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
-# Larger CPU cluster for Dask and Spark examples
-ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
+else
+    echo_info "Skipping Bootstrapping. Set the RUN_BOOTSTRAP environment variable to enable bootstrapping."
+fi
 
-echo_title "Ensuring GPU compute"
-ensure_aml_compute "gpu-cluster" 0 4 "Standard_NC12"
-ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6"
+echo_title "✅ Resource provisioning completed..."
 
-echo "✅ Resource provisioning completed..."

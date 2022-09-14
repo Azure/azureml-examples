@@ -1,10 +1,5 @@
 #!/bin/bash 
 
-if [ "${BASH_SOURCE[0]}" == "$0" ];  then
-    echo "This script is to be sourced, not executing directly, will bail out" >&2
-    exit 1
-fi
-
 ####################
 # SET VARIABLES FOR CURRENT FILE & DIR
 ####################
@@ -25,6 +20,7 @@ COMMON_TAGS=(
   "creationTime=${EPOCH_START}" 
   "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}" 
 )
+
 
 ####################
 # SETUP LOGGING
@@ -54,36 +50,15 @@ echo_subtitle() {
 }
 
 ####################
-# DEBUGGING CONFIGURATION
-####################
-
-CONTINUE_ON_ERR=${CONTINUE_ON_ERR:-0}  # 0: false; 1: true
-if [[ "${CONTINUE_ON_ERR}" = true ]]; then  # -E
-   echo_warning "Set to continue despite of an error ..."
-else
-   echo_warning "set -e  # error stops execution ..."
-   set -e  # exits script when a command fails
-   set -o errexit
-   # ALTERNATE: set -eu pipefail  # pipefail counts as a parameter
-fi
-
-RUN_DEBUG=${RUN_DEBUG:-0}  # 0: false; 1: true
-# set run error control
-if [[ "${RUN_DEBUG}" = true ]]; then
-   echo_warning "set -x  # printing each command before executing it ..."
-   set -x   # (-o xtrace) to show commands for specific issues.
-fi
-
-####################
 # CUSTOM FUNCTIONS
 ####################
 
 function pushd () {
-    command pushd "$@" 2>&1 > /dev/null
+    command pushd "$@" 2>&1 > /dev/null || exit
 }
 
 function popd () {
-    command popd "$@" 2>&1 > /dev/null
+    command popd "$@" 2>&1 > /dev/null || exit
 }
 
 function ensure_resourcegroup() {
@@ -93,7 +68,7 @@ function ensure_resourcegroup() {
         echo_info "Resource group ${RESOURCE_GROUP_NAME} in location: ${LOCATION} does not exist; creating" >&2
         az group create --name "${RESOURCE_GROUP_NAME}" --location "${LOCATION}" --tags "${COMMON_TAGS[@]}" > /dev/null 2>&1
         if [[ $? -ne 0 ]]; then
-            echo_failure "Failed to create resource group ${RESOURCE_GROUP_NAME}" >&2
+            echo_error "Failed to create resource group ${RESOURCE_GROUP_NAME}" >&2
         else
             echo_info "Resource group ${RESOURCE_GROUP_NAME} created successfully" >&2
         fi
@@ -114,7 +89,7 @@ function ensure_ml_workspace() {
             --query id --output tsv  \
             > /dev/null 2>&1)
         if [[ $? -ne 0 ]]; then
-            echo_failure "Failed to create workspace ${WORKSPACE_NAME}" >&2
+            echo_error "Failed to create workspace ${WORKSPACE_NAME}" >&2
             echo "[---fail---] $CREATE_WORKSPACE."
         else
             echo_info "Workspace ${WORKSPACE_NAME} created successfully" >&2
@@ -139,9 +114,9 @@ function ensure_aml_compute() {
             --type amlcompute --min-instances "${MIN_INSTANCES}" --max-instances "${MAX_INSTANCES}"  \
             --size "${COMPUTE_SIZE}" \
             --output tsv  \
-            > /dev/null 2>&1)
+            > /dev/null)
         if [[ $? -ne 0 ]]; then
-            echo_failure "Failed to create compute ${COMPUTE_NAME}" >&2
+            echo_error "Failed to create compute ${COMPUTE_NAME}" >&2
             echo "[---fail---] $CREATE_COMPUTE."
         else
             echo_info "Compute ${COMPUTE_NAME} created successfully" >&2
@@ -149,6 +124,10 @@ function ensure_aml_compute() {
     else
         echo_warning "Compute ${COMPUTE_NAME} already exist, skipping creation step..." >&2
     fi
+}
+
+function IsInstalled {
+    sudo dpkg -S "$1" &> /dev/null
 }
 
 function install_packages() {
@@ -160,23 +139,25 @@ function install_packages() {
     sudo apt-get upgrade -y > /dev/null 2>&1
     sudo apt-get dist-upgrade -y > /dev/null 2>&1
 
-    echo_info "------------------------------------------------"
     echo_info ">>> Installing packages"
-    echo_info "------------------------------------------------"
 
     # jq                - Required for running filters on a stream of JSON data from az
     # uuid-runtime      - Required for containers
+    # uuid-runtime      - Required for aks/arc
     packages_to_install=(
       jq
       uuid-runtime
+      xmlstarlet
     )
     for package in "${packages_to_install[@]}"; do
-      echo_info "Installing \'$package\'"
-      sudo apt-get install "${package}" -y > /dev/null 2>&1
+      echo_info "Installing '$package'"
+      if ! IsInstalled "$package"; then
+          sudo apt-get install -y --no-install-recommends "${package}" > /dev/null 2>&1
+      else
+          echo_info "$package is already installed"
+      fi
     done
-    echo_info "------------------------------------------------"
     echo_info ">>> Clean local cache for packages"
-    echo_info "------------------------------------------------"
 
     sudo apt-get autoclean && sudo apt-get autoremove > /dev/null 2>&1
 }
@@ -186,38 +167,36 @@ function add_extension() {
     az extension add -n "$1" -y
 }
 
-function ensure_ml_extension() {
-    echo_info "az extension version check ... "
-    EXT_VERSION=$( az extension list -o table --query "[?contains(name, 'ml')].{Version:version}" -o tsv |tail -n1|tr -d "[:cntrl:]")
+function ensure_extension() {
+    echo_info "az extension $1 version check ... "
+    EXT_VERSION=$( az extension list -o table --query "[?contains(name, '$1')].{Version:version}" -o tsv |tail -n1|tr -d "[:cntrl:]")
     if [[ -z "${EXT_VERSION}" ]]; then
-       echo_info "az extension \"ml\" not found."
-       add_extension ml
+       echo_info "az extension \"$1\" not found."
+       add_extension "$1"
     else
-       echo_info "Remove az extionsion \'ml\' version ${EXT_VERSION}"
+       echo_info "Remove az extionsion '$1' version ${EXT_VERSION}"
        # Per https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli
-       az extension remove -n ml
-       echo_info "Add latest az extionsion \"ml\":"
-       add_extension ml
+       az extension remove -n "$1"
+       echo_info "Add latest az extionsion \"$1\":"
+       add_extension "$1"
     fi
 }
 
 function ensure_prerequisites_in_workspace() {
     echo_info "Ensuring prerequisites in the workspace" >&2
     deploy_scripts=(
-      # setup-repo/copy-data.sh
-      setup-repo/create-datasets.sh
-      # setup-repo/update-datasets.sh
-      setup-repo/create-components.sh
-      setup-repo/create-environments.sh
+      # infra/copy-data.sh
+      infra/create-datasets.sh
+      # infra/update-datasets.sh
+      infra/create-components.sh
+      infra/create-environments.sh
     )
     for package in "${deploy_scripts[@]}"; do
       echo_info "Deploying '${ROOT_DIR}/${package}'"
       if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash ${ROOT_DIR}/${package};
+        bash "${ROOT_DIR}"/"${package}";
       else
-        echo "---------------------------------------------------------"
         echo_error "${ROOT_DIR}/${package} not found."
-        echo "---------------------------------------------------------"
       fi
     done
 }
@@ -225,16 +204,360 @@ function ensure_prerequisites_in_workspace() {
 function update_dataset() {
     echo_info "Updating dataset in the workspace" >&2
     deploy_scripts=(
-      setup-repo/update-datasets.sh
+      infra/update-datasets.sh
     )
     for package in "${deploy_scripts[@]}"; do
       echo_info "Deploying '${ROOT_DIR}/${package}'"
       if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash ${ROOT_DIR}/${package};
+        bash "${ROOT_DIR}"/"${package}";
       else
-        echo "---------------------------------------------------------"
         echo_error "${ROOT_DIR}/${package} not found."
-        echo "---------------------------------------------------------"
       fi
     done
 }
+
+function register_az_provider {
+   namespace_name=$1
+   RESPONSE=$( az provider show --namespace "$namespace_name"  --query registrationState -o tsv |tail -n1|tr -d "[:cntrl:]")
+   if [ "$RESPONSE" == "Registered" ]; then
+      echo_info ">>> $namespace_name already Registered."
+   else
+      az provider register -n "$namespace_name"
+      echo_info ">>> Provider \"$namespace_name\" registered for subscription."
+   fi
+}
+
+register_providers(){
+
+    provider_list=(
+      "Microsoft.Storage"
+      # For aks
+      "Microsoft.ContainerService"
+      # For arc
+      "Microsoft.Kubernetes"
+      # For amlarc extension
+      "Microsoft.Relay"
+      "Microsoft.KubernetesConfiguration"
+    )
+    for provider in "${provider_list[@]}"; do
+      register_az_provider "${provider}"
+    done
+    # Feature register: enables installing the add-on
+    feature_registerd=$(az feature show --namespace Microsoft.ContainerService --name AKS-ExtensionManager --query properties.state |tail -n1|tr -d "[:cntrl:]")
+    if test "$feature_registerd" != \"Registered\"
+    then
+        az feature register --namespace Microsoft.ContainerService --name AKS-ExtensionManager
+    else
+        echo_info ">>> Microsoft.ContainerService AKS-ExtensionManager already registered"
+    fi
+    while test "$feature_registerd" != \"Registered\"
+    do
+        sleep 10;
+        feature_registerd=$(az feature show --namespace Microsoft.ContainerService --name AKS-ExtensionManager --query properties.state |tail -n1|tr -d "[:cntrl:]")
+    done
+}
+
+install_tools(){
+
+    # az upgrade --all --yes
+    echo_info "Ensuring az extension on the machine." >&2
+    add_extension=(
+      # Arc extentions
+      connectedk8s
+      k8s-extension
+      # ML Extension
+      ml
+    )
+    for extension_name in "${add_extension[@]}"; do
+      echo_info "Ensuring extension '${extension_name}'"
+      # ensure_extension "${extension_name}"
+    done
+
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && chmod +x ./kubectl  \
+    && sudo mv ./kubectl /usr/local/bin/kubectl  \
+    && az version
+}
+
+
+
+# get AKS credentials
+get_kubeconfig(){
+    local AKS_CLUSTER_NAME="${1:-aks-cluster}"
+    az aks get-credentials \
+        --subscription "${SUBSCRIPTION_ID}" \
+        --resource-group "${RESOURCE_GROUP_NAME}" \
+        --name "${AKS_CLUSTER_NAME}" \
+        --overwrite-existing
+}
+
+check_arc_status(){
+    local ARC_CLUSTER_NAME="${1:-aks-cluster}"
+    for i in $(seq 1 "$MAX_RETRIES"); do
+        connectivityStatus=$(az connectedk8s show \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --name "$ARC_CLUSTER_NAME" \
+            --query connectivityStatus -o tsv | tail -n1 | tr -d "[:cntrl:]")
+        echo_info "connectivityStatus: $connectivityStatus"
+        if [[ $connectivityStatus != "Connected" ]]; then
+            sleep "${SLEEP_SECONDS}"
+        else
+            break
+        fi
+    done
+    [[ $connectivityStatus == "Connected" ]]
+    CONNECTED_CLUSTER_ID=$(az connectedk8s show -n "${ARC_CLUSTER_NAME}" -g "${RESOURCE_GROUP_NAME}" --query id -o tsv)
+    echo_info "Connected to ARC Cluster Id: ${CONNECTED_CLUSTER_ID}..."
+}
+
+# connect cluster to ARC
+connect_arc(){
+    local AKS_CLUSTER_NAME="${1:-aks-cluster}"
+    local ARC_CLUSTER_NAME="${2:-arc-cluster}" # Name of the connected cluster resource
+    echo_info "Connecting to the existing K8s cluster..."
+    # the existing K8s cluster is determined by the contents of the kubeconfig file
+    # get aks kubeconfig
+    get_kubeconfig "$AKS_CLUSTER_NAME"
+
+    clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" --query connectivityStatus -o json)
+    clusterState=$(echo "$clusterState" | tr -d '"' | tr -d '"\r\n')
+    echo_info "cluster current state: ${clusterState}"
+    if [[ ! -z "$clusterState" ]]; then
+        echo_info "Cluster: ${ARC_CLUSTER_NAME} is already connected..."
+    else
+        # attach/onboard the cluster to Arc
+        $(az connectedk8s connect \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --location "$LOCATION" \
+            --name "$ARC_CLUSTER_NAME" --no-wait \
+            --output tsv  \
+            > /dev/null 2>&1 )
+    fi
+    check_arc_status "${ARC_CLUSTER_NAME}"
+}
+
+
+function setup_compute() {
+    echo_info "Attaching Kubernetes Compute"
+    local CLUSTER_NAME="${1:-aks-cluster}"
+    local COMPUTE_NAME="${2:-aks-compute}"
+    local CLUSTER_TYPE="${3:-connectedClusters}"
+    local COMPUTE_NS="${4:-default}"
+    local RESOURCE_ID
+    local SERVICE_TYPE="Kubernetes"
+    if [ "${CLUSTER_TYPE}" == "connectedClusters" ]; then
+        RESOURCE_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/providers/Microsoft.Kubernetes/ConnectedClusters/${CLUSTER_NAME}"
+    else
+        # managedClusters
+        RESOURCE_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/providers/Microsoft.ContainerService/managedClusters/${CLUSTER_NAME}"
+    fi
+    echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
+    ATTACH_COMPUTE=$(az ml compute attach \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --workspace-name "${WORKSPACE_NAME}" \
+            --type "${SERVICE_TYPE}" \
+            --resource-id "${RESOURCE_ID}" \
+            --namespace "${COMPUTE_NS}" \
+            --name "${COMPUTE_NAME}" \
+            --output tsv \
+            > /dev/null )
+    echo_info "ProvisioningState of ATTACH_COMPUTE: ${ATTACH_COMPUTE}"
+}
+
+function detach_compute() {
+    echo_info "Detaching Kubernetes Compute"
+    local CLUSTER_NAME="${1:-aks-cluster}"
+    echo_info "Detaching compute to workspace for the cluster: ${CLUSTER_NAME} in workspace:${WORKSPACE_NAME}"
+    DETACH_COMPUTE=$(az ml compute detach \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --workspace-name "${WORKSPACE_NAME}" \
+            --name "${CLUSTER_NAME}" \
+            --yes \
+            --output tsv \
+            > /dev/null )
+    echo_info "ProvisioningState of DETACH_COMPUTE: ${DETACH_COMPUTE}"
+}
+
+# setup AKS
+function ensure_aks_compute() {
+    AKS_CLUSTER_NAME=${1:-aks-cluster}
+    MIN_COUNT="${2:-1}"
+    MAX_COUNT="${3:-3}"
+    VM_SKU="${4:-STANDARD_D3_V2}"
+    compute_exists=$(az aks list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${AKS_CLUSTER_NAME}']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${compute_exists}" = "[]" ]]; then
+        echo_info "AKS Compute ${AKS_CLUSTER_NAME} does not exist; creating" >&2
+        CREATE_COMPUTE=$(az aks create \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --location "${LOCATION}" \
+            --name "${AKS_CLUSTER_NAME}" \
+            --enable-cluster-autoscaler \
+            --node-count "$MIN_COUNT" \
+            --min-count "$MIN_COUNT" \
+            --max-count "$MAX_COUNT" \
+            --node-vm-size "${VM_SKU}" \
+            --no-ssh-key \
+            --output tsv  \
+            > /dev/null )
+
+        if [[ $? -ne 0 ]]; then
+            echo_error "Failed to create AKS compute ${AKS_CLUSTER_NAME}" >&2
+            echo_info "[---fail---] $CREATE_COMPUTE."
+        else
+            echo_info "AKS Compute ${AKS_CLUSTER_NAME} created successfully" >&2
+            check_aks_status
+        fi
+    else
+        echo_warning "AKS Compute ${AKS_CLUSTER_NAME} already exist, skipping creation step..." >&2
+        check_aks_status
+    fi
+    # install_k8s_extension "${AKS_CLUSTER_NAME}" "managedClusters" "Microsoft.ContainerService/managedClusters"
+    # setup_compute "${AKS_CLUSTER_NAME}" "managedClusters" "azureml"
+}
+
+# Check status of AKS Cluster
+check_aks_status(){
+    MAX_RETRIES="${MAX_RETRIES:-60}"
+    SLEEP_SECONDS="${SLEEP_SECONDS:-20}"
+    for i in $(seq 1 "$MAX_RETRIES"); do
+        provisioningState=$(az aks show \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --name "${AKS_CLUSTER_NAME}" \
+            --query provisioningState -o tsv |tail -n1|tr -d "[:cntrl:]")
+        echo_info "ProvisioningState: $provisioningState for the AKS cluster: ${AKS_CLUSTER_NAME}"
+        if [[ $provisioningState != "Succeeded" ]]; then
+            sleep "${SLEEP_SECONDS}"
+        else
+            break
+        fi
+    done
+    [[ $provisioningState == "Succeeded" ]]
+}
+
+install_k8s_extension(){
+    local CLUSTER_NAME=${1:-aks-cluster}
+    local CLUSTER_TYPE="${2:-connectedClusters}" # or managedClusters
+    local RESOURCE_TYPE="${3:-Microsoft.Kubernetes/connectedClusters}" # or Microsoft.ContainerService/managedClusters
+    local ARC_CLUSTER_NAME
+    if [ "${CLUSTER_TYPE}" == "connectedClusters" ]; then
+        ARC_CLUSTER_NAME="${CLUSTER_NAME}-arc"
+        connect_arc "${CLUSTER_NAME}" "${ARC_CLUSTER_NAME}"
+    else
+        # managedClusters
+        ARC_CLUSTER_NAME="${CLUSTER_NAME}"
+    fi
+    echo_info "Creating k8s extension for $CLUSTER_TYPE for Azure ML extension: $EXTENSION_NAME on cluster: ${ARC_CLUSTER_NAME}"
+    EXTENSION_INSTALL_STATE=$(az k8s-extension create \
+                --cluster-name "${ARC_CLUSTER_NAME}" \
+                --cluster-type "${CLUSTER_TYPE}" \
+                --subscription "${SUBSCRIPTION_ID}" \
+                --resource-group "${RESOURCE_GROUP_NAME}" \
+                --name "$EXTENSION_NAME" \
+                --extension-type "$EXTENSION_TYPE" \
+                --auto-upgrade "$EXT_AUTO_UPGRADE" \
+                --scope cluster \
+                --release-train "$RELEASE_TRAIN" \
+                --configuration-settings $EXTENSION_SETTINGS \
+                --no-wait \
+                -o tsv |tail -n1|tr -d "[:cntrl:]") && echo_info "$EXTENSION_INSTALL_STATE"
+    check_extension_status "${ARC_CLUSTER_NAME}" "${CLUSTER_TYPE}"
+}
+
+check_extension_status(){
+    local CLUSTER_NAME=${1:-aks-cluster}
+    local CLUSTER_TYPE="${2:-connectedClusters}" # or managedClusters
+    MAX_RETRIES="${MAX_RETRIES:-60}"
+    SLEEP_SECONDS="${SLEEP_SECONDS:-20}"
+    for i in $(seq 1 "$MAX_RETRIES"); do
+        provisioningState=$(az k8s-extension show \
+            --cluster-name "$CLUSTER_NAME" \
+            --cluster-type "$CLUSTER_TYPE" \
+            --subscription "${SUBSCRIPTION_ID}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --name "${EXTENSION_NAME}" \
+            --query provisioningState -o tsv | tail -n1 | tr -d "[:cntrl:]")
+        echo_info "ProvisioningState: '$provisioningState' for k8s-extension on the cluster: ${CLUSTER_NAME}"
+        if [[ $provisioningState != "Succeeded" ]]; then
+            sleep "${SLEEP_SECONDS}"
+        else
+            break
+        fi
+    done
+    [[ $provisioningState == "Succeeded" ]] && echo_info "$CLUSTER_TYPE for Azure ML extension: ${EXTENSION_NAME} is installed successfully on cluster: ${CLUSTER_NAME}.">&2
+}
+
+deleteArcCIExtension() {
+    local CLUSTER_NAME=${1:-aks-cluster}
+    local CLUSTER_TYPE="${2:-connectedClusters}" # or managedClusters
+    az k8s-extension delete \
+        --cluster-name "$CLUSTER_NAME" \
+        --cluster-type "$CLUSTER_TYPE" \
+        --subscription "${SUBSCRIPTION_ID}" \
+        --resource-group "${RESOURCE_GROUP_NAME}" \
+        --name "${EXTENSION_NAME}" \
+        --yes
+}
+
+# CPU_INSTANCE_TYPE: "4 40Gi"
+# GPU_INSTANCE_TYPE: "4 40Gi 2"
+# setup_instance_type defaultinstancetype $GPU_INSTANCE_TYPE
+# setup_instance_type cpu $CPU_INSTANCE_TYPE
+# setup_instance_type gpu $GPU_INSTANCE_TYPE
+setup_instance_type(){
+    INSTANCE_TYPE_NAME="${1:-$INSTANCE_TYPE_NAME}"
+    CPU="${2:-$CPU}"
+    MEMORY="${3:-$MEMORY}"
+    GPU="${4:-$GPU}"
+
+    cat <<EOF | kubectl apply -f -
+apiVersion: amlarc.azureml.com/v1alpha1
+kind: InstanceType
+metadata:
+  name: $INSTANCE_TYPE_NAME
+spec:
+  resources:
+    limits:
+      cpu: "$CPU"
+      memory: "$MEMORY"
+      nvidia.com/gpu: $GPU
+    requests:
+      cpu: "$CPU"
+      memory: "$MEMORY"
+EOF
+
+}
+
+setup_instance_type_aml_arc(){
+    local ARC_CLUSTER_NAME="${1:-amlarc-inference}"
+    get_kubeconfig "${ARC_CLUSTER_NAME}"
+    setup_instance_type defaultinstancetype "$CPU_INSTANCE_TYPE"
+    setup_instance_type cpu "$CPU_INSTANCE_TYPE"
+}
+
+generate_workspace_config(){
+    if [[ ! -d ".azureml" ]]; then
+        mkdir -p ".azureml";
+    fi
+    cat << EOF > .azureml/config.json
+{
+    "subscription_id": "$SUBSCRIPTION_ID",
+    "resource_group": "$RESOURCE_GROUP_NAME",
+    "workspace_name": "$WORKSPACE_NAME"
+}
+EOF
+}
+
+help(){
+    echo "All functions:"
+    declare -F
+}
+
+if [[ "$0" = "$BASH_SOURCE" ]]; then
+    "$@"
+fi

@@ -31,6 +31,10 @@ set -o nounset
 # Names of parameters
 ###################
 
+# Global variables
+export MAX_RETRIES=60
+export SLEEP_SECONDS=20
+
 # default values for script invocation parameter
 # export RUN_DEBUG=false               # -x
 # export CONTINUE_ON_ERR=true         # -E  - true or false
@@ -84,3 +88,38 @@ then
     export SUBSCRIPTION_ID=${subscriptionId}
     echo_warning "No Azure subscription id [SUBSCRIPTION_ID] specified. Using default subscription id."
 fi
+
+#login to azure using your credentials
+az account show 1> /dev/null
+if [ $? != 0 ];
+then
+    az login
+fi
+
+echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCATION}\" set as defaults. "
+az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
+az account set -s "${SUBSCRIPTION_ID}" || exit 1
+
+# AKS
+# export AKS_CLUSTER_PREFIX="${AKS_CLUSTER_PREFIX:-amlarc-aks}"
+export VM_SKU="${VM_SKU:-Standard_D4s_v3}"
+export MIN_COUNT="${MIN_COUNT:-3}"
+export MAX_COUNT="${MAX_COUNT:-8}"
+
+# Extension
+export EXT_AUTO_UPGRADE='false'
+export RELEASE_TRAIN="${RELEASE_TRAIN:-staging}"
+export RELEASE_NAMESPACE="${RELEASE_NAMESPACE:-azureml}"
+export EXTENSION_NAME="${EXTENSION_NAME:-amlarc-extension}"
+export EXTENSION_TYPE="${EXTENSION_TYPE:-Microsoft.AzureML.Kubernetes}"
+export EXTENSION_SETTINGS="${EXTENSION_SETTINGS:-enableTraining=True enableInference=True allowInsecureConnections=True inferenceRouterServiceType=loadBalancer}"
+export CLUSTER_TYPE="${CLUSTER_TYPE:-connectedClusters}" # or managedClusters
+
+
+# ARC Compute
+# export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws}"  # $((1 + $RANDOM % 100))
+# export COMPUTE="${COMPUTE:-inferencecompute}"
+export INSTANCE_TYPE_NAME="${INSTANCE_TYPE_NAME:-defaultinstancetype}"
+export CPU="${CPU:-1}"
+export MEMORY="${MEMORY:-4Gi}"
+export GPU="${GPU:-null}"
