@@ -147,9 +147,11 @@ jobs:
       run: |
           source "{github_workspace}/infra/sdk_helpers.sh";
           source "{github_workspace}/infra/init_environment.sh";
-          bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";
+          bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config";
           pwd;
-          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";"""
+          ls;
+          find "$PWD";
+          [ -f "../.azureml/config" ] && cat "../.azureml/config";"""
     if is_pipeline_notebook:
         # pipeline-job uses different cred
         cred_replace = f"""
