@@ -45,7 +45,7 @@ This repository contains an example `YAML` file for creating `component` using A
 ```
 ### Define optional inputs and default value in command component
 
-We also provide to specify the default value and whether input is option when define command component. 
+We also provide capability to specify the default value and whether input is optional when defining command component. 
 - Inputs with default value will take the default value if without value provided during runtime. 
 - To make input work as optional, you need use `$[[command_with_optional_input]]` to embrace command line with optional input. And if inputs marked as optional and no value provide during runtime, this command line will ignore.
 
