@@ -55,6 +55,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
           pwd;
           ls;
           find "$PWD";
