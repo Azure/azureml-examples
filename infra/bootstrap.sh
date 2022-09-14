@@ -29,7 +29,8 @@ SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 
 ###############
 
-sudo chmod 775 "$SCRIPT_DIR"
+sudo chmod 775 "$SCRIPT_DIR"/sdk_helpers.sh
+sudo chmod 775 "$SCRIPT_DIR"/init_environment.sh
 
 if [ -f "$SCRIPT_DIR"/sdk_helpers.sh ]; then
   source "$SCRIPT_DIR"/sdk_helpers.sh;
@@ -48,7 +49,7 @@ else
 fi
 
 echo_title "Ensuring dependent packages"
-# "$SCRIPT_DIR"/sdk_helpers.sh install_packages
+"$SCRIPT_DIR"/sdk_helpers.sh install_packages
 
 if [ -f "$SCRIPT_DIR"/verify_prerequisites.sh ]; then
   source "$SCRIPT_DIR"/verify_prerequisites.sh;
