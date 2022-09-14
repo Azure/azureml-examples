@@ -62,7 +62,7 @@ SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -
 echo "Scoring url is $SCORING_URL"
 
 # <test_online_endpoint>
-python endpoints/online/triton/single-model/triton_densenet_scoring.py --base_url $SCORING_URL --token $KEY
+python endpoints/online/triton/single-model/triton_densenet_scoring.py --base_url $SCORING_URL --token $KEY --image_url endpoints/online/triton/single-model/peacock.jpg
 # </test_online_endpoint>
 
 # <delete_online_endpoint>

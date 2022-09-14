@@ -1,8 +1,6 @@
 import argparse
 import numpy as np
-import io
 import os
-import requests
 from PIL import Image
 
 import gevent.ssl
@@ -17,7 +15,7 @@ def preprocess(img_content):
     h = 224
     w = 224
 
-    img = Image.open(io.BytesIO(img_content))
+    img = Image.open(img_content)
 
     sample_img = img.convert("RGB")
 
@@ -83,8 +81,7 @@ if __name__ == "__main__":
     status_ctx = triton_client.is_model_ready(model_name, "1", headers)
     print("Is model ready - {}".format(status_ctx))
 
-    img_content = requests.get(args.image_url).content
-    img_data = preprocess(img_content)
+    img_data = preprocess(args.image_url)
 
     # Populate inputs and outputs
     input = tritonhttpclient.InferInput("data_0", img_data.shape, "FP32")
