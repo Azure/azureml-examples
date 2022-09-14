@@ -308,7 +308,7 @@ check_arc_status(){
     done
     [[ $connectivityStatus == "Connected" ]]
     CONNECTED_CLUSTER_ID=$(az connectedk8s show -n "${ARC_CLUSTER_NAME}" -g "${RESOURCE_GROUP_NAME}" --query id -o tsv)
-    echo_info "Connected to ARC Cluster Id: ${CONNECTED_CLUSTER_ID}..."
+    # echo_info "Connected to ARC Cluster Id: ${CONNECTED_CLUSTER_ID}..."
 }
 
 # connect cluster to ARC
