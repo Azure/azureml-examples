@@ -9,7 +9,6 @@ on:
       - sdk-preview
     paths:
       - cli/deploy-r.sh
-      - infra/**
       - .github/workflows/cli-scripts-deploy-r.yml
       - cli/setup.sh
 jobs:
@@ -21,21 +20,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
-    - name: Bootstrap Resources
-      run: bash bootstrap.sh
-      working-directory: infra
-      continue-on-error: false
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          bash setup.sh
+      run: bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: test script script
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          set -e; bash -x deploy-r.sh
+      run: set -e; az ml model archive -n plumber -v 1 || true ; bash -x deploy-r.sh
       working-directory: cli

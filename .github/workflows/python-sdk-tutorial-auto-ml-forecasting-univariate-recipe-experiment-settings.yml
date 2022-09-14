@@ -3,12 +3,13 @@ name: auto-ml-forecasting-univariate-recipe-experiment-settings
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 18 * * 2"
+    - cron: "0 17 * * 2"
   pull_request:
     branches:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/forecasting-recipes-univariate/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-univariate-recipe-experiment-settings.yml
 jobs:
   build:
