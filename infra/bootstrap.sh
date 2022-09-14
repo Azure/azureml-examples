@@ -29,8 +29,10 @@ SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 
 ###############
 
-sudo chmod 775 "$SCRIPT_DIR"/sdk_helpers.sh
-sudo chmod 775 "$SCRIPT_DIR"/init_environment.sh
+# update directory with full permissions
+if [ -d "$SCRIPT_DIR" ]; then
+    sudo chmod -R 777 "$SCRIPT_DIR"
+fi
 
 if [ -f "$SCRIPT_DIR"/sdk_helpers.sh ]; then
   source "$SCRIPT_DIR"/sdk_helpers.sh;
@@ -119,10 +121,13 @@ if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
       echo_info "Creating amlarc cluster: '$arc_compute'"
       "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
       "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
-      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "inference-arc" "connectedClusters" "azureml"
+      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "inferencecompute" "connectedClusters" "azureml"
       "$SCRIPT_DIR"/sdk_helpers.sh setup_instance_type_aml_arc "${arc_compute}"
     done
     echo_info ">>> Done creating amlarc clusters"
+    echo_title "Copying data"
+    "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
+    "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
 
 else
     echo_info "Skipping Bootstrapping. Set the RUN_BOOTSTRAP environment variable to enable bootstrapping."

@@ -126,6 +126,26 @@ function ensure_aml_compute() {
     fi
 }
 
+function install_azcopy() {
+    echo_info "Installing AzCopy" >&2
+    # Download and extract
+    wget https://aka.ms/downloadazcopy-v10-linux
+    tar -xvf downloadazcopy-v10-linux
+
+    # Move AzCopy
+    sudo rm -f /usr/bin/azcopy
+    sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
+    sudo chmod 755 /usr/bin/azcopy
+    rm -f downloadazcopy-v10-linux
+    rm -rf ./azcopy_linux_amd64_*/
+
+    echo "Testing azcopy call."
+    if ! command -v azcopy; then
+        echo "azcopy was not installed"
+        exit 1
+    fi
+}
+
 function IsInstalled {
     sudo dpkg -S "$1" &> /dev/null
 }
@@ -208,6 +228,21 @@ function update_dataset() {
     )
     for package in "${deploy_scripts[@]}"; do
       echo_info "Deploying '${ROOT_DIR}/${package}'"
+      if [ -f "${ROOT_DIR}"/"${package}" ]; then
+        bash "${ROOT_DIR}"/"${package}";
+      else
+        echo_error "${ROOT_DIR}/${package} not found."
+      fi
+    done
+}
+
+function copy_dataset() {
+    echo_info "Copying dataset in the workspace" >&2
+    deploy_scripts=(
+      infra/copy-data.sh
+    )
+    for package in "${deploy_scripts[@]}"; do
+      echo_info "Executing '${ROOT_DIR}/${package}'"
       if [ -f "${ROOT_DIR}"/"${package}" ]; then
         bash "${ROOT_DIR}"/"${package}";
       else
