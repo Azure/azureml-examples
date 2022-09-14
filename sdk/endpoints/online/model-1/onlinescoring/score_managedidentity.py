@@ -4,7 +4,7 @@ import json
 import numpy
 import joblib
 import requests
-
+from pathlib import Path
 
 def get_token():
     access_token = None
@@ -57,7 +57,7 @@ def init():
     # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
     # For multiple models, it points to the folder containing all deployed models (./azureml-models)
     model_path = os.path.join(
-        os.getenv("AZUREML_MODEL_DIR"), "sklearn_regression_model.pkl"
+        Path(os.getenv("AZUREML_MODEL_DIR")) / "model" /  "sklearn_regression_model.pkl"
     )
     # deserialize the model file back into a sklearn model
     model = joblib.load(model_path)
