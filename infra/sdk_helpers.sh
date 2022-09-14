@@ -577,9 +577,9 @@ setup_instance_type_aml_arc(){
 
 generate_workspace_config(){
     local CONFIG_PATH=${1:-.azureml/config}
-    if [[ ! -d ".azureml" ]]; then
-        mkdir -p ".azureml";
-    fi
+    local FOLDER_NAME=$(echo ${CONFIG_PATH} | rev | cut -d"/" -f2- | rev | tr -d '"' | tr -d '"\r\n')
+    echo "Location of the config: ${FOLDER_NAME}"
+    [[ -d "${FOLDER_NAME}" ]] && echo "Directory exists: ${FOLDER_NAME}" || mkdir -p "${FOLDER_NAME}";
     cat << EOF > "${CONFIG_PATH}"
 {
     "subscription_id": "$SUBSCRIPTION_ID",

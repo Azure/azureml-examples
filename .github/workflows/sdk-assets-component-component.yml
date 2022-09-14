@@ -52,8 +52,8 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          mkdir -p "../.azureml";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config";
+          bash [[ -f "../../.azureml/config" ]] && cat "../../.azureml/config";
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" component.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" component.ipynb
           papermill -k python component.ipynb component.output.ipynb
