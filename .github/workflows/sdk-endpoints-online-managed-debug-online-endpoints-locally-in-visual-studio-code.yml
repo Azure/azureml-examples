@@ -42,6 +42,7 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
+          sed -i -e "s/<ENDPOINT_NAME>/localendpoint/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
 
           papermill -k python debug-online-endpoints-locally-in-visual-studio-code.ipynb debug-online-endpoints-locally-in-visual-studio-code.output.ipynb
