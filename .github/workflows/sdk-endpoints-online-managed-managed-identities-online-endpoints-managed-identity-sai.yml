@@ -43,6 +43,10 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-managed-identity-sai.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-managed-identity-sai.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<STORAGE_ACCOUNT_NAME>/saistorage${{env.GITHUB_RUN_NUMBER}}/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<CONTAINER_TO_ACCESS>/azureml-examples/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<FILE_TO_ACCESS>/hello.txt/g" online-endpoints-managed-identity-sai.ipynb
+          sed -i -e "s/<USER_ASSIGNED_IDENTITY_NAME>/uaid${{env.GITHUB_RUN_NUMBER}}/g" online-endpoints-managed-identity-sai.ipynb
 
           papermill -k python online-endpoints-managed-identity-sai.ipynb online-endpoints-managed-identity-sai.output.ipynb
       working-directory: sdk/endpoints/online/managed/managed-identities
