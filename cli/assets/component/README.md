@@ -89,14 +89,15 @@ Command line in the runtime may differ according to different inputs.
 python train.py --training_data some_input_path --learning_rate 0.01 --learning_rate_schedule time-based --model_output some_output_path
 ```
 
-As `learning_rate` and `learning_rate_schedule` have default value defined, which will be take if no value provide in runtime.
+As `learning_rate` and `learning_rate_schedule` have default value defined which will be taken if no value provide in runtime.
 
 - If all inputs/outputs provide values during runtime, the command line will look like:
 ```cli
 python train.py --training_data some_input_path --max_epocs 10 --learning_rate 0.01 --learning_rate_schedule time-based --model_output some_output_path
 ```
 
+To learn more details about `az ml component` commands, Please refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest).
 
-To learn more details about `az ml component` commands, Pleas refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest).
+To learn more details about `component` , Please refer [this link](https://docs.microsoft.com/en-us/azure/machine-learning/concept-component).
 
 To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
