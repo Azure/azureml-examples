@@ -107,6 +107,7 @@ on:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/{notebook_folder}/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-{notebook_name}.yml
 jobs:
   build:
