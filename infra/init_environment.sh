@@ -46,6 +46,7 @@ let "DATE_ONLY=$(date +'%y%m')"
 export LOCATION="East US"
 export PREFIX=aml
 export SUFFIX=sdkv2
+export APP_NAME="github-sp-amlsdkv2-gh"
 # export RESOURCE_GROUP_NAME=test-data-rg
 # export WORKSPACE_NAME=${PREFIX}${SUFFIX}${DATE_ONLY}-ws
 # export SUBSCRIPTION_ID=test
@@ -118,7 +119,8 @@ export CLUSTER_TYPE="${CLUSTER_TYPE:-connectedClusters}" # or managedClusters
 
 # ARC Compute
 # export WORKSPACE="${WORKSPACE:-amlarc-githubtest-ws}"  # $((1 + $RANDOM % 100))
-# export COMPUTE="${COMPUTE:-inferencecompute}"
+export ARC_CLUSTER_NAME="${ARC_CLUSTER_NAME:-amlarc-inference}"
+export ARC_COMPUTE_NAME="${ARC_COMPUTE_NAME:-inferencecompute}"
 export INSTANCE_TYPE_NAME="${INSTANCE_TYPE_NAME:-defaultinstancetype}"
 export CPU="${CPU:-1}"
 export MEMORY="${MEMORY:-4Gi}"

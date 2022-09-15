@@ -163,6 +163,8 @@ jobs:
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" {name}.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" {name}.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" {name}.ipynb
+          sed -i -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" {name}.ipynb
+          sed -i -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" {name}.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb\n"""
     workflow_yaml += cred_replace
 
