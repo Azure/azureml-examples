@@ -1,50 +1,11 @@
-## Working with Component in Azure Machine Learning CLI 2.0
-This repository contains an example `YAML` file for creating `component` using Azure Machine learning CLI 2.0. This directory includes:
+## Working with Component in Azure Machine Learning SDK 2.0
+This repository contains an example `YAML` file for creating `component` using Azure Machine learning SDK 2.0. This directory includes:
 
 - Sample `YAML` files for creating a `command component`. 
+- [component.ipnb](component.ipynb) for manage component in SDK.
 
+To learn how to define optional inputs in command component, [please follow this part](../../../cli/assets/component/README.md#define-optional-inputs-and-default-value-in-command-component)
 
-- To create a component using any of the sample `YAML` files provided in this directory, execute following command:
-```cli
-> az ml component create -f train.yml
-```
-
-- To list the component from your workspace, execute following command:
-```cli
-> az ml component list
-```
-
-- To show one component details from your workspace, execute following command:
-```cli
-> az ml component show --name train_data_component --version 1
-```
-
-- To update a component that in workspace, execute following command. Currently only a few fields(description, display_name) support update:
-```cli
-> az ml component update -f train.yml
-```
-
-- To archive an component container (archives all versions of that component):
-```cli
-> az ml component archive -n <component_name>
-```
-
-- To archive an component version:
-```cli
-> az ml component archive -n <component_name> -v <component_version>
-```
-
-- To restore an archived component container (restores all versions of that component):
-```cli
-> az ml component restore -n <component_name>
-```
-
-- To restore an component version:
-```cli
-> az ml component restore -n <component_name> -v <component_version>
-```
-
-
-To learn more details about `az ml component` commands, Pleas refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest).
+To learn more details about `component` , please refer [this link](https://docs.microsoft.com/en-us/azure/machine-learning/concept-component).
 
 To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
