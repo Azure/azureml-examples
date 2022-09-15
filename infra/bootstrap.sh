@@ -53,13 +53,13 @@ fi
 echo_title "Ensuring dependent packages"
 "$SCRIPT_DIR"/sdk_helpers.sh install_packages
 
-if [ -f "$SCRIPT_DIR"/verify_prerequisites.sh ]; then
-  source "$SCRIPT_DIR"/verify_prerequisites.sh;
-else
-  echo "---------------------------------------------------------"
-  echo -e "ERROR: verify_prerequisites.sh not found."
-  echo "---------------------------------------------------------"
-fi
+###################
+# validate dependencies if the required utilities are installed
+###################
+
+"$SCRIPT_DIR"/sdk_helpers.sh validate_tool az || exit 1
+"$SCRIPT_DIR"/sdk_helpers.sh validate_tool jq || exit 1
+"$SCRIPT_DIR"/sdk_helpers.sh validate_tool sed || exit 1
 
 #login to azure using your credentials
 az account show 1> /dev/null
@@ -77,10 +77,15 @@ echo_title "Installing tools"
 
 echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
+
 RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
+
 if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace
+
+    echo_title "Ensuring Permissions on RG"
+    "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"
 
     echo_title "Ensuring CPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 6 "Standard_DS3_v2"
@@ -115,13 +120,13 @@ if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
 
     # Arc cluster configuration
     configure_arc_cluster=(
-      amlarc-inference
+      ${ARC_CLUSTER_NAME}
     )
     for arc_compute in "${configure_arc_cluster[@]}"; do
       echo_info "Creating amlarc cluster: '$arc_compute'"
       "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
       "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
-      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "inferencecompute" "connectedClusters" "azureml"
+      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
       "$SCRIPT_DIR"/sdk_helpers.sh setup_instance_type_aml_arc "${arc_compute}"
     done
     echo_info ">>> Done creating amlarc clusters"

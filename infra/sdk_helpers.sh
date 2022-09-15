@@ -105,7 +105,7 @@ function ensure_aml_compute() {
     MIN_INSTANCES=${2:-0}
     MAX_INSTANCES=${3:-2}
     COMPUTE_SIZE=${4:-Standard_DS3_v2}
-    compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$COMPUTE_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$COMPUTE_NAME']" | tail -n1 | tr -d "[:cntrl:]")
     if [[ "${compute_exists}" = "[]" ]]; then
         echo_info "Compute ${COMPUTE_NAME} does not exist; creating" >&2
         CREATE_COMPUTE=$(az ml compute create \
@@ -124,6 +124,15 @@ function ensure_aml_compute() {
     else
         echo_warning "Compute ${COMPUTE_NAME} already exist, skipping creation step..." >&2
     fi
+}
+
+
+function grant_permission_app_id_on_rg() {
+    local SERVICE_PRINCIPAL_NAME="${1:-APP_NAME}"
+    servicePrincipalAppId=$(az ad sp list --display-name "${SERVICE_PRINCIPAL_NAME}" --query "[].appId" -o tsv | tail -n1 | tr -d "[:cntrl:]")
+    RESOURCE_GROUP_ID=$(az group show --name "${RESOURCE_GROUP_NAME}" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
+    cmd="az role assignment create --role 'Storage Blob Data Owner' --assignee $servicePrincipalAppId --scope $RESOURCE_GROUP_ID"
+    eval "$cmd"
 }
 
 function install_azcopy() {
@@ -577,7 +586,7 @@ setup_instance_type_aml_arc(){
 
 generate_workspace_config(){
     local CONFIG_PATH=${1:-.azureml/config}
-    local FOLDER_NAME=$(echo ${CONFIG_PATH} | rev | cut -d"/" -f2- | rev | tr -d '"' | tr -d '"\r\n')
+    local FOLDER_NAME=$(echo "${CONFIG_PATH}" | rev | cut -d"/" -f2- | rev | tr -d '"' | tr -d '"\r\n')
     echo "Location of the config: ${FOLDER_NAME}"
     [[ -d "${FOLDER_NAME}" ]] && echo "Directory exists: ${FOLDER_NAME}" || mkdir -p "${FOLDER_NAME}";
     cat << EOF > "${CONFIG_PATH}"
@@ -587,6 +596,16 @@ generate_workspace_config(){
     "workspace_name": "$WORKSPACE_NAME"
 }
 EOF
+}
+
+function validate_tool() {
+    which "$1" &>/dev/null
+    if [ $? -ne 0 ]; then
+        echo >&2 "Error: Unable to find required '$1' tool."
+        return 1
+    else
+        return 0
+    fi
 }
 
 help(){
