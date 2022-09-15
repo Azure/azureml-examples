@@ -46,6 +46,12 @@ jobs:
 
           sed -i -e "s/<ENDPOINT_NAME>/localendpoint/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
 
+          # Create a dummy executable for VSCode
+          mkdir -p /tmp/code
+          touch /tmp/code/code
+          chmod +x /tmp/code/code
+          export PATH="/tmp/code:$PATH"
+
           papermill -k python debug-online-endpoints-locally-in-visual-studio-code.ipynb debug-online-endpoints-locally-in-visual-studio-code.output.ipynb
       working-directory: sdk/endpoints/online/managed
     - name: upload notebook's working folder as an artifact
