@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/forecasting-orange-juice-sales/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-orange-juice-sales.yml
 jobs:
   build:
