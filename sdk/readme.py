@@ -156,6 +156,10 @@ jobs:
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" {name}.ipynb        
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb\n"""
 
+    if name == "debug-online-endpoints-locally-in-visual-studio-code":
+        workflow_yaml += f"""
+          sed -i -e "s/<ENDPOINT_NAME>/localendpoint/g" {name}.ipynb\n"""
+
     if not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb
