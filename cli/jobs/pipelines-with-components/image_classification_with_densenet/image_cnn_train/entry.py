@@ -7,8 +7,8 @@ from multiprocessing.pool import ThreadPool
 from multiprocessing import cpu_count
 import functools
 from enum import Enum
+
 from mldesigner import command_component, Input
-from mldesigner.executor import ComponentExecutor
 
 
 class Data_BackendEnum(Enum):
@@ -166,7 +166,3 @@ def main(
     ]
     print(" ".join(sys.argv))
     runpy.run_path("main.py", run_name="__main__")
-
-
-if __name__ == "__main__":
-    ComponentExecutor(main).execute(sys.argv)
