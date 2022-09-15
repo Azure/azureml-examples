@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: train_data_component
+name: train_data_component_sdk
 display_name: train_data
 description: A example train component
 tags:
