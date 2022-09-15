@@ -54,13 +54,12 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
-          pwd;
-          ls;
-          find "$PWD";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
+          sed -i -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
+          sed -i -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
 
           papermill -k python debug-online-endpoints-locally-in-visual-studio-code.ipynb debug-online-endpoints-locally-in-visual-studio-code.output.ipynb
