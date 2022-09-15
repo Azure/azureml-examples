@@ -54,13 +54,12 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
-          pwd;
-          ls;
-          find "$PWD";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
+          sed -i -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
+          sed -i -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-classification-multiclass-task-sentiment.ipynb automl-nlp-text-classification-multiclass-task-sentiment.output.ipynb
