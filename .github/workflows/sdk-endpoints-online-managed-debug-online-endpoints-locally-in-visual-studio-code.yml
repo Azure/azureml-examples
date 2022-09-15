@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - sdk/endpoints/online/managed/**
+      - sdk/endpoints/online/managed/debug-online-endpoints-locally-in-visual-studio-code.ipynb
       - .github/workflows/sdk-endpoints-online-managed-debug-online-endpoints-locally-in-visual-studio-code.yml
       - sdk/dev-requirements.txt
       - sdk/setup.sh
