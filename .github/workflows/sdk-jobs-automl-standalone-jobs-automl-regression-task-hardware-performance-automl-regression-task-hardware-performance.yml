@@ -52,7 +52,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";
           sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" automl-regression-task-hardware-performance.ipynb

@@ -25,7 +25,7 @@ az acr build $BASE_PATH -f $BASE_PATH/r.dockerfile -t $IMAGE_TAG -r $ACR_NAME
 cleanup(){
     sed -i 's/'$ACR_NAME'/{{acr_name}}/' $BASE_PATH/r-deployment.yml
     az ml online-endpoint delete -n $ENDPOINT_NAME -y
-    az ml model archive -n plumber -v 1
+    az ml model archive -n plumber -v 1 || true
 }
 
 # Run image locally for testing
