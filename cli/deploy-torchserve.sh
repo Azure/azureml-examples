@@ -88,7 +88,7 @@ then
 else
   echo "Deployment failed"
   cleanTestingFiles
-  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  #az ml online-endpoint delete -n $ENDPOINT_NAME --yes
   az ml model archive -n $AML_MODEL_NAME --version 1
   exit 1
 fi
@@ -112,7 +112,7 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+#az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 
 # Delete model
 echo "Deleting model..."
