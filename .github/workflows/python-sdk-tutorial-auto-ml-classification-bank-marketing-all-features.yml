@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - python-sdk/tutorials/automl-with-azureml/classification-bank-marketing-all-features/**
+      - python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
       - .github/workflows/python-sdk-tutorial-auto-ml-classification-bank-marketing-all-features.yml
 jobs:
   build:

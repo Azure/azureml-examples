@@ -35,7 +35,7 @@ jobs:
     outputs:
       job_output_file: ${{parent.outputs.job_out_file}}
 
-    mini_batch_size: "100kb"
+    mini_batch_size: "10kb"
     mini_batch_error_threshold: 5
     logging_level: "DEBUG"
     input_data: ${{inputs.input_data}}
