@@ -17,6 +17,7 @@ NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # use if running on a release candidate, else make it empty
 BRANCH = "main"  # default - do not change
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
+GITHUB_CONCURRENCY_GROUP = "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
 
 
 def main(args):
@@ -110,7 +111,7 @@ on:\n"""
       - infra/**
       - sdk/setup.sh
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
