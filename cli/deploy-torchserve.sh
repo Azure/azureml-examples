@@ -1,7 +1,7 @@
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=torchserve-densenet161-`echo $RANDOM`
 echo $AML_MODEL_NAME
-AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
+AZUREML_MODEL_DIR=azureml-models/torchserve-densenet161/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=torchserve-endpoint
 DEPLOYMENT_NAME=torchserve-deployment
