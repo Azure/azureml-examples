@@ -617,13 +617,10 @@ function replace_template_values() {
         -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" \
         -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
-        # for pipeline notebooks
         -e "s/@pipeline(/&force_rerun=True,/g" \
-        # for workflows notebooks
         -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
-        # temporarily override the settings for automl notebooks for quick validations
         -e "s/max_trials=10/max_trials=1/g" \
         -e "s/max_trials = 5/max_trials=1/g" \
         ${FILENAME}
