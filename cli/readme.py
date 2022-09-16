@@ -334,7 +334,7 @@ def write_job_workflow(job):
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
@@ -349,6 +349,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -386,7 +389,7 @@ def write_endpoint_workflow(endpoint):
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
@@ -399,6 +402,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -432,7 +438,7 @@ def write_asset_workflow(asset):
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
@@ -445,6 +451,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -482,7 +491,7 @@ def write_script_workflow(script):
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
@@ -495,6 +504,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -532,7 +544,7 @@ def write_schedule_workflow(schedule):
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
@@ -545,6 +557,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
