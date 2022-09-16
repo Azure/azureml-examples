@@ -17,6 +17,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${ github.workflow }-${ github.ref }
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -53,15 +56,8 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "sklearn-mnist.ipynb";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";
-          sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" sklearn-mnist.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" sklearn-mnist.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" sklearn-mnist.ipynb
-          sed -i -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" sklearn-mnist.ipynb
-          sed -i -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" sklearn-mnist.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" sklearn-mnist.ipynb
-
           papermill -k python sklearn-mnist.ipynb sklearn-mnist.output.ipynb
       working-directory: sdk/jobs/single-step/scikit-learn/mnist
     - name: upload notebook's working folder as an artifact
