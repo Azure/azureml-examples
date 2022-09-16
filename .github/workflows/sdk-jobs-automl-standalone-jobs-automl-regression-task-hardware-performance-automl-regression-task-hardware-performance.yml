@@ -35,7 +35,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -59,7 +59,6 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-regression-task-hardware-performance.ipynb";
-          [ -f "automl-regression-task-hardware-performance.ipynb" ] && cat "automl-regression-task-hardware-performance.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-regression-task-hardware-performance.ipynb automl-regression-task-hardware-performance.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance

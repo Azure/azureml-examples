@@ -27,7 +27,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false

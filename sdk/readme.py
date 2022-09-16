@@ -131,7 +131,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -155,7 +155,6 @@ jobs:
           source "{github_workspace}/infra/init_environment.sh";
           bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values "{name}.ipynb";
-          [ -f "{name}.ipynb" ] && cat "{name}.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";"""
 
     if not ("automl" in folder):

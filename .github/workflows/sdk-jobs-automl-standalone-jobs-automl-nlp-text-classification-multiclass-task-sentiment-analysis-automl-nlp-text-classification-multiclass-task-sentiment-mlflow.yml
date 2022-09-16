@@ -37,7 +37,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -61,7 +61,6 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-text-classification-multiclass-task-sentiment-mlflow.ipynb";
-          [ -f "automl-nlp-text-classification-multiclass-task-sentiment-mlflow.ipynb" ] && cat "automl-nlp-text-classification-multiclass-task-sentiment-mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";          
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-classification-multiclass-task-sentiment-mlflow.ipynb automl-nlp-text-classification-multiclass-task-sentiment-mlflow.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis

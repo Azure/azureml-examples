@@ -362,7 +362,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -415,6 +415,12 @@ jobs:
       uses: azure/login@v1
       with:
         creds: {creds}
+    - name: bootstrap resources
+      run: |
+          echo '{GITHUB_CONCURRENCY_GROUP}';
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
@@ -466,7 +472,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -521,7 +527,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -576,7 +582,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false

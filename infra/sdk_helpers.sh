@@ -609,6 +609,7 @@ function validate_tool() {
 }
 
 function replace_template_values() {
+    echo "Replacing template values in the file: $1"
     sed -i -e "s|<SUBSCRIPTION_ID>|$(echo $SUBSCRIPTION_ID)|" \
         -e "s|<RESOURCE_GROUP>|$(echo $RESOURCE_GROUP_NAME)|" \
         -e "s|<AML_WORKSPACE_NAME>|$(echo $WORKSPACE_NAME)|" \
@@ -620,7 +621,8 @@ function replace_template_values() {
         -e "s|ml_client.workspaces.begin_create(ws_private_link)|# ws_from_config = MLClient.from_config()|" \
         -e "s|@pipeline(|&force_rerun=True,|" \
         -e "s|max_trials=10|max_trials=1|" \
-        $1 >$1
+        "$1" >"$1"
+    cat "$1"
 }
 
 help(){
