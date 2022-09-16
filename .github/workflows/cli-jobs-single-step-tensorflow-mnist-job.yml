@@ -31,7 +31,7 @@ jobs:
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
-    - name: setup
+    - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
