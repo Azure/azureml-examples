@@ -125,7 +125,8 @@ registered_model_name="keras_dnn_mnist_model"
 mlflow.keras.log_model(
     keras_model=model,
     registered_model_name=registered_model_name,
-    artifact_path=registered_model_name
+    artifact_path=registered_model_name,
+    extra_pip_requirements=["protobuf~=3.20"]
 )
 
 # # Saving the model to a file
@@ -133,6 +134,7 @@ print("Saving the model via MLFlow")
 mlflow.keras.save_model(
     keras_model=model,
     path=os.path.join(registered_model_name, "trained_model"),
+    extra_pip_requirements=["protobuf~=3.20"]
 )
 ###########################
 #</save and register model>
