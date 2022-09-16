@@ -23,12 +23,12 @@ amlcompute_to_delete=(
   gpu-cluster-nc6
 )
 for compute_name in "${amlcompute_to_delete[@]}"; do
-  echo "Deleting amlcompute '$compute'"
+  echo "Deleting amlcompute '$compute_name'"
   # delete compute if it does exist
   COMPUTE_EXISTS=$(az ml compute list --type amlcompute -o tsv --query "[?name=='$compute_name'][name]" |  wc -l)
   if [[ COMPUTE_EXISTS -eq 1 ]]; then
       az ml compute delete --name $compute_name --yes --no-wait
-      echo "amlcompute delete initiated for $compute"
+      echo "amlcompute delete initiated for $compute_name"
   else
       echo "amlcompute $compute_name does not exists"
   fi
