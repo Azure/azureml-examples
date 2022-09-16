@@ -366,7 +366,7 @@ jobs:
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
-    - name: setup
+    - name: setup-cli
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
@@ -417,11 +417,10 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
-    - name: setup
+    - name: setup-cli
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
@@ -472,11 +471,10 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
-    - name: setup
+    - name: setup-cli
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
@@ -527,11 +525,10 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
-    - name: setup
+    - name: setup-cli
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
@@ -582,11 +579,10 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
-    - name: setup
+    - name: setup-cli
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
