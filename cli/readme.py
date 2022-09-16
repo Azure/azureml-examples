@@ -23,6 +23,7 @@ BRANCH = "main"  # default - do not change
 # Duplicate name in working directory during checkout
 # https://github.com/actions/checkout/issues/739
 GITHUB_WORKSPACE = "${{ github.workspace }}"
+GITHUB_CONCURRENCY_GROUP = "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
@@ -347,7 +348,7 @@ on:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
     workflow_yaml += f"""      - cli/setup.sh
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
@@ -402,7 +403,7 @@ on:
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
@@ -451,7 +452,7 @@ on:
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
@@ -506,7 +507,7 @@ on:
       - .github/workflows/cli-scripts-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
@@ -561,7 +562,7 @@ on:
       - .github/workflows/cli-schedules-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
