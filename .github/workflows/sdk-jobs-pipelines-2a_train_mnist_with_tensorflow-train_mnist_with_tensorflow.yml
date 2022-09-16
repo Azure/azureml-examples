@@ -34,7 +34,9 @@ jobs:
       with:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup SDK
@@ -57,7 +59,8 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "train_mnist_with_tensorflow.ipynb";
-          [ -f "../.azureml/config" ] && cat "../.azureml/config";
+          [ -f "train_mnist_with_tensorflow.ipynb" ] && cat "train_mnist_with_tensorflow.ipynb";
+          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python train_mnist_with_tensorflow.ipynb train_mnist_with_tensorflow.output.ipynb
       working-directory: sdk/jobs/pipelines/2a_train_mnist_with_tensorflow
     - name: upload notebook's working folder as an artifact
