@@ -36,7 +36,9 @@ jobs:
       with:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup SDK
@@ -59,7 +61,8 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-forecasting-task-energy-demand-advanced-mlflow.ipynb";
-          [ -f "../.azureml/config" ] && cat "../.azureml/config";
+          [ -f "automl-forecasting-task-energy-demand-advanced-mlflow.ipynb" ] && cat "automl-forecasting-task-energy-demand-advanced-mlflow.ipynb";
+          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-task-energy-demand-advanced-mlflow.ipynb automl-forecasting-task-energy-demand-advanced-mlflow.output.ipynb
       working-directory: sdk/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand
     - name: upload notebook's working folder as an artifact

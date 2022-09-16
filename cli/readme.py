@@ -360,7 +360,9 @@ jobs:
       with:
         creds: {creds}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup
@@ -462,7 +464,9 @@ jobs:
       with:
         creds: {creds}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup
@@ -515,7 +519,9 @@ jobs:
       with:
         creds: {creds}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup
@@ -568,7 +574,9 @@ jobs:
       with:
         creds: {creds}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup

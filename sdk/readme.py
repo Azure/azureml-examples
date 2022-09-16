@@ -129,7 +129,9 @@ jobs:
       with:
         creds: {creds}
     - name: bootstrap resources
-      run: bash bootstrap.sh
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup SDK
@@ -152,7 +154,8 @@ jobs:
           source "{github_workspace}/infra/init_environment.sh";
           bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values "{name}.ipynb";
-          [ -f "../.azureml/config" ] && cat "../.azureml/config";"""
+          [ -f "{name}.ipynb" ] && cat "{name}.ipynb";
+          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";"""
 
     if not ("automl" in folder):
         workflow_yaml += f"""
