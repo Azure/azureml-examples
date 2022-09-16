@@ -23,7 +23,9 @@ BRANCH = "main"  # default - do not change
 # Duplicate name in working directory during checkout
 # https://github.com/actions/checkout/issues/739
 GITHUB_WORKSPACE = "${{ github.workspace }}"
-GITHUB_CONCURRENCY_GROUP = "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+GITHUB_CONCURRENCY_GROUP = (
+    "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+)
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
 
 
