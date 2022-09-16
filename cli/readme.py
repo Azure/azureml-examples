@@ -346,12 +346,12 @@ on:
     if is_pipeline_sample:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
     workflow_yaml += f"""      - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -399,12 +399,12 @@ on:
       - infra/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -448,12 +448,12 @@ on:
       - infra/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -501,12 +501,12 @@ on:
       - infra/**
       - .github/workflows/cli-scripts-{hyphenated}.yml
       - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -554,12 +554,12 @@ on:
       - infra/**
       - .github/workflows/cli-schedules-{hyphenated}.yml
       - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
