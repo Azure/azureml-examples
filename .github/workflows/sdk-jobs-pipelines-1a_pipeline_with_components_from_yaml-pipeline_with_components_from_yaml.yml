@@ -35,7 +35,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -59,7 +59,6 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "pipeline_with_components_from_yaml.ipynb";
-          [ -f "pipeline_with_components_from_yaml.ipynb" ] && cat "pipeline_with_components_from_yaml.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python pipeline_with_components_from_yaml.ipynb pipeline_with_components_from_yaml.output.ipynb
       working-directory: sdk/jobs/pipelines/1a_pipeline_with_components_from_yaml

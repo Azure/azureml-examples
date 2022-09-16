@@ -35,7 +35,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${ github.workflow }-${ github.event.pull_request.number || github.ref }';
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -59,7 +59,6 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "lightgbm-iris-sweep.ipynb";
-          [ -f "lightgbm-iris-sweep.ipynb" ] && cat "lightgbm-iris-sweep.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python lightgbm-iris-sweep.ipynb lightgbm-iris-sweep.output.ipynb
       working-directory: sdk/jobs/single-step/lightgbm/iris
