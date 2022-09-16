@@ -1,5 +1,5 @@
 BASE_PATH=endpoints/online/custom-container
-AML_MODEL_NAME=torchserve-densenet1612
+AML_MODEL_NAME=torchserve-densenet161
 echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
@@ -9,7 +9,7 @@ DEPLOYMENT_NAME=torchserve-deployment
 # Download model and config file
 echo "Downling model and config file..."
 mkdir $BASE_PATH/torchserve
-wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet1612.mar
+wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
 wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchserve/config.properties
 
 # Get name of workspace ACR, build image
@@ -48,13 +48,12 @@ wget https://aka.ms/torchserve-test-image -O kitten_small.jpg
 
 # Check scoring locally
 echo "Uploading testing image, the scoring is..."
-curl http://localhost:8080/predictions/densenet1612 -T kitten_small.jpg
+curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
 
 docker stop torchserve-test
 
 # Deploy model to online endpoint
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
-sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
 EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
 # Update endpoint if exists, else create
@@ -79,7 +78,7 @@ fi
 
 # Create deployment
 echo "Creating deployment..."
-az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic --set model.name=$AML_MODEL_NAME
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 
 deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
