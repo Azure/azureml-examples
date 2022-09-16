@@ -1,7 +1,7 @@
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=torchserve-densenet161-`echo $RANDOM`
 echo $AML_MODEL_NAME
-AZUREML_MODEL_DIR=azureml-models/torchserve-densenet161/1
+AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=torchserve-endpoint
 DEPLOYMENT_NAME=torchserve-deployment
@@ -54,6 +54,7 @@ docker stop torchserve-test
 
 # Deploy model to online endpoint
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
+sed -i 's/{{aml_model_name}}/'$AML_MODEL_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
 
 EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
 # Update endpoint if exists, else create

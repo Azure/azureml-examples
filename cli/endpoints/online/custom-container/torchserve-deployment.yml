@@ -6,7 +6,7 @@ model:
   version: 1
   path: ./torchserve
 environment_variables:
-  MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/1
+  MODEL_BASE_PATH: /var/azureml-app/azureml-models/{{aml_model_name}}/1
 environment:
   #name: torchserve-environment
   #version: 1
