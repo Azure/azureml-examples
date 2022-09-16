@@ -611,19 +611,19 @@ function validate_tool() {
 function replace_template_values() {
     local FILENAME=${1:-.azureml/config}
     echo "Replacing template values in the file: ${FILENAME}"
-    sed -i -e "s|<SUBSCRIPTION_ID>|$(echo $SUBSCRIPTION_ID)|" \
-        -e "s|<RESOURCE_GROUP>|$(echo $RESOURCE_GROUP_NAME)|" \
-        -e "s|<AML_WORKSPACE_NAME>|$(echo $WORKSPACE_NAME)|" \
-        -e "s|<CLUSTER_NAME>|$(echo $ARC_CLUSTER_NAME)|" \
-        -e "s|<COMPUTE_NAME>|$(echo $ARC_COMPUTE_NAME)|" \
-        -e "s|DefaultAzureCredential|AzureCliCredential|" \
-        -e "s|ml_client.begin_create_or_update(ws_with_existing)|# ml_client.begin_create_or_update(ws_with_existing)|" \
-        -e "s|ml_client.workspaces.begin_create(ws_private_link)|# ml_client.workspaces.begin_create(ws_private_link)|" \
-        -e "s|ml_client.workspaces.begin_create(ws_private_link)|# ws_from_config = MLClient.from_config()|" \
-        -e "s|@pipeline(|&force_rerun=True,|" \
-        -e "s|max_trials=10|max_trials=1|" \
-        "${FILENAME}" >"${FILENAME}"
-    printf "%s" "$(<FILENAME)"
+    sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" \
+        -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" \
+        -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" \
+        -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" \
+        -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" \
+        -e "s/DefaultAzureCredential/AzureCliCredential/g" \
+        -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
+        -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
+        -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
+        -e "s/@pipeline(/&force_rerun=True,/g" \
+        -e "s/max_trials=10/max_trials=1/g" \
+        ${FILENAME}
+    echo "$(<${FILENAME})"
 }
 
 help(){

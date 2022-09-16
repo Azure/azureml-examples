@@ -50,6 +50,8 @@ else
   echo "---------------------------------------------------------"
 fi
 
+"$SCRIPT_DIR"/sdk_helpers.sh replace_template_values "./test.ipynb"
+sleep 30
 echo_title "Ensuring dependent packages"
 "$SCRIPT_DIR"/sdk_helpers.sh install_packages
 
