@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: torchserve-deployment
 endpoint_name: torchserve-endpoint
 model:
-  name: torchserve-densenet161
+  name: torchserve-densenet1612
   version: 1
   path: ./torchserve
 environment_variables:
@@ -20,7 +20,7 @@ environment:
       path: /ping
     scoring_route:
       port: 8080
-      path: /predictions/densenet161
+      path: /predictions/densenet1612
 instance_type: Standard_DS2_v2
 instance_count: 1
     

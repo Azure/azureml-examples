@@ -1,5 +1,5 @@
 BASE_PATH=endpoints/online/custom-container
-AML_MODEL_NAME=torchserve-densenet161-`echo $RANDOM`
+AML_MODEL_NAME=torchserve-densenet1612
 echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
@@ -9,7 +9,7 @@ DEPLOYMENT_NAME=torchserve-deployment
 # Download model and config file
 echo "Downling model and config file..."
 mkdir $BASE_PATH/torchserve
-wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
+wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet1612.mar
 wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchserve/config.properties
 
 # Get name of workspace ACR, build image
@@ -48,7 +48,7 @@ wget https://aka.ms/torchserve-test-image -O kitten_small.jpg
 
 # Check scoring locally
 echo "Uploading testing image, the scoring is..."
-curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
+curl http://localhost:8080/predictions/densenet1612 -T kitten_small.jpg
 
 docker stop torchserve-test
 
