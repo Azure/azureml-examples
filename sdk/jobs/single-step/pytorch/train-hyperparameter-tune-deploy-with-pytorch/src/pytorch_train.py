@@ -18,8 +18,6 @@ import mlflow
 
 # from azureml.core.run import Run
 # # get the Azure ML run object
-# run = Run.get_context()
-
 
 def load_data(data_dir):
     """Load the train/val data."""
