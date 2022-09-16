@@ -17,6 +17,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${ github.workflow }-${ github.ref }
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -53,10 +56,8 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "train_cifar_10_with_pytorch.ipynb";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" train_cifar_10_with_pytorch.ipynb
-          sed -i "s/@pipeline(/&force_rerun=True,/" train_cifar_10_with_pytorch.ipynb
           papermill -k python train_cifar_10_with_pytorch.ipynb train_cifar_10_with_pytorch.output.ipynb
       working-directory: sdk/jobs/pipelines/2b_train_cifar_10_with_pytorch
     - name: upload notebook's working folder as an artifact

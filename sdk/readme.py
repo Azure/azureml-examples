@@ -151,35 +151,8 @@ jobs:
           source "{github_workspace}/infra/sdk_helpers.sh";
           source "{github_workspace}/infra/init_environment.sh";
           bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
-          bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values {name}.ipynb;
+          bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values "{name}.ipynb";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";"""
-    if is_pipeline_notebook:
-        # pipeline-job uses different cred
-        cred_replace = f"""
-          # sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
-          # sed -i "s/@pipeline(/&force_rerun=True,/" {name}.ipynb
-          """
-    else:
-        cred_replace = f"""
-          # sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" {name}.ipynb
-          # sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" {name}.ipynb
-          # sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" {name}.ipynb
-          # sed -i -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" {name}.ipynb
-          # sed -i -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" {name}.ipynb
-          # sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" {name}.ipynb
-          \n"""
-    workflow_yaml += cred_replace
-
-    if name == "workspace":
-        workflow_yaml += f"""
-          # generate a random workspace name
-          # sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" {name}.ipynb
-          # skip other workpace creation commands for now
-          # sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" {name}.ipynb
-          # sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" {name}.ipynb
-          # sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" {name}.ipynb
-          \n"""
 
     if not ("automl" in folder):
         workflow_yaml += f"""

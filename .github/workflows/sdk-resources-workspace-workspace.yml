@@ -17,6 +17,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${ github.workflow }-${ github.ref }
+      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -53,22 +56,8 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config ".azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "workspace.ipynb";
           [ -f "../.azureml/config" ] && cat "../.azureml/config";
-          sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" workspace.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" workspace.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" workspace.ipynb
-          sed -i -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" workspace.ipynb
-          sed -i -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" workspace.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" workspace.ipynb
-
-          # generate a random workspace name
-          # sed -i -e "s/mlw-basic-prod/mlw-basic-prod-$(echo $RANDOM | md5sum | head -c 10)/g" workspace.ipynb
-          # skip other workpace creation commands for now
-          sed -i -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" workspace.ipynb
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" workspace.ipynb
-          sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" workspace.ipynb
-
           papermill -k python workspace.ipynb workspace.output.ipynb
       working-directory: sdk/resources/workspace
     - name: upload notebook's working folder as an artifact
