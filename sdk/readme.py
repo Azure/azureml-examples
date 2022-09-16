@@ -109,12 +109,12 @@ on:\n"""
       - sdk/dev-requirements.txt
       - infra/**
       - sdk/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
