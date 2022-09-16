@@ -13,12 +13,12 @@ on:
       - .github/workflows/cli-jobs-pipelines-with-components-basics-5c_env_conda_file-pipeline.yml
       - cli/run-pipeline-jobs.sh
       - cli/setup.sh
+concurrency:
+  group: ${ github.workflow }-${ github.event.pull_request.number || github.ref }
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${ github.workflow }-${ github.ref }
-      cancel-in-progress: true
     steps:
     - name: check out repo
       uses: actions/checkout@v2
