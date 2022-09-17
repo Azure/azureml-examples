@@ -79,7 +79,6 @@ function ensure_resourcegroup() {
 
 function ensure_ml_workspace() {
     local LOCAL_WORKSPACE_NAME="${1:-${WORKSPACE_NAME:-}}"
-    sleep 30
     workspace_exists=$(az ml workspace list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_WORKSPACE_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${workspace_exists}" = "[]" ]]; then
         echo_info "Workspace ${LOCAL_WORKSPACE_NAME} does not exist; creating" >&2

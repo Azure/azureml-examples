@@ -56,7 +56,7 @@ fi
 az configure --defaults workspace=$WORKSPACE
 
 acr_resource_id=$(az ml workspace show -n $WORKSPACE --query container_registry --output tsv)
-export ACR_NAME=$(az resource show --ids $acr_resource_id --query name --output tsv)
+export ACR_NAME=$(az resource show --ids "$acr_resource_id" --query name --output tsv)
 
 ### setup VM & deploy/test ###
 # if vm exists, wait for 15 mins before trying to delete
