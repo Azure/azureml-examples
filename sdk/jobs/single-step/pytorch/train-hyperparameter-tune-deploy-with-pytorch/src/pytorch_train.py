@@ -16,9 +16,6 @@ import copy
 import argparse
 import mlflow
 
-# from azureml.core.run import Run
-# # get the Azure ML run object
-
 def load_data(data_dir):
     """Load the train/val data."""
 
@@ -193,18 +190,42 @@ def main():
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
     args = parser.parse_args()
 
+    # Start Run
+    mlflow.start_run()
+
+    #start autologging
+    mlflow.pytorch.autolog()
+
     data_dir = download_data()
     print("data directory is: " + data_dir)
     model = fine_tune_model(args.num_epochs, data_dir,
                             args.learning_rate, args.momentum)
     os.makedirs(args.output_dir, exist_ok=True)
     torch.save(model, os.path.join(args.output_dir, 'model.pt'))
+
+    ##########################
+    #<save and register model>
+    ##########################
+    # Registering the model to the workspace
+    print("Registering the model via MLFlow")
+    registered_model_name="pytorch_dnn_image_classify_model"
     mlflow.pytorch.log_model(
         pytorch_model=model,
-        registered_model_name="pytorch_model",
-        artifact_path="pytorch_model",        
+        registered_model_name=registered_model_name,
+        artifact_path=registered_model_name,        
     )
 
+    # # Saving the model to a file
+    print("Saving the model via MLFlow")
+    mlflow.pytorch.save_model(
+        pytorch_model=model,
+        path=os.path.join(registered_model_name, "trained_model")
+    )
+    ###########################
+    #</save and register model>
+    ###########################
+
+    mlflow.end_run()
 
 if __name__ == "__main__":
     main()
