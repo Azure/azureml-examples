@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 
 # This is the instructions for docs.User has to execute this from a test VM - that is why user cannot use defaults from their local setup
@@ -55,7 +57,7 @@ fi
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
 
-acr_resource_id=$(az ml workspace show -n $WORKSPACE --query container_registry --output tsv)
+export acr_resource_id=$(az ml workspace show -n $WORKSPACE --query container_registry --output tsv)
 export ACR_NAME=$(az resource show --ids "$acr_resource_id" --query name --output tsv)
 
 ### setup VM & deploy/test ###

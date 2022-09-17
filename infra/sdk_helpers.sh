@@ -609,8 +609,9 @@ function validate_tool() {
     fi
 }
 
-#        -e "s/max_trials=10/max_trials=1/g" \
-#        -e "s/max_trials = 5/max_trials=1/g" \
+#        -e "s/max_trials=10/max_trials=1/g"
+#        -e "s/max_trials = 5/max_trials=1/g"
+
 function replace_template_values() {
     local FILENAME="$1"
     echo "Replacing template values in the file: ${FILENAME}"
