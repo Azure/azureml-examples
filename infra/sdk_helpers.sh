@@ -78,25 +78,27 @@ function ensure_resourcegroup() {
 }
 
 function ensure_ml_workspace() {
-    workspace_exists=$(az ml workspace list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$WORKSPACE_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    local LOCAL_WORKSPACE_NAME="${1:-${WORKSPACE_NAME:-}}"
+    sleep 30
+    workspace_exists=$(az ml workspace list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_WORKSPACE_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${workspace_exists}" = "[]" ]]; then
-        echo_info "Workspace ${WORKSPACE_NAME} does not exist; creating" >&2
+        echo_info "Workspace ${LOCAL_WORKSPACE_NAME} does not exist; creating" >&2
         CREATE_WORKSPACE=$(az ml workspace create \
-            --name "${WORKSPACE_NAME}" \
+            --name "${LOCAL_WORKSPACE_NAME}" \
             --resource-group "${RESOURCE_GROUP_NAME}"  \
             --location "${LOCATION}" \
             --tags "${COMMON_TAGS[@]}" \
             --query id --output tsv  \
             > /dev/null 2>&1)
         if [[ $? -ne 0 ]]; then
-            echo_error "Failed to create workspace ${WORKSPACE_NAME}" >&2
+            echo_error "Failed to create workspace ${LOCAL_WORKSPACE_NAME}" >&2
             echo "[---fail---] $CREATE_WORKSPACE."
         else
-            echo_info "Workspace ${WORKSPACE_NAME} created successfully" >&2
-            ensure_prerequisites_in_workspace
+            echo_info "Workspace ${LOCAL_WORKSPACE_NAME} created successfully" >&2
+            # ensure_prerequisites_in_workspace
         fi
     else
-        echo_warning "Workspace ${WORKSPACE_NAME} already exist, skipping creation step..." >&2
+        echo_warning "Workspace ${LOCAL_WORKSPACE_NAME} already exist, skipping creation step..." >&2
     fi
 }
 
@@ -608,6 +610,8 @@ function validate_tool() {
     fi
 }
 
+#        -e "s/max_trials=10/max_trials=1/g" \
+#        -e "s/max_trials = 5/max_trials=1/g" \
 function replace_template_values() {
     local FILENAME="$1"
     echo "Replacing template values in the file: ${FILENAME}"
@@ -621,8 +625,6 @@ function replace_template_values() {
         -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
-        -e "s/max_trials=10/max_trials=1/g" \
-        -e "s/max_trials = 5/max_trials=1/g" \
         ${FILENAME}
     echo "$(<${FILENAME})"
 }

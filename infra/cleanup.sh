@@ -8,7 +8,7 @@ for i in $(az storage account list | jq -r '.[].name' | grep "oepstorage"); do e
 
 for i in $(az ml compute list --type ComputeInstance | jq -r .[].name); do echo "Deleting ComputeInstance:$i" && az ml compute delete --name $i --yes --no-wait && echo "ComputeInstance delete initiated for $i" ;done
 
-for i in $(az identity list | jq -r '.[].name' | grep -E "oep-user-identity|my-cluster-identity"); do echo "Deleting identity:$i" && az identity delete --name $i && echo "Identity $i deleted" ;done
+for i in $(az identity list | jq -r '.[].name' | grep -E "oep-user-identity|my-cluster-identity|uai"); do echo "Deleting identity:$i" && az identity delete --name $i && echo "Identity $i deleted" ;done
 
 for i in $(az monitor autoscale list | jq -r .[].name); do echo "Deleting batch-endpoint:$i" && az monitor autoscale delete --name $i && echo "monitor autoscale $i deleted" ;done
 
