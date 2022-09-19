@@ -10,6 +10,7 @@ pip install mldesigner==0.1.0b6 --extra-index-url=https://azuremlsdktestpypi.azu
 
 # <mltable_install>
 pip install mltable
+pip install pandas
 # </mltable_install>
 
 
