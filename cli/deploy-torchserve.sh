@@ -3,7 +3,7 @@ AML_MODEL_NAME=torchserve-densenet161
 echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
-ENDPOINT_NAME=torchserve-endpoint
+export ENDPOINT_NAME=torchserve-endpoint-`echo $RANDOM`
 DEPLOYMENT_NAME=torchserve-deployment
 
 # Download model and config file
@@ -59,9 +59,9 @@ EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
 # Update endpoint if exists, else create
 if [[ $EXISTS == $ENDPOINT_NAME ]]
 then 
-  az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
+  az ml online-endpoint update -n $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
 else
-  az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+  az ml online-endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
 fi
 
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
@@ -72,7 +72,7 @@ then
   echo "Endpoint created successfully"
 else
   echo "Something went wrong when creating endpoint. Cleaning up..."
-  az ml online-endpoint delete --name $ENDPOINT_NAME
+  az ml online-endpoint delete --name $ENDPOINT_NAME --yes
   exit 1
 fi
 
@@ -88,7 +88,7 @@ then
 else
   echo "Deployment failed"
   cleanTestingFiles
-  #az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  # az ml online-endpoint delete -n $ENDPOINT_NAME --yes
   az ml model archive -n $AML_MODEL_NAME --version 1
   exit 1
 fi
@@ -112,7 +112,7 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-#az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 
 # Delete model
 echo "Deleting model..."
