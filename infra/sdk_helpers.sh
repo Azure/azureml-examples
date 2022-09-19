@@ -136,6 +136,45 @@ function grant_permission_app_id_on_rg() {
     eval "$cmd"
 }
 
+function ensure_vnet() {
+    local VNET_NAME="${1:-vnetName}"
+    local VNET_CIDR="${2:-${VNET_CIDR:-}}"
+    vnet_exists=$(az network vnet list --query "[?name == '$VNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
+    if [[ "${vnet_exists}" = "[]" ]]; then
+       echo_info "creating $VNET_NAME vnet "
+       az network vnet create --name "$VNET_NAME" --address-prefixes "$VNET_CIDR" > /dev/null
+       echo_info "vnet $VNET_NAME creation completed"
+    else
+       echo_warning "vnet $VNET_NAME already exists. reusing pre-created one"
+    fi
+}
+
+function ensure_subnet() {
+    local VNET_NAME="${1:-vnetName}"
+    local MASTER_SUBNET_NAME="${2:-mastersubnet}"
+    local MASTER_SUBNET="${3:-${MASTER_SUBNET:-}}"
+    subnet_exists=$(az network vnet subnet list --vnet-name "$VNET_NAME" --query "[?name == '$MASTER_SUBNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
+    if [[ "${subnet_exists}" = "[]" ]]; then
+       echo_info "creating master  subnet "
+       az network vnet subnet create --vnet-name "$VNET_NAME" --name "$MASTER_SUBNET_NAME" --address-prefixes "$MASTER_SUBNET" > /dev/null
+       echo_info "subnet $MASTER_SUBNET_NAME creation completed"
+    else
+       echo_warning "subnet $MASTER_SUBNET_NAME already exists. reusing pre-created one"
+    fi
+}
+
+function ensure_identity() {
+    local IDENTITY_NAME="${1:-identity}"
+    id=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
+    if [[ -z $id ]]; then
+       echo_info "Creating Managed Identity: $IDENTITY_NAME "
+       id=$(az identity create -n "$IDENTITY_NAME" --query 'principalId' -o tsv > /dev/null )
+       echo_info "Managed Identity: $IDENTITY_NAME creation completed"
+    else
+       echo_warning "Managed Identity: $IDENTITY_NAME already exists. reusing pre-created one"
+    fi
+}
+
 function install_azcopy() {
     echo_info "Installing AzCopy" >&2
     # Download and extract
@@ -615,18 +654,18 @@ function validate_tool() {
 function replace_template_values() {
     local FILENAME="$1"
     echo "Replacing template values in the file: ${FILENAME}"
-    sed -i -e "s/<SUBSCRIPTION_ID>/$(echo $SUBSCRIPTION_ID)/g" \
-        -e "s/<RESOURCE_GROUP>/$(echo $RESOURCE_GROUP_NAME)/g" \
-        -e "s/<AML_WORKSPACE_NAME>/$(echo $WORKSPACE_NAME)/g" \
-        -e "s/<CLUSTER_NAME>/$(echo $ARC_CLUSTER_NAME)/g" \
-        -e "s/<COMPUTE_NAME>/$(echo $ARC_COMPUTE_NAME)/g" \
+    sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
+        -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
+        -e "s/<AML_WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
+        -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
+        -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
         -e "s/@pipeline(/&force_rerun=True,/g" \
         -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
-        ${FILENAME}
-    echo "$(<${FILENAME})"
+        "${FILENAME}"
+    echo "$(<"${FILENAME}")"
 }
 
 help(){
