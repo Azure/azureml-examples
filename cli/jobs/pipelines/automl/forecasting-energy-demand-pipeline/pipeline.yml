@@ -1,0 +1,51 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Pipeline using AutoML Forecasting task
+
+display_name: pipeline-with-forecasting
+experiment_name: pipeline-with-automl
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+inputs:
+  forecasting_training_data:
+    type: mltable
+    path: training-mltable-folder
+  forecasting_validation_data:
+    type: mltable
+    path: validation-mltable-folder
+
+jobs:
+  forecasting_node:
+    type: automl
+    task: forecasting
+    log_verbosity: info
+    primary_metric: normalized_mean_absolute_error
+    limits:
+      max_trials: 1
+      enable_early_termination: true
+    target_column_name: demand
+    training_data: ${{parent.inputs.forecasting_training_data}}
+    validation_data: ${{parent.inputs.forecasting_validation_data}}
+    training:
+      enable_stack_ensemble: false
+      enable_vote_ensemble: false
+    forecasting:
+      time_column_name: "timeStamp"
+      forecast_horizon: 48
+      frequency: "H"
+      target_lags: [ 12 ]
+      target_rolling_window_size: 4
+    # currently need to specify outputs "mlflow_model" explicitly to reference it in following nodes
+    outputs:
+      best_model:
+        type: mlflow_model
+  register_model_node:
+    type: command
+    component: file:./components/component_register_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.forecasting_node.outputs.best_model}}
+      model_base_name: energy_demand_model
+      
