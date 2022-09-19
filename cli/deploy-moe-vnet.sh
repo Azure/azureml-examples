@@ -57,8 +57,12 @@ fi
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
 
-export acr_resource_id=$(az ml workspace show -n $WORKSPACE --query container_registry --output tsv)
-export ACR_NAME=$(az resource show --ids "$acr_resource_id" --query name --output tsv)
+export ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+ACRNAME=$(az acr list --resource-group AZ500LAB09 --query '[].{Name:name}' --output tsv)
+if [[ -z "$ACRNAME" ]]
+then
+    export ACRNAME=$(az acr list --query '[].{Name:name}' --output tsv)
+fi
 
 ### setup VM & deploy/test ###
 # if vm exists, wait for 15 mins before trying to delete
