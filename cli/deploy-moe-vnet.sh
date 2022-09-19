@@ -58,10 +58,9 @@ fi
 az configure --defaults workspace=$WORKSPACE
 
 export ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
-ACRNAME=$(az acr list --resource-group AZ500LAB09 --query '[].{Name:name}' --output tsv)
 if [[ -z "$ACRNAME" ]]
 then
-    export ACRNAME=$(az acr list --query '[].{Name:name}' --output tsv)
+    export ACR_NAME=$(az acr list --query '[].{Name:name}' --output tsv)
 fi
 
 ### setup VM & deploy/test ###
