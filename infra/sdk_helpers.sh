@@ -136,6 +136,24 @@ function grant_permission_app_id_on_rg() {
     eval "$cmd"
 }
 
+function grant_permission_identity_on_acr() {
+    local IDENTITY_NAME="${1:-identity}"
+    Id=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
+    if [[ -z $Id ]]; then 
+        echo_warning "Managed Identity: $IDENTITY_NAME does not exists."
+    fi
+    until az role assignment create --role "Contributor" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
+    do 
+        echo_info "wait for Contributor role propogation"
+        sleep 10
+    done
+    until az role assignment create --role "AcrPull" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
+    do 
+        echo_info "wait for AcrPull role propogation"
+        sleep 10
+    done
+}
+
 function ensure_vnet() {
     local VNET_NAME="${1:-vnetName}"
     local VNET_CIDR="${2:-${VNET_CIDR:-}}"
@@ -664,6 +682,7 @@ function replace_template_values() {
         -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
+        -e "s/version=mltable_version/version=1/g" \
         "${FILENAME}"
     echo "$(<"${FILENAME}")"
 }
