@@ -50,8 +50,8 @@ else
   echo "---------------------------------------------------------"
 fi
 
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
-sleep 60
+# "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
+# sleep 60
 echo_title "Ensuring dependent packages"
 "$SCRIPT_DIR"/sdk_helpers.sh install_packages
 
