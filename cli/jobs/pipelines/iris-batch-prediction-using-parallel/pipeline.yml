@@ -10,36 +10,32 @@ tags:
 settings:
   default_compute: azureml:cpu-cluster
 
-inputs:
-  job_data_path:
-    type: mltable
-    path: ./neural-iris-mltable
-    mode: direct
-  score_model:
-    type: uri_folder
-    path: ./iris-model
-    mode: download
-
-outputs:
-  job_out_file:
-    type: uri_file
-    mode: rw_mount
-
 jobs:
   batch_prediction:
     type: parallel
     compute: azureml:cpu-cluster
     inputs:
-      input_data: ${{parent.inputs.job_data_path}}
-      score_model: ${{parent.inputs.score_model}}
+      input_data: 
+        type: mltable
+        path: ./neural-iris-mltable
+        mode: direct
+      score_model: 
+        type: uri_folder
+        path: ./iris-model
+        mode: download
     outputs:
-      job_output_file: ${{parent.outputs.job_out_file}}
+      job_output_file:
+        type: uri_file
+        mode: rw_mount
 
-    mini_batch_size: "10kb"
-    mini_batch_error_threshold: 5
-    logging_level: "DEBUG"
     input_data: ${{inputs.input_data}}
+    mini_batch_size: "10kb"
+    resources:
+        instance_count: 2
     max_concurrency_per_instance: 2
+
+    logging_level: "DEBUG"
+    mini_batch_error_threshold: 5
     retry_settings:
       max_retries: 2
       timeout: 60
@@ -55,4 +51,11 @@ jobs:
         conda_file: ./environment/environment_parallel.yml
       program_arguments: >-
         --model ${{inputs.score_model}}
+        --error_threshold 5
+        --allowed_failed_percent 30
+        --task_overhead_timeout 1200
+        --progress_update_timeout 600
+        --first_task_creation_timeout 600
+        --copy_logs_to_parent True
+        --resource_monitor_interva 20
       append_row_to: ${{outputs.job_output_file}}
