@@ -10,6 +10,7 @@ on:
       - sdk/**
       - infra/**
       - cli/**
+      - setup-repo/**
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -34,7 +35,7 @@ jobs:
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
-      continue-on-error: false
+      continue-on-error: true
     - name: setup SDK
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
