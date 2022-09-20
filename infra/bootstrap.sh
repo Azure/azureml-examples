@@ -50,11 +50,6 @@ else
   echo "---------------------------------------------------------"
 fi
 
-# "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
-# "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
-# "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
-# "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
-# "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
 # sleep 60
 echo_title "Ensuring dependent packages"
 "$SCRIPT_DIR"/sdk_helpers.sh install_packages
@@ -83,6 +78,12 @@ echo_title "Installing tools"
 
 echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
+
+# Resources required for mevnet workflows
+"$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
+"$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
+"$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
+"$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
 
 RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
 

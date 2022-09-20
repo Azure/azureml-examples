@@ -7,6 +7,9 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 
 #  endpoint name
 export ENDPOINT_NAME=endpt-mlflow-`echo $RANDOM`
+AML_MODEL_NAME=mir-sample-sklearn-mlflow-model
+echo $AML_MODEL_NAME
+
 
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/mlflow/create-endpoint.yaml
@@ -22,6 +25,9 @@ else
   echo "Endpoint creation failed"
   exit 1
 fi
+
+# cleanup of existing model
+az ml model archive -n $AML_MODEL_NAME --version 1
 
 # <create_sklearn_deployment>
 az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/sklearn-deployment.yaml --all-traffic
@@ -58,6 +64,9 @@ fi
 # <test_lightgbm_deployment>
 az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deployment --request-file endpoints/online/mlflow/sample-request-lightgbm.json
 # </test_lightgbm_deployment>
+
+# cleanup of model
+az ml model archive -n $AML_MODEL_NAME --version 1
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes 
