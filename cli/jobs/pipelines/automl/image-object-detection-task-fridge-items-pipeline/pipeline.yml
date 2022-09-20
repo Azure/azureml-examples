@@ -28,7 +28,7 @@ jobs:
     target_column_name: label
     training_data: ${{parent.inputs.image_object_detection_training_data}}
     validation_data: ${{parent.inputs.image_object_detection_validation_data}}
-    image_model:
+    training_parameters:
       early_stopping: True
       evaluation_frequency: 1
     sweep:

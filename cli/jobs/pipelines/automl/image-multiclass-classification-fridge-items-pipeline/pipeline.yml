@@ -45,7 +45,7 @@ jobs:
       - model_name: "choice('seresnext', 'resnet50')"
         learning_rate: "uniform(0.001, 0.01)"
         layers_to_freeze: "choice(0, 2)"
-    image_model:
+    training_parameters:
       early_stopping: True
       evaluation_frequency: 1
     # currently need to specify outputs "mlflow_model" explicitly to reference it in following nodes
