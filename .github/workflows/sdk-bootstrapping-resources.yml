@@ -9,6 +9,7 @@ on:
     paths:
       - sdk/**
       - infra/**
+      - .github/workflows/sdk-bootstrapping-resources.yml
       - cli/**
       - setup-repo/**
 concurrency:
