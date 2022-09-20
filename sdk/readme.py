@@ -11,8 +11,8 @@ NOT_TESTED_NOTEBOOKS = [
     "datastore",
     "mlflow-model-local-inference-test",
     "multicloud-configuration",
-    "online-endpoints-managed-identity-sai", 
-    "online-endpoints-managed-identity-uai"
+    "online-endpoints-managed-identity-sai",
+    "online-endpoints-managed-identity-uai",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
