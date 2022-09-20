@@ -193,9 +193,6 @@ def main():
     # Start Run
     mlflow.start_run()
 
-    #start autologging
-    mlflow.pytorch.autolog()
-
     data_dir = download_data()
     print("data directory is: " + data_dir)
     model = fine_tune_model(args.num_epochs, data_dir,
