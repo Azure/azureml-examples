@@ -52,7 +52,7 @@ jobs:
         number_of_epochs:
           type: choice
           values: [15, 30]
-        grad_accumulation_step:
+        gradient_accumulation_step:
           type: choice
           values: [1, 2]
 
