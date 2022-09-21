@@ -121,19 +121,19 @@ jobs:
     - name: setup_asset /cli/assets/data/local-folder.yml
       if: ${{ always() }}
       run: |
-        set -x
         source "${{ github.workspace }}/infra/sdk_helpers.sh";
         source "${{ github.workspace }}/infra/init_environment.sh";
-        az ml data create --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f local-folder.yml
+        set -x
+        az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f ./local-folder.yml
       working-directory: cli/assets/data
       timeout-minutes: 300
       continue-on-error: true
     - name: setup_dataset
       if: ${{ always() }} 
       run: |
-        set -x
         source "${{ github.workspace }}/infra/sdk_helpers.sh";
         source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
         bash create-datasets.sh
       working-directory: setup-repo
       timeout-minutes: 300
@@ -145,14 +145,14 @@ jobs:
         source "${{ github.workspace }}/infra/init_environment.sh";
         echo 'Please manually setup local-folder-example uri_folder for cli/jobs/basics/hello-data-uri-folder.yml'
         echo 'Please manually setup local-folder-example uri_folder for cli/jobs/pipelines-with-components/basics/4d_data_input/pipeline.yml'
-        cat <<\EOF > local_uri_floder.yml
+        cat << EOF > ./local_uri_floder.yml
         \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
         name: local-folder-example
         description: Dataset created from local folder.
         type: uri_folder
         path: cli/jobs/pipelines-with-components/basics/4d_data_input/data
         EOF
-        az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f local_uri_floder.yml
+        az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f ./local_uri_floder.yml
       timeout-minutes: 300
       continue-on-error: true
    - name: Setup mltable
@@ -161,13 +161,13 @@ jobs:
         source "${{ github.workspace }}/infra/sdk_helpers.sh";
         source "${{ github.workspace }}/infra/init_environment.sh";
         echo 'Please manually setup local-folder-example mltable for cli/jobs/basics/hello-dataset.yml'
-        cat <<\EOF > local_mltable.yml
+        cat << EOF > ./local_mltable.yml
         \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
         name: sampledata 
         description: Dataset created from local folder.
         type: mltable
         path: cli/jobs/basics/hello-automl
         EOF
-        az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f local_mltable.yml
+        az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f ./local_mltable.yml
       timeout-minutes: 300
       continue-on-error: true
