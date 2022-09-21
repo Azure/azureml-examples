@@ -50,3 +50,43 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: cli-automl-image-classification-multilabel-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: cli-automl-image-classification-multiclass-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: cli-automl-image-instance-segmentation-task-fridge-items.yml   
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: cli-automl-image-object-detection-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
