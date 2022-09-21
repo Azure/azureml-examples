@@ -139,16 +139,16 @@ function grant_permission_app_id_on_rg() {
 function grant_permission_identity_on_acr() {
     local IDENTITY_NAME="${1:-identity}"
     Id=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
-    if [[ -z $Id ]]; then 
+    if [[ -z $Id ]]; then
         echo_warning "Managed Identity: $IDENTITY_NAME does not exists."
     fi
     until az role assignment create --role "Contributor" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
-    do 
+    do
         echo_info "wait for Contributor role propogation"
         sleep 10
     done
     until az role assignment create --role "AcrPull" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
-    do 
+    do
         echo_info "wait for AcrPull role propogation"
         sleep 10
     done
@@ -678,6 +678,7 @@ function replace_template_values() {
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
+        -e "s/InteractiveBrowserCredential/AzureCliCredential/g" \
         -e "s/@pipeline(/&force_rerun=True,/g" \
         -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \

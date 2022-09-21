@@ -55,6 +55,8 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
       timeout-minutes: 30
@@ -64,6 +66,8 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
       timeout-minutes: 30
@@ -73,6 +77,8 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
       timeout-minutes: 30
@@ -82,6 +88,8 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
       timeout-minutes: 30
@@ -108,5 +116,25 @@ jobs:
         dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
         dataset.register(ws, "sampledata")
         ' "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME"
+      timeout-minutes: 300
+      continue-on-error: true
+    - name: setup_asset /cli/assets/data/local-folder.yml
+      if: ${{ always() }}
+      run: |
+        set -x
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        az ml data create --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f local-folder.yml
+      working-directory: cli/assets/data
+      timeout-minutes: 300
+      continue-on-error: true
+    - name: setup_dataset
+      if: ${{ always() }} 
+      run: |
+        set -x
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        bash create-datasets.sh
+      working-directory: setup-repo
       timeout-minutes: 300
       continue-on-error: true
