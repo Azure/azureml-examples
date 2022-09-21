@@ -145,7 +145,7 @@ jobs:
         source "${{ github.workspace }}/infra/init_environment.sh";
         echo 'Please manually setup local-folder-example uri_folder for cli/jobs/basics/hello-data-uri-folder.yml'
         echo 'Please manually setup local-folder-example uri_folder for cli/jobs/pipelines-with-components/basics/4d_data_input/pipeline.yml'
-        cat << EOF > local_uri_floder.yml
+        cat <<\EOF > local_uri_floder.yml
         \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
         name: local-folder-example
         description: Dataset created from local folder.
@@ -161,7 +161,7 @@ jobs:
         source "${{ github.workspace }}/infra/sdk_helpers.sh";
         source "${{ github.workspace }}/infra/init_environment.sh";
         echo 'Please manually setup local-folder-example mltable for cli/jobs/basics/hello-dataset.yml'
-        cat << EOF > local_mltable.yml
+        cat <<\EOF > local_mltable.yml
         \$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
         name: sampledata 
         description: Dataset created from local folder.
