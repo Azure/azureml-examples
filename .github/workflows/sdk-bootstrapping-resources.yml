@@ -11,6 +11,7 @@ on:
       - .github/workflows/sdk-bootstrapping-resources.yml
       - cli/**
       - infra/**
+      - setup-repo/**
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -118,6 +119,39 @@ jobs:
         ' "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME"
       timeout-minutes: 300
       continue-on-error: true
+    - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      if: ${{ always() }}
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+        # az ml component create --file pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: setup env for cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      if: ${{ always() }}
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
+        az ml environment create --file environment/responsibleai-environment.yaml
+        az ml data create --file data/data_adult_train.yaml
+        az ml data create --file data/data_adult_test.yaml
+      working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      if: ${{ always() }}
+      run: |
+        echo Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+        az ml component create --file ./pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
+      timeout-minutes: 30
+      continue-on-error: true
     - name: setup_asset /cli/assets/data/local-folder.yml
       if: ${{ always() }}
       run: |
@@ -135,6 +169,24 @@ jobs:
         source "${{ github.workspace }}/infra/init_environment.sh";
         set -x
         bash create-datasets.sh
+      working-directory: setup-repo
+      timeout-minutes: 300
+      continue-on-error: true
+    - name: download azcopy
+      if: ${{ always() }}
+      run: |
+        set -x
+        wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
+        tar zxf azcopy_linux_amd64_10.15.0.tar.gz
+        cp azcopy_linux_amd64_10.15.0/azcopy .
+      working-directory: setup-repo
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: Please manually run copy-data.sh
+      if: ${{ always() }}
+      run: |
+        bash copy-data.sh
+        echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
       working-directory: setup-repo
       timeout-minutes: 300
       continue-on-error: true
