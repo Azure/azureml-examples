@@ -17,7 +17,13 @@ EXCLUDED_RESOURCES = [
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCHEDULES = []
-EXCLUDED_SCRIPTS = ["setup", "cleanup", "run-job"]
+EXCLUDED_SCRIPTS = [
+    "setup",
+    "cleanup",
+    "run-job",
+    "deploy-custom-container-multimodel-minimal",
+    "run-pipeline-jobs",
+]
 CREDENTIALS = "${{secrets.AZUREML_CREDENTIALS}}"
 BRANCH = "main"  # default - do not change
 # Duplicate name in working directory during checkout
