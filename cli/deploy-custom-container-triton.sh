@@ -41,6 +41,17 @@ az ml online-endpoint create -f $BASE_PATH/endpoint.yaml
 az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/deployment.yaml --all-traffic
 # </create_deployment> 
 
+# Check if deployment was successful
+deploy_status=`az ml online-deployment show --name triton-cc-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+echo $deploy_status
+if [[ $deploy_status == "Succeeded" ]]
+then
+  echo "Deployment completed successfully"
+else
+  echo "Deployment failed"
+  exit 1
+fi
+
 # Get accessToken
 echo "Getting access key..."
 KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv)
@@ -51,7 +62,7 @@ SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -
 echo "Scoring url is $SCORING_URL"
 
 # <test_online_endpoint>
-python endpoints/online/triton/single-model/triton_densenet_scoring.py --base_url $SCORING_URL --token $KEY
+python endpoints/online/triton/single-model/triton_densenet_scoring.py --base_url $SCORING_URL --token $KEY --image_path endpoints/online/triton/single-model/data/peacock.jpg
 # </test_online_endpoint>
 
 # <delete_online_endpoint>
