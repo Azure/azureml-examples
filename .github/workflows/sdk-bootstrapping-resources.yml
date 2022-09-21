@@ -152,6 +152,7 @@ jobs:
         type: uri_folder
         path: cli/jobs/pipelines-with-components/basics/4d_data_input/data
         EOF
+        
         az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f ./local_uri_floder.yml
       timeout-minutes: 300
       continue-on-error: true
@@ -168,6 +169,7 @@ jobs:
         type: mltable
         path: cli/jobs/basics/hello-automl
         EOF
+        
         az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f ./local_mltable.yml
       timeout-minutes: 300
       continue-on-error: true
