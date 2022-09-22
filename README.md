@@ -22,6 +22,7 @@ directory|description
 -|-
 [`.github`](.github)|GitHub files like issue templates and actions workflows.
 [`cli`](cli)|Azure Machine Learning CLI v2 examples.
+[`migration`](migration)|Migration guide and scripts for migrating Azure Machine Learning resources and assets from v1 to v2.
 [`sdk`](sdk)|Azure Machine Learning Python SDK v2 examples.
 [`python-sdk`](python-sdk)|Azure Machine Learning Python SDK v1 examples.
 [`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.
