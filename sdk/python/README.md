@@ -46,7 +46,7 @@ pip install --pre azure-ai-ml
 
 ```terminal
 git clone https://github.com/Azure/azureml-examples
-cd azureml-examples/sdk
+cd azureml-examples/sdk/python
 ```
 
 ## Examples available
