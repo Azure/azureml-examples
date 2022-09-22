@@ -3,15 +3,15 @@
 # ---------------------------------------------------------
 
 import argparse
-import json
 import os
-import time
-
 
 from azureml.core import Run
 
 import mlflow
 import mlflow.sklearn
+from mlflow.deployments import get_deploy_client
+
+
 
 # Based on example:
 # https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli
@@ -24,47 +24,46 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # add arguments
-    parser.add_argument("--model_input_path", type=str, help="Path to input model")
     parser.add_argument(
-        "--model_base_name", type=str, help="Name of the registered model"
+        "--deployment_config_path", type=str, help="Path of the deployment config json file"
+    )
+    parser.add_argument(
+        "--model_base_name", type=str, help="Name of the model to deploy"
     )
 
     # parse args
     args = parser.parse_args()
-    print("Path: "+ args.model_input_path)
+
     # return args
     return args
 
 
 def main(args):
     '''
-    Register Model Example
+    Model deployment Example
     '''
-    #Set Tracking URI
+
+    # Set Tracking URI
     current_experiment = Run.get_context().experiment
     tracking_uri = current_experiment.workspace.get_mlflow_tracking_uri()
     print("tracking_uri: {0}".format(tracking_uri))
     mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(current_experiment.name)
 
-    #Get Run ID from model path
-    print("Getting model path")
-    mlmodel_path = os.path.join(args.model_input_path, "MLmodel")
-    runid = ""
-    with open(mlmodel_path, "r") as modelfile:
-        for line in modelfile:
-            if "run_id" in line:
-                runid = line.split(":")[1].strip()
-
-    #Construct Model URI from run ID extract previously
-    model_uri = "runs:/{}/outputs/".format(runid)
+    # Construct Model URI from model name and version
+    model_name = args.model_base_name
+    model_uri = "models:/{}/latest/".format(model_name)
     print("Model URI: " + model_uri)
 
-    #Register the model with Model URI and Name of choice
-    registered_name = args.model_base_name
-    print(f"Registering model as {registered_name}")
-    mlflow.register_model(model_uri, registered_name)
+    # Set the tracking uri in the deployment client.
+    client = get_deploy_client(mlflow.get_tracking_uri())
 
+    # Deploy the model
+    client.create_deployment(
+        model_uri = model_uri,
+        config = {"deploy-config-file": args.deployment_config_path},
+        name = model_name,
+    )
 
 
 # run script
@@ -74,4 +73,3 @@ if __name__ == "__main__":
 
     # run main function
     main(args)
-    
