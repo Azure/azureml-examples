@@ -95,6 +95,61 @@ jobs:
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
       timeout-minutes: 30
       continue-on-error: true
+    - name: image-instance-segmentation-task-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-multiclass-classification-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-multilabel-classification-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-object-detection-task-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: cli/jobs/pipelines/automl/image-object-detection-task-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: 1g_pipeline_with_parallel_nodes.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
+      working-directory: sdk/jobs/pipelines/1g_pipeline_with_parallel_nodes/src
+      timeout-minutes: 30
+      continue-on-error: true
     - name: set sampledata dataset
       if: ${{ always() }}
       run: |
