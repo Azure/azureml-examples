@@ -22,10 +22,10 @@ def main(args):
     experimental = sorted(glob.glob("experimental/*", recursive=False))
 
     # make all notebooks consistent
-    #modify_notebooks(all_notebooks)
+    modify_notebooks(all_notebooks)
 
     # format code
-    #format_code()
+    format_code()
 
     # write workflows
     write_workflows(notebooks, workflows)
