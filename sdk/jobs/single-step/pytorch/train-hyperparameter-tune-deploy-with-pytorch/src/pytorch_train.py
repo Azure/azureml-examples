@@ -200,28 +200,6 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
     torch.save(model, os.path.join(args.output_dir, 'model.pt'))
 
-    ##########################
-    #<save and register model>
-    ##########################
-    # Registering the model to the workspace
-    print("Registering the model via MLFlow")
-    registered_model_name="pytorch_dnn_image_classify_model"
-    mlflow.pytorch.log_model(
-        pytorch_model=model,
-        registered_model_name=registered_model_name,
-        artifact_path=registered_model_name,        
-    )
-
-    # # Saving the model to a file
-    print("Saving the model via MLFlow")
-    mlflow.pytorch.save_model(
-        pytorch_model=model,
-        path=os.path.join(registered_model_name, "trained_model")
-    )
-    ###########################
-    #</save and register model>
-    ###########################
-
     mlflow.end_run()
 
 if __name__ == "__main__":
