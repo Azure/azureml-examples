@@ -154,9 +154,9 @@ on:
     branches:
       - main
     paths:
-      - notebooks/{notebook_dir}/**
+      - v1/notebooks/{notebook_dir}/**
       - .github/workflows/notebooks-{notebook_dir}.yml
-      - notebooks/dev-requirements.txt
+      - v1/notebooks/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -169,19 +169,19 @@ jobs:
         python-version: "3.8"
     - name: Run Install packages
       run: |
-         chmod +x ./scripts/install-packages.sh
-         ./scripts/install-packages.sh
+         chmod +x ./v1/scripts/install-packages.sh
+         ./v1/scripts/install-packages.sh
       shell: bash
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r v1/notebooks/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
     - name: Run update-azure-extensions
       run: |
-         chmod +x ./scripts/update-azure-extensions.sh
-         ./scripts/update-azure-extensions.sh
+         chmod +x ./v1/scripts/update-azure-extensions.sh
+         ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples"""
@@ -191,10 +191,10 @@ jobs:
         workflow_yaml += f"""
     - name: run {notebook}
       run: papermill {notebook} - -k python
-      working-directory: notebooks/{notebook_dir}\n"""
+      working-directory: v1/notebooks/{notebook_dir}\n"""
 
     # write workflow
-    with open(f"../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
+    with open(f"../../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
@@ -212,9 +212,9 @@ on:
     branches:
       - main
     paths:
-      - notebooks/{notebook_dir}/**
+      - v1/notebooks/{notebook_dir}/**
       - .github/workflows/notebooks-{notebook_dir}.yml
-      - notebooks/dev-requirements.txt
+      - v1/notebooks/dev-requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -231,28 +231,28 @@ jobs:
         python-version: "3.8"
     - name: Run Install packages
       run: |
-         chmod +x ./scripts/install-packages.sh
-         ./scripts/install-packages.sh
+         chmod +x ./v1/scripts/install-packages.sh
+         ./v1/scripts/install-packages.sh
       shell: bash
     - name: pip install notebook reqs
-      run: pip install -r notebooks/dev-requirements.txt
+      run: pip install -r v1/notebooks/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: {creds}
     - name: Run update-azure-extensions
       run: |
-         chmod +x ./scripts/update-azure-extensions.sh
-         ./scripts/update-azure-extensions.sh
+         chmod +x ./v1/scripts/update-azure-extensions.sh
+         ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples
     - name: run {matrix_notebook}
       run: papermill {matrix_notebook} - -k python
-      working-directory: notebooks/{notebook_dir}\n"""
+      working-directory: v1/notebooks/{notebook_dir}\n"""
 
     # write workflow
-    with open(f"../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
+    with open(f"../../.github/workflows/notebooks-{notebook_dir}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
