@@ -165,6 +165,16 @@ jobs:
           bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values "{name}.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";"""
 
+    if name == "debug-online-endpoints-locally-in-visual-studio-code":
+        workflow_yaml += f"""
+          sed -i -e "s/<ENDPOINT_NAME>/localendpoint/g" {name}.ipynb
+
+          # Create a dummy executable for VSCode
+          mkdir -p /tmp/code
+          touch /tmp/code/code
+          chmod +x /tmp/code/code
+          export PATH="/tmp/code:$PATH"\n"""
+
     if not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb

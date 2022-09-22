@@ -2,9 +2,14 @@
 # rc install - uncomment and adjust below to run all tests on a CLI release candidate
 # az extension remove -n ml
 
+# <az_ml_install>
+# az extension add -n ml -y
+# </az_ml_install>
+
 # Use a daily build
-# az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.6.0-py3-none-any.whl --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.8.0-py3-none-any.whl --yes
  
+ ## For backward compatibility - running on old subscription
 # <set_variables>
 GROUP="azureml-examples"
 LOCATION="eastus"
@@ -18,10 +23,6 @@ then
     echo "No resource group name [RESOURCE_GROUP_NAME] specified, defaulting to ${GROUP}."
     # Installing extension temporarily assuming the run is on old subscription
     # without bootstrap script.
-
-    # <az_ml_install>
-    az extension add -n ml -y
-    # </az_ml_install>
 
     # <az_configure_defaults>
     az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
