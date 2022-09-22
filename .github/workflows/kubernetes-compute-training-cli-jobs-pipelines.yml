@@ -93,7 +93,7 @@ jobs:
         for job in $(cat $JOB_LIST_FILE); do
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
-            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
+            bash .github/kubernetes-compute/tool.sh run_cli_automl_job $job -cr &
             sleep 120
           else
             echo "Found invalid job: $job"
