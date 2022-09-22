@@ -73,26 +73,20 @@ echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCA
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
-echo_title "Installing tools"
-"$SCRIPT_DIR"/sdk_helpers.sh install_tools
-
 echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 
-# Resources required for mevnet workflows
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
-"$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
-
+# RUN_BOOTSTRAP=1
 RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
 
 if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
+    echo_title "Installing tools"
+    "$SCRIPT_DIR"/sdk_helpers.sh install_tools
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
-    "$SCRIPT_DIR"/ensure_subnet.sh ensure_vnet "vnet-mevnet" "snet-scoring"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
 
@@ -124,10 +118,18 @@ if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
       scoring-explain
     )
     for aks_compute in "${configure_aks_cluster[@]}"; do
-      echo_info "Creating AKS cluster: '$aks_compute'"
-      "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
-      "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${aks_compute}" "managedClusters" "Microsoft.ContainerService/managedClusters"
-      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${aks_compute}" "${aks_compute}" "managedClusters" "azureml"
+      (
+        echo_info "Creating AKS cluster: '$aks_compute'"
+        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
+      ) &
+    done
+    wait # until all AKS are created
+    for aks_compute in "${configure_aks_cluster[@]}"; do
+      (
+        echo_info "Attaching AKS cluster: '$aks_compute'"
+        "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${aks_compute}" "managedClusters" "Microsoft.ContainerService/managedClusters"
+        "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${aks_compute}" "${aks_compute}" "managedClusters" "azureml"
+      )
     done
     echo_info ">>> Done creating AKS clusters"
 
@@ -136,11 +138,13 @@ if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
       ${ARC_CLUSTER_NAME}
     )
     for arc_compute in "${configure_arc_cluster[@]}"; do
-      echo_info "Creating amlarc cluster: '$arc_compute'"
-      "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
-      "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
-      "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
-      "$SCRIPT_DIR"/sdk_helpers.sh setup_instance_type_aml_arc "${arc_compute}"
+      (
+        echo_info "Creating amlarc cluster: '$arc_compute'"
+        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
+        "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
+        "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
+        "$SCRIPT_DIR"/sdk_helpers.sh setup_instance_type_aml_arc "${arc_compute}"
+      )
     done
     echo_info ">>> Done creating amlarc clusters"
     echo_title "Copying data"
