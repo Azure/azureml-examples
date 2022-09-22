@@ -53,15 +53,9 @@ curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
 docker stop torchserve-test
 
 # Deploy model to online endpoint
+echo "Deploying the model to a managed online endpoint..."
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
-
-EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
-# Update endpoint if exists, else create
-if [[ $EXISTS == $ENDPOINT_NAME ]]; then
-  az ml online-endpoint update -f $BASE_PATH/$ENDPOINT_NAME.yml
-else
-  az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
-fi
+az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
 
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
@@ -85,7 +79,7 @@ if [[ $deploy_status == "Succeeded" ]]; then
 else
   echo "Deployment failed"
   cleanTestingFiles
-  #az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
   az ml model archive -n $AML_MODEL_NAME --version 1
   exit 1
 fi
@@ -109,7 +103,7 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-#az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 
 # Delete model
 echo "Deleting model..."
