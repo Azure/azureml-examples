@@ -14,13 +14,7 @@ description: Top-level directory for official Azure Machine Learning Python SDK 
 
 ## Public Preview
 
-We are excited to introduce the public preview of Azure Machine Learning **Python SDK v2**. Azure ML Python SDK v2 is an updated Python SDK package, which allows users to:
-
-* Submit training jobs
-* Manage data, models, environments
-* Perform managed inferencing (real time and batch)
-* Stitch together multiple tasks and production workflows using Azure ML pipelines
-* Run standalone AutoML training for various ml-tasks
+We are excited to introduce the public preview of Azure Machine Learning **Python SDK v2**.
 
 Please note that this Public Preview release is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
 
