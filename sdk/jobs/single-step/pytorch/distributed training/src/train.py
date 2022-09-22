@@ -145,8 +145,8 @@ def main(args):
         # log model
         mlflow.pytorch.log_model(model, "model")
         os.makedirs(args.model_dir, exist_ok=True)
-        torch.save(model, os.path.join(args.model_dir, 'model.pt'))
-        #mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
+        torch.save(model, os.path.join(args.model_dir, "model.pt"))
+        # mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
 
 
 def parse_args():
