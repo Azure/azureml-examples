@@ -54,6 +54,9 @@ fi
 echo_title "Ensuring dependent packages"
 "$SCRIPT_DIR"/sdk_helpers.sh install_packages
 
+echo_title "Installing tools"
+"$SCRIPT_DIR"/sdk_helpers.sh install_tools
+
 ###################
 # validate dependencies if the required utilities are installed
 ###################
@@ -80,8 +83,6 @@ echo_title "Ensuring Resource group"
 RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
 
 if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
-    echo_title "Installing tools"
-    "$SCRIPT_DIR"/sdk_helpers.sh install_tools
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
