@@ -1,5 +1,5 @@
 name: sdk-jobs-pipelines-1d_pipeline_with_non_python_components-pipeline_with_non_python_components
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/jobs/pipelines/1d_pipeline_with_non_python_components/**
+      - sdk/python/jobs/pipelines/1d_pipeline_with_non_python_components/**
       - .github/workflows/sdk-jobs-pipelines-1d_pipeline_with_non_python_components-pipeline_with_non_python_components.yml
-      - sdk/dev-requirements.txt
-      - sdk/setup.sh
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -44,10 +44,10 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_non_python_components.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" pipeline_with_non_python_components.ipynb
           papermill -k python pipeline_with_non_python_components.ipynb pipeline_with_non_python_components.output.ipynb
-      working-directory: sdk/jobs/pipelines/1d_pipeline_with_non_python_components
+      working-directory: sdk/python/jobs/pipelines/1d_pipeline_with_non_python_components
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: pipeline_with_non_python_components
-        path: sdk/jobs/pipelines/1d_pipeline_with_non_python_components
+        path: sdk/python/jobs/pipelines/1d_pipeline_with_non_python_components

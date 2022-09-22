@@ -1,4 +1,4 @@
-name: sdk-resources-compute-compute
+name: sdk-assets-data-working_with_mltable
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/resources/compute/**
-      - .github/workflows/sdk-resources-compute-compute.yml
+      - sdk/python/assets/data/**
+      - .github/workflows/sdk-assets-data-working_with_mltable.yml
       - sdk/python/dev-requirements.txt
       - sdk/python/setup.sh
 jobs:
@@ -37,18 +37,18 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run resources/compute/compute.ipynb
+    - name: run assets/data/working_with_mltable.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" compute.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" compute.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" compute.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" compute.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" working_with_mltable.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" working_with_mltable.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" working_with_mltable.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" working_with_mltable.ipynb
 
-          papermill -k python compute.ipynb compute.output.ipynb
-      working-directory: sdk/python/resources/compute
+          papermill -k python working_with_mltable.ipynb working_with_mltable.output.ipynb
+      working-directory: sdk/python/assets/data
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: compute
-        path: sdk/python/resources/compute
+        name: working_with_mltable
+        path: sdk/python/assets/data

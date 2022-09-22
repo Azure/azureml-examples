@@ -1,4 +1,4 @@
-name: sdk-resources-compute-compute
+name: sdk-jobs-single-step-pytorch-distributed training-distributed-cifar10
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/resources/compute/**
-      - .github/workflows/sdk-resources-compute-compute.yml
+      - sdk/python/jobs/single-step/pytorch/distributed training/**
+      - .github/workflows/sdk-jobs-single-step-pytorch-distributed training-distributed-cifar10.yml
       - sdk/python/dev-requirements.txt
       - sdk/python/setup.sh
 jobs:
@@ -37,18 +37,18 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run resources/compute/compute.ipynb
+    - name: run jobs/single-step/pytorch/distributed training/distributed-cifar10.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" compute.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" compute.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" compute.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" compute.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" distributed-cifar10.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" distributed-cifar10.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" distributed-cifar10.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" distributed-cifar10.ipynb
 
-          papermill -k python compute.ipynb compute.output.ipynb
-      working-directory: sdk/python/resources/compute
+          papermill -k python distributed-cifar10.ipynb distributed-cifar10.output.ipynb
+      working-directory: sdk/python/jobs/single-step/pytorch/distributed training
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: compute
-        path: sdk/python/resources/compute
+        name: distributed-cifar10
+        path: sdk/python/jobs/single-step/pytorch/distributed training

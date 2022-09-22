@@ -1,5 +1,5 @@
 name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multiclass-task-sentiment-analysis-automl-nlp-text-classification-multiclass-task-sentiment
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis/**
+      - sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multiclass-task-sentiment-analysis-automl-nlp-text-classification-multiclass-task-sentiment.yml
-      - sdk/dev-requirements.txt
-      - sdk/setup.sh
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -45,10 +45,10 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-nlp-text-classification-multiclass-task-sentiment.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-classification-multiclass-task-sentiment.ipynb automl-nlp-text-classification-multiclass-task-sentiment.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-nlp-text-classification-multiclass-task-sentiment
-        path: sdk/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+        path: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis

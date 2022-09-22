@@ -1,5 +1,5 @@
 name: sdk-assets-component-component
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/assets/component/**
+      - sdk/python/assets/component/**
       - .github/workflows/sdk-assets-component-component.yml
-      - sdk/dev-requirements.txt
-      - sdk/setup.sh
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -44,10 +44,10 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" component.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" component.ipynb
           papermill -k python component.ipynb component.output.ipynb
-      working-directory: sdk/assets/component
+      working-directory: sdk/python/assets/component
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: component
-        path: sdk/assets/component
+        path: sdk/python/assets/component
