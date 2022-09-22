@@ -11,7 +11,7 @@ DEPLOYMENT_NAME=torchserve-deployment
 # Download model and config file
 echo "Downling model and config file..."
 mkdir $BASE_PATH/torchserve
-wget --progress=dot:mega https://stamldata.blob.core.windows.net/public/densenet161.mar -O $BASE_PATH/torchserve/densenet161.mar
+wget --progress=dot:mega https://stamldata.blob.core.windows.net/public/densenet161.mar -O $BASE_PATH/torchserve/densenet161.mar #Todo: change to aka.ms link
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
