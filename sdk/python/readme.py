@@ -70,7 +70,7 @@ def get_mlflow_import(notebook):
         if "import mlflow" in f.read():
             return """
     - name: pip install mlflow reqs
-      run: pip install -r sdk/mlflow-requirements.txt"""
+      run: pip install -r sdk/python/mlflow-requirements.txt"""
         else:
             return ""
 
@@ -87,7 +87,7 @@ def write_notebook_workflow(
     posix_notebook = notebook.replace(os.sep, "/")
 
     workflow_yaml = f"""name: sdk-{classification}-{name}
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:\n"""
     if ENABLE_MANUAL_CALLING:
@@ -103,10 +103,10 @@ on:\n"""
         if is_pipeline_notebook:
             workflow_yaml += "      - pipeline/*\n"
     workflow_yaml += f"""    paths:
-      - sdk/{posix_folder}/**
+      - sdk/python/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
-      - sdk/dev-requirements.txt
-      - sdk/setup.sh
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -118,7 +118,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt{mlflow_import}
+      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}
     - name: azure login
       uses: azure/login@v1
       with:
@@ -161,17 +161,17 @@ jobs:
     if not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{posix_folder}"""
+      working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""          
           papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{posix_folder}"""
+      working-directory: sdk/python/{posix_folder}"""
     else:
         # need CPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
           papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
-      working-directory: sdk/{posix_folder}"""
+      working-directory: sdk/python/{posix_folder}"""
 
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
@@ -179,10 +179,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: {name}
-        path: sdk/{posix_folder}\n"""
+        path: sdk/python/{posix_folder}\n"""
 
     workflow_file = os.path.join(
-        "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
+        "..", "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
     )
     workflow_before = ""
     if os.path.exists(workflow_file):
