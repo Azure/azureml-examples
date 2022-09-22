@@ -125,7 +125,7 @@ jobs:
         creds: {creds}
     - name: setup SDK
       run: bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup CLI
       run: bash setup.sh
