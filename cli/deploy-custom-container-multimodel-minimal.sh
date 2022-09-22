@@ -14,8 +14,8 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 export BASE_PATH=endpoints/online/custom-container/multimodel-minimal
 mkdir -p $BASE_PATH/{code,build,test-data}
 cp "$(dirname $BASE_PATH)/{multimodel-minimal*} $BASE_PATH/" 
-mv $BASE_PATH/multmodel-minimal.dockerfile $BASE_PATH/build/
-mv $BASE_PATH/multmodel-minimal-score.py $BASE_PATH/code/
+mv $BASE_PATH/multimodel-minimal.dockerfile $BASE_PATH/build/
+mv $BASE_PATH/multimodel-minimal-score.py $BASE_PATH/code/
 # </setup_build_directory> 
 
 cd $BASE_PATH
