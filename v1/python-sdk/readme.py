@@ -22,10 +22,10 @@ def main(args):
     experimental = sorted(glob.glob("experimental/*", recursive=False))
 
     # make all notebooks consistent
-    modify_notebooks(all_notebooks)
+    #modify_notebooks(all_notebooks)
 
     # format code
-    format_code()
+    #format_code()
 
     # write workflows
     write_workflows(notebooks, workflows)
@@ -76,7 +76,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
         name = tutorial.split("/")[-1]
 
         # build entries for tutorial table
-        if os.path.exists(f"../.github/workflows/python-sdk-tutorial-{name}.yml"):
+        if os.path.exists(f"../../.github/workflows/python-sdk-tutorial-{name}.yml"):
             # we can have a single GitHub workflow for handling all notebooks within this tutorial folder
             status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
         else:
@@ -297,7 +297,7 @@ jobs:
       run: papermill v1/python-sdk/{notebook} out.ipynb -k python\n"""
 
     # write workflow
-    with open(f"../.github/workflows/python-sdk-notebook-{name}.yml", "w") as f:
+    with open(f"../../.github/workflows/python-sdk-notebook-{name}.yml", "w") as f:
         f.write(workflow_yaml)
 
 
@@ -347,7 +347,7 @@ jobs:
 
     # write workflow
     with open(
-        f"../.github/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml", "w"
+        f"../../.github/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml", "w"
     ) as f:
         f.write(workflow_yaml)
 
