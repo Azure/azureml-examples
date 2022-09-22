@@ -15,6 +15,8 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-with-sklearn",
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
+    "online-endpoints-managed-identity-sai",
+    "online-endpoints-managed-identity-uai",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this

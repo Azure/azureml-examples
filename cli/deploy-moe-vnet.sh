@@ -34,6 +34,8 @@ export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup-repo/
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
+# remove all whitespace from location
+export LOCATION="$(echo -e "${LOCATION}" | tr -d '[:space:]')"
 export IDENTITY_NAME=uai$SUFFIX
 # export ACR_NAME=cr$SUFFIX
 export WORKSPACE=mlw-$SUFFIX

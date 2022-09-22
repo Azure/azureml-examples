@@ -44,7 +44,7 @@ export SLEEP_SECONDS=20
 let "DATE_ONLY=$(date +'%y%m')"
 
 export LOCATION="East US"
-export PREFIX=aml
+export PREFIX=aml01
 export SUFFIX=sdkv2
 export APP_NAME="github-sp-amlsdkv2-gh"
 # export RESOURCE_GROUP_NAME=test-data-rg

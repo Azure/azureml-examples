@@ -142,16 +142,8 @@ function grant_permission_identity_on_acr() {
     if [[ -z $Id ]]; then
         echo_warning "Managed Identity: $IDENTITY_NAME does not exists."
     fi
-    until az role assignment create --role "Contributor" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
-    do
-        echo_info "wait for Contributor role propogation"
-        sleep 10
-    done
-    until az role assignment create --role "AcrPull" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
-    do
-        echo_info "wait for AcrPull role propogation"
-        sleep 10
-    done
+    az role assignment create --role "Contributor" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
+    az role assignment create --role "AcrPull" --assignee-object-id "$Id"  --assignee-principal-type ServicePrincipal &> /dev/null
 }
 
 function ensure_vnet() {
