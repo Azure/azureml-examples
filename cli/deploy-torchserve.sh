@@ -1,5 +1,6 @@
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=torchserve-densenet161
+echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=torchserve-endpoint
@@ -87,8 +88,8 @@ then
 else
   echo "Deployment failed"
   cleanTestingFiles
-  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
-  az ml model delete -n $AML_MODEL_NAME --version 1
+  #az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  az ml model archive -n $AML_MODEL_NAME --version 1
   exit 1
 fi
 
@@ -111,7 +112,7 @@ cleanTestingFiles
 
 # Delete endpoint
 echo "Deleting endpoint..."
-az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+#az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 
 # Delete model
 echo "Deleting model..."
