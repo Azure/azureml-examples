@@ -174,15 +174,21 @@ function ensure_subnet() {
 }
 
 function ensure_identity() {
-    local IDENTITY_NAME="${1:-identity}"
-    id=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
-    if [[ -z $id ]]; then
+    local IDENTITY_NAME="${1:-identityname}"
+    IDENTITY_ID=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
+    if [[ -z $IDENTITY_ID ]]; then
        echo_info "Creating Managed Identity: $IDENTITY_NAME "
-       id=$(az identity create -n "$IDENTITY_NAME" --query 'principalId' -o tsv > /dev/null )
+       IDENTITY_ID=$(az identity create -n "$IDENTITY_NAME" --query 'principalId' -o tsv | tail -n1 | tr -d "[:cntrl:]")
        echo_info "Managed Identity: $IDENTITY_NAME creation completed"
     else
        echo_warning "Managed Identity: $IDENTITY_NAME already exists. reusing pre-created one"
     fi
+    RESOURCE_GROUP_ID=$(az group show --name "${RESOURCE_GROUP_NAME}" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
+    IDENTITY_ID=$(az identity create -n "$IDENTITY_NAME" --query 'principalId' -o tsv | tail -n1 | tr -d "[:cntrl:]")
+    cmd="az role assignment create --role 'Contributor' --assignee $IDENTITY_ID --scope $RESOURCE_GROUP_ID"
+    eval "$cmd"
+    cmd="az role assignment create --role 'AcrPull' --assignee $IDENTITY_ID --scope $RESOURCE_GROUP_ID"
+    eval "$cmd"
 }
 
 function install_azcopy() {

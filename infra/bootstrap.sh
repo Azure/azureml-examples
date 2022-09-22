@@ -50,7 +50,6 @@ else
   echo "---------------------------------------------------------"
 fi
 
-# sleep 60
 echo_title "Ensuring dependent packages"
 "$SCRIPT_DIR"/sdk_helpers.sh install_packages
 

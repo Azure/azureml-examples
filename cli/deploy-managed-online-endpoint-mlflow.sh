@@ -27,7 +27,7 @@ else
 fi
 
 # cleanup of existing model
-az ml model archive -n $AML_MODEL_NAME --version 1
+model_archive=$(az ml model archive -n $AML_MODEL_NAME --version 1 || true)
 
 # <create_sklearn_deployment>
 az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/mlflow/sklearn-deployment.yaml --all-traffic
@@ -66,7 +66,7 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deploym
 # </test_lightgbm_deployment>
 
 # cleanup of model
-az ml model archive -n $AML_MODEL_NAME --version 1
+model_archive=$(az ml model archive -n $AML_MODEL_NAME --version 1 || true)
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes 
