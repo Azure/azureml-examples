@@ -11,6 +11,7 @@ NOT_TESTED_NOTEBOOKS = [
     "datastore",
     "mlflow-model-local-inference-test",
     "multicloud-configuration",
+    "debug-online-endpoints-locally-in-visual-studio-code"
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
