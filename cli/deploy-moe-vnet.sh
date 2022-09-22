@@ -81,10 +81,10 @@ az deployment group create --name $VM_NAME-$ENDPOINT_NAME --template-file endpoi
 az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
 
 # build image
-az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENV_DIR_PATH:$ENV_DIR_PATH"
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "'ACR_NAME=$ACR_NAME'" "IMAGE_NAME:$IMAGE_NAME" "ENV_DIR_PATH:$ENV_DIR_PATH"
 
 # create endpoint/deployment inside managed vnet
-az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/create_moe.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENDPOINT_FILE_PATH:$ENDPOINT_FILE_PATH" "DEPLOYMENT_FILE_PATH:$DEPLOYMENT_FILE_PATH" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH"
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/create_moe.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "'ACR_NAME=$ACR_NAME'" "IMAGE_NAME:$IMAGE_NAME" "ENDPOINT_FILE_PATH:$ENDPOINT_FILE_PATH" "DEPLOYMENT_FILE_PATH:$DEPLOYMENT_FILE_PATH" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH"
 
 # test the endpoint by scoring it
 export CMD_OUTPUT=$(az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/score_endpoint.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH")

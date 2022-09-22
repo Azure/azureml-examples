@@ -77,6 +77,8 @@ fi
 # Check if user is logged in
 [[ -n $(az account show 2> /dev/null) ]] || { echo_warning "Please login via the Azure CLI."; az login; }
 
+# ACR name must contain only small caps
+export MOE_ACR_NAME="sdk${PREFIX}${SUFFIX}${DATE_ONLY}acr"
 
 SUBSCRIPTION_ID=${SUBSCRIPTION_ID:-}
 if [ -z "$SUBSCRIPTION_ID" ]
