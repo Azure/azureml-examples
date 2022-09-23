@@ -1,4 +1,4 @@
-name: sdk-bootstrapping-resources
+name: bootstrapping-resources
 on:
   workflow_dispatch:
   schedule:
@@ -8,7 +8,7 @@ on:
       - main
     paths:
       - sdk/**
-      - .github/workflows/sdk-bootstrapping-resources.yml
+      - .github/workflows/bootstrapping-resources.yml
       - cli/**
       - infra/**
       - setup-repo/**
