@@ -42,4 +42,4 @@ jobs:
           type: uri_folder
       environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
       command: >-
-        ls {inputs.input_dir}
+        ls ${{inputs.input_dir}}
