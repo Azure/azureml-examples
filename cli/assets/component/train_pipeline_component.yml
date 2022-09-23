@@ -3,7 +3,7 @@ type: pipeline
 
 name: train_pipeline_component_asset
 display_name: train_pipeline_component_asset
-description: Dummy train-score-eval pipeline component with local components
+description: Dummy pipeline component with local components
 
 inputs:
   training_data: 
