@@ -32,7 +32,7 @@ jobs:
       limits:
         max_trials: 10
         max_concurrent_trials: 2
-      sampling_algorithm: random
+      sampling_algorithm: Random
       early_termination:
         type: bandit
         evaluation_interval: 2
@@ -52,10 +52,9 @@ jobs:
     outputs:
       best_model:
         type: mlflow_model
-  register_model_node:
+  show_output:
     type: command
-    component: file:./components/component_register_model.yaml
     inputs:
-      model_input_path: ${{parent.jobs.image_multiclass_classification_node.outputs.best_model}}
-      model_base_name: fridge_items_multiclass_classification_model
-      
+      mltable_output: ${{parent.jobs.image_multiclass_classification_node.outputs.best_model}}
+    command: ls ${{inputs.mltable_output}}
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
