@@ -21,8 +21,8 @@ jobs:
         python-version: "3.8"
     - name: Run Install packages
       run: |
-         chmod +x ./scripts/install-packages.sh
-         ./scripts/install-packages.sh
+         chmod +x ./v1/scripts/install-packages.sh
+         ./v1/scripts/install-packages.sh
       shell: bash
     - name: pip install notebook reqs
       run: pip install -r notebooks/dev-requirements.txt
@@ -32,8 +32,8 @@ jobs:
         creds: ${{secrets.AZ_CREDS}}
     - name: Run update-azure-extensions
       run: |
-         chmod +x ./scripts/update-azure-extensions.sh
-         ./scripts/update-azure-extensions.sh
+         chmod +x ./v1/scripts/update-azure-extensions.sh
+         ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
