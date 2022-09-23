@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/workflows/train/fastai/mnist-mlproject/**
+      - v1/python-sdk/workflows/train/fastai/mnist-mlproject/**
       - .github/workflows/python-sdk-train-fastai-mnist-mlproject-job.yml
-      - python-sdk/requirements.txt
+      - v1/python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,21 +21,21 @@ jobs:
         python-version: "3.8"
     - name: Run Install packages
       run: |
-         chmod +x ./scripts/install-packages.sh
-         ./scripts/install-packages.sh
+         chmod +x ./v1/scripts/install-packages.sh
+         ./v1/scripts/install-packages.sh
       shell: bash
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: pip install -r v1/python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: Run update-azure-extensions
       run: |
-         chmod +x ./scripts/update-azure-extensions.sh
-         ./scripts/update-azure-extensions.sh
+         chmod +x ./v1/scripts/update-azure-extensions.sh
+         ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run workflow
-      run: python python-sdk/workflows/train/fastai/mnist-mlproject/job.py
+      run: python v1/python-sdk/workflows/train/fastai/mnist-mlproject/job.py
