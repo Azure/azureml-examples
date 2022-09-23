@@ -11,7 +11,6 @@ on:
       - .github/workflows/bootstrapping-resources.yml
       - cli/**
       - infra/**
-      - setup-repo/**
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -213,7 +212,7 @@ jobs:
         source "${{ github.workspace }}/infra/init_environment.sh";
         set -x
         bash create-datasets.sh
-      working-directory: setup-repo
+      working-directory: setup/setup-repo
       timeout-minutes: 300
       continue-on-error: true
     - name: download azcopy
@@ -223,14 +222,14 @@ jobs:
         wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
         tar zxf azcopy_linux_amd64_10.15.0.tar.gz
         cp azcopy_linux_amd64_10.15.0/azcopy .
-      working-directory: setup-repo
+      working-directory: setup/setup-repo
       timeout-minutes: 30
       continue-on-error: true
     - name: Please manually run copy-data.sh
       if: ${{ always() }}
       run: |
         bash copy-data.sh
-        echo 'Please manually run "bash copy-data.sh" in setup-repo directory'
-      working-directory: setup-repo
+        echo 'Please manually run "bash copy-data.sh" in setup/setup-repo directory'
+      working-directory: setup/setup-repo
       timeout-minutes: 300
       continue-on-error: true
