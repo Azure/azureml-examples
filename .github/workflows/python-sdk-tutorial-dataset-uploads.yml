@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/tutorials/dataset-uploads/**
+      - v1/python-sdk/tutorials/dataset-uploads/**
       - .github/workflows/python-sdk-tutorial-dataset-uploads.yml
-      - python-sdk/requirements.txt
+      - v1/python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -26,7 +26,7 @@ jobs:
     - name: downgrade pip
       run: pip install pip==21.1.1
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: pip install -r v1/python-sdk/requirements.txt
     - name: temp installs
       run: pip install azureml-dataset-runtime azureml-dataprep
     - name: azure login
@@ -39,4 +39,4 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run ${{matrix.notebook}}
       run: papermill ${{matrix.notebook}} - -k python
-      working-directory: python-sdk/tutorials/dataset-uploads
+      working-directory: v1/python-sdk/tutorials/dataset-uploads

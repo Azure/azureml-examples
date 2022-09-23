@@ -29,7 +29,7 @@ export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet/mlflow/sample-request.
 export ENV_DIR_PATH="endpoints/online/managed/vnet/mlflow/environment"
 # </set_env_vars>
 
-export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
+export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup/setup-repo/azure-github.sh
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)

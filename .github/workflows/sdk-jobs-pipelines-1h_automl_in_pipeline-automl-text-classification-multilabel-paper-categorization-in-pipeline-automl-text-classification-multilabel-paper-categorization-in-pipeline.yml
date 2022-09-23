@@ -1,5 +1,5 @@
 name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,11 +9,11 @@ on:
     branches:
       - main
     paths:
-      - sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline/**
+      - sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline/**
       - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline-automl-text-classification-multilabel-paper-categorization-in-pipeline.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
       - infra/**
-      - sdk/setup.sh
+      - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -28,7 +28,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -44,7 +44,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
@@ -61,10 +61,10 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-text-classification-multilabel-paper-categorization-in-pipeline.ipynb automl-text-classification-multilabel-paper-categorization-in-pipeline.output.ipynb
-      working-directory: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline
+      working-directory: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-text-classification-multilabel-paper-categorization-in-pipeline
-        path: sdk/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline
+        path: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-paper-categorization-in-pipeline

@@ -1,5 +1,5 @@
 name: sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,11 +9,11 @@ on:
     branches:
       - main
     paths:
-      - sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/**
+      - sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
       - infra/**
-      - sdk/setup.sh
+      - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -28,9 +28,9 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
-      run: pip install -r sdk/mlflow-requirements.txt
+      run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -46,7 +46,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
@@ -63,10 +63,10 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-image-classification-multilabel-task-fridge-items.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";          
           papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multilabel-task-fridge-items.ipynb automl-image-classification-multilabel-task-fridge-items.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-image-classification-multilabel-task-fridge-items
-        path: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
+        path: sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items

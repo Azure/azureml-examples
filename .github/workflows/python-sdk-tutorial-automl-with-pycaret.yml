@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - tutorials/automl-with-pycaret/**
+      - v1/tutorials/automl-with-pycaret/**
       - .github/workflows/python-sdk/tutorial-automl-with-pycaret.yml
-      - requirements.txt
+      - v1/tutorials/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -20,7 +20,7 @@ jobs:
       with:
         python-version: "3.8"
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: pip install -r v1/python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -31,4 +31,4 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run 1.classification.ipynb
       run: papermill 1.classification.ipynb - -k python
-      working-directory: python-sdk/tutorials/automl-with-pycaret
+      working-directory: v1/python-sdk/tutorials/automl-with-pycaret

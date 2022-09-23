@@ -1,5 +1,5 @@
 name: sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,11 +9,11 @@ on:
     branches:
       - main
     paths:
-      - sdk/jobs/pipelines/2f_rai_pipeline_sample/**
+      - sdk/python/jobs/pipelines/2f_rai_pipeline_sample/**
       - .github/workflows/sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
       - infra/**
-      - sdk/setup.sh
+      - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -28,7 +28,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -44,7 +44,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
@@ -61,10 +61,10 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "rai_pipeline_sample.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python rai_pipeline_sample.ipynb rai_pipeline_sample.output.ipynb
-      working-directory: sdk/jobs/pipelines/2f_rai_pipeline_sample
+      working-directory: sdk/python/jobs/pipelines/2f_rai_pipeline_sample
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: rai_pipeline_sample
-        path: sdk/jobs/pipelines/2f_rai_pipeline_sample
+        path: sdk/python/jobs/pipelines/2f_rai_pipeline_sample
