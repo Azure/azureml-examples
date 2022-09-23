@@ -33,10 +33,9 @@ jobs:
     outputs:
       best_model:
         type: mlflow_model
-  register_model_node:
+  show_output:
     type: command
-    component: file:./components/component_register_model.yaml
     inputs:
-      model_input_path: ${{parent.jobs.text_ner_node.outputs.best_model}}
-      model_base_name: paper_categorization_model
-      
+      mltable_output: ${{parent.jobs.text_ner_node.outputs.best_model}}
+    command: ls ${{inputs.mltable_output}}
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
