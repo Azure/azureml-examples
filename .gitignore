@@ -11,7 +11,7 @@
 *lightning_logs
 *.DS_Store
 *.pyc
-*config.json
+config.json
 *.log
 scratch/*
 config-amlexamples.json
