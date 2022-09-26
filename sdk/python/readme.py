@@ -194,7 +194,7 @@ jobs:
     workflow_yaml += f"""
     - name: Send IcM on failure
       if: ${{{{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}}}
-      uses: .github/actions/generate-icm
+      uses: ./.github/actions/generate-icm
       with:
         host: ${{{{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}}}
         connector_id: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}}}
