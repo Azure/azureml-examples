@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/experimental/using-pytorch-lightning/**
+      - v1/python-sdk/experimental/using-pytorch-lightning/**
       - .github/workflows/python-sdk-tutorial-using-pytorch-lightning.yml
-      - pythno-sdk/requirements.txt
+      - v1/python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -22,7 +22,7 @@ jobs:
     - name: downgrade pip
       run: pip install pip==21.1.1
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: pip install -r v1/python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -33,10 +33,10 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run 1.train-single-node.ipynb
       run: papermill 1.train-single-node.ipynb - -k python
-      working-directory: python-sdk/experimental/using-pytorch-lightning
+      working-directory: v1/python-sdk/experimental/using-pytorch-lightning
     - name: run 2.log-with-tensorboard.ipynb
       run: papermill 2.log-with-tensorboard.ipynb - -k python
-      working-directory: python-sdk/experimental/using-pytorch-lightning
+      working-directory: v1/python-sdk/experimental/using-pytorch-lightning
     - name: run 3.log-with-mlflow.ipynb
       run: papermill 3.log-with-mlflow.ipynb - -k python
-      working-directory: python-sdk/experimental/using-pytorch-lightning
+      working-directory: v1/python-sdk/experimental/using-pytorch-lightning

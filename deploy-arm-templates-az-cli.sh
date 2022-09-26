@@ -6,9 +6,9 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
+LOCATION=$(az ml workspace show --query location | tr -d '\r"')
 RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
-LOCATION=$(az ml workspace show| jq -r '.location')
 #</create_variables>
 
 # <set_endpoint_name>
@@ -16,7 +16,7 @@ export ENDPOINT_NAME=endpoint-`echo $RANDOM`
 # </set_endpoint_name>
 
 #<api_version>
-API_VERSION="2021-10-01"
+API_VERSION="2022-05-01"
 #</api_version>
 
 echo -e "Using:\nSUBSCRIPTION_ID=$SUBSCRIPTION_ID\nLOCATION=$LOCATION\nRESOURCE_GROUP=$RESOURCE_GROUP\nWORKSPACE=$WORKSPACE"
@@ -58,7 +58,7 @@ export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.acco
 # </get_storage_details>
 
 # <upload_code>
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s endpoints/online/model-1/onlinescoring --account-name $AZURE_STORAGE_ACCOUNT
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/score -s cli/endpoints/online/model-1/onlinescoring --account-name $AZURE_STORAGE_ACCOUNT
 # </upload_code>
 
 # <create_code>
@@ -71,7 +71,7 @@ codeUri="https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZUREML_DEFAULT_C
 # </create_code>
 
 # <upload_model>
-az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s endpoints/online/model-1/model --account-name $AZURE_STORAGE_ACCOUNT
+az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s cli/endpoints/online/model-1/model --account-name $AZURE_STORAGE_ACCOUNT
 # </upload_model>
 
 # <create_model>
@@ -84,7 +84,7 @@ modelUri="azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROU
 # </create_model>
 
 # <read_condafile>
-CONDA_FILE=$(cat endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
 # <read_condafile>
 
 # <create_environment>
@@ -131,7 +131,7 @@ az deployment group create -g $RESOURCE_GROUP \
  codeId="$resourceScope/workspaces/$WORKSPACE/codes/score-sklearn/versions/1" \
  scoringScript=score.py \
  environmentId="$resourceScope/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION" \
- model="$resourceScope/workspaces/$WORKSPACE/models/sklearn/versions/1" \
+ model="$resourceScope/workspaces/$WORKSPACE/models/score-sklearn/versions/1" \
  endpointComputeType=Managed \
  skuName=Standard_F2s_v2 \
  skuCapacity=1
@@ -158,7 +158,7 @@ accessToken=$(echo $response | jq -r '.accessToken')
 curl --location --request POST $scoringUri \
 --header "Authorization: Bearer $accessToken" \
 --header "Content-Type: application/json" \
---data-raw @endpoints/online/model-1/sample-request.json
+--data-raw @cli/endpoints/online/model-1/sample-request.json
 # </score_endpoint>
 
 # <get_deployment_logs>

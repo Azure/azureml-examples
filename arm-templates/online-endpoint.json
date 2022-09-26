@@ -55,7 +55,7 @@
   "resources": [
     {
       "type": "Microsoft.MachineLearningServices/workspaces/onlineEndpoints",
-      "apiVersion": "2021-10-01",
+      "apiVersion": "2022-05-01",
       "name": "[concat(parameters('workspaceName'), '/', parameters('onlineEndpointName'))]",
       "location": "[parameters('location')]",
       "tags": "[parameters('onlineEndpointTags')]",

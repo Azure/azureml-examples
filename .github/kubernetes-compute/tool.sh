@@ -100,7 +100,6 @@ register_provider(){
     
     # For amlarc extension
     az provider register --namespace Microsoft.Relay
-    az provider register --namespace Microsoft.ServiceBus
     az provider register --namespace Microsoft.KubernetesConfiguration
     az provider register --namespace Microsoft.ContainerService
     az feature register --namespace Microsoft.ContainerService -n AKS-ExtensionManager
@@ -418,6 +417,8 @@ delete_workspace(){
 ##  Run jobs
 ##
 ########################################
+JOB_STATUS_FAILED="Failed"
+JOB_STATUS_COMPLETED="Completed"
 
 # run cli test job
 run_cli_job(){
@@ -449,9 +450,9 @@ run_cli_job(){
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
     
     # check status
-    if [[ $status ==  "Failed" ]]; then
+    if [[ $status ==  "${JOB_STATUS_FAILED}" ]]; then
         return 2
-    elif [[ $status != "Completed" ]]; then 
+    elif [[ $status != "${JOB_STATUS_COMPLETED}" ]]; then 
         timeout 5m az ml job cancel $SRW -n $run_id
         return 3
     fi
@@ -538,9 +539,9 @@ run_cli_automl_job(){
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
 
     # check status
-    if [[ $status ==  "Failed" ]]; then
+    if [[ $status ==  "${JOB_STATUS_FAILED}" ]]; then
         return 2
-    elif [[ $status != "Completed" ]]; then
+    elif [[ $status != "${JOB_STATUS_COMPLETED}" ]]; then
         timeout 5m az ml job cancel $SRW -n $run_id
         return 3
     fi
@@ -586,9 +587,9 @@ run_jupyter_test(){
     echo $status
     if [[ "$status" == "0" ]]
     then
-        echo "[JobStatus] $JOB_SPEC completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_COMPLETED}" | tee -a $RESULT_FILE
     else
-        echo "[JobStatus] $JOB_SPEC failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_FAILED}" | tee -a $RESULT_FILE
         return 1
     fi
 }
@@ -609,9 +610,9 @@ run_py_test(){
     echo $status
     if [[ "$status" == "0" ]]
     then
-        echo "[JobStatus] $JOB_SPEC completed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_COMPLETED}" | tee -a $RESULT_FILE
     else
-        echo "[JobStatus] $JOB_SPEC failed" | tee -a $RESULT_FILE
+        echo "[JobStatus] $JOB_SPEC ${JOB_STATUS_FAILED}" | tee -a $RESULT_FILE
         return 1
     fi
 }
@@ -627,13 +628,15 @@ count_result(){
     cat $RESULT_FILE
 
     total=$(grep -c "\[JobSubmission\]" $RESULT_FILE)
-    success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic completed)
+    success=$(grep "\[JobStatus\]" $RESULT_FILE | grep -ic ${JOB_STATUS_COMPLETED})
     unhealthy=$(( $total - $success ))
 
     echo "Total: ${total}, Success: ${success}, Unhealthy: ${unhealthy}, MinSuccessNum: ${MIN_SUCCESS_NUM}."
     
     if (( 10#${unhealthy} > 0 )) ; then
         echo "There are $unhealthy unhealthy jobs."
+        echo "Unhealthy jobs:"
+        grep "\[JobStatus\]" $RESULT_FILE | grep -iv ${JOB_STATUS_COMPLETED}
         return 1
     fi
     
@@ -648,191 +651,146 @@ count_result(){
 
 ########################################
 ##
-##  ICM funcs
+##  Upload metrics funcs
 ##
 ########################################
+export CERT_PATH=$(pwd)/certs
+export CONTAINER_NAME=amltestmdmcontinaer
+export STATSD_PORT=38125
+export REPOSITORY="${REPOSITORY:-Repository}"
+export WORKFLOW="${WORKFLOW:-Workflow}"
+export REPEAT="${REPEAT:-5}"
 
-gen_summary_for_github_test(){
-    echo "
-This ticket is automatically filed by github workflow.
-<br>
-The workflow is used to test github examples.
-<br>
-PLease check the following links for detailed errors.
-<br>
-<br>
-Owners: 
-<br>
-$OWNERS 
-<br>
-<br>
-Github repo: 
-<br>
-$GITHUB_REPO 
-<br>
-<br>
-Workflow url: 
-<br>
-$WORKFLOW_URL 
-<br>
-<br>
-Test result:
-<br>
-$(sed ':a;N;$!ba;s/\n/<br>/g' $RESULT_FILE)
-<br>
-<br>
-Others:
-<br>
-$OtherIcmMessage
-<br>
-"
+install_mdm_dependency(){
+    sudo apt install socat
 }
 
-download_icm_cert(){
+download_metrics_info(){
     KEY_VAULT_NAME=${KEY_VAULT_NAME:-kvname}
-    ICM_KEY_PEM_NAME=${ICM_KEY_PEM_NAME:-ICM-KEY-PEM}
-    ICM_CERT_PEM_NAME=${ICM_CERT_PEM_NAME:-ICM-CERT-PEM}
-    ICM_HOST_NAME=${ICM_HOST_NAME:-ICM-HOST}
-    ICM_CONNECTOR_ID_NAME=${ICM_CONNECTOR_ID_NAME:-ICM-CONNECTOR-ID}
-    ICM_ROUTING_ID_NAME=${ICM_ROUTING_ID_NAME:-ICM-ROUTING-ID}
+    METRIC_ENDPOINT_NAME=${METRIC_ENDPOINT_NAME:-METRIC-ENDPOINT}
+    MDM_ACCOUNT_NAME=${MDM_ACCOUNT_NAME:-MDM-ACCOUNT}
+    MDM_NAMESPACE_NAME=${MDM_NAMESPACE_NAME:-MDM-NAMESPACE}
+    KEY_PEM_NAME=${KEY_PEM_NAME:-KEY-PEM}
+    CERT_PEM_NAME=${CERT_PEM_NAME:-CERT-PEM}
 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_KEY_PEM_NAME -f key.pem
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_CERT_PEM_NAME -f cert.pem 
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_HOST_NAME -f icm_host
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_CONNECTOR_ID_NAME -f icm_connector_id
-    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $ICM_ROUTING_ID_NAME -f icm_routing_id
+    mkdir -p $CERT_PATH
+
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $METRIC_ENDPOINT_NAME -f metric_endpoint.txt
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_ACCOUNT_NAME -f mdm_account.txt 
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $MDM_NAMESPACE_NAME -f mdm_namespace.txt
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $KEY_PEM_NAME -f $CERT_PATH/key.pem
+    az keyvault secret download --vault-name $KEY_VAULT_NAME --name $CERT_PEM_NAME -f $CERT_PATH/cert.pem
 }
 
-file_icm(){
+start_mdm_container(){
 
-set -e
+    METRIC_ENDPOINT="${METRIC_ENDPOINT:-$(cat metric_endpoint.txt)}"
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
 
-ICM_XML_TEMPLATE='<?xml version="1.0" encoding="UTF-8"?>
-<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing">
-   <s:Header>
-      <a:Action s:mustUnderstand="1">http://tempuri.org/IConnectorIncidentManager/AddOrUpdateIncident2</a:Action>
-      <a:MessageID>{message_id}</a:MessageID>
-      <a:To s:mustUnderstand="1">https://icm.ad.msoppe.msft.net/Connector3/ConnectorIncidentManager.svc</a:To>
-   </s:Header>
-   <s:Body>
-      <AddOrUpdateIncident2 xmlns="http://tempuri.org/">
-         <connectorId>{connector_id}</connectorId>
-         <incident xmlns:b="http://schemas.datacontract.org/2004/07/Microsoft.AzureAd.Icm.Types" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-            <b:CommitDate i:nil="true" />
-            <b:Component i:nil="true" />
-            <b:CorrelationId>NONE://Default</b:CorrelationId>
-            <b:CustomFields i:nil="true" />
-            <b:CustomerName i:nil="true" />
-            <b:ExtendedData i:nil="true" />
-            <b:HowFixed i:nil="true" />
-            <b:ImpactStartDate i:nil="true" />
-            <b:ImpactedServices i:nil="true" />
-            <b:ImpactedTeams i:nil="true" />
-            <b:IncidentSubType i:nil="true" />
-            <b:IncidentType i:nil="true" />
-            <b:IsCustomerImpacting i:nil="true" />
-            <b:IsNoise i:nil="true" />
-            <b:IsSecurityRisk i:nil="true" />
-            <b:Keywords i:nil="true" />
-            <b:MitigatedDate i:nil="true" />
-            <b:Mitigation i:nil="true" />
-            <b:MonitorId>NONE://Default</b:MonitorId>
-            <b:OccurringLocation>
-               <b:DataCenter i:nil="true" />
-               <b:DeviceGroup i:nil="true" />
-               <b:DeviceName i:nil="true" />
-               <b:Environment i:nil="true" />
-               <b:ServiceInstanceId i:nil="true" />
-            </b:OccurringLocation>
-            <b:OwningAlias>{OwningAlias}</b:OwningAlias>
-            <b:OwningContactFullName>{OwningContactFullName}</b:OwningContactFullName>
-            <b:RaisingLocation>
-               <b:DataCenter i:nil="true" />
-               <b:DeviceGroup i:nil="true" />
-               <b:DeviceName i:nil="true" />
-               <b:Environment i:nil="true" />
-               <b:ServiceInstanceId i:nil="true" />
-            </b:RaisingLocation>
-            <b:ReproSteps i:nil="true" />
-            <b:ResolutionDate i:nil="true" />
-            <b:RoutingId>{routing_id}</b:RoutingId>
-            <b:ServiceResponsible i:nil="true" />
-            <b:Severity>{severity}</b:Severity>
-            <b:Source>
-               <b:CreateDate>2021-12-22T13:30:34.252844</b:CreateDate>
-               <b:CreatedBy>Monitor</b:CreatedBy>
-               <b:IncidentId>57638e1c-632b-11ec-ab00-3f0c27fe2792</b:IncidentId>
-               <b:ModifiedDate>2021-12-22T13:30:34.252869</b:ModifiedDate>
-               <b:Origin>Monitor</b:Origin>
-               <b:Revision i:nil="true" />
-               <b:SourceId>00000000-0000-0000-0000-000000000000</b:SourceId>
-            </b:Source>
-            <b:Status>Active</b:Status>
-            <b:SubscriptionId i:nil="true" />
-            <b:Summary>{summary}</b:Summary>
-            <b:SupportTicketId i:nil="true" />
-            <b:Title>{title}</b:Title>
-            <b:TrackingTeams i:nil="true" />
-            <b:TsgId>{tsg_id}</b:TsgId>
-            <b:TsgOutput i:nil="true" />
-            <b:ValueSpecifiedFields>None</b:ValueSpecifiedFields>
-         </incident>
-         <routingOptions>None</routingOptions>
-      </AddOrUpdateIncident2>
-   </s:Body>
-</s:Envelope>
-'  
+    METRIC_ENDPOINT_ARG="-e METRIC_ENDPOINT=${METRIC_ENDPOINT}"
+    if [ "$METRIC_ENDPOINT" = "METRIC-ENDPOINT-PROD" ]; then
+       METRIC_ENDPOINT_ARG=""
+    fi
 
-    UUID="$(uuidgen)"  
-    DATE=$(date --iso-8601=second)
-    CONNECTOR_ID="${CONNECTOR_ID:-6872439d-31d6-4e5d-a73b-2d93edebf18a}"
-    TITLE="${TITLE:-[Github] Github examples test failed}"
-    ROUTING_ID="${ROUTING_ID:-Vienna-AmlArc}"
-    OWNING_ALIAS="${OWNING_ALIAS}"
-    OWNING_CONTACT_FULL_NAME="${OWNING_CONTACT_FULL_NAME}"
-    SUMMARY="${SUMMARY:-Test icm ticket}"
-    SEVERITY="${SEVERITY:-4}"
-    TSG_ID="${TSG_ID:-tsg-link}"
-    
-    KEY_FILE="${KEY_FILE:-key.pem}"
-    CERT_FILE="${CERT_FILE:-cert.pem}"
-    ICM_HOST="${ICM_HOST:-test}"
-    ICM_URL="https://${ICM_HOST}/Connector3/ConnectorIncidentManager.svc?wsdl"
-      
-    PAYLOAD=$(echo $ICM_XML_TEMPLATE | xmlstarlet ed \
-            -N s=http://www.w3.org/2003/05/soap-envelope \
-            -N a=http://www.w3.org/2005/08/addressing \
-            -N aa=http://tempuri.org/ \
-            -N b="http://schemas.datacontract.org/2004/07/Microsoft.AzureAd.Icm.Types" \
-            -N i="http://www.w3.org/2001/XMLSchema-instance" \
-            -u '/s:Envelope/s:Header/a:MessageID' -v "urn:uuid:$UUID" \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:connectorId' -v "$CONNECTOR_ID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Title' -v "$TITLE"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Severity' -v "$SEVERITY" \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:RoutingId' -v "$ROUTING_ID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningAlias' -v "$OWNING_ALIAS"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:OwningContactFullName' -v "$OWNING_CONTACT_FULL_NAME"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Summary' -v "$SUMMARY"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:TsgId' -v "$TSG_ID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:CreateDate' -v "$DATE"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:IncidentId' -v "$UUID"  \
-            -u '/s:Envelope/s:Body/aa:AddOrUpdateIncident2/aa:incident/b:Source/b:ModifiedDate' -v "$DATE"  \
-        )
-    
-    temp_file=$(mktemp)
-    curl "$ICM_URL" -v --http1.1 -X POST --key $KEY_FILE --cert $CERT_FILE -o $temp_file  \
-        -H "Host: $ICM_HOST" \
-        -H "Expect: 100-continue" \
-        -H "Content-Type: application/soap+xml; charset=utf-8" \
-        -d "$PAYLOAD" 
-    
-    ret=$?
-    echo "code: $ret" 
-    echo "Response: $temp_file"
-    xmlstarlet fo --indent-tab --omit-decl $temp_file || true
-    return $ret
+    docker run -d \
+        --name=$CONTAINER_NAME \
+        -v  ${CERT_PATH}:/certs \
+        --net=host --uts=host \
+        -e MDM_ACCOUNT=${MDM_ACCOUNT} \
+        -e MDM_NAMESPACE=${MDM_NAMESPACE} \
+        -e MDM_INPUT=statsd_udp \
+        -e STATSD_PORT=${STATSD_PORT} \
+        -e MDM_LOG_LEVEL=Debug \
+        -e CERT_FILE=/certs/cert.pem \
+        -e KEY_FILE=/certs/key.pem \
+        linuxgeneva-microsoft.azurecr.io/genevamdm \
+        $METRIC_ENDPOINT_ARG
+
+    show_mdm_container
 }
 
+show_mdm_container(){
+    docker ps -a \
+        --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.CreatedAt}}\t{{.Image}}" \
+        -f name=$CONTAINER_NAME
+}
+
+stop_mdm_container(){
+    show_mdm_container
+    docker stop $CONTAINER_NAME
+    docker rm -f $CONTAINER_NAME
+    show_mdm_container
+}
+
+report_cluster_setup_metrics(){
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
+    METRIC_NAME="${METRIC_NAME:-GithubWorkflowClusterSetup}"
+    VALUE="${VALUE:-1}"
+    
+    for i in $(seq 1 $REPEAT); do
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        sleep 60
+    done
+
+}
+
+report_inference_metrics(){
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
+    METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
+    METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
+    jobstatus="${jobstatus:-Completed}"
+    job="${job:-job}"
+
+    for i in $(seq 1 $REPEAT); do
+        # Report heartbeat
+        VALUE=100
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        VALUE=0
+        if [ "${jobstatus}" == "${JOB_STATUS_COMPLETED}" ]; then
+            VALUE=100
+        fi
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"Job":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+        sleep 60
+    done
+
+}
+
+report_test_result_metrics(){
+    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
+    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
+    METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
+    METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
+
+    jobs=$(grep "\[JobSubmission\]" $RESULT_FILE)
+    echo "Found $(echo "$jobs"| wc -l) jobs"
+
+    for i in $(seq 1 $REPEAT); do
+        # Report heartbeat
+        VALUE=100
+        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+
+        while IFS= read -r job; do
+            job=$(echo $job| awk '{print $2}')
+            jobstatus=$(grep "\[JobStatus\]" $RESULT_FILE | grep $job | awk '{print $3}')
+            echo "Report metrics for job: $job status: $jobstatus"
+
+            VALUE=0
+            if [ "${jobstatus}" == "${JOB_STATUS_COMPLETED}" ]; then
+                VALUE=100
+            fi
+
+            # Report test result            
+            echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"Job":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
+            sleep 2
+        done <<< $(echo "$jobs")
+
+        sleep 60
+    done
+
+}
 
 help(){
     echo "All functions:"

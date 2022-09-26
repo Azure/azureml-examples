@@ -6,7 +6,7 @@ on:
     inputs:
       TEST_REGION:
         description: 'Resource Region'
-        required: true
+        required: false
         default: 'eastus'
       TIMEOUT:
         description: 'Timeout of a single job'
@@ -16,6 +16,10 @@ on:
         description: 'Whether to file icm ticket: true or false'
         required: false
         default: 'false'
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,17 +31,12 @@ jobs:
 
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-bad-cases.txt
       TIMEOUT: '120m'
-      MIN_SUCCESS_NUM: 1
+      MIN_SUCCESS_NUM: 0
 
       FILE_TICKET: true
-      SEVERITY: 3
       KEY_VAULT_NAME: amlarcgithubworkflowkv
-      OWNERS: amlarc@microsoft.com
-      TITLE: "[Github Workflow] kubernetes-compute-training-cli-jobs-bad-cases failed"
-      GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-bad-cases.yml
-      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
-      ICM_MESSAGE: "Failed to run cli-jobs-bad-cases jobs on kubernetes compute!"
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-bad-cases.yml
 
     steps:
     - name: replace env from workflow_dispatch
@@ -46,6 +45,7 @@ jobs:
         echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
         echo "TIMEOUT=${{ github.event.inputs.TIMEOUT }}" | tee -a $GITHUB_ENV
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -59,8 +59,9 @@ jobs:
       timeout-minutes: 30
     - name: install ml
       run: |
-        set -x
+        set -x +e
         az extension remove -n ml
+        sleep 60
         cat cli/setup.sh | grep "^az extension add" | bash 
         az version
       timeout-minutes: 30
@@ -72,18 +73,8 @@ jobs:
 
     - name: collect jobs
       run: |
-        #echo "cli/jobs/basics/hello-iris-datastore-folder.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/basics/hello-sweep.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/single-step/scikit-learn/iris/job-sweep.yml " | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/single-step/lightgbm/iris/job-sweep.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml"  | tee -a $JOB_LIST_FILE
-        #echo "cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/pipelines/tensorflow-image-segmentation/pipeline.yml"  | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
-        #echo "cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
     - name: run jobs
@@ -107,20 +98,39 @@ jobs:
         bash .github/kubernetes-compute/tool.sh count_result
       timeout-minutes: 30
 
-    - name: file_icm
-      if: ${{ failure() && github.event_name != 'pull_request' }}
+    # report metrics
+    - name: download_metrics_dependency
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+        fi
+      timeout-minutes: 30
+    - name: start_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export ICM_HOST_NAME=ICM-HOST-PPE
-          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PPE
-          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PPE
-          bash .github/kubernetes-compute/tool.sh download_icm_cert
-          export ICM_HOST=$(cat icm_host)
-          export CONNECTOR_ID=$(cat icm_connector_id)
-          export ROUTING_ID=$(cat icm_routing_id)
-          export OtherIcmMessage="${ICM_MESSAGE}"
-          export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
-          bash .github/kubernetes-compute/tool.sh file_icm
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+          export KEY_PEM_NAME=AMLARC-KEY-PEM
+          export CERT_PEM_NAME=AMLARC-CERT-PEM
+          bash .github/kubernetes-compute/tool.sh download_metrics_info
+          bash .github/kubernetes-compute/tool.sh start_mdm_container
+        fi
+      timeout-minutes: 30
+    - name: report_metrics
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh report_test_result_metrics
+        fi
+      timeout-minutes: 30   
+    - name: stop_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh stop_mdm_container
         fi
       timeout-minutes: 30

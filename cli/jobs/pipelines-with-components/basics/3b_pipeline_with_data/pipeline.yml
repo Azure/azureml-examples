@@ -13,7 +13,7 @@ outputs:
 jobs:
   component_a:
     type: command
-    component: file:./componentA.yml
+    component: ./componentA.yml
     inputs:
       component_a_input: 
         type: uri_folder
@@ -24,7 +24,7 @@ jobs:
         mode: rw_mount
   component_b:
     type: command
-    component: file:./componentB.yml
+    component: ./componentB.yml
     inputs:
       component_b_input: ${{parent.jobs.component_a.outputs.component_a_output}}
     outputs:
@@ -32,7 +32,7 @@ jobs:
         mode: rw_mount
   component_c:
     type: command
-    component: file:./componentC.yml
+    component: ./componentC.yml
     inputs:
       component_c_input: ${{parent.jobs.component_b.outputs.component_b_output}}
     outputs:

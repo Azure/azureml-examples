@@ -6,24 +6,44 @@ on:
     inputs:
       TEST_REGION:
         description: 'Resource Region'
-        required: true
+        required: false
         default: 'eastus'
       RELEASE_TRAIN:
         description: 'Release version: experimental, staging or stable'
-        required: true
-        default: 'staging'
+        required: false
+        default: 'stable'
       REINSTALL_EXTENSION:
         description: 'Whether to reinstall extension: true or false'
-        required: true
+        required: false
         default: 'false'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
-        required: true
+        required: false
         default: 'false'
       EXTENSION_VERSION:
         description: 'The version of k8s-extension'
-        required: true
+        required: false
         default: ''
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
+      VM_SKU:
+        description: 'The VM SKU of the cluster'
+        required: false
+        default: 'STANDARD_NC12'
+      AKS_CLUSTER_PREFIX:
+        description: 'The prefix of the cluster'
+        required: false
+        default: 'amlarc-aks'
+      CPU_INSTANCE_TYPE:
+        description: 'cpu instance type'
+        required: false
+        default: '4 40Gi'
+      GPU_INSTANCE_TYPE:
+        description: 'gpu instance type'
+        required: false
+        default: '4 40Gi 2'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -35,21 +55,19 @@ jobs:
       VM_SKU: STANDARD_NC12
       MIN_COUNT: 4
       CLUSTER_TYPE: managedClusters
-      RELEASE_TRAIN: staging
+      RELEASE_TRAIN: stable
       COMPUTE: "gpu-cluster"
       EXTENSION_SETTINGS: "enableTraining=True enableInference=True inferenceRouterServiceType=loadBalancer allowInsecureConnections=True installNvidiaDevicePlugin=True installDcgmExporter=True"
       REINSTALL_EXTENSION: false
       EXTENSION_VERSION: ""
+      AKS_CLUSTER_PREFIX: "amlarc-aks"
+      CPU_INSTANCE_TYPE: "4 40Gi"
+      GPU_INSTANCE_TYPE: "4 40Gi 2"
 
       FILE_TICKET: true
-      SEVERITY: 3
       KEY_VAULT_NAME: amlarcgithubworkflowkv
-      OWNERS: amlarc@microsoft.com
-      TITLE: "[Github Workflow] kubernetes-compute-gpu-resources-setup failed"
-      GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-gpu-resources-setup.yml
-      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/15/Doc.aspx?sourcedoc=%7B7ebf9ccd-fa20-4e82-8b2b-6c14c9f1740f%7D&action=edit&wd=target(AMLArcTSG.one%7C69e8bdb1-5734-4b07-967a-5a50a91cf040%2FTroubleshooting%20github%20workflow%7C53a1a232-f9f0-4192-b7d2-0474848ebb18%2F)&share=IgHNnL9-IPqCTosrbBTJ8XQPAVwbVLD_kFe92G2Y9a49ROs
-      ICM_MESSAGE: "Failed to setup gpu resources for kubernetes compute github workflow!"
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-gpu-resources-setup.yml
 
     steps:
     - name: replace env from workflow_dispatch
@@ -60,6 +78,11 @@ jobs:
         echo "REINSTALL_EXTENSION=${{ github.event.inputs.REINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
         echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
         echo "EXTENSION_VERSION=${{ github.event.inputs.EXTENSION_VERSION }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+        echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
+        echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
+        echo "CPU_INSTANCE_TYPE=${{ github.event.inputs.CPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
+        echo "GPU_INSTANCE_TYPE=${{ github.event.inputs.GPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -101,26 +124,55 @@ jobs:
     - name: setup_instance_type
       run: |
         bash .github/kubernetes-compute/tool.sh get_kubeconfig
-        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype 4 32Gi  2
-        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu 4 32Gi
-        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu 4 32Gi 2
+        bash .github/kubernetes-compute/tool.sh setup_instance_type defaultinstancetype $GPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type cpu $CPU_INSTANCE_TYPE
+        bash .github/kubernetes-compute/tool.sh setup_instance_type gpu $GPU_INSTANCE_TYPE
       timeout-minutes: 30
 
-    - name: file_icm
-      if: ${{ failure() && github.event_name != 'pull_request' }}
+    # report metrics
+    - name: download_metrics_dependency
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+        fi
+      timeout-minutes: 30
+    - name: start_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
           # download certificates
-          export ICM_HOST_NAME=ICM-HOST-AML-EXAMPLES
-          export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-AML-EXAMPLES
-          export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-AML-EXAMPLES
-          bash .github/kubernetes-compute/tool.sh download_icm_cert
-          export ICM_HOST=$(cat icm_host)
-          export CONNECTOR_ID=$(cat icm_connector_id)
-          export ROUTING_ID=$(cat icm_routing_id)
-          export OtherIcmMessage="${ICM_MESSAGE}"
-          export SUMMARY=$(bash .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
-          bash .github/kubernetes-compute/tool.sh file_icm
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+          export KEY_PEM_NAME=AMLARC-KEY-PEM
+          export CERT_PEM_NAME=AMLARC-CERT-PEM
+          bash .github/kubernetes-compute/tool.sh download_metrics_info
+          bash .github/kubernetes-compute/tool.sh start_mdm_container
+        fi
+      timeout-minutes: 30
+    - name: report_failure_metrics
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export VALUE=0
+          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
+          sleep 60
+        fi
+      timeout-minutes: 30
+    - name: report_succes_metrics
+      if: ${{ success() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export VALUE=100
+          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
+        fi
+      timeout-minutes: 30   
+    - name: stop_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh stop_mdm_container
         fi
       timeout-minutes: 30
    

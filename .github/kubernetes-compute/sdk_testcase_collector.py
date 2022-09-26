@@ -34,10 +34,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("-r", "--regex", required=True, help="test case name selector")
     parser.add_argument(
-        "-o",
-        "--output",
-        required=False,
-        help="the file selected test case send to",
+        "-o", "--output", required=False, help="the file selected test case send to"
     )
 
     args = parser.parse_args()

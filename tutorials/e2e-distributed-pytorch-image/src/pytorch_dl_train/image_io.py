@@ -44,9 +44,7 @@ def find_image_subfolder(current_root):
 
 
 def build_image_datasets(
-    train_images_dir: str,
-    valid_images_dir: str,
-    input_size: int = 224,
+    train_images_dir: str, valid_images_dir: str, input_size: int = 224
 ):
     """
     Args:

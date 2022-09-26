@@ -14,7 +14,7 @@ compute: azureml:cpu-cluster
 jobs:
   component_folder:
     type: command
-    component: file:./component-folder.yml
+    component: ./component-folder.yml
     inputs:
       sample_input_data: 
         type: uri_folder
@@ -26,7 +26,7 @@ jobs:
       sample_output_data: ${{parent.outputs.pipeline_sample_output_data}}
   component_file:
     type: command
-    component: file:./component-file.yml
+    component: ./component-file.yml
     inputs:
       sample_input_data_file: 
         type: uri_file

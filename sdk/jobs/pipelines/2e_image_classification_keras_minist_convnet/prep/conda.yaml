@@ -1,8 +1,0 @@
-name: imagekeras_prep_conda_env
-channels:
-  - defaults
-dependencies:
-  - python=3.7.11
-  - pip=20.0
-  - pip:
-    - mldesigner

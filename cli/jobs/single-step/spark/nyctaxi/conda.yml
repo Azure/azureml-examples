@@ -30,4 +30,5 @@ dependencies:
     - python-snappy
     - fastparquet
     - azureml-mlflow
+    - azureml-core
     - pyspark
