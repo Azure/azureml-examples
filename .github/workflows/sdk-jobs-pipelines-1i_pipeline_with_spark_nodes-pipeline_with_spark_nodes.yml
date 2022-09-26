@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-1i_pipeline_with_spark_nodes-pipeline_with_spark_nodes
+# This file is created by sdk/python/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
@@ -6,12 +8,11 @@ on:
   pull_request:
     branches:
       - main
-      - sdk-preview
-      - pipeline/*
     paths:
-      - sdk/**
+      - sdk/python/jobs/pipelines/1i_pipeline_with_spark_nodes/**
       - .github/workflows/sdk-jobs-pipelines-1i_pipeline_with_spark_nodes-pipeline_with_spark_nodes.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,14 +24,14 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup CLI
       run: bash setup.sh
@@ -39,15 +40,14 @@ jobs:
     - name: run jobs/pipelines/1i_pipeline_with_spark_nodes/pipeline_with_spark_nodes.ipynb
       run: |
           mkdir ../../.azureml
-          export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
           echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_spark_nodes.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" pipeline_with_spark_nodes.ipynb
           papermill -k python pipeline_with_spark_nodes.ipynb pipeline_with_spark_nodes.output.ipynb
-      working-directory: sdk/jobs/pipelines/1i_pipeline_with_spark_nodes
+      working-directory: sdk/python/jobs/pipelines/1i_pipeline_with_spark_nodes
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: pipeline_with_spark_nodes
-        path: sdk/jobs/pipelines/1i_pipeline_with_spark_nodes
+        path: sdk/python/jobs/pipelines/1i_pipeline_with_spark_nodes
