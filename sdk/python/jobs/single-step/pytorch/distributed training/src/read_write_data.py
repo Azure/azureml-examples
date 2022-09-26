@@ -10,5 +10,5 @@ args = parser.parse_args()
 
 file = tarfile.open(args.input_data)
 output_path = os.path.join(args.output_folder)
-file.extractall(output_path)  
+file.extractall(output_path)
 file.close()
