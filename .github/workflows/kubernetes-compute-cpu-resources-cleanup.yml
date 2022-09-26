@@ -20,6 +20,18 @@ on:
         description: 'Whether to delete cluster: true or false'
         required: true
         default: 'false'
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
+      VM_SKU:
+        description: 'The VM SKU of the cluster'
+        required: false
+        default: 'Standard_D4s_v3'
+      AKS_CLUSTER_PREFIX:
+        description: 'The prefix of the cluster'
+        required: false
+        default: 'amlarc-aks'
       
 jobs:
   test:
@@ -46,6 +58,9 @@ jobs:
         echo "CLEANUP_WORKSPACE=${{ github.event.inputs.CLEANUP_WORKSPACE }}" | tee -a $GITHUB_ENV
         echo "UNINSTALL_EXTENSION=${{ github.event.inputs.UNINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
         echo "CLEANUP_CLUSTER=${{ github.event.inputs.CLEANUP_CLUSTER }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+        echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
+        echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -101,6 +116,7 @@ jobs:
     - name: cleanup terminating pods
       if: ${{ always() }}
       run: |
+          set +e
           bash .github/kubernetes-compute/tool.sh get_kubeconfig
           for i in $(kubectl get pod | grep Terminating | awk '{print $1}') ; do echo $i ; kubectl get pod $i; kubectl delete pod  $i --force; done
       timeout-minutes: 60

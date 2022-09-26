@@ -9,7 +9,7 @@ inputs:
 jobs:
   python_hello_step:
     type: command
-    component: file:./component-hello.yml
+    component: ./component-hello.yml
     compute: azureml:cpu-cluster
     inputs:
       sample_input_data: 
@@ -23,7 +23,7 @@ jobs:
 
   python_world_step:
     type: command
-    component: file:./component-world.yml
+    component: ./component-world.yml
     compute: azureml:cpu-cluster
     inputs:
       sample_input_data: 

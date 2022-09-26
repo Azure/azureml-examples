@@ -11,12 +11,12 @@ settings:
 jobs:
   component_a:
     type: command
-    component: file:./componentA.yml
+    component: ./componentA.yml
     limits: 
       timeout: 3600
   component_b:
     type: command
-    component: file:./componentB.yml
+    component: ./componentB.yml
   component_c:
     type: command
-    component: file:./componentC.yml
+    component: ./componentC.yml

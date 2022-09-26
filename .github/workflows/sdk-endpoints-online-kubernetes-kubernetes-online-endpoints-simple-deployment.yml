@@ -1,28 +1,35 @@
 name: sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-simple-deployment
 on:
   workflow_dispatch:
+    inputs:
+      FILE_TICKET:
+        description: 'Whether to file icm ticket: true or false'
+        required: false
+        default: 'false'
   schedule:
     - cron: "0 6 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/python/**
       - .github/workflows/sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-simple-deployment.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
       - .github/kubernetes-compute/tool.sh
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      FILE_TICKET: true
       KEY_VAULT_NAME: amlarcgithubworkflowkv
-      SEVERITY: 3
-      OWNERS: amlarc@microsoft.com
-      TITLE: "[Github Workflow] Faild to run kubernetes-online-endpoints-simple-deployment notebook"
-      GITHUB_REPO: https://github.com/Azure/azureml-examples
-      WORKFLOW_URL: https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment.yml
-      TSG_ID: https://microsoft.sharepoint.com/teams/Vienna/_layouts/OneNote.aspx?id=%2Fteams%2FVienna%2FSiteAssets%2FVienna%20Notebook&wd=target%28AMLArcTSG.one%7C69E8BDB1-5734-4B07-967A-5A50A91CF040%2FTroubleshooting%20github%20workflow%7C53A1A232-F9F0-4192-B7D2-0474848EBB18%2F%29
+      REPOSITORY: https://github.com/Azure/azureml-examples
+      WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/sdk-endpoints-online-kubernetes-online-endpoints-simple-deployment.yml
+
     steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -30,7 +37,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -55,24 +62,59 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" kubernetes-online-endpoints-simple-deployment.ipynb
 
           papermill -k python kubernetes-online-endpoints-simple-deployment.ipynb kubernetes-online-endpoints-simple-deployment.output.ipynb
-      working-directory: sdk/endpoints/online/kubernetes
-    - name: file IcM when fails
-      if: ${{ failure() && github.event_name == 'schedule' }}
+      working-directory: sdk/python/endpoints/online/kubernetes
+    
+    # report metrics
+    - name: download_metrics_dependency
+      if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
-        # download certificates
-        export ICM_HOST_NAME=ICM-HOST-PROD
-        export ICM_CONNECTOR_ID_NAME=ICM-CONNECTOR-ID-PROD
-        export ICM_ROUTING_ID_NAME=ICM-ROUTING-ID-PROD
-        set -e; bash -x .github/kubernetes-compute/tool.sh download_icm_cert
-        export ICM_HOST=$(cat icm_host)
-        export CONNECTOR_ID=$(cat icm_connector_id)
-        export ROUTING_ID=$(cat icm_routing_id)
-        export SUMMARY=$(set -e; bash -x .github/kubernetes-compute/tool.sh gen_summary_for_github_test)
-        set -e; bash -x .github/kubernetes-compute/tool.sh file_icm
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+        fi
       timeout-minutes: 30
+    - name: start_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          # download certificates
+          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+          export KEY_PEM_NAME=AMLARC-KEY-PEM
+          export CERT_PEM_NAME=AMLARC-CERT-PEM
+          bash .github/kubernetes-compute/tool.sh download_metrics_info
+          bash .github/kubernetes-compute/tool.sh start_mdm_container
+        fi
+      timeout-minutes: 30
+    - name: report_failure_metrics
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export jobstatus=Failed
+          export job="sdk/python/endpoints/online/kubernetes/kubernetes-online-endpoints-simple-deployment.ipynb"
+          bash .github/kubernetes-compute/tool.sh report_inference_metrics
+        fi
+      timeout-minutes: 30
+    - name: report_succes_metrics
+      if: ${{ success() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          export jobstatus=Completed
+          export job="sdk/python/endpoints/online/kubernetes/kubernetes-online-endpoints-simple-deployment.ipynb"
+          bash .github/kubernetes-compute/tool.sh report_inference_metrics
+        fi
+      timeout-minutes: 30   
+    - name: stop_mdm
+      if: ${{ always() && github.event_name != 'pull_request' }}
+      run: |
+        if [ "$FILE_TICKET" == "true" ]; then
+          bash .github/kubernetes-compute/tool.sh stop_mdm_container
+        fi
+      timeout-minutes: 30
+
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: kubernetes-online-endpoints-simple-deployment
-        path: sdk/endpoints/online/kubernetes
+        path: sdk/python/endpoints/online/kubernetes

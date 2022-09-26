@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/tutorials/using-pipelines/**
+      - v1/python-sdk/tutorials/using-pipelines/**
       - .github/workflows/python-sdk-tutorial-using-pipelines.yml
-      - python-sdk/requirements.txt
+      - v1/python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -26,7 +26,7 @@ jobs:
     - name: downgrade pip
       run: pip install pip==21.1.1
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: pip install -r v1/python-sdk/requirements.txt
     - name: temp installs
       run: pip install azureml-pipeline azureml-pipeline-steps
     - name: azure login
@@ -39,4 +39,4 @@ jobs:
       run: az ml folder attach -w main -g azureml-examples
     - name: run ${{matrix.notebook}}
       run: papermill ${{matrix.notebook}} - -k python
-      working-directory: python-sdk/tutorials/using-pipelines
+      working-directory: v1/python-sdk/tutorials/using-pipelines

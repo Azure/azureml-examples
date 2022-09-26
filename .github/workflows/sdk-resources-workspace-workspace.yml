@@ -1,13 +1,18 @@
 name: sdk-resources-workspace-workspace
+# This file is created by sdk/python/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/python/resources/workspace/**
       - .github/workflows/sdk-resources-workspace-workspace.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,14 +24,14 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup CLI
       run: bash setup.sh
@@ -47,10 +52,10 @@ jobs:
           sed -i -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" workspace.ipynb
 
           papermill -k python workspace.ipynb workspace.output.ipynb
-      working-directory: sdk/resources/workspace
+      working-directory: sdk/python/resources/workspace
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: workspace
-        path: sdk/resources/workspace
+        path: sdk/python/resources/workspace
