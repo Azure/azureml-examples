@@ -1,5 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/kubernetesOnlineEndpoint.schema.json
+#To serve the online endpoint in Kubernetes, set the compute as your Kubernetes compute target. The legacy AKS compute is not supported. Learn more on Kubernetes compute here aka.ms/amlarc/doc.
+
 name: my-endpoint
-compute: azureml:inferencecompute
+compute: azureml:kubernetescompute
 auth_mode: Key
 tags:
   tag1: endpoint-tag1-value
