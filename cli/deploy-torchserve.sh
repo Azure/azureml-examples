@@ -1,3 +1,5 @@
+#/bin/bash
+
 set -e
 
 BASE_PATH=endpoints/online/custom-container
