@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+          "type": "string",
+          "defaultValue": "doris-gpu-arc"
+        },
+        "namespace": {
+          "type": "string",
+          "defaultValue": "default"
+        },
+        "workspaceName": {
+          "type": "string",
+          "defaultValue": "doris-ws"
+        },
+        "computeName": {
+            "type": "string",
+            "defaultValue": "armtemplate"
+          },
+          "location": {
+            "type": "string",
+            "defaultValue": "eastus"
+          }
+      },
+    "resources": [
+        {
+            "type": "Microsoft.MachineLearningServices/workspaces/computes",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('workspaceName'), '/', parameters('computeName'))]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "computeType": "Kubernetes",
+                "resourceId": "[resourceId('Microsoft.Kubernetes/connectedClusters', parameters('clusterName'))]",
+                "properties": {
+                    "namespace": "[parameters('namespace')]"
+                }
+            }
+        }
+    ],
+    "outputs": {}
+  }

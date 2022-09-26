@@ -13,6 +13,7 @@ request_settings:
   request_timeout_ms: 3000
   max_concurrent_requests_per_instance: 1
   max_queue_wait_ms: 3000
+instance_type: defaltinstancetype
 resources:
   requests:
     cpu: "0.1"
