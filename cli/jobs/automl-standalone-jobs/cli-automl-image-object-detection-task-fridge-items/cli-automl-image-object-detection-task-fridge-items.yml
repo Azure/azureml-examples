@@ -29,6 +29,8 @@ validation_data:
 # <limit_settings>
 limits:
   timeout_minutes: 60
+  max_trials: 10
+  max_concurrent_trials: 2
 # </limit_settings>
 
 # <fixed_settings>
@@ -39,9 +41,6 @@ training_parameters:
 
 # <sweep_settings>
 sweep:
-  limits:
-    max_trials: 10
-    max_concurrent_trials: 2
   sampling_algorithm: random
   early_termination:
     type: bandit
