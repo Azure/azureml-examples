@@ -1,3 +1,5 @@
+set -e
+
 # <initialize_variables>
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=tfserving-mounted
@@ -77,7 +79,7 @@ else
   # <delete_endpoint_and_model>
   az ml online-endpoint delete -n $ENDPOINT_NAME -y
   echo "deleting model..."
-  az ml model delete -n tfserving-mounted --version 1
+  az ml model archive -n tfserving-mounted --version 1
   # </delete_endpoint_and_model>
   cleanup
   exit 1
@@ -94,11 +96,10 @@ done
 
 echo "Tested successfully, response was $RESPONSE. Cleaning up..."
 
-echo "Deployment failed"
 # <delete_endpoint_and_model>
 az ml online-endpoint delete -n $ENDPOINT_NAME -y
 echo "deleting model..."
-az ml model delete -n tfserving-mounted --version 1
+az ml model archive -n tfserving-mounted --version 1
 # </delete_endpoint_and_model>
 
 cleanup
