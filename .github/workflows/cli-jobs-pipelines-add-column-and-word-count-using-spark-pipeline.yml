@@ -10,6 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines/add-column-and-word-count-using-spark/**
       - .github/workflows/cli-jobs-pipelines-add-column-and-word-count-using-spark-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 jobs:
   build:
