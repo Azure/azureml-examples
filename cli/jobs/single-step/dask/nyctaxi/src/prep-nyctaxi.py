@@ -31,8 +31,7 @@ mlflow.log_text(str(c), "dask_cluster1")
 # read in the data from the provided file dataset (which is mounted at the same
 # location on all nodes of the job)
 df = dd.read_csv(
-    f"{dataset}/*.csv",
-    parse_dates=["tpep_pickup_datetime", "tpep_dropoff_datetime"],
+    f"{dataset}/*.csv", parse_dates=["tpep_pickup_datetime", "tpep_dropoff_datetime"]
 )
 
 # as an alternative, the below would be using abfs

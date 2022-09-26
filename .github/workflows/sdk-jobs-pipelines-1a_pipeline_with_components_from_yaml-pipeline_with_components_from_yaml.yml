@@ -1,4 +1,6 @@
 name: sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml
+# This file is created by sdk/python/readme.py.
+# Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
@@ -7,9 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/**
+      - sdk/python/jobs/pipelines/1a_pipeline_with_components_from_yaml/**
       - .github/workflows/sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_components_from_yaml.yml
-      - sdk/dev-requirements.txt
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,14 +24,14 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup CLI
       run: bash setup.sh
@@ -41,10 +44,10 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_components_from_yaml.ipynb
           sed -i "s/@pipeline(/&force_rerun=True,/" pipeline_with_components_from_yaml.ipynb
           papermill -k python pipeline_with_components_from_yaml.ipynb pipeline_with_components_from_yaml.output.ipynb
-      working-directory: sdk/jobs/pipelines/1a_pipeline_with_components_from_yaml
+      working-directory: sdk/python/jobs/pipelines/1a_pipeline_with_components_from_yaml
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: pipeline_with_components_from_yaml
-        path: sdk/jobs/pipelines/1a_pipeline_with_components_from_yaml
+        path: sdk/python/jobs/pipelines/1a_pipeline_with_components_from_yaml

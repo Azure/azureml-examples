@@ -1,0 +1,45 @@
+name: profiling-online-endpoints
+on:
+  workflow_dispatch:
+    inputs:
+      SKU_LIST:
+        description: 'Define the list of skus in the format of ["sku:num_concurrent_requests", "sku:num_concurrent_requests" ...]'     
+        required: true
+        default: '["Standard_F2s_v2:1", "Standard_F4s_v2:2"]'
+jobs:
+  profiling:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sku_connection_pair: ${{ fromJson(github.event.inputs.SKU_LIST) }}
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v2
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: Install dependencies
+      run: |
+        az extension add -n ml -y
+        sudo apt-get update -y && sudo apt-get install jq
+    - name: Setup az environment
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: Generate unique online-endpoint name and online-deployment name
+      run: |
+        export ENDPOINT_NAME=endpt-`echo $RANDOM`
+        echo ENDPOINT_NAME=$ENDPOINT_NAME >> $GITHUB_ENV
+        echo DEPLOYMENT_NAME=$ENDPOINT_NAME-dep >> $GITHUB_ENV
+        echo CONNECTIONS=`echo ${{ matrix.sku_connection_pair }} | awk -F: '{print $2}'` >> $GITHUB_ENV
+    - name: Run Profiling Job
+      run: |
+        sed -i -e "s/<ENDPOINT_NAME>/${{ env.ENDPOINT_NAME }}/g" how-to-profile-online-endpoint.sh
+        sed -i -e "s/<DEPLOYMENT_NAME>/${{ env.DEPLOYMENT_NAME }}/g" how-to-profile-online-endpoint.sh
+        sed -i -e "s/<PROFILER_COMPUTE_NAME>/profilingTest/g" how-to-profile-online-endpoint.sh
+        sed -i -e "s/<CONNECTIONS>/${{ env.CONNECTIONS }}/g" how-to-profile-online-endpoint.sh
+      
+        set -e; bash -x how-to-profile-online-endpoint.sh
+      working-directory: cli

@@ -1,0 +1,19 @@
+{
+  "validations": [
+  {
+    "name": "check notebook output",
+    "params": {
+      "check": "warning stderr"
+     }
+  },
+  {
+    "name": "check experiment result",
+    "params": {
+      "experiment_name": "automl-regression",
+      "minimum_median_score": "0.45",
+      "metric_name": "r2_score",
+      "absolute_minimum_score": "-1.0"
+    }
+  }
+  ]
+}

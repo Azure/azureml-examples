@@ -1,2 +1,2 @@
 GitPython==3.1.17
-black[jupyter]==22.3.0
+black[jupyter]==22.6.0
