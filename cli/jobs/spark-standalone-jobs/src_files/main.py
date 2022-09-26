@@ -1,109 +1,46 @@
-# imports
-import os
-import mlflow
+"""
+An example demonstrating k-means clustering.
+This example requires NumPy (http://www.numpy.org/).
+"""
+
 import argparse
 
+import numpy as np
 import pandas as pd
-import lightgbm as lgbm
-import matplotlib.pyplot as plt
+from pyspark.ml.clustering import KMeans
+from pyspark.ml.evaluation import ClusteringEvaluator
+from pyspark.sql import SparkSession
 
-from sklearn.metrics import log_loss, accuracy_score
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
+spark = SparkSession.builder.appName("KMeansExample").getOrCreate()
 
-# define functions
-def main(args):
-    # enable auto logging
-    mlflow.autolog()
+parser = argparse.ArgumentParser()
+parser.add_argument("--file_input")
+parser.add_argument("--output")
+args = parser.parse_args()
 
-    # setup parameters
-    num_boost_round = args.num_boost_round
-    params = {
-        "objective": "multiclass",
-        "num_class": 3,
-        "boosting": args.boosting,
-        "num_iterations": args.num_iterations,
-        "num_leaves": args.num_leaves,
-        "num_threads": args.num_threads,
-        "learning_rate": args.learning_rate,
-        "metric": args.metric,
-        "seed": args.seed,
-        "verbose": args.verbose,
-    }
+# Loads data.
+dataset = spark.read.format("libsvm").load(args.file_input)
 
-    # read in data
-    df = pd.read_csv(args.iris_csv)
+# Trains a k-means model.
+kmeans = KMeans().setK(2).setSeed(1)
+model = kmeans.fit(dataset)
 
-    # process data
-    X_train, X_test, y_train, y_test, enc = process_data(df)
+# Make predictions
+predictions = model.transform(dataset)
 
-    # train model
-    model = train_model(params, num_boost_round, X_train, X_test, y_train, y_test)
+# Evaluate clustering by computing Silhouette score
+evaluator = ClusteringEvaluator()
 
+silhouette = evaluator.evaluate(predictions)
+print("Silhouette with squared euclidean distance = " + str(silhouette))
 
-def process_data(df):
-    # split dataframe into X and y
-    X = df.drop(["species"], axis=1)
-    y = df["species"]
+# Shows the result.
+centers = model.clusterCenters()
+print("Cluster Centers: ")
+for center in centers:
+    print(center)
 
-    # encode label
-    enc = LabelEncoder()
-    y = enc.fit_transform(y)
-
-    # train/test split
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
-
-    # return splits and encoder
-    return X_train, X_test, y_train, y_test, enc
-
-
-def train_model(params, num_boost_round, X_train, X_test, y_train, y_test):
-    # create lightgbm datasets
-    train_data = lgbm.Dataset(X_train, label=y_train)
-    test_data = lgbm.Dataset(X_test, label=y_test)
-
-    # train model
-    model = lgbm.train(
-        params,
-        train_data,
-        num_boost_round=num_boost_round,
-        valid_sets=[test_data],
-        valid_names=["test"],
-    )
-
-    # return model
-    return model
-
-
-def parse_args():
-    # setup arg parser
-    parser = argparse.ArgumentParser()
-
-    # add arguments
-    parser.add_argument("--iris-csv", type=str)
-    parser.add_argument("--num-boost-round", type=int, default=10)
-    parser.add_argument("--boosting", type=str, default="gbdt")
-    parser.add_argument("--num-iterations", type=int, default=16)
-    parser.add_argument("--num-leaves", type=int, default=31)
-    parser.add_argument("--num-threads", type=int, default=0)
-    parser.add_argument("--learning-rate", type=float, default=0.1)
-    parser.add_argument("--metric", type=str, default="multi_logloss")
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--verbose", type=int, default=0)
-
-    # parse args
-    args = parser.parse_args()
-
-    # return args
-    return args
-
-
-# run script
-if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main function
-    main(args)
+centers = np.array(centers)
+df = pd.DataFrame(centers)
+spark_df = spark.createDataFrame(df)
+spark_df.write.csv(path=args.output, header=True, sep=",", mode="overwrite")
