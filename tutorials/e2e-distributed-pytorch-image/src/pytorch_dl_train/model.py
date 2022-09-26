@@ -10,9 +10,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.models as models
 
-MODEL_ARCH_LIST = [
-    "resnet18",
-]
+MODEL_ARCH_LIST = ["resnet18"]
 
 
 def load_model(model_arch: str, output_dimension: int = 1, pretrained: bool = True):

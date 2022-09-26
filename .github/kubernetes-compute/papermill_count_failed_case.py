@@ -41,12 +41,7 @@ def check_test_case(input_file):
 if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Check all papermill output files.")
-    parser.add_argument(
-        "-i",
-        "--input",
-        required=True,
-        help="job ipynb file list",
-    )
+    parser.add_argument("-i", "--input", required=True, help="job ipynb file list")
 
     args = parser.parse_args()
 

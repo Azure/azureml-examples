@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
+name: simple_recurrence_job_schedule
+display_name: Simple recurrence job schedule
+description: a simple hourly recurrence job schedule
+
+trigger:
+  type: recurrence
+  frequency: day #can be minute, hour, day, week, month
+  interval: 1 #every day
+  schedule:
+    hours: [4,5,10,11,12]
+    minutes: [0,30]
+  start_time: "2022-07-10T10:00:00" # optional - default will be schedule creation time
+  time_zone: "Pacific Standard Time" # optional - default will be UTC
+
+create_job: ./simple-pipeline-job.yml
+# create_job: azureml:simple-pipeline-job

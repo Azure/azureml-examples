@@ -613,8 +613,7 @@ def run(args):
     # PROFILER: here we use a helper class to enable profiling
     # see profiling.py for the implementation details
     training_profiler = PyTorchProfilerHandler(
-        enabled=bool(args.enable_profiling),
-        rank=training_handler.world_rank,
+        enabled=bool(args.enable_profiling), rank=training_handler.world_rank
     )
     # PROFILER: set profiler in trainer to call profiler.step() during training
     training_handler.profiler = training_profiler.start_profiler()

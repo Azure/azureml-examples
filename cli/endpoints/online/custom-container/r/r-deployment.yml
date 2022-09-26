@@ -1,10 +1,13 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: r-deployment
 endpoint_name: r-endpoint
+code_configuration:
+  code: ./scripts
+  scoring_script: plumber.R
 model:
-  name: plumber
+  name: rplumber
   version: 1
-  path: ./scripts
+  path: ./models
 environment:
   #name: r-environment
   #version: 1

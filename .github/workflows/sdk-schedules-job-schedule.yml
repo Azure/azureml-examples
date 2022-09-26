@@ -1,0 +1,54 @@
+name: sdk-schedules-job-schedule
+# This file is created by sdk/python/readme.py.
+# Please do not edit directly.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/python/schedules/**
+      - .github/workflows/sdk-schedules-job-schedule.yml
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r sdk/python/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup SDK
+      run: bash setup.sh
+      working-directory: sdk/python
+      continue-on-error: true
+    - name: setup CLI
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run schedules/job-schedule.ipynb
+      run: |
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" job-schedule.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" job-schedule.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" job-schedule.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" job-schedule.ipynb
+
+          papermill -k python job-schedule.ipynb job-schedule.output.ipynb
+      working-directory: sdk/python/schedules
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: job-schedule
+        path: sdk/python/schedules

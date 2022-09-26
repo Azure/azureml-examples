@@ -7,7 +7,7 @@ on:
       DELETE_ENDPOINTS:
         description: 'Whether to delete endpoints: true or false'
         required: true
-        default: 'true'
+        default: 'false'
       CLEANUP_WORKSPACE:
         description: 'Whether to delete workspace: true or false'
         required: true
@@ -20,6 +20,18 @@ on:
         description: 'Whether to delete cluster: true or false'
         required: true
         default: 'false'
+      WORKSPACE:
+        description: 'The workspace of the cluster'
+        required: false
+        default: 'amlarc-githubtest-ws'
+      VM_SKU:
+        description: 'The VM SKU of the cluster'
+        required: false
+        default: 'Standard_D4s_v3'
+      AKS_CLUSTER_PREFIX:
+        description: 'The prefix of the cluster'
+        required: false
+        default: 'amlarc-aks'
       
 jobs:
   test:
@@ -33,7 +45,22 @@ jobs:
       COMPUTE: "cpu-cluster"
       CLUSTER_TYPE: managedClusters
     
+      DELETE_ENDPOINTS: true
+      CLEANUP_WORKSPACE: false
+      UNINSTALL_EXTENSION: true
+      CLEANUP_CLUSTER: false
+
     steps:
+    - name: replace env from workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "DELETE_ENDPOINTS=${{ github.event.inputs.DELETE_ENDPOINTS }}" | tee -a $GITHUB_ENV
+        echo "CLEANUP_WORKSPACE=${{ github.event.inputs.CLEANUP_WORKSPACE }}" | tee -a $GITHUB_ENV
+        echo "UNINSTALL_EXTENSION=${{ github.event.inputs.UNINSTALL_EXTENSION }}" | tee -a $GITHUB_ENV
+        echo "CLEANUP_CLUSTER=${{ github.event.inputs.CLEANUP_CLUSTER }}" | tee -a $GITHUB_ENV
+        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+        echo "VM_SKU=${{ github.event.inputs.VM_SKU }}" | tee -a $GITHUB_ENV
+        echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
@@ -51,27 +78,47 @@ jobs:
 
     # cleanup resources
     - name: delete_endpoints
-      if: ${{ always() && github.event.inputs.DELETE_ENDPOINTS == 'true' }}
+      if: ${{ always() }}
       run: |
-          bash .github/kubernetes-compute/tool.sh delete_endpoints
+          if [ "$DELETE_ENDPOINTS" == 'true' ]; then 
+            bash .github/kubernetes-compute/tool.sh delete_endpoints
+          fi 
       timeout-minutes: 60
     - name: delete_compute
-      if: ${{ always() && ( github.event.inputs.CLEANUP_WORKSPACE == 'true' || github.event.inputs.UNINSTALL_EXTENSION == 'true' ) }}
+      if: ${{ always() }}
       run: |
-          bash .github/kubernetes-compute/tool.sh delete_compute
+          if [ "$CLEANUP_WORKSPACE" == 'true' ] || [ "$UNINSTALL_EXTENSION" == 'true' ] ; then 
+            bash .github/kubernetes-compute/tool.sh delete_compute || true
+          fi
       timeout-minutes: 60
     - name: delete_workspace
-      if: ${{ always() && github.event.inputs.CLEANUP_WORKSPACE == 'true' }}
+      if: ${{ always() }}
       run: |
-          bash .github/kubernetes-compute/tool.sh delete_workspace
+          if [ "$CLEANUP_WORKSPACE" == 'true' ]; then 
+            bash .github/kubernetes-compute/tool.sh delete_workspace
+          fi
       timeout-minutes: 60
     - name: delete_extension
-      if: ${{ always() && github.event.inputs.UNINSTALL_EXTENSION == 'true' }}
+      if: ${{ always() }}
       run: |
-          bash .github/kubernetes-compute/tool.sh delete_extension
+          if [ "$UNINSTALL_EXTENSION" == 'true' ]; then 
+           bash .github/kubernetes-compute/tool.sh delete_extension
+          fi
       timeout-minutes: 60
     - name: delete_cluster
-      if: ${{ always() && github.event.inputs.CLEANUP_CLUSTER == 'true' }}
+      if: ${{ always() }}
       run: |
-          bash .github/kubernetes-compute/tool.sh delete_aks
+          if [ "$CLEANUP_CLUSTER" == 'true' ]; then 
+            bash .github/kubernetes-compute/tool.sh delete_aks
+          fi
       timeout-minutes: 60
+
+    - name: cleanup terminating pods
+      if: ${{ always() }}
+      run: |
+          set +e
+          bash .github/kubernetes-compute/tool.sh get_kubeconfig
+          for i in $(kubectl get pod | grep Terminating | awk '{print $1}') ; do echo $i ; kubectl get pod $i; kubectl delete pod  $i --force; done
+      timeout-minutes: 60
+
+
