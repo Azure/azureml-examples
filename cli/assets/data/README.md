@@ -12,6 +12,6 @@ This repository contains example `YAML` files for creating `datas` using Azure M
 > az ml data create -f <file-name>.yml
 ```
 
-> **NOTE: Ensure you have copied the sample data into your default storage account by running the [copy-data.sh](../../../setup-repo/copy-data.sh) script (`azcopy` is required).**
+> **NOTE: Ensure you have copied the sample data into your default storage account by running the [copy-data.sh](../../../setup/setup-repo/copy-data.sh) script (`azcopy` is required).**
 
-To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
+To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli).
