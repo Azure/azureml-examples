@@ -7,13 +7,13 @@ AML_MODEL_NAME=torchserve-densenet161
 echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
-ENDPOINT_NAME=torchserve-endpoint
+ENDPOINT_NAME=endpt-torchserve-`echo $RANDOM`
 DEPLOYMENT_NAME=torchserve-deployment
 
 # Download model and config file
 echo "Downling model and config file..."
 mkdir $BASE_PATH/torchserve
-wget --progress=dot:mega https://azuremlexamples.blob.core.windows.net/models/densenet161.mar -O $BASE_PATH/torchserve/densenet161.mar #Todo: change to aka.ms link
+wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
@@ -46,7 +46,7 @@ curl http://localhost:8080/ping
 
 # Download test image
 echo "Downloading test image..."
-wget https://raw.githubusercontent.com/pytorch/serve/master/examples/image_classifier/kitten.jpg -O kitten_small.jpg #Todo: change to aka.ms link
+wget https://aka.ms/torchserve-test-image -O kitten_small.jpg
 
 # Check scoring locally
 echo "Uploading testing image, the scoring is..."
@@ -57,7 +57,7 @@ docker stop torchserve-test
 # Deploy model to online endpoint
 echo "Deploying the model to a managed online endpoint..."
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
-az ml online-endpoint create -f $BASE_PATH/$ENDPOINT_NAME.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
 
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
