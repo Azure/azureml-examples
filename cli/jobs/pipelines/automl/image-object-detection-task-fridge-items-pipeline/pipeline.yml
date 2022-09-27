@@ -25,6 +25,8 @@ jobs:
     primary_metric: mean_average_precision
     limits:
       timeout_minutes: 180
+      max_trials: 10
+      max_concurrent_trials: 2
     target_column_name: label
     training_data: ${{parent.inputs.image_object_detection_training_data}}
     validation_data: ${{parent.inputs.image_object_detection_validation_data}}
@@ -32,9 +34,6 @@ jobs:
       early_stopping: True
       evaluation_frequency: 1
     sweep:
-      limits:
-        max_trials: 10
-        max_concurrent_trials: 2
       sampling_algorithm: random
       early_termination:
         type: bandit
