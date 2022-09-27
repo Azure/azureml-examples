@@ -1,4 +1,4 @@
-name: train_environment
+name: imagecnn_train_conda_env
 channels:
   - defaults
   - conda-forge
@@ -8,7 +8,7 @@ dependencies:
   - pip:
       - --extra-index-url https://pypi.org/simple
       - git+https://github.com/NVIDIA/dllogger.git@26a0f8f1958de2c0c460925ff6102a4d2486d6cc#egg=dllogger
-      - mldesigner==0.1.0b1
+      - mldesigner==0.1.0b4
       - watchdog==0.10.3
       - torch==1.8.1
       - torchvision==0.9.1

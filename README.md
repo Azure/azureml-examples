@@ -18,15 +18,21 @@ Welcome to the Azure Machine Learning examples repository!
 
 ## Contents
 
-directory|description
--|-
-[`.github`](.github)|GitHub files like issue templates and actions workflows.
-[`cli`](cli)|Azure Machine Learning CLI v2 examples.
-[`sdk`](sdk)|Azure Machine Learning Python SDK v2 examples.
-[`python-sdk`](python-sdk)|Azure Machine Learning Python SDK v1 examples.
-[`notebooks`](notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.
-[`setup-ci`](setup-ci)|Setup scripts to customize and configure an Azure Machine Learning compute instance.
-[`setup-repo`](setup-repo)|Setup scripts for Azure/azureml-examples.
+|directory||description|
+|-|-|-|
+|[`.github`](.github)||GitHub files like issue templates and actions workflows.|
+|[`cli`](cli)||Azure Machine Learning CLI v2 examples.||
+|[`sdk`](sdk)||Azure Machine Learning SDK v2 examples.||
+||[`python`](sdk/python/)| Azure Machine Learning Python SDK v2 examples.|
+||[`.net`](sdk/.net)| Azure Machine Learning .Net SDK v2 examples.|
+|[`setup`](setup)||Folder with setup scripts|
+||[`setup-ci`](setup/setup-ci)|Setup scripts to customize and configure ||an Azure Machine Learning compute instance.|
+||[`setupdsvm`](setup/setup-dsvm/RStudio/)|Setup RStudio on Data Science Virtual Machine (DSVM)|
+||[`setup-repo`](setup/setup-repo)|Setup scripts for Azure/azureml-examples.|
+|[`tutorials`](tutorials/)||Azure Machine Learning end to end Python SDK v2 tutorials|
+|[`v1`](v1)||Azure Machine Learning Python SDK v1 examples.|
+||[`python-sdk`](v1/python-sdk)|Azure Machine Learning Python SDK v1 examples.|
+||[`notebooks`](v1/notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.|
 
 ## Contributing
 
