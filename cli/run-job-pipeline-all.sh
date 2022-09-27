@@ -43,9 +43,6 @@ bash run-job.sh ./jobs/pipelines/cifar-10/pipeline.yml cli_samples_v2_$target_ve
 echo ./jobs/pipelines/nyc-taxi/pipeline.yml
 bash run-job.sh ./jobs/pipelines/nyc-taxi/pipeline.yml cli_samples_v2_$target_version nowait
 
-echo ./jobs/pipelines/add-column-and-word-count-using-spark/pipeline.yml
-bash run-job.sh ./jobs/pipelines/add-column-and-word-count-using-spark/pipeline.yml cli_samples_v2_$target_version nowait
-
 echo ./jobs/pipelines-with-components/basics/1a_e2e_local_components/pipeline.yml
 bash run-job.sh ./jobs/pipelines-with-components/basics/1a_e2e_local_components/pipeline.yml cli_samples_v2_$target_version nowait
 
@@ -105,8 +102,5 @@ bash run-job.sh ./jobs/pipelines-with-components/pipeline_with_hyperparameter_sw
 
 echo ./jobs/pipelines-with-components/rai_pipeline_adult_analyse/pipeline.yml
 bash run-job.sh ./jobs/pipelines-with-components/rai_pipeline_adult_analyse/pipeline.yml cli_samples_v2_$target_version
-
-echo ./jobs/pipelines-with-components/shakespear_sample_and_word_count_using_spark/pipeline.yml
-bash run-job.sh ./jobs/pipelines-with-components/shakespear_sample_and_word_count_using_spark/pipeline.yml cli_samples_v2_$target_version nowait
 
 az --version
