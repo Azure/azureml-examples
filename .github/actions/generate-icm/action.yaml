@@ -1,0 +1,43 @@
+name: Generate IcM
+description: |
+    A github action that facilitates IcM generation using the the IcM
+    connector webservice.
+inputs:
+    connector_id:
+        description: "IcM Connector ID"
+        required: true
+    host:
+        description: "Hostname for the IcM webservice"
+        required: true
+    certificate:
+        description: A certificate
+        required: true
+    private_key: 
+        description: The unencrypted private-key associated with the certificate
+        required: true
+    args:
+        description: |
+            A yaml encoded string that describes the arguments for 
+            AddOrUpdateIncident2. See IcM documentation on Connector API
+        required: true
+
+runs:
+    using: "composite"
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: "pip"
+      - name: Install Dependencies
+        run: pip install -r "${{ github.action_path }}/requirements.txt"
+        shell: bash
+      - name: Send IcM
+        run: python "${{ github.action_path }}/main.py" 
+        shell: bash
+        env:
+          INPUT_HOST: ${{ inputs.host }}
+          INPUT_CONNECTOR_ID: ${{ inputs.connector_id }}
+          INPUT_CERTIFICATE: ${{ inputs.certificate }}
+          INPUT_PRIVATE_KEY: ${{ inputs.private_key }}
+          INPUT_ARGS: ${{ inputs.args }}
