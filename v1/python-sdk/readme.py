@@ -347,7 +347,8 @@ jobs:
 
     # write workflow
     with open(
-        f"../../.github/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml", "w"
+        f"../../.github/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml",
+        "w",
     ) as f:
         f.write(workflow_yaml)
 
