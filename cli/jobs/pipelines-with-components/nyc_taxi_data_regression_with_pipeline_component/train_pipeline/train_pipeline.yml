@@ -1,0 +1,52 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+name: train_pipeline
+display_name: pipeline component with train, predict and score component
+description: pipeline component with train, predict and score component
+
+# <inputs_and_outputs>
+inputs:
+  train_data:
+    type: uri_folder
+  compute_train_node: # example to show how to promote compute as input
+    type: string
+outputs: 
+  trained_model:
+    type: mlflow_model
+  predictions:
+    type: uri_folder
+  score_report:
+    type: uri_folder
+# </inputs_and_outputs>
+
+# <jobs>
+
+jobs:
+  train_job:
+    type: command
+    component: ./train_src/train.yml
+    inputs:
+      train_data: ${{parent.inputs.train_data}}
+    outputs:
+      model_output: ${{parent.outputs.trained_model}}
+      test_data: 
+    compute: ${{parent.inputs.compute_train_node}}
+  
+  predict_job:
+    type: command
+    component: ./predict_src/predict.yml
+    inputs:
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: ${{parent.jobs.train_job.outputs.test_data}}
+    outputs:
+      predictions: ${{parent.outputs.predictions}}
+
+  score_job:
+    type: command
+    component: ./score_src/score.yml
+    inputs:
+      predictions: ${{parent.jobs.predict_job.outputs.predictions}}
+      model: ${{parent.jobs.train_job.outputs.model_output}}
+    outputs:
+      score_report: ${{parent.outputs.score_report}}
+# </jobs>

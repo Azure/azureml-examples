@@ -17,6 +17,8 @@ inputs:
   learning_rate_schedule:
     type: string
     default: 'time-based'
+  train_node_compute: # example to show how to promote compute as input
+    type: string
 
 outputs: 
   trained_model:
@@ -33,8 +35,10 @@ jobs:
       max_epochs: ${{parent.inputs.training_max_epochs}}
       learning_rate: ${{parent.inputs.training_learning_rate}}
       learning_rate_schedule: ${{parent.inputs.learning_rate_schedule}}
+      
     outputs:
       model_output: ${{parent.outputs.trained_model}}
+    compute: ${{parent.inputs.train_node_compute}}
   
   score_job:
     type: command
