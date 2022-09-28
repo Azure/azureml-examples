@@ -1,23 +1,11 @@
-# ---------------------------------------------------------
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# ---------------------------------------------------------
-
-import argparse
-import json
 import os
-import time
+import argparse
 
+from azure.identity import DefaultAzureCredential
+from azure.ai.ml import MLClient
 
-from azureml.core import Run
-
-import mlflow
-import mlflow.sklearn
-
-# Based on example:
-# https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli
-# which references
-# https://github.com/Azure/azureml-examples/tree/main/cli/jobs/train/lightgbm/iris
-
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import ModelType
 
 def parse_args():
     # setup arg parser
@@ -26,28 +14,20 @@ def parse_args():
     # add arguments
     parser.add_argument("--model_input_path", type=str, help="Path to input model")
     parser.add_argument(
-        "--model_base_name", type=str, help="Name of the registered model"
+        "--model_registeration_name", type=str, help="Name of the registered model"
     )
 
     # parse args
     args = parser.parse_args()
-    print("Path: " + args.model_input_path)
-    # return args
+    print("Arguments received ",args)
     return args
 
-
 def main(args):
-    """
+    '''
     Register Model Example
-    """
-    # Set Tracking URI
-    current_experiment = Run.get_context().experiment
-    tracking_uri = current_experiment.workspace.get_mlflow_tracking_uri()
-    print("tracking_uri: {0}".format(tracking_uri))
-    mlflow.set_tracking_uri(tracking_uri)
-    mlflow.set_experiment(current_experiment.name)
+    '''
 
-    # Get Run ID from model path
+    #Get Run ID from model path
     print("Getting model path")
     mlmodel_path = os.path.join(args.model_input_path, "MLmodel")
     runid = ""
@@ -56,20 +36,21 @@ def main(args):
             if "run_id" in line:
                 runid = line.split(":")[1].strip()
 
-    # Construct Model URI from run ID extract previously
-    model_uri = "runs:/{}/outputs/".format(runid)
-    print("Model URI: " + model_uri)
+    #Construct Model URI from run ID extract previously
+    run_uri = "runs:/{}/outputs/".format(runid)
 
-    # Register the model with Model URI and Name of choice
-    registered_name = args.model_base_name
-    print(f"Registering model as {registered_name}")
-    mlflow.register_model(model_uri, registered_name)
+    # hardcoded as of now
+    ml_client = MLClient(
+    DefaultAzureCredential(), "381b38e9-9840-4719-a5a0-61d9585e1e91", "ayush_mishra_res01", "mlw-basic-prod-hrishi")
+    run_model = Model(
+        path=run_uri,
+        name=args.model_registeration_name,
+        description="Model created from run.",
+        type=ModelType.MLFLOW
+    )
 
+    ml_client.models.create_or_update(run_model)
 
-# run script
 if __name__ == "__main__":
-    # parse args
     args = parse_args()
-
-    # run main function
     main(args)
