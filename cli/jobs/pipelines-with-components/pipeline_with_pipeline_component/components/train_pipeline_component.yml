@@ -1,0 +1,59 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+
+name: train_pipeline_component
+display_name: train_pipeline_component
+description: Dummy train-score-eval pipeline component with local components
+
+inputs:
+  training_data: 
+    type: uri_folder  # default/path is not supported for data type
+  test_data: 
+    type: uri_folder  # default/path is not supported for data type
+  training_max_epochs:
+    type: integer
+  training_learning_rate: 
+    type: number
+  learning_rate_schedule:
+    type: string
+    default: 'time-based'
+  train_node_compute: # example to show how to promote compute as input
+    type: string
+
+outputs: 
+  trained_model:
+    type: uri_folder
+  evaluation_report:
+    type: uri_folder
+
+jobs:
+  train_job:
+    type: command
+    component: ./train/train.yml
+    inputs:
+      training_data: ${{parent.inputs.training_data}}
+      max_epochs: ${{parent.inputs.training_max_epochs}}
+      learning_rate: ${{parent.inputs.training_learning_rate}}
+      learning_rate_schedule: ${{parent.inputs.learning_rate_schedule}}
+      
+    outputs:
+      model_output: ${{parent.outputs.trained_model}}
+    compute: ${{parent.inputs.train_node_compute}}
+  
+  score_job:
+    type: command
+    component: ./score/score.yml
+    inputs:
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: ${{parent.inputs.test_data}}
+    outputs:
+      score_output: 
+        mode: upload
+
+  evaluate_job:
+    type: command
+    component: ./eval/eval.yml
+    inputs:
+      scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
+    outputs:
+      eval_output: ${{parent.outputs.evaluation_report}}

@@ -6,7 +6,7 @@ import os
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
-parser.add_argument("--max_epocs", type=int, help="Max # of epocs for the training")
+parser.add_argument("--max_epochs", type=int, help="Max # of epocs for the training")
 parser.add_argument("--learning_rate", type=float, help="Learning rate")
 parser.add_argument("--learning_rate_schedule", type=str, help="Learning rate schedule")
 parser.add_argument("--model_output", type=str, help="Path of output model")
@@ -17,7 +17,7 @@ print("hello training world...")
 
 lines = [
     f"Training data path: {args.training_data}",
-    f"Max epocs: {args.max_epocs}",
+    f"Max epocs: {args.max_epochs}",
     f"Learning rate: {args.learning_rate}",
     f"Learning rate: {args.learning_rate_schedule}",
     f"Model output path: {args.model_output}",

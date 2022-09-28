@@ -9,7 +9,8 @@ outputs:
   pipeline_sample_output_data:
     mode: upload
 
-compute: azureml:cpu-cluster
+settings:
+  default_compute: azureml:cpu-cluster
 
 jobs:
   component_folder:

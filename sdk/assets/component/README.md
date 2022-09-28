@@ -21,8 +21,7 @@ This repository contains an example `YAML` file for creating `component` using A
 
 - To update a component that in workspace, execute following command. Currently only a few fields(description, display_name) support update:
 ```cli
-> az ml component update -f train.yml
-```
+> az ml component update -n <component_name> --set description='new description'
 
 - To archive an component container (archives all versions of that component):
 ```cli

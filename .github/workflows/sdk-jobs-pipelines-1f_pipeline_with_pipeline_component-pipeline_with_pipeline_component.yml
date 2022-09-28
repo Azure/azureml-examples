@@ -1,0 +1,53 @@
+name: sdk-jobs-pipelines-1f_pipeline_with_pipeline_component-pipeline_with_pipeline_component
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+      - pipeline/*
+    paths:
+      - sdk/**
+      - .github/workflows/sdk-jobs-pipelines-1f_pipeline_with_pipeline_component-pipeline_with_pipeline_component.yml
+      - sdk/dev-requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r sdk/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup SDK
+      run: bash setup.sh
+      working-directory: sdk
+      continue-on-error: true
+    - name: setup CLI
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run jobs/pipelines/1f_pipeline_with_pipeline_component/pipeline_with_pipeline_component.ipynb
+      run: |
+          mkdir ../../.azureml
+          export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
+          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" pipeline_with_pipeline_component.ipynb
+          sed -i "s/@pipeline(/&force_rerun=True,/" pipeline_with_pipeline_component.ipynb
+          papermill -k python pipeline_with_pipeline_component.ipynb pipeline_with_pipeline_component.output.ipynb
+      working-directory: sdk/jobs/pipelines/1f_pipeline_with_pipeline_component
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: pipeline_with_pipeline_component
+        path: sdk/jobs/pipelines/1f_pipeline_with_pipeline_component

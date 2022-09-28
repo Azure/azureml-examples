@@ -1,0 +1,45 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+
+name: train_pipeline_component_asset
+display_name: train_pipeline_component_asset
+description: Dummy pipeline component with local components
+
+inputs:
+  training_data: 
+    type: uri_folder  # default/path is not supported for data type
+  training_max_epochs:
+    type: integer
+  training_learning_rate: 
+    type: number
+  learning_rate_schedule:
+    type: string
+    default: 'time-based'
+
+outputs: 
+  trained_model:
+    type: uri_folder
+
+jobs:
+  train_job:
+    type: command
+    component: ./train.yml
+    inputs:
+      training_data: ${{parent.inputs.training_data}}
+      max_epochs: ${{parent.inputs.training_max_epochs}}
+      learning_rate: ${{parent.inputs.training_learning_rate}}
+      learning_rate_schedule: ${{parent.inputs.learning_rate_schedule}}
+    outputs:
+      model_output: ${{parent.outputs.trained_model}}
+  
+  ls_model_path:
+    type: command
+    inputs:
+      input_dir: ${{parent.jobs.train_job.outputs.model_output}}
+    component:
+      inputs:
+        input_dir:
+          type: uri_folder
+      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+      command: >-
+        ls ${{inputs.input_dir}}
