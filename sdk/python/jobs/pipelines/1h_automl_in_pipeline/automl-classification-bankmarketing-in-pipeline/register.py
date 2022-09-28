@@ -41,7 +41,7 @@ def main(args):
 
     # hardcoded as of now
     ml_client = MLClient(
-    DefaultAzureCredential(), "381b38e9-9840-4719-a5a0-61d9585e1e91", "ayush_mishra_res01", "mlw-basic-prod-hrishi")
+    DefaultAzureCredential(), "********", "********", "**********")
     run_model = Model(
         path=run_uri,
         name=args.model_registeration_name,
