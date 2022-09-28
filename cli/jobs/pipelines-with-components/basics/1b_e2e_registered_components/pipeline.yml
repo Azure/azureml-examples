@@ -7,6 +7,7 @@ inputs:
   pipeline_job_training_max_epocs: 20
   pipeline_job_training_learning_rate: 1.8
   pipeline_job_learning_rate_schedule: 'time-based'
+  compute_step: azureml:cpu-cluster
 
 outputs: 
   pipeline_job_trained_model:
@@ -16,10 +17,10 @@ outputs:
   pipeline_job_evaluation_report:
     mode: upload
 
-#settings:
-#  datastore: azureml:workspaceblobstore
-  
-compute: azureml:cpu-cluster
+settings:
+  default_compute: azureml:cpu-cluster
+
+
 
 jobs:
   train_job:
@@ -34,6 +35,8 @@ jobs:
       learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
     outputs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:44
+    compute: ${{inputs.compute_step}} 
   
   score_job:
     type: command
