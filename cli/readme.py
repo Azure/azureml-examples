@@ -384,8 +384,10 @@ jobs:
     - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
-          bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";\n"""
+    if "image" in job:
+        workflow_yaml += "          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
+    workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
       working-directory: cli/{project_dir}\n"""
 
     # write workflow
