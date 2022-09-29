@@ -18,6 +18,7 @@ COMMON_TAGS=(
   "cleanup:DeleteAfter=${DELETE_AFTER}" 
   "cleanup:Policy=DeleteAfter" 
   "creationTime=${EPOCH_START}" 
+  "owner=azuremlsdk@microsoft.com"
   "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}" 
 )
 
