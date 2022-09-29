@@ -34,9 +34,9 @@ az ml job stream --name $parent_job_name --workspace-name $ws_name --resource-gr
 train_job_name=$(az ml job list --parent-job-name $parent_job_name --workspace-name $ws_name --resource-group $ws_rg --query [0].name | sed 's/\"//g') || {
     echo "job list failed"; exit 1;
 }
-k/
+
 # create model in workspace from train job output
-az ml model create --name nyc-taxi-model --version $version --type mlflow_model --path azureml://jobs/$train_job_name/outputs/default/model --workspace-name $ws_name --resource-group $ws_rg || {
+az ml model create --name nyc-taxi-model --version $version --type mlflow_model --path azureml://jobs/$train_job_name/outputs/artifacts/paths/model --workspace-name $ws_name --resource-group $ws_rg || {
     echo "model create in workspace failed"; exit 1;
 }
 
