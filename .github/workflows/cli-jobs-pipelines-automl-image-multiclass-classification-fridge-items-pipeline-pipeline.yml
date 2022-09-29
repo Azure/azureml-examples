@@ -43,5 +43,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline

@@ -42,5 +42,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../run-job.sh cli-automl-image-classification-multilabel-task-fridge-items.yml
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
