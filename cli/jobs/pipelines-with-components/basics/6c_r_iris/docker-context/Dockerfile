@@ -9,6 +9,7 @@ RUN ln -f /usr/bin/pip3 /usr/bin/pip
 RUN pip install -U pip
 
 # Install azureml-mlflow
+# Change back when azureml-mlflow fix the No module named 'dateutil' bug
 RUN pip install azureml-mlflow==1.42.0
 
 # Create link for python
