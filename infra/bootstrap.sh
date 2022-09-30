@@ -79,9 +79,7 @@ echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 
 # RUN_BOOTSTRAP=1
-RUN_BOOTSTRAP=${RUN_BOOTSTRAP:-}
-
-if [[ ! -z "$RUN_BOOTSTRAP" ]]; then
+if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
