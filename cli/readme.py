@@ -388,6 +388,7 @@ jobs:
     if "automl" in job and "image" in job:
         workflow_yaml += f"""          bash \"{GITHUB_WORKSPACE}/infra/sdk_helpers.sh\" replace_template_values \"prepare_data.py\";
           pip install azure-identity
+          bash \"{GITHUB_WORKSPACE}/setup.sh sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
       working-directory: cli/{project_dir}\n"""
