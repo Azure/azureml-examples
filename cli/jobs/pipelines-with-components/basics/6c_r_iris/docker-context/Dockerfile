@@ -9,7 +9,7 @@ RUN ln -f /usr/bin/pip3 /usr/bin/pip
 RUN pip install -U pip
 
 # Install azureml-mlflow
-RUN pip install azureml-mlflow!=1.45,!=1.44
+RUN pip install azureml-mlflow!=1.45,!=1.44,!=1.43
 
 # Create link for python
 RUN ln -f /usr/bin/python3 /usr/bin/python
