@@ -45,7 +45,7 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
           pip install azure-identity
-          bash "${{ github.workspace }}/setup.sh sdk/python/setup.sh"  
+          bash "${{ github.workspace }}/sdk/python/setup.sh"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline

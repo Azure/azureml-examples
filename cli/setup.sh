@@ -22,6 +22,7 @@ if ! az extension add --yes --source "https://azuremlsdktestpypi.blob.core.windo
     exit 1
 fi
 
+az version
 
 ## For backward compatibility - running on old subscription
 # <set_variables>
