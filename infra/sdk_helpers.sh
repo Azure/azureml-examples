@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 set -eu
 [ -n "${DEBUG:-}" ] && set -x
@@ -419,17 +419,20 @@ check_arc_status(){
 connect_arc(){
     local AKS_CLUSTER_NAME="${1:-aks-cluster}"
     local ARC_CLUSTER_NAME="${2:-arc-cluster}" # Name of the connected cluster resource
-    echo_info "Connecting to the existing K8s cluster..."
+    echo_info "Connecting to the existing K8s cluster by installing ARC agent..."
     # the existing K8s cluster is determined by the contents of the kubeconfig file
     # get aks kubeconfig
     get_kubeconfig "$AKS_CLUSTER_NAME"
 
-    clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" --query connectivityStatus -o json)
-    clusterState=$(echo "$clusterState" | tr -d '"' | tr -d '"\r\n')
-    echo_info "cluster current state: ${clusterState}"
-    if [[ ! -z "$clusterState" ]]; then
+    if
+        [[ $(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" | jq -r .name) == ${ARC_CLUSTER_NAME} ]]
+    then
         echo_info "Cluster: ${ARC_CLUSTER_NAME} is already connected..."
+        clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" --query connectivityStatus -o json)
+        clusterState=$(echo "$clusterState" | tr -d '"' | tr -d '"\r\n')
+        echo_info "Cluster: ${ARC_CLUSTER_NAME} current state: ${clusterState}"
     else
+        echo -e "Connecting Azure via Azure Arc for Cluster: ${ARC_CLUSTER_NAME}"
         # attach/onboard the cluster to Arc
         $(az connectedk8s connect \
             --subscription "${SUBSCRIPTION_ID}" \
@@ -438,6 +441,7 @@ connect_arc(){
             --name "$ARC_CLUSTER_NAME" --no-wait \
             --output tsv  \
             > /dev/null 2>&1 )
+        echo -e "Azure Arc cluster created: ${ARC_CLUSTER_NAME}"
     fi
     check_arc_status "${ARC_CLUSTER_NAME}"
 }
