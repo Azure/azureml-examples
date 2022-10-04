@@ -12,7 +12,7 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 
 # Create subdir "mlflow_context" and set BASE_PATH to it
 # <initialize_build_context>
-export PARENT_PATH=endpoints/online/custom-container
+export PARENT_PATH=endpoints/online/custom-container/mlflow
 export BASE_PATH="$PARENT_PATH/mlflow_context"
 export ASSET_PATH=endpoints/online/mlflow
 rm -rf $BASE_PATH && mkdir $BASE_PATH
