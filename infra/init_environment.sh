@@ -128,6 +128,8 @@ export INSTANCE_TYPE_NAME="${INSTANCE_TYPE_NAME:-defaultinstancetype}"
 export CPU="${CPU:-1}"
 export MEMORY="${MEMORY:-4Gi}"
 export GPU="${GPU:-null}"
+export CPU_INSTANCE_TYPE="2 4Gi"
+export GPU_INSTANCE_TYPE="4 40Gi 2"
 
 export VNET_CIDR="${VNET_CIDR:-10.0.0.0/8}"
 export MASTER_SUBNET="${MASTER_SUBNET:-10.0.0.0/23}"
