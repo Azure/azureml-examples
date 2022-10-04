@@ -142,7 +142,7 @@ function grant_permission_app_id_on_rg() {
 
 function grant_permission_identity_on_acr() {
     local IDENTITY_NAME="${1:-identity}"
-    Id=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
+    Id=$(az identity list --query "[?name=='$IDENTITY_NAME'].principalId" -o tsv)
     if [[ -z $Id ]]; then
         echo_warning "Managed Identity: $IDENTITY_NAME does not exists."
     fi
@@ -169,7 +169,7 @@ function ensure_subnet() {
     local MASTER_SUBNET="${3:-${MASTER_SUBNET:-}}"
     subnet_exists=$(az network vnet subnet list --vnet-name "$VNET_NAME" --query "[?name == '$MASTER_SUBNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
     if [[ "${subnet_exists}" = "[]" ]]; then
-       echo_info "creating master  subnet "
+       echo_info "creating master subnet: $MASTER_SUBNET_NAME"
        az network vnet subnet create --vnet-name "$VNET_NAME" --name "$MASTER_SUBNET_NAME" --address-prefixes "$MASTER_SUBNET" > /dev/null
        echo_info "subnet $MASTER_SUBNET_NAME creation completed"
     else
@@ -179,7 +179,7 @@ function ensure_subnet() {
 
 function ensure_identity() {
     local IDENTITY_NAME="${1:-identityname}"
-    IDENTITY_ID=$(az identity show --name "$IDENTITY_NAME" --query 'principalId' -o tsv || true)
+    IDENTITY_ID=$(az identity list --query "[?name=='$IDENTITY_NAME'].principalId" -o tsv)
     if [[ -z $IDENTITY_ID ]]; then
        echo_info "Creating Managed Identity: $IDENTITY_NAME "
        IDENTITY_ID=$(az identity create -n "$IDENTITY_NAME" --query 'principalId' -o tsv | tail -n1 | tr -d "[:cntrl:]")
@@ -644,8 +644,8 @@ EOF
 setup_instance_type_aml_arc(){
     local ARC_CLUSTER_NAME="${1:-amlarc-inference}"
     get_kubeconfig "${ARC_CLUSTER_NAME}"
-    setup_instance_type defaultinstancetype "$CPU_INSTANCE_TYPE"
-    setup_instance_type cpu "$CPU_INSTANCE_TYPE"
+    setup_instance_type defaultinstancetype $CPU_INSTANCE_TYPE
+    setup_instance_type cpu $CPU_INSTANCE_TYPE
 }
 
 generate_workspace_config(){
