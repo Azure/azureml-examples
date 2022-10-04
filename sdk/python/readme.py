@@ -66,7 +66,7 @@ def write_workflows(notebooks):
 
 
 def get_mlflow_import(notebook):
-    with open(notebook, "r", encoding='utf-8') as f:
+    with open(notebook, "r", encoding="utf-8") as f:
         if "import mlflow" in f.read():
             return """
     - name: pip install mlflow reqs
@@ -322,14 +322,14 @@ def modify_notebooks(notebooks):
     for notebook in notebooks:
 
         # read in notebook
-        with open(notebook, "r", encoding='utf-8') as f:
+        with open(notebook, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         # update metadata
         data["metadata"]["kernelspec"] = kernelspec
 
         # write notebook
-        with open(notebook, "w", encoding='utf-8') as f:
+        with open(notebook, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=1, ensure_ascii=False)
             f.write("\n")
 
