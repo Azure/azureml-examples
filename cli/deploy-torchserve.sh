@@ -1,25 +1,27 @@
+#/bin/bash
+
+set -e
+
 BASE_PATH=endpoints/online/custom-container
 AML_MODEL_NAME=torchserve-densenet161
 echo $AML_MODEL_NAME
 AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
 MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
-export ENDPOINT_NAME=torchserve-endpoint-`echo $RANDOM`
+ENDPOINT_NAME=endpt-torchserve-`echo $RANDOM`
 DEPLOYMENT_NAME=torchserve-deployment
 
 # Download model and config file
 echo "Downling model and config file..."
 mkdir $BASE_PATH/torchserve
 wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
-wget --progress=dot:mega https://aka.ms/torchserve-config -O $BASE_PATH/torchserve/config.properties
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
 ACR_NAME=$(az ml workspace show --name $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
 
-if [[ $ACR_NAME == "" ]]
-then
-    echo "ACR login failed, exiting"
-    exit 1
+if [[ $ACR_NAME == "" ]]; then
+  echo "ACR login failed, exiting"
+  exit 1
 fi
 
 az acr login -n $ACR_NAME
@@ -28,14 +30,14 @@ az acr build $BASE_PATH/ -f $BASE_PATH/torchserve.dockerfile -t $IMAGE_TAG -r $A
 
 # Run image locally for testing
 docker run --rm -d -p 8080:8080 --name torchserve-test \
-    -e MODEL_BASE_PATH=$MODEL_BASE_PATH \
-    -v $PWD/$BASE_PATH/torchserve:$MODEL_BASE_PATH/torchserve $IMAGE_TAG
+  -e MODEL_BASE_PATH=$MODEL_BASE_PATH \
+  -v $PWD/$BASE_PATH/torchserve:$MODEL_BASE_PATH/torchserve $IMAGE_TAG
 
 sleep 10
 
-cleanTestingFiles(){
-    rm -r $BASE_PATH/torchserve
-    rm kitten_small.jpg
+cleanTestingFiles() {
+  rm -r $BASE_PATH/torchserve
+  rm kitten_small.jpg
 }
 
 # Check Torchserve health
@@ -53,26 +55,18 @@ curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
 docker stop torchserve-test
 
 # Deploy model to online endpoint
+echo "Deploying the model to a managed online endpoint..."
 sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
-
-EXISTS=$(az ml online-endpoint show -n $ENDPOINT_NAME --query name -o tsv)
-# Update endpoint if exists, else create
-if [[ $EXISTS == $ENDPOINT_NAME ]]
-then 
-  az ml online-endpoint update -n $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
-else
-  az ml online-endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
-fi
+az ml online-endpoint create --name $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
 
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
 
-if [[ $ENDPOINT_STATUS == "Succeeded" ]]
-then  
+if [[ $ENDPOINT_STATUS == "Succeeded" ]]; then
   echo "Endpoint created successfully"
 else
   echo "Something went wrong when creating endpoint. Cleaning up..."
-  az ml online-endpoint delete --name $ENDPOINT_NAME --yes
+  az ml online-endpoint delete --name $ENDPOINT_NAME
   exit 1
 fi
 
@@ -80,16 +74,15 @@ fi
 echo "Creating deployment..."
 az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
 
-deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status=$(az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo $deploy_status
-if [[ $deploy_status == "Succeeded" ]]
-then
+if [[ $deploy_status == "Succeeded" ]]; then
   echo "Deployment completed successfully"
 else
   echo "Deployment failed"
   cleanTestingFiles
-  # az ml online-endpoint delete -n $ENDPOINT_NAME --yes
-  model_archive=$(az ml model archive -n $AML_MODEL_NAME --version 1 || true)
+  az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+  az ml model archive -n $AML_MODEL_NAME --version 1
   exit 1
 fi
 
@@ -116,4 +109,4 @@ az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 
 # Delete model
 echo "Deleting model..."
-model_archive=$(az ml model archive -n $AML_MODEL_NAME --version 1 || true)
+az ml model archive -n $AML_MODEL_NAME --version 1
