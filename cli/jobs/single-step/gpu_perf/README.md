@@ -124,3 +124,41 @@ Use logs from `all_reduce_perf` to check your NCCL performance and configuration
   - if you can't find `ncclCollNetPlugin_v4`, compile [nccl-rdma-sharp-plugins](https://github.com/Mellanox/nccl-rdma-sharp-plugins) using `--with-sharp` option.
 - "NCCL INFO Plugin Path : /usr/local/rdma-sharp-plugins-dev/lib/libnccl-net.so"
   - you've successfully loaded the rdma/sharp plugins
+
+## Example perf values
+
+### Standard_ND40rs_v2 (V100), 2 nodes
+
+```
+#                                                       out-of-place                       in-place          
+#       size         count      type   redop     time   algbw   busbw  error     time   algbw   busbw  error
+#        (B)    (elements)                       (us)  (GB/s)  (GB/s)            (us)  (GB/s)  (GB/s)       
+db7284be16ae4f7d81abf17cb8e41334000002:3876:3876 [0] NCCL INFO Launch mode Parallel
+    33554432       8388608     float     sum   4393.9    7.64   14.32  4e-07   4384.4    7.65   14.35  4e-07
+    67108864      16777216     float     sum   8349.4    8.04   15.07  4e-07   8351.5    8.04   15.07  4e-07
+   134217728      33554432     float     sum    16064    8.36   15.67  4e-07    16032    8.37   15.70  4e-07
+   268435456      67108864     float     sum    31486    8.53   15.99  4e-07    31472    8.53   15.99  4e-07
+   536870912     134217728     float     sum    62323    8.61   16.15  4e-07    62329    8.61   16.15  4e-07
+  1073741824     268435456     float     sum   124011    8.66   16.23  4e-07   123877    8.67   16.25  4e-07
+  2147483648     536870912     float     sum   247301    8.68   16.28  4e-07   247285    8.68   16.28  4e-07
+  4294967296    1073741824     float     sum   493921    8.70   16.30  4e-07   493850    8.70   16.31  4e-07
+  8589934592    2147483648     float     sum   987274    8.70   16.31  4e-07   986984    8.70   16.32  4e-07
+```
+
+### Standard_ND96amsr_A100_v4 (A100), 2 nodes
+
+```
+#                                                       out-of-place                       in-place          
+#       size         count      type   redop     time   algbw   busbw  error     time   algbw   busbw  error
+#        (B)    (elements)                       (us)  (GB/s)  (GB/s)            (us)  (GB/s)  (GB/s)       
+47c46425da29465eb4f752ffa03dd537000001:4122:4122 [0] NCCL INFO Launch mode Parallel
+    33554432       8388608     float     sum    593.7   56.52  105.97  5e-07    590.2   56.86  106.60  5e-07
+    67108864      16777216     float     sum    904.7   74.18  139.09  5e-07    918.0   73.11  137.07  5e-07
+   134217728      33554432     float     sum   1629.6   82.36  154.43  5e-07   1654.3   81.13  152.12  5e-07
+   268435456      67108864     float     sum   2996.0   89.60  167.99  5e-07   3056.7   87.82  164.66  5e-07
+   536870912     134217728     float     sum   5631.9   95.33  178.74  5e-07   5639.2   95.20  178.51  5e-07
+  1073741824     268435456     float     sum    11040   97.26  182.36  5e-07    10985   97.74  183.27  5e-07
+  2147483648     536870912     float     sum    21733   98.81  185.27  5e-07    21517   99.81  187.14  5e-07
+  4294967296    1073741824     float     sum    42843  100.25  187.97  5e-07    42745  100.48  188.40  5e-07
+  8589934592    2147483648     float     sum    85710  100.22  187.91  5e-07    85070  100.98  189.33  5e-07
+```
