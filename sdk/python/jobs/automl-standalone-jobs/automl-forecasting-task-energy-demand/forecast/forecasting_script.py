@@ -37,7 +37,9 @@ def run(mini_batch):
         predicted_column_name = "predicted"
         PI = "prediction_interval"
         fitted_model.quantiles = quantiles
-        pred_quantiles = fitted_model.forecast_quantiles(X_test, ignore_data_errors=True)
+        pred_quantiles = fitted_model.forecast_quantiles(
+            X_test, ignore_data_errors=True
+        )
         pred_quantiles[PI] = pred_quantiles[[min(quantiles), max(quantiles)]].apply(
             lambda x: "[{}, {}]".format(x[0], x[1]), axis=1
         )
@@ -48,12 +50,14 @@ def run(mini_batch):
         # happens because of missing actuals
         # or at edges of time due to lags/rolling windows
         clean = X_test[
-             X_test[[target_column_name, predicted_column_name]].notnull().all(axis=1)
+            X_test[[target_column_name, predicted_column_name]].notnull().all(axis=1)
         ]
-        print(f'The predictions have {clean.shape[0]} rows and {clean.shape[1]} columns.')
+        print(
+            f"The predictions have {clean.shape[0]} rows and {clean.shape[1]} columns."
+        )
         # Save data as a json string as otherwise we will loose the header.
-        json_string = clean.to_json(orient='table')
-        
+        json_string = clean.to_json(orient="table")
+
         resultList.append(json_string)
 
     return resultList
