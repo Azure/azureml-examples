@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/kubernetesOnlineDeployment.schema.json
 name: green
 type: kubernetes
 endpoint_name: my-endpoint
@@ -10,6 +11,7 @@ code_configuration:
 environment:
   conda_file: ../model-2/environment/conda.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+instance_type: defaultinstancetype
 scale_settings:
   type: target_utilization
   min_instances: 1
