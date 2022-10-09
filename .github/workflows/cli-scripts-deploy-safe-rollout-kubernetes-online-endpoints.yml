@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints/online/**
+      - cli/endpoints/online/kubernetes/**
       - cli/deploy-safe-rollout-kubernetes-online-endpoints.sh
       - .github/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
       - cli/setup.sh
