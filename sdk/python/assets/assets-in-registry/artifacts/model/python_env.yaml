@@ -1,4 +1,4 @@
-python: 3.8.14
+python: 3.8.13
 build_dependencies:
 - pip==22.0.4
 - setuptools==57.5.0
