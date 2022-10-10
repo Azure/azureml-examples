@@ -26,5 +26,3 @@ conf:
   spark.executor.memory: "2g"
   spark.executor.instances: 4
   spark.yarn.dist.jars: https://foobaradrama2.azurefd.net/latest/hadoop-azureml-fs.jar
-  spark.yarn.appMasterEnv.AZUREML_ENABLE_DATAPATH_RESOLUTION: True
-  spark.yarn.appMasterEnv.AZUREML_HADOOP_EXTENSION_URL: https://foobaradrama2.azurefd.net/latest/hadoop-azureml-fs.jar
