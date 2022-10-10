@@ -6,11 +6,11 @@ on:
   pull_request:
     branches:
       - main
+      - sdk-preview
     paths:
       - cli/deploy-moe-vnet-mlflow.sh
       - .github/workflows/cli-scripts-deploy-moe-vnet-mlflow.yml
       - cli/setup.sh
-      - cli/endpoints/online/managed/vnet/**
 jobs:
   build:
     runs-on: ubuntu-latest

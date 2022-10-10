@@ -26,5 +26,5 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: test script script
-      run: set -e; az ml model archive -n plumber -v 1 || true ; bash -x deploy-r.sh
+      run: set -e; bash -x deploy-r.sh
       working-directory: cli

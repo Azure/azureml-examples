@@ -44,6 +44,14 @@ jobs:
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
 
+          sed -i -e "s/<ENDPOINT_NAME>/localendpoint/g" debug-online-endpoints-locally-in-visual-studio-code.ipynb
+
+          # Create a dummy executable for VSCode
+          mkdir -p /tmp/code
+          touch /tmp/code/code
+          chmod +x /tmp/code/code
+          export PATH="/tmp/code:$PATH"
+
           papermill -k python debug-online-endpoints-locally-in-visual-studio-code.ipynb debug-online-endpoints-locally-in-visual-studio-code.output.ipynb
       working-directory: sdk/python/endpoints/online/managed
     - name: upload notebook's working folder as an artifact
@@ -52,3 +60,22 @@ jobs:
       with:
         name: debug-online-endpoints-locally-in-visual-studio-code
         path: sdk/python/endpoints/online/managed
+
+    - name: Send IcM on failure
+      if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
+      uses: ./.github/actions/generate-icm
+      with:
+        host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
+        connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
+        certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
+        private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
+        args: |
+            incident:
+                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'endpoints/online/managed/debug-online-endpoints-locally-in-visual-studio-code.ipynb'"
+                Summary: |
+                    Notebook 'endpoints/online/managed/debug-online-endpoints-locally-in-visual-studio-code.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                Severity: 4
+                RoutingId: "github://azureml-examples"
+                Status: Active
+                Source:
+                    IncidentId: "endpoints/online/managed/debug-online-endpoints-locally-in-visual-studio-code.ipynb[${{ github.ref_name }}]"

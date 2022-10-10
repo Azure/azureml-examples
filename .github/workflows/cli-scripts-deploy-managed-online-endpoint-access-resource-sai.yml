@@ -11,8 +11,6 @@ on:
       - cli/deploy-managed-online-endpoint-access-resource-sai.sh
       - .github/workflows/cli-scripts-deploy-managed-online-endpoint-access-resource-sai.yml
       - cli/setup.sh
-      - cli/endpoints/online/managed/managed-identities
-      - cli/endpoints/online/model-1
 jobs:
   build:
     runs-on: ubuntu-latest
