@@ -4,5 +4,4 @@ ipython-genutils
 ipykernel==5.5.5
 papermill==2.3.3
 pandas
-scikit-learn>=0.19.0,<0.23.0
 matplotlib
