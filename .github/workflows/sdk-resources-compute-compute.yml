@@ -39,9 +39,9 @@ jobs:
       continue-on-error: true
     - name: run resources/compute/compute.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" compute.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" compute.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" compute.ipynb
+          sed -i -e "s/<SUBSCRIPTION(\s|_)ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" compute.ipynb
+          sed -i -e "s/<RESOURCE(\s|_)GROUP(\s|_)?(NAME)?>/azureml-examples/g" compute.ipynb
+          sed -i -e "s/<(AML)?(\s|_)?WORKSPACE(\s|_)NAME>/main/g" compute.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" compute.ipynb
 
           papermill -k python compute.ipynb compute.output.ipynb
