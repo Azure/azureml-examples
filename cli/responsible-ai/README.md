@@ -20,6 +20,7 @@ If not compatible, you can wrap your model's prediction function into a wrapper 
 ## Supportability 🧰
 Currently, we support datasets having numerical and categorical features. The following table provides the scenarios supported for each of the four responsible AI components:
 > **Note**: Model overview (performance metrics and fairness disparity metrics) and Data explorer are generated for every Responsible AI dashboard by default and do not require a component to be configured.
+
 | RAI component | Binary classification | Multi-class classification | Multilabel classification | Regression | Timeseries forecasting | Categorical features | Text features | Image Features | Recommender Systems | Reinforcement Learning |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -- |
 | Explainability | Yes | Yes | No | Yes | No | Yes | No | No | No | No |
