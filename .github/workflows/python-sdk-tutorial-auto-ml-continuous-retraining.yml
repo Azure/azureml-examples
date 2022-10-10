@@ -58,7 +58,7 @@ jobs:
       working-directory: v1/python-sdk/tutorials/automl-with-azureml/continuous-retraining
     - name: check notebook output
       run: |
-         python scripts/validation/check_notebook_output.py \
+         python v1/scripts/validation/check_notebook_output.py \
                 --file_name auto-ml-continuous-retraining.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/continuous-retraining \
                 --check warning
