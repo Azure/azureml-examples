@@ -89,12 +89,13 @@ def get_args():
 def get_data(target_column_name, test_dataset):
 
     # get the first data set, present on the cloud.
-    test_df = None
+    dfs = []
     for fle in filter(lambda x: x.endswith(".csv"), os.listdir(test_dataset)):
-        test_df = pd.read_csv(os.path.join(test_dataset, fle))
-        break
-    if test_df is None:
+        dfs.append(pd.read_csv(os.path.join(test_dataset, fle)))
+
+    if not dfs:
         raise ValueError("The data set can not e found.")
+    test_df = pd.concat(dfs, sort=False, ignore_index=True)
     if target_column_name in test_df:
         y_test = test_df.pop(target_column_name).values
     else:
