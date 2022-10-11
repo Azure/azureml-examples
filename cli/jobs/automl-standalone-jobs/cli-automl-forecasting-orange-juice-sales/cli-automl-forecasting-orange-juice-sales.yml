@@ -1,0 +1,38 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+type: automl
+
+experiment_name: dpv2-cli-automl-forecasting-orange-juice-sales
+# name: dpv2-sdk-forecasting-train-job-01
+description: A Time-Series Forecasting job using orange juice sales dataset
+compute: azureml:cpu-cluster
+task: forecasting
+primary_metric: normalized_root_mean_squared_error
+log_verbosity: debug
+
+training_data:
+    path: "./training-mltable-folder"
+    type: mltable
+
+test_data:
+    path: "./test-mltable-folder"
+    type: mltable
+
+target_column_name: Quantity
+n_cross_validations: 3
+
+limits:
+  timeout_minutes: 15
+  max_trials: 10
+  max_concurrent_trials: 4
+  trial_timeout_minutes: 15
+  enable_early_termination: true
+
+forecasting:
+  time_column_name: "WeekStarting"
+  forecast_horizon: 20
+  frequency: "W-THU"
+
+training:
+  enable_model_explainability: true
+  enable_stack_ensemble: false
+  blocked_training_algorithms: []
