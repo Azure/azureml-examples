@@ -13,7 +13,7 @@ export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 
 # <set_base_path_and_copy_assets>
-export PARENT_PATH="endpoints/online/custom-container"
+export PARENT_PATH="endpoints/online/custom-container/triton/single-model"
 export ASSET_PATH="endpoints/online/triton/single-model"
 export BASE_PATH="$PARENT_PATH/triton_context"
 rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models 
