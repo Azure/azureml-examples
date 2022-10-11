@@ -110,7 +110,7 @@ def get_data(target_column_name, test_dataset):
     return test_df, y_test
 
 
-def get_model_filename( model_path):
+def get_model_filename(model_path):
     for filename in os.listdir(model_path):
         if filename == "model.pkl":
             return filename
