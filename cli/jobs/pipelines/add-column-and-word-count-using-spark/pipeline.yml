@@ -15,7 +15,7 @@ outputs:
     mode: direct
 
 jobs:
-  add_greeting_column1:
+  add_greeting_columns:
     type: spark
 
     inputs:
@@ -43,7 +43,7 @@ jobs:
       spark.executor.memory: "1g"
       spark.executor.instances: 1
     
-  count_by_row1:
+  count_by_rows:
     type: spark
 
     inputs:
