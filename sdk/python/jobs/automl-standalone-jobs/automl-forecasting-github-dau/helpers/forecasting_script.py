@@ -36,11 +36,14 @@ def run(mini_batch):
         y_test = X_test.pop(target_column_name).values
 
         predicted_column_name = "predicted"
-        preds = fitted_model.predict(
-            X_test, y_test
-        )
+        preds = fitted_model.predict(X_test, y_test)
         X_test[target_column_name] = y_test
-        X_test[predicted_column_name] = np.pad(preds, pad_width=(y_test.shape[0]-preds.shape[0],0), mode="constant", constant_values=None)
+        X_test[predicted_column_name] = np.pad(
+            preds,
+            pad_width=(y_test.shape[0] - preds.shape[0], 0),
+            mode="constant",
+            constant_values=None,
+        )
         # drop rows where prediction or actuals are nan
         # happens because of missing actuals
         # or at edges of time due to lags/rolling windows
