@@ -116,7 +116,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with: 
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}
     - name: azure login
