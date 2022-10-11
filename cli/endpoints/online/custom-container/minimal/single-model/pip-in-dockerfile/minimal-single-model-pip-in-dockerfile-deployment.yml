@@ -1,15 +1,15 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: blue
-endpoint_name: {{endpoint_name}}
+name: pip-in-dockerfile
+endpoint_name: {{ENDPOINT_NAME}}
 model: 
   name: minimal-cc-model 
-  path: ./model-1/model
+  path: ../../../../model-1/model
 code_configuration: 
-  code: ./model-1/onlinescoring
+  code: ../../../../model-1/onlinescoring
   scoring_script: score.py
 environment:  
-  name: minimal-inf-cc-env
-  image: {{acr_name}}.azurecr.io/azureml-examples/minimal-inf-cc:latest
+  name: pip-in-dockerfile
+  image: {{ACR_NAME}}.azurecr.io/azureml-examples/minimal-single-model-pip-in-dockerfile:1
   inference_config:
     liveness_route:
       path: /
