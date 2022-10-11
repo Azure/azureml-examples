@@ -3,10 +3,10 @@ name: tfserving-deployment
 endpoint_name: tfserving-endpoint
 model:
   name: tfserving-mounted
-  version: 1
+  version: {{MODEL_VERSION}}
   path: ./half_plus_two
 environment_variables:
-  MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/1
+  MODEL_BASE_PATH: /var/azureml-app/azureml-models/tfserving-mounted/{{MODEL_VERSION}}
   MODEL_NAME: half_plus_two
 environment:
   #name: tfserving
