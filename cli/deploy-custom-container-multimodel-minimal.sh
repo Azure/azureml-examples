@@ -14,8 +14,8 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 export BASE_PATH=endpoints/online/custom-container/multimodel-minimal
 mkdir -p $BASE_PATH/{code,build,test-data}
 cp "$(dirname $BASE_PATH)/{multimodel-minimal*} $BASE_PATH/" 
-mv $BASE_PATH/multmodel-minimal.dockerfile $BASE_PATH/build/
-mv $BASE_PATH/multmodel-minimal-score.py $BASE_PATH/code/
+mv $BASE_PATH/multimodel-minimal.dockerfile $BASE_PATH/build/
+mv $BASE_PATH/multimodel-minimal-score.py $BASE_PATH/code/
 # </setup_build_directory> 
 
 cd $BASE_PATH
@@ -27,11 +27,11 @@ python multimodel-minimal-train.py
 cd - 
 
 # <build_image> 
-az acr build -t azureml-examples/minimal-multimodel:1 -r $ACR_NAME -f $BASE_PATH/build/multmodel-minimal.dockerfile $BASE_PATH/build 
+az acr build -t azureml-examples/minimal-multimodel:1 -r $ACR_NAME -f $BASE_PATH/build/multimodel-minimal.dockerfile $BASE_PATH/build 
 # </build_image> 
 
 # <create_endpoint> 
-az online-endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/multimodel-minimal-endpoint.yml
+az ml online-endpoint create -n $ENDPOINT_NAME -f $BASE_PATH/multimodel-minimal-endpoint.yml
 # </create_endpoint> 
 
 # Check if endpoint was successful
@@ -46,7 +46,7 @@ else
 fi
 
 # <create_deployment> 
-az online-endpoint create -e $ENDPOINT_NAME -f $BASE_PATH/multimodel-minimal-deployment.yml
+az ml online-deployment create -n blue -e $ENDPOINT_NAME -f $BASE_PATH/multimodel-minimal-deployment.yml
 # </create_deployment> 
 
 # Check if deployment was successful 
