@@ -56,7 +56,7 @@ MODEL_VERSION=$RANDOM
 sed -e "s/{{MODEL_VERSION}}/$MODEL_VERSION/g" -i $BASE_PATH/tfserving-deployment.yml
 
 # <create_deployment>
-az ml online-deployment create --name tfserving-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-deployment.yml --all-traffic
+az ml online-deployment create --name tfserving-deployment --endpoint $ENDPOINT_NAME -f $BASE_PATH/tfserving-deployment.yml --all-traffic
 # </create_deployment>
 
 # <get_status>
