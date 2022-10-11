@@ -49,7 +49,7 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export ENDPOINT_NAME=endpt-tfserving-`echo $RANDOM`
 
 # <create_endpoint>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-endpoint.yml
+az ml online-endpoint create --name $ENDPOINT_NAME -f $BASE_PATH/tfserving-endpoint.yml
 # </create_endpoint>
 
 MODEL_VERSION=$RANDOM
