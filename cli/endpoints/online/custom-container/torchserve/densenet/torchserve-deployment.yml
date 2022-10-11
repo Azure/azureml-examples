@@ -1,9 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: torchserve-deployment
 endpoint_name: torchserve-endpoint
-model: azureml:torchserve-densenet161:1
+model: azureml:torchserve-densenet161:{{MODEL_VERSION}}
 environment_variables:
-  MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/1
+  MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/{{MODEL_VERSION}}
 environment:
   #name: torchserve-environment
   #version: 1

@@ -52,6 +52,9 @@ export ENDPOINT_NAME=endpt-tfserving-`echo $RANDOM`
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-endpoint.yml
 # </create_endpoint>
 
+MODEL_VERSION=$RANDOM
+sed -e "s/{{MODEL_VERSION}}/$MODEL_VERSION/g" -i $BASE_PATH/tfserving-deployment.yml
+
 # <create_deployment>
 az ml online-deployment create --name tfserving-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/custom-container/tfserving-deployment.yml --all-traffic
 # </create_deployment>

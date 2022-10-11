@@ -54,8 +54,11 @@ curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
 
 docker stop torchserve-test
 
+MODEL_VERSION=$RANDOM
+sed -e "s/{{MODEL_VERSION}}/$MODEL_VERSION/g" -i $BASE_PATH/torchserve-deployment.yml
+
 # Create model
-az ml model create -n torchserve-densenet161 -v 1 -p $BASE_PATH/torchserve/densenet161.mar 
+az ml model create -n torchserve-densenet161 -v $MODEL_VERSION -p $BASE_PATH/torchserve/densenet161.mar 
 
 # Deploy model to online endpoint
 echo "Deploying the model to a managed online endpoint..."
