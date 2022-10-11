@@ -15,7 +15,7 @@ outputs:
     mode: direct
 
 jobs:
-  add_greeting_column:
+  add_greeting_column1:
     type: spark
 
     inputs:
@@ -43,7 +43,7 @@ jobs:
       spark.executor.memory: "1g"
       spark.executor.instances: 1
     
-  count_by_row:
+  count_by_row1:
     type: spark
 
     inputs:
@@ -68,7 +68,7 @@ jobs:
       --output ${{outputs.output}}
 
     compute: azureml:spark31
-    
+
     conf:
       spark.driver.cores: 2
       spark.driver.memory: "1g"
