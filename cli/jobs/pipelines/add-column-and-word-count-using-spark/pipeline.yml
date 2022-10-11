@@ -35,6 +35,7 @@ jobs:
       --file_input ${{inputs.file_input}}
 
     compute: azureml:spark31
+
     conf:
       spark.driver.cores: 2
       spark.driver.memory: "1g"
@@ -67,6 +68,7 @@ jobs:
       --output ${{outputs.output}}
 
     compute: azureml:spark31
+    
     conf:
       spark.driver.cores: 2
       spark.driver.memory: "1g"
