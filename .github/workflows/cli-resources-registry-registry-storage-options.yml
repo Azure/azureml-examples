@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-nyc_taxi_data_regression-single-job-pipeline
+name: cli-resources-registry-registry-storage-options
 on:
   workflow_dispatch:
   schedule:
@@ -8,10 +8,9 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
+      - cli/resources/registry/registry-storage-options.yml
       - infra/**
-      - .github/workflows/cli-jobs-pipelines-with-components-nyc_taxi_data_regression-single-job-pipeline.yml
-      - cli/run-pipeline-jobs.sh
+      - .github/workflows/cli-resources-registry-registry-storage-options.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -28,7 +27,6 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -39,9 +37,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run job
+    - name: create asset
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          bash -x ../../../run-job.sh single-job-pipeline.yml
-      working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression
+          az ml registry create -f resources/registry/registry-storage-options.yml
+      working-directory: cli
