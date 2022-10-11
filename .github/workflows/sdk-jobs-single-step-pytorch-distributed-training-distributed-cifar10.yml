@@ -1,4 +1,4 @@
-name: sdk-jobs-single-step-pytorch-distributed training-distributed-cifar10
+name: sdk-jobs-single-step-pytorch-distributed-training-distributed-cifar10
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/jobs/single-step/pytorch/distributed training/**
-      - .github/workflows/sdk-jobs-single-step-pytorch-distributed training-distributed-cifar10.yml
+      - sdk/python/jobs/single-step/pytorch/distributed-training/**
+      - .github/workflows/sdk-jobs-single-step-pytorch-distributed-training-distributed-cifar10.yml
       - sdk/python/dev-requirements.txt
       - sdk/python/setup.sh
 jobs:
@@ -37,7 +37,7 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/single-step/pytorch/distributed training/distributed-cifar10.ipynb
+    - name: run jobs/single-step/pytorch/distributed-training/distributed-cifar10.ipynb
       run: |
           sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" distributed-cifar10.ipynb
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" distributed-cifar10.ipynb
@@ -45,13 +45,13 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" distributed-cifar10.ipynb
 
           papermill -k python distributed-cifar10.ipynb distributed-cifar10.output.ipynb
-      working-directory: sdk/python/jobs/single-step/pytorch/distributed training
+      working-directory: sdk/python/jobs/single-step/pytorch/distributed-training
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: distributed-cifar10
-        path: sdk/python/jobs/single-step/pytorch/distributed training
+        path: sdk/python/jobs/single-step/pytorch/distributed-training
 
     - name: Send IcM on failure
       if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
@@ -63,11 +63,11 @@ jobs:
         private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
         args: |
             incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/single-step/pytorch/distributed training/distributed-cifar10.ipynb'"
+                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/single-step/pytorch/distributed-training/distributed-cifar10.ipynb'"
                 Summary: |
-                    Notebook 'jobs/single-step/pytorch/distributed training/distributed-cifar10.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                    Notebook 'jobs/single-step/pytorch/distributed-training/distributed-cifar10.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
                 Severity: 4
                 RoutingId: "github://azureml-examples"
                 Status: Active
                 Source:
-                    IncidentId: "jobs/single-step/pytorch/distributed training/distributed-cifar10.ipynb[${{ github.ref_name }}]"
+                    IncidentId: "jobs/single-step/pytorch/distributed-training/distributed-cifar10.ipynb[${{ github.ref_name }}]"
