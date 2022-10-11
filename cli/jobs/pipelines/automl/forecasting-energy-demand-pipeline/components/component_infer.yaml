@@ -17,7 +17,7 @@ outputs:
     type: uri_folder
 code: ./infer_src/
 # The environment needs to be the same as the one in the AutoML training part.
-environment: azureml:AzureML-AutoML:129
+environment: azureml://AzureML-AutoML:129
 command: >-
   python infer.py
   --model_path ${{inputs.model_path}}
