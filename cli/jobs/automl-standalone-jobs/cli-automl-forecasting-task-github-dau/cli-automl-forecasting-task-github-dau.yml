@@ -27,7 +27,6 @@ limits:
 forecasting:
   time_column_name: "date"
   forecast_horizon: 14
-  frequency: "D"
 
 training:
   enable_dnn_training: true
