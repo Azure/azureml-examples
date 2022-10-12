@@ -1,13 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: torchserve-deployment
 endpoint_name: torchserve-endpoint
-model: azureml:torchserve-densenet161:{{MODEL_VERSION}}
+model:
+  path: torchserve
 environment_variables:
-  MODEL_BASE_PATH: /var/azureml-app/azureml-models/torchserve-densenet161/{{MODEL_VERSION}}
+  TORCHSERVE_MODELS: "densenet161=densenet161.mar"
 environment:
-  #name: torchserve-environment
-  #version: 1
-  image: {{acr_name}}.azurecr.io/torchserve:8080
+  image: {{ACR_NAME}}.azurecr.io/torchserve:1 
   inference_config:
     liveness_route:
       port: 8080

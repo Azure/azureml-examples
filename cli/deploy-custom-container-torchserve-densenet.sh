@@ -3,17 +3,7 @@
 set -e
 
 BASE_PATH=endpoints/online/custom-container/torchserve/densenet
-AML_MODEL_NAME=torchserve-densenet161
-echo $AML_MODEL_NAME
-AZUREML_MODEL_DIR=azureml-models/$AML_MODEL_NAME/1
-MODEL_BASE_PATH=/var/azureml-app/$AZUREML_MODEL_DIR
 ENDPOINT_NAME=endpt-torchserve-`echo $RANDOM`
-DEPLOYMENT_NAME=torchserve-deployment
-
-# Download model and config file
-echo "Downling model and config file..."
-mkdir $BASE_PATH/torchserve
-wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
 
 # Get name of workspace ACR, build image
 WORKSPACE=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
@@ -24,47 +14,51 @@ if [[ $ACR_NAME == "" ]]; then
   exit 1
 fi
 
-az acr login -n $ACR_NAME
-IMAGE_TAG=${ACR_NAME}.azurecr.io/torchserve:8080
-az acr build $BASE_PATH/ -f $BASE_PATH/torchserve.dockerfile -t $IMAGE_TAG -r $ACR_NAME
+cleanTestingFiles() {
+  rm -r $BASE_PATH/torchserve
+  rm $BASE_PATH/kitten_small.jpg
+  rm $BASE_PATH/torchserve-deployment.yml_
+}
 
-# Run image locally for testing
+# <download_model>
+echo "Downling model and config file..."
+mkdir $BASE_PATH/torchserve
+wget --progress=dot:mega https://aka.ms/torchserve-densenet161 -O $BASE_PATH/torchserve/densenet161.mar
+# </download_model>
+
+# <build_image>
+az acr login -n $ACR_NAME
+IMAGE_TAG=${ACR_NAME}.azurecr.io/torchserve:1
+az acr build -f $BASE_PATH/torchserve.dockerfile -t $IMAGE_TAG -r $ACR_NAME $BASE_PATH 
+# <build_image>
+
+# <run_image_locally>
 docker run --rm -d -p 8080:8080 --name torchserve-test \
-  -e MODEL_BASE_PATH=$MODEL_BASE_PATH \
-  -v $PWD/$BASE_PATH/torchserve:$MODEL_BASE_PATH/torchserve $IMAGE_TAG
+  -e AZUREML_MODEL_DIR=/var/azureml-app/azureml-models/ \
+  -e TORCHSERVE_MODELS="densenet161=densenet161.mar" \
+  -v $PWD/$BASE_PATH/torchserve:/var/azureml-app/azureml-models/torchserve $IMAGE_TAG
+# </run_image_locally> 
 
 sleep 10
 
-cleanTestingFiles() {
-  rm -r $BASE_PATH/torchserve
-  rm kitten_small.jpg
-}
-
-# Check Torchserve health
+# <test_locally>
 echo "Checking Torchserve health..."
 curl http://localhost:8080/ping
 
-# Download test image
 echo "Downloading test image..."
-wget https://aka.ms/torchserve-test-image -O kitten_small.jpg
+wget https://aka.ms/torchserve-test-image -O $BASE_PATH/kitten_small.jpg
 
-# Check scoring locally
 echo "Uploading testing image, the scoring is..."
-curl http://localhost:8080/predictions/densenet161 -T kitten_small.jpg
+curl http://localhost:8080/predictions/densenet161 -T $BASE_PATH/kitten_small.jpg
 
 docker stop torchserve-test
+# </test_locally>
 
-MODEL_VERSION=$RANDOM
-sed -e "s/{{MODEL_VERSION}}/$MODEL_VERSION/g" -i $BASE_PATH/torchserve-deployment.yml
-
-# Create model
-az ml model create -n torchserve-densenet161 -v $MODEL_VERSION -p $BASE_PATH/torchserve/densenet161.mar 
-
-# Deploy model to online endpoint
-echo "Deploying the model to a managed online endpoint..."
-sed -i 's/{{acr_name}}/'$ACR_NAME'/' $BASE_PATH/$DEPLOYMENT_NAME.yml
+# <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f $BASE_PATH/torchserve-endpoint.yml
+# </create_endpoint> 
 
+# <check_endpoint_status> 
 ENDPOINT_STATUS=$(az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo "Endpoint status is $ENDPOINT_STATUS"
 
@@ -75,12 +69,16 @@ else
   az ml online-endpoint delete --name $ENDPOINT_NAME
   exit 1
 fi
+# </check_endpoint_status> 
 
-# Create deployment
-echo "Creating deployment..."
-az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file $BASE_PATH/$DEPLOYMENT_NAME.yml --all-traffic
+# <create_deployment>
+cp $BASE_PATH/torchserve-deployment.yml $BASE_PATH/torchserve-deployment.yml_ 
+sed -e "s/{{ACR_NAME}}/$ACR_NAME/g" -i $BASE_PATH/torchserve-deployment.yml_
+az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/torchserve-deployment.yml_ --all-traffic
+# </create_deployment> 
 
-deploy_status=$(az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv)
+# <check_deployment_status> 
+deploy_status=$(az ml online-deployment show --name torchserve-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv)
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]; then
   echo "Deployment completed successfully"
@@ -91,28 +89,27 @@ else
   az ml model archive -n $AML_MODEL_NAME --version 1
   exit 1
 fi
+# </check_deployment_status> 
 
-# Get accessToken
+# <get_endpoint_details> 
 echo "Getting access token..."
 TOKEN=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query accessToken -o tsv)
 
-# Get scoring url
 echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 echo "Scoring url is $SCORING_URL"
+# </get_endpoint_details> 
 
-# Check scoring
+# <test_endpoint> 
 echo "Uploading testing image, the scoring is..."
 curl -H "Authorization: {Bearer $TOKEN}" -T kitten_small.jpg $SCORING_URL
+# </test_endpoint> 
 
 echo "Tested successfully, cleaning up"
-
 cleanTestingFiles
 
-# Delete endpoint
+# <delete_endpoint> 
 echo "Deleting endpoint..."
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes
+# </delete_endpoint> 
 
-# Delete model
-echo "Deleting model..."
-az ml model archive -n $AML_MODEL_NAME --version 1

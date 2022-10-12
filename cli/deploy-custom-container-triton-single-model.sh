@@ -68,5 +68,3 @@ python endpoints/online/triton/single-model/triton_densenet_scoring.py --base_ur
 # <delete_online_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
-
-#rm -rf $BASE_PATH

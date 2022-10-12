@@ -80,5 +80,3 @@ curl -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -d @"$B
 # <delete_online_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
-
-rm *.yml_
