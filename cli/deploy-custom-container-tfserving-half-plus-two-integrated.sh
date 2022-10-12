@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 BASE_PATH=endpoints/online/custom-container/tfserving/half-plus-two-integrated
 ENDPOINT_NAME=tfsintegrated-`echo $RANDOM`
 ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
@@ -32,16 +34,18 @@ docker stop tfsintegrated
 az ml online-endpoint create -n $ENDPOINT_NAME
 # </create_endpoint>
 
-# <get_endpoint_details> 
-KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv)
-SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
-# </get_endpoint_details> 
-
 # <create_deployment>
 change_vars $BASE_PATH/half-plus-two-integrated-deployment.yml
 az ml online-deployment create -f $BASE_PATH/half-plus-two-integrated-deployment.yml_ --all-traffic
-rm $BASE_PATH/half-plus-two-integrated-deployment.yml_deployment.yml_
+rm $BASE_PATH/half-plus-two-integrated-deployment.yml_
 # </create_deployment>
+
+# <get_endpoint_details> 
+KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv)
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
+echo "Scoring url is $SCORING_URL"
+echo "Key is $KEY"
+# </get_endpoint_details> 
 
 # <test_deployment>
 curl -d @$BASE_PATH/sample-data.json -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL
