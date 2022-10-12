@@ -127,7 +127,7 @@ Test Status is for branch - **_main_**
 |resources|compute|[compute](resources/compute/compute.ipynb)|Create compute in Azure ML workspace|[![compute](https://github.com/Azure/azureml-examples/actions/workflows/sdk-resources-compute-compute.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-resources-compute-compute.yml)|
 |resources|datastores|[datastore](resources/datastores/datastore.ipynb)|Create datastores and use in a Command - _This sample is excluded from automated tests_|[![datastore](https://github.com/Azure/azureml-examples/actions/workflows/sdk-resources-datastores-datastore.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-resources-datastores-datastore.yml)|
 |resources|workspace|[workspace](resources/workspace/workspace.ipynb)|Create Azure ML workspace|[![workspace](https://github.com/Azure/azureml-examples/actions/workflows/sdk-resources-workspace-workspace.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-resources-workspace-workspace.yml)|
-|schedules|job-schedule.ipynb|[job-schedule](schedules/job-schedule.ipynb)|Create a component asset|[![job-schedule](https://github.com/Azure/azureml-examples/actions/workflows/sdk-schedules-job-schedule.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-schedules-job-schedule.yml)|
+|schedules|job-schedule.ipynb|[job-schedule](schedules/job-schedule.ipynb)|Create a job schedule|[![job-schedule](https://github.com/Azure/azureml-examples/actions/workflows/sdk-schedules-job-schedule.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-schedules-job-schedule.yml)|
 
 ## Contributing
 
