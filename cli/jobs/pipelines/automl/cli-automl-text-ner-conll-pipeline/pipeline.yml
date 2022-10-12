@@ -7,7 +7,7 @@ display_name: pipeline-with-text-ner
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:gpu-cluster
+  default_compute: azureml:b-dedicated-Standard-NC12
 
 inputs:
   text_ner_training_data:
@@ -38,5 +38,14 @@ jobs:
     component: file:./components/component_register_model.yaml
     inputs:
       model_input_path: ${{parent.jobs.text_ner_node.outputs.best_model}}
-      model_base_name: paper_categorization_model
-      
+      model_base_name: text_ner_model
+    outputs:
+      model_id_path:
+        type: uri_folder
+  deploy_model_node:
+    type: command
+    component: file:./components/component_deploy_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      endpoint_name: textner-endpoint
+      deployment_name: textner-deployment        
