@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: deploy_model
+display_name: Deploy Model
+version: 1
+type: command
+inputs:
+  model_id_path:
+    type: uri_folder
+  endpoint_name:
+    type: string
+  deployment_name:
+    type: string
+code: ./src/
+environment: azureml:AzureML-ACPT-pytorch-1.11-py38-cuda11.3-gpu:4
+command: >-
+  python deploy.py
+  --model_id_path ${{inputs.model_id_path}}
+  --endpoint_name ${{inputs.endpoint_name}}
+  --deployment_name ${{inputs.deployment_name}}

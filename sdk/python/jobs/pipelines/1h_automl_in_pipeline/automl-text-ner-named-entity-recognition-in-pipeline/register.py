@@ -1,17 +1,16 @@
 # ---------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
-# ---------------------------------------------------------
-
-import argparse
-import json
+# -------------------------------------------------------
 import os
-import time
+import argparse
+from pathlib import Path
 
+from azure.identity import  ManagedIdentityCredential
 
-from azureml.core import Run
+from azure.ai.ml import MLClient
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import AssetTypes
 
-import mlflow
-import mlflow.sklearn
 
 # Based on example:
 # https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli
@@ -26,47 +25,59 @@ def parse_args():
     # add arguments
     parser.add_argument("--model_input_path", type=str, help="Path to input model")
     parser.add_argument(
-        "--model_base_name", type=str, help="Name of the registered model"
+        "--model_base_name", type=str, help="Name with which model needs to be registered"
     )
-
+    parser.add_argument(
+        "--model_id_path", type=str, help = "Path which stores registered model id"
+    )
     # parse args
     args = parser.parse_args()
     print("Path: " + args.model_input_path)
     # return args
     return args
 
-
-def main(args):
-    """
-    Register Model Example
-    """
-
-    # Set Tracking URI
-    current_experiment = Run.get_context().experiment
-    tracking_uri = current_experiment.workspace.get_mlflow_tracking_uri()
-    print("tracking_uri: {0}".format(tracking_uri))
-    mlflow.set_tracking_uri(tracking_uri)
-    mlflow.set_experiment(current_experiment.name)
-
-    # Get Run ID from model path
-    print("Getting model path")
-    mlmodel_path = os.path.join(args.model_input_path, "MLmodel")
+def get_runid(model_input_path):
+    # returns runid from model_path
+    mlmodel_path = os.path.join(model_input_path, "MLmodel")
     runid = ""
     with open(mlmodel_path, "r") as modelfile:
         for line in modelfile:
             if "run_id" in line:
                 runid = line.split(":")[1].strip()
+    return runid
 
-    # Construct Model URI from run ID extract previously
-    model_uri = "runs:/{}/outputs/".format(runid)
-    print("Model URI: " + model_uri)
+def get_ml_client():
+    # returns ML client by autherizing credentials via MSI
+    credential = ManagedIdentityCredential(client_id="<MSI_CLIENT_ID>")
+    ml_client = MLClient(
+         credential, 
+        "<SUBSCRIPTION_ID>",
+        "<RESOURCE_GROUP>",
+        "<AML_WORKSPACE_NAME>")
+    
+    return ml_client
 
-    # Register the model with Model URI and Name of choice
-    registered_name = args.model_base_name
-    print(f"Registering model as {registered_name}")
-    mlflow.register_model(model_uri, registered_name)
+def main(args):
+    """
+    Register Model Example
+    """
+    runid = get_runid(args.model_input_path)
+    ml_client = get_ml_client()
 
-
+    # register the model
+    run_uri = "azureml://jobs/{}/outputs/artifacts/outputs/mlflow-model/".format(runid)
+    reg_model = Model(
+        path=run_uri,
+        name=args.model_base_name,
+        description="Model created from run.",
+        type=AssetTypes.MLFLOW_MODEL
+    )
+    registered_model = ml_client.models.create_or_update(reg_model)
+    
+    print("Model registered with id ",reg_model.id)
+    # write registered model id which will be fetched by deployment component
+    (Path(args.model_id_path) / "reg_id.txt").write_text(registered_model.id)
+    
 # run script
 if __name__ == "__main__":
     # parse args
