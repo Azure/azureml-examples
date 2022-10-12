@@ -30,7 +30,7 @@ limits:
 forecasting:
   time_column_name: "observation_date"
   forecast_horizon: 12
-  frequency: "D"
+  frequency: "M"
   target_lags: "auto"
 
 training:

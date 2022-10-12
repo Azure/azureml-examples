@@ -20,6 +20,23 @@ test_data:
 target_column_name: Quantity
 n_cross_validations: 3
 
+featurization:
+  featurization_config:
+    column_purposes:
+      CPWVOL5: Numeric
+    transformer_params:
+      Imputer:
+      - fields: ["Quantity"]
+        parameters:
+          strategy: constant
+          fill_value: 0
+      - fields: ["INCOME"]
+        parameters:
+          strategy: median
+      - fields: ["Price"]
+        parameters:
+          strategy: ffill
+
 limits:
   timeout_minutes: 15
   max_trials: 10
