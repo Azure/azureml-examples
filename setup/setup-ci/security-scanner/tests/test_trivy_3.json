@@ -1,0 +1,51 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "mmaitre-mdc4",
+  "ArtifactType": "filesystem",
+  "Metadata": {
+    "OS": {
+      "Family": "ubuntu",
+      "Name": "18.04"
+    },
+    "ImageConfig": {
+      "architecture": "",
+      "created": "0001-01-01T00:00:00Z",
+      "os": "",
+      "rootfs": {
+        "type": "",
+        "diff_ids": null
+      },
+      "config": {}
+    }
+  },
+  "Results": [
+    {
+      "Target": "mmaitre-mdc4 (ubuntu 18.04)",
+      "Class": "os-pkgs",
+      "Type": "ubuntu",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2022-31607",
+          "PkgName": "libnvidia-cfg1-470",
+          "InstalledVersion": "470.103.01-0ubuntu1",
+          "FixedVersion": "470.141.03-0ubuntu0.18.04.1",
+          "Layer": {},
+          "SeveritySource": "ubuntu",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-31607",
+          "DataSource": {
+            "ID": "ubuntu",
+            "Name": "Ubuntu CVE Tracker",
+            "URL": "https://git.launchpad.net/ubuntu-cve-tracker"
+          },
+          "Description": "NVIDIA GPU Display Driver for Linux contains a vulnerability in the kernel mode layer (nvidia.ko), where a local user with basic capabilities can cause improper input validation, which may lead to denial of service, escalation of privileges, data tampering, and limited information disclosure.",
+          "Severity": "HIGH",
+          "References": [
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-31607",
+            "https://nvidia.custhelp.com/app/answers/detail/a_id/5383",
+            "https://ubuntu.com/security/notices/USN-5547-1"
+          ]
+        }
+      ]
+    }      
+  ]
+}

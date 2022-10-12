@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces/computes",
+      "name": "AmlDev/test-amlsecscan",
+      "location": "westus2",
+      "apiVersion": "2021-07-01",
+      "properties": {
+        "computeType": "ComputeInstance",
+        "disableLocalAuth": true,
+        "properties": {
+          "VMSize": "Standard_F2s_v2",
+          "rootAccess": false,
+          "applicationSharingPolicy": "Personal",
+          "sshSettings": { "sshPublicAccess": "Disabled" },
+          "setupScripts": {
+            "scripts": {
+              "creationScript": {
+                "scriptSource":"inline",
+                "scriptData":"[base64('sudo python3 mmaitre/amlsecscan.py install')]",
+                "timeout": "10m"
+              }
+            }
+          },
+          "schedules": {
+            "computeStartStop": [
+              {
+                "action": "Stop",
+                "triggerType": "Cron",
+                "cron": {
+                  "startTime": "2022-01-01T00:00:00",
+                  "timeZone": "Pacific Standard Time",
+                  "expression": "00 05 * * *"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
