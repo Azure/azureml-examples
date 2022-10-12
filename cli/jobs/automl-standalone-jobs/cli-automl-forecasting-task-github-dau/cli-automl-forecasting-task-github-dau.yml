@@ -26,7 +26,7 @@ limits:
 
 forecasting:
   time_column_name: "date"
-  forecast_horizon: 12
+  forecast_horizon: 14
   frequency: "D"
 
 training:
