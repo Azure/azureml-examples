@@ -102,7 +102,7 @@ echo "Scoring url is $SCORING_URL"
 
 # <test_endpoint> 
 echo "Uploading testing image, the scoring is..."
-curl -H "Authorization: {Bearer $TOKEN}" -T kitten_small.jpg $SCORING_URL
+curl -H "Authorization: {Bearer $TOKEN}" -T $BASE_PATH/kitten_small.jpg $SCORING_URL
 # </test_endpoint> 
 
 echo "Tested successfully, cleaning up"

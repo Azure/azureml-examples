@@ -101,6 +101,7 @@ az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment-name sklearn-diabete
 az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment-name lightgbm-iris --request-file "$BASE_PATH/sample-request-lightgbm.json"
 # </test_online_endpoints_with_invoke>
 
+# <get_endpoint_details> 
 # Get key
 echo "Getting access key..."
 KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv)
@@ -109,6 +110,7 @@ KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey
 echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 echo "Scoring url is $SCORING_URL"
+# </get_endpoint_details> 
 
 # <test_online_endpoints_with_curl>
 curl -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -H "azureml-model-deployment: sklearn-diabetes" -d @"$BASE_PATH/sample-request-sklearn.json"  $SCORING_URL
@@ -118,5 +120,3 @@ curl -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -H "azu
 # <delete_online_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME
 # </delete_online_endpoint>
-
-#rm -rf $BASE_PATH
