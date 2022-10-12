@@ -7,7 +7,7 @@ description: A Time-Series Forecasting job using univariate dataset
 compute: azureml:cpu-cluster
 task: forecasting
 primary_metric: normalized_root_mean_squared_error
-log_verbosity: debug
+log_verbosity: info
 
 training_data:
     path: "./training-mltable-folder"
@@ -18,19 +18,22 @@ test_data:
     type: mltable
 
 target_column_name: S4248SM144SCEN
-n_cross_validations: 3
+n_cross_validations: auto
 
 limits:
   timeout_minutes: 20
   max_trials: 10
   max_concurrent_trials: 4
-  trial_timeout_minutes: 20
+  max_cores_per_trial: -1
+  trial_timeout_minutes: 5
   enable_early_termination: true
 
 forecasting:
   time_column_name: "observation_date"
+  time_series_id_column_names: []
+  use_stl: none
   forecast_horizon: 12
-  frequency: "M"
+  frequency: "MS"
   target_lags: "auto"
 
 training:

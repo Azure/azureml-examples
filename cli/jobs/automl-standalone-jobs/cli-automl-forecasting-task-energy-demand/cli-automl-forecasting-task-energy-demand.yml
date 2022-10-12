@@ -7,7 +7,7 @@ description: A Time-Series Forecasting job using energy demand dataset
 compute: azureml:cpu-cluster
 task: forecasting
 primary_metric: normalized_root_mean_squared_error
-log_verbosity: debug
+log_verbosity: info
 
 training_data:
   path: "./training-mltable-folder"
@@ -18,7 +18,7 @@ test_data:
   type: mltable
 
 target_column_name: demand
-n_cross_validations: 3
+n_cross_validations: auto
 
 limits:
   timeout_minutes: 20

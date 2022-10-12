@@ -7,7 +7,7 @@ description: A Time-Series Forecasting job using orange juice sales dataset
 compute: azureml:cpu-cluster
 task: forecasting
 primary_metric: normalized_root_mean_squared_error
-log_verbosity: debug
+log_verbosity: info
 
 training_data:
     path: "./training-mltable-folder"
@@ -18,14 +18,14 @@ test_data:
     type: mltable
 
 target_column_name: Quantity
-n_cross_validations: 3
+n_cross_validations: auto
 
 featurization:
-  featurization_config:
-    column_purposes:
+  mode: custom
+  column_name_and_types:
       CPWVOL5: Numeric
-    transformer_params:
-      Imputer:
+  transformer_params:
+    imputer:
       - fields: ["Quantity"]
         parameters:
           strategy: constant
@@ -41,11 +41,13 @@ limits:
   timeout_minutes: 15
   max_trials: 10
   max_concurrent_trials: 4
+  max_cores_per_trial: -1
   trial_timeout_minutes: 15
   enable_early_termination: true
 
 forecasting:
   time_column_name: "WeekStarting"
+  time_series_id_column_names: ["Store", "Brand"]
   forecast_horizon: 20
   frequency: "W-THU"
 
