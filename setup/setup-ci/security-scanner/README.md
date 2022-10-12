@@ -12,7 +12,7 @@ description: Sample setup script to scan Compute Instances for malware and secur
 
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../../../LICENSE)
 
-A security scanner for Azure ML [Compute Instances](https://learn.microsoft.com/en-us/azure/machine-learning/concept-compute-instance) reporting malware and vulnerabilities in OS and Python packages to [Azure Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview).
+A security scanner for Azure ML [Compute Instances](https://learn.microsoft.com/en-us/azure/machine-learning/concept-compute-instance) reporting malware and vulnerabilities in OS and Python packages to [Azure Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview). For details on the vulnerability management process for the Azure Machine Learning service, see [Vulnerability Management](https://learn.microsoft.com/azure/machine-learning/concept-vulnerability-management).
 
 ## Getting Started
 

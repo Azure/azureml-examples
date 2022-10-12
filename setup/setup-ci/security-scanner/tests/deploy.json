@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.MachineLearningServices/workspaces/computes",
-      "name": "AmlDev/test-amlsecscan",
+      "name": "{azure_ml_workspace_name}/{azure_ml_compute_name}",
       "location": "westus2",
       "apiVersion": "2021-07-01",
       "properties": {
@@ -19,7 +19,7 @@
             "scripts": {
               "creationScript": {
                 "scriptSource":"inline",
-                "scriptData":"[base64('sudo python3 mmaitre/amlsecscan.py install')]",
+                "scriptData":"[base64('sudo python3 {user_name}/amlsecscan.py install')]",
                 "timeout": "10m"
               }
             }

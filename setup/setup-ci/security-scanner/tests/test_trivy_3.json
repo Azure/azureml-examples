@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 2,
-  "ArtifactName": "mmaitre-mdc4",
+  "ArtifactName": "test-mdc4",
   "ArtifactType": "filesystem",
   "Metadata": {
     "OS": {
@@ -20,7 +20,7 @@
   },
   "Results": [
     {
-      "Target": "mmaitre-mdc4 (ubuntu 18.04)",
+      "Target": "test-mdc4 (ubuntu 18.04)",
       "Class": "os-pkgs",
       "Type": "ubuntu",
       "Vulnerabilities": [
