@@ -1,23 +1,10 @@
 paths:
-<<<<<<<< HEAD:sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share/data/test-mltable-folder/MLTable
-  - file: ./bike-no-test.csv
-========
   - file: ./bike-share-test.csv
->>>>>>>> c3388c5e06c4cea0f7b80f3c24da69a0b1888365:cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share/test-mltable-folder/MLTable
 transformations:
   - read_delimited:
         delimiter: ','
         encoding: 'ascii'
   - convert_column_types:
-<<<<<<<< HEAD:sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share/data/test-mltable-folder/MLTable
-      - columns: hum
-        column_type: float
-      - columns: windspeed
-        column_type: float
-      - columns: temp
-        column_type: float
-      - columns: atemp
-========
       - columns: temp
         column_type: float
       - columns: atemp
@@ -25,5 +12,4 @@ transformations:
       - columns: hum
         column_type: float
       - columns: windspeed
->>>>>>>> c3388c5e06c4cea0f7b80f3c24da69a0b1888365:cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share/test-mltable-folder/MLTable
         column_type: float
