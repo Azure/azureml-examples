@@ -1,6 +1,20 @@
+---
+page_type: sample
+languages:
+- bash
+- python
+products:
+- azure-machine-learning
+description: Sample setup script to scan Compute Instances for malware and security vulnerabilities
+---
+
+# Compute Instance Security Scanner
+
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../../../LICENSE)
+
 A security scanner for Azure ML [Compute Instances](https://learn.microsoft.com/en-us/azure/machine-learning/concept-compute-instance) reporting malware and vulnerabilities in OS and Python packages to [Azure Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview).
 
-# Getting Started
+## Getting Started
 
 > Prerequisite: an Azure ML workspace with a Compute Instance running and [diagnostic logs](https://learn.microsoft.com/en-us/azure/machine-learning/monitor-azure-machine-learning) streaming to Log Analytics. See further down for alternative setups.
 
@@ -8,7 +22,7 @@ A security scanner for Azure ML [Compute Instances](https://learn.microsoft.com/
 - **Install the scanner**: open a terminal in Azure ML Notebooks and run `sudo ./amlsecscan.py install`
 - **Run a scan**: in the terminal, run `sudo ./amlsecscan.py scan all` (this takes a few minutes)
 
-# Telemetry
+## Telemetry
 
 In Log Analytics, the scanner reports hearbeats to table `AmlSecurityComputeHealth_CL` and assessment results to `AmlSecurityComputeAssessments_CL`.
 
@@ -24,7 +38,7 @@ Assessment|Source
 Malware|[ClamAV](https://www.clamav.net/)
 OS + Python vulnerabilities|[Trivy](https://github.com/aquasecurity/trivy)
 
-# Installation
+## Installation
 
 > Note: on Compute Instances with `sudo` disabled (`rootAccess = false`), installation is only possible via [Setup Script](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-customize-compute-instance).
 
@@ -36,7 +50,7 @@ Irrespective of how the scanner is installed, the scanner script must first be c
 
 The scanner can be installed on both existing and new Compute Instances.
 
-## Existing Compute Instances
+### Existing Compute Instances
 
 By default, the scanner uses the first Log Analytics workspace to which the Azure ML workspace streams [diagnostic logs](https://learn.microsoft.com/en-us/azure/machine-learning/monitor-azure-machine-learning):
 ```bash
@@ -58,9 +72,9 @@ Another option, in case this configuration is reused multiple times, is to store
 
 > The ARM Resource ID of a Log Analytics workspace can be obtained by opening the [Azure Portal](https://portal.azure.com), navigating to the Log Analytics workspace, and copying this substring from the browser URL.
 
-## New Compute Instances
+### New Compute Instances
 
-### Using Azure ML Studio
+#### Using Azure ML Studio
 
 Start by creating a file called `amlsecscan.sh` with content `sudo python3 amlsecscan.py install` .
 
@@ -68,7 +82,7 @@ Open the [Compute Instance list](https://ml.azure.com/compute/list) in [Azure ML
 In the pop-up, select the machine name and size then click `Next: Advanced Settings`. Toggle `Provision with setup script`, select `Local file`, and pick `amlsecscan.sh`.
 Finally, click on the `Create` button.
 
-### Using an ARM Template
+#### Using an ARM Template
 
 For automated deployments, the scanner can be installed as part of the ARM templates deploying the Compute Instances.
 
@@ -113,15 +127,15 @@ az account set --subscription {subscription_id}
 az deployment group create --resource-group {resource_group_name} --template-file deploy.json
 ```
 
-# Clean Up
+## Clean Up
 
 > Note: on Compute Instances with `sudo` disabled (`rootAccess = false`), clean up is not supported.
 
 To stop scan scheduling and remove the scanner, run `sudo ./amlsecscan.py uninstall` .
 
-# Troubleshooting
+## Troubleshooting
 
-## Ensure that telemetry is emitted
+### Ensure that telemetry is emitted
 
 Check the scanner health in Log Analytics: `AmlSecurityComputeHealth_CL | top 100 by TimeGenerated desc` .
 
@@ -132,7 +146,7 @@ one with `Status_s = 'Started'` followed by one with `Status_s = 'Succeeded'`. I
 
 If heartbeats are not present in Log Analytics, verify whether heartbeats can be emitted by running `./amlsecscan.py heartbeat` in a terminal on the Compute Instance.
 
-## Ensure that the scanner is running
+### Ensure that the scanner is running
 
 > Note: on Compute Instances with `sudo` disabled (`rootAccess = false`), deploy with `&& sudo usermod -a -G adm azureuser` in `scriptData` and skip `sudo` in the commands below.
 
@@ -144,18 +158,18 @@ The CRON configuration is located at `/etc/cron.d/amlsecscan` .
 
 Scans can be run manually with higher verbosity to get more details: `sudo /home/azureuser/.amlsecscan/run.sh scan all -ll DEBUG` .
 
-## Investigate Compute Instance deployment failures
+### Investigate Compute Instance deployment failures
 
 Compute Instance creation logs are stored under `/Logs/{azure_ml_compute_name}/creation`.
 They can also be found by selecting the Compute Instance in Azure ML Studio, clicking on the `Logs` tab, and opening the file `Setup > stdout`.
 
-## Verify that malware gets reported
+### Verify that malware gets reported
 
 Malware detection can be verified by downloading a simulated malware file: `wget -O ~/eicar.com.txt https://secure.eicar.org/eicar.com.txt` .
 
 The malware should be reported in Log Analytics: `AmlSecurityComputeAssessments_CL | where Type_s == 'Malware' | top 100 by TimeGenerated desc` .
 
-## Verify that the scanner files are present
+### Verify that the scanner files are present
 
 After installation, the following files should be present on the Compute Instance:
 
@@ -165,7 +179,7 @@ File|Description
 `/home/azureuser/.amlsecscan/run.sh`|Scanner CRON entry point
 `/etc/cron.d/amlsecscan`|Scanner CRON schedule
 
-## Verify that resource-usage limits are in place
+### Verify that resource-usage limits are in place
 
 When running through CRON schedule, scans have their CPU usage limited to 20% and are deprioritized by running at priority 19.
 When running manually, CPU usage is not limited and priority is left as default.
