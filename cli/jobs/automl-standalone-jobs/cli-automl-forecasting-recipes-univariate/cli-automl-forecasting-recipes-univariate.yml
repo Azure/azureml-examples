@@ -33,7 +33,6 @@ forecasting:
   time_series_id_column_names: []
   use_stl: none
   forecast_horizon: 12
-  frequency: "MS"
   target_lags: "auto"
 
 training:
