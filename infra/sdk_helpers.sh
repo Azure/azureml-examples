@@ -18,11 +18,12 @@ declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+31 days" +'%y-%m-%d')
 declare -a DELETE_AFTER=("31.00:00:00")
 
 COMMON_TAGS=(
-  "cleanup:DeleteAfter=${DELETE_AFTER}" 
-  "cleanup:Policy=DeleteAfter" 
-  "creationTime=${EPOCH_START}" 
+  "cleanup:DeleteAfter=${DELETE_AFTER}"
+  "cleanup:Policy=DeleteAfter"
+  "creationTime=${EPOCH_START}"
   "owner=azuremlsdk@microsoft.com"
-  "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}" 
+  "SkipAutoDeleteTill=${SKIP_AUTO_DELETE_TILL}"
+  "EnableAzSecPackIdentityPolicy=true"
 )
 
 
@@ -660,6 +661,52 @@ generate_workspace_config(){
     "workspace_name": "$WORKSPACE_NAME"
 }
 EOF
+}
+
+function vmss_upgrade_policy_automatic() {
+    local LOCAL_RESOURCE_GROUP_NAME=${1:-testrg}
+    printf "Update VMSS upgrade policy in resource group %s\n" ${LOCAL_RESOURCE_GROUP_NAME}
+    # get list of all scale sets
+    # VM_SCALE_SETS_JSON=$(az vmss list --resource-group ${LOCAL_RESOURCE_GROUP_NAME} -o json)
+    # VM_SCALE_SETS_LIST=$(echo $VM_SCALE_SETS_JSON | jq -r '.[] | .name')
+    VM_SCALE_SETS=$(az vmss list --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} | jq -r '.[].name')
+
+    printf "Checking scalesets %s in resource-group %s\n" "${VM_SCALE_SETS}" "${LOCAL_RESOURCE_GROUP_NAME}"
+    for VMSS in ${VM_SCALE_SETS}; do
+        VMSS_PROPERTIES=$(az vmss show --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --name $VMSS)
+        # echo SKU_TEMP $VMSS_PROPERTIES
+        # az vmss show -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" -o json
+        if [[ $(echo $VMSS_PROPERTIES | jq -r '.upgradePolicy.mode') == "Automatic" ]]; then
+            echo_info "Skipping to update upgradePolicy for VMSS $VMSS in resource-group ${LOCAL_RESOURCE_GROUP_NAME}..."
+            continue
+        else
+            echo_info "Enabling Auto OS Image upgrade for VMSS $VMSS in resource-group ${LOCAL_RESOURCE_GROUP_NAME}..."
+            az vmss update --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --set upgradePolicy.automaticOSUpgradePolicy='{"enableAutomaticOSUpgrade": true, "disableAutomaticRollback": false }'
+            echo_info "Updating upgradePolicy to Automatic for VMSS $VMSS in resource-group ${LOCAL_RESOURCE_GROUP_NAME}..."
+            az vmss update --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --set upgradePolicy.mode='Automatic'
+        fi
+        az vmss show --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --query upgradePolicy -o json
+    done
+}
+
+function vmss_upgrade_policy_all_rg() {
+    local RG_PREFIX="${1:-MC_}"
+    local Tag_Name="EnableAzSecPackIdentityPolicy"
+    local Tag_Value="true"
+    # checking Resource group name to ensure we're in a managed cluster RG
+    echo "Number of Resource groups starting with ${RG_PREFIX}:" $(az group list --subscription "${SUBSCRIPTION_ID}" --query "[? starts_with(@.name, '${RG_PREFIX}')] | length(@)")
+    # az group list --query "[? starts_with(@.name, '${RG_PREFIX}')].name" -o tsv | xargs -i "$SCRIPT_DIR"/sdk_helpers.sh check_vmss "{}"
+    for LOCAL_RESOURCE_GROUP_NAME in $(az group list --subscription "${SUBSCRIPTION_ID}" --query "[? starts_with(@.name, '${RG_PREFIX}')].name" --output json | jq .[] -r); do
+        # resource_id=$(az resource list --resource-group "${LOCAL_RESOURCE_GROUP_NAME}" --query [].id --output tsv)
+        RESOURCE_GROUP_ID=$(az group show --subscription "${SUBSCRIPTION_ID}" --name "${LOCAL_RESOURCE_GROUP_NAME}" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
+        echo "Current tags for resource-group ${LOCAL_RESOURCE_GROUP_NAME}"
+        az tag list --subscription "${SUBSCRIPTION_ID}" --resource-id "${RESOURCE_GROUP_ID}"
+        # echo "Update tag for RG ""$RESOURCE_GROUP_ID"" $Tag_Name tag to ""$Tag_Value"
+        az tag update --subscription "${SUBSCRIPTION_ID}" --resource-id "$RESOURCE_GROUP_ID" --operation Merge --tags "$Tag_Name"="$Tag_Value"
+        echo "Updated tags for resource-group ${LOCAL_RESOURCE_GROUP_NAME}:"
+        az tag list --subscription "${SUBSCRIPTION_ID}" --resource-id "${RESOURCE_GROUP_ID}"
+        vmss_upgrade_policy_automatic "${LOCAL_RESOURCE_GROUP_NAME}"
+    done
 }
 
 function validate_tool() {
