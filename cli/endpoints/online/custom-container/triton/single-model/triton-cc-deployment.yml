@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: triton-cc-deployment
+endpoint_name: {{endpoint_name}}
+model: 
+  path: ./models/model_1
+model_mount_path: /models 
+environment: 
+  name: triton-cc-env
+  image: {{acr_name}}.azurecr.io/azureml-examples/triton-cc:latest
+  inference_config:
+      liveness_route:
+          path: /v2/health/live
+          port: 8000
+      readiness_route:
+          path: /v2/health/ready
+          port: 8000
+      scoring_route:
+          path: /
+          port: 8000
+instance_type: Standard_DS4_v2
+instance_count: 1
