@@ -74,7 +74,7 @@ fi
 # </check_endpoint_status>
 
 # <create_deployment>
-az ml online-deployment create --name r-deployment --endpoint $ENDPOINT_NAME -f $BASE_PATH/r-deployment.yml --all-traffic
+az ml online-deployment create --name r-deployment --endpoint $ENDPOINT_NAME -f $BASE_PATH/r-deployment.yml --all-traffic --skip-script-validation
 # </create_deployment>
 
 # Check if deployment was successful
