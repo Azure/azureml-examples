@@ -67,7 +67,7 @@ cd $ROOT_PATH
 
 # <test_locally> 
 docker run --name huggingface-textgen --rm -d -p 8080:8080 -v "$PWD/$SERVE_PATH":/tmp/wd -e AZUREML_MODEL_DIR=/tmp/wd -e TORCHSERVE_MODELS="textgeneration=Textgeneration.mar" -t "$ACR_NAME.azurecr.io/$IMAGE_TAG" 
-sleep 10
+sleep 30
 curl -X POST http://127.0.0.1:8080/predictions/textgeneration -T "$SERVE_PATH/Text_gen_artifacts/sample_text.txt"
 docker stop huggingface-textgen
 # </test_locally> 
