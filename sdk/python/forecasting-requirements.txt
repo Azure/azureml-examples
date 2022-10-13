@@ -1,0 +1,2 @@
+# required for forecasting notebooks
+sklearn
