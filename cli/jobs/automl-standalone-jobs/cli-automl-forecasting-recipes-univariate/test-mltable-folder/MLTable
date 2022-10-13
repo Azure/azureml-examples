@@ -1,6 +1,6 @@
 paths:
-- file: ./nyc-energy-train.csv
+- file: ./univariate-test.csv
 transformations:
 - read_delimited:
     delimiter: ','
-    encoding: ascii
+    encoding: ascii 

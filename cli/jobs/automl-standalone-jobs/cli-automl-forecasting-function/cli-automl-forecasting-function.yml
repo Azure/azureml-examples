@@ -1,39 +1,41 @@
 $schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
 type: automl
 
-experiment_name: dpv2-cli-automl-forecasting-energy-demand
+experiment_name: dpv2-cli-automl-forecasting-function
 # name: dpv2-sdk-forecasting-train-job-01
-description: A Time-Series Forecasting job using energy demand dataset
+description: A Time-Series Forecasting job using artificial dataset
 compute: azureml:cpu-cluster
 task: forecasting
 primary_metric: normalized_root_mean_squared_error
 log_verbosity: info
 
 training_data:
-  path: "./training-mltable-folder"
-  type: mltable
+    path: "./training-mltable-folder"
+    type: mltable
 
 test_data:
-  path: "./test-mltable-folder"
-  type: mltable
+    path: "./test-mltable-folder"
+    type: mltable
 
-target_column_name: demand
+target_column_name: "y"
 n_cross_validations: auto
 
 limits:
-  timeout_minutes: 20
+  timeout_minutes: 15
   max_trials: 10
   max_concurrent_trials: 4
-  trial_timeout_minutes: 20
+  max_cores_per_trial: -1
+  trial_timeout_minutes: 15
   enable_early_termination: true
 
 forecasting:
-  time_column_name: "timeStamp"
-  forecast_horizon: 48
+  time_column_name: "date"
+  time_series_id_column_names: ["time_series_id"]
+  forecast_horizon: 6
   frequency: "H"
-  target_lags: "auto"
+  target_lags: [1, 2, 3]
 
 training:
   enable_model_explainability: true
   enable_stack_ensemble: false
-  blocked_training_algorithms: ["extreme_random_trees", "auto_arima", "prophet"]
+  blocked_training_algorithms: []

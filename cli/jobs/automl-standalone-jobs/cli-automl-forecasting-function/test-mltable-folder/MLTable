@@ -1,5 +1,5 @@
 paths:
-- file: ./nyc-energy-train.csv
+- file: ./artificial-test.csv
 transformations:
 - read_delimited:
     delimiter: ','
