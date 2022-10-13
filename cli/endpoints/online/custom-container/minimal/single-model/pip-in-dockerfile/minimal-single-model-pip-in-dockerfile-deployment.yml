@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: pip-in-dockerfile
+endpoint_name: {{ENDPOINT_NAME}}
+model: 
+  name: minimal-cc-model 
+  path: ../../../../model-1/model
+code_configuration: 
+  code: ../../../../model-1/onlinescoring
+  scoring_script: score.py
+environment:  
+  name: pip-in-dockerfile
+  image: {{ACR_NAME}}.azurecr.io/azureml-examples/minimal-single-model-pip-in-dockerfile:1
+  inference_config:
+    liveness_route:
+      path: /
+      port: 5001
+    readiness_route:
+      path: /
+      port: 5001
+    scoring_route:
+      path: /score
+      port: 5001
+instance_type: Standard_DS2_v2
+instance_count: 1
