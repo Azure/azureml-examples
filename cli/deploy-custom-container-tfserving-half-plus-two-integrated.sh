@@ -24,7 +24,7 @@ az acr build -f $BASE_PATH/half-plus-two-integrated.Dockerfile -t azureml-exampl
 # </build_image> 
 
 # <test_locally>
-docker run -p 8501:8501 --rm -d --name tfsintegrated -d -t "$ACR_NAME.azurecr.io/azureml-examples/tfsintegrated:1"
+docker run -p 8501:8501 --rm -d --name tfsintegrated -t "$ACR_NAME.azurecr.io/azureml-examples/tfsintegrated:1"
 sleep 5
 curl -d '{"inputs": [[1,1]]}' -H "Content-Type: application/json" localhost:8501/v1/models/hpt:predict
 docker stop tfsintegrated
