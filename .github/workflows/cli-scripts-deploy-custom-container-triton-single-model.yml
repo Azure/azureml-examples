@@ -1,0 +1,45 @@
+name: cli-scripts-deploy-custom-container-triton-single-model
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/8 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/deploy-custom-container-triton-single-model.sh
+      - infra/**
+      - .github/workflows/cli-scripts-deploy-custom-container-triton-single-model.yml
+      - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: bootstrap resources
+      run: |
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: test script script
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          set -e; bash -x deploy-custom-container-triton-single-model.sh
+      working-directory: cli

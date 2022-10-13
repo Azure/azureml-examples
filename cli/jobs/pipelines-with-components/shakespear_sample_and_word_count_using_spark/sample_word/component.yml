@@ -36,5 +36,3 @@ conf:
   spark.dynamicAllocation.enabled: True
   spark.dynamicAllocation.minExecutors: 1
   spark.dynamicAllocation.maxExecutors: 4
-  spark.yarn.appMasterEnv.AZUREML_ENABLE_DATAPATH_RESOLUTION: True
-  spark.yarn.appMasterEnv.AZUREML_HADOOP_EXTENSION_URL: https://foobaradrama2.azurefd.net/latest/hadoop-azureml-fs.jar
