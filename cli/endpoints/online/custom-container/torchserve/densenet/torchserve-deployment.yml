@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: torchserve-deployment
+endpoint_name: torchserve-endpoint
+model:
+  path: torchserve
+environment_variables:
+  TORCHSERVE_MODELS: "densenet161=densenet161.mar"
+environment:
+  image: {{ACR_NAME}}.azurecr.io/torchserve:1 
+  inference_config:
+    liveness_route:
+      port: 8080
+      path: /ping
+    readiness_route:
+      port: 8080
+      path: /ping
+    scoring_route:
+      port: 8080
+      path: /predictions/densenet161
+instance_type: Standard_DS2_v2
+instance_count: 1
+    
