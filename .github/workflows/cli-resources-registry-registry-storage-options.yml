@@ -1,0 +1,45 @@
+name: cli-resources-registry-registry-storage-options
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/8 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/resources/registry/registry-storage-options.yml
+      - infra/**
+      - .github/workflows/cli-resources-registry-registry-storage-options.yml
+      - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: bootstrap resources
+      run: |
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create asset
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml registry create -f resources/registry/registry-storage-options.yml
+      working-directory: cli

@@ -32,9 +32,10 @@ def run(mini_batch):
         X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
         y_test = X_test.pop(target_column_name).values
 
-        y_pred, X_trans =  fitted_model.rolling_evaluation(X_test, y_test,ignore_data_errors=True
+        y_pred, X_trans = fitted_model.rolling_evaluation(
+            X_test, y_test, ignore_data_errors=True
         )
-        
+
         # Add predictions, actuals, and horizon relative to rolling origin to the test feature data
         assign_dict = {
             "horizon_origin": X_trans["horizon_origin"].values,
@@ -52,5 +53,3 @@ def run(mini_batch):
         resultList.append(json_string)
 
     return resultList
-
-
