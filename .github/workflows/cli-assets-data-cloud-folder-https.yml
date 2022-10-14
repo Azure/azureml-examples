@@ -2,15 +2,19 @@ name: cli-assets-data-cloud-folder-https
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/4 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
       - sdk-preview
     paths:
       - cli/assets/data/cloud-folder-https.yml
+      - infra/**
       - .github/workflows/cli-assets-data-cloud-folder-https.yml
       - cli/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,11 +24,22 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
-    - name: setup
-      run: bash setup.sh
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: bootstrap resources
+      run: |
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
-      run: az ml data create -f assets/data/cloud-folder-https.yml
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml data create -f assets/data/cloud-folder-https.yml
       working-directory: cli
