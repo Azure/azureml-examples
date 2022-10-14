@@ -1,0 +1,41 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+type: automl
+
+experiment_name: dpv2-cli-automl-forecasting-recipes-univariate
+# name: dpv2-sdk-forecasting-train-job-01
+description: A Time-Series Forecasting job using univariate dataset
+compute: azureml:cpu-cluster
+task: forecasting
+primary_metric: normalized_root_mean_squared_error
+log_verbosity: info
+
+training_data:
+    path: "./training-mltable-folder"
+    type: mltable
+
+test_data:
+    path: "./test-mltable-folder"
+    type: mltable
+
+target_column_name: S4248SM144SCEN
+n_cross_validations: auto
+
+limits:
+  timeout_minutes: 20
+  max_trials: 10
+  max_concurrent_trials: 4
+  max_cores_per_trial: -1
+  trial_timeout_minutes: 5
+  enable_early_termination: true
+
+forecasting:
+  time_column_name: "observation_date"
+  time_series_id_column_names: []
+  use_stl: none
+  forecast_horizon: 12
+  target_lags: "auto"
+
+training:
+  enable_model_explainability: true
+  enable_stack_ensemble: false
+  blocked_training_algorithms: []

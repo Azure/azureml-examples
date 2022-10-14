@@ -1,3 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/kubernetesOnlineDeployment.schema.json
 name: blue
 type: kubernetes
 endpoint_name: my-endpoint

@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: integratedbyoc
+endpoint_name: {{ENDPOINT_NAME}}
+environment:
+  image: {{ACR_NAME}}.azurecr.io/azureml-examples/tfsintegrated:1
+  inference_config:
+    liveness_route:
+      port: 8501
+      path: /v1/models/hpt
+    readiness_route:
+      port: 8501
+      path: /v1/models/hpt
+    scoring_route:
+      port: 8501
+      path: /v1/models/hpt:predict
+instance_type: Standard_DS2_v2
+instance_count: 1
