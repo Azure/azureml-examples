@@ -5,3 +5,4 @@ ipykernel==5.5.5
 papermill==2.3.3
 pandas
 matplotlib
+sklearn

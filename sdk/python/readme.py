@@ -212,7 +212,7 @@ jobs:
                     IncidentId: "{posix_notebook}[${{{{ github.ref_name }}}}]"\n"""
 
     workflow_file = os.path.join(
-        "..", "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
+        "C:\\Users","anagarajan","Documents","repos","azureml-examples", ".github", "workflows", f"sdk-{classification}-{name}.yml"
     )
     workflow_before = ""
     if os.path.exists(workflow_file):
