@@ -12,7 +12,11 @@ on:
       - sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-classification-bankmarketing-in-pipeline/**
       - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-classification-bankmarketing-in-pipeline-automl-classification-bankmarketing-in-pipeline.yml
       - sdk/python/dev-requirements.txt
+      - infra/**
       - sdk/python/setup.sh
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,21 +32,34 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: bootstrap resources
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
     - name: setup SDK
-      run: bash setup.sh
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
-    - name: setup CLI
-      run: bash setup.sh
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run jobs/pipelines/1h_automl_in_pipeline/automl-classification-bankmarketing-in-pipeline/automl-classification-bankmarketing-in-pipeline.ipynb
       run: |
-          mkdir ../../.azureml
-          echo '{"subscription_id": "6560575d-fa06-4e7d-95fb-f962e74efd7a", "resource_group": "azureml-examples", "workspace_name": "main"}' > ../../.azureml/config.json 
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-classification-bankmarketing-in-pipeline.ipynb
-          sed -i "s/@pipeline(/&force_rerun=True,/" automl-classification-bankmarketing-in-pipeline.ipynb
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-classification-bankmarketing-in-pipeline.ipynb";
+          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-classification-bankmarketing-in-pipeline.ipynb automl-classification-bankmarketing-in-pipeline.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-classification-bankmarketing-in-pipeline
     - name: upload notebook's working folder as an artifact
