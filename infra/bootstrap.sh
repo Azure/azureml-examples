@@ -80,7 +80,7 @@ echo_title "Ensuring Resource group"
 
 "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
 
-REGISTRY_NAME="DemoRegistry$(date +%s)"
+export REGISTRY_NAME="DemoRegistry$(date +%s)"
 echo_title "Ensuring Registry"
 "$SCRIPT_DIR"/sdk_helpers.sh create_ml_registry "${REGISTRY_NAME}"
 
