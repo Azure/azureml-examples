@@ -106,6 +106,26 @@ function ensure_ml_workspace() {
     fi
 }
 
+function create_ml_registry() {
+    local LOCAL_REGISTRY_NAME="${1:-${REGISTRY_NAME:-}}"
+    echo_info "Creating registry ${LOCAL_REGISTRY_NAME}" >&2
+    CREATE_REGISTRY=$(az ml registry create \
+        --file ../cli/resources/registry/registry-demo.yml
+        --name "${LOCAL_REGISTRY_NAME}" \
+        --resource-group "${RESOURCE_GROUP_NAME}"  \
+        --location "${LOCATION}" \
+        --tags "${COMMON_TAGS[@]}" \
+        --query id --output tsv  \
+        > /dev/null 2>&1)
+    if [[ $? -ne 0 ]]; then
+        echo_error "Failed to create registry ${LOCAL_REGISTRY_NAME}" >&2
+        echo "[---fail---] $CREATE_REGISTRY."
+    else
+        echo_info "Registry ${LOCAL_REGISTRY_NAME} created successfully" >&2
+        # ensure_prerequisites_in_workspace
+    fi
+}
+
 function ensure_aml_compute() {
     COMPUTE_NAME=${1:-cpu-cluster}
     MIN_INSTANCES=${2:-0}

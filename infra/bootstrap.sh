@@ -80,10 +80,13 @@ echo_title "Ensuring Resource group"
 
 "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
 
+REGISTRY_NAME="DemoRegistry$(date +%s)"
+
 # RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
+    "$SCRIPT_DIR"/sdk_helpers.sh create_ml_registry "${REGISTRY_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
