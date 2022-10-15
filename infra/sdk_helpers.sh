@@ -113,10 +113,9 @@ function create_ml_registry() {
         --file ../cli/resources/registry/registry-demo.yml \
         --name "${LOCAL_REGISTRY_NAME}" \
         --resource-group "${RESOURCE_GROUP_NAME}"  \
-        --location "eastus" \
+        --location "${LOCATION}" \
         --tags "${COMMON_TAGS[@]}" \
-        --query id --output tsv  \
-        > /dev/null 2>&1)
+        --query id --output tsv)
     if [[ $? -ne 0 ]]; then
         echo_error "Failed to create registry ${LOCAL_REGISTRY_NAME}" >&2
         echo "[---fail---] $CREATE_REGISTRY."
