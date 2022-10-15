@@ -113,7 +113,6 @@ function create_ml_registry() {
         --file ../cli/resources/registry/registry-demo.yml \
         --name "${LOCAL_REGISTRY_NAME}" \
         --resource-group "${RESOURCE_GROUP_NAME}"  \
-        --location \""${LOCATION}"\" \
         --tags "${COMMON_TAGS[@]}" \
         --query id --output tsv)
     if [[ $? -ne 0 ]]; then
