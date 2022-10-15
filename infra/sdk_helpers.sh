@@ -113,7 +113,7 @@ function create_ml_registry() {
         --file ../cli/resources/registry/registry-demo.yml \
         --name "${LOCAL_REGISTRY_NAME}" \
         --resource-group "${RESOURCE_GROUP_NAME}"  \
-        --location "${LOCATION}" \
+        --location "eastus" \
         --tags "${COMMON_TAGS[@]}" \
         --query id --output tsv  \
         > /dev/null 2>&1)
