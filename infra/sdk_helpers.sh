@@ -110,7 +110,7 @@ function create_ml_registry() {
     local LOCAL_REGISTRY_NAME="${1:-${REGISTRY_NAME:-}}"
     echo_info "Creating registry ${LOCAL_REGISTRY_NAME}" >&2
     CREATE_REGISTRY=$(az ml registry create \
-        --file ../cli/resources/registry/registry-demo.yml
+        --file ../cli/resources/registry/registry-demo.yml \
         --name "${LOCAL_REGISTRY_NAME}" \
         --resource-group "${RESOURCE_GROUP_NAME}"  \
         --location "${LOCATION}" \
