@@ -5,7 +5,7 @@ name: hello_python_world
 display_name: Hello_Python_World
 version: 1
 
-code: ./src
+# code: ./src
 
 inputs:
   number: 
@@ -14,4 +14,4 @@ environment:
   image: python
 
 command: >-
-  python hello.py
+  echo ${{inputs.number}}

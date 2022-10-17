@@ -3,7 +3,7 @@ type: pipeline
 display_name: 2a_basic_component
 description: Hello World component example
 inputs:
-  number: 10
+  number: 10.0
 jobs:
   hello_python_world_job:
     type: command
