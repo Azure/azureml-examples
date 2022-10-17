@@ -2,10 +2,13 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: 2a_basic_component
 description: Hello World component example
-
+inputs:
+  number: 10
 jobs:
   hello_python_world_job:
     type: command
     component: ./component.yml
+    inputs:
+      number: ${{parent.inputs.number}}
     compute: azureml:cpu-cluster
 

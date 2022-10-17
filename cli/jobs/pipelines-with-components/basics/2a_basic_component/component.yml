@@ -7,6 +7,9 @@ version: 1
 
 code: ./src
 
+inputs:
+  number: 
+    type: integer
 environment: 
   image: python
 

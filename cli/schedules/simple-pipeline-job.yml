@@ -21,4 +21,5 @@ jobs:
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     inputs:
       world_input: ${{parent.jobs.b.outputs.world_output}}
- 
+tags:
+  hello: world
