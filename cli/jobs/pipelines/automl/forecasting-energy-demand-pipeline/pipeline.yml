@@ -17,6 +17,10 @@ inputs:
     type: mltable
     path: validation-mltable-folder
 
+outputs: 
+  inference_output:
+    mode: upload
+
 jobs:
   forecasting_node:
     type: automl
@@ -48,4 +52,17 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.forecasting_node.outputs.best_model}}
       model_base_name: energy_demand_model
+  # This is an optional step for data inference.
+  infer_model_node:
+    type: command
+    component: file:./components/component_infer.yaml
+    inputs:
+      test_data: 
+        type: uri_folder
+        path: ./test-data/
+      model_path: ${{parent.jobs.forecasting_node.outputs.best_model}}
+      ouput_dataset_name: energy_demand_infer
+      target_column_name: demand
+    outputs:
+      output_path: ${{parent.outputs.inference_output}}
       
