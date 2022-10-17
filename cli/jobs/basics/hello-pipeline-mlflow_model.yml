@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: hello_pipeline_settings
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+jobs:
+  hello_job:
+    command: |
+      ls ${{inputs.sampledata}}
+    code: src
+    inputs:
+      sampledata:
+        type: mlflow_model
+        path: azureml:local-mlflow-example@latest
+        mode: ro_mount
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    compute: azureml:cpu-cluster
