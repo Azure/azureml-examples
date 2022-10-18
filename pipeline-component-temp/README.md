@@ -236,6 +236,9 @@ After submitted pipeline job, you can go to pipeline job detail page to change p
 
 ![pipeline-component-debug](./media/pipeline-component-debug.gif)
 
+#### group components as pipeline component and ungroup pipeline component
+
+![pipeline-component-UI-authoring](./media/pipeline-component-ui-authoring.gif)
 ## Contact us
 
 Reach out to us: lochen@microsoft.com if you have any questions or feedback.
