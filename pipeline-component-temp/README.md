@@ -6,11 +6,12 @@ When developing complex machine learning  pipeline, there will be sub-pipeline w
 Pipeline component author can focus on the sub-task, and easy to integrate pipeline component with whole pipeline job. Meanwhile, as pipeline component have well defined interface (inputs/outputs), pipeline component user didn't need to know detail implementation of pipeline component.
 
 ## Prerequisites
+- Please update your CLI and SDK to new version: CLI>=2.10.0, SDK>=0.1.0
 - As this private preview feature, please fill [this form to join](https://forms.office.com/r/pEguDEiqZL).
 - To use this new featur you need use [CLI and SDK v2](https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2).
     - [Install and set up CLI (v2)](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli)
     - [Install and set up SDK (v2)](https://aka.ms/sdk-v2-install)
-- Please update your CLI and SDK to newest version.
+
 ## The difference of pipeline job and pipeline component
 In general, pipeline component is much similar to pipeline job. They are both consist of group of jobs/component. Here are some main difference you need aware when defining pipeline component:
 - Pipeline component only define the interface of inputs/outputs, which means when define pipeline component your need explicitly define type of inputs/outputs instead of directly assign values to them.
