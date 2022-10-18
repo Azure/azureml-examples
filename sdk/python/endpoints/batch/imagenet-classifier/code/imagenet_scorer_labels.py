@@ -1,4 +1,3 @@
-
 import os
 import numpy as np
 import tensorflow as tf
@@ -14,7 +13,7 @@ def init():
 
     # AZUREML_MODEL_DIR is an environment variable created during deployment
     model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "model")
-    labels_path = os.path.join(model_path, 'ImageNetLabels.txt')
+    labels_path = os.path.join(model_path, "ImageNetLabels.txt")
 
     # load the model
     model = load_model(model_path)
@@ -29,9 +28,13 @@ def run(mini_batch):
     resultList = []
 
     for image in mini_batch:
-        data = Image.open(image).resize((input_width, input_height)) # Read and resize the image
-        data = np.array(data)/255.0 # Normalize
-        data_batch = tf.expand_dims(data, axis=0) # create a batch of size (1, 244, 244, 3)
+        data = Image.open(image).resize(
+            (input_width, input_height)
+        )  # Read and resize the image
+        data = np.array(data) / 255.0  # Normalize
+        data_batch = tf.expand_dims(
+            data, axis=0
+        )  # create a batch of size (1, 244, 244, 3)
 
         # perform inference
         pred = model.predict(data_batch)
