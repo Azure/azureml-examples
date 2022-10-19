@@ -8,7 +8,7 @@ on:
       - main
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis/**
-      - .github/workflows/python-sdk-tutorial-automl-nlp-v2-ner.yml
+      - .github/workflows/python-sdk-tutorial-automl-nlp-v2-multiclass.yml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
           auto-activate-base: false
     - name: update conda env with the update_env.yml
       run: |
-        conda env update --file v1/python-sdk/tutorials/automl-with-azureml/automl-nlp-ner/update_env.yml
+        conda env update --file v1/python-sdk/tutorials/automl-with-azureml/automl-nlp-multiclass/update_env.yml
     - name: install papermill and set up the IPython kernel
       run: |
         pip install papermill==2.3.3
