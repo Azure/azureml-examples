@@ -5,7 +5,7 @@ import os
 import argparse
 from pathlib import Path
 
-from azure.identity import  ManagedIdentityCredential
+from azure.identity import ManagedIdentityCredential
 
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Model
@@ -25,16 +25,19 @@ def parse_args():
     # add arguments
     parser.add_argument("--model_input_path", type=str, help="Path to input model")
     parser.add_argument(
-        "--model_base_name", type=str, help="Name with which model needs to be registered"
+        "--model_base_name",
+        type=str,
+        help="Name with which model needs to be registered",
     )
     parser.add_argument(
-        "--model_id_path", type=str, help = "Path which stores registered model id"
+        "--model_id_path", type=str, help="Path which stores registered model id"
     )
     # parse args
     args = parser.parse_args()
     print("Path: " + args.model_input_path)
     # return args
     return args
+
 
 def get_runid(model_input_path):
     # returns runid from model_path
@@ -46,16 +49,16 @@ def get_runid(model_input_path):
                 runid = line.split(":")[1].strip()
     return runid
 
+
 def get_ml_client():
     # returns ML client by autherizing credentials via MSI
     credential = ManagedIdentityCredential(client_id="<MSI_CLIENT_ID>")
     ml_client = MLClient(
-         credential, 
-        "<SUBSCRIPTION_ID>",
-        "<RESOURCE_GROUP>",
-        "<AML_WORKSPACE_NAME>")
-    
+        credential, "<SUBSCRIPTION_ID>", "<RESOURCE_GROUP>", "<AML_WORKSPACE_NAME>"
+    )
+
     return ml_client
+
 
 def main(args):
     """
@@ -70,14 +73,15 @@ def main(args):
         path=run_uri,
         name=args.model_base_name,
         description="Model created from run.",
-        type=AssetTypes.MLFLOW_MODEL
+        type=AssetTypes.MLFLOW_MODEL,
     )
     registered_model = ml_client.models.create_or_update(reg_model)
-    
-    print("Model registered with id ",reg_model.id)
+
+    print("Model registered with id ", reg_model.id)
     # write registered model id which will be fetched by deployment component
     (Path(args.model_id_path) / "reg_id.txt").write_text(registered_model.id)
-    
+
+
 # run script
 if __name__ == "__main__":
     # parse args
