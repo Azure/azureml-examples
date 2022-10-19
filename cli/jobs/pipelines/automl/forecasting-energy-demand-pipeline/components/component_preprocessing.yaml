@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: data_preprocessing
+display_name: Data Preprocessing
+version: 1
+type: command
+inputs:
+  train_data:
+    type: mltable
+  validation_data:
+    type: mltable
+outputs:
+  preprocess_train_data:
+    type: mltable
+  preprocess_validation_data:
+    type: mltable
+code: ./src/
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+command: >-
+  python preprocess.py
+  --train_data ${{inputs.train_data}}
+  --validation_data ${{inputs.validation_data}}
+  --preprocess_train_data ${{outputs.preprocess_train_data}}
+  --preprocess_validation_data ${{outputs.preprocess_validation_data}}
