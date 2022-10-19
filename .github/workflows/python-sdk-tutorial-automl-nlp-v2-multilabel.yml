@@ -62,7 +62,7 @@ jobs:
         bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-text-classification-multilabel-task-paper-cat.ipynb";
         [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
         papermill -k python automl-nlp-text-classification-multilabel-task-paper-cat.ipynb automl-nlp-text-classification-multilabel-task-paper-cat.output.ipynb
-      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
