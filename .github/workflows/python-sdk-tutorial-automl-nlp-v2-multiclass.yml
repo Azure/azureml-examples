@@ -1,4 +1,4 @@
-name: automl-nlp-ner
+name: automl-nlp-v2-multiclass
 on:
   workflow_dispatch:
   schedule:
