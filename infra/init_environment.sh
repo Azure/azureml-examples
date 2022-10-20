@@ -75,6 +75,7 @@ then
     echo_warning "No resource group location [LOCATION] specified, defaulting to ${LOCATION}."
 fi
 
+REGISTRY_NAME=${REGISTRY_NAME:-}
 if [[ -z "$REGISTRY_NAME" ]]
 then
     export REGISTRY_NAME="${PREFIX}${SUFFIX}${DATE_ONLY}-registry"
