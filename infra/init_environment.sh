@@ -75,6 +75,12 @@ then
     echo_warning "No resource group location [LOCATION] specified, defaulting to ${LOCATION}."
 fi
 
+if [[ -z "$REGISTRY_NAME" ]]
+then
+    export REGISTRY_NAME="${PREFIX}${SUFFIX}${DATE_ONLY}-registry"
+    echo_warning "No registry name [REGISTRY_NAME] specified, defaulting to ${REGISTRY_NAME}."
+fi
+
 # Check if user is logged in
 [[ -n $(az account show 2> /dev/null) ]] || { echo_warning "Please login via the Azure CLI."; az login; }
 
