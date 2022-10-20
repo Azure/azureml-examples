@@ -66,6 +66,25 @@ function popd () {
     command popd "$@" 2>&1 > /dev/null || exit
 }
 
+function ensure_registry(){
+    local LOCAL_REGISTRY_NAME="${1:-${REGISTRY_NAME:-}}"
+    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${registry_exists}" = "[]" ]]; then
+        echo_info "registry ${LOCAL_REGISTRY_NAME} does not exist; creating" >&2
+        sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $ROOT_DIR/cli/resources/registry/registry-demo.yml
+        sed -i "s/<LOCATION>/$LOCATION/" $ROOT_DIR/cli/resources/registry/registry-demo.yml
+        cat $ROOT_DIR/cli/resources/registry/registry-demo.yml
+        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/cli/resources/registry/registry-demo.yml
+        if [[ $? -ne 0 ]]; then
+            echo_error "Failed to create registry ${LOCAL_REGISTRY_NAME}" >&2
+        else
+            echo_info "registry ${LOCAL_REGISTRY_NAME} created successfully" >&2
+        fi
+    else
+        echo_warning "registry ${LOCAL_REGISTRY_NAME} already exist, skipping creation step..." >&2
+    fi
+}
+
 function ensure_resourcegroup() {
     rg_exists=$(az group exists --resource-group "$RESOURCE_GROUP_NAME" --output tsv |tail -n1|tr -d "[:cntrl:]")
     if [ "false" = "$rg_exists" ]; then
@@ -727,6 +746,7 @@ function replace_template_values() {
     sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
         -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
         -e "s/<AML_WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
+        -e "s/<registry-name>/$(echo "$REGISTRY_NAME")/g" \
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
