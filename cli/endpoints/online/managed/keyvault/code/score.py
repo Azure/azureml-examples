@@ -13,7 +13,7 @@ def init():
     vault_url = f"https://{kv_name}.vault.azure.net/"
     credential = ManagedIdentityCredential()
     secret_client = SecretClient(vault_url=vault_url, credential=credential)   
-    secret_client.get_secret(name=secret_name)
+    secret = secret_client.get_secret(name=secret_name)
 
 def run(data):
     return secret
