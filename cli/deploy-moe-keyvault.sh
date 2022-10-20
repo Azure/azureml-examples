@@ -43,6 +43,14 @@ else
   #exit 1
 fi
 
+# <get_endpoint_principal_id> 
+ENDPOINT_PRINCIPAL_ID=$(az ml online-endpoint show -n $ENDPOINT_NAME --query identity.principal_id -o tsv)
+# </get_endpoint_principal_id> 
+
+# <set_access_policy> 
+az keyvault set-policy -n $KV_NAME --object-id $ENDPOINT_PRINCIPAL_ID --secret-permissions get
+# </set_access_policy> 
+
 # <create_deployment>
 change_vars keyvault-deployment.yml
 az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml_
@@ -69,9 +77,10 @@ SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -
 echo "Scoring url is $SCORING_URL"
 
 # <test_deployment>
-curl -d "{}" -H "Authorization: Bearer $KEY" $SCORING_URL 
+curl -d '{"name" : "foo"}' -H "Authorization: Bearer $KEY" $SCORING_URL 
 # </test_deployment> 
 
 # <delete_assets>
 az keyvault delete -n $KV_NAME
+az ml online-endpoint delete -n $ENDPOINT_NAME --no-wait
 # </delete_assets>
