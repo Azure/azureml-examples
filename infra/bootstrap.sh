@@ -80,6 +80,9 @@ echo_title "Ensuring Resource group"
 
 "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
 
+echo_title "Ensuring Registry"
+"$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME}"
+
 # RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Workspace"
