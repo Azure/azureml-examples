@@ -40,7 +40,7 @@ search_space:
       values: [bert_base_cased, roberta_base]
   - model_name:
       type: choice
-      values: [distilroberta_base_cased]
+      values: [distilroberta_base]
     weight_decay:
       type: uniform
       min_value: 0.01
