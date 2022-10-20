@@ -4,6 +4,6 @@ az keyvault create -n $KV_NAME -g $GROUP
 
 az keyvault secret set --vault-name $KV_NAME -n foo --value bar
 
-az keyvault scret show --vault-name $KV_NAME -n foo 
+az keyvault secret show --vault-name $KV_NAME -n foo 
 
 az keyvault delete -n $KV_NAME
