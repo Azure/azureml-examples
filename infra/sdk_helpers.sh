@@ -746,7 +746,7 @@ function replace_template_values() {
     sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
         -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
         -e "s/<AML_WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
-        -e "s/<registry-name>/$(echo "$REGISTRY_NAME")/g" \
+        -e "s/<REGISTRY_NAME>/$(echo "$REGISTRY_NAME")/g" \
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
