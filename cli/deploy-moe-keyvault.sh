@@ -34,7 +34,7 @@ az ml online-endpoint create -n $ENDPOINT_NAME
 
 # <create_deployment>
 change_vars keyvault-deployment.yml
-az ml online-deployment create -f keyvault-deployment_.yml
+az ml online-deployment create -f $BASE_PATH/keyvault-deployment_.yml
 # </create-deployment> 
 
 # <delete_assets>
