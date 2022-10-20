@@ -4,7 +4,7 @@ display_name: train_data
 description: A example train component
 tags:
   author: azureml-sdk-team
-version: 5
+version: 6
 type: command
 inputs:
   training_data: 

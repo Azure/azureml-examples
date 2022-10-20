@@ -1,4 +1,4 @@
-$schema: http://azureml/sdk-2-0/SparkComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/sparkComponent.schema.json
 name: kmeans_spark_component
 type: spark
 version: 1
@@ -30,5 +30,3 @@ conf:
   spark.executor.cores: 1
   spark.executor.memory: "1g"
   spark.executor.instances: 1
-  spark.yarn.appMasterEnv.AZUREML_ENABLE_DATAPATH_RESOLUTION: True
-  spark.yarn.appMasterEnv.AZUREML_HADOOP_EXTENSION_URL: https://foobaradrama2.azurefd.net/latest/hadoop-azureml-fs.jar

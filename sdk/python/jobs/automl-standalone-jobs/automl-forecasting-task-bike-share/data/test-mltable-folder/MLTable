@@ -1,0 +1,15 @@
+paths:
+  - file: ./bike-no-test.csv
+transformations:
+  - read_delimited:
+        delimiter: ','
+        encoding: 'ascii'
+  - convert_column_types:
+      - columns: hum
+        column_type: float
+      - columns: windspeed
+        column_type: float
+      - columns: temp
+        column_type: float
+      - columns: atemp
+        column_type: float
