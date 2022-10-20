@@ -19,7 +19,6 @@ change_vars() {
   done
 }
 
-
 # <create_keyvault> 
 az keyvault create -n $KV_NAME -g $GROUP
 # </create_keyvault> 
@@ -81,6 +80,6 @@ curl -d '{"name" : "foo"}' -H "Authorization: Bearer $KEY" $SCORING_URL
 # </test_deployment> 
 
 # <delete_assets>
-az keyvault delete -n $KV_NAME
+az keyvault delete -n $KV_NAME --no-wait
 az ml online-endpoint delete -n $ENDPOINT_NAME --no-wait
 # </delete_assets>
