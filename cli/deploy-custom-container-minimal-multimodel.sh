@@ -49,7 +49,6 @@ az acr build -t azureml-examples/minimal-multimodel:1 -r $ACR_NAME -f $BASE_PATH
 change_vars $BASE_PATH/minimal-multimodel-deployment.yml
 az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/minimal-multimodel-deployment.yml_ --all-traffic
 az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/minimal-multimodel-deployment.yml_
-
 # </create_deployment> 
 
 # Check if deployment was successful 
