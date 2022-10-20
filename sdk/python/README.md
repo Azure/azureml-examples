@@ -7,20 +7,10 @@ products:
 description: Top-level directory for official Azure Machine Learning Python SDK v2 sample code.
 ---
 
-# Azure Machine Learning SDK (v2) (preview) examples
+# Azure Machine Learning SDK (v2) examples
 
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
-
-## Public Preview
-
-We are excited to introduce the public preview of Azure Machine Learning **Python SDK v2**.
-
-Please note that this Public Preview release is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
-
-## How can I provide feedback?
-
-If you are facing any issues while using the new feature, please reach out to [Azure ML SDK feedback](mailto:amlsdkfeedback@microsoft.com). For general feedback, please submit an [GitHub issue](https://github.com/Azure/azure-sdk-for-python/issues/new/choose).
 
 ## Prerequisites
 
@@ -31,9 +21,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip uninstall azure-ai-ml
-
-pip install --pre azure-ai-ml
+pip install azure-ai-ml
 ```
 
 ## Clone examples repository
@@ -71,6 +59,7 @@ Test Status is for branch - **_main_**
 |jobs|automl-standalone-jobs|[automl-classification-task-bankmarketing](jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing.ipynb)|*no description*|[![automl-classification-task-bankmarketing](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-automl-classification-task-bankmarketing.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-automl-classification-task-bankmarketing.yml)|
 |jobs|automl-standalone-jobs|[mlflow-model-local-inference-test](jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/mlflow-model-local-inference-test.ipynb)|*no description* - _This sample is excluded from automated tests_|[![mlflow-model-local-inference-test](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-mlflow-model-local-inference-test.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-mlflow-model-local-inference-test.yml)|
 |jobs|automl-standalone-jobs|[auto-ml-forecasting-github-dau](jobs/automl-standalone-jobs/automl-forecasting-github-dau/auto-ml-forecasting-github-dau.ipynb)|*no description*|[![auto-ml-forecasting-github-dau](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-github-dau-auto-ml-forecasting-github-dau.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-github-dau-auto-ml-forecasting-github-dau.yml)|
+|jobs|automl-standalone-jobs|[automl-forecasting-orange-juice-sales-mlflow](jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales/automl-forecasting-orange-juice-sales-mlflow.ipynb)|*no description*|[![automl-forecasting-orange-juice-sales-mlflow](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-automl-forecasting-orange-juice-sales-mlflow.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-automl-forecasting-orange-juice-sales-mlflow.yml)|
 |jobs|automl-standalone-jobs|[auto-ml-forecasting-bike-share](jobs/automl-standalone-jobs/automl-forecasting-task-bike-share/auto-ml-forecasting-bike-share.ipynb)|*no description*|[![auto-ml-forecasting-bike-share](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-bike-share-auto-ml-forecasting-bike-share.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-bike-share-auto-ml-forecasting-bike-share.yml)|
 |jobs|automl-standalone-jobs|[automl-forecasting-task-energy-demand-advanced-mlflow](jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/automl-forecasting-task-energy-demand-advanced-mlflow.ipynb)|*no description*|[![automl-forecasting-task-energy-demand-advanced-mlflow](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced-mlflow.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced-mlflow.yml)|
 |jobs|automl-standalone-jobs|[automl-forecasting-task-energy-demand-advanced](jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/automl-forecasting-task-energy-demand-advanced.ipynb)|*no description*|[![automl-forecasting-task-energy-demand-advanced](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced.yml)|
