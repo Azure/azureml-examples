@@ -7,20 +7,10 @@ products:
 description: Top-level directory for official Azure Machine Learning Python SDK v2 sample code.
 ---
 
-# Azure Machine Learning SDK (v2) (preview) examples
+# Azure Machine Learning SDK (v2) examples
 
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
-
-## Public Preview
-
-We are excited to introduce the public preview of Azure Machine Learning **Python SDK v2**.
-
-Please note that this Public Preview release is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
-
-## How can I provide feedback?
-
-If you are facing any issues while using the new feature, please reach out to [Azure ML SDK feedback](mailto:amlsdkfeedback@microsoft.com). For general feedback, please submit an [GitHub issue](https://github.com/Azure/azure-sdk-for-python/issues/new/choose).
 
 ## Prerequisites
 
@@ -31,9 +21,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip uninstall azure-ai-ml
-
-pip install --pre azure-ai-ml
+pip install azure-ai-ml
 ```
 
 ## Clone examples repository
@@ -44,6 +32,7 @@ cd azureml-examples/sdk/python
 ```
 
 ## Examples available
+
 Test Status is for branch - **_main_**
 |Area|Sub-Area|Notebook|Description|Status|
 |--|--|--|--|--|
