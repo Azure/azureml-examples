@@ -17,7 +17,7 @@ change_vars() {
   done
 }
 
-cleanup_() {
+cleanup() {
     rm peacock-pic.jpg
     rm out-1.jpg
 }
@@ -83,3 +83,4 @@ az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-d
 #curl -X POST -F "file1=@peacock-pic.jpg" -F "file2=@$BASE_PATH/out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
 curl -X POST -F "file[]=@peacock-pic.jpg" -F "file[]=@$BASE_PATH/out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
 # <test_online_endpoint_2> 
+
