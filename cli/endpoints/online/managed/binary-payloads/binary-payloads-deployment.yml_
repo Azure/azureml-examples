@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: binary-payload
-endpoint_name: endpt-moe-11809
+endpoint_name: endpt-moe-23510
 model:
   path: .
 code_configuration:

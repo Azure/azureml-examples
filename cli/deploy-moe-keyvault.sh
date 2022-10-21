@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 
 # <set_variables>
 ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
@@ -39,7 +41,7 @@ then
   echo "Endpoint created successfully"
 else
   echo "Endpoint creation failed"
-  #exit 1
+  exit 1
 fi
 
 # <get_endpoint_principal_id> 
@@ -63,7 +65,7 @@ then
   echo "Deployment completed successfully"
 else
   echo "Deployment failed"
-  #exit 1
+  exit 1
 fi
 
 # Get key
@@ -75,14 +77,20 @@ echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
 echo "Scoring url is $SCORING_URL"
 
-KEY=rLHj3TRYGRoYSj8y2aAjtGuO1zkwPFSk
-SCORING_URL=https://endpt-moe-23541.eastus.inference.ml.azure.com/score
-
 # <test_deployment>
-curl -d '{"name" : "foo"}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL 
+RES=$(curl -d '{"name": "foo"}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL)
+echo $RES
 # </test_deployment>
 
+if [[ $RES == "bar" ]]
+then
+  echo "Deployment test succeeded"
+else
+  echo "Deployment test failed"
+  exit 1
+fi
+
 # <delete_assets>
-az keyvault delete -n $KV_NAME --no-wait
+az keyvault delete --name $KV_NAME --no-wait
 az ml online-endpoint delete --yes -n $ENDPOINT_NAME --no-wait
 # </delete_assets>

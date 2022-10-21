@@ -1,3 +1,6 @@
+#!/bin/bash 
+set -e
+
 # <set_variables> 
 ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
@@ -80,7 +83,6 @@ az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-d
 # </create_deployment_2> 
 
 # <test_online_endpoint_2>
-#curl -X POST -F "file1=@peacock-pic.jpg" -F "file2=@$BASE_PATH/out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
 curl -X POST -F "file[]=@peacock-pic.jpg" -F "file[]=@out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
 # <test_online_endpoint_2> 
 
