@@ -56,7 +56,7 @@ az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml_
 # </create-deployment> 
 
 # Check if deployment was successful 
-deploy_status=`az ml online-deployment show --name minimal-multimodel --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
+deploy_status=`az ml online-deployment show --name kvdep --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
