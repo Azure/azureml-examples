@@ -7,20 +7,10 @@ products:
 description: Top-level directory for official Azure Machine Learning Python SDK v2 sample code.
 ---
 
-# Azure Machine Learning SDK (v2) (preview) examples
+# Azure Machine Learning SDK (v2) examples
 
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](../LICENSE)
-
-## Public Preview
-
-We are excited to introduce the public preview of Azure Machine Learning **Python SDK v2**.
-
-Please note that this Public Preview release is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
-
-## How can I provide feedback?
-
-If you are facing any issues while using the new feature, please reach out to [Azure ML SDK feedback](mailto:amlsdkfeedback@microsoft.com). For general feedback, please submit an [GitHub issue](https://github.com/Azure/azure-sdk-for-python/issues/new/choose).
 
 ## Prerequisites
 
@@ -31,9 +21,7 @@ If you are facing any issues while using the new feature, please reach out to [A
 1. Install the SDK v2
 
 ```terminal
-pip uninstall azure-ai-ml
-
-pip install --pre azure-ai-ml
+pip install azure-ai-ml
 ```
 
 ## Clone examples repository
@@ -44,6 +32,7 @@ cd azureml-examples/sdk/python
 ```
 
 ## Examples available
+
 Test Status is for branch - **_main_**
 |Area|Sub-Area|Notebook|Description|Status|
 |--|--|--|--|--|
@@ -87,6 +76,7 @@ Test Status is for branch - **_main_**
 |jobs|automl-standalone-jobs|[mlflow-model-local-inference-test](jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis/mlflow-model-local-inference-test.ipynb)|*no description* - _This sample is excluded from automated tests_|[![mlflow-model-local-inference-test](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multiclass-task-sentiment-analysis-mlflow-model-local-inference-test.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multiclass-task-sentiment-analysis-mlflow-model-local-inference-test.yml)|
 |jobs|automl-standalone-jobs|[automl-nlp-text-classification-multilabel-task-paper-cat](jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-text-classification-multilabel-task-paper-cat.ipynb)|*no description*|[![automl-nlp-text-classification-multilabel-task-paper-cat](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat.yml)|
 |jobs|automl-standalone-jobs|[automl-nlp-text-ner-task](jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task/automl-nlp-text-ner-task.ipynb)|*no description*|[![automl-nlp-text-ner-task](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-automl-nlp-text-ner-task.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-automl-nlp-text-ner-task.yml)|
+|jobs|automl-standalone-jobs|[automl-nlp-text-ner-task-distributed-sweeping](jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-with-sweeping)|Train an NLP model using AutoML NLP on named-entity-recognition data, sweeping over models and parameters to get the best performance.|[![automl-nlp-text-ner-task-distributed-with-sweeping](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-distributed-with-sweeping-automl-nlp-text-ner-task-distributed-with-sweeping.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-distributed-with-sweeping-automl-nlp-text-ner-task-distributed-with-sweeping.yml)|
 |jobs|automl-standalone-jobs|[automl-regression-task-hardware-performance](jobs/automl-standalone-jobs/automl-regression-task-hardware-performance/automl-regression-task-hardware-performance.ipynb)|*no description*|[![automl-regression-task-hardware-performance](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance.yml)|
 |jobs|configuration.ipynb|[configuration](jobs/configuration.ipynb)|Setting up your Azure Machine Learning services workspace and configuring needed resources|[![configuration](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-configuration.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-configuration.yml)|
 |jobs|multicloud-configuration.ipynb|[multicloud-configuration](jobs/multicloud-configuration.ipynb)|Setting up your Azure Machine Learning services workspace and configuring needed resources - _This sample is excluded from automated tests_|[![multicloud-configuration](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-multicloud-configuration.yml/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/sdk-jobs-multicloud-configuration.yml)|
