@@ -26,7 +26,7 @@ az keyvault create -n $KV_NAME -g $GROUP
 # </create_keyvault> 
 
 # <set_secret> 
-az keyvault secret set --vault-name $KV_NAME -n foo --value bar
+az keyvault secret set --vault-name $KV_NAME -n multiplier --value 7
 # </set_secret> 
 
 # <create_endpoint> 
@@ -78,17 +78,9 @@ SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -
 echo "Scoring url is $SCORING_URL"
 
 # <test_deployment>
-RES=$(curl -d '{"name": "foo"}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL)
+RES=$(curl -d '{"input": 1}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL)
 echo $RES
 # </test_deployment>
-
-if [[ $RES == "bar" ]]
-then
-  echo "Deployment test succeeded"
-else
-  echo "Deployment test failed"
-  exit 1
-fi
 
 # <delete_assets>
 az keyvault delete --name $KV_NAME --no-wait
