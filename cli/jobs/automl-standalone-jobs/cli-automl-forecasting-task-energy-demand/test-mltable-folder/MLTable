@@ -1,0 +1,6 @@
+paths:
+- file: ./nyc-energy-test.csv
+transformations:
+- read_delimited:
+    delimiter: ','
+    encoding: ascii
