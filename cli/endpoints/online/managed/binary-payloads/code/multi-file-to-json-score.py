@@ -10,7 +10,4 @@ def run(req : AMLRequest):
         "size" : Image.open(f.stream).size}
         for f in req.files.getlist("file[]")]
 
-    for x in req.files.getlist("file[]"):
-        print(x)
-
     return {"response" : sizes}

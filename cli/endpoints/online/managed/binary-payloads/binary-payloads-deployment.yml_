@@ -5,7 +5,7 @@ model:
   path: .
 code_configuration:
   code: code
-  scoring_script: single-file-to-file-score.py
+  scoring_script: multi-file-to-json-score.py
 environment:
   image: mcr.microsoft.com/azureml/minimal-ubuntu20.04-py38-cpu-inference:latest
   conda_file: env.yml 

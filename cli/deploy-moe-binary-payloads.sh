@@ -75,7 +75,7 @@ curl -X POST -F "file=@peacock-pic.jpg" -H "Authorization: Bearer $KEY"   $SCORI
 # <create_deployment_2>
 SCORING_SCRIPT="multi-file-to-json-score.py"
 change_vars $BASE_PATH/binary-payloads-deployment.yml
-az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ --all-traffic 
+az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_
 #az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ 
 # </create_deployment_2> 
 
@@ -85,5 +85,5 @@ curl -X POST -F "file[]=@peacock-pic.jpg" -F "file[]=@out-1.jpg" -H "Authorizati
 # <test_online_endpoint_2> 
 
 # <delete_assets>
-az ml online-endpoint delete -yn $ENDPOINT_NAME --NO-WAIT
+az ml online-endpoint delete -n $ENDPOINT_NAME --no-wait --yes
 # </delete_assets> 
