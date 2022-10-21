@@ -49,7 +49,7 @@ az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-d
 az ml online-deployment get-logs -n binary-payload -e $ENDPOINT_NAME 
 
 # Check if deployment was successful 
-deploy_status=`az ml online-deployment show --name minimal-multimodel --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
+deploy_status=`az ml online-deployment show --name binary-payload --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then

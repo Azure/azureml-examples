@@ -54,7 +54,7 @@ az keyvault set-policy -n $KV_NAME --object-id $ENDPOINT_PRINCIPAL_ID --secret-p
 
 # <create_deployment>
 change_vars $BASE_PATH/keyvault-deployment.yml
-az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml_
+az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml_ --all-traffic
 # </create-deployment> 
 
 # Check if deployment was successful 
