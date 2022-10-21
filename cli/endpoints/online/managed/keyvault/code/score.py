@@ -19,7 +19,7 @@ def load_secrets():
     secret_clients = {}
     credential = ManagedIdentityCredential()
 
-    for k, v in os.environ:
+    for k, v in os.environ.items():
         if "KV_SECRET" in k:
             try: 
                 secret_name, vault_url = v.split("@")
@@ -45,5 +45,5 @@ def run(data):
     data = json.loads(data)
     input = data["input"]
     output = input*multiplier
-    
+
     return {"output" : output}
