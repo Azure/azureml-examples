@@ -85,7 +85,7 @@ modelUri="azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROU
 
 # <read_condafile>
 CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
-# <read_condafile>
+# </read_condafile>
 
 # <create_environment>
 ENV_VERSION=$RANDOM
