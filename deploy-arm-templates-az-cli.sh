@@ -135,7 +135,7 @@ az deployment group create -g $RESOURCE_GROUP \
  endpointComputeType=Managed \
  skuName=Standard_F2s_v2 \
  skuCapacity=1
- # <\create_deployment>
+ # </create_deployment>
 
 # <get_deployment>
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue?api-version=$API_VERSION" \
