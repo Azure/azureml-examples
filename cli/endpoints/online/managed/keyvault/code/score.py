@@ -17,4 +17,4 @@ def run(data):
     data = json.loads(data)
     name = data["name"]
     secret = secret_client.get_secret(name=name)
-    return {"secret" : secret}
+    return {"secret" : secret.value}

@@ -80,6 +80,6 @@ curl -d '{"name" : "foo"}' -H "Authorization: Bearer $KEY" $SCORING_URL
 # </test_deployment> 
 
 # <delete_assets>
-az keyvault delete -n $KV_NAME --no-wait
-az ml online-endpoint delete -n $ENDPOINT_NAME --no-wait
+az keyvault delete -yn $KV_NAME --no-wait
+az ml online-endpoint delete -yn $ENDPOINT_NAME --no-wait
 # </delete_assets>
