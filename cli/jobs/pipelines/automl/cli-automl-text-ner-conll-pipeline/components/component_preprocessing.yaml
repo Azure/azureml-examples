@@ -14,7 +14,7 @@ outputs:
   preprocess_validation_data:
     type: mltable
 code: ./src/
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+environment: aml-identity-aiml-sdkv3:2
 command: >-
   python preprocess.py
   --train_data ${{inputs.train_data}}
