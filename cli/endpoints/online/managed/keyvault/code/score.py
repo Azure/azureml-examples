@@ -14,11 +14,7 @@ def init():
     secret_client = SecretClient(vault_url=f"https://{kv_name}.vault.azure.net", credential=cred)
 
 def run(data): 
-    try:
-        data = json.loads(data)
-        name = data["name"]
-        secret = secret_client.get_secret(name=name)
-        return {"secret" : secret.value}
-    except Exception as e: 
-        return repr(e)
-
+    data = json.loads(data)
+    name = data["name"]
+    secret = secret_client.get_secret(name=name)
+    return secret.value

@@ -37,7 +37,7 @@ then
   echo "Endpoint created successfully"
 else
   echo "Endpoint creation failed"
-  #exit 1
+  exit 1
 fi
 
 # <create_deployment_1>
@@ -56,7 +56,7 @@ then
   echo "Deployment completed successfully"
 else
   echo "Deployment failed"
-  #exit 1
+  exit 1
 fi
 
 # Get key
