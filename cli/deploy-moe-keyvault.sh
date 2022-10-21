@@ -75,11 +75,14 @@ echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
 echo "Scoring url is $SCORING_URL"
 
+KEY=rLHj3TRYGRoYSj8y2aAjtGuO1zkwPFSk
+SCORING_URL=https://endpt-moe-23541.eastus.inference.ml.azure.com/score
+
 # <test_deployment>
-curl -d '{"name" : "foo"}' -H "Authorization: Bearer $KEY" $SCORING_URL 
-# </test_deployment> 
+curl -d '{"name" : "foo"}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL 
+# </test_deployment>
 
 # <delete_assets>
-az keyvault delete -yn $KV_NAME --no-wait
-az ml online-endpoint delete -yn $ENDPOINT_NAME --no-wait
+az keyvault delete -n $KV_NAME --no-wait
+az ml online-endpoint delete --yes -n $ENDPOINT_NAME --no-wait
 # </delete_assets>

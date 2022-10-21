@@ -69,18 +69,21 @@ echo "Scoring url is $SCORING_URL"
 wget https://aka.ms/peacock-pic -O peacock-pic.jpg
 
 # <test_online_endpoint_1> 
-curl -X POST -F "file=@peacock-pic.jpg" -H "Authorization: Bearer $KEY"   $SCORING_URL -o $BASE_PATH/out-1.jpg
+curl -X POST -F "file=@peacock-pic.jpg" -H "Authorization: Bearer $KEY"   $SCORING_URL -o out-1.jpg
 # <test_online_endpoint_1> 
 
 # <create_deployment_2>
 SCORING_SCRIPT="multi-file-to-json-score.py"
 change_vars $BASE_PATH/binary-payloads-deployment.yml
 az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ --all-traffic 
-az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ 
+#az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ 
 # </create_deployment_2> 
 
 # <test_online_endpoint_2>
 #curl -X POST -F "file1=@peacock-pic.jpg" -F "file2=@$BASE_PATH/out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
-curl -X POST -F "file[]=@peacock-pic.jpg" -F "file[]=@$BASE_PATH/out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
+curl -X POST -F "file[]=@peacock-pic.jpg" -F "file[]=@out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
 # <test_online_endpoint_2> 
 
+# <delete_assets>
+az ml online-endpoint delete -yn $ENDPOINT_NAME --NO-WAIT
+# </delete_assets> 
