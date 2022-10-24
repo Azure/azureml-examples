@@ -1,4 +1,4 @@
-name: cli-resources-registry-registry-storage-options
+name: cli-jobs-pipelines-with-components-nyc_taxi_data_regression-env_train
 on:
   workflow_dispatch:
   schedule:
@@ -8,9 +8,9 @@ on:
       - main
       - sdk-preview
     paths:
-      - cli/resources/registry/registry-storage-options.yml
+      - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
       - infra/**
-      - .github/workflows/cli-resources-registry-registry-storage-options.yml
+      - .github/workflows/cli-jobs-pipelines-with-components-nyc_taxi_data_regression-env_train.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -41,6 +41,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version resources/registry/registry-storage-options.yml
-          az ml registry create -f resources/registry/registry-storage-options.yml
-      working-directory: cli
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version env_train.yml
+          az ml environment create -f env_train.yml
+      working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression

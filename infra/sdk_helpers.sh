@@ -761,6 +761,25 @@ function replace_template_values() {
     echo "$(<"${FILENAME}")"
 }
 
+function replace_workspace_info() {
+    local FILENAME="$1"
+    echo "Replacing workspace information in the file: ${FILENAME}"
+    sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
+        -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
+        -e "s/<WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
+        -e "s/<REGISTRY_NAME>/$(echo "$REGISTRY_NAME")/g" \
+        "${FILENAME}"
+    echo "$(<"${FILENAME}")"
+}
+
+function replace_version(){
+    local FILENAME="$1"
+    echo "Replacing version in the file: ${FILENAME}"
+    sed -i -e "s/<VERSION>/$(echo "$timestamp")/g" \
+        "${FILENAME}"
+    echo "$(<"${FILENAME}")"
+}
+
 help(){
     echo "All functions:"
     declare -F
