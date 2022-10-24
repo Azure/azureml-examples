@@ -1,0 +1,108 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+
+inputs:
+  source_s3:
+    type: DataImportInput
+    # type: s3
+    path: ./path/on/s3/to/data/
+    connection: azureml:my_s3_connection  
+
+outputs:
+  sink_s3:
+    type: DataExportOutput
+    # type: s3
+    path: ./path/on/s3/to/data/
+    connection: azureml:my_s3_connection  
+
+  target_blob:
+    type: uri_folder
+    path: azureml://datastores/my_datastore/paths/target_blob
+
+
+jobs:
+  import_data:
+    type: import
+    inputs:
+      source: ${{parent.inputs.source_s3}}
+    output:
+      my_s3_uri_data:
+        type: uri_folder
+        path: azureml://datastores/my_datastore/S3_output
+  data_movment:
+    # type: import
+    type: data_transfer
+    inputs:
+      source: ${{parent.jobs.import_data.outputs.my_s3_uri_data}}
+    outputs:
+      target: ${{parent.outputs.target_blob}}
+
+  export_data:
+    type: export
+    inputs: 
+      input: ${{parent.jobs.data_movment.outputs.target}}
+    outputs:
+      sink: ${{parent.outputs.sink_s3}}
+
+
+
+
+inputs:
+  source_s3_connection: azureml:my_s3_connection  
+outputs:
+  sink_s3_path: ./path/on/s3/to/data/
+jobs:
+  import_data:
+    type: import
+    source: 
+      type: s3
+      path: ./path/on/s3/to/data/
+      connection: ${{parent.inputs.source_s3_connection}}
+    output:
+      name: my_s3_uri_data
+      version: 1
+      type: uri_folder
+      path: azureml://datastores/my_datastore/S3_output
+  export_data:
+    type: export
+    input: ${{parent.jobs.import_data.output}}
+    sink: 
+      type: s3
+      path: ${{parent.outputs.sink_s3_path}}
+      connection: azureml:my_s3_connection  
+
+
+  train_job:
+    type: command
+    compute: azureml:cpu-cluster
+    component: ./train.yml
+    inputs:
+      training_data: ${{parent.jobs.import_data.output}}
+      max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
+      learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
+      learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+  
+  score_job:
+    type: command
+    component: ./score.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: 
+        type: uri_folder
+        path: ./data
+    outputs:
+      score_output: 
+        mode: upload
+
+  evaluate_job:
+    type: command
+    component: ./eval.yml
+    compute: azureml:cpu-cluster
+    inputs:
+      scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
+    outputs:
+      eval_output: ${{parent.outputs.pipeline_job_evaluation_report}}

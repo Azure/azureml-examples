@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
+type: command
+
+name: process_data
+description: Pre/post process the data.
+version: 0.0.1
+
+inputs:
+  input_data:
+    type: uri_folder
+
+outputs:
+  output_data:
+    type: uri_folder
+
+code: ./
+command: >-
+  mldesigner execute --source process_data.py --name process_data --inputs
+  input_data=${{inputs.input_data}}
+  --outputs output_data=${{outputs.output_data}}
+
+environment:
+  conda_file:
+    name: example-environment
+    channels:
+      - defaults
+    dependencies:
+      - python=3.8.12
+      - pip=21.2.2
+      - pip:
+          - mldesigner
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04

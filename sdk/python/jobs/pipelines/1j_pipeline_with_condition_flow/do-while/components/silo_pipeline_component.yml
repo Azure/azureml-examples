@@ -1,0 +1,34 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+
+display_name: silo_pipeline
+description: Silo for each iteration in federated learning, contains pre_process, training and post_process
+
+inputs:
+  input_model:
+    type: uri_folder
+
+outputs:
+  output_model:
+    type: uri_folder
+
+jobs:
+  pre_data_process:
+    type: command
+    component: ./process_data/component.yml
+    inputs:
+      input_data: ${{parent.inputs.input_model}}
+
+  training_node:
+    type: command
+    component: ./train_model/component.yml
+    inputs:
+      input_model: ${{parent.jobs.pre_data_process.outputs.output_data}}
+
+  post_data_process:
+    type: command
+    component: ./process_data/component.yml
+    inputs:
+      input_data: ${{parent.jobs.training_node.outputs.output_model}}
+    outputs:
+      output_data: ${{parent.outputs.output_model}}
