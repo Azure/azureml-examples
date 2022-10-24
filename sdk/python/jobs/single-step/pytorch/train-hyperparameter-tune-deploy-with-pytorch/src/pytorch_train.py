@@ -173,7 +173,9 @@ def download_data():
 
     # download data
     data_file = "./fowl_data.zip"
-    download_url = "https://azureopendatastorage.blob.core.windows.net/testpublic/temp/fowl_data.zip"
+    download_url = (
+        "https://azuremlexamples.blob.core.windows.net/datasets/fowl_data.zip"
+    )
     urllib.request.urlretrieve(download_url, filename=data_file)
 
     # extract files
