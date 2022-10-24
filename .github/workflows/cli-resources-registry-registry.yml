@@ -41,5 +41,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version resources/registry/registry.yml
           az ml registry create -f resources/registry/registry.yml
       working-directory: cli
