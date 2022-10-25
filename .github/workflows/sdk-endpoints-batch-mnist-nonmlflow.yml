@@ -37,14 +37,14 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run endpoints/batch/mnist-nonmlflow.ipynb
+    - name: run endpoints/batch/mnist-batch.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" mnist-nonmlflow.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" mnist-nonmlflow.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" mnist-nonmlflow.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" mnist-nonmlflow.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" mnist-batch.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" mnist-batch.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" mnist-batch.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" mnist-batch.ipynb
 
-          papermill -k python mnist-nonmlflow.ipynb mnist-nonmlflow.output.ipynb
+          papermill -k python mnist-batch.ipynb mnist-batch.output.ipynb
       working-directory: sdk/python/endpoints/batch
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
@@ -63,11 +63,11 @@ jobs:
         private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
         args: |
             incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'endpoints/batch/mnist-nonmlflow.ipynb'"
+                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'endpoints/batch/mnist-batch.ipynb'"
                 Summary: |
-                    Notebook 'endpoints/batch/mnist-nonmlflow.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                    Notebook 'endpoints/batch/mnist-batch.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
                 Severity: 4
                 RoutingId: "github://azureml-examples"
                 Status: Active
                 Source:
-                    IncidentId: "endpoints/batch/mnist-nonmlflow.ipynb[${{ github.ref_name }}]"
+                    IncidentId: "endpoints/batch/mnist-batch.ipynb[${{ github.ref_name }}]"

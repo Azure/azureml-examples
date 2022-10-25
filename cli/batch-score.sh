@@ -4,6 +4,7 @@ set -e
 
 # <set_variables>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+export DEPLOYMENT_NAME="<YOUR_DEPLOYMENT_NAME>"
 # </set_variables>
 
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
@@ -20,7 +21,7 @@ az ml batch-endpoint create --name $ENDPOINT_NAME
 
 echo "Creating batch deployment nonmlflowdp for endpoint $ENDPOINT_NAME"
 # <create_batch_deployment_set_default>
-az ml batch-deployment create --name nonmlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/nonmlflow-deployment.yml --set-default
+az ml batch-deployment create --file endpoints/batch/mnist-torch-deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
 # </create_batch_deployment_set_default>
 
 echo "Showing details of the batch endpoint"
@@ -30,7 +31,7 @@ az ml batch-endpoint show --name $ENDPOINT_NAME
 
 echo "Showing details of the batch deployment"
 # <check_batch_deployment_detail>
-az ml batch-deployment show --name nonmlflowdp --endpoint-name $ENDPOINT_NAME
+az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME
 # </check_batch_deployment_detail>
 
 echo "Invoking batch endpoint with public URI (MNIST)"
@@ -67,8 +68,14 @@ fi
 echo "Invoke batch endpoint with specific output file name"
 # <start_batch_scoring_job_configure_output_settings>
 export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --output-path azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --mini-batch-size 20 --instance-count 5 --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --output-path azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
 # </start_batch_scoring_job_configure_output_settings>
+
+echo "Invoke batch endpoint with specific overwrites"
+# <start_batch_scoring_job_overwrite>
+export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --mini-batch-size 20 --instance-count 5 --query name -o tsv)
+# </start_batch_scoring_job_overwrite>
 
 echo "Stream job detail"
 # <stream_job_logs_to_console>
@@ -93,17 +100,19 @@ fi
 
 echo "List all jobs under the batch deployment"
 # <list_all_jobs>
-az ml batch-deployment list-jobs --name nonmlflowdp --endpoint-name $ENDPOINT_NAME --query [].name
+az ml batch-deployment list-jobs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --query [].name
 # </list_all_jobs>
 
-echo "Create a new batch deployment (mlflow-nyctaxi), not setting it as default this time"
+echo "Create a new batch deployment (mnist-keras-dpl), not setting it as default this time"
 # <create_new_deployment_not_default>
-az ml batch-deployment create --name mlflowdp --endpoint-name $ENDPOINT_NAME --file endpoints/batch/mlflow-deployment.yml
+az ml batch-deployment create --file endpoints/batch/mnist-keras-deployment.yml --endpoint-name $ENDPOINT_NAME
 # </create_new_deployment_not_default>
 
 echo "Invoke batch endpoint with public data"
 # <test_new_deployment>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name mlflowdp --input https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --input-type uri_file --query name -o tsv)
+DEPLOYMENT_NAME="mnist-keras-dpl"
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name $DEPLOYMENT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --query name -o tsv)
+# </test_new_deployment>
 
 echo "Show job detail"
 # <show_job_in_studio>
@@ -130,30 +139,20 @@ else
   exit 2
 fi
 # </check_job_status>
-# </test_new_deployment>
 
 echo "Update the batch deployment as default for the endpoint"
 # <update_default_deployment>
-az ml batch-endpoint update --name $ENDPOINT_NAME --set defaults.deployment_name=mlflowdp
+az ml batch-endpoint update --name $ENDPOINT_NAME --set defaults.deployment_name=$DEPLOYMENT_NAME
 # </update_default_deployment>
 
 echo "Verify default deployment. In this example, it should be mlflowdp."
 # <verify_default_deployment>
 az ml batch-endpoint show --name $ENDPOINT_NAME --query "{Name:name, Defaults:defaults}"
-
-DEFAULT_DEPL_NAME=$(az ml batch-endpoint show --name $ENDPOINT_NAME --query defaults.deployment_name)
-if [[ $DEFAULT_DEPL_NAME == \"mlflowdp\" ]]
-then
-  echo "mlflowdp is set as default successfully"
-else 
-  echo "default deployment set failed"
-  exit 1
-fi
 # </verify_default_deployment>
 
 echo "Invoke batch endpoint with the new default deployment with public URI"
 # <test_new_default_deployment>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv --input-type uri_file --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://pipelinedata.blob.core.windows.net/sampledata/mnist --input-type uri_folder --query name -o tsv)
 # </test_new_default_deployment>
 
 echo "Stream job logs to console"
@@ -196,7 +195,7 @@ RESPONSE=$(curl --location --request POST "$SCORING_URI" \
   \"properties\": {
     \"dataset\": {
       \"dataInputType\": \"DataUrl\",
-      \"Path\": \"https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv\"
+      \"Path\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
     }
   }
 }")
