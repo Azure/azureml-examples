@@ -1,0 +1,29 @@
+artifact_path: model
+flavors:
+  python_function:
+    env: conda.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    python_version: 3.8.14
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 0.24.1
+mlflow_version: 1.28.0
+model_uuid: 0e78039a2e934028aa8accf3961ecf3b
+run_id: 0046d24d-b433-45d5-bcdd-65d0720b6d69
+signature:
+  inputs: '[{"name": "distance", "type": "double"}, {"name": "dropoff_latitude", "type":
+    "double"}, {"name": "dropoff_longitude", "type": "double"}, {"name": "passengers",
+    "type": "long"}, {"name": "pickup_latitude", "type": "double"}, {"name": "pickup_longitude",
+    "type": "double"}, {"name": "store_forward", "type": "long"}, {"name": "vendor",
+    "type": "long"}, {"name": "pickup_weekday", "type": "long"}, {"name": "pickup_month",
+    "type": "long"}, {"name": "pickup_monthday", "type": "long"}, {"name": "pickup_hour",
+    "type": "long"}, {"name": "pickup_minute", "type": "long"}, {"name": "pickup_second",
+    "type": "long"}, {"name": "dropoff_weekday", "type": "long"}, {"name": "dropoff_month",
+    "type": "long"}, {"name": "dropoff_monthday", "type": "long"}, {"name": "dropoff_hour",
+    "type": "long"}, {"name": "dropoff_minute", "type": "long"}, {"name": "dropoff_second",
+    "type": "long"}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+utc_time_created: '2022-09-09 23:12:33.935654'

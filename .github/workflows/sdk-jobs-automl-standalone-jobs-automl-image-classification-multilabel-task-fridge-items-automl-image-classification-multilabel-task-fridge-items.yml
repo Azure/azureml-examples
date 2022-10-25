@@ -1,5 +1,5 @@
 name: sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items
-# This file is created by sdk/readme.py.
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ on:
     branches:
       - main
     paths:
-      - sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/**
+      - sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-classification-multilabel-task-fridge-items-automl-image-classification-multilabel-task-fridge-items.yml
-      - sdk/dev-requirements.txt
-      - sdk/setup.sh
+      - sdk/python/dev-requirements.txt
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,16 +24,16 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/dev-requirements.txt
+      run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
-      run: pip install -r sdk/mlflow-requirements.txt
+      run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CREDS}}
     - name: setup SDK
       run: bash setup.sh
-      working-directory: sdk
+      working-directory: sdk/python
       continue-on-error: true
     - name: setup CLI
       run: bash setup.sh
@@ -47,10 +47,29 @@ jobs:
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-image-classification-multilabel-task-fridge-items.ipynb
           
           papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multilabel-task-fridge-items.ipynb automl-image-classification-multilabel-task-fridge-items.output.ipynb
-      working-directory: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: automl-image-classification-multilabel-task-fridge-items
-        path: sdk/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
+        path: sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
+
+    - name: Send IcM on failure
+      if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
+      uses: ./.github/actions/generate-icm
+      with:
+        host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
+        connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
+        certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
+        private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
+        args: |
+            incident:
+                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/automl-image-classification-multilabel-task-fridge-items.ipynb'"
+                Summary: |
+                    Notebook 'jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/automl-image-classification-multilabel-task-fridge-items.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                Severity: 4
+                RoutingId: "github://azureml-examples"
+                Status: Active
+                Source:
+                    IncidentId: "jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items/automl-image-classification-multilabel-task-fridge-items.ipynb[${{ github.ref_name }}]"
