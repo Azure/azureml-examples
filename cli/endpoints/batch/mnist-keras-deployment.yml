@@ -1,13 +1,14 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
-name: nonmlflowdp
-endpoint_name: mybatchedp
+name: mnist-keras-dpl
+description: A deployment using Keras with TensorFlow to solve the MNIST classification dataset.
+endpoint_name: mnist-batch
 model: 
-  path: ./mnist/model/
+  path: ./mnist-keras/model/
 code_configuration:
-  code: ./mnist/code/
-  scoring_script: digit_identification.py
+  code: ./mnist-keras/code/
+  scoring_script: batch_driver.py
 environment:
-  conda_file: ./mnist/environment/conda.yml
+  conda_file: ./mnist-keras/environment/conda.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 compute: azureml:batch-cluster
 resources:
@@ -16,8 +17,3 @@ max_concurrency_per_instance: 2
 mini_batch_size: 10
 output_action: append_row
 output_file_name: predictions.csv
-retry_settings:
-  max_retries: 3
-  timeout: 30
-error_threshold: -1
-logging_level: info

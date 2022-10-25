@@ -1,4 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: mybatchedp
-description: my sample batch endpoint
+name: mnist-batch
+description: A batch endpoint for scoring images from the MNIST dataset.
 auth_mode: aad_token
