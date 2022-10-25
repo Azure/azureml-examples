@@ -5,7 +5,7 @@ pip install azure-ai-ml
 # </az_ml_sdk_install>
 
 # <mldesigner_install>
-pip install mldesigner==0.1.0b7
+pip install mldesigner
 # </mldesigner_install>
 
 # <mltable_install>
