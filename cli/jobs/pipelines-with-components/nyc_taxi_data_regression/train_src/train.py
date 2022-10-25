@@ -7,6 +7,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
+from mlflow.tracking.client import MlflowClient
 
 mlflow.sklearn.autolog()
 
@@ -15,6 +16,11 @@ parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
 parser.add_argument("--model_output", type=str, help="Path of output model")
 parser.add_argument("--test_split_ratio", type=float, help="ratio of train test split")
+
+activerun = mlflow.active_run()
+root_run_id = activerun.data.tags["mlflow.rootRunId"]
+client = MlflowClient()
+client.log_metric(root_run_id, 'metrics_root', 123)
 
 
 args = parser.parse_args()
