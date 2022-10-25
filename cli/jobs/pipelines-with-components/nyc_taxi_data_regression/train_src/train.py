@@ -10,7 +10,7 @@ import mlflow
 from mlflow.tracking.client import MlflowClient
 
 mlflow.sklearn.autolog()
-
+mlflow.start_run()
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
@@ -18,10 +18,11 @@ parser.add_argument("--model_output", type=str, help="Path of output model")
 parser.add_argument("--test_split_ratio", type=float, help="ratio of train test split")
 
 activerun = mlflow.active_run()
+print(activerun.data.tags)
 root_run_id = activerun.data.tags["mlflow.rootRunId"]
 client = MlflowClient()
 client.log_metric(root_run_id, 'metrics_root', 123)
-
+mlflow.end_run()
 
 args = parser.parse_args()
 
