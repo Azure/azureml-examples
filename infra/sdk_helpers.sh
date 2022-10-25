@@ -101,7 +101,7 @@ function ensure_registry_local(){
         registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
         if [[ "${registry_exists}" = "[]" ]]; then
             echo_info "Retry creating registry ${LOCAL_REGISTRY_NAME}" >&2
-            sleep 10
+            sleep 30
         fi
     fi
 }
