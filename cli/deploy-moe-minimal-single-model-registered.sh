@@ -52,7 +52,7 @@ az ml online-deployment create -f $BASE_PATH/deployment.yml_ --all-traffic
 rm $BASE_PATH/deployment.yml_ 
 
 # Check if deployment was successful 
-deploy_status=`az ml online-deployment show --name  --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
+deploy_status=`az ml online-deployment show --name smr --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
