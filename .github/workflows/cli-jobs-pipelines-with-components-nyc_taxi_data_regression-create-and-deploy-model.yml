@@ -41,7 +41,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version artifacts/model/nyc-taxi-model.yml
-          az ml model create -f artifacts/model/nyc-taxi-model.yml
+          az ml model create -f artifacts/model/nyc-taxi-model.yml  --registry-name $REGISTRY_NAME
       working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression
       continue-on-error: false
     - name: deploy to endpoint
@@ -49,6 +49,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version deploy.yml
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_workspace_info deploy.yml 
           az ml online-deployment create -f deploy.yml
       working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression
 
