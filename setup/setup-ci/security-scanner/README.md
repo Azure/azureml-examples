@@ -40,8 +40,6 @@ OS + Python vulnerabilities|[Trivy](https://github.com/aquasecurity/trivy)
 
 ## Installation
 
-> Note: on Compute Instances with `sudo` disabled (`rootAccess = false`), installation is only possible via [Setup Script](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-customize-compute-instance).
-
 Irrespective of how the scanner is installed, the scanner script must first be copied to the Azure ML workspace:
 - Download [amlsecscan.py](amlsecscan.py)
 - Open [Azure ML Studio](https://ml.azure.com/)
@@ -129,8 +127,6 @@ az deployment group create --resource-group {resource_group_name} --template-fil
 
 ## Clean Up
 
-> Note: on Compute Instances with `sudo` disabled (`rootAccess = false`), clean up is not supported.
-
 To stop scan scheduling and remove the scanner, run `sudo ./amlsecscan.py uninstall` .
 
 ## Troubleshooting
@@ -147,8 +143,6 @@ one with `Status_s = 'Started'` followed by one with `Status_s = 'Succeeded'`. I
 If heartbeats are not present in Log Analytics, verify whether heartbeats can be emitted by running `./amlsecscan.py heartbeat` in a terminal on the Compute Instance.
 
 ### Ensure that the scanner is running
-
-> Note: on Compute Instances with `sudo` disabled (`rootAccess = false`), deploy with `&& sudo usermod -a -G adm azureuser` in `scriptData` and skip `sudo` in the commands below.
 
 If logs are missing in Log Analytics, scans may not be running. Local logs are available in `syslog` for investigation:
 - Check `cron` logs: `sudo cat /var/log/syslog | grep -i cron`
