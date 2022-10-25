@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+name: register_data_component_cli_sdk_v1
+display_name: register_data_component_cli_sdk_v1
+description: A example register_data_component_cli_sdk_v1
+tags:
+  author: azureml-sdk-team
+# version: 5
+type: command
+inputs:
+  data_path: 
+    type: uri_folder
+    path: .
+  data_name: register_data_job
+compute: azureml:cpu-cluster
+code: ./register_data
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+command: >-
+  python register_data.py 
+  --data_path ${{inputs.data_path}}
+  --data_name ${{inputs.data_name}}
+
