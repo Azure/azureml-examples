@@ -79,7 +79,7 @@ fi
 REGISTRY_NAME=${REGISTRY_NAME:-}
 if [[ -z "$REGISTRY_NAME" ]]
 then
-    export REGISTRY_NAME="DemoRegistry-${DATE_ONLY}"
+    export REGISTRY_NAME="DemoRegistry--${DATE_ONLY}"
     echo_warning "No registry name [REGISTRY_NAME] specified, defaulting to ${REGISTRY_NAME}."
 fi
 
