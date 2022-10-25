@@ -8,6 +8,7 @@ export DEPLOYMENT_NAME="<YOUR_DEPLOYMENT_NAME>"
 # </set_variables>
 
 export ENDPOINT_NAME=endpt-`echo $RANDOM`
+export DEPLOYMENT_NAME="mnist-torch-dpl"
 
 echo "Creating compute"
 # <create_compute>
