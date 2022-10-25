@@ -55,7 +55,7 @@ We have a rough cost comparison. That varies based on your region, currency and 
 ACI cost is calculated by $29.5650 * X + $3.2485 * Y. (X is the CPU core request rounded up to the nearest number, Y is the memory GB request rounded up to the nearest tenths place)
 Both costs are calculated by month.
 
-| CPU reqeust | Memory request in GB | ACI costs range | SKU | SKU pay as you go| SKU 1 year reserved| SKU 3 year reserved
+| CPU request | Memory request in GB | ACI costs range | SKU | SKU pay as you go| SKU 1 year reserved| SKU 3 year reserved
 | :----| :---- | :---- | :---- | :---- | :---- | :---- |
 | (0, 1] | (0, 1.2] | ($29.565, $33.463] | DS1 V2 | $41.610 | $27.003 | $17.696 |
 | (1, 2] | (1.2, 1.7] | ($63.028, $64.652] | F2s V2 | $61.758 | $36.500 | $22.638 |
