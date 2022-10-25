@@ -84,6 +84,7 @@ function ensure_registry(){
             else 
                 echo_info "registry ${LOCAL_REGISTRY_NAME} created successfully" >&2
                 break
+            fi
         done
     else
         echo_warning "registry ${LOCAL_REGISTRY_NAME} already exist, skipping creation step..." >&2
