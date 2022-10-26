@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -e
+set -e
 
 # <set_variables>
 RAND=`echo $RANDOM`
