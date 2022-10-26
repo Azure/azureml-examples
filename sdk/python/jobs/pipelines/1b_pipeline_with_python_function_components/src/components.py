@@ -43,7 +43,7 @@ def train_model(
 conda_env = dict(
     # note that mldesigner package must be included.
     conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
 )
 
 

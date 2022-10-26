@@ -48,7 +48,7 @@ jobs:
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" automl-forecasting-orange-juice-sales-mlflow.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" automl-forecasting-orange-juice-sales-mlflow.ipynb
 
-          papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-orange-juice-sales-mlflow.ipynb
+          papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-orange-juice-sales-mlflow.ipynb automl-forecasting-orange-juice-sales-mlflow.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
