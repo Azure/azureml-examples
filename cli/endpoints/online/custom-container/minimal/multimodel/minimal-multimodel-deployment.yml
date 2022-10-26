@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: minimal-multimodel
+endpoint_name: {{ENDPOINT_NAME}}
+model:
+  name: minimal-multimodel
+  path: models 
+code_configuration:
+  code: code
+  scoring_script: minimal-multimodel-score.py
+environment:
+  name: minimal-multimodel
+  image: {{ACR_NAME}}.azurecr.io/azureml-examples/minimal-multimodel:1
+instance_type: Standard_DS2_v2
+instance_count: 1

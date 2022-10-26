@@ -11,6 +11,7 @@ NOT_TESTED_NOTEBOOKS = [
     "datastore",
     "mlflow-model-local-inference-test",
     "multicloud-configuration",
+    "debug-online-endpoints-locally-in-visual-studio-code"
     "online-endpoints-managed-identity-sai",
     "online-endpoints-managed-identity-uai",
 ]  # cannot automate lets exclude
