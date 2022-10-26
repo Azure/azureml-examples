@@ -49,7 +49,9 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version deploy.yml
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_workspace_info deploy.yml 
-          az ml online-deployment create -f deploy.yml
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_workspace_info deploy.yml
+          az ml online-endpoint create --name reg-ep-$timestamp 
+          az ml online-deployment create -f deploy.yml --endpoint-name reg-ep-$timestamp
+          az ml online-endpoint delete --name reg-ep-$timestamp
       working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression
 

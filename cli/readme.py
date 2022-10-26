@@ -14,6 +14,7 @@ EXCLUDED_RESOURCES = [
     "instance",
     "connections",
     "compute/cluster-user-identity",
+    "registry"
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCHEDULES = []
