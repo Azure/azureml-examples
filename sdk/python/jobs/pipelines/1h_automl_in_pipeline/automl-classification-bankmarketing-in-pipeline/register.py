@@ -5,7 +5,7 @@ import os
 import argparse
 from pathlib import Path
 
-from azure.identity import ManagedIdentityCredential
+from azure.identity import ManagedIdentityCredential,DefaultAzureCredential, InteractiveBrowserCredential
 
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Model
@@ -52,11 +52,18 @@ def get_runid(model_input_path):
 
 def get_ml_client():
     # returns ML client by autherizing credentials via MSI
-    credential = ManagedIdentityCredential(client_id="<MSI_CLIENT_ID>")
-    ml_client = MLClient(
-        credential, "<SUBSCRIPTION_ID>", "<RESOURCE_GROUP>", "<AML_WORKSPACE_NAME>"
-    )
-
+    # credential = ManagedIdentityCredential(client_id="<MSI_CLIENT_ID>")
+    # ml_client = MLClient(
+    #     credential, "<SUBSCRIPTION_ID>", "<RESOURCE_GROUP>", "<AML_WORKSPACE_NAME>"
+    # )
+    try:
+        credential = DefaultAzureCredential()
+        # Check if given credential can get token successfully.
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+        credential = InteractiveBrowserCredential()
+    ml_client = MLClient.from_config(credential=credential)
     return ml_client
 
 
