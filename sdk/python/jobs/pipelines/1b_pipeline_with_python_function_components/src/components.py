@@ -6,16 +6,7 @@ from uuid import uuid4
 from mldesigner import command_component, Input, Output
 
 
-# init customer environment with conda YAML
-# the YAML file shall be put under your code folder.
-conda_env = dict(
-    # note that mldesigner package must be included.
-    conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-)
-
-
-@command_component(environment=conda_env)
+@command_component()
 def train_model(
     training_data: Input(type="uri_file"),
     max_epochs: int,
@@ -45,6 +36,15 @@ def train_model(
     # Here only output a dummy data for demo.
     model = str(uuid4())
     (Path(model_output) / "model").write_text(model)
+
+
+# init customer environment with conda YAML
+# the YAML file shall be put under your code folder.
+conda_env = dict(
+    # note that mldesigner package must be included.
+    conda_file=Path(__file__).parent / "conda.yaml",
+    image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
+)
 
 
 @command_component(
