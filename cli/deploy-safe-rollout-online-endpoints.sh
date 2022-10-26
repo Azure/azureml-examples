@@ -54,11 +54,11 @@ curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY
 
 # <test_green_with_mirror_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --mirror-traffic "green=10"
-# <test_green_with_mirror_traffic>
+# </test_green_with_mirror_traffic>
 
 # <reset_mirror_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --mirror-traffic "green=0"
-# <reset_mirror_traffic>
+# </reset_mirror_traffic>
 
 # <green_10pct_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=90 green=10"

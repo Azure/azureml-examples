@@ -1,0 +1,12 @@
+name: multimodel
+channels:
+  - defaults
+dependencies: 
+  - python=3.8
+  - pip
+  - pip: 
+    - pandas 
+    - numpy
+    - scikit-learn
+    - joblib
+    - azureml-inference-server-http
