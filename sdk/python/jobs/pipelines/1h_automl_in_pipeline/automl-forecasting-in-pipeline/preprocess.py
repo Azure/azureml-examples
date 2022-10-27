@@ -37,7 +37,7 @@ def main(args):
 
     # write preprocessed train data in output path
     preprocessed_train_dataframe.to_csv(
-        args.preprocess_train_data + "/nyc_energy_training_clean.csv",
+        args.preprocess_train_data + "/oj-train.csv",
         index=False,
         header=True,
     )
