@@ -42,9 +42,9 @@ def main(args):
         args.preprocess_train_data + "/nyc_energy_training_clean.csv",
         index=False,
         header=True,
-    )validation_data
+    )
 
-    validation_data_table = load(args.)
+    validation_data_table = load(args.validation_data)
     validation_dataframe = validation_data_table.to_pandas_dataframe()
     preprocessed_validation_dataframe = get_preprocessed_data(validation_dataframe)
 
