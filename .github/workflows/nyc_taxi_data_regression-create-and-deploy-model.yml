@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-nyc_taxi_data_regression-create-and-deploy-model
+name: nyc_taxi_data_regression-create-and-deploy-model
 on:
   workflow_dispatch:
   schedule:
@@ -11,6 +11,7 @@ on:
       - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
       - infra/**
       - cli/setup.sh
+      - .github/workflows/nyc_taxi_data_regression-create-and-deploy-model.yml
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
