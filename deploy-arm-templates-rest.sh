@@ -318,7 +318,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
             \"value\": \"$ENV_VERSION\"
         },
         \"dockerImage\": {
-            \"value\": \"mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1\"
+            \"value\": \"mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest.v1\"
         },
         \"condaFile\": {
             \"value\": \"$CONDA_FILE\"

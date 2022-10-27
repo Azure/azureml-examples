@@ -67,7 +67,7 @@ internal class EnvironmentOperations
             Tags = { { "key1", "value1" }, { "key2", "value2" } },
             OSType = OperatingSystemType.Linux,
             IsAnonymous = false,
-            Image = "mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+            Image = "mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest",
         };
 
         EnvironmentVersionData data = new EnvironmentVersionData(properties);
