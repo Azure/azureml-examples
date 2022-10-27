@@ -31,7 +31,7 @@ env = Environment.from_pip_requirements(environment_name, environment_file)
 # specify a GPU base image
 env.docker.enabled = True
 env.docker.base_image = (
-    "mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.2-cudnn8-ubuntu18.04"
+    "mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.1-cudnn8-ubuntu20.04"
 )
 
 # create job config
