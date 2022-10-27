@@ -4,4 +4,3 @@ endpoint_name: reg-ep-1234
 model: azureml://registries/<REGISTRY_NAME>/models/nyc-taxi-model/versions/<VERSION>
 instance_type: Standard_DS2_v2
 instance_count: 1
-environment: azureml://registries/azureml/environments/sklearn-1.1-ubuntu20.04-py38-cpu/versions/6
