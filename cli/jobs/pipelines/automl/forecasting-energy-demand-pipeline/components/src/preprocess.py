@@ -12,6 +12,8 @@ def parse_args():
     # add arguments
     parser.add_argument("--train_data", type=str)
     parser.add_argument("--preprocess_train_data", type=str)
+    parser.add_argument("--validation_data", type=str)
+    parser.add_argument("--preprocess_validation_data", type=str)
     # parse args
     args = parser.parse_args()
     print("args received ", args)
@@ -40,9 +42,9 @@ def main(args):
         args.preprocess_train_data + "/nyc_energy_training_clean.csv",
         index=False,
         header=True,
-    )
+    )validation_data
 
-    validation_data_table = load(args.validation_data)
+    validation_data_table = load(args.)
     validation_dataframe = validation_data_table.to_pandas_dataframe()
     preprocessed_validation_dataframe = get_preprocessed_data(validation_dataframe)
 
