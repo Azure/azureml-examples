@@ -1,4 +1,4 @@
-name: cli-jobs-pipelines-with-components-nyc_taxi_data_regression-env_train
+name: nyc_taxi_data_regression-env_train
 on:
   workflow_dispatch:
   schedule:
@@ -10,7 +10,7 @@ on:
     paths:
       - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
       - infra/**
-      - .github/workflows/cli-jobs-pipelines-with-components-nyc_taxi_data_regression-env_train.yml
+      - .github/workflows/nyc_taxi_data_regression-env_train.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
