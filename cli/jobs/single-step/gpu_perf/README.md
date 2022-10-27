@@ -43,7 +43,7 @@ az ml environment create  --file ./environments/azureml/env.yml
 az ml environment create  --file ./environments/nvidia/env.yml
 
 # run the job and manually override its environment
-az ml job create -f ./gpu_perf_job.yml --web --set environment="azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04"
+az ml job create -f ./gpu_perf_job.yml --web --set environment="azureml:nccltests_azureml:openmpi4.1.0-cuda11.1-cudnn8-ubuntu20.04"
 ```
 
 ## How to customize

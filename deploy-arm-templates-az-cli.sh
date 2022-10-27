@@ -95,7 +95,7 @@ az deployment group create -g $RESOURCE_GROUP \
 workspaceName=$WORKSPACE \
 environmentAssetName=sklearn-env \
 environmentAssetVersion=$ENV_VERSION \
-dockerImage=mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1 \
+dockerImage=mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest \
 condaFile="$CONDA_FILE"
 # </create_environment>
 
