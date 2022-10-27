@@ -5,5 +5,5 @@ description: MNIST is a dataset containing tiny gray-scale images, each showing 
 code: src
 command: >-
   python trainer.py
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu@latest
+environment: azureml:AzureML-tensorflow-2.5-ubuntu20.04-py38-cuda11-gpu@latest
 compute: azureml:trainer-cpu

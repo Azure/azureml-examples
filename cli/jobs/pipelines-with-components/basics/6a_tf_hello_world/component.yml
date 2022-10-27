@@ -7,7 +7,7 @@ name: tf_hello_world
 display_name: TF-hello-world
 version: 1
 
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:34
+environment: azureml:AzureML-tensorflow-2.5-ubuntu20.04-py38-cuda11-gpu@latest
 command: echo $TF_CONFIG
 resources:
   instance_count: 2

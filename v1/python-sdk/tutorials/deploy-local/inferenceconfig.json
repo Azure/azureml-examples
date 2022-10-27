@@ -5,7 +5,7 @@
         "docker": {
             "arguments": [],
             "baseDockerfile": null,
-            "baseImage": "mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+            "baseImage": "mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest",
             "enabled": false,
             "sharedVolumes": true,
             "shmSize": null

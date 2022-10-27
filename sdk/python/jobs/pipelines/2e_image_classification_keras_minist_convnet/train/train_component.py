@@ -10,7 +10,7 @@ from mldesigner import command_component, Input, Output
     description="train image classification with keras",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
-        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+        image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest",
     ),
 )
 def keras_train_component(
