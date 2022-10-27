@@ -8,7 +8,7 @@ trial:
     --C ${{search_space.C}}
     --kernel ${{search_space.kernel}}
     --coef0 ${{search_space.coef0}}
-  environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+  environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 inputs:
   iris_csv: 
     type: uri_file
