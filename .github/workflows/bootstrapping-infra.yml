@@ -4,10 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       debug:
+        description: 'Debug flag for workflows'
         type: boolean
         required: false
         default: false
       bootstrap:
+        description: 'To bootstrap resources or not'
         type: boolean
         required: false
         default: true
@@ -29,6 +31,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RUN_BOOTSTRAP: ${{ github.event.inputs.bootstrap }}
+      debug: ${{ github.event.inputs.debug || false }}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -46,8 +51,5 @@ jobs:
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      with:
-        debug: ${{ github.event.inputs.debug }}
-        RUN_BOOTSTRAP: ${{ github.event.inputs.bootstrap }}
       working-directory: infra
       continue-on-error: true
