@@ -1,14 +1,8 @@
-# PR into Azure/azureml-examples
+# Description
 
-## Checklist
 
-I have:
+# Checklist
 
-- [ ] read and followed the contributing guidelines
 
-## Changes
-
--
-
-fixes #
-
+- [ ] I have read the [contribution guidelines](https://github.com/Azure/azureml-examples/blob/main/CONTRIBUTING.md)
+- [ ] Pull request includes test coverage for the included changes.
