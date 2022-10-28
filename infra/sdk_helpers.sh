@@ -73,8 +73,8 @@ function ensure_registry(){
         retry_times=0
         while true 
         do 
-            ensure_registry_local
             retry_times=$((retry_times+1))
+            ensure_registry_local
             if [[ $? -ne 0 ]]; then
                 if [[ $retry_times -gt 9 ]]; then
                     echo_error "Failed to create registry after 10 retries"
@@ -102,8 +102,10 @@ function ensure_registry_local(){
         if [[ "${registry_exists}" = "[]" ]]; then
             echo_info "Retry creating registry ${LOCAL_REGISTRY_NAME}" >&2
             sleep 30
+            return 1
         fi
     fi
+    return 0
 }
 function ensure_resourcegroup() {
     rg_exists=$(az group exists --resource-group "$RESOURCE_GROUP_NAME" --output tsv |tail -n1|tr -d "[:cntrl:]")
