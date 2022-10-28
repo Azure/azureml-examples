@@ -35,26 +35,25 @@ def run(mini_batch):
         X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
         y_test = X_test.pop(target_column_name).values
 
-        predicted_column_name = "predicted"
-        preds = fitted_model.predict(X_test, y_test)
-        X_test[target_column_name] = y_test
-        X_test[predicted_column_name] = np.pad(
-            preds,
-            pad_width=(y_test.shape[0] - preds.shape[0], 0),
-            mode="constant",
-            constant_values=None,
+        # Make a rolling forecast, advancing the forecast origin by 1 period on each iteration through the test set   
+        X_rf = fitted_model.rolling_forecast(
+            X_test, y_test, step=1, ignore_data_errors=True
         )
-        # drop rows where prediction or actuals are nan
-        # happens because of missing actuals
-        # or at edges of time due to lags/rolling windows
-        clean = X_test[
-            X_test[[target_column_name, predicted_column_name]].notnull().all(axis=1)
-        ]
+
+        # Add predictions, actuals, and horizon relative to rolling origin to the test feature data
+        assign_dict = {
+            fitted_model.forecast_origin_column_name: "forecast_origin",
+            fitted_model.forecast_column_name: "predicted",
+            fitted_model.actual_column_name: target_column_name,
+        }
+        X_rf.rename(columns=assign_dict, inplace=True)
+        # drop rows where prediction or actuals are nan happens because of missing actuals or at edges of time due to lags/rolling windows]
+        X_rf.dropna(inplace=True)
         print(
-            f"The predictions have {clean.shape[0]} rows and {clean.shape[1]} columns."
+            f"The predictions have {X_rf.shape[0]} rows and {X_rf.shape[1]} columns."
         )
         # Save data as a json string as otherwise we will loose the header.
-        json_string = clean.to_json(orient="table")
+        json_string = X_rf.to_json(orient="table")
 
         resultList.append(json_string)
 
