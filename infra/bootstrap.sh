@@ -78,12 +78,7 @@ az account set -s "${SUBSCRIPTION_ID}" || exit 1
 echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 
-"$SCRIPT_DIR"/sdk_helpers.sh update_dataset
-
-echo_title "Ensuring Registry"
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME}"
-
-# RUN_BOOTSTRAP=1
+RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
@@ -159,6 +154,7 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
 
 else
+    "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
     echo_info "Skipping Bootstrapping. Set the RUN_BOOTSTRAP environment variable to enable bootstrapping."
 fi
 
