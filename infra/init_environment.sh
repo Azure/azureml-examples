@@ -48,6 +48,7 @@ export LOCATION="East US"
 export PREFIX=aml
 export SUFFIX=sdkv2
 export APP_NAME="github-sp-amlsdkv2-gh"
+export timestamp=$(date +%s)
 # export RESOURCE_GROUP_NAME=test-data-rg
 # export WORKSPACE_NAME=${PREFIX}${SUFFIX}${DATE_ONLY}-ws
 # export SUBSCRIPTION_ID=test
@@ -78,7 +79,7 @@ fi
 REGISTRY_NAME=${REGISTRY_NAME:-}
 if [[ -z "$REGISTRY_NAME" ]]
 then
-    export REGISTRY_NAME="${PREFIX}${SUFFIX}${DATE_ONLY}-registry"
+    export REGISTRY_NAME="DemoRegistry${DATE_ONLY}"
     echo_warning "No registry name [REGISTRY_NAME] specified, defaulting to ${REGISTRY_NAME}."
 fi
 

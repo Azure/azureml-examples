@@ -70,21 +70,41 @@ function ensure_registry(){
     local LOCAL_REGISTRY_NAME="${1:-${REGISTRY_NAME:-}}"
     registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${registry_exists}" = "[]" ]]; then
-        echo_info "registry ${LOCAL_REGISTRY_NAME} does not exist; creating" >&2
-        sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $ROOT_DIR/cli/resources/registry/registry-demo.yml
-        sed -i "s/<LOCATION>/$LOCATION/" $ROOT_DIR/cli/resources/registry/registry-demo.yml
-        cat $ROOT_DIR/cli/resources/registry/registry-demo.yml
-        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/cli/resources/registry/registry-demo.yml
-        if [[ $? -ne 0 ]]; then
-            echo_error "Failed to create registry ${LOCAL_REGISTRY_NAME}" >&2
-        else
-            echo_info "registry ${LOCAL_REGISTRY_NAME} created successfully" >&2
-        fi
+        retry_times=0
+        while true 
+        do 
+            ensure_registry_local
+            retry_times=$((retry_times+1))
+            if [[ $? -eq 0 ]]; then
+                if [[ $retry_times -gt 9 ]]; then
+                    echo_error "Failed to create registry after 10 retries"
+                    exit 1
+                fi
+                continue
+            else 
+                echo_info "registry ${LOCAL_REGISTRY_NAME} created successfully" >&2
+                break
+            fi
+        done
     else
         echo_warning "registry ${LOCAL_REGISTRY_NAME} already exist, skipping creation step..." >&2
     fi
 }
-
+function ensure_registry_local(){
+    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${registry_exists}" = "[]" ]]; then
+        echo_info "registry ${LOCAL_REGISTRY_NAME} does not exist; creating" >&2
+        sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
+        sed -i "s/<LOCATION>/$LOCATION/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
+        cat $ROOT_DIR/infra/infra_resources/registry-demo.yml
+        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/infra/infra_resources/registry-demo.yml || echo "Failed to create registry, will retry"
+        registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
+        if [[ "${registry_exists}" = "[]" ]]; then
+            echo_info "Retry creating registry ${LOCAL_REGISTRY_NAME}" >&2
+            sleep 30
+        fi
+    fi
+}
 function ensure_resourcegroup() {
     rg_exists=$(az group exists --resource-group "$RESOURCE_GROUP_NAME" --output tsv |tail -n1|tr -d "[:cntrl:]")
     if [ "false" = "$rg_exists" ]; then
@@ -746,7 +766,7 @@ function replace_template_values() {
     sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
         -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
         -e "s/<AML_WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
-        -e "s/<registry-name>/$(echo "$REGISTRY_NAME")/g" \
+        -e "s/<REGISTRY_NAME>/$(echo "$REGISTRY_NAME")/g" \
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
@@ -757,6 +777,25 @@ function replace_template_values() {
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
         -e "s/version=mltable_version/version=1/g" \
         -e "s/max_trials=10/max_trials=2/g" \
+        "${FILENAME}"
+    echo "$(<"${FILENAME}")"
+}
+
+function replace_workspace_info() {
+    local FILENAME="$1"
+    echo "Replacing workspace information in the file: ${FILENAME}"
+    sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
+        -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
+        -e "s/<WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
+        -e "s/<REGISTRY_NAME>/$(echo "$REGISTRY_NAME")/g" \
+        "${FILENAME}"
+    echo "$(<"${FILENAME}")"
+}
+
+function replace_version(){
+    local FILENAME="$1"
+    echo "Replacing version in the file: ${FILENAME}"
+    sed -i -e "s/<VERSION>/$(echo "$timestamp")/g" \
         "${FILENAME}"
     echo "$(<"${FILENAME}")"
 }
