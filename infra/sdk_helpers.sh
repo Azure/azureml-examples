@@ -75,7 +75,7 @@ function ensure_registry(){
         do 
             ensure_registry_local
             retry_times=$((retry_times+1))
-            if [[ $? -eq 0 ]]; then
+            if [[ $? -ne 0 ]]; then
                 if [[ $retry_times -gt 9 ]]; then
                     echo_error "Failed to create registry after 10 retries"
                     exit 1
