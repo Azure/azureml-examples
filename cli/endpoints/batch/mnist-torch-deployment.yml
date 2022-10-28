@@ -9,7 +9,7 @@ code_configuration:
   scoring_script: batch_driver.py
 environment:
   conda_file: ./mnist/environment/conda.yml
-  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
 compute: azureml:batch-cluster
 resources:
   instance_count: 1
