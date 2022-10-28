@@ -193,7 +193,7 @@ function grant_permission_identity_on_acr() {
 function ensure_vnet() {
     local VNET_NAME="${1:-vnetName}"
     local VNET_CIDR="${2:-${VNET_CIDR:-}}"
-    vnet_exists=$(az network vnet list --query "[?name == '$VNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
+    vnet_exists=$(az network vnet list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$VNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
     if [[ "${vnet_exists}" = "[]" ]]; then
        echo_info "creating $VNET_NAME vnet "
        az network vnet create --name "$VNET_NAME" --address-prefixes "$VNET_CIDR" > /dev/null
@@ -207,7 +207,7 @@ function ensure_subnet() {
     local VNET_NAME="${1:-vnetName}"
     local MASTER_SUBNET_NAME="${2:-mastersubnet}"
     local MASTER_SUBNET="${3:-${MASTER_SUBNET:-}}"
-    subnet_exists=$(az network vnet subnet list --vnet-name "$VNET_NAME" --query "[?name == '$MASTER_SUBNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
+    subnet_exists=$(az network vnet subnet list --resource-group "${RESOURCE_GROUP_NAME}" --vnet-name "$VNET_NAME" --query "[?name == '$MASTER_SUBNET_NAME']" | tail -n1 | tr -d "[:cntrl:]")
     if [[ "${subnet_exists}" = "[]" ]]; then
        echo_info "creating master subnet: $MASTER_SUBNET_NAME"
        az network vnet subnet create --vnet-name "$VNET_NAME" --name "$MASTER_SUBNET_NAME" --address-prefixes "$MASTER_SUBNET" > /dev/null

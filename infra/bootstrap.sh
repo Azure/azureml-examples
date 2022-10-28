@@ -78,7 +78,7 @@ az account set -s "${SUBSCRIPTION_ID}" || exit 1
 echo_title "Ensuring Resource group"
 "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 
-RUN_BOOTSTRAP=1
+# RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
