@@ -713,6 +713,8 @@ function vmss_upgrade_policy_automatic() {
     VM_SCALE_SETS=$(az vmss list --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} | jq -r '.[].name')
 
     printf "Checking scalesets %s in resource-group %s\n" "${VM_SCALE_SETS}" "${LOCAL_RESOURCE_GROUP_NAME}"
+    # temporarily disable the flag
+    set +e
     for VMSS in ${VM_SCALE_SETS}; do
         VMSS_PROPERTIES=$(az vmss show --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --name $VMSS)
         # echo SKU_TEMP $VMSS_PROPERTIES
@@ -728,6 +730,8 @@ function vmss_upgrade_policy_automatic() {
         fi
         az vmss show --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --query upgradePolicy -o json
     done
+    # return to the default
+    set -e
 }
 
 function vmss_upgrade_policy_all_rg() {

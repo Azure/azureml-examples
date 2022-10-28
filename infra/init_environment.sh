@@ -41,7 +41,7 @@ export SLEEP_SECONDS=20
 
 # let "DATE_ONLY=`date +'%y%m%d'`"
 # let "DATE_ONLY=$(date +'%y%m%U')"
-let "DATE_ONLY=$(date -d '+2 days' +'%y%m')"
+let "DATE_ONLY=$(date -d '+5 days' +'%y%m')"
 
 
 export LOCATION="East US"
