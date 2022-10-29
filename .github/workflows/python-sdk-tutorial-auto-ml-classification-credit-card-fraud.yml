@@ -58,13 +58,13 @@ jobs:
       working-directory: v1/python-sdk/tutorials/automl-with-azureml/classification-credit-card-fraud
     - name: check notebook output
       run: |
-         python scripts/validation/check_notebook_output.py \
+         python v1/scripts/validation/check_notebook_output.py \
                 --file_name auto-ml-classification-credit-card-fraud.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/classification-credit-card-fraud \
                 --check warning stderr
     - name: check experiment result
       run: |
-         python scripts/validation/check_experiment_result.py \
+         python v1/scripts/validation/check_experiment_result.py \
                 --file_name auto-ml-classification-credit-card-fraud.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/classification-credit-card-fraud \
                 --experiment_name automl-classification-ccard-remote \
