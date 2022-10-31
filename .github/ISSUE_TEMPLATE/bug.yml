@@ -1,0 +1,77 @@
+name: Bug Report
+description: File a bug report for one of the examples
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report!
+
+        Please note that the bug reports in this repository are for bugs with our community-driven examples.
+
+        * For issues with the ML extension for Azure CLI, [please open an issue here](https://github.com/azure/azure-cli-extensions/issues/new/choose)
+        * For issues with the Azure ML Python SDK, [please open an issue here](https://github.com/azure/azure-sdk-for-python/issues/new/choose)
+  - type: markdown
+    attributes:
+      value: |
+        # Environment
+  - type: dropdown
+    id: os
+    attributes:
+      label: "Operating System"
+      multiple: false
+      options:
+        - Windows
+        - Linux
+        - MacOS
+    validations:
+      required: true
+  - type: textarea
+    id: version
+    attributes:
+      label: Version Information
+      description: |
+        What version of our software are you running?
+
+        * If this is an issue for a CLI sample, please paste the content of `az version --output=yaml`
+        * If this is an issue for an SDK sample, please provide the following:
+          ```
+          Python Version:
+          azure-ai-ml package version: 
+          ```
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        # Describe the problem
+  - type: textarea
+    id: reproduce-steps
+    attributes:
+      label: Steps to reproduce
+      description: Please provide minimal required steps to reproduce the bug.
+      placeholder: |
+          1. Step one.
+          2. Step two.
+          3. Step three.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What was the expected behavior?
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What was the actual behavior?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Addition information
+      description: If there is any additional information relevant to this issue, please include below.
