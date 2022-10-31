@@ -1,0 +1,2 @@
+# Running a Pipeline job using sweep (hyperdrive) in pipeline
+In this example, we will explains how to create a sweep node and use it in a pipeline. A sweep node can be used to enable hyperparameter tuning on a specified compute (either local or on the cloud) for a specific command component. The command component accepts `environment` to setup required infrastructure. You can define a `search_space` and an `objective` to search for the target output. 
