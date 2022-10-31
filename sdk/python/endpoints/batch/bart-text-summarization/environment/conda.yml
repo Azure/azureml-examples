@@ -1,0 +1,12 @@
+name: huggingface-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - tensorflow
+    - transformers
+    - datasets
+    - azureml-core
+    - azureml-dataset-runtime[fuse]
