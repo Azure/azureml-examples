@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: decorated
+endpoint_name: <my-endpoint-name>
+model:
+  path: ../../../model-1/model
+code_configuration:
+  code: code
+  scoring_script: score.py
+environment:
+  image: mcr.microsoft.com/azureml/minimal-ubuntu20.04-py38-cpu-inference
+  conda_file: ../env.yml
+instance_type: Standard_DS2_v2
+instance_count: 1
