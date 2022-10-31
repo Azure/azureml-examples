@@ -68,7 +68,7 @@ def get_ml_client():
         print("credential took from interactive browse credentials")
     try:
         ml_client = MLClient.from_config(credential=credential)
-    except exception as ex:
+    except Exception as ex:
         print(ex)
     return ml_client
 
