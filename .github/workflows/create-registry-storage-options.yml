@@ -37,12 +37,26 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create asset
+    - name: create registry
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           local_registry_name=DemoRegistry2-$timestamp;
+          echo "$local_registry_name" >> $GITHUB_ENV
           az ml registry create -f resources/registry/registry-storage-options.yml --name $local_registry_name;
-          az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$local_registry_name']" |tail -n1|tr -d "[:cntrl:]"
-          az resource delete -g $RESOURCE_GROUP_NAME -n $local_registry_name --resource-type "Microsoft.MachineLearningServices/registries"
       working-directory: cli
+      continue-on-error: false
+    - name: validate registry
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${{ env.local_registry_name }}']" |tail -n1|tr -d "[:cntrl:]"
+      working-directory: cli
+      continue-on-error: false
+    - name: delete registry
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az resource delete -g $RESOURCE_GROUP_NAME -n ${{ env.local_registry_name }} --resource-type "Microsoft.MachineLearningServices/registries"
+      working-directory: cli
+      continue-on-error: false
