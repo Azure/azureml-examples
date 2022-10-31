@@ -5,6 +5,7 @@ from PIL import Image
 def init():
     pass
 
+
 @rawhttp
 def run(req: AMLRequest):
     sizes = [
