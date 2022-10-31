@@ -6,7 +6,9 @@ from azure.ai.ml.constants import InputOutputModes
 subscription_id = "<SUBSCRIPTION_ID>"
 resource_group = "<RESOURCE_GROUP>"
 workspace = "<AML_WORKSPACE_NAME>"
-ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
+ml_client = MLClient(
+    DefaultAzureCredential(), subscription_id, resource_group, workspace
+)
 
 spark_component = spark(
     name="Spark Component 5",
@@ -24,28 +26,33 @@ spark_component = spark(
     executor_cores=2,
     executor_memory="2g",
     executor_instances=2,
-    args="--titanic_data ${{inputs.titanic_data}} --wrangled_data ${{outputs.wrangled_data}}"
+    args="--titanic_data ${{inputs.titanic_data}} --wrangled_data ${{outputs.wrangled_data}}",
 )
+
 
 @dsl.pipeline(
     description="Sample Pipeline with Spark component",
 )
-def spark_pipeline(
-    spark_input_data):
-    spark_step = spark_component(
-        titanic_data=spark_input_data
+def spark_pipeline(spark_input_data):
+    spark_step = spark_component(titanic_data=spark_input_data)
+    spark_step.inputs.titanic_data.mode = InputOutputModes.DIRECT
+    spark_step.outputs.wrangled_data = Output(
+        type="uri_folder",
+        path="azureml://datastores/workspaceblobstore/paths/data/wrangled/",
     )
-    spark_step.inputs.titanic_data.mode=InputOutputModes.DIRECT
-    spark_step.outputs.wrangled_data=Output(type="uri_folder", path="azureml://datastores/workspaceblobstore/paths/data/wrangled/")
-    spark_step.outputs.wrangled_data.mode=InputOutputModes.DIRECT
-    spark_step.identity=UserIdentityConfiguration()
-    spark_step.resources={
+    spark_step.outputs.wrangled_data.mode = InputOutputModes.DIRECT
+    spark_step.identity = UserIdentityConfiguration()
+    spark_step.resources = {
         "instance_type": "Standard_E8S_V3",
-        "runtime_version": "3.2.0"
-        }
+        "runtime_version": "3.2.0",
+    }
+
 
 pipeline = spark_pipeline(
-    spark_input_data=Input(type="uri_file", path="azureml://datastores/workspaceblobstore/paths/data/titanic.csv")
+    spark_input_data=Input(
+        type="uri_file",
+        path="azureml://datastores/workspaceblobstore/paths/data/titanic.csv",
+    )
 )
 
 pipeline_job = ml_client.jobs.create_or_update(

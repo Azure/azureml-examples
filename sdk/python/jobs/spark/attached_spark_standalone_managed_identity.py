@@ -5,7 +5,9 @@ from azure.ai.ml.entities import ManagedIdentityConfiguration
 subscription_id = "<SUBSCRIPTION_ID>"
 resource_group = "<RESOURCE_GROUP>"
 workspace = "<AML_WORKSPACE_NAME>"
-ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
+ml_client = MLClient(
+    DefaultAzureCredential(), subscription_id, resource_group, workspace
+)
 
 spark_job = spark(
     display_name="Titanic-Spark-Job-SDK-1",
@@ -21,18 +23,18 @@ spark_job = spark(
         "titanic_data": Input(
             type="uri_file",
             path="azureml://datastores/workspaceblobstore/paths/data/titanic.csv",
-            mode="direct"
+            mode="direct",
         ),
     },
     outputs={
         "wrangled_data": Output(
             type="uri_folder",
             path="azureml://datastores/workspaceblobstore/paths/data/wrangled/",
-            mode="direct"
+            mode="direct",
         ),
     },
-    identity = ManagedIdentityConfiguration(),
-    args="--titanic_data ${{inputs.titanic_data}} --wrangled_data ${{outputs.wrangled_data}}"
+    identity=ManagedIdentityConfiguration(),
+    args="--titanic_data ${{inputs.titanic_data}} --wrangled_data ${{outputs.wrangled_data}}",
 )
 
 returned_spark_job = ml_client.jobs.create_or_update(spark_job)
