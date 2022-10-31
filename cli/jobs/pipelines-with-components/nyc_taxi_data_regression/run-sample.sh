@@ -5,10 +5,10 @@
 set -x
 
 version=$(date +%s)
-reg_name="ContosoMLjun14"
-ws_name="mlw-contoso-819prod"
-ws_rg="rg-contoso-819prod"
-ws_sub="21d8f407-c4c4-452e-87a4-e609bfb86248"
+reg_name="<REGISTRY_NAME>"
+ws_name="<WORKSPACE_NAME>"
+ws_rg="<RESOURCE_GROUP>"
+ws_sub="<SUBSCRIPTION_ID>"
 
 # create environment
 az ml environment create --file env_train.yml --registry-name $reg_name --version $version || {
