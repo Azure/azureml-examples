@@ -75,11 +75,12 @@ echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCA
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
-echo_title "Ensuring Resource group"
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 
 # RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
+
+    echo_title "Ensuring Resource group"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
