@@ -1,0 +1,7 @@
+name: DemoRegistry2211
+description: Basic registry with one primary region and to additional regions
+tags:
+  foo: bar
+location: East US
+replication_locations:
+  - location: East US

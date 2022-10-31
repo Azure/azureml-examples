@@ -33,4 +33,3 @@ sed -i 's/container-name/'"$container"'/g' ../cli/assets/dataset/cloud-folder-wa
 sed -i 's/account-name/'"$account"'/g' ../cli/assets/dataset/cloud-file-wasbs.yml
 
 sed -i 's/container-name/'"$container"'/g' ../cli/assets/dataset/cloud-file-wasbs.yml
-

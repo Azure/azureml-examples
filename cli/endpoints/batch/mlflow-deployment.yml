@@ -1,6 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
-name: mlflowdp
-endpoint_name: mybatchedp
-model: 
-  path: ./autolog_nyc_taxi
-compute: azureml:batch-cluster
