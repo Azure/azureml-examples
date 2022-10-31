@@ -65,6 +65,7 @@ def get_ml_client():
     except Exception as ex:
         # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
         credential = InteractiveBrowserCredential()
+        credential.get_token("https://management.azure.com/.default")
         print("credential took from interactive browse credentials")
     try:
         ml_client = MLClient.from_config(credential=credential)
