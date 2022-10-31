@@ -6,7 +6,7 @@ dependencies:
   - pip=20.0
   - pip:
     - mldesigner==0.1.0b4
-    - azureml-mlflow
+    - azureml-mlflow==1.42.0
     - tensorflow==2.7.0
     - numpy==1.21.4
     - scikit-learn==1.0.1

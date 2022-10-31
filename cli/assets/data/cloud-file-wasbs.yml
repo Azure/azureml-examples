@@ -2,4 +2,4 @@ $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: cloud-file-wasbs-example
 description: Data asset created from a file in cloud using wasbs URL.
 type: uri_file
-path: wasbs://mainstorage9c05dabf5c924.blob.core.windows.net/azureml-blobstore-54887b46-3cb0-485b-bb15-62e7b5578ee6/example-data/titanic.csv
+path: wasbs://.blob.core.windows.net//example-data/titanic.csv
