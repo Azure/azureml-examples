@@ -1,0 +1,6 @@
+{
+    "sepal_length": [7.2, 4.2],
+    "sepal_width": [3.2,3.5], 
+    "petal_length": [6.0,1.0],
+    "petal_width": [1.8,3.0]
+}
