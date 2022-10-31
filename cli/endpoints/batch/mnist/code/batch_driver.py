@@ -3,6 +3,7 @@
 
 import os
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from PIL import Image
 from azureml.core import Model
@@ -37,6 +38,6 @@ def run(mini_batch):
         inference_result = output.eval(feed_dict={in_tensor: np_im}, session=g_tf_sess)
         # find best probability, and add to result list
         best_result = np.argmax(inference_result)
-        resultList.append("{}: {}".format(os.path.basename(image), best_result))
+        resultList.append([os.path.basename(image), best_result])
 
-    return resultList
+    return pd.DataFrame(resultList)
