@@ -1,3 +1,4 @@
+# attached_spark_pipeline_managed_identity.py
 from azure.ai.ml import MLClient, dsl, spark, Input, Output
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import ManagedIdentityConfiguration

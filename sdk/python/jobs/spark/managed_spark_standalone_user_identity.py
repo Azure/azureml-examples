@@ -5,8 +5,8 @@ from azure.ai.ml.entities import UserIdentityConfiguration
 
 subscription_id = "<SUBSCRIPTION_ID>"
 resource_group = "<RESOURCE_GROUP>"
-workspace = "<AML_WORKSPACE_NAME>"
-ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
+workspace_name = "<AML_WORKSPACE_NAME>"
+ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace_name)
 
 spark_job = spark(
     display_name="Titanic-Spark-Job-SDK-5",

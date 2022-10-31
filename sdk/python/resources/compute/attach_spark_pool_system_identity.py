@@ -16,4 +16,5 @@ synapse_name = "<ATTACHED_SPARK_POOL_NAME>"
 synapse_resource ="/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Synapse/workspaces/<SYNAPSE_WORKSPACE_NAME>/bigDataPools/<SPARK_POOL_NAME>" 
 synapse_identity = IdentityConfiguration(type="SystemAssigned") 
 
-synapse_comp = SynapseSparkCompute(name=synapse_name, resource_id=synapse_resource,identity=synapse_identity) ml_client.begin_create_or_update(synapse_comp) 
+synapse_comp = SynapseSparkCompute(name=synapse_name, resource_id=synapse_resource,identity=synapse_identity) 
+ml_client.begin_create_or_update(synapse_comp) 
