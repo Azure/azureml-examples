@@ -61,7 +61,7 @@ jobs:
          python v1/scripts/validation/check_notebook_output.py \
                 --file_name auto-ml-forecasting-function.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-forecast-function \
-                --check warning stderr
+                --check warning
     - name: check experiment result
       run: |
          python v1/scripts/validation/check_experiment_result.py \
