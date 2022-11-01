@@ -150,9 +150,9 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     done
     echo_info ">>> Done creating amlarc clusters"
     "$SCRIPT_DIR"/sdk_helpers.sh vmss_upgrade_policy_all_rg
-    echo_title "Copying data"
-    "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
-    "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
+    # echo_title "Copying data"
+    # "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
+    # "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
 
 else
     "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
