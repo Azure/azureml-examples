@@ -420,44 +420,6 @@ delete_workspace(){
 JOB_STATUS_FAILED="Failed"
 JOB_STATUS_COMPLETED="Completed"
 
-# run cli test job
-run_cli_job(){
-    JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
-    CONVERTER_ARGS="${@:2}"
-
-    SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
-    TIMEOUT="${TIMEOUT:-60m}"
-
-    # preprocess job spec for amlarc compute
-    python $SCRIPT_DIR/convert.py -i $JOB_YML $CONVERTER_ARGS
-    
-    # submit job
-    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
-    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
-
-    # check run id
-    echo "[JobRunId] $JOB_YML $run_id" | tee -a $RESULT_FILE
-    if [[ "$run_id" ==  "" ]]; then 
-        echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
-        return 1
-    fi
-
-    # stream job logs
-    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
-
-    # show job status
-    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
-    echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
-    
-    # check status
-    if [[ $status ==  "${JOB_STATUS_FAILED}" ]]; then
-        return 2
-    elif [[ $status != "${JOB_STATUS_COMPLETED}" ]]; then 
-        timeout 5m az ml job cancel $SRW -n $run_id
-        return 3
-    fi
-}
-
 collect_jobs_from_workflows(){
     OUPUT_FILE=${1:-job-list.txt}
     SELECTOR=${2:-cli-jobs-basics}
@@ -501,7 +463,7 @@ collect_jobs_from_workflows(){
     cat $OUPUT_FILE
 }
 
-run_cli_automl_job(){
+run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
     CONVERTER_ARGS="${@:2}"
 
