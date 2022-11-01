@@ -1,5 +1,45 @@
+import argparse
+import os
+
+import numpy as np
+import pandas as pd
+
+from sklearn.externals import joblib
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+from azureml.automl.runtime.shared.score import scoring, constants
+from azureml.core import Run
+
+try:
+    import torch
+
+    _torch_present = True
+except ImportError:
+    _torch_present = False
+
+
 def map_location_cuda(storage, loc):
     return storage.cuda()
+
+
+def APE(actual, pred):
+    """
+    Calculate absolute percentage error.
+    Returns a vector of APE values with same length as actual/pred.
+    """
+    return 100 * np.abs((actual - pred) / actual)
+
+
+def MAPE(actual, pred):
+    """
+    Calculate mean absolute percentage error.
+    Remove NA and values where actual is close to zero
+    """
+    not_na = ~(np.isnan(actual) | np.isnan(pred))
+    not_zero = ~np.isclose(actual, 0.0)
+    actual_safe = actual[not_na & not_zero]
+    pred_safe = pred[not_na & not_zero]
+    return np.mean(APE(actual_safe, pred_safe))
 
 
 parser = argparse.ArgumentParser()
@@ -55,10 +95,8 @@ df = test_dataset.to_pandas_dataframe()
 print("Read df")
 print(df)
 
-X_test_df = test_dataset.drop_columns(columns=[target_column_name])
-y_test_df = test_dataset.with_timestamp_columns(None).keep_columns(
-    columns=[target_column_name]
-)
+X_test_df = df
+y_test = df.pop(target_column_name).to_numpy()
 
 _, ext = os.path.splitext(model_path)
 if ext == ".pt":
@@ -74,7 +112,7 @@ else:
     # Load the sklearn pipeline.
     fitted_model = joblib.load(model_path)
 
-X_rf = fitted_model.rolling_forecast(X_test, y_test_df.to_numpy(), step=1)
+X_rf = fitted_model.rolling_forecast(X_test_df, y_test, step=1)
 assign_dict = {
     fitted_model.forecast_origin_column_name: "forecast_origin",
     fitted_model.forecast_column_name: "predicted",
