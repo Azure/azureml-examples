@@ -34,5 +34,5 @@ def calculate_metrics(actual, pred):
     metrics_dict["mean absolute error"] = mean_absolute_error(actual_safe, pred_safe)
     metrics_dict["mean_absolute_percentage_error"] = MAPE(actual_safe, pred_safe)
     metrics_dict["root mean squared error"] = rmse
-    
+
     return pd.DataFrame(metrics_dict.items(), columns=["metric name", "score"])

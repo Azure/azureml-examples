@@ -40,10 +40,10 @@ X_rf = fitted_model.rolling_forecast(X_test_df, y_test_df.values, step=1)
 
 # Add predictions, actuals, and horizon relative to rolling origin to the test feature data
 assign_dict = {
-            fitted_model.forecast_origin_column_name: "forecast_origin",
-            fitted_model.forecast_column_name: "predicted",
-            fitted_model.actual_column_name: target_column_name,
-        }
+    fitted_model.forecast_origin_column_name: "forecast_origin",
+    fitted_model.forecast_column_name: "predicted",
+    fitted_model.actual_column_name: target_column_name,
+}
 X_rf.rename(columns=assign_dict, inplace=True)
 
 file_name = "outputs/predictions.csv"
