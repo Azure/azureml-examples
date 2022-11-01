@@ -1,0 +1,223 @@
+name: bootstrapping-resources
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/**
+      - .github/workflows/bootstrapping-resources.yml
+      - cli/**
+      - infra/**
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r sdk/python/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: bootstrap resources
+      run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: true
+    - name: setup SDK
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: sdk/python
+      continue-on-error: true
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: cli-automl-image-classification-multilabel-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: cli-automl-image-classification-multiclass-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: cli-automl-image-instance-segmentation-task-fridge-items.yml   
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: cli-automl-image-object-detection-task-fridge-items.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-instance-segmentation-task-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-multiclass-classification-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-multilabel-classification-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: image-object-detection-task-fridge-items-pipeline.yml
+      if: ${{ always() }}
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../.azureml/config.json";
+      working-directory: cli/jobs/pipelines/automl/image-object-detection-task-fridge-items-pipeline
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: set sampledata dataset
+      if: ${{ always() }}
+      run: |
+        set -x
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        pip install azure.cli.core
+        pip install azureml-dataset-runtime
+        python -c '
+        import sys
+        from azureml.core.workspace import Workspace
+        from azureml.core import Dataset
+        from azureml.core.authentication import AzureCliAuthentication
+        cli_auth = AzureCliAuthentication()
+        ws = Workspace.get(subscription_id=sys.argv[1],
+                      resource_group=sys.argv[2],
+                      name=sys.argv[3],
+                      auth=cli_auth)
+        datastore = ws.datastores["workspaceblobstore"]
+        dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
+        dataset.register(ws, "sampledata")
+        ' "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME"
+      timeout-minutes: 300
+      continue-on-error: true
+    - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      if: ${{ always() }}
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
+        az ml component create --file train.yml
+        az ml component create --file score.yml
+        az ml component create --file eval.yml
+        # az ml component create --file pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: setup env for cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      if: ${{ always() }}
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
+        az ml environment create --file environment/responsibleai-environment.yaml
+        az ml data create --file data/data_adult_train.yaml
+        az ml data create --file data/data_adult_test.yaml
+      working-directory: cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+      if: ${{ always() }}
+      run: |
+        echo Please manually setup uri_file for cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri/pipeline.yml
+        az ml component create --file ./pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
+      timeout-minutes: 30
+      continue-on-error: true
+    - name: setup_asset /cli/assets/data/local-folder.yml
+      if: ${{ always() }}
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
+        az ml data create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME -f ./local-folder.yml
+      working-directory: cli/assets/data
+      timeout-minutes: 300
+      continue-on-error: true
+    - name: setup_dataset
+      if: ${{ always() }} 
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        set -x
+        bash create-datasets.sh
+      working-directory: setup/setup-repo
+      timeout-minutes: 300
+      continue-on-error: true
+    - name: azcopy install
+      if: ${{ always() }}
+      run: |
+        echo "installing azcopy"
+        sudo mkdir -p /home/azcopy/
+        curl -L https://aka.ms/downloadazcopy-v10-linux | tar -zxf - --directory /home/azcopy/
+        sudo mv $(find /home/azcopy/ -type f -name azcopy) /usr/bin/
+    - name: azcopy sync
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      run: |
+        # login to azcopy with AZURE_CREDENTIALS
+        export AZCOPY_SPA_CLIENT_SECRET=$(echo "$AZURE_CREDENTIALS" | jq -r .clientSecret)
+        CLIENT_ID=$(echo "$AZURE_CREDENTIALS" | jq -r .clientId)
+        azcopy login --service-principal --application-id "${CLIENT_ID}"
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        echo_title "Copying data"
+        # bash "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
+        bash "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
+      working-directory: infra
+      continue-on-error: true
