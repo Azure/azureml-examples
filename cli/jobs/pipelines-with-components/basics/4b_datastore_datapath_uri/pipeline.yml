@@ -10,7 +10,8 @@ outputs:
     # format for data store uri: azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>
     path: azureml://datastores/workspaceblobstore/paths/azureml  
 
-compute: azureml:cpu-cluster
+settings:
+  default_compute: azureml:cpu-cluster
 
 jobs:
   component_folder:
