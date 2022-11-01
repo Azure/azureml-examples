@@ -2,11 +2,19 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: echo "hello world" | sleep 3600
 environment:
   image: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+
 compute: azureml:cpu-cluster
+
 services: 
   my_vscode: 
-    job_service_type: VS_code 
+    job_service_type: vs_code 
   my_jupyter_lab: 
     job_service_type: jupyter_lab 
   my_tensorboard:
-    job_service_type: tensorboard
+    job_service_type: tensor_board
+    properties:
+      logDir: "logs/tblogs"
+#  my_ssh:
+#    job_service_type: tensor_board
+#    properties:
+#      sshPublicKeys: <paste the entire pub key content>
