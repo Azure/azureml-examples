@@ -3,7 +3,7 @@
 # az extension remove -n ml
 
 # <az_ml_install>
-az extension add -n ml -y
+# az extension add -n ml -y
 # </az_ml_install>
 
 # Use a daily build
