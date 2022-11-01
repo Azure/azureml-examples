@@ -60,9 +60,7 @@ jobs:
     - name: install ml
       run: |
         set -x +e
-        az extension remove -n ml
-        sleep 60
-        cat cli/setup.sh | grep "^az extension add" | bash 
+        bash cli/setup.sh 
         az version
       timeout-minutes: 30
     - name: azure login
@@ -82,7 +80,7 @@ jobs:
         for job in $(cat $JOB_LIST_FILE); do
           if [[ "$job" = *"yml" ]]; then
             echo "Run job: $job"
-            bash .github/kubernetes-compute/tool.sh run_cli_automl_job $job -cr &
+            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
             sleep 60
           else
             echo "Found invalid job: $job"
