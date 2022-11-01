@@ -199,21 +199,25 @@ jobs:
       working-directory: setup/setup-repo
       timeout-minutes: 300
       continue-on-error: true
-    - name: download azcopy
+    - name: azcopy install
       if: ${{ always() }}
       run: |
-        set -x
-        wget https://azcopyvnext.azureedge.net/release20220511/azcopy_linux_amd64_10.15.0.tar.gz
-        tar zxf azcopy_linux_amd64_10.15.0.tar.gz
-        cp azcopy_linux_amd64_10.15.0/azcopy .
-      working-directory: setup/setup-repo
-      timeout-minutes: 30
-      continue-on-error: true
-    - name: Please manually run copy-data.sh
-      if: ${{ always() }}
+        echo "installing azcopy"
+        sudo mkdir -p /home/azcopy/
+        curl -L https://aka.ms/downloadazcopy-v10-linux | tar -zxf - --directory /home/azcopy/
+        sudo mv $(find /home/azcopy/ -type f -name azcopy) /usr/bin/
+    - name: azcopy sync
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
-        bash copy-data.sh
-        echo 'Please manually run "bash copy-data.sh" in setup/setup-repo directory'
-      working-directory: setup/setup-repo
-      timeout-minutes: 300
+        # login to azcopy with AZURE_CREDENTIALS
+        export AZCOPY_SPA_CLIENT_SECRET=$(echo "$AZURE_CREDENTIALS" | jq -r .clientSecret)
+        CLIENT_ID=$(echo "$AZURE_CREDENTIALS" | jq -r .clientId)
+        azcopy login --service-principal --application-id "${CLIENT_ID}"
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        echo_title "Copying data"
+        # bash "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
+        bash "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
+      working-directory: infra
       continue-on-error: true
