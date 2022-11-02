@@ -43,7 +43,7 @@ jobs:
           sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" online-endpoints-keyvault.ipynb
           sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" online-endpoints-keyvault.ipynb
           sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" online-endpoints-keyvault.ipynb
-
+          CLIENT_ID=$(echo "$AZURE_CREDENTIALS" | jq -r .clientId)
           papermill -k python online-endpoints-keyvault.ipynb online-endpoints-keyvault.output.ipynb
       working-directory: sdk/python/endpoints/online/managed
     - name: upload notebook's working folder as an artifact
