@@ -435,6 +435,9 @@ get_kubeconfig(){
         --resource-group "${RESOURCE_GROUP_NAME}" \
         --name "${AKS_CLUSTER_NAME}" \
         --overwrite-existing
+
+    kubectl get ns
+    echo_info "AKS credentials retrieved for the cluster:${AKS_CLUSTER_NAME}"
 }
 
 check_arc_status(){
@@ -503,18 +506,25 @@ function setup_compute() {
         # managedClusters
         RESOURCE_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/providers/Microsoft.ContainerService/managedClusters/${CLUSTER_NAME}"
     fi
-    echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
-    ATTACH_COMPUTE=$(az ml compute attach \
-            --subscription "${SUBSCRIPTION_ID}" \
-            --resource-group "${RESOURCE_GROUP_NAME}" \
-            --workspace-name "${WORKSPACE_NAME}" \
-            --type "${SERVICE_TYPE}" \
-            --resource-id "${RESOURCE_ID}" \
-            --namespace "${COMPUTE_NS}" \
-            --name "${COMPUTE_NAME}" \
-            --output tsv \
-            > /dev/null )
-    echo_info "ProvisioningState of ATTACH_COMPUTE: ${ATTACH_COMPUTE}"
+
+    if
+        [[ $(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${COMPUTE_NAME}" | jq -r .provisioning_state) == "Succeeded" ]]
+    then
+        echo_info "Cluster is already attached to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}..."
+    else
+        echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
+        ATTACH_COMPUTE=$(az ml compute attach \
+                --subscription "${SUBSCRIPTION_ID}" \
+                --resource-group "${RESOURCE_GROUP_NAME}" \
+                --workspace-name "${WORKSPACE_NAME}" \
+                --type "${SERVICE_TYPE}" \
+                --resource-id "${RESOURCE_ID}" \
+                --namespace "${COMPUTE_NS}" \
+                --name "${COMPUTE_NAME}" \
+                --output tsv \
+                > /dev/null )
+        echo_info "ProvisioningState of ATTACH_COMPUTE: ${ATTACH_COMPUTE}"
+    fi
 }
 
 function detach_compute() {
@@ -602,21 +612,29 @@ install_k8s_extension(){
         # managedClusters
         ARC_CLUSTER_NAME="${CLUSTER_NAME}"
     fi
-    echo_info "Creating k8s extension for $CLUSTER_TYPE for Azure ML extension: $EXTENSION_NAME on cluster: ${ARC_CLUSTER_NAME}"
-    EXTENSION_INSTALL_STATE=$(az k8s-extension create \
-                --cluster-name "${ARC_CLUSTER_NAME}" \
-                --cluster-type "${CLUSTER_TYPE}" \
-                --subscription "${SUBSCRIPTION_ID}" \
-                --resource-group "${RESOURCE_GROUP_NAME}" \
-                --name "$EXTENSION_NAME" \
-                --extension-type "$EXTENSION_TYPE" \
-                --auto-upgrade "$EXT_AUTO_UPGRADE" \
-                --scope cluster \
-                --release-train "$RELEASE_TRAIN" \
-                --configuration-settings $EXTENSION_SETTINGS \
-                --no-wait \
-                -o tsv |tail -n1|tr -d "[:cntrl:]") && echo_info "$EXTENSION_INSTALL_STATE"
-    check_extension_status "${ARC_CLUSTER_NAME}" "${CLUSTER_TYPE}"
+
+    if
+        [[ $(az k8s-extension show --cluster-type "${CLUSTER_TYPE}" -c "${ARC_CLUSTER_NAME}" -g "${RESOURCE_GROUP_NAME}" --name "${EXTENSION_NAME}" | jq -r .provisioningState) == "Succeeded" ]]
+    then
+        echo "Extension:${EXTENSION_NAME} already installed on cluster: ${ARC_CLUSTER_NAME}"
+    else
+
+        echo_info "Creating k8s extension for $CLUSTER_TYPE for Azure ML extension: ${EXTENSION_NAME} on cluster: ${ARC_CLUSTER_NAME}"
+        EXTENSION_INSTALL_STATE=$(az k8s-extension create \
+                    --cluster-name "${ARC_CLUSTER_NAME}" \
+                    --cluster-type "${CLUSTER_TYPE}" \
+                    --subscription "${SUBSCRIPTION_ID}" \
+                    --resource-group "${RESOURCE_GROUP_NAME}" \
+                    --name "${EXTENSION_NAME}" \
+                    --extension-type "$EXTENSION_TYPE" \
+                    --auto-upgrade "$EXT_AUTO_UPGRADE" \
+                    --scope cluster \
+                    --release-train "$RELEASE_TRAIN" \
+                    --configuration-settings $EXTENSION_SETTINGS \
+                    --no-wait \
+                    -o tsv |tail -n1|tr -d "[:cntrl:]") && echo_info "$EXTENSION_INSTALL_STATE"
+        check_extension_status "${ARC_CLUSTER_NAME}" "${CLUSTER_TYPE}"
+    fi
 }
 
 check_extension_status(){
