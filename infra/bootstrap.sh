@@ -92,9 +92,9 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Permissions on RG"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"
 
-    echo_title "Ensuring Registry"
+    echo_title "Ensuring Registry ${REGISTRY_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME}"
-    echo_title "Ensuring Registry of tomorrow"
+    echo_title "Ensuring Registry of tomorrow ${REGISTRY_NAME_TOMORROW}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME_TOMORROW}"
     
     echo_title "Ensuring CPU compute"
