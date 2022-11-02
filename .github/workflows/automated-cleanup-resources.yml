@@ -27,6 +27,13 @@ jobs:
       with:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
       continue-on-error: true
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: cli
+      continue-on-error: true
     - name: Perform Cleanup
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
