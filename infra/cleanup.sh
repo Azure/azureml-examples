@@ -37,4 +37,4 @@ done
 # delete registry of yesterday
 RegistryToBeDeleted=DemoRegistry$(date -d '-1 days' +'%m%d')
 echo "Deleting registry $RegistryToBeDeleted"
-az resource delete -n $RegistryToBeDeleted --resource-type Microsoft.MachineLearningServices/registries
+az resource delete -n $RegistryToBeDeleted -g $RESOURCE_GROUP_NAME --resource-type Microsoft.MachineLearningServices/registries
