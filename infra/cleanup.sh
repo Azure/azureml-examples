@@ -35,4 +35,6 @@ for compute_name in "${amlcompute_to_delete[@]}"; do
 done
 
 # delete registry of yesterday
-az resource delete -n DemoRegistry$(date -d '-1 days' +'%m%d') --resource-type Microsoft.MachineLearningServices/registries
+RegistryToBeDeleted=DemoRegistry$(date -d '-1 days' +'%m%d')
+echo "Deleting registry $RegistryToBeDeleted"
+az resource delete -n $RegistryToBeDeleted --resource-type Microsoft.MachineLearningServices/registries
