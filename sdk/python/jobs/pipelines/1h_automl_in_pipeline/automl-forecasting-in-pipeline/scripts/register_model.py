@@ -28,8 +28,6 @@ if __name__ == "__main__":
         ws = run.experiment.workspace
 
     model = Model.register(
-        ws,
-        model_path=args.model_path,
-        model_name=args.model_base_name,
+        ws, model_path=args.model_path, model_name=args.model_base_name,
     )
     print("Registered version {0} of model {1}".format(model.version, model.name))
