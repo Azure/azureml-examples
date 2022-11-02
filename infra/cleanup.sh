@@ -34,3 +34,5 @@ for compute_name in "${amlcompute_to_delete[@]}"; do
   fi
 done
 
+# delete registry of yesterday
+az resource delete -n DemoRegistry$(date -d '-1 days' +'%m%d') --resource-type Microsoft.MachineLearningServices/registries
