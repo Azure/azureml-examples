@@ -43,11 +43,14 @@ def init():
     global output_dir
     global automl_settings
     global model_uid
+    global forecast_quantiles
+    
     logger.info("Initialization of the run.")
     parser = argparse.ArgumentParser("Parsing input arguments.")
     parser.add_argument("--output-dir", dest="out", required=True)
     parser.add_argument("--model-name", dest="model", default=None)
     parser.add_argument("--model-uid", dest="model_uid", default=None)
+    parser.add_argument("--forecast_quantiles", nargs='*', type=float, help="forecast quantiles list", default=None)
 
     parsed_args, _ = parser.parse_known_args()
     model_name = parsed_args.model
@@ -55,6 +58,7 @@ def init():
     target_column_name = automl_settings.get("label_column_name")
     output_dir = parsed_args.out
     model_uid = parsed_args.model_uid
+    forecast_quantiles = parsed_args.forecast_quantiles
     os.makedirs(output_dir, exist_ok=True)
     os.environ["AUTOML_IGNORE_PACKAGE_VERSION_INCOMPATIBILITIES".lower()] = "True"
 
@@ -143,6 +147,15 @@ def run_backtest(data_input_name: str, file_name: str, experiment: Experiment):
     x_pred["actual_level"] = y_test
     x_pred["backtest_iteration"] = f"iteration_{last_training_date}"
     date_safe = RE_INVALID_SYMBOLS.sub("_", last_training_date)
+
+    # Adding the forecast quantile logic
+    if(forecast_quantiles):
+        fitted_model.quantiles = forecast_quantiles 
+        forecast_quantile_df = fitted_model.forecast_quantiles(X_test)
+        merge_keys = [automl_settings[constants.TimeSeries.TIME_COLUMN_NAME]]
+        merge_keys.extend([automl_settings[constants.TimeSeries.GRAIN_COLUMN_NAMES]])
+        x_pred = pd.merge(x_pred,forecast_quantile_df,how ='left',on = merge_keys)
+
     x_pred.to_csv(os.path.join(output_dir, f"iteration_{date_safe}.csv"), index=False)
     return x_pred
 
