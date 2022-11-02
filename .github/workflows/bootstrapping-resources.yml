@@ -211,9 +211,10 @@ jobs:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       run: |
         # login to azcopy with AZURE_CREDENTIALS
-        export AZCOPY_SPA_CLIENT_SECRET=$(echo "$AZURE_CREDENTIALS" | jq -r .clientSecret)
-        CLIENT_ID=$(echo "$AZURE_CREDENTIALS" | jq -r .clientId)
-        azcopy login --service-principal --application-id "${CLIENT_ID}"
+        export AZCOPY_SPA_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq '.clientSecret' -r)
+        export AZCOPY_SPA_APP_ID=$(echo $AZURE_CREDENTIALS | jq '.clientId' -r)
+        export AZCOPY_SPA_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq '.tenantId' -r)
+        azcopy login --service-principal --application-id $AZCOPY_SPA_APP_ID --tenant-id $AZCOPY_SPA_TENANT_ID
         source "${{ github.workspace }}/infra/sdk_helpers.sh";
         source "${{ github.workspace }}/infra/init_environment.sh";
         echo_title "Copying data"
