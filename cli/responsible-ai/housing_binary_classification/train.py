@@ -5,7 +5,7 @@ import argparse
 import json
 import os
 
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -41,7 +41,7 @@ def parse_args():
     return args
 
 
-def get_regression_model_pipeline(continuous_features, categorical_features):
+def get_classification_model_pipeline(continuous_features, categorical_features):
     # We create the preprocessing pipelines for both numeric and
     # categorical data.
     numeric_transformer = Pipeline(steps=[("scaler", StandardScaler())])
@@ -62,7 +62,7 @@ def get_regression_model_pipeline(continuous_features, categorical_features):
     pipeline = Pipeline(
         steps=[
             ("preprocessor", transformations),
-            ("regressor", RandomForestRegressor()),
+            ("regressor", RandomForestClassifier()),
         ]
     )
     return pipeline
@@ -86,7 +86,7 @@ def main(args):
     continuous_features = args.continuous_features
     categorical_features = args.categorical_features
 
-    pipeline = get_regression_model_pipeline(
+    pipeline = get_classification_model_pipeline(
         continuous_features=continuous_features,
         categorical_features=categorical_features,
     )
