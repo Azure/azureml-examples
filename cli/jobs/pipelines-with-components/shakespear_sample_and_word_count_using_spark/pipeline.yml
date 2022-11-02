@@ -1,4 +1,4 @@
-git a$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
 description: 'submit a pipeline with spark job'
