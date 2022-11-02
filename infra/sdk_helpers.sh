@@ -97,7 +97,7 @@ function ensure_registry_local(){
         sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
         sed -i "s/<LOCATION>/$LOCATION/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
         cat $ROOT_DIR/infra/infra_resources/registry-demo.yml
-        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/infra/infra_resources/registry-demo.yml || echo "Failed to create registry $LOCAL_REGISTRY_NAME, will retry"
+        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/infra/infra_resources/registry-demo.yml --name $LOCAL_REGISTRY_NAME || echo "Failed to create registry $LOCAL_REGISTRY_NAME, will retry"
         registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
         if [[ "${registry_exists}" = "[]" ]]; then
             echo_info "Retry creating registry ${LOCAL_REGISTRY_NAME}" >&2
