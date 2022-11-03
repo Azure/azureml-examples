@@ -2,4 +2,4 @@ $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: cloud-folder-wasbs-example
 description: Data asset created from folder in cloud using wasbs URL.
 type: uri_folder
-path: wasbs://.blob.core.windows.net//example-data/
+path: wasbs://account-name.blob.core.windows.net/container-name/example-data/
