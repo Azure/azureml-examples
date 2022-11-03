@@ -68,6 +68,7 @@ else
   exit 1
 fi
 
+#<get_endpoint_details> 
 # Get key
 echo "Getting access key..."
 KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv )
@@ -76,6 +77,7 @@ KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey
 echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
 echo "Scoring url is $SCORING_URL"
+#</get_endpoint_details> 
 
 # <test_deployment>
 RES=$(curl -d '{"input": 1}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL)
