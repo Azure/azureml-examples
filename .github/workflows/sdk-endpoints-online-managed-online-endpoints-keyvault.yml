@@ -21,63 +21,64 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with: 
-        python-version: "3.8"
-    - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
-    - name: bootstrap resources
-      run: |
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: pip install notebook reqs
+        run: pip install -r sdk/python/dev-requirements.txt
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZUREML_CREDENTIALS}}
+      - name: bootstrap resources
+        run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra
-      continue-on-error: false
-    - name: setup SDK
-      run: |
+        working-directory: infra
+        continue-on-error: false
+      - name: setup SDK
+        run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-      working-directory: sdk/python
-      continue-on-error: true
-    - name: setup-cli
-      run: |
+        working-directory: sdk/python
+        continue-on-error: true
+      - name: setup-cli
+        run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: run endpoints/online/managed/online-endpoints-keyvault.ipynb
-      run: |
+        working-directory: cli
+        continue-on-error: true
+      - name: run endpoints/online/managed/online-endpoints-keyvault.ipynb
+        run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "online-endpoints-keyvault.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
+          export CLIENT_ID=$(echo "$AZURE_CREDENTIALS" | jq -r .clientId)
           papermill -k python online-endpoints-keyvault.ipynb online-endpoints-keyvault.output.ipynb
-      working-directory: sdk/python/endpoints/online/managed
-    - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: online-endpoints-keyvault
-        path: sdk/python/endpoints/online/managed
+        working-directory: sdk/python/endpoints/online/managed
+      - name: upload notebook's working folder as an artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: online-endpoints-keyvault
+          path: sdk/python/endpoints/online/managed
 
-    - name: Send IcM on failure
-      if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
-        connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
-        certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
-        private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
-        args: |
+      - name: Send IcM on failure
+        if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
+        uses: ./.github/actions/generate-icm
+        with:
+          host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
+          connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
+          certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
+          private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
+          args: |
             incident:
                 Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'endpoints/online/managed/online-endpoints-keyvault.ipynb'"
                 Summary: |
