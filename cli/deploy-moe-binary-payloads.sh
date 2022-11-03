@@ -6,8 +6,6 @@ ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 # </set_variables>
 
-ENDPOINT_NAME=endpt-moe-bp-4267
-
 BASE_PATH="endpoints/online/managed/binary-payloads"
 
 # Helper function to change parameters in yaml files
