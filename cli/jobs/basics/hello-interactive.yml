@@ -7,14 +7,18 @@ compute: azureml:cpu-cluster
 
 services: 
   my_vscode: 
-    job_service_type: vs_code 
+    job_service_type: vs_code
+    nodes: all
   my_jupyter_lab: 
-    job_service_type: jupyter_lab 
+    job_service_type: jupyter_lab
+    nodes: all
   my_tensorboard:
     job_service_type: tensor_board
     properties:
       logDir: "logs/tblogs"
+    nodes: all # Use the `nodes` property to pick which node you want to enable interactive services on. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
 #  my_ssh:
 #    job_service_type: tensor_board
 #    properties:
 #      sshPublicKeys: <paste the entire pub key content>
+#    nodes: all
