@@ -1,0 +1,21 @@
+$schema: http://azureml/sdk-2-0/SparkComponent.json
+
+type: spark
+code: ./src_files
+description: "spark job example"
+environment: azureml:condaenv:1
+compute: azureml:synapsecompute
+entry:
+  file: main.py
+conf:
+  spark.driver.cores: 1
+  spark.driver.memory: 2g
+  spark.executor.cores: 2
+  spark.executor.memory: 2g
+  spark.executor.instances: 1
+  spark.dynamicAllocation.enabled: True
+  spark.dynamicAllocation.minExecutors: 1
+  spark.dynamicAllocation.maxExecutors: 5
+  spark.jars.packages: com.microsoft.ml.spark:mmlspark_2.11:0.15
+  spark.jars.repositories: https://mmlspark.azureedge.net/maven
+  spark.jars.excludes: slf4j

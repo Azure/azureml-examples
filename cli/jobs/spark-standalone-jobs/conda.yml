@@ -1,0 +1,6 @@
+channels:
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.8
+name: project_environment
