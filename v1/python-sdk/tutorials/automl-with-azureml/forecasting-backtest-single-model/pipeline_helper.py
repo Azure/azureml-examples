@@ -45,7 +45,7 @@ def get_backtest_pipeline(
     :param step_size: The number of periods to step back in backtesting.
     :param step_number: The number of backtesting iterations.
     :param model_uid: The uid to mark models from this run of the experiment.
-    :param forecast_quantiles: The forecast quantiles that are required in the inference. 
+    :param forecast_quantiles: The forecast quantiles that are required in the inference.
     :return: The pipeline to be used for model retraining.
              **Note:** The output will be uploaded in the pipeline output
              called 'score'.
