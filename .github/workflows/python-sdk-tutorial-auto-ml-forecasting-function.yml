@@ -56,9 +56,15 @@ jobs:
     - name: run auto-ml-forecasting-function.ipynb
       run: papermill -k python auto-ml-forecasting-function.ipynb auto-ml-forecasting-function.output.ipynb
       working-directory: v1/python-sdk/tutorials/automl-with-azureml/forecasting-forecast-function
+    - name: check notebook output
+      run: |
+         python scripts/validation/check_notebook_output.py \
+                --file_name auto-ml-forecasting-function.output.ipynb \
+                --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-forecast-function \
+                --check warning stderr
     - name: check experiment result
       run: |
-         python v1/scripts/validation/check_experiment_result.py \
+         python scripts/validation/check_experiment_result.py \
                 --file_name auto-ml-forecasting-function.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-forecast-function \
                 --experiment_name automl-forecast-function-demo \
