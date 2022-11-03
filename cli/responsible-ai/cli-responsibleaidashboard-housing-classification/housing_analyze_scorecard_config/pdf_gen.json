@@ -1,0 +1,13 @@
+{
+  "Model":
+    {
+      "ModelName": "Housing classification",
+      "ModelType": "Classification",
+      "ModelSummary": "<model summary>"
+    },
+  "Metrics":
+    {
+      "accuracy_score": {"threshold": ">=0.7"},
+      "precision_score": {}
+    }
+}
