@@ -41,7 +41,7 @@ az ml model create --name nyc-taxi-model --version $version --type mlflow_model 
 }
 
 # copy model created in workspace to registry
-az ml model create --registry-name ContosoMLjun14 --path azureml://subscriptions/$ws_sub/resourceGroups/$ws_rg/workspaces/$ws_name/models/nyc-taxi-model/versions/$version || {
+az ml model create --registry-name <REGISTRY_NAME> --path azureml://subscriptions/$ws_sub/resourceGroups/$ws_rg/workspaces/$ws_name/models/nyc-taxi-model/versions/$version || {
     echo "model create in registry failed"; exit 1;
 }
 

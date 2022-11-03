@@ -1,7 +1,23 @@
 import pandas as pd
 import numpy as np
 
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+def mean_absolute_error(actual, pred):
+    """Calculate mean absolute error."""
+    return np.mean(np.abs(actual - pred))
+
+
+def mean_squared_error(actual, pred):
+    """Calculate mean squared error."""
+    return np.mean((actual - pred) ** 2)
+
+
+def r2_score(actual, pred):
+    """Calculate r2 score"""
+    numerator = ((actual - pred) ** 2).sum()
+    denominator = ((actual - np.mean(actual)) ** 2).sum()
+
+    return 1.0 - numerator / denominator
 
 
 def APE(actual, pred):
@@ -34,7 +50,5 @@ def calculate_metrics(actual, pred):
     metrics_dict["mean absolute error"] = mean_absolute_error(actual_safe, pred_safe)
     metrics_dict["mean_absolute_percentage_error"] = MAPE(actual_safe, pred_safe)
     metrics_dict["root mean squared error"] = rmse
-    metrics_dict["normalized root mean squared error"] = rmse / np.abs(
-        actual_safe.max() - actual_safe.min()
-    )
+
     return pd.DataFrame(metrics_dict.items(), columns=["metric name", "score"])
