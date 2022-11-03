@@ -14,6 +14,11 @@ NOT_TESTED_NOTEBOOKS = [
     "debug-online-endpoints-locally-in-visual-studio-code"
     "online-endpoints-managed-identity-sai",
     "online-endpoints-managed-identity-uai",
+    "pipeline_with_spark_nodes",
+    "interactive_data_wrangling",
+    "attach_manage_spark_pools",
+    "submit_spark_pipeline_jobs",
+    "submit_spark_standalone_jobs",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
