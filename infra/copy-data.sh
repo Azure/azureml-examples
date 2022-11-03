@@ -13,13 +13,16 @@ datastore="workspaceblobstore"
 
 # query subscription and group
 
+tenant_id=$(az account get-access-token --query tenant --output tsv)
 subscription=$(az account show --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
 
 group=$(az ml workspace show --query resource_group -o tsv | tail -n1 | tr -d "[:cntrl:]")
 
 # query principal
-
 principal=$(az ad signed-in-user show --query objectId -o tsv | tail -n1 | tr -d "[:cntrl:]")
+# Check we're logged in as a user principal
+upn=$(az ad signed-in-user show --query userPrincipalName --output tsv)
+[[ -z "$upn" ]] && error "Must be logged in as a user principal."
 
 # query datastore
 
@@ -31,22 +34,24 @@ endpoint=$(az ml datastore show -n $datastore --query endpoint -o tsv | tail -n1
 
 protocol=$(az ml datastore show -n $datastore --query protocol -o tsv | tail -n1 | tr -d "[:cntrl:]")
 
+storageId=$(az storage account show --name ${STORAGE_ACCOUNT_NAME?} --query id --output tsv)
+
 # build strings
 destination="$protocol://${STORAGE_ACCOUNT_NAME?}.blob.$endpoint/$container/$datapath/"
 echo $destination
 
-# give access to blob container
+# Grant permission, Storage Blob Data Owner on the storage account
 
-az role assignment create \
-    --role "Storage Blob Data Owner" \
-    --assignee $principal \
-    --scope "/subscriptions/$subscription/resourceGroups/$group/providers/Microsoft.Storage/storageAccounts/$account"
+echo "az role assignment create --role \"Storage Blob Data Owner\" --assignee $upn --scope $storageId" >&2
+az role assignment create --role "Storage Blob Data Owner" --assignee $upn --scope $storageId >&2
+[[ $? -ne 0 ]] && error "Could not add Storage Blob Data Owner role"
 
 # let permissions propogate
 
-sleep 360
+sleep 30
 
-azcopy login
+# Using the credentials passed from workflow.
+# azcopy login --service-principal --application-id "$principal" --tenant-id="$tenant_id"
 
 for i in {0..1}
 

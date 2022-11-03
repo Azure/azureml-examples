@@ -16,10 +16,8 @@ outputs:
   pipeline_job_evaluation_report:
     mode: upload
 
-#settings:
-#  datastore: azureml:workspaceblobstore
-  
-compute: azureml:cpu-cluster
+settings:
+ default_compute: azureml:cpu-cluster
 
 jobs:
   train_job:
