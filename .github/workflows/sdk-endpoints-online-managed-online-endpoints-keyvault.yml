@@ -54,6 +54,8 @@ jobs:
         working-directory: cli
         continue-on-error: true
       - name: run endpoints/online/managed/online-endpoints-keyvault.ipynb
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
