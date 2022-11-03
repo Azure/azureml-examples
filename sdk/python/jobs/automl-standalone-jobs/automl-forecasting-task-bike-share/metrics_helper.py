@@ -15,11 +15,9 @@ def mean_squared_error(actual, pred):
 def r2_score(actual, pred):
     """Calculate r2 score"""
     numerator = ((actual - pred) ** 2).sum()
-    denominator = (
-        (actual - np.mean(actual)) ** 2
-    ).sum()
+    denominator = ((actual - np.mean(actual)) ** 2).sum()
 
-    return 1. - numerator / denominator
+    return 1.0 - numerator / denominator
 
 
 def APE(actual, pred):
