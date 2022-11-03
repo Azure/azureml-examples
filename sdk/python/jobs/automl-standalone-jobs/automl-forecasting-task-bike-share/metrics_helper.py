@@ -1,7 +1,25 @@
 import pandas as pd
 import numpy as np
 
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+def mean_absolute_error(actual, pred):
+    """Calculate mean absolute error."""
+    return np.mean(np.abs(actual - pred))
+
+
+def mean_squared_error(actual, pred):
+    """Calculate mean squared error."""
+    return np.mean((actual - pred) ** 2)
+
+
+def r2_score(actual, pred):
+    """Calculate r2 score"""
+    numerator = ((actual - pred) ** 2).sum()
+    denominator = (
+        (actual - np.mean(actual)) ** 2
+    ).sum()
+
+    return 1. - numerator / denominator
 
 
 def APE(actual, pred):
