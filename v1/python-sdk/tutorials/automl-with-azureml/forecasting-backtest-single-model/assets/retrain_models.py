@@ -140,7 +140,9 @@ def run_backtest(data_input_name: str, file_name: str, experiment: Experiment):
     if forecast_quantiles:
         if 0.5 not in forecast_quantiles:
             forecast_quantiles.append(0.5)
-        fitted_model.quantiles = forecast_quantiles
+    else:
+        forecast_quantiles = [0.5]
+    fitted_model.quantiles = forecast_quantiles
 
     x_pred = fitted_model.forecast_quantiles(X_test)
     x_pred.rename({0.5, "predicted_level"}, axis=1, inplace=True)
