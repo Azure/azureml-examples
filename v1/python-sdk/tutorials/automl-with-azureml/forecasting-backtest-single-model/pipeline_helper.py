@@ -139,8 +139,7 @@ def get_backtest_pipeline(
         prs_args.append(model_uid)
     if forecast_quantiles:
         prs_args.append("--forecast_quantiles")
-        for val in range(len(forecast_quantiles)):
-            prs_args.append(forecast_quantiles[val])
+        prs_args.extend(forecast_quantiles)
     backtest_prs = ParallelRunStep(
         name=parallel_step_name,
         parallel_run_config=back_test_config,
