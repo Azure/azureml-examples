@@ -1,0 +1,47 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+
+type: automl
+experiment_name: dpv2-cli-text-ner
+description: A text named entity recognition job using CoNLL 2003 data
+
+compute: azureml:gpu-cluster
+
+task: text_ner
+primary_metric: accuracy
+log_verbosity: debug
+
+limits:
+  timeout_minutes: 60
+  max_nodes: 4
+  max_trials: 2
+  max_concurrent_trials: 2
+
+training_data:
+  path: "./training-mltable-folder"
+  type: mltable
+validation_data:
+  type: mltable
+  path: "./validation-mltable-folder"
+
+# featurization:
+#   dataset_language: "eng"
+
+sweep:
+  sampling_algorithm: random
+  early_termination:
+    type: bandit
+    evaluation_interval: 2
+    slack_amount: 0.05
+    delay_evaluation: 6
+
+search_space:
+  - model_name:
+      type: choice
+      values: [bert_base_cased, roberta_base]
+  - model_name:
+      type: choice
+      values: [distilroberta_base]
+    weight_decay:
+      type: uniform
+      min_value: 0.01
+      max_value: 0.1

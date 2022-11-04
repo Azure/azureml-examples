@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/tutorials/using-rapids/**
+      - v1/python-sdk/tutorials/using-rapids/**
       - .github/workflows/python-sdk-tutorial-using-rapids.yml
-      - python-sdk/requirements.txt
+      - v1/python-sdk/requirements.txt
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -22,7 +22,7 @@ jobs:
     - name: install snappy
       run: sudo apt-get install libsnappy-dev
     - name: pip install
-      run: pip install -r python-sdk/requirements.txt
+      run: pip install -r v1/python-sdk/requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -33,7 +33,7 @@ jobs:
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run 1.train-and-hpo.ipynb
       run: papermill 1.train-and-hpo.ipynb - -k python
-      working-directory: python-sdk/tutorials/using-rapids
+      working-directory: v1/python-sdk/tutorials/using-rapids
     - name: run 2.train-multi-gpu.ipynb
       run: papermill 2.train-multi-gpu.ipynb - -k python
-      working-directory: python-sdk/tutorials/using-rapids
+      working-directory: v1/python-sdk/tutorials/using-rapids

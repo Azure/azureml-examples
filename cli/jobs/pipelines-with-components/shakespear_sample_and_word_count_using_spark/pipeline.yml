@@ -1,0 +1,49 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: 'submit a pipeline with spark job'
+
+inputs:
+  # input type can be uri_file,uri_folder,mltable
+  # mode can be only be direct
+  file_input:
+    type: uri_file
+    path: ./data/shakespeare.txt
+    mode: direct
+  sample_rate: 0.01
+
+outputs:
+  # output type can be uri_file, uri_folder,mltable
+  # mode can only be direct
+  file_output:
+    type: uri_file
+    mode: direct
+
+jobs:
+  sample_word:
+    type: spark
+    component: ./sample_word/component.yml
+    inputs:
+      file_input: ${{parent.inputs.file_input}}
+      sample_rate: ${{parent.inputs.sample_rate}}
+
+    outputs:
+      file_output: ${{parent.outputs.file_output}}
+
+    resources:
+      instance_type: Standard_E8S_V3
+      runtime_version: 3.1.0
+
+  count_word:
+    type: spark
+    component: ./word_count/component.yml
+    inputs:
+      file_input: 
+        path: ${{parent.jobs.sample_word.outputs.file_output}}
+        mode: direct
+
+    resources:
+      instance_type: Standard_E8S_V3
+      runtime_version: 3.1.0
+
+

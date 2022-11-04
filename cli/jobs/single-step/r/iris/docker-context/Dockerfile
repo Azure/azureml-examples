@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:4.0.0-ubuntu18.04
+FROM rocker/tidyverse:latest
 
 # Install python
 RUN apt-get update -qq && \
@@ -10,6 +10,7 @@ RUN pip install -U pip
 
 # Install azureml-mlflow
 RUN pip install azureml-mlflow
+RUN pip install mlflow
 
 # Create link for python
 RUN ln -f /usr/bin/python3 /usr/bin/python

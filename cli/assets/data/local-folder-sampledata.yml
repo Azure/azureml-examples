@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: sampledata
+description: Dataset created from local folder.
+type: uri_folder
+path: example-data/

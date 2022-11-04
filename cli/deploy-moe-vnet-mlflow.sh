@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 
 # This is the instructions for docs.User has to execute this from a test VM - that is why user cannot use defaults from their local setup
@@ -27,12 +29,13 @@ export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet/mlflow/sample-request.
 export ENV_DIR_PATH="endpoints/online/managed/vnet/mlflow/environment"
 # </set_env_vars>
 
-export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup-repo/azure-github.sh
+export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup/setup-repo/azure-github.sh
 export SUBSCRIPTION=$(az account show --query "id" -o tsv)
 export RESOURCE_GROUP=$(az configure -l --query "[?name=='group'].value" -o tsv)
 export LOCATION=$(az configure -l --query "[?name=='location'].value" -o tsv)
+# remove all whitespace from location
+export LOCATION="$(echo -e "${LOCATION}" | tr -d '[:space:]')"
 export IDENTITY_NAME=uai$SUFFIX
-export ACR_NAME=cr$SUFFIX
 export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME=$ENDPOINT_NAME
 # VM name used during creation: endpoints/online/managed/vnet/setup_vm/vm-main.bicep
@@ -54,14 +57,20 @@ fi
 # We use a different workspace for managed vnet endpoints
 az configure --defaults workspace=$WORKSPACE
 
+export ACR_NAME=$(az ml workspace show -n $WORKSPACE --query container_registry -o tsv | cut -d'/' -f9-)
+if [[ -z "$ACRNAME" ]]
+then
+    export ACR_NAME=$(az acr list --query '[].{Name:name}' --output tsv)
+fi
+
 ### setup VM & deploy/test ###
 # if vm exists, wait for 15 mins before trying to delete
 export VM_EXISTS=$(az vm list -o tsv --query "[?name=='$VM_NAME'].name")
 if [ "$VM_EXISTS" != "" ];
 then
    echo "VM already exists from previous run. Waiting for 15 mins before deleting."
-	sleep 15m
-	az vm delete -n $VM_NAME -y
+   sleep 15m
+   az vm delete -n $VM_NAME -y
 fi
 
 # Create the VM. In the docs we will provide instructions to create a VM using az vm create -n $VM_NAME

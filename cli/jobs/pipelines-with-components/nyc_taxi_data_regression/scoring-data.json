@@ -1,0 +1,32 @@
+{
+    "input_data": {
+      "columns": [
+        "distance",
+        "dropoff_latitude",
+        "dropoff_longitude",
+        "passengers",
+        "pickup_latitude",
+        "pickup_longitude",
+        "store_forward",
+        "vendor",
+        "pickup_weekday",
+        "pickup_month",
+        "pickup_monthday",
+        "pickup_hour",
+        "pickup_minute",
+        "pickup_second",
+        "dropoff_weekday",
+        "dropoff_month",
+        "dropoff_monthday",
+        "dropoff_hour",
+        "dropoff_minute",
+        "dropoff_second"
+      ],
+      "index": [0,1,2],
+      "data": [    
+            [0.83,40.69454574584961,-73.97611236572266,1,40.6938362121582,-73.98726654052734,0,2,6,1,3,21,2,35,6,1,3,21,5,52],
+            [6.27,40.745811462402344,-73.98792266845703,1,40.71521377563477,-73.96052551269531,0,2,5,1,9,17,35,52,5,1,9,18,5,29],
+            [18.51,40.64547729492188,-73.77632141113281,1,40.78546905517578,-73.94915771484375,0,2,3,1,21,10,18,2,3,1,21,10,46,36]
+        ]
+    }
+  }
