@@ -72,9 +72,7 @@ check_lock_file(){
 }
 
 install_tools(){
-
-    sudo apt-get install xmlstarlet
-    
+        
     az upgrade --all --yes
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
