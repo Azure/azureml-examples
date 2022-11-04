@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
 type: pipeline
 
-name: train_pipeline_component
-display_name: train_pipeline_component
+name: train_eval_score_pipeline_component
+display_name: train_eval_score_pipeline_component
 description: Dummy train-score-eval pipeline component with local components
 
 inputs:

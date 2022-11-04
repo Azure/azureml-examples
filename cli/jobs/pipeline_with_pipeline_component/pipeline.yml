@@ -30,7 +30,7 @@ settings:
 jobs:
   train_and_evaludate_model1:
     type: pipeline
-    component: azureml://registries/UnsecureTest-reg-bani/components/bani_pipe_comp_reg/versions/1.0
+    component: azureml://registries/<registry_name>/components/<component_name>/versions/<version>
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
@@ -40,7 +40,7 @@ jobs:
 
   train_and_evaludate_model2:
     type: pipeline
-    component: azureml://registries/UnsecureTest-reg-bani/components/bani_pipe_comp_reg/versions/1.0
+    component: azureml://registries/<registry_name>/components/<component_name>/versions/<version>
     inputs:
       training_data: ${{parent.inputs.pipeline_job_training_data}}
       test_data: ${{parent.inputs.pipeline_job_test_data}}
