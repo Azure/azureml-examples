@@ -14,13 +14,10 @@ EXCLUDED_RESOURCES = [
     "instance",
     "connections",
     "compute/cluster-user-identity",
-<<<<<<< HEAD
     "compute/attached-spark",
     "compute/attached-spark-system-identity",
     "compute/attached-spark-user-identity",
-=======
     "registry",
->>>>>>> main
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
 EXCLUDED_SCHEDULES = []
