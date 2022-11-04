@@ -137,7 +137,7 @@ def get_backtest_pipeline(
     if model_uid is not None:
         prs_args.append("--model-uid")
         prs_args.append(model_uid)
-    if forecast_quantiles is not None:
+    if forecast_quantiles:
         prs_args.append("--forecast_quantiles")
         for val in range(len(forecast_quantiles)):
             prs_args.append(forecast_quantiles[val])
