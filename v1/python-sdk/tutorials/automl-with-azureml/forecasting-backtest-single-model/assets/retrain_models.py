@@ -145,7 +145,7 @@ def run_backtest(data_input_name: str, file_name: str, experiment: Experiment):
     fitted_model.quantiles = forecast_quantiles
 
     x_pred = fitted_model.forecast_quantiles(X_test)
-    x_pred.rename({0.5, "predicted_level"}, axis=1, inplace=True)
+    x_pred.rename(columns={0.5, "predicted_level"}, inplace=True)
     x_pred["actual_level"] = y_test
     x_pred["backtest_iteration"] = f"iteration_{last_training_date}"
     date_safe = RE_INVALID_SYMBOLS.sub("_", last_training_date)
