@@ -1,4 +1,4 @@
-name: DemoRegistry-<VERSION>
+name: DemoRegistry
 description: Basic registry with one primary region and to additional regions
 tags:
   foo: bar
