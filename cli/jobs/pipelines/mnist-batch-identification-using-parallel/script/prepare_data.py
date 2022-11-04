@@ -14,7 +14,6 @@ args, _ = parser.parse_known_args()
 
 data_folder = os.path.join(args.output_folder, 'mnist')
 os.makedirs(data_folder, exist_ok=True)
-print(f"data_folder is {data_folder}")
 urllib.request.urlretrieve('https://azureopendatastorage.blob.core.windows.net/mnist/t10k-images-idx3-ubyte.gz',
                            filename=os.path.join(os.getcwd(), 'test-images.gz'))
 
