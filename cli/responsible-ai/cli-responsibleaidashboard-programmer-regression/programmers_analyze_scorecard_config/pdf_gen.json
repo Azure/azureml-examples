@@ -1,0 +1,27 @@
+{
+  "Model": 
+    {
+      "ModelName": "GPT2 Access",
+      "ModelType": "Regression",
+      "ModelSummary": "This is a regression model to analyzer how likely a programmer is given access to gpt 2"
+    },
+  "Metrics":
+    {
+      "mean_absolute_error": {"threshold": "<=20"},
+      "mean_squared_error": {}
+    },
+  "FeatureImportance":
+    {
+      "top_n": 6
+    },
+  "DataExplorer": 
+    {
+      "features": ["YOE", "age"]
+    },
+  "Fairness":
+    {
+      "metric": ["mean_squared_error", "mean_absolute_error"],
+      "sensitive_features": ["IDE", "style"],
+      "fairness_evaluation_kind": "difference"
+    }
+}
