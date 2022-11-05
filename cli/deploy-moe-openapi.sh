@@ -71,7 +71,7 @@ az ml online-deployment update -f endpoints/online/managed/openapi/deployment.ym
 # </create_custom_deployment> 
 
 # Check if deployment was successful 
-deploy_status=`az ml online-deployment show --name custom --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
+deploy_status=`az ml online-deployment show --name openapi --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
