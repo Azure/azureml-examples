@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'automl|java'
+        default: 'java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -38,7 +38,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-basics.*yml$'
-      JOB_FILTER: 'automl|java'
+      JOB_FILTER: 'java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-basics.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1

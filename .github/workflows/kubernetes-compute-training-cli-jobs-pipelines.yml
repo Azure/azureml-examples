@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'image_classification_with_densenet|tensorflow-image-segmentation'
+        default: 'image_classification_with_densenet|spark|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -38,7 +38,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-pipelines.*yml$'
-      JOB_FILTER: 'image_classification_with_densenet|tensorflow-image-segmentation'
+      JOB_FILTER: 'image_classification_with_densenet|spark|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-pipelines.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1

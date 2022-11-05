@@ -71,7 +71,7 @@ jobs:
 
     - name: collect jobs
       run: |
-        echo "cli/jobs/pipelines/tensorflow-image-segmentation/pipeline.yml"  | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share/cli-automl-forecasting-task-bike-share.yml"  | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 

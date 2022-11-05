@@ -11,11 +11,11 @@ on:
       JOB_SELECTOR:
         description: 'Job selector used with grep command to select job workflows'
         required: false
-        default: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
+        default: '^cli-jobs-automl.*yml$'
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
+        default: 'cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -38,7 +38,7 @@ jobs:
       LOCATION: eastus
 
       JOB_SELECTOR: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
-      JOB_FILTER: 'multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
+      JOB_FILTER: 'cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
