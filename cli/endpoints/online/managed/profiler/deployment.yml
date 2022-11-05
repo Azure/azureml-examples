@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: <ENDPOINT_NAME>
+model:
+  path: ../../model-1/model/
+code_configuration: 
+  code: ../../model-1/onlinescoring/
+  scoring_script: score.py
+environment:
+  conda_file: ../../model-1/environment/conda.yml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+instance_type: Standard_DS2_v2
+instance_count: 1
+request_settings:
+  request_timeout_ms: 3000
+  max_concurrent_requests_per_instance: 1024
