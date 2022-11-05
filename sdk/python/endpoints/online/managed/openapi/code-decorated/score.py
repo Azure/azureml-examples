@@ -9,7 +9,6 @@ from inference_schema.parameter_types.standard_py_parameter_type import (
     StandardPythonParameterType,
 )
 
-
 def init():
     global model
 

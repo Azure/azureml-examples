@@ -4,8 +4,6 @@
 # <set_variables>
 RAND=`echo $RANDOM`
 ENDPOINT_NAME="endpt-moe-$RAND"
-BASE_PATH=endpoints/online/managed/openapi
-MODEL1_PATH=endpoints/online/model-1
 # </set_variables>
 
 # <create_endpoint> 
@@ -38,13 +36,14 @@ echo "OpenAPI (Swagger) url is $OPENAPI_URL"
 # </get_key_and_openapi_url>
 
 # <create_decorated_deployment>
-az ml online-deployment create -f $BASE_PATH/decorated/deployment.yml \
+az ml online-deployment create -f endpoints/online/managed/openapi/deployment.yml \
   --set endpoint_name=$ENDPOINT_NAME \
+  --set code_configuration.code=code-decorated \
   --all-traffic
 # </create_decorated_deployment> 
 
 # Check if deployment was successful 
-deploy_status=`az ml online-deployment show --name decorated --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
+deploy_status=`az ml online-deployment show --name openapi --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -57,7 +56,7 @@ fi
 echo "Testing scoring... "
 # <test_decorated_scoring>
 curl -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
-    -d @$MODEL1_PATH/sample-request.json $SCORING_URL
+    -d @endpoints/online/model-1/sample-request.json $SCORING_URL
 # </test_decorated_scoring>
 
 echo "Getting swagger..."
@@ -65,11 +64,11 @@ echo "Getting swagger..."
 curl -H "Authorization: Bearer $KEY" $SWAGGER_URL
 # </get_decorated_swagger>
 
-# <create_decorated_deployment>
-az ml online-deployment create -f $BASE_PATH/custom/deployment.yml \
+# <create_custom_deployment>
+az ml online-deployment update -f endpoints/online/managed/openapi/deployment.yml \
   --set endpoint_name=$ENDPOINT_NAME \
-  --all-traffic
-# </create_decorated_deployment> 
+  --set code_configuration.code=code-custom
+# </create_custom_deployment> 
 
 # Check if deployment was successful 
 deploy_status=`az ml online-deployment show --name custom --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
@@ -83,16 +82,16 @@ else
 fi
 
 echo "Testing scoring... "
-# <test_decorated_scoring>
+# <test_custom_scoring>
 curl -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
-    -d @$MODEL1_PATH/sample-request.json $SCORING_URL
-# </test_decorated_scoring>
+    -d @endpoints/online/model-1/sample-request.json $SCORING_URL
+# </test_custom_scoring>
 
 echo "Getting swagger..."
-# <get_decorated_swagger>
+# <get_custom_swagger>
 curl -H "Authorization: Bearer $KEY" $SWAGGER_URL
-# </get_decorated_swagger>
+# </get_custom_swagger>
 
-# <delete_online_endpoint>
+# <delete_custom_endpoint>
 az ml online-endpoint delete -y -n $ENDPOINT_NAME --no-wait
-# </delete_online_endpoint>
+# </delete_custom_endpoint>
