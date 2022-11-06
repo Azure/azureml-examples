@@ -40,6 +40,12 @@ jobs:
       WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-basics.yml
 
     steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
     - name: setup environment
       run: |
         bash .github/kubernetes-compute/tool.sh set_default_env
@@ -51,14 +57,6 @@ jobs:
           echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
           echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
         fi
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.8"
-    - name: install tools
-      run: |
         bash .github/kubernetes-compute/tool.sh install_tools
         set -x +e
         bash cli/setup.sh 
