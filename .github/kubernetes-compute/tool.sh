@@ -91,7 +91,7 @@ install_tools(){
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl  \
     && sudo mv ./kubectl /usr/local/bin/kubectl  
-    
+
     pip install azureml-core 
     pip install shyaml
 
@@ -670,6 +670,12 @@ report_metrics(){
 
     # stop mdm
     stop_mdm_container
+
+    rm -f metric_endpoint.txt
+    rm -f mdm_account.txt
+    rm -f mdm_namespace.txt
+    rm -f $CERT_PATH/key.pem
+    rm -f $CERT_PATH/cert.pem
 }
 
 install_mdm_dependency(){

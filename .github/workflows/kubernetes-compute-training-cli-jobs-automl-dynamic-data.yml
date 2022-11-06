@@ -24,46 +24,32 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      SUBSCRIPTION: 6560575d-fa06-4e7d-95fb-f962e74efd7a
-      RESOURCE_GROUP: azureml-examples
-      WORKSPACE: amlarc-githubtest-ws
-      LOCATION: eastus
-
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-bad-cases.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
-
-      FILE_TICKET: true
-      KEY_VAULT_NAME: amlarcgithubworkflowkv
-      REPOSITORY: https://github.com/Azure/azureml-examples
       WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl-dynamic-data.yml
 
     steps:
-    - name: replace env from workflow_dispatch
-      if: ${{ github.event_name == 'workflow_dispatch' }}
-      run: |
-        echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
-        echo "TIMEOUT=${{ github.event.inputs.TIMEOUT }}" | tee -a $GITHUB_ENV
-        echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
-        echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
       with:
         python-version: "3.8"
-    - name: install tools
+    - name: setup environment
       run: |
-        pip install shyaml
+        bash .github/kubernetes-compute/tool.sh set_default_env
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
+          echo "TIMEOUT=${{ github.event.inputs.TIMEOUT }}" | tee -a $GITHUB_ENV
+          echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
+          echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
+        fi
+        bash .github/kubernetes-compute/tool.sh install_tools
         pip install azure-ai-textanalytics
         pip install azure-identity
         pip install azure-ai-ml
         pip install azure-cli
-
-        bash .github/kubernetes-compute/tool.sh install_tools
-      timeout-minutes: 30
-    - name: install ml
-      run: |
         set -x +e
         bash cli/setup.sh 
         az version
@@ -73,6 +59,7 @@ jobs:
       with:
         creds: ${{secrets.AZ_CREDS}}
       timeout-minutes: 30
+
     - name: collect jobs
       run: |
         echo "cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
@@ -110,17 +97,7 @@ jobs:
 
     - name: run jobs
       run: |
-        for job in $(cat $JOB_LIST_FILE); do
-          if [[ "$job" = *"yml" ]]; then
-            echo "Run job: $job"
-            bash .github/kubernetes-compute/tool.sh run_cli_job $job -cr &
-            sleep 60
-          else
-            echo "Found invalid job: $job"
-          fi
-        done
-
-        wait
+        bash .github/kubernetes-compute/tool.sh run_jobs_from_file "$JOB_LIST_FILE"
       timeout-minutes: 300
 
     - name: check jobs
@@ -130,38 +107,10 @@ jobs:
       timeout-minutes: 30
 
     # report metrics
-    - name: download_metrics_dependency
-      if: ${{ always() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
-        fi
-      timeout-minutes: 30
-    - name: start_mdm
-      if: ${{ always() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          # download certificates
-          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
-          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
-          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
-          export KEY_PEM_NAME=AMLARC-KEY-PEM
-          export CERT_PEM_NAME=AMLARC-CERT-PEM
-          bash .github/kubernetes-compute/tool.sh download_metrics_info
-          bash .github/kubernetes-compute/tool.sh start_mdm_container
-        fi
-      timeout-minutes: 30
     - name: report_metrics
       if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
-          bash .github/kubernetes-compute/tool.sh report_test_result_metrics
+          bash .github/kubernetes-compute/tool.sh report_metrics upload_test_result_metrics
         fi
-      timeout-minutes: 30   
-    - name: stop_mdm
-      if: ${{ always() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          bash .github/kubernetes-compute/tool.sh stop_mdm_container
-        fi
-      timeout-minutes: 30
+      timeout-minutes: 120
