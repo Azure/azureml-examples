@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'spark|java|sweep'
+        default: 'spark|java|sweep|pytorch-cifar-distributed-job'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JOB_SELECTOR: '^cli-jobs-single-step.*yml$'
-      JOB_FILTER: 'spark|java|sweep'
+      JOB_FILTER: 'spark|java|sweep|pytorch-cifar-distributed-job'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-single-step.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
