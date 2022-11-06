@@ -65,7 +65,6 @@ jobs:
         echo "cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
-        echo "cli/jobs/pipelines/automl/image-object-detection-task-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
         
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
