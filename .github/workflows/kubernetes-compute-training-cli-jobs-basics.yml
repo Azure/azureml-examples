@@ -42,6 +42,7 @@ jobs:
     steps:
     - name: setup environment
       run: |
+        bash .github/kubernetes-compute/tool.sh set_default_env
         if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
           echo "LOCATION=${{ github.event.inputs.TEST_REGION }}" | tee -a $GITHUB_ENV
           echo "JOB_SELECTOR=${{ github.event.inputs.JOB_SELECTOR }}" | tee -a $GITHUB_ENV
@@ -49,8 +50,6 @@ jobs:
           echo "TIMEOUT=${{ github.event.inputs.TIMEOUT }}" | tee -a $GITHUB_ENV
           echo "FILE_TICKET=${{ github.event.inputs.FILE_TICKET }}" | tee -a $GITHUB_ENV
           echo "WORKSPACE=${{ github.event.inputs.WORKSPACE }}" | tee -a $GITHUB_ENV
-        else
-          bash .github/kubernetes-compute/tool.sh set_default_env
         fi
     - name: check out repo
       uses: actions/checkout@v2
