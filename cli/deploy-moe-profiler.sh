@@ -114,3 +114,11 @@ sleep 10
 # <download_files> 
 az ml job download --name $job_name --download-path endpoints/online/managed/profiler/foo
 # </download_files> 
+
+# <delete_endpoint> 
+az ml online-endpoint delete -n $ENDPOINT_NAME
+# </delete_endpoint> 
+
+# <delete_compute>
+az ml compute delete -n $PROFILER_COMPUTE_NAME 
+# </delete_compute> 

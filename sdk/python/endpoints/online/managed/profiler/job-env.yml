@@ -1,23 +1,22 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >
   python -m online_endpoints_model_profiler --payload_path ${{inputs.payload}}
-
 experiment_name: profiling-job
-display_name: <% SKU_CONNECTION_PAIR %>
+display_name: <SKU_CONNECTION_PAIR> 
 environment:
   image: mcr.microsoft.com/azureml/online-endpoints-model-profiler:latest
 environment_variables:
-  ONLINE_ENDPOINT: "<% ENDPOINT_NAME %>"
-  DEPLOYMENT: "blue"
-  PROFILING_TOOL: "wrk"
-  DURATION: "30"
+  ONLINE_ENDPOINT: <ENDPOINT_NAME> 
+  DEPLOYMENT: blue
+  PROFILING_TOOL: wrk
+  DURATION: "10"
   CONNECTIONS: "1"
   TARGET_RPS: "50"
   CLIENTS: "1"
   TIMEOUT: "10"
   THREAD: "1"
-compute: "azureml:<% COMPUTE_NAME %>"
+compute: azureml:<PROFILER_COMPUTE_NAME>
 inputs:
   payload:
     type: uri_file
-    path: azureml://datastores/workspaceblobstore/paths/profiling_payloads/<% ENDPOINT_NAME %>_payload.txt
+    path: azureml://datastores/workspaceblobstore/paths/profiling_payloads/<ENDPOINT_NAME>_payload.txt
