@@ -1,4 +1,4 @@
-name: sdk-jobs-automl-standalone-jobs-automl-forecasting-github-dau-auto-ml-forecasting-github-dau
+name: sdk-endpoints-batch-imagenet-classifier-batch
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-github-dau-auto-ml-forecasting-github-dau.yml
+      - sdk/python/endpoints/batch/**
+      - .github/workflows/sdk-endpoints-batch-imagenet-classifier-batch.yml
       - sdk/python/dev-requirements.txt
       - sdk/python/setup.sh
 jobs:
@@ -39,21 +39,21 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-forecasting-github-dau/auto-ml-forecasting-github-dau.ipynb
+    - name: run endpoints/batch/imagenet-classifier-batch.ipynb
       run: |
-          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" auto-ml-forecasting-github-dau.ipynb
-          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" auto-ml-forecasting-github-dau.ipynb
-          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" auto-ml-forecasting-github-dau.ipynb
-          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" auto-ml-forecasting-github-dau.ipynb
+          sed -i -e "s/<SUBSCRIPTION_ID>/6560575d-fa06-4e7d-95fb-f962e74efd7a/g" imagenet-classifier-batch.ipynb
+          sed -i -e "s/<RESOURCE_GROUP>/azureml-examples/g" imagenet-classifier-batch.ipynb
+          sed -i -e "s/<AML_WORKSPACE_NAME>/main/g" imagenet-classifier-batch.ipynb
+          sed -i -e "s/DefaultAzureCredential/AzureCliCredential/g" imagenet-classifier-batch.ipynb
 
-          papermill -k python -p compute_name automl-cpu-cluster auto-ml-forecasting-github-dau.ipynb auto-ml-forecasting-github-dau.output.ipynb
-      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
+          papermill -k python imagenet-classifier-batch.ipynb imagenet-classifier-batch.output.ipynb
+      working-directory: sdk/python/endpoints/batch
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: auto-ml-forecasting-github-dau
-        path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
+        name: imagenet-classifier-batch
+        path: sdk/python/endpoints/batch
 
     - name: Send IcM on failure
       if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
@@ -65,11 +65,11 @@ jobs:
         private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
         args: |
             incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/automl-standalone-jobs/automl-forecasting-github-dau/auto-ml-forecasting-github-dau.ipynb'"
+                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'endpoints/batch/imagenet-classifier-batch.ipynb'"
                 Summary: |
-                    Notebook 'jobs/automl-standalone-jobs/automl-forecasting-github-dau/auto-ml-forecasting-github-dau.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                    Notebook 'endpoints/batch/imagenet-classifier-batch.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
                 Severity: 4
                 RoutingId: "github://azureml-examples"
                 Status: Active
                 Source:
-                    IncidentId: "jobs/automl-standalone-jobs/automl-forecasting-github-dau/auto-ml-forecasting-github-dau.ipynb[${{ github.ref_name }}]"
+                    IncidentId: "endpoints/batch/imagenet-classifier-batch.ipynb[${{ github.ref_name }}]"
