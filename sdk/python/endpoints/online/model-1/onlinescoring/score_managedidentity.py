@@ -16,17 +16,17 @@ def access_blob_storage_sdk():
 
     blob_client = BlobClient(
         account_url=f"https://{storage_account}.blob.core.windows.net/",
-        container_name=storage_container, 
-        blob_name=file_name, 
-        credential=credential
+        container_name=storage_container,
+        blob_name=file_name,
+        credential=credential,
     )
     blob_contents = blob_client.download_blob().content_as_text()
     logging.info(f"Blob contains: {blob_contents}")
-    
+
 
 def get_token_rest():
     """
-    Retrieve an access token via REST.  
+    Retrieve an access token via REST.
     """
 
     access_token = None
@@ -54,7 +54,7 @@ def get_token_rest():
 
 def access_blob_storage_rest():
     """
-    Access a blob via REST. 
+    Access a blob via REST.
     """
 
     logging.info("Trying to access blob storage...")
@@ -75,6 +75,7 @@ def access_blob_storage_rest():
     resp = requests.get(blob_url, headers=auth_headers)
     resp.raise_for_status()
     logging.info(f"Blob contains: {resp.text}")
+
 
 def init():
     global model
