@@ -21,9 +21,6 @@ PROFILER_COMPUTE_NAME=profiler
 PROFILER_COMPUTE_SIZE="Standard_DS4_v2"
 # </set_variables>
 
-ENDPOINT_NAME=endpt-moe-27998
-PROFILER_COMPUTE_NAME=profiler2
-
 # <create_endpoint>  
 az ml online-endpoint create -n $ENDPOINT_NAME
 # </create_endpoint> 
