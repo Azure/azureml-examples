@@ -18,17 +18,6 @@ inputs:
     path: data/validation-mltable-folder
 
 jobs:
-  preprocessing_node:
-    type: command
-    component: file:./components/component_preprocessing.yaml
-    inputs:
-      train_data: ${{parent.inputs.image_object_detection_training_data}}
-      validation_data: ${{parent.inputs.image_object_detection_validation_data}}
-    outputs:
-      preprocess_train_data:
-        type: mltable
-      preprocess_validation_data:
-        type: mltable
   image_object_detection_node:
     type: automl
     task: image_object_detection
@@ -39,8 +28,8 @@ jobs:
       max_trials: 10
       max_concurrent_trials: 2
     target_column_name: label
-    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocess_train_data}}
-    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocess_validation_data}}
+    training_data: ${{parent.inputs.image_object_detection_training_data}}
+    validation_data: ${{parent.inputs.image_object_detection_validation_data}}
     training_parameters:
       early_stopping: True
       evaluation_frequency: 1
