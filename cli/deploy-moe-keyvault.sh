@@ -2,7 +2,7 @@
 set -e
 
 
-az ad signed_in_user show
+az ad signed-in-user show
 exit 1
 
 # <set_variables>
