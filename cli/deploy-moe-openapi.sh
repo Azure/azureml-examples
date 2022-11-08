@@ -10,7 +10,7 @@ ENDPOINT_NAME="endpt-moe-$RAND"
 az ml online-endpoint create -n $ENDPOINT_NAME
 # </create_endpoint> 
 
-# Check if endpoint was successful
+# <check_endpoint> 
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $endpoint_status
 if [[ $endpoint_status == "Succeeded" ]]
@@ -21,11 +21,12 @@ else
   exit 1
 fi
 
+# </check_endpoint> 
+
 # <get_key_and_openapi_url>
 echo "Getting access key..."
 KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv )
 
-# Get scoring url
 echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
 echo "Scoring url is $SCORING_URL"
@@ -42,7 +43,7 @@ az ml online-deployment create -f endpoints/online/managed/openapi/deployment.ym
   --all-traffic
 # </create_decorated_deployment> 
 
-# Check if deployment was successful 
+# <check_deployment> 
 deploy_status=`az ml online-deployment show --name openapi --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
@@ -52,6 +53,7 @@ else
   echo "Deployment failed"
   exit 1
 fi
+# </check_deployment> 
 
 echo "Testing scoring... "
 # <test_decorated_scoring>
@@ -70,7 +72,7 @@ az ml online-deployment update -f endpoints/online/managed/openapi/deployment.ym
   --set code_configuration.code=code-custom
 # </create_custom_deployment> 
 
-# Check if deployment was successful 
+# <check_deployment> 
 deploy_status=`az ml online-deployment show --name openapi --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
@@ -80,6 +82,7 @@ else
   echo "Deployment failed"
   exit 1
 fi
+# </check_deployment> 
 
 echo "Testing scoring... "
 # <test_custom_scoring>
