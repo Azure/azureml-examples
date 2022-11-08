@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-
-az ad signed-in-user show
-exit 1
-
 # <set_variables>
 ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 GROUP=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
@@ -13,21 +9,12 @@ KV_NAME="kv${RANDOM}"
 
 BASE_PATH=endpoints/online/managed/keyvault
 
-# Helper function to change parameters in yaml files
-change_vars() {
-  for FILE in "$@"; do 
-    TMP="${FILE}_"
-    cp $FILE $TMP 
-    readarray -t VARS < <(cat $TMP | grep -oP '{{.*?}}' | sed -e 's/[}{]//g'); 
-    for VAR in "${VARS[@]}"; do
-      sed -i "s/{{${VAR}}}/${!VAR}/g" $TMP
-    done
-  done
-}
-
 # <create_keyvault> 
 az keyvault create -n $KV_NAME -g $GROUP
-# </create_keyvault> 
+# </create_keyvault>
+
+az keyvault show -n $KV_NAME
+exit 1
 
 # <set_secret> 
 az keyvault secret set --vault-name $KV_NAME -n multiplier --value 7
@@ -58,7 +45,10 @@ az keyvault set-policy -n $KV_NAME --object-id $ENDPOINT_PRINCIPAL_ID --secret-p
 
 # <create_deployment>
 change_vars $BASE_PATH/keyvault-deployment.yml
-az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml_ --all-traffic
+az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml \
+  --set endpoint_name=$ENDPOINT_NAME \
+  --set environment_variables.KV_SECRET_MULTIPLIER="multiplier@https://$KV_NAME.vault.azure.net" \
+  --all-traffic
 # </create-deployment> 
 
 # Check if deployment was successful 
