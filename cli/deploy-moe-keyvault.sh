@@ -13,7 +13,7 @@ BASE_PATH=endpoints/online/managed/keyvault
 az keyvault create -n $KV_NAME -g $GROUP
 # </create_keyvault>
 
-echo az account show
+az account show
 exit 1
 
 # <set_secret> 
