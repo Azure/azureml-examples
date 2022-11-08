@@ -29,6 +29,8 @@ def run(mini_batch):
     print(f"run method start: {__file__}, run({mini_batch})")
     resultList = []
     for test in mini_batch:
+        if not test.endswith(".csv"):
+            continue
         X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
         y_test = X_test.pop(target_column_name).values
 
