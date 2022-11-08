@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+
+az ad signed_in_user show
+exit 1
+
 # <set_variables>
 ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 GROUP=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
