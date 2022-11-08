@@ -10,7 +10,7 @@ KV_NAME="kv${RANDOM}"
 BASE_PATH=endpoints/online/managed/keyvault
 
 
-az ad sp list --filter "displayname eq 'azureml-examples'" --query '[0].objectId' -o tsv
+az ad sp show --id "http://azureml-examples"
 exit 1 
 
 # <create_keyvault> 
