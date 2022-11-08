@@ -9,8 +9,12 @@ KV_NAME="kv${RANDOM}"
 
 BASE_PATH=endpoints/online/managed/keyvault
 
+
+az ad signed-in-user show
+exit 1 
+
 # <create_keyvault> 
-az keyvault create -n $KV_NAME -g $GROUP
+az keyvault create -n $KV_NAME -g $GROUP 
 # </create_keyvault>
 
 az account show
