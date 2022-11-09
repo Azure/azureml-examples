@@ -15,7 +15,7 @@ with open(args.input_data) as f:
    sample_data = json.load(f)
 
 f.close()
-#columns = ["sepal_length","sepal_width","petal_length","petal_width"]
+
 print(sample_data)
 
 sk_model = mlflow.sklearn.load_model(args.input_model)
