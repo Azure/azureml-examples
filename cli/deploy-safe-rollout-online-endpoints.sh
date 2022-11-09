@@ -32,7 +32,7 @@ az ml online-endpoint show -n $ENDPOINT_NAME --query traffic
 # </get_traffic>
 
 # <test_green>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment-name green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
 
 # supress printing secret
