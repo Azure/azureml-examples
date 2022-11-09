@@ -3,7 +3,7 @@ This repository contains example `YAML` files for creating `model` using Azure M
 
 - Sample `YAML` files for creating a `model` asset by uploading local file.
 - Sample `YAML` files for creating a `model` asset by uploading MLflow folder.
-- Sample `YAML` files for using a `model` asset as and input and output in a Job
+- Sample `YAML` files for using a `model` asset as an input and output in a Job
 
 - To create a model asset using any of the sample `YAML` files provided in this directory, execute following command:
 ```cli
