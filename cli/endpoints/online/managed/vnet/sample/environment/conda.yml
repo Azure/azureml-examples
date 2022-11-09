@@ -9,4 +9,4 @@ dependencies:
   - scipy=1.7.1
   - pip:    
     - joblib==1.0.1
-    - azureml-inference-server-http==0.7.6
+    - azureml-defaults==1.38.0
