@@ -7,7 +7,7 @@ display_name: pipeline-with-image-object-detection
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:gpu-cluster
+  default_compute: azureml:b-dedicated-Standard-NC12
 
 inputs:
   image_object_detection_training_data:

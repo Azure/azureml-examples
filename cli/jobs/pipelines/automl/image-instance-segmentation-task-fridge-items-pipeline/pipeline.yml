@@ -7,7 +7,7 @@ display_name: pipeline-with-image-instance-segmentation
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:gpu-cluster
+  default_compute: azureml:b-dedicated-Standard-NC12
 
 inputs:
   image_instance_segmentation_training_data:
@@ -64,4 +64,13 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.image_instance_segmentation_node.outputs.best_model}}
       model_base_name: fridge_items_segmentation_model
-      
+    outputs:
+      model_id_path:
+        type: uri_folder
+  deploy_model_node:
+    type: command
+    component: file:./components/component_deploy_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      endpoint_name: fridge-item-endpoint
+      deployment_name: fridge-item-deployment         
