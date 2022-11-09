@@ -71,10 +71,18 @@ check_lock_file(){
     fi
 }
 
-install_tools(){
+set_default_env(){
+    echo "SUBSCRIPTION=6560575d-fa06-4e7d-95fb-f962e74efd7a" | tee -a $GITHUB_ENV
+    echo "RESOURCE_GROUP=azureml-examples" | tee -a $GITHUB_ENV
+    echo "WORKSPACE=amlarc-githubtest-ws" | tee -a $GITHUB_ENV
+    echo "LOCATION=eastus" | tee -a $GITHUB_ENV
+    echo "FILE_TICKET=true" | tee -a $GITHUB_ENV
+    echo "KEY_VAULT_NAME=amlarcgithubworkflowkv" | tee -a $GITHUB_ENV
+    echo "REPOSITORY=https://github.com/Azure/azureml-examples" | tee -a $GITHUB_ENV
+}
 
-    sudo apt-get install xmlstarlet
-    
+install_tools(){
+        
     az upgrade --all --yes
     az extension add -n connectedk8s --yes
     az extension add -n k8s-extension --yes
@@ -85,6 +93,7 @@ install_tools(){
     && sudo mv ./kubectl /usr/local/bin/kubectl  
 
     pip install azureml-core 
+    pip install shyaml
 
     pip list || true
     az version || true
@@ -420,54 +429,16 @@ delete_workspace(){
 JOB_STATUS_FAILED="Failed"
 JOB_STATUS_COMPLETED="Completed"
 
-# run cli test job
-run_cli_job(){
-    JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
-    CONVERTER_ARGS="${@:2}"
-
-    SRW=" --subscription $SUBSCRIPTION --resource-group $RESOURCE_GROUP --workspace-name $WORKSPACE "
-    TIMEOUT="${TIMEOUT:-60m}"
-
-    # preprocess job spec for amlarc compute
-    python $SCRIPT_DIR/convert.py -i $JOB_YML $CONVERTER_ARGS
-    
-    # submit job
-    echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
-    run_id=$(az ml job create $SRW -f $JOB_YML --query name -o tsv)
-
-    # check run id
-    echo "[JobRunId] $JOB_YML $run_id" | tee -a $RESULT_FILE
-    if [[ "$run_id" ==  "" ]]; then 
-        echo "[JobStatus] $JOB_YML SubmissionFailed" | tee -a $RESULT_FILE
-        return 1
-    fi
-
-    # stream job logs
-    timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
-
-    # show job status
-    status=$(az ml job show $SRW -n $run_id --query status -o tsv)
-    echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
-    
-    # check status
-    if [[ $status ==  "${JOB_STATUS_FAILED}" ]]; then
-        return 2
-    elif [[ $status != "${JOB_STATUS_COMPLETED}" ]]; then 
-        timeout 5m az ml job cancel $SRW -n $run_id
-        return 3
-    fi
-}
-
 collect_jobs_from_workflows(){
-    OUPUT_FILE=${1:-job-list.txt}
+    OUTPUT_FILE=${1:-job-list.txt}
     SELECTOR=${2:-cli-jobs-basics}
     FILTER=${3:-java}
     WORKFLOWS_DIR=".github/workflows" 
 
-    echo "WORKFLOWS_DIR: $WORKFLOWS_DIR, OUPUT_FILE: $OUPUT_FILE, FILTER: $FILTER"
+    echo "WORKFLOWS_DIR: $WORKFLOWS_DIR, OUTPUT_FILE: $OUTPUT_FILE, FILTER: $FILTER"
 
-    rm -f $OUPUT_FILE
-    touch $OUPUT_FILE
+    rm -f $OUTPUT_FILE
+    touch $OUTPUT_FILE
 
     for workflow in $(ls -a $WORKFLOWS_DIR | grep -E "$SELECTOR" | grep -E -v "$FILTER" ); do
 
@@ -488,7 +459,7 @@ collect_jobs_from_workflows(){
             echo "Found: run: $run wkdir: $wkdir"
 
             job_yml=$wkdir/$(echo $run | awk '{print $NF}' | xargs)
-            echo "${job_yml}" | tee -a $OUPUT_FILE
+            echo "${job_yml}" | tee -a $OUTPUT_FILE
         done
 
         if [ "$job_yml" == "" ]; then
@@ -497,11 +468,26 @@ collect_jobs_from_workflows(){
 
     done
 
-    echo "Found $(cat $OUPUT_FILE | wc -l) jobs:"
-    cat $OUPUT_FILE
+    echo "Found $(cat $OUTPUT_FILE | wc -l) jobs:"
+    cat $OUTPUT_FILE
 }
 
-run_cli_automl_job(){
+run_jobs_from_file(){
+    JOB_LIST_FILE=${1:-job-list.txt}
+    for job in $(cat $JOB_LIST_FILE); do
+        if [[ "$job" = *"yml" ]]; then
+            echo "Run job: $job"
+            run_cli_job $job -cr &
+            sleep 120
+        else
+            echo "Found invalid job: $job"
+        fi
+    done
+
+    wait
+}
+
+run_cli_job(){
     JOB_YML="${1:-examples/training/simple-train-cli/job.yml}"
     CONVERTER_ARGS="${@:2}"
 
@@ -518,6 +504,7 @@ run_cli_automl_job(){
     python $SCRIPT_DIR/convert.py -i $JOB_SPEC_FILE $CONVERTER_ARGS
 
     # submit job
+    echo "[$(date)] Create job: $JOB_YML"
     echo "[JobSubmission] $JOB_YML" | tee -a $RESULT_FILE
     run_id=$(az ml job create $SRW -f $JOB_SPEC_FILE --query name -o tsv)
 
@@ -531,10 +518,12 @@ run_cli_automl_job(){
         return 1
     fi
 
-    # stream job logs
+    # stream job 
+    echo "[$(date)] Stream job logs: $JOB_YML"
     timeout ${TIMEOUT} az ml job stream $SRW -n $run_id
 
     # show job status
+    echo "[$(date)] Show job status: $JOB_YML"
     status=$(az ml job show $SRW -n $run_id --query status -o tsv)
     echo "[JobStatus] $JOB_YML ${status}" | tee -a $RESULT_FILE
 
@@ -661,6 +650,34 @@ export REPOSITORY="${REPOSITORY:-Repository}"
 export WORKFLOW="${WORKFLOW:-Workflow}"
 export REPEAT="${REPEAT:-5}"
 
+report_metrics(){
+    # download metrics dependency
+    install_mdm_dependency
+
+    # download certificates
+    export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
+    export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
+    export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
+    export KEY_PEM_NAME=AMLARC-KEY-PEM
+    export CERT_PEM_NAME=AMLARC-CERT-PEM
+    bash .github/kubernetes-compute/tool.sh download_metrics_info
+
+    # start mdm
+    bash .github/kubernetes-compute/tool.sh start_mdm_container
+
+    # upload metrics
+    $@
+
+    # stop mdm
+    stop_mdm_container
+
+    rm -f metric_endpoint.txt
+    rm -f mdm_account.txt
+    rm -f mdm_namespace.txt
+    rm -f $CERT_PATH/key.pem
+    rm -f $CERT_PATH/cert.pem
+}
+
 install_mdm_dependency(){
     sudo apt install socat
 }
@@ -723,7 +740,7 @@ stop_mdm_container(){
     show_mdm_container
 }
 
-report_cluster_setup_metrics(){
+upload_cluster_setup_metrics(){
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
     MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
     METRIC_NAME="${METRIC_NAME:-GithubWorkflowClusterSetup}"
@@ -736,29 +753,7 @@ report_cluster_setup_metrics(){
 
 }
 
-report_inference_metrics(){
-    MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
-    MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
-    METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
-    METRIC_NAME="${METRIC_NAME:-GithubWorkflowTestResult}"
-    jobstatus="${jobstatus:-Completed}"
-    job="${job:-job}"
-
-    for i in $(seq 1 $REPEAT); do
-        # Report heartbeat
-        VALUE=100
-        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_HEARTBEAT_NAME}'", "Dims": { "Repository":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
-        VALUE=0
-        if [ "${jobstatus}" == "${JOB_STATUS_COMPLETED}" ]; then
-            VALUE=100
-        fi
-        echo '{"Account":"'${MDM_ACCOUNT}'","Namespace":"'${MDM_NAMESPACE}'","Metric":"'${METRIC_NAME}'", "Dims": {"Job":"'${job}'", "REPOSITORY":"'${REPOSITORY}'", "Workflow":"'${WORKFLOW}'"}}:'${VALUE}'|g' | socat -t 1 - UDP-SENDTO:127.0.0.1:${STATSD_PORT}
-        sleep 60
-    done
-
-}
-
-report_test_result_metrics(){
+upload_test_result_metrics(){
     MDM_ACCOUNT="${MDM_ACCOUNT:-$(cat mdm_account.txt )}"
     MDM_NAMESPACE="${MDM_NAMESPACE:-$(cat mdm_namespace.txt)}"
     METRIC_HEARTBEAT_NAME="${METRIC_HEARTBEAT_NAME:-GithubWorkflowHeartBeat}"
@@ -790,11 +785,6 @@ report_test_result_metrics(){
         sleep 60
     done
 
-}
-
-help(){
-    echo "All functions:"
-    declare -F
 }
 
 
