@@ -1,4 +1,4 @@
-name: DemoRegistry2-<VERSION>
+name: DemoRegistry2
 description: Registry with additional configuration for storage accounts
 tags:
   foo: bar

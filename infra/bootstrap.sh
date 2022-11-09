@@ -75,11 +75,12 @@ echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCA
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
-echo_title "Ensuring Resource group"
-"$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
 
 # RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
+
+    echo_title "Ensuring Resource group"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
@@ -91,8 +92,10 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Permissions on RG"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"
 
-    echo_title "Ensuring Registry"
+    echo_title "Ensuring Registry ${REGISTRY_NAME}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME}"
+    echo_title "Ensuring Registry of tomorrow ${REGISTRY_NAME_TOMORROW}"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME_TOMORROW}"
     
     echo_title "Ensuring CPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 12 "Standard_DS3_v2"
@@ -149,9 +152,9 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     done
     echo_info ">>> Done creating amlarc clusters"
     "$SCRIPT_DIR"/sdk_helpers.sh vmss_upgrade_policy_all_rg
-    echo_title "Copying data"
-    "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
-    "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
+    # echo_title "Copying data"
+    # "$SCRIPT_DIR"/sdk_helpers.sh install_azcopy
+    # "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
 
 else
     "$SCRIPT_DIR"/sdk_helpers.sh update_dataset

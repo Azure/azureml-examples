@@ -120,6 +120,7 @@ jobs:
     - name: setup_compute
       run: |
         COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh setup_compute
+        COMPUTE="spark31" bash .github/kubernetes-compute/tool.sh setup_compute
       timeout-minutes: 30
     - name: setup_instance_type
       run: |
@@ -129,50 +130,11 @@ jobs:
         bash .github/kubernetes-compute/tool.sh setup_instance_type gpu $GPU_INSTANCE_TYPE
       timeout-minutes: 30
 
-    # report metrics
-    - name: download_metrics_dependency
+    - name: report_metrics
       if: ${{ always() && github.event_name != 'pull_request' }}
       run: |
         if [ "$FILE_TICKET" == "true" ]; then
-          bash .github/kubernetes-compute/tool.sh install_mdm_dependency
+          bash .github/kubernetes-compute/tool.sh report_metrics upload_cluster_setup_metrics
         fi
-      timeout-minutes: 30
-    - name: start_mdm
-      if: ${{ always() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          # download certificates
-          export METRIC_ENDPOINT_NAME=METRIC-ENDPOINT-PROD
-          export MDM_ACCOUNT_NAME=MDM-ACCOUNT-PROD
-          export MDM_NAMESPACE_NAME=MDM-NAMESPACE-PROD
-          export KEY_PEM_NAME=AMLARC-KEY-PEM
-          export CERT_PEM_NAME=AMLARC-CERT-PEM
-          bash .github/kubernetes-compute/tool.sh download_metrics_info
-          bash .github/kubernetes-compute/tool.sh start_mdm_container
-        fi
-      timeout-minutes: 30
-    - name: report_failure_metrics
-      if: ${{ failure() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          export VALUE=0
-          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
-          sleep 60
-        fi
-      timeout-minutes: 30
-    - name: report_succes_metrics
-      if: ${{ success() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          export VALUE=100
-          bash .github/kubernetes-compute/tool.sh report_cluster_setup_metrics
-        fi
-      timeout-minutes: 30   
-    - name: stop_mdm
-      if: ${{ always() && github.event_name != 'pull_request' }}
-      run: |
-        if [ "$FILE_TICKET" == "true" ]; then
-          bash .github/kubernetes-compute/tool.sh stop_mdm_container
-        fi
-      timeout-minutes: 30
+      timeout-minutes: 120
    
