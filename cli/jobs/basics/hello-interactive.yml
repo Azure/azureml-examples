@@ -15,7 +15,7 @@ services:
   my_tensorboard:
     job_service_type: tensor_board
     properties:
-      logDir: "logs/tblogs"
+      logDir: "outputs/tblogs"
     nodes: all # Use the `nodes` property to pick which node you want to enable interactive services on. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
 #  my_ssh:
 #    job_service_type: tensor_board
