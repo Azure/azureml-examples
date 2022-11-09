@@ -62,6 +62,7 @@ jobs:
         echo "cli/jobs/pipelines/automl/image-object-detection-task-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share/cli-automl-forecasting-task-bike-share.yml"  | tee -a $JOB_LIST_FILE
         echo "cli/jobs/pipelines-with-components/image_classification_with_densenet/pipeline.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-github-dau/cli-automl-forecasting-task-github-dau.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
     - name: run jobs

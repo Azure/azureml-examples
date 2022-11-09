@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
+        default: 'automl-forecasting-task-github-dau|cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JOB_SELECTOR: '^cli-jobs-automl.*yml$|cli-jobs-basics-hello-automl-hello-automl-job-basic.yml'
-      JOB_FILTER: 'cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
+      JOB_FILTER: 'automl-forecasting-task-github-dau|cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
