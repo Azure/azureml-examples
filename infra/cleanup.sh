@@ -27,6 +27,10 @@ echo "IDENTITY_LIST: $IDENTITY_LIST"
 AUTOSCALE_SETTINGS_LIST=$(az monitor autoscale list  --query "[*].[name]" -o tsv | grep -E "autoscale-" | sort -u)
 echo "AUTOSCALE_SETTINGS_LIST: $AUTOSCALE_SETTINGS_LIST"
 
+#Query Workspaces
+WORKSPACE_LIST=$(az ml workspace list --query "[*].[name]" -o tsv)
+echo "WORKSPACE_LIST: $WORKSPACE_LIST"
+
 # Delete online endpoints
 for i in $ONLINE_ENDPOINT_LIST; do 
     echo "Deleting online-endpoint:$i" && az ml online-endpoint delete --name $i --yes --no-wait && echo "online-endpoint delete initiated for $i" ;
@@ -86,3 +90,11 @@ done
 RegistryToBeDeleted=DemoRegistry$(date -d '-1 days' +'%m%d')
 echo "Deleting registry $RegistryToBeDeleted"
 az resource delete -n $RegistryToBeDeleted -g $RESOURCE_GROUP_NAME --resource-type Microsoft.MachineLearningServices/registries
+
+#delete workpsaces created by samples
+for workspace in $WORKSPACE_LIST; do
+    if [[ $workspace == "mlw-basic-prod-"* ]] || [[ $workspace == "mlw-basicex-prod-"* ]]; then
+        az ml workspace delete -n $workspace --yes --no-wait --all-resources
+        echo "workspace delete initiated for $workspace" ;
+    fi
+done
