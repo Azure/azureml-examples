@@ -7,5 +7,6 @@ dependencies:
   - pip:
     - tensorflow==1.15.2
     - pillow
+    - pandas
     - azureml-core
     - azureml-dataset-runtime[fuse]

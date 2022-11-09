@@ -1,5 +1,5 @@
-name: DemoRegistry2211
-description: Basic registry with one primary region and to additional regions
+name: <REGISTRY-NAME>
+description: Basic registry with one primary region
 tags:
   foo: bar
 location: East US
