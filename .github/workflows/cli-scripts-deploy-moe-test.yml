@@ -23,30 +23,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
-    - name: bootstrap resources
-      run: |
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZUREML_CREDENTIALS}}
+      - name: bootstrap resources
+        run: |
           bash bootstrap.sh
-      working-directory: infra
-      continue-on-error: false
-    - name: setup-cli
-      run: |
+        working-directory: infra
+        continue-on-error: false
+      - name: setup-cli
+        run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: test script script
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-      run: |
+        working-directory: cli
+        continue-on-error: true
+      - name: test script script
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZUREML_CREDENTIALS }}
+        run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          export CLIENT_ID=$(echo $AZURE_CREDENTIALS | jq '.clientId' -r);
+          export CLIENT_ID=$(echo $AZURE_CREDENTIALS | jq '.clientId' -r | sed "s#\"##g");
           set -e; bash -x deploy-moe-test.sh
-      working-directory: cli
+        working-directory: cli
