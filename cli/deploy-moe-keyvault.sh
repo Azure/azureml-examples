@@ -9,16 +9,9 @@ KV_NAME="kv${RANDOM}"
 
 BASE_PATH=endpoints/online/managed/keyvault
 
-
-az ad sp show --id "http://azureml-examples"
-exit 1 
-
 # <create_keyvault> 
 az keyvault create -n $KV_NAME -g $GROUP 
 # </create_keyvault>
-
-az account show
-exit 1
 
 # <set_secret> 
 az keyvault secret set --vault-name $KV_NAME -n multiplier --value 7
