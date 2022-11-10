@@ -22,6 +22,14 @@ A security scanner for Azure ML [Compute Instances](https://learn.microsoft.com/
 - **Install the scanner**: open a terminal in Azure ML Notebooks and run `sudo ./amlsecscan.py install`
 - **Run a scan**: in the terminal, run `sudo ./amlsecscan.py scan all` (this takes a few minutes)
 
+## Assessments
+
+The security scanner installs [ClamAV](https://www.clamav.net/) to report malware and [Trivy](https://github.com/aquasecurity/trivy) to report OS and Python vulnerabilities.
+
+Security scans are scheduled via CRON jobs to run either daily around 5AM or 10 minutes after OS startup. A CRON job also emits heartbeats every 10 minutes. Scans have their CPU usage limited to 20% and are deprioritized by running at priority 19.
+
+Trivy is configured to report vulnerabilities of severity either `HIGH` or `CRITICAL` for which a fix is available. The ClamAV realtime scanning is not enabled.
+
 ## Telemetry
 
 In Log Analytics, the scanner reports hearbeats to table `AmlSecurityComputeHealth_CL` and assessment results to `AmlSecurityComputeAssessments_CL`.
@@ -29,14 +37,6 @@ In Log Analytics, the scanner reports hearbeats to table `AmlSecurityComputeHeal
 Examples of Log Analytics [KQL](https://docs.microsoft.com/en-us/azure/data-explorer/kql-quick-reference) queries:
 - Recent heartbeats and scan status: `AmlSecurityComputeHealth_CL | top 100 by TimeGenerated desc`
 - Recent assessments: `AmlSecurityComputeAssessments_CL | top 100 by TimeGenerated desc`
-
-Hearbeats are emitted every 10 minutes. Scans are scheduled either daily around 5AM UTC or 10 minutes after machine reboot.
-
-Assessments cover the following areas:
-Assessment|Source
---|--
-Malware|[ClamAV](https://www.clamav.net/)
-OS + Python vulnerabilities|[Trivy](https://github.com/aquasecurity/trivy)
 
 ## Installation
 
