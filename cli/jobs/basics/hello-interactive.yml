@@ -1,22 +1,20 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: echo "hello world" | sleep 900
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+command: python hello-interactive.py && sleep 900
+code: src
+environment: AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
 compute: azureml:cpu-cluster
 
 services: 
   my_vscode: 
     job_service_type: vs_code
-    nodes: all
   my_jupyter_lab: 
     job_service_type: jupyter_lab
-    nodes: all
   my_tensorboard:
     job_service_type: tensor_board
     properties:
       logDir: "outputs/tblogs"
-    nodes: all # Use the `nodes` property to pick which node you want to enable interactive services on. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
 #  my_ssh:
 #    job_service_type: tensor_board
 #    properties:
 #      sshPublicKeys: <paste the entire pub key content>
-#    nodes: all
+#    nodes: all # Use the `nodes` property for a distributed job to run interactive services on all nodes. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
