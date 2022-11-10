@@ -46,7 +46,6 @@ jobs:
     #    properties:
     #      sshPublicKeys: <paste the entire pub key content>
     #    nodes: all # Use the `nodes` property to pick which node you want to enable interactive services on. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
-
   
   score_job:
     type: command
