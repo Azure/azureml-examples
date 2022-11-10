@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: python hello-interactive.py && sleep 900
 code: src
-environment: AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
+environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
 compute: azureml:cpu-cluster
 
 services: 
