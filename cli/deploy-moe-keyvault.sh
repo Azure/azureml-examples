@@ -3,24 +3,15 @@ set -e
 
 # <set_variables>
 ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
-GROUP=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
-KV_NAME="kv${RANDOM}"
+KV_NAME="kvexample${RANDOM}"
+RESOURCE_GROUP=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
 # </set_variables> 
-
-BASE_PATH=endpoints/online/managed/keyvault
-
-# <create_keyvault> 
-az keyvault create -n $KV_NAME -g $GROUP 
-# </create_keyvault>
-
-# <set_secret> 
-az keyvault secret set --vault-name $KV_NAME -n multiplier --value 7
-# </set_secret> 
 
 # <create_endpoint> 
 az ml online-endpoint create -n $ENDPOINT_NAME 
 # </create_endpoint> 
 
+# <check_endpoint> 
 # Check if endpoint was successful
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $endpoint_status
@@ -31,6 +22,15 @@ else
   echo "Endpoint creation failed"
   exit 1
 fi
+# </check_endpoint> 
+
+# <create_keyvault> 
+az keyvault create -n $KV_NAME -g $RESOURCE_GROUP 
+# </create_keyvault>
+
+# <set_secret> 
+az keyvault secret set --vault-name $KV_NAME -n multiplier --value 7
+# </set_secret> 
 
 # <get_endpoint_principal_id> 
 ENDPOINT_PRINCIPAL_ID=$(az ml online-endpoint show -n $ENDPOINT_NAME --query identity.principal_id -o tsv)
@@ -41,7 +41,8 @@ az keyvault set-policy -n $KV_NAME --object-id $ENDPOINT_PRINCIPAL_ID --secret-p
 # </set_access_policy> 
 
 # <create_deployment>
-az ml online-deployment create -f $BASE_PATH/keyvault-deployment.yml \
+az ml online-deployment create \
+  -f endpoints/online/managed/keyvault/keyvault-deployment.yml \
   --set endpoint_name=$ENDPOINT_NAME \
   --set environment_variables.KV_SECRET_MULTIPLIER="multiplier@https://$KV_NAME.vault.azure.net" \
   --all-traffic

@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: kvdep
 endpoint_name: <ENDPOINT_NAME>
-model: 
+model:
   path: .
 code_configuration:
   code: code
