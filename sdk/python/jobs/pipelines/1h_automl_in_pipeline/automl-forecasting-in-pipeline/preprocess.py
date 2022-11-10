@@ -37,7 +37,9 @@ def main(args):
     preprocessed_train_dataframe = get_preprocessed_data(train_dataframe)
 
     # write preprocessed train data in output path
-    preprocessed_train_data_path = os.path.join(args.preprocessed_train_data, "oj-train.csv")
+    preprocessed_train_data_path = os.path.join(
+        args.preprocessed_train_data, "oj-train.csv"
+    )
     preprocessed_train_dataframe.to_csv(
         preprocessed_train_data_path,
         index=False,
@@ -47,7 +49,9 @@ def main(args):
     # Write MLTable yaml file as well in output folder
     # Since in this example we are not doing any preprocessing, we are just copying same yaml file from input,change it if needed
     train_data_mltable_path = os.path.join(args.train_data, "MLTable")
-    preprocessed_train_data_mltable_path = os.path.join(args.preprocessed_train_data, "MLTable")
+    preprocessed_train_data_mltable_path = os.path.join(
+        args.preprocessed_train_data, "MLTable"
+    )
     # read and write MLModel yaml file for train data
     with open(train_data_mltable_path, "r") as file:
         yaml_file = yaml.safe_load(file)

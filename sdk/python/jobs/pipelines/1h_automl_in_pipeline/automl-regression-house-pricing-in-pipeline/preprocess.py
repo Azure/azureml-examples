@@ -41,7 +41,9 @@ def main(args):
     preprocessed_train_dataframe = get_preprocessed_data(train_dataframe)
 
     # write preprocessed train data in output path
-    preprocessed_train_data_path = os.path.join(args.preprocessed_train_data,"house_pricing_train.csv")
+    preprocessed_train_data_path = os.path.join(
+        args.preprocessed_train_data, "house_pricing_train.csv"
+    )
     preprocessed_train_dataframe.to_csv(
         preprocessed_train_data_path,
         index=False,
@@ -53,7 +55,9 @@ def main(args):
     preprocessed_validation_dataframe = get_preprocessed_data(validation_dataframe)
 
     # write preprocessed validation data in output path
-    preprocessed_validation_data_path = os.path.join(args.preprocessed_validation_data,"house_pricing_validation.csv")
+    preprocessed_validation_data_path = os.path.join(
+        args.preprocessed_validation_data, "house_pricing_validation.csv"
+    )
     preprocessed_validation_dataframe.to_csv(
         preprocessed_validation_data_path,
         index=False,
@@ -65,7 +69,9 @@ def main(args):
     preprocessed_test_dataframe = get_preprocessed_data(test_dataframe)
 
     # write preprocessed validation data in output path
-    preprocessed_test_data_path = os.path.join(args.preprocessed_test_data,"house_pricing_test.csv")
+    preprocessed_test_data_path = os.path.join(
+        args.preprocessed_test_data, "house_pricing_test.csv"
+    )
     preprocessed_test_dataframe.to_csv(
         preprocessed_test_data_path, index=False, header=True
     )
@@ -75,7 +81,9 @@ def main(args):
 
     # read and write MLModel yaml file for train data
     train_data_mltable_path = os.path.join(args.train_data, "MLTable")
-    preprocessed_train_data_mltable_path = os.path.join(args.preprocessed_train_data, "MLTable")
+    preprocessed_train_data_mltable_path = os.path.join(
+        args.preprocessed_train_data, "MLTable"
+    )
     with open(train_data_mltable_path, "r") as file:
         yaml_file = yaml.safe_load(file)
     with open(preprocessed_train_data_mltable_path, "w") as file:
@@ -83,7 +91,9 @@ def main(args):
 
     # read and write MLModel yaml file for validation data
     validation_data_mltable_path = os.path.join(args.validation_data, "MLTable")
-    preprocessed_validation_data_mltable_path = os.path.join(args.preprocessed_validation_data, "MLTable")
+    preprocessed_validation_data_mltable_path = os.path.join(
+        args.preprocessed_validation_data, "MLTable"
+    )
     with open(validation_data_mltable_path, "r") as file:
         yaml_file = yaml.safe_load(file)
     with open(preprocessed_validation_data_mltable_path, "w") as file:
@@ -91,7 +101,9 @@ def main(args):
 
     # read and write MLModel yaml file for validation data
     test_data_mltable_path = os.path.join(args.test_data, "MLTable")
-    preprocessed_test_data_mltable_path = os.path.join(args.preprocessed_test_data, "MLTable")
+    preprocessed_test_data_mltable_path = os.path.join(
+        args.preprocessed_test_data, "MLTable"
+    )
     with open(test_data_mltable_path, "r") as file:
         yaml_file = yaml.safe_load(file)
     with open(preprocessed_test_data_mltable_path, "w") as file:
