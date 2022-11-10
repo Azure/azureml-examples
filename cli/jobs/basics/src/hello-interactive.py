@@ -4,7 +4,6 @@ from tensorflow import keras
 import time
 import numpy as np
 
-
 data_size = 1000
 # 80% of the data is for training.
 train_pct = 0.8
