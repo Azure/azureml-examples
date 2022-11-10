@@ -238,7 +238,6 @@ jobs:
 
     if workflow_yaml != workflow_before:
         # write workflow
-        print("hrishi", workflow_file)
         with open(workflow_file, "w") as f:
             f.write(workflow_yaml)
 
