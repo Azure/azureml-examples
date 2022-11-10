@@ -112,4 +112,3 @@ cleanTestingFiles
 echo "Deleting endpoint..."
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint> 
-

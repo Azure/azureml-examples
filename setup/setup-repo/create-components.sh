@@ -5,4 +5,3 @@ az ml component create --file ../cli/jobs/pipelines-with-components/basics/1b_e2
 az ml component create --file ../cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/score.yml
 
 az ml component create --file ../cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/eval.yml
-
