@@ -17,8 +17,8 @@
 # <set_variables>
 RAND=`echo $RANDOM`
 ENDPOINT_NAME=endpt-moe-$RAND 
-PROFILER_COMPUTE_NAME=profiler-$RAND
-PROFILER_COMPUTE_SIZE="Standard_DS4_v2"
+PROFILER_COMPUTE_NAME=profiler$RAND
+PROFILER_COMPUTE_SIZE=Standard_DS4_v2
 # </set_variables>
 
 # <create_endpoint>  
