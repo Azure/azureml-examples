@@ -15,8 +15,6 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-with-sklearn",
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
-    "online-endpoints-managed-identity-sai",
-    "online-endpoints-managed-identity-uai",
     "pipeline_with_spark_nodes",
     "interactive_data_wrangling",
     "attach_manage_spark_pools",
