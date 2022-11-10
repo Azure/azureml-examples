@@ -1,16 +1,12 @@
-from azureml.contrib.services.aml_request import AMLRequest, rawhttp
-from azureml.contrib.services.aml_response import AMLResponse
-from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
+from azureml_inference_server_http.server.azureml_contrib_services.aml_request import AMLRequest, rawhttp
+from azureml_inference_server_http.server.azureml_contrib_services.aml_response import AMLResponse
 from PIL import Image
 import io
 
 default_resize = (128, 128)
 
-
 def init():
     pass
-
 
 @rawhttp
 def run(req: AMLRequest):

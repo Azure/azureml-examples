@@ -8,22 +8,9 @@ ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f
 
 BASE_PATH="endpoints/online/managed/binary-payloads"
 
-# Helper function to change parameters in yaml files
-change_vars() {
-  for FILE in "$@"; do 
-    TMP="${FILE}_"
-    cp $FILE $TMP 
-    readarray -t VARS < <(cat $TMP | grep -oP '{{.*?}}' | sed -e 's/[}{]//g'); 
-    for VAR in "${VARS[@]}"; do
-      sed -i "s/{{${VAR}}}/${!VAR}/g" $TMP
-    done
-  done
-}
-
-cleanup() {
-    rm peacock-pic.jpg
-    rm out-1.jpg
-}
+# <download_sample_data> 
+wget https://aka.ms/peacock-pic -O peacock-pic.jpg
+# </download_sample_data>
 
 # <create_endpoint> 
 az ml online-endpoint create -n $ENDPOINT_NAME 
@@ -41,13 +28,27 @@ else
 fi
 
 # <create_deployment_1>
-SCORING_SCRIPT="single-file-to-file-score.py"
-change_vars $BASE_PATH/binary-payloads-deployment.yml
-az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ --all-traffic 
+az ml online-deployment create -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml \
+  --set scoring_script=single-file-to-file-score.py \
+  --all-traffic 
 # </create_deployment_1> 
 
-az ml online-deployment get-logs -n binary-payload -e $ENDPOINT_NAME 
+# <get_endpoint_details> 
+# Get key
+echo "Getting access key..."
+KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv )
 
+# Get scoring url
+echo "Getting scoring url..."
+SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
+echo "Scoring url is $SCORING_URL"
+# </get_endpoint_details> 
+
+# <get_logs> 
+az ml online-deployment get-logs -n binary-payload -e $ENDPOINT_NAME 
+# </get_logs> 
+
+# <check_deployment> 
 # Check if deployment was successful 
 deploy_status=`az ml online-deployment show --name binary-payload --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
@@ -58,29 +59,16 @@ else
   echo "Deployment failed"
   exit 1
 fi
-
-# Get key
-echo "Getting access key..."
-KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv )
-
-# Get scoring url
-echo "Getting scoring url..."
-SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
-echo "Scoring url is $SCORING_URL"
-
-# Get test image
-wget https://aka.ms/peacock-pic -O peacock-pic.jpg
+# </check_deployment> 
 
 # <test_online_endpoint_1> 
 curl -X POST -F "file=@peacock-pic.jpg" -H "Authorization: Bearer $KEY"   $SCORING_URL -o out-1.jpg
 # <test_online_endpoint_1> 
 
-# <create_deployment_2>
-SCORING_SCRIPT="multi-file-to-json-score.py"
-change_vars $BASE_PATH/binary-payloads-deployment.yml
-az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_
-#az ml online-deployment update -e $ENDPOINT_NAME -f $BASE_PATH/binary-payloads-deployment.yml_ 
-# </create_deployment_2> 
+# <update_deployment2>
+az ml online-deployment update -e $ENDPOINT_NAME -n binary-payload \
+  --set code.scoring_script="multi-file-to-json-score.py"
+# </updat _deployment2> 
 
 # <test_online_endpoint_2>
 curl -X POST -F "file[]=@peacock-pic.jpg" -F "file[]=@out-1.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
