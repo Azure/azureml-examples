@@ -17,7 +17,6 @@ on:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced-mlflow.yml
       - sdk/python/dev-requirements.txt
-      - sdk/python/forecasting-requirements.txt
       - infra/**
       - sdk/python/setup.sh
 concurrency:
