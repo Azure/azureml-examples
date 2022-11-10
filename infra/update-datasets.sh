@@ -20,6 +20,8 @@ container=$(az ml datastore show -n $datastore --query container_name -o tsv)
 
 container=$(echo $container|tr -d '\r')
 
+echo "account is $account"
+echo "container is $container"
 
 # replace storage account and container names in the YAML files
 
