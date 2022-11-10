@@ -25,9 +25,9 @@ jobs:
       train_data: ${{parent.inputs.classification_train_data}}
       validation_data: ${{parent.inputs.classification_validate_data}}
     outputs:
-      preprocess_train_data:
+      preprocessed_train_data:
         type: mltable
-      preprocess_validation_data:
+      preprocessed_validation_data:
         type: mltable
   classification_node:
     type: automl
@@ -37,8 +37,8 @@ jobs:
       max_trials: 1
       max_concurrent_trials: 1
     target_column_name: "y"
-    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocess_train_data}}
-    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocess_validation_data}}
+    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
+    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
     featurization:
       mode: "auto"
     training:

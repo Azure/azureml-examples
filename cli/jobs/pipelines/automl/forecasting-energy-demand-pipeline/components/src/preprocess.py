@@ -1,3 +1,4 @@
+import os
 import argparse
 import datetime
 from pathlib import Path
@@ -11,9 +12,9 @@ def parse_args():
 
     # add arguments
     parser.add_argument("--train_data", type=str)
-    parser.add_argument("--preprocess_train_data", type=str)
     parser.add_argument("--validation_data", type=str)
-    parser.add_argument("--preprocess_validation_data", type=str)
+    parser.add_argument("--preprocessed_train_data", type=str)
+    parser.add_argument("--preprocessed_validation_data", type=str)
     # parse args
     args = parser.parse_args()
     print("args received ", args)
@@ -38,10 +39,9 @@ def main(args):
     preprocessed_train_dataframe = get_preprocessed_data(train_dataframe)
 
     # write preprocessed train data in output path
+    preprocessed_train_data_path = os.path.join(args.preprocessed_train_data, "nyc_energy_training_clean.csv")
     preprocessed_train_dataframe.to_csv(
-        args.preprocess_train_data + "/nyc_energy_training_clean.csv",
-        index=False,
-        header=True,
+        preprocessed_train_data_path, index=False, header=True
     )
 
     validation_data_table = load(args.validation_data)
@@ -49,25 +49,28 @@ def main(args):
     preprocessed_validation_dataframe = get_preprocessed_data(validation_dataframe)
 
     # write preprocessed validation data in output path
+    preprocessed_validation_data_path = os.path.join(args.preprocessed_validation_data, "nyc_energy_validation_clean.csv")
     preprocessed_validation_dataframe.to_csv(
-        args.preprocess_validation_data + "/nyc_energy_validation_clean.csv",
-        index=False,
-        header=True,
+        preprocessed_validation_data_path, index=False, header=True
     )
 
     # Write MLTable yaml file as well in output folder
     # Since in this example we are not doing any preprocessing, we are just copying same yaml file from input,change it if needed
 
     # read and write MLModel yaml file for train data
-    with open(args.train_data + "/MLTable", "r") as file:
+    train_data_mltable_path = os.path.join(args.train_data, "MLTable")
+    preprocessed_train_data_mltable_path = os.path.join(args.preprocessed_train_data, "MLTable")
+    with open(train_data_mltable_path, "r") as file:
         yaml_file = yaml.safe_load(file)
-    with open(args.preprocess_train_data + "/MLTable", "w") as file:
+    with open(preprocessed_train_data_mltable_path, "w") as file:
         yaml.dump(yaml_file, file)
 
     # read and write MLModel yaml file for validation data
-    with open(args.validation_data + "/MLTable", "r") as file:
+    validation_data_mltable_path = os.path.join(args.validation_data, "MLTable")
+    preprocessed_validation_data_mltable_path = os.path.join(args.preprocessed_validation_data, "MLTable")
+    with open(validation_data_mltable_path, "r") as file:
         yaml_file = yaml.safe_load(file)
-    with open(args.preprocess_validation_data + "/MLTable", "w") as file:
+    with open(preprocessed_validation_data_mltable_path, "w") as file:
         yaml.dump(yaml_file, file)
 
 

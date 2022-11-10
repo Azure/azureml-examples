@@ -11,11 +11,11 @@ inputs:
   test_data:
     type: mltable
 outputs:
-  preprocess_train_data:
+  preprocessed_train_data:
     type: mltable
-  preprocess_validation_data:
+  preprocessed_validation_data:
     type: mltable
-  preprocess_test_data:
+  preprocessed_test_data:
     type: mltable
 code: ./src/
 environment:
@@ -27,6 +27,6 @@ command: >-
   --train_data ${{inputs.train_data}}
   --validation_data ${{inputs.validation_data}}
   --test_data ${{inputs.test_data}}
-  --preprocess_train_data ${{outputs.preprocess_train_data}}
-  --preprocess_validation_data ${{outputs.preprocess_validation_data}}
-  --preprocess_test_data ${{outputs.preprocess_test_data}}
+  --preprocessed_train_data ${{outputs.preprocessed_train_data}}
+  --preprocessed_validation_data ${{outputs.preprocessed_validation_data}}
+  --preprocessed_test_data ${{outputs.preprocessed_test_data}}

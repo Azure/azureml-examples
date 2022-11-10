@@ -12,5 +12,5 @@ dependencies:
       - xlrd==2.0.1
       - azureml-mlflow==1.42.0
       - mltable==0.1.0b4
-      - pyyaml
+      - pyyaml==6.0
 name: model-env
