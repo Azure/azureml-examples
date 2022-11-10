@@ -10,5 +10,4 @@ args = parser.parse_args()
 
 sk_model = mlflow.sklearn.load_model(args.input_model)
 
-mlflow.sklearn.save_model(sk_model,os.path.join(args.custom_model_output, "my_model"))
-
+mlflow.sklearn.save_model(sk_model, os.path.join(args.custom_model_output, "my_model"))
