@@ -120,7 +120,6 @@ jobs:
     - name: setup_compute
       run: |
         COMPUTE="cpu-cluster-lg" bash .github/kubernetes-compute/tool.sh setup_compute
-        COMPUTE="automl-gpu-cluster" bash .github/kubernetes-compute/tool.sh setup_compute
         COMPUTE="spark31" bash .github/kubernetes-compute/tool.sh setup_compute
       timeout-minutes: 30
     - name: setup_instance_type
