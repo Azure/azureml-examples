@@ -9,7 +9,7 @@ from azure.storage.blob import BlobClient
 
 
 def access_blob_storage_sdk():
-    credential = ManagedIdentityCredential()
+    credential = ManagedIdentityCredential(client_id=os.getenv("UAI_CLIENT_ID"))
     storage_account = os.getenv("STORAGE_ACCOUNT_NAME")
     storage_container = os.getenv("STORAGE_CONTAINER_NAME")
     file_name = os.getenv("FILE_NAME")
