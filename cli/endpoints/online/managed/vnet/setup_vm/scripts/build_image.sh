@@ -16,11 +16,11 @@ az configure --defaults group=$RESOURCE_GROUP workspace=$WORKSPACE location=$LOC
 # Navigate to the samples
 cd /home/samples/azureml-examples/cli/$ENV_DIR_PATH
 # login to acr. Optionally, to avoid using sudo, complete the docker post install steps: https://docs.docker.com/engine/install/linux-postinstall/
-sudo az acr login -n $ACR_NAME
+sudo az acr login -n "$ACR_NAME"
 # Build the docker image with the sample docker file
-sudo docker build -t $ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1 .
+sudo docker build -t "$ACR_NAME.azurecr.io/repo/$IMAGE_NAME":v1 .
 # push the image to the ACR
-sudo docker push $ACR_NAME.azurecr.io/repo/$IMAGE_NAME:v1
+sudo docker push "$ACR_NAME.azurecr.io/repo/$IMAGE_NAME":v1
 # check if the image exists in acr
-az acr repository show -n $ACR_NAME --repository repo/$IMAGE_NAME
+az acr repository show -n "$ACR_NAME" --repository "repo/$IMAGE_NAME"
 # </build_image> 

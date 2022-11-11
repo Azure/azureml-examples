@@ -30,10 +30,9 @@ jobs:
     outputs:
       file_output: ${{parent.outputs.file_output}}
 
-#    resources:
-#      instance_type: Standard_E8S_V3
-#      runtime_version: 3.1.0
-    compute: azureml:spark31
+    resources:
+      instance_type: Standard_E8S_V3
+      runtime_version: 3.1.0
 
   count_word:
     type: spark
@@ -43,9 +42,8 @@ jobs:
         path: ${{parent.jobs.sample_word.outputs.file_output}}
         mode: direct
 
-    # resources:
-    #   instance_type: Standard_E8S_V3
-    #   runtime_version: 3.1.0
-    compute: azureml:spark31
+    resources:
+      instance_type: Standard_E8S_V3
+      runtime_version: 3.1.0
 
 
