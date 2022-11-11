@@ -17,6 +17,7 @@ on:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-automl-forecasting-orange-juice-sales-mlflow.yml
       - sdk/python/dev-requirements.txt
+      - sdk/python/forecasting-requirements.txt
       - infra/**
       - sdk/python/setup.sh
 concurrency:

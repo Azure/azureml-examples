@@ -9,3 +9,4 @@ dependencies:
   - scipy=1.7.1
   - pip:    
     - joblib==1.0.1
+    - azureml-defaults==1.38.0
