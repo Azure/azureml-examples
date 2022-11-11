@@ -162,7 +162,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with:
+      with: 
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
@@ -214,7 +214,7 @@ jobs:
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
-        workflow_yaml += f"""
+        workflow_yaml += f"""          
           papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
     else:
