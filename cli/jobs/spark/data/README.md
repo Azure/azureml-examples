@@ -1,0 +1,2 @@
+## Using the provided data file
+The `titanic.csv` file provided here should be uploaded to the blob container for the default workspace datastore `workspaceblobstore` under a directory named `data`. This will make this file accessible using the URI `azureml://datastores/workspaceblobstore/paths/data/titanic.csv`.

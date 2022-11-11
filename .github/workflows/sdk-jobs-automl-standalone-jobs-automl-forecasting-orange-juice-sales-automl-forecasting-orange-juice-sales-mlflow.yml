@@ -17,6 +17,7 @@ on:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-automl-forecasting-orange-juice-sales-mlflow.yml
       - sdk/python/dev-requirements.txt
+      - sdk/python/forecasting-requirements.txt
       - infra/**
       - sdk/python/setup.sh
 concurrency:
@@ -36,6 +37,8 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
+    - name: pip install forecasting reqs
+      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
