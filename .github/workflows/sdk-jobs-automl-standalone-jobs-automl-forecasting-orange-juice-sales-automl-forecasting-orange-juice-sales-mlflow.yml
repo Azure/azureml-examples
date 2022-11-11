@@ -76,6 +76,9 @@ jobs:
         name: automl-forecasting-orange-juice-sales-mlflow
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
 
+    - name: Remove the compute if notebook did not done it properly.
+      bash "${{ github.workspace }}/infra/remove_computes.sh" oj-cluster
+
     - name: Send IcM on failure
       if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
       uses: ./.github/actions/generate-icm
