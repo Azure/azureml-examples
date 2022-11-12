@@ -4,8 +4,8 @@ command: |
 code: src
 inputs:
   sampledata:
-    type: mltable
+    type: uri_folder
     path: azureml:sampledata@latest
-    mode: eval_mount
+    mode: ro_mount
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster
