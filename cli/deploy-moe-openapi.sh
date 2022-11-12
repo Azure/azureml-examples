@@ -20,7 +20,6 @@ else
   echo "Endpoint creation failed"
   exit 1
 fi
-
 # </check_endpoint> 
 
 # <get_key_and_openapi_url>
