@@ -1,5 +1,5 @@
-from azureml_inference_server_http.server.azureml_contrib_services.aml_request import AMLRequest, rawhttp
-from azureml_inference_server_http.server.azureml_contrib_services.aml_response import AMLResponse
+from azureml.contrib.services.aml_request import AMLRequest, rawhttp
+from azureml.contrib.services.aml_response import AMLResponse
 from PIL import Image
 import io
 

@@ -1,4 +1,4 @@
-from azureml_inference_server_http.server.azureml_contrib_services.aml_request import AMLRequest, rawhttp
+from azureml.contrib.services.aml_request import AMLRequest, rawhttp
 from PIL import Image
 
 def init():
@@ -6,8 +6,8 @@ def init():
 
 @rawhttp
 def run(req: AMLRequest):
+    files = req.files.getlist("file[]")
     sizes = [
-        {"filename": f.filename, "size": Image.open(f.stream).size}
-        for f in req.files.getlist("file[]")
+        {"filename": f.filename, "size": Image.open(f.stream).size} for f in files
     ]
     return {"response": sizes}
