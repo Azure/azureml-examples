@@ -28,17 +28,14 @@ fi
 az keyvault create -n $KV_NAME -g $RESOURCE_GROUP 
 # </create_keyvault>
 
+# <set_access_policy>
+ENDPOINT_PRINCIPAL_ID=$(az ml online-endpoint show -n $ENDPOINT_NAME --query identity.principal_id -o tsv)
+az keyvault set-policy -n $KV_NAME --object-id $ENDPOINT_PRINCIPAL_ID --secret-permissions get
+# </set_access_policy> 
+
 # <set_secret> 
 az keyvault secret set --vault-name $KV_NAME -n multiplier --value 7
 # </set_secret> 
-
-# <get_endpoint_principal_id> 
-ENDPOINT_PRINCIPAL_ID=$(az ml online-endpoint show -n $ENDPOINT_NAME --query identity.principal_id -o tsv)
-# </get_endpoint_principal_id> 
-
-# <set_access_policy> 
-az keyvault set-policy -n $KV_NAME --object-id $ENDPOINT_PRINCIPAL_ID --secret-permissions get
-# </set_access_policy> 
 
 # <create_deployment>
 az ml online-deployment create \
@@ -48,7 +45,7 @@ az ml online-deployment create \
   --all-traffic
 # </create-deployment> 
 
-# Check if deployment was successful 
+# <check_deployment> 
 deploy_status=`az ml online-deployment show --name kvdep --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv `
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
@@ -58,24 +55,17 @@ else
   echo "Deployment failed"
   exit 1
 fi
+# </check_deployment>
 
-#<get_endpoint_details> 
-# Get key
-echo "Getting access key..."
-KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv )
+# <test_endpoint>
+az ml online-endpoint invoke -n $ENDPOINT_NAME \
+  --request-file endpoints/online/managed/keyvault/sample_request.json
+# </test_endpoint>
 
-# Get scoring url
-echo "Getting scoring url..."
-SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv )
-echo "Scoring url is $SCORING_URL"
-#</get_endpoint_details> 
-
-# <test_deployment>
-RES=$(curl -d '{"input": 1}' -H "Content-Type: application/json" -H "Authorization: Bearer $KEY" $SCORING_URL)
-echo $RES
-# </test_deployment>
-
-# <delete_assets>
-az keyvault delete --name $KV_NAME --no-wait
+# <delete_endpoint> 
 az ml online-endpoint delete --yes -n $ENDPOINT_NAME --no-wait
-# </delete_assets>
+# </delete_endpoint> 
+
+# <delete_keyvault>
+az keyvault delete --name $KV_NAME --no-wait
+# </delete_keyvault>
