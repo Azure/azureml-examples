@@ -5,8 +5,10 @@ import io
 
 default_resize = (128, 128)
 
+
 def init():
     pass
+
 
 @rawhttp
 def run(req: AMLRequest):
