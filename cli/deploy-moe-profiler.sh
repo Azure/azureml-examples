@@ -113,9 +113,9 @@ az ml job download --name $job_name --download-path endpoints/online/managed/pro
 # </download_files> 
 
 # <delete_endpoint> 
-az ml online-endpoint delete -n $ENDPOINT_NAME
+az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint> 
 
 # <delete_compute>
-az ml compute delete -n $PROFILER_COMPUTE_NAME 
+az ml compute delete -n $PROFILER_COMPUTE_NAME --yes
 # </delete_compute> 
