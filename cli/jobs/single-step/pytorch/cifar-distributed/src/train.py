@@ -153,6 +153,9 @@ def main(args):
         sampler=train_sampler,
     )
 
+    print("args.data_dir content")
+    print(os.listdir(args.data_dir))
+
     test_set = torchvision.datasets.CIFAR10(
         root=args.data_dir, train=False, download=False, transform=transform
     )
