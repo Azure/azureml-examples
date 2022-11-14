@@ -9,7 +9,7 @@ ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f
 BASE_PATH="endpoints/online/managed/binary-payloads"
 
 # <download_sample_data> 
-wget https://aka.ms/peacock-pic -O binary-payloads/input.jpg
+wget https://aka.ms/peacock-pic -O endpoints/online/managed/binary-payloads/input.jpg
 # </download_sample_data>
 
 # <create_endpoint> 
@@ -62,7 +62,8 @@ fi
 # </check_deployment> 
 
 # <test_online_endpoint_1> 
-curl -X POST -F "file=@input.jpg" -H "Authorization: Bearer $KEY"   $SCORING_URL -o binary-payloads/output.jpg
+curl -X POST -F "file=@input.jpg" -H "Authorization: Bearer $KEY"   $SCORING_URL \
+  -o endpoints/online/managed/binary-payloads/binary-payloads/output.jpg
 # <test_online_endpoint_1> 
 
 # <update_deployment2>
@@ -71,7 +72,9 @@ az ml online-deployment update -e $ENDPOINT_NAME -n binary-payload \
 # </updat _deployment2> 
 
 # <test_online_endpoint_2>
-curl -X POST -F "file[]=@binary-payloads/input.jpg" -F "file[]=@binary-payloads/output.jpg" -H "Authorization: Bearer $KEY"  $SCORING_URL
+curl -X POST -F "file[]=@endpoints/online/managed/binary-payloads/binary-payloads/input.jpg" \
+  -F "file[]=@endpoints/online/managed/binary-payloads/binary-payloads/output.jpg" \
+  -H "Authorization: Bearer $KEY"  $SCORING_URL
 # <test_online_endpoint_2> 
 
 # <delete_assets>
