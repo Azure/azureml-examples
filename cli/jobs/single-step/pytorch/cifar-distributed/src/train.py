@@ -136,6 +136,9 @@ def main(args):
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
 
+    print("args.data_dir content")
+    print(os.listdir(args.data_dir))
+
     train_set = torchvision.datasets.CIFAR10(
         root=args.data_dir, train=True, download=False, transform=transform
     )
