@@ -72,8 +72,8 @@ az ml online-deployment update -e $ENDPOINT_NAME -n binary-payload \
 # </updat _deployment2> 
 
 # <test_online_endpoint_2>
-curl -X POST -F "file[]=@endpoints/online/managed/binary-payloads/binary-payloads/input.jpg" \
-  -F "file[]=@endpoints/online/managed/binary-payloads/binary-payloads/output.jpg" \
+curl -X POST -F "file[]=@endpoints/online/managed/binary-payloads/input.jpg" \
+  -F "file[]=@endpoints/online/managed/binary-payloads/output.jpg" \
   -H "Authorization: Bearer $KEY"  $SCORING_URL
 # <test_online_endpoint_2> 
 
