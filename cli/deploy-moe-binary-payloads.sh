@@ -63,7 +63,7 @@ fi
 
 # <test_online_endpoint_1> 
 curl -X POST -F "file=@endpoints/online/managed/binary-payloads/input.jpg" -H "Authorization: Bearer $KEY"   $SCORING_URL \
-  -o endpoints/online/managed/binary-payloads/binary-payloads/output.jpg
+  -o endpoints/online/managed/binary-payloads/output.jpg
 # <test_online_endpoint_1> 
 
 # <update_deployment2>
