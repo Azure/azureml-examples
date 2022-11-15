@@ -27,7 +27,7 @@ y = 0.5 * x + 2 + np.random.normal(0, 0.05, (data_size,))
 x_train, y_train = x[:train_size], y[:train_size]
 x_test, y_test = x[train_size:], y[train_size:]
 
-logdir = "output/tblogs"
+logdir = "outputs/tblogs"
 tensorboard_callback = keras.callbacks.TensorBoard(log_dir=logdir)
 
 model = keras.models.Sequential(
