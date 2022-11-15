@@ -31,7 +31,10 @@ logdir = "outputs/tblogs"
 tensorboard_callback = keras.callbacks.TensorBoard(log_dir=logdir)
 
 model = keras.models.Sequential(
-    [keras.layers.Dense(16, input_dim=1), keras.layers.Dense(1),]
+    [
+        keras.layers.Dense(16, input_dim=1),
+        keras.layers.Dense(1),
+    ]
 )
 
 model.compile(
