@@ -11,7 +11,7 @@ on:
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-recipes-univariate-automl-forecasting-recipe-univariate-experiment-settings.yml
-      - sdk/python/dev-requirements.txt
+      - sdk/python/forecasting-requirements.txt
       - sdk/python/setup.sh
 jobs:
   build:
