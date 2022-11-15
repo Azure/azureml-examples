@@ -136,6 +136,13 @@ def main(args):
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
 
+    data_files = os.listdir(args.data_dir)
+    expected_file = "cifar-10-batches-py"
+    if expected_file not in data_files:
+        print("Folder {} expected in args.data_dir".format(expected_file))
+        print("Found:")
+        print(data_files)
+
     train_set = torchvision.datasets.CIFAR10(
         root=args.data_dir, train=True, download=False, transform=transform
     )
