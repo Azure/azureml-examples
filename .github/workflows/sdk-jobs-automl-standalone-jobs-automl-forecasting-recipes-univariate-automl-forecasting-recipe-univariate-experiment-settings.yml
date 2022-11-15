@@ -24,7 +24,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
