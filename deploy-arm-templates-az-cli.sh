@@ -1,4 +1,4 @@
-set -x
+#set -x
 
 #<get_access_token>
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
@@ -11,9 +11,12 @@ RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
 WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
 #</create_variables>
 
-# <set_endpoint_name>
-export ENDPOINT_NAME=endpoint-`echo $RANDOM`
-# </set_endpoint_name>
+# <set_variables>
+RAND="$RANDOM"
+export ENDPOINT_NAME=endpoint-$RAND
+export MODEL_VERSION=$RAND
+export ENV_VERSION=$RAND
+# </set_variables>
 
 #<api_version>
 API_VERSION="2022-05-01"
@@ -80,7 +83,8 @@ az deployment group create -g $RESOURCE_GROUP \
 --parameters \
 workspaceName=$WORKSPACE \
 modelAssetName="sklearn" \
-modelUri="azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model/sklearn_regression_model.pkl"
+modelAssetVersion=$MODEL_VERSION \
+modelUri="azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/workspaces/$WORKSPACE/datastores/$AZUREML_DEFAULT_DATASTORE/paths/model"
 # </create_model>
 
 # <read_condafile>
@@ -88,14 +92,13 @@ CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
 # </read_condafile>
 
 # <create_environment>
-ENV_VERSION=$RANDOM
 az deployment group create -g $RESOURCE_GROUP \
 --template-file arm-templates/environment-version.json \
 --parameters \
 workspaceName=$WORKSPACE \
 environmentAssetName=sklearn-env \
 environmentAssetVersion=$ENV_VERSION \
-dockerImage=mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1 \
+dockerImage=mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest \
 condaFile="$CONDA_FILE"
 # </create_environment>
 
@@ -131,14 +134,35 @@ az deployment group create -g $RESOURCE_GROUP \
  codeId="$resourceScope/workspaces/$WORKSPACE/codes/score-sklearn/versions/1" \
  scoringScript=score.py \
  environmentId="$resourceScope/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION" \
- model="$resourceScope/workspaces/$WORKSPACE/models/sklearn/versions/1" \
+ model="$resourceScope/workspaces/$WORKSPACE/models/sklearn/versions/$MODEL_VERSION" \
  endpointComputeType=Managed \
- skuName=Standard_F2s_v2 \
+ skuName=Standard_DS2_v2 \
  skuCapacity=1
  # </create_deployment>
 
 # <get_deployment>
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue?api-version=$API_VERSION" \
+--header "Content-Type: application/json" \
+--header "Authorization: Bearer $TOKEN")
+
+operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+wait_for_completion $operation_id
+# </get_deployment> 
+
+ # <update_endpoint_traffic>
+az deployment group create -g $RESOURCE_GROUP \
+--template-file arm-templates/online-endpoint.json \
+--parameters \
+workspaceName=$WORKSPACE \
+onlineEndpointName=$ENDPOINT_NAME \
+identityType=SystemAssigned \
+authMode=AMLToken \
+location=$LOCATION \
+traffic="{\"blue\":100}"
+# </update_endpoint_traffic>
+
+# <get_endpoint>
+response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME?api-version=$API_VERSION" \
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
@@ -158,7 +182,7 @@ accessToken=$(echo $response | jq -r '.accessToken')
 curl --location --request POST $scoringUri \
 --header "Authorization: Bearer $accessToken" \
 --header "Content-Type: application/json" \
---data-raw @cli/endpoints/online/model-1/sample-request.json
+--data @cli/endpoints/online/model-1/sample-request.json
 # </score_endpoint>
 
 # <get_deployment_logs>
