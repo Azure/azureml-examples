@@ -48,7 +48,7 @@ let "REGISTRY_TOMORROW=$(date -d '+1 days' +'%m%d')"
 
 export LOCATION="East US"
 export PREFIX=aml
-export SUFFIX=sdkv201
+export SUFFIX=sdkv202
 export APP_NAME="github-sp-amlsdkv2-gh"
 export timestamp=$(date +%s)
 # export RESOURCE_GROUP_NAME=test-data-rg
