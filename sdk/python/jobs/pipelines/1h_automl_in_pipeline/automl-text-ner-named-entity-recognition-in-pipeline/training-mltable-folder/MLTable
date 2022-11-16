@@ -2,10 +2,3 @@ paths:
   - file: ./train.txt
 transformations:
   - take: 1
-
-
-
-
-
-with open(path+'/train.txt') as f:
-    train_data = f.read()
