@@ -22,7 +22,7 @@ jobs:
     environment:
         name: "prepare_data_environment"
         version: 1
-        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+        image: mcr.microsoft.com/azureml/openmpi4.0.1-ubuntu20.04
         conda_file: ./environment/environment_prepare.yml
 
   predict_digits_mnist:
@@ -60,7 +60,7 @@ jobs:
       environment:
         name: "batch_environment"
         version: 1
-        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+        image: mcr.microsoft.com/azureml/openmpi4.0.1-ubuntu20.04
         conda_file: ./environment/environment_parallel.yml
       program_arguments: >-
         --model ${{inputs.score_model}}
