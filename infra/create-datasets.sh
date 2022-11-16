@@ -16,7 +16,7 @@ az ml data create -f "./cli/jobs/pipelines-with-components/basics/4d_data_input/
 # tar -xvzf cifar-10-python.tar.gz -C data
 # az ml data create --name cifar-10-example --version 1 --set path=data
 
-az ml data create --name cifar-10-example --version 1 --path "https://azuremlexampledata.blob.core.windows.net/cifar-10-batches/" > /dev/null 2>&1
+az ml data create --name cifar-10-example --version 1 --path "wasbs://cifar-10-batches@azuremlexampledata.blob.core.windows.net/" > /dev/null 2>&1
 
 
 
