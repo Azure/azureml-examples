@@ -172,11 +172,11 @@ wait_for_completion $operation_id
 scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
 # </get_endpoint>
 
-# <get_access_token>
+# <get_endpoint_access_token>
 response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
 accessToken=$(echo $response | jq -r '.accessToken')
-# </get_access_token>
+# </get_endpoint_access_token>
 
 # <score_endpoint>
 curl --location --request POST $scoringUri \

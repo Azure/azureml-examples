@@ -34,7 +34,9 @@ jobs:
     args: >-
       --file_input ${{inputs.file_input}}
 
-    compute: azureml:spark31
+    resources:
+      instance_type: Standard_E8S_V3
+      runtime_version: 3.1.0
 
     conf:
       spark.driver.cores: 2
@@ -67,7 +69,9 @@ jobs:
       --file_input ${{inputs.file_input}}
       --output ${{outputs.output}}
 
-    compute: azureml:spark31
+    resources:
+      instance_type: Standard_E8S_V3
+      runtime_version: 3.1.0
 
     conf:
       spark.driver.cores: 2

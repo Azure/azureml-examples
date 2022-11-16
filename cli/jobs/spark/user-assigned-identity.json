@@ -1,0 +1,11 @@
+{
+    "properties":{
+    },
+    "location": "<AZURE_REGION>",
+    "identity":{
+        "type":"SystemAssigned,UserAssigned",
+        "userAssignedIdentities":{
+            "/subscriptions/<SUBSCRIPTION_ID/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<AML_USER_MANAGED_ID>": { }
+        }
+    }
+}

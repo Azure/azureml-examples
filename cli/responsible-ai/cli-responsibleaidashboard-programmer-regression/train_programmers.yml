@@ -1,0 +1,33 @@
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: train_programmers_dataset_for_rai
+display_name: Train on Programmers Dataset and register model for RAI
+version: 1
+type: command
+inputs:
+  training_data:
+    type: path
+  target_column_name:
+    type: string
+  continuous_features:
+    type: string
+  categorical_features:
+    type: string
+  model_name:
+    type: string
+outputs:
+  model_output:
+    type: mlflow_model
+  model_output_json:
+    type: path
+
+code: ./train.py
+environment: azureml://registries/azureml/environments/AzureML-responsibleai-0.20-ubuntu20.04-py38-cpu/versions/4
+command: >-
+  python train.py
+  --training_data ${{inputs.training_data}}
+  --target_column_name ${{inputs.target_column_name}}
+  --categorical_features '${{inputs.categorical_features}}'
+  --continuous_features '${{inputs.continuous_features}}'
+  --model_output '${{outputs.model_output}}'
+  --model_name '${{inputs.model_name}}'
+  --model_output_json '${{outputs.model_output_json}}'
