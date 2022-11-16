@@ -746,7 +746,7 @@ function vmss_upgrade_policy_automatic() {
             echo_info "Updating upgradePolicy to Automatic for VMSS $VMSS in resource-group ${LOCAL_RESOURCE_GROUP_NAME}..."
             az vmss update --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --set upgradePolicy.mode='Automatic'
         fi
-        az vmss show --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --query upgradePolicy -o json
+        # az vmss show --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --query upgradePolicy -o json
     done
     # return to the default
     set -e
