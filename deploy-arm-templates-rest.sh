@@ -220,7 +220,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
             \"value\": \"$WORKSPACE\"
             },
             \"modelAssetName\": {
-                \"value\": \"score-sklearn\"
+                \"value\": \"sklearn\"
             },
             \"modelAssetVersion\": {
                 \"value\": \"1\"
@@ -572,7 +572,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
             \"value\": \"$resourceScope/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION\"
         },
         \"model\": {
-            \"value\": \"$resourceScope/workspaces/$WORKSPACE/models/score-sklearn/versions/1\"
+            \"value\": \"$resourceScope/workspaces/$WORKSPACE/models/sklearn/versions/1\"
         },
         \"endpointComputeType\": {
             \"value\": \"Managed\"
