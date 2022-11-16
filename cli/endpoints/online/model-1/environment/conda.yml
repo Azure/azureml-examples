@@ -9,4 +9,6 @@ dependencies:
   - scipy=1.7.1
   - pip:
     - azureml-defaults==1.47.0
+    - inference-schema[numpy-support]==1.5
     - joblib==1.0.1
+

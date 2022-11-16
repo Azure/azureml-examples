@@ -13,3 +13,5 @@ transformations:
         column_type: float
       - columns: windspeed
         column_type: float
+      - columns: cnt
+        column_type: float
