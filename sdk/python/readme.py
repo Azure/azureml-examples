@@ -236,7 +236,7 @@ jobs:
     if nb_config.get(section=name, option=COMPUTE_NAMES, fallback=None):
         workflow_yaml += f"""
     - name: Remove the compute if notebook did not done it properly.
-      bash "{github_workspace}/infra/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
+      run: bash "{github_workspace}/infra/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
 
     workflow_yaml += f"""
     - name: Send IcM on failure
