@@ -63,7 +63,9 @@ def main(args):
 
     # write preprocessed validation data in output path
     preprocessed_test_dataframe.to_csv(
-        args.preprocessed_test_data + "/house_pricing_test.csv", index=False, header=True
+        args.preprocessed_test_data + "/house_pricing_test.csv",
+        index=False,
+        header=True,
     )
 
     # Write MLTable yaml file as well in output folder
