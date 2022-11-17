@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    echo "This script depetes computes provided in the first parameter."
+    echo "This script deletes computes provided in the first parameter."
     echo "Comutes may include batch endpoints, compute clustrs and"
     echo "online endpoints."
     echo "Usage $0 [list of computs to delete]"
