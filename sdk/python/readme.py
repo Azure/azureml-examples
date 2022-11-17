@@ -104,7 +104,11 @@ def get_mlflow_import(notebook):
 
 
 def get_forecast_reqs(notebook_name, nb_config):
-    is_required = int(nb_config.get(section=notebook_name, option=USE_FORECAST_REQUIREMENTS, fallback=0))
+    is_required = int(
+        nb_config.get(
+            section=notebook_name, option=USE_FORECAST_REQUIREMENTS, fallback=0
+        )
+    )
     if is_required:
         return get_additional_requirements(
             "forecasting", "sdk/python/forecasting-requirements.txt"
