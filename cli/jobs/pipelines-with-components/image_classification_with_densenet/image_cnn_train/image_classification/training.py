@@ -399,14 +399,18 @@ def train(
                     total_train_step,
                 )
                 mlflow.log_metric("train/learning_rate", step=epoch, value=lr)
-                mlflow.log_metric("train/loss", step=total_train_step, value=to_python_float(loss))
+                mlflow.log_metric(
+                    "train/loss", step=total_train_step, value=to_python_float(loss)
+                )
                 mlflow.log_metric(
                     "perf/compute_ips",
                     step=total_train_step,
                     value=calc_ips(bs, it_time - data_time),
                 )
                 mlflow.log_metric(
-                    "perf/train_total_ips", step=total_train_step, value=calc_ips(bs, it_time)
+                    "perf/train_total_ips",
+                    step=total_train_step,
+                    value=calc_ips(bs, it_time),
                 )
 
             total_train_step += 1
