@@ -11,7 +11,7 @@ from mldesigner import command_component, Input, Output
     description="Convert data to CSV file, and split to training and test data",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
-        image="mcr.microsoft.com/azureml/openmpi4.0.1-ubuntu20.04",
+        image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
     ),
 )
 def prepare_data_component(
