@@ -10,7 +10,7 @@ jobs:
       world_output:
   world_job:
     command: cat ${{inputs.world_input}}/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:23
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
     compute: azureml:cpu-cluster
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.world_output}}
