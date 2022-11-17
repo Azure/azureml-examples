@@ -59,9 +59,9 @@ checkpoint_file_name = "checkpoint_backup.pth.tar"
 from multiprocessing import Value
 from ctypes import c_bool
 
-from azureml.core.run import Run
+import mlflow
 
-run = Run.get_context()
+mlflow.autolog()
 
 
 class PreemptHandler(FileSystemEventHandler):
@@ -398,15 +398,15 @@ def train(
                     calc_ips(bs, it_time),
                     total_train_step,
                 )
-                run.log_row("train/learning_rate", x=epoch, y=lr)
-                run.log_row("train/loss", x=total_train_step, y=to_python_float(loss))
-                run.log_row(
+                mlflow.log_metric("train/learning_rate", step=epoch, value=lr)
+                mlflow.log_metric("train/loss", step=total_train_step, value=to_python_float(loss))
+                mlflow.log_metric(
                     "perf/compute_ips",
-                    x=total_train_step,
-                    y=calc_ips(bs, it_time - data_time),
+                    step=total_train_step,
+                    value=calc_ips(bs, it_time - data_time),
                 )
-                run.log_row(
-                    "perf/train_total_ips", x=total_train_step, y=calc_ips(bs, it_time)
+                mlflow.log_metric(
+                    "perf/train_total_ips", step=total_train_step, value=calc_ips(bs, it_time)
                 )
 
             total_train_step += 1
@@ -617,8 +617,9 @@ def train_loop(
     )
     if is_first_rank:
         ts = str(time.time())
+        # logdir = os.path.expanduser('~/tensorboard/{}/logs/'.format(os.environ['DLTS_JOB_ID']) + ts)
         logdir = os.path.expanduser(
-            "~/tensorboard/{}/logs/".format(os.environ["AZUREML_RUN_ID"]) + ts
+            "~/tensorboard/{}/logs/".format(os.environ["AZ_BATCH_JOB_ID"]) + ts
         )
         print("tensorboard at ", logdir)
         if not os.path.exists(logdir):
@@ -640,7 +641,7 @@ def train_loop(
         )
         if writer:
             writer.add_scalar("train/summary/scalar/world_size", world_size, epoch)
-            run.log_row("train/world_size", x=epoch, y=world_size)
+            mlflow.log_metric("train/world_size", step=epoch, value=world_size)
 
         if logger is not None:
             logger.start_epoch()
@@ -678,8 +679,8 @@ def train_loop(
                 if writer:
                     writer.add_scalar("val/summary/scalar/loss", val_loss, epoch)
                     writer.add_scalar("val/summary/scalar/prec1", prec1, epoch)
-                    run.log_row("val/loss", x=epoch, y=val_loss)
-                    run.log_row("val/prec1", x=epoch, y=prec1)
+                    mlflow.log_metric("val/loss", step=epoch, value=val_loss)
+                    mlflow.log_metric("val/prec1", step=epoch, value=prec1)
 
         if logger is not None:
             print(
