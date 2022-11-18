@@ -12,7 +12,7 @@ from mldesigner import command_component, Output
     description="Train a basic neural network with TensorFlow on the MNIST dataset, distributed via TensorFlow.",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
-        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+        image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
     ),
     distribution={"type": "tensorflow", "worker_count": 2},
 )
