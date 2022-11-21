@@ -36,6 +36,8 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
+    - name: pip install forecasting reqs
+      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -75,6 +77,9 @@ jobs:
       with:
         name: auto-ml-forecasting-bike-share
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share
+
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "${{ github.workspace }}/infra/remove_computes.sh" bike-share-v2
 
     - name: Send IcM on failure
       if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
