@@ -11,7 +11,7 @@ on:
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-recipes-univariate-automl-forecasting-recipe-univariate-experiment-settings.yml
-      - sdk/python/dev-requirements.txt
+      - sdk/python/forecasting-requirements.txt
       - sdk/python/setup.sh
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
