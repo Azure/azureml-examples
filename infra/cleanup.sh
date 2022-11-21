@@ -1,17 +1,69 @@
 #!/bin/bash
 
-for i in $(az ml online-endpoint list | jq -r .[].name); do echo "Deleting online-endpoint:$i" && az ml online-endpoint delete --name $i --yes --no-wait && echo "online-endpoint delete initiated for $i" ;done
+# Query online endpoints
+ONLINE_ENDPOINT_LIST=$(az ml online-endpoint list --query "[*].[name]" -o tsv)
+echo "ONLINE_ENDPOINT_LIST: $ENDPOINT_LIST"
 
-for i in $(az ml batch-endpoint list | jq -r .[].name); do echo "Deleting batch-endpoint:$i" && az ml batch-endpoint delete --name $i --yes --no-wait && echo "batch-endpoint delete initiated for $i" ;done
+# Query left over autoscale settings created for online endpoints
+AUTOSCALE_SETTINGS_LIST=$(az monitor autoscale list  --query "[*].[name]" -o tsv)
 
-for i in $(az storage account list | jq -r '.[].name' | grep "oepstorage"); do echo "Deleting storage account:$i" && az storage account delete --name $i --yes && echo "storage account delete initiated for $i" ;done
+# Query batch endpoints
+BATCH_ENDPOINT_LIST=$(az ml batch-endpoint list --query "[*].[name]" -o tsv)
+echo "BATCH_ENDPOINT_LIST: $BATCH_ENDPOINT_LIST"
 
-for i in $(az ml compute list --type ComputeInstance | jq -r .[].name); do echo "Deleting ComputeInstance:$i" && az ml compute delete --name $i --yes --no-wait && echo "ComputeInstance delete initiated for $i" ;done
+# Query storage accounts
+STORAGE_ACCOUNT_LIST=$(az storage account list --query "[*].[name]" -o tsv | grep -E "oepstorage" | sort -u)
+echo "STORAGE_ACCOUNT_LIST: $STORAGE_ACCOUNT_LIST"
 
-for i in $(az identity list | jq -r '.[].name' | grep -E "oep-user-identity|my-cluster-identity"); do echo "Deleting identity:$i" && az identity delete --name $i && echo "Identity $i deleted" ;done
+# Query compute instances
+CI_LIST=$(az ml compute list --type ComputeInstance --query "[*].[name]" -o tsv)
+echo "CI_LIST: $CI_LIST"
 
-for i in $(az monitor autoscale list | jq -r .[].name); do echo "Deleting batch-endpoint:$i" && az monitor autoscale delete --name $i && echo "monitor autoscale $i deleted" ;done
+# Query UAI
+IDENTITY_LIST=$(az identity list --query "[].{name:name}" -o tsv | grep -E "oep-user-identity|my-cluster-identity" | sort -u)
+echo "IDENTITY_LIST: $IDENTITY_LIST"
 
+# Query left over autoscale settings created for online endpoints
+AUTOSCALE_SETTINGS_LIST=$(az monitor autoscale list  --query "[*].[name]" -o tsv | grep -E "autoscale-" | sort -u)
+echo "AUTOSCALE_SETTINGS_LIST: $AUTOSCALE_SETTINGS_LIST"
+
+#Query Workspaces created by samples code
+SAMPLES_WORKSPACE_LIST=$(az ml workspace list --query "[*].[name]" -o tsv | grep -E "mlw-basic-prod-|mlw-basicex-prod-" | sort -u)
+echo "SAMPLES_WORKSPACE_LIST: $SAMPLES_WORKSPACE_LIST"
+
+# Delete online endpoints
+for i in $ONLINE_ENDPOINT_LIST; do 
+    echo "Deleting online-endpoint:$i" && az ml online-endpoint delete --name $i --yes --no-wait && echo "online-endpoint delete initiated for $i" ;
+done
+
+# Batch online endpoints
+for i in $BATCH_ENDPOINT_LIST; do
+    echo "Deleting batch-endpoint:$i" && az ml batch-endpoint delete --name $i --yes --no-wait && echo "batch-endpoint delete initiated for $i" ;
+done
+
+# Delete storage accounts
+for storage in $STORAGE_ACCOUNT_LIST; do
+    if [[ $storage == *"oepstorage"* ]]; then
+        echo "Deleting storage account:$storage" && az storage account delete --name $storage --yes && echo "storage account delete initiated for $storage" ;
+    fi
+done
+
+# Delete compute instances
+for i in $CI_LIST; do 
+    echo "Deleting ComputeInstance:$i" && az ml compute delete --name $i --yes --no-wait && echo "ComputeInstance delete initiated for $i" ;
+done
+
+# Delete Identities
+for name in $IDENTITY_LIST; do 
+    echo "Deleting identity:$name" && az identity delete --name $name && echo "Identity $name deleted" ;
+done
+
+# Delete Autoscale monitor
+for i in $AUTOSCALE_SETTINGS_LIST; do 
+    echo "Deleting batch-endpoint:$i" && az monitor autoscale delete --name $i && echo "monitor autoscale $i deleted" ;
+done
+
+# Delete amlcompute
 amlcompute_to_delete=(
   minimal-example
   basic-example
@@ -34,3 +86,12 @@ for compute_name in "${amlcompute_to_delete[@]}"; do
   fi
 done
 
+# delete registry of yesterday
+RegistryToBeDeleted=DemoRegistry$(date -d '-1 days' +'%m%d')
+echo "Deleting registry $RegistryToBeDeleted"
+az resource delete -n $RegistryToBeDeleted -g $RESOURCE_GROUP_NAME --resource-type Microsoft.MachineLearningServices/registries
+
+#delete workpsaces created by samples
+for workspace in $SAMPLES_WORKSPACE_LIST; do
+    echo "Deleting workspace: $workspace" && az ml workspace delete -n $workspace --yes --no-wait --all-resources && echo "workspace delete initiated for: $workspace" ;
+done

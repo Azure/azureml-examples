@@ -68,7 +68,7 @@ function popd () {
 
 function ensure_registry(){
     local LOCAL_REGISTRY_NAME="${1:-${REGISTRY_NAME:-}}"
-    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${registry_exists}" = "[]" ]]; then
         retry_times=0
         while true 
@@ -91,14 +91,14 @@ function ensure_registry(){
     fi
 }
 function ensure_registry_local(){
-    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
+    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${registry_exists}" = "[]" ]]; then
         echo_info "registry ${LOCAL_REGISTRY_NAME} does not exist; creating" >&2
         sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
         sed -i "s/<LOCATION>/$LOCATION/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
         cat $ROOT_DIR/infra/infra_resources/registry-demo.yml
-        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/infra/infra_resources/registry-demo.yml || echo "Failed to create registry, will retry"
-        registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
+        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/infra/infra_resources/registry-demo.yml --name $LOCAL_REGISTRY_NAME || echo "Failed to create registry $LOCAL_REGISTRY_NAME, will retry"
+        registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
         if [[ "${registry_exists}" = "[]" ]]; then
             echo_info "Retry creating registry ${LOCAL_REGISTRY_NAME}" >&2
             sleep 30
@@ -435,6 +435,9 @@ get_kubeconfig(){
         --resource-group "${RESOURCE_GROUP_NAME}" \
         --name "${AKS_CLUSTER_NAME}" \
         --overwrite-existing
+
+    kubectl get ns
+    echo_info "AKS credentials retrieved for the cluster:${AKS_CLUSTER_NAME}"
 }
 
 check_arc_status(){
@@ -503,18 +506,25 @@ function setup_compute() {
         # managedClusters
         RESOURCE_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP_NAME}/providers/Microsoft.ContainerService/managedClusters/${CLUSTER_NAME}"
     fi
-    echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
-    ATTACH_COMPUTE=$(az ml compute attach \
-            --subscription "${SUBSCRIPTION_ID}" \
-            --resource-group "${RESOURCE_GROUP_NAME}" \
-            --workspace-name "${WORKSPACE_NAME}" \
-            --type "${SERVICE_TYPE}" \
-            --resource-id "${RESOURCE_ID}" \
-            --namespace "${COMPUTE_NS}" \
-            --name "${COMPUTE_NAME}" \
-            --output tsv \
-            > /dev/null )
-    echo_info "ProvisioningState of ATTACH_COMPUTE: ${ATTACH_COMPUTE}"
+
+    if
+        [[ $(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${COMPUTE_NAME}" | jq -r .provisioning_state) == "Succeeded" ]]
+    then
+        echo_info "Cluster is already attached to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}..."
+    else
+        echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
+        ATTACH_COMPUTE=$(az ml compute attach \
+                --subscription "${SUBSCRIPTION_ID}" \
+                --resource-group "${RESOURCE_GROUP_NAME}" \
+                --workspace-name "${WORKSPACE_NAME}" \
+                --type "${SERVICE_TYPE}" \
+                --resource-id "${RESOURCE_ID}" \
+                --namespace "${COMPUTE_NS}" \
+                --name "${COMPUTE_NAME}" \
+                --output tsv \
+                > /dev/null )
+        echo_info "ProvisioningState of ATTACH_COMPUTE: ${ATTACH_COMPUTE}"
+    fi
 }
 
 function detach_compute() {
@@ -602,21 +612,29 @@ install_k8s_extension(){
         # managedClusters
         ARC_CLUSTER_NAME="${CLUSTER_NAME}"
     fi
-    echo_info "Creating k8s extension for $CLUSTER_TYPE for Azure ML extension: $EXTENSION_NAME on cluster: ${ARC_CLUSTER_NAME}"
-    EXTENSION_INSTALL_STATE=$(az k8s-extension create \
-                --cluster-name "${ARC_CLUSTER_NAME}" \
-                --cluster-type "${CLUSTER_TYPE}" \
-                --subscription "${SUBSCRIPTION_ID}" \
-                --resource-group "${RESOURCE_GROUP_NAME}" \
-                --name "$EXTENSION_NAME" \
-                --extension-type "$EXTENSION_TYPE" \
-                --auto-upgrade "$EXT_AUTO_UPGRADE" \
-                --scope cluster \
-                --release-train "$RELEASE_TRAIN" \
-                --configuration-settings $EXTENSION_SETTINGS \
-                --no-wait \
-                -o tsv |tail -n1|tr -d "[:cntrl:]") && echo_info "$EXTENSION_INSTALL_STATE"
-    check_extension_status "${ARC_CLUSTER_NAME}" "${CLUSTER_TYPE}"
+
+    if
+        [[ $(az k8s-extension show --cluster-type "${CLUSTER_TYPE}" -c "${ARC_CLUSTER_NAME}" -g "${RESOURCE_GROUP_NAME}" --name "${EXTENSION_NAME}" | jq -r .provisioningState) == "Succeeded" ]]
+    then
+        echo "Extension:${EXTENSION_NAME} already installed on cluster: ${ARC_CLUSTER_NAME}"
+    else
+
+        echo_info "Creating k8s extension for $CLUSTER_TYPE for Azure ML extension: ${EXTENSION_NAME} on cluster: ${ARC_CLUSTER_NAME}"
+        EXTENSION_INSTALL_STATE=$(az k8s-extension create \
+                    --cluster-name "${ARC_CLUSTER_NAME}" \
+                    --cluster-type "${CLUSTER_TYPE}" \
+                    --subscription "${SUBSCRIPTION_ID}" \
+                    --resource-group "${RESOURCE_GROUP_NAME}" \
+                    --name "${EXTENSION_NAME}" \
+                    --extension-type "$EXTENSION_TYPE" \
+                    --auto-upgrade "$EXT_AUTO_UPGRADE" \
+                    --scope cluster \
+                    --release-train "$RELEASE_TRAIN" \
+                    --configuration-settings $EXTENSION_SETTINGS \
+                    --no-wait \
+                    -o tsv |tail -n1|tr -d "[:cntrl:]") && echo_info "$EXTENSION_INSTALL_STATE"
+        check_extension_status "${ARC_CLUSTER_NAME}" "${CLUSTER_TYPE}"
+    fi
 }
 
 check_extension_status(){
@@ -728,7 +746,7 @@ function vmss_upgrade_policy_automatic() {
             echo_info "Updating upgradePolicy to Automatic for VMSS $VMSS in resource-group ${LOCAL_RESOURCE_GROUP_NAME}..."
             az vmss update --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --set upgradePolicy.mode='Automatic'
         fi
-        az vmss show --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --query upgradePolicy -o json
+        # az vmss show --subscription "${SUBSCRIPTION_ID}" -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" --query upgradePolicy -o json
     done
     # return to the default
     set -e

@@ -41,12 +41,14 @@ export SLEEP_SECONDS=20
 
 # let "DATE_ONLY=`date +'%y%m%d'`"
 # let "DATE_ONLY=$(date +'%y%m%U')"
-let "DATE_ONLY=$(date -d '+5 days' +'%y%m')"
+let "DATE_ONLY=$(date -d '+2 days' +'%y%m')"
+let "REGISTRY_TODAY=$(date +'%m%d')"
+let "REGISTRY_TOMORROW=$(date -d '+1 days' +'%m%d')"
 
 
 export LOCATION="East US"
 export PREFIX=aml
-export SUFFIX=sdkv2
+export SUFFIX=sdkv202
 export APP_NAME="github-sp-amlsdkv2-gh"
 export timestamp=$(date +%s)
 # export RESOURCE_GROUP_NAME=test-data-rg
@@ -79,9 +81,10 @@ fi
 REGISTRY_NAME=${REGISTRY_NAME:-}
 if [[ -z "$REGISTRY_NAME" ]]
 then
-    export REGISTRY_NAME="DemoRegistry${DATE_ONLY}"
+    export REGISTRY_NAME="DemoRegistry${REGISTRY_TODAY}"
     echo_warning "No registry name [REGISTRY_NAME] specified, defaulting to ${REGISTRY_NAME}."
 fi
+export REGISTRY_NAME_TOMORROW="DemoRegistry${REGISTRY_TOMORROW}"
 
 # Check if user is logged in
 [[ -n $(az account show 2> /dev/null) ]] || { echo_warning "Please login via the Azure CLI."; az login; }
