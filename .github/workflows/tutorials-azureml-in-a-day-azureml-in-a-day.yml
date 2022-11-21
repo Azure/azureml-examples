@@ -68,13 +68,13 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "azureml-in-a-day.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python azureml-in-a-day.ipynb azureml-in-a-day.output.ipynb
-      working-directory: sdk/python/azureml-in-a-day
+      working-directory: tutorials/azureml-in-a-day
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: azureml-in-a-day
-        path: sdk/python/azureml-in-a-day
+        path: tutorials/azureml-in-a-day
 
     - name: Send IcM on failure
       if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
