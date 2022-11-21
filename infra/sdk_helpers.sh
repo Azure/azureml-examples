@@ -313,6 +313,21 @@ function ensure_extension() {
     fi
 }
 
+function ensure_prerequisites_in_registry() {
+    echo_info "Ensuring prerequisites in the registry" >&2
+    deploy_scripts=(
+      infra/create-registry-components.sh
+    )
+    for package in "${deploy_scripts[@]}"; do
+      echo_info "Deploying '${ROOT_DIR}/${package}'"
+      if [ -f "${ROOT_DIR}"/"${package}" ]; then
+        bash "${ROOT_DIR}"/"${package}" ${REGISTRY_NAME};
+      else
+        echo_error "${ROOT_DIR}/${package} not found."
+      fi
+    done
+}
+
 function ensure_prerequisites_in_workspace() {
     echo_info "Ensuring prerequisites in the workspace" >&2
     deploy_scripts=(
