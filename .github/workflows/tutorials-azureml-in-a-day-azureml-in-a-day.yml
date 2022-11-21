@@ -3,8 +3,8 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-azureml-in-a-day-azureml-in-a-day
-# This file is created by sdk/python/readme.py.
+name: tutorials-azureml-in-a-day-azureml-in-a-day
+# This file is created by tutorials/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
       - main
     paths:
       - tutorials/azureml-in-a-day/**
-      - .github/workflows/sdk-azureml-in-a-day-azureml-in-a-day.yml
+      - .github/workflows/tutorials-azureml-in-a-day-azureml-in-a-day.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
