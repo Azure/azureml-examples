@@ -14,7 +14,7 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/azureml-in-a-day/**
+      - tutorials/azureml-in-a-day/**
       - .github/workflows/sdk-azureml-in-a-day-azureml-in-a-day.yml
       - sdk/python/dev-requirements.txt
       - infra/**
