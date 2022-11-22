@@ -45,5 +45,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml model create -f assets/model/job-model-as-output.yml
+          az ml job create -f assets/model/job-model-as-output.yml
       working-directory: cli
