@@ -1,0 +1,43 @@
+name: automated-cleanup-resources
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 */12 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/automated-cleanup-resources.yml
+      - infra/**
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+      continue-on-error: true
+    - name: setup-cli
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: Perform Cleanup
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash cleanup.sh
+      working-directory: infra
+      continue-on-error: true
