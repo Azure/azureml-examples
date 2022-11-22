@@ -5,7 +5,7 @@ code_configuration:
   code: ../../model-1/onlinescoring/
   scoring_script: score_managedidentity.py
 environment: 
-  conda_file: ../../model-1/environment/conda.yml
+  conda_file: ../../model-1/environment/conda-managedidentity.yml
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
 instance_type: Standard_DS2_v2
 instance_count: 1
