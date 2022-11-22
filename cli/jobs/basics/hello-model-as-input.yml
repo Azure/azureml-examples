@@ -12,6 +12,6 @@ code: load_score.py
 inputs:
   my_model:
     type: mlflow_model # List of all model types here: https://learn.microsoft.com/azure/machine-learning/reference-yaml-model#yaml-syntax
-    path: mlflow-model
+    path: cli\assets\model\mlflow-model
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster

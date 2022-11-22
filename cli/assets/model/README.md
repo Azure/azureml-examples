@@ -10,10 +10,4 @@ This repository contains example `YAML` files for creating `model` using Azure M
 > az ml model create -f <file-name>.yml
 ```
 
-
-- To create a job that uses a `model` asset using any of the sample `YAML` files provided in this directory, execute following command:
-```cli
-> az ml job create -f <job-name>.yml
-```
-
 To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli).
