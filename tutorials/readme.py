@@ -283,7 +283,7 @@ def write_readme(notebooks, pipeline_folder=None):
             suffix = f.read()
 
         # define markdown tables
-        notebook_table = f"Test Status is for branch - **_{branch}_**\n|Area|Sub-Area|Notebook|Description|Status|\n|--|--|--|--|--|\n"
+        notebook_table = f"Test Status is for branch - **_{branch}_**\n|Title|Notebook|Description|Status|\n|--|--|--|--|\n"
         for notebook in notebooks:
             # get notebook name
             name = notebook.split(os.sep)[-1].replace(".ipynb", "")
@@ -343,7 +343,7 @@ def write_readme_row(
     nb_name = f"[{name}]({notebook})"
     status = f"[![{name}]({gh_link}/tutorials-{classification}-{name}.yml/badge.svg?branch={branch})]({gh_link}/tutorials-{classification}-{name}.yml)"
 
-    row = f"|{area}|{sub_area}|{nb_name}|{description}|{status}|"
+    row = f"|{area}|{nb_name}|{description}|{status}|"
     return row
 
 
