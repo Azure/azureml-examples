@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints
+name: cli-assets-model-job-model-as-output
 on:
   workflow_dispatch:
   schedule:
@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/deploy-safe-rollout-kubernetes-online-endpoints.sh
+      - cli/assets/model/job-model-as-output.yml
       - infra/**
-      - .github/workflows/cli-scripts-deploy-safe-rollout-kubernetes-online-endpoints.yml
+      - .github/workflows/cli-assets-model-job-model-as-output.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -41,9 +41,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: test script script
+    - name: create asset
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          set -e; bash -x deploy-safe-rollout-kubernetes-online-endpoints.sh
+          az ml model create -f assets/model/job-model-as-output.yml
       working-directory: cli
