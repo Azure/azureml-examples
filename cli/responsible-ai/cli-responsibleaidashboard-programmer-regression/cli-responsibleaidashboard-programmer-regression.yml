@@ -1,0 +1,110 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+experiment_name: programmers_dataset_analyze
+type: pipeline
+
+inputs:
+  target_column_name: 'score'
+  my_training_data:
+    type: mltable
+    path: ./data-programmer-regression/train
+  my_test_data:
+    type: mltable
+    path: ./data-programmer-regression/test
+
+outputs: 
+  programmers_model:
+    type: mlflow_model
+    mode: rw_mount
+
+compute: azureml:cpu-cluster
+
+jobs:
+  train_model:
+    type: command
+    component: file:./train_programmers.yml
+    inputs:
+      training_data: ${{parent.inputs.my_training_data}}
+      target_column_name: ${{parent.inputs.target_column_name}}
+      categorical_features: '["location", "style", "job title", "OS", "Employer", "IDE", "Programming language"]'
+      continuous_features: '["YOE", "Number of github repos contributed to", "age"]'
+      model_name: 'programmers_model'
+    outputs:
+      model_output: ${{parent.outputs.programmers_model}}
+
+  create_rai_job:
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_constructor/versions/0.2.0
+    limits:
+      timeout: 120
+    inputs:
+      title: Programmers Analysis
+      task_type: regression
+      model_info_path: ${{parent.jobs.train_model.outputs.model_output_json}}
+      train_dataset: ${{parent.inputs.my_training_data}}
+      test_dataset: ${{parent.inputs.my_test_data}}
+      target_column_name: ${{parent.inputs.target_column_name}}
+      categorical_column_names: '["location", "style", "job title", "OS", "Employer", "IDE", "Programming language"]'
+
+  explain_01:
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_explanation/versions/0.2.0
+    limits:
+      timeout: 120
+    inputs:
+      comment: Some random string
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+
+  causal_01:
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_causal/versions/0.2.0
+    limits:
+      timeout: 120
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      treatment_features: '["Number of github repos contributed to", "YOE"]'
+      heterogeneity_features: '[]'
+      nuisance_model: linear
+      skip_cat_limit_checks: True
+
+  counterfactual_01:
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_counterfactual/versions/0.2.0
+    limits:
+      timeout: 600
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      total_CFs: 10
+      desired_range: '[5, 10]'
+      feature_importance: True
+
+  error_analysis_01:
+    limits:
+      timeout: 120
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_erroranalysis/versions/0.2.0
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      max_depth: 3
+      filter_features: '["style", "Employer"]'
+
+  gather_01:
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_gather/versions/0.2.0
+    limits:
+      timeout: 120
+    inputs:
+      constructor: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      insight_1: ${{parent.jobs.causal_01.outputs.causal}}
+      insight_2: ${{parent.jobs.counterfactual_01.outputs.counterfactual}}
+      insight_3: ${{parent.jobs.error_analysis_01.outputs.error_analysis}}
+      insight_4: ${{parent.jobs.explain_01.outputs.explanation}}
+
+  scorecard_01:
+    type: command
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_score_card/versions/0.2.0
+    inputs:
+      dashboard: ${{parent.jobs.gather_01.outputs.dashboard}}
+      pdf_generation_config:
+        type: uri_file
+        path: ./programmers_analyze_scorecard_config/pdf_gen.json
+        mode: download

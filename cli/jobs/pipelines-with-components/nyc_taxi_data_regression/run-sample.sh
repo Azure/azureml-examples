@@ -5,10 +5,10 @@
 set -x
 
 version=$(date +%s)
-reg_name="ContosoMLjun14"
-ws_name="mlw-contoso-819prod"
-ws_rg="rg-contoso-819prod"
-ws_sub="21d8f407-c4c4-452e-87a4-e609bfb86248"
+reg_name="<REGISTRY_NAME>"
+ws_name="<WORKSPACE_NAME>"
+ws_rg="<RESOURCE_GROUP>"
+ws_sub="<SUBSCRIPTION_ID>"
 
 # create environment
 az ml environment create --file env_train.yml --registry-name $reg_name --version $version || {
@@ -41,7 +41,7 @@ az ml model create --name nyc-taxi-model --version $version --type mlflow_model 
 }
 
 # copy model created in workspace to registry
-az ml model create --registry-name ContosoMLjun14 --path azureml://subscriptions/$ws_sub/resourceGroups/$ws_rg/workspaces/$ws_name/models/nyc-taxi-model/versions/$version || {
+az ml model create --registry-name <REGISTRY_NAME> --path azureml://subscriptions/$ws_sub/resourceGroups/$ws_rg/workspaces/$ws_name/models/nyc-taxi-model/versions/$version || {
     echo "model create in registry failed"; exit 1;
 }
 
