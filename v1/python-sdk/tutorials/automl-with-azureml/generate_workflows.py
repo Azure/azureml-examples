@@ -84,9 +84,7 @@ def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     creds = "${{secrets.AZ_CREDS}}"
 
     run_update_env = ""
-    update_yml_file = (
-        f"v1/python-sdk/tutorials/automl-with-azureml/{notebook_folder}/{UPDATE_ENV_YML}"
-    )
+    update_yml_file = f"v1/python-sdk/tutorials/automl-with-azureml/{notebook_folder}/{UPDATE_ENV_YML}"
     # some notebook needs install more packages with the basic automl requirement.
     if os.path.exists(os.path.join(notebook_folder, UPDATE_ENV_YML)):
         run_update_env = f"""
