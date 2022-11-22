@@ -15,7 +15,7 @@ command: >-
 inputs:
   input_model: 
     type: mlflow_model # mlflow_model,custom_model, triton_model
-    path: cli\assets\model\mlflow-model
+    path: ../../assets/model/mlflow-model
 outputs:
   output_folder: 
     type: custom_model # mlflow_model,custom_model, triton_model
