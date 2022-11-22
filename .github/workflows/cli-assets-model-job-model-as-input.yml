@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-scripts-deploy-moe-binary-payloads
+name: cli-assets-model-job-model-as-input
 on:
   workflow_dispatch:
   schedule:
@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/deploy-moe-binary-payloads.sh
+      - cli/assets/model/job-model-as-input.yml
       - infra/**
-      - .github/workflows/cli-scripts-deploy-moe-binary-payloads.yml
+      - .github/workflows/cli-assets-model-job-model-as-input.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -41,9 +41,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: test script script
+    - name: create asset
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          set -e; bash -x deploy-moe-binary-payloads.sh
+          az ml model create -f assets/model/job-model-as-input.yml
       working-directory: cli
