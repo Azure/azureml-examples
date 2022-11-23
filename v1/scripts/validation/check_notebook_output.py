@@ -44,7 +44,7 @@ allowed_list = [
     "LinkTabularOutputDatasetConfig",
     "This may take a few minutes",
     "Downloading dataset",
-    "logger.warning"
+    "logger.warning",
 ]
 
 with open(full_name, "r") as notebook_file:
