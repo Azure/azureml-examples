@@ -45,6 +45,7 @@ allowed_list = [
     "This may take a few minutes",
     "Downloading dataset",
     "logger.warning",
+    "Importing plotly failed",
 ]
 
 with open(full_name, "r") as notebook_file:
