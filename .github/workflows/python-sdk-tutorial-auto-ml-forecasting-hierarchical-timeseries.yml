@@ -61,13 +61,13 @@ jobs:
       working-directory: v1/python-sdk/tutorials/automl-with-azureml/forecasting-hierarchical-timeseries
     - name: check notebook output
       run: |
-         python scripts/validation/check_notebook_output.py \
+         python v1/scripts/validation/check_notebook_output.py \
                 --file_name auto-ml-forecasting-hierarchical-timeseries.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-hierarchical-timeseries \
                 --check warning
     - name: check timeseries
       run: |
-         python scripts/validation/check_timeseries.py \
+         python v1/scripts/validation/check_timeseries.py \
                 --file_name auto-ml-forecasting-hierarchical-timeseries.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-hierarchical-timeseries \
                 --experiment_name automl-hts
