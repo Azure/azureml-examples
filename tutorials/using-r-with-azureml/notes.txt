@@ -1,0 +1,38 @@
+Branch azureml-examples and add this into 
+https://github.com/Azure/azureml-examples/tree/main/tutorials
+
+
+CODE
+----
+in 01
+- install plumber
+- use httr to create datastore/asset
+
+in 02
+- decide what to save
+
+in 03
+- finish the parametrization of the script and test
+- future: use R to generate YML
+
+in 04
+- take sam's example iris and change it the model trained in 03
+- deployment plumber script
+- scoring script
+
+
+DOCS
+----
+
+- merge building R workflow into overview (toc update)
+- interactive
+    - developpent enviroment (notebooks or RStudio - not in CI) 
+    - creating data asset
+    - reading data asset interacvite with pandas and reticulate
+- adapting the scrupt
+    what to do to the R script (parameters, logging, MLFlow)
+- Run R job (training job)
+    - can be anything
+- Deploy and score
+    - deployment aspect
+    - show some R scoring code (can happen anyhere)

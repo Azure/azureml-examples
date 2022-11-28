@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >
+  Rscript timeseries-train.R 
+  --data_folder ${{inputs.ojsales}}
+  --brand ${{inputs.brand}}
+  --store ${{inputs.store}}
+code: src
+inputs:
+  brand: 1
+  store: 2
+  ojsales: 
+    type: uri_file
+    path: "azureml://subscriptions/2fcb5846-b560-4f38-8b32-ed6dedcc0a38/resourcegroups/aml/workspaces/marckvaisman-mcaps-nonprod/datastores/marckblob/paths/bayesm-orangejuice/yx.csv"
+environment:
+  build:
+    path: docker-context
+compute: azureml:cpucluster
+display_name: ojsales-forecasting-store-2-brand-1
+experiment_name: ojsales-forecasting
+description: Timeseries forecasting for a single store and brand (store 2, brand 1).
