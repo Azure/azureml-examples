@@ -3,16 +3,13 @@
 
 ## NOTES
 
-# Code adapted, modified and optimized from the forecasting example 
+# Code adapted, modified and optimized from the forecasting example
 # https://microsoft.github.io/forecasting/examples/grocery_sales/
 # https://github.com/microsoft/forecasting
 # accessed 11/14/2022
 
-# The source of the dataset is from the `bayesm` package and has been 
-# saved as csv files and provided in the data/ directory.
-
-# Make sure that packages you are going to use are installed in the 
-# Docker image, or use pacman (which needs to be installed in the Docker image) 
+# Make sure that packages you are going to use are installed in the
+# Docker image, or use pacman (which needs to be installed in the Docker image)
 # to check for installed packages and install missing ones at runtime
 
 
@@ -26,7 +23,8 @@ library(tsibble)
 library(fable) # https://fable.tidyverts.org/index.html
 library(janitor) # https://github.com/sfirke/janitor
 
-# Source the aml_utils.R script which is needed to use the MLFlow back end with R
+# Source the aml_utils.R script which is needed to use the MLFlow back end
+# with R
 source("azureml_utils.R")
 
 # Set MLFlow related env vars
@@ -46,14 +44,14 @@ parser <- add_option(
 parser <- add_option(
   parser,
   "--brand",
-  type = "character",
+  type = "double",
   action = "store"
 )
 
 parser <- add_option(
   parser,
   "--store",
-  type = "character",
+  type = "double",
   action = "store"
 )
 
@@ -65,10 +63,10 @@ args <- parse_args(parser)
 ## Modify to read the files from Azure storage using reticulate
 # df <- pd$read_csv("azureml://")
 
-oj_sales_read <- readr::read_csv("xxx") |> 
+file_name = file.path(args$data_file)
+
+oj_sales_read <- readr::read_csv(file_name) |> 
   janitor::clean_names()
-
-
 
 # Constants (were previously defined in a YAML file in the 
 # reference example, and ideally can be parametrized
@@ -84,7 +82,8 @@ oj_sales <- oj_sales_read |>
   mutate(yr_wk = tsibble::yearweek(START_DATE + week * 7)) |> 
   select(-week) |> 
   # convert to tsibble
-  as_tsibble(index = yr_wk, key = c(store, brand))
+  as_tsibble(index = yr_wk, key = c(store, brand)) |>
+  filter(store == args$store, brand == args$brand)
 
 # All stores have the same start week (1990 W25) and end week (1992 W41).
 # For training, use 100 weeks (1992 W18)
