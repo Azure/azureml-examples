@@ -1,0 +1,678 @@
+{
+    "SchemaVersion": 2,
+    "ArtifactName": "0624-222158-6jfnf5ao-10-139-64-5",
+    "ArtifactType": "filesystem",
+    "Metadata": {
+      "OS": {
+        "Family": "ubuntu",
+        "Name": "20.04"
+      },
+      "ImageConfig": {
+        "architecture": "",
+        "created": "0001-01-01T00:00:00Z",
+        "os": "",
+        "rootfs": {
+          "type": "",
+          "diff_ids": null
+        },
+        "config": {}
+      }
+    },
+    "Results": [
+      {
+        "Target": "0624-222158-6jfnf5ao-10-139-64-5 (ubuntu 20.04)",
+        "Class": "os-pkgs",
+        "Type": "ubuntu",
+        "Vulnerabilities": [
+          {
+            "VulnerabilityID": "CVE-2022-21499",
+            "PkgName": "linux-headers-5.4.0-113",
+            "InstalledVersion": "5.4.0-113.127",
+            "FixedVersion": "5.4.0-117.132",
+            "Layer": {},
+            "SeveritySource": "ubuntu",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-21499",
+            "DataSource": {
+              "ID": "ubuntu",
+              "Name": "Ubuntu CVE Tracker",
+              "URL": "https://git.launchpad.net/ubuntu-cve-tracker"
+            },
+            "Title": "kernel: possible to use the debugger to write zero into a location of choice",
+            "Description": "KGDB and KDB allow read and write access to kernel memory, and thus should be restricted during lockdown. An attacker with access to a serial port could trigger the debugger so it is important that the debugger respect the lockdown mode when/if it is triggered. CVSS 3.1 Base Score 6.5 (Confidentiality, Integrity and Availability impacts). CVSS Vector: (CVSS:3.1/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:H/A:H).",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-787"
+            ],
+            "CVSS": {
+              "nvd": {
+                "V2Vector": "AV:L/AC:L/Au:N/C:P/I:P/A:P",
+                "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+                "V2Score": 4.6,
+                "V3Score": 6.7
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:N/I:H/A:L",
+                "V3Score": 6.4
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2022-21499",
+              "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-21499",
+              "https://git.kernel.org/linus/eadb2f47a3ced5c64b23b90fd2a3463f63726066",
+              "https://linux.oracle.com/cve/CVE-2022-21499.html",
+              "https://linux.oracle.com/errata/ELSA-2022-9496.html",
+              "https://ubuntu.com/security/notices/USN-5465-1",
+              "https://ubuntu.com/security/notices/USN-5466-1",
+              "https://ubuntu.com/security/notices/USN-5467-1",
+              "https://ubuntu.com/security/notices/USN-5468-1",
+              "https://ubuntu.com/security/notices/USN-5469-1",
+              "https://ubuntu.com/security/notices/USN-5470-1",
+              "https://ubuntu.com/security/notices/USN-5471-1",
+              "https://ubuntu.com/security/notices/USN-5484-1",
+              "https://www.debian.org/security/2022/dsa-5161",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/10",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/7"
+            ],
+            "PublishedDate": "2022-06-09T21:15:00Z",
+            "LastModifiedDate": "2022-06-17T14:55:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2022-21499",
+            "PkgName": "linux-headers-5.4.0-113-generic",
+            "InstalledVersion": "5.4.0-113.127",
+            "FixedVersion": "5.4.0-117.132",
+            "Layer": {},
+            "SeveritySource": "ubuntu",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-21499",
+            "DataSource": {
+              "ID": "ubuntu",
+              "Name": "Ubuntu CVE Tracker",
+              "URL": "https://git.launchpad.net/ubuntu-cve-tracker"
+            },
+            "Title": "kernel: possible to use the debugger to write zero into a location of choice",
+            "Description": "KGDB and KDB allow read and write access to kernel memory, and thus should be restricted during lockdown. An attacker with access to a serial port could trigger the debugger so it is important that the debugger respect the lockdown mode when/if it is triggered. CVSS 3.1 Base Score 6.5 (Confidentiality, Integrity and Availability impacts). CVSS Vector: (CVSS:3.1/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:H/A:H).",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-787"
+            ],
+            "CVSS": {
+              "nvd": {
+                "V2Vector": "AV:L/AC:L/Au:N/C:P/I:P/A:P",
+                "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+                "V2Score": 4.6,
+                "V3Score": 6.7
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:N/I:H/A:L",
+                "V3Score": 6.4
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2022-21499",
+              "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-21499",
+              "https://git.kernel.org/linus/eadb2f47a3ced5c64b23b90fd2a3463f63726066",
+              "https://linux.oracle.com/cve/CVE-2022-21499.html",
+              "https://linux.oracle.com/errata/ELSA-2022-9496.html",
+              "https://ubuntu.com/security/notices/USN-5465-1",
+              "https://ubuntu.com/security/notices/USN-5466-1",
+              "https://ubuntu.com/security/notices/USN-5467-1",
+              "https://ubuntu.com/security/notices/USN-5468-1",
+              "https://ubuntu.com/security/notices/USN-5469-1",
+              "https://ubuntu.com/security/notices/USN-5470-1",
+              "https://ubuntu.com/security/notices/USN-5471-1",
+              "https://ubuntu.com/security/notices/USN-5484-1",
+              "https://www.debian.org/security/2022/dsa-5161",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/10",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/7"
+            ],
+            "PublishedDate": "2022-06-09T21:15:00Z",
+            "LastModifiedDate": "2022-06-17T14:55:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2022-21499",
+            "PkgName": "linux-libc-dev",
+            "InstalledVersion": "5.4.0-113.127",
+            "FixedVersion": "5.4.0-117.132",
+            "Layer": {},
+            "SeveritySource": "ubuntu",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-21499",
+            "DataSource": {
+              "ID": "ubuntu",
+              "Name": "Ubuntu CVE Tracker",
+              "URL": "https://git.launchpad.net/ubuntu-cve-tracker"
+            },
+            "Title": "kernel: possible to use the debugger to write zero into a location of choice",
+            "Description": "KGDB and KDB allow read and write access to kernel memory, and thus should be restricted during lockdown. An attacker with access to a serial port could trigger the debugger so it is important that the debugger respect the lockdown mode when/if it is triggered. CVSS 3.1 Base Score 6.5 (Confidentiality, Integrity and Availability impacts). CVSS Vector: (CVSS:3.1/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:H/A:H).",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-787"
+            ],
+            "CVSS": {
+              "nvd": {
+                "V2Vector": "AV:L/AC:L/Au:N/C:P/I:P/A:P",
+                "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+                "V2Score": 4.6,
+                "V3Score": 6.7
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:N/I:H/A:L",
+                "V3Score": 6.4
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2022-21499",
+              "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-21499",
+              "https://git.kernel.org/linus/eadb2f47a3ced5c64b23b90fd2a3463f63726066",
+              "https://linux.oracle.com/cve/CVE-2022-21499.html",
+              "https://linux.oracle.com/errata/ELSA-2022-9496.html",
+              "https://ubuntu.com/security/notices/USN-5465-1",
+              "https://ubuntu.com/security/notices/USN-5466-1",
+              "https://ubuntu.com/security/notices/USN-5467-1",
+              "https://ubuntu.com/security/notices/USN-5468-1",
+              "https://ubuntu.com/security/notices/USN-5469-1",
+              "https://ubuntu.com/security/notices/USN-5470-1",
+              "https://ubuntu.com/security/notices/USN-5471-1",
+              "https://ubuntu.com/security/notices/USN-5484-1",
+              "https://www.debian.org/security/2022/dsa-5161",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/10",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/7"
+            ],
+            "PublishedDate": "2022-06-09T21:15:00Z",
+            "LastModifiedDate": "2022-06-17T14:55:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2022-21499",
+            "PkgName": "linux-tools-common",
+            "InstalledVersion": "5.4.0-113.127",
+            "FixedVersion": "5.4.0-117.132",
+            "Layer": {},
+            "SeveritySource": "ubuntu",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-21499",
+            "DataSource": {
+              "ID": "ubuntu",
+              "Name": "Ubuntu CVE Tracker",
+              "URL": "https://git.launchpad.net/ubuntu-cve-tracker"
+            },
+            "Title": "kernel: possible to use the debugger to write zero into a location of choice",
+            "Description": "KGDB and KDB allow read and write access to kernel memory, and thus should be restricted during lockdown. An attacker with access to a serial port could trigger the debugger so it is important that the debugger respect the lockdown mode when/if it is triggered. CVSS 3.1 Base Score 6.5 (Confidentiality, Integrity and Availability impacts). CVSS Vector: (CVSS:3.1/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:H/A:H).",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-787"
+            ],
+            "CVSS": {
+              "nvd": {
+                "V2Vector": "AV:L/AC:L/Au:N/C:P/I:P/A:P",
+                "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+                "V2Score": 4.6,
+                "V3Score": 6.7
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:N/I:H/A:L",
+                "V3Score": 6.4
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2022-21499",
+              "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-21499",
+              "https://git.kernel.org/linus/eadb2f47a3ced5c64b23b90fd2a3463f63726066",
+              "https://linux.oracle.com/cve/CVE-2022-21499.html",
+              "https://linux.oracle.com/errata/ELSA-2022-9496.html",
+              "https://ubuntu.com/security/notices/USN-5465-1",
+              "https://ubuntu.com/security/notices/USN-5466-1",
+              "https://ubuntu.com/security/notices/USN-5467-1",
+              "https://ubuntu.com/security/notices/USN-5468-1",
+              "https://ubuntu.com/security/notices/USN-5469-1",
+              "https://ubuntu.com/security/notices/USN-5470-1",
+              "https://ubuntu.com/security/notices/USN-5471-1",
+              "https://ubuntu.com/security/notices/USN-5484-1",
+              "https://www.debian.org/security/2022/dsa-5161",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/10",
+              "https://www.openwall.com/lists/oss-security/2022/05/24/7"
+            ],
+            "PublishedDate": "2022-06-09T21:15:00Z",
+            "LastModifiedDate": "2022-06-17T14:55:00Z"
+          }
+        ]
+      },
+      {
+        "Target": "databricks/conda/pkgs/conda-4.8.2-py38_0/info/test/tests/conda_env/support/requirements.txt",
+        "Class": "lang-pkgs",
+        "Type": "pip",
+        "Vulnerabilities": [
+          {
+            "VulnerabilityID": "CVE-2018-1000656",
+            "PkgName": "flask",
+            "InstalledVersion": "0.10.1",
+            "FixedVersion": "0.12.3",
+            "Layer": {},
+            "SeveritySource": "nvd",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-1000656",
+            "DataSource": {
+              "ID": "osv",
+              "Name": "Python Packaging Advisory Database",
+              "URL": "https://github.com/pypa/advisory-db"
+            },
+            "Title": "python-flask: Denial of Service via crafted JSON file",
+            "Description": "The Pallets Project flask version Before 0.12.3 contains a CWE-20: Improper Input Validation vulnerability in flask that can result in Large amount of memory usage possibly leading to denial of service. This attack appear to be exploitable via Attacker provides JSON data in incorrect encoding. This vulnerability appears to have been fixed in 0.12.3. NOTE: this may overlap CVE-2019-1010083.",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-20"
+            ],
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+                "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V2Score": 5,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2018-1000656",
+              "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-1000656",
+              "https://github.com/advisories/GHSA-562c-5r94-xh97",
+              "https://github.com/pallets/flask/pull/2691",
+              "https://github.com/pallets/flask/releases/tag/0.12.3",
+              "https://lists.debian.org/debian-lts-announce/2019/08/msg00025.html",
+              "https://nvd.nist.gov/vuln/detail/CVE-2018-1000656",
+              "https://security.netapp.com/advisory/ntap-20190221-0001/",
+              "https://ubuntu.com/security/notices/USN-4378-1",
+              "https://usn.ubuntu.com/4378-1/"
+            ],
+            "PublishedDate": "2018-08-20T19:31:00Z",
+            "LastModifiedDate": "2020-06-09T22:15:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2019-1010083",
+            "PkgName": "flask",
+            "InstalledVersion": "0.10.1",
+            "FixedVersion": "1.0",
+            "Layer": {},
+            "SeveritySource": "nvd",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-1010083",
+            "DataSource": {
+              "ID": "osv",
+              "Name": "Python Packaging Advisory Database",
+              "URL": "https://github.com/pypa/advisory-db"
+            },
+            "Title": "python-flask: unexpected memory usage can lead to denial of service via crafted encoded JSON data",
+            "Description": "The Pallets Project Flask before 1.0 is affected by: unexpected memory usage. The impact is: denial of service. The attack vector is: crafted encoded JSON data. The fixed version is: 1. NOTE: this may overlap CVE-2018-1000656.",
+            "Severity": "HIGH",
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+                "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V2Score": 5,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2019-1010083",
+              "https://github.com/advisories/GHSA-5wv5-4vpf-pj6m",
+              "https://nvd.nist.gov/vuln/detail/CVE-2019-1010083",
+              "https://palletsprojects.com/blog/flask-1-0-released/",
+              "https://snyk.io/vuln/SNYK-PYTHON-FLASK-451637",
+              "https://www.palletsprojects.com/blog/flask-1-0-released/"
+            ],
+            "PublishedDate": "2019-07-17T14:15:00Z",
+            "LastModifiedDate": "2020-08-24T17:37:00Z"
+          }
+        ]
+      },
+      {
+        "Target": "usr/local/lib/R/site-library/bslib/yarn.lock",
+        "Class": "lang-pkgs",
+        "Type": "yarn",
+        "Vulnerabilities": [
+          {
+            "VulnerabilityID": "CVE-2021-3807",
+            "PkgName": "ansi-regex",
+            "InstalledVersion": "3.0.0",
+            "FixedVersion": "3.0.1, 4.1.1, 5.0.1, 6.0.1",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-3807",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "nodejs-ansi-regex: Regular expression denial of service (ReDoS) matching ANSI escape codes",
+            "Description": "ansi-regex is vulnerable to Inefficient Regular Expression Complexity",
+            "Severity": "HIGH",
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:C",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V2Score": 7.8,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2021-3807",
+              "https://app.snyk.io/vuln/SNYK-JS-ANSIREGEX-1583908",
+              "https://github.com/advisories/GHSA-93q8-gq69-wqmw",
+              "https://github.com/chalk/ansi-regex/commit/8d1d7cdb586269882c4bdc1b7325d0c58c8f76f9",
+              "https://github.com/chalk/ansi-regex/issues/38#issuecomment-924086311",
+              "https://github.com/chalk/ansi-regex/issues/38#issuecomment-925924774",
+              "https://github.com/chalk/ansi-regex/releases/tag/v6.0.1",
+              "https://huntr.dev/bounties/5b3cf33b-ede0-4398-9974-800876dfd994",
+              "https://linux.oracle.com/cve/CVE-2021-3807.html",
+              "https://linux.oracle.com/errata/ELSA-2022-0350.html",
+              "https://nvd.nist.gov/vuln/detail/CVE-2021-3807",
+              "https://www.oracle.com/security-alerts/cpuapr2022.html"
+            ],
+            "PublishedDate": "2021-09-17T07:15:00Z",
+            "LastModifiedDate": "2022-04-20T00:16:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2020-28469",
+            "PkgName": "glob-parent",
+            "InstalledVersion": "3.1.0",
+            "FixedVersion": "5.1.2",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-28469",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "nodejs-glob-parent: Regular expression denial of service",
+            "Description": "This affects the package glob-parent before 5.1.2. The enclosure regex used to check for strings ending in enclosure containing path separator.",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-400"
+            ],
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V2Score": 5,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2020-28469",
+              "https://github.com/advisories/GHSA-ww39-953v-wcq6",
+              "https://github.com/gulpjs/glob-parent/blob/6ce8d11f2f1ed8e80a9526b1dc8cf3aa71f43474/index.js%23L9",
+              "https://github.com/gulpjs/glob-parent/pull/36",
+              "https://github.com/gulpjs/glob-parent/releases/tag/v5.1.2",
+              "https://linux.oracle.com/cve/CVE-2020-28469.html",
+              "https://linux.oracle.com/errata/ELSA-2022-0350.html",
+              "https://nvd.nist.gov/vuln/detail/CVE-2020-28469",
+              "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWERGITHUBES128-1059093",
+              "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1059092",
+              "https://snyk.io/vuln/SNYK-JS-GLOBPARENT-1016905",
+              "https://www.oracle.com/security-alerts/cpujan2022.html"
+            ],
+            "PublishedDate": "2021-06-03T16:15:00Z",
+            "LastModifiedDate": "2022-03-29T16:39:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2021-3918",
+            "PkgName": "json-schema",
+            "InstalledVersion": "0.2.3",
+            "FixedVersion": "0.4.0",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-3918",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "nodejs-json-schema: Prototype pollution vulnerability",
+            "Description": "json-schema is vulnerable to Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')",
+            "Severity": "CRITICAL",
+            "CweIDs": [
+              "CWE-915"
+            ],
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "V3Score": 9.8
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "V2Score": 7.5,
+                "V3Score": 9.8
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "V3Score": 9.8
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2021-3918",
+              "https://github.com/advisories/GHSA-896r-f27r-55mw",
+              "https://github.com/kriszyp/json-schema/commit/22f146111f541d9737e832823699ad3528ca7741",
+              "https://github.com/kriszyp/json-schema/commit/b62f1da1ff5442f23443d6be6a92d00e65cba93a",
+              "https://github.com/kriszyp/json-schema/commit/f6f6a3b02d667aa4ba2d5d50cc19208c4462abfa",
+              "https://huntr.dev/bounties/bb6ccd63-f505-4e3a-b55f-cd2662c261a9",
+              "https://linux.oracle.com/cve/CVE-2021-3918.html",
+              "https://linux.oracle.com/errata/ELSA-2022-0350.html",
+              "https://nvd.nist.gov/vuln/detail/CVE-2021-3918"
+            ],
+            "PublishedDate": "2021-11-13T09:15:00Z",
+            "LastModifiedDate": "2022-05-12T01:02:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2021-44906",
+            "PkgName": "minimist",
+            "InstalledVersion": "1.2.5",
+            "FixedVersion": "1.2.6",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-44906",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "minimist: prototype pollution",
+            "Description": "Minimist \u003c=1.2.5 is vulnerable to Prototype Pollution via file index.js, function setKey() (lines 69-95).",
+            "Severity": "CRITICAL",
+            "CweIDs": [
+              "CWE-1321"
+            ],
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "V3Score": 9.8
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "V2Score": 7.5,
+                "V3Score": 9.8
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+                "V3Score": 5.6
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2021-44906",
+              "https://github.com/Marynk/JavaScript-vulnerability-detection/blob/main/minimist%20PoC.zip",
+              "https://github.com/advisories/GHSA-xvch-5gv4-984h",
+              "https://github.com/substack/minimist/blob/master/index.js#L69",
+              "https://github.com/substack/minimist/issues/164",
+              "https://nvd.nist.gov/vuln/detail/CVE-2021-44906",
+              "https://security.snyk.io/vuln/SNYK-JS-MINIMIST-559764",
+              "https://snyk.io/vuln/SNYK-JS-MINIMIST-559764",
+              "https://stackoverflow.com/questions/8588563/adding-custom-properties-to-a-function/20278068#20278068"
+            ],
+            "PublishedDate": "2022-03-17T16:15:00Z",
+            "LastModifiedDate": "2022-04-12T16:52:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2022-24771",
+            "PkgName": "node-forge",
+            "InstalledVersion": "0.10.0",
+            "FixedVersion": "1.3.0",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-24771",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "node-forge: Signature verification leniency in checking `digestAlgorithm` structure can lead to signature forgery",
+            "Description": "Forge (also called `node-forge`) is a native implementation of Transport Layer Security in JavaScript. Prior to version 1.3.0, RSA PKCS#1 v1.5 signature verification code is lenient in checking the digest algorithm structure. This can allow a crafted structure that steals padding bytes and uses unchecked portion of the PKCS#1 encoded message to forge a signature when a low public exponent is being used. The issue has been addressed in `node-forge` version 1.3.0. There are currently no known workarounds.",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-347"
+            ],
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "V2Score": 5,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2022-24771",
+              "https://github.com/advisories/GHSA-cfm4-qjh2-4765",
+              "https://github.com/digitalbazaar/forge/commit/3f0b49a0573ef1bb7af7f5673c0cfebf00424df1",
+              "https://github.com/digitalbazaar/forge/commit/bb822c02df0b61211836472e29b9790cc541cdb2",
+              "https://github.com/digitalbazaar/forge/security/advisories/GHSA-cfm4-qjh2-4765",
+              "https://nvd.nist.gov/vuln/detail/CVE-2022-24771"
+            ],
+            "PublishedDate": "2022-03-18T14:15:00Z",
+            "LastModifiedDate": "2022-03-28T13:53:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2022-24772",
+            "PkgName": "node-forge",
+            "InstalledVersion": "0.10.0",
+            "FixedVersion": "1.3.0",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-24772",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "node-forge: Signature verification failing to check tailing garbage bytes can lead to signature forgery",
+            "Description": "Forge (also called `node-forge`) is a native implementation of Transport Layer Security in JavaScript. Prior to version 1.3.0, RSA PKCS#1 v1.5 signature verification code does not check for tailing garbage bytes after decoding a `DigestInfo` ASN.1 structure. This can allow padding bytes to be removed and garbage data added to forge a signature when a low public exponent is being used. The issue has been addressed in `node-forge` version 1.3.0. There are currently no known workarounds.",
+            "Severity": "HIGH",
+            "CweIDs": [
+              "CWE-347"
+            ],
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "V2Score": 5,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2022-24772",
+              "https://github.com/advisories/GHSA-x4jg-mjrx-434g",
+              "https://github.com/digitalbazaar/forge/commit/3f0b49a0573ef1bb7af7f5673c0cfebf00424df1",
+              "https://github.com/digitalbazaar/forge/commit/bb822c02df0b61211836472e29b9790cc541cdb2",
+              "https://github.com/digitalbazaar/forge/security/advisories/GHSA-x4jg-mjrx-434g",
+              "https://nvd.nist.gov/vuln/detail/CVE-2022-24772"
+            ],
+            "PublishedDate": "2022-03-18T14:15:00Z",
+            "LastModifiedDate": "2022-03-28T14:10:00Z"
+          },
+          {
+            "VulnerabilityID": "CVE-2021-3803",
+            "PkgName": "nth-check",
+            "InstalledVersion": "1.0.2",
+            "FixedVersion": "2.0.1",
+            "Layer": {},
+            "SeveritySource": "ghsa",
+            "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-3803",
+            "DataSource": {
+              "ID": "ghsa",
+              "Name": "GitHub Security Advisory Npm",
+              "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+            },
+            "Title": "nodejs-nth-check: inefficient regular expression complexity",
+            "Description": "nth-check is vulnerable to Inefficient Regular Expression Complexity",
+            "Severity": "HIGH",
+            "CVSS": {
+              "ghsa": {
+                "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              },
+              "nvd": {
+                "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V2Score": 5,
+                "V3Score": 7.5
+              },
+              "redhat": {
+                "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "V3Score": 7.5
+              }
+            },
+            "References": [
+              "https://access.redhat.com/security/cve/CVE-2021-3803",
+              "https://github.com/advisories/GHSA-rp65-9cf3-cjxr",
+              "https://github.com/fb55/nth-check/commit/9894c1d2010870c351f66c6f6efcf656e26bb726",
+              "https://huntr.dev/bounties/8cf8cc06-d2cf-4b4e-b42c-99fafb0b04d0",
+              "https://nvd.nist.gov/vuln/detail/CVE-2021-3803"
+            ],
+            "PublishedDate": "2021-09-17T07:15:00Z",
+            "LastModifiedDate": "2022-05-12T01:02:00Z"
+          }
+        ]
+      }
+    ]
+  }
