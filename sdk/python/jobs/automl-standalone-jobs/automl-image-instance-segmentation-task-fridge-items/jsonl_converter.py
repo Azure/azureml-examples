@@ -132,8 +132,10 @@ def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
 
     # We'll copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
-    validation_mltable_path = os.path.join(dataset_parent_dir, "validation-mltable-folder") 
-    
+    validation_mltable_path = os.path.join(
+        dataset_parent_dir, "validation-mltable-folder"
+    )
+
     # First, let's create the folders if they don't exist
     os.makedirs(training_mltable_path, exist_ok=True)
     os.makedirs(validation_mltable_path, exist_ok=True)
