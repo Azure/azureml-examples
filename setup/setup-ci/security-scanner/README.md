@@ -18,9 +18,13 @@ A security scanner for Azure ML [Compute Instances](https://learn.microsoft.com/
 
 > Prerequisite: an Azure ML workspace with a Compute Instance running and [diagnostic logs](https://learn.microsoft.com/en-us/azure/machine-learning/monitor-azure-machine-learning) streaming to Log Analytics. See further down for alternative setups.
 
-- **Upload the scanner to Azure ML**: download [`amlsecscan.py`](amlsecscan.py), open [Azure ML Studio](https://ml.azure.com/), go to the Notebooks tab, and upload the file into your user folder `/Users/{user_name}` (replacing `{user_name}` with your user alias).
-- **Install the scanner**: open a terminal in Azure ML Notebooks and run `sudo ./amlsecscan.py install`
-- **Run a scan**: in the terminal, run `sudo ./amlsecscan.py scan all` (this takes a few minutes)
+1. **Upload the scanner to Azure ML**:
+   1. Download [`amlsecscan.py`](amlsecscan.py)
+   2. Open [Azure ML Studio](https://ml.azure.com/)
+   3. Go to the Notebooks tab
+   4. Upload the file into your user folder `/Users/{user_name}` (replacing `{user_name}` with your user alias)
+2. **Install the scanner**: open a terminal in Azure ML Notebooks and run `sudo ./amlsecscan.py install`
+3. **Run a scan**: in the terminal, run `sudo ./amlsecscan.py scan all` (this takes a few minutes)
 
 ## Telemetry
 
@@ -41,19 +45,20 @@ OS + Python vulnerabilities|[Trivy](https://github.com/aquasecurity/trivy)
 ## Installation
 
 Irrespective of how the scanner is installed, the scanner script must first be copied to the Azure ML workspace:
-- Download [amlsecscan.py](amlsecscan.py)
-- Open [Azure ML Studio](https://ml.azure.com/)
-- Go to the Notebooks tab
-- Upload the file into your user folder `/Users/{user_name}` (replacing `{user_name}` with your user alias).
+1. Download [amlsecscan.py](amlsecscan.py)
+2. Open [Azure ML Studio](https://ml.azure.com/)
+3. Go to the Notebooks tab
+4. Upload the file into your user folder `/Users/{user_name}` (replacing `{user_name}` with your user alias)
 
 The scanner can be installed on both existing and new Compute Instances.
 
 ### Existing Compute Instances
 
-By default, the scanner uses the first Log Analytics workspace to which the Azure ML workspace streams [diagnostic logs](https://learn.microsoft.com/en-us/azure/machine-learning/monitor-azure-machine-learning):
+To install the scanner using default settings, run the `install` command without parameters:
 ```bash
 sudo ./amlsecscan.py install
 ```
+The scanner will use the first Log Analytics workspace to which the Azure ML workspace streams [diagnostic logs](https://learn.microsoft.com/en-us/azure/machine-learning/monitor-azure-machine-learning).
 
 If diagnostic logs are not enabled or an alternative Log Analytics workspace needs to be used, its ARM Resource ID can be specified on the command line using the `-la` parameter:
 ```bash
@@ -74,11 +79,12 @@ Another option, in case this configuration is reused multiple times, is to store
 
 #### Using Azure ML Studio
 
-Start by creating a file called `amlsecscan.sh` with content `sudo python3 amlsecscan.py install` .
-
-Open the [Compute Instance list](https://ml.azure.com/compute/list) in [Azure ML Studio](https://ml.azure.com) and click on the `+ New` button.
-In the pop-up, select the machine name and size then click `Next: Advanced Settings`. Toggle `Provision with setup script`, select `Local file`, and pick `amlsecscan.sh`.
-Finally, click on the `Create` button.
+1. Create a file called `amlsecscan.sh` with content `sudo python3 amlsecscan.py install` .
+2. Open the [Compute Instance list](https://ml.azure.com/compute/list) in [Azure ML Studio](https://ml.azure.com)
+3. Click on the `+ New` button
+4. In the pop-up, select the machine name and size then click `Next: Advanced Settings`
+5. Toggle `Provision with setup script`, select `Local file`, and pick `amlsecscan.sh`
+6. Click on the `Create` button
 
 #### Using an ARM Template
 
