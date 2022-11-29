@@ -1,11 +1,3 @@
-### Part of automated testing: only required when this script is called via vm run-command invoke inorder to gather the parameters ###
-set -e
-for args in "$@"
-do
-    keyname=$(echo $args | cut -d ':' -f 1)
-    result=$(echo $args | cut -d ':' -f 2)
-    export $keyname=$result
-done
 
 # $USER is no set when used from az vm run-command
 export USER=$(whoami)

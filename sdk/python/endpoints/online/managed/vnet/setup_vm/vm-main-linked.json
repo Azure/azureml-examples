@@ -1,0 +1,91 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "9818999348039912360"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azure region used for the deployment of all resources."
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "defaultValue": "moevnet-vm",
+      "metadata": {
+        "description": "name of the test scoring vm"
+      }
+    },
+    "identityName": {
+      "type": "string",
+      "defaultValue": "test-vm-uai",
+      "metadata": {
+        "description": "Name of the user assigned identity (UAI). UAI is used to login through az cli from within the vm to create image in ACR, deploy model in azure ml etc"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "name of the vnet to deploy the vm"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "snet-scoring",
+      "metadata": {
+        "description": "name of the subnet to deploy the vm"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Set of tags to apply to all resources."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-deployment', parameters('vmName'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "vmName": {
+            "value": "[parameters('vmName')]"
+          },
+          "virtualMachineSize": {
+            "value": "Standard_F2s_v2"
+          },
+          "uaiResourceId": {
+            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+          },
+          "subnetId": {
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/vm.json"
+        }
+      } 
+
+    }
+  ]
+}

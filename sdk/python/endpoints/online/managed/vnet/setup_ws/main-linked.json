@@ -1,0 +1,324 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "18012559095375175657"
+    }
+  },
+  "parameters": {
+    "suffix": {
+      "type": "string",
+      "metadata": {
+        "description": "Prefix for all resource names."
+      },
+      "maxLength": 10,
+      "minLength": 2
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azure region used for the deployment of all resources."
+      }
+    },
+    "appinsightsLocation": {
+      "type": "string",
+      "defaultValue": "[parameters('location')]",
+      "metadata": {
+        "description": "Optional- Azure region used for appinsights."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Set of tags to apply to all resources."
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "192.168.0.0/16",
+      "metadata": {
+        "description": "Virtual network address prefix"
+      }
+    },
+    "scoringSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "192.168.0.0/24",
+      "metadata": {
+        "description": "private endpoint subnet address prefix"
+      }
+    }
+  },
+  "variables": {
+    "name": "[toLower(format('{0}', parameters('suffix')))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('nsg-{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "nsgName": {
+            "value": "[format('nsg-{0}', variables('name'))]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/nsg.json"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('vnet-{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "virtualNetworkName": {
+            "value": "[format('vnet-{0}', variables('name'))]"
+          },
+          "networkSecurityGroupId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('nsg-{0}-deployment', variables('name'))), '2020-10-01').outputs.networkSecurityGroup.value]"
+          },
+          "vnetAddressPrefix": {
+            "value": "[parameters('vnetAddressPrefix')]"
+          },
+          "scoringSubnetPrefix": {
+            "value": "[parameters('scoringSubnetPrefix')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/vnet.json"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('nsg-{0}-deployment', variables('name')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('kv-{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "keyvaultName": {
+            "value": "[format('kv{0}', variables('name'))]"
+          },
+          "keyvaultPleName": {
+            "value": "[format('ple-{0}-kv', variables('name'))]"
+          },
+          "subnetId": {
+            "value": "[format('{0}/subnets/snet-scoring', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "virtualNetworkId": {
+            "value": "[format('{0}', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/keyvault.json"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('st{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "storageName": {
+            "value": "[format('st{0}', variables('name'))]"
+          },
+          "storagePleBlobName": {
+            "value": "[format('ple-{0}-st-blob', variables('name'))]"
+          },
+          "storagePleFileName": {
+            "value": "[format('ple-{0}-st-file', variables('name'))]"
+          },
+          "storageSkuName": {
+            "value": "Standard_LRS"
+          },
+          "subnetId": {
+            "value": "[format('{0}/subnets/snet-scoring', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "virtualNetworkId": {
+            "value": "[format('{0}', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/storage.json"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('cr{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "containerRegistryName": {
+            "value": "[format('cr{0}', variables('name'))]"
+          },
+          "containerRegistryPleName": {
+            "value": "[format('ple-{0}-cr', variables('name'))]"
+          },
+          "subnetId": {
+            "value": "[format('{0}/subnets/snet-scoring', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "virtualNetworkId": {
+            "value": "[format('{0}', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/containerregistry.json"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('appi-{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('appinsightsLocation')]"
+          },
+          "applicationInsightsName": {
+            "value": "[format('appi-{0}', variables('name'))]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/applicationinsights.json"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('mlw-{0}-deployment', variables('name'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "machineLearningName": {
+            "value": "[format('mlw-{0}', variables('name'))]"
+          },
+          "machineLearningFriendlyName": {
+            "value": "Private link endpoint sample workspace"
+          },
+          "machineLearningDescription": {
+            "value": "This is an example workspace having a private link endpoint."
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "applicationInsightsId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('appi-{0}-deployment', variables('name'))), '2020-10-01').outputs.applicationInsightsId.value]"
+          },
+          "containerRegistryId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('cr{0}-deployment', variables('name'))), '2020-10-01').outputs.containerRegistryId.value]"
+          },
+          "keyVaultId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('kv-{0}-deployment', variables('name'))), '2020-10-01').outputs.keyvaultId.value]"
+          },
+          "storageAccountId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('st{0}-deployment', variables('name'))), '2020-10-01').outputs.storageId.value]"
+          },
+          "subnetId": {
+            "value": "[format('{0}/subnets/snet-scoring', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "virtualNetworkId": {
+            "value": "[format('{0}', reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name'))), '2020-10-01').outputs.id.value)]"
+          },
+          "machineLearningPleName": {
+            "value": "[format('ple-{0}-mlw', variables('name'))]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "modules/machinelearning.json"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('appi-{0}-deployment', variables('name')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('cr{0}-deployment', variables('name')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('kv-{0}-deployment', variables('name')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('st{0}-deployment', variables('name')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('vnet-{0}-deployment', variables('name')))]"
+      ]
+    }
+  ]
+}
