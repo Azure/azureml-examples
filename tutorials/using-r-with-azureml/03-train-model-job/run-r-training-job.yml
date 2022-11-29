@@ -10,10 +10,8 @@ inputs:
   store: 2
   ojsales: 
     type: uri_file
-    path: "azureml://subscriptions/2fcb5846-b560-4f38-8b32-ed6dedcc0a38/resourcegroups/aml/workspaces/marckvaisman-mcaps-nonprod/datastores/marckblob/paths/bayesm-orangejuice/yx.csv"
-environment:
-  build:
-    path: docker-context
+    path: azureml:orangejuice-sales
+environment: azureml:r-environment-with-mlflow
 compute: azureml:cpucluster
 display_name: ojsales-forecasting-store-2-brand-1
 experiment_name: ojsales-forecasting
