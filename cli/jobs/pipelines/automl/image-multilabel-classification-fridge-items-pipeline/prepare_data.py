@@ -111,7 +111,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
 
     # Extract current dataset name from dataset url
-    dataset_name = os.path.split(download_url)[-1].split(".")[0]
+    dataset_name = os.path.basename(download_url).split(".")[0]
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
 
