@@ -10,8 +10,8 @@ inputs:
   store: 2
   ojsales: 
     type: uri_file
-    path: azureml:orangejuice-sales
-environment: azureml:r-environment-with-mlflow
+    path: azureml:orangejuice-sales:latest
+environment: azureml:r-environment-with-mlflow:latest
 compute: azureml:cpucluster
 display_name: ojsales-forecasting-store-2-brand-1
 experiment_name: ojsales-forecasting

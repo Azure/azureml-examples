@@ -6,7 +6,7 @@ CODE
 ----
 in 01
 - install plumber
-- use httr to create datastore/asset
+- use httr to create datastore/asset... DONE using CLIv2
 
 in 02
 - decide what to save
