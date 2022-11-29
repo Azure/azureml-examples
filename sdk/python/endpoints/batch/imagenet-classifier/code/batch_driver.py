@@ -1,3 +1,4 @@
+
 import os
 import numpy as np
 import pandas as pd
@@ -20,18 +21,13 @@ def init():
     input_width = 244
     input_height = 244
 
-
 def run(mini_batch):
     results = []
 
     for image in mini_batch:
-        data = Image.open(image).resize(
-            (input_width, input_height)
-        )  # Read and resize the image
-        data = np.array(data) / 255.0  # Normalize
-        data_batch = tf.expand_dims(
-            data, axis=0
-        )  # create a batch of size (1, 244, 244, 3)
+        data = Image.open(image).resize((input_width, input_height)) # Read and resize the image
+        data = np.array(data)/255.0 # Normalize
+        data_batch = tf.expand_dims(data, axis=0) # create a batch of size (1, 244, 244, 3)
 
         # perform inference
         pred = model.predict(data_batch)
