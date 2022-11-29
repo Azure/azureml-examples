@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat
+name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-multilabel-paper-cat
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -15,7 +15,7 @@ on:
       - main
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-text-classification-multilabel-task-paper-cat.yml
+      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-task-paper-categorization-automl-nlp-multilabel-paper-cat.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -60,20 +60,20 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-text-classification-multilabel-task-paper-cat.ipynb
+    - name: run jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-multilabel-paper-cat.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-text-classification-multilabel-task-paper-cat.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-multilabel-paper-cat.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";          
-          papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-classification-multilabel-task-paper-cat.ipynb automl-nlp-text-classification-multilabel-task-paper-cat.output.ipynb
+          papermill -k python -p compute_name automl-gpu-cluster automl-nlp-multilabel-paper-cat.ipynb automl-nlp-multilabel-paper-cat.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-nlp-text-classification-multilabel-task-paper-cat
+        name: automl-nlp-multilabel-paper-cat
         path: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
 
     - name: Send IcM on failure
@@ -86,11 +86,11 @@ jobs:
         private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
         args: |
             incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-text-classification-multilabel-task-paper-cat.ipynb'"
+                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-multilabel-paper-cat.ipynb'"
                 Summary: |
-                    Notebook 'jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-text-classification-multilabel-task-paper-cat.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                    Notebook 'jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-multilabel-paper-cat.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
                 Severity: 4
                 RoutingId: "github://azureml-examples"
                 Status: Active
                 Source:
-                    IncidentId: "jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-text-classification-multilabel-task-paper-cat.ipynb[${{ github.ref_name }}]"
+                    IncidentId: "jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization/automl-nlp-multilabel-paper-cat.ipynb[${{ github.ref_name }}]"
