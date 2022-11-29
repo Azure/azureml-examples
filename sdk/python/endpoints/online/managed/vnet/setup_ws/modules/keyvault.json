@@ -1,0 +1,154 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "17939787886554855919"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The Azure Region to deploy the resrouce group into"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to the Key Vault Instance"
+      }
+    },
+    "keyvaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Key Vault"
+      }
+    },
+    "keyvaultPleName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Key Vault private link endpoint"
+      }
+    },
+    "subnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "The Subnet ID where the Key Vault Private Link is to be created"
+      }
+    },
+    "virtualNetworkId": {
+      "type": "string",
+      "metadata": {
+        "description": "The VNet ID where the Key Vault Private Link is to be created"
+      }
+    }
+  },
+  "variables": {
+    "privateDnsZoneName": "[format('privatelink{0}', environment().suffixes.keyvaultDns)]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2021-04-01-preview",
+      "name": "[parameters('keyvaultName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "createMode": "default",
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false,
+        "enableSoftDelete": true,
+        "enableRbacAuthorization": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Deny"
+        },
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "softDeleteRetentionInDays": 7,
+        "tenantId": "[subscription().tenantId]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/privateEndpoints",
+      "apiVersion": "2020-11-01",
+      "name": "[parameters('keyvaultPleName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "privateLinkServiceConnections": [
+          {
+            "name": "[parameters('keyvaultPleName')]",
+            "properties": {
+              "groupIds": [
+                "vault"
+              ],
+              "privateLinkServiceId": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]"
+            }
+          }
+        ],
+        "subnet": {
+          "id": "[parameters('subnetId')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/privateDnsZones",
+      "apiVersion": "2020-01-01",
+      "name": "[variables('privateDnsZoneName')]",
+      "location": "global"
+    },
+    {
+      "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}/vault-PrivateDnsZoneGroup', parameters('keyvaultPleName'))]",
+      "properties": {
+        "privateDnsZoneConfigs": [
+          {
+            "name": "[variables('privateDnsZoneName')]",
+            "properties": {
+              "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]",
+        "[resourceId('Microsoft.Network/privateEndpoints', parameters('keyvaultPleName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2020-01-01",
+      "name": "[format('{0}/{1}', variables('privateDnsZoneName'), uniqueString(resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))))]",
+      "location": "global",
+      "properties": {
+        "registrationEnabled": false,
+        "virtualNetwork": {
+          "id": "[parameters('virtualNetworkId')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]",
+        "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "keyvaultId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyvaultName'))]"
+    }
+  }
+}

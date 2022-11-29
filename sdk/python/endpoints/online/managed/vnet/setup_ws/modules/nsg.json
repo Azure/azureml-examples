@@ -1,0 +1,154 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "17227527345578367714"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region of the deployment"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "Tags to add to the resources"
+      }
+    },
+    "nsgName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the network security group"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2020-07-01",
+      "name": "[parameters('nsgName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AzureMachineLearningInbound",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "44224",
+              "sourceAddressPrefix": "AzureMachineLearning",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AzureActiveDirectory",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "AzureActiveDirectory",
+              "access": "Allow",
+              "priority": 140,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AzureResourceManager",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "AzureResourceManager",
+              "access": "Allow",
+              "priority": 160,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AzureStorageAccount",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "[format('Storage.{0}', parameters('location'))]",
+              "access": "Allow",
+              "priority": 170,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AzureFrontDoor",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "AzureFrontDoor.FrontEnd",
+              "access": "Allow",
+              "priority": 180,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AzureContainerRegistry",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "[format('AzureContainerRegistry.{0}', parameters('location'))]",
+              "access": "Allow",
+              "priority": 190,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "MicrosoftContainerRegistry",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "MicrosoftContainerRegistry",
+              "access": "Allow",
+              "priority": 200,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "Internet",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "Internet",
+              "access": "Allow",
+              "priority": 210,
+              "direction": "Outbound"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "networkSecurityGroup": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+    }
+  }
+}

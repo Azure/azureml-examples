@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "1474825660738995948"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region of the deployment"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to add to the resources"
+      }
+    },
+    "applicationInsightsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Application Insights resource name"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[parameters('applicationInsightsName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "DisableIpMasking": false,
+        "DisableLocalAuth": false,
+        "Flow_Type": "Bluefield",
+        "ForceCustomerStorageForProfiler": false,
+        "ImmediatePurgeDataOn30Days": true,
+        "IngestionMode": "ApplicationInsights",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Disabled",
+        "Request_Source": "rest"
+      }
+    }
+  ],
+  "outputs": {
+    "applicationInsightsId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]"
+    }
+  }
+}
