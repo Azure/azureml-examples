@@ -71,8 +71,8 @@ function ensure_registry(){
     registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${registry_exists}" = "[]" ]]; then
         retry_times=0
-        while true 
-        do 
+        while true
+        do
             retry_times=$((retry_times+1))
             ensure_registry_local
             if [[ $? -ne 0 ]]; then
@@ -81,7 +81,7 @@ function ensure_registry(){
                     exit 1
                 fi
                 continue
-            else 
+            else
                 echo_info "registry ${LOCAL_REGISTRY_NAME} created successfully" >&2
                 break
             fi
@@ -795,10 +795,7 @@ function replace_template_values() {
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
         -e "s/InteractiveBrowserCredential/AzureCliCredential/g" \
-        -e "s/@pipeline(/&force_rerun=True,/g" \
-        -e "s/ml_client.begin_create_or_update(ws_with_existing)/# ml_client.begin_create_or_update(ws_with_existing)/g" \
-        -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
-        -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
+        -e "s/@pipeline(/&force_rerun=True,/g" \        
         -e "s/version=mltable_version/version=1/g" \
         -e "s/max_trials=10/max_trials=2/g" \
         "${FILENAME}"
