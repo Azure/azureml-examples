@@ -1,12 +1,12 @@
-
 import pandas as pd
 import tensorflow as tf
 
-class TfClassifier():
+
+class TfClassifier:
     def __init__(self, model_path: str, labels_path: str):
         import numpy as np
         from tensorflow.keras.models import load_model
-        
+
         self.model = load_model(model_path)
         self.imagenet_labels = np.array(open(labels_path).read().splitlines())
 
@@ -18,11 +18,10 @@ class TfClassifier():
         pred_class = tf.argmax(preds, axis=-1)
         pred_label = [self.imagenet_labels[pred] for pred in pred_class]
 
-        return pd.DataFrame({
-            "class": pred_class, 
-            "probability": pred_prob,
-            "label": pred_label
-        })
+        return pd.DataFrame(
+            {"class": pred_class, "probability": pred_prob, "label": pred_label}
+        )
+
 
 def _load_pyfunc(data_path: str):
     import os
