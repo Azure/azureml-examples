@@ -40,7 +40,7 @@ featurization:
 limits:
   timeout_minutes: 15
   max_trials: 10
-  max_concurrent_trials: 4
+  max_concurrent_trials: 2
   max_cores_per_trial: -1
   trial_timeout_minutes: 15
   enable_early_termination: true

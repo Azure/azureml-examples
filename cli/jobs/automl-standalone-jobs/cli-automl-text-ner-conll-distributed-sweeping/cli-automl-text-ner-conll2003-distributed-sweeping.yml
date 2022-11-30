@@ -13,7 +13,7 @@ log_verbosity: debug
 limits:
   timeout_minutes: 120
   max_nodes: 4
-  max_trials: 2
+  max_trials: 10
   max_concurrent_trials: 2
 
 training_data:

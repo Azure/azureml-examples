@@ -21,7 +21,7 @@ validation_data:
 
 limits:
   timeout_minutes: 60
-  max_concurrent_trials: 4
+  max_concurrent_trials: 2
   enable_early_termination: true
 
 forecasting:
