@@ -23,7 +23,7 @@ n_cross_validations: auto
 limits:
   timeout_minutes: 20
   max_trials: 10
-  max_concurrent_trials: 2
+  max_concurrent_trials: 4
   trial_timeout_minutes: 20
   enable_early_termination: true
 
