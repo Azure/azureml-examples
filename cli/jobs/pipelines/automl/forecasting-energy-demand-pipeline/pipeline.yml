@@ -22,6 +22,17 @@ outputs:
     mode: upload
 
 jobs:
+  preprocessing_node:
+    type: command
+    component: file:./components/component_preprocessing.yaml
+    inputs:
+      train_data: ${{parent.inputs.forecasting_training_data}}
+      validation_data: ${{parent.inputs.forecasting_validation_data}}
+    outputs:
+      preprocessed_train_data:
+        type: mltable
+      preprocessed_validation_data:
+        type: mltable
   forecasting_node:
     type: automl
     task: forecasting
@@ -31,8 +42,8 @@ jobs:
       max_trials: 1
       enable_early_termination: true
     target_column_name: demand
-    training_data: ${{parent.inputs.forecasting_training_data}}
-    validation_data: ${{parent.inputs.forecasting_validation_data}}
+    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
+    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
     training:
       enable_stack_ensemble: false
       enable_vote_ensemble: false
