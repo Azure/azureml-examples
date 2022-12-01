@@ -77,7 +77,7 @@ jobs:
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
 
     - name: Remove the compute if notebook did not done it properly.
-      bash "${{ github.workspace }}/infra/remove_computes.sh" github-cluster-sdkv2
+      run: bash "${{ github.workspace }}/infra/remove_computes.sh" github-cluster-sdkv2
 
     - name: Send IcM on failure
       if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
