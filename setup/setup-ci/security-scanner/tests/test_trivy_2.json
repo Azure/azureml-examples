@@ -1,0 +1,945 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "0624-222158-6jfnf5ao-10-139-64-5",
+  "ArtifactType": "filesystem",
+  "Metadata": {
+    "OS": {
+      "Family": "ubuntu",
+      "Name": "20.04"
+    },
+    "ImageConfig": {
+      "architecture": "",
+      "created": "0001-01-01T00:00:00Z",
+      "os": "",
+      "rootfs": {
+        "type": "",
+        "diff_ids": null
+      },
+      "config": {}
+    }
+  },
+  "Results": [
+    {
+      "Target": "0624-222158-6jfnf5ao-10-139-64-5 (ubuntu 20.04)",
+      "Class": "os-pkgs",
+      "Type": "ubuntu"
+    },
+    {
+      "Target": "databricks/adbsecscan/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2021-34552",
+          "PkgName": "Pillow",
+          "InstalledVersion": "8.2.0",
+          "FixedVersion": "8.3.0",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-34552",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-pillow: Buffer overflow in image convert function",
+          "Description": "Pillow through 8.2.0 and PIL (aka Python Imaging Library) through 1.1.7 allow an attacker to pass controlled parameters directly into a convert function to trigger a buffer overflow in Convert.c.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-120"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/hydra/rest/securitydata/cve/CVE-2021-34552.json",
+            "https://access.redhat.com/security/cve/CVE-2021-34552",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-34552",
+            "https://github.com/advisories/GHSA-7534-mm45-c74v",
+            "https://github.com/python-pillow/Pillow/pull/5567",
+            "https://lists.debian.org/debian-lts-announce/2021/07/msg00018.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/7V6LCG525ARIX6LX5QRYNAWVDD2MD2SV/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VUGBBT63VL7G4JNOEIPDJIOC34ZFBKNJ/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-34552",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/8.3.0.html#buffer-overflow",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/index.html",
+            "https://ubuntu.com/security/notices/USN-5227-1",
+            "https://ubuntu.com/security/notices/USN-5227-2"
+          ],
+          "PublishedDate": "2021-07-13T17:15:00Z",
+          "LastModifiedDate": "2021-09-20T12:20:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-22817",
+          "PkgName": "Pillow",
+          "InstalledVersion": "8.2.0",
+          "FixedVersion": "9.0.0",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-22817",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-pillow: PIL.ImageMath.eval allows evaluation of arbitrary expressions",
+          "Description": "PIL.ImageMath.eval in Pillow before 9.0.0 allows evaluation of arbitrary expressions, such as ones that use the Python exec method. A lambda expression could also be used,",
+          "Severity": "CRITICAL",
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-22817",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22817",
+            "https://github.com/advisories/GHSA-8vj2-vxx3-667w",
+            "https://github.com/python-pillow/Pillow/commit/8531b01d6cdf0b70f256f93092caa2a5d91afc11",
+            "https://linux.oracle.com/cve/CVE-2022-22817.html",
+            "https://linux.oracle.com/errata/ELSA-2022-0643.html",
+            "https://lists.debian.org/debian-lts-announce/2022/01/msg00018.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-22817",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/9.0.0.html#fixed-imagepath-path-array-handling",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/9.0.0.html#restrict-builtins-available-to-imagemath-eval",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/9.0.1.html#security",
+            "https://ubuntu.com/security/notices/USN-5227-1",
+            "https://ubuntu.com/security/notices/USN-5227-2",
+            "https://www.debian.org/security/2022/dsa-5053"
+          ],
+          "PublishedDate": "2022-01-10T14:12:00Z",
+          "LastModifiedDate": "2022-04-22T16:21:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-24303",
+          "PkgName": "Pillow",
+          "InstalledVersion": "8.2.0",
+          "FixedVersion": "9.0.1",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-24303",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-pillow: temporary directory with a space character allows removal of unrelated file after im.show() and related actions",
+          "Description": "Pillow before 9.0.1 allows attackers to delete files because spaces in temporary pathnames are mishandled.",
+          "Severity": "CRITICAL",
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H",
+              "V3Score": 9.1
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H",
+              "V2Score": 6.4,
+              "V3Score": 9.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-24303",
+            "https://github.com/advisories/GHSA-9j59-75qj-795w",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/pillow/PYSEC-2022-168.yaml",
+            "https://github.com/python-pillow/Pillow/commit/427221ef5f19157001bf8b1ad7cfe0b905ca8c26",
+            "https://github.com/python-pillow/Pillow/pull/3450",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/W4ZUXPKEX72O3E5IHBPVY5ZCPMJ4GHHV/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/XR6UP2XONXOVXI4446VY72R63YRO2YTP/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-24303",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/9.0.1.html",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/9.0.1.html#security"
+          ],
+          "PublishedDate": "2022-03-28T02:15:00Z",
+          "LastModifiedDate": "2022-04-26T15:35:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-23437",
+          "PkgName": "Pillow",
+          "InstalledVersion": "8.2.0",
+          "FixedVersion": "8.3.2",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-23437",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-pillow: possible ReDoS via the getrgb function",
+          "Description": "The package pillow 5.2.0 and before 8.3.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the getrgb function.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-125"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-23437",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-23437",
+            "https://github.com/advisories/GHSA-98vv-pw6r-q6q4",
+            "https://github.com/python-pillow/Pillow/commit/9e08eb8f78fdfd2f476e1b20b7cf38683754866b",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/RNSG6VFXTAROGF7ACYLMAZNQV4EJ6I2C/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VKRCL7KKAKOXCVD7M6WC5OKFGL4L3SJT/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-23437",
+            "https://pillow.readthedocs.io/en/stable/releasenotes/8.3.2.html",
+            "https://snyk.io/vuln/SNYK-PYTHON-PILLOW-1319443",
+            "https://ubuntu.com/security/notices/USN-5227-1",
+            "https://ubuntu.com/security/notices/USN-5227-2"
+          ],
+          "PublishedDate": "2021-09-03T16:15:00Z",
+          "LastModifiedDate": "2021-11-30T21:19:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2017-11424",
+          "PkgName": "PyJWT",
+          "InstalledVersion": "1.5.0",
+          "FixedVersion": "1.5.1",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2017-11424",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-jwt: Incorrect handling of PEM-encoded public keys",
+          "Description": "In PyJWT 1.5.0 and below the `invalid_strings` check in `HMACAlgorithm.prepare_key` does not account for all PEM encoded public keys. Specifically, the PKCS1 PEM encoded format would be allowed because it is prefaced with the string `-----BEGIN RSA PUBLIC KEY-----` which is not accounted for. This enables symmetric/asymmetric key confusion attacks against users using the PKCS1 PEM encoded public keys, which would allow an attacker to craft JWTs from scratch.",
+          "Severity": "HIGH",
+          "CVSS": {
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://www.debian.org/security/2017/dsa-3979",
+            "https://access.redhat.com/security/cve/CVE-2017-11424",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-11424",
+            "https://github.com/jpadilla/pyjwt/pull/277",
+            "https://ubuntu.com/security/notices/USN-3407-1"
+          ],
+          "PublishedDate": "2017-08-24T16:29:00Z",
+          "LastModifiedDate": "2019-10-03T00:03:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-29217",
+          "PkgName": "PyJWT",
+          "InstalledVersion": "1.5.0",
+          "FixedVersion": "2.4.0",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-29217",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-jwt: Key confusion through non-blocklisted public key formats",
+          "Description": "PyJWT is a Python implementation of RFC 7519. PyJWT supports multiple different JWT signing algorithms. With JWT, an attacker submitting the JWT token can choose the used signing algorithm. The PyJWT library requires that the application chooses what algorithms are supported. The application can specify `jwt.algorithms.get_default_algorithms()` to get support for all algorithms, or specify a single algorithm. The issue is not that big as `algorithms=jwt.algorithms.get_default_algorithms()` has to be used. Users should upgrade to v2.4.0 to receive a patch for this issue. As a workaround, always be explicit with the algorithms that are accepted and expected when decoding.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-327"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 7.4
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-29217",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-29217",
+            "https://github.com/advisories/GHSA-ffqj-6fqr-9h24",
+            "https://github.com/jpadilla/pyjwt/commit/9c528670c455b8d948aff95ed50e22940d1ad3fc",
+            "https://github.com/jpadilla/pyjwt/commit/9c528670c455b8d948aff95ed50e22940d1ad3fc (2.4.0)",
+            "https://github.com/jpadilla/pyjwt/releases/tag/2.4.0",
+            "https://github.com/jpadilla/pyjwt/security/advisories/GHSA-ffqj-6fqr-9h24",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/pyjwt/PYSEC-2022-202.yaml",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5PK7IQCBVNLYJEFTPHBBPFP72H4WUFNX/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/6HIYEYZRQEP6QTHT3EHH3RGFYJIHIMAO/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-29217"
+          ],
+          "PublishedDate": "2022-05-24T15:15:00Z",
+          "LastModifiedDate": "2022-06-07T14:40:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-21699",
+          "PkgName": "ipython",
+          "InstalledVersion": "7.22.0",
+          "FixedVersion": "6.0.0rc1, 7.16.3, 7.31.1, 8.0.1",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-21699",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "IPython (Interactive Python) is a command shell for interactive comput ...",
+          "Description": "IPython (Interactive Python) is a command shell for interactive computing in multiple programming languages, originally developed for the Python programming language. Affected versions are subject to an arbitrary code execution vulnerability achieved by not properly managing cross user temporary files. This vulnerability allows one user to run code as another on the same machine. All users are advised to upgrade.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-250",
+            "CWE-279"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+              "V3Score": 8.2
+            },
+            "nvd": {
+              "V2Vector": "AV:L/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+              "V2Score": 4.6,
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "https://github.com/advisories/GHSA-pq7m-3gw7-gq5x",
+            "https://github.com/ipython/ipython/commit/46a51ed69cdf41b4333943d9ceeb945c4ede5668",
+            "https://github.com/ipython/ipython/security/advisories/GHSA-pq7m-3gw7-gq5x",
+            "https://ipython.readthedocs.io/en/stable/whatsnew/version8.html#ipython-8-0-1-cve-2022-21699",
+            "https://lists.debian.org/debian-lts-announce/2022/01/msg00021.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/CRQRTWHYXMLDJ572VGVUZMUPEOTPM3KB/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/DZ7LVZBB4D7KVSFNEQUBEHFO3JW6D2ZK/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-21699"
+          ],
+          "PublishedDate": "2022-01-19T22:15:00Z",
+          "LastModifiedDate": "2022-03-25T15:04:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-32797",
+          "PkgName": "notebook",
+          "InstalledVersion": "6.3.0",
+          "FixedVersion": "6.4.1, 5.7.11",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-32797",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "JupyterLab: XSS due to lack of sanitization of the action attribute of an html \u003cform\u003e",
+          "Description": "JupyterLab is a user interface for Project Jupyter which will eventually replace the classic Jupyter Notebook. In affected versions untrusted notebook can execute code on load. In particular JupyterLab doesn’t sanitize the action attribute of html `\u003cform\u003e`. Using this it is possible to trigger the form validation outside of the form itself. This is a remote code execution, but requires user action to open a notebook.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-79"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:N/A:N",
+              "V3Score": 7.4
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+              "V2Score": 6.8,
+              "V3Score": 9.6
+            }
+          },
+          "References": [
+            "https://github.com/advisories/GHSA-4952-p58q-6crx",
+            "https://github.com/google/security-research/security/advisories/GHSA-c469-p3jp-2vhx",
+            "https://github.com/jupyterlab/jupyterlab/commit/504825938c0abfa2fb8ff8d529308830a5ae42ed",
+            "https://github.com/jupyterlab/jupyterlab/security/advisories/GHSA-4952-p58q-6crx",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-32797"
+          ],
+          "PublishedDate": "2021-08-09T21:15:00Z",
+          "LastModifiedDate": "2022-04-07T18:40:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-24758",
+          "PkgName": "notebook",
+          "InstalledVersion": "6.3.0",
+          "FixedVersion": "6.4.10",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-24758",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "The Jupyter notebook is a web-based notebook environment for interacti ...",
+          "Description": "The Jupyter notebook is a web-based notebook environment for interactive computing. Prior to version 6.4.9, unauthorized actors can access sensitive information from server logs. Anytime a 5xx error is triggered, the auth cookie and other header values are recorded in Jupyter server logs by default. Considering these logs do not require root access, an attacker can monitor these logs, steal sensitive auth/cookie information, and gain access to the Jupyter server. Jupyter notebook version 6.4.x contains a patch for this issue. There are currently no known workarounds.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-532"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:N/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V2Score": 5,
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://github.com/advisories/GHSA-m87f-39q9-6f55",
+            "https://github.com/jupyter/notebook/security/advisories/GHSA-m87f-39q9-6f55",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/notebook/PYSEC-2022-180.yaml",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-24758"
+          ],
+          "PublishedDate": "2022-03-31T23:15:00Z",
+          "LastModifiedDate": "2022-04-08T16:28:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-33503",
+          "PkgName": "urllib3",
+          "InstalledVersion": "1.25.11",
+          "FixedVersion": "1.26.5",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-33503",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-urllib3: ReDoS in the parsing of authority part of URL",
+          "Description": "An issue was discovered in urllib3 before 1.26.5. When provided with a URL containing many @ characters in the authority component, the authority regular expression exhibits catastrophic backtracking, causing a denial of service if a URL were passed as a parameter or redirected to via an HTTP redirect.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-33503",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33503",
+            "https://errata.almalinux.org/8/ALSA-2021-4162.html",
+            "https://github.com/advisories/GHSA-q2q7-5pp4-w6pg",
+            "https://github.com/urllib3/urllib3/commit/2d4a3fee6de2fa45eb82169361918f759269b4ec",
+            "https://github.com/urllib3/urllib3/security/advisories/GHSA-q2q7-5pp4-w6pg",
+            "https://linux.oracle.com/cve/CVE-2021-33503.html",
+            "https://linux.oracle.com/errata/ELSA-2021-4162.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/6SCV7ZNAHS3E6PBFLJGENCDRDRWRZZ6W/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/FMUGWEAUYGGHTPPXT6YBD53WYXQGVV73/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-33503",
+            "https://security.gentoo.org/glsa/202107-36",
+            "https://www.oracle.com/security-alerts/cpuoct2021.html"
+          ],
+          "PublishedDate": "2021-06-29T11:15:00Z",
+          "LastModifiedDate": "2021-12-08T20:34:00Z"
+        }
+      ]
+    },
+    {
+      "Target": "databricks/conda/pkgs/conda-4.8.2-py38_0/info/test/tests/conda_env/support/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2018-1000656",
+          "PkgName": "flask",
+          "InstalledVersion": "0.10.1",
+          "FixedVersion": "0.12.3",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-1000656",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-flask: Denial of Service via crafted JSON file",
+          "Description": "The Pallets Project flask version Before 0.12.3 contains a CWE-20: Improper Input Validation vulnerability in flask that can result in Large amount of memory usage possibly leading to denial of service. This attack appear to be exploitable via Attacker provides JSON data in incorrect encoding. This vulnerability appears to have been fixed in 0.12.3. NOTE: this may overlap CVE-2019-1010083.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-20"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2018-1000656",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-1000656",
+            "https://github.com/advisories/GHSA-562c-5r94-xh97",
+            "https://github.com/pallets/flask/pull/2691",
+            "https://github.com/pallets/flask/releases/tag/0.12.3",
+            "https://lists.debian.org/debian-lts-announce/2019/08/msg00025.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2018-1000656",
+            "https://security.netapp.com/advisory/ntap-20190221-0001/",
+            "https://ubuntu.com/security/notices/USN-4378-1",
+            "https://usn.ubuntu.com/4378-1/"
+          ],
+          "PublishedDate": "2018-08-20T19:31:00Z",
+          "LastModifiedDate": "2020-06-09T22:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-1010083",
+          "PkgName": "flask",
+          "InstalledVersion": "0.10.1",
+          "FixedVersion": "1.0",
+          "Layer": {},
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-1010083",
+          "DataSource": {
+            "ID": "osv",
+            "Name": "Python Packaging Advisory Database",
+            "URL": "https://github.com/pypa/advisory-db"
+          },
+          "Title": "python-flask: unexpected memory usage can lead to denial of service via crafted encoded JSON data",
+          "Description": "The Pallets Project Flask before 1.0 is affected by: unexpected memory usage. The impact is: denial of service. The attack vector is: crafted encoded JSON data. The fixed version is: 1. NOTE: this may overlap CVE-2018-1000656.",
+          "Severity": "HIGH",
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2019-1010083",
+            "https://github.com/advisories/GHSA-5wv5-4vpf-pj6m",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-1010083",
+            "https://palletsprojects.com/blog/flask-1-0-released/",
+            "https://snyk.io/vuln/SNYK-PYTHON-FLASK-451637",
+            "https://www.palletsprojects.com/blog/flask-1-0-released/"
+          ],
+          "PublishedDate": "2019-07-17T14:15:00Z",
+          "LastModifiedDate": "2020-08-24T17:37:00Z"
+        }
+      ]
+    },
+    {
+      "Target": "usr/local/lib/R/site-library/bslib/yarn.lock",
+      "Class": "lang-pkgs",
+      "Type": "yarn",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2021-3807",
+          "PkgName": "ansi-regex",
+          "InstalledVersion": "3.0.0",
+          "FixedVersion": "3.0.1, 4.1.1, 5.0.1, 6.0.1",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-3807",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "nodejs-ansi-regex: Regular expression denial of service (ReDoS) matching ANSI escape codes",
+          "Description": "ansi-regex is vulnerable to Inefficient Regular Expression Complexity",
+          "Severity": "HIGH",
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:C",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 7.8,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-3807",
+            "https://app.snyk.io/vuln/SNYK-JS-ANSIREGEX-1583908",
+            "https://github.com/advisories/GHSA-93q8-gq69-wqmw",
+            "https://github.com/chalk/ansi-regex/commit/8d1d7cdb586269882c4bdc1b7325d0c58c8f76f9",
+            "https://github.com/chalk/ansi-regex/issues/38#issuecomment-924086311",
+            "https://github.com/chalk/ansi-regex/issues/38#issuecomment-925924774",
+            "https://github.com/chalk/ansi-regex/releases/tag/v6.0.1",
+            "https://huntr.dev/bounties/5b3cf33b-ede0-4398-9974-800876dfd994",
+            "https://linux.oracle.com/cve/CVE-2021-3807.html",
+            "https://linux.oracle.com/errata/ELSA-2022-0350.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-3807",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html"
+          ],
+          "PublishedDate": "2021-09-17T07:15:00Z",
+          "LastModifiedDate": "2022-04-20T00:16:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-28469",
+          "PkgName": "glob-parent",
+          "InstalledVersion": "3.1.0",
+          "FixedVersion": "5.1.2",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-28469",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "nodejs-glob-parent: Regular expression denial of service",
+          "Description": "This affects the package glob-parent before 5.1.2. The enclosure regex used to check for strings ending in enclosure containing path separator.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2020-28469",
+            "https://github.com/advisories/GHSA-ww39-953v-wcq6",
+            "https://github.com/gulpjs/glob-parent/blob/6ce8d11f2f1ed8e80a9526b1dc8cf3aa71f43474/index.js%23L9",
+            "https://github.com/gulpjs/glob-parent/pull/36",
+            "https://github.com/gulpjs/glob-parent/releases/tag/v5.1.2",
+            "https://linux.oracle.com/cve/CVE-2020-28469.html",
+            "https://linux.oracle.com/errata/ELSA-2022-0350.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2020-28469",
+            "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWERGITHUBES128-1059093",
+            "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1059092",
+            "https://snyk.io/vuln/SNYK-JS-GLOBPARENT-1016905",
+            "https://www.oracle.com/security-alerts/cpujan2022.html"
+          ],
+          "PublishedDate": "2021-06-03T16:15:00Z",
+          "LastModifiedDate": "2022-03-29T16:39:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-3918",
+          "PkgName": "json-schema",
+          "InstalledVersion": "0.2.3",
+          "FixedVersion": "0.4.0",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-3918",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "nodejs-json-schema: Prototype pollution vulnerability",
+          "Description": "json-schema is vulnerable to Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-915"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-3918",
+            "https://github.com/advisories/GHSA-896r-f27r-55mw",
+            "https://github.com/kriszyp/json-schema/commit/22f146111f541d9737e832823699ad3528ca7741",
+            "https://github.com/kriszyp/json-schema/commit/b62f1da1ff5442f23443d6be6a92d00e65cba93a",
+            "https://github.com/kriszyp/json-schema/commit/f6f6a3b02d667aa4ba2d5d50cc19208c4462abfa",
+            "https://huntr.dev/bounties/bb6ccd63-f505-4e3a-b55f-cd2662c261a9",
+            "https://linux.oracle.com/cve/CVE-2021-3918.html",
+            "https://linux.oracle.com/errata/ELSA-2022-0350.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-3918"
+          ],
+          "PublishedDate": "2021-11-13T09:15:00Z",
+          "LastModifiedDate": "2022-05-12T01:02:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-44906",
+          "PkgName": "minimist",
+          "InstalledVersion": "1.2.5",
+          "FixedVersion": "1.2.6",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-44906",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "minimist: prototype pollution",
+          "Description": "Minimist \u003c=1.2.5 is vulnerable to Prototype Pollution via file index.js, function setKey() (lines 69-95).",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-1321"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-44906",
+            "https://github.com/Marynk/JavaScript-vulnerability-detection/blob/main/minimist%20PoC.zip",
+            "https://github.com/advisories/GHSA-xvch-5gv4-984h",
+            "https://github.com/substack/minimist/blob/master/index.js#L69",
+            "https://github.com/substack/minimist/issues/164",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-44906",
+            "https://security.snyk.io/vuln/SNYK-JS-MINIMIST-559764",
+            "https://snyk.io/vuln/SNYK-JS-MINIMIST-559764",
+            "https://stackoverflow.com/questions/8588563/adding-custom-properties-to-a-function/20278068#20278068"
+          ],
+          "PublishedDate": "2022-03-17T16:15:00Z",
+          "LastModifiedDate": "2022-04-12T16:52:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-24771",
+          "PkgName": "node-forge",
+          "InstalledVersion": "0.10.0",
+          "FixedVersion": "1.3.0",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-24771",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "node-forge: Signature verification leniency in checking `digestAlgorithm` structure can lead to signature forgery",
+          "Description": "Forge (also called `node-forge`) is a native implementation of Transport Layer Security in JavaScript. Prior to version 1.3.0, RSA PKCS#1 v1.5 signature verification code is lenient in checking the digest algorithm structure. This can allow a crafted structure that steals padding bytes and uses unchecked portion of the PKCS#1 encoded message to forge a signature when a low public exponent is being used. The issue has been addressed in `node-forge` version 1.3.0. There are currently no known workarounds.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-347"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-24771",
+            "https://github.com/advisories/GHSA-cfm4-qjh2-4765",
+            "https://github.com/digitalbazaar/forge/commit/3f0b49a0573ef1bb7af7f5673c0cfebf00424df1",
+            "https://github.com/digitalbazaar/forge/commit/bb822c02df0b61211836472e29b9790cc541cdb2",
+            "https://github.com/digitalbazaar/forge/security/advisories/GHSA-cfm4-qjh2-4765",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-24771"
+          ],
+          "PublishedDate": "2022-03-18T14:15:00Z",
+          "LastModifiedDate": "2022-03-28T13:53:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-24772",
+          "PkgName": "node-forge",
+          "InstalledVersion": "0.10.0",
+          "FixedVersion": "1.3.0",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-24772",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "node-forge: Signature verification failing to check tailing garbage bytes can lead to signature forgery",
+          "Description": "Forge (also called `node-forge`) is a native implementation of Transport Layer Security in JavaScript. Prior to version 1.3.0, RSA PKCS#1 v1.5 signature verification code does not check for tailing garbage bytes after decoding a `DigestInfo` ASN.1 structure. This can allow padding bytes to be removed and garbage data added to forge a signature when a low public exponent is being used. The issue has been addressed in `node-forge` version 1.3.0. There are currently no known workarounds.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-347"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-24772",
+            "https://github.com/advisories/GHSA-x4jg-mjrx-434g",
+            "https://github.com/digitalbazaar/forge/commit/3f0b49a0573ef1bb7af7f5673c0cfebf00424df1",
+            "https://github.com/digitalbazaar/forge/commit/bb822c02df0b61211836472e29b9790cc541cdb2",
+            "https://github.com/digitalbazaar/forge/security/advisories/GHSA-x4jg-mjrx-434g",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-24772"
+          ],
+          "PublishedDate": "2022-03-18T14:15:00Z",
+          "LastModifiedDate": "2022-03-28T14:10:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-3803",
+          "PkgName": "nth-check",
+          "InstalledVersion": "1.0.2",
+          "FixedVersion": "2.0.1",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-3803",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Title": "nodejs-nth-check: inefficient regular expression complexity",
+          "Description": "nth-check is vulnerable to Inefficient Regular Expression Complexity",
+          "Severity": "HIGH",
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-3803",
+            "https://github.com/advisories/GHSA-rp65-9cf3-cjxr",
+            "https://github.com/fb55/nth-check/commit/9894c1d2010870c351f66c6f6efcf656e26bb726",
+            "https://huntr.dev/bounties/8cf8cc06-d2cf-4b4e-b42c-99fafb0b04d0",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-3803"
+          ],
+          "PublishedDate": "2021-09-17T07:15:00Z",
+          "LastModifiedDate": "2022-05-12T01:02:00Z"
+        }
+      ]
+    }
+  ]
+}
