@@ -18,6 +18,17 @@ settings:
   default_compute: azureml:cpu-cluster
 
 jobs:
+  preprocessing_node:
+    type: command
+    component: file:./components/component_preprocessing.yaml
+    inputs:
+      train_data: ${{parent.inputs.classification_train_data}}
+      validation_data: ${{parent.inputs.classification_validate_data}}
+    outputs:
+      preprocessed_train_data:
+        type: mltable
+      preprocessed_validation_data:
+        type: mltable
   classification_node:
     type: automl
     task: classification
@@ -26,8 +37,8 @@ jobs:
       max_trials: 1
       max_concurrent_trials: 1
     target_column_name: "y"
-    training_data: ${{parent.inputs.classification_train_data}}
-    validation_data: ${{parent.inputs.classification_validate_data}}
+    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
+    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
     featurization:
       mode: "auto"
     training:
@@ -42,5 +53,3 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.classification_node.outputs.best_model}}
       model_base_name: bankmarketing_example_model
-
-
