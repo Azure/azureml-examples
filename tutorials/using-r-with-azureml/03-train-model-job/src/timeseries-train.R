@@ -57,23 +57,24 @@ parser <- add_option(
 
 args <- parse_args(parser)
 
-# Load the dataset from the mounted input location. This can be done directly with R functions. 
+# Load the dataset from the mounted input location.
+# This can be done directly with R functions.
 # There is no need to use reticulate in a running job
 
 ## Modify to read the files from Azure storage using reticulate
 # df <- pd$read_csv("azureml://")
 
-file_name = file.path(args$data_file)
+file_name <- file.path(args$data_file)
 
-oj_sales_read <- readr::read_csv(file_name) |> 
+oj_sales_read <- readr::read_csv(file_name) |>
   janitor::clean_names()
 
-# Constants (were previously defined in a YAML file in the 
+# Constants (were previously defined in a YAML file in the
 # reference example, and ideally can be parametrized
 
-START_DATE <- as.Date("1989-09-14")  
+START_DATE <- as.Date("1989-09-14")
 
-## Data prep
+## Data prep of the full dataset
 
 oj_sales <- oj_sales_read |> 
   # complete the missing combinations
@@ -82,7 +83,10 @@ oj_sales <- oj_sales_read |>
   mutate(yr_wk = tsibble::yearweek(START_DATE + week * 7)) |> 
   select(-week) |> 
   # convert to tsibble
-  as_tsibble(index = yr_wk, key = c(store, brand)) |>
+  as_tsibble(index = yr_wk, key = c(store, brand)) 
+  
+## Select the store and brand based on the job parameter  
+sales_for_store_brand <- oj_sales  |>
   filter(store == args$store, brand == args$brand)
 
 # All stores have the same start week (1990 W25) and end week (1992 W41).
@@ -91,7 +95,7 @@ oj_sales <- oj_sales_read |>
 # The model function in fabletools can fit multiple models 
 # out of the box
 
-fit <- oj_sales |> 
+fit <- sales_for_store_brand |> 
   filter(yr_wk <= yearweek("1992 W18")) |> 
   model(
     mean = MEAN(logmove),
@@ -106,6 +110,17 @@ fcast <- forecast(fit, h = 10)
 # Evaluate the metrics for each model (one set of metrics
 # per modeltype/store/brand)
 metrics <- accuracy(fcast, oj_sales)
+
+# create a plot
+
+
+# Log the store
+# Log the brand
+# Log the model metrics for each separate model
+# Log the model
+# Log the plot
+
+# Add car
 
 
 sg_data <- oj_sales |> filter(store == 2, brand == 1)
