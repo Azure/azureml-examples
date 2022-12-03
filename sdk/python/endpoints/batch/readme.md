@@ -5,7 +5,7 @@ Batch endpoints provide a convenient way to run inference over large volumes of 
 Use batch endpoints when:
 
 - &check; You have expensive models that requires a longer time to run inference.
-- &check; heavy_check_mark: You need to perform inference over large amounts of data, distributed in multiple files.
+- &check; You need to perform inference over large amounts of data, distributed in multiple files.
 - &check; You don't have low latency requirements.
 - &check; You can take advantage of parallelization.
 
