@@ -2,6 +2,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: demo
 endpoint_name: reg-ep-1234
 model: azureml://registries/<REGISTRY_NAME>/models/nyc-taxi-model/versions/<VERSION>
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 instance_type: Standard_DS2_v2
 instance_count: 1
