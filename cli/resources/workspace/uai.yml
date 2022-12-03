@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: mlw-uai-prod
+location: eastus
+display_name: UAI workspace-example
+description: UAI workspace with multiple user assigned identities, and a primary user assigned identity.
+identity:
+  type: user_assigned
+  tenant_id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  user_assigned_identities:
+    '/subscriptions/8f338f6e-4fce-44ae-969c-fc7d8fda030e/resourceGroups/rg-mhe-e2e-test-dont-remove/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-mhe':
+      principal_id: 12314790-cb6d-41a0-af2c-3a1db8731732
+      client_id: 85192328-37cb-40c2-804c-13c397f64690
+    '/subscriptions/8f338f6e-4fce-44ae-969c-fc7d8fda030e/resourceGroups/rg-mhe-e2e-test-dont-remove/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-mhe2':
+      principal_id: 37e0ec69-7512-4363-b534-580c867c7e04
+      client_id: 555bf85b-1d34-4b5e-98d3-621615d5c6da
+primary_user_assigned_identity: /subscriptions/8f338f6e-4fce-44ae-969c-fc7d8fda030e/resourceGroups/rg-mhe-e2e-test-dont-remove/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-mhe
+tags:
+  purpose: demonstration
