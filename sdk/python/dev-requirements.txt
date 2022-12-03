@@ -8,4 +8,4 @@ matplotlib
 tensorflow
 tensorflow-hub
 transformers
-keras>=2.9
+keras==2.9
