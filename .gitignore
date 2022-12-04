@@ -21,4 +21,7 @@ config-amlexamples.json
 *.Rproj
 .ipynb_aml_checkpoints
 *.ipynb.amltmp
+mlruns/
+outputs/
+scratchpad/
 

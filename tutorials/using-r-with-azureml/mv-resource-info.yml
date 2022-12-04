@@ -1,0 +1,7 @@
+subscription: "2fcb5846-b560-4f38-8b32-ed6dedcc0a38"
+resource-group: "aml"
+workspace: "marckvaisman-aml-east2"
+compute-instance: "mavaisma-ci-eastus2"
+compute-cluster: "mvaisma-cluster-eastus2"
+environment-name:
+data-asset-name: 

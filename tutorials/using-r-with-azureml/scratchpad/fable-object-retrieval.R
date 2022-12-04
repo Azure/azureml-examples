@@ -34,8 +34,6 @@ b <- sg_model |>
   pull(arima)
 
 
-
-
 mdl <- sg_model |> 
   pull(arima) 
 
