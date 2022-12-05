@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     coco_data = read_coco_file(input_coco_file_path)
 
-    print("Converting for {}".format(task_type))
+    print(f"Converting for {task_type}")
 
     # Defined in azureml.contrib.dataset.labeled_dataset.LabeledDatasetTask.OBJECT_DETECTION.value
     if task_type == "ObjectDetection":
