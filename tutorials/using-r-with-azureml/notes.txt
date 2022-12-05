@@ -12,7 +12,7 @@ in 02
 - decide what to save
 
 in 03
-- finish the parametrization of the script and test
+- finish the parametrization of the script and test DONE
 - future: use R to generate YML
 
 in 04
