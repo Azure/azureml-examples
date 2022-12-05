@@ -11,7 +11,7 @@ inputs:
   ojsales: 
     type: uri_file
     path: azureml:orangejuice-sales:1
-environment: azureml:r-environment-for-training-job-with-mlflow-and-packages:2
+environment: azureml:r-environment-for-training-job-with-mlflow-and-packages:4
 compute: azureml:mvaisma-cluster-eastus2
 display_name: ojsales-forecasting-store-2-brand-1
 experiment_name: ojsales-forecasting
