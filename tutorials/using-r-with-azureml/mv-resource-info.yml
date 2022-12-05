@@ -3,5 +3,5 @@ resource-group: "aml"
 workspace: "marckvaisman-aml-east2"
 compute-instance: "mavaisma-ci-eastus2"
 compute-cluster: "mvaisma-cluster-eastus2"
-environment-name:
-data-asset-name: 
+environment-name: "marckvaisman-aml-east2"
+data-asset-name: "orangejuice-sales"

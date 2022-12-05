@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >
   Rscript timeseries-train.R 
-  --data_folder ${{inputs.ojsales}}
+  --data_file ${{inputs.ojsales}}
   --brand ${{inputs.brand}}
   --store ${{inputs.store}}
 code: src
@@ -10,9 +10,9 @@ inputs:
   store: 2
   ojsales: 
     type: uri_file
-    path: azureml:orangejuice-sales:latest
-environment: azureml:r-environment-with-mlflow:latest
-compute: azureml:cpucluster
+    path: azureml:orangejuice-sales:1
+environment: azureml:r-environment-for-training-job-with-mlflow-and-packages:2
+compute: azureml:mvaisma-cluster-eastus2
 display_name: ojsales-forecasting-store-2-brand-1
 experiment_name: ojsales-forecasting
 description: Timeseries forecasting for a single store and brand (store 2, brand 1).

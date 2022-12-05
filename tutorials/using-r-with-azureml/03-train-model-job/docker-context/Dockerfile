@@ -26,3 +26,4 @@ RUN R -e "install.packages(c('tsibble'), repos = 'https://cloud.r-project.org/')
 RUN R -e "install.packages(c('fable'), repos = 'https://cloud.r-project.org/')"
 RUN R -e "install.packages(c('janitor'), repos = 'https://cloud.r-project.org/')"
 RUN R -e "install.packages(c('qs'), repos = 'https://cloud.r-project.org/')"
+RUN R -e "install.packages(c('feasts'), repos = 'https://cloud.r-project.org/')"
