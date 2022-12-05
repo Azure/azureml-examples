@@ -38,7 +38,7 @@ def init():
     print(model_path)
 
     try:
-        logger.info("Loading model from path: {}.".format(model_path))
+        logger.info(f"Loading model from path: {model_path}.")
         model_settings = {}
         model = load_model(TASK_TYPE, model_path, **model_settings)
         logger.info("Loading successful.")
