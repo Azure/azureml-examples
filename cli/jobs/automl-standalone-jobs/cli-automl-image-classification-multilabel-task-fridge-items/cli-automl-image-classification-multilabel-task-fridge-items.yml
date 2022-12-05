@@ -12,9 +12,11 @@ primary_metric: iou
 
 target_column_name: label
 training_data:
+  # Update the path, if prepare_data.py is using data_path other than "./data"
   path: data/training-mltable-folder
   type: mltable
 validation_data:
+  # Update the path, if prepare_data.py is using data_path other than "./data"
   path: data/validation-mltable-folder
   type: mltable
 
