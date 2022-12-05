@@ -13,9 +13,7 @@ from azureml.automl.dnn.vision.common.model_export_utils import (
     load_model,
     run_inference_batch,
 )
-from azureml.automl.dnn.vision.classification.inference.score import (
-    _score_with_model,
-)
+from azureml.automl.dnn.vision.classification.inference.score import _score_with_model
 from azureml.automl.dnn.vision.common.utils import _set_logging_parameters
 
 
@@ -37,10 +35,20 @@ def init():
     )
     parser.add_argument("--model_name", dest="model_name", required=True)
     parser.add_argument("--batch_size", dest="batch_size", type=int, required=False)
-    parser.add_argument("--model_explainability", dest="model_explainability",
-                        type=bool, default=False, required=False)
-    parser.add_argument("--xai_parameters", dest="xai_parameters",
-                        type=str, default=json.dumps(dict()), required=False)
+    parser.add_argument(
+        "--model_explainability",
+        dest="model_explainability",
+        type=bool,
+        default=False,
+        required=False,
+    )
+    parser.add_argument(
+        "--xai_parameters",
+        dest="xai_parameters",
+        type=str,
+        default=json.dumps(dict()),
+        required=False,
+    )
     args, _ = parser.parse_known_args()
 
     batch_size = args.batch_size
@@ -61,11 +69,13 @@ def init():
 
 def run(mini_batch):
     logger.info("Running inference.")
-    result = run_inference_batch(model,
-                                 mini_batch,
-                                 _score_with_model,
-                                 batch_size,
-                                 model_explainability,
-                                 **xai_parameters)
+    result = run_inference_batch(
+        model,
+        mini_batch,
+        _score_with_model,
+        batch_size,
+        model_explainability,
+        **xai_parameters
+    )
     logger.info("Finished inferencing.")
     return result
