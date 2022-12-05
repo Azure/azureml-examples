@@ -104,7 +104,7 @@ echo "Tested successfully, response was $RESPONSE. Cleaning up..."
 # <delete_endpoint_and_model>
 az ml online-endpoint delete -n $ENDPOINT_NAME -y
 echo "deleting model..."
-az ml model archive -n tfserving-mounted --version 1
+az ml model archive -n tfserving-mounted
 # </delete_endpoint_and_model>
 
 cleanup
