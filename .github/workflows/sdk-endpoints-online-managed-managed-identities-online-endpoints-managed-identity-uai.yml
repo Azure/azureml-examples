@@ -73,22 +73,3 @@ jobs:
       with:
         name: online-endpoints-managed-identity-uai
         path: sdk/python/endpoints/online/managed/managed-identities
-
-    - name: Send IcM on failure
-      if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
-        connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
-        certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
-        private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
-        args: |
-            incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'endpoints/online/managed/managed-identities/online-endpoints-managed-identity-uai.ipynb'"
-                Summary: |
-                    Notebook 'endpoints/online/managed/managed-identities/online-endpoints-managed-identity-uai.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-                Severity: 4
-                RoutingId: "github://azureml-examples"
-                Status: Active
-                Source:
-                    IncidentId: "endpoints/online/managed/managed-identities/online-endpoints-managed-identity-uai.ipynb[${{ github.ref_name }}]"
