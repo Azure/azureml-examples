@@ -12,9 +12,11 @@ settings:
 inputs:
   image_multiclass_classification_training_data:
     type: mltable
+    # Update the path, if prepare_data.py is using data_path other than "./data"
     path: data/training-mltable-folder
   image_multiclass_classification_validation_data:
     type: mltable
+    # Update the path, if prepare_data.py is using data_path other than "./data"
     path: data/validation-mltable-folder
 
 jobs:

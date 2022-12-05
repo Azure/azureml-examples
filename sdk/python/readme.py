@@ -5,6 +5,8 @@ import json
 import glob
 import argparse
 
+from configparser import ConfigParser
+
 # define constants
 ENABLE_MANUAL_CALLING = True  # defines whether the workflow can be invoked or not
 NOT_TESTED_NOTEBOOKS = [
@@ -15,8 +17,6 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-with-sklearn",
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
-    "online-endpoints-managed-identity-sai",
-    "online-endpoints-managed-identity-uai",
     "pipeline_with_spark_nodes",
     "interactive_data_wrangling",
     "attach_manage_spark_pools",
@@ -35,6 +35,8 @@ BRANCH = "main"  # default - do not change
 GITHUB_CONCURRENCY_GROUP = (
     "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
 )
+USE_FORECAST_REQUIREMENTS = "USE_FORECAST_REQUIREMENTS"
+COMPUTE_NAMES = "COMPUTE_NAMES"
 
 
 def main(args):
@@ -63,6 +65,8 @@ def main(args):
 
 def write_workflows(notebooks):
     print("writing .github/workflows...")
+    cfg = ConfigParser()
+    cfg.read(os.path.join("notebooks_config.ini"))
     for notebook in notebooks:
         if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
             # get notebook name
@@ -76,23 +80,43 @@ def write_workflows(notebooks):
 
             # write workflow file
             write_notebook_workflow(
-                notebook, name, classification, folder, enable_scheduled_runs
+                notebook, name, classification, folder, enable_scheduled_runs, cfg
             )
     print("finished writing .github/workflows")
+
+
+def get_additional_requirements(req_name, req_path):
+    return f"""
+    - name: pip install {req_name} reqs
+      run: pip install -r {req_path}"""
 
 
 def get_mlflow_import(notebook):
     with open(notebook, "r", encoding="utf-8") as f:
         if "import mlflow" in f.read():
-            return """
-    - name: pip install mlflow reqs
-      run: pip install -r sdk/python/mlflow-requirements.txt"""
+            return get_additional_requirements(
+                "mlflow", "sdk/python/mlflow-requirements.txt"
+            )
         else:
             return ""
 
 
+def get_forecast_reqs(notebook_name, nb_config):
+    is_required = int(
+        nb_config.get(
+            section=notebook_name, option=USE_FORECAST_REQUIREMENTS, fallback=0
+        )
+    )
+    if is_required:
+        return get_additional_requirements(
+            "forecasting", "sdk/python/forecasting-requirements.txt"
+        )
+    else:
+        return ""
+
+
 def write_notebook_workflow(
-    notebook, name, classification, folder, enable_scheduled_runs
+    notebook, name, classification, folder, enable_scheduled_runs, nb_config
 ):
     is_pipeline_notebook = ("jobs-pipelines" in classification) or (
         "assets-component" in classification
@@ -102,6 +126,7 @@ def write_notebook_workflow(
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
     mlflow_import = get_mlflow_import(notebook)
+    forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
 
@@ -142,7 +167,7 @@ jobs:
       with: 
         python-version: "3.8"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}
+      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
@@ -208,25 +233,10 @@ jobs:
         name: {name}
         path: sdk/python/{posix_folder}\n"""
 
-    workflow_yaml += f"""
-    - name: Send IcM on failure
-      if: ${{{{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}}}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{{{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}}}
-        connector_id: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}}}
-        certificate: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}}}
-        private_key: ${{{{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}}}
-        args: |
-            incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{{{ github.ref_name }}}}' for notebook '{posix_notebook}'"
-                Summary: |
-                    Notebook '{posix_notebook}' is failing on branch '${{{{ github.ref_name }}}}': ${{{{ github.server_url }}}}/${{{{ github.repository }}}}/actions/runs/${{{{ github.run_id }}}}
-                Severity: 4
-                RoutingId: "github://azureml-examples"
-                Status: Active
-                Source:
-                    IncidentId: "{posix_notebook}[${{{{ github.ref_name }}}}]"\n"""
+    if nb_config.get(section=name, option=COMPUTE_NAMES, fallback=None):
+        workflow_yaml += f"""
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "{github_workspace}/infra/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
 
     workflow_file = os.path.join(
         "..", "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
@@ -280,9 +290,9 @@ def write_readme(notebooks, pipeline_folder=None):
                 try:
                     if data["metadata"]["description"] is not None:
                         description = data["metadata"]["description"]["description"]
-                except:
+                except BaseException:
                     pass
-            except:
+            except BaseException:
                 print("Could not load", notebook)
                 pass
 

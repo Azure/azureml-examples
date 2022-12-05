@@ -67,7 +67,7 @@ Also if adding new examples or changing existing descriptions, run the `readme.p
 python readme.py
 ```
 
-This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with exceptions) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details.
+This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with exceptions) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details. If the new notebook uses compute cluster, please add it to the `sdk/python/notebooks_config.ini` file so the compute clusters will be properly deleted after notebook run was finished. Create a section with the notebook name and add the option `COMPUTE_NAMES` with the compute cluster name. 
 
 ### Discoverability
 

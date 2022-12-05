@@ -66,7 +66,6 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "registry-create.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python registry-create.ipynb registry-create.output.ipynb
-          az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistryPython --resource-type "Microsoft.MachineLearningServices/registries"
       working-directory: sdk/python/resources/registry
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
@@ -74,22 +73,3 @@ jobs:
       with:
         name: registry-create
         path: sdk/python/resources/registry
-
-    - name: Send IcM on failure
-      if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
-        connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
-        certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
-        private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
-        args: |
-            incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'resources/registry/registry-create.ipynb'"
-                Summary: |
-                    Notebook 'resources/registry/registry-create.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-                Severity: 4
-                RoutingId: "github://azureml-examples"
-                Status: Active
-                Source:
-                    IncidentId: "resources/registry/registry-create.ipynb[${{ github.ref_name }}]"
