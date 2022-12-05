@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-assets-job-job-model-as-output
+name: cli-assets-job-model-job-as-output
 on:
   workflow_dispatch:
   schedule:
@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/assets/job/job-model-as-output.yml
+      - cli/assets/job/model-job-as-output.yml
       - infra/**
-      - .github/workflows/cli-assets-job-job-model-as-output.yml
+      - .github/workflows/cli-assets-job-model-job-as-output.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -45,5 +45,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml job create -f assets/job/job-model-as-output.yml
+          az ml job create -f assets/job/model-job-as-output.yml
       working-directory: cli
