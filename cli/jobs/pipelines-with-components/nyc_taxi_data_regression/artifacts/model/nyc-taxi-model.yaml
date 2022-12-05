@@ -3,3 +3,4 @@ name: nyc-taxi-model
 path: ./model.pkl
 version: <VERSION>
 description: Model created from local file.
+type: mlflow_model
