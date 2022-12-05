@@ -1,3 +1,8 @@
+## LOCAL ONLY
+
+library(this.path)
+setwd(dirname(this.path()))
+
 # This script is used to develop the training script with mlflow locally
 # using local mlflow backend and no
 
@@ -7,6 +12,17 @@ mlflow_bin = "/Users/marck/miniforge3/envs/mlflow-r/bin/mlflow"
 Sys.setenv(MLFLOW_PYTHON_BIN = mlflow_python_bin)
 Sys.setenv(MLFLOW_BIN = mlflow_bin)
 
+## AZURE MACHINE LEARNING ONLY
+
+# Source the aml_utils.R script which is needed to use the MLFlow back end
+# with R
+source("azureml_utils.R")
+
+# Set MLFlow related env vars
+Sys.setenv(MLFLOW_BIN = system("which mlflow", intern = TRUE))
+Sys.setenv(MLFLOW_PYTHON_BIN = system("which python", intern = TRUE))
+
+## ALL
 
 library(mlflow)
 library(optparse)
@@ -16,13 +32,14 @@ library(tsibble)
 library(fable) # https://fable.tidyverts.org/index.html
 library(janitor) # https://github.com/sfirke/janitor
 
-# Source the aml_utils.R script which is needed to use the MLFlow back end
-# with R
+# Source the aml_utils.R script which is needed to use the MLFlow 
+# back end with R
+
 # source("azureml_utils.R")
 
 # Set MLFlow related env vars
-Sys.setenv(MLFLOW_BIN = system("which mlflow", intern = TRUE))
-Sys.setenv(MLFLOW_PYTHON_BIN = system("which python", intern = TRUE))
+# Sys.setenv(MLFLOW_BIN = system("which mlflow", intern = TRUE))
+# Sys.setenv(MLFLOW_PYTHON_BIN = system("which python", intern = TRUE))
 
 # parse the command line arguments
 parser <- OptionParser()
@@ -32,7 +49,7 @@ parser <- add_option(
   "--data_file",
   type = "character",
   action = "store",
-  default = "data/sales-data.csv"
+  default = "../../data/sales-data.csv"
 )
 
 parser <- add_option(
@@ -61,29 +78,23 @@ parser <- add_option(
 
 args <- parse_args(parser)
 
-# Load the dataset from the mounted input location.
-# This can be done directly with R functions.
-# There is no need to use reticulate in a running job
-
-## Modify to read the files from Azure storage using reticulate
-# df <- pd$read_csv("azureml://")
+# Read the file from the data path provided with the job
 
 file_name <- file.path(args$data_file)
 
 oj_sales_read <- readr::read_csv(file_name) |>
   janitor::clean_names()
 
-# Create a ./outputs directory to store any generated artifact
-# Image, model, data, etc. 
-# Any files saved to ./outputs will be automatically uploaded 
-# to the experiment at the end of the run. For example:
+# Create a ./outputs directory to store any generated artifacts 
+# (images, models, data, etc.) Any files saved to ./outputs will  
+# be automatically uploaded # to the experiment at the end of the 
+# run. For example:
 
 if (!dir.exists(args$output)){
   dir.create(args$output)
 }
 
-# Constants (were previously defined in a YAML file in the
-# reference example, and ideally can be parametrized
+# This value is hardcoded
 
 START_DATE <- as.Date("1989-09-14")
 
@@ -124,12 +135,19 @@ fcast <- forecast(fit, h = 10)
 # per modeltype/store/brand)
 metrics <- accuracy(fcast, oj_sales)
 
-# create a plot
+# create a plot and save it to output
 forecast_plot <- 
   autoplot(fcast) +
   geom_line(data =sales_for_store_brand |> 
               filter(yr_wk <= yearweek("1992 W18")),
             aes(x = yr_wk, y = logmove)) 
+
+ggsave(forecast_plot, 
+       filename = "./outputs/forecast-plot.png", 
+       units = "px",
+       dpi = 100,
+       width = 800,
+       height = 600)
 
 
 # Create parameters tibble for batch loggine
@@ -169,52 +187,24 @@ all_model_data <-
   ) 
 
 
-
-# Start the run 
-mlflow_start_run()
-# Log the store
-# Log the brand
-# Log the model metrics for each separate model
-# Log the model
-# Log the plot
-
-# End the rum
-mlflow_end_run()
-
-
-
 # one more transformation for logging metrics
 # metrics are numeric
 # need df/tibble with key, value, step and timestamp
-metrics_tbl <- 
-  metrics |> 
-  select(-c(store, brand, .type)) |>  
-  pivot_longer(-.model) |> 
-  unite("key", c(.model, name)) |> 
-  mutate(step = 0,
-         timestamp = as.integer(Sys.time()))
 
-
-
-
-
-
-all_model_data |> 
-  filter(model_name == "arima") |> 
-  select(fcast) |> 
-  pull()
-             
-
-all_model_data |> 
-  filter(model_name == "mean") |> 
-  unnest(fcast)
-
+# testing with a single model (arima), need to wrap in function
+# to loop and log all four
 
 tbl_ln <- all_model_data |> 
   filter(model_name == "arima")
 
-#create_log_objects <- function(...)
-mdl_obj <- 
+#create_log_objects <- function(...) {
+
+    tg_tbl <- tibble(
+    key = "model",
+    value = tbl_ln |> pull(model_name)
+  )
+  
+  mdl_obj <- 
   tbl_ln |> 
   pull(model_object)
 
@@ -235,22 +225,58 @@ metrics_tbl <- bind_rows(
   mutate(step = 0,
          timestamp = as.integer(Sys.time()))
 
-
 tg_tbl <- tibble(
   key = "model",
   value = tbl_ln |> pull(model_name)
 )
 
-# create model object
+# crate model object
+# Unlike Python ML models, building and deploying models in R 
+# through MLflow requires the model to be packaged before it can be 
+# logged as an mlflow model. The crate function in the carrier 
+# package is a tool that helps wrap and construct the R model, 
+# making it a crated function. This is then passed in to be 
+#logged as an mlflow model.
+
+# The prediction function is expected to take a dataframe as 
+# input and produce a dataframe, a vector or a list with the  
+# predictions as output. 
+
+# In this example, the prediction is a set of data points for a 
+# time series predicted n-periods after the last period of the training 
+# set. It only requires a single number (the number of periods).
+
+forecast_ts <- crate(function(x) 
+  {fabletools::forecast(!!mdl_obj, h = x)})
+
+# save object
 
 
 
-forecast(mdl, h =20)
 
-tbl_ln |> 
-  pull(tidy_coef)
+# Start the run 
+mlflow_start_run()
 
+mlflow_log_batch(
+  metrics = metrics_tbl,
+  params = params_tbl,
+  tags = tg_tbl
+)
 
+mlflow_log_model(
+  model = forecast_ts, 
+  artifact_path = "model"
+)
+
+mlflow_log_artifact(
+  path = "./outputs/"
+  )
+
+mlflow_end_run()
+
+mlflow_ui()
+
+# https://mdneuzerling.com/post/deploying-r-models-with-mlflow-and-docker/
 
 
 
