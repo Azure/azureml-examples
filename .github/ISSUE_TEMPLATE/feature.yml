@@ -1,0 +1,14 @@
+name: Feature Request
+description: Request a new example, an enhancement for an existing example, or an enhancement for the repo itself
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: Describe your suggestion
+    validations:
+      required: true
+  - type: textarea
+    id: more-details
+    attributes:
+      label: Additional details

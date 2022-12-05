@@ -1,0 +1,56 @@
+name: bootstrapping-infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Debug flag for workflows'
+        type: boolean
+        required: false
+        default: false
+      bootstrap:
+        description: 'To bootstrap resources or not'
+        type: boolean
+        required: false
+        default: true
+  schedule:
+    - cron: "0 */6 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/**
+      - .github/workflows/bootstrapping-infra.yml
+      - cli/**
+      - infra/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RUN_BOOTSTRAP: ${{ github.event.inputs.bootstrap }}
+      debug: ${{ github.event.inputs.debug || false }}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r sdk/python/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: bootstrap infra resources
+      run: |
+          [[ -z "${RUN_BOOTSTRAP:-}" ]] && RUN_BOOTSTRAP='true'
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: true

@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: nyc-taxi-model
+path: ./model.pkl
+version: <VERSION>
+description: Model created from local file.

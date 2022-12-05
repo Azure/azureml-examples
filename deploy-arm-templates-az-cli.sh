@@ -85,7 +85,7 @@ modelUri="azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROU
 
 # <read_condafile>
 CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
-# <read_condafile>
+# </read_condafile>
 
 # <create_environment>
 ENV_VERSION=$RANDOM
@@ -135,7 +135,7 @@ az deployment group create -g $RESOURCE_GROUP \
  endpointComputeType=Managed \
  skuName=Standard_F2s_v2 \
  skuCapacity=1
- # <\create_deployment>
+ # </create_deployment>
 
 # <get_deployment>
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/deployments/blue?api-version=$API_VERSION" \
@@ -148,11 +148,11 @@ wait_for_completion $operation_id
 scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
 # </get_endpoint>
 
-# <get_access_token>
+# <get_endpoint_access_token>
 response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
 accessToken=$(echo $response | jq -r '.accessToken')
-# </get_access_token>
+# </get_endpoint_access_token>
 
 # <score_endpoint>
 curl --location --request POST $scoringUri \

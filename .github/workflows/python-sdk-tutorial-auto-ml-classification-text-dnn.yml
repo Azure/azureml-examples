@@ -58,13 +58,13 @@ jobs:
       working-directory: v1/python-sdk/tutorials/automl-with-azureml/classification-text-dnn
     - name: check notebook output
       run: |
-         python scripts/validation/check_notebook_output.py \
+         python v1/scripts/validation/check_notebook_output.py \
                 --file_name auto-ml-classification-text-dnn.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/classification-text-dnn \
                 --check warning stderr
     - name: check experiment result
       run: |
-         python scripts/validation/check_experiment_result.py \
+         python v1/scripts/validation/check_experiment_result.py \
                 --file_name auto-ml-classification-text-dnn.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/classification-text-dnn \
                 --experiment_name automl-classification-text-dnn \
@@ -72,7 +72,7 @@ jobs:
                 --metric_name accuracy
     - name: check cell output
       run: |
-         python scripts/validation/check_cell_output.py \
+         python v1/scripts/validation/check_cell_output.py \
                 --file_name auto-ml-classification-text-dnn.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/classification-text-dnn \
                 --cell_source \
