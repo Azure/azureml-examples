@@ -16,8 +16,6 @@ library(tidyverse)
 library(tsibble)
 library(fable) # https://fable.tidyverts.org/index.html
 library(janitor) # https://github.com/sfirke/janitor
-library(feasts)
-library(urca)
 
 # parse the command line arguments
 parser <- OptionParser()

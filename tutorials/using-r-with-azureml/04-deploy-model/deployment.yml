@@ -1,0 +1,22 @@
+# ./r-deployment.yml
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: r-deployment
+endpoint_name: r-endpoint-iris
+code_configuration:
+  code: ./scripts
+  scoring_script: plumber.R
+model: azureml:timeseries-forecast:1
+environment:
+  image: <ACR_NAME>.azurecr.io/r_server
+  inference_config:
+    liveness_route:
+      port: 8000
+      path: /live
+    readiness_route:
+      port: 8000
+      path: /ready
+    scoring_route:
+      port: 8000
+      path: /score
+instance_type: Standard_DS2_v2
+instance_count: 1
