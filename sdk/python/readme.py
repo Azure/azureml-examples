@@ -31,7 +31,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_classification_mlflow",
     "xgboost_nested_runs",
     "xgboost_service_principal",
-    "using_mlflow_rest_api"
+    "using_mlflow_rest_api",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
