@@ -1,0 +1,38 @@
+$schema: https://azuremlschemas.azureedge.net/latest/sparkComponent.schema.json
+name: sample_spark_component
+type: spark
+version: 1
+display_name: Spark sample word
+description: Spark sample word
+
+inputs:
+  file_input:
+    type: uri_file
+    mode: direct
+  sample_rate:
+    type: number
+    default: 0.01
+
+outputs:
+  file_output:
+    type: uri_file
+    mode: direct
+
+code: .
+
+entry:
+  file: sampleword.py
+
+args: >-
+  --input1 ${{inputs.file_input}}
+  --output2 ${{outputs.file_output}}
+  --my_sample_rate ${{inputs.sample_rate}}
+
+conf:
+  spark.driver.cores: 1
+  spark.driver.memory: "2g"
+  spark.executor.cores: 2
+  spark.executor.memory: "2g"
+  spark.dynamicAllocation.enabled: True
+  spark.dynamicAllocation.minExecutors: 1
+  spark.dynamicAllocation.maxExecutors: 4

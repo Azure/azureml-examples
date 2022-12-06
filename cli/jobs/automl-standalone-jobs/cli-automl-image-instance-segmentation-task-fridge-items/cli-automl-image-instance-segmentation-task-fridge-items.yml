@@ -12,23 +12,24 @@ primary_metric: mean_average_precision
 
 target_column_name: label
 training_data:
+  # Update the path, if prepare_data.py is using data_path other than "./data"
   path: data/training-mltable-folder
   type: mltable
 validation_data:
+  # Update the path, if prepare_data.py is using data_path other than "./data"
   path: data/validation-mltable-folder
   type: mltable
 
 limits:
   timeout_minutes: 60
+  max_trials: 10
+  max_concurrent_trials: 2
 
-image_model:
+training_parameters:
   early_stopping: True
   evaluation_frequency: 1
 
 sweep:
-  limits:
-    max_trials: 10
-    max_concurrent_trials: 2
   sampling_algorithm: random
   early_termination:
     type: bandit
@@ -37,7 +38,16 @@ sweep:
     delay_evaluation: 6
 
 search_space:
-  - model_name: "maskrcnn_resnet50_fpn"
-    learning_rate: "uniform(0.0001, 0.001)"
-    optimizer: "choice('sgd', 'adam', 'adamw')"
-    min_size: "choice(600, 800)"
+  - model_name:
+      type: choice
+      values: [maskrcnn_resnet50_fpn]
+    learning_rate:
+      type: uniform
+      min_value: 0.0001
+      max_value: 0.001
+    optimizer:
+      type: choice
+      values: ['sgd', 'adam', 'adamw']
+    min_size:
+      type: choice
+      values: [600, 800]

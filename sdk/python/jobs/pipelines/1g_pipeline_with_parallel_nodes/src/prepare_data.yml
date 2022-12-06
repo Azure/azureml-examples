@@ -1,0 +1,27 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+
+type: command
+
+name: prepare_file_tabular_data
+display_name: Prepare File Tabular Data
+version: 1
+
+inputs:
+  input_data:
+    type: uri_folder
+
+outputs:
+  file_output_data:
+    type: mltable
+  tabular_output_data:
+    type: mltable
+
+code: ./
+
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+
+command: >-
+  python prepare_data.py
+  --input_data ${{inputs.input_data}}
+  --file_output_data ${{outputs.file_output_data}}
+  --tabular_output_data ${{outputs.tabular_output_data}}

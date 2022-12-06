@@ -1,0 +1,7 @@
+name: <REGISTRY-NAME>
+description: Basic registry with one primary region
+tags:
+  foo: bar
+location: East US
+replication_locations:
+  - location: East US

@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: nyc-taxi-model
+path: .
+version: <VERSION>
+description: Model created from local file.
+type: mlflow_model

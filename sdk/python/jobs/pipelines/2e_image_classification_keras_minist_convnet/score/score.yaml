@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: score_image_classification_keras
+display_name: Score Image Classification Keras
+inputs:
+  input_data: 
+    type: uri_folder
+  input_model:
+    type: uri_folder
+outputs:
+  output_result:
+    type: uri_folder
+code: ./
+command: python score.py --input_data ${{inputs.input_data}} --input_model ${{inputs.input_model}} --output_result ${{outputs.output_result}}
+environment:
+  conda_file: ./conda.yaml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+

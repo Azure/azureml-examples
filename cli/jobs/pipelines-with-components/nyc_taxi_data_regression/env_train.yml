@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: SKLearnEnv
+version: 1-<VERSION>
+description: Scikit Learn environment
+build:
+  path: ./env_train

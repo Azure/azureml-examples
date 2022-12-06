@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/model.schema.json
+name: minimalregistered
+version: {{MODEL_VERSION}}
+path: ../../../model-1/model

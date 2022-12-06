@@ -1,0 +1,63 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: Pipeline using AutoML regression task
+
+display_name: pipeline-with-automl-regression
+experiment_name: pipeline-with-automl
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+inputs:
+  regression_train_data:
+    type: mltable
+    path: ./house_pricing/training-mltable-folder
+  regression_test_data:
+    type: mltable
+    path: ./house_pricing/test-mltable-folder
+  regression_validate_data:
+    type: mltable
+    path: ./house_pricing/validation-mltable-folder
+
+jobs:
+  preprocessing_node:
+    type: command
+    component: file:./components/component_preprocessing.yaml
+    inputs:
+      train_data: ${{parent.inputs.regression_train_data}}
+      validation_data: ${{parent.inputs.regression_validate_data}}
+      test_data: ${{parent.inputs.regression_test_data}}
+    outputs:
+      preprocessed_train_data:
+        type: mltable
+      preprocessed_validation_data:
+        type: mltable
+      preprocessed_test_data:
+        type: mltable
+  regression_node:
+    type: automl
+    task: regression
+    primary_metric: r2_score
+    limits:
+      max_trials: 1
+      max_concurrent_trials: 1
+    target_column_name: SalePrice
+    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
+    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
+    test_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_test_data}}
+    featurization:
+      mode: "off" # In YAML 1.1, literal off equals boolean false, ref: https://yaml.org/type/bool.html
+    training:
+      enable_stack_ensemble: false
+      enable_vote_ensemble: false
+    # currently need to specify outputs "mlflow_model" explicitly to reference it in following nodes 
+    outputs:
+       best_model:
+          type: mlflow_model
+  register_model_node:
+    type: command
+    component: file:./components/component_register_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.regression_node.outputs.best_model}}
+      model_base_name: house_pricing_model

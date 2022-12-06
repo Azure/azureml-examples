@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - python-sdk/experimental/automl-model-testing/regression/**
+      - v1/python-sdk/experimental/automl-model-testing/regression/**
       - .github/workflows/python-sdk-experimental-automl-model-testing-regression-tsi.yml
 jobs:
   build:
@@ -26,14 +26,14 @@ jobs:
         python-version: "3.7"
     - name: Run Install packages
       run: |
-         chmod +x ./scripts/install-packages.sh
-         ./scripts/install-packages.sh
+         chmod +x ./v1/scripts/install-packages.sh
+         ./v1/scripts/install-packages.sh
       shell: bash
     - name: create automl conda environment
       uses: conda-incubator/setup-miniconda@v2
       with:
           activate-environment: azure_automl
-          environment-file: python-sdk/experimental/automl-model-testing/automl_env_linux.yml
+          environment-file: v1/python-sdk/experimental/automl-model-testing/automl_env_linux.yml
           auto-activate-base: false
     - name: install papermill and set up the IPython kernel
       run: |
@@ -46,17 +46,17 @@ jobs:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: Run update-azure-extensions
       run: |
-         chmod +x ./scripts/update-azure-extensions.sh
-         ./scripts/update-azure-extensions.sh
+         chmod +x ./v1/scripts/update-azure-extensions.sh
+         ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
       run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
     - name: run regression-TSI.ipynb
       run: papermill -k python regression-TSI.ipynb regression-TSI.output.ipynb
-      working-directory: python-sdk/experimental/automl-model-testing/regression
+      working-directory: v1/python-sdk/experimental/automl-model-testing/regression
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: regression-TSI
-        path: python-sdk/experimental/automl-model-testing/regression
+        path: v1/python-sdk/experimental/automl-model-testing/regression

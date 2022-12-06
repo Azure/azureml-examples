@@ -1,31 +1,34 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: train_data_component
+name: train_data_component_cli
 display_name: train_data
 description: A example train component
 tags:
   author: azureml-sdk-team
-version: 3
+version: 7
 type: command
 inputs:
   training_data: 
     type: uri_folder
   max_epocs:
     type: integer
+    optional: true
   learning_rate: 
     type: number
     default: 0.01
+    optional: true
   learning_rate_schedule: 
     type: string
-    default: time-based 
+    default: time-based
+    optional: true
 outputs:
   model_output:
     type: uri_folder
 code: ./train_src
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
-  --max_epocs ${{inputs.max_epocs}}   
-  --learning_rate ${{inputs.learning_rate}} 
-  --learning_rate_schedule ${{inputs.learning_rate_schedule}} 
+  $[[--max_epocs ${{inputs.max_epocs}}]]
+  $[[--learning_rate ${{inputs.learning_rate}}]]
+  $[[--learning_rate_schedule ${{inputs.learning_rate_schedule}}]]
   --model_output ${{outputs.model_output}}

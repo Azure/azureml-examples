@@ -1,0 +1,17 @@
+paths:
+  - file: ./bike-share-train.csv
+transformations:
+  - read_delimited:
+        delimiter: ','
+        encoding: 'ascii'
+  - convert_column_types:
+      - columns: temp
+        column_type: float
+      - columns: atemp
+        column_type: float
+      - columns: hum
+        column_type: float
+      - columns: windspeed
+        column_type: float
+      - columns: cnt
+        column_type: float

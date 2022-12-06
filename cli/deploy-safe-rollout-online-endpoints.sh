@@ -12,7 +12,7 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/s
 # </create_endpoint>
 
 # <create_blue>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
+az ml online-deployment create --name blue --endpoint-name $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
 # </create_blue>
 
 # <test_blue>
@@ -20,11 +20,11 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file endpoints/onli
 # </test_blue>
 
 # <scale_blue>
-az ml online-deployment update --name blue --endpoint $ENDPOINT_NAME --set instance_count=2
+az ml online-deployment update --name blue --endpoint-name $ENDPOINT_NAME --set instance_count=2
 # </scale_blue>
 
 # <create_green>
-az ml online-deployment create --name green --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/green-deployment.yml
+az ml online-deployment create --name green --endpoint-name $ENDPOINT_NAME -f endpoints/online/managed/sample/green-deployment.yml
 # </create_green>
 
 # <get_traffic>
@@ -32,7 +32,7 @@ az ml online-endpoint show -n $ENDPOINT_NAME --query traffic
 # </get_traffic>
 
 # <test_green>
-az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment green --request-file endpoints/online/model-2/sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment-name green --request-file endpoints/online/model-2/sample-request.json
 # </test_green>
 
 # supress printing secret
@@ -54,11 +54,11 @@ curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY
 
 # <test_green_with_mirror_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --mirror-traffic "green=10"
-# <test_green_with_mirror_traffic>
+# </test_green_with_mirror_traffic>
 
 # <reset_mirror_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --mirror-traffic "green=0"
-# <reset_mirror_traffic>
+# </reset_mirror_traffic>
 
 # <green_10pct_traffic>
 az ml online-endpoint update --name $ENDPOINT_NAME --traffic "blue=90 green=10"

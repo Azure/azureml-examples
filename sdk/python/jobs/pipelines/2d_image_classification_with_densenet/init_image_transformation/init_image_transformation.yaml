@@ -1,0 +1,108 @@
+$schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
+type: command
+
+name: microsoftsamples_init_image_transformation
+display_name: Init Image Transformation
+description: Initialize image transformation.
+
+version: 0.0.1
+
+inputs:
+  resize:
+    description: Resize the input PIL Image to the given size
+    type: string
+    default: True
+    enum: ["True", "False"]
+  size:
+    description: Desired output size
+    type: integer
+    default: 256
+  center_crop:
+    description: Crops the given PIL Image at the center
+    type: string
+    default: False
+    enum: ["True", "False"]
+  crop_size:
+    description: Desired output size of the crop
+    type: integer
+    default: 224
+  pad:
+    description: Pad the given PIL Image on all sides with the given "pad" value
+    type: string
+    default: False
+    enum: ["True", "False"]
+  padding:
+    description: Padding on each border
+    type: integer
+    default: 0
+  color_jitter:
+    description: Randomly change the brightness, contrast and saturation of an image
+    type: boolean
+    default: false
+  grayscale:
+    description: Convert image to grayscale
+    type: boolean
+    default: false
+  random_resized_crop:
+    description: Crop the given PIL Image to random size and aspect ratio
+    type: string
+    default: False
+    enum: ["True", "False"]
+  random_resized_crop_size:
+    description: Expected output size of each edge
+    type: integer
+    default: 256
+  random_crop:
+    description: Crop the given PIL Image at a random location
+    type: string
+    default: False
+    enum: ["True", "False"]
+  random_crop_size:
+    description: Desired output size of the crop
+    type: integer
+    default: 224
+  random_horizontal_flip:
+    description: Horizontally flip the given PIL Image randomly with a given probability
+    type: boolean
+    default: false
+  random_vertical_flip:
+    description: Vertically flip the given PIL Image randomly with a given probability
+    type: boolean
+    default: false
+  random_rotation:
+    description: Rotate the image by angle
+    type: boolean
+    default: false
+  random_rotation_degrees:
+    description: Range of degrees to select from
+    type: integer
+    default: 0
+  random_affine:
+    description: Random affine transformation of the image keeping center invariant
+    type: boolean
+    default: false
+  random_affine_degrees:
+    description: Range of degrees to select from
+    type: integer
+    default: 0
+  random_grayscale:
+    description: Randomly convert image to grayscale with a probability of p (default 0.1)
+    type: boolean
+    default: false
+  random_perspective:
+    description: Performs Perspective transformation of the given PIL Image randomly with a given probability
+    type: boolean
+    default: false
+outputs:
+  output_path:
+    type: uri_folder
+    description: Output image transformation
+
+command: >-
+  python -m azureml.designer.modules.computer_vision.transform.init_image_transformation.init_image_transformation --resize ${{inputs.resize}} --size ${{inputs.size}} --center-crop ${{inputs.center_crop}} --crop-size ${{inputs.crop_size}}  
+  --pad ${{inputs.pad}} --padding ${{inputs.padding}} --color-jitter ${{inputs.color_jitter}} --grayscale ${{inputs.grayscale}} --random-resized-crop ${{inputs.random_resized_crop}} --random-resized-crop-size ${{inputs.random_resized_crop_size}} --random-crop ${{inputs.random_crop}} --random-crop-size ${{inputs.random_crop_size}} --random-horizontal-flip ${{inputs.random_horizontal_flip}} --random-vertical-flip ${{inputs.random_vertical_flip}} --random-rotation ${{inputs.random_rotation}} --random-rotation-degrees ${{inputs.random_rotation_degrees}} --random-affine ${{inputs.random_affine}} --random-affine-degrees ${{inputs.random_affine_degrees}} --random-grayscale ${{inputs.random_grayscale}} --random-perspective ${{inputs.random_perspective}} --output-path ${{outputs.output_path}}
+
+
+environment:
+  conda_file: ./conda.yaml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
