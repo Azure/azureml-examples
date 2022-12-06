@@ -1,5 +1,0 @@
-# ./r-environment.yml
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: r-environment-with-mlflow
-build:
-  path: docker-context

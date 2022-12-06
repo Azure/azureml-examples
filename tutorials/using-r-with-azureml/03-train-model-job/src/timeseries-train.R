@@ -214,15 +214,12 @@ tg_tbl <- tibble(
 # logged as an mlflow model. The crate function in the carrier 
 # package is a tool that helps wrap and construct the R model, 
 # making it a crated function. This is then passed in to be 
-#logged as an mlflow model.
+# logged as an mlflow model.
 
-# The prediction function is expected to take a dataframe as 
-# input and produce a dataframe, a vector or a list with the  
-# predictions as output. 
-
-# In this example, the prediction is a set of data points for a 
-# time series predicted n-periods after the last period of the training 
-# set. It only requires a single number (the number of periods).
+# The prediction function forecast_ts expects a single number,
+# the number of periods to forecast out after the last period 
+# used in the training set. The output is a dataframe of periods and
+# predictions.
 
 forecast_ts <- crate(function(x) 
 {fabletools::forecast(!!mdl_obj, h = x)})
@@ -246,11 +243,3 @@ mlflow_log_artifact(
 )
 
 mlflow_end_run()
-
-
-
-
-
-
-
-

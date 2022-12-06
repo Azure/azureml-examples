@@ -6,7 +6,7 @@
 * azure-cli installed in local environment
 * az ml install installed in local environment
 * R installed in local environment
-* yaml package
+
 
 ## 01-setup
 
