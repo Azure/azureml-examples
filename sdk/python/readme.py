@@ -22,6 +22,16 @@ NOT_TESTED_NOTEBOOKS = [
     "attach_manage_spark_pools",
     "submit_spark_pipeline_jobs",
     "submit_spark_standalone_jobs",
+    "logging_model_with_mlflow",
+    "scoring_to_mlmodel",
+    "model_management",
+    "deploying_with_mlflow",
+    "track_with_databricks_deploy_aml",
+    "run_history",
+    "xgboost_classification_mlflow",
+    "xgboost_nested_runs",
+    "xgboost_service_principal",
+    "using_mlflow_rest_api"
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
