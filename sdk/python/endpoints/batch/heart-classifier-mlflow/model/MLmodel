@@ -12,11 +12,11 @@ flavors:
 model_uuid: 04bd660a1b8b4b1e84b9198c46cfd117
 run_id: 22874b7e-b069-43f0-b90c-1c57793c7854
 signature:
-  inputs: '[{"name": "age", "type": "long"}, {"name": "sex", "type": "long"}, {"name":
-    "cp", "type": "long"}, {"name": "trestbps", "type": "long"}, {"name": "chol",
-    "type": "long"}, {"name": "fbs", "type": "long"}, {"name": "restecg", "type":
-    "long"}, {"name": "thalach", "type": "long"}, {"name": "exang", "type": "long"},
-    {"name": "oldpeak", "type": "double"}, {"name": "slope", "type": "long"}, {"name":
-    "ca", "type": "long"}, {"name": "thal", "type": "string"}]'
+  inputs: '[{"name": "age", "type": "long"}, {"name": "sex", "type": "long"},
+    {"name": "cp", "type": "long"}, {"name": "trestbps", "type": "long"}, {"name":
+    "chol", "type": "long"}, {"name": "fbs", "type": "long"}, {"name": "restecg",
+    "type": "long"}, {"name": "thalach", "type": "long"}, {"name": "exang", "type":
+    "long"}, {"name": "oldpeak", "type": "double"}, {"name": "slope", "type": "long"},
+    {"name": "ca", "type": "long"}, {"name": "thal", "type": "string"}]'
   outputs: '[{"type": "long"}]'
 utc_time_created: '2022-10-13 00:55:57.543663'
