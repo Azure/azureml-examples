@@ -16,7 +16,7 @@ Please note that the default location used for saving the data is `./data`
 
 
 
-2. For an automatic hyperparameter sweep, run the AutoML CLI command pointing to the cli-automl-image-object-detection-task-fridge-items-automode.yml file in this folder plus the Azure ML IDs needed:
+2. To launch an automatic hyperparameter sweep (aka AutoMode), run the AutoML CLI command pointing to the cli-automl-image-object-detection-task-fridge-items-automode.yml file in this folder plus the Azure ML IDs needed:
 ----------------------------------------------------------------------------------------------------
 
 Note: Your compute cluster should be GPU-based when training with Images or Text. 
@@ -27,7 +27,7 @@ You need to specify/change the name of the cluster in the .YAML file (compute: a
 
 
 
-3. For a manual hyperparameter  sweep, run the AutoML CLI command pointing to the cli-automl-image-object-detection-task-fridge-items.yml file in this folder plus the Azure ML IDs needed:
+3. To launch a manual hyperparameter sweep, run the AutoML CLI command pointing to the cli-automl-image-object-detection-task-fridge-items.yml file in this folder plus the Azure ML IDs needed:
 ----------------------------------------------------------------------------------------------------
 
 Note: Your compute cluster should be GPU-based when training with Images or Text. 
