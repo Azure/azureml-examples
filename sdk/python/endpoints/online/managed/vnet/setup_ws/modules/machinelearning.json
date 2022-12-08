@@ -1,0 +1,150 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "18113917709781430941"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region of the deployment"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "Tags to add to the resources"
+      }
+    },
+    "machineLearningName": {
+      "type": "string",
+      "metadata": {
+        "description": "Machine learning workspace name"
+      }
+    },
+    "machineLearningFriendlyName": {
+      "type": "string",
+      "defaultValue": "[parameters('machineLearningName')]",
+      "metadata": {
+        "description": "Machine learning workspace display name"
+      }
+    },
+    "machineLearningDescription": {
+      "type": "string",
+      "metadata": {
+        "description": "Machine learning workspace description"
+      }
+    },
+    "applicationInsightsId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the application insights resource"
+      }
+    },
+    "containerRegistryId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the container registry resource"
+      }
+    },
+    "keyVaultId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the key vault resource"
+      }
+    },
+    "storageAccountId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the storage account resource"
+      }
+    },
+    "subnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the subnet resource"
+      }
+    },
+    "virtualNetworkId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the virtual network"
+      }
+    },
+    "machineLearningPleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Machine learning workspace private link endpoint name"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces",
+      "apiVersion": "2021-07-01",
+      "name": "[parameters('machineLearningName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "friendlyName": "[parameters('machineLearningFriendlyName')]",
+        "description": "[parameters('machineLearningDescription')]",
+        "applicationInsights": "[parameters('applicationInsightsId')]",
+        "containerRegistry": "[parameters('containerRegistryId')]",
+        "keyVault": "[parameters('keyVaultId')]",
+        "storageAccount": "[parameters('storageAccountId')]",
+        "publicNetworkAccess": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "machineLearningNetworking",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "virtualNetworkId": {
+            "value": "[parameters('virtualNetworkId')]"
+          },
+          "workspaceArmId": {
+            "value": "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "machineLearningPleName": {
+            "value": "[parameters('machineLearningPleName')]"
+          }
+        },
+        "templateLink": {
+          "relativePath": "machinelearningnetworking.json"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "machineLearningId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]"
+    }
+  }
+}

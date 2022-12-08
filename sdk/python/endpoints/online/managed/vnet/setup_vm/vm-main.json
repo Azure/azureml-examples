@@ -1,0 +1,222 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "9818999348039912360"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azure region used for the deployment of all resources."
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "defaultValue": "moevnet-vm",
+      "metadata": {
+        "description": "name of the test scoring vm"
+      }
+    },
+    "identityName": {
+      "type": "string",
+      "defaultValue": "test-vm-uai",
+      "metadata": {
+        "description": "Name of the user assigned identity (UAI). UAI is used to login through az cli from within the vm to create image in ACR, deploy model in azure ml etc"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "name of the vnet to deploy the vm"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "snet-scoring",
+      "metadata": {
+        "description": "name of the subnet to deploy the vm"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Set of tags to apply to all resources."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-deployment', parameters('vmName'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "vmName": {
+            "value": "[parameters('vmName')]"
+          },
+          "virtualMachineSize": {
+            "value": "Standard_F2s_v2"
+          },
+          "uaiResourceId": {
+            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+          },
+          "subnetId": {
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.12.40.16777",
+              "templateHash": "15545845808996894775"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "vmName": {
+              "type": "string",
+              "metadata": {
+                "description": "VM resource name"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Tags to add to the resources"
+              }
+            },
+            "adminUserName": {
+              "type": "string",
+              "defaultValue": "d3F4gfddfE4"
+            },
+            "subnetId": {
+              "type": "string"
+            },
+            "virtualMachineSize": {
+              "type": "string"
+            },
+            "uaiResourceId": {
+              "type": "string"
+            },
+            "ubuntuSku": {
+              "type": "string",
+              "defaultValue": "20_04-lts-gen2"
+            }
+          },
+          "variables": {
+            "randomSshPublicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUCu8YZlOF4bPPu4I8lXBB1Yv9xtqQZlLzGcvgbLRUeU2/GJh2EIWS331bsQX72Ww8NZgqnvvqLz5yRak8Y171zmokkpUrNQUGLEUT5BATF8s3ssNnAksNRDPqZoweUjk4JFKQ4TmvgWMW8QbEHpc4x3urfNxHHet3xKLm5I4pqd35/UUB/5moE1YjjUQLsurcjJCrUEmn3+X2itO7TS8DM4q3FhnNasAOq3UFILBNWYQisrrPbj62yt1BNFmz2yq7uBxYpNiDzeKZvGVT17de5yKNh1v9F99QG62hApjIAH+GDW4G5tm92W0Q4sf6LdC7fE3/BvNmYjVNt6JCpEJx",
+            "networkInterfaceName": "[format('nic{0}', parameters('vmName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/networkInterfaces",
+              "apiVersion": "2021-03-01",
+              "name": "[variables('networkInterfaceName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "ipConfigurations": [
+                  {
+                    "name": "ipconfig1",
+                    "properties": {
+                      "subnet": {
+                        "id": "[parameters('subnetId')]"
+                      },
+                      "privateIPAllocationMethod": "Dynamic"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2021-07-01",
+              "name": "[parameters('vmName')]",
+              "location": "[parameters('location')]",
+              "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                  "[format('{0}', parameters('uaiResourceId'))]": {}
+                }
+              },
+              "properties": {
+                "hardwareProfile": {
+                  "vmSize": "[parameters('virtualMachineSize')]"
+                },
+                "storageProfile": {
+                  "osDisk": {
+                    "createOption": "FromImage",
+                    "managedDisk": {
+                      "storageAccountType": "Premium_LRS"
+                    },
+                    "deleteOption": "Delete"
+                  },
+                  "imageReference": {
+                    "publisher": "canonical",
+                    "offer": "0001-com-ubuntu-server-focal",
+                    "sku": "[parameters('ubuntuSku')]",
+                    "version": "latest"
+                  }
+                },
+                "networkProfile": {
+                  "networkInterfaces": [
+                    {
+                      "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]",
+                      "properties": {
+                        "deleteOption": "Delete"
+                      }
+                    }
+                  ]
+                },
+                "osProfile": {
+                  "computerName": "[format('cname{0}', parameters('vmName'))]",
+                  "adminUsername": "[parameters('adminUserName')]",
+                  "linuxConfiguration": {
+                    "patchSettings": {
+                      "patchMode": "ImageDefault"
+                    },
+                    "disablePasswordAuthentication": true,
+                    "ssh": {
+                      "publicKeys": [
+                        {
+                          "keyData": "[variables('randomSshPublicKey')]",
+                          "path": "[format('/home/{0}/.ssh/authorized_keys', parameters('adminUserName'))]"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
