@@ -84,7 +84,7 @@ oj_sales <- oj_sales_read |>
   select(-week) |> 
   # convert to tsibble
   as_tsibble(index = yr_wk, key = c(store, brand)) 
-
+  
 ## Select the store and brand based on the job parameter  
 sales_for_store_brand <- oj_sales  |>
   filter(store == args$store, brand == args$brand)
@@ -102,7 +102,7 @@ fit <- sales_for_store_brand |>
     naive = NAIVE(logmove),
     drift = RW(logmove ~ drift()),
     arima = ARIMA(logmove ~ pdq() + PDQ(0, 0, 0))
-  )
+)
 
 # Forecast out 10 weeks 
 fcast <- forecast(fit, h = 10)
@@ -126,42 +126,55 @@ ggsave(forecast_plot,
        height = 600)
 
 
-# Create parameters tibble for batch loggine
-params_tbl <- tibble(
-  key = c("store", "brand", "data_file"),
-  value = c(args$store, args$brand, args$data_file)
-)
+# create a tibble with one row per model and all re-arranged artifacts
+# (tidy info, metrics and forecast), plus tibbles for logging:
+# 
 
-# create a tibble with one row per model and all artifacts
-# for that model
 
-all_model_data <- 
+all_model_data <-
   fit |>
-  as_tibble() |>
-  select(-c(store, brand)) |> 
+  #as_tibble() |>
+  select(-c(store, brand)) |>
   pivot_longer(cols = everything(),
                names_to = "model_name",
                values_to = "model_object") |>
-  mutate(tidy_coef = map(model_object, tidy)) |>
-  inner_join(
-    metrics |>
-      as_tibble() |> 
-      select(-c(store, brand, .type)) |>
-      pivot_longer(-c(.model)) |>
-      rename(model_name = .model,
-             metric = name) |>
-      nest(data = c(metric, value)) |> 
-      rename(perf_metrics = data) 
-  ) |>
+  mutate(tidy_model = map(model_object, tidy)) |>
+  inner_join(metrics |>
+               select(-c(store, brand)) |>
+               nest(metrics = -c(.model)),
+             by = c("model_name" = ".model")) |>
   inner_join(
     fcast |>
-      as_tibble() |> 
+      as_tibble() |>
       select(-c(store, brand)) |>
-      rename(model_name = .model) |>
-      nest(data = -model_name) |>
-      rename(fcast = data)
-  ) 
+      #      group_by(.model) |>
+      group_nest(.model, .key = "prediction"),
+    by = c("model_name" = ".model")
+  ) |>
+  mutate(
+    metrics_tbl = map(metrics, function(m) {
+    m |>
+      select(-c(.type)) |>
+      pivot_longer(everything(),
+                   names_to = "key") |> 
+        mutate(step = 0,
+               timestamp = as.integer(Sys.time()))
+        
+        
+  }),
+  params_tbl = map(tidy_model, function(tm) {
+    tm |> 
+      pivot_longer(-term) |> 
+      unite("key", c(term, name))
+  }),
+  tag_tbl = map(model_name, function(n) {
+    tibble(key = "model", value = n)
+  }))
 
+
+
+write_rds(all_model_data, 
+          file = "outputs/all-models-tibble.rds")
 
 # one more transformation for logging metrics
 # metrics are numeric
@@ -170,74 +183,118 @@ all_model_data <-
 # testing with a single model (arima), need to wrap in function
 # to loop and log all four
 
-tbl_ln <- all_model_data |> 
-  filter(model_name == "arima")
+# extract the models from the tibble and crate them 
 
-#create_log_objects <- function(...) {
+mean_ts_pred <- crate(function(x) 
+{fabletools::forecast(!!all_model_data$model_object[[1]], h = x)})
 
-tg_tbl <- tibble(
-  key = "model",
-  value = tbl_ln |> pull(model_name)
-)
+naive_ts_pred <- crate(function(x) 
+{fabletools::forecast(!!all_model_data$model_object[[2]], h = x)})
 
-mdl_obj <- 
-  tbl_ln |> 
-  pull(model_object)
+drift_ts_pred <- crate(function(x) 
+{fabletools::forecast(!!all_model_data$model_object[[3]], h = x)})
 
-tdy_coef <- 
-  tbl_ln |> 
-  pull(tidy_coef) |> 
-  magrittr::extract2(1) |> 
-  pivot_longer(-term) |> 
-  unite("key", c(term, name))
+arima_ts_pred <- crate(function(x) 
+{fabletools::forecast(!!all_model_data$model_object[[4]], h = x)})
 
-pmet <- tbl_ln |> 
-  pull(perf_metrics) |> 
-  magrittr::extract2(1) 
-
-metrics_tbl <- bind_rows(
-  tdy_coef,
-  pmet |> rename(key = metric)) |> 
-  mutate(step = 0,
-         timestamp = as.integer(Sys.time()))
-
-tg_tbl <- tibble(
-  key = "model",
-  value = tbl_ln |> pull(model_name)
-)
-
-# crate model object
 # Unlike Python ML models, building and deploying models in R 
 # through MLflow requires the model to be packaged before it can be 
 # logged as an mlflow model. The crate function in the carrier 
 # package is a tool that helps wrap and construct the R model, 
 # making it a crated function. This is then passed in to be 
-# logged as an mlflow model.
+#logged as an mlflow model.
 
-# The prediction function forecast_ts expects a single number,
-# the number of periods to forecast out after the last period 
-# used in the training set. The output is a dataframe of periods and
-# predictions.
+# In this example, the prediction is a set of data points for a 
+# time series predicted n-periods after the last period of the training 
+# set. It only requires a single number (the number of periods).
 
-forecast_ts <- crate(function(x) 
-{fabletools::forecast(!!mdl_obj, h = x)})
+# experiment metadata
+experiment_tbl <- tibble(
+  key = c("store", "brand", "data_file"),
+  value = c(args$store, args$brand, args$data_file)
+)
 
-# Start the run 
+
+# Since we are logging 4 separate models and associated metadata from a
+# single script run, we use mlflow with nested runs.
+
+# Start the nested run 
 mlflow_start_run()
 
-mlflow_log_batch(
-  metrics = metrics_tbl,
-  params = params_tbl,
-  tags = tg_tbl
-)
-
-mlflow_log_model(
-  model = forecast_ts, 
-  artifact_path = "model"
-)
+mlflow_log_param("store", args$store)
+mlflow_log_param("brand", args$brand)
+mlflow_log_param("data_file", args$data_file)
 
 mlflow_log_artifact(
   path = "./outputs/"
 )
+# now log nested models and metadata
 
+# log mean
+mlflow_start_run(nested = TRUE)
+
+mlflow_log_batch(
+  metrics = all_model_data$metrics_tbl[[1]],
+  params = all_model_data$params_tbl[[1]],
+  tags = all_model_data$params_tbl[[1]]
+)
+
+mlflow_log_model(
+  model = mean_ts_pred, 
+  artifact_path = "model"
+)
+
+mlflow_end_run()
+
+
+mlflow_start_run(nested = TRUE)
+
+mlflow_log_batch(
+  metrics = all_model_data$metrics_tbl[[2]],
+  params = all_model_data$params_tbl[[2]],
+  tags = all_model_data$params_tbl[[2]]
+)
+
+mlflow_log_model(
+  model = naive_ts_pred, 
+  artifact_path = "model"
+)
+
+mlflow_end_run()
+
+mlflow_start_run(nested = TRUE)
+
+mlflow_log_batch(
+  metrics = all_model_data$metrics_tbl[[3]],
+  params = all_model_data$params_tbl[[3]],
+  tags = all_model_data$params_tbl[[3]]
+)
+
+mlflow_log_model(
+  model = drift_ts_pred, 
+  artifact_path = "model"
+)
+
+#library(purrr) my_tibble |> pull(nested_column) |> pluck(111)
+
+mlflow_end_run()
+
+# log arima - nested
+mlflow_start_run(nested = TRUE)
+
+mlflow_log_batch(
+  metrics = all_model_data$metrics_tbl[[4]],
+  params = all_model_data$params_tbl[[4]],
+  tags = all_model_data$params_tbl[[4]]
+)
+
+mlflow_log_model(
+  model = arima_ts_pred, 
+  artifact_path = "model"
+)
+
+# end arima
+mlflow_end_run()
+
+# end parent run
 mlflow_end_run()
