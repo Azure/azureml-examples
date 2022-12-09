@@ -30,7 +30,6 @@ validation_data:
 
 # <limit_settings>
 limits:
-  timeout_minutes: 60
   max_trials: 10
   max_concurrent_trials: 2
 # </limit_settings>
