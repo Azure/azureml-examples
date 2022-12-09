@@ -11,6 +11,12 @@ def main(args):
     dataset = run_context.input_datasets["train_10_models"]
     df = dataset.to_pandas_dataframe()
 
+    # Drop the column "Revenue" from the dataset
+    # Please remove if this is not required
+    drop_column_name = "Revenue"
+    if drop_column_name in df.columns:
+        df.drop(drop_column_name, axis=1, inplace=True)
+
     # Apply any data pre-processing techniques here
 
     df.to_parquet(output / "data_prepared_result.parquet", compression=None)
