@@ -52,9 +52,7 @@ def run(mini_batch):
         # drop rows where prediction or actuals are nan happens because of missing actuals or at edges of time due to lags/rolling windows]
         X_rf.dropna(inplace=True)
         print(f"The predictions have {X_rf.shape[0]} rows and {X_rf.shape[1]} columns.")
-        # Save data as a json string as otherwise we will loose the header.
-        json_string = X_rf.to_json(orient="table")
 
-        resultList.append(json_string)
+        resultList.append(X_rf)
 
-    return resultList
+    return pd.concat(resultList, sort=False, ignore_index=True)
