@@ -11,12 +11,24 @@ You first need to prepare the data: The image based datasets need to be uploaded
 You do this by simply running the prepare_data.py available in this folder, with a command like the following:
 
 
-/> python prepare_data.py --subscription [YOUR_AZURE_SUBSCRIPTION] --group [YOUR_AZURE_RESOURCE_GROUP] --workspace [YOUR_AZURE_WORKSPACE]
+/> python prepare_data.py --subscription [YOUR_AZURE_SUBSCRIPTION] --group [YOUR_AZURE_RESOURCE_GROUP] --workspace [YOUR_AZURE_WORKSPACE] --data_path [PATH_TO_SAVE_DATASET]
+
+Please note that the default location used for saving the data is `./data`
+
+
+
+2. To launch an automatic hyperparameter sweep (aka AutoMode), run the AutoML CLI command pointing to the cli-automl-image-classification-multilabel-task-fridge-items-automode.yml file in this folder plus the Azure ML IDs needed:
+----------------------------------------------------------------------------------------------------
+
+Note: Your compute cluster should be GPU-based when training with Images or Text. 
+You need to specify/change the name of the cluster in the .YAML file (compute: azureml:gpu-cluster).
+
+/> az ml job create --file ./cli-automl-image-classification-multilabel-task-fridge-items-automode.yml --workspace-name [YOUR_AZURE_WORKSPACE] --resource-group [YOUR_AZURE_RESOURCE_GROUP] --subscription [YOUR_AZURE_SUBSCRIPTION]
 
 
 
 
-2. Run the AutoML CLI command pointing to the .YML file in this folder plus the Azure ML IDs needed:
+3. To launch a manual hyperparameter sweep, run the AutoML CLI command pointing to the cli-automl-image-classification-multilabel-task-fridge-items.yml file in this folder plus the Azure ML IDs needed:
 ----------------------------------------------------------------------------------------------------
 
 Note: Your compute cluster should be GPU-based when training with Images or Text. 

@@ -38,18 +38,11 @@ def train_model(
     (Path(model_output) / "model").write_text(model)
 
 
-# init customer environment with conda YAML
-# the YAML file shall be put under your code folder.
-conda_env = dict(
-    # note that mldesigner package must be included.
-    conda_file=Path(__file__).parent / "conda.yaml",
-    image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
-)
-
-
 @command_component(
     display_name="Score",
-    environment=conda_env,
+    # init customer environment with conda YAML
+    # the YAML file shall be put under your code folder.
+    environment="./env.yaml",
     # specify your code folder, default code folder is current file's parent
     # code='.'
 )
@@ -79,7 +72,7 @@ def score_data(
     (Path(score_output) / "score").write_text("scored with {}".format(model))
 
 
-@command_component(display_name="Evaluate", environment=conda_env)
+@command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
     scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder")
 ):

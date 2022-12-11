@@ -58,13 +58,13 @@ jobs:
       working-directory: v1/python-sdk/tutorials/automl-with-azureml/forecasting-orange-juice-sales
     - name: check notebook output
       run: |
-         python scripts/validation/check_notebook_output.py \
+         python v1/scripts/validation/check_notebook_output.py \
                 --file_name auto-ml-forecasting-orange-juice-sales.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-orange-juice-sales \
                 --check warning stderr
     - name: check experiment result
       run: |
-         python scripts/validation/check_experiment_result.py \
+         python v1/scripts/validation/check_experiment_result.py \
                 --file_name auto-ml-forecasting-orange-juice-sales.output.ipynb \
                 --folder v1/python-sdk/tutorials/automl-with-azureml/forecasting-orange-juice-sales \
                 --experiment_name automl-ojforecasting \

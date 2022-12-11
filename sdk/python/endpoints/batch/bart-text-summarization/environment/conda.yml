@@ -2,10 +2,11 @@ name: huggingface-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.7
+  - python=3.8
   - pip
   - pip:
     - tensorflow
+    - keras==2.9
     - transformers
     - datasets
     - azureml-core

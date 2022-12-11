@@ -37,12 +37,15 @@ allowed_list = [
     "recommend to use ServicePrincipalAuthentication or MsiAuthentication",
     "Please refer to aka.ms/aml-notebook-auth",
     "Class KubernetesCompute: This is an experimental class",
+    "Class SynapseCompute: This is an experimental class",
     'Please use "Dataset.File.upload_directory"',
     'Please use "FileDatasetFactory.upload_directory" instead',
     "Called AzureBlobDatastore.upload_files",
     "LinkTabularOutputDatasetConfig",
     "This may take a few minutes",
     "Downloading dataset",
+    "logger.warning",
+    "Importing plotly failed",
 ]
 
 with open(full_name, "r") as notebook_file:
