@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'automl-forecasting-task-github-dau|cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilablel-task-fridge-items|detection-task-fridge-items|spark|java'
+        default: 'automl-forecasting-task-github-dau|cli-automl-forecasting-task-bike-share|multiclass-task-fridge-items|segmentation-task-fridge-items|multilabel-task-fridge-items|detection-task-fridge-items|spark|java'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
