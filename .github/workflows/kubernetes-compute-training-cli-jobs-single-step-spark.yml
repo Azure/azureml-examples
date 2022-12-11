@@ -70,7 +70,7 @@ jobs:
 
     - name: collect jobs
       run: |
-        bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
+        echo "cli/jobs/single-step/spark/nyctaxi/job.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
 
     - name: run jobs
