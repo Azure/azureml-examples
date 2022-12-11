@@ -67,9 +67,13 @@ jobs:
         echo "cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline/pipeline.yml" | tee -a $JOB_LIST_FILE
         
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-image-classification-multiclass-task-fridge-items-automode.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-image-instance-segmentation-task-fridge-items-automode.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilablel-task-fridge-items/cli-automl-image-classification-multilabel-task-fridge-items-automode.yml" | tee -a $JOB_LIST_FILE
         echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items.yml" | tee -a $JOB_LIST_FILE
+        echo "cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-image-object-detection-task-fridge-items-automode.yml" | tee -a $JOB_LIST_FILE
       timeout-minutes: 30
     - name: prepare data
       run: |

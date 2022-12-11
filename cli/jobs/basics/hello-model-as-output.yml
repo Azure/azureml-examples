@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+# Possible Paths for Model:
+# Local path: mlflow-model/model.pkl
+# AzureML Datastore: azureml://datastores/<datastore-name>/paths/<path_on_datastore>
+# MLflow run: runs:/<run-id>/<path-to-model-relative-to-the-root-of-the-artifact-location>
+# Job: azureml://jobs/<job-name>/outputs/<output-name>/paths/<path-to-model-relative-to-the-named-output-location>
+# Model Asset: azureml:<my_model>:<version>
+
+code: src
+command: >-
+  python hello-model-as-output.py 
+  --input_model ${{inputs.input_model}} 
+  --custom_model_output ${{outputs.output_folder}}
+inputs:
+  input_model: 
+    type: mlflow_model # mlflow_model,custom_model, triton_model
+    path: ../../assets/model/mlflow-model
+outputs:
+  output_folder: 
+    type: custom_model # mlflow_model,custom_model, triton_model
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+compute: azureml:cpu-cluster

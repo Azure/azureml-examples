@@ -248,26 +248,6 @@ jobs:
     - name: Remove the compute if notebook did not done it properly.
       run: bash "{github_workspace}/infra/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
 
-    workflow_yaml += f"""
-    - name: Send IcM on failure
-      if: ${{{{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}}}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{{{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}}}
-        connector_id: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}}}
-        certificate: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}}}
-        private_key: ${{{{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}}}
-        args: |
-            incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{{{ github.ref_name }}}}' for notebook '{posix_notebook}'"
-                Summary: |
-                    Notebook '{posix_notebook}' is failing on branch '${{{{ github.ref_name }}}}': ${{{{ github.server_url }}}}/${{{{ github.repository }}}}/actions/runs/${{{{ github.run_id }}}}
-                Severity: 4
-                RoutingId: "github://azureml-examples"
-                Status: Active
-                Source:
-                    IncidentId: "{posix_notebook}[${{{{ github.ref_name }}}}]"\n"""
-
     workflow_file = os.path.join(
         "..", "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
     )
