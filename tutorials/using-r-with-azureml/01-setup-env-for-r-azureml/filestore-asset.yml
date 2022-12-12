@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: orangejuice-sales
+description: Data asset created from local file.
+type: uri_file
+path: ../data/sales-data.csv
+
+
+
+      path: "azureml://datastores/workspacefilestore/Users/" #file share
