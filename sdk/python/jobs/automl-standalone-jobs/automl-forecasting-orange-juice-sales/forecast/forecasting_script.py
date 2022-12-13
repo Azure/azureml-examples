@@ -58,9 +58,7 @@ def run(mini_batch):
         print(
             f"The predictions have {clean.shape[0]} rows and {clean.shape[1]} columns."
         )
-        # Save data as a json string as otherwise we will loose the header.
-        json_string = clean.to_json(orient="table")
 
-        resultList.append(json_string)
+        resultList.append(clean)
 
-    return resultList
+    return pd.concat(resultList, sort=False, ignore_index=True)
