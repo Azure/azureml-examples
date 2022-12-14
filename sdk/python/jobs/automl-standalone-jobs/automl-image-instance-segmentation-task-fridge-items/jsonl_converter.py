@@ -119,13 +119,26 @@ def parsing_mask(mask_fname):
     return polygons
 
 
-def convert_mask_in_VOC_to_jsonl(base_dir, remote_path):
+def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
+    """
+    :param dataset_dir: Path to dataset directory, where user has images and anotations
+    :type: dataset_dir: String
+    :param remote_path: Remote path for dataset
+    :type: remote_path: String
+    """
 
-    src_images = base_dir
+    dataset_parent_dir = os.path.dirname(dataset_dir)
+    print(dataset_dir, dataset_parent_dir)
 
     # We'll copy each JSONL file within its related MLTable folder
-    training_mltable_path = "./data/training-mltable-folder/"
-    validation_mltable_path = "./data/validation-mltable-folder/"
+    training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
+    validation_mltable_path = os.path.join(
+        dataset_parent_dir, "validation-mltable-folder"
+    )
+
+    # First, let's create the folders if they don't exist
+    os.makedirs(training_mltable_path, exist_ok=True)
+    os.makedirs(validation_mltable_path, exist_ok=True)
 
     train_validation_ratio = 5
 
@@ -138,8 +151,8 @@ def convert_mask_in_VOC_to_jsonl(base_dir, remote_path):
     )
 
     # Path to the annotations
-    annotations_folder = os.path.join(src_images, "annotations")
-    mask_folder = os.path.join(src_images, "segmentation-masks")
+    annotations_folder = os.path.join(dataset_dir, "annotations")
+    mask_folder = os.path.join(dataset_dir, "segmentation-masks")
 
     # sample json line dictionary
     json_line_sample = {
@@ -152,52 +165,52 @@ def convert_mask_in_VOC_to_jsonl(base_dir, remote_path):
     with open(train_annotations_file, "w") as train_f:
         with open(validation_annotations_file, "w") as validation_f:
             for i, filename in enumerate(os.listdir(annotations_folder)):
-                if filename.endswith(".xml"):
-                    print("Parsing " + os.path.join(src_images, filename))
+                if not filename.endswith(".xml"):
+                    print(f"Skipping unknown file: {filename}")
+                    continue
 
-                    root = ET.parse(
-                        os.path.join(annotations_folder, filename)
-                    ).getroot()
+                annotation_file_path = os.path.join(annotations_folder, filename)
+                print(f"Parsing {annotation_file_path}")
 
-                    width = int(root.find("size/width").text)
-                    height = int(root.find("size/height").text)
-                    # convert mask into polygon
-                    mask_fname = os.path.join(mask_folder, filename[:-4] + ".png")
-                    polygons = parsing_mask(mask_fname)
+                root = ET.parse(annotation_file_path).getroot()
+                width = int(root.find("size/width").text)
+                height = int(root.find("size/height").text)
 
-                    labels = []
-                    for index, object in enumerate(root.findall("object")):
-                        name = object.find("name").text
-                        isCrowd = int(object.find("difficult").text)
-                        labels.append(
-                            {
-                                "label": name,
-                                "bbox": "null",
-                                "isCrowd": isCrowd,
-                                "polygon": polygons[index],
-                            }
-                        )
+                # convert mask into polygon
+                mask_fname = os.path.join(mask_folder, filename[:-4] + ".png")
+                polygons = parsing_mask(mask_fname)
 
-                    # build the jsonl file
-                    image_filename = root.find("filename").text
-                    _, file_extension = os.path.splitext(image_filename)
-                    json_line = dict(json_line_sample)
-                    json_line["image_url"] = (
-                        json_line["image_url"] + "images/" + image_filename
+                labels = []
+                for index, object in enumerate(root.findall("object")):
+                    name = object.find("name").text
+                    isCrowd = int(object.find("difficult").text)
+                    labels.append(
+                        {
+                            "label": name,
+                            "bbox": "null",
+                            "isCrowd": isCrowd,
+                            "polygon": polygons[index],
+                        }
                     )
-                    json_line["image_details"]["format"] = file_extension[1:]
-                    json_line["image_details"]["width"] = width
-                    json_line["image_details"]["height"] = height
-                    json_line["label"] = labels
 
-                    if i % train_validation_ratio == 0:
-                        # validation annotation
-                        validation_f.write(json.dumps(json_line) + "\n")
-                    else:
-                        # train annotation
-                        train_f.write(json.dumps(json_line) + "\n")
+                # build the jsonl file
+                image_filename = root.find("filename").text
+                _, file_extension = os.path.splitext(image_filename)
+                json_line = dict(json_line_sample)
+                json_line["image_url"] = (
+                    json_line["image_url"] + "images/" + image_filename
+                )
+                json_line["image_details"]["format"] = file_extension[1:]
+                json_line["image_details"]["width"] = width
+                json_line["image_details"]["height"] = height
+                json_line["label"] = labels
+
+                if i % train_validation_ratio == 0:
+                    # validation annotation
+                    validation_f.write(json.dumps(json_line) + "\n")
                 else:
-                    print("Skipping unknown file: {}".format(filename))
+                    # train annotation
+                    train_f.write(json.dumps(json_line) + "\n")
 
 
 if __name__ == "__main__":
@@ -205,10 +218,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data_path",
         type=str,
-        help="the directory contains images, annotations, and masks",
+        help="The directory contains images, annotations, and masks.",
     )
 
     args, remaining_args = parser.parse_known_args()
     data_path = args.data_path
 
-    convert_mask_in_VOC_to_jsonl(data_path)
+    convert_mask_in_VOC_to_jsonl(data_path, None)

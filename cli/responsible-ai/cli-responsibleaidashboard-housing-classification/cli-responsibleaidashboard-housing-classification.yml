@@ -39,7 +39,7 @@ jobs:
 
   create_rai_job:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_constructor/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_constructor/versions/0.4.0
     limits:
       timeout: 120
     inputs:
@@ -54,7 +54,7 @@ jobs:
 
   explain_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_explanation/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_explanation/versions/0.4.0
     limits:
       timeout: 120
     inputs:
@@ -63,7 +63,7 @@ jobs:
 
   causal_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_causal/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_causal/versions/0.4.0
     limits:
       timeout: 120
     inputs:
@@ -75,7 +75,7 @@ jobs:
 
   counterfactual_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_counterfactual/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_counterfactual/versions/0.4.0
     limits:
       timeout: 600
     inputs:
@@ -88,14 +88,14 @@ jobs:
     limits:
       timeout: 120
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_erroranalysis/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_erroranalysis/versions/0.4.0
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       max_depth: 3
 
   gather_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_gather/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_gather/versions/0.4.0
     limits:
       timeout: 120
     inputs:
@@ -107,7 +107,7 @@ jobs:
 
   scorecard_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_score_card/versions/0.3.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_score_card/versions/0.4.0
     inputs:
       dashboard: ${{parent.jobs.gather_01.outputs.dashboard}}
       pdf_generation_config:

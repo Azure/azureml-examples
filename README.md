@@ -24,7 +24,7 @@ Welcome to the Azure Machine Learning examples repository!
 |[`cli`](cli)||Azure Machine Learning CLI v2 examples.||
 |[`sdk`](sdk)||Azure Machine Learning SDK v2 examples.||
 ||[`python`](sdk/python/)| Azure Machine Learning Python SDK v2 examples.|
-||[`.net`](sdk/.net)| Azure Machine Learning .Net SDK v2 examples.|
+||[`dotnet`](sdk/dotnet)| Azure Machine Learning .Net SDK v2 examples.|
 |[`setup`](setup)||Folder with setup scripts|
 ||[`setup-ci`](setup/setup-ci)|Setup scripts to customize and configure ||an Azure Machine Learning compute instance.|
 ||[`setupdsvm`](setup/setup-dsvm/RStudio/)|Setup RStudio on Data Science Virtual Machine (DSVM)|
