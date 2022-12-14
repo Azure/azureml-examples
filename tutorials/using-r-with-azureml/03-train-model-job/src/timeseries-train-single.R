@@ -61,12 +61,12 @@ file_name <- file.path(args$data_file)
 oj_sales_read <- readr::read_csv(file_name) |>
   janitor::clean_names()
 
-# Create a ./outputs directory to store any generated artifacts 
-# (images, models, data, etc.) Any files saved to ./outputs will  
-# be automatically uploaded # to the experiment at the end of the 
+# Create a ./outputs directory to store any generated artifacts
+# (images, models, data, etc.) Any files saved to ./outputs will
+# be automatically uploaded # to the experiment at the end of the
 # run. For example:
 
-if (!dir.exists(args$output)){
+if (!dir.exists(args$output)) {
   dir.create(args$output)
 }
 
@@ -76,35 +76,35 @@ START_DATE <- as.Date("1989-09-14")
 
 ## Data prep of the full dataset
 
-oj_sales <- oj_sales_read |> 
+oj_sales <- oj_sales_read |>
   # complete the missing combinations
-  tidyr::complete(store, brand, week) |> 
+  tidyr::complete(store, brand, week) |>
   # create the actual week based on start date and # of weeks passed
-  mutate(yr_wk = tsibble::yearweek(START_DATE + week * 7)) |> 
-  select(-week) |> 
+  mutate(yr_wk = tsibble::yearweek(START_DATE + week * 7)) |>
+  select(-week) |>
   # convert to tsibble
-  as_tsibble(index = yr_wk, key = c(store, brand)) 
-  
-## Select the store and brand based on the job parameter  
+  as_tsibble(index = yr_wk, key = c(store, brand))
+
+## Select the store and brand based on the job parameter
 sales_for_store_brand <- oj_sales  |>
   filter(store == args$store, brand == args$brand)
 
 # All stores have the same start week (1990 W25) and end week (1992 W41).
 # For training, use 100 weeks (1992 W18)
 
-# The model function in fabletools can fit multiple models 
+# The model function in fabletools can fit multiple models
 # out of the box
 
-fit <- sales_for_store_brand |> 
-  filter(yr_wk <= yearweek("1992 W18")) |> 
+fit <- sales_for_store_brand |>
+  filter(yr_wk <= yearweek("1992 W18")) |>
   model(
     mean = MEAN(logmove),
     naive = NAIVE(logmove),
     drift = RW(logmove ~ drift()),
     arima = ARIMA(logmove ~ pdq() + PDQ(0, 0, 0))
-)
+  )
 
-# Forecast out 10 weeks 
+# Forecast out 10 weeks
 fcast <- forecast(fit, h = 10)
 
 # Evaluate the metrics for each model (one set of metrics
@@ -112,23 +112,25 @@ fcast <- forecast(fit, h = 10)
 metrics <- accuracy(fcast, oj_sales)
 
 # create a plot and save it to output
-forecast_plot <- 
+forecast_plot <-
   autoplot(fcast) +
-  geom_line(data =sales_for_store_brand |> 
+  geom_line(data = sales_for_store_brand |>
               filter(yr_wk <= yearweek("1992 W18")),
-            aes(x = yr_wk, y = logmove)) 
+            aes(x = yr_wk, y = logmove))
 
-ggsave(forecast_plot, 
-       filename = "./outputs/forecast-plot.png", 
-       units = "px",
-       dpi = 100,
-       width = 800,
-       height = 600)
+ggsave(
+  forecast_plot,
+  filename = "./outputs/forecast-plot.png",
+  units = "px",
+  dpi = 100,
+  width = 800,
+  height = 600
+)
 
 
 # create a tibble with one row per model and all re-arranged artifacts
 # (tidy info, metrics and forecast), plus tibbles for logging:
-# 
+#
 
 
 all_model_data <-
@@ -153,27 +155,28 @@ all_model_data <-
   ) |>
   mutate(
     metrics_tbl = map(metrics, function(m) {
-    m |>
-      select(-c(.type)) |>
-      pivot_longer(everything(),
-                   names_to = "key") |> 
+      m |>
+        select(-c(.type)) |>
+        pivot_longer(everything(),
+                     names_to = "key") |>
         mutate(step = 0,
                timestamp = as.integer(Sys.time()))
-        
-        
-  }),
-  params_tbl = map(tidy_model, function(tm) {
-    tm |> 
-      pivot_longer(-term) |> 
-      unite("key", c(term, name))
-  }),
-  tag_tbl = map(model_name, function(n) {
-    tibble(key = "model", value = n)
-  }))
+      
+      
+    }),
+    params_tbl = map(tidy_model, function(tm) {
+      tm |>
+        pivot_longer(-term) |>
+        unite("key", c(term, name))
+    }),
+    tag_tbl = map(model_name, function(n) {
+      tibble(key = "model", value = n)
+    })
+  )
 
 
 
-write_rds(all_model_data, 
+write_rds(all_model_data,
           file = "outputs/all-models-tibble.rds")
 
 # one more transformation for logging metrics
@@ -183,29 +186,37 @@ write_rds(all_model_data,
 # testing with a single model (arima), need to wrap in function
 # to loop and log all four
 
-# extract the models from the tibble and crate them 
+# extract the models from the tibble and crate them
 
-mean_ts_pred <- crate(function(x) 
-{fabletools::forecast(!!all_model_data$model_object[[1]], h = x)})
+mean_ts_pred <- crate(function(x)
+{
+  fabletools::forecast(!!all_model_data$model_object[[1]], h = x)
+})
 
-naive_ts_pred <- crate(function(x) 
-{fabletools::forecast(!!all_model_data$model_object[[2]], h = x)})
+naive_ts_pred <- crate(function(x)
+{
+  fabletools::forecast(!!all_model_data$model_object[[2]], h = x)
+})
 
-drift_ts_pred <- crate(function(x) 
-{fabletools::forecast(!!all_model_data$model_object[[3]], h = x)})
+drift_ts_pred <- crate(function(x)
+{
+  fabletools::forecast(!!all_model_data$model_object[[3]], h = x)
+})
 
-arima_ts_pred <- crate(function(x) 
-{fabletools::forecast(!!all_model_data$model_object[[4]], h = x)})
+arima_ts_pred <- crate(function(x)
+{
+  fabletools::forecast(!!all_model_data$model_object[[4]], h = x)
+})
 
-# Unlike Python ML models, building and deploying models in R 
-# through MLflow requires the model to be packaged before it can be 
-# logged as an mlflow model. The crate function in the carrier 
-# package is a tool that helps wrap and construct the R model, 
-# making it a crated function. This is then passed in to be 
+# Unlike Python ML models, building and deploying models in R
+# through MLflow requires the model to be packaged before it can be
+# logged as an mlflow model. The crate function in the carrier
+# package is a tool that helps wrap and construct the R model,
+# making it a crated function. This is then passed in to be
 #logged as an mlflow model.
 
-# In this example, the prediction is a set of data points for a 
-# time series predicted n-periods after the last period of the training 
+# In this example, the prediction is a set of data points for a
+# time series predicted n-periods after the last period of the training
 # set. It only requires a single number (the number of periods).
 
 # experiment metadata
@@ -214,23 +225,36 @@ experiment_tbl <- tibble(
   value = c(args$store, args$brand, args$data_file)
 )
 
+model_name_for_registry <- "arima-2-1"
 
 # Will log only the arima model
 
 mlflow_start_run()
 
+# store the run information
+run_info <- mlflow_get_run()
+
+
 mlflow_log_param("store", args$store)
 mlflow_log_param("brand", args$brand)
 mlflow_log_param("data_file", args$data_file)
 
-mlflow_log_artifact(
-  path = "./outputs/"
-)
+#mlflow_log_artifact(path = "./outputs/")
 
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[4]],
   params = all_model_data$params_tbl[[4]],
-  tags = all_model_data$params_tbl[[4]]
+  tags = all_model_data$tag_tbl[[4]]
 )
+
+mlflow_log_model(model = arima_ts_pred,
+                 artifact_path = "model")
+
+
+try(mlflow_create_registered_model(name = model_name_for_registry))
+
+try(mlflow_create_model_version(name = model_name_for_registry,
+                                source = stringr::str_glue("runs:/{run_info$run_id}/model")))
+#  run_id = run_info$run_id,))
 
 mlflow_end_run()

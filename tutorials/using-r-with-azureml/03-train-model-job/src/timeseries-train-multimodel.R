@@ -236,7 +236,7 @@ mlflow_start_run(nested = TRUE)
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[1]],
   params = all_model_data$params_tbl[[1]],
-  tags = all_model_data$params_tbl[[1]]
+  tags = all_model_data$tag_tbl[[1]]
 )
 
 mlflow_log_model(
@@ -252,7 +252,7 @@ mlflow_start_run(nested = TRUE)
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[2]],
   params = all_model_data$params_tbl[[2]],
-  tags = all_model_data$params_tbl[[2]]
+  tags = all_model_data$tag_tbl[[2]]
 )
 
 mlflow_log_model(
@@ -267,7 +267,7 @@ mlflow_start_run(nested = TRUE)
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[3]],
   params = all_model_data$params_tbl[[3]],
-  tags = all_model_data$params_tbl[[3]]
+  tags = all_model_data$tag_tbl[[3]]
 )
 
 mlflow_log_model(
@@ -285,7 +285,7 @@ mlflow_start_run(nested = TRUE)
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[4]],
   params = all_model_data$params_tbl[[4]],
-  tags = all_model_data$params_tbl[[4]]
+  tags = all_model_data$tag_tbl[[4]]
 )
 
 mlflow_log_model(
