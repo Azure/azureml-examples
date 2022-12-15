@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JOB_SELECTOR: '^cli-jobs-pipelines.*yml$'
-      JOB_FILTER: 'image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
+      JOB_FILTER: '4b_datastore_datapath_uri|image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-pipelines.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
