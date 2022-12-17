@@ -16,12 +16,5 @@ config.json
 scratch/*
 config-amlexamples.json
 .amlignore*
-.Rhistory
-.Rproj.user
-*.Rproj
-.ipynb_aml_checkpoints
-*.ipynb.amltmp
-mlruns/
-outputs/
-scratchpad/
+
 

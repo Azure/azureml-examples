@@ -225,14 +225,28 @@ experiment_tbl <- tibble(
   value = c(args$store, args$brand, args$data_file)
 )
 
-model_name_for_registry <- "arima-2-1"
 
-# Will log only the arima model
+## The following code is for interacting with AzureML MLFlow
+
+model_name_for_registry <- "arima-2-1"
+model_artifact_path <- "model"
+
 
 mlflow_start_run()
 
 # store the run information
 run_info <- mlflow_get_run()
+exp_info <- mlflow_get_experiment()
+
+
+print("Run Info mlflow_get_run()")
+mlflow_get_run() |> glimpse()
+
+print("Experiment Info mlflow_get_experiment()")
+mlflow_get_experiment() |> glimpse()
+
+print("Artifact Info mlflow_list_artifacts()")
+mlflow_list_artifacts() |> glimpse()
 
 
 mlflow_log_param("store", args$store)
@@ -241,20 +255,46 @@ mlflow_log_param("data_file", args$data_file)
 
 #mlflow_log_artifact(path = "./outputs/")
 
+
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[4]],
   params = all_model_data$params_tbl[[4]],
   tags = all_model_data$tag_tbl[[4]]
 )
 
-mlflow_log_model(model = arima_ts_pred,
-                 artifact_path = "model")
+mlflow_log_model(
+  model = arima_ts_pred,
+  artifact_path = model_artifact_path#,
+#  flavors = list(
+#    python_function = list(env = "conda.yml")
+  )
 
+# Don't use the `mlflow_log_model()` function because we need to add a
+# `python_function` flavor which the R/MLflow API doesn't support 
+# in order to register a model programatically. 
 
-try(mlflow_create_registered_model(name = model_name_for_registry))
+# Save model and add a dummy `python_function` flavor
+# (saves in the model directory on the job container)
 
-try(mlflow_create_model_version(name = model_name_for_registry,
-                                source = stringr::str_glue("runs:/{run_info$run_id}/model")))
+# mlflow_save_model(
+#   model = arima_ts_pred,
+#   path = model_artifact_path,
+#   model_spec = list(flavors = list(
+#     python_function = list(env = "conda.yml",
+#                            loader_module = "mlflow.sklearn"))
+#   ))
+# 
+# mlflow_log_artifact(
+#   artifact_path = model_artifact_path
+# )
+
+# tryCatch(
+#   mlflow_create_registered_model(name = model_name_for_registry),
+#   error = function(e) print(stringr::str_glue("Model {model_name_for_registry} is already registered."))
+#   )
+# 
+# try(mlflow_create_model_version(name = model_name_for_registry,
+#                                 source = stringr::str_glue("{run_info$artifact_uri}/model")))
 #  run_id = run_info$run_id,))
 
 mlflow_end_run()

@@ -1,0 +1,10 @@
+.Rhistory
+.Rproj.user
+*.Rproj
+.ipynb_aml_checkpoints
+*.ipynb.amltmp
+*/src/outputs
+*/src/model
+*/src/mlruns
+scratchpad/
+*.rds
