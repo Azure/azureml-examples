@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: sklearn-deployment-script
+endpoint_name: my-endpoint
+model:
+  name: mir-sample-sklearn-mlflow-model
+  version: 1
+  path: sklearn-diabetes/model
+  type: mlflow_model
+environment:
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  conda_file: sklearn-diabetes/environment/conda.yml
+code_configuration:
+    code: sklearn-diabetes/src
+    scoring_script: score.py
+instance_type: Standard_DS2_v2
+instance_count: 1
