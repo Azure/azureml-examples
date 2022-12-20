@@ -13,7 +13,7 @@ conda activate vnet
 # $USER is no set when used from az vm run-command
 export USER=$(whoami)
 
-cd /home/$USER/samples/azureml-examples/sdk/python/endpoints/online/managed/vnet/setup_vm/scripts
+cd /home/$USER/samples/azureml-examples/sdk/python/endpoints/online/managed
 
-python $SCRIPT_NAME
+python vnet/setup_vm/scripts/$SCRIPT_NAME
 

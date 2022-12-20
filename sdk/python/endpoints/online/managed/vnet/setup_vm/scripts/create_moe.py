@@ -9,7 +9,7 @@ from azure.ai.ml.entities import (
     CodeConfiguration,
     Environment,
 )
-from azure.identity import DefaultAzureCredential
+from azure.identity import ManagedIdentityCredential
 import os
 
 parser = argparse.ArgumentParser()
@@ -19,11 +19,10 @@ parser.add_argument('--workspace', type=str, default=os.getenv("WORKSPACE"))
 parser.add_argument('--container_registry', type=str, default=os.getenv("CONTAINER_REGISTRY"))
 parser.add_argument('--image_name', type=str, default=os.getenv("IMAGE_NAME"))
 parser.add_argument('--endpoint_name', type=str, default=os.getenv("ENDPOINT_NAME"))
-parser.add_argument('--sample_request_path', type=str, default=os.getenv("SAMPLE_REQUEST_PATH"))
 args = parser.parse_args()
 
 # <get_client>
-credential = DefaultAzureCredential()
+credential = ManagedIdentityCredential()
 ml_client = MLClient(credential=credential, subscription_id=args.subscription_id, resource_group=args.resource_group, workspace_name=args.workspace)
 # </get_client>
 
@@ -39,19 +38,20 @@ endpoint = ml_client.begin_create_or_update(endpoint).result()
 # <create_deployment>
 deployment = ManagedOnlineDeployment(
     name="blue",
-    endpoint_name="my-endpoint",
-    model=Model(path="../../../model-1/model/model.pkl"),
+    endpoint_name=args.endpoint_name,
+    model=Model(path="vnet/sample/model/sklearn_regression_model.pkl"),
     code=CodeConfiguration(
-        code="../../../model-1/code",
+        code="vnet/sample/onlinescoring",
         scoring_script="score.py",
     ),
     environment=Environment(
-        conda_file="../../../model-1/environment/conda.yml",
-        image=f"{args.container_registry}.azurecr.io/amlexvnet:latest"
+        image=f"{args.container_registry}.azurecr.io/{args.image_name}:latest",
+        inference_config={
+            "liveness_route": {"path": "/", "port": 5001},
+            "readiness_route": {"path": "/", "port": 5001},
+            "scoring_route": {"path": "/score", "port": 5001},
+        },
     ),
-    environment_variables={
-        "WORKER_COUNT": 2
-    },
     instance_type="Standard_D2_v2",
     instance_count=1,
     egress_public_network_access="disabled",
@@ -67,7 +67,3 @@ endpoint = ml_client.begin_create_or_update(endpoint).result()
 # <get_logs> 
 print(ml_client.online_deployments.get_logs(endpoint_name=args.endpoint_name, name="blue", tail=100))
 # </get_logs> 
-
-# <check_scoring>
-ml_client.online_endpoints.invoke(endpoint_name=args.endpoint_name, request_file=args.sample_request_path)
-# </check_scoring> 
