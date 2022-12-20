@@ -11,10 +11,7 @@ environment:
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
   conda_file: ../../model-1/environment/conda.yml
 environment_variables:
-  WORKER_COUNT: 8
-  WORKER_TIMEOUT: 1500 #LONG SETUP TIME
-request_settings:
-  max_concurrent_requests_per_instance: 8
-  request_timeout_ms: 20000
+  APP_INSIGHTS_LOG_RESPONSE_ENABLED: true
+  AML_MODEL_DC_STORAGE_ENABLED: true
 instance_type: Standard_DS2_v2
 instance_count: 1
