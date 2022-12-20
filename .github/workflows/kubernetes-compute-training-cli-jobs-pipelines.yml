@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
+        default: '4b_datastore_datapath_uri|image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
