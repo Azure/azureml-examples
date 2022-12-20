@@ -264,11 +264,11 @@ mlflow_log_batch(
 
 mlflow_log_model(
   model = arima_ts_pred,
-  artifact_path = model_artifact_path#,
-#  flavors = list(
-#    python_function = list(env = "conda.yml")
+  artifact_path = model_artifact_path,
+  flavors = list(
+    python_function = list(env = "conda.yml")
   )
-
+)
 # Don't use the `mlflow_log_model()` function because we need to add a
 # `python_function` flavor which the R/MLflow API doesn't support 
 # in order to register a model programatically. 
