@@ -801,6 +801,7 @@ function replace_template_values() {
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
         -e "s/version=mltable_version/version=1/g" \
         -e "s/max_trials=10/max_trials=2/g" \
+        -e "s/max_trials: 10/max_trials: 2/g" \
         "${FILENAME}"
     echo "$(<"${FILENAME}")"
 }

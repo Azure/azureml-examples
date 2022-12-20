@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample
+name: sdk-endpoints-online-mlflow-online-endpoints-deploy-mlflow-model-with-script
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/jobs/pipelines/2f_rai_pipeline_sample/**
-      - .github/workflows/sdk-jobs-pipelines-2f_rai_pipeline_sample-rai_pipeline_sample.yml
+      - sdk/python/endpoints/online/mlflow/**
+      - .github/workflows/sdk-endpoints-online-mlflow-online-endpoints-deploy-mlflow-model-with-script.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -58,18 +58,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/2f_rai_pipeline_sample/rai_pipeline_sample.ipynb
+    - name: run endpoints/online/mlflow/online-endpoints-deploy-mlflow-model-with-script.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "rai_pipeline_sample.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "online-endpoints-deploy-mlflow-model-with-script.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python rai_pipeline_sample.ipynb rai_pipeline_sample.output.ipynb
-      working-directory: sdk/python/jobs/pipelines/2f_rai_pipeline_sample
+          papermill -k python online-endpoints-deploy-mlflow-model-with-script.ipynb online-endpoints-deploy-mlflow-model-with-script.output.ipynb
+      working-directory: sdk/python/endpoints/online/mlflow
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: rai_pipeline_sample
-        path: sdk/python/jobs/pipelines/2f_rai_pipeline_sample
+        name: online-endpoints-deploy-mlflow-model-with-script
+        path: sdk/python/endpoints/online/mlflow
