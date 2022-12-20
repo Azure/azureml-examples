@@ -51,9 +51,9 @@ jobs:
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
-      process_count_per_instance: 2
+      process_count_per_instance: 1
     resources:
-      instance_count: 1
+      instance_count: 2
     inputs:
       cifar: ${{parent.jobs.get_data.outputs.cifar}}
       model_dir: ${{parent.jobs.train_model.outputs.model_dir}}
