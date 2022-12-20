@@ -17,10 +17,8 @@ APP_INSIGHTS_INSTRUMENTATION_KEY=$(az monitor app-insights component show --ids 
 az ml online-endpoint create --name $ENDPOINT_NAME
 # </create_endpoint>
 
-APP_INSIGHTS_KEY="8d5839d8-f8eb-4ddf-96c1-f06b36ea59c8"
-
 # <create_deployment> 
-az ml online-deployment update \
+az ml online-deployment create \
     -f endpoints/online/managed/app-insights/deployment.yml \
     --endpoint $ENDPOINT_NAME \
     --set environment_variables.AML_APP_INSIGHTS_KEY=$APP_INSIGHTS_KEY \
@@ -29,9 +27,11 @@ az ml online-deployment update \
 
 # <send_request_1> 
 az ml online-endpoint invoke -n $ENDPOINT_NAME --request-file endpoints/online/model-1/sample-request.json
-# </send_request_1> 
+# </send_request_1>
 
-# <a
+# as
+
+az monitor app-insights --help
 
 # <create_deployment> 
 az ml online-deployment update \
