@@ -63,20 +63,20 @@ environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 
 command: >-
   python train.py 
-    --data ${{inputs.data}}
-    --C ${{inputs.c_value}}
-    --kernel ${{inputs.kernel}}
-    --degree ${{inputs.degree}}
-    --gamma ${{inputs.gamma}}
-    --coef0 ${{inputs.coef0}}
-    --shrinking ${{inputs.shrinking}}
-    --probability ${{inputs.probability}}
-    --tol ${{inputs.tol}}
-    --cache_size ${{inputs.cache_size}}
-    --verbose ${{inputs.verbose}}
-    --max_iter ${{inputs.max_iter}}
-    --decision_function_shape ${{inputs.decision_function_shape}}
-    --break_ties ${{inputs.break_ties}}
-    --random_state ${{inputs.random_state}}
-    --model_output ${{outputs.model_output}}
-    --test_data ${{outputs.test_data}}
+  --data ${{inputs.data}}
+  --C ${{inputs.c_value}}
+  --kernel ${{inputs.kernel}}
+  --degree ${{inputs.degree}}
+  --gamma ${{inputs.gamma}}
+  --coef0 ${{inputs.coef0}}
+  --shrinking ${{inputs.shrinking}}
+  --probability ${{inputs.probability}}
+  --tol ${{inputs.tol}}
+  --cache_size ${{inputs.cache_size}}
+  --verbose ${{inputs.verbose}}
+  --max_iter ${{inputs.max_iter}}
+  --decision_function_shape ${{inputs.decision_function_shape}}
+  --break_ties ${{inputs.break_ties}}
+  --random_state ${{inputs.random_state}}
+  --model_output ${{outputs.model_output}}
+  --test_data ${{outputs.test_data}}
