@@ -2,11 +2,11 @@
 
 set -e
 
-# Installs azureml-fsspec in default conda environment azureml_py38
+# Installs azureml-fsspec in default conda environment 
 # Does not need to run as sudo
 
 eval "$(conda shell.bash hook)"
-conda activate azureml_py38
+conda activate azureml_py310_sdkv2
 pip install azureml-fsspec
 conda deactivate
 
