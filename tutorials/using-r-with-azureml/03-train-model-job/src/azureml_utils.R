@@ -90,3 +90,7 @@ clean_tracking_uri <- function() {
 
 clean_tracking_uri()
 tcltk2::tclTaskSchedule(as.integer(Sys.getenv("MLFLOW_TOKEN_REFRESH_INTERVAL_SECONDS", 30))*1000, fetch_token_from_aml(), id = "fetch_token_from_aml", redo = TRUE)
+
+# Set MLFlow related env vars
+Sys.setenv(MLFLOW_BIN = system("which mlflow", intern = TRUE))
+Sys.setenv(MLFLOW_PYTHON_BIN = system("which python", intern = TRUE))
