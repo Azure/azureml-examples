@@ -73,11 +73,6 @@ jobs:
         bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
       timeout-minutes: 30
 
-    - name: collect jobs
-      run: |
-        bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
-      timeout-minutes: 30
-
     - name: run jobs
       run: |
         bash .github/kubernetes-compute/tool.sh run_jobs_from_file "$JOB_LIST_FILE"
