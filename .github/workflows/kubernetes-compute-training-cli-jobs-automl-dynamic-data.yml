@@ -1,7 +1,7 @@
 name: kubernetes-compute-training-cli-jobs-automl-dynamic-data
 on:
   schedule:
-    - cron: "0 23 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       TEST_REGION:
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-bad-cases.txt
-      TIMEOUT: '120m'
+      TIMEOUT: '180m'
       MIN_SUCCESS_NUM: 1
       WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl-dynamic-data.yml
 
