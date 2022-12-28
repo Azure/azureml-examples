@@ -1,2 +1,2 @@
 
-We use a datastore with datapath as input folder in this example. In first step, we will mount folder `azureml://datastores/workspaceblobstore/paths/azureml/` using `uri_file` type, then create `hello-world.txt` in it, in the second step, we will print the content in `hello-world.txt` using `uri_file` type.
+We use a datastore with datapath as input folder in this example. In first step, we will mount folder `azureml://datastores/workspaceblobstore/paths/azureml/` using `uri_folder` type, then create `hello-world.txt` in it, in the second step, we will print the content in `hello-world.txt` using `uri_file` type.
