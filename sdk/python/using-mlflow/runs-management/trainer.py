@@ -53,6 +53,13 @@ def train_and_log(input_data: str, register_model: bool = False):
     # Log the model with its signature
     signature = infer_signature(X_test, y_test)
     if register_model:
-        mlflow.sklearn.log_model(pipeline, artifact_path="pipeline", registered_model_name=model_name, signature=signature)
+        mlflow.sklearn.log_model(
+            pipeline,
+            artifact_path="pipeline",
+            registered_model_name=model_name,
+            signature=signature,
+        )
     else:
-        mlflow.sklearn.log_model(pipeline, artifact_path="pipeline", signature=signature)
+        mlflow.sklearn.log_model(
+            pipeline, artifact_path="pipeline", signature=signature
+        )
