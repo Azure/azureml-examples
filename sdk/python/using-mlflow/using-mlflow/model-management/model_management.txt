@@ -1,0 +1,5 @@
+mlflow
+azureml-mlflow
+scikit-learn
+pandas
+numpy
