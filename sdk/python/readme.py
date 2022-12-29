@@ -22,16 +22,26 @@ NOT_TESTED_NOTEBOOKS = [
     "attach_manage_spark_pools",
     "submit_spark_pipeline_jobs",
     "submit_spark_standalone_jobs",
+<<<<<<< HEAD
     # mlflow SDK samples
     "mlflow_sdk_online_endpoints_progresive",
     "mlflow_sdk_online_endpoints",
     "mlflow_sdk_web_service",
+=======
+    "logging_model_with_mlflow",
+>>>>>>> parent of 7c7d893b (testing)
     "scoring_to_mlmodel",
     "track_with_databricks_deploy_aml",
     "model_management",
+<<<<<<< HEAD
     "run_history",
     "keras_mnist_with_mlflow",
     "logging_and_customizing_models",
+=======
+    "deploying_with_mlflow",
+    "track_with_databricks_deploy_aml",
+    "run_history",
+>>>>>>> parent of 7c7d893b (testing)
     "xgboost_classification_mlflow",
     "xgboost_nested_runs",
     "xgboost_service_principal",
