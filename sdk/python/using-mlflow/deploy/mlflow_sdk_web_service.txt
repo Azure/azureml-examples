@@ -1,0 +1,7 @@
+azure-ai-ml
+mlflow>2.0
+azureml-mlflow
+pandas
+numpy
+xgboost
+matplotlib
