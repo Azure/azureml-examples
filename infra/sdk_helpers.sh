@@ -148,7 +148,7 @@ function ensure_ml_workspace() {
 }
 
 function ensure_aml_compute() {
-    COMPUTE_NAME=${1:-cpu-cluster-hri}
+    COMPUTE_NAME=${1:-cpu-cluster}
     MIN_INSTANCES=${2:-0}
     MAX_INSTANCES=${3:-2}
     COMPUTE_SIZE=${4:-Standard_DS3_v2}
