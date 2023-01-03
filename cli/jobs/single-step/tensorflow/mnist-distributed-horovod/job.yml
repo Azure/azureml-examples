@@ -11,7 +11,7 @@ resources:
   instance_count: 2
 distribution:
   type: mpi
-  process_count_per_instance: 2
+  process_count_per_instance: 1
 display_name: tensorflow-mnist-distributed-horovod-example
 experiment_name: tensorflow-mnist-distributed-horovod-example
 description: Train a basic neural network with TensorFlow on the MNIST dataset, distributed via Horovod.
