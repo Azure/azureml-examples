@@ -8,7 +8,7 @@ inputs:
 outputs:
   pipeline_sample_output_data:
     # format for data store uri: azureml://datastores/<datastore_name>/paths/<path>/<on>/<datastore>
-    path: azureml://datastores/workspaceblobstore/paths/azureml  
+    path: azureml://datastores/workspaceblobstore/paths/azureml/4b_datastore_datapath_uri
 
 settings:
   default_compute: azureml:cpu-cluster
@@ -20,7 +20,7 @@ jobs:
     inputs:
       sample_input_data: 
         type: uri_folder
-        path: azureml://datastores/workspaceblobstore/paths/azureml  
+        path: azureml://datastores/workspaceblobstore/paths/azureml
         mode: ro_mount      
       sample_input_string: ${{parent.inputs.pipeline_sample_input_string}}
     outputs:
@@ -31,7 +31,7 @@ jobs:
     inputs:
       sample_input_data_file: 
         type: uri_file
-        path: azureml://datastores/workspaceblobstore/paths/azureml/hello-world.txt
+        path: azureml://datastores/workspaceblobstore/paths/azureml/4b_datastore_datapath_uri/hello-world.txt
         mode: download      
       placeholder: ${{parent.jobs.component_folder.outputs.sample_output_data}}
     outputs:
