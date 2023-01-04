@@ -30,8 +30,6 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
-        python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
@@ -67,6 +65,11 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python connections.ipynb connections.output.ipynb
       working-directory: sdk/python/resources/connections
+      env:
+        ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+        GIT_PAT: ${{ secrets.GIT_PAT }}
+        PYTHON_FEED_SAS: ${{ secrets.PYTHON_FEED_SAS }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
