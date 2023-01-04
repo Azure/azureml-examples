@@ -1,0 +1,34 @@
+name: python-sdk-tutorial-automl-with-pycaret
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - v1/tutorials/automl-with-pycaret/**
+      - .github/workflows/python-sdk/tutorial-automl-with-pycaret.yml
+      - v1/tutorials/requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: pip install
+      run: pip install -r v1/python-sdk/requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run 1.classification.ipynb
+      run: papermill 1.classification.ipynb - -k python
+      working-directory: v1/python-sdk/tutorials/automl-with-pycaret

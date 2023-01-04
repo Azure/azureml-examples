@@ -1,0 +1,42 @@
+name: python-sdk-tutorial-dataset-uploads
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - v1/python-sdk/tutorials/dataset-uploads/**
+      - .github/workflows/python-sdk-tutorial-dataset-uploads.yml
+      - v1/python-sdk/requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    strategy:
+      fail-fast: false
+      matrix:
+        notebook: [upload_dataframe_register_as_dataset.ipynb, upload_directory_create_file_dataset.ipynb]
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
+    - name: pip install
+      run: pip install -r v1/python-sdk/requirements.txt
+    - name: temp installs
+      run: pip install azureml-dataset-runtime azureml-dataprep
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_AE_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+    - name: run ${{matrix.notebook}}
+      run: papermill ${{matrix.notebook}} - -k python
+      working-directory: v1/python-sdk/tutorials/dataset-uploads

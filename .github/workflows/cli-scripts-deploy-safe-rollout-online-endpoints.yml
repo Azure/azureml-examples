@@ -1,0 +1,33 @@
+name: cli-scripts-deploy-safe-rollout-online-endpoints
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/deploy-safe-rollout-online-endpoints.sh
+      - .github/workflows/cli-scripts-deploy-safe-rollout-online-endpoints.yml
+      - cli/setup.sh
+      - cli/endpoints/online/managed/sample
+      - cli/endpoints/online/model-1
+      - cli/endpoints/online/model-2
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: test script script
+      run: set -e; bash -x deploy-safe-rollout-online-endpoints.sh
+      working-directory: cli

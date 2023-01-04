@@ -1,0 +1,34 @@
+name: cli-schedules-schedules-cron-with-settings-job-schedule
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/schedules/cron-with-settings-job-schedule.yml
+      - .github/workflows/cli-schedules-schedules-cron-with-settings-job-schedule.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create schedule
+      run: az ml schedule create -f ./schedules/cron-with-settings-job-schedule.yml --set name="ci_test_cron-with-settings-job-schedule"
+      working-directory: cli
+
+    - name: disable schedule
+      run: az ml schedule disable --name ci_test_cron-with-settings-job-schedule
+      working-directory: cli

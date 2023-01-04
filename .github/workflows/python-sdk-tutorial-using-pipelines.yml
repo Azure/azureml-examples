@@ -1,0 +1,42 @@
+name: python-sdk-tutorial-using-pipelines
+on:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - v1/python-sdk/tutorials/using-pipelines/**
+      - .github/workflows/python-sdk-tutorial-using-pipelines.yml
+      - v1/python-sdk/requirements.txt
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    strategy:
+      fail-fast: false
+      matrix:
+        notebook: [dataset-and-pipelineparameter.ipynb, image-classification.ipynb, style-transfer-parallel-run.ipynb, publish-and-run-using-rest-endpoint.ipynb]
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: downgrade pip
+      run: pip install pip==21.1.1
+    - name: pip install
+      run: pip install -r v1/python-sdk/requirements.txt
+    - name: temp installs
+      run: pip install azureml-pipeline azureml-pipeline-steps
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: install azmlcli
+      run: az extension add -n azure-cli-ml -y
+    - name: attach to workspace
+      run: az ml folder attach -w main -g azureml-examples
+    - name: run ${{matrix.notebook}}
+      run: papermill ${{matrix.notebook}} - -k python
+      working-directory: v1/python-sdk/tutorials/using-pipelines

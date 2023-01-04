@@ -1,0 +1,30 @@
+name: cli-jobs-basics-hello-world
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/jobs/basics/**
+      - .github/workflows/cli-jobs-basics-hello-world.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run job
+      run: bash -x ../../run-job.sh hello-world.yml
+      working-directory: cli/jobs/basics

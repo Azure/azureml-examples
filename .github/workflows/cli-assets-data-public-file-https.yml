@@ -1,0 +1,30 @@
+name: cli-assets-data-public-file-https
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/assets/data/public-file-https.yml
+      - .github/workflows/cli-assets-data-public-file-https.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create asset
+      run: az ml data create -f assets/data/public-file-https.yml
+      working-directory: cli

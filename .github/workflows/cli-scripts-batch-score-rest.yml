@@ -1,0 +1,32 @@
+name: cli-scripts-batch-score-rest
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/4 * * *"
+  pull_request:
+    branches:
+      - main
+      - sdk-preview
+    paths:
+      - cli/batch-score-rest.sh
+      - .github/workflows/cli-scripts-batch-score-rest.yml
+      - cli/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: scripts installs
+      run: sudo apt-get install jq -y
+    - name: test script script
+      run: set -e; bash -x batch-score-rest.sh
+      working-directory: cli
