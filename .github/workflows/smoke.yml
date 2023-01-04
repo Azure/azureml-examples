@@ -1,0 +1,25 @@
+name: smoke
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - cli-preview
+  schedule:
+      - cron: "0 0/1 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.9"
+    - name: pip install
+      run: pip install -r dev-requirements.txt
+    - name: check code format
+      run: black --check .
