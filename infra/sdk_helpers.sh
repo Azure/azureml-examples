@@ -267,11 +267,11 @@ function install_packages() {
     echo_info "------------------------------------------------"
 
     echo_info "sudo apt-get update"
-    sudo apt-get update > /dev/null 2>&1
+    sudo apt-get update
     echo_info "sudo apt-get upgrade -y"
-    sudo apt-get upgrade -y > /dev/null 2>&1
+    sudo apt-get upgrade -y
     echo_info "sudo apt-get dist-upgrade -y"
-    sudo apt-get dist-upgrade -y > /dev/null 2>&1
+    sudo apt-get dist-upgrade -y
 
     echo_info ">>> Installing packages"
 
