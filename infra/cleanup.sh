@@ -68,6 +68,7 @@ amlcompute_to_delete=(
   minimal-example
   basic-example
   mycluster
+  mycluster-msi
   location-example
   low-pri-example
   ssh-example
