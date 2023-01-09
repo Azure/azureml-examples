@@ -41,16 +41,16 @@ export SLEEP_SECONDS=20
 
 # let "DATE_ONLY=`date +'%y%m%d'`"
 # let "DATE_ONLY=$(date +'%y%m%U')"
-let "DATE_ONLY=$(10#date -d '+2 days' +'%y%m')"
-let "REGISTRY_TODAY=$(10#date +'%m%d')"
-let "REGISTRY_TOMORROW=$(10#date -d '+1 days' +'%m%d')"
+let "DATE_ONLY=$((10#date -d '+2 days' +'%y%m'))"
+let "REGISTRY_TODAY=$((10#date +'%m%d'))"
+let "REGISTRY_TOMORROW=$((10#date -d '+1 days' +'%m%d'))"
 
 
 export LOCATION="East US"
 export PREFIX=aml
 export SUFFIX=sdkv202
 export APP_NAME="github-sp-amlsdkv2-gh"
-export timestamp=$(10#date +%s)
+export timestamp=$((10#date +%s))
 # export RESOURCE_GROUP_NAME=test-data-rg
 # export WORKSPACE_NAME=${PREFIX}${SUFFIX}${DATE_ONLY}-ws
 # export SUBSCRIPTION_ID=test
