@@ -9,6 +9,7 @@ import torchvision
 import torchvision.transforms as transforms
 import time
 from model import Net, nn
+
 # import MLflow if available. Continue with a warning if not installed on the system.
 try:
     import mlflow
@@ -22,7 +23,9 @@ def add_argument():
     parser = argparse.ArgumentParser(description="CIFAR")
 
     # train
-    parser.add_argument("-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)")
+    parser.add_argument(
+        "-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)"
+    )
     parser.add_argument(
         "-e",
         "--epochs",
@@ -39,7 +42,9 @@ def add_argument():
         help="local rank passed from distributed launcher",
     )
     parser.add_argument("--global_rank", default=-1, type=int, help="global rank")
-    parser.add_argument("--with_aml_log", default=True, help="Use Azure ML metric logging")
+    parser.add_argument(
+        "--with_aml_log", default=True, help="Use Azure ML metric logging"
+    )
 
     # Include DeepSpeed configuration arguments
     parser = deepspeed.add_config_arguments(parser)
@@ -60,13 +65,23 @@ print("Current tracking uri: {}".format(tracking_uri))
 #     If running on Windows and you get a BrokenPipeError, try setting
 #     the num_worker of torch.utils.data.DataLoader() to 0.
 
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform = transforms.Compose(
+    [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
+)
 
-trainset = torchvision.datasets.CIFAR10(root="../data", train=True, download=False, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=2)
+trainset = torchvision.datasets.CIFAR10(
+    root="../data", train=True, download=False, transform=transform
+)
+trainloader = torch.utils.data.DataLoader(
+    trainset, batch_size=4, shuffle=True, num_workers=2
+)
 
-testset = torchvision.datasets.CIFAR10(root="../data", train=False, download=False, transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=4, shuffle=False, num_workers=2)
+testset = torchvision.datasets.CIFAR10(
+    root="../data", train=False, download=False, transform=transform
+)
+testloader = torch.utils.data.DataLoader(
+    testset, batch_size=4, shuffle=False, num_workers=2
+)
 
 classes = (
     "plane",
@@ -137,7 +152,7 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         model_engine.backward(loss)
         model_engine.step()
         post = time.time()
-        Time_per_step = post-pre
+        Time_per_step = post - pre
 
         # print statistics
         running_loss += loss.item()
@@ -203,7 +218,9 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels.to(model_engine.local_rank)).sum().item()
 
-print("Accuracy of the network on the 10000 test images: %d %%" % (100 * correct / total))
+print(
+    "Accuracy of the network on the 10000 test images: %d %%" % (100 * correct / total)
+)
 
 ########################################################################
 # That looks way better than chance, which is 10% accuracy (randomly picking
@@ -227,4 +244,7 @@ with torch.no_grad():
             class_total[label] += 1
 
 for i in range(10):
-    print("Accuracy of %5s : %2d %%" % (classes[i], 100 * class_correct[i] / class_total[i]))
+    print(
+        "Accuracy of %5s : %2d %%"
+        % (classes[i], 100 * class_correct[i] / class_total[i])
+    )
