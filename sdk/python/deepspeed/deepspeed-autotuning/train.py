@@ -116,19 +116,10 @@ criterion = nn.CrossEntropyLoss()
 # This is when things start to get interesting.
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
-# run = mlflow.active_run()
-# print("starting run\n")
-# print("Active run_id: {}".format(run.info.run_id))
-# mlflow.start_run()
-print(os.environ)
-if not mlflow.active_run():
-    this_run = mlflow.start_run()
-else:
+if args.with_aml_log:
     this_run = mlflow.active_run()
-print("starting run\n")
-print("Active run_id: {}".format(this_run.info.run_id))
-mlflow.log_metrics({"hello": 12345})
-print("env variables")
+    print("Active run_id: {}".format(this_run.info.run_id))
+    mlflow.log_metrics({"hello": 12345})
 for epoch in range(args.epochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -147,18 +138,6 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         model_engine.step()
         post = time.time()
         Time_per_step = post-pre
-        # if args.with_aml_log:
-        #     try:
-        #         # # import MLflow if available. Continue with a warning if not installed on the system.
-        #         # import mlflow
-        #         # run = mlflow.start_run()
-        #         # print("starting run\n")
-        #         # print("Active run_id: {}".format(run.info.run_id))
-        #         # print("Active run_id: {}".format(run.info.run_id))
-        #         # mlflow.log_metric("Sample train per step", Time_per_step)
-        #     except:
-        #         print("MLFlow logging failed. Continuing without MLflow.")
-        #         pass
 
         # print statistics
         running_loss += loss.item()
