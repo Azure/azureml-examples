@@ -41,9 +41,11 @@ export SLEEP_SECONDS=20
 
 # let "DATE_ONLY=`date +'%y%m%d'`"
 # let "DATE_ONLY=$(date +'%y%m%U')"
-let "DATE_ONLY=$(date -d '+2 days' +'%y%m')"
-let "REGISTRY_TODAY=$(date +'%m%d')"
-let "REGISTRY_TOMORROW=$(date -d '+1 days' +'%m%d')"
+# Add 10# to the front of variables to avoid the "Value too great for base" error when value has leading zeros.
+# Ref: https://stackoverflow.com/questions/21049822/value-too-great-for-base-error-token-is-09
+let "DATE_ONLY=10#$(date -d '+2 days' +'%y%m')"
+let "REGISTRY_TODAY=10#$(date +'%m%d')"
+let "REGISTRY_TOMORROW=10#$(date -d '+1 days' +'%m%d')"
 
 
 export LOCATION="East US"
