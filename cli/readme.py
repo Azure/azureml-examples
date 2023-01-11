@@ -74,7 +74,9 @@ def main(args):
     ]
 
     jobs_using_registry_components = sorted(
-        glob.glob("jobs/pipelines-with-components/basics/**/*pipeline*.yml", recursive=True)
+        glob.glob(
+            "jobs/pipelines-with-components/basics/**/*pipeline*.yml", recursive=True
+        )
     )
     jobs_using_registry_components = [
         job.replace(".yml", "")
@@ -123,7 +125,15 @@ def main(args):
     ]
 
     # write workflows
-    write_workflows(jobs, jobs_using_registry_components, endpoints, resources, assets, scripts, schedules)
+    write_workflows(
+        jobs,
+        jobs_using_registry_components,
+        endpoints,
+        resources,
+        assets,
+        scripts,
+        schedules,
+    )
 
     # read existing README.md
     with open("README.md", "r") as f:
@@ -293,7 +303,15 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     print("Finished writing README.md...")
 
 
-def write_workflows(jobs, jobs_using_registry_components, endpoints, resources, assets, scripts, schedules):
+def write_workflows(
+    jobs,
+    jobs_using_registry_components,
+    endpoints,
+    resources,
+    assets,
+    scripts,
+    schedules,
+):
     print("writing .github/workflows...")
 
     # process jobs
@@ -421,6 +439,7 @@ jobs:
     with open(f"../.github/workflows/cli-{job.replace('/', '-')}.yml", "w") as f:
         f.write(workflow_yaml)
 
+
 def write_job_using_registry_components_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     folder_name = project_dir.split("/")[-1]
@@ -483,8 +502,11 @@ jobs:
       working-directory: cli/{project_dir}\n"""
 
     # write workflow
-    with open(f"../.github/workflows/cli-{job.replace('/', '-')}-registry.yml", "w") as f:
+    with open(
+        f"../.github/workflows/cli-{job.replace('/', '-')}-registry.yml", "w"
+    ) as f:
         f.write(workflow_yaml)
+
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
