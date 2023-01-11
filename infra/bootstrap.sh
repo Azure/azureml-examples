@@ -110,6 +110,7 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Running prerequisites"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_prerequisites_in_workspace
     "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_prerequisites_in_registry
 
     "$SCRIPT_DIR"/sdk_helpers.sh register_providers
 
