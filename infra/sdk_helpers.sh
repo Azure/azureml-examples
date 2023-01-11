@@ -236,6 +236,18 @@ function ensure_identity() {
     eval "$cmd"
 }
 
+function ensure_msi() {
+    MSI_NAME=${1:-automl-msi}
+    echo "Creating MSI $MSI_NAME"
+    # Get the resource id of the identity
+    IDENTITY_ID=$(az identity show --name "$MSI_NAME" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]" || true)
+    if [[ -z $IDENTITY_ID ]]; then
+       IDENTITY_ID=$(az identity create -n "$MSI_NAME" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
+    fi
+    echo "MSI created: $MSI_NAME"
+    sleep 15
+}
+
 function install_azcopy() {
     echo_info "Installing AzCopy" >&2
     # Download and extract
