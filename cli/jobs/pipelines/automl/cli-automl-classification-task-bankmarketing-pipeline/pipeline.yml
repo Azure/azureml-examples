@@ -15,7 +15,7 @@ inputs:
     path: ./validation-mltable-folder
 
 settings:
-  default_compute: azureml:cpu-cluster-hri
+  default_compute: azureml:mycluster-msi
 
 jobs:
   preprocessing_node:
