@@ -25,6 +25,7 @@ EXCLUDED_SCRIPTS = [
     "setup",
     "cleanup",
     "run-job",
+    "run-pipeline-job-with-registry-components",
     "deploy-custom-container-multimodel-minimal",
     "run-pipeline-jobs",
 ]
@@ -72,6 +73,15 @@ def main(args):
         if not any(excluded in job for excluded in EXCLUDED_JOBS)
     ]
 
+    jobs_using_registry_components = sorted(
+        glob.glob("jobs/pipelines-with-components/basics/**/*pipeline*.yml", recursive=True)
+    )
+    jobs_using_registry_components = [
+        job.replace(".yml", "")
+        for job in jobs_using_registry_components
+        if not any(excluded in job for excluded in EXCLUDED_JOBS)
+    ]
+
     # get list of endpoints
     endpoints = sorted(glob.glob("endpoints/**/*.yml", recursive=True))
     endpoints = [
@@ -113,7 +123,7 @@ def main(args):
     ]
 
     # write workflows
-    write_workflows(jobs, endpoints, resources, assets, scripts, schedules)
+    write_workflows(jobs, jobs_using_registry_components, endpoints, resources, assets, scripts, schedules)
 
     # read existing README.md
     with open("README.md", "r") as f:
@@ -283,13 +293,18 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     print("Finished writing README.md...")
 
 
-def write_workflows(jobs, endpoints, resources, assets, scripts, schedules):
+def write_workflows(jobs, jobs_using_registry_components, endpoints, resources, assets, scripts, schedules):
     print("writing .github/workflows...")
 
     # process jobs
     for job in jobs:
         # write workflow file
         write_job_workflow(job)
+
+    # process jobs_using_registry_components
+    for job in jobs_using_registry_components:
+        # write workflow file
+        write_job_using_registry_components_workflow(job)
 
     # process endpoints
     for endpoint in endpoints:
@@ -406,6 +421,70 @@ jobs:
     with open(f"../.github/workflows/cli-{job.replace('/', '-')}.yml", "w") as f:
         f.write(workflow_yaml)
 
+def write_job_using_registry_components_workflow(job):
+    filename, project_dir, hyphenated = parse_path(job)
+    folder_name = project_dir.split("/")[-1]
+    is_pipeline_sample = "jobs/pipelines" in job
+    creds = CREDENTIALS
+    # Duplicate name in working directory during checkout
+    # https://github.com/actions/checkout/issues/739
+    workflow_yaml = f"""{READONLY_HEADER}
+name: cli-{hyphenated}-registry
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0/8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/{project_dir}/**
+      - infra/**
+      - .github/workflows/cli-{hyphenated}-registry.yml\n"""
+    if is_pipeline_sample:
+        workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
+    workflow_yaml += f"""      - cli/setup.sh
+concurrency:
+  group: {GITHUB_CONCURRENCY_GROUP}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: {creds}
+    - name: bootstrap resources
+      run: |
+          echo '{GITHUB_CONCURRENCY_GROUP}';
+          bash bootstrap.sh
+      working-directory: infra
+      continue-on-error: false
+    - name: setup-cli
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: run job
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";\n"""
+    if "automl" in job and "image" in job:
+        workflow_yaml += f"""          bash \"{GITHUB_WORKSPACE}/infra/sdk_helpers.sh\" replace_template_values \"prepare_data.py\";
+          pip install azure-identity
+          bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
+          python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
+    workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-pipeline-job-with-registry-components.sh {filename} {folder_name}
+      working-directory: cli/{project_dir}\n"""
+
+    # write workflow
+    with open(f"../.github/workflows/cli-{job.replace('/', '-')}-registry.yml", "w") as f:
+        f.write(workflow_yaml)
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
