@@ -7,7 +7,6 @@ if [ -z "$1" ]
 fi
 
 az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-instances 8 -o none
-az ml compute create -n cpu-cluster-hri --type amlcompute --min-instances 0 --max-instances 8 -o none
 az ml compute create -n gpu-cluster --type amlcompute --min-instances 0 --max-instances 4 --size Standard_NC12 -o none
 az ml data create --file assets/data/local-folder.yml --set version=$target_version -o none
 az ml component create --file jobs/pipelines-with-components/basics/1b_e2e_registered_components/train.yml --set version=$target_version -o none
