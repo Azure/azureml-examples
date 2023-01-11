@@ -100,7 +100,6 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring CPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 20 "Standard_DS3_v2"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-hri" 0 20 "Standard_DS3_v2"
     # Larger CPU cluster for Dask and Spark examples
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
     
