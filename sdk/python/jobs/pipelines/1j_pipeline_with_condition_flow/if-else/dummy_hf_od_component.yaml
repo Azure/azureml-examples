@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
+name: dummy_image_hugging_face_object_detection
+version: 1
+display_name: Dummy Image HF OD Component
+is_deterministic: True
+type: command
+description: This is the dummy image hugging face pipeline subgraph component
+inputs:
+  model_name:
+    type: string
+    optional: False
+    default: hugging_face_model
+    description: An HF Model
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+command: echo Hello World & echo ${{inputs.model_name}}
+code: ./
