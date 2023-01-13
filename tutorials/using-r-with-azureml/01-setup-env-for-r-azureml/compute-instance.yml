@@ -1,9 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json 
-name: testing-setupscript-yaml
-type: computeinstance
-size: STANDARD_DS3_v2
-setup_scripts: #setup script to automate customization
-  creation_script: 
-    path: "./" 
-    command: "bash ci-setup-interactive-r.sh"
-    timeout_minutes: 5

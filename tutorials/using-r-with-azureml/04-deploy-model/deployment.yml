@@ -1,4 +1,3 @@
-# ./r-deployment.yml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: deployment-1
 endpoint_name: experiment-1

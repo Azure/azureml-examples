@@ -1,5 +1,3 @@
-# ./docker-context/start_plumber.R
-
 entry_script_path <- paste0(Sys.getenv('AML_APP_ROOT'),'/', Sys.getenv('AZUREML_ENTRY_SCRIPT'))
 
 pr <- plumber::plumb(entry_script_path)

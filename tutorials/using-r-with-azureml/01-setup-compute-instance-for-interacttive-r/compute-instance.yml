@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json 
+name: testing-setupscript-yaml
+type: computeinstance
+size: STANDARD_DS3_v2

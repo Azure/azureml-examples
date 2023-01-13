@@ -1,3 +1,5 @@
+# Configure 
+
 
 * create an Azure Machine Learning workspace if you do not already have one. You can use an existing workspace
 

@@ -1,4 +1,3 @@
-# r-endpoint.yml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: experiment-1
 auth_mode: aml_token

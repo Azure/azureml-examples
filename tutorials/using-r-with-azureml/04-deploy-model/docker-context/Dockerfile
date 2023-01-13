@@ -1,4 +1,3 @@
-# ./docker-context/Dockerfile
 FROM rstudio/plumber:latest
 
 # Install carrier package to be able to use the crated model you created in 
