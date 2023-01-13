@@ -15,7 +15,7 @@ pip install pandas
 
 
 # <az_ml_sdk_test_install>
-pip install https://docsupport.blob.core.windows.net/ml-sample-submissions/2105861/azure_ai_ml-1.3.0-py3-none-any.whl
+pip install https://docsupport.blob.core.windows.net/ml-sample-submissions/2115228/azure_ai_ml-1.3.0-py3-none-any.whl
 # </az_ml_sdk_test_install>
 
 pip list
