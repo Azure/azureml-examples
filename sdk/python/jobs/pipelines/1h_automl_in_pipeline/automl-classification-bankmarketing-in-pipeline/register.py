@@ -50,6 +50,7 @@ def main(args):
     print("client id", msi_client_id)
     run = Run.get_context(allow_offline=False)
     ws = run.experiment.workspace
+    
     print("worspace infor ", ws._workspace_name,ws._resource_group,ws._subscription_id)
     # Get Run ID from model path
     print("Getting model path")
