@@ -228,8 +228,8 @@ experiment_tbl <- tibble(
 
 ## The following code is for interacting with AzureML MLFlow
 
-model_name_for_registry <- "arima-2-1"
-model_artifact_path <- "model"
+# model_name_for_registry <- "arima-2-1"
+model_artifact_path <- "models"
 
 
 mlflow_start_run()

@@ -1,13 +1,13 @@
 # ./r-deployment.yml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: r-deployment
-endpoint_name: r-endpoint-iris
+name: deployment-1
+endpoint_name: experiment-1
 code_configuration:
-  code: ./scripts
+  code: ./src
   scoring_script: plumber.R
-model: azureml:timeseries-forecast:1
+model: azureml:my-registered-timeseries-model@latest
 environment:
-  image: <ACR_NAME>.azurecr.io/r_server
+  image: 0194711019b74feb8a030a1f78e227ae.azurecr.io/acr-container-for-plumber-deployment
   inference_config:
     liveness_route:
       port: 8000
