@@ -173,36 +173,6 @@ function ensure_aml_compute() {
     fi
 }
 
-function ensure_aml_compute_msi() {
-    COMPUTE_NAME=${1:-cpu-cluster-msi}
-    MIN_INSTANCES=${2:-0}
-    MAX_INSTANCES=${3:-2}
-    COMPUTE_SIZE=${4:-Standard_DS3_v2}
-    MSI_NAME=${5:-uaimevnet}
-
-    compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$COMPUTE_NAME']" | tail -n1 | tr -d "[:cntrl:]")
-    if [[ "${compute_exists}" = "[]" ]]; then
-        echo_info "Compute ${COMPUTE_NAME} does not exist; creating" >&2
-        IDENTITY_ID=$(az identity show --name "$MSI_NAME" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]" || true)
-        CREATE_COMPUTE=$(az ml compute create \
-            --name "${COMPUTE_NAME}" \
-            --resource-group "${RESOURCE_GROUP_NAME}"  \
-            --type amlcompute --min-instances "${MIN_INSTANCES}" --max-instances "${MAX_INSTANCES}"  \
-            --size "${COMPUTE_SIZE}" \
-            --identity-type user_assigned \
-            --user-assigned-identities "${IDENTITY_ID}" \
-            --output tsv  \
-            > /dev/null)
-        if [[ $? -ne 0 ]]; then
-            echo_error "Failed to create compute ${COMPUTE_NAME}" >&2
-            echo "[---fail---] $CREATE_COMPUTE."
-        else
-            echo_info "Compute ${COMPUTE_NAME} created successfully" >&2
-        fi
-    else
-        echo_warning "Compute ${COMPUTE_NAME} already exist, skipping creation step..." >&2
-    fi
-}
 
 function grant_permission_app_id_on_rg() {
     local SERVICE_PRINCIPAL_NAME="${1:-APP_NAME}"
