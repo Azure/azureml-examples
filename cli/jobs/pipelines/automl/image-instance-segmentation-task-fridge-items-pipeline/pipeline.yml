@@ -7,7 +7,7 @@ display_name: pipeline-with-image-instance-segmentation
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:gpu-cluster
+  default_compute: azureml:gpu-cluster-msi
 
 inputs:
   image_instance_segmentation_training_data:

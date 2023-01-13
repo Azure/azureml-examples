@@ -7,7 +7,7 @@ display_name: pipeline-with-automl-regression
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:cpu-cluster-msi
 
 inputs:
   regression_train_data:

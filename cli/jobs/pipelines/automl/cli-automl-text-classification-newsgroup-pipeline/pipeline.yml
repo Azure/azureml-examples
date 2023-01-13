@@ -7,7 +7,7 @@ display_name: pipeline-with-text-classification
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:gpu-cluster
+  default_compute: azureml:gpu-cluster-msi
 
 inputs:
   text_classification_training_data:

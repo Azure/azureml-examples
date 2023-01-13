@@ -46,7 +46,11 @@ def main(args):
     print("tracking_uri: {0}".format(tracking_uri))
     mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(current_experiment.name)
-
+    msi_client_id = os.environ.get("DEFAULT_IDENTITY_CLIENT_ID")
+    print("client id", msi_client_id)
+    run = Run.get_context(allow_offline=False)
+    ws = run.experiment.workspace
+    print("worspace infor ", ws._workspace_name,ws._resource_group,ws._subscription_id)
     # Get Run ID from model path
     print("Getting model path")
     mlmodel_path = os.path.join(args.model_input_path, "MLmodel")

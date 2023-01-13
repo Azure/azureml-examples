@@ -7,7 +7,7 @@ display_name: pipeline-with-forecasting
 experiment_name: pipeline-with-automl
 
 settings:
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:cpu-cluster-msi
 
 inputs:
   forecasting_training_data:
