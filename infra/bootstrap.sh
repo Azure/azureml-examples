@@ -102,7 +102,7 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
     # Larger CPU cluster for Dask and Spark examples
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
-
+    
     echo_title "Ensuring GPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "Standard_NC6"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6"
@@ -163,4 +163,3 @@ else
 fi
 
 echo_title "✅ Resource provisioning completed..."
-
