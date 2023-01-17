@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >-
+  bash create-job.sh
+code: src
+environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu
+compute: azureml:gpu-cluster
+display_name: deepspeed-autotuning-example
+experiment_name: deepspeed-autotuning-example
+description: Run deepspeed autotuning to find the optimal configuration for a config file to be used in a model training run.
