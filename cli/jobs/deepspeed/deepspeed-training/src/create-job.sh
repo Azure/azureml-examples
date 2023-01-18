@@ -29,4 +29,4 @@ distribution:
 resources:
   instance_count: 2
 EOF
-az ml job create --file deepspeed-training-aml.yaml
+# az ml job create --file deepspeed-training-aml.yaml

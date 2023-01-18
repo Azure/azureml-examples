@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >-
-  bash create-job.sh
+  bash create-job.sh && az ml job create --file deepspeed-training-aml.yaml
 code: src
 environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu
 compute: azureml:gpu-cluster
