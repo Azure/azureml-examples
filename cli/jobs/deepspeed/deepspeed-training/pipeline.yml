@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+compute: azureml:gpu-cluster
+display_name: deepspeed-training-example
+experiment_name: deepspeed-training-example
+description: Train a model using deepspeed on the cifar dataset.
+jobs:
+  start_ssh:
+    type: command
+    command: >-
+      bash create-job.sh
+    code: src
+    compute: azureml:gpu-cluster
+    environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu@latest
+    name: start-ssh
+  deepspeed_train:
+    type: command
+    component: file:./src/deepspeed-training-aml.yaml
+    compute: azureml:gpu-cluster
+    environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu@latest

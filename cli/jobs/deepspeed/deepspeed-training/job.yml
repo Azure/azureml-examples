@@ -1,9 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-command: >-
-  bash create-job.sh && az ml job create --file deepspeed-training-aml.yaml
-code: src
-environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu@latest
-compute: azureml:gpu-cluster
-display_name: deepspeed-training-example
-experiment_name: deepspeed-training-example
-description: Train a model using deepspeed on the cifar dataset.
