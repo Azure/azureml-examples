@@ -128,13 +128,14 @@ criterion = nn.CrossEntropyLoss()
 # 4. Train the network
 # ^^^^^^^^^^^^^^^^^^^^
 #
-# This is when things start to get interesting.
-# We simply have to loop over our data iterator, and feed the inputs to the
-# network and optimize.
+# Showcasing logging metrics to automl.
 if args.with_aml_log:
     this_run = mlflow.active_run()
     print("Active run_id: {}".format(this_run.info.run_id))
     mlflow.log_metrics({"hello": 12345})
+# This is when things start to get interesting.
+# We simply have to loop over our data iterator, and feed the inputs to the
+# network and optimize.
 for epoch in range(args.epochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -161,7 +162,6 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
         if args.with_aml_log:
             try:
-                print("hello loss")
                 mlflow.log_metrics({"loss": loss})
             except NameError:
                 print("MLFlow logging failed. Continuing without MLflow.")
