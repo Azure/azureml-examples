@@ -50,12 +50,14 @@ run = cr_client.registries.begin_schedule_run(registry_name=args.container_regis
 
 
 elapsed = 0
-get_build_status = lambda : cr_client.runs.get(run_id=run.name,registry_name=args.container_registry,resource_group_name=args.resource_group).status 
-build_status = None
-while build_status != "Succeeded":
-    build_status = get_build_status()
-    print(build_status)
-    time.sleep(5)
-    elapsed += 5
+get_run = lambda : cr_client.runs.get(run_id=run.name,registry_name=args.container_registry,resource_group_name=args.resource_group)
+status = None
+while not status == "Succeeded":
+    run = get_run()
+    status = run.status
     if elapsed > 300:
         raise RuntimeError("Build timed out")
+    elif status == "Failed":
+        raise RuntimeError(f"Build failed with error {run.run_error_message['error']}")
+    time.sleep(5)
+    elapsed += 5
