@@ -58,6 +58,6 @@ while not status == "Succeeded":
     if elapsed > 300:
         raise RuntimeError("Build timed out")
     elif status == "Failed":
-        raise RuntimeError(f"Build failed with error {run.run_error_message}")
+        raise RuntimeError(f"Build failed with error {run.as_dict()}")
     time.sleep(5)
     elapsed += 5
