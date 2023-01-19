@@ -46,5 +46,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          bash -x generate-yml.sh
           bash -x ../../../run-job.sh job.yml
       working-directory: cli/jobs/deepspeed/deepspeed-training
