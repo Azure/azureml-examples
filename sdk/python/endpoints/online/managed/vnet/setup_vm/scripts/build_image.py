@@ -21,6 +21,7 @@ cr_client = CRMCv20180901(credential, args.subscription_id, api_version="v2018_0
 # <upload_source>
 tar_path = f"/tmp/{uuid.uuid4()}.tar.gz"
 source_url = cr_client.registries.get_build_source_upload_url(registry_name=args.container_registry,resource_group_name=args.resource_group)
+print(f"Uploading source to {source_url.upload_url}")
 
 with tarfile.open(tar_path, "w:gz") as f:
     f.add(args.env_dir_path,arcname="")
@@ -47,9 +48,13 @@ build_request = DockerBuildRequest(
 run = cr_client.registries.begin_schedule_run(registry_name=args.container_registry,resource_group_name=args.resource_group,run_request=build_request).result()
 # </build_image> 
 
-run_status = ""
+
 elapsed = 0
-while cr_client.runs.get(run_id=run.name,registry_name=args.container_registry,resource_group_name=args.resource_group).status != "Succeeded":
+get_build_status = lambda : cr_client.runs.get(run_id=run.name,registry_name=args.container_registry,resource_group_name=args.resource_group).status 
+build_status = None
+while build_status != "Succeeded":
+    build_status = get_build_status()
+    print(build_status)
     time.sleep(5)
     elapsed += 5
     if elapsed > 300:
