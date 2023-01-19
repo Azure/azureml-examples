@@ -434,6 +434,7 @@ jobs:
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
     elif "deepspeed" in job:
       workflow_yaml += f"""          bash -x generate-yml.sh\n"""
+      # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh {filename}.yml
       working-directory: cli/{project_dir}\n"""
 

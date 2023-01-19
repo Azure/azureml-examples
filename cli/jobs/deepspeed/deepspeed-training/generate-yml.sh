@@ -1,6 +1,6 @@
 #!/bin/bash
 # Generate key
-ssh-keygen -t rsa -f 'generated-key' -N ''
+ssh-keygen -t rsa -f './src/generated-key' -N ''
 
 # Generate yaml file with key path
 cat > job.yml << EOF
