@@ -16,7 +16,7 @@ parser.add_argument('--env_dir_path', type=str, default=os.getenv("ENV_DIR_PATH"
 args = parser.parse_args()
 
 credential = ManagedIdentityCredential()
-cr_client = ContainerRegistryManagementClient(credential, args.subscription_id)
+cr_client = ContainerRegistryManagementClient(credential, args.subscription_id, api_version="v2018_09_01")
 
 # <upload_source>
 tar_path = f"/tmp/{uuid.uuid4()}.tar.gz"
