@@ -1,7 +1,7 @@
 #!/opt/anaconda/envs/vnet/bin/python
 
 import argparse
-from azure.mgmt.containerregistry import ContainerRegistryManagementClient
+from azure.mgmt.containerregistry.v2018_09_01 import ContainerRegistryManagementClient as CRMCv20180901
 from azure.identity import ManagedIdentityCredential
 from azure.mgmt.containerregistry.models import DockerBuildRequest, Credentials, SourceRegistryCredentials, PlatformProperties
 from azure.storage.blob import upload_blob_to_url
@@ -16,7 +16,7 @@ parser.add_argument('--env_dir_path', type=str, default=os.getenv("ENV_DIR_PATH"
 args = parser.parse_args()
 
 credential = ManagedIdentityCredential()
-cr_client = ContainerRegistryManagementClient(credential, args.subscription_id, api_version="v2018_09_01")
+cr_client = CRMCv20180901(credential, args.subscription_id, api_version="v2018_09_01")
 
 # <upload_source>
 tar_path = f"/tmp/{uuid.uuid4()}.tar.gz"
