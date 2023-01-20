@@ -48,6 +48,14 @@ def run(args):
     # MLFLOW: initialize mlflow (once in entire script)
     mlflow.start_run()
 
+    from mlflow.tracking import MlflowClient
+    client = MlflowClient()
+    run = mlflow.active_run()
+    run = client.get_run(run.info.run_id)
+
+    print("location : mlflow.start_run")
+    print("run_id : {}".format(run.info.run_id))
+    print("run_params : {}".format(run.data.params))
     # use a handler for the training sequence
     training_handler = TensorflowDistributedModelTrainingSequence()
 
