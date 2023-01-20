@@ -80,7 +80,7 @@ def main(args):
     registered_model_id = (Path(args.model_id_path) / "reg_id.txt").read_text()
     endpoint = get_endpoint(args.endpoint_name)
 
-    ml_client.begin_create_or_update(endpoint).wait()
+    ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
     # deployment
 
     deployment = ManagedOnlineDeployment(
@@ -110,8 +110,8 @@ def main(args):
     # deployment to take 100% traffic
 
     endpoint.traffic = {deployment.name: 100}
-    ml_client.begin_create_or_update(endpoint).wait()
-    
+    ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+
     ## Deleting endpoint to save resource
     ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
 
