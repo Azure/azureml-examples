@@ -13,7 +13,7 @@ command: bash start-deepspeed.sh --force_multi train.py --with_aml_log=True --de
 experiment_name: DistributedJob-DeepsSpeed-Training-cifar
 display_name: deepspeed-training-example
 code: src
-environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu@latest
+environment: azureml:AzureML-ACPT-pytorch-1.11-py39-cuda11.3-gpu@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
