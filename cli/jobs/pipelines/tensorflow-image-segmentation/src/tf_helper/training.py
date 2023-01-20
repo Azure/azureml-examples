@@ -152,12 +152,15 @@ class TensorflowDistributedModelTrainingSequence:
             logged_params["cuda_available"] = (
                 logged_params.get("cuda_device_count", 0) > 0
             )
+
+            
             from mlflow.tracking import MlflowClient
             client = MlflowClient()
             run = mlflow.active_run()
             run = client.get_run(run.info.run_id)
 
             print("location : training before log parameter called")
+            print("logged params: {}".format(logged_params))
             print("run_id : {}".format(run.info.run_id))
             print("run_params : {}".format(run.data.params))
 
