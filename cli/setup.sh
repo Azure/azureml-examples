@@ -3,8 +3,7 @@
 # az extension remove -n ml
 
 # <az_ml_install>
-# az extension add -n ml -y
-az extension add --yes --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.13.0-py3-none-any.whl
+az extension add -n ml -y
 # </az_ml_install>
 
 # Use a daily build
