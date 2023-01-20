@@ -104,14 +104,14 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
 
     echo_title "Ensuring CPU compute with MSI"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute_msi "cpu-cluster-msi" 0 20 "Standard_DS3_v2" "uaimevnet"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute_msi "cpu-cluster-msi" 0 4 "Standard_DS3_v2" "uaimevnet"
     
     echo_title "Ensuring GPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "Standard_NC6"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6"
     
     echo_title "Ensuring GPU compute with MSI"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute_msi "gpu-cluster-msi" 0 20 "Standard_NC6" "uaimevnet"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute_msi "gpu-cluster-msi" 0 4 "Standard_NC6" "uaimevnet"
 
     echo_title "Running prerequisites"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_prerequisites_in_workspace
