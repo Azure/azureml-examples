@@ -36,31 +36,10 @@ jobs:
     type: command
     code: ./src/
 
-    compute: azureml:gpu-cluster
-    resources:
-      instance_count: 1 # number of nodes
-    distribution:
-      # NOTE: using type:tensorflow will use all the right env variables (ex: TF_CONFIG)
-      type: tensorflow
-      worker_count: 1 # needs to match instance_count (!)
+    compute: azureml:cpu-cluster
 
     environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
-    # uncomment below to use custom environment
-    # environment:
-    #   build: 
-    #     path: ./environments/nvidia_tensorflow/
-
-    # NOTE: set env var if needed
-    environment_variables:
-      # adjusts the level of info from NCCL tests
-      NCCL_DEBUG: "INFO"
-      NCCL_DEBUG_SUBSYS: "GRAPH,INIT,ENV"
-
-      # relaxed Ordering can greatly help the performance of Infiniband networks in virtualized environments.
-      NCCL_IB_PCI_RELAXED_ORDERING: "1"
-      CUDA_DEVICE_ORDER: "PCI_BUS_ID"
-      NCCL_SOCKET_IFNAME: "eth0"
-
+  
     inputs:
       # data inputs
       images_and_annotations: ${{parent.jobs.prepare_data.outputs.images_and_annotations}}
