@@ -52,7 +52,7 @@ deployment = ManagedOnlineDeployment(
             "scoring_route": {"path": "/score", "port": 5001},
         },
     ),
-    instance_type="Standard_D2_v2",
+    instance_type="Standard_DS2_v2",
     instance_count=1,
     egress_public_network_access="disabled",
 )
