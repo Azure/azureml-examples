@@ -2,6 +2,7 @@
 
 import argparse
 from azure.mgmt.containerregistry.v2018_09_01 import ContainerRegistryManagementClient as CRMCv20180901
+from azure.mgmt.containerregistry import ContainerRegistryManagementClient
 from azure.identity import ManagedIdentityCredential
 from azure.mgmt.containerregistry.models import DockerBuildRequest, Credentials, SourceRegistryCredentials, PlatformProperties
 from azure.storage.blob import upload_blob_to_url
@@ -17,6 +18,7 @@ args = parser.parse_args()
 
 credential = ManagedIdentityCredential()
 cr_client = CRMCv20180901(credential, args.subscription_id, api_version="v2018_09_01")
+#cr_client2 = ContainerRegistryManagementClient(credential, args.subscription_id)
 
 # <upload_source>
 tar_path = f"/tmp/{uuid.uuid4()}.tar.gz"
@@ -29,12 +31,14 @@ with tarfile.open(tar_path, "w:gz") as f:
 with open(tar_path, "rb") as f: 
     upload_blob_to_url(source_url.upload_url, f)
 
-image_tag = f"{args.container_registry}.azurecr.io/{args.image_name}:latest"
+image_tag = f"{args.container_registry}.azurecr.io/{args.image_name}:1"
 # </upload_source>
+
 
 # <build_image>
 build_request = DockerBuildRequest(
     docker_file_path="Dockerfile",
+    agent_pool_name="testagent",
     platform=PlatformProperties(
         os="Linux",
         architecture="amd64"

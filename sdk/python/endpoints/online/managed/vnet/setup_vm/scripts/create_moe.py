@@ -13,7 +13,7 @@ from azure.identity import ManagedIdentityCredential
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--subscription_id', type=str, default=os.getenv("SUBSCRIPTION"))
+parser.add_argument('--subscription_id', type=str, default=os.getenv("SUBSCRIPTION_ID"))
 parser.add_argument('--resource_group', type=str,default=os.getenv("RESOURCE_GROUP")) 
 parser.add_argument('--workspace', type=str, default=os.getenv("WORKSPACE"))
 parser.add_argument('--container_registry', type=str, default=os.getenv("CONTAINER_REGISTRY"))
@@ -23,14 +23,14 @@ args = parser.parse_args()
 
 # <get_client>
 credential = ManagedIdentityCredential()
-ml_client = MLClient(credential=credential, subscription_id=args.subscription_id, resource_group=args.resource_group, workspace_name=args.workspace)
+ml_client = MLClient(credential=credential, subscription_id=args.subscription_id, resource_group_name=args.resource_group, workspace_name=args.workspace)
 # </get_client>
 
 # <create_endpoint>
 endpoint = ManagedOnlineEndpoint(
     name="my-endpoint",
     auth_mode="key",
-    public_network_access="disabled"
+    #public_network_access="disabled"
 )
 endpoint = ml_client.begin_create_or_update(endpoint).result()
 # </create_endpoint>
@@ -45,7 +45,7 @@ deployment = ManagedOnlineDeployment(
         scoring_script="score.py",
     ),
     environment=Environment(
-        image=f"{args.container_registry}.azurecr.io/{args.image_name}:latest",
+        image=f"{args.container_registry}.azurecr.io/{args.image_name}:1",
         inference_config={
             "liveness_route": {"path": "/", "port": 5001},
             "readiness_route": {"path": "/", "port": 5001},
