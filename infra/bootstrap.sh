@@ -97,7 +97,7 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     echo_title "Ensuring Registry of tomorrow ${REGISTRY_NAME_TOMORROW}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME_TOMORROW}"
     echo_title "Deleting outdated Registry ${REGISTRY_NAME_OUTDATED}"
-    "$SCRIPT_DIR"/sdk_helpers.sh delete_registry "${REGISTRY_NAME_OUTDATED}"
+    az resource delete -g "${RESOURCE_GROUP_NAME}" -n "${REGISTRY_NAME_OUTDATED}" --resource-type "Microsoft.MachineLearningServices/registries"
     
     echo_title "Ensuring CPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 20 "Standard_DS3_v2"

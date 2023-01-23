@@ -107,14 +107,6 @@ function ensure_registry_local(){
     fi
     return 0
 }
-function delete_registry(){
-    local LOCAL_REGISTRY_NAME="${1:-${REGISTRY_NAME:-}}"
-    registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
-    if [[ "${registry_exists}" != "[]" ]]; then
-        msg = $(az resource delete -g "${RESOURCE_GROUP_NAME}" -n DemoRegistry2 --resource-type "Microsoft.MachineLearningServices/registries")
-        echo_info msg >&2
-    fi
-}
 function ensure_resourcegroup() {
     rg_exists=$(az group exists --resource-group "$RESOURCE_GROUP_NAME" --output tsv |tail -n1|tr -d "[:cntrl:]")
     if [ "false" = "$rg_exists" ]; then
