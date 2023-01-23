@@ -1,15 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: "tensorflow_unet_pets"
-
-
-
 jobs:
   train:
     code: ./src/
-    command: |
-      ls ${{inputs.my_model}}
     inputs:
       images_type: "jpg"
       images_filename_pattern: "(.*)\\.jpg"

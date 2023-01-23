@@ -1,8 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
 code: ./src/
-command: |
-  ls ${{inputs.my_model}}
 inputs:
   images_type: "jpg"
   images_filename_pattern: "(.*)\\.jpg"
