@@ -1,33 +1,38 @@
-# Create registry-storage-options
-az ml registry create -f resources/registry/registry-storage-options.yml
+az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry65 --resource-type "Microsoft.MachineLearningServices/registries"
+az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry66 --resource-type "Microsoft.MachineLearningServices/registries"
+az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry67 --resource-type "Microsoft.MachineLearningServices/registries"
+az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry68 --resource-type "Microsoft.MachineLearningServices/registries"
 
-if [[ $? -ne 0 ]]; then
-    echo_error "Failed to create registry: DemoRegistry2" >&2
-    exit 1
-fi
+# # Create registry-storage-options
+# az ml registry create -f resources/registry/registry-storage-options.yml
 
-# wait for registry to be ready
-sleep 120
+# if [[ $? -ne 0 ]]; then
+#     echo_error "Failed to create registry: DemoRegistry2" >&2
+#     exit 1
+# fi
 
-# Delete registry
-az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry2 --resource-type "Microsoft.MachineLearningServices/registries"
+# # wait for registry to be ready
+# sleep 120
 
-if [[ $? -ne 0 ]]; then
-    echo_error "Failed to delete registry: DemoRegistry2" >&2
-fi
+# # Delete registry
+# az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry2 --resource-type "Microsoft.MachineLearningServices/registries"
 
-# Create demo-registry
-az ml registry create -f resources/registry/registry.yml
+# if [[ $? -ne 0 ]]; then
+#     echo_error "Failed to delete registry: DemoRegistry2" >&2
+# fi
 
-if [[ $? -ne 0 ]]; then
-    echo_error "Failed to create registry: DemoRegistry " >&2
-    exit 1
-fi
+# # Create demo-registry
+# az ml registry create -f resources/registry/registry.yml
 
-sleep 120
+# if [[ $? -ne 0 ]]; then
+#     echo_error "Failed to create registry: DemoRegistry " >&2
+#     exit 1
+# fi
 
-az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry --resource-type "Microsoft.MachineLearningServices/registries"
+# sleep 120
 
-if [[ $? -ne 0 ]]; then
-    echo_error "Failed to delete registry: DemoRegistry" >&2
-fi
+# az resource delete -g $RESOURCE_GROUP_NAME -n DemoRegistry --resource-type "Microsoft.MachineLearningServices/registries"
+
+# if [[ $? -ne 0 ]]; then
+#     echo_error "Failed to delete registry: DemoRegistry" >&2
+# fi
