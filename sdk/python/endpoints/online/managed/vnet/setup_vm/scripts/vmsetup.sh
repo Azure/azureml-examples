@@ -16,7 +16,7 @@ conda create -n vnet python=3.10.4 -y
 conda activate vnet
 
 # Install dependencies
-pip install azure-ai-ml azure-mgmt-containerregistry azure-storage-blob 
+pip install azure-ai-ml azure-mgmt-containerregistry azure-storage-blob azure-identity
 
 # Clone the samples repo. This is needed to build the image and create the managed online deployment.
 # Note: We will hardcode the below line in the docs (without GIT_BRANCH) so we don't need to explain the logic to the user.

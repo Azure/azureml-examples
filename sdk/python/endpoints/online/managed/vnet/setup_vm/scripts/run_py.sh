@@ -9,5 +9,4 @@ export USER=$(whoami)
 
 cd /home/$USER/samples/sdk/python/endpoints/online/managed
 
-python -v vnet/setup_vm/scripts/$SCRIPT_NAME
-
+python vnet/setup_vm/scripts/$SCRIPT_NAME

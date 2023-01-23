@@ -28,7 +28,7 @@ ml_client = MLClient(credential=credential, subscription_id=args.subscription_id
 
 # <create_endpoint>
 endpoint = ManagedOnlineEndpoint(
-    name="my-endpoint",
+    name=args.endpoint_name,
     auth_mode="key",
     #public_network_access="disabled"
 )
