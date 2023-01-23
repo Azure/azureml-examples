@@ -1,0 +1,30 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: "tensorflow_unet_pets"
+
+
+
+jobs:
+  train:
+    code: ./src/
+    command: |
+      ls ${{inputs.my_model}}
+    inputs:
+      images_type: "jpg"
+      images_filename_pattern: "(.*)\\.jpg"
+      masks_filename_pattern: "(.*)\\.png"
+      num_classes: 3
+      optimizer: "rmsprop"
+      loss: "sparse_categorical_crossentropy"
+    # environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    compute: azureml:cpu-cluster
+    environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
+
+    command: >-
+        python run.py 
+        --images_filename_pattern "${{inputs.images_filename_pattern}}"
+        --masks_filename_pattern "${{inputs.masks_filename_pattern}}"
+        --num_classes ${{inputs.num_classes}}
+        --optimizer ${{inputs.optimizer}}
+        --loss ${{inputs.loss}}

@@ -22,19 +22,19 @@ from distutils.util import strtobool
 import mlflow
 
 # tensorflow imports
-import tensorflow as tf
-from tensorflow import keras
+# import tensorflow as tf
+# from tensorflow import keras
 
 # internal imports
 ## non-specific helper code
-from common.profiling import LogTimeBlock, LogDiskIOBlock  # noqa : E402
+# from common.profiling import LogTimeBlock, LogDiskIOBlock  # noqa : E402
 
 ## tensorflow generic helping code
-from tf_helper.training import TensorflowDistributedModelTrainingSequence  # noqa : E402
+# from tf_helper.training import TensorflowDistributedModelTrainingSequence  # noqa : E402
 
 ## classification specific code
-from segmentation.model import load_model  # noqa : E402
-from segmentation.io import ImageAndMaskSequenceDataset  # noqa : E402
+# from segmentation.model import load_model  # noqa : E402
+# from segmentation.io import ImageAndMaskSequenceDataset  # noqa : E402
 
 
 SCRIPT_START_TIME = time.time()  # just to measure time to start
