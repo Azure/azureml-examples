@@ -96,6 +96,8 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME}"
     echo_title "Ensuring Registry of tomorrow ${REGISTRY_NAME_TOMORROW}"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME_TOMORROW}"
+    echo_title "Deleting outdated Registry ${REGISTRY_NAME_OUTDATED}"
+    "$SCRIPT_DIR"/sdk_helpers.sh delete_registry "${REGISTRY_NAME_OUTDATED}"
     
     echo_title "Ensuring CPU compute"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 20 "Standard_DS3_v2"
