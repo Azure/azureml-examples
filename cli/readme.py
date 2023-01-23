@@ -452,7 +452,7 @@ name: cli-{hyphenated}-registry
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "59 0/8 * * *"
   pull_request:
     branches:
       - main
