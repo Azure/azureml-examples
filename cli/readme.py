@@ -198,8 +198,8 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # process jobs
     for job in jobs:
         # build entries for tutorial table
-        posix_job = job.replace(os.sep, '/')
-        job_name = posix_job.replace('/', '-')
+        posix_job = job.replace(os.sep, "/")
+        job_name = posix_job.replace("/", "-")
         status = f"[![{posix_job}](https://github.com/Azure/azureml-examples/workflows/cli-{job_name}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-{job_name}.yml)"
         description = "*no description*"
         try:
@@ -218,8 +218,8 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # process endpoints
     for endpoint in endpoints:
         # build entries for tutorial table
-        posix_endpoint = endpoint.replace(os.sep, '/')
-        endpoint_name = posix_endpoint.replace('/', '-')
+        posix_endpoint = endpoint.replace(os.sep, "/")
+        endpoint_name = posix_endpoint.replace("/", "-")
         status = f"[![{posix_endpoint}](https://github.com/Azure/azureml-examples/workflows/cli-{endpoint_name}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-{endpoint_name}.yml)"
         description = "*no description*"
         try:
@@ -238,8 +238,8 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # process resources
     for resource in resources:
         # build entries for tutorial table
-        posix_resource = resource.replace(os.sep, '/')
-        resource_name = posix_resource.replace('/', '-')
+        posix_resource = resource.replace(os.sep, "/")
+        resource_name = posix_resource.replace("/", "-")
         status = f"[![{posix_resource}](https://github.com/Azure/azureml-examples/workflows/cli-{resource_name}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-{resource_name}.yml)"
         description = "*no description*"
         try:
@@ -258,8 +258,8 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # process assets
     for asset in assets:
         # build entries for tutorial table
-        posix_asset = asset.replace(os.sep, '/')
-        asset_name = posix_asset.replace('/', '-')
+        posix_asset = asset.replace(os.sep, "/")
+        asset_name = posix_asset.replace("/", "-")
         status = f"[![{posix_asset}](https://github.com/Azure/azureml-examples/workflows/cli-{asset_name}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-{asset_name}.yml)"
         description = "*no description*"
         try:
@@ -278,7 +278,7 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # process scripts
     for script in scripts:
         # build entries for tutorial table
-        posix_script = script.replace(os.sep, '/')
+        posix_script = script.replace(os.sep, "/")
         status = f"[![{posix_script}](https://github.com/Azure/azureml-examples/workflows/cli-scripts-{script}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-{script}.yml)"
         link = f"https://scripts.microsoft.com/azure/machine-learning/{script}"
 
@@ -289,9 +289,11 @@ def write_readme(jobs, endpoints, resources, assets, scripts, schedules):
     # process schedules
     for schedule in schedules:
         # build entries for tutorial table
-        posix_schedule = schedule.replace(os.sep, '/')
+        posix_schedule = schedule.replace(os.sep, "/")
         status = f"[![{posix_schedule}](https://github.com/Azure/azureml-examples/workflows/cli-schedules-{posix_schedule}/badge.svg?branch={BRANCH})](https://github.com/Azure/azureml-examples/actions/workflows/cli-schedules-{posix_schedule}.yml)"
-        link = f"https://schedules.microsoft.com/azure/machine-learning/{posix_schedule}"
+        link = (
+            f"https://schedules.microsoft.com/azure/machine-learning/{posix_schedule}"
+        )
 
         # add row to tutorial table
         row = f"[{posix_schedule}.yml]({posix_schedule}.yml)|{status}\n"
@@ -447,7 +449,10 @@ jobs:
       working-directory: cli/{posix_project_dir}\n"""
 
     # write workflow
-    with open(f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{job.replace(os.sep, '-').replace('/', '-')}.yml", "w") as f:
+    with open(
+        f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{job.replace(os.sep, '-').replace('/', '-')}.yml",
+        "w",
+    ) as f:
         f.write(workflow_yaml)
 
 
@@ -516,7 +521,8 @@ jobs:
 
     # write workflow
     with open(
-        f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{job.replace(os.sep, '-').replace('/', '-')}-registry.yml", "w"
+        f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{job.replace(os.sep, '-').replace('/', '-')}-registry.yml",
+        "w",
     ) as f:
         f.write(workflow_yaml)
 
@@ -626,7 +632,9 @@ jobs:
       working-directory: cli\n"""
 
     # write workflow
-    with open(f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{hyphenated}.yml", "w") as f:
+    with open(
+        f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{hyphenated}.yml", "w"
+    ) as f:
         f.write(workflow_yaml)
 
 
