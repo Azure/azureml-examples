@@ -22,6 +22,10 @@ def add_argument():
     """Add arguements for deepspeed."""
     parser = argparse.ArgumentParser(description="CIFAR")
 
+    parser.add_argument(
+        "--data-dir", type=str, help="directory containing CIFAR-10 dataset"
+    )
+
     # train
     parser.add_argument(
         "-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)"
@@ -65,19 +69,26 @@ print("Current tracking uri: {}".format(tracking_uri))
 #     If running on Windows and you get a BrokenPipeError, try setting
 #     the num_worker of torch.utils.data.DataLoader() to 0.
 
+data_files = os.listdir(args.data_dir)
+expected_file = "cifar-10-batches-py"
+if expected_file not in data_files:
+    print("Folder {} expected in args.data_dir".format(expected_file))
+    print("Found:")
+    print(data_files)
+
 transform = transforms.Compose(
     [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
 )
 
 trainset = torchvision.datasets.CIFAR10(
-    root="../../data", train=True, download=False, transform=transform
+    root=args.data_dir, train=True, download=False, transform=transform
 )
 trainloader = torch.utils.data.DataLoader(
     trainset, batch_size=4, shuffle=True, num_workers=2
 )
 
 testset = torchvision.datasets.CIFAR10(
-    root="../../data", train=False, download=False, transform=transform
+    root=args.data_dir, train=False, download=False, transform=transform
 )
 testloader = torch.utils.data.DataLoader(
     testset, batch_size=4, shuffle=False, num_workers=2
