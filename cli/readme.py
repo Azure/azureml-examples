@@ -81,7 +81,7 @@ def main(args):
     jobs_using_registry_components = [
         job.replace(".yml", "")
         for job in jobs_using_registry_components
-        if not any(excluded in job for excluded in EXCLUDED_JOBS)
+        if not any(excluded in job.replace(os.sep, "/") for excluded in EXCLUDED_JOBS)
     ]
 
     # get list of endpoints
@@ -89,7 +89,9 @@ def main(args):
     endpoints = [
         endpoint.replace(".yml", "")
         for endpoint in endpoints
-        if not any(excluded in endpoint for excluded in EXCLUDED_ENDPOINTS)
+        if not any(
+            excluded in endpoint.replace(os.sep, "/") for excluded in EXCLUDED_ENDPOINTS
+        )
     ]
 
     # get list of resources
@@ -97,7 +99,9 @@ def main(args):
     resources = [
         resource.replace(".yml", "")
         for resource in resources
-        if not any(excluded in resource for excluded in EXCLUDED_RESOURCES)
+        if not any(
+            excluded in resource.replace(os.sep, "/") for excluded in EXCLUDED_RESOURCES
+        )
     ]
 
     # get list of assets
@@ -105,7 +109,9 @@ def main(args):
     assets = [
         asset.replace(".yml", "")
         for asset in assets
-        if not any(excluded in asset for excluded in EXCLUDED_ASSETS)
+        if not any(
+            excluded in asset.replace(os.sep, "/") for excluded in EXCLUDED_ASSETS
+        )
     ]
 
     # get list of scripts
@@ -113,7 +119,9 @@ def main(args):
     scripts = [
         script.replace(".sh", "")
         for script in scripts
-        if not any(excluded in script for excluded in EXCLUDED_SCRIPTS)
+        if not any(
+            excluded in script.replace(os.sep, "/") for excluded in EXCLUDED_SCRIPTS
+        )
     ]
 
     # get list of schedules
@@ -121,7 +129,9 @@ def main(args):
     schedules = [
         schedule.replace(".yml", "")
         for schedule in schedules
-        if not any(excluded in schedule for excluded in EXCLUDED_SCHEDULES)
+        if not any(
+            excluded in schedule.replace(os.sep, "/") for excluded in EXCLUDED_SCHEDULES
+        )
     ]
 
     # write workflows
