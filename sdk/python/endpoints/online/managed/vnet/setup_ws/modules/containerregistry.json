@@ -86,7 +86,7 @@
     {
       "type": "Microsoft.ContainerRegistry/registries/agentPools",
       "apiVersion": "2019-06-01-preview",
-      "name": "[format('{0}/{1}', parameters('containerRegistryPleName'), 'apool1')]",
+      "name": "[format('{0}/{1}', parameters('containerRegistryNameCleaned'), 'apool1')]",
       "location": "[parameters('location')]",
       "properties": {
         "count": 1,
