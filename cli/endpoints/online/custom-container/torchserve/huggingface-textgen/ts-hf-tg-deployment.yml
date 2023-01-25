@@ -19,6 +19,6 @@ environment:
     scoring_route:
       port: 8080
       path: /predictions/textgeneration
-instance_type: Standard_DS2_v2
+instance_type: Standard_DS3_v2
 instance_count: 1
     
