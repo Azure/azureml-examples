@@ -12,7 +12,6 @@ command: >-
   bash start-deepspeed.sh
   --force_multi train.py
   --with_aml_log=True
-  --data-dir \${{inputs.cifar}}
   --deepspeed
   --deepspeed_config ds_config.json
 
@@ -24,10 +23,6 @@ environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
   AZUREML_SSH_KEY: 'generated-key'
-inputs:
-  cifar: 
-     type: uri_folder
-     path: azureml:cifar-10-example@latest
 outputs:
   output:
     type: uri_folder

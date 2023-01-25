@@ -22,10 +22,6 @@ def add_argument():
     """Add arguements for deepspeed."""
     parser = argparse.ArgumentParser(description="CIFAR")
 
-    parser.add_argument(
-        "--data-dir", type=str, help="directory containing CIFAR-10 dataset"
-    )
-
     # train
     parser.add_argument(
         "-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)"
@@ -81,14 +77,14 @@ transform = transforms.Compose(
 )
 
 trainset = torchvision.datasets.CIFAR10(
-    root=args.data_dir, train=True, download=False, transform=transform
+    root="./data", train=True, download=False, transform=transform
 )
 trainloader = torch.utils.data.DataLoader(
     trainset, batch_size=4, shuffle=True, num_workers=2
 )
 
 testset = torchvision.datasets.CIFAR10(
-    root=args.data_dir, train=False, download=False, transform=transform
+    root="./data", train=False, download=False, transform=transform
 )
 testloader = torch.utils.data.DataLoader(
     testset, batch_size=4, shuffle=False, num_workers=2
