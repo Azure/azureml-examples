@@ -8,11 +8,11 @@ cat > job.yml << EOF
 
 \$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
-command: bash start-deepspeed.sh --autotuning tune --force_multi train.py --with_aml_log=True --deepspeed --deepspeed_config ds_config.json
+command: bash start-deepspeed.sh --force_multi train.py --with_aml_log=True --deepspeed --deepspeed_config ds_config.json
 
-experiment_name: DistributedJob-DeepsSpeed-Autotuning-cifar
-display_name: deepspeed-autotuning-example
-code: .
+experiment_name: DistributedJob-DeepsSpeed-Training-cifar
+display_name: deepspeed-training-example
+code: src
 environment: azureml:AzureML-ACPT-pytorch-1.11-py38-cuda11.3-gpu@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
@@ -22,7 +22,7 @@ outputs:
   output:
     type: uri_folder
     mode: rw_mount
-    path: azureml://datastores/workspaceblobstore/paths/outputs/autotuning_result
+    path: azureml://datastores/workspaceblobstore/paths/outputs/training_results
 compute: azureml:gpu-v100-cluster
 distribution:
   type: pytorch
@@ -30,4 +30,4 @@ distribution:
 resources:
   instance_count: 2
 EOF
-# az ml job create --file deepspeed-autotune-aml.yaml
+# az ml job create --file deepspeed-training-aml.yaml

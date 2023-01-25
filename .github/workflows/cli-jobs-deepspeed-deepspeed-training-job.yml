@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-jobs-deepspeed-deepspeed-autotuning-src-job
+name: cli-jobs-deepspeed-deepspeed-training-job
 on:
   workflow_dispatch:
   schedule:
@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/deepspeed/deepspeed-autotuning/src/**
+      - cli/jobs/deepspeed/deepspeed-training/**
       - infra/**
-      - .github/workflows/cli-jobs-deepspeed-deepspeed-autotuning-src-job.yml
+      - .github/workflows/cli-jobs-deepspeed-deepspeed-training-job.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -47,5 +47,5 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash -x generate-yml.sh
-          bash -x ../../../../run-job.sh job.yml
-      working-directory: cli/jobs/deepspeed/deepspeed-autotuning/src
+          bash -x ../../../run-job.sh job.yml
+      working-directory: cli/jobs/deepspeed/deepspeed-training

@@ -17,8 +17,8 @@
   "autotuning": {
     "enabled": true,
     "fast": false,
-    "results_dir": "outputs/training_results/results",
-    "exps_dir": "outputs/training_results/exps"
+    "results_dir": "outputs/autotuning_results/results",
+    "exps_dir": "outputs/autotuning_results/exps"
   },
   "steps_per_print": 10
 }
