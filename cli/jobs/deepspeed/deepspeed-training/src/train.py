@@ -65,13 +65,6 @@ print("Current tracking uri: {}".format(tracking_uri))
 #     If running on Windows and you get a BrokenPipeError, try setting
 #     the num_worker of torch.utils.data.DataLoader() to 0.
 
-data_files = os.listdir(args.data_dir)
-expected_file = "cifar-10-batches-py"
-if expected_file not in data_files:
-    print("Folder {} expected in args.data_dir".format(expected_file))
-    print("Found:")
-    print(data_files)
-
 transform = transforms.Compose(
     [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
 )
