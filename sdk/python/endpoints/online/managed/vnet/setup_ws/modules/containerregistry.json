@@ -86,14 +86,17 @@
     {
       "type": "Microsoft.ContainerRegistry/registries/agentPools",
       "apiVersion": "2019-06-01-preview",
-      "name": "apool1",
+      "name": "[format('{0}/{1}', parameters('containerRegistryPleName'), 'apool1')]",
       "location": "[parameters('location')]",
       "properties": {
         "count": 1,
         "os": "Linux",
         "tier": "S1",
         "virtualNetworkSubnetResourceId": "[parameters('subnetId')]"
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]"
+      ]
     },
     {
       "type": "Microsoft.Network/privateEndpoints",
