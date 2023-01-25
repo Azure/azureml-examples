@@ -8,7 +8,13 @@ cat > job.yml << EOF
 
 \$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
-command: bash start-deepspeed.sh --force_multi train.py --with_aml_log=True --data-dir \${{inputs.cifar}} --deepspeed --deepspeed_config ds_config.json
+command: >-
+  bash start-deepspeed.sh
+  --force_multi train.py
+  --with_aml_log=True
+  --data-dir \${{inputs.cifar}}
+  --deepspeed
+  --deepspeed_config ds_config.json
 
 experiment_name: DistributedJob-DeepsSpeed-Training-cifar
 display_name: deepspeed-training-example
