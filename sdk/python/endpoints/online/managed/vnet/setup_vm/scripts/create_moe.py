@@ -6,6 +6,7 @@ from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
     Model,
+
     Environment,
 )
 from azure.identity import ManagedIdentityCredential

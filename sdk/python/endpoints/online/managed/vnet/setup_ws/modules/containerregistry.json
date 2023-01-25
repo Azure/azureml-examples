@@ -84,6 +84,18 @@
       }
     },
     {
+      "type": "Microsoft.ContainerRegistry/registries/agentPools",
+      "apiVersion": "2019-06-01-preview",
+      "name": "apool1",
+      "location": "[parameters('location')]",
+      "properties": {
+        "count": 1,
+        "os": "Linux",
+        "tier": "S1",
+        "virtualNetworkSubnetResourceId": "[parameters('subnetId')]"
+      }
+    },
+    {
       "type": "Microsoft.Network/privateEndpoints",
       "apiVersion": "2020-11-01",
       "name": "[parameters('containerRegistryPleName')]",

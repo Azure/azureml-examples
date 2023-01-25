@@ -1,8 +1,7 @@
 #!/opt/anaconda/envs/vnet/bin/python
 
 import argparse
-from azure.mgmt.containerregistry.v2018_09_01 import ContainerRegistryManagementClient as CRMCv20180901
-from azure.mgmt.containerregistry import ContainerRegistryManagementClient
+from azure.mgmt.containerregistry.v2018_09_01 import ContainerRegistryManagementClient
 from azure.identity import ManagedIdentityCredential
 from azure.mgmt.containerregistry.models import DockerBuildRequest, Credentials, SourceRegistryCredentials, PlatformProperties
 from azure.storage.blob import upload_blob_to_url
@@ -14,11 +13,12 @@ parser.add_argument('--resource_group', type=str, default=os.getenv("RESOURCE_GR
 parser.add_argument('--container_registry', type=str, default=os.getenv("CONTAINER_REGISTRY") )
 parser.add_argument('--image_name', type=str, default=os.getenv("IMAGE_NAME"))
 parser.add_argument('--env_dir_path', type=str, default=os.getenv("ENV_DIR_PATH"))
+parser.add_argument('--location', type=str, default=os.getenv("LOCATION"))
+parser.add_argument('--vnet_name', type=str, default=os.getenv("VNET_NAME"))
 args = parser.parse_args()
 
 credential = ManagedIdentityCredential()
-cr_client = CRMCv20180901(credential, args.subscription_id, api_version="v2018_09_01")
-#cr_client2 = ContainerRegistryManagementClient(credential, args.subscription_id)
+cr_client = ContainerRegistryManagementClient(credential, args.subscription_id, api_version="v2018_09_01")
 
 # <upload_source>
 tar_path = f"/tmp/{uuid.uuid4()}.tar.gz"
@@ -33,7 +33,6 @@ with open(tar_path, "rb") as f:
 
 image_tag = f"{args.container_registry}.azurecr.io/{args.image_name}:1"
 # </upload_source>
-
 
 # <build_image>
 build_request = DockerBuildRequest(
