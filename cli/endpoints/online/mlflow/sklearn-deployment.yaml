@@ -6,5 +6,5 @@ model:
   version: 1
   path: sklearn-diabetes/model
   type: mlflow_model
-instance_type: Standard_DS2_v2
+instance_type: Standard_DS3_v2
 instance_count: 1
