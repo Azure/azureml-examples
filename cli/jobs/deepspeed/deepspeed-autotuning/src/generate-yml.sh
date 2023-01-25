@@ -22,7 +22,7 @@ outputs:
   output:
     type: uri_folder
     mode: rw_mount
-    path: azureml://datastores/workspaceblobstore/paths/outputs/autotuning_result
+    path: azureml://datastores/workspaceblobstore/paths/outputs/autotuning_results
 compute: azureml:gpu-v100-cluster
 distribution:
   type: pytorch
