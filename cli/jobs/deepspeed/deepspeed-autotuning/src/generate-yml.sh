@@ -1,6 +1,6 @@
 #!/bin/bash
 # Generate key
-ssh-keygen -t rsa -f './src/generated-key' -N ''
+ssh-keygen -t rsa -f './generated-key' -N ''
 
 # Generate yaml file with key path
 cat > job.yml << EOF
@@ -12,7 +12,7 @@ command: bash start-deepspeed.sh --autotuning tune --force_multi train.py --with
 
 experiment_name: DistributedJob-DeepsSpeed-Autotuning-cifar
 display_name: deepspeed-autotuning-example
-code: src
+code: .
 environment: azureml:AzureML-ACPT-pytorch-1.11-py38-cuda11.3-gpu@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
