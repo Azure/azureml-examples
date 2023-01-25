@@ -6,7 +6,6 @@ from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
     Model,
-    CodeConfiguration,
     Environment,
 )
 from azure.identity import ManagedIdentityCredential
@@ -30,7 +29,7 @@ ml_client = MLClient(credential=credential, subscription_id=args.subscription_id
 endpoint = ManagedOnlineEndpoint(
     name=args.endpoint_name,
     auth_mode="key",
-    #public_network_access="disabled"
+    public_network_access="disabled"
 )
 endpoint = ml_client.begin_create_or_update(endpoint).result()
 # </create_endpoint>
@@ -40,10 +39,8 @@ deployment = ManagedOnlineDeployment(
     name="blue",
     endpoint_name=args.endpoint_name,
     model=Model(path="vnet/sample/model/sklearn_regression_model.pkl"),
-    code=CodeConfiguration(
-        code="vnet/sample/onlinescoring",
-        scoring_script="score.py",
-    ),
+    code_path="vnet/sample/onlinescoring",
+    scoring_script="score.py",
     environment=Environment(
         image=f"{args.container_registry}.azurecr.io/{args.image_name}:1",
         inference_config={
