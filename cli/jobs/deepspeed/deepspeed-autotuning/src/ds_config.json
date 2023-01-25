@@ -17,7 +17,6 @@
   "autotuning": {
     "enabled": true,
     "fast": false,
-    "overwrite": true,
     "results_dir": "outputs/autotuning_results/results",
     "exps_dir": "outputs/autotuning_results/exps"
   },
