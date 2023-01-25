@@ -75,13 +75,10 @@ Read [Create data assets](how-to-create-data-assets.md) for more information abo
 > -----------------------------
 
 **_Note: After the download data step, the script should automatically copy the original source data into the user's local device drive_**
-**_Note: rework the paragraph explaining what user is doing here after breaking down code snippets_**
-
-This code sample will upload the raw data file to the designated cloud storage resource. The **version** property in the **my_data** block requires a unique value each time this code sample runs, or the code will fail with this feedback message:
 
 **Covered 20230123: _Note: break down the code snippets so we can explain each block_**
 
-This block will configure the MLClient object for those Azure ML resources. Replace the strings between the **"<"** and **">"** characters with values specific to your Azure ML resources.
+This notebook cell will configure the MLClient object for those Azure ML resources. Replace the strings between the **"<"** and **">"** characters with values specific to your Azure ML resources.
 
 ```python
 from azure.ai.ml import MLClient
@@ -101,7 +98,9 @@ ml_client = MLClient(
 )
 ```
 
-This block creates the data asset:
+**_Note: rework the paragraph explaining what user is doing here after breaking down code snippets_**
+
+The next notebook cell creates the data asset. Here, the code sample will upload the raw data file to the designated cloud storage resource. This upload operation requires unique **version** and **name** properties in the **my_data** block. Otherwise, the cell will fail. To run this cell code more than once with the same **name** value, change the **version** value each time you run the code. As another workaround, you can also comment out the **version** value. This approach will create new data asset each time the cell runs, and it will auto-increment the version numbers of those versions, starting from 1:
 
 ```python
 # update <path> to be the location of where you downloaded the data on your
@@ -112,7 +111,8 @@ my_path = <path>/default_of_credit_card_clients.csv'
 
 # define the data asset
 
-# The version value is optional in this statement. Without it, this code can re-execute this cell with the given name and version values.
+# The version value is optional in this statement. Without it, this code
+# can re-execute this cell with the given name and version values.
 # In this case, AutoML will create new data assets each time the cell
 # executes, and it will auto-increment the version number of those
 # data assets, starting from 1.
