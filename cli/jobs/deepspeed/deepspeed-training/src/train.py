@@ -129,8 +129,9 @@ criterion = nn.CrossEntropyLoss()
 # ^^^^^^^^^^^^^^^^^^^^
 #
 # Showcasing logging metrics to automl.
+if args.with_aml_log:
+    mlflow.log_metrics({"hello": 12345})
 
-mlflow.log_metrics({"hello": 12345})
 # This is when things start to get interesting.
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
@@ -158,7 +159,7 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         # if i % 2000 == 1999:  # print every 2000 mini-batches
         loss = running_loss / 2000
         print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
-        if args.with_aml_log and mlflow.active_run():
+        if args.with_aml_log:
             try:
                 mlflow.log_metrics({"loss": loss})
             except NameError:
