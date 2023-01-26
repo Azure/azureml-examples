@@ -305,7 +305,7 @@ def write_readme(notebooks, pipeline_folder=None):
 
             try:
                 # read in notebook
-                with open(notebook, "r") as f:
+                with open(notebook, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 description = "*no description*"
