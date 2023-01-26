@@ -112,6 +112,11 @@
               "groupIds": [
                 "[variables('groupName')]"
               ],
+              "privateLinkServiceId": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryNameCleaned'))]"
+            }
+          }
+        ],
+        "subnet": {
           "id": "[parameters('subnetId')]"
         }
       },
