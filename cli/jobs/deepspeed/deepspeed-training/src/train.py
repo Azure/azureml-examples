@@ -129,11 +129,8 @@ criterion = nn.CrossEntropyLoss()
 # ^^^^^^^^^^^^^^^^^^^^
 #
 # Showcasing logging metrics to automl.
-if args.with_aml_log:
-    this_run = mlflow.active_run()
-    if this_run:
-        print("Active run_id: {}".format(this_run.info.run_id))
-        mlflow.log_metrics({"hello": 12345})
+
+mlflow.log_metrics({"hello": 12345})
 # This is when things start to get interesting.
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
