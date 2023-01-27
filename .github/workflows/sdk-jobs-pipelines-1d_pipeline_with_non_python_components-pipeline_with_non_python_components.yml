@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1d_pipeline_with_non_python_components-pipeline_with_no
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "38 3/8 * * *"
   pull_request:
     branches:
       - main

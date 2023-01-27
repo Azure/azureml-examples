@@ -9,7 +9,7 @@ name: sdk-endpoints-batch-text-summarization-batch
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "16 6/8 * * *"
   pull_request:
     branches:
       - main

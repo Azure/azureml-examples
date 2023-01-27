@@ -9,7 +9,7 @@ name: sdk-endpoints-online-mlflow-online-endpoints-deploy-mlflow-model
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "58 4/8 * * *"
   pull_request:
     branches:
       - main

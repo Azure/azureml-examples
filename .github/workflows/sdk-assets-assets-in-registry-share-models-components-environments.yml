@@ -9,7 +9,7 @@ name: sdk-assets-assets-in-registry-share-models-components-environments
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "32 0/8 * * *"
   pull_request:
     branches:
       - main

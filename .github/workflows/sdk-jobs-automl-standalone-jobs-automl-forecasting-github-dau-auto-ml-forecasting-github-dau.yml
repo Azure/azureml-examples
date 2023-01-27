@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-github-dau-auto-ml-fore
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "20 7/8 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-pytorch-iris-pytorch-iris
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "56 5/8 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-endpoints-online-custom-container-online-endpoints-custom-container
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "9 6/8 * * *"
   pull_request:
     branches:
       - main

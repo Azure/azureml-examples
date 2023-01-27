@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-tensorflow-mnist-tensorflow-mnist
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "21 5/8 * * *"
   pull_request:
     branches:
       - main

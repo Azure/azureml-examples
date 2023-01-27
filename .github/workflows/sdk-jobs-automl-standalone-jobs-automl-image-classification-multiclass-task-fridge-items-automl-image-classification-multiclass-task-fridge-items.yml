@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-image-classification-multiclass-tas
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "13 6/8 * * *"
   pull_request:
     branches:
       - main

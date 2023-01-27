@@ -9,7 +9,7 @@ name: sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-safe-rollout
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "54 1/8 * * *"
   pull_request:
     branches:
       - main

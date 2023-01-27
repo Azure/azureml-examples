@@ -4,6 +4,7 @@ import os
 import json
 import glob
 import argparse
+import hashlib
 
 from configparser import ConfigParser
 
@@ -144,6 +145,12 @@ def write_notebook_workflow(
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
 
+    # Schedule notebooks at different times to reduce maximum quota usage.
+    name_hash = int(hashlib.sha512(name.encode()).hexdigest(), 16)
+    schedule_minute = name_hash % 60
+    hours_between_runs = 8
+    schedule_hour = (name_hash // 60) % hours_between_runs
+
     workflow_yaml = f"""{READONLY_HEADER}
 name: sdk-{classification}-{name}
 # This file is created by sdk/python/readme.py.
@@ -153,7 +160,7 @@ on:\n"""
         workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
         workflow_yaml += f"""  schedule:
-    - cron: "0 */8 * * *"\n"""
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main\n"""

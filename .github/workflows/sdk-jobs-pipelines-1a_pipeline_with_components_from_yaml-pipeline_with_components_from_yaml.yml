@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1a_pipeline_with_components_from_yaml-pipeline_with_com
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "45 1/8 * * *"
   pull_request:
     branches:
       - main

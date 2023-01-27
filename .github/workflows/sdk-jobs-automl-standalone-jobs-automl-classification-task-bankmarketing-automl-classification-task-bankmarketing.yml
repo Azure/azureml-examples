@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-a
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "6 0/8 * * *"
   pull_request:
     branches:
       - main

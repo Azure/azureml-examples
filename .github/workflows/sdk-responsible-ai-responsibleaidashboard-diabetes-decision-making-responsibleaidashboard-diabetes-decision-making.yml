@@ -9,7 +9,7 @@ name: sdk-responsible-ai-responsibleaidashboard-diabetes-decision-making-respons
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "52 7/8 * * *"
   pull_request:
     branches:
       - main

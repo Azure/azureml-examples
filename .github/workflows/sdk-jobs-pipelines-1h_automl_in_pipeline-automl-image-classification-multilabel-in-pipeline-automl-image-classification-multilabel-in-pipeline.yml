@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-image-classification-multi
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "45 6/8 * * *"
   pull_request:
     branches:
       - main

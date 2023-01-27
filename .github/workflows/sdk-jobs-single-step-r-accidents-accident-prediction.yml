@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-r-accidents-accident-prediction
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "43 1/8 * * *"
   pull_request:
     branches:
       - main

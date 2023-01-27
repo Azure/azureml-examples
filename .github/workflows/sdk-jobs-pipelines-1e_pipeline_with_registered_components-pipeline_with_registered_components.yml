@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1e_pipeline_with_registered_components-pipeline_with_re
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "24 5/8 * * *"
   pull_request:
     branches:
       - main

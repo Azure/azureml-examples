@@ -9,7 +9,7 @@ name: sdk-resources-compute-compute
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "25 1/8 * * *"
   pull_request:
     branches:
       - main

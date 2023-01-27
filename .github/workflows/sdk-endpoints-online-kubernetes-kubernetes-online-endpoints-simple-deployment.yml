@@ -9,7 +9,7 @@ name: sdk-endpoints-online-kubernetes-kubernetes-online-endpoints-simple-deploym
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "17 0/8 * * *"
   pull_request:
     branches:
       - main
