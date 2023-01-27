@@ -18,6 +18,8 @@ environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
   AZUREML_SSH_KEY: 'generated-key'
+limits:
+  timeout: 2400
 outputs:
   output:
     type: uri_folder
