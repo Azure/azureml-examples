@@ -1,10 +1,13 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
+inputs:
+  pipeline_input_a: "a"
 jobs:
   train:
     code: ./src/
     inputs:
+      input_from_pipeline: ${{parent.inputs.pipeline_input_a}}
       images_type: "jpg"
       images_filename_pattern: "(.*)\\.jpg"
       masks_filename_pattern: "(.*)\\.png"
@@ -13,7 +16,7 @@ jobs:
       loss: "sparse_categorical_crossentropy"
     # environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
     compute: azureml:cpu-cluster
-    environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
+    environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu:25
 
     command: >-
         python run.py 

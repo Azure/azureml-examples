@@ -58,6 +58,19 @@ def run(args):
     print("location : mlflow.start_run")
     print("run_id : {}".format(run.info.run_id))
     print("run_params : {}".format(run.data.params))
+
+    logged_params = {
+                # log some distribution params
+                "images_type": "dummy",
+                "test_param" : "abc"}
+
+    mlflow.log_params(logged_params)
+
+    run = client.get_run(run.info.run_id)
+
+    print("location : after log_param")
+    print("run_id : {}".format(run.info.run_id))
+    print("run_params : {}".format(run.data.params))
   
 
 
