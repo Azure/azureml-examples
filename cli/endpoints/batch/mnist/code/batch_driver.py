@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from PIL import Image
-from azureml.core import Model
 
 
 def init():
