@@ -131,7 +131,7 @@ class TensorflowDistributedModelTrainingSequence:
                 "instance_per_node": self.gpus,
                 "disable_cuda": bool(self.training_config.disable_cuda),
                 "distributed": self.distributed_available,
-                "distributed_strategy": self.training_config.distributed_strategy,
+                "distributed_strategy_resolved": self.training_config.distributed_strategy,
                 "distributed_backend": self.training_config.distributed_backend,
                 # data loading params
                 "batch_size": self.dataloading_config.batch_size,
