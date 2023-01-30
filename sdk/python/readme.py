@@ -22,12 +22,16 @@ NOT_TESTED_NOTEBOOKS = [
     "attach_manage_spark_pools",
     "submit_spark_pipeline_jobs",
     "submit_spark_standalone_jobs",
-    "logging_model_with_mlflow",
+    # mlflow SDK samples notebooks
+    "mlflow_sdk_online_endpoints_progresive",
+    "mlflow_sdk_online_endpoints",
+    "mlflow_sdk_web_service",
     "scoring_to_mlmodel",
-    "model_management",
-    "deploying_with_mlflow",
     "track_with_databricks_deploy_aml",
+    "model_management",
     "run_history",
+    "keras_mnist_with_mlflow",
+    "logging_and_customizing_models",
     "xgboost_classification_mlflow",
     "xgboost_nested_runs",
     "xgboost_service_principal",
@@ -174,7 +178,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
@@ -226,7 +230,7 @@ jobs:
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
-        workflow_yaml += f"""          
+        workflow_yaml += f"""
           papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
     else:
@@ -234,6 +238,14 @@ jobs:
         workflow_yaml += f"""
           papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
+
+    if name == "connections":
+        workflow_yaml += """
+      env:
+        ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+        GIT_PAT: ${{ secrets.GIT_PAT }}
+        PYTHON_FEED_SAS: ${{ secrets.PYTHON_FEED_SAS }}"""
 
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
@@ -293,7 +305,7 @@ def write_readme(notebooks, pipeline_folder=None):
 
             try:
                 # read in notebook
-                with open(notebook, "r") as f:
+                with open(notebook, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 description = "*no description*"

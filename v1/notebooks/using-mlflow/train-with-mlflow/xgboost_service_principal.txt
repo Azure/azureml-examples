@@ -1,9 +1,0 @@
-xgboost
-mlflow
-azureml-mlflow
-scikit-learn
-pandas
-numpy
-matplotlib
-azure-ai-ml
-protobuf~=3.19.0

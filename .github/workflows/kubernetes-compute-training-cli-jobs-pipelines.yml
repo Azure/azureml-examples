@@ -15,7 +15,7 @@ on:
       JOB_FILTER:
         description: 'Job filter used with grep command to filter out job workflows'
         required: false
-        default: 'image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
+        default: '4b_datastore_datapath_uri|image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JOB_SELECTOR: '^cli-jobs-pipelines.*yml$'
-      JOB_FILTER: 'image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
+      JOB_FILTER: '4b_datastore_datapath_uri|image_classification_with_densenet|spark|image-instance-segmentation-task-fridge-items-pipeline|image-multiclass-classification-fridge-items-pipeline|image-multilabel-classification-fridge-items-pipeline|image-object-detection-task-fridge-items-pipeline'
       JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-pipelines.txt
       TIMEOUT: '120m'
       MIN_SUCCESS_NUM: 1
@@ -66,11 +66,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZ_CREDS}}
-      timeout-minutes: 30
-
-    - name: collect jobs
-      run: |
-        bash .github/kubernetes-compute/tool.sh collect_jobs_from_workflows "$JOB_LIST_FILE"  "$JOB_SELECTOR" "$JOB_FILTER"
       timeout-minutes: 30
 
     - name: collect jobs
