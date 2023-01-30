@@ -32,8 +32,6 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-          sudo apt-get -y update && sudo apt-get -y install powershell
-          pwsh -v
       working-directory: cli
       continue-on-error: true
     - name: Perform Cleanup
@@ -44,11 +42,11 @@ jobs:
       working-directory: infra
       continue-on-error: true
     - name: Perform additional Cleanup
-      shell: pwsh
       run: |
-        Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force;
-        Import-Module Az;
-        "${{ github.workspace }}/infra/sdk_helpers.sh";
-        "${{ github.workspace }}/infra/init_environment.sh";
-        & "${{ github.workspace }}/infra/scripts/call_all_scripts.ps1" 
-      working-directory: infra
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          bash setup.sh
+          sudo apt-get -y update && sudo apt-get -y install powershell
+          pwsh -v
+          pwsh -c 'Install-Module Az -Force; Import-Module Az -Force;'
+          pwsh -File '${{ github.workspace }}/infra/scripts/call_all_scripts.ps1'
