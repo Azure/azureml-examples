@@ -48,5 +48,7 @@ jobs:
       run: |
         Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force;
         Import-Module Az;
+        bash "${{ github.workspace }}/infra/sdk_helpers.sh";
+        bash "${{ github.workspace }}/infra/init_environment.sh";
         & ${{ github.workspace }}/infra/scripts/remove-role-assignments.ps1 -ResourceScope "/subscriptions/$env:SUBSCRIPTION_ID/resourceGroups/$env:RESOURCE_GROUP_NAME" 
       working-directory: infra
