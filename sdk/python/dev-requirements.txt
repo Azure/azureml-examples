@@ -9,3 +9,4 @@ tensorflow
 tensorflow-hub
 transformers
 keras==2.9
+jupyter-client==7.4.9
