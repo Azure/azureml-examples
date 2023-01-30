@@ -37,7 +37,7 @@ internal class ComponentOperations
         ComponentContainerResource componentContainerResource = armClient.GetComponentContainerResource(id);
 
         JObject jsonObject = JObject.Parse(@"{
-  '$schema': 'https://azuremlschemas.azureedge.net/development/commandComponent.schema.json',
+  '$schema': 'https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json',
   'name': '" + componentName + @"',
   'type': 'command',
   'version': '" + version + @"',
@@ -119,7 +119,7 @@ internal class ComponentOperations
         ComponentContainerResource componentContainerResource = armClient.GetComponentContainerResource(id);
 
         JObject jsonObject = JObject.Parse(@"{
-  '$schema': 'https://azuremlschemas.azureedge.net/development/commandComponent.schema.json',
+  '$schema': 'https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json',
   'name': '" + componentName + @"',
   'type': 'command',
   'version': '" + version + @"',
