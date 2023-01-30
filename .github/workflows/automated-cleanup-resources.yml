@@ -32,10 +32,8 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
-          apt-get -y update && apt-get -y install powershell
+          sudo apt-get -y update && sudo apt-get -y install powershell
           pwsh -v
-          pwsh -c "Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force"
-          pwsh -c "Import-Module Az"
       working-directory: cli
       continue-on-error: true
     - name: Perform Cleanup
@@ -48,7 +46,7 @@ jobs:
     - name: Perform additional Cleanup
       shell: pwsh
       run: |
-        & "${{ github.workspace }}/infra/sdk_helpers.sh";
-        & "${{ github.workspace }}/infra/init_environment.sh";
+        Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force;
+        Import-Module Az;
         & ${{ github.workspace }}/infra/scripts/remove-role-assignments.ps1 -ResourceScope "/subscriptions/$env:SUBSCRIPTION_ID/resourceGroups/$env:RESOURCE_GROUP_NAME" 
       working-directory: infra
