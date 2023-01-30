@@ -27,7 +27,6 @@ try
 }
 catch
 {
-    Write-Error "There was an issue cleaning the . See details: $($_.ErrorDetails.Message)"
-    # Write-Error $_.Exception.Message
-    # Exit 1
+    Write-Error "There was an issue in cleaning-up the Role Assignment. See details: $($_.ErrorDetails.Message)"
+    Exit 1
 }
