@@ -18,13 +18,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - run:
-        name: Install for PowerShell
-        command: |
-          apt-get -y update && apt-get -y install powershell
-          pwsh -v
-          pwsh -c "Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force"
-          pwsh -c "Import-Module Az"
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -39,6 +32,10 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash setup.sh
+          apt-get -y update && apt-get -y install powershell
+          pwsh -v
+          pwsh -c "Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force"
+          pwsh -c "Import-Module Az"
       working-directory: cli
       continue-on-error: true
     - name: Perform Cleanup
