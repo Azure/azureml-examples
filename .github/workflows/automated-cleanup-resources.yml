@@ -45,7 +45,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          bash setup.sh
           sudo apt-get -y update && sudo apt-get -y install powershell
           pwsh -v
           pwsh -c 'Install-Module Az -Force; Import-Module Az -Force;'
