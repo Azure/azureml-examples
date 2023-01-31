@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-2c_nyc_taxi_data_regression-nyc_taxi_data_regression
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "38 2/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-online-endpoints-simple-deployment
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "16 2/12 * * *"
   pull_request:
     branches:
       - main

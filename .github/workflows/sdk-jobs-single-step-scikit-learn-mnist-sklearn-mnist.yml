@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-scikit-learn-mnist-sklearn-mnist
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "34 9/12 * * *"
   pull_request:
     branches:
       - main

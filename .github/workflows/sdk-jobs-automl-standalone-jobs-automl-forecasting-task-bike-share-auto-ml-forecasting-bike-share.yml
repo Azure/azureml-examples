@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-task-bike-share-auto-ml
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "57 6/12 * * *"
   pull_request:
     branches:
       - main

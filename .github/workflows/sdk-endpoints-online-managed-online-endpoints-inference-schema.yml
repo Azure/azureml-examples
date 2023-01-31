@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-online-endpoints-inference-schema
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "13 11/12 * * *"
   pull_request:
     branches:
       - main

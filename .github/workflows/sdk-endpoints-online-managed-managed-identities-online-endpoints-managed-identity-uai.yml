@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-managed-identities-online-endpoints-managed-i
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "15 9/12 * * *"
   pull_request:
     branches:
       - main

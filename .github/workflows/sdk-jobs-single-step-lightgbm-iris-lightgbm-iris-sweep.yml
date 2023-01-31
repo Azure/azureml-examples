@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-lightgbm-iris-lightgbm-iris-sweep
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "51 4/12 * * *"
   pull_request:
     branches:
       - main

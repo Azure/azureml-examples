@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-pytorch-distributed-training-distributed-cifar10
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "2 8/12 * * *"
   pull_request:
     branches:
       - main

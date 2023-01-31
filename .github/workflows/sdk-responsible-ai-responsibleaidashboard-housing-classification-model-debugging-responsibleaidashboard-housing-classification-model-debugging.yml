@@ -9,7 +9,7 @@ name: sdk-responsible-ai-responsibleaidashboard-housing-classification-model-deb
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "59 2/12 * * *"
   pull_request:
     branches:
       - main
