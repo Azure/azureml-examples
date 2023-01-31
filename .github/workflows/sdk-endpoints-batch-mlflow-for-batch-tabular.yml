@@ -9,7 +9,7 @@ name: sdk-endpoints-batch-mlflow-for-batch-tabular
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "11 8/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-jobs-configuration
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "59 7/12 * * *"
   pull_request:
     branches:
       - main

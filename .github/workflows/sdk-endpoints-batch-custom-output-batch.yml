@@ -9,7 +9,7 @@ name: sdk-endpoints-batch-custom-output-batch
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "24 11/12 * * *"
   pull_request:
     branches:
       - main

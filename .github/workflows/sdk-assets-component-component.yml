@@ -9,7 +9,7 @@ name: sdk-assets-component-component
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "17 7/12 * * *"
   pull_request:
     branches:
       - main

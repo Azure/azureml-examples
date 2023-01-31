@@ -9,7 +9,7 @@ name: sdk-endpoints-online-custom-container-triton-online-endpoints-triton-cc
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "27 9/12 * * *"
   pull_request:
     branches:
       - main
