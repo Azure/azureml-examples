@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-auto
 on:
   workflow_dispatch:
   schedule:
-    - cron: "41 0/8 * * *"
+    - cron: "41 0/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-forecasting-in-pipeline-au
 on:
   workflow_dispatch:
   schedule:
-    - cron: "47 6/8 * * *"
+    - cron: "47 2/12 * * *"
   pull_request:
     branches:
       - main

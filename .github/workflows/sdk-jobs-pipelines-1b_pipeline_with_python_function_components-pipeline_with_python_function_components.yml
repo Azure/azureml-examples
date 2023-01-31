@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1b_pipeline_with_python_function_components-pipeline_wi
 on:
   workflow_dispatch:
   schedule:
-    - cron: "33 3/8 * * *"
+    - cron: "33 3/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-image-instance-segmentation-task-fr
 on:
   workflow_dispatch:
   schedule:
-    - cron: "32 6/8 * * *"
+    - cron: "32 10/12 * * *"
   pull_request:
     branches:
       - main

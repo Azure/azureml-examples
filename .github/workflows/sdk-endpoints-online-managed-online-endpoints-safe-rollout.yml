@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-online-endpoints-safe-rollout
 on:
   workflow_dispatch:
   schedule:
-    - cron: "55 6/8 * * *"
+    - cron: "55 2/12 * * *"
   pull_request:
     branches:
       - main

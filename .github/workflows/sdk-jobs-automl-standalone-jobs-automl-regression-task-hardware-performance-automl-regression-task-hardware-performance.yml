@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performanc
 on:
   workflow_dispatch:
   schedule:
-    - cron: "7 5/8 * * *"
+    - cron: "7 9/12 * * *"
   pull_request:
     branches:
       - main

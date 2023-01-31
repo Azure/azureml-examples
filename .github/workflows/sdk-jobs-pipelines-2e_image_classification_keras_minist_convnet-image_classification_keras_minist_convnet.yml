@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-2e_image_classification_keras_minist_convnet-image_clas
 on:
   workflow_dispatch:
   schedule:
-    - cron: "48 4/8 * * *"
+    - cron: "48 4/12 * * *"
   pull_request:
     branches:
       - main

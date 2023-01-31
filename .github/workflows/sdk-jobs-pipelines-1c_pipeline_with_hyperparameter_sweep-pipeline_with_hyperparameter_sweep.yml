@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1c_pipeline_with_hyperparameter_sweep-pipeline_with_hyp
 on:
   workflow_dispatch:
   schedule:
-    - cron: "18 0/8 * * *"
+    - cron: "18 8/12 * * *"
   pull_request:
     branches:
       - main

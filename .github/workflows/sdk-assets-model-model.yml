@@ -9,7 +9,7 @@ name: sdk-assets-model-model
 on:
   workflow_dispatch:
   schedule:
-    - cron: "1 7/8 * * *"
+    - cron: "1 7/12 * * *"
   pull_request:
     branches:
       - main

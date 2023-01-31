@@ -148,7 +148,7 @@ def write_notebook_workflow(
     # Schedule notebooks at different times to reduce maximum quota usage.
     name_hash = int(hashlib.sha512(name.encode()).hexdigest(), 16)
     schedule_minute = name_hash % 60
-    hours_between_runs = 8
+    hours_between_runs = 12
     schedule_hour = (name_hash // 60) % hours_between_runs
 
     workflow_yaml = f"""{READONLY_HEADER}

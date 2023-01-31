@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1g_pipeline_with_parallel_nodes-pipeline_with_parallel_
 on:
   workflow_dispatch:
   schedule:
-    - cron: "1 2/8 * * *"
+    - cron: "1 10/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-endpoints-batch-mnist-batch
 on:
   workflow_dispatch:
   schedule:
-    - cron: "11 5/8 * * *"
+    - cron: "11 1/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-schedules-job-schedule
 on:
   workflow_dispatch:
   schedule:
-    - cron: "35 1/8 * * *"
+    - cron: "35 9/12 * * *"
   pull_request:
     branches:
       - main

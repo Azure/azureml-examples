@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-2b_train_cifar_10_with_pytorch-train_cifar_10_with_pyto
 on:
   workflow_dispatch:
   schedule:
-    - cron: "3 1/8 * * *"
+    - cron: "3 5/12 * * *"
   pull_request:
     branches:
       - main

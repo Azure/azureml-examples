@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-online-endpoints-multimodel
 on:
   workflow_dispatch:
   schedule:
-    - cron: "49 1/8 * * *"
+    - cron: "49 1/12 * * *"
   pull_request:
     branches:
       - main

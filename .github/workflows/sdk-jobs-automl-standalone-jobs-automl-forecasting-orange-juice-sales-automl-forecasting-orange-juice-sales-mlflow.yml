@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-auto
 on:
   workflow_dispatch:
   schedule:
-    - cron: "38 3/8 * * *"
+    - cron: "38 11/12 * * *"
   pull_request:
     branches:
       - main

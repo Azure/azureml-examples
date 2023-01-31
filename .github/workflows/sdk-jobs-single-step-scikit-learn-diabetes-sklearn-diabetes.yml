@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-scikit-learn-diabetes-sklearn-diabetes
 on:
   workflow_dispatch:
   schedule:
-    - cron: "31 6/8 * * *"
+    - cron: "31 10/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-assets-data-data
 on:
   workflow_dispatch:
   schedule:
-    - cron: "2 3/8 * * *"
+    - cron: "2 11/12 * * *"
   pull_request:
     branches:
       - main
