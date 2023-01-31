@@ -7,7 +7,7 @@ name: cli-jobs-automl-standalone-jobs-cli-automl-image-object-detection-task-fri
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "0 3/12 * * *"
   pull_request:
     branches:
       - main

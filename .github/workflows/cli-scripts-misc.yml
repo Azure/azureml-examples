@@ -7,7 +7,7 @@ name: cli-scripts-misc
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "38 9/12 * * *"
   pull_request:
     branches:
       - main

@@ -7,7 +7,7 @@ name: cli-jobs-automl-standalone-jobs-cli-automl-text-ner-conll-cli-automl-text-
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "17 3/12 * * *"
   pull_request:
     branches:
       - main

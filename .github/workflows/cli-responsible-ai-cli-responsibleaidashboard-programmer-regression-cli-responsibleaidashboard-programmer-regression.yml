@@ -7,7 +7,7 @@ name: cli-responsible-ai-cli-responsibleaidashboard-programmer-regression-cli-re
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "5 8/12 * * *"
   pull_request:
     branches:
       - main

@@ -7,7 +7,7 @@ name: cli-scripts-deploy-mlcompute-create_with-system-identity
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "16 5/12 * * *"
   pull_request:
     branches:
       - main
