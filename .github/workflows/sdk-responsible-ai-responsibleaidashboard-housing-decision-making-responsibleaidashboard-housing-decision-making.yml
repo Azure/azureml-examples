@@ -9,7 +9,7 @@ name: sdk-responsible-ai-responsibleaidashboard-housing-decision-making-responsi
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "12 7/12 * * *"
   pull_request:
     branches:
       - main

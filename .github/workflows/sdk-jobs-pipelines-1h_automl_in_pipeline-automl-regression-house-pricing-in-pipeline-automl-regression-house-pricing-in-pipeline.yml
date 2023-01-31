@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-regression-house-pricing-i
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "31 10/12 * * *"
   pull_request:
     branches:
       - main

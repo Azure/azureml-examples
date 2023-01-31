@@ -9,7 +9,7 @@ name: sdk-responsible-ai-responsibleaidashboard-programmer-regression-model-debu
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "9 2/12 * * *"
   pull_request:
     branches:
       - main

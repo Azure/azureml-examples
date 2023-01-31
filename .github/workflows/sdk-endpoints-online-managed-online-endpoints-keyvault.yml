@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-online-endpoints-keyvault
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "38 4/12 * * *"
   pull_request:
     branches:
       - main

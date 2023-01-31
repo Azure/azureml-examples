@@ -9,7 +9,7 @@ name: sdk-endpoints-online-managed-online-endpoints-openapi
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "1 9/12 * * *"
   pull_request:
     branches:
       - main

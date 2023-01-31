@@ -9,7 +9,7 @@ name: sdk-endpoints-online-triton-single-model-online-endpoints-triton
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "47 5/12 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-1h_automl_in_pipeline-automl-text-classification-in-pip
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "21 7/12 * * *"
   pull_request:
     branches:
       - main
