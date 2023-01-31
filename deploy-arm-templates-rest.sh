@@ -12,7 +12,7 @@ echo -e "Using:\nSUBSCRIPTION_ID=$SUBSCRIPTION_ID\nLOCATION=$LOCATION\nRESOURCE_
 
 # <read_condafile>
 CONDA_FILE=$(< cli/endpoints/online/model-1/environment/conda.yml)
-# <read_condafile>
+# </read_condafile>
 
 #<get_access_token>
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
@@ -145,11 +145,11 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         }
     }
 }"
-# <\create_code>
+# </create_code>
 
 # <upload_model>
 az storage blob upload-batch -d $AZUREML_DEFAULT_CONTAINER/model -s cli/endpoints/online/model-1/model --account-name $AZURE_STORAGE_ACCOUNT
-# <\upload_model>
+# </upload_model>
 
 # <create_model>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Resources/deployments/sklearn?api-version=2021-04-01" \
@@ -231,11 +231,11 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         }
     }
 }"
-# <\create_model>
+# </create_model>
 
 # <read_condafile>
 CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
-# <read_condafile>
+# </read_condafile>
 
 # <create_environment>
 ENV_VERSION=$RANDOM
@@ -326,7 +326,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
     }
   }
 }"
-# <\create_environment>
+# </create_environment>
 
 # <create_endpoint>
 curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Resources/deployments/$ENDPOINT_NAME?api-version=2021-04-01" \
@@ -425,7 +425,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
         }
     }
 }"
-# <\create_endpoint>
+# </create_endpoint>
 
 # <get_endpoint>
 endpoint_cmd() {
@@ -600,11 +600,11 @@ wait_for_completion deployment_cmd
 scoringUri=$(echo deployment_cmd | jq -r '.properties' | jq -r '.scoringUri')
 # </get_deployment>
 
-# <get_access_token>
+# <get_endpoint_access_token>
 response=$(curl -H "Content-Length: 0" --location --request POST "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/onlineEndpoints/$ENDPOINT_NAME/token?api-version=$API_VERSION" \
 --header "Authorization: Bearer $TOKEN")
 accessToken=$(echo $response | jq -r '.accessToken')
-# </get_access_token>
+# </get_endpoint_access_token>
 
 # <score_endpoint>
 curl --location --request POST $scoringUri \
