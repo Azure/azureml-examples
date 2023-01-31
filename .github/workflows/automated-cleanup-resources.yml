@@ -26,7 +26,12 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
+        enable-AzPSSession: true
       continue-on-error: true
+    - name: "Install Az Modules"
+      shell: pwsh
+      run: |
+        Install-Module Az -Force; Import-Module Az -Force;
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
@@ -45,7 +50,4 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          sudo apt-get -y update && sudo apt-get -y install powershell
-          pwsh -v
-          pwsh -c 'Install-Module Az -Force; Import-Module Az -Force;'
           pwsh -File '${{ github.workspace }}/infra/scripts/call_all_scripts.ps1'
