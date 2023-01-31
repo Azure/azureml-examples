@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/development/CommandComponent.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
 name: microsoftsamples_convert_to_image_directory
