@@ -7,7 +7,7 @@ name: cli-scripts-batch-score
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "51 0/12 * * *"
   pull_request:
     branches:
       - main
