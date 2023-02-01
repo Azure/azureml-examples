@@ -7,7 +7,7 @@ name: cli-schedules-schedules-recurrence-job-schedule
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "52 10/12 * * *"
   pull_request:
     branches:
       - main

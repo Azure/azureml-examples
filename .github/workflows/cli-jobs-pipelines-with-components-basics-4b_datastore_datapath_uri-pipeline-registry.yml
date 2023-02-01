@@ -7,7 +7,7 @@ name: cli-jobs-pipelines-with-components-basics-4b_datastore_datapath_uri-pipeli
 on:
   workflow_dispatch:
   schedule:
-    - cron: "59 0/8 * * *"
+    - cron: "4 6/12 * * *"
   pull_request:
     branches:
       - main

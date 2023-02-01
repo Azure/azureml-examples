@@ -7,7 +7,7 @@ name: cli-scripts-deploy-moe-keyvault
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "18 3/12 * * *"
   pull_request:
     branches:
       - main

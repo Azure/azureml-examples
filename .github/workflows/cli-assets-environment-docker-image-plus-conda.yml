@@ -7,7 +7,7 @@ name: cli-assets-environment-docker-image-plus-conda
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "8 3/12 * * *"
   pull_request:
     branches:
       - main

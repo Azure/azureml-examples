@@ -7,7 +7,7 @@ name: cli-assets-data-local-folder
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "3 10/12 * * *"
   pull_request:
     branches:
       - main
