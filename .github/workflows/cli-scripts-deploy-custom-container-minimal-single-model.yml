@@ -7,7 +7,7 @@ name: cli-scripts-deploy-custom-container-minimal-single-model
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "20 4/12 * * *"
   pull_request:
     branches:
       - main
