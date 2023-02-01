@@ -1,6 +1,5 @@
 #!/bin/bash
 az_batch_host_list="$AZ_BATCH_HOST_LIST"
-local_gpu_count=$((AZ_BATCHAI_GPU_COUNT / AZUREML_NODE_COUNT))
 RANK="$AZUREML_CR_NODE_RANK"
 
 # Start ssh
@@ -19,31 +18,36 @@ touch /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 /usr/sbin/sshd -D -p 1143 &
 
-# Create hostfile
+# Create hostfile. Use process_count_per_instance variable to populate slots value.
 oldIFS=IFS
 IFS=',' read -ra host_list <<< "$az_batch_host_list"
-sudo mkdir /job
-for i in "${host_list[@]}"
-do 
-    echo "$i" slots="$local_gpu_count" >> /job/hostfile
-    echo "$i" slots="$local_gpu_count" >> /job/hostfile.txt
-done
 IFS=$oldIFS
+
+sudo mkdir /job
+if ! [[ -w /job/hostfile ]]
+then
+    for i in "${host_list[@]}"
+    do
+        echo "$i" slots=$1 >> /job/hostfile
+        echo "$i" slots=$1 >> /job/hostfile.txt
+    done
+fi
 
 echo Hostfile generated
 echo ------------
-cat /job/hostfile.txt
+cat /job/hostfile
 echo ------------
 
 # Create deepspeed call
 ds_call="deepspeed --hostfile /job/hostfile "
+shift
 for i in "$@"
 do
     ds_call+=$i
     ds_call+=" "
 done
 ls
-if [ $RANK == 0 ]
+if [[ $RANK == 0 ]] && [[ $AZUREML_PROCESS_NAME == "rank_0" ]]
 then
     echo rank is 0, starting deepspeed
     sleep 60
