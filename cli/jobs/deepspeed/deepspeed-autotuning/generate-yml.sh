@@ -5,6 +5,7 @@ ssh-keygen -t rsa -f './src/generated-key' -N ''
 # Pre-set process_count_per_instance so it can be passed into deepspeed via bash script.
 process_count_per_instance=2
 
+cat > job.yml << EOF
 # Training job submission via AML CLI v2
 
 \$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
