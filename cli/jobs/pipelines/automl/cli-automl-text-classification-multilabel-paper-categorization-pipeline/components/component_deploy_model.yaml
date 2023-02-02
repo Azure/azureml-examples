@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: deploy_model
+display_name: Deploy Model
+version: 1
+type: command
+inputs:
+  model_id_path:
+    type: uri_folder
+  endpoint_name:
+    type: string
+  deployment_name:
+    type: string
+code: ./src/
+environment: azureml://registries/azureml-preview/environments/finetune-acpt-pytorch-111-py38-cuda113-gpu/versions/0.0.9
+compute: azureml:gpu-cluster-msi
+command: >-
+  python deploy.py
+  --model_id_path ${{inputs.model_id_path}}
+  --endpoint_name ${{inputs.endpoint_name}}
+  --deployment_name ${{inputs.deployment_name}}

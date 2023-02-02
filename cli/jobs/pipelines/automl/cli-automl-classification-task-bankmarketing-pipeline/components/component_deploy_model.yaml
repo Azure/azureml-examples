@@ -1,21 +1,20 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: register_model
-display_name: Register Model
+name: deploy_model
+display_name: Deploy Model
 version: 1
 type: command
 inputs:
-  model_input_path:
-    type: uri_folder
-  model_base_name:
-    type: string
-outputs:
   model_id_path:
-    type: uri_file
+    type: uri_folder
+  endpoint_name:
+    type: string
+  deployment_name:
+    type: string
 code: ./src/
 environment: azureml://registries/azureml-preview/environments/finetune-acpt-pytorch-111-py38-cuda113-gpu/versions/0.0.9
 compute: azureml:cpu-cluster-msi
 command: >-
-  python register.py
-  --model_input_path ${{inputs.model_input_path}}
-  --model_base_name ${{inputs.model_base_name}}
-  --model_id_path ${{outputs.model_id_path}}
+  python deploy.py
+  --model_id_path ${{inputs.model_id_path}}
+  --endpoint_name ${{inputs.endpoint_name}}
+  --deployment_name ${{inputs.deployment_name}}

@@ -22,17 +22,6 @@ outputs:
     mode: upload
 
 jobs:
-  preprocessing_node:
-    type: command
-    component: file:./components/component_preprocessing.yaml
-    inputs:
-      train_data: ${{parent.inputs.forecasting_training_data}}
-      validation_data: ${{parent.inputs.forecasting_validation_data}}
-    outputs:
-      preprocessed_train_data:
-        type: mltable
-      preprocessed_validation_data:
-        type: mltable
   forecasting_node:
     type: automl
     task: forecasting
@@ -42,8 +31,8 @@ jobs:
       max_trials: 1
       enable_early_termination: true
     target_column_name: demand
-    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
-    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
+    training_data: ${{parent.inputs.forecasting_training_data}}
+    validation_data: ${{parent.inputs.forecasting_validation_data}}
     training:
       enable_stack_ensemble: false
       enable_vote_ensemble: false
@@ -63,6 +52,16 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.forecasting_node.outputs.best_model}}
       model_base_name: energy_demand_model
+    outputs:
+      model_id_path:
+        type: uri_folder
+  deploy_model_node:
+    type: command
+    component: file:./components/component_deploy_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      endpoint_name: energy-demand-endpoint
+      deployment_name: energy-demand-deployment        
   # This is an optional step for data inference.
   infer_model_node:
     type: command

@@ -21,20 +21,6 @@ inputs:
     path: ./house_pricing/validation-mltable-folder
 
 jobs:
-  preprocessing_node:
-    type: command
-    component: file:./components/component_preprocessing.yaml
-    inputs:
-      train_data: ${{parent.inputs.regression_train_data}}
-      validation_data: ${{parent.inputs.regression_validate_data}}
-      test_data: ${{parent.inputs.regression_test_data}}
-    outputs:
-      preprocessed_train_data:
-        type: mltable
-      preprocessed_validation_data:
-        type: mltable
-      preprocessed_test_data:
-        type: mltable
   regression_node:
     type: automl
     task: regression
@@ -43,9 +29,9 @@ jobs:
       max_trials: 1
       max_concurrent_trials: 1
     target_column_name: SalePrice
-    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
-    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
-    test_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_test_data}}
+    training_data: ${{parent.inputs.regression_train_data}}
+    validation_data: ${{parent.inputs.regression_validate_data}}
+    test_data: ${{parent.inputs.regression_test_data}}
     featurization:
       mode: "off" # In YAML 1.1, literal off equals boolean false, ref: https://yaml.org/type/bool.html
     training:
@@ -61,3 +47,13 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.regression_node.outputs.best_model}}
       model_base_name: house_pricing_model
+    outputs:
+      model_id_path:
+        type: uri_folder
+  deploy_model_node:
+    type: command
+    component: file:./components/component_deploy_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      endpoint_name: housepricing-endpoint
+      deployment_name: housepricing-deployment

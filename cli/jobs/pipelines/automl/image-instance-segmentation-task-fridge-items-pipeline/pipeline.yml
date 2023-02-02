@@ -12,11 +12,9 @@ settings:
 inputs:
   image_instance_segmentation_training_data:
     type: mltable
-    # Update the path, if prepare_data.py is using data_path other than "./data"
     path: data/training-mltable-folder
   image_instance_segmentation_validation_data:
     type: mltable
-    # Update the path, if prepare_data.py is using data_path other than "./data"
     path: data/validation-mltable-folder
 
 jobs:
@@ -66,4 +64,14 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.image_instance_segmentation_node.outputs.best_model}}
       model_base_name: fridge_items_segmentation_model
+    outputs:
+      model_id_path:
+        type: uri_folder
+  deploy_model_node:
+    type: command
+    component: file:./components/component_deploy_model.yaml
+    inputs:
+      model_input_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      endpoint_name: fridge-item-endpoint
+      deployment_name: fridge-item-deployment
       
