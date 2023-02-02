@@ -2,15 +2,15 @@
 # Generate key
 ssh-keygen -t rsa -f './src/generated-key' -N ''
 
-# Pre-set process_count_per_instance so it can be passed into deepspeed via bash script.
-process_count_per_instance=2
+# Pre-set num_gpus_per_node so it can be passed into deepspeed via bash script.
+num_gpus_per_node=2
 
 cat > job.yml << EOF
 # Training job submission via AML CLI v2
 
 \$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
-command: bash start-deepspeed.sh ${process_count_per_instance} --force_multi train.py --with_aml_log=True --deepspeed --deepspeed_config ds_config.json
+command: bash start-deepspeed.sh ${num_gpus_per_node} --force_multi train.py --with_aml_log=True --deepspeed --deepspeed_config ds_config.json
 
 experiment_name: DistributedJob-DeepsSpeed-Training-cifar
 display_name: deepspeed-training-example
@@ -32,7 +32,7 @@ outputs:
 compute: azureml:gpu-v100-cluster
 distribution:
   type: pytorch
-  process_count_per_instance: ${process_count_per_instance}
+  process_count_per_instance: ${num_gpus_per_node}
 resources:
   instance_count: 2
 EOF

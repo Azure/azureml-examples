@@ -18,7 +18,7 @@ touch /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 /usr/sbin/sshd -D -p 1143 &
 
-# Create hostfile. Use process_count_per_instance variable to populate the slots variable.
+# Create hostfile. Use num_gpus_per_node to populate the slots variable.
 oldIFS=IFS
 IFS=',' read -ra host_list <<< "$az_batch_host_list"
 IFS=$oldIFS
