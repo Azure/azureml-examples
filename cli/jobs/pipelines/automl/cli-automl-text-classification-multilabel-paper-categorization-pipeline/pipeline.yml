@@ -18,6 +18,17 @@ inputs:
     path: ./validation-mltable-folder
 
 jobs:
+  preprocessing_node:
+    type: command
+    component: file:./components/component_preprocessing.yaml
+    inputs:
+      train_data: ${{parent.inputs.text_classification_multilabel_training_data}}
+      validation_data: ${{parent.inputs.text_classification_multilabel_validation_data}}
+    outputs:
+      preprocessed_train_data:
+        type: mltable
+      preprocessed_validation_data:
+        type: mltable
   text_classification_multilabel_node:
     type: automl
     task: text_classification_multilabel
@@ -27,8 +38,8 @@ jobs:
       max_trials: 1
       timeout_minutes: 60
     target_column_name: terms
-    training_data: ${{parent.inputs.text_classification_multilabel_training_data}}
-    validation_data: ${{parent.inputs.text_classification_multilabel_validation_data}}
+    training_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_train_data}}
+    validation_data: ${{parent.jobs.preprocessing_node.outputs.preprocessed_validation_data}}
     # currently need to specify outputs "mlflow_model" explicitly to reference it in following nodes
     outputs:
       best_model:
