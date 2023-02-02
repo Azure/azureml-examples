@@ -71,7 +71,7 @@ jobs:
     type: command
     component: file:./components/component_deploy_model.yaml
     inputs:
-      model_input_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      model_id_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
       endpoint_name: fridge-item-endpoint
       deployment_name: fridge-item-deployment
       
