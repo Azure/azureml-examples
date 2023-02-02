@@ -144,6 +144,7 @@ jobs:
         dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
         dataset.register(ws, "sampledata")
         ' "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME"
+      working-directory: cli/assets/data
       timeout-minutes: 300
       continue-on-error: true
     - name: create asset for cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
