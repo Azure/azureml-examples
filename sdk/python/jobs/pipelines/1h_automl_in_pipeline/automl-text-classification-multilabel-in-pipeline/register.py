@@ -41,17 +41,6 @@ def parse_args():
     return args
 
 
-def get_runid(model_input_path):
-    # returns runid from model_path
-    mlmodel_path = os.path.join(model_input_path, "MLmodel")
-    runid = ""
-    with open(mlmodel_path, "r") as modelfile:
-        for line in modelfile:
-            if "run_id" in line:
-                runid = line.split(":")[1].strip()
-    return runid
-
-
 def get_ml_client():
 
     #returns ML client by autherizing credentials via MSI
@@ -74,13 +63,10 @@ def main(args):
     """
     Register Model Example
     """
-    runid = get_runid(args.model_input_path)
     ml_client = get_ml_client()
 
-    # register the model
-    run_uri = "azureml://jobs/{}/outputs/artifacts/outputs/mlflow-model/".format(runid)
     reg_model = Model(
-        path=run_uri,
+        path=args.model_input_path,
         name=args.model_base_name,
         description="Model created from run.",
         type=AssetTypes.MLFLOW_MODEL,
