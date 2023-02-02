@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-pytorch-distributed-training-yolov5-objectdetectionAz
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "13 1/12 * * *"
   pull_request:
     branches:
       - main
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
@@ -73,22 +73,3 @@ jobs:
       with:
         name: objectdetectionAzureML
         path: sdk/python/jobs/single-step/pytorch/distributed-training-yolov5
-
-    - name: Send IcM on failure
-      if: ${{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}
-        connector_id: ${{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}
-        certificate: ${{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}
-        private_key: ${{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}
-        args: |
-            incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{ github.ref_name }}' for notebook 'jobs/single-step/pytorch/distributed-training-yolov5/objectdetectionAzureML.ipynb'"
-                Summary: |
-                    Notebook 'jobs/single-step/pytorch/distributed-training-yolov5/objectdetectionAzureML.ipynb' is failing on branch '${{ github.ref_name }}': ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-                Severity: 4
-                RoutingId: "github://azureml-examples"
-                Status: Active
-                Source:
-                    IncidentId: "jobs/single-step/pytorch/distributed-training-yolov5/objectdetectionAzureML.ipynb[${{ github.ref_name }}]"

@@ -11,5 +11,5 @@ environment:
   conda_file: env.yml
 environment_variables:
   KV_SECRET_MULTIPLIER: multiplier@https://<KV_NAME>.vault.azure.net
-instance_type: Standard_DS2_v2
+instance_type: Standard_DS3_v2
 instance_count: 1

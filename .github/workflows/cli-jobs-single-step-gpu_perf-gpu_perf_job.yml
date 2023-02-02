@@ -7,7 +7,7 @@ name: cli-jobs-single-step-gpu_perf-gpu_perf_job
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "55 7/12 * * *"
   pull_request:
     branches:
       - main

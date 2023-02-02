@@ -7,7 +7,7 @@ name: cli-scripts-deploy-safe-rollout-online-endpoints
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "28 7/12 * * *"
   pull_request:
     branches:
       - main

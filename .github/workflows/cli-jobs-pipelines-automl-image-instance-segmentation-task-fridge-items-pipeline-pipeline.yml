@@ -7,7 +7,7 @@ name: cli-jobs-pipelines-automl-image-instance-segmentation-task-fridge-items-pi
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "4 6/12 * * *"
   pull_request:
     branches:
       - main

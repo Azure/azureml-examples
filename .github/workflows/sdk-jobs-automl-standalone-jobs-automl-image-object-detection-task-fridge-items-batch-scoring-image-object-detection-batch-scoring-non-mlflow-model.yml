@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-image-object-detection-task-fridge-
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "37 3/12 * * *"
   pull_request:
     branches:
       - main
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
@@ -66,7 +66,7 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "image-object-detection-batch-scoring-non-mlflow-model.ipynb";
-          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";          
+          [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster image-object-detection-batch-scoring-non-mlflow-model.ipynb image-object-detection-batch-scoring-non-mlflow-model.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring
     - name: upload notebook's working folder as an artifact

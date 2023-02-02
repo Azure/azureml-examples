@@ -7,7 +7,7 @@ name: cli-jobs-pipelines-with-components-basics-2a_basic_component-pipeline-regi
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "4 6/12 * * *"
   pull_request:
     branches:
       - main

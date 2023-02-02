@@ -10,5 +10,5 @@ code_configuration:
 environment:
   name: minimal-multimodel
   image: {{ACR_NAME}}.azurecr.io/azureml-examples/minimal-multimodel:1
-instance_type: Standard_DS2_v2
+instance_type: Standard_DS3_v2
 instance_count: 1

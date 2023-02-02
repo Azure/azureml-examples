@@ -7,7 +7,7 @@ name: cli-scripts-deploy-custom-container-tfserving-half-plus-two
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "52 8/12 * * *"
   pull_request:
     branches:
       - main
