@@ -3,7 +3,7 @@
 ssh-keygen -t rsa -f './src/generated-key' -N ''
 
 # Pre-set num_gpus_per_node so it can be passed into deepspeed via bash script.
-num_gpus_per_node=2
+num_gpus_per_node=8
 
 cat > job.yml << EOF
 # Training job submission via AML CLI v2
