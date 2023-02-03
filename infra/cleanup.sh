@@ -68,6 +68,7 @@ amlcompute_to_delete=(
   minimal-example
   basic-example
   mycluster
+  mycluster-msi
   location-example
   low-pri-example
   ssh-example
@@ -87,9 +88,9 @@ for compute_name in "${amlcompute_to_delete[@]}"; do
 done
 
 # delete registry of yesterday
-RegistryToBeDeleted=DemoRegistry$(date -d '-1 days' +'%m%d')
-echo "Deleting registry $RegistryToBeDeleted"
-az resource delete -n $RegistryToBeDeleted -g $RESOURCE_GROUP_NAME --resource-type Microsoft.MachineLearningServices/registries
+let "RegistryToBeDeleted=10#$(date -d '-1 days' +'%m%d')"
+echo "Deleting registry DemoRegistry$RegistryToBeDeleted"
+az resource delete -n DemoRegistry$RegistryToBeDeleted -g $RESOURCE_GROUP_NAME --resource-type Microsoft.MachineLearningServices/registries
 
 #delete workpsaces created by samples
 for workspace in $SAMPLES_WORKSPACE_LIST; do

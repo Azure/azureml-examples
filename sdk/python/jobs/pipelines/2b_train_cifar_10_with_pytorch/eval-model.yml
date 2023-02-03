@@ -14,7 +14,7 @@ inputs:
 code: ./eval-model
 distribution:
   type: pytorch
-  process_count_per_instance: 2
+  process_count_per_instance: 1
 resources:
   instance_count: 2
 environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:6

@@ -7,7 +7,7 @@ name: cli-assets-data-cloud-mltable
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "48 1/12 * * *"
   pull_request:
     branches:
       - main

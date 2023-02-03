@@ -1,0 +1,4 @@
+mlflow<3,>=2.1
+cloudpickle==2.2.0
+scikit-learn==1.2.0
+xgboost==1.7.2
