@@ -24,7 +24,7 @@ IFS=',' read -ra host_list <<< "$az_batch_host_list"
 IFS=$oldIFS
 
 sudo mkdir /job
-if ! [[ -w /job/hostfile ]]
+if [[ $AZUREML_PROCESS_NAME == "rank_0" ]]
 then
     for i in "${host_list[@]}"
     do
