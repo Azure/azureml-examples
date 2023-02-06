@@ -54,5 +54,5 @@ az ml online-deployment get-logs --local -n blue --endpoint $ENDPOINT_NAME
 # </get_logs>
 
 # <delete_endpoint>
-az ml online-endpoint delete --local --name $ENDPOINT_NAME --yes --no-wait
+az ml online-endpoint delete --local --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
