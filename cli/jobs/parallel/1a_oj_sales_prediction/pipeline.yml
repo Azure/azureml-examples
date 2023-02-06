@@ -61,7 +61,7 @@ jobs:
       timeout: 60
 
     environment_variables:
-      "AZUREML_PARALLEL_EXAMPLE": "oj_many-model_sdk"
+      "AZUREML_PARALLEL_EXAMPLE": "1a_yaml"
 
     task:
       type: run_function
