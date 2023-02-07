@@ -266,7 +266,7 @@ function install_packages() {
     echo_info ">>> Updating packages index"
     echo_info "------------------------------------------------"
 
-    sudo apt-get update > /dev/null 2>&1
+    sudo apt-get update -y > /dev/null 2>&1
     sudo apt-get upgrade -y > /dev/null 2>&1
     sudo apt-get dist-upgrade -y > /dev/null 2>&1
 
