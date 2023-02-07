@@ -6,9 +6,8 @@
 - How to pre-cook data into **mltable with partition setting**.
 - How to use **mltable** with **tabular data** as the **input of parallel job**.
 - How to use **partition_keys** in parallel job to consume data with partitions. 
-- How to use **append_row_to** to aggregate returns to **uri_file** output.
+- How to use **error_threshold** with **empty returns** to ignore checking failed items in mini-batch.
 - How to use parallel job settings:
-  - error threshold
   - mini_batch_error_threshold
   - environment_variables
 
