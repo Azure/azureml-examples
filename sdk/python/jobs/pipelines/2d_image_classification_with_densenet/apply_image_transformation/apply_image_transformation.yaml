@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/development/commandComponent.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 
 name: microsoftsamples_apply_image_transformation

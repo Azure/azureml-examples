@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-auto
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "41 0/12 * * *"
   pull_request:
     branches:
       - main
@@ -30,12 +30,10 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
-    - name: pip install mlflow reqs
-      run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:

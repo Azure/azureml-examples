@@ -1,0 +1,24 @@
+{
+  "train_batch_size": 64,
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 0.0002,
+      "betas": [
+        0.5,
+        0.999
+      ],
+      "eps": 1e-8
+    }
+  },
+  "fp16": {
+    "enabled": true
+  },
+  "autotuning": {
+    "enabled": true,
+    "fast": false,
+    "results_dir": "outputs/training_results/results",
+    "exps_dir": "outputs/training_results/exps"
+  },
+  "steps_per_print": 10
+}

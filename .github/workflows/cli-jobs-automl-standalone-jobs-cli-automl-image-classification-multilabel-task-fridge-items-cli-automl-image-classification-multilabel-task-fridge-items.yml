@@ -7,7 +7,7 @@ name: cli-jobs-automl-standalone-jobs-cli-automl-image-classification-multilabel
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "40 4/12 * * *"
   pull_request:
     branches:
       - main

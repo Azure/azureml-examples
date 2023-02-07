@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-pytorch-train-hyperparameter-tune-deploy-with-pytorch
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "40 10/12 * * *"
   pull_request:
     branches:
       - main
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt

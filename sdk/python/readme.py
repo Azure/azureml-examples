@@ -4,6 +4,7 @@ import os
 import json
 import glob
 import argparse
+import hashlib
 
 from configparser import ConfigParser
 
@@ -144,6 +145,12 @@ def write_notebook_workflow(
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
 
+    # Schedule notebooks at different times to reduce maximum quota usage.
+    name_hash = int(hashlib.sha512(name.encode()).hexdigest(), 16)
+    schedule_minute = name_hash % 60
+    hours_between_runs = 12
+    schedule_hour = (name_hash // 60) % hours_between_runs
+
     workflow_yaml = f"""{READONLY_HEADER}
 name: sdk-{classification}-{name}
 # This file is created by sdk/python/readme.py.
@@ -153,7 +160,7 @@ on:\n"""
         workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
         workflow_yaml += f"""  schedule:
-    - cron: "0 */8 * * *"\n"""
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main\n"""
@@ -178,7 +185,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
@@ -230,7 +237,7 @@ jobs:
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
-        workflow_yaml += f"""          
+        workflow_yaml += f"""
           papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
     else:
@@ -238,6 +245,14 @@ jobs:
         workflow_yaml += f"""
           papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
+
+    if name == "connections":
+        workflow_yaml += """
+      env:
+        ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+        GIT_PAT: ${{ secrets.GIT_PAT }}
+        PYTHON_FEED_SAS: ${{ secrets.PYTHON_FEED_SAS }}"""
 
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
@@ -297,7 +312,7 @@ def write_readme(notebooks, pipeline_folder=None):
 
             try:
                 # read in notebook
-                with open(notebook, "r") as f:
+                with open(notebook, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 description = "*no description*"

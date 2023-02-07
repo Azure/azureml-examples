@@ -13,5 +13,5 @@ environment:
     scoring_route:
       port: 8501
       path: /v1/models/hpt:predict
-instance_type: Standard_DS2_v2
+instance_type: Standard_DS3_v2
 instance_count: 1
