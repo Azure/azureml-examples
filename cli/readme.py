@@ -483,7 +483,7 @@ def write_job_using_registry_components_workflow(job):
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     workflow_yaml = f"""{READONLY_HEADER}
-name: cli-{hyphenated}-registry
+name: registry-cli-{hyphenated}
 on:
   workflow_dispatch:
   schedule:
@@ -538,7 +538,7 @@ jobs:
 
     # write workflow
     with open(
-        f"..{os.sep}.github{os.sep}workflows{os.sep}cli-{job.replace(os.sep, '-').replace('/', '-')}-registry.yml",
+        f"..{os.sep}.github{os.sep}workflows{os.sep}registry-cli-{job.replace(os.sep, '-').replace('/', '-')}.yml",
         "w",
     ) as f:
         f.write(workflow_yaml)
