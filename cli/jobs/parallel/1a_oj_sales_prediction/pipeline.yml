@@ -2,6 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: partition by key parallel job
 description: The hello world pipeline job with partition by key
+experiment_name: hello-world-parallel-job
 tags:
   tag: tagvalue
   owner: sdkteam
@@ -37,10 +38,6 @@ jobs:
       date_col: "WeekStarting"
       lagging_orders: "1,2,3,4,5,6"
     outputs:
-      model_perf:
-        type: uri_file
-        path: azureml://datastores/workspaceblobstore/paths/${{name}}/my_append_output.csv
-        mode: rw_mount
       model_folder:
         type: uri_folder
         mode: rw_mount
@@ -77,7 +74,6 @@ jobs:
         --date_col ${{inputs.date_col}}
         --lagging_orders ${{inputs.lagging_orders}}
         --model_folder ${{outputs.model_folder}}
-      append_row_to: ${{outputs.model_perf}}
 
 
 

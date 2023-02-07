@@ -3,6 +3,7 @@ type: pipeline
 
 display_name: iris-batch-prediction-using-parallel
 description: The hello world pipeline job with inline parallel job
+experiment_name: hello-world-parallel-job
 tags:
   tag: tagvalue
   owner: sdkteam
@@ -26,7 +27,7 @@ jobs:
     outputs:
       job_output_file:
         type: uri_file
-        path: azureml://datastores/workspaceblobstore/paths/${{name}}/aggregated_returns.csv
+        path: azureml://datastores/${{default_datastore}}/paths/${{name}}/aggregated_returns.csv
         mode: rw_mount
 
     input_data: ${{inputs.input_data}}

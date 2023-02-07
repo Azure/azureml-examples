@@ -8,15 +8,12 @@ import numpy as np
 import pickle
 import mltable
 import argparse
+import mlflow
 
 # from azureml.opendatasets import OjSalesSimulated
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import GradientBoostingRegressor
-
-
-def mape(y_true, y_pred):
-    return round(np.mean(np.abs((y_true - y_pred) / y_true)) * 100, 2)
 
 
 def init():
@@ -49,6 +46,8 @@ def init():
 
 
 def run(input_data, mini_batch_context):
+    mlflow.autolog()
+
     if not isinstance(input_data, pd.DataFrame):
         raise Exception("Not a valid DataFrame input.")
 
@@ -92,31 +91,15 @@ def run(input_data, mini_batch_context):
     reg.fit(X_train, y_train)
     reg_pred = reg.predict(X_test)
 
-    reg_mape = mape(y_test, reg_pred)
-
     # Dump model
-    model_file_name = "my_model.pkl"
     relative_path = os.path.join(
         model_folder,
         *list(str(i) for i in mini_batch_context.partition_key_value.values()),
     )
-    print("##############################################")
-    print("relative_path:")
-    print(relative_path)
-    print("##############################################")
 
     if not os.path.exists(relative_path):
         os.makedirs(relative_path)
 
-    with open(os.path.join(relative_path, model_file_name), "wb") as f:
-        pickle.dump(reg, f)
+    mlflow.sklearn.save_model(reg, relative_path)
 
-    # output perf
-    # returns from every mini-batch will be aggregated into 'append_row_to' output.
-    result_df = pd.DataFrame()
-    for key in mini_batch_context.partition_key_value.keys():
-        result_df[key] = [mini_batch_context.partition_key_value[key]]
-
-    result_df["MAPE"] = reg_mape
-
-    return result_df
+    return []
