@@ -6,7 +6,6 @@ dependencies:
   - python=3.8.12
   - pip=21.2.2
   - pip:
-      - --extra-index-url https://pypi.org/simple
       - mldesigner==0.1.0b4
       - watchdog==0.10.3
       - torch==1.8.1
