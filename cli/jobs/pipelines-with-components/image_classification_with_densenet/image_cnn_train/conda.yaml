@@ -6,8 +6,6 @@ dependencies:
   - python=3.8.12
   - pip=21.2.2
   - pip:
-      - --extra-index-url https://pypi.org/simple
-      - git+https://github.com/NVIDIA/dllogger.git@26a0f8f1958de2c0c460925ff6102a4d2486d6cc#egg=dllogger
       - mldesigner==0.1.0b4
       - watchdog==0.10.3
       - torch==1.8.1
