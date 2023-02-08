@@ -7,7 +7,7 @@ name: cli-scripts-deploy-managed-online-endpoint-ncd
 on:
   workflow_dispatch:
   schedule:
-    - cron: "38 2/12 * * *"
+    - cron: "6 0/12 * * *"
   pull_request:
     branches:
       - main
