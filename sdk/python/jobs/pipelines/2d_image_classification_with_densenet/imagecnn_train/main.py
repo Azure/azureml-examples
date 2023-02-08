@@ -483,9 +483,7 @@ def main(gpu_index, args):
     )
 
     if args.lr_schedule == "step":
-        lr_policy = lr_step_policy(
-            args.lr, [30, 60, 80], 0.1, args.warmup, logger=None
-        )
+        lr_policy = lr_step_policy(args.lr, [30, 60, 80], 0.1, args.warmup, logger=None)
     elif args.lr_schedule == "cosine":
         lr_policy = lr_cosine_policy(args.lr, args.warmup, args.epochs, logger=None)
     elif args.lr_schedule == "linear":
