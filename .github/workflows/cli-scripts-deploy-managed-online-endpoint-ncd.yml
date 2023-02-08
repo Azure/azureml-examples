@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-scripts-deploy-managed-online-endpoint-mlflow
+name: cli-scripts-deploy-managed-online-endpoint-ncd
 on:
   workflow_dispatch:
   schedule:
@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/deploy-managed-online-endpoint-mlflow.sh
+      - cli/deploy-managed-online-endpoint-ncd.sh
       - infra/**
-      - .github/workflows/cli-scripts-deploy-managed-online-endpoint-mlflow.yml
+      - .github/workflows/cli-scripts-deploy-managed-online-endpoint-ncd.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -45,5 +45,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          set -e; bash -x deploy-managed-online-endpoint-mlflow.sh
+          set -e; bash -x deploy-managed-online-endpoint-ncd.sh
       working-directory: cli
