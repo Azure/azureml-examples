@@ -1,0 +1,12 @@
+path: datasets/fridgedata
+
+train: images/train 
+val:   images/valid
+#test: ../fridgedata/images/test/
+
+# Classes
+names:
+  0: carton
+  1: milk_bottle
+  2: can
+  3: water_bottle
