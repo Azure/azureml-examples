@@ -86,7 +86,7 @@ oj_sales <- oj_sales_read |>
   as_tsibble(index = yr_wk, key = c(store, brand))
 
 ## Select the store and brand based on the job parameter
-sales_for_store_brand <- oj_sales  |>
+sales_for_store_brand <- oj_sales |>
   filter(store == args$store, brand == args$brand)
 
 # All stores have the same start week (1990 W25) and end week (1992 W41).
@@ -114,9 +114,11 @@ metrics <- accuracy(fcast, oj_sales)
 # create a plot and save it to output
 forecast_plot <-
   autoplot(fcast) +
-  geom_line(data = sales_for_store_brand |>
-              filter(yr_wk <= yearweek("1992 W18")),
-            aes(x = yr_wk, y = logmove))
+  geom_line(
+    data = sales_for_store_brand |>
+      filter(yr_wk <= yearweek("1992 W18")),
+    aes(x = yr_wk, y = logmove)
+  )
 
 ggsave(
   forecast_plot,
@@ -135,16 +137,20 @@ ggsave(
 
 all_model_data <-
   fit |>
-  #as_tibble() |>
+  # as_tibble() |>
   select(-c(store, brand)) |>
-  pivot_longer(cols = everything(),
-               names_to = "model_name",
-               values_to = "model_object") |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "model_name",
+    values_to = "model_object"
+  ) |>
   mutate(tidy_model = map(model_object, tidy)) |>
-  inner_join(metrics |>
-               select(-c(store, brand)) |>
-               nest(metrics = -c(.model)),
-             by = c("model_name" = ".model")) |>
+  inner_join(
+    metrics |>
+      select(-c(store, brand)) |>
+      nest(metrics = -c(.model)),
+    by = c("model_name" = ".model")
+  ) |>
   inner_join(
     fcast |>
       as_tibble() |>
@@ -158,11 +164,12 @@ all_model_data <-
       m |>
         select(-c(.type)) |>
         pivot_longer(everything(),
-                     names_to = "key") |>
-        mutate(step = 0,
-               timestamp = as.integer(Sys.time()))
-      
-      
+          names_to = "key"
+        ) |>
+        mutate(
+          step = 0,
+          timestamp = as.integer(Sys.time())
+        )
     }),
     params_tbl = map(tidy_model, function(tm) {
       tm |>
@@ -177,7 +184,8 @@ all_model_data <-
 
 
 write_rds(all_model_data,
-          file = "outputs/all-models-tibble.rds")
+  file = "outputs/all-models-tibble.rds"
+)
 
 # one more transformation for logging metrics
 # metrics are numeric
@@ -188,23 +196,8 @@ write_rds(all_model_data,
 
 # extract the models from the tibble and crate them
 
-mean_ts_pred <- crate(function(x)
-{
-  fabletools::forecast(!!all_model_data$model_object[[1]], h = x)
-})
 
-naive_ts_pred <- crate(function(x)
-{
-  fabletools::forecast(!!all_model_data$model_object[[2]], h = x)
-})
-
-drift_ts_pred <- crate(function(x)
-{
-  fabletools::forecast(!!all_model_data$model_object[[3]], h = x)
-})
-
-arima_ts_pred <- crate(function(x)
-{
+arima_ts_pred <- crate(function(x) {
   fabletools::forecast(!!all_model_data$model_object[[4]], h = x)
 })
 
@@ -213,7 +206,7 @@ arima_ts_pred <- crate(function(x)
 # logged as an mlflow model. The crate function in the carrier
 # package is a tool that helps wrap and construct the R model,
 # making it a crated function. This is then passed in to be
-#logged as an mlflow model.
+# logged as an mlflow model.
 
 # In this example, the prediction is a set of data points for a
 # time series predicted n-periods after the last period of the training
@@ -226,18 +219,13 @@ experiment_tbl <- tibble(
 )
 
 
-## The following code is for interacting with AzureML MLFlow
-
-# model_name_for_registry <- "arima-2-1"
 model_artifact_path <- "models"
-
 
 mlflow_start_run()
 
 # store the run information
 run_info <- mlflow_get_run()
 exp_info <- mlflow_get_experiment()
-
 
 print("Run Info mlflow_get_run()")
 mlflow_get_run() |> glimpse()
@@ -248,13 +236,9 @@ mlflow_get_experiment() |> glimpse()
 print("Artifact Info mlflow_list_artifacts()")
 mlflow_list_artifacts() |> glimpse()
 
-
 mlflow_log_param("store", args$store)
 mlflow_log_param("brand", args$brand)
 mlflow_log_param("data_file", args$data_file)
-
-#mlflow_log_artifact(path = "./outputs/")
-
 
 mlflow_log_batch(
   metrics = all_model_data$metrics_tbl[[4]],
@@ -264,37 +248,7 @@ mlflow_log_batch(
 
 mlflow_log_model(
   model = arima_ts_pred,
-  artifact_path = model_artifact_path,
-  flavors = list(
-    python_function = list(env = "conda.yml")
-  )
+  artifact_path = model_artifact_path
 )
-# Don't use the `mlflow_log_model()` function because we need to add a
-# `python_function` flavor which the R/MLflow API doesn't support 
-# in order to register a model programatically. 
 
-# Save model and add a dummy `python_function` flavor
-# (saves in the model directory on the job container)
-
-# mlflow_save_model(
-#   model = arima_ts_pred,
-#   path = model_artifact_path,
-#   model_spec = list(flavors = list(
-#     python_function = list(env = "conda.yml",
-#                            loader_module = "mlflow.sklearn"))
-#   ))
-# 
-# mlflow_log_artifact(
-#   artifact_path = model_artifact_path
-# )
-
-# tryCatch(
-#   mlflow_create_registered_model(name = model_name_for_registry),
-#   error = function(e) print(stringr::str_glue("Model {model_name_for_registry} is already registered."))
-#   )
-# 
-# try(mlflow_create_model_version(name = model_name_for_registry,
-#                                 source = stringr::str_glue("{run_info$artifact_uri}/model")))
-#  run_id = run_info$run_id,))
-
-mlflow_end_run()
+# mlflow_end_run()
