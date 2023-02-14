@@ -12,7 +12,7 @@ inputs:
     type: uri_file
     path: azureml:orangejuice-sales@latest
 environment: azureml:r-environment-for-training-job-with-mlflow-and-packages@latest
-compute: azureml:mvaisma-cluster-eastus2
+compute: azureml:mv-plain-ci
 # display_name: ojsales-forecasting-store-2-brand-1
-experiment_name: ojsales-forecasting
+experiment_name: mlflow-debugging
 description: Timeseries forecasting for a single store and brand (store 2, brand 1).

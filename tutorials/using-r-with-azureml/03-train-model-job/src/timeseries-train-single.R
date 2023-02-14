@@ -221,20 +221,20 @@ experiment_tbl <- tibble(
 
 model_artifact_path <- "models"
 
-mlflow_start_run()
+# mlflow_start_run()
 
 # store the run information
-run_info <- mlflow_get_run()
-exp_info <- mlflow_get_experiment()
+# run_info <- mlflow_get_run()
+# exp_info <- mlflow_get_experiment()
 
-print("Run Info mlflow_get_run()")
-mlflow_get_run() |> glimpse()
+# print("Run Info mlflow_get_run()")
+# mlflow_get_run() |> glimpse()
 
-print("Experiment Info mlflow_get_experiment()")
-mlflow_get_experiment() |> glimpse()
+# print("Experiment Info mlflow_get_experiment()")
+# mlflow_get_experiment() |> glimpse()
 
-print("Artifact Info mlflow_list_artifacts()")
-mlflow_list_artifacts() |> glimpse()
+# print("Artifact Info mlflow_list_artifacts()")
+# mlflow_list_artifacts() |> glimpse()
 
 mlflow_log_param("store", args$store)
 mlflow_log_param("brand", args$brand)
