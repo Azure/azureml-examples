@@ -32,7 +32,10 @@ then
         echo "$i" slots=$1 >> /job/hostfile.txt
     done
 fi
-
+if [[ -z $AZ_BATCH_HOST_LIST ]] && [[ $AZUREML_PROCESS_NAME == "rank_0" ]]
+then
+    echo "localhost" slots=$1 >> /job/hostfile
+fi
 echo Hostfile generated
 echo ------------
 cat /job/hostfile
