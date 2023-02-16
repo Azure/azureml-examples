@@ -35,6 +35,8 @@ echo "Showing details of the batch deployment"
 az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME
 # </check_batch_deployment_detail>
 
+sleep 60
+
 echo "Invoking batch endpoint with public URI (MNIST)"
 # <start_batch_scoring_job>
 JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
