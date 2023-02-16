@@ -258,10 +258,6 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 }")
 #</create_dataset>
 
-#<unique_output>
-export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-#</unique_output>
-
 # <score_endpoint_with_dataset>
 response=$(curl --location --request POST $SCORING_URI \
 --header "Authorization: Bearer $SCORING_TOKEN" \
@@ -277,10 +273,9 @@ response=$(curl --location --request POST $SCORING_URI \
         \"OutputData\": {
             \"customOutput\": {
                 \"JobOutputType\": \"UriFolder\",
-                \"Uri\": \"azureml://datastores/workspaceblobstore/paths/batch/$ENDPOINT_NAME/$RANDOM\"
+                \"Uri\": \"azureml://datastores/workspaceblobstore/paths/batch/$ENDPOINT_NAME/$RANDOM/predictions.csv\"
             }
         },
-        \"outputFileName\": \"$OUTPUT_FILE_NAME\"
     }
 }")
 # </score_endpoint_with_dataset>
