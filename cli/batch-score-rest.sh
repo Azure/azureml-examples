@@ -226,7 +226,7 @@ response=$(curl --location --request POST $SCORING_URI \
     \"properties\": {
         \"dataset\": {
             \"dataInputType\": \"DataUrl\",
-            \"Path\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
+            \"Path\": \"https://azuremlexampledata.blob.core.windows.net/data/mnist/sample\"
         }
     }
 }")
@@ -251,7 +251,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"properties\": {
         \"paths\": [
             {
-                \"folder\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
+                \"folder\": \"https://azuremlexampledata.blob.core.windows.net/data/mnist/sample\"
             }
         ]
     }
@@ -268,14 +268,17 @@ response=$(curl --location --request POST $SCORING_URI \
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"dataset\": {
-            \"dataInputType\": \"DatasetVersion\",
-            \"datasetName\": \"$DATASET_NAME\",
-            \"datasetVersion\": \"$DATASET_VERSION\"
+        \"InputData\": {
+            \"mnistinput\": {
+                \"JobInputType\": \"UriFolder\",
+                \"Uri\": \"azureml://locations/$LOCATION/workspaces/$WORKSPACE/data/$DATASET_NAME/versions/labels/latest\"
+            }
         },
-        \"outputDataset\": {
-            \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
-            \"path\": \"$ENDPOINT_NAME\"
+        \"OutputData\": {
+            \"customOutput\": {
+                \"JobOutputType\": \"UriFolder\",
+                \"Uri\": \"azureml://datastores/workspaceblobstore/paths/batch/$ENDPOINT_NAME/$RANDOM\"
+            }
         },
         \"outputFileName\": \"$OUTPUT_FILE_NAME\"
     }
