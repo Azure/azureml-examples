@@ -273,7 +273,7 @@ response=$(curl --location --request POST $SCORING_URI \
         \"OutputData\": {
             \"customOutput\": {
                 \"JobOutputType\": \"UriFolder\",
-                \"Uri\": \"azureml://datastores/workspaceblobstore/paths/batch/$ENDPOINT_NAME/$RANDOM/predictions.csv\"
+                \"Uri\": \"azureml://datastores/workspaceblobstore/paths/batch/$ENDPOINT_NAME/$RANDOM/\"
             }
         },
     }
