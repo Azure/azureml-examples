@@ -1,0 +1,22 @@
+paths:
+- pattern: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/green/puYear=2015/puMonth=*/*.parquet
+- pattern: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/green/puYear=2016/puMonth=*/*.parquet
+- pattern: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/green/puYear=2017/puMonth=*/*.parquet
+- pattern: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/green/puYear=2018/puMonth=*/*.parquet
+- pattern: wasbs://nyctlc@azureopendatastorage.blob.core.windows.net/green/puYear=2019/puMonth=*/*.parquet
+transformations:
+- extract_columns_from_partition_format:
+    ignore_errors: false
+    partition_format: /puYear={year}/puMonth={month}
+    path_column: Path
+- read_parquet:
+    include_path_column: false
+    path_column: Path
+- take_random_sample:
+    probability: 0.001
+    seed: 735
+- drop_columns:
+  - puLocationId
+  - doLocationId
+  - storeAndFwdFlag
+type: mltable
