@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- azurecli
+- python
+products:
+- azure-machine-learning
+description: Using Azure ML Tables (MLTable).
+---
+
 # Using Azure ML Tables (MLTable)
 
 Azure ML Tables (`mltable` type) allow you to define how you want to *load* your data files into memory as a Pandas and/or Spark data frame. Azure ML Tables are specific to loading data for ML tasks - such as encodings, type conversion, extracting data from paths, subsetting, etc.
