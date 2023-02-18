@@ -3,7 +3,7 @@ import mltable
 
 # parse arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('--input', help='mltable to read')
+parser.add_argument("--input", help="mltable to read")
 args = parser.parse_args()
 
 # load mltable
@@ -14,4 +14,3 @@ df = tbl.to_pandas_dataframe()
 
 # print the head of data
 print(df.head())
-
