@@ -11,3 +11,7 @@ tbl = mltable.load(args.input)
 
 # load into pandas
 df = tbl.to_pandas_dataframe()
+
+# print the head of data
+print(df.head())
+
