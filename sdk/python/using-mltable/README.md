@@ -18,4 +18,5 @@ For more information on Azure ML Tables, read [Working with tables in Azure ML](
 
 | Notebook | Description |
 |----------|-------------|
-| [Azure ML Tables Quickstart](./quickstart/mltable-quickstart.ipynb) | *Demonstrates an end-to-end example of using MLTable, including asset creation, loading into both interactive sessions and jobs.*
+| [Azure ML Tables Quickstart](./quickstart/mltable-quickstart.ipynb) | *Demonstrates an end-to-end example of using MLTable, including asset creation, loading into both interactive sessions and jobs.* |
+| [Azure ML Tables Local-to-Cloud](./local-to-cloud/mltable-local-to-cloud.ipynb) | *Demonstrates how to work with data and tables locally and upload to the cloud as a data asset for improved sharing and reproducibility.* |
