@@ -5,7 +5,7 @@ dependencies:
   - python=3.6.2
   - pip<22.0
   - pip:
-    - tensorflow==1.15.2
+    - tensorflow==2.1.4
     - pillow
     - pandas
     - azureml-core
