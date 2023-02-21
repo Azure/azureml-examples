@@ -8,7 +8,7 @@
     "pip",
     {
       "pip": [
-        "tensorflow==1.15.2",
+        "tensorflow==2.1.4",
         "pillow",
         "azureml-core",
         "azureml-dataset-runtime[fuse]"
