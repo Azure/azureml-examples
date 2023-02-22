@@ -25,6 +25,9 @@ jobs:
   sample_word:
     type: spark
     component: ./sample_word/component.yml
+    identity:
+      type: managed
+
     inputs:
       file_input: ${{parent.inputs.file_input}}
       sample_rate: ${{parent.inputs.sample_rate}}

@@ -1,5 +1,5 @@
 $schema: http://azureml/sdk-2-0/BatchDeployment.json
-name: endpoint-with-spark
+name: endpoint-with-spark-manage-identity
 description: A sample deployment that trains an XGBoost model for the UCI dataset.
 endpoint_name: endpoint-with-spark
 compute: azureml:batch-cluster
