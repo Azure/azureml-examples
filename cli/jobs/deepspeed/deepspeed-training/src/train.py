@@ -56,8 +56,9 @@ def add_argument():
 
 # Need args here to set ranks for multi-node training with download=True
 args = add_argument()
-tracking_uri = mlflow.get_tracking_uri()
-print("Current tracking uri: {}".format(tracking_uri))
+if args.with_aml_log:
+    tracking_uri = mlflow.get_tracking_uri()
+    print("Current tracking uri: {}".format(tracking_uri))
 ########################################################################
 # The output of torchvision datasets are PILImage images of range [0, 1].
 # We transform them to Tensors of normalized range [-1, 1].
@@ -130,10 +131,7 @@ criterion = nn.CrossEntropyLoss()
 #
 # Showcasing logging metrics to automl.
 if args.with_aml_log:
-    this_run = mlflow.active_run()
-    if this_run:
-        print("Active run_id: {}".format(this_run.info.run_id))
-        mlflow.log_metrics({"hello": 12345})
+    mlflow.log_metrics({"hello": 12345})
 # This is when things start to get interesting.
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
@@ -161,7 +159,7 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         # if i % 2000 == 1999:  # print every 2000 mini-batches
         loss = running_loss / 2000
         print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
-        if args.with_aml_log and mlflow.active_run():
+        if args.with_aml_log:
             try:
                 mlflow.log_metrics({"loss": loss})
             except NameError:

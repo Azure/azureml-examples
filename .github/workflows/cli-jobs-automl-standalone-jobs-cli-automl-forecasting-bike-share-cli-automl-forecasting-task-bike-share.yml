@@ -7,7 +7,7 @@ name: cli-jobs-automl-standalone-jobs-cli-automl-forecasting-bike-share-cli-auto
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "59 7/12 * * *"
   pull_request:
     branches:
       - main

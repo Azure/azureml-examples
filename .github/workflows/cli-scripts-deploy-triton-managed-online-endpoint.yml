@@ -7,7 +7,7 @@ name: cli-scripts-deploy-triton-managed-online-endpoint
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "2 0/12 * * *"
   pull_request:
     branches:
       - main

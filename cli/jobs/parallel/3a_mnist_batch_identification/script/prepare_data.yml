@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: prepare_data
+display_name: Prepare mnist data
+version: 1
+
+command: >-
+      python prepare_data.py --output_folder ${{outputs.mnist_png}}
+code: ./
+outputs:
+  mnist_png:
+    type: uri_folder
+    mode: rw_mount
+
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda_file: ./environment_prepare.yml
