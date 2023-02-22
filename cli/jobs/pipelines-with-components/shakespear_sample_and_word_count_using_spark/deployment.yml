@@ -1,0 +1,11 @@
+$schema: http://azureml/sdk-2-0/BatchDeployment.json
+name: endpoint-with-spark
+description: A sample deployment that trains an XGBoost model for the UCI dataset.
+endpoint_name: endpoint-with-spark
+compute: azureml:batch-cluster
+type: component
+job_definition:
+    type: pipeline
+    component: ./pipeline_component.yml
+    settings:
+        continue_on_step_failure: false
