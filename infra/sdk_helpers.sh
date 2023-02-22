@@ -266,9 +266,9 @@ function install_packages() {
     echo_info ">>> Updating packages index"
     echo_info "------------------------------------------------"
 
-    sudo apt-get update > /dev/null 2>&1
-    sudo apt-get upgrade -y > /dev/null 2>&1
-    sudo apt-get dist-upgrade -y > /dev/null 2>&1
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo apt-get dist-upgrade -y
 
     echo_info ">>> Installing packages"
 
@@ -283,14 +283,15 @@ function install_packages() {
     for package in "${packages_to_install[@]}"; do
       echo_info "Installing '$package'"
       if ! IsInstalled "$package"; then
-          sudo apt-get install -y --no-install-recommends "${package}" > /dev/null 2>&1
+          # sudo apt-get install -y --no-install-recommends "${package}" > /dev/null 2>&1
+          sudo apt-get install -y --no-install-recommends "${package}"
       else
           echo_info "$package is already installed"
       fi
     done
     echo_info ">>> Clean local cache for packages"
 
-    sudo apt-get autoclean && sudo apt-get autoremove > /dev/null 2>&1
+    sudo apt-get autoclean && sudo apt-get autoremove
 }
 
 function add_extension() {
