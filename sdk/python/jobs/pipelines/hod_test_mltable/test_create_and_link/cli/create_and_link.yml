@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: create_and_link
+display_name: create_and_link
+description: Create and link through mltable
+tags:
+  author: azureml-sdk-team
+version: 1
+type: command
+
+outputs:
+  my_output:
+
+code: .
+environment: ./conda.yaml
+command: >-
+  python create_and_link.py ${{inputs.input_mltable}}
