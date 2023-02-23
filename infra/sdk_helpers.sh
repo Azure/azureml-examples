@@ -266,16 +266,22 @@ function install_packages() {
     echo_info ">>> Updating packages index"
     echo_info "------------------------------------------------"
 
+    echo_info ">>> Executing: apt-get update"
     sudo apt-get update
+    echo_info ">>> Executing: apt install grub-efi-amd64-bin"
+    sudo apt install grub-efi-amd64-bin
     # sudo apt install --reinstall grub-efi-arm64-signed -y
+    echo_info ">>> Executing: apt-get upgrade"
     sudo apt-get upgrade -y
+    echo_info ">>> Executing: apt-get upgrade"
     # Errors: grub-efi-amd64-signed & shim-signed
     # https://stackoverflow.com/questions/53203528/errors-grub-efi-amd64-signed-shim-signed/53284186#53284186
     # sudo apt-get purge grub\*
     # sudo apt-get install grub-efi
     # sudo apt-get autoremove
     # sudo update-grub
-    # sudo apt-get dist-upgrade -y
+    echo_info ">>> Executing: apt-get dist-upgrade"
+    sudo apt-get dist-upgrade -y
 
     echo_info ">>> Installing packages"
 
