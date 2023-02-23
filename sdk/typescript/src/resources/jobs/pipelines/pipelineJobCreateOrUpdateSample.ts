@@ -32,7 +32,7 @@ import {
           "node1": {
             "name": "node1",
             "type": "command",
-            "componentId": "azureml:command_component_basic:0.0.1"
+            "componentId": "command_component_basic:0.0.1"
           }
         },
         properties: {},
