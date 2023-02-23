@@ -1,0 +1,58 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: mnist-batch-identification-using-parallel
+description: The hello world pipeline job with inline parallel job
+experiment_name: hello-world-parallel-job
+tags:
+  tag: tagvalue
+  owner: sdkteam
+
+jobs:
+  prepare_data:
+    type: command
+    compute: azureml:cpu-cluster
+    component: ./script/prepare_data.yml
+
+  predict_digits_mnist:
+    type: parallel
+    compute: azureml:cpu-cluster
+    inputs:
+      job_data_path:
+        type: uri_folder
+        path: ${{parent.jobs.prepare_data.outputs.mnist_png}}
+        mode: ro_mount
+      score_model:
+        type: uri_folder
+        path: ./mnist_models
+        mode: download
+    outputs:
+      job_output_file:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/${{name}}/aggregated_returns.csv
+        mode: rw_mount
+
+    mini_batch_size: "5"
+    resources:
+      instance_count: 2
+    mini_batch_error_threshold: 5
+    logging_level: "DEBUG"
+    input_data: ${{inputs.job_data_path}}
+    max_concurrency_per_instance: 2
+    retry_settings:
+      max_retries: 2
+      timeout: 60
+    
+    environment_variables:
+      "AZUREML_PARALLEL_EXAMPLE": "3a_yaml"
+    
+    task:
+      type: run_function
+      code: ./script
+      entry_script: digit_identification.py
+      environment:
+        image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+        conda_file: ./script/environment_parallel.yml
+      program_arguments: >-
+        --model ${{inputs.score_model}}
+      append_row_to: ${{outputs.job_output_file}}
+

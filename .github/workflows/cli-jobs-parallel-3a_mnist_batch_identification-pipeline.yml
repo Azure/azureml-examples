@@ -3,18 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-scripts-create-registries
+name: cli-jobs-parallel-3a_mnist_batch_identification-pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "3 8/12 * * *"
+    - cron: "0 0/8 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - cli/create-registries.sh
+      - cli/jobs/parallel/3a_mnist_batch_identification/**
       - infra/**
-      - .github/workflows/cli-scripts-create-registries.yml
+      - .github/workflows/cli-jobs-parallel-3a_mnist_batch_identification-pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -31,6 +32,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -41,9 +43,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: test script script
+    - name: run job
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          set -e; bash -x create-registries.sh
-      working-directory: cli
+          bash -x ../../../run-job.sh pipeline.yml
+      working-directory: cli/jobs/parallel/3a_mnist_batch_identification
