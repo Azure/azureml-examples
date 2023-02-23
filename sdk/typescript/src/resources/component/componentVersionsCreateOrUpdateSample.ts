@@ -19,14 +19,14 @@ const workspaceName = getEnvironmentVariable("WORKSPACE_NAME");
  * @summary Create or update version.
  * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentVersion/createOrUpdate.json
  */
-async function createOrUpdateComponentVersion() {
+export async function createOrUpdateComponentVersion() {
   const name = "command_component_basic";
   const version = "0.0.1";
   const body: ComponentVersion = {
     properties: {
       description: "This is the basic command component",
       componentSpec: {
-        'command': 'echo Hello World & echo $[[${{inputs.component_in_number}}]] & echo ${{inputs.component_in_path}} & echo ${{outputs.component_out_path}} > ${{outputs.component_out_path}}/component_in_number',
+        'command': 'echo Hello World & echo $[[${{inputs.component_in_number}}]] & echo $[[${{inputs.component_in_path}}]] & echo ${{outputs.component_out_path}} > ${{outputs.component_out_path}}/component_in_number',
         'environment': 'azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1',
         'name': 'command_component_basic',
         'description': 'This is the basic command component',
@@ -37,7 +37,7 @@ async function createOrUpdateComponentVersion() {
         'is_deterministic': true,
         'inputs': {
           'component_in_number': { 'type': 'number', 'optional': true, 'default': '10.99', 'description': 'A number' },
-          'component_in_path': { 'type': 'uri_folder', 'description': 'A path' }
+          'component_in_path': { 'type': 'uri_folder', 'optional': true, 'description': 'A path' }
         },
         'outputs': { 'component_out_path': { 'type': 'uri_folder' } },
         'type': 'command',

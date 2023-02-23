@@ -5,6 +5,7 @@ import {
     JobBase,
   } from "@azure/arm-machinelearning";
   import { client, getEnvironmentVariable } from "../../../utils";
+  import { createOrUpdateComponentVersion } from "../../component/componentVersionsCreateOrUpdateSample";
   
   // Load the .env file if it exists
   import * as dotenv from "dotenv";
@@ -19,31 +20,21 @@ import {
    * @summary Create or update version.
    */
   async function createOrUpdatePipelineJob() {
+    // create a simple component
+    await createOrUpdateComponentVersion();
     const name = "simple_pipeline_job";
-    const version = "0.0.1";
     const body: JobBase = {
       properties: {
         description: "This is the basic pipeline job",
         computeId: "cpu-cluster",
+        jobType: "Pipeline",
         jobs: {
           "node1": {
             "name": "node1",
             "type": "command",
-            "inputs": {
-                "component_in_number": {
-                    "job_input_type": "literal",
-                    "value": "${{parent.inputs.job_in_number}}"
-                },
-                "component_in_path": {
-                    "job_input_type": "literal",
-                    "value": "${{parent.inputs.job_in_path}}"
-                }
-            },
-            "_source": "YAML.COMPONENT",
-            "componentId": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/00000/components/azureml_anonymous/versions/af7c8957-aa4a-4d24-bc2e-0e6e53be325a"
+            "componentId": "azureml:command_component_basic:0.0.1"
           }
         },
-        isAnonymous: false,
         properties: {},
         tags: { 'tag': 'tagvalue', 'owner': 'sdkteam' }
       }
@@ -52,11 +43,10 @@ import {
     // const client = new AzureMachineLearningWorkspaces(credential, subscriptionId);
     try {
       console.log("Create or update pipeline job ...")
-      const pipelineJobCreateOrUpdateResponse = await client.job.createOrUpdate(
+      const pipelineJobCreateOrUpdateResponse = await client.jobs.createOrUpdate(
         resourceGroupName,
         workspaceName,
         name,
-        version,
         body
       );
       console.log(pipelineJobCreateOrUpdateResponse);
