@@ -267,8 +267,8 @@ function install_packages() {
     echo_info "------------------------------------------------"
 
     sudo apt-get update
-    sudo apt-get upgrade -y
     sudo apt install --reinstall grub-efi-arm64-signed -y
+    sudo apt-get upgrade -y
     # Errors: grub-efi-amd64-signed & shim-signed
     # https://stackoverflow.com/questions/53203528/errors-grub-efi-amd64-signed-shim-signed/53284186#53284186
     # sudo apt-get purge grub\*
