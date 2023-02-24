@@ -1,13 +1,11 @@
 # Pipeline component
-Please note that this Private Preview release is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/en-us/support/legal/preview-supplemental-terms/).
 ## Overview
 When developing complex machine learning  pipeline, there will be sub-pipeline which will use multi-step to doing some task such as data preprocessing, model training. And they can develop and test standalone. We introduce pipeline component, which can group multi-step as component, then you can use them to as single step built complex pipeline, this will help your share your work and better collaborate with team members.
 
 Pipeline component author can focus on the sub-task, and easy to integrate pipeline component with whole pipeline job. Meanwhile, as pipeline component have well defined interface (inputs/outputs), pipeline component user didn't need to know detail implementation of pipeline component.
 
 ## Prerequisites
-- Please update your CLI and SDK to new version: CLI>=2.10.0, SDK>=0.1.0
-- As this private preview feature, please fill [this form to join](https://forms.office.com/r/pEguDEiqZL).
+- Please update your CLI and SDK to new version.
 - To use this new featur you need use [CLI and SDK v2](https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2).
     - [Install and set up CLI (v2)](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli)
     - [Install and set up SDK (v2)](https://aka.ms/sdk-v2-install)
