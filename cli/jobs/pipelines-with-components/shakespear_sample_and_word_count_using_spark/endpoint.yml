@@ -1,6 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: endpoint-with-spark
-description: An endpoint to perform training with spark node
-auth_mode: aad_token
-properties:
-  ComponentDeployment.Enabled: True
