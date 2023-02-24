@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-name: pipeline_component_with_data_prep_and_transformation
+# name: pipeline_component_with_data_prep_and_transformation
 display_name: nyc_taxi_data_regression
 description: Train regression model based on nyc taxi dataset
 
@@ -19,10 +19,12 @@ inputs:
   compute_train_node: cpu-cluster # example to show how to promote compute as input
   # compute_train_node: 
     # type: string
-# changes to use as pipeline component
+
+# changes needed to make pipeline job as pipeline component
 ## outputs need explicit type
 ## add name property which is always ignored for job
 ## remove path property under inputs
+
 outputs: 
   pipeline_job_trained_model:
     type: mlflow_model

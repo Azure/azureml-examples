@@ -21,7 +21,7 @@ In general, pipeline component is much similar to pipeline job. They are both co
 ## Experience
 
 ### CLI experience
-You can find more detail example [here](../pipeline_with_pipeline_component/).
+You can find more detail example [here](../../../../../cli/).
 
 ### SDK experience
-You can find more detail example [here](../../../../sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/).
+You can find more detail example [here](../1j_pipeline_with_pipeline_component/).
