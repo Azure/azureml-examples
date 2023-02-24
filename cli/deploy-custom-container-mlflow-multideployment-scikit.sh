@@ -14,7 +14,7 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 # <initialize_build_context>
 export PARENT_PATH=endpoints/online/custom-container/mlflow/multideployment-scikit/
 export BASE_PATH="$PARENT_PATH/mlflow_context"
-export ASSET_PATH=endpoints/online/mlflow
+export ASSET_PATH=endpoints/online/ncd
 rm -rf $BASE_PATH && mkdir $BASE_PATH
 # </initialize_build_context> 
 
