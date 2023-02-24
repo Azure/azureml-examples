@@ -2,25 +2,42 @@ import os
 from pathlib import Path
 
 from mldesigner import command_component, Input, Output
+# from mldesigner.dsl._dynamic_executor import DynamicExecutor
 
 
-@command_component(environment="./conda.yaml")
-def get_my_data(output: Output(type="mltable")):
-    """Get a data asset and pass to next component"""
+@command_component
+def gen_data_0(output: Output(type="uri_folder")):
+    """Generate data output"""
+    
+    print(f"output_0: {output}")
+    output_file = Path(output) / "hello.txt"
+    output_file.write_text("Hello")
+    
 
-    output_base = Path(output)
-    print("================= Check output folder =================")
-    print(f"Output is a folder: {output_base.is_dir()}")
-    print(f"Output base: {output_base}")
+@command_component
+def gen_data_1(output: Output(type="uri_folder")):
+    """Generate data output"""
+    
+    print(f"output_1: {output}")
+    output_file = Path(output) / "world.txt"
+    output_file.write_text("Hello")
+    
+
+@command_component
+def select_data(input_0: Input(type="uri_folder"), input_1: Input(type="uri_folder"), output: Output(type="mltable")):
+    """Select input and gen mltable output"""
+
+    print("============================ Inspect original inputs ============================")
+    print(f"Input_0: {input_0}")
+    print(f"Input_1: {input_1}")
+    print(f"output: {output}")
 
     print("================= Write Mltable to local =================")
-    # azureml://subscriptions/96aede12-2f73-41cb-b983-6d11a904839b/resourcegroups/hod-eastus2/workspaces/sdk_vnext_cli/datastores/workspaceblobstore/paths/LocalUpload/cc355250825d6284521e9ae14f3db123/src/
-    # azureml://subscriptions/96aede12-2f73-41cb-b983-6d11a904839b/resourcegroups/hod-eastus2/workspaces/sdk_vnext_cli/datastores/workspaceblobstore/paths/LocalUpload/4c8f25cc30097999fb052b06bca2a561/data/
     mltable_yaml = f"""$schema: https://azuremlschemas.azureedge.net/latest/MLTable.schema.json
 
 type: mltable
 paths:
-    - folder: azureml:mltable_test_data:1
+    - folder: {input_0}
 """
 
     print("Writing MLTable file to local...")
@@ -32,9 +49,11 @@ paths:
     print("================= Double check mltable file =================")
     print(f"mltable path: {mltable}")
     print(f"mltable content: \n{mltable.read_text()}")
-    
 
-@command_component(environment="./conda.yaml")
+    print("============================ Finished ============================")
+
+
+@command_component
 def consume_data(data_path: Input(type="mltable", mode="eval_mount")):
     """Consume an mltable input"""
     data = Path(data_path)
@@ -47,7 +66,7 @@ def consume_data(data_path: Input(type="mltable", mode="eval_mount")):
     else:
         print(f"Data file name: {data.name}")
         print(f"Data file content: \n\t{data.read_text()}")
-        
+
 
 def list_files(startpath):
     for root, dirs, files in os.walk(startpath):

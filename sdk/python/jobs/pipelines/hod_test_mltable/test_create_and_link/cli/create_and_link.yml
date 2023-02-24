@@ -7,10 +7,17 @@ tags:
 version: 1
 type: command
 
+inputs:
+  input_mltable:
+    type: mltable
+    mode: eval_mount
+
 outputs:
   my_output:
+    type: uri_folder
 
 code: .
-environment: ./conda.yaml
+environment: file:./conda.yaml
+
 command: >-
   python create_and_link.py ${{inputs.input_mltable}}
