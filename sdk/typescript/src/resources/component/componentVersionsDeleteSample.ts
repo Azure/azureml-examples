@@ -16,7 +16,7 @@ const workspaceName = getEnvironmentVariable("WORKSPACE_NAME");
  * @summary Delete version.
  * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentVersion/delete.json
  */
-async function deleteComponentVersion() {
+async function deleteComponentVersion(): Promise<void> {
   const name = "command_component_basic";
   const version = "0.0.1";
   try {

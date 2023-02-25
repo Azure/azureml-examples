@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 import {
+  ComponentVersion,
   ComponentVersionsListOptionalParams,
 } from "@azure/arm-machinelearning";
 
@@ -18,12 +19,12 @@ const workspaceName = getEnvironmentVariable("WORKSPACE_NAME");
  * @summary List component versions.
  * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentVersion/list.json
  */
-async function listComponentVersion() {
+async function listComponentVersion(): Promise<void> {
   const name = "command_component_basic";
   const orderBy = "createdtime desc";
   const top = 1;
   const options: ComponentVersionsListOptionalParams = { orderBy, top };
-  const resArray = new Array();
+  const resArray = new Array<ComponentVersion>();
   for await (let componentItem of client.componentVersions.list(
     resourceGroupName,
     workspaceName,

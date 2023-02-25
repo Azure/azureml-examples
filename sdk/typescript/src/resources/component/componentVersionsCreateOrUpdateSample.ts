@@ -19,7 +19,7 @@ const workspaceName = getEnvironmentVariable("WORKSPACE_NAME");
  * @summary Create or update version.
  * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentVersion/createOrUpdate.json
  */
-async function createOrUpdateComponentVersion() {
+async function createOrUpdateComponentVersion(): Promise<void> {
   const name = "command_component_basic";
   const version = "0.0.1";
   const body: ComponentVersion = {
