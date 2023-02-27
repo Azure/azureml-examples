@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 import {
-    JobBase,
-  } from "@azure/arm-machinelearning";
+  JobBase,
+} from "@azure/arm-machinelearning";
 import { client, getEnvironmentVariable } from "../../../utils";
 import { createOrUpdateComponentVersion } from "../../component/componentVersionsCreateOrUpdateSample";
 
@@ -19,7 +19,7 @@ const workspaceName = getEnvironmentVariable("WORKSPACE_NAME");
  *
  * @summary Create or update version.
  */
-async function createOrUpdatePipelineJob() {
+async function createOrUpdatePipelineJob(): Promise<void> {
   // create a simple component
   await createOrUpdateComponentVersion();
   const name = "simple_pipeline_job";
