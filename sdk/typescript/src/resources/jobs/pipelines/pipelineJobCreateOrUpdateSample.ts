@@ -19,7 +19,7 @@ import {
    *
    * @summary Create or update version.
    */
-  async function createOrUpdatePipelineJob() {
+  async function createOrUpdatePipelineJob(): Promise<void> {
     // create a simple component
     await createOrUpdateComponentVersion();
     const name = "simple_pipeline_job";
