@@ -1,0 +1,45 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: import data from s3 in pipeline
+description: Single job pipeline job to import data from s3
+
+settings:
+  default_compute: serverless
+
+inputs:
+  input_mlflow_model: 
+    type: mlflow_model
+    path: azureml:local-mlflow-example@latest
+  input_folder1: 
+    type: uri_folder
+    path: ../../sample_data
+  input_folder2:
+    type: uri_folder
+    path: ../../sample_data
+
+
+
+jobs:
+  copy_data_mlflow:
+    type: data_transfer
+    component: ./prep.yml    
+    inputs:
+      input_model: ${{parent.inputs.input_model}}
+    outputs:
+      output_model:
+      type: mlflow_model
+  merge_folders:
+    type: data_transfer
+    component: ./prep.yml    
+    inputs:
+      input_folder1: ${{parent.inputs.input_folder1}}
+      input_folder2: ${{parent.inputs.input_folder2}}
+    outputs:
+      output_folder:
+      type: uri_folder
+  
+
+
+
+
+  

@@ -1,0 +1,7 @@
+name: test_s3_conn_data_transfer
+type: s3
+target: https://bucket-name.s3.region-code.amazonaws.com/key-name
+credentials:
+  type: access_key
+  access_key_id: dummy
+  secret_access_key: dummy

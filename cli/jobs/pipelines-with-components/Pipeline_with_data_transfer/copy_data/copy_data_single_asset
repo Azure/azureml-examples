@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/DataTransferComponent.json
+name: datatransfer_copy_model
+display_name: Data Transfer Pipeline copy model
+
+type: data_transfer
+task: copy_data
+inputs:
+  input_model: 
+    type: mlflow_model
+outputs:
+  output_model: 
+    type: mlflow_model
+data_copy_mode: fail_if_conflicts

@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: import data from s3 in pipeline
+description: Single job pipeline job to import data from s3
+
+settings:
+  default_compute: serverless
+  
+jobs:
+  import_data_s3:
+    type: data_transfer
+    task: import_data
+    source: 
+      type: file_system
+      connction: test_s3_conn_data_transfer
+      path: /data
+    outputs:
+      sink: 
+        type: uri_folder
+
+
+  

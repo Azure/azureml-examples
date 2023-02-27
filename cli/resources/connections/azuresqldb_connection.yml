@@ -1,0 +1,9 @@
+name: test_ws_conn_azuresqldb
+type: azuresqldb
+target: 
+  server_name: dummy_db.database.windows.net
+  database_name: dummy_table
+credentials:
+  type: sql_auth
+  username: dummy
+  password: dummy

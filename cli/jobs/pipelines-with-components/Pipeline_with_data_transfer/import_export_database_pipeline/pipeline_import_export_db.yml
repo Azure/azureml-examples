@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: import and export sql data in pipeline
+description: Single job pipeline job to import export sql data
+
+settings:
+  default_compute: serverless
+
+inputs:
+  query_sink_azuresqlbd: "SELECT * FROM dummy_table"
+jobs:
+  import_azuresql_data:
+    type: data_transfer
+    task: import_data
+    source: 
+      type: database
+      connction: test_ws_conn_azuresqldb
+      query:  ${{parent.inputs.query_source_azuresqlbd}}
+    outputs:
+      sink: 
+        type: mltable
+
+  export_azuresql_data:
+    type: data_transfer
+    task: export_data
+    inputs:
+      source: 
+        type: uri_file
+        path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
+    sink: 
+      type: database
+      connction: test_ws_conn_azuresqldb
+      table_name: dummy_table
+
+
+  
