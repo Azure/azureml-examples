@@ -4,8 +4,8 @@
 import {
   JobBase,
 } from "@azure/arm-machinelearning";
-import { client, getEnvironmentVariable } from "../../../utils";
-import { createOrUpdateComponentVersion } from "../../component/componentVersionsCreateOrUpdateSample";
+import { client, getEnvironmentVariable } from "../../utils";
+import { createOrUpdateComponentVersion } from "../../assets/component/componentVersionsCreateOrUpdateSample";
 
 // Load the .env file if it exists
 import * as dotenv from "dotenv";
