@@ -15,7 +15,7 @@ const workspaceName = getEnvironmentVariable("WORKSPACE_NAME");
  * @summary Get version.
  * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentVersion/get.json
  */
-async function getComponentVersion() {
+async function getComponentVersion(): Promise<void> {
   const name = "command_component_basic";
   const version = "0.0.1";
   try {
