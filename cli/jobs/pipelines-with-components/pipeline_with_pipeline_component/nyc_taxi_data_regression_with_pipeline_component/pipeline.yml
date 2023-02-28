@@ -15,10 +15,8 @@ inputs:
     type: uri_folder
     path: ./data
     # path: azureml:nyc_taxi_data_regression@latest
-
+  test_split_ratio: 0.2
   compute_train_node: cpu-cluster # example to show how to promote compute as input
-  # compute_train_node: 
-    # type: string
 
 # changes needed to make pipeline job as pipeline component
 ## outputs need explicit type
@@ -44,12 +42,13 @@ jobs:
     # component: azureml:data_pipeline@latest
     inputs:
       raw_data: ${{parent.inputs.pipeline_raw_data}}
+      test_split_ratio: ${{parent.inputs.test_split_ratio}}
     outputs:
       train_data:  
   train_pipeline:
     type: pipeline
     component: ./train_pipeline/train_pipeline.yml
-    # component: azureml:train_pipeline@lastet
+    # component: azureml:train_pipeline@latest
     inputs: 
       train_data: ${{parent.jobs.data_pipeline.outputs.train_data}}
       compute_train_node: ${{parent.inputs.compute_train_node}}
