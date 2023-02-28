@@ -49,7 +49,7 @@ jobs:
   train_pipeline:
     type: pipeline
     component: ./train_pipeline/train_pipeline.yml
-    # component: azureml:train_pipeline@lastet
+    # component: azureml:train_pipeline@latest
     inputs: 
       train_data: ${{parent.jobs.data_pipeline.outputs.train_data}}
       compute_train_node: ${{parent.inputs.compute_train_node}}

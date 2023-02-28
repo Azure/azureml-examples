@@ -29,7 +29,7 @@ settings:
   continue_on_step_failure: false
 
 jobs:
-  train_and_evaludate_model1:
+  train_and_evaluate_model1:
     type: pipeline
     component: ./components/train_pipeline_component.yml
     inputs:
@@ -39,7 +39,7 @@ jobs:
       training_learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate1}}
       train_node_compute: ${{parent.inputs.compute_train_node}}
 
-  train_and_evaludate_model2:
+  train_and_evaluate_model2:
     type: pipeline
     component: ./components/train_pipeline_component.yml
     inputs:
@@ -54,10 +54,10 @@ jobs:
     component: ./components/compare2/compare2.yml
     compute: ${{parent.inputs.compute_compare_node}} # example to show how to promote compute as pipeline level inputs
     inputs:
-      model1: ${{parent.jobs.train_and_evaludate_model1.outputs.trained_model}}
-      eval_result1: ${{parent.jobs.train_and_evaludate_model1.outputs.evaluation_report}}
-      model2: ${{parent.jobs.train_and_evaludate_model2.outputs.trained_model}}
-      eval_result2: ${{parent.jobs.train_and_evaludate_model2.outputs.evaluation_report}}
+      model1: ${{parent.jobs.train_and_evaluate_model1.outputs.trained_model}}
+      eval_result1: ${{parent.jobs.train_and_evaluate_model1.outputs.evaluation_report}}
+      model2: ${{parent.jobs.train_and_evaluate_model2.outputs.trained_model}}
+      eval_result2: ${{parent.jobs.train_and_evaluate_model2.outputs.evaluation_report}}
     outputs: 
       best_model: ${{parent.outputs.pipeline_job_best_model}}
       best_result: ${{parent.outputs.pipeline_job_best_result}}
