@@ -16,7 +16,7 @@ sudo apt-get install -y azure-cli
 
 echo "Required package installed"
 echo "Add the Microsoft package signing key"
-wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 echo "Install the .NET Core 6.0 runtime"
