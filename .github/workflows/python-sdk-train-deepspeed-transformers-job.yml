@@ -11,7 +11,7 @@ on:
       - v1/python-sdk/requirements.txt
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{vars.V1_UBUNTU_RUNNER}}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
