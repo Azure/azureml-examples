@@ -3,7 +3,7 @@
 azureml-core>=1.20.0
 azureml-mlflow>=1.20.0
 azureml-train>=1.20.0
-azureml-dataprep>=1.20.0
+azureml-dataset-runtime>=1.20.0
 azureml-widgets>=1.20.0
 azureml-pipeline>=1.20.0
 azure-cli-core>=2.31.0
@@ -16,4 +16,4 @@ matplotlib
 
 # required for notebook testing in workflow actions
 # pinned to avoid surprises
-papermill==2.3.3
+papermill==2.4.0
