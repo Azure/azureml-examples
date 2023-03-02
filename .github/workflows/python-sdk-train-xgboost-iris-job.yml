@@ -36,6 +36,6 @@ jobs:
          ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+      run: az ml folder attach -w main -g azureml-examples
     - name: run workflow
       run: python v1/python-sdk/workflows/train/xgboost/iris/job.py
