@@ -13,7 +13,7 @@ on:
       - .github/workflows/python-sdk-tutorial-auto-ml-forecasting-backtest-single-model.yml
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         shell: bash -l {0}
@@ -39,7 +39,7 @@ jobs:
           auto-activate-base: false
     - name: install papermill and set up the IPython kernel
       run: |
-        pip install papermill==2.3.3
+        pip install papermill==2.4.0
         python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
         pip list
     - name: azure login

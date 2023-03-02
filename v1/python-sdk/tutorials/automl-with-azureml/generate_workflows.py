@@ -109,7 +109,7 @@ on:
       - .github/workflows/python-sdk-tutorial-{notebook_name}.yml
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         shell: bash -l {{0}}
@@ -135,7 +135,7 @@ jobs:
           auto-activate-base: false{run_update_env}
     - name: install papermill and set up the IPython kernel
       run: |
-        pip install papermill==2.3.3
+        pip install papermill==2.4.0
         python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
         pip list
     - name: azure login
