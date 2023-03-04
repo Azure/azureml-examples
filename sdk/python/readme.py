@@ -55,7 +55,6 @@ COMPUTE_NAMES = "COMPUTE_NAMES"
 
 
 def main(args):
-
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
 
@@ -133,7 +132,13 @@ def get_forecast_reqs(notebook_name, nb_config):
 def get_validation_yml(notebook_folder, notebook_name):
     validation_yml = ""
     validation_json_file_name = os.path.join(
-        "..", "..", ".github", "validate", "sdk", "python", notebook_name.replace(".ipynb", "-validations.json")
+        "..",
+        "..",
+        ".github",
+        "validate",
+        "sdk",
+        "python",
+        notebook_name.replace(".ipynb", "-validations.json"),
     )
 
     if os.path.exists(validation_json_file_name):
@@ -150,7 +155,9 @@ def get_validation_yml(notebook_folder, notebook_name):
 def get_validation_check_yml(notebook_folder, notebook_name, validation):
     validation_name = validation["name"]
     validation_file_name = validation_name.replace(" ", "_")
-    notebook_output_file = os.path.basename(notebook_name).replace(".", ".output.").replace(os.sep, "/")
+    notebook_output_file = (
+        os.path.basename(notebook_name).replace(".", ".output.").replace(os.sep, "/")
+    )
     notebook_folder = notebook_folder.replace(os.sep, "/")
     full_folder_name = f"sdk/python/{notebook_folder}"
 
@@ -427,7 +434,6 @@ def modify_notebooks(notebooks):
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -457,7 +463,6 @@ def change_working_dir(path):
 
 # run functions
 if __name__ == "__main__":
-
     # setup argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--check-readme", type=bool, default=False)
