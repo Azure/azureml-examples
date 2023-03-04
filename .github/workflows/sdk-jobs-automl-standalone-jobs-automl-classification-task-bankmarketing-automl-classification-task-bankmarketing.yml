@@ -69,6 +69,20 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+    - name: check notebook output
+      run: |
+         python v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-classification-task-bankmarketing.output.ipynb \
+                --folder sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing \
+                --check warning
+    - name: check experiment result
+      run: |
+         python v1/scripts/validation/check_experiment_result.py \
+                --file_name automl-classification-task-bankmarketing.output.ipynb \
+                --folder sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing \
+                --experiment_name dpv2-classifier-experiment \
+                --minimum_median_score 0.7 \
+                --metric_name AUC_weighted
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
