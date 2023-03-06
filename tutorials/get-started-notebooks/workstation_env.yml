@@ -1,4 +1,4 @@
-name: workstation_env.yml
+name: workstation_env
 dependencies:
   - python=3.8
   - pip=21.2.4
