@@ -1,16 +1,12 @@
-name: dask
+name: dask-mpi
 channels:
   - defaults
   - conda-forge
 dependencies:
   - python=3.8
-  - dask==2022.2.1
-  - distributed==2022.2.1
-  - pip==21.3.1
-  - jupyterlab
-  - jupyter-server-proxy
   - pip:
-    - fastparquet==0.8.0
-    - fsspec==2022.2.0
-    - tabulate==0.8.9
+    - dask[complete]
+    - dask_mpi
+    - mpi4py
+    - pyarrow
     - azureml-mlflow

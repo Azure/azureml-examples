@@ -1,6 +1,7 @@
 from dask.distributed import Client
+import dask_mpi
 import dask.dataframe as dd
-import os, uuid, time
+import os, uuid, time, socket
 import argparse
 import mlflow
 from pathlib import Path
@@ -24,7 +25,17 @@ print(f"dataset location: {dataset}")
 os.system(f"find {dataset}")
 print(f"output location: {output_path}")
 
-c = Client("localhost:8786")
+# Initialize Dask over MPI
+dask_mpi.initialize()
+c = Client()
+
+# Find the Dask dashboard
+def get_ip_address():
+    return socket.gethostbyname_ex(socket.gethostname())[-1][-1]
+host = c.run_on_scheduler(get_ip_address)
+port = c.scheduler_info()["services"]["dashboard"]
+print(f"Dask dashboard on {host}:{port}")
+
 print(c)
 mlflow.log_text(str(c), "dask_cluster1")
 
