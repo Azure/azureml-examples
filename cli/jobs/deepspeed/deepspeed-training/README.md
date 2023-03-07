@@ -1,10 +1,15 @@
 ### Deepspeed training with Azure Machine Learning
-## Overview
-Train a model using deepspeed.
-## How to Run
-1. Create a compute that can run the job. Tesla V100 or A100 GPUs are strongly recommended, the example may not work correctly without them. In the ``generate-yml.sh`` file, set the compute to be the name of your compute.
-2. Generate the training job yaml file with the following command:<br />
-```bash generate-yml.sh```
-3. Start the job with the following command:<br />
-```az ml job create --file job.yml```
-4. This example provides a basic ``ds_config.json`` file to configure deepspeed. To have a more optimal configuration, run the deepspeed-autotuning example first to generate a new ds_config file to replace this one.
+This example showcases how to use DeepSpeed with an AzureML training job.
+### Setup
+#### Environment
+The environment for this job is provided in the docker-context file. There is no setup needed to run the job, however, if you want to setup the environment separately for use later (to prevent rebuilding the environment every time the job is run), follow [this guide](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-environments-in-studio).
+#### Compute Instance
+V100 GPUs (ND40rs) are recommended for this job. This example was originally run using 2 ND40rs nodes with 8 V100 GPUs each. Make sure to edit the ``job.yml`` file with the name of the compute you want to use for this job.
+- Inside the ``job.sh`` file, the ``instance_count`` and the ``process_count_per_instance`` variables will also need to be edited to specify how many compute nodes and how many GPUs exist per each compute node being used.
+### Running the Job
+To start a DeepSpeed training job, run the following command in the command line while inside this directory:
+```
+az ml job create --file job.yml
+```
+
+When the job completes, the optimal DeepSpeed configuration can be found at ``outputs/autotuning_results/results/ds_config_optimal.json``.
