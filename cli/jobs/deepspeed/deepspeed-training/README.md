@@ -1,4 +1,4 @@
-### Deepspeed training with Azure Machine Learning
+## Deepspeed training with Azure Machine Learning
 This example showcases how to use DeepSpeed with an AzureML training job.
 ### Setup
 #### Environment
@@ -11,5 +11,4 @@ To start a DeepSpeed training job, run the following command in the command line
 ```
 az ml job create --file job.yml
 ```
-
-When the job completes, the optimal DeepSpeed configuration can be found at ``outputs/autotuning_results/results/ds_config_optimal.json``.
+> Using with Autotuning: If the deepspeed-autotuning example is run first, you can use the the optimal ``ds_config.json`` file that is generated as the configuration file for this example. This will allow for better resource utilization.
