@@ -1,6 +1,6 @@
 # Training job submission via AML CLI v2
 
-\$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
 command: python train.py --with_aml_log=True --deepspeed --deepspeed_config ds_config.json
 
