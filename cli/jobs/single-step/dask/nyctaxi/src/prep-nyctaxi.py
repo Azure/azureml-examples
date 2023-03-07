@@ -29,9 +29,12 @@ print(f"output location: {output_path}")
 dask_mpi.initialize()
 c = Client()
 
+
 # Find the Dask dashboard
 def get_ip_address():
     return socket.gethostbyname_ex(socket.gethostname())[-1][-1]
+
+
 host = c.run_on_scheduler(get_ip_address)
 port = c.scheduler_info()["services"]["dashboard"]
 print(f"Dask dashboard on {host}:{port}")
@@ -104,6 +107,7 @@ query_frags = [
     "dropoff_latitude > 40 and dropoff_latitude < 42",
 ]
 query = " and ".join(query_frags)
+
 
 # helper function which takes a DataFrame partition
 def clean(df_part, remap, must_haves, query):
@@ -238,6 +242,7 @@ start_time = time.time()
 # make sure that the output_path exists on all nodes of the cluster.
 # See above for how to create it on all cluster nodes.
 taxi_df.to_parquet(output_path, engine="fastparquet")
+
 
 # for debug, show output folders on all nodes
 def list_output():
