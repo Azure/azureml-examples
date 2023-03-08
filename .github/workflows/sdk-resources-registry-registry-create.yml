@@ -68,8 +68,9 @@ jobs:
           papermill -k python registry-create.ipynb registry-create.output.ipynb
       working-directory: sdk/python/resources/registry
     - name: delete created registry
+      if: ${{ always() }}
       run: |
-          az ml registry delete --name "DemoRegistryPython"
+          az ml registry delete --name "DemoRegistryPython" --resource-group $RESOURCE_GROUP_NAME
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
