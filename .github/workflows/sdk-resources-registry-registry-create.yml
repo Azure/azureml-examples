@@ -70,6 +70,8 @@ jobs:
     - name: delete created registry
       if: ${{ always() }}
       run: |
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          echo $RESOURCE_GROUP_NAME;
           az ml registry delete --name "DemoRegistryPython" --resource-group $RESOURCE_GROUP_NAME
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
