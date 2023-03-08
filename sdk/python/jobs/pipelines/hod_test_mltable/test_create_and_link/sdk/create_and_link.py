@@ -20,7 +20,7 @@ def get_my_data(output: Output(type="mltable")):
 
 type: mltable
 paths:
-    - folder: azureml:mltable_test_data:1
+    - file: azureml://subscriptions/96aede12-2f73-41cb-b983-6d11a904839b/resourcegroups/hod-eastus2/workspaces/sdk_vnext_cli/datastores/workspaceblobstore/paths/LocalUpload/4c8f25cc30097999fb052b06bca2a561/data/
 """
 
     print("Writing MLTable file to local...")

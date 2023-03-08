@@ -12,3 +12,10 @@ conda_file:
     - pip:
         - azure-ai-ml
         - mldesigner
+
+
+$schema: https://azuremlschemas.azureedge.net/latest/MLTable.schema.json
+
+type: mltable
+paths:
+    - folder: azureml:mltable_test_data:1
