@@ -67,6 +67,9 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python registry-create.ipynb registry-create.output.ipynb
       working-directory: sdk/python/resources/registry
+    - name: delete created registry
+      run: |
+          az ml registry delete --name "DemoRegistryPython"
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
