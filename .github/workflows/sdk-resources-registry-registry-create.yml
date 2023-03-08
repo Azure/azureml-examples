@@ -73,6 +73,7 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           echo $RESOURCE_GROUP_NAME;
           az ml registry delete --name "DemoRegistryPython" --resource-group $RESOURCE_GROUP_NAME
+      working-directory: sdk/python/resources/registry
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
