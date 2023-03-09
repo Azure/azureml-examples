@@ -73,6 +73,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           echo $RESOURCE_GROUP_NAME;
+          az ml registry show --name "DemoRegistryPython";
           az ml registry delete --name "DemoRegistryPython" --resource-group $RESOURCE_GROUP_NAME --subscription $SUBSCRIPTION_ID
       working-directory: sdk/python/resources/registry
     - name: upload notebook's working folder as an artifact
