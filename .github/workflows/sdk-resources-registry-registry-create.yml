@@ -66,7 +66,7 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "registry-create.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python registry-create.ipynb registry-create.output.ipynb;
-          # az ml registry delete --name "DemoRegistryPython"-$timestamp --resource-group $RESOURCE_GROUP_NAME --subscription $SUBSCRIPTION_ID
+          az ml registry delete --name "DemoRegistryPython"-$timestamp --resource-group $RESOURCE_GROUP_NAME --subscription $SUBSCRIPTION_ID
       working-directory: sdk/python/resources/registry
       continue-on-error: true
     - name: upload notebook's working folder as an artifact
