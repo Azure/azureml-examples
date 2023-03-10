@@ -75,7 +75,7 @@ jobs:
                 --file_name automl-classification-task-bankmarketing.output.ipynb \
                 --folder . \
                 --check warning \
-        working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: check v2 experiment result
       run: |
          python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
@@ -84,7 +84,7 @@ jobs:
                 --experiment_name dpv2-classifier-experiment \
                 --minimum_median_score 0.7 \
                 --metric_name AUC_weighted \
-        working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

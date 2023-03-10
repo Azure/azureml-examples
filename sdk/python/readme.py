@@ -183,7 +183,7 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
                 --{param_name} {param_value} \\"""
 
     check_yml += f"""
-        working-directory: {full_folder_name} \\"""
+      working-directory: {full_folder_name} \\"""
 
     return check_yml[:-2]
 
