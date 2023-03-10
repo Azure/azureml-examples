@@ -39,6 +39,7 @@ parser.add_argument("--is_local_run", type=bool)
 
 inputArgs = parser.parse_args()
 
+
 def checkExperimentResult(
     experiment_name,
     file_name,
@@ -69,16 +70,16 @@ def checkExperimentResult(
 
     runs = mlflow_client.search_runs(
         experiment_ids=experiment.experiment_id,
-        filter_string='',
+        filter_string="",
         run_view_type=ViewType.ALL,
-        order_by=['run.info.start_time DESC'])
+        order_by=["run.info.start_time DESC"],
+    )
 
     print("Total runs: " + str(len(runs)))
 
     root_run_ids = getNotebookRuns(runs, file_name, folder)
 
-    print("root_run_ids: "+str(root_run_ids))
-
+    print("root_run_ids: " + str(root_run_ids))
 
     if vision_train_run:
         # Only check the most recent runs
@@ -119,9 +120,12 @@ def checkExperimentResult(
     print("check_experiment_result complete")
 
 
-
 def getNotebookRuns(runs, file_name, folder):
-    root_run_ids = set(run.data.tags['mlflow.rootRunId'] for run in runs if run.data.tags['mlflow.rootRunId']+"_setup"==run.info.run_id)
+    root_run_ids = set(
+        run.data.tags["mlflow.rootRunId"]
+        for run in runs
+        if run.data.tags["mlflow.rootRunId"] + "_setup" == run.info.run_id
+    )
     full_name = os.path.join(folder, file_name)
     notebook_run_ids = []
 
@@ -130,8 +134,16 @@ def getNotebookRuns(runs, file_name, folder):
 
         return [runid for runid in root_run_ids if runid in notebook_output]
 
+
 def getChildRuns(runs, root_run_id):
-    return [run for run in runs if run.data.tags['mlflow.rootRunId']==root_run_id and run.info.run_id.replace(run.data.tags['mlflow.rootRunId']+"_", "").isdigit()]
+    return [
+        run
+        for run in runs
+        if run.data.tags["mlflow.rootRunId"] == root_run_id
+        and run.info.run_id.replace(
+            run.data.tags["mlflow.rootRunId"] + "_", ""
+        ).isdigit()
+    ]
 
 
 checkExperimentResult(
@@ -147,4 +159,3 @@ checkExperimentResult(
     inputArgs.expected_run_count or 1,
     inputArgs.vision_train_run,
 )
-
