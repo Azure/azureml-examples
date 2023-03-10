@@ -206,7 +206,7 @@ jobs:
           mkdir data
           cd data
           wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv"""
-          
+
     if not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb
