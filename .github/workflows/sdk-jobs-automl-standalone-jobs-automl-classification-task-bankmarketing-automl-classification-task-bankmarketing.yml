@@ -75,9 +75,9 @@ jobs:
                 --file_name automl-classification-task-bankmarketing.output.ipynb \
                 --folder sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing \
                 --check warning
-    - name: check experiment result
+    - name: check v2 experiment result
       run: |
-         python v1/scripts/validation/check_experiment_result.py \
+         python v1/scripts/validation/check_v2_experiment_result.py \
                 --file_name automl-classification-task-bankmarketing.output.ipynb \
                 --folder sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing \
                 --experiment_name dpv2-classifier-experiment \
