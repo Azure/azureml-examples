@@ -1,0 +1,22 @@
+{
+  "validations": [
+  {
+    "name": "check notebook output",
+    "params": {
+      "check": "warning stderr"
+     }
+  },
+  {
+    "name": "check experiment result",
+    "params": {
+      "experiment_name": "dpv2-forecasting-experiment",
+      "expected_run_count": "2",
+      "minimum_median_score": "0.01",
+      "maximum_median_score": "0.2",
+      "metric_name": "normalized_root_mean_squared_error",
+      "absolute_minimum_score": "0.0",
+      "absolute_maximum_score": "1.0"
+    }
+  }
+  ]
+}
