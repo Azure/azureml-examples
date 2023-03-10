@@ -46,6 +46,7 @@ allowed_list = [
     "Downloading dataset",
     "logger.warning",
     "Importing plotly failed",
+    "Found the config file in:",
 ]
 
 with open(full_name, "r") as notebook_file:
