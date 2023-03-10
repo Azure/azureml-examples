@@ -160,13 +160,14 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
     )
     notebook_folder = notebook_folder.replace(os.sep, "/")
     full_folder_name = f"sdk/python/{notebook_folder}"
+    github_workspace = "${{ github.workspace }}"
 
     check_yml = f"""
     - name: {validation_name}
       run: |
-         python v1/scripts/validation/{validation_file_name}.py \\
+         python {github_workspace}/v1/scripts/validation/{validation_file_name}.py \\
                 --file_name {notebook_output_file} \\
-                --folder {full_folder_name} \\"""
+                --folder . \\"""
 
     for param_name, param_value in validation["params"].items():
         if type(param_value) is list:
@@ -180,6 +181,9 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
         else:
             check_yml += f"""
                 --{param_name} {param_value} \\"""
+
+    check_yml += f"""
+        working-directory: {full_folder_name} \\"""
 
     return check_yml[:-2]
 
