@@ -199,7 +199,14 @@ jobs:
           touch /tmp/code/code
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
+    if "access-and-explore-data" in name:
+        workflow_yaml += f"""
 
+          # load data into 'data' subdirectory
+          mkdir data
+          cd data
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv"""
+          
     if not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb

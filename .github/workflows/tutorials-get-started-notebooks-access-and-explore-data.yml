@@ -65,6 +65,11 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "access-and-explore-data.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
+
+          # load data into 'data' subdirectory
+          mkdir data
+          cd data
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
           papermill -k python access-and-explore-data.ipynb access-and-explore-data.output.ipynb
       working-directory: tutorials/get-started-notebooks
     - name: upload notebook's working folder as an artifact
