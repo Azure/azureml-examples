@@ -78,9 +78,9 @@ jobs:
                 --folder . \
                 --check warning stderr \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
-    - name: check experiment result
+    - name: check v2 experiment result
       run: |
-         python ${{ github.workspace }}/v1/scripts/validation/check_experiment_result.py \
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
                 --file_name automl-forecasting-orange-juice-sales-mlflow.output.ipynb \
                 --folder . \
                 --experiment_name dpv2-forecasting-experiment \

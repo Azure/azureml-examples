@@ -78,9 +78,9 @@ jobs:
                 --folder . \
                 --check warning \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share
-    - name: check experiment result
+    - name: check v2 experiment result
       run: |
-         python ${{ github.workspace }}/v1/scripts/validation/check_experiment_result.py \
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
                 --file_name auto-ml-forecasting-bike-share.output.ipynb \
                 --folder . \
                 --experiment_name dpv2-bike-test \

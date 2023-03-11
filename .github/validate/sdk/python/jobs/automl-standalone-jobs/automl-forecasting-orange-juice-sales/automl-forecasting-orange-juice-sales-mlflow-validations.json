@@ -7,7 +7,7 @@
      }
   },
   {
-    "name": "check experiment result",
+    "name": "check v2 experiment result",
     "params": {
       "experiment_name": "dpv2-forecasting-experiment",
       "minimum_median_score": "0.01",
