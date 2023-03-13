@@ -205,8 +205,8 @@ jobs:
           # load data into 'data' subdirectory
           mkdir data
           cd data
-          pwd
-          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv"""
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
+          cd .."""
 
     if not ("automl" in folder):
         workflow_yaml += f"""
