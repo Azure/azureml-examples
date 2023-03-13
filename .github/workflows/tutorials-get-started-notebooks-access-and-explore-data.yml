@@ -69,7 +69,9 @@ jobs:
           # load data into 'data' subdirectory
           mkdir data
           cd data
+          pwd
           wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
+        working-directory: tutorials/get-started-notebooks
           papermill -k python access-and-explore-data.ipynb access-and-explore-data.output.ipynb
       working-directory: tutorials/get-started-notebooks
     - name: upload notebook's working folder as an artifact
