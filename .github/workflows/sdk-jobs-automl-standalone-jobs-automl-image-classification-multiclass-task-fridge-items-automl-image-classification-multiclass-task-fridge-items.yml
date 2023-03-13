@@ -69,6 +69,13 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-image-classification-multiclass-task-fridge-items.ipynb automl-image-classification-multiclass-task-fridge-items.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multiclass-task-fridge-items
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-image-classification-multiclass-task-fridge-items.output.ipynb \
+                --folder . \
+                --check warning \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multiclass-task-fridge-items
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
