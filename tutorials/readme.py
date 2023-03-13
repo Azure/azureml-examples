@@ -206,8 +206,7 @@ jobs:
           mkdir data
           cd data
           pwd
-          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
-        working-directory: tutorials/{posix_folder}"""
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv"""
 
     if not ("automl" in folder):
         workflow_yaml += f"""
