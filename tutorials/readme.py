@@ -119,6 +119,10 @@ def write_notebook_workflow(
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
+    if "access-and-explore-data" in name:
+        runs_on = "ubuntu-20.04"
+    else:
+        runs_on = "ubuntu-latest"
 
     workflow_yaml = f"""{READONLY_HEADER}
 name: tutorials-{classification}-{name}
@@ -148,7 +152,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: {runs_on}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
