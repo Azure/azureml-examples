@@ -81,7 +81,7 @@ jobs:
          python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
                 --file_name automl-regression-task-hardware-performance.output.ipynb \
                 --folder . \
-                --experiment_name automl-regression \
+                --experiment_name dpv2-regression-experiment \
                 --minimum_median_score 0.45 \
                 --metric_name r2_score \
                 --absolute_minimum_score -1.0 \

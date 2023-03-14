@@ -9,7 +9,7 @@
   {
     "name": "check v2 experiment result",
     "params": {
-      "experiment_name": "automl-regression",
+      "experiment_name": "dpv2-regression-experiment",
       "minimum_median_score": "0.45",
       "metric_name": "r2_score",
       "absolute_minimum_score": "-1.0"
