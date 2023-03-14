@@ -1,0 +1,23 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+endpoint_name: text-summarization-batch
+name: text-summarization-hfbart
+description: A text summarization deployment implemented with HuggingFace and BART architecture
+model: azureml:bart-text-summarization@latest
+compute: azureml:gpu-cluster
+environment:
+   image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.3-cudnn8-ubuntu20.04:latest
+   conda_file: environment/conda.yml
+code_configuration:
+  code: code
+  scoring_script: transformer_scorer.py
+resources:
+  instance_count: 2
+max_concurrency_per_instance: 1
+mini_batch_size: 1
+output_action: append_row
+output_file_name: predictions.csv
+retry_settings:
+  max_retries: 3
+  timeout: 3000
+error_threshold: -1
+logging_level: info

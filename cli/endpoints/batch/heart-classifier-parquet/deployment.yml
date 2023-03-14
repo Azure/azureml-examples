@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+endpoint_name: heart-classifier-batch
+name: classifier-xgboost-custom
+description: A heart condition classifier based on XGBoost and Scikit-Learn pipelines that append predictions on parquet files.
+model:
+  path: model
+  name: heart-classifier-sklpipe
+environment:
+   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+   conda_file: environment/conda.yaml
+code_configuration:
+  code: code
+  scoring_script: batch_driver.py
+compute: azureml:batch-cluster
+resources:
+  instance_count: 2
+max_concurrency_per_instance: 2
+mini_batch_size: 2
+output_action: summary_only
+retry_settings:
+  max_retries: 3
+  timeout: 300
+error_threshold: -1
+logging_level: info
