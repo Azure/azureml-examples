@@ -105,9 +105,9 @@ def get_additional_requirements(req_name, req_path):
       run: pip install -r {req_path}"""
 
 
-def get_mlflow_import(notebook):
+def get_mlflow_import(notebook, validation_yml):
     with open(notebook, "r", encoding="utf-8") as f:
-        if "import mlflow" in f.read():
+        if validation_yml or "import mlflow" in f.read():
             return get_additional_requirements(
                 "mlflow", "sdk/python/mlflow-requirements.txt"
             )
@@ -198,7 +198,6 @@ def write_notebook_workflow(
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
-    mlflow_import = get_mlflow_import(notebook)
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
@@ -210,6 +209,7 @@ def write_notebook_workflow(
     schedule_hour = (name_hash // 60) % hours_between_runs
 
     validation_yml = get_validation_yml(folder, notebook)
+    mlflow_import = get_mlflow_import(notebook, validation_yml)
 
     workflow_yaml = f"""{READONLY_HEADER}
 name: sdk-{classification}-{name}
