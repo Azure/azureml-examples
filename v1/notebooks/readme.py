@@ -162,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: setup python
       uses: actions/setup-python@v2
       with: 
@@ -224,7 +224,7 @@ jobs:
         notebook: {notebooks}
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: setup python
       uses: actions/setup-python@v2
       with: 

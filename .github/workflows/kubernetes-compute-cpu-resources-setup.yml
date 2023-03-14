@@ -78,7 +78,7 @@ jobs:
         echo "AKS_CLUSTER_PREFIX=${{ github.event.inputs.AKS_CLUSTER_PREFIX }}" | tee -a $GITHUB_ENV
         echo "CPU_INSTANCE_TYPE=${{ github.event.inputs.CPU_INSTANCE_TYPE }}" | tee -a $GITHUB_ENV
     - name: check out repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: setup python
       uses: actions/setup-python@v2
       with:
