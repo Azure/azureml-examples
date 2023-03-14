@@ -48,7 +48,7 @@ allowed_list = [
     "Importing plotly failed",
     "Found the config file in:",
     "Check: endpoint regression",
-    "data_collector is not a known attribute of class"
+    "data_collector is not a known attribute of class",
 ]
 
 with open(full_name, "r") as notebook_file:
