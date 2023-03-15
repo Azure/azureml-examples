@@ -4,8 +4,9 @@ command: |
 code: src
 inputs:
   sampledata:
-    type: mlflow_model
-    path: azureml:local-mlflow-example@latest
+    type: uri_folder
+    path: azureml:image@latest
+    # path: azureml://registries/lochen-test/models/nyc-taxi-model/versions/1669714386
     mode: ro_mount
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 compute: azureml:cpu-cluster
