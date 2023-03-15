@@ -7,12 +7,17 @@ settings:
 jobs:
   hello_job:
     command: |
-      ls ${{inputs.sampledata}}
+      cp ${{inputs.sampledata}} ${{outputs.image_output}}
     code: src
     inputs:
       sampledata:
-        type: mlflow_model
-        path: azureml:local-mlflow-example@latest
+        type: uri_file
+        path: azureml:single-image@latest
+        # path: azureml:local-mlflow-example@latest
+        # path: azureml://registries/lochen-test/models/nyc-taxi-model/versions/1669714386
         mode: ro_mount
+    outputs:
+        image_output:
+          type: uri_file
     environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
     compute: azureml:cpu-cluster
