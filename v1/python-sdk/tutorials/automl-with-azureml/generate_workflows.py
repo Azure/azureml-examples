@@ -36,7 +36,18 @@ def main():
 def get_validation_yml(notebook_folder, notebook_name):
     validation_yml = ""
     validation_json_file_name = os.path.join(
-        notebook_folder, notebook_name.replace(".ipynb", "-validations.json")
+        "..",
+        "..",
+        "..",
+        "..",
+        ".github",
+        "validate",
+        "v1",
+        "python-sdk",
+        "tutorials",
+        "automl-with-azureml",
+        notebook_folder,
+        notebook_name.replace(".ipynb", "-validations.json"),
     )
 
     if os.path.exists(validation_json_file_name):
