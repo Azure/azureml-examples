@@ -1,0 +1,57 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: emotion-2425-take2
+
+inputs:
+  compute_model_selector: gpu-cluster-big
+  compute_preprocess: gpu-cluster-big
+  compute_finetune: gpu-cluster-big
+  compute_model_evaluation: gpu-cluster-big
+
+settings:
+  default_compute: azureml:gpu-cluster-big
+  force_rerun: true
+
+jobs:
+  split_data:
+    type: command
+    component: azureml://registries/sample-data/components/split_dataset/versions/0.0.11
+    inputs: 
+      data_file:
+        path: azureml://registries/sample-data/data/emotion/versions/1
+        type: uri_file
+      train_split: 0.05
+      validation_split: 0.005
+      test_split: 0.005
+    outputs:
+      train_file:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/${{name}}/train.jsonl
+      validation_file:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/${{name}}/validation.jsonl
+      test_file: 
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/${{name}}/test.jsonl
+  pipeline_component_singlelabel:
+    type: pipeline
+    component: azureml://registries/azureml-preview/components/textclassificationsinglelabel_pipelinecomponent/versions/0.0.13
+    inputs:
+      compute_model_selector: ${{parent.inputs.compute_model_selector}}
+      compute_preprocess: ${{parent.inputs.compute_preprocess}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+      compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
+      process_count_per_instance_finetune: 2
+      huggingface_id: bert-base-uncased
+      train_file_path: ${{parent.jobs.split_data.outputs.train_file}}
+      valid_file_path: ${{parent.jobs.split_data.outputs.validation_file}}
+      sentence1_key: text
+      sentence2_key: ""
+      label_key: label
+      epochs: 3
+      learning_rate: 2e-5
+      train_batch_size: 2
+      valid_batch_size: 2
+      test_file_path: ${{parent.jobs.split_data.outputs.test_file}}
+      test_data_input_column_names: text
