@@ -65,9 +65,8 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "registry-create.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python registry-create.ipynb registry-create.output.ipynb;
+          papermill -k python registry-create.ipynb registry-create.output.ipynb
       working-directory: sdk/python/resources/registry
-      continue-on-error: true
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
