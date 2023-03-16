@@ -119,7 +119,7 @@ def write_notebook_workflow(
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
-    if "access-and-explore-data" in name:
+    if "explore-data" in name:
         runs_on = "ubuntu-20.04"
     else:
         runs_on = "ubuntu-latest"
@@ -203,7 +203,7 @@ jobs:
           touch /tmp/code/code
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
-    if "access-and-explore-data" in name:
+    if "explore-data" in name:
         workflow_yaml += f"""
 
           # load data into 'data' subdirectory

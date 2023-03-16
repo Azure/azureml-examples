@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -65,6 +65,12 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "explore-data.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
+
+          # load data into 'data' subdirectory
+          mkdir data
+          cd data
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
+          cd ..
           papermill -k python explore-data.ipynb explore-data.output.ipynb
       working-directory: tutorials/get-started-notebooks
     - name: upload notebook's working folder as an artifact
