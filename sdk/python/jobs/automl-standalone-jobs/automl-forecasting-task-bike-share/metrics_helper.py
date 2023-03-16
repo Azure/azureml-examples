@@ -1,54 +1,36 @@
 import pandas as pd
-import numpy as np
+
+from azureml.metrics import constants
+from azureml.metrics import compute_metrics
 
 
-def mean_absolute_error(actual, pred):
-    """Calculate mean absolute error."""
-    return np.mean(np.abs(actual - pred))
-
-
-def mean_squared_error(actual, pred):
-    """Calculate mean squared error."""
-    return np.mean((actual - pred) ** 2)
-
-
-def r2_score(actual, pred):
-    """Calculate r2 score"""
-    numerator = ((actual - pred) ** 2).sum()
-    denominator = ((actual - np.mean(actual)) ** 2).sum()
-
-    return 1.0 - numerator / denominator
-
-
-def APE(actual, pred):
-    """
-    Calculate absolute percentage error.
-    Returns a vector of APE values with same length as actual/pred.
-    """
-    return 100 * np.abs((actual - pred) / actual)
-
-
-def MAPE(actual, pred):
-    """
-    Calculate mean absolute percentage error.
-    Remove NA and values where actual is close to zero
-    """
-    not_na = ~(np.isnan(actual) | np.isnan(pred))
-    not_zero = ~np.isclose(actual, 0.0)
-    actual_safe = actual[not_na & not_zero]
-    pred_safe = pred[not_na & not_zero]
-    return np.mean(APE(actual_safe, pred_safe))
-
-
-def calculate_metrics(actual, pred):
-    not_na = ~(np.isnan(actual) | np.isnan(pred))
-    actual_safe = actual[not_na]
-    pred_safe = pred[not_na]
-    rmse = np.sqrt(mean_squared_error(actual_safe, pred_safe))
-    metrics_dict = {}
-    metrics_dict["R2 score"] = r2_score(actual_safe, pred_safe)
-    metrics_dict["mean absolute error"] = mean_absolute_error(actual_safe, pred_safe)
-    metrics_dict["mean_absolute_percentage_error"] = MAPE(actual_safe, pred_safe)
-    metrics_dict["root mean squared error"] = rmse
-
+def calculate_metrics(
+    X_train,
+    X_test,
+    actuals_colum_name,
+    time_column_name,
+    time_series_id_column_names=None,
+    predictions_column_name="predicted",
+):
+    # Remove all NaNs in the train set
+    X_train = X_train.copy()
+    X_train.dropna(subset=[actuals_colum_name], inplace=True)
+    y_train = X_train.pop(actuals_colum_name).values
+    # Remove all NaNs in the test set.
+    X_test = X_test.copy()
+    X_test.dropna(subset=[actuals_colum_name, predictions_column_name], inplace=True)
+    actual = X_test.pop(actuals_colum_name).values
+    pred = X_test.pop(predictions_column_name).values
+    metrics = compute_metrics(
+        task_type=constants.Tasks.FORECASTING,
+        y_test=actual,
+        y_pred=pred,
+        X_test=X_test,
+        X_train=X_train,
+        y_train=y_train,
+        time_column_name=time_column_name,
+        time_series_id_column_names=time_series_id_column_names,
+        metrics=constants.Metric.SCALAR_REGRESSION_SET,
+    )
+    metrics_dict = metrics[constants.Metric.Metrics]
     return pd.DataFrame(metrics_dict.items(), columns=["metric name", "score"])
