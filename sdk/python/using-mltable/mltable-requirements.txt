@@ -1,2 +1,2 @@
 mltable==1.2.0
-azureml-dataprep[pandas]==4.94
+azureml-dataprep[pandas]==4.9.4
