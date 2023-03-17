@@ -1,2 +1,2 @@
 mltable
-pandas
+azureml-dataprep[pandas]
