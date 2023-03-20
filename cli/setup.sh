@@ -1,9 +1,10 @@
 #!/bin/bash
 # rc install - uncomment and adjust below to run all tests on a CLI release candidate
-# az extension remove -n ml
+az extension remove -n ml
 
 # <az_ml_install>
-az extension add -n ml -y
+# az extension add -n ml -y
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.15.0-py3-none-any.whl -y
 # </az_ml_install>
 
 # Use a daily build
