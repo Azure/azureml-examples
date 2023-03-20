@@ -50,6 +50,10 @@
         "tag3": "value3"
       },
       "type": "object"
+    },
+    "traffic": {
+      "type": "object",
+      "defaultValue": {}
     }
   },
   "resources": [
@@ -65,7 +69,7 @@
       "properties": {
         "authMode": "[parameters('authMode')]",
         "description": "[parameters('onlineEndpointDescription')]",
-        "properties": {}
+        "traffic": "[parameters('traffic')]"
       }
     }
   ]
