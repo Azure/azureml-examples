@@ -94,7 +94,9 @@ jobs:
     
     # provision resources
     - name: setup_aks
-      run: bash .github/kubernetes-compute/tool.sh setup_aks
+      run: |
+        az account show
+        bash .github/kubernetes-compute/tool.sh setup_aks
       timeout-minutes: 30
     - name: install_extension
       run: |
