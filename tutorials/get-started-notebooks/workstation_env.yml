@@ -6,7 +6,6 @@ dependencies:
   - scipy=1.7.1
   - pandas>=1.1,<1.2
   - pip:
-    - xlrd==2.0.1
     - mlflow== 1.26.1
     - azureml-mlflow==1.42.0
     - psutil>=5.8,<5.9
