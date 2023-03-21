@@ -19,9 +19,11 @@ from glue_datasets import (
     num_labels_from_task,
     load_metric_from_task,
 )
-#pretraining
+
+# pretraining
 from transformers import AutoConfig
 from transformers import DataCollatorForLanguageModeling
+
 # Azure ML imports - could replace this with e.g. wandb or mlflow
 from transformers.integrations import MLflowCallback
 
@@ -47,7 +49,6 @@ def construct_compute_metrics_function(task: str) -> Callable[[EvalPrediction], 
 
 
 if __name__ == "__main__":
-
     parser = HfArgumentParser(TrainingArguments)
     parser.add_argument("--task", default="cola", help="name of GLUE task to compute")
     parser.add_argument("--model_checkpoint", default="bert-large-uncased")

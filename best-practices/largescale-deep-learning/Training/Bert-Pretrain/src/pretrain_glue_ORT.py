@@ -36,16 +36,21 @@ from glue_datasets import (
     num_labels_from_task,
     load_metric_from_task,
 )
-#pretraining
+
+# pretraining
 from transformers import AutoConfig
 from transformers import DataCollatorForLanguageModeling
+
 # Azure ML imports - could replace this with e.g. wandb or mlflow
 from transformers.integrations import MLflowCallback
+
 # Pytorch Profiler
 import torch.profiler.profiler as profiler
 from transformers import TrainerCallback
+
 # Onnx Runtime for training
 from optimum.onnxruntime import ORTTrainer, ORTTrainingArguments
+
 
 def construct_compute_metrics_function(task: str) -> Callable[[EvalPrediction], Dict]:
     metric = load_metric_from_task(task)
@@ -68,7 +73,6 @@ def construct_compute_metrics_function(task: str) -> Callable[[EvalPrediction], 
 
 
 if __name__ == "__main__":
-
     parser = HfArgumentParser(ORTTrainingArguments)
     parser.add_argument("--task", default="cola", help="name of GLUE task to compute")
     parser.add_argument("--model_checkpoint", default="bert-large-uncased")
@@ -101,24 +105,27 @@ if __name__ == "__main__":
     compute_metrics = construct_compute_metrics_function(args.task)
 
     # Create path for logging to tensorboard
-    my_logs=os.environ['PWD']+args.tensorboard_log_dir
+    my_logs = os.environ["PWD"] + args.tensorboard_log_dir
 
     # Custom HuggingFace trainer callback used for starting/stopping the pytorch profiler
     class ProfilerCallback(TrainerCallback):
         def on_train_begin(self, args, state, control, model=None, **kwargs):
             self.prof = profiler.profile(
                 schedule=profiler.schedule(wait=2, warmup=1, active=3, repeat=2),
-                activities=[profiler.ProfilerActivity.CPU, profiler.ProfilerActivity.CUDA],
+                activities=[
+                    profiler.ProfilerActivity.CPU,
+                    profiler.ProfilerActivity.CUDA,
+                ],
                 on_trace_ready=profiler.tensorboard_trace_handler(my_logs),
                 record_shapes=True,
                 with_stack=True,
-                profile_memory=True
+                profile_memory=True,
             )
             self.prof.start()
 
         def on_train_end(self, args, state, control, model=None, **kwargs):
             self.prof.stop()
-        
+
         def on_step_begin(self, args, state, control, model=None, **kwargs):
             self.prof.step()
 
@@ -132,7 +139,7 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         compute_metrics=compute_metrics,
         callbacks=[ProfilerCallback],
-        feature="sequence-classification"
+        feature="sequence-classification",
     )
 
     trainer.pop_callback(MLflowCallback)
