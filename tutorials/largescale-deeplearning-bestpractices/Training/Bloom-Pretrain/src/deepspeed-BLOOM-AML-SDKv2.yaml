@@ -1,0 +1,84 @@
+# Training job submission via AzureML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: >-
+  python Megatron-DeepSpeed/pretrain_gpt.py
+  --tensor-model-parallel-size 8
+  --pipeline-model-parallel-size 1
+  --num-layers 8
+  --hidden-size 14336
+  --num-attention-heads 32
+  --seq-length 2048
+  --loss-scale 15
+  --save-interval 100
+  --max-position-embeddings 2048
+  --micro-batch-size 2
+  --global-batch-size 16
+  --lr 6.0e-5
+  --min-lr 6.0e-6 
+  --lr-decay-style 'cosine'
+  --log-interval 1
+  --eval-iters 40
+  --eval-interval 1000
+  --clip-grad 1.0
+  --weight-decay 0.1
+  --adam-beta1 0.9
+  --adam-beta2 0.95
+  --init-method-std 0.006
+  --bf16
+  --train-iters 100000
+  --data-impl 'mmap'
+  --checkpoint-activations
+  --save /tmp/outputs/checkpoint
+  --load /tmp/outputs/checkpoint
+  --tensorboard-dir '/tmp/outputs/tensorboard'
+  --deepspeed
+  --deepspeed_config 'ds_config.json'
+  --zero-stage 0
+  --deepspeed-activation-checkpointing
+  --exit-interval 500
+  --optimizer adam 
+  --embed-layernorm
+  --sync-tp-duplicated-parameters  
+  --seed 42
+  --position-embedding-type alibi
+  --tokenizer-type PretrainedFromHF 
+  --abort-on-unmet-fused-kernel-constraints
+  --data-path 0.033178301 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/ar/ar_text_document 0.011279676 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/ca/ca_text_document 0.130708086 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/code/code_text_document 0.21911033 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/en/en_text_document 0.107035252 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/es/es_text_document 0.00156473 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/eu/eu_text_document 0.130973455 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/fr/fr_text_document 0.010954583 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/id/id_text_document 0.000110574 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-as/indic-as_text_document 0.005510761 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-bn/indic-bn_text_document 0.000403458 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-gu/indic-gu_text_document 0.007495064 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-hi/indic-hi_text_document 0.000621117 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-kn/indic-kn_text_document 0.001036982 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-ml/indic-ml_text_document 0.000502873 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-mr/indic-mr_text_document 0.000669502 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-ne/indic-ne_text_document 0.000360473 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-or/indic-or_text_document 0.000510136 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-pa/indic-pa_text_document 0.002120798 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-ta/indic-ta_text_document 0.00091605 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-te/indic-te_text_document 0.001249597 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/indic-ur/indic-ur_text_document 0.000316939 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/nigercongo-all/nigercongo-all_text_document 0.081644439 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/oscar-en/oscar-en_text_document 0.055479024 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/oscar-zhs/oscar-zhs_text_document 0.049707326 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/pt/pt_text_document 0.024698813 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/vi/vi_text_document 0.121322237 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/zhs/zhs_text_document 0.000519424 ${{outputs.blobstore_datadir}}/bigscience-catalogue-lm-data_bloom_bin/zht/zht_text_document
+  --split '90,5,5'
+  --tokenizer-name-or-path 'bigscience-catalogue-data-dev/byte-level-bpe-tokenizer-no-norm-250k-whitespace-and-eos-regex-alpha-v3-dedup-lines-articles' 
+  --adam-eps 1e-8 
+  --pad-vocab-size-to 250880
+  --exit-duration-in-mins 5990
+  --pp-partition-method 'type:transformer|embedding'
+code: .
+experiment_name: LargeModel-DistributedJob
+environment: azureml:BomEnv@latest
+environment_variables:
+  NCCL_DEBUG: 'WARN'
+  NCCL_DEBUG_SUBSYS: 'WARN'
+  CUDA_DEVICE_ORDER: 'PCI_BUS_ID'
+  DATASET_MOUNT_CACHE_SIZE: '10GB'
+  NCCL_SOCKET_IFNAME: 'eth0'
+  NCCL_IB_PCI_RELAXED_ORDERING: '1'
+  CUDA_LAUNCH_BLOCKING: '1'
+  UCX_TLS: 'tcp'
+  UCX_NET_DEVICES: 'eth0'
+  DATASET_MOUNT_BLOCK_BASED_CACHE_ENABLED: 'true'
+  DATASET_MOUNT_MEMORY_CACHE_SIZE: '549755813888'
+outputs:
+  output:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/workspaceblobstore/paths/outputs/checkoint
+  blobstore_datadir:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/bloomdatastore/paths/bloom-data
+compute: azureml:bloom
+distribution:
+  type: pytorch
+  process_count_per_instance: 8
+resources:
+  instance_count: 1

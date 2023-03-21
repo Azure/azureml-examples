@@ -1,0 +1,212 @@
+name: Run all tests
+on:
+  # enable to manually trigger the tests
+  workflow_dispatch:
+# re-enable if we want automatic CI again
+#  pull_request:
+#    paths:
+#      - "**.py"
+
+jobs:
+
+# GPU sizes and types that we could use:
+# g4dn.12xlarge  4x 16GB T4 (CC 7.5) (low availability)
+# p3.8xlarge     4x 16GB V100 (CC 7.0) (very low availability)
+
+# Unfit:
+# g3.16xlarge    4x 8GB Tesla M60 (CC 5.2) (not supported by cuda-11)
+# p2.8xlarge     8x 12GB K80 (CC 3.7 not supported by cuda-11)
+
+  start-runner:
+    name: Start self-hosted EC2 runner
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.start-ec2-runner.outputs.label }}
+      ec2-instance-id: ${{ steps.start-ec2-runner.outputs.ec2-instance-id }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      # don't use the following subnets as p3.8xlarge is not supported there:
+      # - subnet-06576a4b # us-east-1d
+      # - subnet-859322b4 # us-east-1e
+      # - subnet-47cfad21 # us-east-1b
+      - name: Try to start EC2 runner (a)
+        id: try-us-east-1a
+        uses: machulav/ec2-github-runner@v2
+        continue-on-error: true
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-0ad997818d90480f2
+          ec2-instance-type: g4dn.12xlarge
+          security-group-id: sg-f2a4e2fc
+          subnet-id: subnet-b7533b96 # us-east-1c
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "Name", "Value": "ec2-github-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
+      - name: Try to start EC2 runner (b)
+        id: try-us-east-1b
+        if: steps.try-us-east-1a.outcome == 'failure'
+        uses: machulav/ec2-github-runner@v2
+        continue-on-error: true
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-0ad997818d90480f2
+          ec2-instance-type: g4dn.12xlarge
+          security-group-id: sg-f2a4e2fc
+          subnet-id: subnet-a396b2ad # us-east-1f
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "Name", "Value": "ec2-github-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
+      - name: Try to start EC2 runner (c)
+        id: try-us-east-1c
+        if: steps.try-us-east-1b.outcome == 'failure'
+        uses: machulav/ec2-github-runner@v2
+        continue-on-error: true
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-0ad997818d90480f2
+          ec2-instance-type: g4dn.12xlarge
+          security-group-id: sg-f2a4e2fc
+          subnet-id: subnet-df0f6180 # us-east-1a
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "Name", "Value": "ec2-github-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
+
+      - name: Try to start EC2 runner (a-2)
+        id: try-us-east-1a-2
+        if: steps.try-us-east-1c.outcome == 'failure'
+        uses: machulav/ec2-github-runner@v2
+        continue-on-error: true
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-0ad997818d90480f2
+          ec2-instance-type: p3.8xlarge
+          security-group-id: sg-f2a4e2fc
+          subnet-id: subnet-b7533b96 # us-east-1c
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "Name", "Value": "ec2-github-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
+      - name: Try to start EC2 runner (b-2)
+        id: try-us-east-1b-2
+        if: steps.try-us-east-1a-2.outcome == 'failure'
+        uses: machulav/ec2-github-runner@v2
+        continue-on-error: true
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-0ad997818d90480f2
+          ec2-instance-type: p3.8xlarge
+          security-group-id: sg-f2a4e2fc
+          subnet-id: subnet-a396b2ad # us-east-1f
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "Name", "Value": "ec2-github-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
+      - name: Try to start EC2 runner (c-2)
+        id: try-us-east-1c-2
+        if: steps.try-us-east-1b-2.outcome == 'failure'
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-0ad997818d90480f2
+          ec2-instance-type: p3.8xlarge
+          security-group-id: sg-f2a4e2fc
+          subnet-id: subnet-df0f6180 # us-east-1a
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "Name", "Value": "ec2-github-runner"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
+
+      - name: See if any of 3 sub-regions had the resource
+        id: start-ec2-runner
+        run: |
+          if [ "${{ steps.try-us-east-1a.outcome }}" = "success" ]; then
+            echo "::set-output name=label::${{ steps.try-us-east-1a.outputs.label }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1a.outputs.ec2-instance-id }}"
+          fi
+          if [ "${{ steps.try-us-east-1b.outcome }}" = "success" ]; then
+            echo "::set-output name=label::${{ steps.try-us-east-1b.outputs.label }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1b.outputs.ec2-instance-id }}"
+          fi
+          if [ "${{ steps.try-us-east-1c.outcome }}" = "success" ]; then
+            echo "::set-output name=label::${{ steps.try-us-east-1c.outputs.label }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1c.outputs.ec2-instance-id }}"
+          fi
+          if [ "${{ steps.try-us-east-1a-2.outcome }}" = "success" ]; then
+            echo "::set-output name=label::${{ steps.try-us-east-1a-2.outputs.label }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1a-2.outputs.ec2-instance-id }}"
+          fi
+          if [ "${{ steps.try-us-east-1b-2.outcome }}" = "success" ]; then
+            echo "::set-output name=label::${{ steps.try-us-east-1b-2.outputs.label }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1b-2.outputs.ec2-instance-id }}"
+          fi
+          if [ "${{ steps.try-us-east-1c-2.outcome }}" = "success" ]; then
+            echo "::set-output name=label::${{ steps.try-us-east-1c-2.outputs.label }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1c-2.outputs.ec2-instance-id }}"
+          fi
+
+
+  do-the-job:
+    name: Do the job on the runner
+    needs: start-runner # required to start the main job when the runner is ready
+    # need to figure out how to cancel the previous build if a new push was made the old test is still running
+    # concurrency: # cancel previous build on a new push
+    #   group: ${{ github.ref }} # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
+    #   cancel-in-progress: true
+    runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
+    steps:
+      - name: NVIDIA-SMI
+        run: nvidia-smi
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-timeout
+
+      - name: Run tests
+        run: pytest --timeout=600 tests
+
+  stop-runner:
+    name: Stop self-hosted EC2 runner
+    needs:
+      - start-runner # required to get output from the start-runner job
+      - do-the-job # required to wait when the main job is done
+    runs-on: ubuntu-latest
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Stop EC2 runner
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: stop
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          label: ${{ needs.start-runner.outputs.label }}
+          ec2-instance-id: ${{ needs.start-runner.outputs.ec2-instance-id }}
