@@ -12,7 +12,7 @@ To attain linear scaling for large model, one important step can be to use Infin
 ### **Environment**
 The environment found [here](https://github.com/savitamittal1/Megatron-DeepSpeed-AML/blob/353db918a3a061552aa541e8d67d9b55a35b2f3d/examples/azureml/environment/context/Dockerfile) is an ACPT environment with multiple accelerators to boost the training job. Also included are HuggingFace packages used for this training. If you would like to add additional packages, edit the appropriate files in that directory with your changes, then create the custom environment using the following command:
 ```
-az ml environment create --file ./src/environments/env.yml
+az ml environment create --file ./src/environment/env.yml
 ```
 
 ## **Code**

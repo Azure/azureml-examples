@@ -54,7 +54,7 @@ command: >-
   --pp-partition-method 'type:transformer|embedding'
 code: .
 experiment_name: LargeModel-DistributedJob
-environment: azureml:BomEnv@latest
+environment: azureml:ACPTEnv@latest
 environment_variables:
   NCCL_DEBUG: 'WARN'
   NCCL_DEBUG_SUBSYS: 'WARN'
