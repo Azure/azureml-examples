@@ -24,7 +24,7 @@ The first step in the training script is to parse the arguments passed in from t
 - ``--gradient_accumulation_steps`` Number of training steps to accumulate gradients before using them to compute variables. This value should match the value of ``gradient_accumulation_steps`` in your ``ds_config.json`` file if deepspeed is enabled.
 - ``--model_checkpoint`` the model to pretrain. In this case we are pretraining "bert-large-uncased" but this example was also run with DistilBERT and BERT-base. See below for more information.
 
-This example also supports the interactive capabilities from JupyterLab, TensorBoard and VSCode. These are added via the ``services`` section of the yml submit files. For more information on these, see [this](https://github.com/microsoft/azureml-largescale-deeplearning-bestpractices/tree/main/Training#interactive-debugging) page. Remove these sections under ``services`` to disable these tools.
+This example also supports the interactive capabilities from JupyterLab, TensorBoard and VSCode. These are added via the ``services`` section of the yml submit files. For more information on these, see [this](../README.md#interactive-debugging) page. Remove these sections under ``services`` to disable these tools.
 
 #### **DeepSpeed Configuration**
 As discussed above, arguments to the command job will need to match arguments in the DeepSpeed configuration file (``ds_config.json``) if DeepSpeed is being used. We use a very simple configuration for this experiment. This config is without the additional profiling + checkpointing tools added to the ``ds_config.json`` located in the ``src`` folder.
@@ -42,7 +42,7 @@ As discussed above, arguments to the command job will need to match arguments in
 ```
 Each setting here is described above, but this configuration also includes ``fp16`` to improve training speed and reduce memory usage. 
 
-This configuration was found by running [DeepSpeed Autotuning](https://www.deepspeed.ai/tutorials/autotuning/) with this training script and BERT large in [this example](https://github.com/microsoft/azureml-largescale-deeplearning-bestpractices/tree/main/Training/DeepSpeed-Autotuning). DeepSpeed as it relates to this example is described in more detail [here](https://github.com/microsoft/azureml-largescale-deeplearning-bestpractices/tree/main/Training#deepspeed).
+This configuration was found by running [DeepSpeed Autotuning](https://www.deepspeed.ai/tutorials/autotuning/) with this training script and BERT large in [this example](../DeepSpeed-Autotuning). DeepSpeed as it relates to this example is described in more detail [here](../README.md#deepspeed).
 ### **Load the dataset**
 Once arguments have been parsed, its time to prepare the dataset. First we prepare a tokenizer to tokenize the data:
 ```
@@ -56,7 +56,7 @@ encoded_dataset_train, encoded_dataset_eval = load_encoded_glue_dataset(
     task=task, tokenizer=tokenizer
 )
 ```
-This is done from within the [``glue_datasets.py``](https://github.com/microsoft/azureml-largescale-deeplearning-bestpractices/blob/main/Training/Bert-Pretrain/src/glue_datasets.py) file.
+This is done from within the [``glue_datasets.py``](../src/glue_datasets.py) file.
 ```
 def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
     dataset = load_dataset("glue", actual_task(task))
@@ -113,7 +113,7 @@ trainer.pop_callback(MLflowCallback)
 
 result = trainer.train()
 ```
-The ``ProfilerCallback`` in the above code is used to integrate the experiment with [Pytorch Profiler](https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html). For more information on this code, see [this page](https://github.com/microsoft/azureml-largescale-deeplearning-bestpractices/tree/main/Training#pytorch-profiler).
+The ``ProfilerCallback`` in the above code is used to integrate the experiment with [Pytorch Profiler](https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html). For more information on this code, see [this page](../README.md#pytorch-profiler).
 
 ## **Run the Job**
 ### **Submit with vanilla Pytorch**
