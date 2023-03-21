@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >
+  python main.py 
+  --iris-csv {inputs.iris}
+inputs:
+  iris:
+    data:
+      path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+    mode: mount
+environment:
+  docker:
+    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  conda_file: file:environment.yml
+compute:
+  target: azureml:cpu-cluster
+experiment_name: lightgbm-iris-example
+description: Train a LightGBM model on the Iris dataset.

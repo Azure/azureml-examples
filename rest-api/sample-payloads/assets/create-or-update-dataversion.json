@@ -1,0 +1,11 @@
+{
+    "properties": {
+        "datasetType": "Simple",
+        "datastoreId": "subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/datastores/{{datastoreName}}",
+        "path": "iris.csv",
+        "isAnonymous": false,
+        "description": "iris dataset",
+        "tags": {"testDataset":"datasetTag"},
+        "properties": {}
+    }
+}

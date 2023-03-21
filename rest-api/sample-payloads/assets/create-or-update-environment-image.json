@@ -1,0 +1,17 @@
+{
+    "properties": {
+        "environmentSpecificationType": "UserCreated",
+        "docker": {
+            "dockerSpecificationType": "Image",
+            "platform": {
+                "operatingSystemType": "Linux"
+            },
+            "dockerImageUri": "mcr.microsoft.com/dotnet/aspnet:5.0"
+        },
+        "condaFile": "name: tfv2-example\nchannels:\n  - defaults\n  - anaconda\n  - conda-forge\ndependencies:\n  - python=3.6\n  - scikit-learn\n  - pip\n  - pip:\n    - azureml-mlflow\n    - tensorflow==2.2.0",
+        "isAnonymous": true,
+        "description": "user created environment with docker image",
+        "tags": {},
+        "properties": {}
+    }
+}

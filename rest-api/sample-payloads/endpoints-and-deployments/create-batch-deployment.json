@@ -1,0 +1,23 @@
+{
+    "Location": "centraluseuap",
+    "Properties": {
+        "description": "Testing deployment creation",
+        "compute": {
+            "target" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/{{computeName}}",
+            "instanceCount": 1
+        },
+        "miniBatchSize": 5,
+        "retrySettings": {
+            "timeout": "PT30S"
+        },
+        "model": {
+            "referenceType": "Id",
+            "assetId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/models/{{modelContainerName}}/versions/1"
+        },
+        "codeConfiguration":{
+            "codeId" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/{{codeContainerName}}/versions/1",
+            "scoringScript": "train.py"
+        },
+        "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/{{environmentContainerName}}/versions/1"
+    }
+}

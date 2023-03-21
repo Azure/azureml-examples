@@ -1,0 +1,11 @@
+{
+    "location": "centraluseuap",
+    "identity": {
+        "type": "None"
+    },
+    "Properties":
+    {
+        "description": "Testing pipeline endpoint creation",
+        "authMode": "AadToken"
+    }
+}

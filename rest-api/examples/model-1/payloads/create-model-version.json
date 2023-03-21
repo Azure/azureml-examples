@@ -1,0 +1,10 @@
+{
+    "properties": {
+        "path": "model/sklearn_regression_model.pkl",
+        "datastoreId" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/datastores/{{datastoreName}}",
+        "description": "model version descripiton",
+        "flavors" : {},
+        "tags": {},
+        "properties": {}
+    }
+}

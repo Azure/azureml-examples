@@ -1,0 +1,38 @@
+$schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
+type: sweep_job
+algorithm: random
+trial:
+  code: 
+    local_path: src 
+  command: >
+    python main.py 
+    --iris-csv {inputs.iris}
+    --learning-rate {search_space.learning_rate}
+    --boosting {search_space.boosting}
+  inputs:
+    iris:
+      data:
+        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+      mode: mount
+  environment:
+    docker:
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    conda_file: file:environment.yml
+  compute:
+    target: azureml:cpu-cluster
+search_space:
+  learning_rate:
+    type: uniform
+    min_value: 0.01
+    max_value: 0.9
+  boosting:
+    type: choice
+    values: ["gbdt", "dart"]
+objective:
+  primary_metric: test-multi_logloss
+  goal: minimize
+max_total_trials: 20
+max_concurrent_trials: 10
+timeout_minutes: 120
+experiment_name: lightgbm-iris-sweep-example
+description: Run a hyperparameter sweep job for LightGBM on Iris dataset.

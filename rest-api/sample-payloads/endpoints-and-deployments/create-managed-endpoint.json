@@ -1,0 +1,14 @@
+{
+    "properties": {
+        "authMode": "Key",
+        "provisioningState": "Creating",
+        "description": "endpoint description",
+        "properties": {},
+        "traffic": {},
+        "keys": {
+            "primaryKey": "[key1]",
+            "secondaryKey": "[key2]"
+        }
+    },
+    "location": "{{location}}"
+}

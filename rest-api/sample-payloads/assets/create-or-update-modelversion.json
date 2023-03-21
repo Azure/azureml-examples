@@ -1,0 +1,10 @@
+{
+    "properties": {
+        "path": "<<path/to/file>>",
+        "datastoreId" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/datastores/{{datastoreName}}",
+        "description": "model version description",
+        "flavors" : {},
+        "tags": {},
+        "properties": {}
+    }
+}

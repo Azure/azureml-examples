@@ -1,0 +1,10 @@
+{
+    "properties": {
+        "datasetType": "Simple",
+        "path" : "https://azuremlexamples.blob.core.windows.net/datasets/iris.csv",
+        "isAnonymous": false,
+        "description": "iris dataset",
+        "tags": {"testDataset":"datasetTag"},
+        "properties": {}
+    }
+}

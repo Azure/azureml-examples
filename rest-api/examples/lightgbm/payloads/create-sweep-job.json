@@ -1,0 +1,36 @@
+{
+    "properties": {
+        "jobType": "Sweep",
+        "experimentName" : "lightgbm-iris-sweep",
+        "description": "description of the job",
+        "compute":{
+            "target" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/cpu-madhura",
+            "instanceCount": 1
+        },
+        "searchSpace": {
+            "--learning_rate": ["uniform", [0.01, 0.9]],
+            "--boosting":["choice",[["gbdt","dart"]]]
+        },
+        "algorithm": "Random",
+        "maxTotalTrials" : 20,
+        "maxConcurrentTrials": 10,
+        "timeout" : "PT120M",
+        "objective": {
+            "primaryMetric": "test-multi_logloss",
+            "goal": "minimize"
+        },
+        "trial" :
+        {
+            "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/{{environmentContainerName}}/versions/1",
+            "codeId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/{{codeContainerName}}/versions/1",
+            "command": "python main.py --iris-csv irisdata",
+            "inputDataBindings":{
+                "irisData" : {
+                    "dataId" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/data/{{codeContainerName}}/versions/1"
+                }
+            }
+        },
+        "tags": {"MySweepJob": "SweepTag"},
+        "properties": {}
+    }
+}

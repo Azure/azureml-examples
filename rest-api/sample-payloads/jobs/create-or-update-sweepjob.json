@@ -1,0 +1,38 @@
+{
+    "properties": {
+        "jobType": "Sweep",
+        "experimentName" : "MyTextExperiment",
+        "description": "description of the job",
+        "compute":{
+            "target" : "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/computes/cpu-madhura",
+            "instanceCount": 1
+        },
+        "searchSpace": {
+            "--kernel": ["choice", [["linear", "rbf", "poly", "sigmoid"]]],
+            "--penalty": ["choice", [[0.5, 1, 1.5]]]
+        },
+        "algorithm": "Random",
+        "maxTotalTrials" : 12,
+        "maxConcurrentTrials": 4,
+        "timeout" : "PT45M",
+        "earlyTermination":{
+            "policyType": "TruncationSelection",
+            "evaluationInterval": 5,
+            "delayEvaluation": 2,
+            "truncationPercentage": 25
+        },
+        "objective": {
+            "primaryMetric": "Accuracy",
+            "goal": "Maximize"
+        },
+        "trial" :
+        {
+            "timeout": "PT10M",
+            "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/AzureML-Minimal",
+            "codeId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/train-iris/versions/2",
+            "command": "train_iris.py"
+        },
+        "tags": {"MySweepJob": "SweepTag"},
+        "properties": {}
+    }
+}

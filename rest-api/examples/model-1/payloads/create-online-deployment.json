@@ -1,0 +1,22 @@
+{
+    "properties": {
+        "endpointComputeType": "Managed",
+        "scaleSettings": {
+            "scaleType": "Manual",
+            "instanceCount": 1,
+            "minInstances": 1,
+            "maxInstances": 4
+        },
+        "model": {
+            "referenceType": "Id",
+            "assetId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/models/{{modelContainerName}}/versions/1"
+        },
+        "codeConfiguration": {
+            "scoringScript": "score.py",
+            "codeId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/codes/{{codeContainerName}}/versions/1"
+        },
+        "environmentId": "/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.MachineLearningServices/workspaces/{{workspaceName}}/environments/{{environmentContainerName}}/versions/1",
+        "instanceType": "Standard_F2s_v2"
+    },
+    "location": "centraluseuap"
+}
