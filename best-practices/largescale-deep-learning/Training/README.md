@@ -8,14 +8,28 @@ Large scale training has led to state-of-the-art accuracies across a range of ta
   
 This guide will show best practices to allow you to train large models very efficiently with high throughput in AzureML, leveraging full utilization of GPU to keep the cost low.
 
-- [Large Scale Distributed Training](#large-scale-distributed-training)
-  - [Setup](#setup)
-      - [**Linear Scaling with Infiniband Enabled SKUs**](#linear-scaling-with-infiniband-enabled-skus)
-  - [Optimizations](#optimizations)
-      - [**DeepSpeed Autotuning**](#deepspeed-autotuning)
-  - [Monitoring](#monitoring)
-- [Create path for logging to tensorboard](#create-path-for-logging-to-tensorboard)
-  - [**Examples**](#examples)
+- [Setup](#setup)
+  - [Estimate Your Memory Requirements](#estimate-memory-requirements)
+  - [Compute Cluster](#compute-cluster)
+    - [Linear Scaling with Infiniband Enabled SKUs](linear-scaling-with-infiniband-enabled-skus)
+  - [Environment](#environment)
+  - [Data Loading](#data-loading)
+- [Training Optimizations for Compute and Memory Efficiency](#optimizations)
+  - [DeepSpeed](#deepspeed)
+    - [DeepSpeed Autotuning](#deepspeed-autotuning)
+  - [Onnx Runtime (ORT)](#onnx-runtime-ort)
+- [Monitoring and Debugging](#monitoring)
+  - [Interactive Debugging](#interactive-debugging)
+    - [JupyterLab](#jupyterlab)
+    - [VSCode](#vscode)
+    - [Tensorboard](#tensorboard)
+  - [Pytorch Profiler](#pytorch-profiler)
+  - [Flops Profiler](#flops-profiler)
+- [Resiliency](#resiliency)
+  - [Nebula Checkpointing](#nebula-checkpointing)
+- [Examples](#examples)
+  - [BERT Pretrain](#bert-pretrain)
+  - [BLOOM Pretrain](#bloom-pretrain)
       
 <!-- /TOC -->
 
