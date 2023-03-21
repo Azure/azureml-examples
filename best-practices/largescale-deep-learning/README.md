@@ -56,7 +56,7 @@ AzureML supports thre data asset types:
 Follow this [guide](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-data-assets) to learn more how to create any of the supported data assets.
 
 ## Create Training environment
-An Environment is useful to track and reproduce the projects' software dependencies as they evolve over time. In this [section](./Environment/Readme.md) you can learn more about Environments in AzureML, how to quickly get started and validate the setup before we begin training. 
+An Environment is useful to track and reproduce the projects' software dependencies as they evolve over time. In this [section](./Environment/README.md) you can learn more about Environments in AzureML, how to quickly get started and validate the setup before we begin training. 
 
 ## Efficient data loading for large training workloads
 
