@@ -10,7 +10,7 @@ NVIDIA A100 80GB GPUs are recommended for this job. This experiment was original
 To attain linear scaling for large model, one important step can be to use InfiniBand. InfiniBand enables low-latency, GPU-to-GPU communication across nodes in a cluster. InfiniBand requires specialized hardware to operate. Only some VM SKUs on Azure contain this required hardware. You can view the full list of InfiniBand-enabled machine SKUs [here](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-hpc#rdma-capable-instances). 
 
 ### **Environment**
-The environment found [here](https://github.com/savitamittal1/Megatron-DeepSpeed-AML/blob/353db918a3a061552aa541e8d67d9b55a35b2f3d/examples/azureml/environment/context/Dockerfile) is an ACPT environment with multiple accelerators to boost the training job. Also included are HuggingFace packages used for this training. If you would like to add additional packages, edit the appropriate files in that directory with your changes, then create the custom environment using the following command:
+The environment found [here](./src/environment/context/Dockerfile) is an ACPT environment with multiple accelerators to boost the training job. Also included are HuggingFace packages used for this training. If you would like to add additional packages, edit the appropriate files in that directory with your changes, then create the custom environment using the following command:
 ```
 az ml environment create --file ./src/environment/env.yml
 ```
