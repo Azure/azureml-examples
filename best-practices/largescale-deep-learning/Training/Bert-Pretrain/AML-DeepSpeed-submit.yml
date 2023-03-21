@@ -1,0 +1,38 @@
+# Training job submission via AzureML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: python pretrain_glue_ORT.py --tensorboard_log_dir "/outputs/runs/" --deepspeed ds_config.json --num_train_epochs 1000 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch"  --logging_strategy "epoch" --per_device_train_batch_size 93 --gradient_accumulation_steps 1 --per_device_eval_batch_size 93 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "bert-large-uncased" --optim "adamw_ort_fused"
+
+experiment_name: bert-pretrain-GLUE-ds-optimal
+environment: azureml:ACPT_Nebula@latest
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
+  AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
+code: src
+outputs:
+  output:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/workspaceblobstore/paths/outputs
+compute: <Enter the name of your compute here>
+distribution:
+  type: pytorch
+  process_count_per_instance: 8
+resources:
+  instance_count: 2
+  shm_size: 3100m
+services:
+  my_jupyterlab:
+    job_service_type: jupyter_lab
+    nodes: all
+  my_tensorboard:
+    job_service_type: tensor_board
+    properties:
+      logDir: "outputs/runs/"
+    nodes: all
+  my_vscode:
+    job_service_type: vs_code
+    nodes: all
+
+    
