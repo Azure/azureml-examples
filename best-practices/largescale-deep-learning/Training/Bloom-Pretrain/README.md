@@ -10,7 +10,7 @@ NVIDIA A100 80GB GPUs are recommended for this job. This experiment was original
 To attain linear scaling for large model, one important step can be to use InfiniBand. InfiniBand enables low-latency, GPU-to-GPU communication across nodes in a cluster. InfiniBand requires specialized hardware to operate. Only some VM SKUs on Azure contain this required hardware. You can view the full list of InfiniBand-enabled machine SKUs [here](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-hpc#rdma-capable-instances). 
 
 ### **Environment**
-The environment found [here](https://github.com/savitamittal1/Megatron-DeepSpeed-AML/blob/353db918a3a061552aa541e8d67d9b55a35b2f3d/examples/azureml/environment/context/Dockerfile) is an ACPT environment with multiple accelerators to boost the training job. Also included are HuggingFace packages used for this training. If you would like to add additional packages, edit the appropriate files in that directory with your changes, then create the custom environment using the following command:
+The environment found [here](./src/environment/context/Dockerfile) is an ACPT environment with multiple accelerators to boost the training job. Also included are HuggingFace packages used for this training. If you would like to add additional packages, edit the appropriate files in that directory with your changes, then create the custom environment using the following command:
 ```
 az ml environment create --file ./src/environment/env.yml
 ```
@@ -19,7 +19,7 @@ az ml environment create --file ./src/environment/env.yml
 The following code can be found under this directory in ``src/deepspeed-BLOOM-AML-SDKv2.yaml`` for the submit file and environment and ``src/Megatron-DeepSpeed/pretrain_gpt.py`` for the training code.
 
 ### **Job Configuration**
-In the [``deepspeed-BLOOM-AML-SDKv2.yaml``](https://github.com/microsoft/azureml-largescale-deeplearning-bestpractices/tree/main/Training/Bloom-Pretrain/src/deepspeed-BLOOM-AML-SDKv2.yaml) file for submitting the job, there are several arguments passed in for the pretraining, with most being settings specific to how the model will be trained. For more information on command line arguments, see [here](https://github.com/bigscience-workshop/Megatron-DeepSpeed/blob/main/megatron/arguments.py). Some arguments relevant to this example are:
+In the [``deepspeed-BLOOM-AML-SDKv2.yaml``](./src/deepspeed-BLOOM-AML-SDKv2.yaml) file for submitting the job, there are several arguments passed in for the pretraining, with most being settings specific to how the model will be trained. For more information on command line arguments, see [here](https://github.com/bigscience-workshop/Megatron-DeepSpeed/blob/main/megatron/arguments.py). Some arguments relevant to this example are:
 
 - ``--data-path`` - The paths to the data the model is trained on. The format should be the weight of the dataset and the path and name of the file that references .bin and .idx file (without the extension). For example, command below will add weight of 0.033178301 to ar language data, and inside the ar folder should be ar_text_document.bin and ar_text_document.idx.
 - ``--deepspeed`` and other deepspeed related arguments. These arguments are specific to DeepSpeed. The ``ds_config.json`` file passed in gives the configuration settings for DeepSpeed. Notice that the argument ``global_batch_size`` matches the ``train_batch_size`` setting in the ds_config. Similarly, the ``--zero_stage`` command line argument matches the ``zero_optimization`` setting in the ``ds_config.json`` file.
