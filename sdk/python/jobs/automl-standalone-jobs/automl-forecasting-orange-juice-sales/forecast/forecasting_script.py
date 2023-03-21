@@ -46,6 +46,7 @@ def run(mini_batch):
         pred_quantiles[PI] = pred_quantiles[[min(quantiles), max(quantiles)]].apply(
             lambda x: "[{}, {}]".format(x[0], x[1]), axis=1
         )
+        pred_quantiles.reset_index(drop=True, inplace=True)
         X_test[target_column_name] = y_test
         X_test[PI] = pred_quantiles[PI]
         X_test[predicted_column_name] = pred_quantiles[0.5]
