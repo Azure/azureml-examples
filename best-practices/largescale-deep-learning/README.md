@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [AzureML Large Scale Deep Learning Best Practices](#azureml-large-scale-deep-learning-best-practices)
-  - [Table of Contents](#table-of-contents)
   - [Welcome](#welcome)
   - [Optimizations for Deep Learning in AzureML](#optimizations-for-deep-learning-in-azureml)
   - [Create ML resources to get started](#create-ml-resources-to-get-started)
@@ -34,7 +33,7 @@ The host OS is updated with the latest drivers and patches to ensure smooth oper
 
 The AzureML Compute layer abstracts the complexities for managing the cloud scale infrastructure for compute, storage and networking. 
 
-AzureML supports curated environments for training execution on cached Docker images reducing the run preparation cost and consistency for experiment runs. The Azure Container for PyTorch ([ACPT](https://learn.microsoft.com/azure/machine-learning/reference-azure-container-for-pytorch)) Curated Environment is the built-in setup for running pytorch training experiments on the Azure AI hardware. ACPT includes a curated set of optimizer libraries to improve the training throughput with DeepSpeed for GPU memory optimization, ONNX Runtime Training for efficient op-level execution and NebulaML for fast checkpointing.
+AzureML supports curated environments for training execution on cached Docker images reducing the run preparation cost and consistency for experiment runs. The Azure Container for PyTorch ([ACPT](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-azure-container-for-pytorch-environment)) Curated Environment is the built-in setup for running pytorch training experiments on the Azure AI hardware. ACPT includes a curated set of optimizer libraries to improve the training throughput with DeepSpeed for GPU memory optimization, ONNX Runtime Training for efficient op-level execution and NebulaML for fast checkpointing.
 
 The AzureML PaaS offers capabilities for the enterprise MLOps lifecycle to manage all aspects of the experimentation and deployment loops.
 

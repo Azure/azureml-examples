@@ -56,7 +56,7 @@ encoded_dataset_train, encoded_dataset_eval = load_encoded_glue_dataset(
     task=task, tokenizer=tokenizer
 )
 ```
-This is done from within the [``glue_datasets.py``](../src/glue_datasets.py) file.
+This is done from within the [``glue_datasets.py``](./src/glue_datasets.py) file.
 ```
 def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
     dataset = load_dataset("glue", actual_task(task))
