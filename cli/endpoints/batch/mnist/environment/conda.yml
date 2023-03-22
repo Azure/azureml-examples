@@ -2,10 +2,10 @@ name: mnist-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.6.2
+  - python=3.9.16
   - pip<22.0
   - pip:
-    - tensorflow==1.15.2
+    - tensorflow==2.11.0
     - pillow
     - pandas
     - azureml-core

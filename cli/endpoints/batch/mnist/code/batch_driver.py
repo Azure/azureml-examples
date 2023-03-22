@@ -4,7 +4,7 @@
 import os
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from PIL import Image
 from azureml.core import Model
 
@@ -18,6 +18,7 @@ def init():
     model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "model")
 
     # contruct graph to execute
+    tf.disable_v2_behavior()
     tf.reset_default_graph()
     saver = tf.train.import_meta_graph(os.path.join(model_path, "mnist-tf.model.meta"))
     g_tf_sess = tf.Session(config=tf.ConfigProto(device_count={"GPU": 0}))

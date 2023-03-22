@@ -4,11 +4,11 @@
     "conda-forge"
   ],
   "dependencies": [
-    "python=3.6.2",
+    "python=3.9.16",
     "pip",
     {
       "pip": [
-        "tensorflow==1.15.2",
+        "tensorflow==2.11.0",
         "pillow",
         "azureml-core",
         "azureml-dataset-runtime[fuse]"
