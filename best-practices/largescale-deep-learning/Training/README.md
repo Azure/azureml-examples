@@ -1,33 +1,33 @@
 # # Large Scale Distributed Training in Azure Machine Learning
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
-[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-00000svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
 
 <!-- vscode-markdown-toc -->
-* 1. [Setup](#Setup)
-	* 1.1. [ **Estimate Memory Requirements**](#EstimateMemoryRequirements)
-	* 1.2. [**Compute Cluster**](#ComputeCluster)
-		* 1.2.1. [**Linear Scaling with Infiniband Enabled SKUs****](#LinearScalingwithInfinibandEnabledSKUs)
-	* 1.3. [**Environment**](#Environment)
-	* 1.4. [**Data Loading**](#DataLoading)
-* 2. [Optimizations](#Optimizations)
-	* 2.1. [**DeepSpeed**](#DeepSpeed)
-		* 2.1.1. [**DeepSpeed Autotuning****](#DeepSpeedAutotuning)
-	* 2.2. [**Onnx Runtime (ORT)**](#OnnxRuntimeORT)
-* 3. [Monitoring](#Monitoring)
-	* 3.1. [**Interactive Debugging**](#InteractiveDebugging)
-		* 3.1.1. [**JupyterLab**](#JupyterLab)
-		* 3.1.2. [**VSCode**](#VSCode)
-		* 3.1.3. [**Tensorboard**](#Tensorboard)
-	* 3.2. [**Pytorch Profiler**](#PytorchProfiler)
-	* 3.3. [**Flops Profiler**](#FlopsProfiler)
-* 4. [**Resiliency**](#Resiliency)
-	* 4.1. [**Nebula checkpointing**](#Nebulacheckpointing)
-* 5. [**Examples**](#Examples)
-	* 5.1. [**BERT Pretrain**](#BERTPretrain)
-	* 5.2. [**Bloom Pretrain**](#BloomPretrain)
+*  [Setup](#setup)
+	*  [**Estimate Memory Requirements**](#estimate-memory-requirements)
+	*  [**Compute Cluster**](#compute-cluster)
+		*  [**Linear Scaling with Infiniband Enabled SKUs**](#linear-scaling-with-infiniband-enabled-skus)
+	*  [**Environment**](#environment)
+	*  [**Data Loading**](#data-loading)
+*  [Optimizations](#optimizations)
+	*  [**DeepSpeed**](#deepspeed)
+		*  [**DeepSpeed Autotuning**](#deepspeed-autotuning)
+	*  [**Onnx Runtime (ORT)**](#onnx-runtime-ort)
+*  [Monitoring](#monitoring)
+	*  [**Interactive Debugging**](#interactive-debugging)
+		*  [**JupyterLab**](#jupyterlab)
+		*  [**VSCode**](#vscode)
+		*  [**Tensorboard**](#tensorboard)
+	*  [**Pytorch Profiler**](#pytorch-profiler)
+	*  [**Flops Profiler**](#flops-profiler)
+*  [**Resiliency**](#resiliency)
+	*  [**Nebula checkpointing**](#nebula-checkpointing)
+*  [**Examples**](#examples)
+	*  [**BERT Pretrain**](#bert-pretrain)
+	*  [**Bloom Pretrain**](#bloom-pretrain)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
@@ -44,9 +44,9 @@ Large scale training has led to state-of-the-art accuracies across a range of ta
 This guide will show best practices to allow you to train large models very efficiently with high throughput in AzureML, leveraging full utilization of GPU to keep the cost low.
 
 
-##  1. <a name='Setup'></a>Setup
+## <a name='Setup'></a>Setup
 
-###  1.1. <a name='EstimateMemoryRequirements'></a> **Estimate Memory Requirements**
+### <a name='Estimate Memory Requirements'></a>**Estimate Memory Requirements**
   For a large training job, its improtant to know how much memory is required by model params, gradients and optimizer states. In addition, you will also need enough memory to fit activation calculations and any temporary memory for intermediate calculations, which for long sequences could be significant. Here is estimated calculation for Model using FP16 and Adam optimizers
   ```
     FP16 parameter: 2 bytes
@@ -65,11 +65,11 @@ This guide will show best practices to allow you to train large models very effi
   ([API to estimate memory usage for model state consumption, but not activations](https://deepspeed.readthedocs.io/en/latest/memory.html)) from DeepSpeed with several accelarations/optimizations to reduce GPU memory. 
   
 
-###  1.2. <a name='ComputeCluster'></a>**Compute Cluster**
+### <a name='ComputeCluster'></a>**Compute Cluster**
 
   Ideally, as the number of VMs training a given model increases, the time to train that model should decrease linearly. For instance, if training a model using one VM takes 100 seconds, then training that same model using two VMs should ideally take 50 seconds. Also ideally, model quality / accuracy should not be affected by the number of VMs used. To attain linear scaling, one important step is to use InfiniBand. Linear scaling is ideal, but unfortunately as the number of machines increases, communication cost among the nodes also increases. Infiniband can help offset this cost and increase throughput.
 
-####  1.2.1. <a name='LinearScalingwithInfinibandEnabledSKUs'></a>**Linear Scaling with Infiniband Enabled SKUs******
+#### <a name='LinearScalingwithInfinibandEnabledSKUs'></a>**Linear Scaling with Infiniband Enabled SKUs**
 
   AzureML offers optimized supercomputer hardware with high bandwidth interconnects to enable low latency, GPU-to-GPU communication across nodes in a cluster.
 	These GPUs within a node are connected by NVLink and NVSwitch, GPUs across nodes connected by NVIDIA Mellanox 200Gbps Infiniband cards providing 2.8 exaflop/s of peak AI performance in aggregate.
@@ -98,7 +98,7 @@ This guide will show best practices to allow you to train large models very effi
   > While InifiBand helps attain linear scaling, there are other reasons/factors that can impact linear scaling and you will see in the document below and solution.. 
   
   
-###  1.3. <a name='Environment'></a>**Environment**
+### <a name='Environment'></a>**Environment**
   The recommended environment for a large scale distributed training job is an Azure Container for PyTorch (ACPT) environment with several built in optimizers and is 	described in more detail [here](../Environment/ACPT.md). This environment is built and ready to use under the 	'Environments' tab in AzureML studio. Some optimizers included in the environment are: 
 	- Onnx Runtime, Built-in optimizations that deliver up to 1.4X faster training
 	- Deepspeed allows to train trillion model parameter at low cost by achieving excellent system throughput and efficiently scale to thousands of GPUs
@@ -106,12 +106,12 @@ This guide will show best practices to allow you to train large models very effi
 	- Nebula, a new fast checkpointing feature to save your checkpoint 1000 times faster
 
 
-###  1.4. <a name='DataLoading'></a>**Data Loading**
+### <a name='DataLoading'></a>**Data Loading**
   To load data in the most efficient way with large scale distributed training jobs, follow [this guide](../Data-loading/data-loading.md).
 
-##  2. <a name='Optimizations'></a>Optimizations
+## <a name='Optimizations'></a>Optimizations
 To achive the best possible performance and resource utilization of jobs on AzureML, we employ several different optimization tools showcased below.
-###  2.1. <a name='DeepSpeed'></a>**DeepSpeed**
+### <a name='DeepSpeed'></a>**DeepSpeed**
 
   [DeepSpeed](https://github.com/microsoft/DeepSpeed) is an open-source library developed by Microsoft that optimizes the training of large deep learning models. It aims to reduce the time and memory requirements needed for training large models with trillions of parameters on distributed GPU clusters.
 
@@ -150,7 +150,7 @@ To achive the best possible performance and resource utilization of jobs on Azur
   An example showing this implementation can be found [here](https://github.com/Azure/azureml-examples/tree/main/cli/jobs/deepspeed/deepspeed-training).
   For a full set of DeepSpeed features see this [API doc](https://www.deepspeed.ai/docs/config-json/).
 
-####  2.1.1. <a name='DeepSpeedAutotuning'></a>**DeepSpeed Autotuning****
+#### <a name='DeepSpeedAutotuning'></a>**DeepSpeed Autotuning**
   When running a job with DeepSpeed, it is always necessary to include a ``ds_config.json`` file that has the configurations that DeepSpeed will use for training. However, it is hard to know what settings are best in your scenario. This is where Autotuning comes in. [DeepSpeed Autotuning](https://www.deepspeed.ai/tutorials/autotuning/) will find the most optimal configuration file that will maximize the training speed and memory efficiency of a model for a given hardware configuration. This can give users the best possible performance, without having to spend time manually tweaking hyperparameters. There are three configurations in particular that Autotuning will help find the best settings for:
   - ``train_micro_batch_size_per_gpu`` - The batch size for a single step on a GPU.
   - ``gradient_accumulation_steps``- Number of training steps to accumulate gradients before using them to compute variables. Increasing this allows for training on bigger batch sizes.
@@ -180,7 +180,7 @@ To achive the best possible performance and resource utilization of jobs on Azur
   | ----------------- | --------------- | ------------------ |
   | Training Time     |      351.75 s   |   253.79 s     |
   | samples/second    |      2431.02    |   3369.37      |
-###  2.2. <a name='OnnxRuntimeORT'></a>**Onnx Runtime (ORT)**
+### <a name='OnnxRuntimeORT'></a>**Onnx Runtime (ORT)**
 
   In addition to DeepSpeed, we can also use the HuggingFace [Optimum](https://huggingface.co/docs/optimum/index) library and [Onnx Runtime](https://onnxruntime.ai/docs/) to optimize our training. ORT can provide several benefits to a training job, including flexibility with different hardware configurations, memory optimizations that allow fitting of larger models compared to base Pytorch. More details on how exactly Onnx Runtime improves training time and throughput can be found [here](https://huggingface.co/blog/optimum-onnxruntime-training).
 
@@ -206,8 +206,8 @@ To achive the best possible performance and resource utilization of jobs on Azur
   --optim adamw_ort_fused
   ```
   This is an extra argument added with ORTTrainingArguments that applies the Fused Adam Optimizer to give a little extra performance gain. For a training example that uses ORT, See the [BERT Pretrain example](./Bert-Pretrain/README.md).
-##  3. <a name='Monitoring'></a>Monitoring
-###  3.1. <a name='InteractiveDebugging'></a>**Interactive Debugging**
+## <a name='Monitoring'></a>Monitoring
+### <a name='InteractiveDebugging'></a>**Interactive Debugging**
   Machine learning model training is usually an iterative process and requires significant experimentation. With the Azure Machine Learning interactive job experience, we can access the container where the job is running and iterate on training scripts, monitor progress and even debug the job remotely on local machines.  
   
   Depending on the tool you want to use, add the corresponding service to your Azure cli v2 command job yaml file:
@@ -231,18 +231,18 @@ To access these services once the job starts, go to the job overview page and cl
 
 For an example that enables these tools, see [here](./Bert-Pretrain/README.md).
 
-####  3.1.1. <a name='JupyterLab'></a>**JupyterLab**
+#### <a name='JupyterLab'></a>**JupyterLab**
 
   With JupyterLab, you can open a terminal and interact with the job container as well as iterate on your training script.
 
   <img src="https://user-images.githubusercontent.com/73311224/225483980-b53800af-0a27-49f4-a8f5-e2328ed94a5a.png" alt="JupyterLab" width="650"/>
 
-####  3.1.2. <a name='VSCode'></a>**VSCode**
+#### <a name='VSCode'></a>**VSCode**
   VSCode can also interact with the job container, but in addition has the added benefit of interactive debugging.
 
   <img src="https://user-images.githubusercontent.com/73311224/225445237-7c9ba264-abda-47c3-a662-29ae37dfa0d9.png" alt="Tensorboard" width="650"/>
 
-####  3.1.3. <a name='Tensorboard'></a>**Tensorboard**
+#### <a name='Tensorboard'></a>**Tensorboard**
 
   With TensorBoard we can monitor metrics while the job is running. It also can show resource utilization via Pytorch Profiler (more on this later).
 
@@ -258,7 +258,7 @@ For an example that enables these tools, see [here](./Bert-Pretrain/README.md).
   >```
   For more information on interacting with jobs, see [this page](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-interactive-jobs?tabs=ui).
 
-###  3.2. <a name='PytorchProfiler'></a>**Pytorch Profiler**
+### <a name='PytorchProfiler'></a>**Pytorch Profiler**
   With how long training times can be and how little resources may be available for a large scale training job, it is important to monitor resource utilization. For a clear and consise way to do this while a job is running, we can use the Pytorch Profiler.
 
   If you are using the HuggingFace Transformers library in your training script, one way to start using the profiler is to use a custom HuggingFace trainer callback.
@@ -294,7 +294,7 @@ For an example that enables these tools, see [here](./Bert-Pretrain/README.md).
   If you are not using the HuggingFace Transformers ``Trainer`` class in your training script and instead using your own training loop, try [this tutorial](https://pytorch.org/tutorials/intermediate/tensorboard_profiler_tutorial.html).
 
 
-###  3.3. <a name='FlopsProfiler'></a>**Flops Profiler**
+### <a name='FlopsProfiler'></a>**Flops Profiler**
 
   The DeepSpeed Flops Profiler provides user with metrics that can help understand the performance and help spot inefficiencies. More information can be found [here](https://www.deepspeed.ai/tutorials/flops-profiler/). To enable Flops Profiler while using DeepSpeed in your jobs, you can pass the `flops_profiler` settings to ds_config.json:
 
@@ -312,10 +312,10 @@ For an example that enables these tools, see [here](./Bert-Pretrain/README.md).
 
   <img src="https://user-images.githubusercontent.com/73311224/225174576-df95695c-fa14-4cf4-ac9e-0bf4ecac20e7.png" alt="Tensorboard" width="400"/>
 
-##  4. <a name='Resiliency'></a>**Resiliency**
+## <a name='Resiliency'></a>**Resiliency**
 When training with multiple compute nodes, the likelyhood of hardware faults occuring is increased. Fortunately, AzureML will automatically restart training jobs that fail due to hardware errors. With the length and resource consumption of large scale distributed training jobs however, it is ideal that training is not restarted scratch. With model checkpointing the training process can be saved at periodic checkpoints and if the training fails due to hardware faults, the training can be resumed from before it failed. Nebula Checkpointing is an optimized version of this feature.
 
-###  4.1. <a name='Nebulacheckpointing'></a>**Nebula checkpointing**
+### <a name='Nebulacheckpointing'></a>**Nebula checkpointing**
 
 Nebula Checkpointing improves on standard model checkpointing by saving models 1000 times faster.
 
@@ -337,10 +337,10 @@ Nebula Checkpointing improves on standard model checkpointing by saving models 1
   ```
   shm_size: 3100m
   ```
-##  5. <a name='Examples'></a>**Examples**
+## <a name='Examples'></a>**Examples**
 - ### **Pretraining a model**
   Pretraining a language model is a process of training a model on a large corpus of unlabeled text using self-supervision, which means that the model learns to predict some parts of the text from other parts. Pretraining helps the model learn general language knowledge and skills that can be useful for various downstream tasks. Pretraining from scratch means training a model from random initialization without using any existing pretrained models. Pretraining from scratch can be beneficial when you have a large amount of domain-specific data that differs significantly from general text corpora, or when you want to customize your model architecture or hyperparameters. However, pretraining from scratch can also be more costly and time-consuming than finetuning an existing pretrained model.
-###  5.1. <a name='BERTPretrain'></a>**BERT Pretrain**
+### <a name='BERTPretrain'></a>**BERT Pretrain**
   [This example](./Bert-Pretrain/README.md) shows how to run a BERT pretraining job on AzureML.
   The following results were found using 2 ND40rs nodes with 8 V100 GPUs each.
 
@@ -348,7 +348,7 @@ Nebula Checkpointing improves on standard model checkpointing by saving models 1
   |----------------|-------------|------|------|-----------------|----------------------|
   | Vanilla Pytorch| 330M        | 16   | 64   | 2431.02         | 49.4%​                |
   | DeepSpeed + Autotuning| 330M | 16   | 93   | 3369.37         | 64.5%​                |
-###  5.2. <a name='BloomPretrain'></a>**Bloom Pretrain**
+### <a name='BloomPretrain'></a>**Bloom Pretrain**
   [This example](./Bloom-Pretrain/README.md) shows how to pretrain the Bloom model in AzureML. The following results were found using 16 NVIDIA A100 80GB GPUs (2 nodes NVLink enabled).
   |Experiment |Model size|GPU Count |	TP|	PP	 | MBS	| TFlops|	Samples per second |	GPU memory Utillized	
   |----|----|----|----|----|----|----|----|----|
