@@ -1,3 +1,7 @@
+
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 # Operationalize 
 Operationalizing models in production is about taking the model that has been trained and evaluated, and making it available for use in a live, production environment. 
 
