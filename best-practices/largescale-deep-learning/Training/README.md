@@ -1,4 +1,4 @@
-# # Large Scale Distributed Training in Azure Machine Learning
+## Large Scale Distributed Training in Azure Machine Learning
 
 [![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
 [![Python code style: black](https://img.shields.io/badge/code%20style-black-00000svg)](https://github.com/psf/black)
