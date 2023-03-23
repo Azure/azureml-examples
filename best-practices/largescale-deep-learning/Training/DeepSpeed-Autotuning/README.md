@@ -1,3 +1,7 @@
+
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 ## Using DeepSpeed Autotuning to generate an optimal DeepSpeed configuration file
 
 DeepSpeed Autotuning is a feature used to find the most optimal configuration file that will maximize the training speed and memory efficiency of a model for a given hardware configuration. This can give users the best possible performance, without having to spend time manually tweaking hyperparameters.

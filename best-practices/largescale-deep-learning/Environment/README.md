@@ -1,3 +1,7 @@
+
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 ## Introduction
 
 An environment is typically the first thing to start with when doing deep learning training for several reasons:
