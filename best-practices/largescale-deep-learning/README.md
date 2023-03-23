@@ -4,7 +4,7 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: Top-level directory for official best practices for Large scale distributed training in Azure Machine Learning.
+description: Demonstrates an official step-by-step guide of best-practices with techniques and optimizations for running large scale distributed training on AzureML. Best practices includes all aspects of the data science steps to manage enterprise grade MLOps lifecycle from resource setup and data loading to training optimizations, evaluation and optimizations for inference.
 ---
 
 # AzureML Large Scale Deep Learning Best Practices
