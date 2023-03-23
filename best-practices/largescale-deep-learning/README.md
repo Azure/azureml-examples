@@ -1,3 +1,12 @@
+---
+page_type: sample
+languages:
+- python
+products:
+- azure-machine-learning
+description: Top-level directory for official best practices for Large scale distributed training in Azure Machine Learning.
+---
+
 # AzureML Large Scale Deep Learning Best Practices
 
 ## Table of Contents
