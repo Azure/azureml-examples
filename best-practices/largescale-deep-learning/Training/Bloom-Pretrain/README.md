@@ -1,3 +1,7 @@
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+
 # **Bloom Pretraining on AzureML**
 
 BigScience Large Open-science Open-access Multilingual Language Model (BLOOM), is an autoregressive language model based on the GPT-3 architecture. BLOOM is trained on data from 46 natural languages and 13 programming languages and is the largest publicly available open multilingual model. Training this large model required multiple optimizations to train efficiently. This guide details the process.

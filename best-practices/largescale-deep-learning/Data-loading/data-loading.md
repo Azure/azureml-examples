@@ -1,3 +1,7 @@
+
+[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 # Efficient data loading for large training workload
 
 One key business objective when training AI models is to ensure the GPU on your compute is fully utilized in order to keep costs as low as possible (no idle compute). Serving training data to the GPU in a performant manner goes a long way to ensure you can fully utilize the GPU. If the serving of data to the GPU is slow relative to the processing of an epoch, then the GPU may idle whilst it waits for the data to arrive.
