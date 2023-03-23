@@ -1,0 +1,33 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: .
+command: >-
+  python train.py 
+  --epochs ${{inputs.epochs}}
+  --labeled-dataset ${{inputs.dataset}}
+#  --model-dir ${{outputs.model_dir}}
+inputs:
+  epochs: 3
+  dataset:
+    path: azureml:mmmnist:1
+    type: mltable
+    mode: direct
+# outputs:
+#   model_dir:
+#     type: uri_folder
+#     mode: upload
+environment:
+  build:
+    path: image
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: "true"
+  AZUREML_CR_BOOTSTRAPPER_CONFIG_OVERRIDE: "{\"capabilities_registry\": {\"registry\": {\"url\": \"commonruntimedev.azurecr.io\", \"username\": null, \"password\": null}, \"regional_tag_prefix\": false}}"
+compute: azureml:joscalz-amlc
+resources:
+  instance_count: 1
+distribution:
+  type: pytorch
+  process_count_per_instance: 1
+
+# display_name: pytorch-mnist-train
+experiment_name: pytorch-mnist-test
+description: Train a basic neural network with PyTorch on the MNIST dataset

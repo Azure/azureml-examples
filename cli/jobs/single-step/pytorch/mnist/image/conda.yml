@@ -1,0 +1,12 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8
+- pip
+- pytorch
+- torchvision
+- pip:
+  - mlflow
+  - azureml-mlflow
+  - azureml-dataset-runtime
+name: pytorch-1.9-mlflow
