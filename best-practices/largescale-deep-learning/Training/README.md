@@ -6,7 +6,7 @@
 
 
 <!-- vscode-markdown-toc -->
-*  [Setup](#setup)
+*  [**Setup**](#setup)
 	*  [**Estimate Memory Requirements**](#estimate-memory-requirements)
 	*  [**Compute Cluster**](#compute-cluster)
 		*  [**Linear Scaling with Infiniband Enabled SKUs**](#linear-scaling-with-infiniband-enabled-skus)
@@ -44,9 +44,9 @@ Large scale training has led to state-of-the-art accuracies across a range of ta
 This guide will show best practices to allow you to train large models very efficiently with high throughput in AzureML, leveraging full utilization of GPU to keep the cost low.
 
 
-## <a name='Setup'></a>Setup
+## <a name='Setup'></a>**Setup**
 
-### <a name='Estimate Memory Requirements'></a>**Estimate Memory Requirements**
+### <a name='EstimateMemoryRequirements'></a>**Estimate Memory Requirements**
   For a large training job, its improtant to know how much memory is required by model params, gradients and optimizer states. In addition, you will also need enough memory to fit activation calculations and any temporary memory for intermediate calculations, which for long sequences could be significant. Here is estimated calculation for Model using FP16 and Adam optimizers
   ```
     FP16 parameter: 2 bytes
@@ -109,7 +109,7 @@ This guide will show best practices to allow you to train large models very effi
 ### <a name='DataLoading'></a>**Data Loading**
   To load data in the most efficient way with large scale distributed training jobs, follow [this guide](../Data-loading/data-loading.md).
 
-## <a name='Optimizations'></a>Optimizations
+## <a name='Optimizations'></a>**Optimizations**
 To achive the best possible performance and resource utilization of jobs on AzureML, we employ several different optimization tools showcased below.
 ### <a name='DeepSpeed'></a>**DeepSpeed**
 
@@ -206,7 +206,7 @@ To achive the best possible performance and resource utilization of jobs on Azur
   --optim adamw_ort_fused
   ```
   This is an extra argument added with ORTTrainingArguments that applies the Fused Adam Optimizer to give a little extra performance gain. For a training example that uses ORT, See the [BERT Pretrain example](./Bert-Pretrain/README.md).
-## <a name='Monitoring'></a>Monitoring
+## <a name='Monitoring'></a>**Monitoring**
 ### <a name='InteractiveDebugging'></a>**Interactive Debugging**
   Machine learning model training is usually an iterative process and requires significant experimentation. With the Azure Machine Learning interactive job experience, we can access the container where the job is running and iterate on training scripts, monitor progress and even debug the job remotely on local machines.  
   
