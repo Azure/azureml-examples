@@ -1,0 +1,32 @@
+2023/03/21 17:57:43 INFO mlflow.utils.autologging_utils: Created MLflow autologging run with ID '2d104b37-8869-4d64-bae5-1beea722b797', which will track hyperparameters, performance metrics, model artifacts, and lineage information for the current sklearn workflow
+2023/03/21 17:57:44 WARNING mlflow.utils.autologging_utils: MLflow autologging encountered a warning: "/usr/local/lib/python3.8/site-packages/mlflow/models/signature.py:130: UserWarning: Hint: Inferred schema contains integer column(s). Integer columns in Python cannot represent missing values. If your input data contains missing values at inference time, it will be encoded as floats and will cause a schema enforcement error. The best way to avoid this problem is to infer the model schema based on a realistic data sample (training dataset) that includes missing values. Alternatively, you can declare integer columns as doubles (float64) whenever these columns may have missing values. See `Handling Integers With Missing Values <https://www.mlflow.org/docs/latest/models.html#handling-integers-with-missing-values>`_ for more details."
+train.py:91: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  testX["cost"] = testy
+hello training world...
+Training data path: /mnt/azureml/cr/j/c48de8d071e84e2c823b0c06f85f54dd/cap/data-capability/wd/INPUT_training_data
+Test data path: /mnt/azureml/cr/j/c48de8d071e84e2c823b0c06f85f54dd/cap/data-capability/wd/test_data
+Model output path: /mnt/azureml/cr/j/c48de8d071e84e2c823b0c06f85f54dd/cap/data-capability/wd/model_output
+Test split ratio:0.2
+mounted_path files: 
+['transformed_data.csv']
+reading file: transformed_data.csv ...
+Index(['Unnamed: 0', 'Unnamed: 0.1', 'cost', 'distance', 'dropoff_latitude',
+       'dropoff_longitude', 'passengers', 'pickup_latitude',
+       'pickup_longitude', 'store_forward', 'vendor', 'pickup_weekday',
+       'pickup_month', 'pickup_monthday', 'pickup_hour', 'pickup_minute',
+       'pickup_second', 'dropoff_weekday', 'dropoff_month', 'dropoff_monthday',
+       'dropoff_hour', 'dropoff_minute', 'dropoff_second'],
+      dtype='object')
+(7818, 20)
+Index(['distance', 'dropoff_latitude', 'dropoff_longitude', 'passengers',
+       'pickup_latitude', 'pickup_longitude', 'store_forward', 'vendor',
+       'pickup_weekday', 'pickup_month', 'pickup_monthday', 'pickup_hour',
+       'pickup_minute', 'pickup_second', 'dropoff_weekday', 'dropoff_month',
+       'dropoff_monthday', 'dropoff_hour', 'dropoff_minute', 'dropoff_second'],
+      dtype='object')
+0.8894837557744923
+(1955, 21)

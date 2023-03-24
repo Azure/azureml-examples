@@ -1,0 +1,3 @@
+{
+  "LinearRegression_score_trainX": "LinearRegression.score(X=trainX, y=trainy)"
+}
