@@ -1,7 +1,9 @@
 artifact_path: model
 flavors:
   python_function:
-    env: conda.yaml
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
     loader_module: mlflow.sklearn
     model_path: model.pkl
     predict_fn: predict
@@ -11,9 +13,9 @@ flavors:
     pickled_model: model.pkl
     serialization_format: cloudpickle
     sklearn_version: 0.24.1
-mlflow_version: 1.29.0
-model_uuid: 7ea1fc5bdd2b497888617d34c8e47c34
-run_id: b6eaaf5c-f6ba-47fa-af33-013f616e1a4e
+mlflow_version: 2.2.2
+model_uuid: c0701eba38e34f9bbe7a23b8d5fb8613
+run_id: 2d104b37-8869-4d64-bae5-1beea722b797
 signature:
   inputs: '[{"name": "distance", "type": "double"}, {"name": "dropoff_latitude", "type":
     "double"}, {"name": "dropoff_longitude", "type": "double"}, {"name": "passengers",
@@ -27,4 +29,4 @@ signature:
     "type": "long"}, {"name": "dropoff_minute", "type": "long"}, {"name": "dropoff_second",
     "type": "long"}]'
   outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
-utc_time_created: '2022-10-10 19:39:43.255709'
+utc_time_created: '2023-03-21 17:57:44.324658'
