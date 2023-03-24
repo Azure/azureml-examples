@@ -1,0 +1,68 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: partition by key parallel job
+experiment_name: hello-world-parallel-job
+description: The hello world pipeline job with partition by key
+tags:
+  tag: tagvalue
+  owner: sdkteam
+
+inputs:
+  custom_node_count: 3
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+jobs:
+  partition_job:
+    type: command
+    component: ./src/partition_data/partition_data.yml
+    compute: azureml:cpu-cluster
+    
+    inputs:
+      data_source:
+        type: uri_file
+        path: ./oj_sales_data/oj_sales_data.csv
+      partition_keys: Store,Brand
+    outputs:
+      tabular_output_data:
+        type: mltable
+        mode: rw_mount
+
+  parallel_train:
+    type: parallel
+    # Load parallel component from local yaml definition
+    component: ./src/parallel_train_component/parallel_train.yml
+    # Use the following line to load component from your workspace. 
+    # component: azureml:<component_name>:<component_version>
+
+    compute: azureml:cpu-cluster
+    inputs:
+      data_source: 
+        path: ${{parent.jobs.partition_job.outputs.tabular_output_data}}
+        mode: direct
+      drop_cols: "Revenue,Advert,Store,Brand"
+      target_col: "Quantity"
+      date_col: "WeekStarting"
+    outputs:
+      model_folder:
+        mode: rw_mount
+    
+    environment_variables:
+      "AZUREML_PARALLEL_EXAMPLE": "1a_yaml"
+    
+    # Override parallel component run settings in this job.
+    mini_batch_error_threshold: 10
+    max_concurrency_per_instance: 3
+    retry_settings:
+      max_retries: 5
+
+    # User can also define dynamic value by binding to pipeline primitive input. 
+    resources:
+      instance_count: ${{parent.inputs.custom_node_count}}
+
+    
+
+
+
+

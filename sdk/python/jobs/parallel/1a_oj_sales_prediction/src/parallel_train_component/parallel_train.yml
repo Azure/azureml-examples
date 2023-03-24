@@ -1,0 +1,52 @@
+$schema: https://azuremlschemas.azureedge.net/latest/parallelComponent.schema.json
+type: parallel
+name: parallel_train
+display_name: Train partitioned mltable data in parallel
+version: 1
+
+inputs:
+  data_source:
+    type: mltable
+    mode: direct
+  drop_cols:
+    type: string
+  target_col:
+    type: string
+  date_col:
+    type: string
+  lagging_orders:
+    type: string
+    optional: true
+    default: "1,2,3,4,5,6"
+outputs:
+  model_folder:
+    type: uri_folder
+    mode: rw_mount
+
+partition_keys:
+  - Store
+  - Brand
+
+error_threshold: -1
+mini_batch_error_threshold: 10
+logging_level: "INFO"
+input_data: ${{inputs.data_source}}
+max_concurrency_per_instance: 2
+retry_settings:
+  max_retries: 2
+  timeout: 60
+
+task:
+  type: run_function
+  code: .
+  entry_script: parallel_train.py
+  environment:
+    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    conda_file: ./conda.yml
+
+  program_arguments: >-
+    --drop_cols ${{inputs.drop_cols}}
+    --target_col ${{inputs.target_col}}
+    --date_col ${{inputs.date_col}}
+    $[[--lagging_orders ${{inputs.lagging_orders}}]]
+    --model_folder ${{outputs.model_folder}}
