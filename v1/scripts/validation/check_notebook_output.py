@@ -50,6 +50,7 @@ allowed_list = [
     "Check: endpoint",
     "data_collector is not a known attribute of class",
     "Readonly attribute primary_metric will be ignored",
+    "Downloading artifact ",
 ]
 
 with open(full_name, "r") as notebook_file:
