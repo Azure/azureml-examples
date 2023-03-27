@@ -1,0 +1,42 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: mnist-batch-identification-using-parallel
+description: The hello world pipeline job with inline parallel job
+tags:
+  tag: tagvalue
+  owner: sdkteam
+
+jobs:
+  prepare_data:
+    type: command
+    compute: azureml:cpu-cluster
+    component: ./script/prepare_data.yml
+
+  predict_digits_mnist:
+    type: parallel
+    compute: azureml:cpu-cluster
+    component: ./script/predict_digits_mnist.yml
+    
+    inputs:
+      job_data_path:
+        type: uri_folder
+        path: ${{parent.jobs.prepare_data.outputs.mnist_png}}
+        mode: ro_mount
+      score_model:
+        type: uri_folder
+        path: ./mnist_models
+        mode: ro_mount
+    outputs:
+      job_output_file:
+        type: uri_file
+        path: azureml://datastores/workspaceblobstore/paths/${{name}}/aggregated_returns.csv
+        mode: rw_mount
+    
+    mini_batch_error_threshold: 10
+    retry_settings:
+      max_retries: 3
+    
+    environment_variables:
+      "AZUREML_PARALLEL_EXAMPLE": "3a_yaml"
+
+

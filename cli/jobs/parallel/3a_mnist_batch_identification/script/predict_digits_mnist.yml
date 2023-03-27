@@ -1,0 +1,39 @@
+$schema: https://azuremlschemas.azureedge.net/latest/parallelComponent.schema.json
+type: parallel
+name: batch_inferencing_with_mini_batch_size
+display_name: Batch Inferencing with mini_batch_size
+version: 1
+
+inputs:
+  job_data_path:
+    type: uri_folder
+    mode: ro_mount
+  score_model:
+    type: uri_folder
+    mode: download
+outputs:
+  job_output_file:
+    type: uri_file
+    mode: rw_mount
+
+mini_batch_size: "5"
+resources:
+  instance_count: 2
+mini_batch_error_threshold: 5
+logging_level: "DEBUG"
+input_data: ${{inputs.job_data_path}}
+max_concurrency_per_instance: 2
+retry_settings:
+  max_retries: 2
+  timeout: 60
+    
+task:
+  type: run_function
+  code: .
+  entry_script: digit_identification.py
+  environment:
+    image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+    conda_file: ./environment_parallel.yml
+  program_arguments: >-
+    --model ${{inputs.score_model}}
+  append_row_to: ${{outputs.job_output_file}}
