@@ -59,6 +59,14 @@ Add below to the ds_config.json to enable Nebula checkpointing:
         "enable_nebula_load": true
 },
 ```
+
+After your job runs successfully, you can see below logs in user logs, to check wether checkpoints have been saved successfully by Nebula or not and how much time it takes to save a file in checkpoints.
+
+```
+[2023-03-27 03:42:54,860] [INFO] [nebula_checkpoint_engine.py:47:save] [Nebula] Saving pytorch_model.bin under tag checkpoint-20...
+[1679888575], size is [219004580], Time difference = 68100[µs]
+```
+
 ## Running the Job
 ### Submit with Deepspeed
 To try BERT pretraining with DeepSpeed, submit the following command from within this directory:

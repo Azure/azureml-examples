@@ -11,25 +11,24 @@ RUN pip install git+https://github.com/FreyaRao/DeepSpeed.git@qrao/fix_save_16mi
 
 # Install pip dependencies
 RUN pip install 'ipykernel~=6.0' \
-                'azureml-core==1.48.0' \
-				'azureml-dataset-runtime==1.48.0' \
-                'azureml-defaults==1.48.0' \
-				'azure-ml==0.0.1' \
-				'azure-ml-component==0.9.16.post2' \
-                'azureml-mlflow==1.48.0' \
-		'azureml-contrib-services==1.48.0' \
-		        'azureml-contrib-services==1.48.0' \
+                'azureml-core' \
+                'azureml-dataset-runtime' \
+                'azureml-defaults' \
+                'azure-ml-component' \
+                'azureml-mlflow' \
+                'azureml-contrib-services' \
+                'azureml-contrib-services' \
                 'torch-tb-profiler~=0.4.0' \
-				'py-spy==0.3.12' \
-		        'debugpy~=1.6.3'
+                'py-spy==0.3.12' \
+                'debugpy~=1.6.3'
 
 RUN pip install \
-	azure-ai-ml==1.2.0 \
-        azureml-inference-server-http~=0.7.0 \
+        azure-ai-ml \
+        azureml-inference-server-http \
         inference-schema~=1.4.2.1 \
         MarkupSafe==2.0.1 \
-	    regex \
-	    pybind11
+        regex \
+        pybind11
 
 # Inference requirements
 COPY --from=mcr.microsoft.com/azureml/o16n-base/python-assets:20220607.v1 /artifacts /var/

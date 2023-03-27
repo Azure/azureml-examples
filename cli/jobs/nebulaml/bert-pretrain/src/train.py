@@ -10,22 +10,8 @@ if __name__ == "__main__":
     parser = HfArgumentParser(TrainingArguments)
     training_args, args = parser.parse_args_into_dataclasses(return_remaining_strings=True)
 
-    #bookcorpus = load_dataset("bookcorpus", split="train")
-    #wikide = load_dataset("wikipedia", "20220301.de", split="train")
-    #wikien = load_dataset("wikipedia", "20220301.en", split="train")
-    #wikifr = load_dataset("wikipedia", "20220301.fr", split="train")
-    #wikifrr = load_dataset("wikipedia", "20220301.frr", split="train")
     wikiit = load_dataset("wikipedia", "20220301.it", split="train")
-    #wikisimple = load_dataset("wikipedia", "20220301.simple", split="train")
-    
-    #wiki = concatenate_datasets([ wikide, wikien, wikifr, wikifrr, wikiit, wikisimple])
-    #wiki = wiki.remove_columns([col for col in wiki.column_names if col != "text"])  # only keep the 'text' column
-    #dataset = concatenate_datasets([bookcorpus, wiki])
     dataset = wikiit
-
-    #toberemoved
-    #dataset = wikisimple.remove_columns([col for col in wikisimple.column_names if col != "text"])
-    #train_dataset = Dataset.Tabular.from_delimited_files(train_data)
 
     d = dataset.train_test_split(test_size=0.1)
     d["train"], d["test"]
