@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multiclass-task-sentiment-analysis-automl-nlp-multiclass-sentiment
+name: sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced-mlflow
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "2 11/12 * * *"
+    - cron: "30 0/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multiclass-task-sentiment-analysis-automl-nlp-multiclass-sentiment.yml
+      - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/**
+      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced-mlflow.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -36,6 +36,8 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
+    - name: pip install forecasting reqs
+      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -60,25 +62,21 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis/automl-nlp-multiclass-sentiment.ipynb
+    - name: run jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/automl-forecasting-task-energy-demand-advanced-mlflow.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-multiclass-sentiment.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-forecasting-task-energy-demand-advanced-mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python -p compute_name automl-gpu-cluster automl-nlp-multiclass-sentiment.ipynb automl-nlp-multiclass-sentiment.output.ipynb
-      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
-    - name: check notebook output
-      run: |
-         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
-                --file_name automl-nlp-multiclass-sentiment.output.ipynb \
-                --folder . \
-                --check warning stderr \
-      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+          papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-task-energy-demand-advanced-mlflow.ipynb automl-forecasting-task-energy-demand-advanced-mlflow.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-nlp-multiclass-sentiment
-        path: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+        name: automl-forecasting-task-energy-demand-advanced-mlflow
+        path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand
+
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "${{ github.workspace }}/infra/remove_computes.sh" energy-cluster-v2
