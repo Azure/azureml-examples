@@ -36,6 +36,12 @@ To use Nebula, you need the following prerequisites:
 
 To use Nebula, you only need to change your training script to import the ``torch_nebula`` package and call the Nebula APIs at the appropriate places. You don't need to modify the Azure Machine Learning SDK or CLI. You do not need to make any modification to other steps to train your large model on Azure Machine Learning Platform. 
 
+> **[IMPORTANT]** Saving checkpoints with Nebula requires some memory to store checkpoints. Please make sure your memory is larger than at least three copies of the checkpoints.
+>
+> If the memory is not enough to hold checkpoints, you are suggested to set up an environment variable `NEBULA_MEMORY_BUFFER_SIZE` in the command to limit the use of the memory per each node when saving checkpoints. When setting this variable, Nebula will use this memory as buffer to save checkpoints. If the memory usage is not limited, Nebula will use the memory as much as possible to store the checkpoints.
+>
+> If multiple processes are running on the same node, the maximum memory for saving checkpoints will be half of the limit divided by the number of processes. Nebula will use the other half for multi-process coordination. For example, if you want to limit the memory usage per each node to 200MB, you can set the environment variable as `export NEBULA_MEMORY_BUFFER_SIZE=200000000` (in bytes, around 200MB) in the command. In this case, Nebula will only use 200MB memory to store the checkpoints in each node. If there are 4 processes running on the same node, Nebula will use 25MB memory per each process to store the checkpoints.
+
 ## Examples
 Here are some examples of how to use Nebula for different framework types. You can choose the one that fits your training script the most.
 - [Using PyTorch Lightning](#using-pytorch-lightning)
