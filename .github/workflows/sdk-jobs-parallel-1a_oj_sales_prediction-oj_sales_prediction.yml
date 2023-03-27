@@ -9,7 +9,7 @@ name: sdk-jobs-parallel-1a_oj_sales_prediction-oj_sales_prediction
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "1 7/12 * * *"
   pull_request:
     branches:
       - main
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
@@ -71,5 +71,5 @@ jobs:
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: 1a_oj_sales_prediction
+        name: oj_sales_prediction
         path: sdk/python/jobs/parallel/1a_oj_sales_prediction

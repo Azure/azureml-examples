@@ -1,1 +1,25 @@
-# This is a temporary file until generate-yml.sh is run to generate the job.yml file that will be used for this example.
+# Training job submission via AML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: python train.py --with_aml_log=True --deepspeed --deepspeed_config ds_config.json
+
+experiment_name: DistributedJob-DeepsSpeed-Training-cifar
+display_name: deepspeed-training-example
+code: src
+environment:
+  build:
+    path: docker-context
+limits:
+  timeout: 900
+outputs:
+  output:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/workspaceblobstore/paths/outputs/training_results
+compute: azureml:gpu-v100-cluster
+distribution:
+  type: pytorch
+  process_count_per_instance: 8
+resources:
+  instance_count: 2
