@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-parallel-1a_oj_sales_prediction-oj_sales_prediction
+name: sdk-using-mlflow-train-and-log-pipelines_with_mlflow
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "1 7/12 * * *"
+    - cron: "44 5/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/jobs/parallel/1a_oj_sales_prediction/**
-      - .github/workflows/sdk-jobs-parallel-1a_oj_sales_prediction-oj_sales_prediction.yml
+      - sdk/python/using-mlflow/train-and-log/**
+      - .github/workflows/sdk-using-mlflow-train-and-log-pipelines_with_mlflow.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -58,18 +58,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/parallel/1a_oj_sales_prediction/oj_sales_prediction.ipynb
+    - name: run using-mlflow/train-and-log/pipelines_with_mlflow.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "oj_sales_prediction.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "pipelines_with_mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python oj_sales_prediction.ipynb oj_sales_prediction.output.ipynb
-      working-directory: sdk/python/jobs/parallel/1a_oj_sales_prediction
+          papermill -k python pipelines_with_mlflow.ipynb pipelines_with_mlflow.output.ipynb
+      working-directory: sdk/python/using-mlflow/train-and-log
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: oj_sales_prediction
-        path: sdk/python/jobs/parallel/1a_oj_sales_prediction
+        name: pipelines_with_mlflow
+        path: sdk/python/using-mlflow/train-and-log

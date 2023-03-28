@@ -17,7 +17,8 @@ def init():
     # load the model
     model = load_model(model_path)
 
-def run(mini_batch : List[str]) -> pd.DataFrame:
+
+def run(mini_batch: List[str]) -> pd.DataFrame:
     print(f"Executing run method over batch of {len(mini_batch)} files.")
 
     results = []
@@ -33,10 +34,12 @@ def run(mini_batch : List[str]) -> pd.DataFrame:
         pred_prob = tf.math.reduce_max(tf.math.softmax(pred, axis=-1)).numpy()
         pred_class = tf.math.argmax(pred, axis=-1).numpy()
 
-        results.append({
-            "file": basename(image_path), 
-            "class": pred_class[0],
-            "probability": pred_prob
-        })
+        results.append(
+            {
+                "file": basename(image_path),
+                "class": pred_class[0],
+                "probability": pred_prob,
+            }
+        )
 
     return pd.DataFrame(results)

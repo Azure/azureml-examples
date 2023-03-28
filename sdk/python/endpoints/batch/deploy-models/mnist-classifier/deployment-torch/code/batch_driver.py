@@ -10,6 +10,7 @@ from os.path import basename
 from mnist_classifier import MnistClassifier
 from typing import List
 
+
 def init():
     global model
     global device
@@ -24,6 +25,7 @@ def init():
     model.eval()
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 def run(mini_batch: List[str]) -> pd.DataFrame:
     print(f"Executing run method over batch of {len(mini_batch)} files.")
@@ -40,12 +42,14 @@ def run(mini_batch: List[str]) -> pd.DataFrame:
 
             # Compute probabilities, classes and labels
             predictions = torch.nn.Softmax(dim=-1)(predict_logits)
-            predicted_prob, predicted_class= torch.max(predictions, axis=-1)
-            
-            results.append({ 
-                "file": basename(image_path),
-                "class": predicted_class.numpy(),
-                "probability": predicted_prob.numpy()
-            })
+            predicted_prob, predicted_class = torch.max(predictions, axis=-1)
+
+            results.append(
+                {
+                    "file": basename(image_path),
+                    "class": predicted_class.numpy(),
+                    "probability": predicted_prob.numpy(),
+                }
+            )
 
     return pd.DataFrame(results)

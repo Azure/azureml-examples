@@ -11,7 +11,6 @@ class TfClassifier:
         self.imagenet_labels = np.array(open(labels_path).read().splitlines())
 
     def predict(self, data):
-
         preds = self.model.predict(data)
 
         pred_prob = tf.reduce_max(preds, axis=-1)
