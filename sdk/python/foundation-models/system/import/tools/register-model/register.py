@@ -82,16 +82,16 @@ def get_ml_client(registry_name):
     #    run = Run.get_context(allow_offline=False)
     #    ws = run.experiment.workspace
 
-    uri = os.environ["MLFLOW_TRACKING_URI"]
-    uri_segments = uri.split("/")
-    subscription_id = uri_segments[uri_segments.index("subscriptions") + 1]
-    resource_group_name = uri_segments[uri_segments.index("resourceGroups") + 1]
-    workspace_name = uri_segments[uri_segments.index("workspaces") + 1]
+        uri = os.environ["MLFLOW_TRACKING_URI"]
+        uri_segments = uri.split("/")
+        subscription_id = uri_segments[uri_segments.index("subscriptions") + 1]
+        resource_group_name = uri_segments[uri_segments.index("resourceGroups") + 1]
+        workspace_name = uri_segments[uri_segments.index("workspaces") + 1]
         return MLClient(
             credential=credential,
-            subscription_id=ws._subscription_id,
-            resource_group_name=ws._resource_group,
-            workspace_name=ws._workspace_name,
+            subscription_id=subscription_id,
+            resource_group_name=resource_group_name,
+            workspace_name=workspace_name,
         )
     return MLClient(credential=credential, registry_name=registry_name)
 
@@ -159,12 +159,12 @@ def main(args):
             properties[key] = model_info["metadata"]["download_details"][key]
 
     # get the pipeline job id
-    AZUREML_ROOT_RUN_ID = os.environ.get("AZUREML_ROOT_RUN_ID")
+    pipeline_job_name = os.environ.get("AZUREML_ROOT_RUN_ID")
     # check if the `mlflow_model_folder` output is available
-    print ("pipeline job outputs: ", ml_client.jobs.get(pipeline_job.name).outputs)
+    print ("pipeline job outputs: ", ml_client.jobs.get(pipeline_job_name).outputs)
 
     #fetch the model from pipeline job output - not working, hence fetching from fine tune child job
-    model_path_from_job = ("azureml://jobs/{0}/outputs/{1}".format(pipeline_job.name, "downloaded_model_mlflow"))
+    model_path_from_job = ("azureml://jobs/{0}/outputs/{1}".format(pipeline_job_name, "downloaded_model_mlflow"))
 
 
     model = Model(
