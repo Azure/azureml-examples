@@ -1,13 +1,13 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 endpoint_name: text-summarization-batch
-name: text-summarization-optimum
-description: A text summarization deployment implemented with HuggingFace and BART architecture with GPU optimization using Optimum.
+name: text-summarization-hfbart
+description: A text summarization deployment implemented with HuggingFace and BART architecture
 model: azureml:bart-text-summarization@latest
-compute: azureml:gpu-cluster
+compute: azureml:gpu-cluster-k80
 environment:
-  name: torch200-transformers-gpu
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.8-cudnn8-ubuntu22.04:latest
-  conda_file: environment/torch200-conda.yml
+  name: torch113-transformers-gpu
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.1-cudnn7-ubuntu18.04:latest
+  conda_file: environment/torch113-conda.yml
 code_configuration:
   code: code
   scoring_script: batch_driver.py

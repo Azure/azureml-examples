@@ -10,22 +10,38 @@ ENDPOINT_NAME="text-summarization-$ENDPOINT_SUFIX"
 
 echo "Download model from HuggingFace"
 # <download_model>
-conda env create -f environment/conda.yml
-conda activate huggingface-env
-python download_model.py
-conda deactivate
-conda env remove -n huggingface-env  
+if [ ! -d model ]
+then
+  conda env create -f environment/torch113-conda.yml
+  conda activate huggingface-env
+  
+  # fix CI on GHA agents
+  pip uninstall -y nvidia-cublas-cu11
+  pip install nvidia-cublas-cu12
+  
+  mkdir -p model
+  python download_model.py
+  conda deactivate
+  conda env remove -n huggingface-env  
+else
+  echo "Skipped"
+fi
 # </download_model>
 
 echo "Register the model"
+if [[ $(az ml model show --name bart-text-summarization --label latest) ]];
+then
+  echo "Skipped"
+else
 # <register_model>
-MODEL_NAME='bart-text-summarization'
-az ml model create --name $MODEL_NAME --path "model"
-# <register_model>
+  MODEL_NAME='bart-text-summarization'
+  az ml model create --name $MODEL_NAME --path "model"
+# <register_model>  
+fi
 
 echo "Creating compute with GPU"
 # <create_compute>
-az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC6 --min-instances 0 --max-instances 2
+az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NV6 --min-instances 0 --max-instances 2
 # </create_compute>
 
 echo "Creating batch endpoint $ENDPOINT_NAME"
@@ -83,3 +99,6 @@ fi
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
+
+echo "Clean temp files"
+find ./model -exec rm -rf {} +

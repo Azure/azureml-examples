@@ -8,8 +8,9 @@ code_configuration:
   code: code
   scoring_script: batch_driver.py
 environment:
-  conda_file: environment/conda.yml
+  name: batch-torch-py38
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  conda_file: environment/conda.yml
 compute: azureml:batch-cluster
 resources:
   instance_count: 1
