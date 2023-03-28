@@ -1,0 +1,32 @@
+# Training job submission via AzureML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: python pretrain_glue.py --tensorboard_log_dir "/outputs/runs/" --num_train_epochs 100 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch"  --logging_strategy "epoch" --per_device_train_batch_size 64 --gradient_accumulation_steps 1 --per_device_eval_batch_size 64 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "bert-large-uncased"
+
+experiment_name: bert-pretrain-GLUE
+environment: azureml:ACPT_Nebula@latest
+code: src
+outputs:
+  output:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/workspaceblobstore/paths/outputs
+compute: <Enter the name of your compute here>
+distribution:
+  type: pytorch
+  process_count_per_instance: 8
+resources:
+  instance_count: 2
+services:
+  my_jupyterlab:
+    job_service_type: jupyter_lab
+    nodes: all
+  my_tensorboard:
+    job_service_type: tensor_board
+    properties:
+      logDir: "outputs/runs/"
+    nodes: all
+  my_vscode:
+    job_service_type: vs_code
+    nodes: all
