@@ -5,7 +5,7 @@
 # </az_ml_sdk_install>
 
 # <mldesigner_install>
-pip install https://hodstorage.blob.core.windows.net/mldesigner/b12/1/mldesigner-0.0.1-py3-none-any.whl
+pip install https://hodstorage.blob.core.windows.net/mldesigner/b12/2/mldesigner-0.0.1-py3-none-any.whl
 # </mldesigner_install>
 
 # <mltable_install>
