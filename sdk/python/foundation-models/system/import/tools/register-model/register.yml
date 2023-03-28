@@ -1,0 +1,52 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: register_model
+version: 0.0.4
+display_name: Register model
+is_deterministic: True
+type: command
+description: Register a model to a workspace or a registry. The component works on compute with [MSI](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-manage-compute-instance?tabs=python) attached.
+tags:
+  Preview: ''
+inputs:
+  model_path:
+    type: uri_folder
+    optional: False
+    description: Path to the model directory
+  download_details:
+    type: uri_file
+    optional: True
+    description: A JSON file which contains information related to model download.
+  model_metadata:
+    type: uri_file
+    optional: True
+    description: YAML file that contains model metadata confirming to Model V2 [contract](https://azuremlschemas.azureedge.net/latest/model.schema.json)
+  model_name:
+    type: string
+    optional: True
+    description: Model name to use in the registration. If name already exists, the version will be auto incremented
+  model_type:
+    type: string
+    optional: True
+    default: mlflow_model
+    description: Model type
+    enum:
+    - custom_model
+    - mlflow_model
+  model_description:
+    type: string
+    optional: True
+    description: Description of the model that will be shown in AzureML registry or workspace
+  registry_name:
+    type: string
+    optional: True
+    description: Name of the AzureML asset registry where the model will be registered. Model will be registered in a workspace if this is unspecified
+outputs:
+  registration_details:
+    type: uri_file
+    description: JSON file into which model registration details will be written
+code: ./
+environment: azureml://registries/azureml-preview-test1/environments/python-sdk-v2/versions/1
+resources:
+  instance_count: 1
+command: python register.py --model_path ${{inputs.model_path}} $[[--model_type ${{inputs.model_type}}]] $[[--model_name ${{inputs.model_name}}]] $[[--registry_name ${{inputs.registry_name}}]] $[[--download_details ${{inputs.download_details}}]] $[[--model_description "${{inputs.model_description}}"]] $[[--model_metadata ${{inputs.model_metadata}}]] --registration_details ${{outputs.registration_details}}
+...
