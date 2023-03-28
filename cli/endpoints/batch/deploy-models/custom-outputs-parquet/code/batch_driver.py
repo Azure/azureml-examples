@@ -17,8 +17,9 @@ def init():
     model_path = os.environ["AZUREML_MODEL_DIR"]
     model_file = glob.glob(f"{model_path}/*/*.pkl")[-1]
 
-    with open(model_file, 'rb') as file:
+    with open(model_file, "rb") as file:
         model = pickle.load(file)
+
 
 def run(mini_batch: List[str]):
     for file_path in mini_batch:
