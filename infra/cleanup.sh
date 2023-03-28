@@ -72,7 +72,6 @@ amlcompute_to_delete=(
   location-example
   low-pri-example
   ssh-example
-  batch-cluster
   gpu-cluster-nc6
 )
 for compute_name in "${amlcompute_to_delete[@]}"; do
