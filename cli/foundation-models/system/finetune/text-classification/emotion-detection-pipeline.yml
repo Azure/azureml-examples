@@ -32,8 +32,8 @@ inputs:
 
   # training settings
   number_of_gpu_to_use_finetuning: 2
-  num_train_epochs: 3,
-  learning_rate: "2e-5"
+  num_train_epochs: 3
+  learning_rate: 2e-5
 
 outputs:
   # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
@@ -47,7 +47,8 @@ settings:
 jobs:
   emotion_detection_finetune_job:
     type: pipeline
-    component: azureml://registries/azureml-preview/components/text_classification_pipeline/versions/0.0.2
+#    component: azureml://registries/azureml-preview/components/text_classification_pipeline/versions/0.0.2
+    component: azureml://registries/azureml-preview/components/text_classification_pipeline/labels/latest
     inputs:
       mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
 
