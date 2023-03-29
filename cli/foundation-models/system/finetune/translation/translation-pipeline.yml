@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: text-classification-emotion-detection
+experiment_name: translation-wmt16-en-ro
 
 inputs:
   compute_model_selector: gpu-cluster-big
@@ -11,24 +11,25 @@ inputs:
 
   # specify the foundation model available in the azureml system registry
   mlflow_model_path: 
-    path: azureml://registries/azureml-preview/models/bert-based-uncased/versions/3
-    # huggingface_id: 'bert-base-uncased' # if you want to use a huggingface model, uncomment this line and comment the above line
+    path: azureml://registries/azureml-preview/models/t5-small/versions/4
+    # huggingface_id: 't5-small' # if you want to use a huggingface model, uncomment this line and comment the above line
 
   # map the dataset files to parameters
   train_file_path: 
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_train.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_train.jsonl"
   validation_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_validation.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_validation.jsonl"
   test_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_test.jsonl"
   
   # The following parameters map to the dataset fields
-  sentence1_key: "text"
-  label_key: "label_string" 
-  input_column_names: "text"
+  # source_lang parameter maps to the "en" field in the wmt16 dataset
+  source_lang: "en"
+  # target_lang parameter maps to the "ro" field in the wmt16 dataset
+  target_lang: "ro"
 
   # training settings
   number_of_gpu_to_use_finetuning: 2
@@ -45,10 +46,10 @@ settings:
   force_rerun: true
 
 jobs:
-  emotion_detection_finetune_job:
+  translation_en_ro_finetune_job:
     type: pipeline
-    # component: azureml://registries/azureml-preview/components/text_classification_pipeline/versions/0.0.3
-    component: azureml://registries/azureml-preview/components/text_classification_pipeline/labels/latest
+    # component: azureml://registries/azureml-preview/components/translation_pipeline/versions/0.0.3
+    component: azureml://registries/azureml-preview/components/translation_pipeline/labels/latest
     inputs:
       mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
 
@@ -61,9 +62,8 @@ jobs:
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
 
-      sentence1_key: ${{parent.inputs.sentence1_key}}
-      label_key: ${{parent.inputs.label_key}}
-      input_column_names: ${{parent.inputs.input_column_names}}
+      source_lang: ${{parent.inputs.source_lang}}
+      target_lang: ${{parent.inputs.target_lang}}
 
       number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
       num_train_epochs: ${{parent.inputs.num_train_epochs}}
