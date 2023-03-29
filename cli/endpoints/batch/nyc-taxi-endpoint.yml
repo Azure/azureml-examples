@@ -1,4 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: nyc-taxi-batch
-description: An endpoint for serving a model for the NYC Taxi dataset.
-auth_mode: aad_token
