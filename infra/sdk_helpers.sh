@@ -266,9 +266,14 @@ function install_packages() {
     echo_info ">>> Updating packages index"
     echo_info "------------------------------------------------"
 
-    sudo apt-get update > /dev/null 2>&1
-    sudo apt-get upgrade -y > /dev/null 2>&1
-    sudo apt-get dist-upgrade -y > /dev/null 2>&1
+    echo_info ">>> Executing: apt-get update"
+    # https://github.com/orgs/community/discussions/47863
+    sudo apt-mark hold grub-efi-amd64-signed
+    sudo apt-get update --fix-missing
+    echo_info ">>> Executing: apt-get upgrade"
+    sudo apt-get upgrade -y
+    echo_info ">>> Executing: apt-get dist-upgrade"
+    sudo apt-get dist-upgrade -y
 
     echo_info ">>> Installing packages"
 
@@ -808,6 +813,7 @@ function replace_template_values() {
         -e "s/<REGISTRY_NAME>/$(echo "$REGISTRY_NAME")/g" \
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
+        -e "s/<TIME_STAMP>/$(echo "$timestamp")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
         -e "s/InteractiveBrowserCredential/AzureCliCredential/g" \
         -e "s/@pipeline(/&force_rerun=True,/g" \

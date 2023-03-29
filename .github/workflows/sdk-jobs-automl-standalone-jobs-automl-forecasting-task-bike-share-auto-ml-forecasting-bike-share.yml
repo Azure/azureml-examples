@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-task-bike-share-auto-ml
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "57 6/12 * * *"
   pull_request:
     branches:
       - main
@@ -70,6 +70,25 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "auto-ml-forecasting-bike-share.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster auto-ml-forecasting-bike-share.ipynb auto-ml-forecasting-bike-share.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name auto-ml-forecasting-bike-share.output.ipynb \
+                --folder . \
+                --check warning \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share
+    - name: check v2 experiment result
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
+                --file_name auto-ml-forecasting-bike-share.output.ipynb \
+                --folder . \
+                --experiment_name dpv2-bike-test \
+                --minimum_median_score 0.01 \
+                --maximum_median_score 0.3 \
+                --metric_name normalized_root_mean_squared_error \
+                --absolute_minimum_score 0.0 \
+                --absolute_maximum_score 1.0 \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

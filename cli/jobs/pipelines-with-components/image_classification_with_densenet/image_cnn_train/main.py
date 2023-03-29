@@ -56,7 +56,6 @@ except ImportError:
     )
 
 import image_classification.resnet as models
-import image_classification.logger as log
 
 from image_classification.smoothing import LabelSmoothing
 from image_classification.mixup import NLLMultiLabelSmooth, MixUpWrapper
@@ -64,7 +63,6 @@ from image_classification.dataloaders import *
 from image_classification.training import *
 from image_classification.utils import *
 
-import dllogger
 
 import torch.multiprocessing as mp
 import os
@@ -471,26 +469,6 @@ def main(gpu_index, args):
         args.data, args.batch_size, 1000, False, workers=args.workers, fp16=args.fp16
     )
 
-    if not torch.distributed.is_initialized() or torch.distributed.get_rank() == 0:
-        logger = log.Logger(
-            args.print_freq,
-            [
-                dllogger.StdOutBackend(
-                    dllogger.Verbosity.DEFAULT, step_format=log.format_step
-                ),
-                dllogger.JSONStreamBackend(
-                    dllogger.Verbosity.VERBOSE,
-                    os.path.join(args.workspace, args.raport_file),
-                ),
-            ],
-            last_epoch=start_epoch - 1,
-        )
-
-    else:
-        logger = log.Logger(args.print_freq, [], last_epoch=start_epoch - 1)
-
-    logger.log_parameter(args.__dict__, verbosity=dllogger.Verbosity.DEFAULT)
-
     optimizer = get_optimizer(
         list(model_and_loss.model.named_parameters()),
         args.fp16,
@@ -505,13 +483,11 @@ def main(gpu_index, args):
     )
 
     if args.lr_schedule == "step":
-        lr_policy = lr_step_policy(
-            args.lr, [30, 60, 80], 0.1, args.warmup, logger=logger
-        )
+        lr_policy = lr_step_policy(args.lr, [30, 60, 80], 0.1, args.warmup, logger=None)
     elif args.lr_schedule == "cosine":
-        lr_policy = lr_cosine_policy(args.lr, args.warmup, args.epochs, logger=logger)
+        lr_policy = lr_cosine_policy(args.lr, args.warmup, args.epochs, logger=None)
     elif args.lr_schedule == "linear":
-        lr_policy = lr_linear_policy(args.lr, args.warmup, args.epochs, logger=logger)
+        lr_policy = lr_linear_policy(args.lr, args.warmup, args.epochs, logger=None)
 
     if args.amp:
         model_and_loss, optimizer = amp.initialize(
@@ -534,7 +510,7 @@ def main(gpu_index, args):
         val_loader,
         args.epochs,
         args.fp16,
-        logger,
+        None,
         should_backup_checkpoint(args),
         args.save_checkpoint_epochs,
         use_amp=args.amp,
@@ -549,8 +525,7 @@ def main(gpu_index, args):
         total_train_step=args.total_train_step,
     )
     exp_duration = time.time() - exp_start_time
-    if not torch.distributed.is_initialized() or torch.distributed.get_rank() == 0:
-        logger.end()
+
     print("Experiment ended")
 
     sys.stdout.flush()

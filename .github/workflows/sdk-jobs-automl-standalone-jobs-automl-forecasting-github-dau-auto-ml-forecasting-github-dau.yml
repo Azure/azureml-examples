@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-github-dau-auto-ml-fore
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "20 11/12 * * *"
   pull_request:
     branches:
       - main
@@ -68,6 +68,13 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "auto-ml-forecasting-github-dau.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster auto-ml-forecasting-github-dau.ipynb auto-ml-forecasting-github-dau.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name auto-ml-forecasting-github-dau.output.ipynb \
+                --folder . \
+                --check warning \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

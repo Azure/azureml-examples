@@ -9,7 +9,7 @@ name: sdk-jobs-single-step-debug-and-monitor-debug-and-monitor
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "8 1/12 * * *"
   pull_request:
     branches:
       - main

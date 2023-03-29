@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-image-object-detection-task-fridge-
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "51 5/12 * * *"
   pull_request:
     branches:
       - main

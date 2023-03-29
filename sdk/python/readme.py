@@ -4,6 +4,7 @@ import os
 import json
 import glob
 import argparse
+import hashlib
 
 from configparser import ConfigParser
 
@@ -54,7 +55,6 @@ COMPUTE_NAMES = "COMPUTE_NAMES"
 
 
 def main(args):
-
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
 
@@ -105,9 +105,9 @@ def get_additional_requirements(req_name, req_path):
       run: pip install -r {req_path}"""
 
 
-def get_mlflow_import(notebook):
+def get_mlflow_import(notebook, validation_yml):
     with open(notebook, "r", encoding="utf-8") as f:
-        if "import mlflow" in f.read():
+        if validation_yml or "import mlflow" in f.read():
             return get_additional_requirements(
                 "mlflow", "sdk/python/mlflow-requirements.txt"
             )
@@ -129,6 +129,65 @@ def get_forecast_reqs(notebook_name, nb_config):
         return ""
 
 
+def get_validation_yml(notebook_folder, notebook_name):
+    validation_yml = ""
+    validation_json_file_name = os.path.join(
+        "..",
+        "..",
+        ".github",
+        "validate",
+        "sdk",
+        "python",
+        notebook_name.replace(".ipynb", "-validations.json"),
+    )
+
+    if os.path.exists(validation_json_file_name):
+        with open(validation_json_file_name, "r") as json_file:
+            validation_file = json.load(json_file)
+            for validation in validation_file["validations"]:
+                validation_yml += get_validation_check_yml(
+                    notebook_folder, notebook_name, validation
+                )
+
+    return validation_yml
+
+
+def get_validation_check_yml(notebook_folder, notebook_name, validation):
+    validation_name = validation["name"]
+    validation_file_name = validation_name.replace(" ", "_")
+    notebook_output_file = (
+        os.path.basename(notebook_name).replace(".", ".output.").replace(os.sep, "/")
+    )
+    notebook_folder = notebook_folder.replace(os.sep, "/")
+    full_folder_name = f"sdk/python/{notebook_folder}"
+    github_workspace = "${{ github.workspace }}"
+
+    check_yml = f"""
+    - name: {validation_name}
+      run: |
+         python {github_workspace}/v1/scripts/validation/{validation_file_name}.py \\
+                --file_name {notebook_output_file} \\
+                --folder . \\"""
+
+    for param_name, param_value in validation["params"].items():
+        if type(param_value) is list:
+            check_yml += f"""
+                --{param_name} \\"""
+
+            for param_item in param_value:
+                param_item_value = param_item.replace("\n", "\\n")
+                check_yml += f"""
+                  \"{param_item_value}\" \\"""
+        else:
+            check_yml += f"""
+                --{param_name} {param_value} \\"""
+
+    check_yml += f"""
+      working-directory: {full_folder_name} \\"""
+
+    return check_yml[:-2]
+
+
 def write_notebook_workflow(
     notebook, name, classification, folder, enable_scheduled_runs, nb_config
 ):
@@ -139,10 +198,18 @@ def write_notebook_workflow(
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
-    mlflow_import = get_mlflow_import(notebook)
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
+
+    # Schedule notebooks at different times to reduce maximum quota usage.
+    name_hash = int(hashlib.sha512(name.encode()).hexdigest(), 16)
+    schedule_minute = name_hash % 60
+    hours_between_runs = 12
+    schedule_hour = (name_hash // 60) % hours_between_runs
+
+    validation_yml = get_validation_yml(folder, notebook)
+    mlflow_import = get_mlflow_import(notebook, validation_yml)
 
     workflow_yaml = f"""{READONLY_HEADER}
 name: sdk-{classification}-{name}
@@ -153,7 +220,7 @@ on:\n"""
         workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
         workflow_yaml += f"""  schedule:
-    - cron: "0 */8 * * *"\n"""
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main\n"""
@@ -246,6 +313,8 @@ jobs:
         ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
         GIT_PAT: ${{ secrets.GIT_PAT }}
         PYTHON_FEED_SAS: ${{ secrets.PYTHON_FEED_SAS }}"""
+
+    workflow_yaml += validation_yml
 
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
@@ -369,7 +438,6 @@ def modify_notebooks(notebooks):
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -399,7 +467,6 @@ def change_working_dir(path):
 
 # run functions
 if __name__ == "__main__":
-
     # setup argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--check-readme", type=bool, default=False)

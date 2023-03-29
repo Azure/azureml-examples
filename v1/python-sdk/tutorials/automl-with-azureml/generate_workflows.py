@@ -36,7 +36,18 @@ def main():
 def get_validation_yml(notebook_folder, notebook_name):
     validation_yml = ""
     validation_json_file_name = os.path.join(
-        notebook_folder, notebook_name.replace(".ipynb", "-validations.json")
+        "..",
+        "..",
+        "..",
+        "..",
+        ".github",
+        "validate",
+        "v1",
+        "python-sdk",
+        "tutorials",
+        "automl-with-azureml",
+        notebook_folder,
+        notebook_name.replace(".ipynb", "-validations.json"),
     )
 
     if os.path.exists(validation_json_file_name):
@@ -82,6 +93,7 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
 def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     notebook_name = notebook.replace(".ipynb", "")
     creds = "${{secrets.AZ_CREDS}}"
+    runner = "${{vars.V1_UBUNTU_RUNNER}}"
 
     run_update_env = ""
     update_yml_file = f"v1/python-sdk/tutorials/automl-with-azureml/{notebook_folder}/{UPDATE_ENV_YML}"
@@ -109,7 +121,7 @@ on:
       - .github/workflows/python-sdk-tutorial-{notebook_name}.yml
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: {runner}
     defaults:
       run:
         shell: bash -l {{0}}
@@ -135,7 +147,7 @@ jobs:
           auto-activate-base: false{run_update_env}
     - name: install papermill and set up the IPython kernel
       run: |
-        pip install papermill==2.3.3
+        pip install papermill==2.4.0
         python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
         pip list
     - name: azure login

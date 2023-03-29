@@ -7,7 +7,7 @@ name: cli-jobs-basics-hello-pipeline-customize-output-file
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "30 11/12 * * *"
   pull_request:
     branches:
       - main

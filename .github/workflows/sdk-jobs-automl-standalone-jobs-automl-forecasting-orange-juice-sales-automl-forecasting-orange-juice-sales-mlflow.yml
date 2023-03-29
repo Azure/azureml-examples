@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-auto
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "38 11/12 * * *"
   pull_request:
     branches:
       - main
@@ -70,6 +70,25 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-forecasting-orange-juice-sales-mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-orange-juice-sales-mlflow.ipynb automl-forecasting-orange-juice-sales-mlflow.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-forecasting-orange-juice-sales-mlflow.output.ipynb \
+                --folder . \
+                --check warning stderr \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
+    - name: check v2 experiment result
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
+                --file_name automl-forecasting-orange-juice-sales-mlflow.output.ipynb \
+                --folder . \
+                --experiment_name dpv2-forecasting-experiment \
+                --minimum_median_score 0.01 \
+                --maximum_median_score 0.3 \
+                --metric_name normalized_root_mean_squared_error \
+                --absolute_minimum_score 0.0 \
+                --absolute_maximum_score 1.0 \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

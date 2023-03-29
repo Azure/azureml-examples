@@ -3,6 +3,7 @@ import os
 import json
 import glob
 import argparse
+import hashlib
 
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
@@ -42,6 +43,7 @@ GITHUB_CONCURRENCY_GROUP = (
     "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
 )
 # BRANCH = "sdk-preview"  # this should be deleted when this branch is merged to main
+hours_between_runs = 12
 
 
 # define functions
@@ -67,6 +69,7 @@ def main(args):
         glob.glob("jobs/automl-standalone-jobs/**/*cli-automl*.yml", recursive=True)
     )
     jobs += sorted(glob.glob("responsible-ai/**/cli-*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/parallel/**/*pipeline*.yml", recursive=True))
     jobs = [
         job.replace(".yml", "")
         for job in jobs
@@ -402,6 +405,7 @@ def write_job_workflow(job):
     posix_project_dir = project_dir.replace(os.sep, "/")
     is_pipeline_sample = "jobs/pipelines" in job
     creds = CREDENTIALS
+    schedule_hour, schedule_minute = get_schedule_time(filename)
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     workflow_yaml = f"""{READONLY_HEADER}
@@ -409,7 +413,7 @@ name: cli-{hyphenated}
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
   pull_request:
     branches:
       - main
@@ -455,9 +459,9 @@ jobs:
           pip install azure-identity
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
-    elif "deepspeed" in job:
-      workflow_yaml += f"""          bash -x generate-yml.sh\n"""
-      # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
+    elif "autotuning" in job:
+        workflow_yaml += f"""          bash -x generate-yml.sh\n"""
+        # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
       working-directory: cli/{posix_project_dir}\n"""
 
@@ -476,6 +480,7 @@ def write_job_using_registry_components_workflow(job):
     folder_name = project_dir.split(os.sep)[-1]
     is_pipeline_sample = "jobs/pipelines" in job
     creds = CREDENTIALS
+    schedule_hour, schedule_minute = get_schedule_time(filename)
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     workflow_yaml = f"""{READONLY_HEADER}
@@ -483,7 +488,7 @@ name: cli-{hyphenated}-registry
 on:
   workflow_dispatch:
   schedule:
-    - cron: "59 0/8 * * *"
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
   pull_request:
     branches:
       - main
@@ -543,12 +548,13 @@ jobs:
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
     creds = CREDENTIALS
+    schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
   pull_request:
     branches:
       - main
@@ -598,12 +604,13 @@ def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
     posix_asset = asset.replace(os.sep, "/")
     creds = CREDENTIALS
+    schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
   pull_request:
     branches:
       - main
@@ -654,12 +661,13 @@ jobs:
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
     creds = CREDENTIALS
+    schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-scripts-{hyphenated}
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
   pull_request:
     branches:
       - main
@@ -709,12 +717,13 @@ def write_schedule_workflow(schedule):
     filename, project_dir, hyphenated = parse_path(schedule)
     posix_schedule = schedule.replace(os.sep, "/")
     creds = CREDENTIALS
+    schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-schedules-{hyphenated}
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
   pull_request:
     branches:
       - main
@@ -764,6 +773,13 @@ jobs:
     # write workflow
     with open(f"../.github/workflows/cli-schedules-{hyphenated}.yml", "w") as f:
         f.write(workflow_yaml)
+
+
+def get_schedule_time(filename):
+    name_hash = int(hashlib.sha512(filename.encode()).hexdigest(), 16)
+    schedule_minute = name_hash % 60
+    schedule_hour = (name_hash // 60) % hours_between_runs
+    return schedule_hour, schedule_minute
 
 
 # run functions

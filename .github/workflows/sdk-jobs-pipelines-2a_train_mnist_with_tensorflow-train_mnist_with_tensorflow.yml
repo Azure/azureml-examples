@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-2a_train_mnist_with_tensorflow-train_mnist_with_tensorf
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "58 11/12 * * *"
   pull_request:
     branches:
       - main

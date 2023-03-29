@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-t
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "21 9/12 * * *"
   pull_request:
     branches:
       - main
@@ -68,6 +68,13 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-text-ner-task-distributed-with-sweeping.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-ner-task-distributed-with-sweeping.ipynb automl-nlp-text-ner-task-distributed-with-sweeping.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-nlp-text-ner-task-distributed-with-sweeping.output.ipynb \
+                --folder . \
+                --check warning stderr \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

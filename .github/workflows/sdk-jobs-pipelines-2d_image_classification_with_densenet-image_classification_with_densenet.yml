@@ -9,7 +9,7 @@ name: sdk-jobs-pipelines-2d_image_classification_with_densenet-image_classificat
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "6 4/12 * * *"
   pull_request:
     branches:
       - main

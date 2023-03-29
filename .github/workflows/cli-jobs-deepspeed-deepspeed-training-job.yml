@@ -7,7 +7,7 @@ name: cli-jobs-deepspeed-deepspeed-training-job
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "54 3/12 * * *"
   pull_request:
     branches:
       - main
@@ -46,6 +46,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          bash -x generate-yml.sh
           bash -x ../../../run-job.sh job.yml
       working-directory: cli/jobs/deepspeed/deepspeed-training

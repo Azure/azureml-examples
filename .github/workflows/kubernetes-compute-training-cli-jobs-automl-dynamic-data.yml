@@ -11,7 +11,7 @@ on:
       TIMEOUT:
         description: 'Timeout of a single job'
         required: false
-        default: '120m'
+        default: '300m'
       FILE_TICKET:
         description: 'Whether to file icm ticket: true or false'
         required: false
@@ -24,8 +24,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-bad-cases.txt
-      TIMEOUT: '180m'
+      JOB_LIST_FILE: kubernetes-compute-training-cli-jobs-automl-dynamic-data.txt
+      TIMEOUT: '300m'
       MIN_SUCCESS_NUM: 1
       WORKFLOW: https://github.com/Azure/azureml-examples/actions/workflows/kubernetes-compute-training-cli-jobs-automl-dynamic-data.yml
 
@@ -57,7 +57,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
       timeout-minutes: 30
 
     - name: collect jobs

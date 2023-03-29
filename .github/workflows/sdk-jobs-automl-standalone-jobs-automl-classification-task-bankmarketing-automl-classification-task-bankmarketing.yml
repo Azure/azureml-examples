@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-classification-task-bankmarketing-a
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "6 4/12 * * *"
   pull_request:
     branches:
       - main
@@ -68,6 +68,22 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-classification-task-bankmarketing.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-classification-task-bankmarketing.ipynb automl-classification-task-bankmarketing.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-classification-task-bankmarketing.output.ipynb \
+                --folder . \
+                --check warning \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
+    - name: check v2 experiment result
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
+                --file_name automl-classification-task-bankmarketing.output.ipynb \
+                --folder . \
+                --experiment_name dpv2-classifier-experiment \
+                --minimum_median_score 0.7 \
+                --metric_name AUC_weighted \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

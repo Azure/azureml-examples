@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-classification-multilabel-
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "43 10/12 * * *"
   pull_request:
     branches:
       - main
@@ -68,6 +68,13 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-multilabel-paper-cat.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-multilabel-paper-cat.ipynb automl-nlp-multilabel-paper-cat.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-nlp-multilabel-paper-cat.output.ipynb \
+                --folder . \
+                --check warning stderr \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multilabel-task-paper-categorization
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

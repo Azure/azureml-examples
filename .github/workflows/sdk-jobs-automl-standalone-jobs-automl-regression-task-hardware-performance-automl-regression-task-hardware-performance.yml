@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performanc
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "7 9/12 * * *"
   pull_request:
     branches:
       - main
@@ -68,6 +68,23 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-regression-task-hardware-performance.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-regression-task-hardware-performance.ipynb automl-regression-task-hardware-performance.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-regression-task-hardware-performance.output.ipynb \
+                --folder . \
+                --check warning stderr \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance
+    - name: check v2 experiment result
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
+                --file_name automl-regression-task-hardware-performance.output.ipynb \
+                --folder . \
+                --experiment_name dpv2-regression-experiment \
+                --minimum_median_score 0.45 \
+                --metric_name r2_score \
+                --absolute_minimum_score -1.0 \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
