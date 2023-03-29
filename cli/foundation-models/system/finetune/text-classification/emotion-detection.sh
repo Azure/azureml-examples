@@ -143,7 +143,7 @@ echo "Invoking endpoint $endpoint_name with following input:\n\n"
 cat $scoring_file
 echo "\n\n"
 
-az ml online-endpoint invoke --name $endpoint_name --request-file $scoring_file || {
+az ml online-endpoint invoke --name $endpoint_name --request-file $scoring_file $workspace_info || {
     echo "endpoint invoke failed"; exit 1;
 }
 
