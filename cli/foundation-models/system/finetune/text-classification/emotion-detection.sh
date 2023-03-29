@@ -4,9 +4,9 @@ set -x
 
 # script inputs
 registry_name="azureml-preview"
-subscription_id="21d8f407-c4c4-452e-87a4-e609bfb86248" #"<SUBSCRIPTION_ID>"
-resource_group_name="rg-contoso-819prod" #"<RESOURCE_GROUP>",
-workspace_name="mlw-contoso-819prod" #"WORKSPACE_NAME>",
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 compute_cluster="gpu-cluster-big"
 # if above compute cluster does not exist, create it with the following vm size
@@ -47,6 +47,14 @@ num_train_epochs=3
 learning_rate=2e-5
 
 # 1. Setup pre-requisites
+
+if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
+   ["$resource_group_name" = "<RESOURCE_GROUP>" ] || \
+   [ "$workspace_name" = "<WORKSPACE_NAME>" ]; then 
+    echo "Please update the script with the subscription_id, resource_group_name and workspace_name"
+    exit 1
+fi
+
 az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
