@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: text-classification-emotion-detection
+experiment_name: token-classification-ner
 
 inputs:
   compute_model_selector: gpu-cluster-big
@@ -17,18 +17,17 @@ inputs:
   # map the dataset files to parameters
   train_file_path: 
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_train.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_train.jsonl"
   validation_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_validation.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_validation.jsonl"
   test_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_test.jsonl"
   
   # The following parameters map to the dataset fields
-  sentence1_key: "text"
-  label_key: "label_string" 
-  input_column_names: "text"
+  token_key: "tokens"
+  tag_key: "ner_tags_str"
 
   # training settings
   number_of_gpu_to_use_finetuning: 2
@@ -45,10 +44,10 @@ settings:
   force_rerun: true
 
 jobs:
-  emotion_detection_finetune_job:
+  ner_finetune_job:
     type: pipeline
-    # component: azureml://registries/azureml-preview/components/text_classification_pipeline/versions/0.0.3
-    component: azureml://registries/azureml-preview/components/text_classification_pipeline/labels/latest
+    # component: azureml://registries/azureml-preview/components/token_classification_pipeline/versions/0.0.3
+    component: azureml://registries/azureml-preview/components/token_classification_pipeline/labels/latest
     inputs:
       mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
 
@@ -61,9 +60,8 @@ jobs:
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
 
-      sentence1_key: ${{parent.inputs.sentence1_key}}
-      label_key: ${{parent.inputs.label_key}}
-      input_column_names: ${{parent.inputs.input_column_names}}
+      token_key: ${{parent.inputs.token_key}}
+      tag_key: ${{parent.inputs.tag_key}}
 
       number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
       num_train_epochs: ${{parent.inputs.num_train_epochs}}
