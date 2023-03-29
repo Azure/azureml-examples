@@ -11,7 +11,7 @@ from mldesigner import command_component, Input, Output
     description="Convert data to CSV file, and split to training and test data",
     environment=dict(
         conda_file=Path(__file__).parent / "conda.yaml",
-        image="mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
+        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
     ),
 )
 def prepare_data_component(
@@ -33,23 +33,24 @@ def prepare_data_component(
     )
 
 
-def convert(imgf, labelf, outf, n):
-    f = open(imgf, "rb")
-    l = open(labelf, "rb")
-    o = open(outf, "w")
+def convert(img_file_path, label_file_path, out_file_path, n):
+    img_file = open(img_file_path, "rb")
+    label_file = open(label_file_path, "rb")
+    output_file = open(out_file_path, "w")
 
-    f.read(16)
-    l.read(8)
+    img_file.read(16)
+    label_file.read(8)
+
     images = []
-
     for i in range(n):
-        image = [ord(l.read(1))]
+        image = [ord(label_file.read(1))]
         for j in range(28 * 28):
-            image.append(ord(f.read(1)))
+            image.append(ord(img_file.read(1)))
         images.append(image)
 
     for image in images:
-        o.write(",".join(str(pix) for pix in image) + "\n")
-    f.close()
-    o.close()
-    l.close()
+        output_file.write(",".join(str(pix) for pix in image) + "\n")
+
+    img_file.close()
+    label_file.close()
+    output_file.close()
