@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: heart-classifier-batch
+description: A heart condition classifier for batch inference
+auth_mode: aad_token
