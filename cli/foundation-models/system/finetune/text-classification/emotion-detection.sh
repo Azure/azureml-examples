@@ -139,6 +139,10 @@ az ml online-deployment create --file deploy.yml --all-traffic --set \
 }
 
 # 7. Try a sample scoring request
+echo "Invoking endpoint $endpoint_name with following input:\n\n"
+cat $scoring_file
+echo "\n\n"
+
 az ml online-endpoint invoke --name $endpoint_name --request-file $scoring_file || {
     echo "endpoint invoke failed"; exit 1;
 }
