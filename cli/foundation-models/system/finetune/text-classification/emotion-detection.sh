@@ -20,10 +20,11 @@ model_name="bert-base-uncased"
 # using the latest version of the model - not working yet
 model_version=3
 
+version=$(date +%s)
 finetuned_model_name=$model_name"-emotion-detection"
 endpoint_name="emotion-$version"
 deployment_sku="Standard_DS2_v2"
-version=$(date +%s)
+
 
 # training data
 train_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_train.jsonl"
@@ -120,19 +121,19 @@ az ml job stream --name $parent_job_name $workspace_info || {
 
 # 5. Create model in workspace from train job output
 az ml model create --name $finetuned_model_name --version $version --type mlflow_model \
- --path azureml://jobs/$parent_job_name/outputs/trained_model $workspace_info \ || {
+ --path azureml://jobs/$parent_job_name/outputs/trained_model $workspace_info  || {
     echo "model create in workspace failed"; exit 1;
 }
 
 # 6. Deploy the model to an endpoint
-# create online endpoint 
+ create online endpoint 
 az ml online-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
 # deploy model from registry to endpoint in workspace
 az ml online-deployment create --file deploy.yml --all-traffic --set \
-  endpoint_name=$endpoint_name model=$finetuned_model_name:$version \
+  endpoint_name=$endpoint_name model=azureml:$finetuned_model_name:$version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
 }
