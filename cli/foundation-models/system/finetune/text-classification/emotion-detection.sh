@@ -66,7 +66,7 @@ fi
 # need to confirm model show command works for registries outside the tenant (aka system registry)
 if ! az ml model show --name $model_name --version $model_version --registry-name $registry_name 
 then
-    echo "Model $model_name:$model_version does not exist"
+    echo "Model $model_name:$model_version does not exist in registry $registry_name"
     exit 1
 fi
 
@@ -126,7 +126,7 @@ az ml model create --name $finetuned_model_name --version $version --type mlflow
 }
 
 # 6. Deploy the model to an endpoint
- create online endpoint 
+# create online endpoint 
 az ml online-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
@@ -139,9 +139,17 @@ az ml online-deployment create --file deploy.yml --all-traffic --set \
 }
 
 # 7. Try a sample scoring request
-echo "Invoking endpoint $endpoint_name with following input:\n\n"
-cat $scoring_file
-echo "\n\n"
+
+
+# Check if scoring data file exists
+if [ -f $scoring_file ]; then
+    echo "Invoking endpoint $endpoint_name with following input:\n\n"
+    cat $scoring_file
+    echo "\n\n"
+else
+    echo "Scoring file $scoring_file does not exist"
+    exit 1
+fi
 
 az ml online-endpoint invoke --name $endpoint_name --request-file $scoring_file $workspace_info || {
     echo "endpoint invoke failed"; exit 1;
