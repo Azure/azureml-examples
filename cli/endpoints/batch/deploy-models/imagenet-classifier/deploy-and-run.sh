@@ -32,7 +32,7 @@ az ml batch-endpoint create --file endpoint.yml  --name $ENDPOINT_NAME
 
 echo "Creating batch deployment for endpoint $ENDPOINT_NAME"
 # <create_batch_deployment_set_default>
-az ml batch-deployment create --file deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
+az ml batch-deployment create --file deployment-by-file.yml --endpoint-name $ENDPOINT_NAME --set-default
 # </create_batch_deployment_set_default>
 
 echo "Showing details of the batch endpoint"
@@ -46,9 +46,18 @@ DEPLOYMENT_NAME="imagenet-classifier-resnetv2"
 az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME
 # </check_batch_deployment_detail>
 
+# <download_sample_data>
+wget https://azuremlexampledata.blob.core.windows.net/data/imagenet-1000.zip
+unzip imagenet-1000.zip -d data
+# </download_sample_data>
+
+# <create_sample_data_asset>
+az ml data create -f imagenet-sample-unlabeled.yml
+# </create_sample_data_asset>
+
 echo "Invoking batch endpoint with local data"
 # <start_batch_scoring_job>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input data --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input azureml:imagenet-sample-unlabeled@latest --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
@@ -77,9 +86,45 @@ else
 fi
 # </check_job_status>
 
+# <download_scores>
+az ml job download --name $JOB_NAME --output-name score --download-path .
+# </download_scores>
+
+echo "Creating batch deployment for endpoint $ENDPOINT_NAME with high throughput"
+# <create_batch_deployment_ht>
+az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --default
+# </create_batch_deployment_ht>
+
+echo "Invoking batch endpoint with local data"
+# <start_batch_scoring_job_ht>
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input azureml:imagenet-sample-unlabeled@latest --query name -o tsv)
+# </start_batch_scoring_job_ht>
+
+echo "Stream job logs to console"
+# <stream_job_logs_to_console_ht>
+az ml job stream -n $JOB_NAME
+# </stream_job_logs_to_console_ht>
+
+# <check_job_status_ht>
+STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
+echo $STATUS
+if [[ $STATUS == "Completed" ]]
+then
+  echo "Job completed"
+elif [[ $STATUS ==  "Failed" ]]
+then
+  echo "Job failed"
+  exit 1
+else 
+  echo "Job status not failed or completed"
+  exit 2
+fi
+# </check_job_status_ht>
+
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
 
 echo "Clean temp files"
 find ./model -exec rm -rf {} +
+find ./data -exec rm -rf {} +

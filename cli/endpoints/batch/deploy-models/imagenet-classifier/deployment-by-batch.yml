@@ -13,6 +13,9 @@ code_configuration:
   scoring_script: batch_driver.py
 resources:
   instance_count: 2
+tags:
+  device_acceleration: CUDA
+  device_batching: 16
 max_concurrency_per_instance: 1
 mini_batch_size: 5
 output_action: append_row
