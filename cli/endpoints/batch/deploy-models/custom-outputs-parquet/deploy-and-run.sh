@@ -9,8 +9,8 @@ ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head 
 ENDPOINT_NAME="heart-classifier-$ENDPOINT_SUFIX"
 
 # <register_model>
-MODEL_NAME='heart-classifier'
-az ml model create --name $MODEL_NAME --type "mlflow_model" --path "model"
+MODEL_NAME='heart-classifier-sklpipe'
+az ml model create --name $MODEL_NAME --type "custom_model" --path "model"
 # <register_model>
 
 echo "Creating compute"
@@ -25,7 +25,7 @@ az ml batch-endpoint create -n $ENDPOINT_NAME -f endpoint.yml
 
 echo "Creating batch deployment $DEPLOYMENT_NAME for endpoint $ENDPOINT_NAME"
 # <create_batch_deployment_set_default>
-az ml batch-deployment create --file deployment-parquet/deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
+az ml batch-deployment create --file deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
 # </create_batch_deployment_set_default>
 
 echo "Update the batch deployment as default for the endpoint"

@@ -2,9 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 endpoint_name: heart-classifier-batch
 name: classifier-xgboost-custom
 description: A heart condition classifier based on XGBoost and Scikit-Learn pipelines that append predictions on parquet files.
-model:
-  path: model
-  name: heart-classifier-sklpipe
+model: azureml:heart-classifier-sklpipe@latest
 environment:
   name: batch-mlflow-xgboost
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
