@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: text-summarization-batch
+description: A batch endpoint for summarizing text using a HuggingFace transformer model.
+auth_mode: aad_token

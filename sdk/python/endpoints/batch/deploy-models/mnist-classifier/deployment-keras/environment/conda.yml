@@ -1,0 +1,12 @@
+name: tensorflow-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8.5
+  - pip
+  - pip:
+    - pandas
+    - tensorflow
+    - pillow
+    - azureml-core
+    - azureml-dataset-runtime[fuse]
