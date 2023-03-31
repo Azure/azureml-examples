@@ -1,7 +1,6 @@
 ---
 page_type: sample
 languages:
-- azuresdk
 - python
 products:
 - azure-machine-learning
