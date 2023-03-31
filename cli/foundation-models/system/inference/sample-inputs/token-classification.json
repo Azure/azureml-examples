@@ -1,1 +1,3 @@
-{"inputs":{"input_string":["My name is Wolfgang and I live in Berlin.", "The head Microsoft office is in Redmond."]}}
+{
+    "inputs": ["My name is Wolfgang and I live in Berlin.", "The head Microsoft office is in Redmond."]
+}
