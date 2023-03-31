@@ -32,6 +32,8 @@ train_data="../../../../../sdk/python/foundation-models/system/finetune/question
 validation_data="../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_validation.jsonl"
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_test.jsonl"
+# evaluation config
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/question-answering/question-answering-config.jsonl"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/sample_score.json"
 
@@ -117,6 +119,7 @@ parent_job_name=$( az ml job create --file ./extractive-qa-pipeline.yml $workspa
   inputs.train_file_path.path=$train_data \
   inputs.validation_file_path.path=$validation_data \
   inputs.test_file_path.path=$test_data \
+  inputs.evaluation_config.path=$evaluation_config \
   inputs.question_key=$question_key \
   inputs.context_key=$context_key \
   inputs.answers_key=$answers_key \

@@ -24,6 +24,10 @@ inputs:
   test_file_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_test.jsonl"
+  evaluation_config_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.jsonl"
+  
   
   # The following parameters map to the dataset fields
   # document_key parameter maps to the "article" field in the news summary dataset
@@ -61,6 +65,7 @@ jobs:
       train_file_path: ${{parent.inputs.train_file_path}}
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
+      evaluation_config: ${{parent.inputs.evaluation_config_path}}
 
       document_key: ${{parent.inputs.document_key}}
       summary_key: ${{parent.inputs.summary_key}}

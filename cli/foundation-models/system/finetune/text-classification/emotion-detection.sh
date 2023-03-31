@@ -32,6 +32,8 @@ train_data="../../../../../sdk/python/foundation-models/system/finetune/text-cla
 validation_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_validation.jsonl"
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+# evaluation config
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.jsonl"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/sample_score.json"
 
@@ -113,6 +115,7 @@ parent_job_name=$( az ml job create --file ./emotion-detection-pipeline.yml $wor
   inputs.train_file_path.path=$train_data \
   inputs.validation_file_path.path=$validation_data \
   inputs.test_file_path.path=$test_data \
+  inputs.evaluation_config.path=$evaluation_config \
   inputs.sentence1_key=$sentence1_key \
   inputs.label_key=$label_key \
   inputs.input_column_names=$input_column_names \

@@ -24,6 +24,10 @@ inputs:
   test_file_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+  evaluation_config_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.jsonl"
+  
   
   # The following parameters map to the dataset fields
   sentence1_key: "text"
@@ -60,6 +64,7 @@ jobs:
       train_file_path: ${{parent.inputs.train_file_path}}
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
+      evaluation_config: ${{parent.inputs.evaluation_config_path}}
 
       sentence1_key: ${{parent.inputs.sentence1_key}}
       label_key: ${{parent.inputs.label_key}}

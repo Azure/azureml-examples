@@ -24,6 +24,9 @@ inputs:
   test_file_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_test.jsonl"
+  evaluation_config_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/question-answering/question-answering-config.jsonl"
   
   # The following parameters map to the dataset fields
   # the question whose answer needs to be extracted from the provided context 
@@ -72,6 +75,7 @@ jobs:
       train_file_path: ${{parent.inputs.train_file_path}}
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
+      evaluation_config: ${{parent.inputs.evaluation_config_path}}
 
       question_key: ${{parent.inputs.question_key}}
       context_key: ${{parent.inputs.context_key}}
