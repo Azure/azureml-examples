@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-distributed-sweeping-automl-nlp-text-ner-task-distributed-with-sweeping
+name: sdk-jobs-automl-standalone-jobs-automl-forecasting-recipes-univariate-automl-forecasting-recipe-univariate-run
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "21 9/12 * * *"
+    - cron: "40 10/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-nlp-text-named-entity-recognition-task-distributed-sweeping-automl-nlp-text-ner-task-distributed-with-sweeping.yml
+      - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate/**
+      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-recipes-univariate-automl-forecasting-recipe-univariate-run.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -36,6 +36,8 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
+    - name: pip install forecasting reqs
+      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -60,18 +62,21 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping/automl-nlp-text-ner-task-distributed-with-sweeping.ipynb
+    - name: run jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate/automl-forecasting-recipe-univariate-run.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-text-ner-task-distributed-with-sweeping.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-forecasting-recipe-univariate-run.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-ner-task-distributed-with-sweeping.ipynb automl-nlp-text-ner-task-distributed-with-sweeping.output.ipynb
-      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping
+          papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-recipe-univariate-run.ipynb automl-forecasting-recipe-univariate-run.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-nlp-text-ner-task-distributed-with-sweeping
-        path: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping
+        name: automl-forecasting-recipe-univariate-run
+        path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate
+
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "${{ github.workspace }}/infra/remove_computes.sh" recipe-cluster
