@@ -1,1 +1,3 @@
-{"inputs":{"input_string":["My name is Thomas and my main "]}}
+{
+    "inputs": ["My name is Thomas and my main "]
+}
