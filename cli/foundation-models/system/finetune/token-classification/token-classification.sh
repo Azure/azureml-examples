@@ -32,6 +32,8 @@ train_data="../../../../../sdk/python/foundation-models/system/finetune/token-cl
 validation_data="../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_validation.jsonl"
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_test.jsonl"
+# evaluation config
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/token-classification/token-classification-config.jsonl"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/sample_score.json"
 
@@ -104,6 +106,7 @@ parent_job_name=$( az ml job create --file ./token-classification-pipeline.yml $
   inputs.train_file_path.path=$train_data \
   inputs.validation_file_path.path=$validation_data \
   inputs.test_file_path.path=$test_data \
+  inputs.evaluation_config.path=$evaluation_config \
   inputs.token_key=$token_key \
   inputs.tag_key=$tag_key \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \

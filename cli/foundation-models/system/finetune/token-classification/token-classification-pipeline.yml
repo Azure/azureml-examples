@@ -24,6 +24,10 @@ inputs:
   test_file_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_test.jsonl"
+  evaluation_config_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/token-classification-config.jsonl"
+  
   
   # The following parameters map to the dataset fields
   token_key: "tokens"
@@ -59,6 +63,7 @@ jobs:
       train_file_path: ${{parent.inputs.train_file_path}}
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
+      evaluation_config: ${{parent.inputs.evaluation_config_path}}
 
       token_key: ${{parent.inputs.token_key}}
       tag_key: ${{parent.inputs.tag_key}}

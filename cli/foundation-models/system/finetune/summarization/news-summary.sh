@@ -32,6 +32,8 @@ train_data="../../../../../sdk/python/foundation-models/system/finetune/summariz
 validation_data="../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_validation.jsonl"
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_test.jsonl"
+# evaluation config
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.jsonl"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/sample_score.json"
 
@@ -106,6 +108,7 @@ parent_job_name=$( az ml job create --file ./news-summary-pipeline.yml $workspac
   inputs.train_file_path.path=$train_data \
   inputs.validation_file_path.path=$validation_data \
   inputs.test_file_path.path=$test_data \
+  inputs.evaluation_config.path=$evaluation_config \
   inputs.document_key=$document_key \
   inputs.summary_key=$summary_key \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \
