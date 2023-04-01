@@ -4,7 +4,7 @@ type: pipeline
 experiment_name: summarization-news-summary
 
 inputs:
-  compute_model_selector: gpu-cluster-big
+  compute_model_import: gpu-cluster-big
   compute_preprocess: gpu-cluster-big
   compute_finetune: gpu-cluster-big
   compute_model_evaluation: gpu-cluster-big
@@ -57,7 +57,7 @@ jobs:
     inputs:
       mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
 
-      compute_model_selector: ${{parent.inputs.compute_model_selector}}
+      compute_model_import: ${{parent.inputs.compute_model_import}}
       compute_preprocess: ${{parent.inputs.compute_preprocess}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
       compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
