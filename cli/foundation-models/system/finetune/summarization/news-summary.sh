@@ -33,7 +33,7 @@ validation_data="../../../../../sdk/python/foundation-models/system/finetune/sum
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_test.jsonl"
 # evaluation config
-evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.jsonl"
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.json"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/sample_score.json"
 
