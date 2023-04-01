@@ -33,7 +33,7 @@ validation_data="../../../../../sdk/python/foundation-models/system/finetune/tok
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_test.jsonl"
 # evaluation config
-evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/token-classification/token-classification-config.jsonl"
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/token-classification/token-classification-config.json"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/sample_score.json"
 

@@ -33,7 +33,7 @@ validation_data="../../../../../sdk/python/foundation-models/system/finetune/tex
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
 # evaluation config
-evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.jsonl"
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.json"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/sample_score.json"
 
