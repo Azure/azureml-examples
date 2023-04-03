@@ -1,6 +1,3 @@
-# Copyright (c) Microsoft. All rights reserved.
-# Licensed under the MIT license.
-
 import os
 import pandas as pd
 import torch
@@ -47,8 +44,8 @@ def run(mini_batch: List[str]) -> pd.DataFrame:
             results.append(
                 {
                     "file": basename(image_path),
-                    "class": predicted_class.numpy(),
-                    "probability": predicted_prob.numpy(),
+                    "class": predicted_class.numpy()[0],
+                    "probability": predicted_prob.numpy()[0],
                 }
             )
 
