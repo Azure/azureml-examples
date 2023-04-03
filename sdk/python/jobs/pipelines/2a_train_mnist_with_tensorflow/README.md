@@ -4,7 +4,7 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: This sample shows how to run build pipeline with command function.
+description: This sample shows how to run build pipeline with distributed Tensorflow training.
 ---
 
 # Running a Pipeline job for training with Tensorflow
