@@ -7,5 +7,5 @@ products:
 description: This sample shows how to run build pipeline with component.
 ---
 
-# Running a Pipeline job
+# Running a Pipeline job with components
 This example shows how to use component to build a pipeline: [pipeline_with_components_from_yaml.ipynb](pipeline_with_components_from_yaml.ipynb).
