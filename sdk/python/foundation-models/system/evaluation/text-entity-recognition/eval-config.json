@@ -1,3 +1,0 @@
-{
-  "metrics": ["accuracy", "f1_score_macro", "f1_score_micro"]
-}
