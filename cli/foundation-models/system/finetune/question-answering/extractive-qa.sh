@@ -33,7 +33,7 @@ validation_data="../../../../../sdk/python/foundation-models/system/finetune/que
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_test.jsonl"
 # evaluation config
-evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/question-answering/question-answering-config.jsonl"
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/question-answering/question-answering-config.json"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/sample_score.json"
 
