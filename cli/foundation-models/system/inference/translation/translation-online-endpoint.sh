@@ -4,9 +4,9 @@ set -x
 
 # script inputs
 registry_name="azureml-preview"
-subscription_id="21d8f407-c4c4-452e-87a4-e609bfb86248" #"<SUBSCRIPTION_ID>"
-resource_group_name="rg-contoso-819prod" #"<RESOURCE_GROUP>",
-workspace_name="mlw-contoso-819prod" #"WORKSPACE_NAME>",
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="t5-small"
@@ -14,15 +14,22 @@ model_name="t5-small"
 model_version=4
 
 version=$(date +%s)
-endpoint_name="fill-mask-$version"
+endpoint_name="translation-$version"
 
 # todo: fetch deployment_sku from the min_inference_sku tag of the model
 deployment_sku="Standard_DS2_v2"
 
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/inference/fill-mask/book-corpus-dataset/sample_score.json"
+scoring_file="../../../../../sdk/python/foundation-models/system/inference/translation/wmt16-en-ro-dataset/sample_score.json"
 
 # 1. Setup pre-requisites
+if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
+   ["$resource_group_name" = "<RESOURCE_GROUP>" ] || \
+   [ "$workspace_name" = "<WORKSPACE_NAME>" ]; then 
+    echo "Please update the script with the subscription_id, resource_group_name and workspace_name"
+    exit 1
+fi
+
 az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
@@ -42,7 +49,7 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 
 # deploy model from registry to endpoint in workspace
 az ml online-deployment create --file deploy.yml --all-traffic --set \
-  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$version \
+  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
 }

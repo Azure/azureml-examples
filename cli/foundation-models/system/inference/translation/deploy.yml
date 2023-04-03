@@ -2,3 +2,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: demo
 instance_type: Standard_DS3_v2
 instance_count: 1
+request_settings:
+  request_timeout_ms: 60000
