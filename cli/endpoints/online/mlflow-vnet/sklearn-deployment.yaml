@@ -1,0 +1,12 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: sklearn-deployment
+endpoint_name: my-endpoint
+model:
+  name: mlflow-model-vnet
+  version: 1
+  local_path: model-vnet
+environment_variables:
+  MLFLOW_MODEL_FOLDER: model-vnet
+environment: azureml:vnet-shellscript:1
+instance_type: Standard_F2s_v2
+instance_count: 1

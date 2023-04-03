@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: vnet-shellscript
+image: 7acfa0544d574b78b2d66ed4939ef465.azurecr.io/scriptbyoc:1
+inference_config:
+    liveness_route:
+      port: 5001
+      path: /
+    readiness_route:
+      port: 5001
+      path: /
+    scoring_route:
+      port: 5001
+      path: /score
