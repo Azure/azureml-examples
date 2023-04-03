@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+# name of the experiment, use this to structure your training results
+experiment_name: nebula-mnist-example
+display_name: nebula-mnist-example
+
+code: .
+
+# compute cluster on which the command above should be run
+# note: before you can use the compute, it needs to be created first in your AzureML workspace
+compute: gpu-cluster
+
+# compute resources
+resources:
+    # number of nodes in the cluster above
+    instance_count: 1
+
+# environment in which the command above should be run in
+# note: It is recommended to use an environment which either is the ACPT image or at least inherits from it. The ACPT
+#       image has many frameworks related to PyTorch pre-installed, hence reduces efforts to create your own
+#       environment. To learn more about environments in AML, see
+#       https://learn.microsoft.com/en-us/azure/machine-learning/concept-environments
+#
+# for the latest ACPT image using PyTorch 1.12, CUDA 11.6 on Python 3.9
+environment: azureml:acpt-pytorch-1.12-py39-cuda11.6@latest
+# for a specific version
+#environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu:3
+# for the latest version of a custom environment:  (====install Nebula in dockerfile environment=====)
+#environment: azureml:ACPT-Extended@latest
+# for a specific Docker image (has to be compatible with Azure ML):
+#environment:
+#    image: mcr.microsoft.com/azureml/curated/acpt-pytorch-1.12-py39-cuda11.6-gpu:2
+
+# command that should be run by the job (====install Nebula with comand OR use dockerfile environment=====)
+command: >-
+      python train.py --save-model 
