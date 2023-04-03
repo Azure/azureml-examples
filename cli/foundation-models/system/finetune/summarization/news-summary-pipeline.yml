@@ -26,7 +26,7 @@ inputs:
     path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_test.jsonl"
   evaluation_config_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.json"
   
   
   # The following parameters map to the dataset fields

@@ -26,7 +26,7 @@ inputs:
     path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
   evaluation_config_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.json"
   
   
   # The following parameters map to the dataset fields

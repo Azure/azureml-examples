@@ -34,7 +34,7 @@ validation_data="../../../../../sdk/python/foundation-models/system/finetune/tra
 # test data
 test_data="../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_test.jsonl"
 # evaluation config
-evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/translation/translation-config.jsonl"
+evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/translation/translation-config.json"
 # scoring_file
 scoring_file="../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/sample_score.json"
 

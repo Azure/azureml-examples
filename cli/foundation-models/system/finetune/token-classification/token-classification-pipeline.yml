@@ -26,7 +26,7 @@ inputs:
     path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/conll2003-dataset/small_test.jsonl"
   evaluation_config_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/token-classification-config.jsonl"
+    path: "../../../../../sdk/python/foundation-models/system/finetune/token-classification/token-classification-config.json"
   
   
   # The following parameters map to the dataset fields
