@@ -1,5 +1,5 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-sdk-fill-mask-online-endpoint
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-sdk-question-answering-online-endpoint
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
@@ -9,18 +9,18 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="bert-base-uncased"
+model_name="deepset-minilm-uncased-squad2"
 # using the latest version of the model - not working yet
 model_version=3
 
 version=$(date +%s)
-endpoint_name="fill-mask-$version"
+endpoint_name="question-answering-$version"
 
 # todo: fetch deployment_sku from the min_inference_sku tag of the model
 deployment_sku="Standard_DS2_v2"
 
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/inference/fill-mask/book-corpus-dataset/sample_score.json"
+scoring_file="../../../../../sdk/python/foundation-models/system/inference/question-answering/squad-dataset/sample_score.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
