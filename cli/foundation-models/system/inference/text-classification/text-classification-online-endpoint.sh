@@ -1,5 +1,5 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-sdk-text-classification-online-endpoint
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-online-sdk-text-classification
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
@@ -48,7 +48,7 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy.yml --all-traffic --set \
+az ml online-deployment create --file deploy.yml $workspace_info --all-traffic --set \
   endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
@@ -71,7 +71,7 @@ az ml online-endpoint invoke --name $endpoint_name --request-file $scoring_file 
 }
 
 # 6. Delete the endpoint
-az ml online-endpoint delete --name $endpoint_name --yes || {
+az ml online-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
 
