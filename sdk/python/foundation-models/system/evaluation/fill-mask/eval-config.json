@@ -1,3 +1,5 @@
 {
-  "metrics": ["perplexities"]
+  "metrics": ["perplexities"],
+  "model_id": "bert-base-uncased",
+  "add_start_token": true
 }
