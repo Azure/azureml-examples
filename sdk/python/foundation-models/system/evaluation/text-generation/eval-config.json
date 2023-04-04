@@ -1,3 +1,6 @@
 {
-  "metrics": ["exact_match", "f1_score"]
+  "metrics": ["rouge1", "rouge2", "bleu_3", "bleu_4"],
+  "aggregator": true,
+  "stemmer": true,
+  "smoothing": false
 }
