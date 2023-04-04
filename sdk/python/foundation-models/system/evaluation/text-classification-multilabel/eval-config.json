@@ -1,9 +1,0 @@
-{
-  "metrics": ["accuracy", "f1_score_macro", "log_loss", "AUC_macro", "confusion_matrix"],
-  "class_labels": ["0", "1", "10", "13", "14", "15", "17", "18", "2", "20", "22", "23", "24", "25", "26", "27", "3", "4", "5", "6", "7", "8", "9"],
-  "train_labels": ["0", "1", "10", "13", "14", "15", "17", "18", "2", "20", "22", "23", "24", "25", "26", "27", "3", "4", "5", "6", "7", "8", "9"],
-  "multilabel": true,
-  "enable_metric_confidence": true,
-  "confidence_metrics": ["log_loss", "AUC_macro"],
-  "use_binary": false
-}
