@@ -1,0 +1,3 @@
+{
+  "metrics": ["exact_match", "f1_score"]
+}
