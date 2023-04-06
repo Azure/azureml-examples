@@ -7,7 +7,7 @@ compute: gpu-cluster-big
 
 jobs:
   pipeline_component_job:
-    type: command
+    type: pipeline
     component: azureml://registries/azureml-preview/components/model_evaluation_pipeline/labels/latest
     inputs:
       task: text-named-entity-recognition
