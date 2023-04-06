@@ -15,20 +15,53 @@ def add_argument():
 
     # data
     parser.add_argument(
-        "--with_cuda", default=False, action="store_true", help="use CPU in case there's no GPU support"
+        "--with_cuda",
+        default=False,
+        action="store_true",
+        help="use CPU in case there's no GPU support",
     )
-    parser.add_argument("--use_ema", default=False, action="store_true", help="whether use exponential moving average")
+    parser.add_argument(
+        "--use_ema",
+        default=False,
+        action="store_true",
+        help="whether use exponential moving average",
+    )
 
     # train
-    parser.add_argument("-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)")
-    parser.add_argument("-e", "--epochs", default=30, type=int, help="number of total epochs (default: 30)")
-    parser.add_argument("--local_rank", type=int, default=-1, help="local rank passed from distributed launcher")
+    parser.add_argument(
+        "-b", "--batch_size", default=32, type=int, help="mini-batch size (default: 32)"
+    )
+    parser.add_argument(
+        "-e",
+        "--epochs",
+        default=30,
+        type=int,
+        help="number of total epochs (default: 30)",
+    )
+    parser.add_argument(
+        "--local_rank",
+        type=int,
+        default=-1,
+        help="local rank passed from distributed launcher",
+    )
 
-    parser.add_argument("--log-interval", type=int, default=2000, help="output logging information at a given interval")
+    parser.add_argument(
+        "--log-interval",
+        type=int,
+        default=2000,
+        help="output logging information at a given interval",
+    )
 
-    parser.add_argument("--moe", default=False, action="store_true", help="use deepspeed mixture of experts (moe)")
+    parser.add_argument(
+        "--moe",
+        default=False,
+        action="store_true",
+        help="use deepspeed mixture of experts (moe)",
+    )
 
-    parser.add_argument("--ep-world-size", default=1, type=int, help="(moe) expert parallel world size")
+    parser.add_argument(
+        "--ep-world-size", default=1, type=int, help="(moe) expert parallel world size"
+    )
     parser.add_argument(
         "--num-experts",
         type=int,
@@ -44,7 +77,9 @@ def add_argument():
         default="standard",
         help="Only applicable when num-experts > 1, accepts [standard, residual]",
     )
-    parser.add_argument("--top-k", default=1, type=int, help="(moe) gating top 1 and 2 supported")
+    parser.add_argument(
+        "--top-k", default=1, type=int, help="(moe) gating top 1 and 2 supported"
+    )
     parser.add_argument(
         "--min-capacity",
         default=0,
@@ -65,7 +100,9 @@ def add_argument():
     )
 
     parser.add_argument("--global_rank", default=-1, type=int, help="global rank")
-    parser.add_argument("--with_aml_log", default=False, help="Use Azure ML metric logging")
+    parser.add_argument(
+        "--with_aml_log", default=False, help="Use Azure ML metric logging"
+    )
 
     # Include DeepSpeed configuration arguments
     parser = deepspeed.add_config_arguments(parser)
@@ -86,7 +123,9 @@ deepspeed.init_distributed()
 #     If running on Windows and you get a BrokenPipeError, try setting
 #     the num_worker of torch.utils.data.DataLoader() to 0.
 
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform = transforms.Compose(
+    [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
+)
 
 if torch.distributed.get_rank() != 0:
     # might be downloading cifar data, let rank 0 download first
@@ -112,14 +151,29 @@ if torch.distributed.get_rank() == 0:
     # cifar data is downloaded, indicate other ranks can proceed
     torch.distributed.barrier()
 
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=16, shuffle=True, num_workers=8)
+trainloader = torch.utils.data.DataLoader(
+    trainset, batch_size=16, shuffle=True, num_workers=8
+)
 
 testset = torchvision.datasets.CIFAR10(
     root="./data-%d" % args.global_rank, train=False, download=True, transform=transform
 )
-testloader = torch.utils.data.DataLoader(testset, batch_size=4, shuffle=False, num_workers=8)
+testloader = torch.utils.data.DataLoader(
+    testset, batch_size=4, shuffle=False, num_workers=8
+)
 
-classes = ("plane", "car", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck")
+classes = (
+    "plane",
+    "car",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck",
+)
 
 ########################################################################
 # Let us show some of the training images, for fun.
@@ -188,6 +242,7 @@ net = Net()
 
 def create_moe_param_groups(model):
     from deepspeed.moe.utils import split_params_into_different_moe_groups_for_optimizer
+
     parameters = {"params": [p for p in model.parameters()], "name": "parameters"}
     return split_params_into_different_moe_groups_for_optimizer(parameters)
 
@@ -229,7 +284,9 @@ for epoch in range(2):  # loop over the dataset multiple times
     running_loss = 0.0
     for i, data in enumerate(trainloader):
         # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data[0].to(model_engine.local_rank), data[1].to(model_engine.local_rank)
+        inputs, labels = data[0].to(model_engine.local_rank), data[1].to(
+            model_engine.local_rank
+        )
         if fp16:
             inputs = inputs.half()
         outputs = model_engine(inputs)
@@ -243,18 +300,27 @@ for epoch in range(2):  # loop over the dataset multiple times
         if i % 2000 == 1999:  # print every 2000 mini-batches
             loss = running_loss / 2000
             print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
-            print("\n***************************** save checkpoints with NebulaML starts *********************************\n")
+            print(
+                "\n***************************** save checkpoints with NebulaML starts *********************************\n"
+            )
             model_engine.save_checkpoint(
                 "/tmp/cifar1"
             )  # deepspeed save (no any extra operations for nebula checkpoint initialization)
-            print("\n***************************** save checkpoints with NebulaML ends *********************************\n")
+            print(
+                "\n***************************** save checkpoints with NebulaML ends *********************************\n"
+            )
             if args.with_aml_log:
                 try:
                     # import MLflow if available. Continue with a warning if not installed on the system.
                     import mlflow
+
                     mlflow.log_metric("loss", loss)
                 except Exception as ex:
-                    print("MLFlow logging failed. Continuing without MLflow. {}".format(ex))
+                    print(
+                        "MLFlow logging failed. Continuing without MLflow. {}".format(
+                            ex
+                        )
+                    )
                     pass
             running_loss = 0.0
 
@@ -309,7 +375,9 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels.to(model_engine.local_rank)).sum().item()
 
-print("Accuracy of the network on the 10000 test images: %d %%" % (100 * correct / total))
+print(
+    "Accuracy of the network on the 10000 test images: %d %%" % (100 * correct / total)
+)
 
 ########################################################################
 # That looks way better than chance, which is 10% accuracy (randomly picking
@@ -335,4 +403,7 @@ with torch.no_grad():
             class_total[label] += 1
 
 for i in range(10):
-    print("Accuracy of %5s : %2d %%" % (classes[i], 100 * class_correct[i] / class_total[i]))
+    print(
+        "Accuracy of %5s : %2d %%"
+        % (classes[i], 100 * class_correct[i] / class_total[i])
+    )
