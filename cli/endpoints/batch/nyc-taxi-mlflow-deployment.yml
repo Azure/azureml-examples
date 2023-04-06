@@ -1,6 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
-name: nyc-taxi-mlflow-dpl
-endpoint_name: nyc-taxi-batch
-model: 
-  path: nyc-taxi/model
-compute: azureml:batch-cluster

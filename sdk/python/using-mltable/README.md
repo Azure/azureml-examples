@@ -18,5 +18,7 @@ For more information on Azure ML Tables, read [Working with tables in Azure ML](
 
 | Notebook | Description |
 |----------|-------------|
-| [Azure ML Tables Quickstart](./quickstart/mltable-quickstart.ipynb) | *Demonstrates an end-to-end example of using MLTable, including asset creation, loading into both interactive sessions and jobs.* |
+| [Azure ML Tables Quickstart](./quickstart/mltable-quickstart.ipynb) | *Demonstrates an end-to-end example of using MLTable, including asset creation, loading into both interactive sessions and jobs. The data is in parquet format.* |
 | [Azure ML Tables Local-to-Cloud](./local-to-cloud/mltable-local-to-cloud.ipynb) | *Demonstrates how to work with data and tables locally and upload to the cloud as a data asset for improved sharing and reproducibility.* |
+| [Create an Azure ML Table from Delimited Text Files (CSV)](./delimited-files-example/delimited-files-example.ipynb) | *Demonstrates creating an MLTable from delimited files (CSV).* |
+| [Create an Azure ML Table of paths](./from-paths-example/from-paths-example.ipynb) | *Demonstrates creating a Table of paths on cloud storage that can then be streamed into a Python session.* |
