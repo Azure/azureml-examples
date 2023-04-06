@@ -31,8 +31,7 @@ inputs:
   
   # The following parameters map to the dataset fields
   sentence1_key: "text"
-  label_key: "label_string" 
-  input_column_names: "text"
+  label_key: "label_string"
 
   # training settings
   number_of_gpu_to_use_finetuning: 2
@@ -68,7 +67,6 @@ jobs:
 
       sentence1_key: ${{parent.inputs.sentence1_key}}
       label_key: ${{parent.inputs.label_key}}
-      input_column_names: ${{parent.inputs.input_column_names}}
 
       number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
       num_train_epochs: ${{parent.inputs.num_train_epochs}}

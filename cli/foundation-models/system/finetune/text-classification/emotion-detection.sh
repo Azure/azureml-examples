@@ -42,7 +42,6 @@ finetuning_pipeline_component="text_classification_pipeline"
 # The following parameters map to the dataset fields
 sentence1_key="text"
 label_key="label_string"
-input_column_names="text"
 # Training settings
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 num_train_epochs=3
@@ -118,7 +117,6 @@ parent_job_name=$( az ml job create --file ./emotion-detection-pipeline.yml $wor
   inputs.evaluation_config.path=$evaluation_config \
   inputs.sentence1_key=$sentence1_key \
   inputs.label_key=$label_key \
-  inputs.input_column_names=$input_column_names \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \
   inputs.num_train_epochs=$num_train_epochs \
   inputs.learning_rate=$learning_rate ) || {
