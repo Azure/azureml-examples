@@ -7,6 +7,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 # define functions
 def main(args):
     job_definition = get_job_definition(args)
@@ -17,7 +18,7 @@ def main(args):
 
 def get_ml_client(args):
     credential = AzureMLOnBehalfOfCredential()
-    subscription_id = os.environ['AZUREML_ARM_SUBSCRIPTION']
+    subscription_id = os.environ["AZUREML_ARM_SUBSCRIPTION"]
     resource_group = os.environ["AZUREML_ARM_RESOURCEGROUP"]
     workspace_name = os.environ["AZUREML_ARM_WORKSPACE_NAME"]
 
@@ -29,6 +30,7 @@ def get_ml_client(args):
     )
     return client
 
+
 def get_job_definition(args):
     job = command(
         code="./src",  # local path where the code is stored
@@ -36,17 +38,19 @@ def get_job_definition(args):
         inputs={
             "iris": Input(
                 type="uri_file",
-                path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv"),
+                path="https://azuremlexamples.blob.core.windows.net/datasets/iris.csv",
+            ),
             "C": args.C,
             "kernel": args.kernel,
-            "coef0": args.coef0,},
+            "coef0": args.coef0,
+        },
         environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:22",
         compute="cpu-cluster",
         display_name="sklearn-iris-example",
         description="sklearn iris example",
-        tags = {"starter_run" : os.environ.get("MLFLOW_RUN_ID") },
+        tags={"starter_run": os.environ.get("MLFLOW_RUN_ID")},
     )
-    
+
     return job
 
 
