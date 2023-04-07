@@ -35,6 +35,22 @@ class COCOJSONLConverter(JSONLConverter):
         self.jsonl_data[index]["image_details"]["width"] = coco_image["width"]
         self.jsonl_data[index]["image_details"]["height"] = coco_image["height"]
 
+    def _populate_label(self, annotation):
+        index = self.image_id_to_data_index[annotation["image_id"]]
+        image_details = self.jsonl_data[index]["image_details"]
+        label = {"label": self.categories[annotation["category_id"]]}
+        # check if object detection or instance segmentation
+        if 'segmentation' not in annotation.keys() or len(annotation['segmentation']) == 0:
+            self._populate_bbox_in_label(label, annotation, image_details)
+        else:
+            # TODO: process iscrowd==1 annotations
+            # currently AutoML only accepts polygon annotations, no masks
+            if "iscrowd" in annotation.keys() and annotation['iscrowd'] == 1:
+                return
+            self.__populate_segmentation_in_label(label, annotation, image_details)
+        self._populate_isCrowd(label, annotation)
+        self.jsonl_data[index]["label"].append(label)
+
     def _populate_bbox_in_label(self, label, annotation, image_details):
         # if bbox comes as normalized, skip normalization.
         if max(annotation["bbox"]) < 1.5:
@@ -49,10 +65,6 @@ class COCOJSONLConverter(JSONLConverter):
         label["bottomY"] = (annotation["bbox"][1] + annotation["bbox"][3]) / height
 
     def __populate_segmentation_in_label(self, label, annotation, image_details):
-        # check if object detection or instance segmentation
-        if 'segmentation' not in annotation.keys() or len(annotation['segmentation']) == 0:
-            return
-
         # if bbox comes as normalized, skip normalization.
         if max(annotation["bbox"]) < 1.5:
             width = 1
@@ -75,16 +87,7 @@ class COCOJSONLConverter(JSONLConverter):
                     y = vertex / height
                     polygon.append(y)
             polygons.append(polygon)
-        label["polygons"] = polygons
-
-    def _populate_label(self, annotation):
-        index = self.image_id_to_data_index[annotation["image_id"]]
-        image_details = self.jsonl_data[index]["image_details"]
-        label = {"label": self.categories[annotation["category_id"]]}
-        self._populate_bbox_in_label(label, annotation, image_details)
-        self.__populate_segmentation_in_label(label, annotation, image_details)
-        self._populate_isCrowd(label, annotation)
-        self.jsonl_data[index]["label"].append(label)
+        label["polygon"] = polygons
 
     def _populate_isCrowd(self, label, annotation):
         if "iscrowd" in annotation.keys():
