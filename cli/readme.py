@@ -7,7 +7,7 @@ import hashlib
 
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
-EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
+EXCLUDED_ENDPOINTS = []
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
@@ -352,8 +352,7 @@ def write_workflows(
     # process endpoints
     for endpoint in endpoints:
         # write workflow file
-        # write_endpoint_workflow(endpoint)
-        pass
+        write_endpoint_workflow(endpoint)
 
     # process assest
     for resource in resources:
