@@ -150,7 +150,7 @@ class VOCJSONLConverter(JSONLConverter):
             for index, object in enumerate(root.findall("object")):
                 name = object.find("name").text
                 isCrowd = int(object.find("difficult").text)
-                if self.mask_dir is None:
+                if self.mask_dir is None: # do object detection
                     xmin = object.find("bndbox/xmin").text
                     ymin = object.find("bndbox/ymin").text
                     xmax = object.find("bndbox/xmax").text

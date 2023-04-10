@@ -1,4 +1,6 @@
 from base_jsonl_converter import JSONLConverter
+from azureml.automl.dnn.vision.object_detection.common import masktools
+import pycocotools.mask as mask
 import json
 
 class COCOJSONLConverter(JSONLConverter):
@@ -36,17 +38,20 @@ class COCOJSONLConverter(JSONLConverter):
         self.jsonl_data[index]["image_details"]["height"] = coco_image["height"]
 
     def _populate_bbox_in_label(self, label, annotation, image_details):
-        # if bbox comes as normalized, skip normalization.
-        if max(annotation["bbox"]) < 1.5:
-            width = 1
-            height = 1
+        if 'segmentation' not in annotation.keys() or len(annotation['segmentation']) == 0:
+            # if bbox comes as normalized, skip normalization.
+            if max(annotation["bbox"]) < 1.5:
+                width = 1
+                height = 1
+            else:
+                width = image_details["width"]
+                height = image_details["height"]
+            label["topX"] = annotation["bbox"][0] / width
+            label["topY"] = annotation["bbox"][1] / height
+            label["bottomX"] = (annotation["bbox"][0] + annotation["bbox"][2]) / width
+            label["bottomY"] = (annotation["bbox"][1] + annotation["bbox"][3]) / height
         else:
-            width = image_details["width"]
-            height = image_details["height"]
-        label["topX"] = annotation["bbox"][0] / width
-        label["topY"] = annotation["bbox"][1] / height
-        label["bottomX"] = (annotation["bbox"][0] + annotation["bbox"][2]) / width
-        label["bottomY"] = (annotation["bbox"][1] + annotation["bbox"][3]) / height
+            label['bbox'] = 'null'
 
     def __populate_segmentation_in_label(self, label, annotation, image_details):
         # check if object detection or instance segmentation
@@ -62,20 +67,25 @@ class COCOJSONLConverter(JSONLConverter):
             height = image_details["height"]
         
         polygons = []
-        for segmentation in annotation['segmentation']:         
-            polygon = []
-            # loop through vertices:
-            for id, vertex in enumerate(segmentation):
-                if (id % 2) == 0:
-                    # x-coordinates (even index)
-                    x = vertex / width
-                    polygon.append(x)
-        
-                else:
-                    y = vertex / height
-                    polygon.append(y)
-            polygons.append(polygon)
-        label["polygons"] = polygons
+        if type(annotation['segmentation']) is dict: # segmentations are in uncompressed rle format
+                rle = annotation['segmentation']
+                compressed_rle = mask.frPyObjects(rle, rle['size'][0], rle['size'][1])
+                polygons = masktools.convert_mask_to_polygon(compressed_rle)
+        else: # segmentation is list of vertices
+            for segmentation in annotation['segmentation']:
+                    polygon = []
+                    # loop through vertices:
+                    for id, vertex in enumerate(segmentation):
+                        if (id % 2) == 0:
+                            # x-coordinates (even index)
+                            x = vertex / width
+                            polygon.append(x)
+                
+                        else:
+                            y = vertex / height
+                            polygon.append(y)
+                    polygons.append(polygon)
+        label["polygon"] = polygons
 
     def _populate_label(self, annotation):
         index = self.image_id_to_data_index[annotation["image_id"]]
