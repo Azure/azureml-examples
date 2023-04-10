@@ -5,33 +5,79 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: This sample shows how to run a distributed Dask job on an Azure ML compute cluster. The 24GB NYC Taxi dataset is read in CSV format by a 4 node Dask cluster, processed and then written to job output in parquet format. 
+description: This sample shows how to run a distributed Dask job on an Azure ML compute cluster using MPI. The 24GB NYC Taxi dataset is read in CSV format by a 4 node Dask cluster, processed, and written to job output in Parquet format. 
 ---
 
 # Running a Dask job
 
-This example shows how a distribted Dask job can be run on multiple nodes of a cluster. In this example we are using 4 nodes using this job yaml. The startup of the cluster is done by the `startDask.py` script which launches a scheduler and a worker on the first node of the cluster and a worker on all the other nodes.
+This sample shows how to run a Dask data preparation task on an Azure ML Compute Cluster, using Dask-MPI. This method leverages the [Azure ML MPI support](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-train-distributed-gpu#mpi) and does not require any custom scripts or additional libraries.
 
-> Since the script is writing the output to the local drive, and since the dataset is cached on the same local drive, your cluster nodes need to have enough free space on the local volume to accomodate pretty much the whole input and output datasets used (to be on the safe side). The input dataset will be 24GB, the parquet output is about 4GB. Using STANDARD_D15_V2 VMs to build your cluster will give you close to 1TB of free disk space and works well even for bigger datasets.
+To illustrate Dask usage, the 24 GB NYC Taxi dataset is read in CSV format by a 4-node Dask cluster, processed, and then written as a job output in Parquet format. Because the script uses Dask Dataframes, the compute tasks are distributed across all 4 nodes.
 
-If a --script parameter is provided, then the script will run that script after the cluster has been brought up and the job will be terminated after the script has completed. To start a Dask cluster for interactive work, don't provide a --script parameter, which will have the job run indefinitely (i.e. until you terminate it).
+The file `conda.yml` contains a Conda environment definition, with all the required dependencies to run the sample script.
 
-The job below is currently launched with `distribution: .. type: pytorch` since that gives the full flexibility of assigning the work to the different nodes of the cluster by just checking the $RANK environment variable. In the future we will provide a more generic name for that mode of launching a distributed job.
+The minimal required dependencies to run a Dask job using MPI are the following:
 
-For debugging and interactive work, the script also launches a Jupyter server on the first node which can be accessed by ssh tunnelling into a node of the cluster (assuming the cluster is not in a VNet). Make sure to provide your SSH public key while setting up the cluster (in ml.azure.com Create Compute Cluster/Settings/Enable SSH access/Use existing public key). Then, on your local laptop computer, you can run a command similar to the one below:
+- `dask`
+- `dask_mpi`
+- `mpi4py`
 
-``` bash
-ssh azureuser@20.67.29.11 -p 50000 -L 9999:10.0.0.4:8888 -L 9797:10.0.0.4:8787
+The provided environment includes other dependencies that are only useful for this sample script.
+
+The included `job.yml` contains an Azure ML job definition to execute the script `prep_nyctaxi.py`.
+
+The important part of that file regarding Dask is the following section:
+
+```yaml
+distribution:
+  type: mpi
+  process_count_per_instance: 4
+resources:
+  instance_count: 4
 ```
 
-In the above example:
+This is where we request to run the script using an MPI cluster of 4 instances (`instance_count`) and 4 processes per instance (`process_count_per_instance`). You should adjust these numbers according to the configuration of your cluster.
 
-- `20.67.29.11` is the public IP address of any of the nodes on the cluster (find in ml.azure.com under Compute/Compute Clusters/<cluster name>/Nodes)
-- `50000` is the port of that same node
-- `9999` and `9797` are the ports where the jupyter server and the dask dashboard will be reachable on your local machine
-- `10.0.0.4` is the private IP of the head node of the job, as will be logged by the job and show up in run history (find in ml.azure.com under Experiments/dask/<run id>/details/metrics/headnode) 
+The job also defines inputs and outputs, both mounted directly from Blob Storage to the compute nodes. This means the inputs and outputs will appear on all the nodes as local folders.
 
-Then you should be able to access the following urls:
+The base Docker image specified in the job definition contains the necessary [OpenMPI](https://www.open-mpi.org/) libraries. You can see a full list of available base images in the GitHub repo [AzureML-Containers](https://github.com/Azure/AzureML-Containers).
 
-- `http://localhost:9999?token=<jupyter-token>` for Jupyter, where <jupyter-token> is jupyter-token that will show up in run history (find in ml.azure.com under Experiments/dask/<run id>/details/metrics/jupyter-token) 
-- `http://localhost:9797` for the Dask Dashboard
+## Accessing the Dask dashboard
+
+The Dask dashboard is very useful to understand what is going on in the cluster. This sample shows a way of accessing the dashboard using SSH tunnels.
+
+- Once the script is running, you can find the job in the Azure ML Jobs list.
+- Click on the job name to open the job page.
+- Click on "Outputs + logs" to access the logs of the job.
+- Open the `user_logs` directory. You will see one log per MPI process, in the form `std_log_process_xx.txt`.
+- Open the log named `std_log_process_01.txt`, this is where you will find the logs written by the script running on the MPI process of rank 1.
+- In this log you will see a line like this: `Dask dashboard on 10.0.0.8:8787`; this gives you the internal IP address of the host where the Dask dashboard is running.
+
+Now you need to open an SSH tunnel between your workstation and the host, so that you can access the dashboard. To do that, you will find the public IP address of your cluster, and use it to open the tunnel.
+
+- In the Azure ML Studio, go to the "Compute" page.
+- Click on "Compute Clusters".
+- Click on your cluster name, for example `dask-cluster`.
+- Click on Nodes. You will see a list of nodes in your cluster. Each node has a "Connection string" value with a clipboard icon. Click on the clipboard icon of any line to get the SSH command to connect to the cluster. It will look like `ssh azureuser@20.a.b.c -p 50003`.
+
+To create the SSH tunnel, use the `-L` argument to indicate that you want to forward the connection from local port 8787 to the remote port, using the information from the logs. The final command should look like this:
+
+```sh
+ssh azureuser@20.a.b.c -p 50003 -L 8787:10.0.0.8:8787
+```
+
+Run that command, and the tunnel should be established. Connect to `http://localhost:8787/status` with your browser to access the dashboard.
+
+## How it works
+
+The following two lines are enough to set up the Dask cluster over MPI:
+
+```python
+# Initialize Dask over MPI
+dask_mpi.initialize()
+c = Client()
+```
+
+This will automatically run the Dask Scheduler on the MPI process with rank 0, the client code on rank 1, and the Dask Workers on the remaining ranks. This means that out of all the distributed processes you requested in your Azure ML job, two are used to coordinate the cluster, and the others to actually perform the compute tasks.
+
+You can read more in the Dask-MPI documentation: [Dask-MPI with Batch Jobs](https://mpi.dask.org/en/latest/batch.html) and [How Dask-MPI Works](https://mpi.dask.org/en/latest/howitworks.html).
