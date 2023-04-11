@@ -9,7 +9,7 @@ name: sdk-foundation-models-system-finetune-token-classification-token-classific
 on:
   workflow_dispatch:
   schedule:
-    - cron: "45 4/12 * * *"
+    - cron: "0 0 * * *"
   pull_request:
     branches:
       - main
