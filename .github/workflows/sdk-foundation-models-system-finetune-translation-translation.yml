@@ -9,7 +9,7 @@ name: sdk-foundation-models-system-finetune-translation-translation
 on:
   workflow_dispatch:
   schedule:
-    - cron: "20 11/12 * * *"
+    - cron: "0 0 * * *"
   pull_request:
     branches:
       - main

@@ -9,7 +9,7 @@ name: sdk-foundation-models-system-finetune-summarization-news-summary
 on:
   workflow_dispatch:
   schedule:
-    - cron: "21 0/12 * * *"
+    - cron: "0 0 * * *"
   pull_request:
     branches:
       - main
