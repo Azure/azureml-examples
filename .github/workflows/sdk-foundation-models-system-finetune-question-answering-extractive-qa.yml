@@ -9,7 +9,7 @@ name: sdk-foundation-models-system-finetune-question-answering-extractive-qa
 on:
   workflow_dispatch:
   schedule:
-    - cron: "26 11/12 * * *"
+    - cron: "0 0 * * *"
   pull_request:
     branches:
       - main
