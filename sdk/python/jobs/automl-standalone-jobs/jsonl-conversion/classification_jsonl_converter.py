@@ -1,23 +1,47 @@
 import os
 from base_jsonl_converter import JSONLConverter
 
-class ClassificationJSONLConverter(JSONLConverter):
 
-    def __init__(self, base_url, data_dir = None, label_file=None):
+class ClassificationJSONLConverter(JSONLConverter):
+    """
+    Class for converting classification data into jsonl files
+    ...
+    Attributes
+    ---------
+    base_url : str
+        the base for the image_url to be written into the jsonl file
+    data_dir : directory containing image data for multiclass classification
+    label_file: file containing annotations for multilabel classification
+    """
+
+    def __init__(self, base_url, data_dir=None, label_file=None):
         self.label_file = label_file
         self.data_dir = data_dir
         super().__init__(base_url)
 
     def convert(self):
-        if self.label_file is not None: # multilabel classification
+        """
+        Generate jsonl data for multilabel or multiclass classification
+
+        return: list of lines for jsonl
+        rtype: List <class 'dict'>
+
+        """
+        if self.label_file is not None:  # multilabel classification
             return self.multilabel2jsonl()
-        elif self.data_dir is not None: # multiclass classification
+        elif self.data_dir is not None:  # multiclass classification
             return self.multiclass2jsonl()
         else:
-            return None 
-
+            return None
 
     def multiclass2jsonl(self):
+        """
+        Generate jsonl data for multiclass classification
+
+        return: list of lines for jsonl
+        rtype: List <class 'dict'>
+
+        """
         # Baseline of json line dictionary
         json_line_sample = {
             "image_url": self.base_url,
@@ -43,6 +67,13 @@ class ClassificationJSONLConverter(JSONLConverter):
         return self.jsonl_data
 
     def multilabel2jsonl(self):
+        """
+        Generate jsonl data for multilabel classification
+
+        return: list of lines for jsonl
+        rtype: List <class 'dict'>
+
+        """
         # Baseline of json line dictionary
         json_line_sample = {
             "image_url": self.base_url,
