@@ -1,7 +1,5 @@
 {
   "metrics": ["accuracy", "f1_score_micro", "average_precision_score_macro"],
-  "class_labels": ["LABEL_0", "LABEL_1"],
-  "train_labels": ["LABEL_0", "LABEL_1"],
   "multilabel": false,
   "enable_metric_confidence": true,
   "confidence_metrics": ["accuracy", "f1_score_micro"],
