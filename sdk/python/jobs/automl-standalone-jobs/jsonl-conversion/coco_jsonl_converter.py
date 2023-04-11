@@ -4,9 +4,10 @@ import pycocotools.mask as mask
 import json
 
 class COCOJSONLConverter(JSONLConverter):
-    def __init__(self, base_url, coco_file):
+    def __init__(self, base_url, coco_file, compressed_rle=False):
         super().__init__(base_url=base_url)
         self.categories = {}
+        self.compressed_rle = compressed_rle
         self.coco_data = self.read_coco_file(coco_file)
         self.image_id_to_data_index = {}
         for i in range(0, len(self.coco_data["images"])):
@@ -45,10 +46,6 @@ class COCOJSONLConverter(JSONLConverter):
         if 'segmentation' not in annotation.keys() or len(annotation['segmentation']) == 0:
             self._populate_bbox_in_label(label, annotation, image_details)
         else:
-            # TODO: process iscrowd==1 annotations
-            # currently AutoML only accepts polygon annotations, no masks
-            if "iscrowd" in annotation.keys() and annotation['iscrowd'] == 1:
-                return
             self.__populate_segmentation_in_label(label, annotation, image_details)
         self._populate_isCrowd(label, annotation)
         self.jsonl_data[index]["label"].append(label)
@@ -81,7 +78,10 @@ class COCOJSONLConverter(JSONLConverter):
         polygons = []
         if type(annotation['segmentation']) is dict: # segmentations are in uncompressed rle format
                 rle = annotation['segmentation']
-                compressed_rle = mask.frPyObjects(rle, rle['size'][0], rle['size'][1])
+                if self.compressed_rle:
+                    compressed_rle = rle
+                else:
+                    compressed_rle = mask.frPyObjects(rle, rle['size'][0], rle['size'][1])
                 polygons = masktools.convert_mask_to_polygon(compressed_rle)
         else: # segmentation is list of vertices
             for segmentation in annotation['segmentation']:
