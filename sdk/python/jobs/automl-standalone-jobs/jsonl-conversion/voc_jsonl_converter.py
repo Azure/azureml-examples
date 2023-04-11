@@ -3,8 +3,6 @@ import os
 import xml.etree.ElementTree as ET
 import numpy as np
 import PIL.Image as Image
-from simplification.cutil import simplify_coords
-from skimage import measure
 from azureml.automl.dnn.vision.object_detection.common import masktools
 import torch
 
