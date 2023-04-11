@@ -9,7 +9,7 @@ name: sdk-foundation-models-system-finetune-text-classification-emotion-detectio
 on:
   workflow_dispatch:
   schedule:
-    - cron: "52 2/12 * * *"
+    - cron: "0 0 * * *"
   pull_request:
     branches:
       - main
