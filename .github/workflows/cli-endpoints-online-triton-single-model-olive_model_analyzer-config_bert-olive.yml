@@ -3,18 +3,18 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-jobs-parallel-3a_mnist_batch_identification-pipeline
+name: cli-endpoints-online-triton-single-model-olive_model_analyzer-config_bert-olive
 on:
   workflow_dispatch:
   schedule:
-    - cron: "4 6/12 * * *"
+    - cron: "52 3/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - cli/jobs/parallel/3a_mnist_batch_identification/**
+      - cli/endpoints/online/triton/single-model/olive_model_analyzer/**
       - infra/**
-      - .github/workflows/cli-jobs-parallel-3a_mnist_batch_identification-pipeline.yml
+      - .github/workflows/cli-endpoints-online-triton-single-model-olive_model_analyzer-config_bert-olive.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -31,7 +31,6 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -42,9 +41,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run job
+    - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          bash -x ../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/parallel/3a_mnist_batch_identification
+          az ml endpoint create -f endpoints/online/triton/single-model/olive_model_analyzer/config_bert-olive.yml
+      working-directory: cli
