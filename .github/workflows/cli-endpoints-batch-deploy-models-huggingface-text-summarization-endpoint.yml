@@ -45,7 +45,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml batch-endpoint delete -n text-summarization-batch -y
+          az ml batch-endpoint delete -n intsbatchdeploymodelshuggingfacetextsummarizationendpoint -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,4 +54,10 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml
           az ml batch-endpoint create -f endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml
+      working-directory: cli
+    - name: cleanup endpoint
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml batch-endpoint delete -n intsbatchdeploymodelshuggingfacetextsummarizationendpoint -y
       working-directory: cli

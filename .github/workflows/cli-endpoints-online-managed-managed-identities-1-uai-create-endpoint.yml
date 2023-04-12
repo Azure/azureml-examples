@@ -45,7 +45,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n my-uai-endpoint -y
+          az ml online-endpoint delete -n ndpointsonlinemanagedmanagedidentities1uaicreateendpoint -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,4 +54,10 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml
           az ml online-endpoint create -f endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml
+      working-directory: cli
+    - name: cleanup endpoint
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml online-endpoint delete -n ndpointsonlinemanagedmanagedidentities1uaicreateendpoint -y
       working-directory: cli

@@ -4,7 +4,8 @@ import json
 import glob
 import argparse
 import hashlib
-
+import random
+import string
 import yaml
 
 # define constants
@@ -556,7 +557,7 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
-    endpoint_name = get_endpoint_name(endpoint + ".yml")
+    endpoint_name = replace_endpoint_name(endpoint + ".yml", hyphenated)
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
@@ -609,6 +610,12 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           cat {endpoint}.yml
           az ml {endpoint_type}-endpoint create -f {endpoint}.yml
+      working-directory: cli
+    - name: cleanup endpoint
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
       working-directory: cli\n"""
 
     # write workflow
@@ -798,10 +805,16 @@ def get_schedule_time(filename):
     return schedule_hour, schedule_minute
 
 
-def get_endpoint_name(filename):
-    # gets the endpoint name from the .yml file named filename
-    with open(filename, "r") as f:
-        endpoint_name = yaml.safe_load(f)["name"]
+def replace_endpoint_name(filename, hyphenated):
+    # replaces the endpoint name in the .yml file
+    with open(filename) as f:
+        endpoint = yaml.safe_load(f)
+        endpoint_name = hyphenated[-64:].replace("-", "")
+        endpoint["name"] = endpoint_name
+
+    with open(filename, "w") as f:
+        yaml.safe_dump(endpoint, f)
+
     return endpoint_name
 
 
