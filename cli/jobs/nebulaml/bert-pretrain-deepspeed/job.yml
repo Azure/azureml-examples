@@ -5,7 +5,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: pip list && python pretrain_glue.py --save_steps 20 --deepspeed ds_config_bertbase.json --num_train_epochs 100 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch" --logging_strategy "epoch" --per_device_train_batch_size 532 --gradient_accumulation_steps 1 --per_device_eval_batch_size 532 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "bert-base-uncased"
 
 experiment_name: bert-pretrain-nebula-ds-optimal
-environment: {your environment name} # Should replace your environment
+environment: <your environment name> # Should replace your environment
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
@@ -15,7 +15,7 @@ outputs:
     type: uri_folder
     mode: rw_mount
     path: azureml://datastores/workspaceblobstore/paths/outputs
-compute: {your compute name} # Should replace your compute
+compute: <your compute name> # Should replace your compute
 distribution:
   type: pytorch
   process_count_per_instance: 4

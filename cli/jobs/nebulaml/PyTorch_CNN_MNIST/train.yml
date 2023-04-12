@@ -22,7 +22,8 @@ resources:
 #       https://learn.microsoft.com/en-us/azure/machine-learning/concept-environments
 #
 # for the latest ACPT image using PyTorch 1.12, CUDA 11.6 on Python 3.9
-environment: azureml:acpt-pytorch-1.12-py39-cuda11.6@latest
+# environment: azureml:acpt-pytorch-1.12-py39-cuda11.6@latest
+environment: AzureML-acpt-pytorch-2.0-cuda11.7 
 # for a specific version
 #environment: azureml:AzureML-ACPT-pytorch-1.12-py39-cuda11.6-gpu:3
 # for the latest version of a custom environment:  (====install Nebula in dockerfile environment=====)
