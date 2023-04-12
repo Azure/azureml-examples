@@ -1,0 +1,59 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+# name: pipeline_component_with_data_prep_and_transformation
+display_name: nyc_taxi_data_regression
+description: Train regression model based on nyc taxi dataset
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+# <inputs_and_outputs>
+inputs:
+  pipeline_raw_data:
+    type: uri_folder
+    path: ./data
+    # path: azureml:nyc_taxi_data_regression@latest
+  test_split_ratio: 0.2
+  compute_train_node: cpu-cluster # example to show how to promote compute as input
+
+# changes needed to make pipeline job as pipeline component
+## outputs need explicit type
+## add name property which is always ignored for job
+## remove path property under inputs
+
+outputs: 
+  pipeline_job_trained_model:
+    type: mlflow_model
+  pipeline_job_predictions:
+    type: uri_folder
+    mode: rw_mount 
+  pipeline_job_score_report:
+    type: uri_folder
+    mode: rw_mount
+# </inputs_and_outputs>
+
+# <jobs>
+jobs:
+  data_pipeline:
+    type: pipeline
+    component: ./data_pipeline/data_pipeline.yml
+    # component: azureml:data_pipeline@latest
+    inputs:
+      raw_data: ${{parent.inputs.pipeline_raw_data}}
+      test_split_ratio: ${{parent.inputs.test_split_ratio}}
+    outputs:
+      train_data:  
+  train_pipeline:
+    type: pipeline
+    component: ./train_pipeline/train_pipeline.yml
+    # component: azureml:train_pipeline@latest
+    inputs: 
+      train_data: ${{parent.jobs.data_pipeline.outputs.train_data}}
+      compute_train_node: ${{parent.inputs.compute_train_node}}
+    outputs:
+      trained_model: ${{parent.outputs.pipeline_job_trained_model}}
+      predictions: ${{parent.outputs.pipeline_job_predictions}}
+      score_report: ${{parent.outputs.pipeline_job_score_report}}
+# </jobs>
