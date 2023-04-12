@@ -45,7 +45,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml batch-endpoint delete -n endpointsbatchdeploymodelsimagenetclassifierendpoint -y
+          az ml batch-endpoint delete -n elsimagenetclassifierendpoint -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -53,11 +53,11 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml
-          az ml batch-endpoint create -n endpointsbatchdeploymodelsimagenetclassifierendpoint -f endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml
+          az ml batch-endpoint create -n elsimagenetclassifierendpoint -f endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml batch-endpoint delete -n endpointsbatchdeploymodelsimagenetclassifierendpoint -y
+          az ml batch-endpoint delete -n elsimagenetclassifierendpoint -y
       working-directory: cli

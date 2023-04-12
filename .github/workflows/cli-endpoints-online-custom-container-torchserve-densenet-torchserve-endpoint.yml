@@ -45,7 +45,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n onlinecustomcontainertorchservedensenettorchserveendpoint -y
+          az ml online-endpoint delete -n rvedensenettorchserveendpoint -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -53,11 +53,11 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/custom-container/torchserve/densenet/torchserve-endpoint.yml
-          az ml online-endpoint create -n onlinecustomcontainertorchservedensenettorchserveendpoint -f endpoints/online/custom-container/torchserve/densenet/torchserve-endpoint.yml
+          az ml online-endpoint create -n rvedensenettorchserveendpoint -f endpoints/online/custom-container/torchserve/densenet/torchserve-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n onlinecustomcontainertorchservedensenettorchserveendpoint -y
+          az ml online-endpoint delete -n rvedensenettorchserveendpoint -y
       working-directory: cli

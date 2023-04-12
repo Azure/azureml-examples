@@ -557,7 +557,7 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
-    endpoint_name = hyphenated[-64:].replace("-", "")
+    endpoint_name = hyphenated[-32:].replace("-", "")
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:

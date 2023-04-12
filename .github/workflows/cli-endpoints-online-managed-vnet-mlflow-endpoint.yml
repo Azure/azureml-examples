@@ -45,7 +45,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n endpointsonlinemanagedvnetmlflowendpoint -y
+          az ml online-endpoint delete -n inemanagedvnetmlflowendpoint -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -53,11 +53,11 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/managed/vnet/mlflow/endpoint.yml
-          az ml online-endpoint create -n endpointsonlinemanagedvnetmlflowendpoint -f endpoints/online/managed/vnet/mlflow/endpoint.yml
+          az ml online-endpoint create -n inemanagedvnetmlflowendpoint -f endpoints/online/managed/vnet/mlflow/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n endpointsonlinemanagedvnetmlflowendpoint -y
+          az ml online-endpoint delete -n inemanagedvnetmlflowendpoint -y
       working-directory: cli
