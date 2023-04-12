@@ -176,7 +176,6 @@ def modify_notebooks(notebooks):
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
@@ -548,7 +547,13 @@ def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
-    endpoint_type = "online" if "endpoints/online/" in endpoint else "batch" if "endpoints/batch/" in endpoint else "unknown"
+    endpoint_type = (
+        "online"
+        if "endpoints/online/" in endpoint
+        else "batch"
+        if "endpoints/batch/" in endpoint
+        else "unknown"
+    )
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
@@ -592,6 +597,7 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          cat {endpoint}.yml
           az ml {endpoint_type}-endpoint create -f {endpoint}.yml
       working-directory: cli\n"""
 

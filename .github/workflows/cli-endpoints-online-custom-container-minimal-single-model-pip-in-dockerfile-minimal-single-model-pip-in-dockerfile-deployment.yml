@@ -45,5 +45,6 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
+          cat endpoints/online/custom-container/minimal/single-model/pip-in-dockerfile/minimal-single-model-pip-in-dockerfile-deployment.yml
           az ml online-endpoint create -f endpoints/online/custom-container/minimal/single-model/pip-in-dockerfile/minimal-single-model-pip-in-dockerfile-deployment.yml
       working-directory: cli
