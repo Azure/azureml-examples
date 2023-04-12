@@ -634,7 +634,7 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           cat {deployment}.yml
-          az ml {endpoint_type}-deployment create -f {deployment}.yml
+          az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml
       working-directory: cli\n"""
 
             workflow_yaml += deployment_yaml

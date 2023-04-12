@@ -60,14 +60,14 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/managed/sample/blue-deployment.yml
-          az ml online-deployment create -f endpoints/online/managed/sample/blue-deployment.yml
+          az ml online-deployment create -e sonlinemanagedsampleendpoint -f endpoints/online/managed/sample/blue-deployment.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/managed/sample/green-deployment.yml
-          az ml online-deployment create -f endpoints/online/managed/sample/green-deployment.yml
+          az ml online-deployment create -e sonlinemanagedsampleendpoint -f endpoints/online/managed/sample/green-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |

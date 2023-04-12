@@ -60,7 +60,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/custom-container/mlflow/multideployment-scikit/mlflow-deployment.yml
-          az ml online-deployment create -f endpoints/online/custom-container/mlflow/multideployment-scikit/mlflow-deployment.yml
+          az ml online-deployment create -e eploymentscikitmlflowendpoint -f endpoints/online/custom-container/mlflow/multideployment-scikit/mlflow-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |

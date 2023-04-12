@@ -60,14 +60,14 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/managed/managed-identities/2-sai-deployment.yml
-          az ml online-deployment create -f endpoints/online/managed/managed-identities/2-sai-deployment.yml
+          az ml online-deployment create -e identities1saicreateendpoint -f endpoints/online/managed/managed-identities/2-sai-deployment.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/managed/managed-identities/2-uai-deployment.yml
-          az ml online-deployment create -f endpoints/online/managed/managed-identities/2-uai-deployment.yml
+          az ml online-deployment create -e identities1saicreateendpoint -f endpoints/online/managed/managed-identities/2-uai-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |

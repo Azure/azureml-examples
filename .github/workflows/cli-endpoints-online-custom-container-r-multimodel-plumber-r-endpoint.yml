@@ -60,7 +60,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/custom-container/r/multimodel-plumber/r-deployment.yml
-          az ml online-deployment create -f endpoints/online/custom-container/r/multimodel-plumber/r-deployment.yml
+          az ml online-deployment create -e rmultimodelplumberrendpoint -f endpoints/online/custom-container/r/multimodel-plumber/r-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
