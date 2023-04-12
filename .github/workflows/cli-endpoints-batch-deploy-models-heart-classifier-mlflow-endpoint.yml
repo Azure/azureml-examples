@@ -41,6 +41,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: delete endpoint if existing
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          az ml batch-endpoint delete -n heart-classifier-batch -y
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";

@@ -5,6 +5,8 @@ import glob
 import argparse
 import hashlib
 
+import yaml
+
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
 EXCLUDED_ENDPOINTS = []
@@ -554,6 +556,7 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
+    endpoint_name = get_endpoint_name(endpoint + ".yml")
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
@@ -591,6 +594,13 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: delete endpoint if existing
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -786,6 +796,13 @@ def get_schedule_time(filename):
     schedule_minute = name_hash % 60
     schedule_hour = (name_hash // 60) % hours_between_runs
     return schedule_hour, schedule_minute
+
+
+def get_endpoint_name(filename):
+    # gets the endpoint name from the .yml file named filename
+    with open(filename, "r") as f:
+        endpoint_name = yaml.safe_load(f)["name"]
+    return endpoint_name
 
 
 # run functions
