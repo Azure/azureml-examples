@@ -557,7 +557,7 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
-    endpoint_name = replace_endpoint_name(endpoint + ".yml", hyphenated)
+    endpoint_name = get_endpoint_name(endpoint + ".yml")
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
@@ -805,16 +805,10 @@ def get_schedule_time(filename):
     return schedule_hour, schedule_minute
 
 
-def replace_endpoint_name(filename, hyphenated):
-    # replaces the endpoint name in the .yml file
-    with open(filename) as f:
-        endpoint = yaml.safe_load(f)
-        endpoint_name = hyphenated[-64:].replace("-", "")
-        endpoint["name"] = endpoint_name
-
-    with open(filename, "w") as f:
-        yaml.safe_dump(endpoint, f)
-
+def get_endpoint_name(filename):
+    # gets the endpoint name from the .yml file
+    with open(filename, "r") as f:
+        endpoint_name = yaml.safe_load(f)["name"]
     return endpoint_name
 
 
