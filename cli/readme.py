@@ -609,7 +609,7 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           cat {endpoint}.yml
-          az ml {endpoint_type}-endpoint create -f {endpoint}.yml
+          az ml {endpoint_type}-endpoint create -n test -f {endpoint}.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |

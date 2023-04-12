@@ -53,7 +53,7 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/custom-container/triton/single-model/triton-cc-endpoint.yml
-          az ml online-endpoint create -f endpoints/online/custom-container/triton/single-model/triton-cc-endpoint.yml
+          az ml online-endpoint create -n test -f endpoints/online/custom-container/triton/single-model/triton-cc-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
