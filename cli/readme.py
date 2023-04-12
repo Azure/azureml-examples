@@ -557,7 +557,7 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
-    endpoint_name = get_endpoint_name(endpoint + ".yml")
+    endpoint_name = hyphenated[-64:].replace("-", "")
     workflow_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
@@ -609,7 +609,7 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           cat {endpoint}.yml
-          az ml {endpoint_type}-endpoint create -n test -f {endpoint}.yml
+          az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
@@ -805,7 +805,7 @@ def get_schedule_time(filename):
     return schedule_hour, schedule_minute
 
 
-def get_endpoint_name(filename):
+def get_endpoint_name(filename, hyphenated):
     # gets the endpoint name from the .yml file
     with open(filename, "r") as f:
         endpoint_name = yaml.safe_load(f)["name"]
