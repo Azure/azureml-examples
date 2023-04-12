@@ -46,6 +46,8 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           az ml online-endpoint delete -n minimal-multimodel-endpoint -y
+      working-directory: cli
+      continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
