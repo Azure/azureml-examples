@@ -88,7 +88,7 @@ def main(args):
     ]
 
     # get list of endpoints
-    endpoints = sorted(glob.glob("endpoints/**/*.yml", recursive=True))
+    endpoints = sorted(glob.glob("endpoints/**/*endpoint.yml", recursive=True))
     endpoints = [
         endpoint.replace(".yml", "")
         for endpoint in endpoints
