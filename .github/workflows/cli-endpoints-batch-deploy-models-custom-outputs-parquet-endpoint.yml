@@ -55,6 +55,13 @@ jobs:
           cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
           az ml batch-endpoint create -n customoutputsparquetendpoint -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
       working-directory: cli
+    - name: create deployment
+      run: |
+          source "${{ github.workspace }}/infra/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/init_environment.sh";
+          cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
+          az ml batch-deployment create -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
+      working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";

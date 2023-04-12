@@ -548,6 +548,10 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    deployments = sorted(
+        glob.glob(project_dir + "/*deployment.yml", recursive=True)
+        + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
+    )
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     endpoint_type = (
@@ -558,7 +562,8 @@ def write_endpoint_workflow(endpoint):
         else "unknown"
     )
     endpoint_name = hyphenated[-32:].replace("-", "")
-    workflow_yaml = f"""{READONLY_HEADER}
+
+    create_endpoint_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -610,13 +615,93 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           cat {endpoint}.yml
           az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml
-      working-directory: cli
-    - name: cleanup endpoint
+      working-directory: cli\n"""
+
+    cleanup_yaml = f"""    - name: cleanup endpoint
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
           az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
       working-directory: cli\n"""
+
+    workflow_yaml = create_endpoint_yaml
+
+    if (deployments is not None) and (len(deployments) > 0):
+        for deployment in deployments:
+            deployment = deployment.replace(".yml", "").replace(".yaml", "")
+            deployment_yaml = f"""    - name: create deployment
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          cat {deployment}.yml
+          az ml {endpoint_type}-deployment create -f {deployment}.yml
+      working-directory: cli\n"""
+
+            workflow_yaml += deployment_yaml
+
+    workflow_yaml += cleanup_yaml
+
+    print(workflow_yaml)
+
+    #     workflow_yaml = f"""{READONLY_HEADER}
+    # name: cli-{hyphenated}
+    # on:
+    #   workflow_dispatch:
+    #   schedule:
+    #     - cron: "{schedule_minute} {schedule_hour}/{hours_between_runs} * * *"
+    #   pull_request:
+    #     branches:
+    #       - main
+    #     paths:
+    #       - cli/{project_dir}/**
+    #       - infra/**
+    #       - .github/workflows/cli-{hyphenated}.yml
+    #       - cli/setup.sh
+    # concurrency:
+    #   group: {GITHUB_CONCURRENCY_GROUP}
+    #   cancel-in-progress: true
+    # jobs:
+    #   build:
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #     - name: check out repo
+    #       uses: actions/checkout@v2
+    #     - name: azure login
+    #       uses: azure/login@v1
+    #       with:
+    #         creds: {creds}
+    #     - name: bootstrap resources
+    #       run: |
+    #           bash bootstrap.sh
+    #       working-directory: infra
+    #       continue-on-error: false
+    #     - name: setup-cli
+    #       run: |
+    #           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+    #           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+    #           bash setup.sh
+    #       working-directory: cli
+    #       continue-on-error: true
+    #     - name: delete endpoint if existing
+    #       run: |
+    #           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+    #           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+    #           az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
+    #       working-directory: cli
+    #       continue-on-error: true
+    #     - name: create endpoint
+    #       run: |
+    #           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+    #           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+    #           cat {endpoint}.yml
+    #           az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml
+    #       working-directory: cli
+    #     - name: cleanup endpoint
+    #       run: |
+    #           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+    #           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+    #           az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
+    #       working-directory: cli\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
