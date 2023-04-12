@@ -10,7 +10,7 @@ import yaml
 
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
-EXCLUDED_ENDPOINTS = []
+EXCLUDED_ENDPOINTS = ["1-uai-create-endpoint"]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
