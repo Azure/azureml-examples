@@ -45,5 +45,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml endpoint create -f endpoints/online/triton/single-model/olive_model_analyzer/config_bert-olive.yml
+          az ml online-endpoint create -f endpoints/online/triton/single-model/olive_model_analyzer/config_bert-olive.yml
       working-directory: cli

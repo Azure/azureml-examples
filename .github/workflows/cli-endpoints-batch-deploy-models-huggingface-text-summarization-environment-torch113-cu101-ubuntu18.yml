@@ -45,5 +45,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml endpoint create -f endpoints/batch/deploy-models/huggingface-text-summarization/environment/torch113-cu101-ubuntu18.yml
+          az ml batch-endpoint create -f endpoints/batch/deploy-models/huggingface-text-summarization/environment/torch113-cu101-ubuntu18.yml
       working-directory: cli
