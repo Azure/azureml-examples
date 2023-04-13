@@ -31,7 +31,7 @@ az extension add --name ml --yes
 ```
 
 ## Examples
- 
+
 **Scripts**
 
 path|status|
