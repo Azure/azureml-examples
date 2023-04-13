@@ -813,6 +813,7 @@ function replace_template_values() {
         -e "s/<REGISTRY_NAME>/$(echo "$REGISTRY_NAME")/g" \
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
+        -e "s/<TIME_STAMP>/$(echo "$timestamp")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
         -e "s/InteractiveBrowserCredential/AzureCliCredential/g" \
         -e "s/@pipeline(/&force_rerun=True,/g" \

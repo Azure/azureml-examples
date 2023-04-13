@@ -67,6 +67,13 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-multiclass-sentiment.ipynb automl-nlp-multiclass-sentiment.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-nlp-multiclass-sentiment.output.ipynb \
+                --folder . \
+                --check warning stderr \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
