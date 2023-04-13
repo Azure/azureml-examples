@@ -24,6 +24,7 @@ EXCLUDED_DEPLOYMENTS = [
     "torchserve-deployment",
     "triton-cc-deployment",
     "2-sai-deployment",
+    "kubernetes-green-deployment",
 ]
 EXCLUDED_RESOURCES = [
     "workspace",
