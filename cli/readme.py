@@ -10,7 +10,17 @@ import yaml
 
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
-EXCLUDED_ENDPOINTS = ["1-uai-create-endpoint"]
+# TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
+EXCLUDED_ENDPOINTS = ["1-uai-create-endpoint", "tfserving-endpoint"]
+EXCLUDED_DEPLOYMENTS = [
+    "minimal-multimodel-deployment",
+    "minimal-single-model-conda-in-dockerfile-deployment",
+    "mlflow-deployment",
+    "r-deployment",
+    "torchserve-deployment",
+    "triton-cc-deployment",
+    "2-sai-deployment",
+]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
@@ -552,6 +562,11 @@ def write_endpoint_workflow(endpoint):
         glob.glob(project_dir + "/*deployment.yml", recursive=True)
         + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
     )
+    deployments = [
+        deployment
+        for deployment in deployments
+        if not any(excluded in deployment for excluded in EXCLUDED_DEPLOYMENTS)
+    ]
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     endpoint_type = (

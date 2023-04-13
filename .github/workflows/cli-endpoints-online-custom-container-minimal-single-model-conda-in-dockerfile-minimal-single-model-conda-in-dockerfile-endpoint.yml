@@ -55,13 +55,6 @@ jobs:
           cat endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/minimal-single-model-conda-in-dockerfile-endpoint.yml
           az ml online-endpoint create -n delcondaindockerfileendpoint -f endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/minimal-single-model-conda-in-dockerfile-endpoint.yml
       working-directory: cli
-    - name: create deployment
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          cat endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/minimal-single-model-conda-in-dockerfile-deployment.yml
-          az ml online-deployment create -e delcondaindockerfileendpoint -f endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/minimal-single-model-conda-in-dockerfile-deployment.yml
-      working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
