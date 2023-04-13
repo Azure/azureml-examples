@@ -7,7 +7,7 @@ compute: azureml:gpu-cluster
 environment:
   name: tensorflow27-cuda11-gpu
   image: mcr.microsoft.com/azureml/curated/tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu:latest
-  conda_file: environment/conda.yml
+  conda_file: environment/conda.yaml
 code_configuration:
   code: code/score-by-batch
   scoring_script: batch_driver.py
