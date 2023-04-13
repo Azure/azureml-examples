@@ -1,0 +1,9 @@
+$schema: http://azureml/sdk-2-0/BatchDeployment.json
+name: uci-classifier-train-onehot
+description: A sample deployment that trains an XGBoost model for the UCI dataset using One hot encoding for variables.
+endpoint_name: uci-classifier-train
+type: pipeline
+component: pipeline.yml
+settings:
+    continue_on_step_failure: false
+    default_compute: batch-cluster

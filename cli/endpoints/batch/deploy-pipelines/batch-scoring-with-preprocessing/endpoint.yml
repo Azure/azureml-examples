@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: uci-classifier-score
+description: Batch scoring endpoint of the Heart Disease Data Set prediction task
+auth_mode: aad_token

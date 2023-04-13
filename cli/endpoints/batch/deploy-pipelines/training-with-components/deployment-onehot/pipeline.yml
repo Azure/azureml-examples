@@ -1,0 +1,50 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+
+name: uci-heart-train-pipeline
+display_name: uci-heart-train
+description: This pipeline demonstrates how to make train a machine learning classifier over the UCI heart dataset.
+
+inputs:
+  input_data:
+    type: uri_folder
+
+outputs: 
+  model:
+    type: mlflow_model
+    mode: upload
+  evaluation_results:
+    type: uri_folder
+    mode: upload
+  prepare_transformations:
+    type: uri_folder
+    mode: upload
+
+jobs:
+  preprocess_job:
+    type: command
+    component: ../components/prepare/prepare.yml
+    inputs:
+      data: ${{parent.inputs.input_data}}
+      categorical_encoding: onehot
+    outputs:
+      prepared_data:
+      transformations_output: ${{parent.outputs.prepare_transformations}}
+  
+  train_job:
+    type: command
+    component: ../components/train_xgb/train_xgb.yml
+    inputs:
+      data: ${{parent.jobs.preprocess_job.outputs.prepared_data}}
+      target_column: target
+      register_best_model: false
+      eval_size: 0.3
+    outputs:
+      model: 
+        mode: upload
+        type: mlflow_model
+        path: ${{parent.outputs.model}}
+      evaluation_results:
+        mode: upload
+        type: uri_folder
+        path: ${{parent.outputs.evaluation_results}}

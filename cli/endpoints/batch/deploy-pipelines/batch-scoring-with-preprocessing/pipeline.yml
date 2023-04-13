@@ -1,0 +1,44 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+
+name: batch_scoring_uci_heart
+display_name: Batch Scoring for UCI heart
+description: This pipeline demostrates how to make batch inference using a model from the Heart Disease Data Set problem, where pre and post processing is required as steps. The pre and post processing steps can be components reusable from the training pipeline.
+
+inputs:
+  input_data:
+    type: uri_folder
+  score_mode:
+    type: string
+    default: append
+
+outputs: 
+  scores:
+    type: uri_folder
+    mode: upload
+
+jobs:
+  preprocess_job:
+    type: command
+    component: azureml:uci_heart_prepare@latest
+    inputs:
+      data: ${{parent.inputs.input_data}}
+      transformations: 
+        path: azureml:heart-classifier-transforms@latest
+        type: custom_model
+    outputs:
+      prepared_data:
+  
+  score_job:
+    type: command
+    component: components/score/score.yml
+    inputs:
+      data: ${{parent.jobs.preprocess_job.outputs.prepared_data}}
+      model:
+        path: azureml:heart-classifier@latest
+        type: mlflow_model
+      score_mode: ${{parent.inputs.score_mode}}
+    outputs:
+      scores: 
+        mode: upload
+        path: ${{parent.outputs.scores}}

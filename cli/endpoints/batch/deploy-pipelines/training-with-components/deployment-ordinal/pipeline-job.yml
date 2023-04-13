@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: uci-heart-train-pipeline
+display_name: uci-heart-train-job
+description: This pipeline demonstrates how to make train a machine learning classifier over the UCI heart dataset.
+
+compute: batch-cluster
+component: pipeline.yml
+inputs:
+  input_data:
+    type: uri_folder
+outputs: 
+  model:
+    type: mlflow_model
+    mode: upload
+  evaluation_results:
+    type: uri_folder
+    mode: upload
+  prepare_transformations:
+    mode: upload

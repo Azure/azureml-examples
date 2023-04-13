@@ -1,0 +1,43 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: uci_heart_prepare
+display_name: UCI Heart dataset prepare
+type: command
+description:  |-
+  **Prepare UCI Heart dataset**:
+
+  Prepares the UCI Heart datasets and outputs the transformation's parameters learnt during the preprocessing. If the transofrmations are also provided as inputs, then no parameters are learnt and the same transformations indicated are applied to the data.
+
+  The following parameters can be indicated:
+
+  * `data`: the data to transform.
+  * `transformations`: the input transformations to apply to the data for scaling the data. If no provided, then the transformations are learnt.
+  * `categorical_encoding`: the categorical encoding to use if transformations are learnt. Possible values are `onehot` or `ordinal`.
+
+  The following outputs are produced:
+
+  * `prepared_data`: the prepared data.
+  * `transformations_output`: the transformations applied to the input data. If the transformation were provided as inputs, then this output has the same values that the input `transformation`.
+inputs:
+  data: 
+    type: uri_folder 
+  transformations:
+    type: custom_model
+    optional: true
+  categorical_encoding:
+    type: string
+    optional: true
+    default: ordinal
+outputs:
+  prepared_data:
+    type: uri_folder
+  transformations_output:
+    type: custom_model
+code: src
+environment: azureml:xgboost-sklearn-py38@latest
+command: >-
+  python prepare.py 
+  --data_path ${{inputs.data}} 
+  $[[--transformations_path ${{inputs.transformations}}]]
+  $[[--categorical_encoding ${{inputs.categorical_encoding}}]]
+  --prepared_data_path ${{outputs.prepared_data}}
+  --transformations_output_path ${{outputs.transformations_output}}

@@ -1,0 +1,12 @@
+inputs:
+  input_data:
+    type: uri_folder
+    path: data/unlabeled
+  score_mode:
+    type: string
+    default: append
+outputs:
+  scores:
+    type: uri_folder
+    mode: upload
+    path: azureml://datastores/workspaceblobstore/paths/uci-classifier-prepros-xgb/batch-job

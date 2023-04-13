@@ -7,7 +7,7 @@ Batch endpoints provide a convenient way to run inference over large volumes of 
 * You don't have low latency requirements.
 * You can take advantage of parallelization.
 
-## Examples
+## Deploy models
 
 Example | Description | Input data type | Script
 -|-|-|-
@@ -16,3 +16,7 @@ Example | Description | Input data type | Script
 [Batch score a model for MNIST classification with multiple deployments](deploy-models/mnist-classifier) | In this example, we're going to deploy a model to solve the classic MNIST ("Modified National Institute of Standards and Technology") digit recognition problem to perform batch inferencing over large amounts of data (image files). In the first section of this tutorial, we're going to create a batch deployment with a model created using Torch. Such deployment will become our default one in the endpoint. In the second half, we're going to see how we can create a second deployment using a model created with TensorFlow (Keras), test it out, and then switch the endpoint to start using the new deployment as default. | Images | [See script](deploy-models/mnist-classifier/deploy-and-run.sh)
 [Batch score and classify images using a ResNet50 model for the ImageNet dataset](deploy-models/imagenet-classifier) | The model we are going to work with was built using TensorFlow along with the RestNet architecture (Identity Mappings in Deep Residual Networks). This example shows also how to perform high performance inference over batches of images on GPU.  | Images | [See script](deploy-models/imagenet-classifier/deploy-and-run.sh)
 [Batch score a HuggingFace NLP model for text summarization](deploy-models/huggingface-text-summarization) | The model we are going to work with was built using the popular library transformers from HuggingFace along with a pre-trained model from Facebook with the BART architecture. It was introduced in the paper BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation. | Text | [See script](deploy-models/huggingface-text-summarization/deploy-and-run.sh)
+
+
+## Deploy pipeline components
+

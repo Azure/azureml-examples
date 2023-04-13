@@ -1,0 +1,10 @@
+$schema: http://azureml/sdk-2-0/BatchDeployment.json
+name: uci-classifier-prepros-xgb
+description: A sample deployment with pre and post processing done before and after inference.
+endpoint_name: uci-classifier-batch
+compute: azureml:batch-cluster
+type: pipeline
+job_definition: azureml:uci-classifier-score-job
+settings:
+    continue_on_step_failure: false
+    default_compute: batch-cluster 
