@@ -1,4 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
 model:
   path: ../../model-1/model/
 code_configuration:
