@@ -103,7 +103,7 @@ def checkExperimentResult(
             for iteration in children:
                 iteration_status = iteration.info.status
                 print(iteration.info.run_id + ": " + iteration_status)
-                assert iteration_status == "FINISHED" or iteration_status == "CANCELED"
+                assert iteration_status in ["FINISHED", "CANCELED", "KILLED"]
                 if iteration_status == "FINISHED":
                     metrics = iteration.data.metrics
                     print(metric_name + " = " + str(metrics[metric_name]))

@@ -4,10 +4,27 @@ import json
 import glob
 import argparse
 import hashlib
+import random
+import string
+import yaml
 
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
-EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
+# TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
+EXCLUDED_ENDPOINTS = [
+    "1-uai-create-endpoint",
+    "1-sai-create-endpoint",
+    "tfserving-endpoint",
+]
+EXCLUDED_DEPLOYMENTS = [
+    "minimal-multimodel-deployment",
+    "minimal-single-model-conda-in-dockerfile-deployment",
+    "mlflow-deployment",
+    "r-deployment",
+    "torchserve-deployment",
+    "triton-cc-deployment",
+    "2-sai-deployment",
+]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
@@ -88,7 +105,7 @@ def main(args):
     ]
 
     # get list of endpoints
-    endpoints = sorted(glob.glob("endpoints/**/*.yml", recursive=True))
+    endpoints = sorted(glob.glob("endpoints/**/*endpoint.yml", recursive=True))
     endpoints = [
         endpoint.replace(".yml", "")
         for endpoint in endpoints
@@ -176,7 +193,6 @@ def modify_notebooks(notebooks):
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
@@ -352,8 +368,7 @@ def write_workflows(
     # process endpoints
     for endpoint in endpoints:
         # write workflow file
-        # write_endpoint_workflow(endpoint)
-        pass
+        write_endpoint_workflow(endpoint)
 
     # process assest
     for resource in resources:
@@ -547,9 +562,27 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    deployments = sorted(
+        glob.glob(project_dir + "/*deployment.yml", recursive=True)
+        + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
+    )
+    deployments = [
+        deployment
+        for deployment in deployments
+        if not any(excluded in deployment for excluded in EXCLUDED_DEPLOYMENTS)
+    ]
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
-    workflow_yaml = f"""{READONLY_HEADER}
+    endpoint_type = (
+        "online"
+        if "endpoints/online/" in endpoint
+        else "batch"
+        if "endpoints/batch/" in endpoint
+        else "unknown"
+    )
+    endpoint_name = hyphenated[-32:].replace("-", "")
+
+    create_endpoint_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -588,12 +621,44 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: delete endpoint if existing
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
+      working-directory: cli
+      continue-on-error: true
     - name: create endpoint
       run: |
           source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
-          az ml endpoint create -f {endpoint}.yml
+          cat {endpoint}.yml
+          az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml
       working-directory: cli\n"""
+
+    cleanup_yaml = f"""    - name: cleanup endpoint
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
+      working-directory: cli\n"""
+
+    workflow_yaml = create_endpoint_yaml
+
+    if (deployments is not None) and (len(deployments) > 0):
+        for deployment in deployments:
+            deployment = deployment.replace(".yml", "").replace(".yaml", "")
+            deployment_yaml = f"""    - name: create deployment
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          cat {deployment}.yml
+          az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml
+      working-directory: cli\n"""
+
+            workflow_yaml += deployment_yaml
+
+    workflow_yaml += cleanup_yaml
 
     # write workflow
     with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
@@ -780,6 +845,13 @@ def get_schedule_time(filename):
     schedule_minute = name_hash % 60
     schedule_hour = (name_hash // 60) % hours_between_runs
     return schedule_hour, schedule_minute
+
+
+def get_endpoint_name(filename, hyphenated):
+    # gets the endpoint name from the .yml file
+    with open(filename, "r") as f:
+        endpoint_name = yaml.safe_load(f)["name"]
+    return endpoint_name
 
 
 # run functions
