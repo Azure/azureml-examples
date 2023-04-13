@@ -2,7 +2,7 @@
   "metrics": ["accuracy", "f1_score_micro", "average_precision_score_macro"],
   "class_labels": ["CONTRADICTION", "NEUTRAL", "ENTAILMENT"],
   "train_labels": ["CONTRADICTION", "NEUTRAL", "ENTAILMENT"],
-  "multilabel": false,
+  "multilabel": true,
   "enable_metric_confidence": true,
   "confidence_metrics": ["accuracy", "f1_score_micro"],
   "use_binary": false
