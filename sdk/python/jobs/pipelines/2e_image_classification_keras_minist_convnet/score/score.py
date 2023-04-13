@@ -1,28 +1,20 @@
-from tensorflow import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.utils import to_categorical
-from keras.callbacks import Callback
-from keras.models import load_model
-
 import argparse
+import os
 from pathlib import Path
+
+import mlflow
 import numpy as np
 import pandas as pd
-import os
-import matplotlib.pyplot as plt
-import mlflow
+from keras.models import load_model
+from tensorflow.keras.utils import to_categorical
 
 
-def get_file(f):
-
-    f = Path(f)
-    if f.is_file():
-        return f
+def get_file(file_path):
+    file_path = Path(file_path)
+    if file_path.is_file():
+        return file_path
     else:
-        files = list(f.iterdir())
+        files = list(file_path.iterdir())
         if len(files) == 1:
             return files[0]
         else:
@@ -34,16 +26,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # add arguments
-    parser.add_argument(
-        "--input_data", type=str, help="path containing data for scoring"
-    )
-    parser.add_argument(
-        "--input_model", type=str, default="./", help="input path for model"
-    )
+    parser.add_argument("--input_data", type=str, help="path containing data for scoring")
+    parser.add_argument("--input_model", type=str, default="./", help="input path for model")
 
-    parser.add_argument(
-        "--output_result", type=str, default="./", help="output path for model"
-    )
+    parser.add_argument("--output_result", type=str, default="./", help="output path for model")
 
     # parse args
     args = parser.parse_args()
@@ -53,19 +39,15 @@ def parse_args():
 
 
 def score(input_data, input_model, output_result):
-
     test_file = get_file(input_data)
     data_test = pd.read_csv(test_file, header=None)
 
     img_rows, img_cols = 28, 28
-    input_shape = (img_rows, img_cols, 1)
 
     # Read test data
     X_test = np.array(data_test.iloc[:, 1:])
     y_test = to_categorical(np.array(data_test.iloc[:, 0]))
-    X_test = (
-        X_test.reshape(X_test.shape[0], img_rows, img_cols, 1).astype("float32") / 255
-    )
+    X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, 1).astype("float32") / 255
 
     # Load model
     files = [f for f in os.listdir(input_model) if f.endswith(".h5")]
