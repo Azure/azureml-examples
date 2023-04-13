@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/online/kubernetes/**
+      - cli/endpoints/online/**
       - infra/**
       - .github/workflows/cli-endpoints-online-kubernetes-kubernetes-endpoint.yml
       - cli/setup.sh

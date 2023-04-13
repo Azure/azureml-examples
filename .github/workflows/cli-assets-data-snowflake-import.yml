@@ -3,19 +3,18 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-endpoints-online-custom-container-minimal-single-model-minimal-single-model-endpoint
+name: cli-assets-data-snowflake-import
 on:
   workflow_dispatch:
   schedule:
-    - cron: "9 6/12 * * *"
+    - cron: "54 11/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - cli/endpoints/online/custom-container/minimal/single-model/**
-      - cli/endpoints/online/**
+      - cli/assets/data/snowflake-import.yml
       - infra/**
-      - .github/workflows/cli-endpoints-online-custom-container-minimal-single-model-minimal-single-model-endpoint.yml
+      - .github/workflows/cli-assets-data-snowflake-import.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -42,23 +41,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: delete endpoint if existing
+    - name: create asset
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n elminimalsinglemodelendpoint -y
-      working-directory: cli
-      continue-on-error: true
-    - name: create endpoint
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          cat endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml
-          az ml online-endpoint create -n elminimalsinglemodelendpoint -f endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml
-      working-directory: cli
-    - name: cleanup endpoint
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n elminimalsinglemodelendpoint -y
+          az ml data create -f assets/data/snowflake-import.yml
       working-directory: cli

@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-endpoints-online-custom-container-triton-single-model-triton-cc-endpoint
+name: cli-jobs-pipelines-with-components-pipeline_with_pipeline_component-nyc_taxi_data_regression_with_pipeline_component-data_pipeline-data_pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "49 11/12 * * *"
+    - cron: "44 8/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - cli/endpoints/online/custom-container/triton/single-model/**
-      - cli/endpoints/online/**
+      - cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component/data_pipeline/**
       - infra/**
-      - .github/workflows/cli-endpoints-online-custom-container-triton-single-model-triton-cc-endpoint.yml
+      - .github/workflows/cli-jobs-pipelines-with-components-pipeline_with_pipeline_component-nyc_taxi_data_regression_with_pipeline_component-data_pipeline-data_pipeline.yml
+      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -32,6 +32,7 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
+          echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
       working-directory: infra
       continue-on-error: false
@@ -42,23 +43,9 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: delete endpoint if existing
+    - name: run job
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n singlemodeltritonccendpoint -y
-      working-directory: cli
-      continue-on-error: true
-    - name: create endpoint
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          cat endpoints/online/custom-container/triton/single-model/triton-cc-endpoint.yml
-          az ml online-endpoint create -n singlemodeltritonccendpoint -f endpoints/online/custom-container/triton/single-model/triton-cc-endpoint.yml
-      working-directory: cli
-    - name: cleanup endpoint
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml online-endpoint delete -n singlemodeltritonccendpoint -y
-      working-directory: cli
+          bash -x ../../../../../run-job.sh data_pipeline.yml
+      working-directory: cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component/data_pipeline
