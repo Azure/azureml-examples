@@ -11,7 +11,11 @@ import yaml
 # define constants
 EXCLUDED_JOBS = ["java", "spark"]
 # TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
-EXCLUDED_ENDPOINTS = ["1-uai-create-endpoint", "tfserving-endpoint"]
+EXCLUDED_ENDPOINTS = [
+    "1-uai-create-endpoint",
+    "1-sai-create-endpoint",
+    "tfserving-endpoint",
+]
 EXCLUDED_DEPLOYMENTS = [
     "minimal-multimodel-deployment",
     "minimal-single-model-conda-in-dockerfile-deployment",
