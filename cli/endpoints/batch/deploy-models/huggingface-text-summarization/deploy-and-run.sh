@@ -12,7 +12,7 @@ echo "Download model from HuggingFace"
 # <download_model>
 if [ ! -d model ]
 then
-  conda env create -f environment/torch113-conda.yml
+  conda env create -f environment/torch113-conda.yaml
   conda activate huggingface-env
   
   # fix CI on GHA agents

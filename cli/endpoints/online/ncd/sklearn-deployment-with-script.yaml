@@ -8,7 +8,7 @@ model:
   type: mlflow_model
 environment:
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
-  conda_file: sklearn-diabetes/environment/conda.yml
+  conda_file: sklearn-diabetes/environment/conda.yaml
 code_configuration:
     code: sklearn-diabetes/src
     scoring_script: score.py

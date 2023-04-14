@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: triton-cc-deployment
-endpoint_name: {{endpoint_name}}
+endpoint_name: "{{ENDPOINT_NAME}}"
 model: 
   path: ./models/model_1
 model_mount_path: /models 
