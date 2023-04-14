@@ -28,6 +28,10 @@ az ml model create --name heart-classifier-transforms --type custom_model --path
 az ml component create -f components/prepare/prepare.yml
 #</preprocessing_component_register>
 
+#<create_compute>
+az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
+#</create_compute>
+
 #<test_pipeline>
 az ml job create -f pipeline-job.yml --set inputs.input_data.path=data/unlabeled
 #</test_pipeline>
@@ -58,7 +62,7 @@ SCORE_JOB=$(az ml job list --parent-job-name $JOB_NAME | jq -r ".[-1].name")
 
 #<download_outputs>
 az ml job download --name $SCORE_JOB --output-name scores
-#/download_outputs>
+#</download_outputs>
 
 #<delete_endpoint>
 az ml batch-endpoint delete -n $ENDPOINT_NAME --yes

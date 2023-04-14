@@ -20,6 +20,10 @@ az ml environment create -f environment/xgboost-sklearn-py38.yml
 az ml data create --name heart-classifier-train --type uri_folder --path data/train
 #</data_asset_registration>
 
+#<create_compute>
+az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
+#</create_compute>
+
 #<test_pipeline>
 az ml job create -f deployment-ordinal/pipeline-job.yml --set inputs.input_data.path=azureml:heart-classifier-train@latest
 #</test_pipeline>
@@ -65,7 +69,7 @@ az ml job download --name $TRAIN_JOB --output-name evaluation_results
 az ml job download --name $PREPARE_JOB --output-name transformations
 az ml job download --name $JOB_NAME --output-name model
 az ml job download --name $JOB_NAME --output-name evaluation_results
-#/download_outputs>
+#</download_outputs>
 
 #<create_nondefault_deployment>
 az ml batch-deployment create --endpoint $ENDPOINT_NAME -f deployment-onehot/deployment.yml
