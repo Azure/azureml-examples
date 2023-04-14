@@ -3,6 +3,10 @@ az account set --subscription <subscription>
 az configure --defaults workspace=<workspace> group=<resource-group> location=<location> 
 #</connect_workspace>
 
+#<name_endpoint>
+ENDPOINT_NAME="uci-classifier-train"
+#</name_endpoint>
+
 #<create_random_endpoint_name>
 ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head -n 1)
 ENDPOINT_NAME="uci-classifier-train-$ENDPOINT_SUFIX"
@@ -23,6 +27,10 @@ az ml job create -f deployment-ordinal/pipeline-job.yml --set inputs.input_data.
 #<create_endpoint>
 az ml batch-endpoint create --name $ENDPOINT_NAME -f endpoint.yml
 #</create_endpoint>
+
+#<query_endpoint>
+az ml batch-endpoint show -name $ENDPOINT_NAME
+#</query_endpoint>
 
 #<create_deployment>
 az ml batch-deployment create --endpoint $ENDPOINT_NAME -f deployment-ordinal/deployment.yml --set-default
