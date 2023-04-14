@@ -61,6 +61,12 @@ az ml job download --name $TRAIN_JOB --output-name model
 az ml job download --name $TRAIN_JOB --output-name evaluation_results
 #/download_outputs_train>
 
+#<download_outputs>
+az ml job download --name $PREPARE_JOB --output-name transformations
+az ml job download --name $JOB_NAME --output-name model
+az ml job download --name $JOB_NAME --output-name evaluation_results
+#/download_outputs>
+
 #<create_nondefault_deployment>
 az ml batch-deployment create --endpoint $ENDPOINT_NAME -f deployment-onehot/deployment.yml
 #</create_nondefault_deployment>
@@ -73,6 +79,14 @@ JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME -d $DEPLOYMENT_NAME --f
 #<stream_nondefault_job_logs>
 az ml job stream -n $JOB_NAME
 #</stream_nondefault_job_logs>
+
+# <update_default_deployment>
+az ml batch-endpoint update --name $ENDPOINT_NAME --set defaults.deployment_name=$DEPLOYMENT_NAME
+# </update_default_deployment>
+
+# <delete_deployment>
+az ml batch-deployment delete --name uci-classifier-train-xgb --endpoint-name $ENDPOINT_NAME --yes
+# </delete_deployment>
 
 #<delete_endpoint>
 az ml batch-endpoint delete -n $ENDPOINT_NAME --yes
