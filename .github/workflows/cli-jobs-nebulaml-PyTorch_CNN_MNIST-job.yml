@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-jobs-nebulaml-bert-pretrain_deepspeed-job
+name: cli-jobs-nebulaml-PyTorch_CNN_MNIST-job
 on:
   workflow_dispatch:
   schedule:
@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/jobs/nebulaml/bert-pretrain_deepspeed/**
+      - cli/jobs/nebulaml/PyTorch_CNN_MNIST/**
       - infra/**
-      - .github/workflows/cli-jobs-nebulaml-bert-pretrain_deepspeed-job.yml
+      - .github/workflows/cli-jobs-nebulaml-PyTorch_CNN_MNIST-job.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -47,4 +47,4 @@ jobs:
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash -x ../../../run-job.sh job.yml
-      working-directory: cli/jobs/nebulaml/bert-pretrain_deepspeed
+      working-directory: cli/jobs/nebulaml/PyTorch_CNN_MNIST
