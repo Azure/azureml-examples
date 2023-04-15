@@ -14,7 +14,7 @@ notebooks|description
 [Training and tracking a XGBoost classifier with MLflow using Service Principal authentication](train-and-log/xgboost_service_principal.ipynb)|*Demonstrate how to track experiments using MLflow from compute that is running outside Azure ML and how to authenticate against Azure ML services using a Service Principal.*
 [Hyper-parameters optimization using child runs with MLflow and HyperOpt optimizer](train-and-log/xgboost_nested_runs.ipynb)|*Demonstrate how to use child runs in MLflow to do hyper-parameter optimization for models using the popular library HyperOpt. It shows how to transfer metrics, params and artifacts from child runs to parent runs.*
 [Migrating tracking from Azure ML SDK v1 to MLflow](train-and-log/mlflow-v1-comparison.ipynb)|*A comprehensive guideline for moving from Azure ML SDK v1 to use MLflow for tracking experiments in jobs and notebooks.*
-[Logging models instead of assets with MLflow](logging-models/logging_and_customizing_models.ipynb)|*Demonstrates how to log models and artifacts with MLflow, including custom models.*
+[Logging models instead of assets with MLflow](train-and-log/logging_and_customizing_models.ipynb)|*Demonstrates how to log models and artifacts with MLflow, including custom models.*
 
 ### Management with MLflow
 
