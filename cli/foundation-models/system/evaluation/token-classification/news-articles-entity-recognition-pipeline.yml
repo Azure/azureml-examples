@@ -12,7 +12,7 @@ jobs:
     inputs:
       task: text-named-entity-recognition
       test_data:
-        path: "../../../../../sdk/python/foundation-models/system/evaluation/text-named-entity-recognition/conll2003/small-test.jsonl"
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/token-classification/conll2003/small-test.jsonl"
         type: uri_file
       mlflow_model: 
         path: azureml://registries/azureml-preview/models/jean-baptiste-camembert-ner/versions/3

@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: text-summarization-model-evaluation-subgraph
+experiment_name: text-translation-model-evaluation-subgraph
 
 compute: gpu-cluster-big
 
@@ -10,11 +10,11 @@ jobs:
     type: pipeline
     component: azureml://registries/azureml-preview/components/model_evaluation_pipeline/labels/latest
     inputs:
-      task: text-summarization
+      task: text-translation
       test_data:
-        path: "../../../../../sdk/python/foundation-models/system/evaluation/text-summarization/cnn_dailymail/small-test.jsonl"
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/translation/wmt16_ro-en/small-test.jsonl"
         type: uri_file
       mlflow_model: 
-        path: azureml://registries/azureml-preview/models/sshleifer-distilbart-cnn-12-6/versions/3
-      label_column_name: summary
+        path: azureml://registries/azureml-preview/models/t5-base/versions/4
+      label_column_name: ro
       device: gpu
