@@ -12,9 +12,9 @@ on:
     branches:
       - main
     paths:
-      - cli/assets/environment/docker-image-plus-conda.yml
+      - cli/assets/environment/docker-image-plus-conda.yaml
       - infra/**
-      - .github/workflows/cli-assets-environment-docker-image-plus-conda.yml
+      - .github/workflows/cli-assets-environment-docker-image-plus-conda.yaml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -45,5 +45,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml environment create -f assets/environment/docker-image-plus-conda.yml
+          az ml environment create -f assets/environment/docker-image-plus-conda.yaml
       working-directory: cli
