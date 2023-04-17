@@ -1,4 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: torch200-transformers-gpu
-image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.7-cudnn8-ubuntu20.04:latest
-conda_file: torch200-conda.yml
