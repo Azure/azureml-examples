@@ -12,7 +12,7 @@ jobs:
     inputs:
       task: text-translation
       test_data:
-        path: "../../../../../sdk/python/foundation-models/system/evaluation/text-translation/wmt16_ro-en/small-test.jsonl"
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/translation/wmt16_ro-en/small-test.jsonl"
         type: uri_file
       mlflow_model: 
         path: azureml://registries/azureml-preview/models/t5-base/versions/4
