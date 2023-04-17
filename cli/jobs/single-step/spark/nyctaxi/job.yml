@@ -10,7 +10,7 @@ inputs:
     mode: ro_mount
 environment: 
   image: mcr.microsoft.com/mmlspark/release:1.0.0-rc3
-  conda_file: conda.yml
+  conda_file: conda.yaml
 compute: azureml:cpu-cluster-lg
 resources:
   instance_count: 1
