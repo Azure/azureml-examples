@@ -7,7 +7,7 @@ version: 1
 
 inputs:
   sample_input_data_file:
-    type: uri_folder
+    type: uri_file
   placeholder:
     type: uri_folder
 outputs:

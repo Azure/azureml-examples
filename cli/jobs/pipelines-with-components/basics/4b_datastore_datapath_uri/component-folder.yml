@@ -7,7 +7,7 @@ version: 1
 
 inputs:
   sample_input_data:
-    type: mltable
+    type: uri_folder
   sample_input_string:
     type: string
     default: "component_folder"
