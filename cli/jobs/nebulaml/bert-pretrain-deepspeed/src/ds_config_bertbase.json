@@ -1,0 +1,27 @@
+{
+    "train_micro_batch_size_per_gpu": 532,
+    "fp16": {
+      "enabled": true
+    },
+    "flops_profiler": {
+      "enabled": true,
+      "profile_step": 1,
+      "module_depth": -1,
+      "top_modules": 1,
+      "detailed": true,
+      "output_file": "outputs/profile.txt"
+    },
+    "zero_optimization": {
+      "stage": 3,
+      "stage3_gather_16bit_weights_on_model_save": true
+    },
+    "gradient_accumulation_steps": 1,
+    "train_batch_size": 8512,
+     "nebula": {
+      "enabled": true,
+      "persistent_storage_path": "/outputs/nebula_checkpoint/",
+      "persistent_time_interval": 10,
+      "num_of_version_in_retention": 2,
+      "enable_nebula_load": true
+  }
+}
