@@ -34,6 +34,8 @@ jobs:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
+    - name: pip install mlflow reqs
+      run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -66,6 +68,13 @@ jobs:
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-multiclass-sentiment.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-multiclass-sentiment.ipynb automl-nlp-multiclass-sentiment.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-nlp-multiclass-sentiment.output.ipynb \
+                --folder . \
+                --check warning stderr \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

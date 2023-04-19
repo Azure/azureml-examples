@@ -24,7 +24,7 @@ cp -r $ASSET_PATH/{lightgbm-iris,sklearn-diabetes} $BASE_PATH
 cp $ASSET_PATH/sample-request-*.json $BASE_PATH 
 cp $PARENT_PATH/mlflow.dockerfile $BASE_PATH/Dockerfile
 cp $PARENT_PATH/mlflow-endpoint.yml $BASE_PATH/endpoint.yaml
-sed -i "s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/endpoint.yaml 
+sed -i "s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;" $BASE_PATH/endpoint.yaml 
 # </copy_assets> 
 
 # Create two deployment yamls, store paths in SKLEARN_DEPLOYMENT and LIGHTGBM_DEPLOYMENT
@@ -35,7 +35,7 @@ make_deployment_yaml () {
     export ${DEPLOYMENT_ENV}="$BASE_PATH/mlflow-deployment-$MODEL_NAME.yaml"   
     cp $PARENT_PATH/mlflow-deployment.yml ${!DEPLOYMENT_ENV}
     sed -i "s/{{acr_name}}/$ACR_NAME/g;\
-            s/{{endpoint_name}}/$ENDPOINT_NAME/g;\
+            s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;\
             s/{{environment_name}}/mlflow-cc-$MODEL_NAME-env/g;\
             s/{{model_name}}/$MODEL_NAME/g;\
             s/{{deployment_name}}/$MODEL_NAME/g;" ${!DEPLOYMENT_ENV}
