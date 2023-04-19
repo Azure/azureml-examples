@@ -21,7 +21,7 @@ There are 2 things that are required to use OBO feature:
 - Specify in Job definition you want to use AzureML OBO.
 - Use `AzureMLOnBehalfOfCredential` credential class in training script
 
-### How to I specify in Job definition I want to use AzureML OBO ?
+### Step 1: Specify in Job definition I want to use AzureML OBO
 This is as easy as adding below section to your job definition:
 
 ```yaml
