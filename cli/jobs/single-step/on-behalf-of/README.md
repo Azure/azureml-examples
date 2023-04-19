@@ -31,7 +31,7 @@ identity:
 
 [Job.yaml](job.yaml) from [on behalf of](../on-behalf-of/) shows how a Job definition specifies to use OBO feature.
 
-### How to use `AzureMLOnBehalfOfCredential` credential class in training script ?
+### Step 2: Use `AzureMLOnBehalfOfCredential` credential class in training script
 
 `AzureMLOnBehalfOfCredential` credential class in a part of `azure-ai-ml` package and can be used with any client that accepts credential class from `azure-identity` package. In your training script use this credential class with client of resources you would like to access.
 
