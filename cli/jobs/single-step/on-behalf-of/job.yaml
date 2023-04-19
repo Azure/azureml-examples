@@ -20,5 +20,4 @@ compute: "azureml:cpu-cluster"
 experiment_name: obo-sample
 identity:  # Only available on AMLCompute
   type: user_identity
-tags:
-  "obo_flow": "true"
+
