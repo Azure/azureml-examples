@@ -1,0 +1,23 @@
+command: >-
+  python aml_run.py 
+  --iris-csv ${{inputs.iris_csv}}
+  --C ${{inputs.C}}
+  --kernel ${{inputs.kernel}}
+  --coef0 ${{inputs.coef0}}
+inputs:
+  iris_csv: 
+    type: uri_file
+    path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
+  C: 0.8
+  kernel: "rbf"
+  coef0: 0.1
+code: ./src
+environment:
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20220113.v1
+  conda_file: environment/conda.yml
+display_name: "obo-test"
+compute: "azureml:cpu-cluster"
+experiment_name: obo-sample
+identity:  # Only available on AMLCompute
+  type: user_identity
+
