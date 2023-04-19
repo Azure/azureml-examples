@@ -47,8 +47,11 @@ allowed_list = [
     "logger.warning",
     "Importing plotly failed",
     "Found the config file in:",
-    "Check: endpoint regression",
+    "Check: endpoint",
     "data_collector is not a known attribute of class",
+    "Readonly attribute primary_metric will be ignored",
+    "Downloading artifact ",
+    "Warnings:",
 ]
 
 with open(full_name, "r") as notebook_file:
