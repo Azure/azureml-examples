@@ -34,7 +34,7 @@ To use Nebula, you need the following prerequisites:
 * ACPT curated environment, Azure Container for PyTorch. The required dependency is included in the ACPT curated environment. For ACPT image, please visit [here](https://learn.microsoft.com/en-us/azure/machine-learning/resource-curated-environments#azure-container-for-pytorch-acpt-preview). For how to use curated environment, please visit [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-environments)
 * An Azure ML script run config, which defines the source directory, the entry script, the compute target, and the environment for your model training job. If you don’t have one, you can create one by following the instructions [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-set-up-training-targets)
 
-To use Nebula, you only need to change your training script to import the ``torch_nebula`` package and call the Nebula APIs at the appropriate places. You don't need to modify the Azure Machine Learning SDK or CLI. You do not need to make any modification to other steps to train your large model on Azure Machine Learning Platform. 
+To use Nebula, you only need to change your training script to import the ``nebulaml`` package and call the Nebula APIs at the appropriate places. You don't need to modify the Azure Machine Learning SDK or CLI. You do not need to make any modification to other steps to train your large model on Azure Machine Learning Platform.
 
 > **[IMPORTANT]** Saving checkpoints with Nebula requires some memory to store checkpoints. Please make sure your memory is larger than at least three copies of the checkpoints.
 >
@@ -52,33 +52,33 @@ Here are some examples of how to use Nebula for different framework types. You c
 
 For training scripts that are based on PyTorch, Nebula is fully compatible to be enabled by modifying few lines of your training scripts. For example, here is a snippet of a PyTorch training script that uses Nebula:
 
-First, you need to import the required package `torch_nebula` as:
+First, you need to import the required package `nebulaml` as:
 ```python
 # Import the Nebula package for fast-checkpointing
-import torch_nebula as tn
+import nebulaml
 ```
 
-Then, call the tn.init() function in main() to initialize Nebula, for example:
+Then, call the nebulaml.init() function in main() to initialize Nebula, for example:
 ```python
 # Initialize Nebula with variables that helps Nebula to know where and how often to save your checkpoints
 persistent_storage_path="/tmp/test",
-tn.init(persistent_storage_path,
+nebulaml.init(persistent_storage_path,
             persistent_time_interval=2)
 ```
 
 After initialization, you can save your checkpoint with Nebula by replacing the original torch.save()  with
 ```python
 # Save the checkpoint
-checkpoint = tn.Checkpoint()
+checkpoint = nebulaml.Checkpoint()
 checkpoint.save(<'CKPT_NAME'>, model)
 ```
 Additionally, you can use other APIs to manage your checkpoints such as list all checkpoints or get latest checkpoints.
 ```python
 # Managing checkpoints
 ## List all checkpoints
-ckpts = tn.list_checkpoints()
+ckpts = nebulaml.list_checkpoints()
 ## Get Latest checkpoint path
-latest_ckpt_path = tn.get_latest_checkpoint_path("checkpoint", persisted_storage_path)
+latest_ckpt_path = nebulaml.get_latest_checkpoint_path("checkpoint", persisted_storage_path)
 ```
 ### Using DeepSpeed
 
@@ -93,7 +93,7 @@ If the training script is based on DeepSpeed (\>=0.7.3), you can enjoy Nebula by
         "enable_nebula_load": true
     }
 ```
-This JSON strings functions similar to the `torch_nebula.init()` function. 
+This JSON strings functions similar to the `nebulaml.init()` function.
 After initialization by configuring the `ds_config.json` file, you are all set to save checkpoints with Nebula since the service is already set to be enabled. Then the original DeepSpeed saving method `model_engine.save_checkpoint()` would automatically leverage Nebula and there is no need to modify your code.
 
 ### PyTorch Lightning
@@ -103,35 +103,35 @@ If the training script is based on PyTorch Lightning (\>=0.15.0), there are two 
 If you use `ModelCheckpoint` to save your checkpoints ***conditionally***, you can use `NebulaCallback` in place of `ModelCheckpoint` for initialization.
 
 ```python
-import torch_nebula as tn
+import nebulaml
 
 # define NebulaCallback
 config_params = dict()
 config_params["persistent_storage_path"] = "<YOUR STORAGE PATH>"
 config_params["persistent_time_interval"] = 10
 
-nebula_checkpoint_callback = tn.NebulaCallback(
+nebula_checkpoint_callback = nebulaml.NebulaCallback(
    ****, # Original ModelCheckpoint params
    config_params=config_params, # customize the config of init nebula
 )
 ```
 
-After that, adding tn.NebulaCheckpointIO() in your Trainer as a plugin will enable Nebula to save and load checkpoints.
+After that, adding nebulaml.NebulaCheckpointIO() in your Trainer as a plugin will enable Nebula to save and load checkpoints.
 
 ```python
-trainer = Trainer(plugins=[tn.NebulaCheckpointIO()],   # add NebulaCheckpointIO as a plugin
+trainer = Trainer(plugins=[nebulaml.NebulaCheckpointIO()],   # add NebulaCheckpointIO as a plugin
                   callbacks=[nebula_checkpoint_callback]) # use NebulaCallback as a plugin
 ```
 
 If you script saves checkpoints ***manually*** with `trainer.save_checkpoint()`, you can enjoy Nebula by adding `NebulaCheckpointIO` plugin in your Trainer and modify the storage parameters in `trainer.save_checkpoint()` as follows:
 ```python
 # import Nebula package
-import torch_nebula as tn
+import nebulaml
 
 # initialize Nebula
-tn.init(persistent_storage_path=<"YOUR STORAGE PATH">) 
+nebulaml.init(persistent_storage_path=<"YOUR STORAGE PATH">)
 
-trainer = Trainer(plugins=[tn.NebulaCheckpointIO()])  # add NebulaCheckpointIO as a plugin
+trainer = Trainer(plugins=[nebulaml.NebulaCheckpointIO()])  # add NebulaCheckpointIO as a plugin
 
 # Saving checkpoints
 storage_options = {}
