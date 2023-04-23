@@ -10,7 +10,6 @@ trial:
   environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
 inputs:
   A: 0.5
-compute: azureml:cpu-cluster
 sampling_algorithm: random
 search_space:
   B:
