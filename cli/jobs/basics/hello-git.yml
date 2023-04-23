@@ -4,4 +4,3 @@ command: >-
 code: src
 environment:
   image: library/python:latest
-compute: azureml:cpu-cluster
