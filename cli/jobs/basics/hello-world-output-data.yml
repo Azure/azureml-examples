@@ -4,4 +4,3 @@ outputs:
   hello_output:
 environment:
   image: python
-compute: azureml:cpu-cluster
