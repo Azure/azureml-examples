@@ -2,7 +2,6 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: echo "hello world"
 environment:
   image: library/python:latest
-compute: azureml:cpu-cluster
 tags:
   hello: world
 display_name: hello-world-example
