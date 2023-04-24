@@ -1,0 +1,7 @@
+__pycache__/
+.mypy_cache/
+data/
+data-imagenet/
+outputs/
+model_checkpoints
+mlruns/
