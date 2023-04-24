@@ -13,4 +13,3 @@ inputs:
     type: mlflow_model # List of all model types here: https://learn.microsoft.com/azure/machine-learning/reference-yaml-model#yaml-syntax
     path: ../../assets/model/mlflow-model
 environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
-compute: azureml:cpu-cluster
