@@ -3,10 +3,10 @@ set -x
 # the data files are available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
-workspace_name="WORKSPACE_NAME>"
+workspace_name="<WORKSPACE_NAME>"
+registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"
 # if above compute cluster does not exist, create it with the following vm size
@@ -23,7 +23,7 @@ model_version=1
 version=$(date +%s)
 finetuned_model_name=$model_name"-extractive-qna"
 endpoint_name="ext-qna-$version"
-deployment_sku="Standard_DS2_v2"
+deployment_sku="Standard_DS3_v2"
 
 
 # training data

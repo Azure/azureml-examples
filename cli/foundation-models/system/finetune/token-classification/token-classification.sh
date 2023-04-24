@@ -5,7 +5,7 @@ set -x
 # script inputs
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
-workspace_name="WORKSPACE_NAME>"
+workspace_name="<WORKSPACE_NAME>"
 registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"
@@ -23,7 +23,7 @@ model_version=1
 version=$(date +%s)
 finetuned_model_name=$model_name"-ner"
 endpoint_name="ner-$version"
-deployment_sku="Standard_DS2_v2"
+deployment_sku="Standard_DS3_v2"
 
 
 # training data

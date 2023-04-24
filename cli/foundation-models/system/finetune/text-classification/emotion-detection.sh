@@ -23,7 +23,7 @@ model_version=1
 version=$(date +%s)
 finetuned_model_name=$model_name"-emotion-detection"
 endpoint_name="emotion-$version"
-deployment_sku="Standard_DS2_v2"
+deployment_sku="Standard_DS3_v2"
 
 
 # training data
