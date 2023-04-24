@@ -3,10 +3,10 @@ set -x
 # the data files are available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml-preview"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="WORKSPACE_NAME>"
+registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"
 # if above compute cluster does not exist, create it with the following vm size
@@ -18,7 +18,7 @@ gpus_per_node=2
 # This is the foundation model for finetuning
 model_name="t5-small"
 # using the latest version of the model - not working yet
-model_version=4
+model_version=1
 
 version=$(date +%s)
 finetuned_model_name=$model_name"-news-summary"
@@ -50,6 +50,14 @@ num_train_epochs=3
 learning_rate=2e-5
 
 # 1. Setup pre-requisites
+
+if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
+   [ "$resource_group_name" = "<RESOURCE_GROUP>" ] || \
+   [ "$workspace_name" = "<WORKSPACE_NAME>" ]; then
+    echo "Please update the script with the subscription_id, resource_group_name and workspace_name"
+    exit 1
+fi
+
 az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
@@ -59,7 +67,7 @@ then
     echo "Compute cluster $compute_cluster already exists"
 else
     echo "Creating compute cluster $compute_cluster"
-    az ml compute create --name $compute_cluster --type amlcompute --min-instances 0 --max-instances 2 --vm-size $compute_sku $workspace_info || {
+    az ml compute create --name $compute_cluster --type amlcompute --min-instances 0 --max-instances 2 --size $compute_sku $workspace_info || {
         echo "Failed to create compute cluster $compute_cluster"
         exit 1
     }
@@ -135,14 +143,14 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy.yml --all-traffic --set \
+# You can find here the list of SKU's supported for deployment - https://learn.microsoft.com/en-us/azure/machine-learning/reference-managed-online-endpoints-vm-sku-list
+az ml online-deployment create --file deploy.yml $workspace_info --all-traffic --set \
   endpoint_name=$endpoint_name model=azureml:$finetuned_model_name:$version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
 }
 
 # 7. Try a sample scoring request
-
 
 # Check if scoring data file exists
 if [ -f $scoring_file ]; then
@@ -159,9 +167,6 @@ az ml online-endpoint invoke --name $endpoint_name --request-file $scoring_file 
 }
 
 # 8. Delete the endpoint
-az ml online-endpoint delete --name $endpoint_name --yes || {
+az ml online-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
-
-
-
