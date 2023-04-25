@@ -3,6 +3,9 @@ type: pipeline
 
 display_name: 4a_local_data_input
 description: Example of using data in a local folder as pipeline input
+
+settings:
+  default_compute: azureml:serverless
 inputs:
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 
@@ -13,8 +16,7 @@ outputs:
 jobs:
   hello_python_world_job:
     type: command
-    component: ./component.yml
-    compute: azureml:cpu-cluster
+    component: ./component.yml    
     inputs:
       sample_input_data: 
         type: uri_folder
