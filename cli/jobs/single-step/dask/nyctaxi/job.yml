@@ -15,8 +15,8 @@ outputs:
 environment: 
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
   conda_file: conda.yaml
-compute: azureml:cpu-cluster-lg
 resources:
+  instance_type: Standard_DS3_v3
   instance_count: 4
 distribution:
   type: pytorch
