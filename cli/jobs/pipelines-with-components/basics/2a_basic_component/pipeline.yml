@@ -3,9 +3,10 @@ type: pipeline
 display_name: 2a_basic_component
 description: Hello World component example
 
+settings:
+  default_compute: azureml:serverless
 jobs:
   hello_python_world_job:
     type: command
-    component: ./component.yml
-    compute: azureml:cpu-cluster
+    component: ./component.yml    
 
