@@ -4,7 +4,8 @@ type: automl
 experiment_name: dpv2-cli-text-ner
 description: A text named entity recognition job using CoNLL 2003 data
 
-compute: azureml:gpu-cluster
+resources:  
+  instance_type: Standard_NC6s_v3
 
 task: text_ner
 primary_metric: accuracy
