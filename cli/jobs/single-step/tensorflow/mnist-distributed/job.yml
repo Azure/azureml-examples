@@ -8,8 +8,8 @@ inputs:
   epochs: 1
   model_dir: outputs/keras-model
 environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu@latest
-compute: azureml:gpu-cluster
 resources:
+  instance_type: Standard_NC6s_v3
   instance_count: 2
 distribution:
   type: tensorflow
