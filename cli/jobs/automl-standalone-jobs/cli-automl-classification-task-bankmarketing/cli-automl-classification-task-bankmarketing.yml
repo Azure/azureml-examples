@@ -5,10 +5,6 @@ experiment_name: dpv2-cli-automl-classifier-experiment
 # name: dpv2-cli-classifier-train-job-advanced-01
 description: A Classification job using bank marketing
 
-resources:
-  instance_count: 4
-  instance_type: Standard_DS3_v2
-
 task: classification
 log_verbosity: debug
 primary_metric: accuracy
