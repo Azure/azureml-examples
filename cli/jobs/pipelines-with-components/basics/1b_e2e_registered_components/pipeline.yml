@@ -17,7 +17,7 @@ outputs:
     mode: upload
 
 settings:
- default_compute: azureml:cpu-cluster
+ default_compute: azureml:serverless
 
 jobs:
   train_job:
