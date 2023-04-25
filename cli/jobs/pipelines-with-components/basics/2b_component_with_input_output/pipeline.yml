@@ -8,11 +8,12 @@ outputs:
   pipeline_sample_output_data:
     mode: upload
 
+settings:
+  default_compute: azureml:serverless
 jobs:
   hello_python_world_job:
     type: command
-    component: ./component.yml
-    compute: azureml:cpu-cluster
+    component: ./component.yml    
     inputs:
       sample_input_data: 
         type: uri_folder
