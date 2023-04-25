@@ -11,7 +11,7 @@ outputs:
     path: azureml://datastores/workspaceblobstore/paths/azureml/4b_datastore_datapath_uri
 
 settings:
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
 
 jobs:
   component_folder:
