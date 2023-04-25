@@ -12,6 +12,5 @@ jobs:
   hello_world:
     command: echo "hello" && echo "world" > ${{outputs.output}}
     environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
-    compute: azureml:cpu-cluster
     outputs:
       output: ${{parent.outputs.output}}
