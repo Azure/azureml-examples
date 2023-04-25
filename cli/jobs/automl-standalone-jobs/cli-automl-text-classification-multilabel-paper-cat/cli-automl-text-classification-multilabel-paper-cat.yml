@@ -4,7 +4,9 @@ type: automl
 experiment_name: dpv2-cli-text-classification-multilabel-paper-cat
 description: A text classification multilabel job using paper categorization data
 
-compute: azureml:gpu-cluster
+resources:
+  instance_count: 2
+  instance_type: Standard_NC6s_v3
 
 task: text_classification_multilabel
 primary_metric: accuracy
