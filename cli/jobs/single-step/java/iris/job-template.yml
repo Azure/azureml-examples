@@ -21,7 +21,6 @@ environment:
     path: src/main/resources/Docker
     #azureml:java-env:1
 
-compute: azureml:cpucluster
 display_name: aml-mlflow-java-example
 experiment_name: aml-mlflow-java-example
 description: 
