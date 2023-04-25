@@ -4,7 +4,9 @@ type: automl
 experiment_name: dpv2-cli-text-classification-newsgroup-experiment
 description: A text classification job using newsgroup dataset
 
-compute: azureml:gpu-cluster
+resources:
+  instance_count: 2
+  instance_type: Standard_NC6s_v3
 
 task: text_classification
 primary_metric: accuracy
