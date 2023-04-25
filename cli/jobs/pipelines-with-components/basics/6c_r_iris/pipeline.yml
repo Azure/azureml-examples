@@ -2,12 +2,12 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: 6c_r_iris
 description: Train an R model on the Iris dataset.
-
+settings:
+  default_compute: azureml:serverless
 jobs:
   r_iris_example:
     type: command
-    component: ./component.yml
-    compute: azureml:cpu-cluster
+    component: ./component.yml    
     inputs:
       iris: 
         type: uri_file
