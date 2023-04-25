@@ -32,13 +32,13 @@ environment_variables:
   # CUDA_DEVICE_ORDER: "PCI_BUS_ID" # ordering of gpus
 
 
-compute: azureml:gpu-cluster
 
 distribution:
   type: mpi
   process_count_per_instance: 1 # NOTE: set equal to number of gpus on the node
 
 resources:
+  instance_type: Standard_NC6s_v3
   instance_count: 1 # NOTE: to use multiple nodes
 
 experiment_name: nccl-test
