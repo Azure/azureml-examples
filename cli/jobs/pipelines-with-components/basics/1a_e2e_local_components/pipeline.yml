@@ -4,6 +4,8 @@ type: pipeline
 display_name: 1a_e2e_local_components
 description: Dummy train-score-eval pipeline with local components
 
+settings:
+  default_compute: azureml:serverless
 inputs:
   pipeline_job_training_max_epocs: 20
   pipeline_job_training_learning_rate: 1.8
@@ -17,8 +19,7 @@ outputs:
 
 jobs:
   train_job:
-    type: command
-    compute: azureml:cpu-cluster
+    type: command    
     component: ./train.yml
     inputs:
       training_data: 
@@ -32,8 +33,7 @@ jobs:
   
   score_job:
     type: command
-    component: ./score.yml
-    compute: azureml:cpu-cluster
+    component: ./score.yml    
     inputs:
       model_input: ${{parent.jobs.train_job.outputs.model_output}}
       test_data: 
@@ -45,8 +45,7 @@ jobs:
 
   evaluate_job:
     type: command
-    component: ./eval.yml
-    compute: azureml:cpu-cluster
+    component: ./eval.yml    
     inputs:
       scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
     outputs:
