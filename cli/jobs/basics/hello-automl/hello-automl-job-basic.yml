@@ -5,7 +5,6 @@ experiment_name: dpv2-cli-automl-classifier-experiment
 # name: dpv2-cli-classifier-train-job-basic-01
 description: A Classification job using bank marketing
 
-compute: azureml:cpu-cluster
 
 task: classification
 primary_metric: accuracy
