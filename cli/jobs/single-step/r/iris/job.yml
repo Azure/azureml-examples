@@ -10,7 +10,6 @@ inputs:
 environment:
   build:
     path: docker-context
-compute: azureml:cpu-cluster
 display_name: r-iris-example
 experiment_name: r-iris-example
 description: Train an R model on the Iris dataset.
