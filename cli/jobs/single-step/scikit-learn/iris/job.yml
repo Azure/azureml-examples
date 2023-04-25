@@ -14,7 +14,6 @@ inputs:
   kernel: "rbf"
   coef0: 0.1
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:cpu-cluster
 display_name: sklearn-iris-example
 experiment_name: sklearn-iris-example
 description: Train a scikit-learn SVM on the Iris dataset.
