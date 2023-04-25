@@ -3,9 +3,10 @@ type: pipeline
 display_name: 5b_env_registered
 description: Pipeline job with component using a registered AzureML environment
 
+settings:
+  default_compute: azureml:serverless
 jobs:
   hello_python_world_job:
     type: command
-    component: file:./component.yml
-    compute: azureml:cpu-cluster
+    component: file:./component.yml    
 
