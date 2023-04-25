@@ -1,7 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_customize_output_file
-
+settings:
+    default_compute: azureml:serverless
 outputs:
   output:
     type: uri_file
