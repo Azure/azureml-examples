@@ -1,5 +1,5 @@
 from base_jsonl_converter import JSONLConverter
-from azureml.automl.dnn.vision.object_detection.common import masktools
+import masktools
 import pycocotools.mask as mask
 import json
 

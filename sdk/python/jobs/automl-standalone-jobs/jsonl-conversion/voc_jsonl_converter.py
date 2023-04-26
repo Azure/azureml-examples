@@ -3,7 +3,7 @@ import os
 import xml.etree.ElementTree as ET
 import numpy as np
 import PIL.Image as Image
-from azureml.automl.dnn.vision.object_detection.common import masktools
+import masktools
 import torch
 
 
@@ -81,7 +81,6 @@ class VOCJSONLConverter(JSONLConverter):
                     labels.append(
                         {
                             "label": name,
-                            "bbox": "null",
                             "isCrowd": isCrowd,
                             "polygon": polygons[index],
                         }
