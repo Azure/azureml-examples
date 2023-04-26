@@ -3,4 +3,6 @@ name: hello-batch-dpl
 description: A hello world deployment with a single step.
 endpoint_name: hello-pipeline-batch
 type: pipeline
-component: azureml:hello-component@latest
+component: azureml:hello_batch@latest
+settings:
+    default_compute: batch-cluster

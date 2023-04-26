@@ -33,7 +33,7 @@ az ml batch-endpoint create --name $ENDPOINT_NAME -f endpoint.yml
 #</create_endpoint>
 
 #<query_endpoint>
-az ml batch-endpoint show -name $ENDPOINT_NAME
+az ml batch-endpoint show --name $ENDPOINT_NAME
 #</query_endpoint>
 
 #<create_deployment>
@@ -49,7 +49,7 @@ az ml job stream -n $JOB_NAME
 #</stream_job_logs>
 
 #<child_jobs_name_prepare>
-PREPARE_JOB=$(az ml job list --parent-job-name $JOB_NAME | jq -r ".[0].name")
+PREPARE_JOB=$(az ml job list --parent-job-name $JOB_NAME | jq -r ".[].name")
 #</child_jobs_name_prepare>
 
 #<download_outputs_prepare>

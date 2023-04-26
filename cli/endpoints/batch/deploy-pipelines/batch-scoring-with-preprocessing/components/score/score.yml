@@ -1,7 +1,6 @@
 # <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: uci_heart_score
-version: 1
 display_name: UCI Heart Classifier Score
 type: command
 inputs:

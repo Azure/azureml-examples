@@ -9,4 +9,3 @@ outputs:
   scores:
     type: uri_folder
     mode: upload
-    path: azureml://datastores/workspaceblobstore/paths/uci-classifier-prepros-xgb/batch-job

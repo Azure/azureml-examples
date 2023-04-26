@@ -4,7 +4,7 @@ az configure --defaults workspace=<workspace> group=<resource-group> location=<l
 #</connect_workspace>
 
 #<name_endpoint>
-ENDPOINT_NAME="hello-batch-component"
+ENDPOINT_NAME="hello-batch"
 #</name_endpoint>
 
 #<create_random_endpoint_name>
@@ -25,7 +25,7 @@ az ml batch-endpoint create --name $ENDPOINT_NAME  -f endpoint.yml
 #</create_endpoint>
 
 #<query_endpoint>
-az ml batch-endpoint show -name $ENDPOINT_NAME
+az ml batch-endpoint show --name $ENDPOINT_NAME
 #</query_endpoint>
 
 #<create_deployment>

@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
 name: hello_batch
-display_name: Hello Batch
+display_name: Hello Batch component
 version: 1
 type: pipeline
 jobs:
