@@ -2,6 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 endpoint_name: imagenet-classifier-batch
 name: imagenet-classifier-resnetv2
 description: A ResNetV2 model architecture for performing ImageNet classification in batch
+type: model
 model: azureml:imagenet-classifier@latest
 compute: azureml:gpu-cluster
 environment:
@@ -16,12 +17,13 @@ resources:
 tags:
   device_acceleration: CUDA
   device_batching: 16
-max_concurrency_per_instance: 1
-mini_batch_size: 5
-output_action: append_row
-output_file_name: predictions.csv
-retry_settings:
-  max_retries: 3
-  timeout: 300
-error_threshold: -1
-logging_level: info
+settings:
+  max_concurrency_per_instance: 1
+  mini_batch_size: 5
+  output_action: append_row
+  output_file_name: predictions.csv
+  retry_settings:
+    max_retries: 3
+    timeout: 300
+  error_threshold: -1
+  logging_level: info
