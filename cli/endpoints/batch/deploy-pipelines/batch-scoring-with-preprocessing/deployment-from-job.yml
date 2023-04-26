@@ -1,9 +1,0 @@
-$schema: http://azureml/sdk-2-0/BatchDeployment.json
-name: uci-classifier-prepros-jobs
-description: A sample deployment with pre and post processing done before and after inference. This deployment is created from a pipeline job.
-endpoint_name: uci-classifier-batch
-type: pipeline
-job_definition: azureml:job_name_placeholder
-settings:
-    continue_on_step_failure: false
-    default_compute: batch-cluster 
