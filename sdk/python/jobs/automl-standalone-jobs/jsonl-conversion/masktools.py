@@ -3,14 +3,17 @@ from pycocotools import mask as pycoco_mask
 from simplification.cutil import simplify_coords
 from skimage import measure
 
+
 class MaskToolsLiterals:
     """String keys for Mask tool parameters"""
-    MASK_PIXEL_SCORE_THRESHOLD = 'mask_pixel_score_threshold'
-    MAX_NUMBER_OF_POLYGON_POINTS = 'max_number_of_polygon_points'
+
+    MASK_PIXEL_SCORE_THRESHOLD = "mask_pixel_score_threshold"
+    MAX_NUMBER_OF_POLYGON_POINTS = "max_number_of_polygon_points"
 
 
 class MaskToolsParameters:
     """Default values for mask tool parameters."""
+
     DEFAULT_MASK_PIXEL_SCORE_THRESHOLD = 0.5
     DEFAULT_MAX_NUMBER_OF_POLYGON_POINTS = 100
     DEFAULT_MAX_NUMBER_OF_POLYGON_SIMPLIFICATIONS = 25
@@ -20,10 +23,13 @@ class MaskToolsParameters:
     DEFAULT_GRABCUT_NUMBER_ITERATIONS = 5
     DEFAULT_MASK_REFINE_POINTS = 25
 
+
 def convert_mask_to_polygon(
-        rle_mask, max_polygon_points=MaskToolsParameters.DEFAULT_MAX_NUMBER_OF_POLYGON_POINTS,
-        max_refinement_iterations=MaskToolsParameters.DEFAULT_MAX_NUMBER_OF_POLYGON_SIMPLIFICATIONS,
-        edge_safety_padding=MaskToolsParameters.DEFAULT_MASK_SAFETY_PADDING):
+    rle_mask,
+    max_polygon_points=MaskToolsParameters.DEFAULT_MAX_NUMBER_OF_POLYGON_POINTS,
+    max_refinement_iterations=MaskToolsParameters.DEFAULT_MAX_NUMBER_OF_POLYGON_SIMPLIFICATIONS,
+    edge_safety_padding=MaskToolsParameters.DEFAULT_MASK_SAFETY_PADDING,
+):
     """Convert a run length encoded mask to a polygon outline in normalized coordinates.
 
     :param rle_mask: Run length encoding of a binary mask
@@ -43,11 +49,17 @@ def convert_mask_to_polygon(
     image_shape = mask_array.shape
 
     # Pad the mask to avoid errors at the edge of the mask
-    embedded_mask = numpy.zeros((image_shape[0] + 2 * edge_safety_padding,
-                                 image_shape[1] + 2 * edge_safety_padding),
-                                dtype=numpy.uint8)
-    embedded_mask[edge_safety_padding:image_shape[0] + edge_safety_padding,
-                  edge_safety_padding:image_shape[1] + edge_safety_padding] = mask_array
+    embedded_mask = numpy.zeros(
+        (
+            image_shape[0] + 2 * edge_safety_padding,
+            image_shape[1] + 2 * edge_safety_padding,
+        ),
+        dtype=numpy.uint8,
+    )
+    embedded_mask[
+        edge_safety_padding : image_shape[0] + edge_safety_padding,
+        edge_safety_padding : image_shape[1] + edge_safety_padding,
+    ] = mask_array
 
     # Find Image Contours
     contours = measure.find_contours(embedded_mask, 0.5)
@@ -58,7 +70,10 @@ def convert_mask_to_polygon(
         # Iteratively reduce polygon points, if necessary
         if max_polygon_points is not None:
             simplify_factor = 0
-            while len(contour) > max_polygon_points and simplify_factor < max_refinement_iterations:
+            while (
+                len(contour) > max_polygon_points
+                and simplify_factor < max_refinement_iterations
+            ):
                 contour = simplify_coords(contour, simplify_factor)
                 simplify_factor += 1
 
@@ -98,15 +113,17 @@ def decode_rle_masks_as_binary_mask(rle_masks):
 
     return base_mask
 
+
 def _normalize_contour(contours, image_shape):
 
     height, width = image_shape[0], image_shape[1]
 
     for contour in contours:
-        contour[::2] = [x * 1. / width for x in contour[::2]]
-        contour[1::2] = [y * 1. / height for y in contour[1::2]]
+        contour[::2] = [x * 1.0 / width for x in contour[::2]]
+        contour[1::2] = [y * 1.0 / height for y in contour[1::2]]
 
     return contours
+
 
 def encode_mask_as_rle(mask):
     """Encode binary mask via run-length encoding.
@@ -119,8 +136,8 @@ def encode_mask_as_rle(mask):
     if len(mask.shape) == 2:
         mask = mask.unsqueeze(0)
 
-    rle = pycoco_mask.encode(numpy.array(mask[0, :, :, numpy.newaxis],
-                                         dtype=numpy.uint8,
-                                         order="F"))[0]
+    rle = pycoco_mask.encode(
+        numpy.array(mask[0, :, :, numpy.newaxis], dtype=numpy.uint8, order="F")
+    )[0]
     rle["counts"] = rle["counts"].decode("utf-8")
     return rle
