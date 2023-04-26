@@ -8,6 +8,12 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head -n 1)
 ENDPOINT_NAME="mnist-batch-$ENDPOINT_SUFIX"
 
+echo "Registering the first model"
+# <register_model>
+MODEL_NAME='mnist-classifier-torch'
+az ml model create --name $MODEL_NAME --type "custom_model" --path "deployment-torch/model"
+# </register_model>
+
 echo "Creating compute"
 # <create_compute>
 az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
@@ -98,10 +104,21 @@ else
 fi
 # </check_job_status>
 
+echo "Download scores to local path"
+# <download_scores>
+az ml job download --name $JOB_NAME --output-name score --download-path ./
+# </download_scores>
+
 echo "List all jobs under the batch deployment"
 # <list_all_jobs>
 az ml batch-deployment list-jobs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --query [].name
 # </list_all_jobs>
+
+echo "Registering the second model"
+# <register_model_not_default>
+MODEL_NAME='mnist-classifier-keras'
+az ml model create --name $MODEL_NAME --type "custom_model" --path "deployment-keras/model"
+# </register_model_not_default>
 
 echo "Create a new batch deployment, not setting it as default this time"
 # <create_new_deployment_not_default>
