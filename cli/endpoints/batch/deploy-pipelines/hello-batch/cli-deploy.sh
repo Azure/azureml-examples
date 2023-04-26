@@ -40,6 +40,14 @@ JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME | jq -r ".name")
 az ml job stream -n $JOB_NAME
 #</stream_job_logs>
 
+#<run_pipeline_job_deployment>
+JOB_NAME=$(az ml job create -f pipeline-job.yml | jq -r ".name")
+#</run_pipeline_job_deployment>
+
+#<create_deployment_from_job>
+az ml batch-deployment create --endpoint $ENDPOINT_NAME --set job_definition=azureml:$JOB_NAME -f deployment-from-job.yml
+#</create_deployment_from_job>
+
 #<delete_endpoint>
 az ml batch-endpoint delete -n $ENDPOINT_NAME --yes
 #</delete_endpoint>
