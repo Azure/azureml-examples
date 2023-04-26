@@ -68,6 +68,14 @@ az ml job list --parent-job-name $JOB_NAME | jq -r ".[].name"
 az ml job download --name $JOB_NAME --output-name scores
 #</download_outputs>
 
+#<run_pipeline_job_deployment>
+JOB_NAME=$(az ml job create -f pipeline-job.yml --set inputs.input_data.path=data/unlabeled | jq -r ".name")
+#</run_pipeline_job_deployment>
+
+#<create_deployment_from_job>
+az ml batch-deployment create --endpoint $ENDPOINT_NAME --set job_definition=azureml:$JOB_NAME -f deployment-from-job.yml
+#</create_deployment_from_job>
+
 #<delete_endpoint>
 az ml batch-endpoint delete -n $ENDPOINT_NAME --yes
 #</delete_endpoint>
