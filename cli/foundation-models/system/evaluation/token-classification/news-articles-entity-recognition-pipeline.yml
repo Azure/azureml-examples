@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: named-entity-recognition-model-evaluation-subgraph
+
+compute: gpu-cluster-big
+
+jobs:
+  pipeline_component_job:
+    type: pipeline
+    component: azureml://registries/azureml-preview/components/model_evaluation_pipeline/labels/latest
+    inputs:
+      task: text-named-entity-recognition
+      test_data:
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/token-classification/conll2003/small-test.jsonl"
+        type: uri_file
+      mlflow_model: 
+        path: azureml://registries/azureml-preview/models/jean-baptiste-camembert-ner/versions/3
+      label_column_name: ner_tags_str
+      device: gpu
