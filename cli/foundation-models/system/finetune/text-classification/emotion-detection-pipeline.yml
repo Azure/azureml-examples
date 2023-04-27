@@ -1,0 +1,75 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: text-classification-emotion-detection
+
+inputs:
+  compute_model_import: gpu-cluster-big
+  compute_preprocess: gpu-cluster-big
+  compute_finetune: gpu-cluster-big
+  compute_model_evaluation: gpu-cluster-big
+
+  # specify the foundation model available in the azureml system registry
+  mlflow_model_path: 
+    path: azureml://registries/azureml-preview/models/bert-based-uncased/versions/3
+    # huggingface_id: 'bert-base-uncased' # if you want to use a huggingface model, uncomment this line and comment the above line
+
+  # map the dataset files to parameters
+  train_file_path: 
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_train.jsonl"
+  validation_file_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_validation.jsonl"
+  test_file_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+  evaluation_config_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.json"
+  
+  
+  # The following parameters map to the dataset fields
+  sentence1_key: "text"
+  label_key: "label_string"
+
+  # training settings
+  number_of_gpu_to_use_finetuning: 2
+  num_train_epochs: 3
+  learning_rate: 2e-5
+
+outputs:
+  # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
+  # registering the model is required to deploy the model to an online or batch endpoint
+  trained_model:
+    type: mlflow_model
+
+settings:
+  force_rerun: true
+
+jobs:
+  emotion_detection_finetune_job:
+    type: pipeline
+    # component: azureml://registries/azureml-preview/components/text_classification_pipeline/versions/0.0.3
+    component: azureml://registries/azureml-preview/components/text_classification_pipeline/labels/latest
+    inputs:
+      mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
+
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_preprocess: ${{parent.inputs.compute_preprocess}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+      compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
+
+      train_file_path: ${{parent.inputs.train_file_path}}
+      validation_file_path: ${{parent.inputs.validation_file_path}}
+      test_file_path: ${{parent.inputs.test_file_path}}
+      evaluation_config: ${{parent.inputs.evaluation_config_path}}
+
+      sentence1_key: ${{parent.inputs.sentence1_key}}
+      label_key: ${{parent.inputs.label_key}}
+
+      number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
+      num_train_epochs: ${{parent.inputs.num_train_epochs}}
+      learning_rate: ${{parent.inputs.learning_rate}}
+    outputs:
+      mlflow_model_folder: ${{parent.outputs.trained_model}}
