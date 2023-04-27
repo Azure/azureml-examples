@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/batch/deploy-models/heart-classifier-mlflow/**
+      - cli/endpoints/batch/**
       - infra/**
       - .github/workflows/cli-endpoints-batch-deploy-models-heart-classifier-mlflow-endpoint.yml
       - cli/setup.sh
