@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-foundation-models-system-evaluation-text-named-entity-recognition-news-articles-entity-recognition
+name: sdk-foundation-models-system-evaluation-summarization-abstractive-and-extractive-summarization
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "8 2/12 * * *"
+    - cron: "28 9/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/foundation-models/system/evaluation/text-named-entity-recognition/**
-      - .github/workflows/sdk-foundation-models-system-evaluation-text-named-entity-recognition-news-articles-entity-recognition.yml
+      - sdk/python/foundation-models/system/evaluation/summarization/**
+      - .github/workflows/sdk-foundation-models-system-evaluation-summarization-abstractive-and-extractive-summarization.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -60,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/system/evaluation/text-named-entity-recognition/news-articles-entity-recognition.ipynb
+    - name: run foundation-models/system/evaluation/summarization/abstractive-and-extractive-summarization.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "news-articles-entity-recognition.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "abstractive-and-extractive-summarization.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python news-articles-entity-recognition.ipynb news-articles-entity-recognition.output.ipynb
-      working-directory: sdk/python/foundation-models/system/evaluation/text-named-entity-recognition
+          papermill -k python abstractive-and-extractive-summarization.ipynb abstractive-and-extractive-summarization.output.ipynb
+      working-directory: sdk/python/foundation-models/system/evaluation/summarization
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: news-articles-entity-recognition
-        path: sdk/python/foundation-models/system/evaluation/text-named-entity-recognition
+        name: abstractive-and-extractive-summarization
+        path: sdk/python/foundation-models/system/evaluation/summarization

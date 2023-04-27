@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-foundation-models-system-evaluation-text-translation-translation-romanian-to-english
+name: sdk-foundation-models-system-evaluation-token-classification-news-articles-entity-recognition
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "28 3/12 * * *"
+    - cron: "8 2/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/foundation-models/system/evaluation/text-translation/**
-      - .github/workflows/sdk-foundation-models-system-evaluation-text-translation-translation-romanian-to-english.yml
+      - sdk/python/foundation-models/system/evaluation/token-classification/**
+      - .github/workflows/sdk-foundation-models-system-evaluation-token-classification-news-articles-entity-recognition.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -60,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/system/evaluation/text-translation/translation-romanian-to-english.ipynb
+    - name: run foundation-models/system/evaluation/token-classification/news-articles-entity-recognition.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "translation-romanian-to-english.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "news-articles-entity-recognition.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python translation-romanian-to-english.ipynb translation-romanian-to-english.output.ipynb
-      working-directory: sdk/python/foundation-models/system/evaluation/text-translation
+          papermill -k python news-articles-entity-recognition.ipynb news-articles-entity-recognition.output.ipynb
+      working-directory: sdk/python/foundation-models/system/evaluation/token-classification
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: translation-romanian-to-english
-        path: sdk/python/foundation-models/system/evaluation/text-translation
+        name: news-articles-entity-recognition
+        path: sdk/python/foundation-models/system/evaluation/token-classification
