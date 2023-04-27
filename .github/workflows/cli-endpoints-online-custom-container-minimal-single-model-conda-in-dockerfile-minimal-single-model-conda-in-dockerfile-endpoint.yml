@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/**
+      - cli/endpoints/online/**
       - infra/**
       - .github/workflows/cli-endpoints-online-custom-container-minimal-single-model-conda-in-dockerfile-minimal-single-model-conda-in-dockerfile-endpoint.yml
       - cli/setup.sh
