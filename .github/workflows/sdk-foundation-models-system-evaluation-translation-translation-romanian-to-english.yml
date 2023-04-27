@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-foundation-models-system-evaluation-text-summarization-abstractive-and-extractive-summarization
+name: sdk-foundation-models-system-evaluation-translation-translation-romanian-to-english
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "28 9/12 * * *"
+    - cron: "28 3/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/foundation-models/system/evaluation/text-summarization/**
-      - .github/workflows/sdk-foundation-models-system-evaluation-text-summarization-abstractive-and-extractive-summarization.yml
+      - sdk/python/foundation-models/system/evaluation/translation/**
+      - .github/workflows/sdk-foundation-models-system-evaluation-translation-translation-romanian-to-english.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -60,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/system/evaluation/text-summarization/abstractive-and-extractive-summarization.ipynb
+    - name: run foundation-models/system/evaluation/translation/translation-romanian-to-english.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "abstractive-and-extractive-summarization.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "translation-romanian-to-english.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python abstractive-and-extractive-summarization.ipynb abstractive-and-extractive-summarization.output.ipynb
-      working-directory: sdk/python/foundation-models/system/evaluation/text-summarization
+          papermill -k python translation-romanian-to-english.ipynb translation-romanian-to-english.output.ipynb
+      working-directory: sdk/python/foundation-models/system/evaluation/translation
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: abstractive-and-extractive-summarization
-        path: sdk/python/foundation-models/system/evaluation/text-summarization
+        name: translation-romanian-to-english
+        path: sdk/python/foundation-models/system/evaluation/translation
