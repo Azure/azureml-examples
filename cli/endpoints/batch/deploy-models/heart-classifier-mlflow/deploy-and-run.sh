@@ -9,9 +9,9 @@ ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head 
 ENDPOINT_NAME="heart-classifier-$ENDPOINT_SUFIX"
 
 # <register_model>
-MODEL_NAME='heart-classifier'
+MODEL_NAME='heart-classifier-mlflow'
 az ml model create --name $MODEL_NAME --type "mlflow_model" --path "model"
-# <register_model>
+# </register_model>
 
 # <register_dataset>
 az ml data create -f heart-dataset-unlabeled.yml
@@ -125,6 +125,11 @@ else
   exit 2
 fi
 # </check_job_status>
+
+echo "Download scores to local path"
+# <download_scores>
+az ml job download --name $JOB_NAME --output-name score --download-path ./
+# </download_scores>
 
 echo "Delete resources"
 # <delete_endpoint>

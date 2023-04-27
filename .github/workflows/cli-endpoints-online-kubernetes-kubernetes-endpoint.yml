@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/online/kubernetes/**
+      - cli/endpoints/online/**
       - infra/**
       - .github/workflows/cli-endpoints-online-kubernetes-kubernetes-endpoint.yml
       - cli/setup.sh
@@ -61,13 +62,6 @@ jobs:
           source "${{ github.workspace }}/infra/init_environment.sh";
           cat endpoints/online/kubernetes/kubernetes-blue-deployment.yml
           az ml online-deployment create -e ekuberneteskubernetesendpoint -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml
-      working-directory: cli
-    - name: create deployment
-      run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          cat endpoints/online/kubernetes/kubernetes-green-deployment.yml
-          az ml online-deployment create -e ekuberneteskubernetesendpoint -f endpoints/online/kubernetes/kubernetes-green-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
