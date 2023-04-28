@@ -37,14 +37,11 @@ jobs:
     inputs:
       data: ${{parent.jobs.preprocess_job.outputs.prepared_data}}
       target_column: target
-      register_best_model: false
       eval_size: 0.3
     outputs:
       model: 
-        mode: upload
         type: mlflow_model
         path: ${{parent.outputs.model}}
       evaluation_results:
-        mode: upload
         type: uri_folder
         path: ${{parent.outputs.evaluation_results}}
