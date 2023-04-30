@@ -1,0 +1,12 @@
+$schema: http://azureml/sdk-2-0/OnlineDeployment.json
+
+endpoint_name: my_endpoint 
+name: blue 
+model: azureml:my-model-m1:1 
+environment: azureml:env-m1:1 
+data_collector:
+    collections:
+        request:
+            enabled: true # <true, false>
+        response:
+            enabled: true # <true, false>
