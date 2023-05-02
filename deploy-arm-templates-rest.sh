@@ -11,7 +11,7 @@ schema='$schema'
 echo -e "Using:\nSUBSCRIPTION_ID=$SUBSCRIPTION_ID\nLOCATION=$LOCATION\nRESOURCE_GROUP=$RESOURCE_GROUP\nWORKSPACE=$WORKSPACE"
 
 # <read_condafile>
-CONDA_FILE=$(< cli/endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(< cli/endpoints/online/model-1/environment/conda.yaml)
 # <read_condafile>
 
 #<get_access_token>
@@ -234,7 +234,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # <\create_model>
 
 # <read_condafile>
-CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yaml)
 # <read_condafile>
 
 # <create_environment>

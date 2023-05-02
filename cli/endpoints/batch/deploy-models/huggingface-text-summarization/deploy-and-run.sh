@@ -12,7 +12,7 @@ echo "Download model from HuggingFace"
 # <download_model>
 if [ ! -d model ]
 then
-  conda env create -f environment/torch113-conda.yml
+  conda env create -f environment/torch113-conda.yaml
   conda activate huggingface-env
   
   # fix CI on GHA agents
@@ -36,7 +36,7 @@ else
 # <register_model>
   MODEL_NAME='bart-text-summarization'
   az ml model create --name $MODEL_NAME --path "model"
-# <register_model>  
+# </register_model>  
 fi
 
 echo "Creating compute with GPU"
@@ -95,6 +95,11 @@ else
   exit 2
 fi
 # </check_job_status>
+
+echo "Download scores to local path"
+# <download_scores>
+az ml job download --name $JOB_NAME --output-name score --download-path ./
+# </download_scores>
 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
