@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: lightgbm-deployment
 endpoint_name: my-endpoint
 model:
-  name: mir-sample-lightgbm-mlflow-model
+  name: mir-sample-lightgbm-ncd-model
   version: 1
   path: lightgbm-iris/model
   type: mlflow_model

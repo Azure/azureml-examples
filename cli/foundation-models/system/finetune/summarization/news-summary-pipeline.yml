@@ -1,0 +1,77 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: summarization-news-summary
+
+inputs:
+  compute_model_import: gpu-cluster-big
+  compute_preprocess: gpu-cluster-big
+  compute_finetune: gpu-cluster-big
+  compute_model_evaluation: gpu-cluster-big
+
+  # specify the foundation model available in the azureml system registry
+  mlflow_model_path: 
+    path: azureml://registries/azureml-preview/models/t5-small/versions/4
+    # huggingface_id: 't5-small' # if you want to use a huggingface model, uncomment this line and comment the above line
+
+  # map the dataset files to parameters
+  train_file_path: 
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_train.jsonl"
+  validation_file_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_validation.jsonl"
+  test_file_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/news-summary-dataset/small_test.jsonl"
+  evaluation_config_path:
+    type: uri_file
+    path: "../../../../../sdk/python/foundation-models/system/finetune/summarization/summarization-config.json"
+  
+  
+  # The following parameters map to the dataset fields
+  # document_key parameter maps to the "article" field in the news summary dataset
+  document_key: "article"
+  # summary_key parameter maps to the "highlights" field in the news summary dataset
+  summary_key: "highlights"
+
+  # training settings
+  number_of_gpu_to_use_finetuning: 2
+  num_train_epochs: 3
+  learning_rate: 2e-5
+
+outputs:
+  # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
+  # registering the model is required to deploy the model to an online or batch endpoint
+  trained_model:
+    type: mlflow_model
+
+settings:
+  force_rerun: true
+
+jobs:
+  news_summary_finetune_job:
+    type: pipeline
+    # component: azureml://registries/azureml-preview/components/summarization_pipeline/versions/0.0.3
+    component: azureml://registries/azureml-preview/components/summarization_pipeline/labels/latest
+    inputs:
+      mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
+
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_preprocess: ${{parent.inputs.compute_preprocess}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+      compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
+
+      train_file_path: ${{parent.inputs.train_file_path}}
+      validation_file_path: ${{parent.inputs.validation_file_path}}
+      test_file_path: ${{parent.inputs.test_file_path}}
+      evaluation_config: ${{parent.inputs.evaluation_config_path}}
+
+      document_key: ${{parent.inputs.document_key}}
+      summary_key: ${{parent.inputs.summary_key}}
+
+      number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
+      num_train_epochs: ${{parent.inputs.num_train_epochs}}
+      learning_rate: ${{parent.inputs.learning_rate}}
+    outputs:
+      mlflow_model_folder: ${{parent.outputs.trained_model}}
