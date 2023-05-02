@@ -19,7 +19,7 @@ gpus_per_node=2
 # This is the foundation model for finetuning
 model_name="t5-small"
 # using the latest version of the model - not working yet
-model_version=1
+model_version=3
 
 version=$(date +%s)
 finetuned_model_name=$model_name"-wmt16-en-ro"
