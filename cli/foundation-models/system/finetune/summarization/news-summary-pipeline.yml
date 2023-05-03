@@ -11,7 +11,7 @@ inputs:
 
   # specify the foundation model available in the azureml system registry
   mlflow_model_path: 
-    path: azureml://registries/azureml-preview/models/t5-small/versions/4
+    path: azureml://registries/azureml/models/t5-small/versions/3
     # huggingface_id: 't5-small' # if you want to use a huggingface model, uncomment this line and comment the above line
 
   # map the dataset files to parameters
@@ -50,10 +50,9 @@ settings:
   force_rerun: true
 
 jobs:
-  news_summary_finetune_job:
+  summarization_pipeline:
     type: pipeline
-    # component: azureml://registries/azureml-preview/components/summarization_pipeline/versions/0.0.3
-    component: azureml://registries/azureml-preview/components/summarization_pipeline/labels/latest
+    component: azureml://registries/azureml/components/summarization_pipeline/labels/latest
     inputs:
       mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
 
