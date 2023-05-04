@@ -1,17 +1,12 @@
+import mltable
 import shutil
 import os
-import yaml
 
 
-def create_ml_table(csv_file, output, delimiter=",", encoding="ascii"):
-    os.makedirs(output, exist_ok=True)
-    fname = os.path.split(csv_file)[-1]
-    mltable = {
-        "paths": [{"file": f"./{fname}"}],
-        "transformations": [
-            {"read_delimited": {"delimiter": delimiter, "encoding": encoding}}
-        ],
-    }
-    with open(os.path.join(output, "MLTable"), "w") as f:
-        f.write(yaml.dump(mltable))
-    shutil.copy(csv_file, os.path.join(output, fname))
+def create_ml_table(data_frame, file_name, output_folder):
+    os.makedirs(output_folder, exist_ok=True)
+    data_path = os.path.join(output_folder, file_name)
+    data_frame.to_parquet(data_path, index=False)
+    paths = [{"file": data_path}]
+    ml_table = mltable.from_parquet_files(paths)
+    ml_table.save(output_folder)
