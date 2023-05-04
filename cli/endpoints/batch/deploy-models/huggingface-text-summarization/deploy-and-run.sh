@@ -4,6 +4,10 @@ set -e
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_variables>
 
+# <name_endpoint>
+ENDPOINT_NAME="text-summarization"
+# </name_endpoint>
+
 # The following code ensures the created deployment has a unique name
 ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head -n 1)
 ENDPOINT_NAME="text-summarization-$ENDPOINT_SUFIX"
@@ -45,25 +49,25 @@ az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NV6 --min-
 # </create_compute>
 
 echo "Creating batch endpoint $ENDPOINT_NAME"
-# <create_batch_endpoint>
+# <create_endpoint>
 az ml batch-endpoint create --file endpoint.yml  --name $ENDPOINT_NAME
-# </create_batch_endpoint>
-
-echo "Creating batch deployment for endpoint $ENDPOINT_NAME"
-# <create_batch_deployment_set_default>
-az ml batch-deployment create --file deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
-# </create_batch_deployment_set_default>
+# </create_endpoint>
 
 echo "Showing details of the batch endpoint"
-# <check_batch_endpooint_detail>
+# <query_endpoint>
 az ml batch-endpoint show --name $ENDPOINT_NAME
-# </check_batch_endpooint_detail>
+# </query_endpoint>
+
+echo "Creating batch deployment for endpoint $ENDPOINT_NAME"
+# <create_deployment>
+az ml batch-deployment create --file deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
+# </create_deployment>
 
 echo "Showing details of the batch deployment"
-# <check_batch_deployment_detail>
+# <query_deployment>
 DEPLOYMENT_NAME="text-summarization-hfbart"
 az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME
-# </check_batch_deployment_detail>
+# </query_deployment>
 
 echo "Invoking batch endpoint with local data"
 # <start_batch_scoring_job>
@@ -76,9 +80,9 @@ az ml job show -n $JOB_NAME --web
 # </show_job_in_studio>
 
 echo "Stream job logs to console"
-# <stream_job_logs_to_console>
+# <stream_job_logs>
 az ml job stream -n $JOB_NAME
-# </stream_job_logs_to_console>
+# </stream_job_logs>
 
 # <check_job_status>
 STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
@@ -97,9 +101,9 @@ fi
 # </check_job_status>
 
 echo "Download scores to local path"
-# <download_scores>
+# <download_outputs>
 az ml job download --name $JOB_NAME --output-name score --download-path ./
-# </download_scores>
+# </download_outputs>
 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
