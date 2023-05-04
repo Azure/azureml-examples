@@ -12,13 +12,13 @@ ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head 
 ENDPOINT_NAME="uci-classifier-train-$ENDPOINT_SUFIX"
 #</create_random_endpoint_name>
 
-#<environment_registration>
+#<create_environment>
 az ml environment create -f environment/xgboost-sklearn-py38.yml
-#</environment_registration>
+#</create_environment>
 
-#<data_asset_registration>
+#<create_data_asset>
 az ml data create --name heart-classifier-train --type uri_folder --path data/train
-#</data_asset_registration>
+#</create_data_asset>
 
 #<create_compute>
 az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
@@ -48,9 +48,9 @@ JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME --f inputs.yml | jq -r 
 az ml job stream -n $JOB_NAME
 #</stream_job_logs>
 
-#<child_jobs>
+#<get_child_jobs>
 az ml job list --parent-job-name $JOB_NAME | jq -r ".[].name"
-#</child_jobs>
+#</get_child_jobs>
 
 #<download_outputs>
 az ml job download --name $JOB_NAME --output-name transformations

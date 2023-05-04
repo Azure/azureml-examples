@@ -12,25 +12,25 @@ ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head 
 ENDPOINT_NAME="uci-classifier-score-$ENDPOINT_SUFIX"
 #</create_random_endpoint_name>
 
-#<environment_registration>
+#<create_environment>
 az ml environment create -f environment/xgboost-sklearn-py38.yml
-#</environment_registration>
+#</create_environment>
 
-#<model_registration>
+#<register_model>
 az ml model create --name heart-classifier --type mlflow_model --path model
-#</model_registration>
+#</register_model>
 
-#<transformation_registration>
+#<register_transformation>
 az ml model create --name heart-classifier-transforms --type custom_model --path transformations
-#</transformation_registration>
+#</register_transformation>
 
-#<preprocessing_component_register>
+#<register_preprocessing_component>
 az ml component create -f components/prepare/prepare.yml
-#</preprocessing_component_register>
+#</register_preprocessing_component>
 
-#<scoring_component_register>
+#<register_scoring_component>
 az ml component create -f components/score/score.yml
-#</scoring_component_register>
+#</register_scoring_component>
 
 #<create_compute>
 az ml compute create -n batch-cluster --type amlcompute --min-instances 0 --max-instances 5
@@ -60,9 +60,9 @@ JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME --f inputs.yml | jq -r 
 az ml job stream -n $JOB_NAME
 #</stream_job_logs>
 
-#<child_jobs_names>
+#<get_child_jobs>
 az ml job list --parent-job-name $JOB_NAME | jq -r ".[].name"
-#</child_jobs_names>
+#</get_child_jobs>
 
 #<download_outputs>
 az ml job download --name $JOB_NAME --output-name scores
