@@ -17,9 +17,9 @@ MODEL_NAME='heart-classifier-mlflow'
 az ml model create --name $MODEL_NAME --type "mlflow_model" --path "model"
 # </register_model>
 
-# <register_dataset>
+# <create_data_asset>
 az ml data create -f heart-dataset-unlabeled.yml
-# </register_dataset>
+# </create_data_asset>
 
 echo "Creating compute"
 # <create_compute>
