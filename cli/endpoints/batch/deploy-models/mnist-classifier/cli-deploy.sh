@@ -77,14 +77,15 @@ fi
 
 echo "Invoke batch endpoint with specific output file name"
 # <start_batch_scoring_job_set_output>
-export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --output-path azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
+OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
+OUTPUT_PATH="azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME"
+
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --output-path $OUTPUT_PATH --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
 # </start_batch_scoring_job_set_output>
 
 echo "Invoke batch endpoint with specific overwrites"
 # <start_batch_scoring_job_overwrite>
-export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --mini-batch-size 20 --instance-count 5 --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --mini-batch-size 20 --instance-count 5 --query name -o tsv)
 # </start_batch_scoring_job_overwrite>
 
 echo "Stream job detail"
