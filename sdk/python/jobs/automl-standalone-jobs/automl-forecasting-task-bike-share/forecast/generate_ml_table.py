@@ -1,5 +1,4 @@
 import mltable
-import shutil
 import os
 
 
