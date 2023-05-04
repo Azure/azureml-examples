@@ -1,0 +1,5 @@
+{
+  "metrics": ["perplexities"],
+  "model_id": "gpt2",
+  "add_start_token": true
+}
