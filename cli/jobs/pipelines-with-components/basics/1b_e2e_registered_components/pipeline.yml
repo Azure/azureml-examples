@@ -34,14 +34,14 @@ jobs:
       model_output: ${{parent.outputs.pipeline_job_trained_model}}
     services:
       my_vscode:
-        job_service_type: vs_code
+        type: vs_code
       my_jupyter_lab:
-        job_service_type: jupyter_lab
+        type: jupyter_lab
       my_tensorboard:
-        job_service_type: tensor_board
+        type: tensor_board
         log_dir: "outputs/tblogs"
     #  my_ssh:
-    #    job_service_type: tensor_board
+    #    type: tensor_board
     #    ssh_public_keys: <paste the entire pub key content>
     #    nodes: all # Use the `nodes` property to pick which node you want to enable interactive services on. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
 
