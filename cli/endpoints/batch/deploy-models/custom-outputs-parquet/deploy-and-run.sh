@@ -11,7 +11,7 @@ ENDPOINT_NAME="heart-classifier-$ENDPOINT_SUFIX"
 # <register_model>
 MODEL_NAME='heart-classifier-sklpipe'
 az ml model create --name $MODEL_NAME --type "custom_model" --path "model"
-# <register_model>
+# </register_model>
 
 echo "Creating compute"
 # <create_compute>
