@@ -18,7 +18,7 @@ gpus_per_node=2
 # This is the foundation model for finetuning
 model_name="t5-small"
 # using the latest version of the model - not working yet
-model_version=1
+model_version=3
 
 version=$(date +%s)
 finetuned_model_name=$model_name"-news-summary"
@@ -107,7 +107,7 @@ fi
 # need to switch to using latest version for model, currently blocked with a bug.
 # submit finetuning job
 parent_job_name=$( az ml job create --file ./news-summary-pipeline.yml $workspace_info --query name -o tsv --set \
-  jobs.news_summary_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
+  jobs.summarization_pipeline.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.compute_model_import=$compute_cluster \
   inputs.compute_preprocess=$compute_cluster \
   inputs.compute_finetune=$compute_cluster \

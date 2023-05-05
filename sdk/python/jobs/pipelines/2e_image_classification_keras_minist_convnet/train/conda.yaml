@@ -3,10 +3,10 @@ channels:
   - defaults
 dependencies:
   - python=3.7.11
-  - pip=20.0
+  - pip=20.2
   - pip:
-    - mldesigner==0.1.0b4
-    - azureml-mlflow==1.42.0
+    - mldesigner==0.1.0b12
+    - azureml-mlflow==1.50.0
     - tensorflow==2.7.0
     - numpy==1.21.4
     - scikit-learn==1.0.1
