@@ -1,0 +1,83 @@
+# This is a pipeline is for illustration purpose only. Do not use it for production use.
+description: training pipeline
+display_name: training
+experiment_name: training on fraud model
+type: pipeline
+
+inputs:
+  feature_retrieval_spec: # this will be used by the feature_retrieval_step.
+    mode: ro_mount
+    path: ../FeatureRetrievalSpec.yaml
+    type: uri_file
+  observation_data: # this will be used by the feature_retrieval_step
+    mode: ro_mount
+    path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/observation_data/train/*.parquet
+    type: uri_folder
+  timestamp_column: timestamp # this will be used by the feature_retrieval_step
+  model_name: fraud_model #this will be used by register_model step
+
+jobs:
+  feature_retrieval_step:
+    component: ../../utils/feature_retrieval_component/feature_retrieval.yaml
+    inputs:
+      feature_retrieval_spec:
+        path: ${{parent.inputs.feature_retrieval_spec}}
+      observation_data:
+        path: ${{parent.inputs.observation_data}}
+      timestamp_column:
+        path: ${{parent.inputs.timestamp_column}}
+    resources:
+      instance_type: standard_e4s_v3
+      runtime_version: "3.2"
+    type: spark
+  
+  training_step:
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../train/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
+    inputs:
+      training_data: ${{parent.jobs.feature_retrieval_step.outputs.data_with_features}}
+    outputs:
+      model_output:
+        type: custom_model
+      run_id_output:
+        type: uri_file
+    command: >-
+      python train.py
+      --training_data ${{inputs.training_data}}
+      --model_output ${{outputs.model_output}}
+      --run_id_output ${{outputs.run_id_output}}
+
+  evaluation_step: # this is a placeholder no-op step for illustration purpose only
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../evaluate/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
+    inputs:
+      model_input: ${{parent.jobs.training_step.outputs.model_output}}
+    outputs:
+      evaluation_output:
+        type: uri_folder        
+    command: >-
+      python evaluate.py
+      --model_input ${{inputs.model_input}}
+      --evaluation_output ${{outputs.evaluation_output}}
+
+  register_model_step:
+    component: ../../utils/register_model_component/register_model.yaml
+    type: spark # it need not be a spark job
+    inputs:
+      run_id_file:
+        path: ${{parent.jobs.training_step.outputs.run_id_output}}
+      evaluation_result:
+        path: ${{parent.jobs.evaluation_step.outputs.evaluation_output}}
+      model_name: ${{parent.inputs.model_name}}
+    resources:
+      instance_type: standard_e4s_v3
+      runtime_version: "3.2"
+    

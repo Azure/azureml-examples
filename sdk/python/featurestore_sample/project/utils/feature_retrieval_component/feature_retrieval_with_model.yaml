@@ -1,0 +1,41 @@
+$schema: http://azureml/sdk-2-0/SparkComponent.json
+name: feature_retrieval_with_model
+display_name: feature_retrieval_with_model
+type: spark
+    
+code: ./src 
+entry:
+  file: retrieval.py
+
+environment:
+  conda_file: ../../env/conda.yml
+
+conf:
+  spark.driver.cores: 4
+  spark.driver.memory: 28g
+  spark.executor.cores: 4
+  spark.executor.memory: 28g
+  spark.executor.instances: 2
+
+inputs:
+  input_model:
+    type: custom_model
+    mode: direct
+
+  observation_data:
+    type: uri_folder
+    mode: direct
+
+  timestamp_column:
+    type: string
+
+outputs:
+  data_with_features:
+    type: uri_folder
+    mode: direct
+
+args: >-
+  --input_model ${{inputs.input_model}}
+  --observation_data ${{inputs.observation_data}}
+  --timestamp_column ${{inputs.timestamp_column}}
+  --data_with_features ${{outputs.data_with_features}}

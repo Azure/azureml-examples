@@ -1,0 +1,36 @@
+# This is sample component is for illustration purpose only. Do not use it for production use as-is.
+$schema: http://azureml/sdk-2-0/SparkComponent.json
+name: model_register
+display_name: model_register
+type: spark
+    
+code: ./src 
+entry:
+  file: register_model.py
+
+environment:
+  conda_file: ../../env/conda.yml
+
+conf:
+  spark.driver.cores: 1
+  spark.driver.memory: 2g
+  spark.executor.cores: 1
+  spark.executor.memory: 2g
+  spark.executor.instances: 1
+
+inputs:
+  run_id_file:
+    type: uri_file
+    mode: direct
+
+  evaluation_result:
+    type: uri_folder
+    mode: direct
+
+  model_name:
+    type: string
+
+args: >-
+  --run_id_file ${{inputs.run_id_file}}
+  --evaluation_result ${{inputs.evaluation_result}}
+  --model_name ${{inputs.model_name}}

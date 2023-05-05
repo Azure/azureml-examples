@@ -1,0 +1,10 @@
+$schema: http://azureml/sdk-2-0/Featureset.json
+
+name: transactions
+version: "1"
+description: 7-day and 3-day rolling aggregation of transactions featureset
+specification:
+  path: ./spec # path to feature set specification folder. Can be local (absolute path or relative path to current location) or cloud uri. Contains FeaturesetSpec.yaml + transformation code
+entities: # entities associated with this feature-set
+  - azureml:account:1
+stage: Development

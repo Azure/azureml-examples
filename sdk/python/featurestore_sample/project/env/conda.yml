@@ -1,0 +1,19 @@
+dependencies:
+  - python=3.8
+  - pip=21.1.1
+  - pip:
+    - protobuf==3.19.6
+    - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/control_plane/azure_ai_ml-1.6.0-py3-none-any.whl
+    - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/prp3/featurestore-latest-py3-none-any.whl
+    # Following are not needed for feature retrieval component
+    - scikit-learn
+    - pandas
+    # - azure-cli # This is optional - needed if you want to execute "az ml" cli commands
+    
+    # NOTE: The below is needed only from e2e prerequisites notebook. But we are using it everywhere for simplicity of the tutorial. You can create seperate conda files as a best practice.
+    ## the following packages are ONLY required when runnning the prerequisite part of the e2e notebook
+    - azure-mgmt-storage
+    - azure-mgmt-msi
+    - azure-mgmt-authorization
+    - azure-storage-file-datalake
+name: fs_env
