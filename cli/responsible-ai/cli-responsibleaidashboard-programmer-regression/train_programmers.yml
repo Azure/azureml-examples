@@ -21,7 +21,7 @@ outputs:
     type: path
 
 code: ./train.py
-environment: azureml://registries/azureml/environments/AzureML-responsibleai-0.20-ubuntu20.04-py38-cpu/versions/4
+environment: azureml://registries/azureml/environments/responsibleai-ubuntu20.04-py38-cpu/versions/17
 command: >-
   python train.py
   --training_data ${{inputs.training_data}}

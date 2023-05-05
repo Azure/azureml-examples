@@ -18,7 +18,7 @@ echo "Register the model"
 # <register_model>
 MODEL_NAME='imagenet-classifier'
 az ml model create --name $MODEL_NAME --path "model"
-# <register_model>
+# </register_model>
 
 echo "Creating compute with GPU"
 # <create_compute>
@@ -120,6 +120,11 @@ else
   exit 2
 fi
 # </check_job_status_ht>
+
+echo "Download scores to local path"
+# <download_scores>
+az ml job download --name $JOB_NAME --output-name score --download-path ./
+# </download_scores>
 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes

@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: question-answering-model-evaluation-subgraph
+
+compute: gpu-cluster-big
+
+jobs:
+  pipeline_component_job:
+    type: pipeline
+    component: azureml://registries/azureml-preview/components/model_evaluation_pipeline/labels/latest
+    inputs:
+      task: question-answering
+      test_data:
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/question-answering/squad-v2/small-test.jsonl"
+        type: uri_file
+      mlflow_model: 
+        path: azureml://registries/azureml-preview/models/distilbert-base-uncased-distilled-squad/versions/3
+      label_column_name: answer_text
+      device: gpu
