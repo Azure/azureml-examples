@@ -145,7 +145,7 @@ def write_notebook_workflow_sequential(notebook_dir):
     notebook_dir = notebook_dir.strip("/")
     notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
     notebooks = [notebook.split("/")[-1] for notebook in notebooks]
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
@@ -203,7 +203,7 @@ def write_notebook_workflow_parallel(notebook_dir):
     notebooks = sorted(glob.glob(f"{notebook_dir}/*.ipynb"))
     notebooks = [notebook.split("/")[-1] for notebook in notebooks]
     matrix_notebook = "${{matrix.notebook}}"
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     workflow_yaml = f"""name: notebooks-{notebook_dir}
 on:
   schedule:
