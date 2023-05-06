@@ -3,7 +3,7 @@ name: auto-ml-forecasting-many-models
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 17 * * 2"
+    - cron: "0 14 * * 2"
   pull_request:
     branches:
       - main
@@ -48,7 +48,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: Run update-azure-extensions
       run: |
          chmod +x ./v1/scripts/update-azure-extensions.sh
