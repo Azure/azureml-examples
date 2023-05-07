@@ -5,10 +5,10 @@ experiment_name: training on fraud model
 type: pipeline
 
 inputs:
-  feature_retrieval_spec: # this will be used by the feature_retrieval_step.
+  feature_retrieval_spec: # this will be used by the feature_retrieval_step. it expects a feature_retrieval_spec.yaml in the folder
     mode: ro_mount
-    path: ../FeatureRetrievalSpec.yaml
-    type: uri_file
+    path: ../feature_retrieval_spec
+    type: uri_folder
   observation_data: # this will be used by the feature_retrieval_step
     mode: ro_mount
     path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/observation_data/train/*.parquet

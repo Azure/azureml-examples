@@ -3,8 +3,9 @@ dependencies:
   - pip=21.1.1
   - pip:
     - protobuf==3.19.6
-    - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/control_plane/azure_ai_ml-1.6.0-py3-none-any.whl
-    - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/prp3/featurestore-latest-py3-none-any.whl
+    - https://featurestoreprp.blob.core.windows.net/test-sdk/azureml_featurestore-0.0.1-py3-none-any.whl
+    #- https://featurestoreprp.blob.core.windows.net/test-sdk/azure_ai_ml-1.7.0a20230503002-py3-none-any
+    - https://featurestoreprp.blob.core.windows.net/test-sdk/azure_ai_ml-1.7.0-py3-none-any.whl
     # Following are not needed for feature retrieval component
     - scikit-learn
     - pandas

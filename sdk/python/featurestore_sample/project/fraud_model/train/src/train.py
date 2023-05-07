@@ -20,7 +20,7 @@ parser.add_argument("--run_id_output", type=str, help="runid_output")
 
 args = parser.parse_args()
 
-training_df = pd.read_parquet(os.path.join(args.training_data, "data_with_features.parquet"))
+training_df = pd.read_parquet(os.path.join(args.training_data, "data"))
 
 categorical_feature_names = [
     "transactionID",
@@ -68,7 +68,7 @@ with open(pkl_filename, 'wb') as file:
     pickle.dump(clf, file)
 
 # save the feature_retrieval_spec
-shutil.copy(os.path.join(args.training_data, "FeatureRetrievalSpec.yaml"), args.model_output)
+shutil.copy(os.path.join(args.training_data, "feature_retrieval_spec.yaml"), args.model_output)
 
 # write runid to output file
 

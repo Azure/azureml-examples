@@ -19,7 +19,7 @@ conf:
 
 inputs:
   feature_retrieval_spec:
-    type: uri_file
+    type: uri_folder
     mode: direct
 
   observation_data:

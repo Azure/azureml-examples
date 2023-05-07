@@ -5,7 +5,7 @@ from pyspark.ml import Transformer
 from pyspark.sql.dataframe import DataFrame
 
 
-class TrsactionFeatureTransformer(Transformer):
+class TransactionFeatureTransformer(Transformer):
     def _transform(self, df: DataFrame) -> DataFrame:
         days = lambda i: i * 86400
         w_3d = (Window.partitionBy("accountID").orderBy(F.col("timestamp").cast('long')).rangeBetween(-days(3), 0))

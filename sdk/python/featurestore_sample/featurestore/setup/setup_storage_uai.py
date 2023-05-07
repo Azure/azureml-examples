@@ -20,7 +20,7 @@ from azure.mgmt.msi.models import Identity
 from azure.mgmt.authorization import AuthorizationManagementClient
 from azure.mgmt.authorization.models import RoleAssignmentCreateParameters
 from uuid import uuid4
-from featurestore._identity import AzureMLHoboSparkOnBehalfOfCredential 
+from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 
 
 def create_gen2_storage_container(
@@ -33,7 +33,7 @@ def create_gen2_storage_container(
 ):
     print("creating storage account {account} and container {container}".format(account = storage_account_name, container = storage_file_system_name))
     # Create a storage management client
-    storage_client = StorageManagementClient(AzureMLHoboSparkOnBehalfOfCredential(), storage_subscription_id)
+    storage_client = StorageManagementClient(credential, storage_subscription_id)
 
     # Set up the storage account creation parameters
     storage_account_params = StorageAccountCreateParameters(
