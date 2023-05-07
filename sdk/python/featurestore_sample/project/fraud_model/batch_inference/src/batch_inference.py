@@ -24,7 +24,7 @@ args = parser.parse_args()
 
 
 
-inference_df = pd.read_parquet(os.path.join(args.inference_data, "data_with_features.parquet"))
+inference_df = pd.read_parquet(os.path.join(args.inference_data, "data"))
 
 categorical_feature_names = [
     "transactionID",

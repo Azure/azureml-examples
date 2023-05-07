@@ -6,8 +6,7 @@ from pyspark.context import SparkContext
 from pyspark.sql.session import SparkSession
 from pyspark import SparkFiles
 
-from featurestore import Featurestore
-from featurestore._identity import AzureMLHoboSparkOnBehalfOfCredential
+from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 
 sc = SparkContext.getOrCreate()
 spark = SparkSession(sc)
@@ -34,10 +33,9 @@ ws = os.environ["AZUREML_ARM_WORKSPACE_NAME"]
 print("sub:" + sub_id + " rg:" + rg + " ws:" + ws)
 
 from azure.ai.ml import MLClient
-from featurestore._identity import AzureMLHoboSparkOnBehalfOfCredential
 
 #connect to the workspace
-ml_client = MLClient(AzureMLHoboSparkOnBehalfOfCredential(), sub_id, rg, ws)
+ml_client = MLClient(AzureMLOnBehalfOfCredential(), sub_id, rg, ws)
 
 
 from azure.ai.ml.entities import Model
