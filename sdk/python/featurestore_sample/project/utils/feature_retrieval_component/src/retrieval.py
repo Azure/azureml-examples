@@ -14,6 +14,7 @@ from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 from azureml.featurestore import FeatureStoreClient
 from azureml.featurestore.contracts.feature_retrieval_spec import FeatureRetrievalSpec
 from azureml.featurestore import get_offline_features
+from azureml.featurestore._utils._constants import FEATURE_RETRIEVAL_SPEC_YAML_FILENAME
 from azureml.featurestore._utils.utils import _ensure_azureml_full_path
 
 sc = SparkContext.getOrCreate()
@@ -35,14 +36,13 @@ rg = os.environ["AZUREML_ARM_RESOURCEGROUP"]
 ws = os.environ["AZUREML_ARM_WORKSPACE_NAME"]
 
 
-
 if args.input_model:
     feature_retrieval_spec_folder = args.input_model
 else:
     feature_retrieval_spec_folder = args.feature_retrieval_spec
 
 feature_retrieval_spec = FeatureRetrievalSpec.from_config(feature_retrieval_spec_folder)
-fs_arm_uri = feature_retrieval_spec.featurestores[0].uri
+fs_arm_uri = feature_retrieval_spec.feature_stores[0].uri
 print("feature store:" + fs_arm_uri)
 
 fs_sub_id = re.search(r'/([\w-]+)/resourcegroups', fs_arm_uri).group(1)
@@ -81,12 +81,12 @@ print("Printing head of featureset...")
 print(training_df.head(5))
 
 print("Outputting dataset to parquet files.")
-training_df.write.parquet(os.path.join(args.data_with_features, "data"))
+training_df.write.mode("overwrite").parquet(os.path.join(args.data_with_features, "data"))
 
 # Write feature_retrieval_spec.yaml to the output_folder.
 if_destination_exists = PyIfDestinationExists.MERGE_WITH_OVERWRITE
 dest_uri = PyLocationInfo.from_uri(_ensure_azureml_full_path(args.data_with_features, sub_id, rg, ws))
-src_uri = feature_retrieval_spec_folder + "/feature_retrieval_spec.yaml"
+src_uri = feature_retrieval_spec_folder + FEATURE_RETRIEVAL_SPEC_YAML_FILENAME
 
 Copier.copy_uri(dest_uri, src_uri, if_destination_exists, "")
 
