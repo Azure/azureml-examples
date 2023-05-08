@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-endpoints-batch-deploy-models-heart-classifier-mlflow-mlflow-for-batch-tabular
+name: sdk-endpoints-batch-deploy-pipelines-training-with-components-sdk-deploy-and-test
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "11 8/12 * * *"
+    - cron: "29 5/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow/**
-      - .github/workflows/sdk-endpoints-batch-deploy-models-heart-classifier-mlflow-mlflow-for-batch-tabular.yml
+      - sdk/python/endpoints/batch/deploy-pipelines/training-with-components/**
+      - .github/workflows/sdk-endpoints-batch-deploy-pipelines-training-with-components-sdk-deploy-and-test.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -34,8 +34,6 @@ jobs:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
-    - name: pip install mlflow reqs
-      run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -60,18 +58,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run endpoints/batch/deploy-models/heart-classifier-mlflow/mlflow-for-batch-tabular.ipynb
+    - name: run endpoints/batch/deploy-pipelines/training-with-components/sdk-deploy-and-test.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "mlflow-for-batch-tabular.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "sdk-deploy-and-test.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python mlflow-for-batch-tabular.ipynb mlflow-for-batch-tabular.output.ipynb
-      working-directory: sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow
+          papermill -k python sdk-deploy-and-test.ipynb sdk-deploy-and-test.output.ipynb
+      working-directory: sdk/python/endpoints/batch/deploy-pipelines/training-with-components
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: mlflow-for-batch-tabular
-        path: sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow
+        name: sdk-deploy-and-test
+        path: sdk/python/endpoints/batch/deploy-pipelines/training-with-components
