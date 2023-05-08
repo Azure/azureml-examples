@@ -214,14 +214,14 @@ To achive the best possible performance and resource utilization of jobs on Azur
   ```
   services:
     my_jupyterlab:
-      job_service_type: jupyter_lab
+      type: jupyter_lab
       nodes: all
     my_tensorboard:
-      job_service_type: tensor_board
+      type: tensor_board
       log_dir: "outputs/runs/" #default is working directory on job container
       nodes: all
     my_vscode:
-      job_service_type: vs_code
+      type: vs_code
       nodes: all
 ```
   
