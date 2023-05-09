@@ -5,11 +5,11 @@ dependencies:
     # Protobuf is needed tp avoid conflict with managed spark
     - protobuf==3.19.6
     # Feature store core SDK
-    - https://featurestoreprp.blob.core.windows.net/test-sdk/azureml_featurestore-0.0.1-py3-none-any.whl
+    - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/pup/azureml_featurestore-0.0.92068422-py3-none-any.whl
     # Azure ML CRUD SDK
-    - https://featurestoreprp.blob.core.windows.net/test-sdk/azure_ai_ml-1.7.0-py3-none-any.whl    
+    - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/pup/azure_ai_ml-1.7.0-py3-none-any.whl   
     # This is needed if you want to execute "SDK+CLI" track in the docs tutorial
-    - azure-cli    
+    # - azure-cli    
     # NOTE: This is only needed for setting up materialization which includes offline store creation, UAI creation and setting up RBAC. This is part of Part 2 of the tutorial.
     - azure-mgmt-storage
     - azure-mgmt-msi
