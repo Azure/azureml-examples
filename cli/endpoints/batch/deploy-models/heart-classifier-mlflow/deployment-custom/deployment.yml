@@ -3,7 +3,7 @@ endpoint_name: heart-classifier-batch
 name: classifier-xgboost-custom
 description: A heart condition classifier based on XGBoost
 type: model
-model: azureml:heart-classifier@latest
+model: azureml:heart-classifier-mlflow@latest
 environment:
   name: batch-mlflow-xgboost
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
