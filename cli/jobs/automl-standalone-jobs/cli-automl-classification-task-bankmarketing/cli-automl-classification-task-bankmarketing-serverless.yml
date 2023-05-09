@@ -2,6 +2,7 @@ $schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schem
 type: automl
 experiment_name: dpv2-cli-automl-classifier-experiment
 description: A Classification job using bank marketing
+#Serverless compute is used to run this AutoML job
 
 task: classification
 log_verbosity: debug
@@ -45,6 +46,7 @@ training:
   allowed_training_algorithms:
     - gradient_boosting
     - logistic_regression
+# Resources to run this serverless job
 resources:
   instance_type="Standard_E4s_v3"
   instance_count=6
