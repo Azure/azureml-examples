@@ -40,7 +40,9 @@ for split in get_dataset_split_names(args.dataset, config_name=args.config_name)
     )
 
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
-validation_df = pd.read_json(os.path.join(args.download_dir, "validation.jsonl"), lines=True)
+validation_df = pd.read_json(
+    os.path.join(args.download_dir, "validation.jsonl"), lines=True
+)
 # this dataset doesn't have test data, so split the validation_df into test_df and validation_df
 test_df = validation_df.sample(frac=0.5, random_state=42)
 validation_df.drop(test_df.index, inplace=True)
@@ -52,13 +54,15 @@ test_df.drop(columns=["id"], inplace=True)
 
 # save 20% of the rows from the dataframes into files with small_ prefix in the ./news-summary-dataset folder
 train_df.sample(frac=0.2).to_json(
-    os.path.join(args.download_dir,"small_train.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
 validation_df.sample(frac=0.2).to_json(
-    os.path.join(args.download_dir,"small_validation.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_validation.jsonl"),
+    orient="records",
+    lines=True,
 )
 test_df.sample(frac=0.2).to_json(
-    os.path.join(args.download_dir,"small_test.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 
 
@@ -68,7 +72,7 @@ import pandas as pd
 import json
 
 test_df = pd.read_json(
-    os.path.join(args.download_dir,"small_test.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 # take 1 random sample
 test_df = test_df.sample(n=1)
@@ -79,5 +83,5 @@ test_df.rename(columns={"highlights": "ground_truth_summary"}, inplace=True)
 # create a json object with the key as "inputs" and value as a list of values from the article column of the test dataframe
 test_json = {"inputs": {"input_string": test_df["article"].tolist()}}
 # save the json object to a file named sample_score.json in the ./emotion-dataset folder
-with open(os.path.join(args.download_dir,"sample_score.json"), "w") as f:
+with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)
