@@ -1,18 +1,29 @@
 FROM mcr.microsoft.com/azureml/aifx/stable-ubuntu2004-cu113-py38-torch1110:latest
 
 WORKDIR /
-ENV CONDA_PREFIX=/azureml-envs/conda_env
-ENV CONDA_DEFAULT_ENV=$CONDA_PREFIX
 
-COPY conda.yaml .
-# Create conda environment
-RUN conda env create -p $CONDA_PREFIX -f conda.yaml -q && \
-    rm conda.yaml && \
-    conda run -p $CONDA_PREFIX pip cache purge && \
-    conda clean -a -y
+# support Deepspeed launcher requirement of passwordless ssh login
+RUN apt-get update
+RUN apt-get install -y openssh-server openssh-client
 
-# Prepend path to AzureML conda environment
-ENV PATH=$CONDA_PREFIX/bin:$PATH
+COPY requirements.txt .
+RUN pip install -r requirements.txt --no-cache-dir
 
-# This is needed for mpi to locate libpython
-ENV LD_LIBRARY_PATH $CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+# List installed packages
+RUN pip list
+
+## Delete
+RUN rm requirements.txt
+
+# Inference requirements
+COPY --from=mcr.microsoft.com/azureml/o16n-base/python-assets:20230419.v1 /artifacts /var/
+RUN /var/requirements/install_system_requirements.sh && \
+    cp /var/configuration/rsyslog.conf /etc/rsyslog.conf && \
+    cp /var/configuration/nginx.conf /etc/nginx/sites-available/app && \
+    ln -sf /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app && \
+    rm -f /etc/nginx/sites-enabled/default
+ENV SVDIR=/var/runit
+ENV WORKER_TIMEOUT=400
+EXPOSE 5001 8883 8888
+
+CMD [ "runsvdir", "/var/runit" ]
