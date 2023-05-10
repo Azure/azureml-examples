@@ -1,0 +1,10 @@
+$schema: http://azureml/sdk-2-0/Connection.json
+type: snowflake
+name: my_snowflakedb_connection # add your datastore name here
+
+target: jdbc:snowflake://<myaccount>.snowflakecomputing.com/?db=<mydb>&warehouse=<mywarehouse>&role=<myrole>
+# add the Snowflake account, database, warehouse name and role name here. If no role name provided it will default to PUBLIC
+credentials:
+    type: username_password
+    username: <username> # add the Snowflake database user name here or leave this blank and type in CLI command line
+    password: <password> # add the Snowflake database password here or leave this blank and type in CLI command line

@@ -1,0 +1,37 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+name: data_pipeline
+# version: 4
+display_name: pipeline component with data prep and transformation
+description: pipeline component with data prep and transformation
+
+# <inputs_and_outputs>
+inputs:
+  raw_data: 
+    type: uri_folder
+    optional: true
+outputs: 
+  train_data:
+    type: uri_folder
+# </inputs_and_outputs>
+
+# <jobs>
+jobs:
+  prep_job:
+    type: command
+    component: ./prep_src/prep.yml
+    # component: azureml:prep_taxi_data@latest
+    inputs:
+      raw_data: ${{parent.inputs.raw_data}}
+    outputs:
+      prep_data: 
+
+  transform_job:
+    type: command
+    component: ./transform_src/transform.yml
+    # component: azureml:taxi_feature_engineering@latest
+    inputs:
+      clean_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+    outputs:
+      transformed_data: ${{parent.outputs.train_data}}
+# </jobs>

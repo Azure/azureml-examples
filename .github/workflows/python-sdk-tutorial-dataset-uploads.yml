@@ -11,7 +11,7 @@ on:
       - v1/python-sdk/requirements.txt
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ${{vars.V1_UBUNTU_RUNNER}}
     strategy:
       fail-fast: false
       matrix:
@@ -32,11 +32,11 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: install azmlcli
       run: az extension add -n azure-cli-ml -y
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+      run: az ml folder attach -w main -g azureml-examples
     - name: run ${{matrix.notebook}}
       run: papermill ${{matrix.notebook}} - -k python
       working-directory: v1/python-sdk/tutorials/dataset-uploads

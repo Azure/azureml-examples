@@ -3,3 +3,4 @@
 ####################################################################################################
 
 &"$PSScriptroot\remove_role_assignments.ps1" -ResourceGroupName "$env:RESOURCE_GROUP_NAME"
+&"$PSScriptroot\remove_role_assignments.ps1" -ResourceGroupName "amlsdkv2022303"

@@ -7,7 +7,7 @@ name: cli-jobs-parallel-2a_iris_batch_prediction-pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "4 6/12 * * *"
   pull_request:
     branches:
       - main
@@ -15,7 +15,6 @@ on:
       - cli/jobs/parallel/2a_iris_batch_prediction/**
       - infra/**
       - .github/workflows/cli-jobs-parallel-2a_iris_batch_prediction-pipeline.yml
-      - cli/run-pipeline-jobs.sh
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

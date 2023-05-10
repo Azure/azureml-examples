@@ -72,7 +72,6 @@ amlcompute_to_delete=(
   location-example
   low-pri-example
   ssh-example
-  batch-cluster
   gpu-cluster-nc6
 )
 for compute_name in "${amlcompute_to_delete[@]}"; do
@@ -92,7 +91,7 @@ let "RegistryToBeDeleted=10#$(date -d '-1 days' +'%m%d')"
 echo "Deleting registry DemoRegistry$RegistryToBeDeleted"
 az resource delete -n DemoRegistry$RegistryToBeDeleted -g $RESOURCE_GROUP_NAME --resource-type Microsoft.MachineLearningServices/registries
 
-#delete workpsaces created by samples
+# delete workpsaces created by samples
 for workspace in $SAMPLES_WORKSPACE_LIST; do
     echo "Deleting workspace: $workspace" && az ml workspace delete -n $workspace --yes --no-wait --all-resources && echo "workspace delete initiated for: $workspace" ;
 done

@@ -92,7 +92,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # </create_model>
 
 # <read_condafile>
-CONDA_FILE=$(cat endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(cat endpoints/online/model-1/environment/conda.yaml)
 # <read_condafile>
 
 # <create_environment>

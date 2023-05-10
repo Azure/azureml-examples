@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+endpoint_name: imagenet-classifier-batch
+name: imagenet-classifier-resnetv2
+description: A ResNetV2 model architecture for performing ImageNet classification in batch
+model: azureml:imagenet-classifier@latest
+compute: azureml:gpu-cluster
+environment:
+  name: tensorflow27-cuda11-gpu
+  image: mcr.microsoft.com/azureml/curated/tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu:latest
+  conda_file: environment/conda.yaml
+code_configuration:
+  code: code/score-by-file
+  scoring_script: batch_driver.py
+resources:
+  instance_count: 2
+max_concurrency_per_instance: 1
+mini_batch_size: 5
+output_action: append_row
+output_file_name: predictions.csv
+retry_settings:
+  max_retries: 3
+  timeout: 300
+error_threshold: -1
+logging_level: info

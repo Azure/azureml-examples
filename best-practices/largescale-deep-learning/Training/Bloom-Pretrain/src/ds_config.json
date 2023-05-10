@@ -1,0 +1,21 @@
+{
+  "train_micro_batch_size_per_gpu": 2,
+  "train_batch_size": 16,
+  "gradient_clipping": 1,
+  "zero_optimization": {
+    "stage": 0
+  },
+  "bf16": {
+    "enabled": true
+  },
+  "steps_per_print": 1,
+  "wall_clock_breakdown": false,
+  "flops_profiler": {
+    "enabled": true,
+    "profile_step": 1,
+    "module_depth": -1,
+    "top_modules": 1,
+    "detailed": true,
+    "output_file": null
+  }
+}

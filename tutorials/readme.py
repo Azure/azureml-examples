@@ -119,7 +119,12 @@ def write_notebook_workflow(
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
-
+    if "explore-data" in name:
+        runs_on = "ubuntu-20.04"
+        workflow_sched = "0 */12 * * *"
+    else:
+        runs_on = "ubuntu-latest"
+        workflow_sched = "0 */8 * * *"
     workflow_yaml = f"""{READONLY_HEADER}
 name: tutorials-{classification}-{name}
 # This file is created by tutorials/readme.py.
@@ -129,7 +134,7 @@ on:\n"""
         workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
         workflow_yaml += f"""  schedule:
-    - cron: "0 */8 * * *"\n"""
+    - cron: "{workflow_sched}"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main\n"""
@@ -148,7 +153,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: {runs_on}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -199,6 +204,14 @@ jobs:
           touch /tmp/code/code
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
+    if "explore-data" in name:
+        workflow_yaml += f"""
+
+          # load data into 'data' subdirectory
+          mkdir data
+          cd data
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
+          cd .."""
 
     if not ("automl" in folder):
         workflow_yaml += f"""
@@ -351,7 +364,7 @@ def modify_notebooks(notebooks):
     print("modifying notebooks...")
     # setup variables
     kernelspec = {
-        "display_name": "Python 3.10 - SDK V2",
+        "display_name": "Python 3.10 - SDK v2",
         "language": "python",
         "name": "python310-sdkv2",
     }
