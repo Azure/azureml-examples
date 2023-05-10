@@ -814,6 +814,7 @@ function replace_template_values() {
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/<TIME_STAMP>/$(echo "$timestamp")/g" \
+        -e "s/<python_feed_url>/https://download.pytorch.org/whl/cu113/g \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
         -e "s/InteractiveBrowserCredential/AzureCliCredential/g" \
         -e "s/@pipeline(/&force_rerun=True,/g" \
