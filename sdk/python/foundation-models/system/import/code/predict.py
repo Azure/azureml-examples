@@ -11,17 +11,22 @@ from transformers import LlamaTokenizer, LlamaForCausalLM
 model = None
 tokenizer = None
 
+
 def init():
     global model
     global tokenizer
 
-    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), "INPUT_model_path")
+    model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "INPUT_model_path")
     try:
         print(f"Loading model from path {model_path}")
         # Use this for open_llama models
         subfolder = "open_llama_7b_preview_200bt_transformers_weights"
-        tokenizer = LlamaTokenizer.from_pretrained(model_path, subfolder=subfolder, use_fast=False, local_files_only=True)
-        model = LlamaForCausalLM.from_pretrained(model_path, subfolder=subfolder, local_files_only=True)
+        tokenizer = LlamaTokenizer.from_pretrained(
+            model_path, subfolder=subfolder, use_fast=False, local_files_only=True
+        )
+        model = LlamaForCausalLM.from_pretrained(
+            model_path, subfolder=subfolder, local_files_only=True
+        )
 
         # uncomment for others
         # tokenizer = LlamaTokenizer.from_pretrained(model_path, use_fast=False, local_files_only=True)
@@ -43,18 +48,29 @@ def run(data):
     global tokenizer
 
     if not model or not tokenizer:
-        return json.dumps({"error": "Model or tokenizer was not initialized correctly. Could not infer"})
+        return json.dumps(
+            {
+                "error": "Model or tokenizer was not initialized correctly. Could not infer"
+            }
+        )
 
     print(f"input data:\n{data}")
 
     try:
         inputs, params = get_input_string(data)
     except Exception as e:
-        return json.dumps({"error": f'Error: {e}.' + 'Input request should be in: {"inputs": {"input_str": ["text"], "params": {"k": "v"}}}'})
+        return json.dumps(
+            {
+                "error": f"Error: {e}."
+                + 'Input request should be in: {"inputs": {"input_str": ["text"], "params": {"k": "v"}}}'
+            }
+        )
 
     device = params.get("device", -1)
     if device == -1 and torch.cuda.is_available():
-        print('WARNING: CUDA available. To switch to GPU device pass `"params": {"device" : 0}` in the input.')
+        print(
+            'WARNING: CUDA available. To switch to GPU device pass `"params": {"device" : 0}` in the input.'
+        )
     if device == 0 and not torch.cuda.is_available():
         device = -1
         print("WARNING: CUDA unavailable. Defaulting to CPU device.")
@@ -69,11 +85,11 @@ def run(data):
         for inp in inputs:
             inputs = tokenizer(inp, return_tensors="pt").to(device)
             model = model.to(device)
-            preds = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=True)
+            preds = model.generate(
+                **inputs, max_new_tokens=max_new_tokens, do_sample=True
+            )
             result.append(tokenizer.batch_decode(preds, skip_special_tokens=True)[0])
-        return json.dumps({
-            "result": result
-        })
+        return json.dumps({"result": result})
     except Exception as e:
         return json.dumps({"error": str(e)})
 
