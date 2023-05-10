@@ -4,7 +4,6 @@
 
 import json
 import os
-import time
 import torch
 from transformers import LlamaTokenizer, LlamaForCausalLM
 
@@ -38,18 +37,6 @@ def get_input_string(input_str):
     return input_data, params
 
 
-def log_execution_time(func, logger=None):
-    """Decorate method to log execution time."""
-    def wrap_func(*args, **kwargs):
-        t1 = time.time()
-        result = func(*args, **kwargs)
-        t2 = time.time()
-        print(f"{func.__name__!r} executed in {(t2-t1):.4f}s")
-        return result
-    return wrap_func
-
-
-@log_execution_time
 def run(data):
     global model
     global tokenizer
@@ -57,8 +44,9 @@ def run(data):
     if not model or not tokenizer:
         return json.dumps({"error": "Model or tokenizer was not initialized correctly. Could not infer"})
 
+    print(f"input data:\n{data}")
+
     try:
-        print(data)
         inputs, params = get_input_string(data)
     except Exception as e:
         return json.dumps({"error": f'Error: {e}.' + 'Input request should be in: {"inputs": {"input_str": ["text"], "params": {"k": "v"}}}'})
