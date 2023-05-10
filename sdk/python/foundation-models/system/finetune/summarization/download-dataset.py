@@ -3,10 +3,10 @@ import argparse, os
 
 parser = argparse.ArgumentParser()
 # add an argument to specify a dataset name to download
-parser.add_argument("--dataset", type=str, default="squad", help="dataset name")
+parser.add_argument("--dataset", type=str, default="cnn_dailymail", help="dataset name")
 # add an argument to specify the config name of the dataset
 parser.add_argument(
-    "--config_name", type=str, default="plain_text", help="config name of the dataset"
+    "--config_name", type=str, default="3.0.0", help="config name of the dataset"
 )
 # argument to save a fraction of the dataset
 parser.add_argument(
@@ -16,7 +16,7 @@ parser.add_argument(
 parser.add_argument(
     "--download_dir",
     type=str,
-    default="data",
+    default="./news-summary-dataset",
     help="directory to download the dataset to",
 )
 args = parser.parse_args()
