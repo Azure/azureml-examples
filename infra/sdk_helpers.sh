@@ -806,6 +806,7 @@ function validate_tool() {
 
 function replace_template_values() {
     local FILENAME="$1"
+    local PYTHON_FEED_URL="https://download.pytorch.org/whl/cu113"
     echo "Replacing template values in the file: ${FILENAME}"
     sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
         -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
@@ -814,7 +815,7 @@ function replace_template_values() {
         -e "s/<CLUSTER_NAME>/$(echo "$ARC_CLUSTER_NAME")/g" \
         -e "s/<COMPUTE_NAME>/$(echo "$ARC_COMPUTE_NAME")/g" \
         -e "s/<TIME_STAMP>/$(echo "$timestamp")/g" \
-        -e "s/<python_feed_url>/"https://download.pytorch.org/whl/cu113"/g" \
+        -e "s/<python_feed_url>/$(echo "${PYTHON_FEED_URL}")/g" \
         -e "s/DefaultAzureCredential/AzureCliCredential/g" \
         -e "s/InteractiveBrowserCredential/AzureCliCredential/g" \
         -e "s/@pipeline(/&force_rerun=True,/g" \
