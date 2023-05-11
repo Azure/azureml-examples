@@ -14,7 +14,7 @@ pip install pandas
 
 
 # <az_ml_sdk_test_install>
-pip install azure-ai-ml==1.7.0a20230505008 --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
+pip install azure-ai-ml==1.7.0a20230510007 --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
 # </az_ml_sdk_test_install>
 
 pip list
