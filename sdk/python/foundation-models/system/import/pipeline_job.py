@@ -55,6 +55,7 @@ def model_import_pipeline(model_id, compute):
         "model_registration_details": import_model_job.outputs.model_registration_details
     }
 
+
 # creates pipeline job
 def create_pipeline_job(model_id, task, compute_name):
     """
@@ -70,14 +71,13 @@ def create_pipeline_job(model_id, task, compute_name):
     -------
     job_status : dict
     """
-    
+
     pipeline_object = model_import_pipeline(model_id=model_id, compute=compute_name)
     pipeline_object.identity = UserIdentityConfiguration()
     pipeline_object.settings.force_rerun = True
     pipeline_object.display_name = f"{model_id}-{task}"
     pipeline_job = ml_client_ws.jobs.create_or_update(
-        pipeline_object,
-        experiment_name = "Model Import per task"
+        pipeline_object, experiment_name="Model Import per task"
     )
     job_status = {}
     try:
@@ -85,5 +85,5 @@ def create_pipeline_job(model_id, task, compute_name):
         job_status[model_id] = True
     except:
         job_status[model_id] = False
-        
+
     return job_status
