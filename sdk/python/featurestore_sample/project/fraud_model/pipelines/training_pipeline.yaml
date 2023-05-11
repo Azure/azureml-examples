@@ -18,7 +18,7 @@ inputs:
 
 jobs:
   feature_retrieval_step:
-    component: ../../utils/feature_retrieval_component/feature_retrieval.yaml
+    component: azureml://registries/azureml-preview/components/feature_retrieval/versions/0.0.2
     inputs:
       feature_retrieval_spec:
         path: ${{parent.inputs.feature_retrieval_spec}}
@@ -26,9 +26,18 @@ jobs:
         path: ${{parent.inputs.observation_data}}
       timestamp_column:
         path: ${{parent.inputs.timestamp_column}}
+      observation_data_format: parquet
     resources:
       instance_type: standard_e4s_v3
       runtime_version: "3.2"
+    outputs:
+      output_data:
+    conf:
+      spark.driver.cores: 4
+      spark.driver.memory: 28g
+      spark.executor.cores: 4
+      spark.executor.memory: 28g
+      spark.executor.instances: 2
     type: spark
   
   training_step:
@@ -39,7 +48,9 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
       conda_file: ../../env/conda.yml
     inputs:
-      training_data: ${{parent.jobs.feature_retrieval_step.outputs.data_with_features}}
+      training_data: 
+        path: ${{parent.jobs.feature_retrieval_step.outputs.output_data}}
+        mode: ro_mount
     outputs:
       model_output:
         type: custom_model
