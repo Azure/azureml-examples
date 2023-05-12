@@ -9,7 +9,6 @@ except ImportError:
     result = subprocess.run(["python", "-m", "pip", "install", "azure-data-tables"], capture_output=True, text=True)
     while result.returncode is None:
         pass
-    # print(result.stdout)
 
 
 import argparse
@@ -56,7 +55,6 @@ def get_table_service_client():
             return AzureNamedKeyCredential(datastore.account_name, datastore.account_key)
         if datastore.sas_token is not None:
             return AzureSasCredential(datastore.sas_token)
-        # TODO: raise user error
         raise Exception(
             "Cannot find account key or SAS token in the specified datastore, "
             "and credential passthrough is not enabled. "
@@ -100,7 +98,7 @@ def set_defaults(args):
         known_args.rdzv_backend = "azuretable"
 
     if known_args.rdzv_id is None:
-        print(f"Setting run id to {run_id}")
+        print(f"Setting TorchElastic Rendezvous run ID to {run_id}")
         known_args.rdzv_id = run_id
 
     if known_args.nnodes is None:
@@ -114,19 +112,19 @@ def set_defaults(args):
 
 @record
 def main(args=None):
-    import torch.distributed.elastic.metrics as metrics
-
-    # Handle RendezvousClosedError when the job is completed
     try:
         args = set_defaults(args)
-        os.environ["LOGLEVEL"] = "INFO"
+        
+        # Uncomment to enable metrics from torchelastic for debugging
+        # import torch.distributed.elastic.metrics as metrics
+        # metrics.configure(metrics.ConsoleMetricHandler(), group="torchelastic")
         os.environ["NCCL_DEBUG"] = "INFO"
-        # os.environ["TORCH_DISTRIBUTED_DETAIL"] = "DEBUG"
-
-        metrics.configure(metrics.ConsoleMetricHandler(), group="torchelastic")
-
+        os.environ["TORCH_DISTRIBUTED_DEBUG"] = "DETAIL"
+        
+        # Register rendezvous handler for Azure Table Storage
         rendezvous_handler_registry.register("azuretable", create_azure_table_rendezvous_handler)
-        print(f"Running torchrun with args {args}")
+        
+        print(f"Running torchrun with arguments: {args}")
         torchrun(args)
     except RendezvousClosedError:
         print("Rendezvous closed. Exiting.")
@@ -134,11 +132,3 @@ def main(args=None):
 
 if __name__ == "__main__":
     main()
-
-    # main_args = [
-    #     "--nnodes=1",
-    #     "train.py",
-    #     "--epochs=1",
-    #     "--dist-backend=gloo",
-    # ]
-    # main(main_args)

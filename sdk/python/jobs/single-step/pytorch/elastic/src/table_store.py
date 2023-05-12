@@ -18,7 +18,7 @@ class AzureTableStore(Store):
     table_service_client: TableServiceClient
     table_name: str
 
-    def __init__(self, job_id: str, table_service_client: TableServiceClient, timeout=datetime.timedelta(seconds=30)):
+    def __init__(self, job_id: str, table_service_client: TableServiceClient, timeout=datetime.timedelta(seconds=300)):
         super(AzureTableStore, self).__init__()
         self.job_id = job_id
         self.table_service_client = table_service_client
