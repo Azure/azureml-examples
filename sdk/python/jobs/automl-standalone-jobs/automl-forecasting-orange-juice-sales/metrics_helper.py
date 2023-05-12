@@ -1,7 +1,9 @@
 import pandas as pd
+import warnings
 
-from azureml.metrics import constants
-from azureml.metrics import compute_metrics
+with warnings.catch_warnings(record=False):
+    from azureml.metrics import constants
+    from azureml.metrics import compute_metrics
 
 
 def calculate_metrics(
