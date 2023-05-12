@@ -1,0 +1,1 @@
+FROM nvcr.io/nvidia/nemo:22.12

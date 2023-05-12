@@ -1,0 +1,82 @@
+# Training job submission via AML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: >-
+  python3 examples/nlp/language_modeling/megatron_gpt_pretraining.py
+  --config-path=conf
+  --config-name=megatron_gpt_config
+  trainer.devices=8
+  trainer.num_nodes=2
+  trainer.max_epochs=null
+  trainer.max_steps=105000
+  trainer.val_check_interval=2000
+  trainer.log_every_n_steps=10
+  trainer.limit_val_batches=50
+  trainer.limit_test_batches=50
+  trainer.accumulate_grad_batches=1
+  trainer.precision=16
+  model.micro_batch_size=2
+  model.global_batch_size=1440
+  model.tensor_model_parallel_size=2
+  model.pipeline_model_parallel_size=1
+  model.max_position_embeddings=2048
+  model.encoder_seq_length=2048
+  model.hidden_size=4096
+  model.ffn_hidden_size=16384
+  model.num_layers=24
+  model.num_attention_heads=32
+  model.init_method_std=0.01
+  model.hidden_dropout=0.1
+  model.layernorm_epsilon=1e-5
+  model.tokenizer.vocab_file=${{inputs.vocab_data}}
+  model.tokenizer.merge_file=${{inputs.merge_data}}
+  model.data.data_prefix=[1.0,${{outputs.blobstore_datadir}}/pile_gpt_training_data_text_sentence]
+  model.data.num_workers=2
+  model.data.seq_length=2048
+  model.data.splits_string=\'99990,8,2\'
+  model.optim.name=fused_adam
+  model.optim.lr=1.2e-4
+  model.optim.betas=[0.9,0.95]
+  model.optim.weight_decay=0.1
+  model.optim.sched.name=CosineAnnealing
+  model.optim.sched.warmup_steps=190
+  model.optim.sched.constant_steps=20000
+  model.optim.sched.min_lr=1.2e-5
+  exp_manager.resume_if_exists=True
+  exp_manager.resume_ignore_no_checkpoint=True
+  exp_manager.create_checkpoint_callback=True
+  exp_manager.checkpoint_callback_params.monitor=val_loss
+  exp_manager.checkpoint_callback_params.save_top_k=10
+  exp_manager.checkpoint_callback_params.mode=min
+  exp_manager.checkpoint_callback_params.always_save_nemo=False
+
+experiment_name: DistributedJob-Nemo
+code: nemo-latest
+environment: azureml:Nemo-Env@latest
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
+  HYDRA_FULL_ERROR: '1'
+  CUDA_LAUNCH_BLOCKING: '1'
+inputs:
+  vocab_data:
+    type: uri_file
+    mode: download
+    path: https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-vocab.json
+  merge_data:
+    type: uri_file
+    mode: download
+    path: https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-merges.txt
+outputs:
+  blobstore_datadir:
+    type: uri_folder
+    mode: rw_mount
+    # Replace this path with the path to the location of your preprocessed data.
+    path: azureml://datastores/workspaceartifactstore/paths/ExperimentRun/dcid.brave_ghost_bxh654n2dd/outputs
+compute: azureml:<Your Compute Name>
+distribution:
+  type: pytorch
+  process_count_per_instance: 8
+resources:
+  instance_count: 2
+  shm_size: 3100m

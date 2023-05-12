@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+
+type: uri_folder
+name: PILE-dataset
+description: PILE training dataset for NeMo-megatron training.
+path: <The path to your downloaded data here>
