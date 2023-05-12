@@ -1,9 +1,8 @@
 import pandas as pd
 import warnings
 
-with warnings.catch_warnings(record=False):
-    from azureml.metrics import constants
-    from azureml.metrics import compute_metrics
+from azureml.metrics import constants
+from azureml.metrics import compute_metrics
 
 
 def calculate_metrics(
@@ -23,16 +22,17 @@ def calculate_metrics(
     X_test.dropna(subset=[actuals_colum_name, predictions_column_name], inplace=True)
     actual = X_test.pop(actuals_colum_name).values
     pred = X_test.pop(predictions_column_name).values
-    metrics = compute_metrics(
-        task_type=constants.Tasks.FORECASTING,
-        y_test=actual,
-        y_pred=pred,
-        X_test=X_test,
-        X_train=X_train,
-        y_train=y_train,
-        time_column_name=time_column_name,
-        time_series_id_column_names=time_series_id_column_names,
-        metrics=constants.Metric.SCALAR_REGRESSION_SET,
-    )
+    with warnings.catch_warnings(record=False):
+        metrics = compute_metrics(
+            task_type=constants.Tasks.FORECASTING,
+            y_test=actual,
+            y_pred=pred,
+            X_test=X_test,
+            X_train=X_train,
+            y_train=y_train,
+            time_column_name=time_column_name,
+            time_series_id_column_names=time_series_id_column_names,
+            metrics=constants.Metric.SCALAR_REGRESSION_SET,
+        )
     metrics_dict = metrics[constants.Metric.Metrics]
     return pd.DataFrame(metrics_dict.items(), columns=["metric name", "score"])
