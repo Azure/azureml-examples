@@ -46,6 +46,7 @@ export SLEEP_SECONDS=20
 let "DATE_ONLY=10#$(date -d '+2 days' +'%y%m')"
 let "REGISTRY_TODAY=10#$(date +'%m%d')"
 let "REGISTRY_TOMORROW=10#$(date -d '+1 days' +'%m%d')"
+let "REGISTRY_OUTDATED=10#$(date -d '-2 days' +'%m%d')"
 
 
 export LOCATION="East US"
@@ -87,6 +88,7 @@ then
     echo_warning "No registry name [REGISTRY_NAME] specified, defaulting to ${REGISTRY_NAME}."
 fi
 export REGISTRY_NAME_TOMORROW="DemoRegistry${REGISTRY_TOMORROW}"
+export REGISTRY_NAME_OUTDATED="DemoRegistry${REGISTRY_OUTDATED}"
 
 # Check if user is logged in
 [[ -n $(az account show 2> /dev/null) ]] || { echo_warning "Please login via the Azure CLI."; az login; }
