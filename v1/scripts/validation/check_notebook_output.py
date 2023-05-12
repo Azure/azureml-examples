@@ -55,7 +55,6 @@ allowed_list = [
     "Class FeatureStoreOperations: This is an experimental class",
     "Class FeatureSetOperations: This is an experimental class",
     "Class FeatureStoreEntityOperations: This is an experimental class",
-    "TqdmWarning: IProgress not found",
 ]
 
 with open(full_name, "r") as notebook_file:
