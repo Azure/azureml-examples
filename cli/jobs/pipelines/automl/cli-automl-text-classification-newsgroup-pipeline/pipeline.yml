@@ -51,4 +51,13 @@ jobs:
     inputs:
       model_input_path: ${{parent.jobs.text_classification_node.outputs.best_model}}
       model_base_name: newsgroup_model
-      
+    outputs:
+      model_id_path:
+        type: uri_folder
+  deploy_model_node:
+    type: command
+    component: file:./components/component_deploy_model.yaml
+    inputs:
+      model_id_path: ${{parent.jobs.register_model_node.outputs.model_id_path}}
+      endpoint_name: newsgroup-endpoint
+      deployment_name: newsgroup-deployment

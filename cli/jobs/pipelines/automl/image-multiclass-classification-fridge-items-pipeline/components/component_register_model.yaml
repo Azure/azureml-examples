@@ -8,9 +8,14 @@ inputs:
     type: uri_folder
   model_base_name:
     type: string
+outputs:
+  model_id_path:
+    type: uri_file
 code: ./src/
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+environment: azureml://registries/azureml-preview/environments/finetune-acpt-pytorch-111-py38-cuda113-gpu/versions/0.0.9
+compute: azureml:cpu-cluster-msi
 command: >-
   python register.py
   --model_input_path ${{inputs.model_input_path}}
   --model_base_name ${{inputs.model_base_name}}
+  --model_id_path ${{outputs.model_id_path}}
