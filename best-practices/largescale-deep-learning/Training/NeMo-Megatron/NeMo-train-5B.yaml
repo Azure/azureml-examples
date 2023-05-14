@@ -31,7 +31,7 @@ command: >-
   model.layernorm_epsilon=1e-5
   model.tokenizer.vocab_file=${{inputs.vocab_data}}
   model.tokenizer.merge_file=${{inputs.merge_data}}
-  model.data.data_prefix=[1.0,${{outputs.blobstore_datadir}}/pile_gpt_training_data_text_sentence]
+  model.data.data_prefix=[1.0,${{outputs.blobstore_datadir}}/pile_gpt_training_data_text_document]
   model.data.num_workers=2
   model.data.seq_length=2048
   model.data.splits_string=\'99990,8,2\'

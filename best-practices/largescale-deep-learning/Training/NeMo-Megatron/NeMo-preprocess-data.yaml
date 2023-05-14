@@ -1,0 +1,29 @@
+# Training job submission via AML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: python preprocess_data_for_megatron.py --input=${{inputs.train_data}} --json-keys=text --tokenizer-library=megatron --vocab=${{inputs.vocab_data}} --dataset-impl mmap --tokenizer-type GPT2BPETokenizer --merge-file=${{inputs.merge_data}} --output-prefix=./outputs/pile_gpt_training_data --append-eod --workers=16 --preproc-folder
+experiment_name: DistributedJob-Nemo-data
+code: .
+environment: azureml:Nemo-Env@latest
+environment_variables:
+  HYDRA_FULL_ERROR: '1'
+inputs:
+  train_data:
+    type: uri_folder
+    mode: ro_mount
+    path: azureml:PILE-dataset:1
+  vocab_data:
+    type: uri_file
+    mode: download
+    path: https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-vocab.json
+  merge_data:
+    type: uri_file
+    mode: download
+    path: https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-merges.txt
+compute: azureml:MegatronComputeSSH
+distribution:
+  type: pytorch
+  process_count_per_instance: 8
+resources:
+  instance_count: 2

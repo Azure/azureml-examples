@@ -43,6 +43,12 @@ az ml data create -f register-data.yaml
 These raw json files can now be used for the data preprocessing job.
 
 ### **Preprocessing**
+Before running the preprocessing job, some parameters will need to be adjusted. In the ``NeMo-preprocess-data.yaml`` file, change the following parameters to suit your configuration.
+- ``num-workers``Set this to the total number of gpus being used to preprocess the data.
+- ``compute`` Set this to the name of your compute.
+- ``process_count_per_instance`` Set this to the number of GPUs in each node.
+- ``instance_count`` Set this to the number of nodes.
+
 Run the following command to begin data preprocessing:
 ```
 az ml job create --file preprocess-data.yaml
