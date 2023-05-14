@@ -51,7 +51,7 @@ Before running the preprocessing job, some parameters will need to be adjusted. 
 
 Run the following command to begin data preprocessing:
 ```
-az ml job create --file preprocess-data.yaml
+az ml job create --file NeMo-preprocess-data.yaml
 ```
 
 Once completed, the preprocessed data will be located in the ``outputs`` folder of the job.
@@ -64,5 +64,10 @@ Before running the job, some parameters will need to be adjusted. In the ``NeMo-
 - ``compute`` Set this to the name of your compute.
 - ``process_count_per_instance`` Set this to the number of GPUs in each node.
 - ``instance_count`` Set this to the number of nodes.
+
+Run the following command to start the job:
+```
+az ml job create --file NeMo-train-5B.yaml
+```
 ## **Results**
 
