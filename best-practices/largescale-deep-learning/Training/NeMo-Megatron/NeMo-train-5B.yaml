@@ -52,7 +52,7 @@ command: >-
   exp_manager.checkpoint_callback_params.always_save_nemo=False
 
 experiment_name: DistributedJob-Nemo
-code: nemo-latest
+code: .
 environment: azureml:Nemo-Env@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
