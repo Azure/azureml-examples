@@ -3,7 +3,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
 command: >-
-  python3 examples/nlp/language_modeling/megatron_gpt_pretraining.py
+  python megatron_gpt_pretraining.py
   --config-path=conf
   --config-name=megatron_gpt_config
   trainer.devices=8
