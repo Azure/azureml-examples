@@ -1,0 +1,6 @@
+{
+    "inputs": {
+        "audio": ["https://audiovisionfiles.blob.core.windows.net/audio/audio.m4a", "https://audiovisionfiles.blob.core.windows.net/audio/audio.m4a"],
+        "language": ["en", "fr"]
+    }
+}
