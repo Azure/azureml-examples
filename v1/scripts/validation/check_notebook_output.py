@@ -52,6 +52,9 @@ allowed_list = [
     "Readonly attribute primary_metric will be ignored",
     "Downloading artifact ",
     "Warnings:",
+    "Class FeatureStoreOperations: This is an experimental class",
+    "Class FeatureSetOperations: This is an experimental class",
+    "Class FeatureStoreEntityOperations: This is an experimental class",
 ]
 
 with open(full_name, "r") as notebook_file:
