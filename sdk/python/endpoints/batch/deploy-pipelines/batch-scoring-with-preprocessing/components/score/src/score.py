@@ -8,7 +8,11 @@ import pandas as pd
 parser = argparse.ArgumentParser("score")
 parser.add_argument("--model_path", type=str, help="Path to the input model")
 parser.add_argument("--data_path", type=str, help="Path to the data to score")
-parser.add_argument("--score_mode", type=str, help="The scoring mode. Possible values are `append` or `prediction_only`.")
+parser.add_argument(
+    "--score_mode",
+    type=str,
+    help="The scoring mode. Possible values are `append` or `prediction_only`.",
+)
 parser.add_argument("--scores_path", type=str, help="Path of predictions")
 
 args = parser.parse_args()
@@ -25,7 +29,12 @@ for line in lines:
 
 print("Loading model")
 model = mlflow.pyfunc.load_model(args.model_path)
-model_input_types = dict(zip(model.metadata.signature.inputs.input_names(), model.metadata.signature.inputs.pandas_types()))
+model_input_types = dict(
+    zip(
+        model.metadata.signature.inputs.input_names(),
+        model.metadata.signature.inputs.pandas_types(),
+    )
+)
 
 print("Input schema:")
 print(model.metadata.get_input_schema())
@@ -38,12 +47,12 @@ for input_file in input_files:
     df = pd.read_csv(input_file).astype(model_input_types)
     predictions = model.predict(df)
 
-    if args.score_mode == 'append':
+    if args.score_mode == "append":
         df["prediction"] = predictions
     else:
         df = pd.DataFrame(predictions, columns=["prediction"])
 
     output_file_name = Path(input_file).stem
-    output_file_path = os.path.join(args.scores_path, output_file_name + '.csv')
+    output_file_path = os.path.join(args.scores_path, output_file_name + ".csv")
     print(f"Writing file {output_file_path}")
     df.to_csv(output_file_path, index=False)

@@ -12,11 +12,24 @@ from mlflow.models.signature import infer_signature
 parser = argparse.ArgumentParser("score")
 parser.add_argument("--data_path", type=str, help="Path of input model.")
 parser.add_argument("--target_column", type=str, help="The target to predict.")
-parser.add_argument("--eval_size", type=float, help="The evaluation proportion size", required=False)
-parser.add_argument("--register_best_model", type=lambda x: bool(strtobool(x)), help="If we need to register the best model")
-parser.add_argument("--registered_model_name", type=str, required=False, help="Name of the model to be registered")
+parser.add_argument(
+    "--eval_size", type=float, help="The evaluation proportion size", required=False
+)
+parser.add_argument(
+    "--register_best_model",
+    type=lambda x: bool(strtobool(x)),
+    help="If we need to register the best model",
+)
+parser.add_argument(
+    "--registered_model_name",
+    type=str,
+    required=False,
+    help="Name of the model to be registered",
+)
 parser.add_argument("--model", type=str, help="The trained model.")
-parser.add_argument("--evaluation_results", type=str, help="Path of the evaluation data.")
+parser.add_argument(
+    "--evaluation_results", type=str, help="Path of the evaluation data."
+)
 
 args = parser.parse_args()
 print(vars(args))
@@ -49,18 +62,25 @@ with mlflow.start_run(nested=True):
     test_features = test.drop(columns=[args.target_column])
     predictions = model.predict(test_features)
     test["Labels"] = predictions
-    test["Probabilities"] = model.predict_proba(test_features)[:,1]
-    test.to_csv(os.path.join(args.evaluation_results, "test_predictions.csv"), index=False)
+    test["Probabilities"] = model.predict_proba(test_features)[:, 1]
+    test.to_csv(
+        os.path.join(args.evaluation_results, "test_predictions.csv"), index=False
+    )
 
     accuracy = accuracy_score(test[args.target_column], predictions)
     recall = recall_score(test[args.target_column], predictions)
-    mlflow.log_metrics({ "accuracy": accuracy, "recall": recall })
+    mlflow.log_metrics({"accuracy": accuracy, "recall": recall})
 
     # Model logging
     signature = infer_signature(train_features, predictions)
     mlflow.xgboost.save_model(model, args.model, signature=signature)
 
     if args.register_best_model:
-        mlflow.xgboost.log_model(model, "model", signature=signature, registered_model_name=args.registered_model_name)
+        mlflow.xgboost.log_model(
+            model,
+            "model",
+            signature=signature,
+            registered_model_name=args.registered_model_name,
+        )
     else:
         mlflow.xgboost.log_model(model, "model", signature=signature)
