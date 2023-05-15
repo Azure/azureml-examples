@@ -1,0 +1,34 @@
+name: spark-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip=20.3.4
+  - gcsfs
+  - fs-gcsfs
+  - numpy
+  - scipy
+  - pandas
+  - pandas-datareader
+  - pytables
+  - scikit-learn
+  - scikit-image 
+  - h5py
+  - toolz
+  - bokeh
+  - matplotlib
+  - Pillow
+  - snakeviz
+  - ujson
+  - graphviz
+  - pip
+  - s3fs
+  - fastparquet
+  - adlfs
+  - pip:
+    - python-snappy
+    - fastparquet
+    - azureml-mlflow
+    - azureml-core
+    - pyspark

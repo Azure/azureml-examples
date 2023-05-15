@@ -8,7 +8,7 @@ version: 1
 code: ./src
 
 environment: 
-  conda_file: ./conda.yml
+  conda_file: ./conda.yaml
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20220314.v1
 
 command: >-

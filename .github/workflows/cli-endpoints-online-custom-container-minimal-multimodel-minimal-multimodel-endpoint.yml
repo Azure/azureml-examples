@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/online/custom-container/minimal/multimodel/**
+      - cli/endpoints/online/**
       - infra/**
       - .github/workflows/cli-endpoints-online-custom-container-minimal-multimodel-minimal-multimodel-endpoint.yml
       - cli/setup.sh

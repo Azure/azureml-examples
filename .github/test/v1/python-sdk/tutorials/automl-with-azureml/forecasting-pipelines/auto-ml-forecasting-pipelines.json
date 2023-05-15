@@ -1,0 +1,10 @@
+{
+  "validations": [
+  {
+    "name": "check notebook output",
+    "params": {
+      "check": "stderr"
+     }
+  }
+  ]
+}

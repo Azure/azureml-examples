@@ -84,7 +84,7 @@ modelUri="azureml://subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROU
 # </create_model>
 
 # <read_condafile>
-CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yaml)
 # </read_condafile>
 
 # <create_environment>
