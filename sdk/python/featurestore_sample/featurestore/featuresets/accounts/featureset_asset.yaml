@@ -8,3 +8,5 @@ specification:
 entities: # entities associated with this feature-set
   - azureml:account:1
 stage: Development
+tags:
+  "data_type": "nonPII"
