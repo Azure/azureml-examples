@@ -135,9 +135,10 @@ def get_validation_yml(notebook_folder, notebook_name):
         "..",
         "..",
         ".github",
-        "test",
+        "validate",
         "sdk",
-        notebook_name.replace(".ipynb", ".json"),
+        "python",
+        notebook_name.replace(".ipynb", "-validations.json"),
     )
 
     if os.path.exists(validation_json_file_name):

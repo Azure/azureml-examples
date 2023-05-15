@@ -20,13 +20,13 @@ resources:
   instance_count: 2
 services:
   my_jupyterlab:
-    type: jupyter_lab
+    job_service_type: jupyter_lab
     nodes: all
   my_tensorboard:
-    type: tensor_board
+    job_service_type: tensor_board
     properties:
       logDir: "outputs/runs/"
     nodes: all
   my_vscode:
-    type: vs_code
+    job_service_type: vs_code
     nodes: all

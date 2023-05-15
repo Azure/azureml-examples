@@ -20,7 +20,7 @@ code: ./
 
 environment: 
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
-  conda_file: ./conda.yaml
+  conda_file: ./conda.yml
 
 command: >-
   python partition_data.py

@@ -24,7 +24,6 @@ EXCLUDED_DEPLOYMENTS = [
     "torchserve-deployment",
     "triton-cc-deployment",
     "2-sai-deployment",
-    "kubernetes-green-deployment",
 ]
 EXCLUDED_RESOURCES = [
     "workspace",
@@ -594,7 +593,6 @@ on:
       - main
     paths:
       - cli/{project_dir}/**
-      - cli/endpoints/{endpoint_type}/**
       - infra/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh

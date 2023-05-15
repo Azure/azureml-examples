@@ -37,10 +37,10 @@ sweep:
 search_space:
   - model_name:
       type: choice
-      values: [bert-base-cased, roberta-base]
+      values: [bert_base_cased, roberta_base]
   - model_name:
       type: choice
-      values: [distilroberta-base]
+      values: [distilroberta_base]
     weight_decay:
       type: uniform
       min_value: 0.01

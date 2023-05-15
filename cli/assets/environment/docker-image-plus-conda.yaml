@@ -1,5 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: docker-image-plus-conda-example
-image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
-conda_file: conda-yamls/pydata.yml
-description: Environment created from a Docker image plus Conda environment.
