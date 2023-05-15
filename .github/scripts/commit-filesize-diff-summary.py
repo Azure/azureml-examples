@@ -127,10 +127,15 @@ def main(
 ) -> Literal[0, 1]:
     size_differences = get_file_size_differences(commit_range)
     cumulative_size_difference = sum(x.bytes_changed for x in size_differences.values())
+    exceeds_limit = limit is not None and cumulative_size_difference > limit
+
+    def bytes_diff(num):
+        return ("+" if num >= 0 else "") + human_friendly_bytes(num)
 
     if not quiet:
-        print(f"Total file size difference for range '{commit_range}' in bytes: ")
-        print(f"\t{human_friendly_bytes(cumulative_size_difference)}")
+        print(f"Total file size difference for commit range '{commit_range}': ")
+        print(f"\t{bytes_diff(cumulative_size_difference)}", end="")
+        print(f" (Exceeds set limit of {bytes_diff(limit)})" if exceeds_limit else "")
 
         largest_n_sizes = sorted(
             size_differences.items(), key=lambda x: x[1].bytes_changed, reverse=True
@@ -141,12 +146,9 @@ def main(
             print(f"Largest {len(largest_n_sizes)} filesize differences:")
 
         for path, val in largest_n_sizes:
-            print(f"\t{human_friendly_bytes(val.bytes_changed)}\t{path}")
+            print(f"\t{bytes_diff(val.bytes_changed)}\t{path}")
 
-    if limit is not None:
-        return 1 if cumulative_size_difference > limit else 0
-
-    return 0
+    return 1 if exceeds_limit else 0
 
 
 def num_bytes(arg: str) -> int:
