@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: text-generation-model-evaluation-subgraph
+
+compute: gpu-cluster-big
+
+jobs:
+  pipeline_component_job:
+    type: pipeline
+    component: azureml://registries/azureml-preview/components/model_evaluation_pipeline/labels/latest
+    inputs:
+      task: text-generation
+      test_data:
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/text-generation/text-generation/small-test.jsonl"
+        type: uri_file
+      mlflow_model: 
+        path: azureml://registries/azureml-preview/models/gpt2/versions/3
+      label_column_name: ground_truth
+      device: gpu

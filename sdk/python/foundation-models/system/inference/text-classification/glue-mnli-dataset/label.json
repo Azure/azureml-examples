@@ -1,0 +1,12 @@
+{
+  "id2label": {
+    "0": "ENTAILMENT",
+    "1": "NEUTRAL",
+    "2": "CONTRADICTION"
+  },
+  "label2id": {
+    "ENTAILMENT": 0,
+    "CONTRADICTION": 2,
+    "NEUTRAL": 1
+  }
+}
