@@ -1,12 +1,9 @@
 import argparse
-import io
 import os
+import mlflow
 import math
 import time
 from enum import Enum
-from PIL import Image
-
-import mlflow
 
 import torch
 import torch.distributed as dist
@@ -17,11 +14,8 @@ import torch.utils.data
 import torch.utils.data.distributed
 import torchvision
 import torchvision.datasets as datasets
-from torchvision.datasets.folder import default_loader
 import torchvision.models as models
 import torchvision.transforms as transforms
-from skimage.io import MultiImage
-from azureml.core import Run
 from tqdm import tqdm
 
 
@@ -30,9 +24,6 @@ print(f"World size: {os.environ['WORLD_SIZE']}")
 
 
 NUM_EPOCHS = 40
-
-
-current_run = Run.get_context()
 
 
 model_names = sorted(name for name in models.__dict__
@@ -53,10 +44,12 @@ def get_model_checkpoint_epoch_path(args, epoch):
     print(f"Model checkpoint epoch path: {res}")
     return res
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
     parser.add_argument("--dataset_directory_name", type=str)
     parser.add_argument("--checkpoint_dir", type=str)
+    parser.add_argument("--output-dir", required=False, default="outputs", type=str)
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                         choices=model_names,
                         help='model architecture: ' +
@@ -86,8 +79,6 @@ def parse_args():
                         help='number of nodes for distributed training')
     parser.add_argument('--dist-backend', default='nccl', type=str,
                         help='distributed backend')
-    parser.add_argument('--output-dir', default='outputs', type=str,
-                        help='path to store the model outputs') 
     args = parser.parse_args()
 
     return args
@@ -126,7 +117,8 @@ class WarmUpCosineLRCalculator:
 
 def main(args):
     args.world_size = int(os.environ["WORLD_SIZE"])
-    args.distributed = True if args.world_size > 1 else False
+    if args.world_size > 1:
+        args.distributed = True
     main_worker(args)
 
 
@@ -138,7 +130,8 @@ def main_worker(args):
     args.rank = int(os.environ["RANK"])
     args.world_size = int(os.environ['WORLD_SIZE'])
     dist.init_process_group(backend=args.dist_backend, world_size=args.world_size, rank=args.rank)
-
+    
+    print("=> Initialized process group on rank {} with {} workers".format(args.rank, args.world_size))
     print("=> creating model '{}'".format(args.arch))
     model = models.__dict__[args.arch]()
 
@@ -171,7 +164,8 @@ def main_worker(args):
             print("=> loaded checkpoint '{}' (epoch {})".format(model_checkpoint_path, checkpoint['epoch']))
     else:
         print("=> no checkpoint found at '{}'".format(model_checkpoint_path))
-        
+
+    # Data loading code
     print(f"=> Loading data from {args.dataset_directory_name}")
     train_dataset = make_dataset(args.dataset_directory_name, "train")
     val_dataset = make_dataset(args.dataset_directory_name, "val")
@@ -188,12 +182,12 @@ def main_worker(args):
 
     lr_calculator = WarmUpCosineLRCalculator(len(train_loader), args.lr * args.world_size, args.epochs)
 
-    if os.environ["RANK"] == 0:
+    if args.rank == 0:
         mlflow.log_param("batch_size", args.batch_size)
         mlflow.log_param("epochs", args.epochs)
         mlflow.log_param("learning_rate", args.lr)
         mlflow.log_param("momentum", args.momentum)
-    
+
     if args.evaluate:
         validate(val_loader_dist, model, criterion, args)
         return
@@ -202,7 +196,7 @@ def main_worker(args):
         print(f'Starting epoch {epoch}')
         train_sampler.set_epoch(epoch)
         train(train_loader, model, criterion, optimizer, epoch, device, lr_calculator)
-        acc1 = validate(val_loader_dist, model, criterion, args)
+        acc1 = validate(val_loader_dist, model, criterion, args, epoch)
         is_best = acc1 > best_acc1
         best_acc1 = max(acc1, best_acc1)
         if args.rank == 0:
@@ -212,13 +206,14 @@ def main_worker(args):
                 'best_acc1': best_acc1,
                 'optimizer' : optimizer.state_dict(),
             }, epoch, args)
-            
-    if os.environ["RANK"] == 0:
+    
+    # Save the model at the end of training
+    if args.rank == 0:
+        print(f"Saving model to {args.output_dir}/model.pt")
         mlflow.pytorch.log_model(model, "model")
         os.makedirs(args.output_dir, exist_ok=True)
         model_path = os.path.join(args.output_dir, "model.pt")
         torch.save(model, model_path)
-        print(f"Succesfully trained model. Model saved to {args.output_dir}/model.pt")
 
 
 def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculator):
@@ -245,7 +240,6 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
         # compute output
         output = model(images)
         loss = criterion(output, target)
-        
 
         # measure accuracy and record loss
         acc1, acc5 = accuracy(output, target, topk=(1, 5))
@@ -256,6 +250,8 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
         lr = lr_calculator.calculate(i + epoch * num_batches)
         optimizer.param_groups[0]['lr'] = lr
         
+        print(f'Learning rate: {lr}')
+
         # compute gradient and do SGD step
         optimizer.zero_grad()
         loss.backward()
@@ -263,7 +259,8 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
         torch.nn.utils.clip_grad_value_(model.parameters(), 5)
         optimizer.step()
 
-        if os.environ["RANK"] == 0:
+        if int(os.environ["RANK"]) == 0:
+            mlflow.log_metric("training_loss", loss.item(), step=i)
             mlflow.log_metric("learning_rate", optimizer.param_groups[0]["lr"], step=i)
 
         # measure elapsed time
@@ -271,7 +268,7 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
         end = time.time()
 
 
-def validate(val_loader, model, criterion, args):
+def validate(val_loader, model, criterion, args, epoch=0):
 
     def run_validate(loader, base_progress=0):
         with torch.no_grad():
@@ -297,14 +294,13 @@ def validate(val_loader, model, criterion, args):
                 batch_time.update(time.time() - end)
                 end = time.time()
 
+                # if i % args.print_freq == 0:
+                #     progress.display(i + 1)
+
     batch_time = AverageMeter('Time', ':6.3f', Summary.NONE)
     losses = AverageMeter('Loss', ':.4e', Summary.NONE)
     top1 = AverageMeter('Acc@1', ':6.2f', Summary.AVERAGE)
     top5 = AverageMeter('Acc@5', ':6.2f', Summary.AVERAGE)
-    progress = ProgressMeter(
-        len(val_loader) + (args.distributed and (len(val_loader.sampler) * args.world_size < len(val_loader.dataset))),
-        [batch_time, losses, top1, top5],
-        prefix='Test: ')
 
     # switch to evaluate mode
     model.eval()
@@ -318,25 +314,27 @@ def validate(val_loader, model, criterion, args):
     print(f'Top5 avg: {top5.avg}')
 
     if os.environ['RANK'] == '0':
-        mlflow.log_metric('world_size', args.world_size)
-        mlflow.log_metric('top1', top1.avg)
-        mlflow.log_metric('top5', top5.avg)
+        mlflow.log_metric('world_size', args.world_size, step=epoch)
+        mlflow.log_metric('top1', top1.avg, step=epoch)
+        mlflow.log_metric('top5', top5.avg, step=epoch)
 
     return top1.avg
 
 
 def save_checkpoint(state, epoch, args): 
     model_checkpoint_path = get_model_checkpoint_path(args)
-    model_checkpoint_epoch_path = get_model_checkpoint_epoch_path(args, epoch)
     state['epoch'] = epoch + 1
     start = time.time()
     torch.save(state, model_checkpoint_path)
     print(f"Saved checkpoint to {model_checkpoint_path}")
     print(f'Checkpointing time: {time.time() - start}')
-    start = time.time()
-    torch.save(state, model_checkpoint_epoch_path)
-    print(f"Saved epoch checkpoint to {model_checkpoint_epoch_path}")
-    print(f'Epoch Checkpointing time: {time.time() - start}')
+    # Uncomment to save epoch checkpoint
+    # model_checkpoint_epoch_path = get_model_checkpoint_epoch_path(args, epoch)
+    # start = time.time()
+    # torch.save(state, model_checkpoint_epoch_path)
+    # print(f"Saved epoch checkpoint to {model_checkpoint_epoch_path}")
+    # print(f'Epoch Checkpointing time: {time.time() - start}')
+
 
 class Summary(Enum):
     NONE = 0
@@ -397,28 +395,6 @@ class AverageMeter(object):
         return fmtstr.format(**self.__dict__)
 
 
-class ProgressMeter(object):
-    def __init__(self, num_batches, meters, prefix=""):
-        self.batch_fmtstr = self._get_batch_fmtstr(num_batches)
-        self.meters = meters
-        self.prefix = prefix
-
-    def display(self, batch):
-        entries = [self.prefix + self.batch_fmtstr.format(batch)]
-        entries += [str(meter) for meter in self.meters]
-        print('\t'.join(entries))
-        
-    def display_summary(self):
-        entries = [" *"]
-        entries += [meter.summary() for meter in self.meters]
-        print(' '.join(entries))
-
-    def _get_batch_fmtstr(self, num_batches):
-        num_digits = len(str(num_batches // 1))
-        fmt = '{:' + str(num_digits) + 'd}'
-        return '[' + fmt + '/' + fmt.format(num_batches) + ']'
-
-
 def accuracy(output, target, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
     with torch.no_grad():
@@ -437,6 +413,7 @@ def accuracy(output, target, topk=(1,)):
 
 
 if __name__ == '__main__':
+    print("Starting training...")
     args = parse_args()
     main(args)
     print("Finished training...")
