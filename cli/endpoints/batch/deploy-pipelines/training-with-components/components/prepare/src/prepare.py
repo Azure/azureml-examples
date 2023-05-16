@@ -64,12 +64,12 @@ def build_preprocessing_pipeline(
 
 
 def preprocess_heart_disease_data(
-    df,
-    continuous_features,
-    discrete_features,
-    target,
+    df: pd.DataFrame,
+    continuous_features: List[str],
+    discrete_features: List[str],
+    target: str,
     categorical_encoding: str = "ordinal",
-    transformations=None,
+    transformations: ColumnTransformer = None,
 ):
     mlflow.sklearn.autolog()
 
@@ -89,6 +89,7 @@ def preprocess_heart_disease_data(
         df_transformed = transformations.fit_transform(features_df)
 
     # Get columns names from transformations
+    # Columns names may have been altered due to encoding strategies
     transformed_discrete_features = (
         transformations.transformers_[1][1]
         .named_steps["encoder"]
@@ -129,15 +130,13 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    lines = [
-        f"Input data path: {args.data_path}",
-        f"Categorical encoding strategy: {args.categorical_encoding}",
-        f"transformations path: {args.transformations_path}",
-        f"Processed data path: {args.prepared_data_path}",
-    ]
-
-    for line in lines:
-        print(line)
+    print(
+        f"- Input data path: {args.data_path}",
+        f"- Categorical encoding strategy: {args.categorical_encoding}",
+        f"- Transformations path: {args.transformations_path}",
+        f"- Processed data path: {args.prepared_data_path}",
+        sep="\n",
+    )
 
     print("[DEBUG]Loading transformation if available")
     if args.transformations_path:

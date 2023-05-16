@@ -3,9 +3,9 @@ type: pipeline
 
 display_name: uci-classifier-score-job
 description: |-
-  This pipeline demostrates how to make batch inference using a model from the Heart \
+  This pipeline demonstrate how to make batch inference using a model from the Heart \
   Disease Data Set problem, where pre and post processing is required as steps. The \
-  pre and post processing steps can be components reusable from the training pipeline.
+  pre and post processing steps can be components reused from the training pipeline.
 
 compute: batch-cluster
 component: pipeline.yml

@@ -3,7 +3,7 @@ type: pipeline
 
 experiment_name: hello-pipeline-batch
 display_name: hello-pipeline-batch-job
-description: This job demostrate how to run the a pipeline component in a pipeline job. You can use this example to test a component in an standalone job before deploying it in an endpoint.
+description: This job demonstrates how to run the a pipeline component in a pipeline job. You can use this example to test a component in an standalone job before deploying it in an endpoint.
 
 compute: batch-cluster
 component: hello-component/hello.yml

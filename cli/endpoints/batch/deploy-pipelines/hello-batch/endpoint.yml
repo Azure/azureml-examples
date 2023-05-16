@@ -1,4 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
 name: hello-batch
-description: A hello world endpoint for component deployments
+description: A hello world endpoint for component deployments.
 auth_mode: aad_token
