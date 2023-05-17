@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-bigscience/bloom-7b1.yaml
+      - .github/workflows/import-bigscience-bloom-7b1.yaml
 
 env:
   MODEL_ID: bigscience/bloom-7b1

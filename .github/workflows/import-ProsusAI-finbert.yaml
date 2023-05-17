@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-ProsusAI/finbert.yaml
+      - .github/workflows/import-ProsusAI-finbert.yaml
 
 env:
   MODEL_ID: ProsusAI/finbert

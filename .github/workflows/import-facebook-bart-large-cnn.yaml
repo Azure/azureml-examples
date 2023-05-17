@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-facebook/bart-large-cnn.yaml
+      - .github/workflows/import-facebook-bart-large-cnn.yaml
 
 env:
   MODEL_ID: facebook/bart-large-cnn

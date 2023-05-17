@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-Jean-Baptiste/roberta-large-ner-english.yaml
+      - .github/workflows/import-Jean-Baptiste-roberta-large-ner-english.yaml
 
 env:
   MODEL_ID: Jean-Baptiste/roberta-large-ner-english

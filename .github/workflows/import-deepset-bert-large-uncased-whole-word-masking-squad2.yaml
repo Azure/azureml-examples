@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-deepset/bert-large-uncased-whole-word-masking-squad2.yaml
+      - .github/workflows/import-deepset-bert-large-uncased-whole-word-masking-squad2.yaml
 
 env:
   MODEL_ID: deepset/bert-large-uncased-whole-word-masking-squad2

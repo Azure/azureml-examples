@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-runwayml/stable-diffusion-v1-5.yaml
+      - .github/workflows/import-runwayml-stable-diffusion-v1-5.yaml
 
 env:
   MODEL_ID: runwayml/stable-diffusion-v1-5

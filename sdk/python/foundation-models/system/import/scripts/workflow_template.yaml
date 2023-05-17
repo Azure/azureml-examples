@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-<model-id>.yaml
+      - .github/workflows/import-<file-name>.yaml
 
 env:
   MODEL_ID: <model-id>

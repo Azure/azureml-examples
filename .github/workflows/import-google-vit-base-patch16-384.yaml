@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-google/vit-base-patch16-384.yaml
+      - .github/workflows/import-google-vit-base-patch16-384.yaml
 
 env:
   MODEL_ID: google/vit-base-patch16-384

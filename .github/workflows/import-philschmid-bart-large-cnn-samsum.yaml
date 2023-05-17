@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-philschmid/bart-large-cnn-samsum.yaml
+      - .github/workflows/import-philschmid-bart-large-cnn-samsum.yaml
 
 env:
   MODEL_ID: philschmid/bart-large-cnn-samsum

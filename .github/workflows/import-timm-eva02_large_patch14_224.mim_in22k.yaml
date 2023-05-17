@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-timm/eva02_large_patch14_224.mim_in22k.yaml
+      - .github/workflows/import-timm-eva02_large_patch14_224.mim_in22k.yaml
 
 env:
   MODEL_ID: timm/eva02_large_patch14_224.mim_in22k

@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-dslim/bert-base-NER.yaml
+      - .github/workflows/import-dslim-bert-base-NER.yaml
 
 env:
   MODEL_ID: dslim/bert-base-NER

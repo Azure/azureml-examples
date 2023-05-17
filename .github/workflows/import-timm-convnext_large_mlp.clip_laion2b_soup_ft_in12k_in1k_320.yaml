@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-timm/convnext_large_mlp.clip_laion2b_soup_ft_in12k_in1k_320.yaml
+      - .github/workflows/import-timm-convnext_large_mlp.clip_laion2b_soup_ft_in12k_in1k_320.yaml
 
 env:
   MODEL_ID: timm/convnext_large_mlp.clip_laion2b_soup_ft_in12k_in1k_320

@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-stabilityai/sd-vae-ft-mse.yaml
+      - .github/workflows/import-stabilityai-sd-vae-ft-mse.yaml
 
 env:
   MODEL_ID: stabilityai/sd-vae-ft-mse

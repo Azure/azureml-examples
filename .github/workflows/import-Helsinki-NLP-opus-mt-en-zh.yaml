@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-Helsinki-NLP/opus-mt-en-zh.yaml
+      - .github/workflows/import-Helsinki-NLP-opus-mt-en-zh.yaml
 
 env:
   MODEL_ID: Helsinki-NLP/opus-mt-en-zh

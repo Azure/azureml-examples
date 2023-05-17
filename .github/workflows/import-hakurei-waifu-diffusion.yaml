@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-hakurei/waifu-diffusion.yaml
+      - .github/workflows/import-hakurei-waifu-diffusion.yaml
 
 env:
   MODEL_ID: hakurei/waifu-diffusion

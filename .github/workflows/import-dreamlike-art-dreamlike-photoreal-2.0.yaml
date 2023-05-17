@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-dreamlike-art/dreamlike-photoreal-2.0.yaml
+      - .github/workflows/import-dreamlike-art-dreamlike-photoreal-2.0.yaml
 
 env:
   MODEL_ID: dreamlike-art/dreamlike-photoreal-2.0
