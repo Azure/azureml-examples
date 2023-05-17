@@ -26,7 +26,7 @@ endpoint_name="text-classification-$version"
 deployment_sku="Standard_DS3_v2"
 
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/inference/text-classification/glue-mnli-dataset/sample_score.json"
+scoring_file="../../../../../sdk/python/foundation-models/system/inference/text-classification/imdb-dataset/sample_score.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
