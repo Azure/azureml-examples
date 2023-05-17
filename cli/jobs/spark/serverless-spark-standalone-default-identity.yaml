@@ -2,7 +2,7 @@
 $schema: http://azureml/sdk-2-0/SparkJob.json
 type: spark
 
-code: ./src serverless
+code: ./src
 entry:
   file: titanic.py
 
