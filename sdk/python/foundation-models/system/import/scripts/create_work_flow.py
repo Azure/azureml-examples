@@ -22,7 +22,9 @@ def generate_workflow_file(template, parameters, output_path):
     for parameter in parameters:
         # Replace placeholders in the template with the parameter values
         workflow_content = template_content.replace("<model-id>", parameter)
-        workflow_content = workflow_content.replace("<file-name>", parameter.replace('/','-'))
+        workflow_content = workflow_content.replace(
+            "<file-name>", parameter.replace("/", "-")
+        )
         # Create a new workflow file with the parameter-specific content
         output_file = f"{output_path}/import-{parameter.replace('/','-')}.yaml"
         with open(output_file, "w") as f:
