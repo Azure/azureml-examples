@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+description: Custom model deployment
+
+name: custom-transformers-deployment
+version: 1
+
+build:
+  path: ./context
+  dockerfile_path: Dockerfile
+
+os_type: linux
