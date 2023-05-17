@@ -9,7 +9,7 @@ ENDPOINT_NAME="uci-classifier-train"
 
 #<create_random_endpoint_name>
 ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head -n 1)
-ENDPOINT_NAME="uci-classifier-train-$ENDPOINT_SUFIX"
+ENDPOINT_NAME="$ENDPOINT_NAME-$ENDPOINT_SUFIX"
 #</create_random_endpoint_name>
 
 #<create_environment>

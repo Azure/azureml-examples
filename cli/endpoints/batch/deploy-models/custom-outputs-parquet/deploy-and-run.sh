@@ -10,7 +10,7 @@ ENDPOINT_NAME="heart-classifier-custom"
 
 # The following code ensures the created deployment has a unique name
 ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head -n 1)
-ENDPOINT_NAME="heart-classifier-custom-$ENDPOINT_SUFIX"
+ENDPOINT_NAME="$ENDPOINT_NAME-$ENDPOINT_SUFIX"
 
 # <register_model>
 MODEL_NAME='heart-classifier-sklpipe'
