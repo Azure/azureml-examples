@@ -20,7 +20,9 @@ def init():
     try:
         print(f"Loading model from path {model_path}")
         tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False, local_files_only=True)
-        model = AutoModelForCausalLM.from_pretrained(model_path, local_files_only=True, device_map="auto",trust_remote_code=True)
+        model = AutoModelForCausalLM.from_pretrained(
+            model_path, local_files_only=True, device_map="auto", trust_remote_code=True
+        )
         print("Loading successful.")
     except Exception as e:
         return json.dumps({"error": str(e)})
@@ -38,11 +40,7 @@ def run(data):
     global tokenizer
 
     if not model or not tokenizer:
-        return json.dumps(
-            {
-                "error": "Model or tokenizer was not initialized correctly. Could not infer"
-            }
-        )
+        return json.dumps({"error": "Model or tokenizer was not initialized correctly. Could not infer"})
 
     print(f"input data:\n{data}")
 
@@ -58,9 +56,7 @@ def run(data):
 
     device = params.get("device", -1)
     if device == -1 and torch.cuda.is_available():
-        print(
-            'WARNING: CUDA available. To switch to GPU device pass `"params": {"device" : 0}` in the input.'
-        )
+        print('WARNING: CUDA available. To switch to GPU device pass `"params": {"device" : 0}` in the input.')
     if device == 0 and not torch.cuda.is_available():
         device = -1
         print("WARNING: CUDA unavailable. Defaulting to CPU device.")
@@ -75,9 +71,7 @@ def run(data):
         for inp in inputs:
             inputs = tokenizer(inp, return_tensors="pt").to(device)
             model = model.to(device)
-            preds = model.generate(
-                **inputs, max_new_tokens=max_new_tokens, do_sample=True
-            )
+            preds = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=True)
             result.append(tokenizer.batch_decode(preds, skip_special_tokens=True)[0])
         return json.dumps({"result": result})
     except Exception as e:
@@ -86,4 +80,8 @@ def run(data):
 
 if __name__ == "__main__":
     print(init())
-    print(run('{"inputs": {"input_str": ["rocco noticed the almost defeated look on her lovely face and did not like it.", "Hello, my dog is cute."], "params": {"max_new_tokens": 128, "device": -1}}}'))
+    print(
+        run(
+            '{"inputs": {"input_str": ["rocco noticed the almost defeated look on her lovely face and did not like it.", "Hello, my dog is cute."], "params": {"max_new_tokens": 128, "device": -1}}}'
+        )
+    )
