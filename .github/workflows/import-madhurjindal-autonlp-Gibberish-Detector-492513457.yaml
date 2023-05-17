@@ -14,7 +14,7 @@ env:
   MODEL_ID: madhurjindal/autonlp-Gibberish-Detector-492513457
 
 jobs:
-  import-madhurjindal/autonlp-Gibberish-Detector-492513457-job:
+  import-madhurjindal-autonlp-Gibberish-Detector-492513457-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

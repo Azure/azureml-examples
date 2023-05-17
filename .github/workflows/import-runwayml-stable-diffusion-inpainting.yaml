@@ -14,7 +14,7 @@ env:
   MODEL_ID: runwayml/stable-diffusion-inpainting
 
 jobs:
-  import-runwayml/stable-diffusion-inpainting-job:
+  import-runwayml-stable-diffusion-inpainting-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

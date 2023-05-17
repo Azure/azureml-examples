@@ -14,7 +14,7 @@ env:
   MODEL_ID: facebook/convnext-base-224
 
 jobs:
-  import-facebook/convnext-base-224-job:
+  import-facebook-convnext-base-224-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

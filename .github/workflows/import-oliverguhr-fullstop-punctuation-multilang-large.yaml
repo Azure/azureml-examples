@@ -14,7 +14,7 @@ env:
   MODEL_ID: oliverguhr/fullstop-punctuation-multilang-large
 
 jobs:
-  import-oliverguhr/fullstop-punctuation-multilang-large-job:
+  import-oliverguhr-fullstop-punctuation-multilang-large-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

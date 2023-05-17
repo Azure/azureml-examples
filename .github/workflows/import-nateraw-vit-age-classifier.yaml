@@ -14,7 +14,7 @@ env:
   MODEL_ID: nateraw/vit-age-classifier
 
 jobs:
-  import-nateraw/vit-age-classifier-job:
+  import-nateraw-vit-age-classifier-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

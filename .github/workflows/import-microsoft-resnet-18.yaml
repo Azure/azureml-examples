@@ -14,7 +14,7 @@ env:
   MODEL_ID: microsoft/resnet-18
 
 jobs:
-  import-microsoft/resnet-18-job:
+  import-microsoft-resnet-18-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

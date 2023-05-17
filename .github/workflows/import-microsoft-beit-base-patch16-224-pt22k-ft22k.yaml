@@ -14,7 +14,7 @@ env:
   MODEL_ID: microsoft/beit-base-patch16-224-pt22k-ft22k
 
 jobs:
-  import-microsoft/beit-base-patch16-224-pt22k-ft22k-job:
+  import-microsoft-beit-base-patch16-224-pt22k-ft22k-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

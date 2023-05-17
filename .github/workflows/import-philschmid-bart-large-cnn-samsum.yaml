@@ -14,7 +14,7 @@ env:
   MODEL_ID: philschmid/bart-large-cnn-samsum
 
 jobs:
-  import-philschmid/bart-large-cnn-samsum-job:
+  import-philschmid-bart-large-cnn-samsum-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

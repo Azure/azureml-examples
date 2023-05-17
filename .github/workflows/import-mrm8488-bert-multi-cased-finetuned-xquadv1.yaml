@@ -14,7 +14,7 @@ env:
   MODEL_ID: mrm8488/bert-multi-cased-finetuned-xquadv1
 
 jobs:
-  import-mrm8488/bert-multi-cased-finetuned-xquadv1-job:
+  import-mrm8488-bert-multi-cased-finetuned-xquadv1-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

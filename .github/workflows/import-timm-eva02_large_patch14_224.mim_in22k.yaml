@@ -14,7 +14,7 @@ env:
   MODEL_ID: timm/eva02_large_patch14_224.mim_in22k
 
 jobs:
-  import-timm/eva02_large_patch14_224.mim_in22k-job:
+  import-timm-eva02_large_patch14_224.mim_in22k-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

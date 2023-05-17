@@ -14,7 +14,7 @@ env:
   MODEL_ID: stabilityai/stable-diffusion-2-1-base
 
 jobs:
-  import-stabilityai/stable-diffusion-2-1-base-job:
+  import-stabilityai-stable-diffusion-2-1-base-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

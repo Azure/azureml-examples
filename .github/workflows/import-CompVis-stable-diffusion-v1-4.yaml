@@ -14,7 +14,7 @@ env:
   MODEL_ID: CompVis/stable-diffusion-v1-4
 
 jobs:
-  import-CompVis/stable-diffusion-v1-4-job:
+  import-CompVis-stable-diffusion-v1-4-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

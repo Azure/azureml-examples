@@ -14,7 +14,7 @@ env:
   MODEL_ID: allenai/longformer-large-4096-finetuned-triviaqa
 
 jobs:
-  import-allenai/longformer-large-4096-finetuned-triviaqa-job:
+  import-allenai-longformer-large-4096-finetuned-triviaqa-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

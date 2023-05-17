@@ -14,7 +14,7 @@ env:
   MODEL_ID: Seethal/sentiment_analysis_generic_dataset
 
 jobs:
-  import-Seethal/sentiment_analysis_generic_dataset-job:
+  import-Seethal-sentiment_analysis_generic_dataset-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

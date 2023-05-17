@@ -14,7 +14,7 @@ env:
   MODEL_ID: hakurei/waifu-diffusion
 
 jobs:
-  import-hakurei/waifu-diffusion-job:
+  import-hakurei-waifu-diffusion-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -14,7 +14,7 @@ env:
   MODEL_ID: facebook/bart-large-cnn
 
 jobs:
-  import-facebook/bart-large-cnn-job:
+  import-facebook-bart-large-cnn-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository
