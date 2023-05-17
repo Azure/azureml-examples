@@ -1,8 +1,8 @@
-# managed-spark-standalone-managed-identity.yaml
+# serverless-spark-standalone-default-identity.yaml
 $schema: http://azureml/sdk-2-0/SparkJob.json
 type: spark
 
-code: ./src
+code: ./src serverless
 entry:
   file: titanic.py
 
@@ -28,9 +28,6 @@ outputs:
 args: >-
   --titanic_data ${{inputs.titanic_data}}
   --wrangled_data ${{outputs.wrangled_data}}
-
-identity:
-  type: managed
 
 resources:
   instance_type: standard_e4s_v3
