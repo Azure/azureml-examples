@@ -26,7 +26,7 @@ endpoint_name="token-classification-$version"
 deployment_sku="Standard_DS2_v2"
 
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/inference/token-classification/Jean-Baptiste-wikiner_fr/sample_score.json"
+scoring_file="../../../../../sdk/python/foundation-models/system/inference/token-classification/polyglot_ner/sample_score.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
