@@ -3,7 +3,7 @@ type: pipeline
 
 experiment_name: uci-heart-train-pipeline
 display_name: uci-heart-train-job
-description: This pipeline demonstrates how to make train a machine learning classifier over the UCI heart dataset.
+description: This pipeline demonstrates how to train a machine learning classifier over the UCI heart dataset.
 
 compute: batch-cluster
 component: pipeline.yml
