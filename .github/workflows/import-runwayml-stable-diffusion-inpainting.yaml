@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: runwayml/stable-diffusion-inpainting workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/runwayml/stable-diffusion-inpainting.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: runwayml/stable-diffusion-inpainting
 
 jobs:
-  import-bert-base-cased-job:
+  import-runwayml/stable-diffusion-inpainting-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: Jean-Baptiste/roberta-large-ner-english workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/Jean-Baptiste/roberta-large-ner-english.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: Jean-Baptiste/roberta-large-ner-english
 
 jobs:
-  import-bert-base-cased-job:
+  import-Jean-Baptiste/roberta-large-ner-english-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

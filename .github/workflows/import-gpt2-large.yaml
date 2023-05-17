@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: gpt2-large workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/gpt2-large.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: gpt2-large
 
 jobs:
-  import-bert-base-cased-job:
+  import-gpt2-large-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: facebook/bart-large-mnli workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/facebook/bart-large-mnli.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: facebook/bart-large-mnli
 
 jobs:
-  import-bert-base-cased-job:
+  import-facebook/bart-large-mnli-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

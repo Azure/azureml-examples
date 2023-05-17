@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: Seethal/sentiment_analysis_generic_dataset workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/Seethal/sentiment_analysis_generic_dataset.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: Seethal/sentiment_analysis_generic_dataset
 
 jobs:
-  import-bert-base-cased-job:
+  import-Seethal/sentiment_analysis_generic_dataset-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

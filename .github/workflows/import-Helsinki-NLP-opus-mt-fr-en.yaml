@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: Helsinki-NLP/opus-mt-fr-en workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/Helsinki-NLP/opus-mt-fr-en.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: Helsinki-NLP/opus-mt-fr-en
 
 jobs:
-  import-bert-base-cased-job:
+  import-Helsinki-NLP/opus-mt-fr-en-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

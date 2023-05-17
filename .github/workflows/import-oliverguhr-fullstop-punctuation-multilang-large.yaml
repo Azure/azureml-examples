@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: oliverguhr/fullstop-punctuation-multilang-large workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/oliverguhr/fullstop-punctuation-multilang-large.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: oliverguhr/fullstop-punctuation-multilang-large
 
 jobs:
-  import-bert-base-cased-job:
+  import-oliverguhr/fullstop-punctuation-multilang-large-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

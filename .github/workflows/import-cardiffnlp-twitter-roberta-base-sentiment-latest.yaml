@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: cardiffnlp/twitter-roberta-base-sentiment-latest workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/cardiffnlp/twitter-roberta-base-sentiment-latest.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: cardiffnlp/twitter-roberta-base-sentiment-latest
 
 jobs:
-  import-bert-base-cased-job:
+  import-cardiffnlp/twitter-roberta-base-sentiment-latest-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

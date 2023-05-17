@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: bert-large-uncased-whole-word-masking-finetuned-squad workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/bert-large-uncased-whole-word-masking-finetuned-squad.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: bert-large-uncased-whole-word-masking-finetuned-squad
 
 jobs:
-  import-bert-base-cased-job:
+  import-bert-large-uncased-whole-word-masking-finetuned-squad-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

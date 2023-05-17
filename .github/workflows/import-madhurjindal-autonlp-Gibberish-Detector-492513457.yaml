@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: madhurjindal/autonlp-Gibberish-Detector-492513457 workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/madhurjindal/autonlp-Gibberish-Detector-492513457.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: madhurjindal/autonlp-Gibberish-Detector-492513457
 
 jobs:
-  import-bert-base-cased-job:
+  import-madhurjindal/autonlp-Gibberish-Detector-492513457-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

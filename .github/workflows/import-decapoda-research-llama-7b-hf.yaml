@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: decapoda-research/llama-7b-hf workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/decapoda-research/llama-7b-hf.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: decapoda-research/llama-7b-hf
 
 jobs:
-  import-bert-base-cased-job:
+  import-decapoda-research/llama-7b-hf-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: distilbert-base-uncased workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/distilbert-base-uncased.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: distilbert-base-uncased
 
 jobs:
-  import-bert-base-cased-job:
+  import-distilbert-base-uncased-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: dreamlike-art/dreamlike-photoreal-2.0 workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/dreamlike-art/dreamlike-photoreal-2.0.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: dreamlike-art/dreamlike-photoreal-2.0
 
 jobs:
-  import-bert-base-cased-job:
+  import-dreamlike-art/dreamlike-photoreal-2.0-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

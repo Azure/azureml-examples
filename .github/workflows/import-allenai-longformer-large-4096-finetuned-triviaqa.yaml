@@ -1,4 +1,4 @@
-name: bert-base-cased workflow
+name: allenai/longformer-large-4096-finetuned-triviaqa workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bert-base-cased.yaml
+      - .github/workflows/allenai/longformer-large-4096-finetuned-triviaqa.yaml
 
 env:
-  MODEL_ID: bert-base-cased
+  MODEL_ID: allenai/longformer-large-4096-finetuned-triviaqa
 
 jobs:
-  import-bert-base-cased-job:
+  import-allenai/longformer-large-4096-finetuned-triviaqa-job:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository
