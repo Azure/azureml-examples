@@ -57,7 +57,9 @@ environment: azureml:Nemo-Env@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   HYDRA_FULL_ERROR: '1'
-  CUDA_LAUNCH_BLOCKING: '1'
+  UCX_IB_PCI_RELAXED_ORDERING: 'auto'
+  NCCL_IB_PCI_RELAXED_ORDERING: '2'
+  NCCL_IB_TIMEOUT: '22'
 inputs:
   vocab_data:
     type: uri_file
@@ -79,4 +81,4 @@ distribution:
   process_count_per_instance: 8
 resources:
   instance_count: 2
-  shm_size: 3100m
+  shm_size: 80g
