@@ -5,7 +5,7 @@
 import json
 import os
 import torch
-from transformers import LlamaTokenizer, LlamaForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 model = None
@@ -19,18 +19,8 @@ def init():
     model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "INPUT_model_path")
     try:
         print(f"Loading model from path {model_path}")
-        # Use this for open_llama models
-        subfolder = "open_llama_7b_preview_200bt_transformers_weights"
-        tokenizer = LlamaTokenizer.from_pretrained(
-            model_path, subfolder=subfolder, use_fast=False, local_files_only=True
-        )
-        model = LlamaForCausalLM.from_pretrained(
-            model_path, subfolder=subfolder, local_files_only=True
-        )
-
-        # uncomment for others
-        # tokenizer = LlamaTokenizer.from_pretrained(model_path, use_fast=False, local_files_only=True)
-        # model = LlamaForCausalLM.from_pretrained(model_path, local_files_only=True)
+        tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False, local_files_only=True)
+        model = AutoModelForCausalLM.from_pretrained(model_path, local_files_only=True, device_map="auto",trust_remote_code=True)
         print("Loading successful.")
     except Exception as e:
         return json.dumps({"error": str(e)})
@@ -94,6 +84,6 @@ def run(data):
         return json.dumps({"error": str(e)})
 
 
-# if __name__ == "__main__":
-#     print(init())
-#     print(run('{"inputs": {"input_str": ["rocco noticed the almost defeated look on her lovely face and did not like it.", "Hello, my dog is cute."], "params": {"max_new_tokens": 128, "device": 0}}}'))
+if __name__ == "__main__":
+    print(init())
+    print(run('{"inputs": {"input_str": ["rocco noticed the almost defeated look on her lovely face and did not like it.", "Hello, my dog is cute."], "params": {"max_new_tokens": 128, "device": -1}}}'))
