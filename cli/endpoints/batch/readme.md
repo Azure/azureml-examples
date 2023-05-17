@@ -1,13 +1,17 @@
 # Batch Endpoints examples
 
-Batch endpoints provide a convenient way to run inference over large volumes of data. They simplify the process of hosting your models for batch scoring, so you can focus on machine learning, not infrastructure. Use batch endpoints when:
+Batch endpoints provide a convenient way to run inference over large volumes of data. They simplify the process of hosting your models and pipelines for batch execution, so you can focus on machine learning, not infrastructure. Use batch endpoints when:
 
-* You have expensive models that requires a longer time to run inference.
+* You have expensive models or pipelines that requires a longer time to run inference.
 * You need to perform inference over large amounts of data, distributed in multiple files.
 * You don't have low latency requirements.
 * You can take advantage of parallelization.
 
-## Deploy models
+## Examples
+
+### Deploying models
+
+The following section contains examples about how to deploy models in batch endpoints.
 
 Example | Description | Input data type | Script
 -|-|-|-
@@ -18,5 +22,13 @@ Example | Description | Input data type | Script
 [Batch score a HuggingFace NLP model for text summarization](deploy-models/huggingface-text-summarization) | The model we are going to work with was built using the popular library transformers from HuggingFace along with a pre-trained model from Facebook with the BART architecture. It was introduced in the paper BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation. | Text | [See script](deploy-models/huggingface-text-summarization/deploy-and-run.sh)
 
 
-## Deploy pipeline components
+### Deploying pipeline components
+
+The following section contains examples about how to deploy pipeline components in batch endpoints.
+
+Example | Description | Input data type | Notebook
+-|-|-|-
+[Hello batch endpoints](deploy-pipelines/hello-batch) | This examples performs a simple Hello World example to ensure you can create batch endpoints with component deployments without issues. | None | [See script](deploy-pipelines/hello-batch/deploy-and-run.sh)
+[Operationalize a training routine with Batch Endpoints](deploy-pipelines/training-with-components/) | Learn how to deploy a training pipeline under a batch endpoint to perform training over a tabular dataset. This pipeline multiple uses components (steps) defined in YAML and produces multiple outputs of the steps within, including models, transformations and evaluation results. It also use registered data assets as input data. | Tabular | [See script](deploy-pipelines/training-with-components/deploy-and-run.sh)
+[Batch scoring with pre-processing](deploy-pipelines/batch-scoring-with-preprocessing/) | Learn how to deploy a pipeline under a batch endpoint that reuses a preprocessing component from the training routine to perform inference before running the model. This example not only reuses the code from the existing component but also pulls assets from the registry, including the model and the normalization parameters learnt during training. | Tabular and literal string | [See script](deploy-pipelines/batch-scoring-with-preprocessing/deploy-and-run.sh)
 
