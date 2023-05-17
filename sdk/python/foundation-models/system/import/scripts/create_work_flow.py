@@ -38,7 +38,7 @@ def create_md_table(data):
     for row in data:
         task_supported = row["task_supported"]
         model_id = row["model_id"]
-        table_rows += f"| {task_supported} | {model_id} | [![Importing {model_id}](https://github.com/Azure/azureml-examples/actions/workflows/import-{model_id.replace('/','-')}.yaml/badge.svg?branch=hrishikesh/model-import-workflows)](https://github.com/Azure/azureml-examples/actions/workflows/import-{model_id.replace('/','-')}.yaml?branch=hrishikesh/model-import-workflows) |\n"
+        table_rows += f"| {task_supported} | {model_id} | [![{model_id.replace('/','-')} workflow](https://github.com/Azure/azureml-examples/actions/workflows/import-{model_id.replace('/','-')}.yaml/badge.svg?branch=hrishikesh/model-import-workflows)](https://github.com/Azure/azureml-examples/actions/workflows/import-{model_id.replace('/','-')}.yaml?branch=hrishikesh/model-import-workflows) |\n"
 
     table = table_header + table_divider + table_rows
 
