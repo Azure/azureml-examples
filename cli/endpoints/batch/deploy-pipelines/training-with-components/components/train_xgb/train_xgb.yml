@@ -1,0 +1,38 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: uci_heart_train
+version: 1
+display_name: Train XGBoost classifier
+description: Trains and does hyperparameter of an XGBoost classifier
+type: command
+inputs:
+  data:
+    type: uri_folder
+  target_column:
+    type: string
+  eval_size:
+    type: number
+    default: 0.3
+  register_best_model:
+    type: boolean
+    default: true
+  registered_model_name:
+    type: string
+    optional: true
+outputs:
+  model:
+    type: mlflow_model
+  evaluation_results:
+    type: uri_folder
+environment: azureml:xgboost-sklearn-py38@latest
+code: src
+command: >-
+  python train_xgb.py 
+  --data_path ${{inputs.data}} 
+  --target_column ${{inputs.target_column}}
+  --eval_size ${{inputs.eval_size}}
+  --register_best_model ${{inputs.register_best_model}}
+  --registered_model_name $[[inputs.registered_model_name]]
+  --model ${{outputs.model}}
+  --evaluation_results ${{outputs.evaluation_results}}
+# </component>
