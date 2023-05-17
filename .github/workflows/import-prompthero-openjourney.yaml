@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/prompthero/openjourney.yaml
+      - .github/workflows/import-prompthero/openjourney.yaml
 
 env:
   MODEL_ID: prompthero/openjourney

@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bigcode/santacoder.yaml
+      - .github/workflows/import-bigcode/santacoder.yaml
 
 env:
   MODEL_ID: bigcode/santacoder

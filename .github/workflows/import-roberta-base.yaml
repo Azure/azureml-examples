@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/roberta-base.yaml
+      - .github/workflows/import-roberta-base.yaml
 
 env:
   MODEL_ID: roberta-base

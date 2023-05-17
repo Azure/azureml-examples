@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/t5-base.yaml
+      - .github/workflows/import-t5-base.yaml
 
 env:
   MODEL_ID: t5-base

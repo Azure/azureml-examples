@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/microsoft/beit-base-patch16-224-pt22k-ft22k.yaml
+      - .github/workflows/import-microsoft/beit-base-patch16-224-pt22k-ft22k.yaml
 
 env:
   MODEL_ID: microsoft/beit-base-patch16-224-pt22k-ft22k

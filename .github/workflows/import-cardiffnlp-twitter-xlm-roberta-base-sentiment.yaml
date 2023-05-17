@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/cardiffnlp/twitter-xlm-roberta-base-sentiment.yaml
+      - .github/workflows/import-cardiffnlp/twitter-xlm-roberta-base-sentiment.yaml
 
 env:
   MODEL_ID: cardiffnlp/twitter-xlm-roberta-base-sentiment

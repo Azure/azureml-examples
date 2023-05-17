@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/stabilityai/stable-diffusion-2-1-base.yaml
+      - .github/workflows/import-stabilityai/stable-diffusion-2-1-base.yaml
 
 env:
   MODEL_ID: stabilityai/stable-diffusion-2-1-base

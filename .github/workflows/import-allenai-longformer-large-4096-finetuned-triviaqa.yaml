@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/allenai/longformer-large-4096-finetuned-triviaqa.yaml
+      - .github/workflows/import-allenai/longformer-large-4096-finetuned-triviaqa.yaml
 
 env:
   MODEL_ID: allenai/longformer-large-4096-finetuned-triviaqa

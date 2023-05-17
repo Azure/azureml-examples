@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/runwayml/stable-diffusion-inpainting.yaml
+      - .github/workflows/import-runwayml/stable-diffusion-inpainting.yaml
 
 env:
   MODEL_ID: runwayml/stable-diffusion-inpainting

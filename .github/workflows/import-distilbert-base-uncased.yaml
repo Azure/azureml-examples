@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/distilbert-base-uncased.yaml
+      - .github/workflows/import-distilbert-base-uncased.yaml
 
 env:
   MODEL_ID: distilbert-base-uncased

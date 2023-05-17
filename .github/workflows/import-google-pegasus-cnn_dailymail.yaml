@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/google/pegasus-cnn_dailymail.yaml
+      - .github/workflows/import-google/pegasus-cnn_dailymail.yaml
 
 env:
   MODEL_ID: google/pegasus-cnn_dailymail

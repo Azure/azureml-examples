@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/microsoft/deberta-base.yaml
+      - .github/workflows/import-microsoft/deberta-base.yaml
 
 env:
   MODEL_ID: microsoft/deberta-base

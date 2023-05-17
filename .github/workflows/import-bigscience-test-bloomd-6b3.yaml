@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/bigscience/test-bloomd-6b3.yaml
+      - .github/workflows/import-bigscience/test-bloomd-6b3.yaml
 
 env:
   MODEL_ID: bigscience/test-bloomd-6b3

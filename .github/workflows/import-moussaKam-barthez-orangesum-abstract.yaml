@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/moussaKam/barthez-orangesum-abstract.yaml
+      - .github/workflows/import-moussaKam/barthez-orangesum-abstract.yaml
 
 env:
   MODEL_ID: moussaKam/barthez-orangesum-abstract

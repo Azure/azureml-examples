@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/gpt2-medium.yaml
+      - .github/workflows/import-gpt2-medium.yaml
 
 env:
   MODEL_ID: gpt2-medium

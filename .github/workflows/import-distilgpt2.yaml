@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/distilgpt2.yaml
+      - .github/workflows/import-distilgpt2.yaml
 
 env:
   MODEL_ID: distilgpt2

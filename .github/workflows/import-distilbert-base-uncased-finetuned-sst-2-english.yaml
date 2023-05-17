@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/distilbert-base-uncased-finetuned-sst-2-english.yaml
+      - .github/workflows/import-distilbert-base-uncased-finetuned-sst-2-english.yaml
 
 env:
   MODEL_ID: distilbert-base-uncased-finetuned-sst-2-english

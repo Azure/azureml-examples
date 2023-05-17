@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/madhurjindal/autonlp-Gibberish-Detector-492513457.yaml
+      - .github/workflows/import-madhurjindal/autonlp-Gibberish-Detector-492513457.yaml
 
 env:
   MODEL_ID: madhurjindal/autonlp-Gibberish-Detector-492513457

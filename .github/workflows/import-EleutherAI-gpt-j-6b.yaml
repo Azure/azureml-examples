@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/EleutherAI/gpt-j-6b.yaml
+      - .github/workflows/import-EleutherAI/gpt-j-6b.yaml
 
 env:
   MODEL_ID: EleutherAI/gpt-j-6b

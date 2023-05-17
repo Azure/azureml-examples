@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/decapoda-research/llama-7b-hf.yaml
+      - .github/workflows/import-decapoda-research/llama-7b-hf.yaml
 
 env:
   MODEL_ID: decapoda-research/llama-7b-hf

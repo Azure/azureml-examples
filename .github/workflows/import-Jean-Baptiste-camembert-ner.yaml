@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/Jean-Baptiste/camembert-ner.yaml
+      - .github/workflows/import-Jean-Baptiste/camembert-ner.yaml
 
 env:
   MODEL_ID: Jean-Baptiste/camembert-ner

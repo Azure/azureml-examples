@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/Seethal/sentiment_analysis_generic_dataset.yaml
+      - .github/workflows/import-Seethal/sentiment_analysis_generic_dataset.yaml
 
 env:
   MODEL_ID: Seethal/sentiment_analysis_generic_dataset

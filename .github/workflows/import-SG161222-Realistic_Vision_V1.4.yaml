@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/SG161222/Realistic_Vision_V1.4.yaml
+      - .github/workflows/import-SG161222/Realistic_Vision_V1.4.yaml
 
 env:
   MODEL_ID: SG161222/Realistic_Vision_V1.4
