@@ -1,100 +1,50 @@
-{"sentence":"Bill whistled past the house.","label":-1,"idx":0}
-{"sentence":"The car honked its way down the road.","label":-1,"idx":1}
-{"sentence":"Bill pushed Harry off the sofa.","label":-1,"idx":2}
-{"sentence":"the kittens yawned awake and played.","label":-1,"idx":3}
-{"sentence":"I demand that the more John eats, the more he pay.","label":-1,"idx":4}
-{"sentence":"If John eats more, keep your mouth shut tighter, OK?","label":-1,"idx":5}
-{"sentence":"His expectations are always lower than mine are.","label":-1,"idx":6}
-{"sentence":"The sooner you call, the more carefully I will word the letter.","label":-1,"idx":7}
-{"sentence":"The more timid he feels, the more people he interviews without asking questions of.","label":-1,"idx":8}
-{"sentence":"Once Janet left, Fred became a lot crazier.","label":-1,"idx":9}
-{"sentence":"If you give every senator enough opportunity, he will succumb to corruption.","label":-1,"idx":10}
-{"sentence":"The more time that any senator spends with lobbyists, the more likely he is to succumb to corruption.","label":-1,"idx":11}
-{"sentence":"Which problem does the sooner you solve, the more easily you'll satisfy the folks up at corporate headquarters?","label":-1,"idx":12}
-{"sentence":"Which problem do you think that the sooner you solve, the quicker you'll be able to tell the folks up at corporate headquarters to buzz off?","label":-1,"idx":13}
-{"sentence":"Louise is not happy, is she?","label":-1,"idx":14}
-{"sentence":"He can just not have been working.","label":-1,"idx":15}
-{"sentence":"Which problem do you wonder whether John said Mary solved?","label":-1,"idx":16}
-{"sentence":"They could have left.","label":-1,"idx":17}
-{"sentence":"Have they could left?","label":-1,"idx":18}
-{"sentence":"John eats not chocolate.","label":-1,"idx":19}
-{"sentence":"Has John seen Mary?","label":-1,"idx":20}
-{"sentence":"Mickey looked it up.","label":-1,"idx":21}
-{"sentence":"Mickey looked up him and her.","label":-1,"idx":22}
-{"sentence":"He taught the children.","label":-1,"idx":23}
-{"sentence":"John proved to be a great linguist.","label":-1,"idx":24}
-{"sentence":"There is too likely to be a riot for there to be a serious discussion of the issues.","label":-1,"idx":25}
-{"sentence":"John is willing.","label":-1,"idx":26}
-{"sentence":"Bill seems to be obnoxious, but I don't think that Sam seems.","label":-1,"idx":27}
-{"sentence":"Bill seems to be obnoxious, but I don't think that Sam appears.","label":-1,"idx":28}
-{"sentence":"I believe John with all my heart is a fine person.","label":-1,"idx":29}
-{"sentence":"We would hate John to win.","label":-1,"idx":30}
-{"sentence":"I would want for John to win.","label":-1,"idx":31}
-{"sentence":"The chair abuts the wall.","label":-1,"idx":32}
-{"sentence":"The cup emptied of water.","label":-1,"idx":33}
-{"sentence":"the bottle drained empty of liquid.","label":-1,"idx":34}
-{"sentence":"The tub leaked water empty.","label":-1,"idx":35}
-{"sentence":"Spray the paint onto the whole wall completely.","label":-1,"idx":36}
-{"sentence":"What John did to the whole wall was hit it.","label":-1,"idx":37}
-{"sentence":"Yes, too much so.","label":-1,"idx":38}
-{"sentence":"I convinced John that it was late and Bill that it was early.","label":-1,"idx":39}
-{"sentence":"John is impressed as pompous.","label":-1,"idx":40}
-{"sentence":"The men were promised by Frank to leave.","label":-1,"idx":41}
-{"sentence":"The idea struck the men all as nonsense.","label":-1,"idx":42}
-{"sentence":"We proved Smith to the authorities to be the thief.","label":-1,"idx":43}
-{"sentence":"Us love them.","label":-1,"idx":44}
-{"sentence":"Mary reported him to have loved her.","label":-1,"idx":45}
-{"sentence":"I saw kissing Mary.","label":-1,"idx":46}
-{"sentence":"John wanted to leave the room happy and leave the room happy he did.","label":-1,"idx":47}
-{"sentence":"I only eat fish raw fresh.","label":-1,"idx":48}
-{"sentence":"I can't believe Holly won't eat cabbage.","label":-1,"idx":49}
-{"sentence":"You shouldn't play with rifles because it's dangerous to.","label":-1,"idx":50}
-{"sentence":"Mary claimed that eat cabbage, Holly wouldn't.","label":-1,"idx":51}
-{"sentence":"I visited every town I had to visit.","label":-1,"idx":52}
-{"sentence":"Joe likes his bar, and Sally does too.","label":-1,"idx":53}
-{"sentence":"Dulles suspected everyone who Angleton did it.","label":-1,"idx":54}
-{"sentence":"Dulles suspected everyone who Angleton did so.","label":-1,"idx":55}
-{"sentence":"Although Holly doesn't, Doc eats cabbage.","label":-1,"idx":56}
-{"sentence":"While Perry might switch the TV off, he won't on.","label":-1,"idx":57}
-{"sentence":"This is the book of which Bill approves, and this is the one of which he can't do so.","label":-1,"idx":58}
-{"sentence":"Wendy is eager to sail around the world and Bruce is eager to climb Kilimanjaro, but neither of them can because money is too tight.","label":-1,"idx":59}
-{"sentence":"Mary runs not the marathon.","label":-1,"idx":60}
-{"sentence":"The probable hostile German reaction is unfortunate.","label":-1,"idx":61}
-{"sentence":"What books does a critic think are readable?","label":-1,"idx":62}
-{"sentence":"Who reported that Max and which lady disappeared?","label":-1,"idx":63}
-{"sentence":"Everyone attended more than two seminars.","label":-1,"idx":64}
-{"sentence":"Old pictures of themselves usually strike the children as amusing.","label":-1,"idx":65}
-{"sentence":"Images of themselves seem to have frightened the children.","label":-1,"idx":66}
-{"sentence":"Lemons are always preferred to limes.","label":-1,"idx":67}
-{"sentence":"A gun went off which I had cleaned.","label":-1,"idx":68}
-{"sentence":"What did that Bill wore surprise everyone?","label":-1,"idx":69}
-{"sentence":"I know a boy who is mad at John.","label":-1,"idx":70}
-{"sentence":"He threw into the wastebasket the letter.","label":-1,"idx":71}
-{"sentence":"She asked whether it looked like rain a man who was near the window.","label":-1,"idx":72}
-{"sentence":"I know a man who John is taller than.","label":-1,"idx":73}
-{"sentence":"John is as tall as that man is.","label":-1,"idx":74}
-{"sentence":"What I said was that she was lying.","label":-1,"idx":75}
-{"sentence":"Jack is making the claim you won't need it.","label":-1,"idx":76}
-{"sentence":"John left, and he didn't even say goodbye.","label":-1,"idx":77}
-{"sentence":"I went to the movies and didn't pick up the shirts.","label":-1,"idx":78}
-{"sentence":"The boy works in a skyscraper and the girl works in a quonset hut.","label":-1,"idx":79}
-{"sentence":"That Peter showed up is a miracle and it is doubtful that he'll ever come again.","label":-1,"idx":80}
-{"sentence":"I claimed it that Bob was a nut.","label":-1,"idx":81}
-{"sentence":"What exploded when and who was hurt?","label":-1,"idx":82}
-{"sentence":"If you make yourself comfortable, I'll wash the dishes.","label":-1,"idx":83}
-{"sentence":"My sister arrived at a time when no buses were running and my brother arrived at one too.","label":-1,"idx":84}
-{"sentence":"Mike talked to my friends about politics yesterday.","label":-1,"idx":85}
-{"sentence":"Which hat do you believe she never wore?","label":-1,"idx":86}
-{"sentence":"The boy whose playing the piano loudly I disliked was a student.","label":-1,"idx":87}
-{"sentence":"Ivan figured it out that the bridge would hold.","label":-1,"idx":88}
-{"sentence":"That it was obvious is not true that Bob was lying.","label":-1,"idx":89}
-{"sentence":"It is possible that Sam didn't pick those packages up which are to be mailed tomorrow.","label":-1,"idx":90}
-{"sentence":"I promised that he would be there around midnight.","label":-1,"idx":91}
-{"sentence":"It is proud of him that I have never been.","label":-1,"idx":92}
-{"sentence":"It is beans that I don't think you'll be able to convince me Harry has ever tasted in his life.","label":-1,"idx":93}
-{"sentence":"That Sam sometimes didn't sleep must have pleased anybody.","label":-1,"idx":94}
-{"sentence":"John scratched his arm and so did Mary.","label":-1,"idx":95}
-{"sentence":"Harry believes it, although no one else believes that Sally is innocent.","label":-1,"idx":96}
-{"sentence":"Webster did it after Henry had touched a sword.","label":-1,"idx":97}
-{"sentence":"Webster did so after Henry had touched a sword.","label":-1,"idx":98}
-{"sentence":"These shoes won't fit into the trunk they're next to.","label":-1,"idx":99}
+{"text":"im feeling rather rotten so im not very ambitious right now","label":0}
+{"text":"im updating my blog because i feel shitty","label":0}
+{"text":"i never make her separate from me because i don t ever want her to feel like i m ashamed with her","label":0}
+{"text":"i left with my bouquet of red and yellow tulips under my arm feeling slightly more optimistic than when i arrived","label":1}
+{"text":"i was feeling a little vain when i did this one","label":0}
+{"text":"i cant walk into a shop anywhere where i do not feel uncomfortable","label":4}
+{"text":"i felt anger when at the end of a telephone call","label":3}
+{"text":"i explain why i clung to a relationship with a boy who was in many ways immature and uncommitted despite the excitement i should have been feeling for getting accepted into the masters program at the university of virginia","label":1}
+{"text":"i like to have the same breathless feeling as a reader eager to see what will happen next","label":1}
+{"text":"i jest i feel grumpy tired and pre menstrual which i probably am but then again its only been a week and im about as fit as a walrus on vacation for the summer","label":3}
+{"text":"i don t feel particularly agitated","label":4}
+{"text":"i feel beautifully emotional knowing that these women of whom i knew just a handful were holding me and my baba on our journey","label":0}
+{"text":"i pay attention it deepens into a feeling of being invaded and helpless","label":4}
+{"text":"i just feel extremely comfortable with the group of people that i dont even need to hide myself","label":1}
+{"text":"i find myself in the odd position of feeling supportive of","label":2}
+{"text":"i was feeling as heartbroken as im sure katniss was","label":0}
+{"text":"i feel a little mellow today","label":1}
+{"text":"i feel like my only role now would be to tear your sails with my pessimism and discontent","label":0}
+{"text":"i feel just bcoz a fight we get mad to each other n u wanna make a publicity n let the world knows about our fight","label":3}
+{"text":"i feel like reds and purples are just so rich and kind of perfect","label":1}
+{"text":"im not sure the feeling of loss will ever go away but it may dull to a sweet feeling of nostalgia at what i shared in this life with my dad and the luck i had to have a dad for years","label":0}
+{"text":"i feel like ive gotten to know many of you through comments and emails and for that im appreciative and glad you are a part of this little space","label":1}
+{"text":"i survey my own posts over the last few years and only feel pleased with vague snippets of a few of them only feel that little bits of them capture what its like to be me or someone like me in dublin in the st century","label":1}
+{"text":"i also tell you in hopes that anyone who is still feeling stigmatized or ashamed of their mental health issues will let go of the stigma let go of the shame","label":0}
+{"text":"i don t feel guilty like i m not going to be able to cook for him","label":0}
+{"text":"i hate it when i feel fearful for absolutely no reason","label":4}
+{"text":"i am feeling outraged it shows everywhere","label":3}
+{"text":"i stole a book from one of my all time favorite authors and now i feel like a rotten person","label":0}
+{"text":"i do feel insecure sometimes but who doesnt","label":4}
+{"text":"i highly recommend visiting on a wednesday if youre able because its less crowded so you get to ask the farmers more questions without feeling rude for holding up a line","label":3}
+{"text":"ive been missing him and feeling so restless at home thinking of him","label":4}
+{"text":"i posted on my facebook page earlier this week ive been feeling a little grumpy and out of sorts the past few days","label":3}
+{"text":"i start to feel emotional","label":0}
+{"text":"i feel so cold a href http irish","label":3}
+{"text":"i feel like i m defective or something for not having baby fever","label":0}
+{"text":"i feel more virtuous than when i eat veggies dipped in hummus","label":1}
+{"text":"i feel very honoured to be included in a magzine which prioritises health and clean living so highly im curious do any of you read magazines concerned with health and clean lifestyles such as the green parent","label":1}
+{"text":"i spent the last two weeks of school feeling miserable","label":0}
+{"text":"im feeling very peaceful about our wedding again now after having","label":1}
+{"text":"i had been talking to coach claudia barcomb and coach ali boe for a long time and they both made me feel very welcomed at union","label":1}
+{"text":"i feel if i completely hated things i d exercise my democratic right speak my mind in what ever ways possible and try to enact a change","label":3}
+{"text":"i feel humiliated embarrassed or foolish i will remember that others have felt the same way because of the same kinds of things and i will be kind and helpful and accepting","label":0}
+{"text":"i feel reassured that i am dealing with my diet in the right way and that all is good","label":1}
+{"text":"i feel i have to agree with her even though i can imagine some rather unpleasant possible cases","label":0}
+{"text":"im in such a happy mood today i feel almost delighted and i havent done anything different today then i normally have it is wonderful","label":1}
+{"text":"im feeling really out of place and irritated","label":3}
+{"text":"i also know that i feel nothing than a friendly affection to them too","label":1}
+{"text":"i feel like i had a rather productive weekend and i cant always say that no matter how much i get done","label":1}
+{"text":"im feeling insecure at the moment","label":4}
+{"text":"i feel a funny mix of emotions","label":5}
