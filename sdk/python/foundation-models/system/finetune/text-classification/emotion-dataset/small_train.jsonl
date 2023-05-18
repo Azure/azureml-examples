@@ -1,100 +1,100 @@
-{"sentence":"Our friends won't buy this analysis, let alone the next one we propose.","label":1,"idx":0}
-{"sentence":"One more pseudo generalization and I'm giving up.","label":1,"idx":1}
-{"sentence":"One more pseudo generalization or I'm giving up.","label":1,"idx":2}
-{"sentence":"The more we study verbs, the crazier they get.","label":1,"idx":3}
-{"sentence":"Day by day the facts are getting murkier.","label":1,"idx":4}
-{"sentence":"I'll fix you a drink.","label":1,"idx":5}
-{"sentence":"Fred watered the plants flat.","label":1,"idx":6}
-{"sentence":"Bill coughed his way out of the restaurant.","label":1,"idx":7}
-{"sentence":"We're dancing the night away.","label":1,"idx":8}
-{"sentence":"Herman hammered the metal flat.","label":1,"idx":9}
-{"sentence":"The critics laughed the play off the stage.","label":1,"idx":10}
-{"sentence":"The pond froze solid.","label":1,"idx":11}
-{"sentence":"Bill rolled out of the room.","label":1,"idx":12}
-{"sentence":"The gardener watered the flowers flat.","label":1,"idx":13}
-{"sentence":"The gardener watered the flowers.","label":1,"idx":14}
-{"sentence":"Bill broke the bathtub into pieces.","label":1,"idx":15}
-{"sentence":"Bill broke the bathtub.","label":1,"idx":16}
-{"sentence":"They drank the pub dry.","label":1,"idx":17}
-{"sentence":"They drank the pub.","label":0,"idx":18}
-{"sentence":"The professor talked us into a stupor.","label":1,"idx":19}
-{"sentence":"The professor talked us.","label":0,"idx":20}
-{"sentence":"We yelled ourselves hoarse.","label":1,"idx":21}
-{"sentence":"We yelled ourselves.","label":0,"idx":22}
-{"sentence":"We yelled Harry hoarse.","label":0,"idx":23}
-{"sentence":"Harry coughed himself into a fit.","label":1,"idx":24}
-{"sentence":"Harry coughed himself.","label":0,"idx":25}
-{"sentence":"Harry coughed us into a fit.","label":0,"idx":26}
-{"sentence":"Bill followed the road into the forest.","label":1,"idx":27}
-{"sentence":"We drove Highway 5 from SD to SF.","label":1,"idx":28}
-{"sentence":"Fred tracked the leak to its source.","label":1,"idx":29}
-{"sentence":"John danced waltzes across the room.","label":1,"idx":30}
-{"sentence":"Bill urinated out the window.","label":1,"idx":31}
-{"sentence":"Bill coughed out the window.","label":1,"idx":32}
-{"sentence":"Bill bled on the floor.","label":1,"idx":33}
-{"sentence":"The toilet leaked through the floor into the kitchen below.","label":1,"idx":34}
-{"sentence":"Bill ate off the floor.","label":1,"idx":35}
-{"sentence":"Bill drank from the hose.","label":1,"idx":36}
-{"sentence":"This metal hammers flat easily.","label":1,"idx":37}
-{"sentence":"They made him president.","label":1,"idx":38}
-{"sentence":"They made him angry.","label":1,"idx":39}
-{"sentence":"They caused him to become angry by making him.","label":0,"idx":40}
-{"sentence":"They caused him to become president by making him.","label":0,"idx":41}
-{"sentence":"They made him to exhaustion.","label":0,"idx":42}
-{"sentence":"They made him into a monster.","label":1,"idx":43}
-{"sentence":"The trolley rumbled through the tunnel.","label":1,"idx":44}
-{"sentence":"The wagon rumbled down the road.","label":1,"idx":45}
-{"sentence":"The bullets whistled past the house.","label":1,"idx":46}
-{"sentence":"The knee replacement candidate groaned up the stairs.","label":1,"idx":47}
-{"sentence":"The car honked down the road.","label":0,"idx":48}
-{"sentence":"The dog barked out of the room.","label":0,"idx":49}
-{"sentence":"The dog barked its way out of the room.","label":1,"idx":50}
-{"sentence":"Bill whistled his way past the house.","label":1,"idx":51}
-{"sentence":"The witch vanished into the forest.","label":1,"idx":52}
-{"sentence":"Bill disappeared down the road.","label":1,"idx":53}
-{"sentence":"The witch went into the forest by vanishing.","label":0,"idx":54}
-{"sentence":"The witch went into the forest and thereby vanished.","label":1,"idx":55}
-{"sentence":"The building is tall and wide.","label":1,"idx":56}
-{"sentence":"The building is tall and tall.","label":0,"idx":57}
-{"sentence":"This building is taller and wider than that one.","label":1,"idx":58}
-{"sentence":"This building got taller and wider than that one.","label":1,"idx":59}
-{"sentence":"This building got taller and taller.","label":1,"idx":60}
-{"sentence":"This building is taller and taller.","label":0,"idx":61}
-{"sentence":"This building got than that one.","label":0,"idx":62}
-{"sentence":"This building is than that one.","label":0,"idx":63}
-{"sentence":"Bill floated into the cave.","label":1,"idx":64}
-{"sentence":"Bill floated into the cave for hours.","label":0,"idx":65}
-{"sentence":"Bill pushed Harry off the sofa for hours.","label":0,"idx":66}
-{"sentence":"Bill floated down the river for hours.","label":1,"idx":67}
-{"sentence":"Bill floated down the river.","label":1,"idx":68}
-{"sentence":"Bill pushed Harry along the trail for hours.","label":1,"idx":69}
-{"sentence":"Bill pushed Harry along the trail.","label":1,"idx":70}
-{"sentence":"The road zigzagged down the hill.","label":1,"idx":71}
-{"sentence":"The rope stretched over the pulley.","label":1,"idx":72}
-{"sentence":"The weights stretched the rope over the pulley.","label":1,"idx":73}
-{"sentence":"The weights kept the rope stretched over the pulley.","label":1,"idx":74}
-{"sentence":"Sam cut himself free.","label":1,"idx":75}
-{"sentence":"Sam got free by cutting his finger.","label":1,"idx":76}
-{"sentence":"Bill cried himself to sleep.","label":1,"idx":77}
-{"sentence":"Bill cried Sue to sleep.","label":0,"idx":78}
-{"sentence":"Bill squeezed himself through the hole.","label":1,"idx":79}
-{"sentence":"Bill sang himself to sleep.","label":1,"idx":80}
-{"sentence":"Bill squeezed the puppet through the hole.","label":1,"idx":81}
-{"sentence":"Bill sang Sue to sleep.","label":1,"idx":82}
-{"sentence":"The elevator rumbled itself to the ground.","label":0,"idx":83}
-{"sentence":"If the telephone rang, it could ring itself silly.","label":1,"idx":84}
-{"sentence":"She yelled hoarse.","label":0,"idx":85}
-{"sentence":"Ted cried to sleep.","label":0,"idx":86}
-{"sentence":"The tiger bled to death.","label":1,"idx":87}
-{"sentence":"He coughed awake and we were all overjoyed, especially Sierra.","label":1,"idx":88}
-{"sentence":"John coughed awake, rubbing his nose and cursing under his breath.","label":1,"idx":89}
-{"sentence":"John coughed himself awake on the bank of the lake where he and Bill had their play.","label":1,"idx":90}
-{"sentence":"Ron yawned himself awake.","label":1,"idx":91}
-{"sentence":"She coughed herself awake as the leaf landed on her nose.","label":1,"idx":92}
-{"sentence":"The worm wriggled onto the carpet.","label":1,"idx":93}
-{"sentence":"The chocolate melted onto the carpet.","label":1,"idx":94}
-{"sentence":"The ball wriggled itself loose.","label":0,"idx":95}
-{"sentence":"Bill wriggled himself loose.","label":1,"idx":96}
-{"sentence":"Aliza wriggled her tooth loose.","label":1,"idx":97}
-{"sentence":"The off center spinning flywheel shook itself loose.","label":1,"idx":98}
-{"sentence":"The more you eat, the less you want.","label":1,"idx":99}
+{"text":"i didnt feel humiliated","label":0}
+{"text":"i can go from feeling so hopeless to so damned hopeful just from being around someone who cares and is awake","label":0}
+{"text":"im grabbing a minute to post i feel greedy wrong","label":3}
+{"text":"i am ever feeling nostalgic about the fireplace i will know that it is still on the property","label":2}
+{"text":"i am feeling grouchy","label":3}
+{"text":"ive been feeling a little burdened lately wasnt sure why that was","label":0}
+{"text":"ive been taking or milligrams or times recommended amount and ive fallen asleep a lot faster but i also feel like so funny","label":5}
+{"text":"i feel as confused about life as a teenager or as jaded as a year old man","label":4}
+{"text":"i have been with petronas for years i feel that petronas has performed well and made a huge profit","label":1}
+{"text":"i feel romantic too","label":2}
+{"text":"i feel like i have to make the suffering i m seeing mean something","label":0}
+{"text":"i do feel that running is a divine experience and that i can expect to have some type of spiritual encounter","label":1}
+{"text":"i think it s the easiest time of year to feel dissatisfied","label":3}
+{"text":"i feel low energy i m just thirsty","label":0}
+{"text":"i have immense sympathy with the general point but as a possible proto writer trying to find time to write in the corners of life and with no sign of an agent let alone a publishing contract this feels a little precious","label":1}
+{"text":"i do not feel reassured anxiety is on each side","label":1}
+{"text":"i didnt really feel that embarrassed","label":0}
+{"text":"i feel pretty pathetic most of the time","label":0}
+{"text":"i started feeling sentimental about dolls i had as a child and so began a collection of vintage barbie dolls from the sixties","label":0}
+{"text":"i now feel compromised and skeptical of the value of every unit of work i put in","label":4}
+{"text":"i feel irritated and rejected without anyone doing anything or saying anything","label":3}
+{"text":"i am feeling completely overwhelmed i have two strategies that help me to feel grounded pour my heart out in my journal in the form of a letter to god and then end with a list of five things i am most grateful for","label":4}
+{"text":"i have the feeling she was amused and delighted","label":1}
+{"text":"i was able to help chai lifeline with your support and encouragement is a great feeling and i am so glad you were able to help me","label":1}
+{"text":"i already feel like i fucked up though because i dont usually eat at all in the morning","label":3}
+{"text":"i still love my so and wish the best for him i can no longer tolerate the effect that bm has on our lives and the fact that is has turned my so into a bitter angry person who is not always particularly kind to the people around him when he is feeling stressed","label":0}
+{"text":"i feel so inhibited in someone elses kitchen like im painting on someone elses picture","label":0}
+{"text":"i become overwhelmed and feel defeated","label":0}
+{"text":"i feel kinda appalled that she feels like she needs to explain in wide and lenghth her body measures etc pp","label":3}
+{"text":"i feel more superior dead chicken or grieving child","label":1}
+{"text":"i get giddy over feeling elegant in a perfectly fitted pencil skirt","label":1}
+{"text":"i remember feeling acutely distressed for a few days","label":4}
+{"text":"i have seen heard and read over the past couple of days i am left feeling impressed by more than a few companies","label":5}
+{"text":"i climbed the hill feeling frustrated that id pretty much paced entirely wrong for this course and that a factor that has never ever hampered me had made such a dent in the day","label":3}
+{"text":"i can t imagine a real life scenario where i would be emotionally connected enough with someone to feel totally accepted and safe where it it morally acceptable for me to have close and prolonged physical contact and where sex won t be expected subsequently","label":1}
+{"text":"i am not sure what would make me feel content if anything","label":1}
+{"text":"i have been feeling the need to be creative","label":1}
+{"text":"i do however want you to know that if something someone is causing you to feel less then your splendid self step away from them","label":1}
+{"text":"i feel a bit rude writing to an elderly gentleman to ask for gifts because i feel a bit greedy but what is christmas about if not mild greed","label":3}
+{"text":"i need you i need someone i need to be protected and feel safe i am small now i find myself in a season of no words","label":1}
+{"text":"i plan to share my everyday life stories traveling adventures inspirations and handmade creations with you and hope you will also feel inspired","label":1}
+{"text":"i already have my christmas trees up i got two and am feeling festive which i m sure is spurring me to get started on this book","label":1}
+{"text":"ive worn it once on its own with a little concealer and for the days im feeling brave but dont want to be pale then its perfect","label":1}
+{"text":"i feel very strongly passionate about when some jerk off decides to poke and make fun of us","label":1}
+{"text":"i was feeling so discouraged we are already robbing peter to pay paul to get our cow this year but we cant afford to not get the cow this way","label":0}
+{"text":"i was feeling listless from the need of new things something different","label":0}
+{"text":"i lost my special mind but don t worry i m still sane i just wanted you to feel what i felt while reading this book i don t know how many times it was said that sam was special but i can guarantee you it was many more times than what i used in that paragraph did i tell you she was special","label":1}
+{"text":"i can t let go of that sad feeling that i want to be accepted here in this first home of mine","label":2}
+{"text":"on a boat trip to denmark","label":1}
+{"text":"i stopped feeling cold and began feeling hot","label":3}
+{"text":"i need to feel the dough to make sure its just perfect","label":1}
+{"text":"i found myself feeling a little discouraged that morning","label":0}
+{"text":"i feel selfish and spoiled","label":3}
+{"text":"i was stymied a little bit as i wrote feeling unsure that i might go somewhere with the story unintended","label":4}
+{"text":"i bag qaf look who s cryin now jacynthe lookin good feelin gorgeous rupaul the skins scissor sisters valentine the sun fed up kayle who s your daddy gerling awake the unkind u","label":1}
+{"text":"i feel you know basically like a fake in the realm of science fiction","label":0}
+{"text":"i hate living under my dads roof because it gives him an excuse to be an asshole to me because hes providing for me to live here i think he feels that he needs to make me feel as unwelcome as possible so ill leave","label":0}
+{"text":"i keep feeling pleasantly surprised at his supportiveness and also his ease in new situations","label":5}
+{"text":"i have this feeling that if i have anymore vigorous sexual activity in the coming yes i misspelt that as cumming days parts of me will begin to fall off","label":1}
+{"text":"i feel my mom s graceful warm loving smile as i rob the time to nurture myself and heal","label":1}
+{"text":"i feel in they talk the brother in law is extremely popular the one that had no me to think is so stiff","label":1}
+{"text":"i ate i could feel a gentle tingle throughout almost as if i was feeling the healing taking place at a cellular level","label":2}
+{"text":"i feel like we are pressured into being young beautiful thin and depending on the trend having the girls rejuvenated or butt implants","label":4}
+{"text":"i began having them several times a week feeling tortured by the hallucinations moving people and figures sounds and vibrations","label":4}
+{"text":"i am now nearly finished the week detox and i feel amazing","label":5}
+{"text":"i feel selfish as i read back to my former posts how i have never asked for prayers for others how i never considered that there may be others out there that deserve their prayers answered before my own","label":3}
+{"text":"i know the pain parents feel when an enraged child becomes violent","label":3}
+{"text":"i have been on a roller coaster of emotions over these supposed feelings that something unpleasant was coming","label":0}
+{"text":"i suppose my own truth needs to be shared i havent been feeling very faithful lately ive dwelled more in doubt and uncertainty than i have in faith","label":2}
+{"text":"i was feeling brave when i bought it and clearly when i was doing my makeup","label":1}
+{"text":"i am feeling miserable but c i am also the proudest mum on earth","label":0}
+{"text":"i figure my family loves us no matter what but around anyone else i feel embarrassed when michelle goes ballistic","label":0}
+{"text":"i don t necessarily think f bombs and sex are necessary in all stories but i feel reassured when i see them in print journals","label":1}
+{"text":"i can feel my ovaries aching talking to me as i like to put it","label":0}
+{"text":"i didn t feel like doing much chris and i mostly just took too many pictures of unimportant stuff","label":0}
+{"text":"im tired of the book and ready to have it out of here and finding out that i was given unsuitable images and then feeling blamed for the result did not sit well","label":0}
+{"text":"i did successfully manage to stretch a mxm canvas i feel that this is an achievement in itself for me and was a worthwhile usage of my money and time i will use the canvas for future briefs","label":1}
+{"text":"i think feelings are one of nay the most important things we have","label":1}
+{"text":"i feel completely honored to be an influence to this young talented fully alive beautiful girl woman","label":1}
+{"text":"i feel angered and firey","label":3}
+{"text":"i feel like a miserable piece of garbage","label":0}
+{"text":"i feel like i need to make a list leanne would be appalled at the thought so that i dont miss anything","label":3}
+{"text":"i drove dannika to school i was feeling a little bit rushed and this is what greeted me as i turned the corner","label":3}
+{"text":"i remember feeling so hellip furious with the shooter","label":3}
+{"text":"i feel very happy and excited since i learned so many things","label":1}
+{"text":"i feel that at shows and around show horses people are trusting and relaxed because most show horses are safe and quiet and are handled frequently","label":1}
+{"text":"i only have a couple of things left to make and at the start of december i am done and feeling smug","label":1}
+{"text":"i think about how u could make me feel and realize that everything will be ok","label":1}
+{"text":"i feel so worthless during those times i was struggling finding work","label":0}
+{"text":"i will be able to lay on my bed in the dark and not feel terrified at least for a while","label":4}
+{"text":"i was ready to meet mom in the airport and feel her ever supportive arms around me","label":2}
+{"text":"im feeling bitter today my mood has been strange the entire day so i guess its that","label":3}
+{"text":"when my mums brother passed away after having been involved in a car accident he was bringing me a present as i had passed my form five exams with flying colours","label":0}
+{"text":"i am letting go of the animosity that is towards anyone that i feel has wronged me","label":3}
+{"text":"i talk to dogs as i feel they cannot understand words but they can read emotions and know how to be supportive i decided i should go home","label":2}
+{"text":"i feel like throwing away the shitty piece of shit paper","label":0}
+{"text":"im starting to feel wryly amused at the banal comedy of errors my life is turning into","label":1}
+{"text":"i find every body beautiful and only want people to feel vital in their bodies","label":1}
+{"text":"i hear are owners who feel victimized by their associations the associations attorneys or the property manager","label":0}
+{"text":"i say goodbye to the fam theyre all sad a crying and i feel like a heartless bitch because hey im pretty excited to be flying for the first time and you know also to spend a year in another country","label":3}
