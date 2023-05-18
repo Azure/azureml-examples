@@ -3,7 +3,9 @@ import argparse, os
 
 parser = argparse.ArgumentParser()
 # add an argument to specify a dataset name to download
-parser.add_argument("--dataset", type=str, default="dair-ai/emotion", help="dataset name")
+parser.add_argument(
+    "--dataset", type=str, default="dair-ai/emotion", help="dataset name"
+)
 # add an argument to specify a dataset name to download
 parser.add_argument(
     "--dataset_subset", type=str, default="split", help="dataset subset name"
