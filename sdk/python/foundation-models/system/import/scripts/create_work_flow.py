@@ -1,5 +1,7 @@
 from huggingface_hub import HfApi, ModelFilter
 import re
+import os
+
 
 def get_top_model_ids(task, sort_key="downloads", direction=-1, limit=10):
     api = HfApi()
@@ -15,6 +17,13 @@ def get_top_model_ids(task, sort_key="downloads", direction=-1, limit=10):
     return [x.modelId for x in models]
 
 
+def remove_existing_workflow(output_path):
+    file_names = os.listdir(output_path)
+    for file in file_names:
+        if file.startswith("import-"):
+            os.remove(f"{output_path}/{file}")
+
+
 def generate_workflow_file(template, parameters, output_path):
     with open(template, "r") as f:
         template_content = f.read()
@@ -26,10 +35,8 @@ def generate_workflow_file(template, parameters, output_path):
         job_name = replace_special_characters(file_name)
 
         workflow_content = template_content.replace("<model-id>", model_id)
-        workflow_content = workflow_content.replace(
-            "<file-name>", file_name
-        )
-        workflow_content = workflow_content.replace("<job-name>",job_name)
+        workflow_content = workflow_content.replace("<file-name>", file_name)
+        workflow_content = workflow_content.replace("<job-name>", job_name)
         # Create a new workflow file with the parameter-specific content
         output_file = f"{output_path}/import-{parameter.replace('/','-')}.yaml"
         with open(output_file, "w") as f:
@@ -54,9 +61,11 @@ def create_md_table(data):
         file.write(table)
     print("README file created which will show the status of import workflow.....")
 
+
 def replace_special_characters(string):
-    pattern = r'[^a-zA-Z0-9-_]'
-    return re.sub(pattern, '', string)
+    pattern = r"[^a-zA-Z0-9-_]"
+    return re.sub(pattern, "", string)
+
 
 # Usage example
 template_file = "workflow_template.yaml"  # Path to your template workflow file
@@ -73,6 +82,8 @@ task_supported = [
     "image-classification",
     "text-to-image",
 ]
+remove_existing_workflow(output_directory)
+
 data = []
 for task in task_supported:
     model_ids = get_top_model_ids(task=task)
