@@ -14,7 +14,7 @@ env:
   MODEL_ID: valhalla/longformer-base-4096-finetuned-squadv1
 
 jobs:
-  import-valhalla-longformer-base-4096-finetuned-squadv1-job:
+  valhalla-longformer-base-4096-finetuned-squadv1:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

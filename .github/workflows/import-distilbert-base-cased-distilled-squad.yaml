@@ -14,7 +14,7 @@ env:
   MODEL_ID: distilbert-base-cased-distilled-squad
 
 jobs:
-  import-distilbert-base-cased-distilled-squad-job:
+  distilbert-base-cased-distilled-squad:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

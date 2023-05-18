@@ -14,7 +14,7 @@ env:
   MODEL_ID: d4data/biomedical-ner-all
 
 jobs:
-  import-d4data-biomedical-ner-all-job:
+  d4data-biomedical-ner-all:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

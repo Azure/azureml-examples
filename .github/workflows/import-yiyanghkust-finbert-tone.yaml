@@ -14,7 +14,7 @@ env:
   MODEL_ID: yiyanghkust/finbert-tone
 
 jobs:
-  import-yiyanghkust-finbert-tone-job:
+  yiyanghkust-finbert-tone:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

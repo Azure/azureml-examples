@@ -14,7 +14,7 @@ env:
   MODEL_ID: google/vit-base-patch16-224
 
 jobs:
-  import-google-vit-base-patch16-224-job:
+  google-vit-base-patch16-224:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

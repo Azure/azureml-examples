@@ -1,5 +1,5 @@
 from huggingface_hub import HfApi, ModelFilter
-
+import re
 
 def get_top_model_ids(task, sort_key="downloads", direction=-1, limit=10):
     api = HfApi()
@@ -21,10 +21,15 @@ def generate_workflow_file(template, parameters, output_path):
 
     for parameter in parameters:
         # Replace placeholders in the template with the parameter values
-        workflow_content = template_content.replace("<model-id>", parameter)
+        model_id = parameter
+        file_name = model_id.replace("/", "-")
+        job_name = replace_special_characters(file_name)
+
+        workflow_content = template_content.replace("<model-id>", model_id)
         workflow_content = workflow_content.replace(
-            "<file-name>", parameter.replace("/", "-")
+            "<file-name>", file_name
         )
+        workflow_content = workflow_content.replace("<job-name>",job_name)
         # Create a new workflow file with the parameter-specific content
         output_file = f"{output_path}/import-{parameter.replace('/','-')}.yaml"
         with open(output_file, "w") as f:
@@ -49,6 +54,9 @@ def create_md_table(data):
         file.write(table)
     print("README file created which will show the status of import workflow.....")
 
+def replace_special_characters(string):
+    pattern = r'[^a-zA-Z0-9-_]'
+    return re.sub(pattern, '', string)
 
 # Usage example
 template_file = "workflow_template.yaml"  # Path to your template workflow file

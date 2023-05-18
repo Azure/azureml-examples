@@ -14,7 +14,7 @@ env:
   MODEL_ID: bert-base-multilingual-cased
 
 jobs:
-  import-bert-base-multilingual-cased-job:
+  bert-base-multilingual-cased:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -14,7 +14,7 @@ env:
   MODEL_ID: cardiffnlp/twitter-roberta-base-sentiment-latest
 
 jobs:
-  import-cardiffnlp-twitter-roberta-base-sentiment-latest-job:
+  cardiffnlp-twitter-roberta-base-sentiment-latest:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

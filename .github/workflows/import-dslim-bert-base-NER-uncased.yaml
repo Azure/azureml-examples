@@ -14,7 +14,7 @@ env:
   MODEL_ID: dslim/bert-base-NER-uncased
 
 jobs:
-  import-dslim-bert-base-NER-uncased-job:
+  dslim-bert-base-NER-uncased:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

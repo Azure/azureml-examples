@@ -14,7 +14,7 @@ env:
   MODEL_ID: distilbert-base-uncased-finetuned-sst-2-english
 
 jobs:
-  import-distilbert-base-uncased-finetuned-sst-2-english-job:
+  distilbert-base-uncased-finetuned-sst-2-english:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

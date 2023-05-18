@@ -14,7 +14,7 @@ env:
   MODEL_ID: t5-large
 
 jobs:
-  import-t5-large-job:
+  t5-large:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

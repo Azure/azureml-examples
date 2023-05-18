@@ -14,7 +14,7 @@ env:
   MODEL_ID: Helsinki-NLP/opus-mt-en-es
 
 jobs:
-  import-Helsinki-NLP-opus-mt-en-es-job:
+  Helsinki-NLP-opus-mt-en-es:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

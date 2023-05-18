@@ -14,7 +14,7 @@ env:
   MODEL_ID: t5-3b
 
 jobs:
-  import-t5-3b-job:
+  t5-3b:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -14,7 +14,7 @@ env:
   MODEL_ID: gpt2
 
 jobs:
-  import-gpt2-job:
+  gpt2:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

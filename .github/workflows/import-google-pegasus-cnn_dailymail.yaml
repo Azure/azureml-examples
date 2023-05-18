@@ -14,7 +14,7 @@ env:
   MODEL_ID: google/pegasus-cnn_dailymail
 
 jobs:
-  import-google-pegasus-cnn_dailymail-job:
+  google-pegasus-cnn_dailymail:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

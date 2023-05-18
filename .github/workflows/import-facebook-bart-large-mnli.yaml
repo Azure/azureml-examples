@@ -14,7 +14,7 @@ env:
   MODEL_ID: facebook/bart-large-mnli
 
 jobs:
-  import-facebook-bart-large-mnli-job:
+  facebook-bart-large-mnli:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

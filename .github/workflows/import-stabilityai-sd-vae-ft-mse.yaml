@@ -14,7 +14,7 @@ env:
   MODEL_ID: stabilityai/sd-vae-ft-mse
 
 jobs:
-  import-stabilityai-sd-vae-ft-mse-job:
+  stabilityai-sd-vae-ft-mse:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

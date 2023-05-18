@@ -14,7 +14,7 @@ env:
   MODEL_ID: bigscience/bloom-7b1
 
 jobs:
-  import-bigscience-bloom-7b1-job:
+  bigscience-bloom-7b1:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

@@ -14,7 +14,7 @@ env:
   MODEL_ID: distilbert-base-uncased
 
 jobs:
-  import-distilbert-base-uncased-job:
+  distilbert-base-uncased:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

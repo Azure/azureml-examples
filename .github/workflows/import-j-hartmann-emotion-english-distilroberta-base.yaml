@@ -14,7 +14,7 @@ env:
   MODEL_ID: j-hartmann/emotion-english-distilroberta-base
 
 jobs:
-  import-j-hartmann-emotion-english-distilroberta-base-job:
+  j-hartmann-emotion-english-distilroberta-base:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

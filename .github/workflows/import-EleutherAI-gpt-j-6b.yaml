@@ -14,7 +14,7 @@ env:
   MODEL_ID: EleutherAI/gpt-j-6b
 
 jobs:
-  import-EleutherAI-gpt-j-6b-job:
+  EleutherAI-gpt-j-6b:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

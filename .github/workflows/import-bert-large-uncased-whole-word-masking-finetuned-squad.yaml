@@ -14,7 +14,7 @@ env:
   MODEL_ID: bert-large-uncased-whole-word-masking-finetuned-squad
 
 jobs:
-  import-bert-large-uncased-whole-word-masking-finetuned-squad-job:
+  bert-large-uncased-whole-word-masking-finetuned-squad:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

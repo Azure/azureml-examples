@@ -14,7 +14,7 @@ env:
   MODEL_ID: xlm-roberta-large
 
 jobs:
-  import-xlm-roberta-large-job:
+  xlm-roberta-large:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

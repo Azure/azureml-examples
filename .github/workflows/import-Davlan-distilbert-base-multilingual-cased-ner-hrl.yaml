@@ -14,7 +14,7 @@ env:
   MODEL_ID: Davlan/distilbert-base-multilingual-cased-ner-hrl
 
 jobs:
-  import-Davlan-distilbert-base-multilingual-cased-ner-hrl-job:
+  Davlan-distilbert-base-multilingual-cased-ner-hrl:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

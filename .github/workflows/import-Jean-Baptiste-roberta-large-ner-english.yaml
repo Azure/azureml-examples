@@ -14,7 +14,7 @@ env:
   MODEL_ID: Jean-Baptiste/roberta-large-ner-english
 
 jobs:
-  import-Jean-Baptiste-roberta-large-ner-english-job:
+  Jean-Baptiste-roberta-large-ner-english:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

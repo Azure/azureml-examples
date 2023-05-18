@@ -14,7 +14,7 @@ env:
   MODEL_ID: bigcode/santacoder
 
 jobs:
-  import-bigcode-santacoder-job:
+  bigcode-santacoder:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

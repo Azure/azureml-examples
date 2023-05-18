@@ -14,7 +14,7 @@ env:
   MODEL_ID: flair/ner-english-fast
 
 jobs:
-  import-flair-ner-english-fast-job:
+  flair-ner-english-fast:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

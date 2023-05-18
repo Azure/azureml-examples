@@ -14,7 +14,7 @@ env:
   MODEL_ID: distilgpt2
 
 jobs:
-  import-distilgpt2-job:
+  distilgpt2:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

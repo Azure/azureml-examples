@@ -14,7 +14,7 @@ env:
   MODEL_ID: deepset/bert-large-uncased-whole-word-masking-squad2
 
 jobs:
-  import-deepset-bert-large-uncased-whole-word-masking-squad2-job:
+  deepset-bert-large-uncased-whole-word-masking-squad2:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

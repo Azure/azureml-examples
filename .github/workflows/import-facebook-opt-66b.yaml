@@ -1,4 +1,4 @@
-name: hakurei/waifu-diffusion workflow
+name: facebook/opt-66b workflow
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/import-hakurei-waifu-diffusion.yaml
+      - .github/workflows/import-facebook-opt-66b.yaml
 
 env:
-  MODEL_ID: hakurei/waifu-diffusion
+  MODEL_ID: facebook/opt-66b
 
 jobs:
-  hakurei-waifu-diffusion:
+  facebook-opt-66b:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository

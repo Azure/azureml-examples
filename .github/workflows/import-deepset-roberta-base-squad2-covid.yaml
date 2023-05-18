@@ -14,7 +14,7 @@ env:
   MODEL_ID: deepset/roberta-base-squad2-covid
 
 jobs:
-  import-deepset-roberta-base-squad2-covid-job:
+  deepset-roberta-base-squad2-covid:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Azure/azureml-examples PUBLIC repository
