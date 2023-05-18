@@ -9,7 +9,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="microsoft-deberta-base-mnli"
+model_name="finiteautomata-bertweet-base-sentiment-analysis"
 
 # Validate the existence of the model in the registry and get the latest version
 model_list=$(az ml model list --name ${model_name} --registry-name ${registry_name} 2>&1)

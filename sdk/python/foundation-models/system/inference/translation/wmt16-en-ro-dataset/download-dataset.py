@@ -29,15 +29,15 @@ def format_translation(example):
 
 
 # import hugging face datasets library
-from datasets import load_dataset, get_dataset_split_names
+from datasets import load_dataset
 
-for split in get_dataset_split_names(args.dataset, args.dataset_subset):
-    # load the split of the dataset
-    dataset = load_dataset(args.dataset, args.dataset_subset, split=split, streaming=True)
-    dataset = dataset.map(format_translation, remove_columns=["translation"])
-    dataset = dataset.shuffle()
-    dataset = dataset.take(5)
-    # save the split of the dataset to the download directory as json lines file
-    with open(os.path.join(args.download_dir, f"{split}.jsonl"), "w") as f:
-        for line in dataset:
-            f.write(json.dumps(line) + "\n")
+# load the split of the dataset
+split = "train"
+dataset = load_dataset(args.dataset, args.dataset_subset, split=split, streaming=True)
+dataset = dataset.map(format_translation, remove_columns=["translation"])
+dataset = dataset.shuffle()
+dataset = dataset.take(5)
+# save the split of the dataset to the download directory as json lines file
+with open(os.path.join(args.download_dir, f"{split}.jsonl"), "w") as f:
+    for line in dataset:
+        f.write(json.dumps(line) + "\n")

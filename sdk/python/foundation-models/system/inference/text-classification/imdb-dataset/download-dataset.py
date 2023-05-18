@@ -33,4 +33,3 @@ dataset = dataset.take(5)
 with open(os.path.join(args.download_dir, f"{args.split}.jsonl"), "w") as f:
     for line in dataset:
         f.write(json.dumps(line) + "\n")
-
