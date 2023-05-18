@@ -1,4 +1,4 @@
-# managed-spark-standalone-managed-identity.yaml
+# serverless-spark-standalone-managed-identity.yaml
 $schema: http://azureml/sdk-2-0/SparkJob.json
 type: spark
 
