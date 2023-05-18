@@ -25,10 +25,8 @@ from azure.core.exceptions import ResourceNotFoundError
 from azure.data.tables import TableClient, TableServiceClient
 from torch.distributed import Store
 from torch.distributed.elastic.rendezvous import RendezvousStateError
-from torch.distributed.elastic.rendezvous.api import (
-    RendezvousClosedError, rendezvous_handler_registry)
-from torch.distributed.elastic.rendezvous.dynamic_rendezvous import (
-    DynamicRendezvousHandler, RendezvousBackend, Token)
+from torch.distributed.elastic.rendezvous.api import RendezvousClosedError, rendezvous_handler_registry
+from torch.distributed.elastic.rendezvous.dynamic_rendezvous import DynamicRendezvousHandler, RendezvousBackend, Token
 from torch.distributed.run import main as torchrun
 
 if "DEBUG" in os.environ:
@@ -54,8 +52,7 @@ def get_table_service_client():
         return table_service_client
 
     def get_credentials(datastore: Datastore):
-        from azure.core.credentials import (AzureNamedKeyCredential,
-                                            AzureSasCredential)
+        from azure.core.credentials import AzureNamedKeyCredential, AzureSasCredential
 
         if datastore.account_key is not None:
             return AzureNamedKeyCredential(datastore.account_name, datastore.account_key)
@@ -121,6 +118,14 @@ def set_defaults(args):
     return known_args_list + unknown_args
 
 
+def enable_debugging():
+    os.environ["NCCL_DEBUG"] = "INFO"
+    os.environ["TORCH_CPP_LOG_LEVEL"] = "INFO"
+    os.environ["TORCH_DISTRIBUTED_DEBUG"] = "DETAIL"
+    os.environ["NCCL_DEBUG_SUBSYS"] = "COLL"
+    os.environ["NCCL_DEBUG_FILE"] = "outputs/nccl_logs.txt"
+
+
 class AzureTableStore(Store):
     """
     This class implements a key-value store for PyTorch distributed training using Azure Table Storage.
@@ -142,11 +147,13 @@ class AzureTableStore(Store):
 
     def set(self, key, value):
         print(f"Setting key: {key}")
-        self.table_client.upsert_entity({
-            'PartitionKey': base64.b64encode(key.encode()).decode(),
-            'RowKey': base64.b64encode(key.encode()).decode(),
-            'Value': base64.b64encode(value).decode()
-        })
+        self.table_client.upsert_entity(
+            {
+                "PartitionKey": base64.b64encode(key.encode()).decode(),
+                "RowKey": base64.b64encode(key.encode()).decode(),
+                "Value": base64.b64encode(value).decode(),
+            }
+        )
 
     def get(self, key):
         print(f"Getting key: {key}")
@@ -154,13 +161,13 @@ class AzureTableStore(Store):
         while datetime.timedelta(seconds=time.time() - start) < self._timeout:
             try:
                 entity = self.table_client.get_entity(
-                    base64.b64encode(key.encode()).decode(),
-                    base64.b64encode(key.encode()).decode())
-                return base64.b64decode(entity['Value'])
+                    base64.b64encode(key.encode()).decode(), base64.b64encode(key.encode()).decode()
+                )
+                return base64.b64decode(entity["Value"])
             except ResourceNotFoundError:
                 print(f"Key {key} doesn't exist yet. Sleeping and trying again to read table...")
                 time.sleep(5)
-        raise LookupError(f'Key {key} not found in timeout {self._timeout}')
+        raise LookupError(f"Key {key} not found in timeout {self._timeout}")
 
     def delete_key(self, key):
         print(f"Deleting key: {key}")
@@ -203,9 +210,9 @@ class AzureRendezvousBackend(RendezvousBackend):
     def get_state(self) -> Optional[Tuple[bytes, Token]]:
         """See base class."""
         try:
-            entity = self._table_client.get_entity('state', 'state')
-            etag = entity.metadata['etag']
-            state = base64.b64decode(entity['State'])
+            entity = self._table_client.get_entity("state", "state")
+            etag = entity.metadata["etag"]
+            state = base64.b64decode(entity["State"])
             return state, etag
         except ResourceNotFoundError:
             return None
@@ -243,16 +250,13 @@ class AzureRendezvousBackend(RendezvousBackend):
 def main(args=None):
     try:
         args = set_defaults(args)
-        
-        # Uncomment to enable metrics from torchelastic for debugging
-        # import torch.distributed.elastic.metrics as metrics
-        # metrics.configure(metrics.ConsoleMetricHandler(), group="torchelastic")
-        os.environ["NCCL_DEBUG"] = "INFO"
-        os.environ["TORCH_DISTRIBUTED_DEBUG"] = "DETAIL"
-        
+
+        # Uncomment to enable debug logs from NCCL / PyTorch / etc.
+        # enable_debugging()
+
         # Register rendezvous handler for Azure Table Storage
         rendezvous_handler_registry.register("azuretable", create_azure_table_rendezvous_handler)
-        
+
         print(f"Running torchrun with arguments: {args}")
         torchrun(args)
     except RendezvousClosedError:

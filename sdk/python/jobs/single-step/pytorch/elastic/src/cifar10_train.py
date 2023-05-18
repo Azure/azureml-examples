@@ -22,13 +22,18 @@ from tqdm import tqdm
 print("Starting script")
 print(f"World size: {os.environ['WORLD_SIZE']}")
 
+print("Environment variables:")
+for k, v in os.environ.items():
+    print(f"{k}: {v}")
 
 NUM_EPOCHS = 40
 
 
-model_names = sorted(name for name in models.__dict__
-    if name.islower() and not name.startswith("__")
-    and callable(models.__dict__[name]))
+model_names = sorted(
+    name
+    for name in models.__dict__
+    if name.islower() and not name.startswith("__") and callable(models.__dict__[name])
+)
 
 best_acc1 = 0
 
@@ -46,43 +51,58 @@ def get_model_checkpoint_epoch_path(args, epoch):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+    parser = argparse.ArgumentParser(description="PyTorch ImageNet Training")
     parser.add_argument("--dataset_directory_name", type=str)
     parser.add_argument("--checkpoint_dir", type=str)
     parser.add_argument("--output-dir", required=False, default="outputs", type=str)
-    parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
-                        choices=model_names,
-                        help='model architecture: ' +
-                            ' | '.join(model_names) +
-                            ' (default: resnet18)')
-    parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
-                        help='number of data loading workers (default: 4)')
-    parser.add_argument('--epochs', default=NUM_EPOCHS, type=int, metavar='N',
-                        help='number of total epochs to run')
-    parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
-                        help='manual epoch number (useful on restarts)')
-    parser.add_argument('-b', '--batch-size', default=128, type=int,
-                        metavar='N',
-                        help='mini-batch size (default: 256), this is the total '
-                            'batch size of all GPUs on the current node when '
-                            'using Data Parallel or Distributed Data Parallel')
-    parser.add_argument('--lr', '--learning-rate', default=0.025, type=float,
-                        metavar='LR', help='initial learning rate', dest='lr')
-    parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
-                        metavar='W', help='weight decay (default: 1e-4)',
-                        dest='weight_decay')
-    parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
-                        help='momentum')
-    parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
-                        help='evaluate model on validation set')
-    parser.add_argument('--world-size', default=-1, type=int,
-                        help='number of nodes for distributed training')
-    parser.add_argument('--dist-backend', default='nccl', type=str,
-                        help='distributed backend')
+    parser.add_argument("--experiment_name", required=False, type=str)
+    parser.add_argument("--num_devices", required=False, default=1, type=int)
+    parser.add_argument(
+        "-a",
+        "--arch",
+        metavar="ARCH",
+        default="resnet18",
+        choices=model_names,
+        help="model architecture: " + " | ".join(model_names) + " (default: resnet18)",
+    )
+    parser.add_argument(
+        "-j", "--workers", default=4, type=int, metavar="N", help="number of data loading workers (default: 4)"
+    )
+    parser.add_argument("--epochs", default=NUM_EPOCHS, type=int, metavar="N", help="number of total epochs to run")
+    parser.add_argument(
+        "--start-epoch", default=0, type=int, metavar="N", help="manual epoch number (useful on restarts)"
+    )
+    parser.add_argument(
+        "-b",
+        "--batch-size",
+        default=128,
+        type=int,
+        metavar="N",
+        help="mini-batch size (default: 256), this is the total "
+        "batch size of all GPUs on the current node when "
+        "using Data Parallel or Distributed Data Parallel",
+    )
+    parser.add_argument(
+        "--lr", "--learning-rate", default=0.025, type=float, metavar="LR", help="initial learning rate", dest="lr"
+    )
+    parser.add_argument(
+        "--wd",
+        "--weight-decay",
+        default=1e-4,
+        type=float,
+        metavar="W",
+        help="weight decay (default: 1e-4)",
+        dest="weight_decay",
+    )
+    parser.add_argument("--momentum", default=0.9, type=float, metavar="M", help="momentum")
+    parser.add_argument(
+        "-e", "--evaluate", dest="evaluate", action="store_true", help="evaluate model on validation set"
+    )
+    parser.add_argument("--world-size", default=-1, type=int, help="number of nodes for distributed training")
+    parser.add_argument("--dist-backend", default="nccl", type=str, help="distributed backend")
     args = parser.parse_args()
 
     return args
-
 
 
 def make_dataset(root_folder, subset):
@@ -90,28 +110,27 @@ def make_dataset(root_folder, subset):
     if subset == "train":
         train_set = torchvision.datasets.CIFAR10(root=root_folder, train=True, download=False, transform=transform)
         return train_set
-    
+
     if subset == "val":
         test_set = torchvision.datasets.CIFAR10(root=root_folder, train=False, download=False, transform=transform)
         return test_set
-        
+
     return None
 
 
 class WarmUpCosineLRCalculator:
-
     def __init__(self, batches_per_epoch, lr, epochs=NUM_EPOCHS):
         self._warmup_steps: int = batches_per_epoch * 3
         self._total_steps: int = batches_per_epoch * epochs
         self._cycles: float = 0.45
         self._lr = lr
-    
+
     def calculate(self, step):
         if step < self._warmup_steps:
             return float(step) / float(max(1.0, self._warmup_steps))
         # progress after warmup
         progress = float(step - self._warmup_steps) / float(max(1, self._total_steps - self._warmup_steps))
-        lambda_ = max(0.0, 0.5 * (1. + math.cos(math.pi * float(self._cycles) * 2.0 * progress)))
+        lambda_ = max(0.0, 0.5 * (1.0 + math.cos(math.pi * float(self._cycles) * 2.0 * progress)))
         return self._lr * lambda_
 
 
@@ -124,13 +143,13 @@ def main(args):
 
 def main_worker(args):
     global best_acc1
-    args.gpu = int(os.environ['LOCAL_RANK'])
+    args.gpu = int(os.environ["LOCAL_RANK"])
     print("Use GPU: {} for training".format(args.gpu))
 
     args.rank = int(os.environ["RANK"])
-    args.world_size = int(os.environ['WORLD_SIZE'])
+    args.world_size = int(os.environ["WORLD_SIZE"])
     dist.init_process_group(backend=args.dist_backend, world_size=args.world_size, rank=args.rank)
-    
+
     print("=> Initialized process group on rank {} with {} workers".format(args.rank, args.world_size))
     print("=> creating model '{}'".format(args.arch))
     model = models.__dict__[args.arch]()
@@ -139,29 +158,29 @@ def main_worker(args):
     model.cuda(args.gpu)
     args.batch_size = int(args.batch_size)
     args.workers = int(os.cpu_count() / torch.cuda.device_count()) * 3
-    print(f'Num workers: {args.workers}')
+    print(f"Num workers: {args.workers}")
     model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
 
-    device = torch.device('cuda:{}'.format(args.gpu))
+    device = torch.device("cuda:{}".format(args.gpu))
 
     criterion = nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.SGD(model.parameters(), args.lr * args.world_size,
-                                momentum=args.momentum,
-                                weight_decay=args.weight_decay)
-    
+    optimizer = torch.optim.SGD(
+        model.parameters(), args.lr * args.world_size, momentum=args.momentum, weight_decay=args.weight_decay
+    )
+
     # optionally resume from a checkpoint
     model_checkpoint_path = get_model_checkpoint_path(args)
     if os.path.isfile(model_checkpoint_path):
-            print("=> loading checkpoint '{}'".format(model_checkpoint_path))
-            # Map model to be loaded to specified single gpu.
-            loc = 'cuda:{}'.format(args.gpu)
-            checkpoint = torch.load(model_checkpoint_path, map_location=loc)
-            args.start_epoch = checkpoint['epoch']
-            best_acc1 = checkpoint['best_acc1']
-            # best_acc1 = best_acc1.to(args.gpu)
-            model.load_state_dict(checkpoint['state_dict'])
-            optimizer.load_state_dict(checkpoint['optimizer'])
-            print("=> loaded checkpoint '{}' (epoch {})".format(model_checkpoint_path, checkpoint['epoch']))
+        print("=> loading checkpoint '{}'".format(model_checkpoint_path))
+        # Map model to be loaded to specified single gpu.
+        loc = "cuda:{}".format(args.gpu)
+        checkpoint = torch.load(model_checkpoint_path, map_location=loc)
+        args.start_epoch = checkpoint["epoch"]
+        best_acc1 = checkpoint["best_acc1"]
+        # best_acc1 = best_acc1.to(args.gpu)
+        model.load_state_dict(checkpoint["state_dict"])
+        optimizer.load_state_dict(checkpoint["optimizer"])
+        print("=> loaded checkpoint '{}' (epoch {})".format(model_checkpoint_path, checkpoint["epoch"]))
     else:
         print("=> no checkpoint found at '{}'".format(model_checkpoint_path))
 
@@ -174,11 +193,16 @@ def main_worker(args):
     val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset, shuffle=False)
 
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=args.batch_size,
-        num_workers=args.workers, pin_memory=True, sampler=train_sampler)
+        train_dataset, batch_size=args.batch_size, num_workers=args.workers, pin_memory=True, sampler=train_sampler
+    )
     val_loader_dist = torch.utils.data.DataLoader(
-        val_dataset, batch_size=args.batch_size, shuffle=False,
-        num_workers=args.workers, pin_memory=True, sampler=val_sampler)
+        val_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.workers,
+        pin_memory=True,
+        sampler=val_sampler,
+    )
 
     lr_calculator = WarmUpCosineLRCalculator(len(train_loader), args.lr * args.world_size, args.epochs)
 
@@ -193,20 +217,24 @@ def main_worker(args):
         return
 
     for epoch in range(args.start_epoch, args.epochs):
-        print(f'Starting epoch {epoch}')
+        print(f"Starting epoch {epoch}")
         train_sampler.set_epoch(epoch)
         train(train_loader, model, criterion, optimizer, epoch, device, lr_calculator)
         acc1 = validate(val_loader_dist, model, criterion, args, epoch)
         is_best = acc1 > best_acc1
         best_acc1 = max(acc1, best_acc1)
         if args.rank == 0:
-            save_checkpoint({
-                'arch': args.arch,
-                'state_dict': model.state_dict(),
-                'best_acc1': best_acc1,
-                'optimizer' : optimizer.state_dict(),
-            }, epoch, args)
-    
+            save_checkpoint(
+                {
+                    "arch": args.arch,
+                    "state_dict": model.state_dict(),
+                    "best_acc1": best_acc1,
+                    "optimizer": optimizer.state_dict(),
+                },
+                epoch,
+                args,
+            )
+
     # Save the model at the end of training
     if args.rank == 0:
         print(f"Saving model to {args.output_dir}/model.pt")
@@ -217,11 +245,11 @@ def main_worker(args):
 
 
 def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculator):
-    batch_time = AverageMeter('Time', ':6.3f')
-    data_time = AverageMeter('Data', ':6.3f')
-    losses = AverageMeter('Loss', ':.4e')
-    top1 = AverageMeter('Acc@1', ':6.2f')
-    top5 = AverageMeter('Acc@5', ':6.2f')
+    batch_time = AverageMeter("Time", ":6.3f")
+    data_time = AverageMeter("Data", ":6.3f")
+    losses = AverageMeter("Loss", ":.4e")
+    top1 = AverageMeter("Acc@1", ":6.2f")
+    top5 = AverageMeter("Acc@5", ":6.2f")
     num_batches = len(train_loader)
 
     # switch to train mode
@@ -229,7 +257,6 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
 
     end = time.time()
     for i, (images, target) in enumerate(tqdm(train_loader)):
-
         # measure data loading time
         data_time.update(time.time() - end)
 
@@ -248,9 +275,9 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
         top5.update(acc5[0], images.size(0))
 
         lr = lr_calculator.calculate(i + epoch * num_batches)
-        optimizer.param_groups[0]['lr'] = lr
-        
-        print(f'Learning rate: {lr}')
+        optimizer.param_groups[0]["lr"] = lr
+
+        print(f"Learning rate: {lr}")
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
@@ -269,7 +296,6 @@ def train(train_loader, model, criterion, optimizer, epoch, device, lr_calculato
 
 
 def validate(val_loader, model, criterion, args, epoch=0):
-
     def run_validate(loader, base_progress=0):
         with torch.no_grad():
             end = time.time()
@@ -297,10 +323,10 @@ def validate(val_loader, model, criterion, args, epoch=0):
                 # if i % args.print_freq == 0:
                 #     progress.display(i + 1)
 
-    batch_time = AverageMeter('Time', ':6.3f', Summary.NONE)
-    losses = AverageMeter('Loss', ':.4e', Summary.NONE)
-    top1 = AverageMeter('Acc@1', ':6.2f', Summary.AVERAGE)
-    top5 = AverageMeter('Acc@5', ':6.2f', Summary.AVERAGE)
+    batch_time = AverageMeter("Time", ":6.3f", Summary.NONE)
+    losses = AverageMeter("Loss", ":.4e", Summary.NONE)
+    top1 = AverageMeter("Acc@1", ":6.2f", Summary.AVERAGE)
+    top5 = AverageMeter("Acc@5", ":6.2f", Summary.AVERAGE)
 
     # switch to evaluate mode
     model.eval()
@@ -310,24 +336,24 @@ def validate(val_loader, model, criterion, args, epoch=0):
         top1.all_reduce()
         top5.all_reduce()
 
-    print(f'Top1 avg: {top1.avg}')
-    print(f'Top5 avg: {top5.avg}')
+    print(f"Top1 avg: {top1.avg}")
+    print(f"Top5 avg: {top5.avg}")
 
-    if os.environ['RANK'] == '0':
-        mlflow.log_metric('world_size', args.world_size, step=epoch)
-        mlflow.log_metric('top1', top1.avg, step=epoch)
-        mlflow.log_metric('top5', top5.avg, step=epoch)
+    if os.environ["RANK"] == "0":
+        mlflow.log_metric("world_size", args.world_size, step=epoch)
+        mlflow.log_metric("top1", top1.avg, step=epoch)
+        mlflow.log_metric("top5", top5.avg, step=epoch)
 
     return top1.avg
 
 
-def save_checkpoint(state, epoch, args): 
+def save_checkpoint(state, epoch, args):
     model_checkpoint_path = get_model_checkpoint_path(args)
-    state['epoch'] = epoch + 1
+    state["epoch"] = epoch + 1
     start = time.time()
     torch.save(state, model_checkpoint_path)
     print(f"Saved checkpoint to {model_checkpoint_path}")
-    print(f'Checkpointing time: {time.time() - start}')
+    print(f"Checkpointing time: {time.time() - start}")
     # Uncomment to save epoch checkpoint
     # model_checkpoint_epoch_path = get_model_checkpoint_epoch_path(args, epoch)
     # start = time.time()
@@ -345,7 +371,8 @@ class Summary(Enum):
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
-    def __init__(self, name, fmt=':f', summary_type=Summary.AVERAGE):
+
+    def __init__(self, name, fmt=":f", summary_type=Summary.AVERAGE):
         self.name = name
         self.fmt = fmt
         self.summary_type = summary_type
@@ -376,22 +403,22 @@ class AverageMeter(object):
         self.avg = self.sum / self.count
 
     def __str__(self):
-        fmtstr = '{name} {val' + self.fmt + '} ({avg' + self.fmt + '})'
+        fmtstr = "{name} {val" + self.fmt + "} ({avg" + self.fmt + "})"
         return fmtstr.format(**self.__dict__)
-    
+
     def summary(self):
-        fmtstr = ''
+        fmtstr = ""
         if self.summary_type is Summary.NONE:
-            fmtstr = ''
+            fmtstr = ""
         elif self.summary_type is Summary.AVERAGE:
-            fmtstr = '{name} {avg:.3f}'
+            fmtstr = "{name} {avg:.3f}"
         elif self.summary_type is Summary.SUM:
-            fmtstr = '{name} {sum:.3f}'
+            fmtstr = "{name} {sum:.3f}"
         elif self.summary_type is Summary.COUNT:
-            fmtstr = '{name} {count:.3f}'
+            fmtstr = "{name} {count:.3f}"
         else:
-            raise ValueError('invalid summary type %r' % self.summary_type)
-        
+            raise ValueError("invalid summary type %r" % self.summary_type)
+
         return fmtstr.format(**self.__dict__)
 
 
@@ -412,7 +439,7 @@ def accuracy(output, target, topk=(1,)):
         return res
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("Starting training...")
     args = parse_args()
     main(args)
