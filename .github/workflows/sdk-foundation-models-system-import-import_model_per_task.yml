@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-foundation-models-system-import-import_model_into_registry
+name: sdk-foundation-models-system-import-import_model_per_task
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "33 10/12 * * *"
+    - cron: "46 6/12 * * *"
   pull_request:
     branches:
       - main
     paths:
       - sdk/python/foundation-models/system/import/**
-      - .github/workflows/sdk-foundation-models-system-import-import_model_into_registry.yml
+      - .github/workflows/sdk-foundation-models-system-import-import_model_per_task.yml
       - sdk/python/dev-requirements.txt
       - infra/**
       - sdk/python/setup.sh
@@ -58,18 +58,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/system/import/import_model_into_registry.ipynb
+    - name: run foundation-models/system/import/import_model_per_task.ipynb
       run: |
           source "${{ github.workspace }}/infra/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/init_environment.sh";
           bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "import_model_into_registry.ipynb";
+          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "import_model_per_task.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb
+          papermill -k python import_model_per_task.ipynb import_model_per_task.output.ipynb
       working-directory: sdk/python/foundation-models/system/import
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: import_model_into_registry
+        name: import_model_per_task
         path: sdk/python/foundation-models/system/import
