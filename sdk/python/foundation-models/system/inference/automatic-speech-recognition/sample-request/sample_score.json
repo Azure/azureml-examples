@@ -1,0 +1,6 @@
+{
+    "inputs": {
+        "audio": ["https://huggingface.co/datasets/Narsil/asr_dummy/resolve/main/1.flac", "https://audiovisionfiles.blob.core.windows.net/audio/audio.m4a"],
+        "language": ["en", "en"]
+    }
+}

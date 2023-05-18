@@ -1,0 +1,9 @@
+$schema: http://azureml/sdk-2-0/BatchDeployment.json
+name: hello-batch-from-job
+description: A hello world deployment with a single step. This deployment is created from a pipeline job.
+endpoint_name: hello-pipeline-batch
+type: pipeline
+job_definition: azureml:job_name_placeholder
+settings:
+    continue_on_step_failure: false
+    default_compute: batch-cluster 
