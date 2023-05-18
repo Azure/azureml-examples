@@ -1,7 +1,5 @@
 azureml-core==1.50.0
-azureml-dataset-runtime==1.50.0
 mlflow==1.30.0
 azureml-mlflow==1.50.0
-azureml-contrib-services==1.50.0
 azure-data-tables==12.4.2
 pytorch-lightning==2.0.2
