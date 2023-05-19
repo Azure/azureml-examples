@@ -2,7 +2,8 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: 1b_e2e_registered_components
 description: E2E dummy train-score-eval pipeline with registered components
-
+# Serverless compute is used to run this pipeline job. 
+# Through serverless compute, Azure Machine Learning takes care of creating, scaling, deleting, patching and managing compute, along with providing managed network isolation, reducing the burden on you.
 inputs:
   pipeline_job_training_max_epocs: 20
   pipeline_job_training_learning_rate: 1.8
