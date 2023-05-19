@@ -1,7 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_customize_output_file
-
+# Serverless compute is used to run this pipeline job. 
+# Through serverless compute, Azure Machine Learning takes care of creating, scaling, deleting, patching and managing compute, along with providing managed network isolation, reducing the burden on you.
+settings:
+    default_compute: azureml:serverless
+    
 outputs:
   output:
     type: uri_file
