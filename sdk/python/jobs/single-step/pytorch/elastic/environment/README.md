@@ -4,8 +4,12 @@ The default environment defined here is an Azure Container for PyTorch (ACPT) en
 
 If you would like to add additional packages, you can list them in the accompanying `context/requirements.txt` file.
 
-You can then create a custom environment using the following Azure CLI command:
+The accompanying [environment.ipynb](./environment.ipynb) notebook shows how to create a custom environment using the Azure Machine Learning Python SDK. 
+
+You can also create a custom environment using the following Azure CLI command:
 
 ```
 az ml environment create --file ./docker-context.yml
 ```
+
+To learn more about Azure Machine Learning Environments, see [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-environments-v2?view=azureml-api-2&tabs=cli).
