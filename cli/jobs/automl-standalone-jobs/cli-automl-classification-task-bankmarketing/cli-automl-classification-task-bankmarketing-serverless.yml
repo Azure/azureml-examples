@@ -50,4 +50,4 @@ training:
 # Resources to run this serverless job
 resources:
   instance_type="Standard_E4s_v3"
-  instance_count=6
+  instance_count=5
