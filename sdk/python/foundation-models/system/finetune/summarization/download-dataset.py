@@ -16,7 +16,7 @@ parser.add_argument(
 parser.add_argument(
     "--download_dir",
     type=str,
-    default="./news-summary-dataset",
+    default="data",
     help="directory to download the dataset to",
 )
 args = parser.parse_args()
@@ -32,7 +32,9 @@ for split in get_dataset_split_names(args.dataset, config_name=args.config_name)
     print(f"Loading {split} split of {args.dataset} dataset...")
     # load the split of the dataset
     dataset = load_dataset(args.dataset, args.config_name, split=split)
+    print(dataset.features)
     # save the split of the dataset to the download directory as json lines file
     dataset.select(range(int(dataset.num_rows * args.fraction))).to_json(
         os.path.join(args.download_dir, f"{split}.jsonl")
     )
+

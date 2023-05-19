@@ -81,7 +81,8 @@ test_df.reset_index(drop=True, inplace=True)
 # rename the highlights column to ground_truth_summary
 test_df.rename(columns={"highlights": "ground_truth_summary"}, inplace=True)
 # create a json object with the key as "inputs" and value as a list of values from the article column of the test dataframe
-test_json = {"inputs": {"input_string": test_df["article"].tolist()}}
+test_df_copy = test_df[['article']]
+test_json = {"input_data": test_df_copy.to_dict('split')}
 # save the json object to a file named sample_score.json in the ./emotion-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)
