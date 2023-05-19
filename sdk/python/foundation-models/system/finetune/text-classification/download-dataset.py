@@ -37,21 +37,22 @@ for split in get_dataset_split_names(args.dataset):
 
 # get label2id and id2label mapping
 
-# get any split of data 
+# get any split of data
 split = get_dataset_split_names(args.dataset)[0]
 dataset = load_dataset(args.dataset, split=split)
 
-labels = dataset.features['label'].names
+labels = dataset.features["label"].names
 
 id2label = {}
 label2id = {}
 
-for i,label in enumerate(labels):
+for i, label in enumerate(labels):
     id2label[i] = label
     label2id[label] = i
 
-label_mapping = {'id2label': id2label, 'label2id': label2id}
+label_mapping = {"id2label": id2label, "label2id": label2id}
 
 import json
-with open(os.path.join(args.download_dir, 'label.json'), 'w') as f:
+
+with open(os.path.join(args.download_dir, "label.json"), "w") as f:
     json.dump(label_mapping, f)

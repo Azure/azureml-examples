@@ -31,7 +31,9 @@ for split in get_dataset_split_names(args.dataset):
 import pandas as pd
 
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
-validation_df = pd.read_json(os.path.join(args.download_dir, "validation.jsonl"), lines=True)
+validation_df = pd.read_json(
+    os.path.join(args.download_dir, "validation.jsonl"), lines=True
+)
 
 # save 5% of the rows from the train dataframe into files with small_ prefix in the ./squad-dataset folder
 train_df.sample(frac=0.05).to_json(
@@ -44,7 +46,9 @@ validation_df, test_df = (
 )
 # save 5% of the rows from the validation and test dataframes into files with small_ prefix in the ./squad-dataset folder
 validation_df.sample(frac=0.05).to_json(
-    os.path.join(args.download_dir, "small_validation.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_validation.jsonl"),
+    orient="records",
+    lines=True,
 )
 test_df.sample(frac=0.05).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
@@ -65,8 +69,8 @@ test_df = pd.json_normalize(json_struct)
 test_df = test_df.drop(columns=["id", "title"])
 
 # create a json object with "inputs" as key and a list of json objects with "question" and "context" as keys
-test_df_copy = test_df[['question', 'context']]
-test_json = {"input_data": test_df_copy.to_dict('split')}
+test_df_copy = test_df[["question", "context"]]
+test_json = {"input_data": test_df_copy.to_dict("split")}
 
 # write the json object to a file named sample_score.json in the ./squad-dataset folder
 with open("./squad-dataset/sample_score.json", "w") as f:

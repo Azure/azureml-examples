@@ -47,7 +47,9 @@ for split in get_dataset_split_names(args.dataset, args.dataset_subset):
 
 # load the train.jsonl, test.jsonl and validation.jsonl files from the ./wmt16-en-ro-dataset/ folder and show first 5 rows
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
-validation_df = pd.read_json(os.path.join(args.download_dir, "validation.jsonl"), lines=True)
+validation_df = pd.read_json(
+    os.path.join(args.download_dir, "validation.jsonl"), lines=True
+)
 test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True)
 
 # save 20% of the rows from the dataframes into files with small_ prefix in the ./wmt16-en-ro-dataset folder
@@ -55,7 +57,9 @@ train_df.sample(frac=0.2).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
 validation_df.sample(frac=0.2).to_json(
-    os.path.join(args.download_dir, "small_validation.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_validation.jsonl"),
+    orient="records",
+    lines=True,
 )
 test_df.sample(frac=0.2).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
@@ -65,15 +69,17 @@ test_df.sample(frac=0.2).to_json(
 import pandas as pd
 import json
 
-test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), orient="records", lines=True)
+test_df = pd.read_json(
+    os.path.join(args.download_dir, "test.jsonl"), orient="records", lines=True
+)
 # take 1 random sample
 test_df = test_df.sample(n=1)
 # rebuild index
 test_df.reset_index(drop=True, inplace=True)
 
 # create a json object with the key as "inputs" and value as a list of values from the en column of the test dataframe
-test_df_copy = test_df[['en']]
-test_json = {"input_data": test_df_copy.to_dict('split')}
+test_df_copy = test_df[["en"]]
+test_json = {"input_data": test_df_copy.to_dict("split")}
 # save the json object to a file named sample_score.json in the ./wmt16-en-ro-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)

@@ -37,4 +37,3 @@ for split in get_dataset_split_names(args.dataset, config_name=args.config_name)
     dataset.select(range(int(dataset.num_rows * args.fraction))).to_json(
         os.path.join(args.download_dir, f"{split}.jsonl")
     )
-

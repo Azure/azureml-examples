@@ -37,23 +37,24 @@ for split in get_dataset_split_names(args.dataset):
 
 # get label2id and id2label mapping
 
-# get any split of data 
+# get any split of data
 split = get_dataset_split_names(args.dataset)[0]
 dataset = load_dataset(args.dataset, split=split)
 
-labels = dataset.features['label'].names
+labels = dataset.features["label"].names
 
 id2label = {}
 label2id = {}
 
-for i,label in enumerate(labels):
+for i, label in enumerate(labels):
     id2label[i] = label
     label2id[label] = i
 
-label_mapping = {'id2label': id2label, 'label2id': label2id}
+label_mapping = {"id2label": id2label, "label2id": label2id}
 
 import json
-with open(os.path.join(args.download_dir, 'label.json'), 'w') as f:
+
+with open(os.path.join(args.download_dir, "label.json"), "w") as f:
     json.dump(label_mapping, f)
 
 # load the id2label json element of the ./emotion-dataset/label.json file into pandas table with keys as 'label' column of int64 type and values as 'label_string' column as string type
@@ -71,7 +72,9 @@ with open(os.path.join(args.download_dir, "label.json")) as f:
 
 test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True)
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
-validation_df = pd.read_json(os.path.join(args.download_dir, "validation.jsonl"), lines=True)
+validation_df = pd.read_json(
+    os.path.join(args.download_dir, "validation.jsonl"), lines=True
+)
 # join the train, validation and test dataframes with the id2label dataframe to get the label_string column
 train_df = train_df.merge(label_df, on="label", how="left")
 validation_df = validation_df.merge(label_df, on="label", how="left")
@@ -98,8 +101,8 @@ test_df.reset_index(drop=True, inplace=True)
 test_df = test_df.rename(columns={"label_string": "ground_truth_label"})
 
 # create a json object with the key as "inputs" and value as a list of values from the text column of the test dataframe
-test_df_copy = test_df[['text']]
-test_json = {"input_data": test_df_copy.to_dict('split')}
+test_df_copy = test_df[["text"]]
+test_json = {"input_data": test_df_copy.to_dict("split")}
 # save the json object to a file named sample_score.json in the ./emotion-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)

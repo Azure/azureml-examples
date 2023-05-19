@@ -43,14 +43,18 @@ import pandas as pd
 # load test.jsonl, train.jsonl and validation.jsonl form the ./conll2003-dataset folder into pandas dataframes
 test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True)
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
-validation_df = pd.read_json(os.path.join(args.download_dir, "validation.jsonl"), lines=True)
+validation_df = pd.read_json(
+    os.path.join(args.download_dir, "validation.jsonl"), lines=True
+)
 
 # save 10% of the rows from the train, validation and test dataframes into files with small_ prefix in the ./conll2003-dataset folder
 train_df.sample(frac=0.1).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
 validation_df.sample(frac=0.1).to_json(
-    os.path.join(args.download_dir, "small_validation.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_validation.jsonl"),
+    orient="records",
+    lines=True,
 )
 test_df.sample(frac=0.1).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
@@ -71,8 +75,8 @@ test_df = test_df.rename(columns={"ner_tags_str": "ground_truth_tags"})
 import json
 
 # create a json object with the key as "inputs" and value as a list of values from the text column of the test dataframe
-test_df_copy = test_df[['tokens']]
-test_json = {"input_data": test_df_copy.to_dict('split')}
+test_df_copy = test_df[["tokens"]]
+test_json = {"input_data": test_df_copy.to_dict("split")}
 # save the json object to a file named sample_score.json in the ./conll2003-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)
