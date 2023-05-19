@@ -1,4 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: demo
-instance_type: Standard_DS3_v2
-instance_count: 1
