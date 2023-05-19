@@ -65,12 +65,8 @@ test_df = pd.json_normalize(json_struct)
 test_df = test_df.drop(columns=["id", "title"])
 
 # create a json object with "inputs" as key and a list of json objects with "question" and "context" as keys
-test_json = {
-    "inputs": {
-        "question": test_df["question"].tolist(),
-        "context": test_df["context"].tolist(),
-    }
-}
+test_df_copy = test_df[['question', 'context']]
+test_json = {"input_data": test_df_copy.to_dict('split')}
 
 # write the json object to a file named sample_score.json in the ./squad-dataset folder
 with open("./squad-dataset/sample_score.json", "w") as f:

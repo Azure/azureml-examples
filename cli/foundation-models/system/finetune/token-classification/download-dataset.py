@@ -71,7 +71,8 @@ test_df = test_df.rename(columns={"ner_tags_str": "ground_truth_tags"})
 import json
 
 # create a json object with the key as "inputs" and value as a list of values from the text column of the test dataframe
-test_json = {"inputs": {"input_string": test_df["text"].tolist()}}
+test_df_copy = test_df[['tokens']]
+test_json = {"input_data": test_df_copy.to_dict('split')}
 # save the json object to a file named sample_score.json in the ./conll2003-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)

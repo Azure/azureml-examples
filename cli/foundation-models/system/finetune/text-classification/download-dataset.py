@@ -98,7 +98,8 @@ test_df.reset_index(drop=True, inplace=True)
 test_df = test_df.rename(columns={"label_string": "ground_truth_label"})
 
 # create a json object with the key as "inputs" and value as a list of values from the text column of the test dataframe
-test_json = {"inputs": {"input_string": test_df["text"].tolist()}}
+test_df_copy = test_df[['text']]
+test_json = {"input_data": test_df_copy.to_dict('split')}
 # save the json object to a file named sample_score.json in the ./emotion-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)

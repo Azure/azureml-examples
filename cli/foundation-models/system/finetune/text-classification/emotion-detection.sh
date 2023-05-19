@@ -4,13 +4,13 @@ set -x
 
 # script inputs
 subscription_id="<SUBSCRIPTION_ID>"
-resource_group_name="<RESOURCE_GROUP>"
-workspace_name="<WORKSPACE_NAME>"
+resource_group_name="<RESOURCE_GROUP>",
+workspace_name="WORKSPACE_NAME>",
 registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"
 # if above compute cluster does not exist, create it with the following vm size
-compute_sku="Standard_ND40rs_v2"
+compute_sku="Standard_nd40rs_v2"
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.

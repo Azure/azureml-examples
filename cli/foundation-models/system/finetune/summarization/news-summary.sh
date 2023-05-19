@@ -3,9 +3,9 @@ set -x
 # the data files are available in the same folder as the above notebook
 
 # script inputs
-subscription_id="21d8f407-c4c4-452e-87a4-e609bfb86248" #"<SUBSCRIPTION_ID>"
-resource_group_name="rg-contoso-819prod" #"<RESOURCE_GROUP>",
-workspace_name="mlw-contoso-819prod" #"WORKSPACE_NAME>",
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>",
+workspace_name="WORKSPACE_NAME>",
 registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"

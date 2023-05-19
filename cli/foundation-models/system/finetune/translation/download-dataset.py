@@ -72,7 +72,8 @@ test_df = test_df.sample(n=1)
 test_df.reset_index(drop=True, inplace=True)
 
 # create a json object with the key as "inputs" and value as a list of values from the en column of the test dataframe
-test_json = {"inputs": {"input_string": test_df["en"].tolist()}}
+test_df_copy = test_df[['en']]
+test_json = {"input_data": test_df_copy.to_dict('split')}
 # save the json object to a file named sample_score.json in the ./wmt16-en-ro-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)
