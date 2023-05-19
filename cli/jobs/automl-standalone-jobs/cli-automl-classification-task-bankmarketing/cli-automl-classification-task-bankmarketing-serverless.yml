@@ -2,7 +2,8 @@ $schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schem
 type: automl
 experiment_name: dpv2-cli-automl-classifier-experiment
 description: A Classification job using bank marketing
-#Serverless compute is used to run this AutoML job
+# Serverless compute is used to run this AutoML job. 
+# Through serverless compute, Azure Machine Learning takes care of creating, scaling, deleting, patching and managing compute, along with providing managed network isolation, reducing the burden on you.
 
 task: classification
 log_verbosity: debug
