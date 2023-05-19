@@ -6,10 +6,14 @@ test_data_mask_1 = "./small-test-[MASK].jsonl"  # [MASK]
 # test_data_mask_2 = "./small-test-mask.jsonl"  # <mask>
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--test-data", type=str, default=test_data_mask_1, dest="test_data_file")
+parser.add_argument(
+    "--test-data", type=str, default=test_data_mask_1, dest="test_data_file"
+)
 args = parser.parse_args()
 
-hf_test_data = load_dataset("rcds/wikipedia-for-mask-filling", "original_512", split="train", streaming=True)
+hf_test_data = load_dataset(
+    "rcds/wikipedia-for-mask-filling", "original_512", split="train", streaming=True
+)
 
 test_data_df = pd.DataFrame(hf_test_data.take(1000))
 test_data_df["input_string"] = test_data_df["texts"]

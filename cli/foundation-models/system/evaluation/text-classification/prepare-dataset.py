@@ -9,7 +9,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--test-data", type=str, default=test_data, dest="test_data_file")
 args = parser.parse_args()
 
-df = pd.DataFrame(load_dataset("glue", "mnli", split="validation_matched", streaming=True).take(1000))
+df = pd.DataFrame(
+    load_dataset("glue", "mnli", split="validation_matched", streaming=True).take(1000)
+)
 
 id2label = {
     "id2label": {"0": "ENTAILMENT", "1": "NEUTRAL", "2": "CONTRADICTION"},
