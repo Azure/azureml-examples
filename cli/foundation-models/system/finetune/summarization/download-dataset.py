@@ -85,3 +85,19 @@ test_json = {"inputs": {"input_string": test_df["article"].tolist()}}
 # save the json object to a file named sample_score.json in the ./emotion-dataset folder
 with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
     json.dump(test_json, f)
+
+
+# read ./emotion-dataset/small_test.jsonl into a pandas dataframe
+test_df = pd.read_json(os.path.join(args.download_dir, "small_test.jsonl"), lines=True)
+# take 10 random samples
+test_df = test_df.sample(n=10)
+# rebuild index
+test_df.reset_index(drop=True, inplace=True)
+# rename the label_string column to ground_truth_label
+test_df = test_df.rename(columns={"label_string": "ground_truth_label"})
+
+# create a json object with the key as "inputs" and value as a list of values from the text column of the test dataframe
+test_json = {"inputs": {"input_string": test_df["text"].tolist()}}
+# save the json object to a file named sample_score.json in the ./emotion-dataset folder
+with open(os.path.join(args.download_dir, "sample_score.json"), "w") as f:
+    json.dump(test_json, f)

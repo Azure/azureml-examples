@@ -17,13 +17,13 @@ inputs:
   # map the dataset files to parameters
   train_file_path: 
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_train.jsonl"
+    path: "wmt16-en-ro-dataset/small_train.jsonl"
   validation_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_validation.jsonl"
+    path: "wmt16-en-ro-dataset/small_validation.jsonl"
   test_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_test.jsonl"
+    path: "wmt16-en-ro-dataset/small_test.jsonl"
   evaluation_config_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/translation/translation-config.json"

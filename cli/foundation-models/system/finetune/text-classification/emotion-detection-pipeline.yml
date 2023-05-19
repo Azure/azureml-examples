@@ -17,13 +17,13 @@ inputs:
   # map the dataset files to parameters
   train_file_path: 
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_train.jsonl"
+    path: "emotion-dataset/small_train.jsonl"
   validation_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_validation.jsonl"
+    path: "emotion-dataset/small_validation.jsonl"
   test_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+    path: "emotion-dataset/small_test.jsonl"
   evaluation_config_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.json"

@@ -28,15 +28,15 @@ deployment_sku="Standard_DS3_v2"
 
 
 # training data
-train_data="../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_train.jsonl"
+train_data="wmt16-en-ro-dataset/small_train.jsonl"
 # validation data
-validation_data="../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_validation.jsonl"
+validation_data="wmt16-en-ro-dataset/small_validation.jsonl"
 # test data
-test_data="../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/small_test.jsonl"
+test_data="wmt16-en-ro-dataset/small_test.jsonl"
 # evaluation config
 evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/translation/translation-config.json"
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/finetune/translation/wmt16-en-ro-dataset/sample_score.json"
+scoring_file="wmt16-en-ro-dataset/sample_score.json"
 
 # finetuning job parameters
 finetuning_pipeline_component="translation_pipeline"
@@ -71,6 +71,13 @@ else
         exit 1
     }
 fi
+
+# download the dataset
+
+python ./download-dataset.py || {
+    echo "Failed to download dataset"
+    exit 1
+}
 
 # 2. Check if the model exists in the registry
 # need to confirm model show command works for registries outside the tenant (aka system registry)
