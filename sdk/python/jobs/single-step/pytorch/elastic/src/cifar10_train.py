@@ -22,9 +22,6 @@ from tqdm import tqdm
 print("Starting script")
 print(f"World size: {os.environ['WORLD_SIZE']}")
 
-print("Environment variables:")
-for k, v in os.environ.items():
-    print(f"{k}: {v}")
 
 NUM_EPOCHS = 40
 
@@ -136,6 +133,7 @@ class WarmUpCosineLRCalculator:
 
 def main(args):
     args.world_size = int(os.environ["WORLD_SIZE"])
+    args.distributed = False
     if args.world_size > 1:
         args.distributed = True
     main_worker(args)

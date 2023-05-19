@@ -170,9 +170,6 @@ def parse_args():
 
 def main(args):
     print(f"is_elastic_launched: {torch.distributed.is_torchelastic_launched()}")
-    print("Environment variables:")
-    for k, v in os.environ.items():
-        print(f"{k}: {v}")
     num_nodes = args.num_nodes
     num_devices = args.num_devices
     if torch.distributed.is_torchelastic_launched():
