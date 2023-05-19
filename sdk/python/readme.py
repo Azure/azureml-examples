@@ -23,6 +23,7 @@ NOT_TESTED_NOTEBOOKS = [
     "attach_manage_spark_pools",
     "submit_spark_pipeline_jobs",
     "submit_spark_standalone_jobs",
+    "submit_spark_standalone_jobs_managed_vnet",
     # mlflow SDK samples notebooks
     "mlflow_sdk_online_endpoints_progresive",
     "mlflow_sdk_online_endpoints",
