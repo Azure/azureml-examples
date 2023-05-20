@@ -14,7 +14,6 @@ inputs:
     path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/observation_data/train/*.parquet
     type: uri_folder
   timestamp_column: timestamp # this will be used by the feature_retrieval_step
-  model_name: fraud_model #this will be used by register_model step
 
 jobs:
   feature_retrieval_step:
@@ -80,15 +79,21 @@ jobs:
       --evaluation_output ${{outputs.evaluation_output}}
 
   register_model_step:
-    component: ../../utils/register_model_component/register_model.yaml
-    type: spark # it need not be a spark job
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../register_model/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
     inputs:
-      run_id_file:
-        path: ${{parent.jobs.training_step.outputs.run_id_output}}
-      evaluation_result:
-        path: ${{parent.jobs.evaluation_step.outputs.evaluation_output}}
-      model_name: ${{parent.inputs.model_name}}
-    resources:
-      instance_type: standard_e4s_v3
-      runtime_version: "3.2"
-    
+      model_input: ${{parent.jobs.training_step.outputs.model_output}}
+      evaluation_input: ${{parent.jobs.evaluation_step.outputs.evaluation_output}}
+    outputs:
+      model_output:
+        type: custom_model
+        name: fraud_model        
+    command: >-
+      python register_model.py
+      --model_input ${{inputs.model_input}}
+      --evaluation_input ${{inputs.evaluation_input}}
+      --model_output ${{outputs.model_output}}
