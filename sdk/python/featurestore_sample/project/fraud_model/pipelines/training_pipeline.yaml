@@ -91,7 +91,7 @@ jobs:
     outputs:
       model_output:
         type: custom_model
-        name: fraud_model        
+        name: fraud_model
     command: >-
       python register_model.py
       --model_input ${{inputs.model_input}}
