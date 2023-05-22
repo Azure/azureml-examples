@@ -52,9 +52,7 @@ allowed_list = [
     "Readonly attribute primary_metric will be ignored",
     "Downloading artifact ",
     "Warnings:",
-    "WARNING:azureml.core.model:Warning, custom base image or base dockerfile"
-    "detected without a specified `inferencing_stack_version`. Please set"
-    "environment.inferencing_stack_version='latest'",
+    "custom base image or base dockerfile detected",
 ]
 
 with open(full_name, "r") as notebook_file:
