@@ -1,4 +1,4 @@
-# managed-spark-pipeline-user-identity.yaml
+# serverless-spark-pipeline-user-identity.yaml
 $schema: http://azureml/sdk-2-0/PipelineJob.json
 type: pipeline
 display_name: Titanic-Spark-CLI-Pipeline-5
