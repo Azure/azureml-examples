@@ -80,14 +80,16 @@ train_df = train_df.merge(label_df, on="label", how="left")
 validation_df = validation_df.merge(label_df, on="label", how="left")
 test_df = test_df.merge(label_df, on="label", how="left")
 
-# save 10% of the rows from the train, validation and test dataframes into files with small_ prefix in the ./emotion-dataset folder
-train_df.sample(frac=0.1).to_json(
+# change the frac parameter to control the number of examples to be saved
+# save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./emotion-dataset folder
+frac = 1
+train_df.sample(frac=frac).to_json(
     "./emotion-dataset/small_train.jsonl", orient="records", lines=True
 )
-validation_df.sample(frac=0.1).to_json(
+validation_df.sample(frac=frac).to_json(
     "./emotion-dataset/small_validation.jsonl", orient="records", lines=True
 )
-test_df.sample(frac=0.1).to_json(
+test_df.sample(frac=frac).to_json(
     "./emotion-dataset/small_test.jsonl", orient="records", lines=True
 )
 

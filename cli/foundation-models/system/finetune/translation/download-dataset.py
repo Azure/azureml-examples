@@ -52,16 +52,18 @@ validation_df = pd.read_json(
 )
 test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True)
 
-# save 20% of the rows from the dataframes into files with small_ prefix in the ./wmt16-en-ro-dataset folder
-train_df.sample(frac=0.2).to_json(
+# change the frac parameter to control the number of examples to be saved
+# save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./wmt16-en-ro-dataset folder
+frac = 1
+train_df.sample(frac=frac).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
-validation_df.sample(frac=0.2).to_json(
+validation_df.sample(frac=frac).to_json(
     os.path.join(args.download_dir, "small_validation.jsonl"),
     orient="records",
     lines=True,
 )
-test_df.sample(frac=0.2).to_json(
+test_df.sample(frac=frac).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 
