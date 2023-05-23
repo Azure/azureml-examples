@@ -10,7 +10,7 @@ parser.add_argument(
 )
 # argument to save a fraction of the dataset
 parser.add_argument(
-    "--fraction", type=float, default=0.05, help="fraction of the dataset to save"
+    "--fraction", type=float, default=1, help="fraction of the dataset to save"
 )
 # add an argument to specify the directory to download the dataset to
 parser.add_argument(
@@ -54,16 +54,15 @@ test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True
 
 # change the frac parameter to control the number of examples to be saved
 # save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./wmt16-en-ro-dataset folder
-frac = 1
-train_df.sample(frac=frac).to_json(
+train_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
-validation_df.sample(frac=frac).to_json(
+validation_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_validation.jsonl"),
     orient="records",
     lines=True,
 )
-test_df.sample(frac=frac).to_json(
+test_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 
@@ -72,7 +71,7 @@ import pandas as pd
 import json
 
 test_df = pd.read_json(
-    os.path.join(args.download_dir, "test.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 # take 1 random sample
 test_df = test_df.sample(n=1)
