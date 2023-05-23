@@ -11,6 +11,10 @@ parser.add_argument(
     default="./squad-dataset",
     help="directory to download the dataset to",
 )
+# argument to save a fraction of the dataset
+parser.add_argument(
+    "--fraction", type=float, default=1, help="fraction of the dataset to save"
+)
 args = parser.parse_args()
 
 # create the download directory if it does not exist
@@ -35,10 +39,8 @@ validation_df = pd.read_json(
     os.path.join(args.download_dir, "validation.jsonl"), lines=True
 )
 
-# change the frac parameter to control the number of examples to be saved
 # save a fraction of the rows from the train dataframe into files with small_ prefix in the ./squad-dataset folder
-frac = 1
-train_df.sample(frac=frac).to_json(
+train_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
 # the original dataset does not have a test split, so split the validation dataframe into validation and test dataframes equally
@@ -47,12 +49,12 @@ validation_df, test_df = (
     validation_df[len(validation_df) // 2:],
 )
 # save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./squad-dataset folder
-validation_df.sample(frac=frac).to_json(
+validation_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_validation.jsonl"),
     orient="records",
     lines=True,
 )
-test_df.sample(frac=frac).to_json(
+test_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 

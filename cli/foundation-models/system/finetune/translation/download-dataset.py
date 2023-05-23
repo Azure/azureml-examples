@@ -40,9 +40,7 @@ for split in get_dataset_split_names(args.dataset, args.dataset_subset):
     dataset = load_dataset(args.dataset, args.dataset_subset, split=split)
     dataset = dataset.map(format_translation, remove_columns=["translation"])
     # save the split of the dataset to the download directory as json lines file
-    dataset.select(range(int(dataset.num_rows * args.fraction))).to_json(
-        os.path.join(args.download_dir, f"{split}.jsonl")
-    )
+    dataset.to_json(os.path.join(args.download_dir, f"{split}.jsonl"))
 
 
 # load the train.jsonl, test.jsonl and validation.jsonl files from the ./wmt16-en-ro-dataset/ folder and show first 5 rows
