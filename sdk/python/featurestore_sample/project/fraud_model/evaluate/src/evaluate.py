@@ -16,5 +16,3 @@ args = parser.parse_args()
 f = open(args.evaluation_output + "/evaluation.txt", "x")
 f.write("Now the file has more content!")
 f.close()
-
-
