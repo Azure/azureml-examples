@@ -35,8 +35,10 @@ validation_df = pd.read_json(
     os.path.join(args.download_dir, "validation.jsonl"), lines=True
 )
 
-# save 5% of the rows from the train dataframe into files with small_ prefix in the ./squad-dataset folder
-train_df.sample(frac=0.05).to_json(
+# change the frac parameter to control the number of examples to be saved
+# save a fraction of the rows from the train dataframe into files with small_ prefix in the ./squad-dataset folder
+frac = 1
+train_df.sample(frac=frac).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
 # the original dataset does not have a test split, so split the validation dataframe into validation and test dataframes equally
@@ -44,9 +46,7 @@ validation_df, test_df = (
     validation_df[: len(validation_df) // 2],
     validation_df[len(validation_df) // 2:],
 )
-# change the frac parameter to control the number of examples to be saved
 # save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./squad-dataset folder
-frac = 1
 validation_df.sample(frac=frac).to_json(
     os.path.join(args.download_dir, "small_validation.jsonl"),
     orient="records",

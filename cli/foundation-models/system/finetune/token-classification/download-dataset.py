@@ -58,7 +58,7 @@ validation_df.sample(frac=frac).to_json(
     orient="records",
     lines=True,
 )
-test_df.sample(frac=0.1).to_json(
+test_df.sample(frac=frac).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 
