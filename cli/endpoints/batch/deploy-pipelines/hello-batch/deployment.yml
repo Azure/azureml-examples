@@ -1,0 +1,8 @@
+$schema: http://azureml/sdk-2-0/BatchDeployment.json
+name: hello-batch-dpl
+description: A hello world deployment with a single step.
+endpoint_name: hello-pipeline-batch
+type: pipeline
+component: azureml:hello_batch@latest
+settings:
+    default_compute: batch-cluster

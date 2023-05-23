@@ -1,0 +1,4 @@
+{
+  "metrics": ["bleu_1", "bleu_2", "bleu_3", "bleu_4"],
+  "smoothing":false
+}

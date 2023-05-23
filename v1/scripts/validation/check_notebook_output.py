@@ -52,6 +52,7 @@ allowed_list = [
     "Readonly attribute primary_metric will be ignored",
     "Downloading artifact ",
     "Warnings:",
+    "custom base image or base dockerfile detected",
 ]
 
 with open(full_name, "r") as notebook_file:
