@@ -49,7 +49,10 @@ summary_key="highlights"
 # Training settings
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 num_train_epochs=3
+per_device_train_batch_size=1
+per_device_eval_batch_size=1
 learning_rate=2e-5
+metric_for_best_model="rouge1"
 
 
 
@@ -132,7 +135,10 @@ parent_job_name=$( az ml job create --file ./news-summary-pipeline.yml $workspac
   inputs.summary_key=$summary_key \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \
   inputs.num_train_epochs=$num_train_epochs \
-  inputs.learning_rate=$learning_rate ) || {
+  inputs.per_device_train_batch_size=$per_device_train_batch_size \
+  inputs.per_device_eval_batch_size=$per_device_eval_batch_size \
+  inputs.learning_rate=$learning_rate \
+  inputs.metric_for_best_model=$metric_for_best_model ) || {
     echo "Failed to submit finetuning job"
     exit 1
   }
