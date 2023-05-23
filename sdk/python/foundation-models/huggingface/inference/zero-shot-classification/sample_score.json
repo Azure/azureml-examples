@@ -1,0 +1,6 @@
+{
+  "inputs": "I have a problem with my iphone that needs to be resolved asap!!",
+  "parameters": {
+    "candidate_labels": "urgent, not urgent, phone, tablet, computer"
+  }
+}
