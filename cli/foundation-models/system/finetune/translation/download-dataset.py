@@ -10,7 +10,7 @@ parser.add_argument(
 )
 # argument to save a fraction of the dataset
 parser.add_argument(
-    "--fraction", type=float, default=0.05, help="fraction of the dataset to save"
+    "--fraction", type=float, default=1, help="fraction of the dataset to save"
 )
 # add an argument to specify the directory to download the dataset to
 parser.add_argument(
@@ -40,10 +40,10 @@ for split in get_dataset_split_names(args.dataset, args.dataset_subset):
     dataset = load_dataset(args.dataset, args.dataset_subset, split=split)
     dataset = dataset.map(format_translation, remove_columns=["translation"])
     # save the split of the dataset to the download directory as json lines file
-    dataset.select(range(int(dataset.num_rows * args.fraction))).to_json(
-        os.path.join(args.download_dir, f"{split}.jsonl")
-    )
+    dataset.to_json(os.path.join(args.download_dir, f"{split}.jsonl"))
 
+# import pandas library
+import pandas as pd
 
 # load the train.jsonl, test.jsonl and validation.jsonl files from the ./wmt16-en-ro-dataset/ folder and show first 5 rows
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
@@ -52,25 +52,25 @@ validation_df = pd.read_json(
 )
 test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True)
 
-# save 20% of the rows from the dataframes into files with small_ prefix in the ./wmt16-en-ro-dataset folder
-train_df.sample(frac=0.2).to_json(
+# change the frac parameter to control the number of examples to be saved
+# save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./wmt16-en-ro-dataset folder
+train_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
-validation_df.sample(frac=0.2).to_json(
+validation_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_validation.jsonl"),
     orient="records",
     lines=True,
 )
-test_df.sample(frac=0.2).to_json(
+test_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 
 # read ./wmt16-en-ro-dataset/small_test.jsonl into a pandas dataframe
-import pandas as pd
 import json
 
 test_df = pd.read_json(
-    os.path.join(args.download_dir, "test.jsonl"), orient="records", lines=True
+    os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 # take 1 random sample
 test_df = test_df.sample(n=1)

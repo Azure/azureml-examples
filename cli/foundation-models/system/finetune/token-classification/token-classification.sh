@@ -14,7 +14,9 @@ compute_sku="Standard_NC24rs_v3"
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.
-gpus_per_node=2 
+# CLI command to fetch the number of GPUs
+# az ml compute list-sizes -g <resource_group_name> -w <workspace_name> --subscription <subscription_id> --query "[?name=='<compute_sku>'].{Name:name, Gpus:gpus}" --output table
+gpus_per_node=8
 # This is the foundation model for finetuning
 model_name="bert-base-uncased"
 # using the latest version of the model - not working yet
@@ -45,7 +47,10 @@ tag_key="ner_tags_str"
 # Training settings
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 num_train_epochs=3
+per_device_train_batch_size=1
+per_device_eval_batch_size=1
 learning_rate=2e-5
+metric_for_best_model="f1"
 
 # 1. Setup pre-requisites
 
@@ -126,7 +131,10 @@ parent_job_name=$( az ml job create --file ./token-classification-pipeline.yml $
   inputs.tag_key=$tag_key \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \
   inputs.num_train_epochs=$num_train_epochs \
-  inputs.learning_rate=$learning_rate ) || {
+  inputs.per_device_train_batch_size=$per_device_train_batch_size \
+  inputs.per_device_eval_batch_size=$per_device_eval_batch_size \
+  inputs.learning_rate=$learning_rate \
+  inputs.metric_for_best_model=$metric_for_best_model ) || {
     echo "Failed to submit finetuning job"
     exit 1
   }

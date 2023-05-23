@@ -11,6 +11,10 @@ parser.add_argument(
     default="conll2003-dataset",
     help="directory to download the dataset to",
 )
+# argument to save a fraction of the dataset
+parser.add_argument(
+    "--fraction", type=float, default=1, help="fraction of the dataset to save"
+)
 args = parser.parse_args()
 
 # create the download directory if it does not exist
@@ -47,16 +51,16 @@ validation_df = pd.read_json(
     os.path.join(args.download_dir, "validation.jsonl"), lines=True
 )
 
-# save 10% of the rows from the train, validation and test dataframes into files with small_ prefix in the ./conll2003-dataset folder
-train_df.sample(frac=0.1).to_json(
+# save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./conll2003-dataset folder
+train_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
 )
-validation_df.sample(frac=0.1).to_json(
+validation_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_validation.jsonl"),
     orient="records",
     lines=True,
 )
-test_df.sample(frac=0.1).to_json(
+test_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
 

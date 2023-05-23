@@ -10,7 +10,7 @@ parser.add_argument(
 )
 # argument to save a fraction of the dataset
 parser.add_argument(
-    "--fraction", type=float, default=0.05, help="fraction of the dataset to save"
+    "--fraction", type=float, default=1, help="fraction of the dataset to save"
 )
 # add an argument to specify the directory to download the dataset to
 parser.add_argument(
