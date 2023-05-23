@@ -35,24 +35,21 @@ for split in get_dataset_split_names(args.dataset, config_name=args.config_name)
     # load the split of the dataset
     dataset = load_dataset(args.dataset, args.config_name, split=split)
     # save the split of the dataset to the download directory as json lines file
-    dataset.select(range(int(dataset.num_rows * args.fraction))).to_json(
-        os.path.join(args.download_dir, f"{split}.jsonl")
-    )
+    dataset.to_json(os.path.join(args.download_dir, f"{split}.jsonl"))
 
 train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=True)
 validation_df = pd.read_json(
     os.path.join(args.download_dir, "validation.jsonl"), lines=True
 )
-# this dataset doesn't have test data, so split the validation_df into test_df and validation_df
-test_df = validation_df.sample(frac=0.5, random_state=42)
-validation_df.drop(test_df.index, inplace=True)
+test_df = pd.read_json(
+    os.path.join(args.download_dir, "test.jsonl"), lines=True
+)
+
 # drop the id column as it is not needed for fine tuning
 train_df.drop(columns=["id"], inplace=True)
 validation_df.drop(columns=["id"], inplace=True)
 test_df.drop(columns=["id"], inplace=True)
 
-
-# change the frac parameter to control the number of examples to be saved
 # save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./news-summary-dataset folder
 train_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_train.jsonl"), orient="records", lines=True
@@ -65,7 +62,6 @@ validation_df.sample(frac=args.fraction).to_json(
 test_df.sample(frac=args.fraction).to_json(
     os.path.join(args.download_dir, "small_test.jsonl"), orient="records", lines=True
 )
-
 
 # generate sample scoring data
 # read ./news-summary-dataset/small_test.jsonl into a pandas dataframe

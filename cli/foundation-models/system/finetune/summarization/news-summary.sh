@@ -14,7 +14,9 @@ compute_sku="Standard_NC24rs_v3"
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.
-gpus_per_node=2 
+# CLI command to fetch the number of GPUs
+# az ml compute list-sizes -g <resource_group_name> -w <workspace_name> --subscription <subscription_id> --query "[?name=='<compute_sku>'].{Name:name, Gpus:gpus}" --output table
+gpus_per_node=8
 # This is the foundation model for finetuning
 model_name="t5-small"
 # using the latest version of the model - not working yet
