@@ -46,7 +46,7 @@ train_df.sample(frac=args.fraction).to_json(
 # the original dataset does not have a test split, so split the validation dataframe into validation and test dataframes equally
 validation_df, test_df = (
     validation_df[: len(validation_df) // 2],
-    validation_df[len(validation_df) // 2:],
+    validation_df[len(validation_df) // 2 :],
 )
 # save a fraction of the rows from the validation and test dataframes into files with small_ prefix in the ./squad-dataset folder
 validation_df.sample(frac=args.fraction).to_json(

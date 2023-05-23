@@ -41,9 +41,7 @@ train_df = pd.read_json(os.path.join(args.download_dir, "train.jsonl"), lines=Tr
 validation_df = pd.read_json(
     os.path.join(args.download_dir, "validation.jsonl"), lines=True
 )
-test_df = pd.read_json(
-    os.path.join(args.download_dir, "test.jsonl"), lines=True
-)
+test_df = pd.read_json(os.path.join(args.download_dir, "test.jsonl"), lines=True)
 
 # drop the id column as it is not needed for fine tuning
 train_df.drop(columns=["id"], inplace=True)
