@@ -36,9 +36,12 @@ inputs:
   summary_key: "highlights"
 
   # training settings
-  number_of_gpu_to_use_finetuning: 2
+  number_of_gpu_to_use_finetuning: 8
   num_train_epochs: 3
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
   learning_rate: 2e-5
+  metric_for_best_model: rouge1
 
 outputs:
   # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
@@ -71,6 +74,10 @@ jobs:
 
       number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
       num_train_epochs: ${{parent.inputs.num_train_epochs}}
+      per_device_train_batch_size: ${{parent.inputs.per_device_train_batch_size}}
+      per_device_eval_batch_size: ${{parent.inputs.per_device_eval_batch_size}}
       learning_rate: ${{parent.inputs.learning_rate}}
+      metric_for_best_model: ${{parent.inputs.metric_for_best_model}}
+      max_steps: 250
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}

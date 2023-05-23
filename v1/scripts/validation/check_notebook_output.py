@@ -54,6 +54,7 @@ allowed_list = [
     "Warnings:",
     "Downloading builder script",
     "Downloading extra modules",
+    "custom base image or base dockerfile detected",
 ]
 
 with open(full_name, "r") as notebook_file:
