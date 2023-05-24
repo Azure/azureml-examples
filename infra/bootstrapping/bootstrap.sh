@@ -11,7 +11,7 @@ set -o nounset
 # set -Eeuo pipefail # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -o xtrace # For debugging
 
-### Usage bash ./infra/bootstrap.sh
+### Usage bash ./infra/bootstrapping/bootstrap.sh
 ### Bootstrapping script that creates Resource group and Workspace
 ### This assumes you have performed az login and have sufficient permissions
 
