@@ -9,6 +9,7 @@ on:
     paths:
       - .github/workflows/automated-cleanup-resources.yml
       - infra/bootstrapping/**
+      - infra/scripts/**
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -50,4 +51,4 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          pwsh -File '${{ github.workspace }}/infra/bootstrapping/scripts/call_all_scripts.ps1'
+          pwsh -File '${{ github.workspace }}/infra/scripts/call_all_scripts.ps1'
