@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/**
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-jobs-automl-standalone-jobs-cli-automl-image-classification-multiclass-task-fridge-items-cli-automl-image-classification-multiclass-task-fridge-items.yml
       - cli/setup.sh
 concurrency:
@@ -33,20 +33,20 @@ jobs:
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "prepare_data.py";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "prepare_data.py";
           pip install azure-identity
           bash "${{ github.workspace }}/sdk/python/setup.sh"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME

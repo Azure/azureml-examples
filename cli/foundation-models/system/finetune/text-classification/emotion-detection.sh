@@ -4,17 +4,19 @@ set -x
 
 # script inputs
 subscription_id="<SUBSCRIPTION_ID>"
-resource_group_name="<RESOURCE_GROUP>"
-workspace_name="<WORKSPACE_NAME>"
+resource_group_name="<RESOURCE_GROUP>",
+workspace_name="WORKSPACE_NAME>",
 registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"
 # if above compute cluster does not exist, create it with the following vm size
-compute_sku="Standard_ND40rs_v2"
+compute_sku="Standard_NC24rs_v3"
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.
-gpus_per_node=2 
+# CLI command to fetch the number of GPUs
+# az ml compute list-sizes -g <resource_group_name> -w <workspace_name> --subscription <subscription_id> --query "[?name=='<compute_sku>'].{Name:name, Gpus:gpus}" --output table
+gpus_per_node=8
 # This is the foundation model for finetuning
 model_name="bert-base-uncased"
 # using the latest version of the model - not working yet
@@ -27,15 +29,15 @@ deployment_sku="Standard_DS3_v2"
 
 
 # training data
-train_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_train.jsonl"
+train_data="emotion-dataset/small_train.jsonl"
 # validation data
-validation_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_validation.jsonl"
+validation_data="emotion-dataset/small_validation.jsonl"
 # test data
-test_data="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/small_test.jsonl"
+test_data="emotion-dataset/small_test.jsonl"
 # evaluation config
 evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.json"
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/finetune/text-classification/emotion-dataset/sample_score.json"
+scoring_file="emotion-dataset/sample_score.json"
 
 # finetuning job parameters
 finetuning_pipeline_component="text_classification_pipeline"
@@ -45,7 +47,10 @@ label_key="label_string"
 # Training settings
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 num_train_epochs=3
+per_device_train_batch_size=1
+per_device_eval_batch_size=1
 learning_rate=2e-5
+metric_for_best_model="f1_macro"
 
 # 1. Setup pre-requisites
 
@@ -70,6 +75,13 @@ else
         exit 1
     }
 fi
+
+# download the dataset
+
+python ./download-dataset.py || {
+    echo "Failed to download dataset"
+    exit 1
+}
 
 # 2. Check if the model exists in the registry
 # need to confirm model show command works for registries outside the tenant (aka system registry)
@@ -119,7 +131,10 @@ parent_job_name=$( az ml job create --file ./emotion-detection-pipeline.yml $wor
   inputs.label_key=$label_key \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \
   inputs.num_train_epochs=$num_train_epochs \
-  inputs.learning_rate=$learning_rate ) || {
+  inputs.per_device_train_batch_size=$per_device_train_batch_size \
+  inputs.per_device_eval_batch_size=$per_device_eval_batch_size \
+  inputs.learning_rate=$learning_rate \
+  inputs.metric_for_best_model=$metric_for_best_model ) || {
     echo "Failed to submit finetuning job"
     exit 1
   }

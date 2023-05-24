@@ -17,13 +17,13 @@ inputs:
   # map the dataset files to parameters
   train_file_path: 
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_train.jsonl"
+    path: "squad-dataset/small_train.jsonl"
   validation_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_validation.jsonl"
+    path: "squad-dataset/small_validation.jsonl"
   test_file_path:
     type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/question-answering/squad-dataset/small_test.jsonl"
+    path: "squad-dataset/small_test.jsonl"
   evaluation_config_path:
     type: uri_file
     path: "../../../../../sdk/python/foundation-models/system/finetune/question-answering/question-answering-config.json"
@@ -46,9 +46,12 @@ inputs:
   answer_text_key: "text"
 
   # training settings
-  number_of_gpu_to_use_finetuning: 2
+  number_of_gpu_to_use_finetuning: 8
   num_train_epochs: 3
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
   learning_rate: 2e-5
+  metric_for_best_model: exact
 
 outputs:
   # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
@@ -84,6 +87,9 @@ jobs:
 
       number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
       num_train_epochs: ${{parent.inputs.num_train_epochs}}
+      per_device_train_batch_size: ${{parent.inputs.per_device_train_batch_size}}
+      per_device_eval_batch_size: ${{parent.inputs.per_device_eval_batch_size}}
       learning_rate: ${{parent.inputs.learning_rate}}
+      metric_for_best_model: ${{parent.inputs.metric_for_best_model}}
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}

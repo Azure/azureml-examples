@@ -1,0 +1,4 @@
+inputs:
+  input_data:
+    type: uri_folder
+    path: azureml:heart-classifier-train@latest

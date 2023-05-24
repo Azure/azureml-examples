@@ -1,0 +1,5 @@
+{
+    "metrics": ["rouge1", "rouge2", "rougeL", "rougeLsum"],
+    "aggregator": true,
+    "stemmer": true
+}

@@ -3,15 +3,21 @@ set -x
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml-preview"
+registry_name="azureml"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="Jean-Baptiste-camembert-ner"
-# using the latest version of the model - not working yet
-model_version=3
+
+# Validate the existence of the model in the registry and get the latest version
+model_list=$(az ml model list --name ${model_name} --registry-name ${registry_name} 2>&1)
+if [[ ${model_list} == *"[]"* ]]; then
+    echo "Model doesn't exist in registry. Check the model list and try again."; exit 1;
+fi
+version_temp=${model_list#*\"version\": \"}
+model_version=${version_temp%%\"*}
 
 version=$(date +%s)
 endpoint_name="token-classification-$version"
@@ -20,7 +26,7 @@ endpoint_name="token-classification-$version"
 deployment_sku="Standard_DS2_v2"
 
 # scoring_file
-scoring_file="../../../../../sdk/python/foundation-models/system/inference/token-classification/Jean-Baptiste-wikiner_fr/sample_score.json"
+scoring_file="../../../../../sdk/python/foundation-models/system/inference/token-classification/polyglot_ner/sample_score.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
