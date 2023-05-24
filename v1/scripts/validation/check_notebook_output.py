@@ -52,6 +52,8 @@ allowed_list = [
     "Readonly attribute primary_metric will be ignored",
     "Downloading artifact ",
     "Warnings:",
+    "Downloading builder script",
+    "Downloading extra modules",
     "custom base image or base dockerfile detected",
 ]
 
