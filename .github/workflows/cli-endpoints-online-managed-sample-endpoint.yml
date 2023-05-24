@@ -14,7 +14,7 @@ on:
     paths:
       - cli/endpoints/online/managed/sample/**
       - cli/endpoints/online/**
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-managed-sample-endpoint.yml
       - cli/setup.sh
 concurrency:
@@ -33,46 +33,46 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: delete endpoint if existing
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           az ml online-endpoint delete -n sonlinemanagedsampleendpoint -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/endpoint.yml
           az ml online-endpoint create -n sonlinemanagedsampleendpoint -f endpoints/online/managed/sample/endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/blue-deployment.yml
           az ml online-deployment create -e sonlinemanagedsampleendpoint -f endpoints/online/managed/sample/blue-deployment.yml
       working-directory: cli
     - name: create deployment
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/green-deployment.yml
           az ml online-deployment create -e sonlinemanagedsampleendpoint -f endpoints/online/managed/sample/green-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           az ml online-endpoint delete -n sonlinemanagedsampleendpoint -y
       working-directory: cli

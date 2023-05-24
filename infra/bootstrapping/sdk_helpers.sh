@@ -10,7 +10,6 @@ set -eu
 # The filename of this script for help messages
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
-ROOT_DIR=$(cd "${SCRIPT_DIR}/../" && pwd)
 
 EPOCH_START="$( date -u +%s )"  # e.g. 1661361223
 
@@ -94,10 +93,10 @@ function ensure_registry_local(){
     registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${registry_exists}" = "[]" ]]; then
         echo_info "registry ${LOCAL_REGISTRY_NAME} does not exist; creating" >&2
-        sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
-        sed -i "s/<LOCATION>/$LOCATION/" $ROOT_DIR/infra/infra_resources/registry-demo.yml
-        cat $ROOT_DIR/infra/infra_resources/registry-demo.yml
-        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $ROOT_DIR/infra/infra_resources/registry-demo.yml --name $LOCAL_REGISTRY_NAME || echo "Failed to create registry $LOCAL_REGISTRY_NAME, will retry"
+        sed -i "s/<REGISTRY-NAME>/$LOCAL_REGISTRY_NAME/" $SCRIPT_DIR/infra_resources/registry-demo.yml
+        sed -i "s/<LOCATION>/$LOCATION/" $SCRIPT_DIR/infra_resources/registry-demo.yml
+        cat $SCRIPT_DIR/infra_resources/registry-demo.yml
+        az ml registry create --resource-group $RESOURCE_GROUP_NAME --file $SCRIPT_DIR/infra_resources/registry-demo.yml --name $LOCAL_REGISTRY_NAME || echo "Failed to create registry $LOCAL_REGISTRY_NAME, will retry"
         registry_exists=$(az ml registry list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '$LOCAL_REGISTRY_NAME']" |tail -n1|tr -d "[:cntrl:]")
         if [[ "${registry_exists}" = "[]" ]]; then
             echo_info "Retry creating registry ${LOCAL_REGISTRY_NAME}" >&2
@@ -321,14 +320,14 @@ function ensure_extension() {
 function ensure_prerequisites_in_registry() {
     echo_info "Ensuring prerequisites in the registry" >&2
     deploy_scripts=(
-      infra/create-registry-components.sh
+      "$SCRIPT_DIR/create-registry-components.sh"
     )
-    for package in "${deploy_scripts[@]}"; do
-      echo_info "Deploying '${ROOT_DIR}/${package}'"
-      if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash "${ROOT_DIR}"/"${package}" ${REGISTRY_NAME};
+    for script in "${deploy_scripts[@]}"; do
+      echo_info "Deploying '$script'"
+      if [ -f "$script" ]; then
+        bash "$script" ${REGISTRY_NAME};
       else
-        echo_error "${ROOT_DIR}/${package} not found."
+        echo_error "$script not found."
       fi
     done
 }
@@ -336,18 +335,18 @@ function ensure_prerequisites_in_registry() {
 function ensure_prerequisites_in_workspace() {
     echo_info "Ensuring prerequisites in the workspace" >&2
     deploy_scripts=(
-      # infra/copy-data.sh
-      infra/create-datasets.sh
-      # infra/update-datasets.sh
-      infra/create-components.sh
-      infra/create-environments.sh
+      # "$SCRIPT_DIR/copy-data.sh"
+      "$SCRIPT_DIR/create-datasets.sh"
+      # "$SCRIPT_DIR/update-datasets.sh"
+      "$SCRIPT_DIR/create-components.sh"
+      "$SCRIPT_DIR/create-environments.sh"
     )
-    for package in "${deploy_scripts[@]}"; do
-      echo_info "Deploying '${ROOT_DIR}/${package}'"
-      if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash "${ROOT_DIR}"/"${package}";
+    for script in "${deploy_scripts[@]}"; do
+      echo_info "Deploying '$script'"
+      if [ -f "$script" ]; then
+        bash "$script";
       else
-        echo_error "${ROOT_DIR}/${package} not found."
+        echo_error "$script not found."
       fi
     done
 }
@@ -355,14 +354,14 @@ function ensure_prerequisites_in_workspace() {
 function update_dataset() {
     echo_info "Updating dataset in the workspace" >&2
     deploy_scripts=(
-      infra/update-datasets.sh
+      "$SCRIPT_DIR/update-datasets.sh"
     )
-    for package in "${deploy_scripts[@]}"; do
-      echo_info "Deploying '${ROOT_DIR}/${package}'"
-      if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash "${ROOT_DIR}"/"${package}";
+    for script in "${deploy_scripts[@]}"; do
+      echo_info "Deploying '$script'"
+      if [ -f "$script" ]; then
+        bash "$script";
       else
-        echo_error "${ROOT_DIR}/${package} not found."
+        echo_error "$script not found."
       fi
     done
 }
@@ -370,14 +369,14 @@ function update_dataset() {
 function copy_dataset() {
     echo_info "Copying dataset in the workspace" >&2
     deploy_scripts=(
-      infra/copy-data.sh
+      "$SCRIPT_DIR/copy-data.sh"
     )
-    for package in "${deploy_scripts[@]}"; do
-      echo_info "Executing '${ROOT_DIR}/${package}'"
-      if [ -f "${ROOT_DIR}"/"${package}" ]; then
-        bash "${ROOT_DIR}"/"${package}";
+    for script in "${deploy_scripts[@]}"; do
+      echo_info "Executing '$script'"
+      if [ -f "$script" ]; then
+        bash "$script";
       else
-        echo_error "${ROOT_DIR}/${package} not found."
+        echo_error "$script not found."
       fi
     done
 }
