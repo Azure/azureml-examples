@@ -1,105 +1,964 @@
-# Contributing
-
-This repository is entirely open source and welcomes contributions! These are official examples for Azure Machine Learning used throughout documentation. Due to this and some technical limitations, contributions from people external to the Azure Machine Learning team may experience delays. Please read through the contributing guide below to avoid frustration!
-
-## Contributor License Agreement
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-## Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Goals
-
-- source for all code snippets in documentation
-
-## Non-goals
-
-- serve as documentation (see https://docs.microsoft.com/azure/machine-learning)
-- serve as scenario-specific project templates (coming soon!)
-
-## Issues
-
-All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues/new/choose) - please follow the pre-defined templates where applicable.
-
-## Repository structure
-
-Azure Machine Learning has multiple developer experiences. The subdirectories at the root of the repo correspond to a developer experience, with the slight exception of `notebooks`.
-
-The `notebooks` directory is intended for iterative, interactive code development examples such as exploratory data anlysis or querying logged metrics.
-
-## Pull Requests
-
-Pull requests (PRs) to this repo require review and approval by the Azure Machine Learning team to merge. Please follow the pre-defined template and read all relevant sections below.
-
-**Important:** PRs from forks of this repository are likely to fail automated workflows due to access to secrets. PRs from forks will be considered but may experience additional delay for testing.
-
-
-### Set up and pre-PR
-
-Clone the repository and install the required Python packages for contributing:
-
-```terminal
-git clone https://github.com/Azure/azureml-examples --depth 1
-cd azureml-examples
-pip install -r dev-requirements.txt
-```
-
-Before opening a PR, format all Python code and notebooks:
-
-```terminal
-black .
-black-nb .
-```
-
-Also if adding new examples or changing existing descriptions, run the `readme.py` script in the respective subdirectory to generate the `README.md` file with the table of examples:
-
-```terminal
-python readme.py
-```
-
-This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with exceptions) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details. If the new notebook uses compute cluster, please add it to the `sdk/python/notebooks_config.ini` file so the compute clusters will be properly deleted after notebook run was finished. Create a section with the notebook name and add the option `COMPUTE_NAMES` with the compute cluster name. 
-
-### Discoverability
-
-Examples in this repository can be index in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
-
-- add an excellent `README.md` file in the example directory
-- add required YAML frontmatter at the top of the `README.md`
-
-The YAML frontmatter is this:
-
-```YAML
----
-page_type: sample
-languages:
-- azurecli
-- python
-products:
-- azure-machine-learning
-description: Example description.
----
-```
-
-**Edit the description** and update the languages as needed.
-
-### CLI 2.0
-
-[CLI contributing guide.](cli/CONTRIBUTING.md)
-
-### Python SDK
-
-[Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
-
-### Notebooks
-
-[Notebooks contributing guide.](notebooks/CONTRIBUTING.md)
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "source": [
+    "Copyright (c) Microsoft Corporation. All rights reserved.\n",
+    "\n",
+    "Licensed under the MIT License."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "source": [
+    "![Impressions](https://PixelServer20190423114238.azurewebsites.net/api/impressions/MachineLearningNotebooks/how-to-use-azureml/automated-machine-learning/forecasting-beer-remote/auto-ml-forecasting-beer-remote.png)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "source": [
+    "# AutoML: Train a TCNForecaster (DNN) model on Github Daily Active Users (DAU) dataset\n",
+    "\n",
+    "**Requirements** - In order to benefit from this tutorial, you will need:\n",
+    "- A basic understanding of Machine Learning\n",
+    "- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F)\n",
+    "- An Azure ML workspace. [Check this notebook for creating a workspace](../../../resources/workspace/workspace.ipynb) \n",
+    "- Serverless compute to run the job\n",
+    "- A python environment\n",
+    "- Installation instructions - [install instructions](../../../README.md)\n",
+    "\n",
+    "**Learning Objectives** - By the end of this tutorial, you should be able to:\n",
+    "- Connect to your AML workspace from the Python SDK\n",
+    "- Create an `AutoML time-series forecasting Job` with the 'forecasting()' factory-fuction\n",
+    "- Train the model using serverless compute by submitting/running the AutoML forecasting training job\n",
+    "- Obtain the model and use it to generate forecast\n",
+    "\n",
+    "**Motivations** - This notebook explains how to setup and run an AutoML forecasting job. This is one of the nine ML-tasks supported by AutoML. Other ML-tasks are 'regression', 'classification', 'image classification', 'image object detection', 'nlp text classification', etc.\n",
+    "\n",
+    "In this example we use the associated Github DAU (Daily Active Users) dataset to showcase how you can use AutoML Deep Learning forecasts for a forecasting problem and explore the results. The goal is predict the users for the next 14 days based on historic time-series data."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "source": [
+    "# 1. Connect to Azure Machine Learning Workspace\n",
+    "\n",
+    "The [workspace](https://docs.microsoft.com/en-us/azure/machine-learning/concept-workspace) is the top-level resource for Azure Machine Learning, providing a centralized place to work with all the artifacts you create when you use Azure Machine Learning. In this section we will connect to the workspace in which the job will be run.\n",
+    "\n",
+    "## 1.1. Import the required libraries"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "outputs": [],
+   "source": [
+    "# Import required libraries\n",
+    "from azure.identity import DefaultAzureCredential\n",
+    "from azure.ai.ml import MLClient\n",
+    "\n",
+    "from azure.ai.ml.constants import AssetTypes, InputOutputModes\n",
+    "from azure.ai.ml import automl\n",
+    "from azure.ai.ml import Input"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 1.2. Configure workspace details and get a handle to the workspace\n",
+    "\n",
+    "To connect to a workspace, we need identifier parameters - a subscription, resource group and workspace name. We will use these details in the `MLClient` from `azure.ai.ml` to get a handle to the required Azure Machine Learning workspace. We use the default [default azure authentication](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) for this tutorial. Check the [configuration notebook](../../configuration.ipynb) for more details on how to configure credentials and connect to a workspace."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "credential = DefaultAzureCredential()\n",
+    "ml_client = None\n",
+    "try:\n",
+    "    ml_client = MLClient.from_config(credential)\n",
+    "except Exception as ex:\n",
+    "    print(ex)\n",
+    "    # Enter details of your AML workspace\n",
+    "    subscription_id = \"<SUBSCRIPTION_ID>\"\n",
+    "    resource_group = \"<RESOURCE_GROUP>\"\n",
+    "    workspace = \"<AML_WORKSPACE_NAME>\"\n",
+    "    ml_client = MLClient(credential, subscription_id, resource_group, workspace)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "source": [
+    "### Show Azure ML Workspace information"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "outputs": [],
+   "source": [
+    "workspace = ml_client.workspaces.get(name=ml_client.workspace_name)\n",
+    "\n",
+    "output = {}\n",
+    "output[\"Workspace\"] = ml_client.workspace_name\n",
+    "output[\"Subscription ID\"] = ml_client.connections._subscription_id\n",
+    "output[\"Resource Group\"] = workspace.resource_group\n",
+    "output[\"Location\"] = workspace.location\n",
+    "output"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "source": [
+    "# 2. Data\n",
+    "\n",
+    "We will use github active user (DAU) count for model training. The data is stored in a tabular format.\n",
+    "\n",
+    "With Azure Machine Learning MLTables you can keep a single copy of data in your storage, easily access data during model training, share data and collaborate with other users. \n",
+    "Below, we will upload the data by creating an MLTable to be used for training."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "hideCode": false,
+    "hidePrompt": false
+   },
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import shutil\n",
+    "import pandas as pd\n",
+    "\n",
+    "from helpers.generate_ml_table import create_ml_table\n",
+    "\n",
+    "train = pd.read_csv(\"github_dau_2011-2018_train.csv\", parse_dates=[\"date\"])\n",
+    "create_ml_table(\n",
+    "    train, \"github_dau_2011-2018_train.parquet\", \"./data/training-mltable-folder\"\n",
+    ")\n",
+    "\n",
+    "# Training MLTable defined locally, with local data to be uploaded\n",
+    "my_training_data_input = Input(\n",
+    "    type=AssetTypes.MLTABLE, path=\"./data/training-mltable-folder\"\n",
+    ")\n",
+    "\n",
+    "os.makedirs(\"test_dataset\", exist_ok=True)\n",
+    "shutil.copy(\n",
+    "    \"github_dau_2011-2018_test.csv\",\n",
+    "    \"test_dataset/github_dau_2011-2018_test.csv\",\n",
+    ")\n",
+    "\n",
+    "my_test_data_input = Input(\n",
+    "    type=AssetTypes.URI_FOLDER,\n",
+    "    path=\"test_dataset/\",\n",
+    ")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "To create data input from TabularDataset created using V1 sdk, set the `type` to `AssetTypes.MLTABLE`, `mode` to `InputOutputModes.DIRECT` and `path` to the following format `azureml:<tabulardataset_name>` or `azureml:<tabulardataset_name:<version>`(in case we want to use specific version of the registered dataset).\n",
+    "To run the following cell, remove `\"\"\"` at start and end."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "jupyter": {
+     "outputs_hidden": false,
+     "source_hidden": false
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "# Training MLTable with v1 TabularDataset\n",
+    "my_training_data_input = Input(\n",
+    "    type=AssetTypes.MLTABLE, path=\"azureml:Github_DAU_train:1\", mode=InputOutputModes.DIRECT\n",
+    ")\n",
+    "\"\"\""
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "To use TabularDataset created in V1 sdk as a test data on the batch end point inference we need to convert it to V2 Input.\n",
+    "To run the following cell, remove `\"\"\"` at start and end."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "jupyter": {
+     "outputs_hidden": false,
+     "source_hidden": false
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "from mltable import load\n",
+    "os.makedirs(\"test_dataset\", exist_ok=True)\n",
+    "filedataset_asset = ml_client.data.get(name=\"Github_DAU_test\",version=1)\n",
+    "test_df = load(f\"azureml:/{filedataset_asset.id}\").to_pandas_dataframe()\n",
+    "test_df.to_csv(\"test_dataset_1/Github_DAU_test.csv\")\n",
+    "my_test_data_input = Input(\n",
+    "    type=AssetTypes.URI_FOLDER,\n",
+    "    path=\"test_dataset/\",\n",
+    ")\n",
+    "\"\"\""
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For documentation on creating your own MLTable assets for jobs beyond this notebook:\n",
+    "- https://learn.microsoft.com/en-us/azure/machine-learning/reference-yaml-mltable details how to write MLTable YAMLs (required for each MLTable asset).\n",
+    "- https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-data-assets?tabs=Python-SDK covers how to work with them in the v2 CLI/SDK."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 3. Configure and run the AutoML Forecasting training job\n",
+    "In this section we will configure and run the AutoML job, for training the model.\n",
+    "\n",
+    "## 3.1 Configure the job through the forecasting() factory function\n",
+    "\n",
+    "### forecasting() function parameters:\n",
+    "\n",
+    "The `forecasting()` factory function allows user to configure AutoML for the forecasting task for the most common scenarios with the following properties.\n",
+    "\n",
+    "|Property|Description|\n",
+    "|-|-|\n",
+    "|**target_column_name**|The name of the column to target for predictions. It must always be specified. This parameter is applicable to 'training_data', 'validation_data' and 'test_data'.|\n",
+    "|**primary_metric**|The metric that AutoML will optimize for model selection.|\n",
+    "|**training_data**|The data to be used for training. It should contain both training feature columns and a target column. Optionally, this data can be split for segregating a validation or test dataset. You can use a registered MLTable in the workspace using the format '<mltable_name>:<version>' OR you can use a local file or folder as a MLTable. For e.g Input(mltable='my_mltable:1') OR Input(mltable=MLTable(local_path=\"./data\")). The parameter 'training_data' must always be provided.\n",
+    "|**name**|The name of the Job/Run. This is an optional property. If not specified, a random name will be generated.|\n",
+    "|**experiment_name**|The name of the Experiment. An Experiment is like a folder with multiple runs in Azure ML Workspace that should be related to the same logical machine learning experiment.|\n",
+    "\n",
+    "### set_limits() parameters:\n",
+    "This is an optional configuration method to configure limits parameters such as timeouts.     \n",
+    "\n",
+    "|Property|Description|\n",
+    "|-|-|\n",
+    "|**timeout_minutes**|Maximum amount of time in minutes that the whole AutoML job can take before the job terminates. This timeout includes setup, featurization and training runs but does not include the ensembling and model explainability runs at the end of the process since those actions need to happen once all the trials (children jobs) are done. If not specified, the default job's total timeout is 6 days (8,640 minutes).|\n",
+    "|**trial_timeout_minutes**|Maximum time in minutes that each trial (child job) can run for before it terminates. If not specified, a value of 1 month or 43200 minutes is used.|\n",
+    "|**max_trials**|The maximum number of trials/runs each with a different combination of algorithm and hyperparameters to try during an AutoML job. If not specified, the default is 1000 trials. If using 'enable_early_termination' the number of trials used can be smaller.|\n",
+    "|**max_concurrent_trials**|Represents the maximum number of trials (children jobs) that would be executed in parallel. We highly recommend to set the number of concurrent runs to the number of nodes in the cluster.|\n"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Specialized Forecasting Parameters\n",
+    "To define forecasting parameters for your experiment training, you can leverage the .set_forecast_settings() method. \n",
+    "The table below details the forecasting parameters we will be passing into our experiment.\n",
+    "\n",
+    "|Property|Description|\n",
+    "|-|-|\n",
+    "|**time_column_name**|The name of your time column.|\n",
+    "|**forecast_horizon**|The forecast horizon is how many periods forward you would like to forecast. This integer horizon is in units of the timeseries frequency (e.g. daily, weekly).|\n",
+    "|**frequency**|Forecast frequency. This optional parameter represents the period with which the forecast is desired, for example, daily, weekly, yearly, etc. Use this parameter for the correction of time series containing irregular data points or for padding of short time series. The frequency needs to be a pandas offset alias. Please refer to [pandas documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects) for more information."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Training Parameters\n",
+    "\n",
+    "Some parameters specific to this training job can be set by .set_training() method.\n",
+    "\n",
+    "|Property|Description|\n",
+    "|-|-|\n",
+    "|**allowed_training_algorithms**|The algorithms that will be allowed to train. All other models will be blocked.|\n",
+    "|**enable_dnn_training**|Enable Forecasting DNNs|"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# general job parameters\n",
+    "max_trials = 5\n",
+    "exp_name = \"sdkv2-forecasting-github-dau\"\n",
+    "\n",
+    "target_column_name = \"count\"\n",
+    "forecast_horizon = 14\n",
+    "time_column_name = \"date\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create the AutoML forecasting job with the related factory-function.\n",
+    "from azure.ai.ml.entities import ResourceConfiguration\n",
+    "\n",
+    "forecasting_job = automl.forecasting(\n",
+    "    experiment_name=exp_name,\n",
+    "    training_data=my_training_data_input,\n",
+    "    # validation_data = my_validation_data_input,\n",
+    "    target_column_name=target_column_name,\n",
+    "    primary_metric=\"NormalizedRootMeanSquaredError\",\n",
+    "    n_cross_validations=10,\n",
+    ")\n",
+    "\n",
+    "# Limits are all optional\n",
+    "forecasting_job.set_limits(\n",
+    "    timeout_minutes=120,\n",
+    "    trial_timeout_minutes=30,\n",
+    "    max_trials=max_trials,\n",
+    "    max_concurrent_trials=4,\n",
+    ")\n",
+    "\n",
+    "# Specialized properties for Time Series Forecasting training\n",
+    "forecasting_job.set_forecast_settings(\n",
+    "    time_column_name=time_column_name, forecast_horizon=forecast_horizon, frequency=\"D\"\n",
+    ")\n",
+    "\n",
+    "# Enable Dnn training and allow only TCNForecaster model\n",
+    "forecasting_job.set_training(\n",
+    "    allowed_training_algorithms=[\"TCNForecaster\"], enable_dnn_training=True\n",
+    ")\n",
+    "# Serverless compute resources used to run the job\n",
+    "forecasting_job.resources = ResourceConfiguration(\n",
+    "    instance_type=\"Standard_E4s_v3\", instance_count=4\n",
+    ")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 3.2 Train the AutoML model\n",
+    "Using the `MLClient` created earlier, we will now run this Command in the workspace."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Submit the AutoML job\n",
+    "returned_job = ml_client.jobs.create_or_update(\n",
+    "    forecasting_job\n",
+    ")  # submit the job to the backend\n",
+    "\n",
+    "print(f\"Created job: {returned_job}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ml_client.jobs.stream(returned_job.name)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 4. Retrieve the Best Trial (Best Model's trial/run)\n",
+    "Use the MLFLowClient to access the results (such as Models, Artifacts, Metrics) of a previously completed AutoML Trial."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 4.1 Initialize MLFlow Client\n",
+    "The models and artifacts that are produced by AutoML can be accessed via the MLFlow interface. \n",
+    "Initialize the MLFlow client here, and set the backend as Azure ML, via. the MLFlow Client.\n",
+    "\n",
+    "*IMPORTANT*, you need to have installed the latest MLFlow packages with:\n",
+    "\n",
+    "    pip install azureml-mlflow\n",
+    "\n",
+    "    pip install mlflow"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Obtain the tracking URI for MLFlow"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import mlflow\n",
+    "\n",
+    "# Obtain the tracking URL from MLClient\n",
+    "MLFLOW_TRACKING_URI = ml_client.workspaces.get(\n",
+    "    name=ml_client.workspace_name\n",
+    ").mlflow_tracking_uri\n",
+    "\n",
+    "print(MLFLOW_TRACKING_URI)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set the MLFLOW TRACKING URI\n",
+    "\n",
+    "mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)\n",
+    "\n",
+    "print(\"\\nCurrent tracking uri: {}\".format(mlflow.get_tracking_uri()))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from mlflow.tracking.client import MlflowClient\n",
+    "from mlflow.artifacts import download_artifacts\n",
+    "\n",
+    "# Initialize MLFlow client\n",
+    "mlflow_client = MlflowClient()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Get the AutoML parent Job"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "job_name = returned_job.name\n",
+    "\n",
+    "# Example if providing an specific Job name/ID\n",
+    "# job_name = \"funny_soursop_2zpkp35pdy\"\n",
+    "\n",
+    "# Get the parent run\n",
+    "mlflow_parent_run = mlflow_client.get_run(job_name)\n",
+    "\n",
+    "print(\"Parent Run: \")\n",
+    "print(mlflow_parent_run)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Print parent run tags. 'automl_best_child_run_id' tag should be there.\n",
+    "print(mlflow_parent_run.data.tags)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Get the AutoML best child run"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Get the best model's child run\n",
+    "\n",
+    "best_child_run_id = mlflow_parent_run.data.tags[\"automl_best_child_run_id\"]\n",
+    "print(\"Found best child run id: \", best_child_run_id)\n",
+    "\n",
+    "best_run = mlflow_client.get_run(best_child_run_id)\n",
+    "\n",
+    "print(\"Best child run: \")\n",
+    "print(best_run)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 4.2 Get best model run's validation metrics"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pd.DataFrame(best_run.data.metrics, index=[0]).T"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 5 Model Evaluation and Deployment\n",
+    "\n",
+    "## 5.1 Download the best model\n",
+    "\n",
+    "Access the results (such as Models, Artifacts, Metrics) of a previously completed AutoML Run."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create local folder\n",
+    "import os\n",
+    "\n",
+    "local_dir = \"./artifact_downloads\"\n",
+    "if not os.path.exists(local_dir):\n",
+    "    os.mkdir(local_dir)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Download run's artifacts/outputs\n",
+    "local_path = download_artifacts(\n",
+    "    run_id=best_run.info.run_id, artifact_path=\"outputs\", dst_path=local_dir\n",
+    ")\n",
+    "print(\"Artifacts downloaded in: {}\".format(local_path))\n",
+    "print(\"Artifacts: {}\".format(os.listdir(local_path)))"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 5.2 Forecasting using batch endpoint\n",
+    "Now that we have retrieved the best pipeline/model, it can be used to make predictions on test data. We will do batch scoring on the test dataset which must have the same schema as training dataset.\n",
+    "\n",
+    "The inference will run on a remote compute. In this example, it will re-use the training compute. First we will load model and environment from the local file.\n",
+    "\n",
+    "### Create a model endpoint\n",
+    "First we need to register the model, environment and batch endpoint."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import datetime\n",
+    "from azure.ai.ml.entities import (\n",
+    "    Environment,\n",
+    "    BatchEndpoint,\n",
+    "    BatchDeployment,\n",
+    "    BatchRetrySettings,\n",
+    "    Model,\n",
+    ")\n",
+    "from azure.ai.ml.constants import BatchDeploymentOutputAction\n",
+    "\n",
+    "model_name = \"github-dau-tcn\"\n",
+    "batch_endpoint_name = \"gdau-batch-\" + datetime.datetime.now().strftime(\"%m%d%H%M%f\")\n",
+    "\n",
+    "model = Model(\n",
+    "    path=f\"azureml://jobs/{best_run.info.run_id}/outputs/artifacts/outputs/model.pt\",\n",
+    "    name=model_name,\n",
+    "    description=\"Github DAU forecasting\",\n",
+    ")\n",
+    "registered_model = ml_client.models.create_or_update(model)\n",
+    "\n",
+    "env = Environment(\n",
+    "    name=\"automl-tabular-env-tcn\",\n",
+    "    description=\"environment for automl TCN inference\",\n",
+    "    image=\"mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.1-cudnn8-ubuntu18.04:20220930.v1\",\n",
+    "    conda_file=\"artifact_downloads/outputs/conda_env_v_1_0_0.yml\",\n",
+    ")\n",
+    "\n",
+    "endpoint = BatchEndpoint(\n",
+    "    name=batch_endpoint_name,\n",
+    "    description=\"this is a sample batch endpoint\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ml_client.begin_create_or_update(endpoint).wait()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To create a batch deployment, we will use the forecasting_script.py which will load the model and will call forecast each time we will envoke the endpoint."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "output_file = \"forecast.csv\"\n",
+    "batch_deployment = BatchDeployment(\n",
+    "    name=\"non-mlflow-deployment\",\n",
+    "    description=\"this is a sample non-mlflow deployment\",\n",
+    "    endpoint_name=batch_endpoint_name,\n",
+    "    model=registered_model,\n",
+    "    code_path=\"./helpers\",\n",
+    "    scoring_script=\"forecasting_script.py\",\n",
+    "    environment=env,\n",
+    "    environment_variables={\n",
+    "        \"TARGET_COLUMN_NAME\": target_column_name,\n",
+    "    },\n",
+    "    compute=compute_name,\n",
+    "    instance_count=1,\n",
+    "    max_concurrency_per_instance=2,\n",
+    "    mini_batch_size=10,\n",
+    "    output_action=BatchDeploymentOutputAction.APPEND_ROW,\n",
+    "    output_file_name=output_file,\n",
+    "    retry_settings=BatchRetrySettings(max_retries=3, timeout=30),\n",
+    "    logging_level=\"info\",\n",
+    "    properties={\"include_output_header\": \"true\"},\n",
+    "    tags={\"include_output_header\": \"true\"},\n",
+    ")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, start a model deployment."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ml_client.begin_create_or_update(batch_deployment).wait()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We need to create the Input, representing URI folder, because the batch endpoint is intended to process multiple files at a time. In this example we will use only one test file, we have uploaded to the blob storage before. This file must be available through the url link.\n",
+    "\n",
+    "Create an inference job."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "job = ml_client.batch_endpoints.invoke(\n",
+    "    endpoint_name=batch_endpoint_name,\n",
+    "    input=my_test_data_input,\n",
+    "    deployment_name=\"non-mlflow-deployment\",  # name is required as default deployment is not set\n",
+    ")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We will stream the job output to monitor the execution."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "job_name = job.name\n",
+    "batch_job = ml_client.jobs.get(name=job_name)\n",
+    "print(batch_job.status)\n",
+    "# stream the job logs\n",
+    "ml_client.jobs.stream(name=job_name)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Download the prediction result for metrics calculation\n",
+    "The output of prediction is saved in CSV format. You can use it to calculate test set metrics and plot predictions and actuals over time."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ml_client.jobs.download(job_name, download_path=\".\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fcst_df = pd.read_csv(output_file, parse_dates=[time_column_name, \"forecast_origin\"])\n",
+    "fcst_df.head()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that the rolling forecast can contain multiple predictions for each date, each from a different forecast origin. For example, consider 2017-06-08:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fcst_df[fcst_df.date == \"2017-06-08\"]"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here, the forecast origin refers to the latest date of actuals available for a given forecast. The earliest origin in the rolling forecast, 2017-06-03, is the last day in the training data. For origin date 2017-06-04, the forecaster uses actual recorded counts from the training data *and* the actual count recorded on 2017-06-04. Note that the model is not retrained for origin dates later than 2017-06-03, but the prediction context is set to include all known data up to the given origin date.\n",
+    "\n",
+    "Rolling forecasts are useful for evaluating a forecaster when a relatively long test set is available. Averaging accuracy metrics over many prediction windows gives a more robust estimate of the expected error than a single 14-day-ahead forecast window. When the model meets accuracy requirements, it may be deployed for true forecasting scenarios where the actuals are unknown. See the [automl-forecasting-task-energy-demand](https://github.com/Azure/azureml-examples/blob/main/sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/automl-forecasting-task-energy-demand-advanced-mlflow.ipynb) notebook for a demonstration of inference that is closer to the true forecasting scenario as opposed to accuracy evaluation here. In summary, we use the `forecast` function in the forecasting scenario and the `rolling_forecast` in an evaluation scenario.  \n",
+    "\n",
+    "Let's calculate the metrics over all rolling forecasts:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from helpers.metrics_helper import calculate_metrics\n",
+    "\n",
+    "calculate_metrics(train, fcst_df, target_column_name, time_column_name)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Forecast versus actuals plot\n",
+    "Since the rolling forecast makes multiple predictions for a given date, so we will select the 14-day-ahead forecast from each forecast origin for the purposes of visualization."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "from matplotlib import pyplot as plt\n",
+    "\n",
+    "fcst_df_h14 = (\n",
+    "    fcst_df.groupby(\"forecast_origin\", as_index=False)\n",
+    "    .last()\n",
+    "    .drop(columns=[\"forecast_origin\"])\n",
+    ")\n",
+    "plt.plot(fcst_df_h14.set_index(time_column_name))\n",
+    "plt.xticks(rotation=45)\n",
+    "plt.title(f\"Predicted vs. Actuals\")\n",
+    "plt.legend([\"actual\", \"14-day-ahead forecast\"])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Delete the batch endpoint and compute. Do not do it occasionally.\n",
+    "ml_client.batch_endpoints.begin_delete(name=batch_endpoint_name).wait()\n",
+    "ml_client.compute.begin_delete(name=compute_name).wait()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 5.3 Deployment\n",
+    "\n",
+    "After we have tested our model on the batch endpoint, we may want to deploy it as a service. Currently no code deployment using mlflow is not supported for forecasting tasks and we will use the workaround which is described in the Deployment section of the [automl-forecasting-task-energy-demand](https://github.com/Azure/azureml-examples/blob/main/sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/automl-forecasting-task-energy-demand-advanced-mlflow.ipynb) notebook."
+   ]
+  }
+ ],
+ "metadata": {
+  "authors": [
+   {
+    "name": "jialiu"
+   }
+  ],
+  "hide_code_all_hidden": false,
+  "kernel_info": {
+   "name": "python310-sdkv2"
+  },
+  "kernelspec": {
+   "display_name": "Python 3.10 - SDK V2",
+   "language": "python",
+   "name": "python310-sdkv2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.15"
+  },
+  "microsoft": {
+   "ms_spell_check": {
+    "ms_spell_check_language": "en"
+   }
+  },
+  "nteract": {
+   "version": "nteract-front-end@1.0.0"
+  },
+  "vscode": {
+   "interpreter": {
+    "hash": "05949f3479f4013d8cdcf81c30b0e5ed801a9360182b77ac58fc7c6c004a75e2"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
