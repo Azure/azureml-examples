@@ -119,12 +119,13 @@ def write_notebook_workflow(
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
+    runs_on = "ubuntu-latest"
+    workflow_sched = "0 */8 * * *"
     if "explore-data" in name:
         runs_on = "ubuntu-20.04"
+    if "deploy-model" in name:
         workflow_sched = "0 */12 * * *"
-    else:
-        runs_on = "ubuntu-latest"
-        workflow_sched = "0 */8 * * *"
+
     workflow_yaml = f"""{READONLY_HEADER}
 name: tutorials-{classification}-{name}
 # This file is created by tutorials/readme.py.
