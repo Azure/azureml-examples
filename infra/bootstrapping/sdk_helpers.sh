@@ -280,7 +280,6 @@ function install_packages() {
     # uuid-runtime      - Required for aks/arc
     packages_to_install=(
       uuid-runtime
-      xmlstarlet
     )
     for package in "${packages_to_install[@]}"; do
       echo_info "Installing '$package'"
