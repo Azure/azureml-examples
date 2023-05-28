@@ -115,7 +115,7 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id
 # </get_endpoint>
 
@@ -142,10 +142,10 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id
 
-scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
+scoringUri=$(echo $response | jq -r '.properties.scoringUri')
 # </get_endpoint>
 
 # <get_endpoint_access_token>

@@ -124,7 +124,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 #</create_endpoint>
 
 echo "Endpoint response: $response"
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id
 
 # <create_deployment>
@@ -153,7 +153,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 #</create_deployment>
 
 echo "Endpoint response: $response"
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id
 
 # <get_endpoint>
@@ -161,7 +161,7 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
-scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
+scoringUri=$(echo $response | jq -r '.properties.scoringUri')
 # </get_endpoint>
 
 # <get_access_token>

@@ -149,7 +149,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 }")
 #</create_endpoint>
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id $TOKEN
 
 # <create_deployment>
@@ -201,7 +201,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"location\": \"$LOCATION\"
 }")
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id $TOKEN
 #</set_endpoint_defaults>
 

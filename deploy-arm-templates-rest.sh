@@ -35,7 +35,7 @@ wait_for_completion () {
     do
         sleep 5
         response=$($1)
-        operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+        operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
     done
 
   while [[ $status != "Succeeded" && $status != "Failed" ]]

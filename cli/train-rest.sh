@@ -24,7 +24,7 @@ wait_for_completion () {
         job=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/jobs/$1?api-version=$API_VERSION" \
             --header "Authorization: Bearer $TOKEN")
         # TODO error handling here
-        job_status=$(echo $job | jq -r '.properties' | jq -r '.status')
+        job_status=$(echo $job | jq -r '.properties.status')
         echo "Current job status: $job_status"
         sleep 5
     done
