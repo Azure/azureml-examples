@@ -745,8 +745,6 @@ function vmss_upgrade_policy_automatic() {
     local LOCAL_RESOURCE_GROUP_NAME=${1:-testrg}
     printf "Update VMSS upgrade policy in resource group %s\n" ${LOCAL_RESOURCE_GROUP_NAME}
     # get list of all scale sets
-    # VM_SCALE_SETS_JSON=$(az vmss list --resource-group ${LOCAL_RESOURCE_GROUP_NAME} -o json)
-    # VM_SCALE_SETS_LIST=$(echo $VM_SCALE_SETS_JSON | jq -r '.[] | .name')
     VM_SCALE_SETS=$(az vmss list --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --query '[].name' --output tsv)
 
     printf "Checking scalesets %s in resource-group %s\n" "${VM_SCALE_SETS}" "${LOCAL_RESOURCE_GROUP_NAME}"
@@ -754,7 +752,6 @@ function vmss_upgrade_policy_automatic() {
     set +e
     for VMSS in ${VM_SCALE_SETS}; do
         VMSS_UPGRADE_POLICY_MODE=$(az vmss show --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --name $VMSS --query upgradePolicy.mode --output tsv)
-        # echo SKU_TEMP $VMSS_PROPERTIES
 
         # az vmss show -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" -o json
         if [[ "$VMSS_UPGRADE_POLICY_MODE" == "Automatic" ]]; then
