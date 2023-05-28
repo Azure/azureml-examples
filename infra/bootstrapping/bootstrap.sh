@@ -50,9 +50,6 @@ else
   echo "---------------------------------------------------------"
 fi
 
-echo_title "Ensuring dependent packages"
-"$SCRIPT_DIR"/sdk_helpers.sh install_packages
-
 echo_title "Installing tools"
 "$SCRIPT_DIR"/sdk_helpers.sh install_tools
 

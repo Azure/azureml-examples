@@ -260,40 +260,6 @@ function IsInstalled {
     sudo dpkg -S "$1" &> /dev/null
 }
 
-function install_packages() {
-    echo_info "------------------------------------------------"
-    echo_info ">>> Updating packages index"
-    echo_info "------------------------------------------------"
-
-    echo_info ">>> Executing: apt-get update"
-    # https://github.com/orgs/community/discussions/47863
-    sudo apt-mark hold grub-efi-amd64-signed
-    sudo apt-get update --fix-missing
-    echo_info ">>> Executing: apt-get upgrade"
-    sudo apt-get upgrade -y
-    echo_info ">>> Executing: apt-get dist-upgrade"
-    sudo apt-get dist-upgrade -y
-
-    echo_info ">>> Installing packages"
-
-    # uuid-runtime      - Required for containers
-    # uuid-runtime      - Required for aks/arc
-    packages_to_install=(
-      uuid-runtime
-    )
-    for package in "${packages_to_install[@]}"; do
-      echo_info "Installing '$package'"
-      if ! IsInstalled "$package"; then
-          sudo apt-get install -y --no-install-recommends "${package}" > /dev/null 2>&1
-      else
-          echo_info "$package is already installed"
-      fi
-    done
-    echo_info ">>> Clean local cache for packages"
-
-    sudo apt-get autoclean && sudo apt-get autoremove > /dev/null 2>&1
-}
-
 function add_extension() {
     echo_info "az extension add -n $1 "
     az extension add -n "$1" -y
