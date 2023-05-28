@@ -276,11 +276,9 @@ function install_packages() {
 
     echo_info ">>> Installing packages"
 
-    # jq                - Required for running filters on a stream of JSON data from az
     # uuid-runtime      - Required for containers
     # uuid-runtime      - Required for aks/arc
     packages_to_install=(
-      jq
       uuid-runtime
       xmlstarlet
     )
