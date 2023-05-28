@@ -3,9 +3,11 @@ type: pipeline
 display_name: 5a_env_public_docker_image
 description: Pipeline job with component using public docker image as environment
 
+settings:
+  default_compute: azureml:serverless
 jobs:
   hello_python_world_job:
     type: command
     component: ./component.yml
-    compute: azureml:cpu-cluster
+    
 

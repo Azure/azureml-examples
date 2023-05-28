@@ -7,7 +7,7 @@ description: Train densenet for image classification
 # <jobs>
 settings:
   default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
   continue_on_step_failure: false
 
 jobs:
@@ -69,8 +69,7 @@ jobs:
 
   train:
     type: command
-    component: ./image_cnn_train/entry.spec.yaml
-    compute: azureml:gpu-cluster
+    component: ./image_cnn_train/entry.spec.yaml    
     inputs:
       train_data: ${{parent.jobs.transform_on_training_image.outputs.output_path}}
       valid_data: ${{parent.jobs.transform_on_evaluation_image.outputs.output_path}}
@@ -88,4 +87,5 @@ jobs:
       process_count_per_instance: 1
     resources:
       instance_count: 2
+      instance_type: Standard_NC6s_v3
 # </jobs>

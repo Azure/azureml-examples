@@ -5,7 +5,9 @@ experiment_name: dpv2-cli-automl-regression-experiment
 # name: dpv2-cli-regression-train-job-01
 description: A regression job using hardware performance dataset
 
-compute: azureml:cpu-cluster
+resources:
+  instance_count: 4
+  instance_type: Standard_DS3_v2
 
 task: regression
 log_verbosity: debug

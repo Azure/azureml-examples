@@ -4,7 +4,7 @@ display_name: hello_pipeline_settings
 
 settings:
   default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
 jobs:
   hello_job:
     command: echo 202204190 & echo "hello"

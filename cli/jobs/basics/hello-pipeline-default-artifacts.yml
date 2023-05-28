@@ -1,16 +1,16 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_default_artifacts
+settings:
+    default_compute: azureml:serverless
 jobs:
   hello_job:
     command: echo "hello" && echo "world" > ./outputs/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
-    compute: azureml:cpu-cluster
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest    
     outputs:
       artifacts:
   world_job:
     command: cat ${{inputs.world_input}}/outputs/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
-    compute: azureml:cpu-cluster
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest    
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.artifacts}}

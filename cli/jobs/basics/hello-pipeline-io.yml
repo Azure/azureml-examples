@@ -1,17 +1,17 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_io
+settings:
+    default_compute: azureml:serverless
 jobs:
   hello_job:
     command: echo "hello" && echo "world" > ${{outputs.world_output}}/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
-    compute: azureml:cpu-cluster
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest    
     outputs:
       world_output:
   world_job:
     command: cat ${{inputs.world_input}}/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
-    compute: azureml:cpu-cluster
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1    
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.world_output}}
  

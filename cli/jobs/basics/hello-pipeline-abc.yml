@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: hello_pipeline_abc
 settings:
-    default_compute: azureml:cpu-cluster
+    default_compute: azureml:serverless
   
 inputs:
   hello_string_top_level_input: "hello world"

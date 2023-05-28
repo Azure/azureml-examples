@@ -5,7 +5,7 @@ display_name: 3b_pipeline_with_data
 description: Pipeline with 3 component jobs with data dependencies
 
 settings:
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
 
 outputs:
   final_pipeline_output:

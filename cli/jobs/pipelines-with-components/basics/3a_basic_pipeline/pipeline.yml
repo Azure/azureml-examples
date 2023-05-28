@@ -6,7 +6,7 @@ description: Basic Pipeline Job with 3 Hello World components
 
 settings:
   default_datestore: azureml:workspaceblobstore
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
 
 jobs:
   component_a:

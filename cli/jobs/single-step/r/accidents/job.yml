@@ -10,7 +10,6 @@ inputs:
 environment:
   build:
     path: docker-context
-compute:  azureml:cpu-cluster
 display_name: r-accidents-example
 experiment_name: r-accidents-example
 description: Train a GLM using R on the accidents dataset.  

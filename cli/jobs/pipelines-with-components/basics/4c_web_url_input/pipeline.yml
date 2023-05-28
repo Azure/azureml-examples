@@ -3,6 +3,10 @@ type: pipeline
 
 display_name: 4c_web_url_input
 description: Example of using a file hosted at a web URL as pipeline input
+
+settings:
+  default_compute: azureml:serverless
+  
 inputs:
   pipeline_sample_input_string: 'Hello_Pipeline_World'
 
@@ -12,8 +16,7 @@ outputs:
 jobs:
   hello_python_world_job:
     type: command
-    component: ./component.yml
-    compute: azureml:cpu-cluster
+    component: ./component.yml    
     inputs:
       sample_input_data: 
         type: uri_file

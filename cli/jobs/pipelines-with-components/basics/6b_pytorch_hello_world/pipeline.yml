@@ -3,13 +3,15 @@ type: pipeline
 display_name: 6b_pytorch_hello_world
 description: Prints the environment variables useful for scripts running in a PyTorch training environment
 
+settings:
+  default_compute: azureml:serverless
 jobs:
   pytorch_job:
     type: command
-    component: ./component.yml
-    compute: azureml:gpu-cluster
+    component: ./component.yml    
     resources:
       instance_count: 2
+      instance_type: Standard_NC6s_v3
     distribution:
       type: pytorch
       process_count_per_instance: 2

@@ -12,7 +12,6 @@ inputs:
   iris_csv: 
     type: uri_file
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-compute: azureml:cpu-cluster
 sampling_algorithm: random
 search_space:
   learning_rate:

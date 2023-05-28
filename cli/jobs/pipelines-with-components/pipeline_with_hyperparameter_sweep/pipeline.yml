@@ -3,7 +3,7 @@ type: pipeline
 display_name: pipeline_with_hyperparameter_sweep
 description: Tune hyperparameters using TF component
 settings:
-    default_compute: azureml:cpu-cluster
+    default_compute: azureml:serverless
 jobs:
   sweep_step:
     type: sweep

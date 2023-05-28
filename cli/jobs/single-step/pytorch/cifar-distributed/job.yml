@@ -12,12 +12,12 @@ inputs:
      type: uri_folder
      path: azureml:cifar-10-example@latest
 environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu@latest
-compute: azureml:gpu-cluster
 distribution:
   type: pytorch 
   process_count_per_instance: 1
 resources:
   instance_count: 2
+  instance_type: Standard_NC6s_v3  
 display_name: pytorch-cifar-distributed-example
 experiment_name: pytorch-cifar-distributed-example
 description: Train a basic convolutional neural network (CNN) with PyTorch on the CIFAR-10 dataset, distributed via PyTorch.

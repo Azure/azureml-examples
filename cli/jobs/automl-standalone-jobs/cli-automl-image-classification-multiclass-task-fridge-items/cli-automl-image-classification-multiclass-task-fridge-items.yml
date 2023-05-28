@@ -5,7 +5,9 @@ type: automl
 experiment_name: dpv2-cli-automl-image-classification-experiment
 description: A multi-class Image classification job using fridge items dataset
 
-compute: azureml:gpu-cluster
+resources:
+  instance_count: 2
+  instance_type: Standard_NC6s_v3
 
 task: image_classification
 log_verbosity: debug

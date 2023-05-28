@@ -8,7 +8,6 @@ inputs:
     type: uri_file 
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu@latest
-compute: azureml:cpu-cluster
 display_name: lightgbm-iris-example
 experiment_name: lightgbm-iris-example
 description: Train a LightGBM model on the Iris dataset.
