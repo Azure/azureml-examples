@@ -489,7 +489,7 @@ connect_arc(){
     get_kubeconfig "$AKS_CLUSTER_NAME"
 
     if
-        [[ $(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" | jq -r .name) == ${ARC_CLUSTER_NAME} ]]
+        [[ $(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" --query name --output tsv) == ${ARC_CLUSTER_NAME} ]]
     then
         echo_info "Cluster: ${ARC_CLUSTER_NAME} is already connected..."
         clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_CLUSTER_NAME}" --query connectivityStatus -o json)
@@ -527,7 +527,7 @@ function setup_compute() {
     fi
 
     if
-        [[ $(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${COMPUTE_NAME}" | jq -r .provisioning_state) == "Succeeded" ]]
+        [[ $(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${COMPUTE_NAME}" --query provisioning_state --output tsv) == "Succeeded" ]]
     then
         echo_info "Cluster is already attached to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}..."
     else
@@ -633,7 +633,7 @@ install_k8s_extension(){
     fi
 
     if
-        [[ $(az k8s-extension show --cluster-type "${CLUSTER_TYPE}" -c "${ARC_CLUSTER_NAME}" -g "${RESOURCE_GROUP_NAME}" --name "${EXTENSION_NAME}" | jq -r .provisioningState) == "Succeeded" ]]
+        [[ $(az k8s-extension show --cluster-type "${CLUSTER_TYPE}" -c "${ARC_CLUSTER_NAME}" -g "${RESOURCE_GROUP_NAME}" --name "${EXTENSION_NAME}" --output tsv --query provisioningState) == "Succeeded" ]]
     then
         echo "Extension:${EXTENSION_NAME} already installed on cluster: ${ARC_CLUSTER_NAME}"
     else
@@ -747,16 +747,17 @@ function vmss_upgrade_policy_automatic() {
     # get list of all scale sets
     # VM_SCALE_SETS_JSON=$(az vmss list --resource-group ${LOCAL_RESOURCE_GROUP_NAME} -o json)
     # VM_SCALE_SETS_LIST=$(echo $VM_SCALE_SETS_JSON | jq -r '.[] | .name')
-    VM_SCALE_SETS=$(az vmss list --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} | jq -r '.[].name')
+    VM_SCALE_SETS=$(az vmss list --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --query '[].name' --output tsv)
 
     printf "Checking scalesets %s in resource-group %s\n" "${VM_SCALE_SETS}" "${LOCAL_RESOURCE_GROUP_NAME}"
     # temporarily disable the flag
     set +e
     for VMSS in ${VM_SCALE_SETS}; do
-        VMSS_PROPERTIES=$(az vmss show --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --name $VMSS)
+        VMSS_UPGRADE_POLICY_MODE=$(az vmss show --subscription "${SUBSCRIPTION_ID}" --resource-group ${LOCAL_RESOURCE_GROUP_NAME} --name $VMSS --query upgradePolicy.mode --output tsv)
         # echo SKU_TEMP $VMSS_PROPERTIES
+
         # az vmss show -g "${LOCAL_RESOURCE_GROUP_NAME}" -n "${VMSS}" -o json
-        if [[ $(echo $VMSS_PROPERTIES | jq -r '.upgradePolicy.mode') == "Automatic" ]]; then
+        if [[ "$VMSS_UPGRADE_POLICY_MODE" == "Automatic" ]]; then
             echo_info "Skipping to update upgradePolicy for VMSS $VMSS in resource-group ${LOCAL_RESOURCE_GROUP_NAME}..."
             continue
         else
@@ -778,7 +779,7 @@ function vmss_upgrade_policy_all_rg() {
     # checking Resource group name to ensure we're in a managed cluster RG
     echo "Number of Resource groups starting with ${RG_PREFIX}:" $(az group list --subscription "${SUBSCRIPTION_ID}" --query "[? starts_with(@.name, '${RG_PREFIX}')] | length(@)")
     # az group list --query "[? starts_with(@.name, '${RG_PREFIX}')].name" -o tsv | xargs -i "$SCRIPT_DIR"/sdk_helpers.sh check_vmss "{}"
-    for LOCAL_RESOURCE_GROUP_NAME in $(az group list --subscription "${SUBSCRIPTION_ID}" --query "[? starts_with(@.name, '${RG_PREFIX}')].name" --output json | jq .[] -r); do
+    for LOCAL_RESOURCE_GROUP_NAME in $(az group list --subscription "${SUBSCRIPTION_ID}" --query "[? starts_with(@.name, '${RG_PREFIX}')].name" --output tsv); do
         # resource_id=$(az resource list --resource-group "${LOCAL_RESOURCE_GROUP_NAME}" --query [].id --output tsv)
         RESOURCE_GROUP_ID=$(az group show --subscription "${SUBSCRIPTION_ID}" --name "${LOCAL_RESOURCE_GROUP_NAME}" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
         echo "Current tags for resource-group ${LOCAL_RESOURCE_GROUP_NAME}"
