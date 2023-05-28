@@ -173,7 +173,7 @@ Azure Machine Learning Python SDK v2 comes with many new features like standalon
 
 ## Contributing
 
-We welcome contributions and suggestions! Please see the [contributing guidelines](../CONTRIBUTING.mdCONTRIBUTING.md) for details.
+We welcome contributions and suggestions! Please see the [contributing guidelines](../CONTRIBUTING.md) for details.
 
 ## Code of Conduct
 

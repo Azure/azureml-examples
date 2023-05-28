@@ -26,7 +26,7 @@ jobs:
     type: command
     component: file:./prep.yml
     inputs:
-      raw_data: #using local data, will crate an anonymous data asset
+      raw_data: # using local data, will create an anonymous data asset
         type: uri_folder
         path: ./data
     outputs:
