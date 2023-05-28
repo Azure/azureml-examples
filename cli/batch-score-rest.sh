@@ -1,9 +1,9 @@
 # <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
+WORKSPACE=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 
-LOCATION=$(az ml workspace show| jq -r '.location')
+LOCATION=$(az ml workspace show --query location -o tsv)
 
 API_VERSION="2022-05-01"
 

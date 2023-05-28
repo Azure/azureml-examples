@@ -1,11 +1,11 @@
 exit 0 # TODO - update script to new API
 
 # <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az group show --query location | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+LOCATION=$(az group show --query location -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
 
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+WORKSPACE=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-02-01-preview"
 COMPUTE_NAME="cpu-cluster"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)

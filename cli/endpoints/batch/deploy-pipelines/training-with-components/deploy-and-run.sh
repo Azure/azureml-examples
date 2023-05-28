@@ -41,7 +41,7 @@ az ml batch-deployment create --endpoint $ENDPOINT_NAME -f deployment-ordinal/de
 #</create_deployment>
 
 #<invoke_deployment_file>
-JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME --f inputs.yml | jq -r ".name")
+JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME --f inputs.yml --query name -o tsv)
 #</invoke_deployment_file>
 
 #<stream_job_logs>
@@ -49,7 +49,7 @@ az ml job stream -n $JOB_NAME
 #</stream_job_logs>
 
 #<get_child_jobs>
-az ml job list --parent-job-name $JOB_NAME | jq -r ".[].name"
+az ml job list --parent-job-name $JOB_NAME --query "[].name" -o tsv
 #</get_child_jobs>
 
 #<download_outputs>
@@ -64,7 +64,7 @@ az ml batch-deployment create --endpoint $ENDPOINT_NAME -f deployment-onehot/dep
 
 #<invoke_nondefault_deployment_file>
 DEPLOYMENT_NAME="uci-classifier-train-onehot"
-JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME -d $DEPLOYMENT_NAME --f inputs.yml | jq -r ".name")
+JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME -d $DEPLOYMENT_NAME --f inputs.yml --query name -o tsv)
 #</invoke_nondefault_deployment_file>
 
 #<stream_nondefault_job_logs>

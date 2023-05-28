@@ -50,7 +50,7 @@ az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NA
 
 echo "Invoking batch endpoint"
 # <start_batch_scoring_job>
-JOB_NAME = $(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/heart-disease-uci/data | jq -r '.name')
+JOB_NAME = $(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/heart-disease-uci/data --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
