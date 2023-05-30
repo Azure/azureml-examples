@@ -33,7 +33,7 @@ az ml batch-deployment create --endpoint $ENDPOINT_NAME -f deployment.yml --set-
 #</create_deployment>
 
 #<invoke_deployment_inline>
-JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME | jq -r ".name")
+JOB_NAME=$(az ml batch-endpoint invoke -n $ENDPOINT_NAME --query name -o tsv)
 #</invoke_deployment_inline>
 
 #<stream_job_logs>
@@ -41,7 +41,7 @@ az ml job stream -n $JOB_NAME
 #</stream_job_logs>
 
 #<run_pipeline_job_deployment>
-JOB_NAME=$(az ml job create -f pipeline-job.yml | jq -r ".name")
+JOB_NAME=$(az ml job create -f pipeline-job.yml --query name -o tsv)
 #</run_pipeline_job_deployment>
 
 #<create_deployment_from_job>

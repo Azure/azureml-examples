@@ -5,10 +5,10 @@ TOKEN=$(az account get-access-token --query accessToken -o tsv)
 #</get_access_token>
 
 # <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az ml workspace show --query location | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+LOCATION=$(az ml workspace show --query location -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
+WORKSPACE=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 #</create_variables>
 
 # <set_endpoint_name>
@@ -115,7 +115,7 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id
 # </get_endpoint>
 
@@ -142,10 +142,10 @@ response=$(curl --location --request GET "https://management.azure.com/subscript
 --header "Content-Type: application/json" \
 --header "Authorization: Bearer $TOKEN")
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id
 
-scoringUri=$(echo $response | jq -r '.properties' | jq -r '.scoringUri')
+scoringUri=$(echo $response | jq -r '.properties.scoringUri')
 # </get_endpoint>
 
 # <get_endpoint_access_token>

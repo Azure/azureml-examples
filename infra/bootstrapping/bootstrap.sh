@@ -50,9 +50,6 @@ else
   echo "---------------------------------------------------------"
 fi
 
-echo_title "Ensuring dependent packages"
-"$SCRIPT_DIR"/sdk_helpers.sh install_packages
-
 echo_title "Installing tools"
 "$SCRIPT_DIR"/sdk_helpers.sh install_tools
 
@@ -61,7 +58,6 @@ echo_title "Installing tools"
 ###################
 
 "$SCRIPT_DIR"/sdk_helpers.sh validate_tool az || exit 1
-"$SCRIPT_DIR"/sdk_helpers.sh validate_tool jq || exit 1
 "$SCRIPT_DIR"/sdk_helpers.sh validate_tool sed || exit 1
 
 #login to azure using your credentials
