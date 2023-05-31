@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/datatransferComponent.schema.json
+name: data_merge_component_cli
+display_name: data_merge
+description: A example data transfer component
+tags:
+  author: azureml-sdk-team
+# version: 1
+type: data_transfer
+task: copy_data
+
+inputs:
+  folder1: 
+    type: uri_folder
+  folder2:
+    type: uri_folder  
+outputs:
+  output_folder:
+    type: uri_folder
+data_copy_mode: fail_if_conflict

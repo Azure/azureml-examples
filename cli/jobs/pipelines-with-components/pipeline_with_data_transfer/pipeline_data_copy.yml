@@ -1,0 +1,37 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: pipeline_with_data_transfer
+description: pipeline job copy data assets
+settings:
+    default_compute: azureml:cpu-cluster
+    force_rerun: true
+
+outputs:
+  output_folder:
+    type: uri_folder
+jobs:
+  hello_step:
+    type: command
+    outputs:
+      hello_output:
+        type: uri_folder
+    command: echo "hello" > ${{outputs.hello_output}}/hello.txt
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+
+  world_step:
+    type: command
+    outputs:
+      world_output:
+        type: uri_folder
+    command: echo "world" > ${{outputs.world_output}}/world.txt
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+  
+  merge_data:
+    type: data_transfer
+    task: copy_data
+    component: ./data_merge.yml
+    inputs:
+      folder1: ${{parent.jobs.hello_step.outputs.hello_output}}
+      folder2: ${{parent.jobs.world_step.outputs.world_output}
+    outputs:
+      output_folder: ${{outputs.output_folder}}
