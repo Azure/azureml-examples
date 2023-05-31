@@ -13,6 +13,10 @@ parser.add_argument("--model_output", type=str, help="Path of output model")
 
 args = parser.parse_args()
 
+# function introduced by additional includes
+from common_src.helper import helper_function
+helper_function()
+
 print("hello training world...")
 
 lines = [

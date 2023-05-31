@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: component_additional_include_cli
+display_name: component_additional_include_cli
+description: A example of component using additional includes
+tags:
+  author: azureml-sdk-team
+type: command
+code: ./component_src
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+additional_includes:
+    - common_src
+command: >-
+  python component.py
