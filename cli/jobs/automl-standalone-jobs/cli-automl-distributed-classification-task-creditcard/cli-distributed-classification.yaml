@@ -14,11 +14,11 @@ primary_metric: accuracy
 target_column_name: "Class"
 
 training_data:
-  path: "./data/training-mltable-folder"
+  path: https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/creditcard-training-mltable
   type: mltable
 
 validation_data:
-  path: "./data/valid-mltable-folder"
+  path: https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/creditcard-validation-mltable
   type: mltable
 
 limits:
