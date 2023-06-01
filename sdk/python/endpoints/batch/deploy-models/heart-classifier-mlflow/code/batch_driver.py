@@ -7,6 +7,7 @@ import mlflow
 import pandas as pd
 import logging
 
+
 def init():
     global model
     global model_input_types
@@ -33,7 +34,9 @@ def init():
             elif len(model.metadata.signature.outputs.input_names()) == 1:
                 model_output_names = ["prediction"]
     else:
-        logging.warn("Model doesn't contain a signature. Input data types won't be enforced.")
+        logging.warn(
+            "Model doesn't contain a signature. Input data types won't be enforced."
+        )
 
 
 def run(mini_batch):
@@ -44,10 +47,10 @@ def run(mini_batch):
             lambda fp: pd.read_csv(fp).assign(filename=os.path.basename(fp)), mini_batch
         )
     )
-    
+
     if model_input_types:
         data = data.astype(model_input_types)
-    
+
     # Predict over the input data, minus the column filename which is not part of the model.
     pred = model.predict(data.drop("filename", axis=1))
 
