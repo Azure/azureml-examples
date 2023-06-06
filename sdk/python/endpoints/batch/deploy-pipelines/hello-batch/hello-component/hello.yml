@@ -3,6 +3,7 @@ name: hello_batch
 display_name: Hello Batch component
 version: 1
 type: pipeline
+is_deterministic: false
 jobs:
   main_job:
     type: command
