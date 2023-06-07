@@ -55,6 +55,7 @@ allowed_list = [
     "Downloading builder script",
     "Downloading extra modules",
     "custom base image or base dockerfile detected",
+    "TqdmWarning: IProgress not found.",
 ]
 
 with open(full_name, "r") as notebook_file:
