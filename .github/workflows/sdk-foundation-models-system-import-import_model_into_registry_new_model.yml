@@ -16,6 +16,7 @@ on:
       - sdk/python/setup.sh
 env:
   MODEL_ID: ai4bharat/indic-bert
+  TASK_NAME: fill-mask
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -62,7 +63,7 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "import_model_into_registry.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb -p MODEL_ID "${{ env.MODEL_ID }}"
+          papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb -p MODEL_ID "${{ env.MODEL_ID }}" -p TASK_NAME "${{ env.TASK_NAME }}"
       working-directory: sdk/python/foundation-models/system/import
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
