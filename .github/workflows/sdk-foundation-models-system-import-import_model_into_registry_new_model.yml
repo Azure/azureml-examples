@@ -15,7 +15,7 @@ on:
       - infra/bootstrapping/**
       - sdk/python/setup.sh
 env:
-  MDOEL_ID: ai4bharat/indic-bert
+  MODEL_ID: ai4bharat/indic-bert
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
