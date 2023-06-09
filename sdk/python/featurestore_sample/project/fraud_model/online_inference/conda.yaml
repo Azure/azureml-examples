@@ -2,8 +2,7 @@ dependencies:
   - python=3.8
   - pip:
       - protobuf==3.19.6
-      - mlflow-skinny
-      - azureml-featurestore[online]@https://featurestoreprp.blob.core.windows.net/test-sdk/azureml_featurestore-latest-py3-none-any.whl
+      - azureml-featurestore[online]@https://featurestoreprp.blob.core.windows.net/test-sdk/azureml_featurestore-0.0.95580778-py3-none-any.whl
       - aiohttp==3.8.4
       - azureml-inference-server-http
       - scikit-learn

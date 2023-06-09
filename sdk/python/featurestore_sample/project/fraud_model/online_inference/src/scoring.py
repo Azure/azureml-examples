@@ -1,21 +1,9 @@
-import argparse
 import os
 import logging
 import json
 import time
-import numpy
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import (
-    confusion_matrix,
-    f1_score,
-    precision_score,
-    recall_score
-)
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 import pickle
-import shutil
 
 import os
 os.environ["AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED"] = "True"
@@ -91,7 +79,6 @@ def run(raw_data):
 
     logging.info("model 1: feature joined")
     
-    #data = numpy.array(data)
     data = df.drop(["accountID"], axis="columns").to_numpy()
     result = model.predict(data)
     logging.info("Request processed")
