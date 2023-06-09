@@ -266,7 +266,7 @@ The client code to fetch data from storage can impact training performance. In p
 
 We recommend that you *avoid* creating your own data loading capability using:
 
-- Python Azure Storage APIs - you will likely hit issues with the Python GIL that will throttle throughput.
+- Python Azure Storage APIs - you'll likely hit issues with the Python GIL that will throttle throughput.
 
 Instead, we recommend that you use the in-built data runtime capability in Azure ML - it is fast and highly efficient for machine learning tasks, key benefits include:
 
