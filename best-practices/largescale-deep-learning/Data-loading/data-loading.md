@@ -267,7 +267,6 @@ The client code to fetch data from storage can impact training performance. In p
 We recommend that you *avoid* creating your own data loading capability using:
 
 - Python Azure Storage APIs - you will likely hit issues with the Python GIL that will throttle throughput.
-- `blobfuse` and `blobfuse2` - better performance is achievable (see below).
 
 Instead, we recommend that you use the in-built data runtime capability in Azure ML - it is fast and highly efficient for machine learning tasks, key benefits include:
 
@@ -278,7 +277,6 @@ Instead, we recommend that you use the in-built data runtime capability in Azure
 - Seamlessly handles authentication to cloud storage.
 - Provides options to mount data (stream) or download all the data (see [Mount vs Download](#mount-vs-download).
 - Seamless integration with [fsspec](https://filesystem-spec.readthedocs.io/en/latest/) - a unified pythonic interface to local, remote and embedded file systems and bytes storage.
-- Faster than `blobfuse` and `blobfuse2` - see [Common scenarios and best mounting settings](#common-scenarios-and-best-mount-settings) for more details.
 
 
 Also, we recommend you use Azure ML datastores because authentication to data is automatically taken care of. You can choose between two different authentication methods:
@@ -476,11 +474,9 @@ For some common scenarios, we show some of the optimal settings for the above en
 >
 > All tests are run on `STANDARD_D15_V2` AzureML compute. West Europe region. Unless specified otherwise data re in standard azure blob storage account in the same region.
 >
->Latest azureml-dataprep (`azureml-dataprep==4.7.1 azureml-dataprep-rslex==2.14.0`) and corresponding CR / data-cap version is used.
+> Latest azureml-dataprep (`azureml-dataprep==4.7.1 azureml-dataprep-rslex==2.14.0`) and corresponding CR / data-cap version is used.
 >
 > All perf test numbers are average of at least 5 attempts with only one test using storage account at a time.
-> 
-> For blobfuse tests blobfuse version 1.4.5 is used. `file-cache-timeout-in-seconds` set to 10 days (864000 s).
 
 ### Reading large file sequentially one time (processing lines in csv file)
 
@@ -498,13 +494,13 @@ environment_variables:
   DATASET_MOUNT_READ_BUFFER_BLOCK_COUNT: 80 
 ```
 
-Here is a table that shows the time take to read different file sizes and how the Azure ML mount capability compares with blobfuse:
+Here is a table that shows the time take to read different file sizes:
 
-| File Size | Azure ML Mount (secs) | blobfuse (secs) |  blobfuse2 (secs) |
-|-----------|-----------------------|-----------------|-------------------|
-| 1GB       | 3.37                  | 4.53            | 4.78 |
-| 10GB       | 33.27                  | 43.66            | 46.34 |
-| 100GB       | 322.35                  | 407.19            | 462.18 |
+| File Size | Azure ML Mount (secs) | 
+|-----------|-----------------------|
+| 1GB       | 3.37                  |
+| 10GB       | 33.27                  |
+| 100GB       | 322.35                  | 
 
 ### Reading large file one time from multiple threads (processing partitioned csv file in multiple threads)
 
@@ -517,13 +513,13 @@ environment_variables:
   DATASET_MOUNT_MEMORY_CACHE_SIZE: 0 # disabling in-memory caching
 ```
 
-Here is a table that shows the time take to read different file sizes and how the Azure ML mount capability compares with blobfuse:
+Here is a table that shows the time take to read different file sizes:
 
-| File Size | Azure ML Mount (secs) | blobfuse (secs) |  blobfuse2 (secs) |
-|-----------|-----------------------|-----------------|-------------------|
-| 1GB       | 1.73                  | 2.93            |  |
-| 10GB       | 14.11                  | 23.25            |  |
-| 100GB       | 64.99                  | 205.87            | 234.38 |
+| File Size | Azure ML Mount (secs) |
+|-----------|-----------------------|
+| 1GB       | 1.73                  |
+| 10GB       | 14.11                  | 
+| 100GB       | 64.99                  |
 
 ### Reading millions of small files (images) from multiple threads one time (single epoch training on images)
 
@@ -536,11 +532,11 @@ environment_variables:
   DATASET_MOUNT_MEMORY_CACHE_SIZE: 0 # disabling in-memory caching
 ```
 
-Here is a table that shows the time take to read different file sizes and how the Azure ML mount capability compares with blobfuse:
+Here is a table that shows the time take to read different file sizes:
 
-| File Size | Azure ML Mount (secs) | blobfuse (secs) |  
-|-----------|-----------------------|-----------------|
-| 100GB in 25kb files (~4M files)       | 6,263.13                  | 23,521.14            | 
+| File Size | Azure ML Mount (secs) |  
+|-----------|-----------------------|
+| 100GB in 25kb files (~4M files)       | 6,263.13                  | 
 
 ### Reading millions of small files (images) from multiple threads multiple times (multiple epochs training on images)
 
@@ -557,19 +553,17 @@ environment_variables:
   DATASET_MOUNT_BLOCK_BASED_CACHE_ENABLED: true # enable block-based caching
 ```
 
-Here is a table that shows the time take to read different file sizes and how the Azure ML mount capability compares with blobfuse:
+Here is a table that shows the time take to read:
 
 |       | Listing | First Epoch | Last Epoch | Total | Avg per epoch |
 |-------|-------|-------|-------|-------|-------|
 | Azure ML Mount (secs) | 62.94 | 47.60 |9.92 |209.15 | 20.91|
-| blobfuse | 61.94 | 628.22 |48.21 |2368.39 | 236.84|
 
 ### Reading large file with random seeks (like serving file database from mounted folder)
 Test description:
 
 - Generate list of 10000 chunks each from 25 KB to 25 MB length from a random location.
 - Read each chunk once sequentially from a file.
-- List of chunks is the same for rslex and blobfuse test
 
 Include the following mount settings in the `environment_variables` section of your Azure ML job:
 
@@ -578,8 +572,8 @@ environment_variables:
   DATASET_MOUNT_BLOCK_BASED_CACHE_ENABLED: false # disable block-based caching
 ```
 
-| File Size | Azure ML Mount (secs) | blobfuse (secs) | 
-|-----------|-----------------------|-----------------|
-| 1GB       | 25.00                  | 25.63            | 
-| 10GB       | 48.13                  | 54.07            | 
-| 100GB       | 169.31                  | 263.68            | 
+| File Size | Azure ML Mount (secs) | 
+|-----------|-----------------------|
+| 1GB       | 25.00                  | 
+| 10GB       | 48.13                  |
+| 100GB       | 169.31                  |
