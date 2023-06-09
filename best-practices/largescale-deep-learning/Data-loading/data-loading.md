@@ -474,7 +474,7 @@ For some common scenarios, we show some of the optimal settings for the above en
 >
 > All tests are run on `STANDARD_D15_V2` AzureML compute. West Europe region. Unless specified otherwise data re in standard azure blob storage account in the same region.
 >
-> Latest azureml-dataprep (`azureml-dataprep==4.7.1 azureml-dataprep-rslex==2.14.0`) and corresponding CR / data-cap version is used.
+> Latest azureml-dataprep (`azureml-dataprep==4.7.1 azureml-dataprep-rslex==2.14.0`).
 >
 > All perf test numbers are average of at least 5 attempts with only one test using storage account at a time.
 
