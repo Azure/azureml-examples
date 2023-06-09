@@ -7,7 +7,7 @@ name: cli-jobs-pipelines-nyc-taxi-pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "4 6/12 * * *"
+    - cron: "0 0/4 * * *"
   pull_request:
     branches:
       - main
