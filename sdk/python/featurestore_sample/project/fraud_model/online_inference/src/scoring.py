@@ -22,7 +22,8 @@ os.environ["AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED"] = "True"
 
 from azure.identity import ManagedIdentityCredential
 from azureml.featurestore import FeatureStoreClient
-
+from azureml.featurestore import init_online_lookup
+from azureml.featurestore import get_online_features
 
 
 print("here")
@@ -68,7 +69,7 @@ def init():
     features = featurestore.resolve_feature_retrieval_spec(spec_path)
 
 
-    FeatureStoreClient.init_online_lookup(features, credential)
+    init_online_lookup(features, credential)
 
     time.sleep(20)
 
@@ -84,7 +85,7 @@ def run(raw_data):
     data = json.loads(raw_data)["data"]
 
     obs = pd.DataFrame(data, index=[0])
-    df=FeatureStoreClient.get_online_features(features, obs)
+    df=get_online_features(features, obs)
     print("feature retrieved")
     print(df)
 
