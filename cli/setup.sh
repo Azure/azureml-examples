@@ -3,11 +3,11 @@
 # az extension remove -n ml
 
 # <az_ml_install>
-az extension add -n ml -y
+# az extension add -n ml -y
 # </az_ml_install>
 
 # Use a daily build
-# az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.9.0-py3-none-any.whl --yes
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.18.0-py3-none-any.whl --yes
 # remove ml extension if it is installed
 # if az extension show -n ml &>/dev/null; then
 #     echo -n 'Removing ml extension...'
