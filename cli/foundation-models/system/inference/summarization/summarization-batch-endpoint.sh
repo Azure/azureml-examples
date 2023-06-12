@@ -1,12 +1,11 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-online-sdk-summarization
-# the sample scoring file available in the same folder as the above notebook
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-summarization
 
 # script inputs
 registry_name="azureml"
-subscription_id="a7772904-6f89-406e-a2d2-e3aef319fa70"
-resource_group_name="sumadhva-centralus-rg"
-workspace_name="sumadhva-centralus-ws"
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="sshleifer-distilbart-cnn-12-6"
@@ -24,7 +23,7 @@ endpoint_name="summarization-$version"
 job_name="summarization-job-$version"
 
 # todo: fetch compute_sku from the min_inference_sku tag of the model
-compute_sku="Standard_DS4_v2"
+compute_sku="Standard_DS5_v2"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \

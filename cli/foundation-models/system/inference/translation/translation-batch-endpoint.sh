@@ -1,15 +1,14 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-online-sdk-fill-mask
-# the sample scoring file available in the same folder as the above notebook
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-translation
 
 # script inputs
 registry_name="azureml"
-subscription_id="a7772904-6f89-406e-a2d2-e3aef319fa70"
-resource_group_name="sumadhva-centralus-rg"
-workspace_name="sumadhva-centralus-ws"
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="bert-base-uncased"
+model_name="t5-small"
 
 # Validate the existence of the model in the registry and get the latest version
 model_list=$(az ml model list --name ${model_name} --registry-name ${registry_name} 2>&1)
@@ -20,8 +19,8 @@ version_temp=${model_list#*\"version\": \"}
 model_version=${version_temp%%\"*}
 
 version=$(date +%s)
-endpoint_name="fill-mask-$version"
-job_name="fill-mask-job-$version"
+endpoint_name="translation-$version"
+job_name="translation-job-$version"
 
 # todo: fetch compute_sku from the min_inference_sku tag of the model
 compute_sku="Standard_DS3_v2"
@@ -46,8 +45,8 @@ then
 fi
 
 # Prepare the input data for the batch endpoint
-inputs_dir="./batch/inputs"
-python prepare-batch-dataset.py --model_name $model_name || {
+inputs_dir="./input"
+wget https://foundationmodelsamples.blob.core.windows.net/batch-inference-datasets/wmt16-de-en-dataset/batch/batch_input.csv -P $inputs_dir || {
     echo "prepare batch inputs failed"; exit 1;
 }
 
