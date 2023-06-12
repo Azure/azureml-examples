@@ -28,7 +28,9 @@ testdata = datasets.load_dataset("bookcorpus", split="train", streaming=True)
 test_df = pd.DataFrame(data=testdata.take(100))
 
 # Get the right mask token from huggingface
-with urllib.request.urlopen(f"https://huggingface.co/api/models/{args.model_name}") as url:
+with urllib.request.urlopen(
+    f"https://huggingface.co/api/models/{args.model_name}"
+) as url:
     data = json.load(url)
     mask_token = data["mask_token"]
 
