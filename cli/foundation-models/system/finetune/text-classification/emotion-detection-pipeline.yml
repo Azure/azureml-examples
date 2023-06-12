@@ -49,6 +49,7 @@ outputs:
 
 settings:
   force_rerun: true
+  continue_on_step_failure: false
 
 jobs:
   text_classification_pipeline:

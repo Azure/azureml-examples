@@ -5,6 +5,9 @@ experiment_name: question-answering-model-evaluation-subgraph
 
 compute: gpu-cluster-big
 
+settings:
+  continue_on_step_failure: false
+
 jobs:
   prepare_data_job:
     type: command
