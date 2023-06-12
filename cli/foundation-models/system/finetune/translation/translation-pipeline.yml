@@ -51,6 +51,7 @@ outputs:
 
 settings:
   force_rerun: true
+  continue_on_step_failure: false
 
 jobs:
   translation_pipeline:
