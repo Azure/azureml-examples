@@ -32,6 +32,6 @@ jobs:
     component: ./data_merge.yml
     inputs:
       folder1: ${{parent.jobs.hello_step.outputs.hello_output}}
-      folder2: ${{parent.jobs.world_step.outputs.world_output}
+      folder2: ${{parent.jobs.world_step.outputs.world_output}}
     outputs:
-      output_folder: ${{outputs.output_folder}}
+      output_folder: ${{parent.outputs.output_folder}}

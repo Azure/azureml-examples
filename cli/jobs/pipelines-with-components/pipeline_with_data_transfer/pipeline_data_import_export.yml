@@ -3,13 +3,13 @@ type: pipeline
 display_name: pipeline_with_import_export_data
 description: pipeline job import export data to azure sql
 settings:
-    default_compute: azureml:cpu-cluster
+    default_compute: serverless
     force_rerun: true
 
 inputs:
   data_file:
-    type: mltable
-    path: ./local-mltable
+    type: uri_file
+    path: titanic.csv
   connection_target_azuresql: azureml:my_azuresql_connection
   query_source: SELECT * FROM sample_data
 jobs:
