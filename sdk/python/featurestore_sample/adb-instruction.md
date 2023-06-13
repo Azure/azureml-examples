@@ -11,7 +11,10 @@ You can use the managed feature store capabilities from Azure Databricks! To run
    - Set `sdk/python/featurestore_sample` in the `Cone patterns` textbox
    - Click on `Pull` from the top right button
 
-1. Create a compute cluster, and install packages listed in `sdk/python/featurestore_sample/project/env/conda.yml`:
+1. Create a compute cluster and enable credential pass through
+   - Create a compute cluster
+   - Goto `Compute` -> select the compute -> select the `configuration` tab -> under `Advanced options` -> check `Enable credential passthrough for user-level data access`
+1. Install packages in the compute cluster listed in `sdk/python/featurestore_sample/project/env/conda.yml`:
    - Goto `Compute` -> select the compute -> click on `Libraries` -> `Install new` -> in `Library Source`, select `PyPI`.
    - For each library in the conda.yml, enter the `package` name and click `install`
 
