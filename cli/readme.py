@@ -9,7 +9,7 @@ import string
 import yaml
 
 # define constants
-EXCLUDED_JOBS = ["java", "spark"]
+EXCLUDED_JOBS = ["java"]
 # TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
 EXCLUDED_ENDPOINTS = [
     "1-uai-create-endpoint",
@@ -33,9 +33,6 @@ EXCLUDED_RESOURCES = [
     "instance",
     "connections",
     "compute/cluster-user-identity",
-    "compute/attached-spark",
-    "compute/attached-spark-system-identity",
-    "compute/attached-spark-user-identity",
     "registry",
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
@@ -77,6 +74,7 @@ def main(args):
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/spark/*.yml", recursive=False))
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/cli-automl-*.yml", recursive=True)
     )
