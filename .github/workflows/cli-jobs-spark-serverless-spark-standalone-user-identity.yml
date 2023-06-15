@@ -45,6 +45,7 @@ jobs:
     - name: upload data
       run: |
           bash ../../upload-data-to-blob.sh
+      working-directory: cli
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
