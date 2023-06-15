@@ -15,7 +15,6 @@ on:
       - cli/jobs/spark/**
       - infra/bootstrapping/**
       - .github/workflows/cli-jobs-spark-serverless-spark-standalone-default-identity.yml
-      - cli/upload-data-to-blob.sh
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -45,7 +44,7 @@ jobs:
       continue-on-error: true
     - name: upload data
       run: |
-        bash upload-data-to-blob.sh
+          bash ../../upload-data-to-blob.sh
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
