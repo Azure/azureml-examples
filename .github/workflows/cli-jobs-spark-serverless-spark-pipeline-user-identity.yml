@@ -15,6 +15,7 @@ on:
       - cli/jobs/spark/**
       - infra/bootstrapping/**
       - .github/workflows/cli-jobs-spark-serverless-spark-pipeline-user-identity.yml
+      - cli/jobs/spark/data/titanic.csv
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -44,7 +45,7 @@ jobs:
       continue-on-error: true
     - name: upload data
       run: |
-          bash ../../upload-data-to-blob.sh
+          bash -x ../../upload-data-to-blob.sh titanic.csv
       working-directory: cli
     - name: run job
       run: |
