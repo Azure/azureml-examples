@@ -13,20 +13,6 @@ from matplotlib import pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-GRAIN = "time_series_id"
-BACKTEST_ITER = "backtest_iteration"
-ACTUALS = "actual_level"
-PREDICTIONS = "predicted_level"
-ALL_GRAINS = "all_sets"
-
-FORECASTS_FILE = "forecast.csv"
-SCORES_FILE = "scores.csv"
-SCORES_FILE_GRAIN = "scores_per_grain.csv"
-PLOTS_FILE = "plots_fcst_vs_actual.pdf"
-PLOTS_FILE_GRAIN = "plots_fcst_vs_actual_per_grain.pdf"
-RE_INVALID_SYMBOLS = re.compile("[: ]")
-
-
 def _format_grain_name(grain: Union[str, Tuple[str], List[str]]) -> str:
     """
     Convert grain name to string.
