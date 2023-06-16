@@ -51,8 +51,6 @@ jobs:
          chmod +x ./v1/scripts/update-azure-extensions.sh
          ./v1/scripts/update-azure-extensions.sh
       shell: bash
-    - name: show available accounts
-      run: az account list -o table
     - name: attach to workspace
       run: az ml folder attach -w main -g azureml-examples
     - name: run auto-ml-forecasting-orange-juice-sales.ipynb
