@@ -45,7 +45,7 @@ jobs:
       continue-on-error: true
     - name: upload data
       run: |
-          bash -x upload-data-to-blob.sh jobs/spark/data/titanic.csv
+          bash -x upload-data-to-blob.sh jobs/spark/
       working-directory: cli
     - name: run job
       run: |

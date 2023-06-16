@@ -15,5 +15,5 @@ export AZURE_STORAGE_ACCOUNT=$(echo $response | jq -r '.value[0].properties.acco
 # </get_storage_details>
 
 # <upload_data>
-az storage blob upload -c $AZUREML_DEFAULT_CONTAINER -n paths/data/titanic.csv -f $1 --account-name $AZURE_STORAGE_ACCOUNT --overwrite true
+az storage blob upload-batch -s $1 --pattern *.csv -d $AZUREML_DEFAULT_CONTAINER --account-name $AZURE_STORAGE_ACCOUNT --overwrite true
 # </upload_data>
