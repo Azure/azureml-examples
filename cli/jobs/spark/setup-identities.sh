@@ -14,5 +14,5 @@ az identity create --name $AML_USER_MANAGED_ID --resource-group $RESOURCE_GROUP 
 #</create_uai>
 
 #<assign_uai_to_workspace>
-az ml workspace update --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --name <AML_WORKSPACE_NAME> --file user-assigned-identity.yml
+az ml workspace update --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $AML_WORKSPACE_NAME --file user-assigned-identity.yml
 #</assign_uai_to_workspace>
