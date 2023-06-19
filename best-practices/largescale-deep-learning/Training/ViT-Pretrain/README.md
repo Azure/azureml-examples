@@ -28,13 +28,13 @@ We used machines with [V100](https://learn.microsoft.com/en-us/azure/virtual-mac
 
 ### **Code**
 
-All of the code in our experiments uses the PyTorch Lightning framework and can be found in the ``src`` folder of this directory.
+All of the code in our experiments uses the PyTorch Lightning framework and can be found in the ``src`` subdirectory of this directory.
 
 ### **Job Submission**
 
 The code assumes that the workspace where the job runs contains a datastore named `datasets` with a blob named `imagenet`. The folders under it must be readable by PyTorch's `ImageFolder` class. For more details, please see the [launcher.py](launcher.py) and [run_image_classification.py](src/run_image_classification.py) files.
 
-To train a ViTB model on ImageNet-1k, submit the following command from within this directory:
+To train a ViTB model on ImageNet-1k, submit the following command from within the ``src`` subdirectory of this directory:
 ```
 python launcher.py
 ```

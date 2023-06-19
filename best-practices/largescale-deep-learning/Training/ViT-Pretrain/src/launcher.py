@@ -17,8 +17,8 @@ from azure.identity import DefaultAzureCredential
 
 
 BASE_IMAGE = "mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest"
-CONDA_FILE_NAME = "./dependencies/conda.yml"
-CODE_DIRECTORY_NAME = "./src/"
+CONDA_FILE_NAME = "./conda.yml"
+CODE_DIRECTORY_NAME = "./"
 COMMAND = (
     "python run_image_classification.py --dataset_directory_name ${{inputs.data}} "
     "--num_epochs ${{inputs.num_epochs}} --batch_size ${{inputs.batch_size}} --num_workers ${{inputs.num_workers}} "
