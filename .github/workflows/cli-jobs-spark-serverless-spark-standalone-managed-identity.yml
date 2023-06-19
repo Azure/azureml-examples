@@ -47,6 +47,10 @@ jobs:
       run: |
           bash -x upload-data-to-blob.sh jobs/spark/
       working-directory: cli
+    -name: setup identities
+      run: |
+          bash -x setup-identities.sh
+      working-directory: cli/jobs/spark
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
