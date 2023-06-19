@@ -7,12 +7,17 @@ API_VERSION="2022-05-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 
 AML_USER_MANAGED_ID = "${RESOURCE_GROUP}-uai"
+AML_RESOURCE_ID = "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$AML_USER_MANAGED_ID"
 #</create_variables>
 
 #<create_uai>
 az identity create --name $AML_USER_MANAGED_ID --resource-group $RESOURCE_GROUP --location $LOCATION
 #</create_uai>
 
+TEMP_UAI_FILE = "temp-user-assigned-identity.yml"
+cp user-assigned-identity.yml $TEMP_UAI_FILE
+sed -i "s/{{AML_RESOURCE_ID}}/$AML_RESOURCE_ID/g;" $TEMP_UAI_FILE
+
 #<assign_uai_to_workspace>
-az ml workspace update --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $AML_WORKSPACE_NAME --file user-assigned-identity.yml
+az ml workspace update --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $AML_WORKSPACE_NAME --file $TEMP_UAI_FILE
 #</assign_uai_to_workspace>
