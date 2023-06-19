@@ -4,22 +4,39 @@ import json
 import glob
 import argparse
 
+from pathlib import Path
+import ntpath
+
+
+def _get_paths(paths_list):
+    """
+    Convert the path list to unix format.
+
+    :param paths_list: The input path list.
+    :returns: The same list with unix-like paths.
+    """
+    paths_list.sort()
+    if ntpath.sep == os.path.sep:
+        return [pth.replace(ntpath.sep, "/") for pth in paths_list]
+    return paths_list
+
+
 # define functions
 def main(args):
     # get list of tutorials
-    tutorials = sorted(glob.glob("tutorials/*", recursive=False))
+    tutorials = _get_paths(glob.glob("tutorials/*", recursive=False))
 
     # get list of notebooks
-    notebooks = sorted(glob.glob("notebooks/**/*.ipynb", recursive=True))
+    notebooks = _get_paths(glob.glob("notebooks/**/*.ipynb", recursive=True))
 
     # get list of workflows
-    workflows = sorted(glob.glob("workflows/**/*job*.py", recursive=True))
+    workflows = _get_paths(glob.glob("workflows/**/*job*.py", recursive=True))
 
     # get a list of ALL notebooks, including tutorials and experimental
-    all_notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
+    all_notebooks = _get_paths(glob.glob("**/*.ipynb", recursive=True))
 
     # get list of experimental tutorials
-    experimental = sorted(glob.glob("experimental/*", recursive=False))
+    experimental = _get_paths(glob.glob("experimental/*", recursive=False))
 
     # make all notebooks consistent
     modify_notebooks(all_notebooks)
@@ -48,6 +65,21 @@ def main(args):
             exit(2)
 
 
+def _split_workflow_path(workflow):
+    """
+    Split the path to the file and return the tuple with scenario, tool, project and name.
+
+    :param workflow: path to the file
+    :return: the tuple with scenario, tool, project and name
+    """
+    path_parts = Path(workflow).parts
+    scenario = path_parts[1]
+    tool = path_parts[2]
+    project = path_parts[3]
+    name, _ = os.path.splitext(path_parts[4])
+    return scenario, tool, project, name
+
+
 def write_readme(tutorials, notebooks, workflows, experimental):
     # read in prefix.md and suffix.md
     with open("prefix.md", "r") as f:
@@ -62,27 +94,37 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     )
     train_table = "\n**Train** ([workflows/train](workflows/train))\n\npath|status|description\n-|-|-\n"
     deploy_table = "\n**Deploy** ([workflows/deploy](workflows/deploy))\n\npath|status|description\n-|-|-\n"
-    experimental_table = "\n**Experimental tutorials** ([experimental](experimental))\n\npath|status|notebooks|description|why experimental?\n-|-|-|-|-\n"
+    experimental_table = (
+        "\n**Experimental tutorials** ([experimental](experimental))\n"
+        "\npath|status|notebooks|description|why experimental?\n-|-|-|-|-\n"
+    )
 
     # process tutorials
     for tutorial in tutorials + experimental:
         # get list of notebooks
         nbs = sorted([nb for nb in glob.glob(f"{tutorial}/**/*.ipynb", recursive=True)])
-        notebook_names = [nb.split("/")[-1].replace(".ipynb", "") for nb in nbs]
-        nbs = [f"[{nb.split('/')[-1]}]({nb})" for nb in nbs]
+        notebook_names = [os.path.splitext(os.path.split(nb)[-1])[0] for nb in nbs]
+        nbs = [f"[{os.path.split(nb)[-1]}]({nb})" for nb in nbs]
         nbs = "<br>".join(nbs)
 
         # get tutorial name
-        name = tutorial.split("/")[-1]
+        name = os.path.split(tutorial)[-1]
 
         # build entries for tutorial table
         if os.path.exists(f"../../.github/workflows/python-sdk-tutorial-{name}.yml"):
             # we can have a single GitHub workflow for handling all notebooks within this tutorial folder
-            status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
+            status = (
+                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-tutorial-"
+                f"{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples"
+                f"/actions/workflows/python-sdk-tutorial-{name}.yml)"
+            )
         else:
             # or, we could have dedicated workflows for each individual notebook contained within this tutorial folder
             statuses = [
-                f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
+                (
+                    f"[![{name}](https://github.com/Azure/azureml-examples/workflows/{name}/badge.svg?branch=main)]"
+                    f"(https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-tutorial-{name}.yml)"
+                )
                 for name in notebook_names
             ]
             status = "<br>".join(statuses)
@@ -94,7 +136,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
                     if "description: " in str(line):
                         description = line.split(": ")[-1].strip()
                         break
-        except:
+        except BaseException:
             pass
 
         # additional logic for experimental tutorials
@@ -107,7 +149,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
                             reason = line.split(": ")[-1].strip()
                             break
 
-            except:
+            except BaseException:
                 pass
             # add row to experimental tutorial table
             row = f"[{name}]({tutorial})|{status}|{nbs}|{description}|{reason}\n"
@@ -120,14 +162,18 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     # process notebooks
     for notebook in notebooks:
         # get notebook name
-        name = notebook.split("/")[-1].replace(".ipynb", "")
+        name, _ = os.path.splitext(os.path.split(notebook)[-1])
 
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
 
         # build entries for notebook table
-        status = f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-notebook-{name}.yml)"
+        status = (
+            f"[![{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-notebook-"
+            f"{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/"
+            f"actions/workflows/python-sdk-notebook-{name}.yml)"
+        )
         description = "*no description*"
         try:
             if "description: " in str(data["cells"][0]["source"]):
@@ -137,7 +183,7 @@ def write_readme(tutorials, notebooks, workflows, experimental):
                     .replace("']", "")
                     .strip()
                 )
-        except:
+        except BaseException:
             pass
 
         # add row to notebook table
@@ -147,21 +193,22 @@ def write_readme(tutorials, notebooks, workflows, experimental):
     # process workflows
     for workflow in workflows:
         # get the workflow scenario, tool, project, and name
-        scenario = workflow.split("/")[1]
-        tool = workflow.split("/")[2]
-        project = workflow.split("/")[3]
-        name = workflow.split("/")[4].replace(".py", "")
+        scenario, tool, project, name = _split_workflow_path(workflow)
 
         # read in workflow
         with open(workflow, "r") as f:
             data = f.read()
 
         # build entires for workflow tables
-        status = f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-{scenario}-{tool}-{project}-{name}/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml)"
+        status = (
+            f"[![{scenario}-{tool}-{project}-{name}](https://github.com/Azure/azureml-examples/workflows/python-sdk-"
+            f"{scenario}-{tool}-{project}-{name}/badge.svg?branch=main)](https://github.com/Azure/"
+            f"azureml-examples/actions/workflows/python-sdk-{scenario}-{tool}-{project}-{name}.yml)"
+        )
         description = "*no description*"
         try:
             description = data.split("\n")[0].split(": ")[-1].strip()
-        except:
+        except BaseException:
             pass
 
         # add row to workflow table
@@ -192,7 +239,8 @@ def write_workflows(notebooks, workflows):
     # process notebooks
     for notebook in notebooks:
         # get notebook name
-        name = notebook.split("/")[-1].replace(".ipynb", "")
+        nb_path = Path(notebook)
+        name, _ = os.path.splitext(nb_path.parts[-1])
 
         # write workflow file
         write_notebook_workflow(notebook, name)
@@ -200,10 +248,7 @@ def write_workflows(notebooks, workflows):
     # process workflows
     for workflow in workflows:
         # get the workflow scenario, tool, project, and name
-        scenario = workflow.split("/")[1]
-        tool = workflow.split("/")[2]
-        project = workflow.split("/")[3]
-        name = workflow.split("/")[4].replace(".py", "")
+        scenario, tool, project, name = _split_workflow_path(workflow)
 
         # write workflow file
         write_python_workflow(workflow, scenario, tool, project, name)
@@ -230,7 +275,7 @@ def modify_notebooks(notebooks):
     # for each notebooks
     for notebook in notebooks:
         # read in notebook
-        with open(notebook, "r") as f:
+        with open(notebook, "r", encoding="utf8") as f:
             data = json.load(f)
 
         # update metadata
@@ -240,7 +285,7 @@ def modify_notebooks(notebooks):
             data["metadata"]["kernelspec"] = kernelspec3_8
 
         # write notebook
-        with open(notebook, "w") as f:
+        with open(notebook, "w", encoding="utf8") as f:
             json.dump(data, f, indent=1)
 
 
@@ -273,7 +318,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: Run Install packages
       run: |
@@ -322,7 +367,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: Run Install packages
       run: |
@@ -355,13 +400,6 @@ jobs:
 
 # run functions
 if __name__ == "__main__":
-    # issue #146
-    if "posix" not in os.name:
-        print(
-            "windows is not supported, see issue #146 (https://github.com/Azure/azureml-examples/issues/146)"
-        )
-        exit(1)
-
     # setup argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--check-readme", type=bool, default=False)
