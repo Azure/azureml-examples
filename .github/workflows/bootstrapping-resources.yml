@@ -135,6 +135,7 @@ jobs:
         import sys
         from azureml.core.workspace import Workspace
         from azureml.core import Dataset
+        from azureml.data.datapath import DataPath
         from azureml.core.authentication import AzureCliAuthentication
         cli_auth = AzureCliAuthentication()
         ws = Workspace.get(subscription_id=sys.argv[1],
@@ -142,6 +143,9 @@ jobs:
                       name=sys.argv[3],
                       auth=cli_auth)
         datastore = ws.datastores["workspaceblobstore"]
+        Dataset.File.upload_directory(src_dir='example-data',
+                                      target=DataPath(datastore, "example-data")
+                                     )
         dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
         dataset.register(ws, "sampledata")
         ' "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME"
