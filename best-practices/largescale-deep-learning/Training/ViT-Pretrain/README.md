@@ -57,7 +57,7 @@ We trained ViTB on ImageNet-1k in a few hardware configurations with varying num
 | 8 | 4 | 32 | no | 1685.7 |
 | 8 | 4 | 32 | yes | 2979.5 |
 
-Plotting the training speed as a function of the number of GPUs, it becomes clear that InfiniBand provides almost linear scaling.
+Plotting the training speed as a function of the number of GPUs, it becomes clear that InfiniBand provides almost linear scaling. Note that Infiniband is designed to speed up multi-node training only, but the table above includes a 1 node, 4 GPU, Infiniband enabled setting for completeness.
 
 <center><img src="scaling.png" alt="Scaling" width="890" height="480"/></center>
 
