@@ -23,7 +23,7 @@ az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_
 az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.2 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
 
 TEMP_COMPUTE_FILE="temp-compute-setup.yml"
-cp $1 $TEMP_UAI_FILE
+cp $1 $TEMP_COMPUTE_FILE
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 		s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
 		s/<SYNAPSE_WORKSPACE_NAME>/$SYNAPSE_WORKSPACE_NAME/g;
@@ -32,19 +32,3 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 
 az ml compute attach --file $TEMP_COMPUTE_FILE --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 #</create_attached_resources>
-
-
-
-
-
-
-
-TEMP_UAI_FILE="temp-user-assigned-identity.yml"
-cp user-assigned-identity.yml $TEMP_UAI_FILE
-sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
-		s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
-		s/<AML_USER_MANAGED_ID>/$AML_USER_MANAGED_ID/g;" $TEMP_UAI_FILE
-
-#<assign_uai_to_workspace>
-az ml workspace update --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --name $AML_WORKSPACE_NAME --file $TEMP_UAI_FILE
-#</assign_uai_to_workspace>
