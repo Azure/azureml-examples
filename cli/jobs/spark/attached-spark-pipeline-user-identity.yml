@@ -7,7 +7,7 @@ description: Spark component for Titanic data in Pipeline
 jobs:
   spark_job:
     type: spark
-    component: ./spark-job-component.yaml
+    component: ./spark-job-component.yml
     inputs:
       titanic_data: 
         type: uri_file

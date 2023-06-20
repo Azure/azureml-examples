@@ -54,10 +54,10 @@ jobs:
       working-directory: cli/jobs/spark
       continue-on-error: true
     - name: setup attached spark
-      working-directory: cli/jobs/spark
+      working-directory: cli
       continue-on-error: true
       run: |
-          bash -x setup-attached-resources.sh attached-spark-system-identity.yml
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-system-identity.yml
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
