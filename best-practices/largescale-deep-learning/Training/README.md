@@ -338,8 +338,10 @@ Nebula Checkpointing improves on standard model checkpointing by saving models 1
   shm_size: 3100m
   ```
 ## <a name='Examples'></a>**Examples**
-- ### **Pretraining a language model**
-  Pretraining a language model is typically done in the self-supervised learning paradigm by training on a large corpus of unlabeled text. Commonly, the self-supervision task is to predict some parts of the text from other parts (the MLM framework). Pretraining helps the model learn general language knowledge and skills that can be useful for various downstream tasks. Pretraining from scratch means training a model from random initialization without using any existing pretrained models. Pretraining from scratch can be beneficial when you have a large amount of domain-specific data that differs significantly from general text corpora, or when you want to customize your model architecture or hyperparameters. However, pretraining from scratch can also be more costly and time-consuming than finetuning an existing pretrained model.
+- ### **Pretraining models**
+  Pretraining a language model is typically done in the self-supervised learning paradigm by training on a large corpus of unlabeled text. Commonly, the self-supervised task is to predict some parts of the text from other parts (the MLM framework). Pretraining helps the model learn general language knowledge and skills that can be useful for various downstream tasks. Pretraining from scratch means training a model from random initialization without using any existing pretrained models. Pretraining from scratch can be beneficial when you have a large amount of domain-specific data that differs significantly from general text corpora, or when you want to customize your model architecture or hyperparameters. However, pretraining from scratch can also be more costly and time-consuming than finetuning an existing pretrained model.
+
+  Pretraining a vision model can be done in the supervised or the self-supervised learning paradigm. Similar considerations as for language models apply, i.e. pretraining produces good general features and it brings benefits in specialized domains with large amounts of unlabeled data, but it may be costly.
 ### <a name='BERTPretrain'></a>**BERT Pretrain**
   [This example](./Bert-Pretrain/README.md) shows how to run a BERT pretraining job on AzureML.
   The following results were found using 2 ND40rs nodes with 8 V100 GPUs each.
@@ -355,7 +357,5 @@ Nebula Checkpointing improves on standard model checkpointing by saving models 1
   |1|25B|16|	8|	1|	1|	119.42|	4.173	|69.7%|
   |2|20B|8|	8|	1	|1	|117.71	|2.51	|78.5%|
   |3|20B|8|	8|	1	|2|	123.52	|2.63	|80.1%|
-- ### **Pretraining a vision model**
-  Pretraining a vision model can be done in the supervised or the self-supervised learning paradigm. Similar considerations as for language models apply, i.e. pretraining produces good general features, it brings benefits in specialized domains with large amounts of unlabeled data, and it may be costly.
 ### <a name='ViTPretrain'></a>**ViT Pretrain**
   [This example](./ViT-Pretrain/README.md) shows how to pretrain a ViT model in AzureML via supervised learning.
