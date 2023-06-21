@@ -111,7 +111,7 @@ if __name__ == "__main__":
     class ProfilerCallback(TrainerCallback):
         def on_train_begin(self, args, state, control, model=None, **kwargs):
             self.prof = profiler.profile(
-                schedule=profiler.schedule(wait=2, warmup=1, active=3, repeat=2),
+                schedule=profiler.schedule(wait=2, warmup=1, active=3, repeat=20),
                 activities=[
                     profiler.ProfilerActivity.CPU,
                     profiler.ProfilerActivity.CUDA,
