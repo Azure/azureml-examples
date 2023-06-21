@@ -26,9 +26,9 @@ az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_W
 az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
 if [[! -z "$COMPUTE_MANAGED_IDENTITY"]]
-  then
-	az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
-
+then
+  az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
+fi
 
 TEMP_COMPUTE_FILE="temp-compute-setup.yml"
 cp $1 $TEMP_COMPUTE_FILE
