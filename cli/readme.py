@@ -9,11 +9,7 @@ import string
 import yaml
 
 # define constants
-EXCLUDED_JOBS = [
-    "java",
-    "spark-job-component",
-    "storage_pe",
-    "user-assigned-identity"]
+EXCLUDED_JOBS = ["java", "spark-job-component", "storage_pe", "user-assigned-identity"]
 # TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
 EXCLUDED_ENDPOINTS = [
     "1-uai-create-endpoint",
@@ -475,7 +471,7 @@ jobs:
       working-directory: cli
       continue-on-error: true\n"""
     if is_spark_sample:
-      workflow_yaml += get_spark_setup_workflow(job)
+        workflow_yaml += get_spark_setup_workflow(job)
     workflow_yaml += f"""    - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -865,6 +861,7 @@ def get_endpoint_name(filename, hyphenated):
         endpoint_name = yaml.safe_load(f)["name"]
     return endpoint_name
 
+
 def get_spark_setup_workflow(job):
     is_attached = "attached-spark" in job
     is_user_identity = "user-identity" in job
@@ -882,23 +879,24 @@ def get_spark_setup_workflow(job):
       working-directory: cli/jobs/spark
       continue-on-error: true\n"""
     if is_attached:
-      workflow += f"""    - name: setup attached spark
+        workflow += f"""    - name: setup attached spark
       working-directory: cli
       continue-on-error: true"""
     if is_attached and is_user_identity:
-      workflow += f"""
+        workflow += f"""
       run: |
           bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-user-identity.yml\n"""
     if is_attached and is_managed_identity:
-      workflow += f"""
+        workflow += f"""
       run: |
           bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-system-identity.yml\n"""
     if is_attached and is_default_identity:
-      workflow += f"""
+        workflow += f"""
       run: |
           bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark.yml\n"""
 
     return workflow
+
 
 # run functions
 if __name__ == "__main__":
