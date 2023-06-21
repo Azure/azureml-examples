@@ -13,6 +13,8 @@ SYNAPSE_WORKSPACE_NAME="automation-syws"
 SQL_ADMIN_LOGIN_USER="automation"
 SQL_ADMIN_LOGIN_PASSWORD="auto123!"
 SPARK_POOL_NAME="automationpool"
+SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
+COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name mysparkcompute --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query [*].identity.principal_id --out tsv)
 #</create_variables>
 
 #<create_attached_resources>
@@ -22,6 +24,11 @@ az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RES
 az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_NAME/blobServices/default/containers/$GEN2_FILE_SYSTEM
 az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.2 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
 az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+
+if [[! -z "$COMPUTE_MANAGED_IDENTITY"]]
+  then
+	az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
+
 
 TEMP_COMPUTE_FILE="temp-compute-setup.yml"
 cp $1 $TEMP_COMPUTE_FILE
