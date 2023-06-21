@@ -9,7 +9,11 @@ import string
 import yaml
 
 # define constants
-EXCLUDED_JOBS = ["java"]
+EXCLUDED_JOBS = [
+    "java",
+    "spark-job-component",
+    "storage_pe",
+    "user-assigned-identity"]
 # TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
 EXCLUDED_ENDPOINTS = [
     "1-uai-create-endpoint",
@@ -33,6 +37,9 @@ EXCLUDED_RESOURCES = [
     "instance",
     "connections",
     "compute/cluster-user-identity",
+    "compute/attached-spark",
+    "compute/attached-spark-system-identity",
+    "compute/attached-spark-user-identity",
     "registry",
 ]
 EXCLUDED_ASSETS = ["conda-yamls", "mlflow-models"]
@@ -418,6 +425,7 @@ def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
     is_pipeline_sample = "jobs/pipelines" in job
+    is_spark_sample = "jobs/spark" in job
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     # Duplicate name in working directory during checkout
@@ -437,6 +445,8 @@ on:
       - .github/workflows/cli-{hyphenated}.yml\n"""
     if is_pipeline_sample:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
+    if is_spark_sample:
+        workflow_yaml += "      - cli/jobs/spark/data/titanic.csv\n" ""
     workflow_yaml += f"""      - cli/setup.sh
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
@@ -463,8 +473,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true
-    - name: run job
+      continue-on-error: true\n"""
+    if is_spark_sample:
+      workflow_yaml += get_spark_setup_workflow(job)
+    workflow_yaml += f"""    - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";\n"""
@@ -699,7 +711,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          bash bootstrap.sh
+          bash bootstrapping/bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup-cli
@@ -853,6 +865,40 @@ def get_endpoint_name(filename, hyphenated):
         endpoint_name = yaml.safe_load(f)["name"]
     return endpoint_name
 
+def get_spark_setup_workflow(job):
+    is_attached = "attached-spark" in job
+    is_user_identity = "user-identity" in job
+    is_managed_identity = "managed-identity" in job
+    is_default_identity = "default-identity" in job
+    workflow = f"""    - name: upload data
+      run: |
+          bash -x upload-data-to-blob.sh jobs/spark/
+      working-directory: cli
+      continue-on-error: true\n"""
+    if is_managed_identity:
+        workflow += f"""    - name: setup identities
+      run: |
+          bash -x setup-identities.sh
+      working-directory: cli/jobs/spark
+      continue-on-error: true\n"""
+    if is_attached:
+      workflow += f"""    - name: setup attached spark
+      working-directory: cli
+      continue-on-error: true"""
+    if is_attached and is_user_identity:
+      workflow += f"""
+      run: |
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-user-identity.yml\n"""
+    if is_attached and is_managed_identity:
+      workflow += f"""
+      run: |
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-system-identity.yml\n"""
+    if is_attached and is_default_identity:
+      workflow += f"""
+      run: |
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark.yml\n"""
+
+    return workflow
 
 # run functions
 if __name__ == "__main__":
