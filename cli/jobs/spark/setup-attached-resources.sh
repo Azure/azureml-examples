@@ -14,7 +14,7 @@ SQL_ADMIN_LOGIN_USER="automation"
 SQL_ADMIN_LOGIN_PASSWORD="auto123!"
 SPARK_POOL_NAME="automationpool"
 SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
-COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name mysparkcompute --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query [*].identity.principal_id --out tsv)
+COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name mysparkcompute --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query identity.principal_id --out tsv)
 #</create_variables>
 
 #<create_attached_resources>
