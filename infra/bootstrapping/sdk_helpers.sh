@@ -13,7 +13,7 @@ SCRIPT_DIR="$( cd "$( dirname "${SCRIPT_PATH}" )" && pwd )"
 
 EPOCH_START="$( date -u +%s )"  # e.g. 1661361223
 
-declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+31 days" +'%y-%m-%d')
+declare -A SKIP_AUTO_DELETE_TILL=$(date -d "+31 days" +'%Y-%m-%d')
 declare -a DELETE_AFTER=("31.00:00:00")
 
 COMMON_TAGS=(
