@@ -10,11 +10,11 @@ The main task we consider in this example is pretraining the vision transformer 
 Based on general best practices for Computer Vision model training and our experimentation on Azure, we synthesized the following guidelines:
 
 1. Set the batch size so that GPU memory consumption is maximized.
-2. Set the shared memory size to a large value, e.g. 50% of the total CPU memory available, to make sure dataloaders have enough memory. Please see the [launcher.py](launcher.py) file in this folder for a code snippet (look for "shm_size").
+2. Set the shared memory size to a large value, e.g. 50% of the total CPU memory available, to make sure dataloaders have enough memory. Please see the [launcher.py](src/launcher.py) file in this folder for a code snippet (look for "shm_size").
 3. If network traffic does not exceed the network bandwidth available to the machine, mount the dataset's datastore path and disable caching. This has virtually the same performance as downloading the dataset on the machine when this option is available (disk large enough).
 4. In general, the optimal number of workers for data loading can be found by starting with the number of CPU cores and increasing until there is no noticeable improvement. We have seen that for [NCv3 machines](https://learn.microsoft.com/en-us/azure/virtual-machines/ncv3-series) a good starting point is 6, but for [NCA100v4 machines](https://learn.microsoft.com/en-us/azure/virtual-machines/nc-a100-v4-series) a good starting point is 12.
 5. Scale up before scaling out, e.g. use a Standard_NC24s_v3 with 4 GPUs instead of 4 Standard_NC6s_v3's with 1 GPU each [NCv3 machines](https://learn.microsoft.com/en-us/azure/virtual-machines/ncv3-series). Synchronizing weights on one machine with 4 GPUs (Standard_NC24s_v3) is faster than synchronizing weights across the network between 4 machines with one GPU each (Standard_NC6s_v3).
-6. Use [InfiniBand]#(hardware) whenever possible, as it enables near linear scaling.
+6. Use [InfiniBand](#hardware) whenever possible, as it enables near linear scaling.
 7. If working with high resolution images, strongly consider resizing them or extracting tiles from them before training. If training a ViTB model, images larger than 2048 x 2048 will lead to severe bottlenecks in CPU processing, reading from disk and transferring data over the network.
 8. Depending on your particular application, the [Nvidia DALI](https://developer.nvidia.com/dali) package might help reduce the load on the CPU by doing image preprocessing and augmentation on the GPU.
 
@@ -32,7 +32,7 @@ All of the code in our experiments uses the PyTorch Lightning framework and can 
 
 ### **Job Submission**
 
-The code assumes that the workspace where the job runs contains a datastore named `datasets` with a blob named `imagenet`. The folders under it must be readable by PyTorch's `ImageFolder` class. For more details, please see the [launcher.py](launcher.py) and [run_image_classification.py](src/run_image_classification.py) files.
+The code assumes that the workspace where the job runs contains a datastore named `datasets` with a blob named `imagenet`. The folders under it must be readable by PyTorch's `ImageFolder` class. For more details, please see the [launcher.py](src/launcher.py) and [run_image_classification.py](src/run_image_classification.py) files.
 
 To train a ViTB model on ImageNet-1k, submit the following command from within the ``src`` subdirectory of this directory:
 ```
