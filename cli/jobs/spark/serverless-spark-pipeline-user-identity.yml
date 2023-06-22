@@ -1,5 +1,5 @@
 # serverless-spark-pipeline-user-identity.yaml
-$schema: http://azureml/sdk-2-0/PipelineJob.json
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: Titanic-Spark-CLI-Pipeline-5
 description: Spark component for Titanic data in Pipeline
