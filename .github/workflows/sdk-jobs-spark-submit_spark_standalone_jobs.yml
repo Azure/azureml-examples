@@ -58,6 +58,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: setup spark resources
+      run: |
+          bash -x jobs/spark/setup_spark.sh jobs/spark/ jobs/spark/submit_spark_standalone_jobs.ipynb
+      working-directory: sdk/python
+      continue-on-error: true
     - name: run jobs/spark/submit_spark_standalone_jobs.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
