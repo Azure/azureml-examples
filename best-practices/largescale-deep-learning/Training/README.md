@@ -28,6 +28,7 @@
 *  [**Examples**](#examples)
 	*  [**BERT Pretrain**](#bert-pretrain)
 	*  [**Bloom Pretrain**](#bloom-pretrain)
+	*  [**ViT Pretrain**](#vit-pretrain)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
