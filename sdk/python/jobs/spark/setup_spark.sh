@@ -7,14 +7,14 @@ API_VERSION="2022-05-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
 ATTACHED_SPARK_POOL_NAME="myattachedspark"
-ATTACH_SPARK_PY="../../resources/compute/attach_managed_spark_pools.py"
+ATTACH_SPARK_PY="resources/compute/attach_managed_spark_pools.py"
 GEN2_STORAGE_NAME="gen2automationspark"
 GEN2_FILE_SYSTEM="gen2filesystem"
 SYNAPSE_WORKSPACE_NAME="automation-syws"
 SQL_ADMIN_LOGIN_USER="automation"
 SQL_ADMIN_LOGIN_PASSWORD="auto123!"
 SPARK_POOL_NAME="automationpool"
-USER_IDENTITY_YML="user-assigned-identity.yml"
+USER_IDENTITY_YML="jobs/spark/user-assigned-identity.yml"
 #</create_variables>
 
 # <get_storage_details>
@@ -30,6 +30,7 @@ az storage blob upload-batch -s $1 --pattern *.csv -d $AZUREML_DEFAULT_CONTAINER
 
 #<create_uai>
 az identity create --name $AML_USER_MANAGED_ID --resource-group $RESOURCE_GROUP --location $LOCATION
+AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $AML_USER_MANAGED_ID --query principalId -o tsv)
 #</create_uai>
 
 #<create_attached_resources>
