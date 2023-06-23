@@ -6,6 +6,7 @@ papermill==2.3.3
 pandas
 matplotlib
 torch
+torchvision
 tensorflow
 tensorflow-hub
 transformers
