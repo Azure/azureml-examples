@@ -7,6 +7,7 @@ API_VERSION="2022-05-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
 AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
 ATTACHED_SPARK_POOL_NAME="myattachedspark"
+ATTACHED_SPARK_POOL_NAME_UAI="myattachedsparkuai"
 ATTACH_SPARK_PY="resources/compute/attach_managed_spark_pools.py"
 GEN2_STORAGE_NAME="gen2automationspark"
 GEN2_FILE_SYSTEM="gen2filesystem"
@@ -16,7 +17,15 @@ SQL_ADMIN_LOGIN_PASSWORD="auto123!"
 SPARK_POOL_NAME="automationpool"
 SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
 USER_IDENTITY_YML="jobs/spark/user-assigned-identity.yml"
+#OUTBOUND_RULE_NAME="automationtestrule"
+#KEY_VAULT_NAME=$(az ml workspace show --query key_vault -o tsv | cut -d'/' -f9-)
+#ACCESS_KEY_SECRET_NAME="automationsecret"
 #</create_variables>
+
+if [[ "$2" == *"resources/compute"*]]; then
+  ATTACHED_SPARK_POOL_NAME=${ATTACHED_SPARK_POOL_NAME}2
+  ATTACHED_SPARK_POOL_NAME_UAI=${ATTACHED_SPARK_POOL_NAME_UAI}2
+fi
 
 # <get_storage_details>
 response=$(curl --location --request GET "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$AML_WORKSPACE_NAME/datastores?api-version=$API_VERSION&isDefault=true" \
@@ -59,6 +68,7 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 		s/<SYNAPSE_WORKSPACE_NAME>/$SYNAPSE_WORKSPACE_NAME/g;
 		s/<SPARK_POOL_NAME>/$SPARK_POOL_NAME/g;
 		s/<USER_ASSIGNED_IDENTITY_CLIENT_ID>/$AML_USER_MANAGED_ID/g;
+		s/<ATTACHED_SPARK_POOL_NAME_UAI>/$ATTACHED_SPARK_POOL_NAME_UAI/g;
 		s/<AML_USER_MANAGED_ID>/$AML_USER_MANAGED_ID/g;" $ATTACH_SPARK_PY
 
 python $ATTACH_SPARK_PY
@@ -77,5 +87,6 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 		s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;
 		s/<ATTACHED_SPARK_POOL_NAME>/$ATTACHED_SPARK_POOL_NAME/g;
 		s/<USER_ASSIGNED_IDENTITY_CLIENT_ID>/$AML_USER_MANAGED_ID/g;
+		s/<ATTACHED_SPARK_POOL_NAME_UAI>/$ATTACHED_SPARK_POOL_NAME_UAI/g;
 		s/<AML_USER_MANAGED_ID>/$AML_USER_MANAGED_ID/g;" $2
 #</replace_template_values>
