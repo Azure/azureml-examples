@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: hello_pipeline_io
+# Serverless compute is used to run this pipeline job. 
+# Through serverless compute, Azure Machine Learning takes care of creating, scaling, deleting, patching and managing compute, along with providing managed network isolation, reducing the burden on you.
+settings:
+    default_compute: azureml:serverless
+jobs:
+  hello_job:
+    command: echo "hello" && echo "world" > ${{outputs.world_output}}/world.txt
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest    
+    outputs:
+      world_output:
+  world_job:
+    command: cat ${{inputs.world_input}}/world.txt
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1    
+    inputs:
+      world_input: ${{parent.jobs.hello_job.outputs.world_output}}
+ 
