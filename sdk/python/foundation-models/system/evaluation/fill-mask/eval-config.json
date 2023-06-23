@@ -1,8 +1,4 @@
 {
   "metrics": ["perplexities"],
-  "model_id": "gpt2",
-  "add_start_token": true,
-  "tokenizer_config": {
-    "truncation": true
-  }
+  "add_start_token": true
 }
