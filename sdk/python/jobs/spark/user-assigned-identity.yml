@@ -1,4 +1,4 @@
-# user-assigned-identity.yaml
+# user-assigned-identity.yml
 identity:
   type: "system_assigned,user_assigned"
   user_assigned_identities:

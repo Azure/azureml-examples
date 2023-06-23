@@ -14,6 +14,7 @@ SYNAPSE_WORKSPACE_NAME="automation-syws"
 SQL_ADMIN_LOGIN_USER="automation"
 SQL_ADMIN_LOGIN_PASSWORD="auto123!"
 SPARK_POOL_NAME="automationpool"
+SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
 USER_IDENTITY_YML="jobs/spark/user-assigned-identity.yml"
 #</create_variables>
 
@@ -61,6 +62,13 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 
 python $ATTACH_SPARK_PY
 #</attache_spark>
+
+COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name $ATTACHED_SPARK_POOL_NAME --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query identity.principal_id --out tsv)
+
+if [[ ! -z "$COMPUTE_MANAGED_IDENTITY" ]]
+then
+  az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
+fi
 
 #<replace_template_values>
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
