@@ -48,7 +48,7 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import (
     SynapseSparkCompute,
     IdentityConfiguration,
-    UserAssignedIdentity,
+    ManagedIdentityConfiguration,
 )
 from azure.identity import DefaultAzureCredential
 
@@ -65,7 +65,8 @@ synapse_resource = "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GR
 synapse_identity = IdentityConfiguration(
     type="UserAssigned",
     user_assigned_identities=[
-        UserAssignedIdentity(
+        ManagedIdentityConfiguration(
+            client_id="<USER_ASSIGNED_IDENTITY_CLIENT_ID>",
             resource_id="/subscriptions/<SUBSCRIPTION_ID/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<AML_USER_MANAGED_ID>"
         )
     ],
