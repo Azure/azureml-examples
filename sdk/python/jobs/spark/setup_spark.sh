@@ -82,6 +82,15 @@ then
   az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
 fi
 
+COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name $ATTACHED_SPARK_POOL_NAME_UAI --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query identity.principal_id --out tsv)
+
+if [[ ! -z "$COMPUTE_MANAGED_IDENTITY" ]]
+then
+  az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
+fi
+
+az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $AML_USER_MANAGED_ID
+
 #<replace_template_values>
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 		s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
