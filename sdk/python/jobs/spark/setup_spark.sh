@@ -22,7 +22,8 @@ USER_IDENTITY_YML="jobs/spark/user-assigned-identity.yml"
 #ACCESS_KEY_SECRET_NAME="automationsecret"
 #</create_variables>
 
-if [[ "$2" == *"resources/compute"*]]; then
+if [[ "$2" == *"resources/compute"*]]
+then
   ATTACHED_SPARK_POOL_NAME=${ATTACHED_SPARK_POOL_NAME}2
   ATTACHED_SPARK_POOL_NAME_UAI=${ATTACHED_SPARK_POOL_NAME_UAI}2
 fi
