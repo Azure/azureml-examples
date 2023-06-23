@@ -67,7 +67,7 @@ synapse_identity = IdentityConfiguration(
     user_assigned_identities=[
         ManagedIdentityConfiguration(
             client_id="<USER_ASSIGNED_IDENTITY_CLIENT_ID>",
-            resource_id="/subscriptions/<SUBSCRIPTION_ID/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<AML_USER_MANAGED_ID>"
+            resource_id="/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<AML_USER_MANAGED_ID>",
         )
     ],
 )
