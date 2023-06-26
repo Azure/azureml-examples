@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -51,8 +51,6 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
-          pip install azureml-core
-          pip install azureml-pipeline-core
       working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
