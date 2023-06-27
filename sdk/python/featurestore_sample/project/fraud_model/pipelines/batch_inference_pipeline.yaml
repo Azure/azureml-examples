@@ -1,0 +1,61 @@
+# This is a pipeline is for illustration purpose only. Do not use it for production use.
+description: batch inference pipeline
+display_name: batch_inference
+experiment_name: batch inference on fraud model
+type: pipeline
+
+inputs:
+  input_model:
+    mode: ro_mount
+    path: azureml:fraud_model:1
+    type: custom_model
+  observation_data:
+    mode: ro_mount
+    path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/observation_data/batch_inference/
+    type: uri_folder
+  timestamp_column: timestamp
+
+jobs:
+
+  retrieval_step:
+    component: azureml://registries/azureml/components/feature_retrieval/versions/0.1.0
+    inputs:
+      input_model:
+        path: ${{parent.inputs.input_model}}
+      observation_data:
+        path: ${{parent.inputs.observation_data}}
+      timestamp_column: ${{parent.inputs.timestamp_column}}
+      observation_data_format: parquet
+    resources:
+      instance_type: standard_e4s_v3
+      runtime_version: "3.2"
+    outputs:
+      output_data:
+    conf:
+      spark.driver.cores: 4
+      spark.driver.memory: 28g
+      spark.executor.cores: 4
+      spark.executor.memory: 28g
+      spark.executor.instances: 2
+    type: spark
+  
+  inference_step:
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../batch_inference/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
+    inputs:
+      model_input:
+        path: ${{parent.inputs.input_model}}
+      inference_data:
+        path: ${{parent.jobs.retrieval_step.outputs.output_data}}
+    outputs:
+      data_with_prediction:
+        type: uri_folder
+    command: >-
+      python batch_inference.py
+      --inference_data ${{inputs.inference_data}}
+      --model_input ${{inputs.model_input}}
+      --output_data ${{outputs.data_with_prediction}}

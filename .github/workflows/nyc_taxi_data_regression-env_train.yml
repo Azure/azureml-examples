@@ -9,7 +9,7 @@ on:
       - sdk-preview
     paths:
       - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/nyc_taxi_data_regression-env_train.yml
       - cli/setup.sh
 concurrency:
@@ -28,19 +28,19 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_version env_train.yml
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_version env_train.yml
           az ml environment create -f env_train.yml
       working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression

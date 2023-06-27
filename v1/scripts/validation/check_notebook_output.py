@@ -52,6 +52,11 @@ allowed_list = [
     "Readonly attribute primary_metric will be ignored",
     "Downloading artifact ",
     "Warnings:",
+    "Downloading builder script",
+    "Downloading extra modules",
+    "custom base image or base dockerfile detected",
+    "TqdmWarning: IProgress not found.",
+    "from .autonotebook import tqdm as notebook_tqdm",
 ]
 
 with open(full_name, "r") as notebook_file:
