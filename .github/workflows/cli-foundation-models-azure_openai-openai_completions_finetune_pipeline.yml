@@ -49,5 +49,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          bash -x ../../../../run-job.sh openai_completions_finetune_pipeline_spec.yml
+          bash -x ../../../run-job.sh openai_completions_finetune_pipeline_spec.yml
       working-directory: cli/foundation-models/azure_openai/openai_completions_finetune_pipeline

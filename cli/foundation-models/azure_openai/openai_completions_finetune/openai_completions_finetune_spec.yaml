@@ -26,7 +26,7 @@ jobs:
     inputs:
       train_dataset: 
         type: uri_folder
-        path: azureml:training_data:1
+        path: azureml:oai_sample_training_data:1
         mode: ro_mount
       base_model: ${{parent.jobs.model_selector.outputs.output_model}}
       registered_model_name: ft_ada_model_from_cli_doc
