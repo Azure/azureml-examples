@@ -1,6 +1,6 @@
 # this dataset is needed for the sample under cli/jobs/pipelines-with-components/basics/4d_dataset_input
 
-az ml data create -f ../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
+az ml data create -f ../../../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
 
 
 
@@ -34,7 +34,7 @@ rm -r data
 
 
 # <create_rai_data>
-az ml data create -f "./cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_test.yaml"
-az ml data create -f "./cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_train.yaml"
+az ml data create -f "../../../cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_test.yaml"
+az ml data create -f "../../../cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/data/data_adult_train.yaml"
 
 # </create_rai_data>
