@@ -2,7 +2,7 @@
 
 1. Login to az cli using `az login`
 
-2. Navigate to `docs\examples\cli\openai_completions_finetune`
+2. Navigate to `cli\foundation-models\azure_openai\openai_completions_finetune\openai_completions_finetune.md`
 
 3. Run `az ml job create --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP_NAME> --workspace-name <WORKSPACE_NAME> --file "openai_completions_finetune_spec.yaml"`
 
