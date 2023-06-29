@@ -14,7 +14,7 @@ ENDPOINT_NAME="$ENDPOINT_NAME-$ENDPOINT_SUFIX"
 
 echo "Download model from Azure Storage"
 # <download_model>
-wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/model.zip
+wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/imagenet-1000.zip
 unzip model.zip -d .
 # </download_model>
 
