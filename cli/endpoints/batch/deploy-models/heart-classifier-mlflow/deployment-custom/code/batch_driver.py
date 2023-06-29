@@ -20,7 +20,7 @@ def init():
 
     # Load the model, it's input types and output names
     model = mlflow.pyfunc.load(model_path)
-    if model.metadata:
+    if model.metadata and model.metadata.signature:
         if model.metadata.signature.inputs:
             model_input_types = dict(
                 zip(
@@ -34,7 +34,7 @@ def init():
             elif len(model.metadata.signature.outputs.input_names()) == 1:
                 model_output_names = ["prediction"]
     else:
-        logging.warn(
+        logging.warning(
             "Model doesn't contain a signature. Input data types won't be enforced."
         )
 
