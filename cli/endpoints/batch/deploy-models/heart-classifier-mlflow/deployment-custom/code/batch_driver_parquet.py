@@ -41,6 +41,7 @@ def init():
             "Model doesn't contain a signature. Input data types won't be enforced."
         )
 
+
 def run(mini_batch):
     for file_path in mini_batch:
         data = pd.read_csv(file_path)
