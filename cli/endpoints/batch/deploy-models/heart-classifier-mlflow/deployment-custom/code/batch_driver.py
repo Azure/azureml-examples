@@ -5,6 +5,7 @@ import os
 import glob
 import mlflow
 import pandas as pd
+import logging
 
 
 def init():
@@ -19,18 +20,23 @@ def init():
 
     # Load the model, it's input types and output names
     model = mlflow.pyfunc.load(model_path)
-    if model.metadata.signature.inputs:
-        model_input_types = dict(
-            zip(
-                model.metadata.signature.inputs.input_names(),
-                model.metadata.signature.inputs.pandas_types(),
+    if model.metadata and model.metadata.signature:
+        if model.metadata.signature.inputs:
+            model_input_types = dict(
+                zip(
+                    model.metadata.signature.inputs.input_names(),
+                    model.metadata.signature.inputs.pandas_types(),
+                )
             )
+        if model.metadata.signature.outputs:
+            if model.metadata.signature.outputs.has_input_names():
+                model_output_names = model.metadata.signature.outputs.input_names()
+            elif len(model.metadata.signature.outputs.input_names()) == 1:
+                model_output_names = ["prediction"]
+    else:
+        logging.warning(
+            "Model doesn't contain a signature. Input data types won't be enforced."
         )
-    if model.metadata.signature.outputs:
-        if model.metadata.signature.outputs.has_input_names():
-            model_output_names = model.metadata.signature.outputs.input_names()
-        elif len(model.metadata.signature.outputs.input_names()) == 1:
-            model_output_names = ["prediction"]
 
 
 def run(mini_batch):
@@ -41,10 +47,12 @@ def run(mini_batch):
             lambda fp: pd.read_csv(fp).assign(filename=os.path.basename(fp)), mini_batch
         )
     )
+
     if model_input_types:
         data = data.astype(model_input_types)
 
-    pred = model.predict(data)
+    # Predict over the input data, minus the column filename which is not part of the model.
+    pred = model.predict(data.drop("filename", axis=1))
 
     if pred is not pd.DataFrame:
         if not model_output_names:
