@@ -19,3 +19,7 @@ jobs:
         mode: ro_mount
       registered_model_name: ft_ada_model_from_cli_doc
       model: ${{parent.inputs.model_name}}
+    outputs:
+      output_model:
+        type: uri_folder
+        mode: mount
