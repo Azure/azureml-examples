@@ -19,7 +19,7 @@ def init():
     model_path = glob.glob(os.environ["AZUREML_MODEL_DIR"] + "/*/")[0]
 
     # Load the model, it's input types and output names
-    model = mlflow.pyfunc.load(model_path)
+    model = mlflow.pyfunc.load_model(model_path)
     if model.metadata and model.metadata.signature:
         if model.metadata.signature.inputs:
             model_input_types = dict(
