@@ -1,7 +1,7 @@
 $schema: http://azureml/sdk-2-0/PipelineJob.json
 type: pipeline
-display_name: CLI OpenAI Completions Finetune Pipeline
-description: CLI OpenAI Completions Finetune Pipeline
+display_name: CLI OpenAI Completions Finetune
+description: CLI OpenAI Completions Finetune
 settings:
   default_compute: azureml:serverless
   force_rerun: true
@@ -11,11 +11,11 @@ inputs:
 jobs:
   pipeline_finetune:
     type: pipeline
-    component: azureml://registries/azureml-preview/components/openai_completions_finetune/versions/0.0.7
+    component: azureml://registries/azureml-preview/components/openai_completions_finetune/versions/0.2.9
     inputs:
       train_dataset: 
         type: uri_folder
         path: azureml:oai_sample_training_data:1
         mode: ro_mount
-      registered_model_name: ft_ada_model_from_cli_doc_pipeline
+      registered_model_name: ft_ada_model_from_cli_doc
       model: ${{parent.inputs.model_name}}

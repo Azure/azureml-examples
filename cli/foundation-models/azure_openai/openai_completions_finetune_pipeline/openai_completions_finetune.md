@@ -1,4 +1,4 @@
-## How to finetune openai models via CLI mode using command components ?
+## How to finetune openai models via CLI mode using pipeline component ?
 
 1. Login to az cli using `az login`
 
