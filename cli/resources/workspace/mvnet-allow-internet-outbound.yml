@@ -1,4 +1,4 @@
-name: myworkspace_dep
+name: myworkspace_aio
 managed_network:
   isolation_mode: allow_internet_outbound
   outbound_rules:
