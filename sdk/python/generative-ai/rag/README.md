@@ -8,14 +8,12 @@ For more documentation related to RAG refer the AzureML documentation [here](htt
 
 ## Sample Notebooks
 
-This folder contains the following notebooks.
-
-| Category              | Article             |
+|Category|Article|
 |----------------|----------------|
 |Notebooks|[Process Git Repo into Azure Cognitive Search with Embeddings](./notebooks/azure_cognitive_search/acs_mlindex_with_langchain.ipynb)|
-|Notebooks|[Process private Git Repo into FAISS Embeddings Index](./notebooks/faiss/faiss_mlindex_with_langchain.ipynb)|
+|Notebooks|[Process private Git Repo into FAISS Embeddings Index](./notebooks/faiss/faiss_mlindex_with_langchain.ipynb)||
 |Notebooks|[QA Test Generation](./notebooks/qa_data_generation.ipynb)|
-|Notebooks| [Productionize Vector Index with Test Data Generation, Auto Prompt, Evaluations and Prompt Flow](./notebooks/mlindex_with_testgen_autoprompt.ipynb)|
+|Notebooks|[Productionize Vector Index with Test Data Generation, Auto Prompt, Evaluations and Prompt Flow](./notebooks/mlindex_with_testgen_autoprompt.ipynb)|
 
 ## Feedback and support
 
