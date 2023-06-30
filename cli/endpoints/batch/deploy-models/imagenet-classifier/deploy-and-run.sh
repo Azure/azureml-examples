@@ -61,7 +61,7 @@ az ml data create -f imagenet-sample-unlabeled.yml
 
 echo "Invoking batch endpoint with local data"
 # <start_batch_scoring_job>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input azureml:imagenet-sample-unlabeled@latest --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input azureml:imagenet-sample-unlabeled:1 --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
