@@ -41,7 +41,7 @@ az ml model create --name nyc-taxi-model --version $version --type mlflow_model 
 }
 
 # share model created in workspace to registry
-az ml model share --name nyc-taxi-model --version $version  --registry-name <REGISTRY_NAME> || {
+az ml model share --name nyc-taxi-model --version $version --share-with-name nyc-taxi-model --share-with-version $version --registry-name <REGISTRY_NAME> || {
     echo "model create in registry failed"; exit 1;
 }
 
