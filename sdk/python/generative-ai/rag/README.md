@@ -12,10 +12,10 @@ This folder contains the following notebooks.
 
 | Category              | Article             |
 |----------------|----------------|
-|Notebooks|[Process Git Repo into Azure Cognitive Search with Embeddings](./examples/notebooks/azure_cognitive_search/acs_mlindex_with_langchain.ipynb)|
-|Notebooks|[Process private Git Repo into FAISS Embeddings Index](./examples/notebooks/faiss/faiss_mlindex_with_langchain.ipynb)|
-|Notebooks|[QA Test Generation](./examples/notebooks/qa_data_generation.ipynb)|
-|Notebooks| [Productionize Vector Index with Test Data Generation, Auto Prompt, Evaluations and Prompt Flow](./examples/notebooks/mlindex_with_testgen_autoprompt.ipynb)|
+|Notebooks|[Process Git Repo into Azure Cognitive Search with Embeddings](./notebooks/azure_cognitive_search/acs_mlindex_with_langchain.ipynb)|
+|Notebooks|[Process private Git Repo into FAISS Embeddings Index](./notebooks/faiss/faiss_mlindex_with_langchain.ipynb)|
+|Notebooks|[QA Test Generation](./notebooks/qa_data_generation.ipynb)|
+|Notebooks| [Productionize Vector Index with Test Data Generation, Auto Prompt, Evaluations and Prompt Flow](./notebooks/mlindex_with_testgen_autoprompt.ipynb)|
 
 ## Feedback and support
 
