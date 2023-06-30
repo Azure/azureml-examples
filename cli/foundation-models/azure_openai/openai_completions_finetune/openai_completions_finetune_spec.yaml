@@ -17,6 +17,10 @@ jobs:
         type: uri_folder
         path: azureml:oai_sample_training_data:1
         mode: ro_mount
+      validation_dataset: 
+        type: uri_folder
+        path: azureml:oai_sample_training_data:1
+        mode: ro_mount
       registered_model_name: ft_ada_model_from_cli_doc
       model: ${{parent.inputs.model_name}}
     outputs:
