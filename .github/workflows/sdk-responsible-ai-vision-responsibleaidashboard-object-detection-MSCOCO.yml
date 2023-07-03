@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-foundation-models-azure_openai-openai_completions_finetune_pipeline
+name: sdk-responsible-ai-vision-responsibleaidashboard-object-detection-MSCOCO
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "57 2/12 * * *"
+    - cron: "19 8/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/foundation-models/azure_openai/**
-      - .github/workflows/sdk-foundation-models-azure_openai-openai_completions_finetune_pipeline.yml
+      - sdk/python/responsible-ai/vision/**
+      - .github/workflows/sdk-responsible-ai-vision-responsibleaidashboard-object-detection-MSCOCO.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -34,6 +34,8 @@ jobs:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
+    - name: pip install mlflow reqs
+      run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -58,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/azure_openai/openai_completions_finetune_pipeline.ipynb
+    - name: run responsible-ai/vision/responsibleaidashboard-object-detection-MSCOCO.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "openai_completions_finetune_pipeline.ipynb";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-object-detection-MSCOCO.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python openai_completions_finetune_pipeline.ipynb openai_completions_finetune_pipeline.output.ipynb
-      working-directory: sdk/python/foundation-models/azure_openai
+          papermill -k python responsibleaidashboard-object-detection-MSCOCO.ipynb responsibleaidashboard-object-detection-MSCOCO.output.ipynb
+      working-directory: sdk/python/responsible-ai/vision
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: openai_completions_finetune_pipeline
-        path: sdk/python/foundation-models/azure_openai
+        name: responsibleaidashboard-object-detection-MSCOCO
+        path: sdk/python/responsible-ai/vision

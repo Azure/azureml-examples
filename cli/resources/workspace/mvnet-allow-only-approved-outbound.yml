@@ -1,0 +1,19 @@
+name: myworkspace_dep
+managed_network:
+  isolation_mode: allow_only_approved_outbound
+  outbound_rules:
+  - name: added-servicetagrule
+    type: service_tag
+    destination:
+      port_ranges: 80, 8080
+      protocol: TCP
+      service_tag: DataFactory
+  - name: added-perule
+    type: private_endpoint
+    destination:
+      service_resource_id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyGroup/providers/Microsoft.Storage/storageAccounts/MyAccount2
+      spark_enabled: true
+      subresource_target: blob
+  - name: added-fqdnrule
+    type: fqdn
+    destination: 'test2.com'
