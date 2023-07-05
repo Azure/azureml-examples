@@ -1,0 +1,11 @@
+# my_s3_connection.yaml
+$schema: http://azureml/sdk-2-0/Connection.json
+
+type: s3
+name: s3_bucket
+
+target: my-bucket # add the s3 bucket details
+credentials:
+    type: access_key
+    access_key_id:  # add access key id
+    secret_access_key:  # add access key secret
