@@ -5,8 +5,7 @@ RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-05-01"
 TOKEN=$(az account get-access-token --query accessToken -o tsv)
-AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
-AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $AML_USER_MANAGED_ID --query principalId -o tsv)
+
 GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2
 GEN2_FILE_SYSTEM=${RESOURCE_GROUP}file
 SYNAPSE_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-syws
@@ -16,6 +15,12 @@ SPARK_POOL_NAME="automationpool"
 SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
 ATTACHED_COMPUTE_NAME="mysparkcompute"
 #</create_variables>
+
+#<create_uai>
+AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
+az identity create --name $AML_USER_MANAGED_ID --resource-group $RESOURCE_GROUP --location $LOCATION
+AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $AML_USER_MANAGED_ID --query principalId -o tsv)
+#</create_uai>
 
 #<create_attached_resources>
 az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
@@ -34,6 +39,7 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 		s/<AML_USER_MANAGED_ID>/$AML_USER_MANAGED_ID/g;" $TEMP_COMPUTE_FILE
 
 az ml compute attach --file $TEMP_COMPUTE_FILE --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
+az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $AML_USER_MANAGED_ID_OID
 
 COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name $ATTACHED_COMPUTE_NAME --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query identity.principal_id --out tsv)
 
