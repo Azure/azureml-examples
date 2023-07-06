@@ -1,5 +1,5 @@
-# serverless-spark-standalone-managed-identity.yaml
-$schema: http://azureml/sdk-2-0/SparkJob.json
+# attached-spark-standalone-user-identity.yaml
+$schema: https://azuremlschemas.azureedge.net/latest/sparkJob.schema.json
 type: spark
 
 code: ./src
@@ -30,9 +30,6 @@ args: >-
   --wrangled_data ${{outputs.wrangled_data}}
 
 identity:
-  type: managed
+  type: user_identity
 
-resources:
-  instance_type: standard_e4s_v3
-  runtime_version: "3.2"
-  
+compute: mysparkcompute
