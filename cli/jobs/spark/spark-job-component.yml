@@ -1,0 +1,34 @@
+# spark-job-component.yaml
+$schema: https://azuremlschemas.azureedge.net/latest/sparkComponent.schema.json
+name: titanic_spark_component
+type: spark
+version: 1
+display_name: Titanic-Spark-Component
+description: Spark component for Titanic data
+
+code: ./src
+entry:
+  file: titanic.py
+
+inputs:
+  titanic_data:
+    type: uri_file
+    mode: direct
+
+outputs:
+  wrangled_data:
+    type: uri_folder
+    mode: direct
+
+args: >-
+  --titanic_data ${{inputs.titanic_data}}
+  --wrangled_data ${{outputs.wrangled_data}}
+
+conf:
+  spark.driver.cores: 1
+  spark.driver.memory: 2g
+  spark.executor.cores: 2
+  spark.executor.memory: 2g
+  spark.dynamicAllocation.enabled: True
+  spark.dynamicAllocation.minExecutors: 1
+  spark.dynamicAllocation.maxExecutors: 4
