@@ -15,7 +15,8 @@ ml_client = MLClient(
 )
 
 synapse_name = "<ATTACHED_SPARK_POOL_NAME>"
-synapse_resource = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.Synapse/workspaces/{synapse_workspace_name}/bigDataPools/{synapse_name}"
+spark_pool_name = "<SPARK_POOL_NAME>"
+synapse_resource = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.Synapse/workspaces/{synapse_workspace_name}/bigDataPools/{spark_pool_name}"
 
 synapse_comp = SynapseSparkCompute(name=synapse_name, resource_id=synapse_resource)
 ml_client.begin_create_or_update(synapse_comp).result()
@@ -36,7 +37,8 @@ ml_client = MLClient(
 )
 
 synapse_name = "<ATTACHED_SPARK_POOL_NAME>"
-synapse_resource = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.Synapse/workspaces/{synapse_workspace_name}/bigDataPools/{synapse_name}"
+spark_pool_name = "<SPARK_POOL_NAME>"
+synapse_resource = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.Synapse/workspaces/{synapse_workspace_name}/bigDataPools/{spark_pool_name}"
 synapse_identity = IdentityConfiguration(type="SystemAssigned")
 
 synapse_comp = SynapseSparkCompute(
@@ -69,7 +71,8 @@ ml_client = MLClient(
 )
 
 synapse_name = "<ATTACHED_SPARK_POOL_NAME_UAI>"
-synapse_resource = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.Synapse/workspaces/{synapse_workspace_name}/bigDataPools/{synapse_name}"
+spark_pool_name = "<SPARK_POOL_NAME>"
+synapse_resource = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.Synapse/workspaces/{synapse_workspace_name}/bigDataPools/{spark_pool_name}"
 synapse_identity = IdentityConfiguration(
     type="UserAssigned",
     user_assigned_identities=[
