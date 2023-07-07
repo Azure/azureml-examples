@@ -76,7 +76,7 @@ def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0):
 def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0):
     """Prepare image folder and csv file for batch inference.
 
-    This function will move all images to a single image folder and also create a csv 
+    This function will move all images to a single image folder and also create a csv
     file with images in base64 format.
     """
     image_list = []
