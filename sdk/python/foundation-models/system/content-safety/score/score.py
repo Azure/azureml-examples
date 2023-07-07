@@ -102,7 +102,7 @@ def get_aacs_access_key():
 
     uai_client_id = os.environ.get("UAI_CLIENT_ID")
     if not uai_client_id:
-        raise Exception(
+        raise RuntimeError(
             "Cannot get AACS access key, both UAI_CLIENT_ID and CONTENT_SAFETY_KEY are not set, exiting..."
         )
 
@@ -114,16 +114,12 @@ def get_aacs_access_key():
 
     credential = ManagedIdentityCredential(client_id=uai_client_id)
     cs_client = CognitiveServicesManagementClient(credential, subscription_id)
-    key = cs_client.accounts.list_keys(
-        resource_group_name=resource_group_name, account_name=aacs_account_name
-    ).key1
+    key = cs_client.accounts.list_keys(resource_group_name=resource_group_name, account_name=aacs_account_name).key1
 
     return key
 
 
-model_path = os.path.join(
-    os.getenv("AZUREML_MODEL_DIR"), os.getenv("MLFLOW_MODEL_FOLDER")
-)
+model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), os.getenv("MLFLOW_MODEL_FOLDER"))
 
 # model loaded here using mlfow.models import Model so we have access to the model signature
 model = Model.load(model_path)
@@ -140,9 +136,7 @@ output_param = None
 # signature information
 try:
     if model.saved_input_example_info:
-        sample_input_file_path = os.path.join(
-            model_path, model.saved_input_example_info["artifact_path"]
-        )
+        sample_input_file_path = os.path.join(model_path, model.saved_input_example_info["artifact_path"])
         with open(sample_input_file_path, "r") as sample_input_file:
             loaded_input = json.load(sample_input_file)
             if model.saved_input_example_info["type"] == "dataframe":
@@ -154,19 +148,14 @@ try:
             elif model.saved_input_example_info["type"] == "ndarray":
                 inputs = loaded_input["inputs"]
                 if isinstance(inputs, dict):
-                    sample_input = {
-                        input_name: np.asarray(input_value)
-                        for input_name, input_value in inputs.items()
-                    }
+                    sample_input = {input_name: np.asarray(input_value) for input_name, input_value in inputs.items()}
                 else:
                     sample_input = np.asarray(inputs)
             else:
                 _logger.warning(
                     'Unable to handle sample model input of type "{}", must be of type '
                     '"dataframe" or "ndarray. For more information, please see: '
-                    'https://aka.ms/aml-mlflow-deploy."'.format(
-                        model.saved_input_example_info["type"]
-                    )
+                    'https://aka.ms/aml-mlflow-deploy."'.format(model.saved_input_example_info["type"])
                 )
 except Exception as e:
     _logger.warning(
@@ -210,9 +199,7 @@ else:
             param_arg[key] = NumpyParameterType(value, enforce_shape=False)
         input_param = StandardPythonParameterType(param_arg)
     else:
-        input_param = PandasParameterType(
-            sample_input, enforce_shape=False, orient="split"
-        )
+        input_param = PandasParameterType(sample_input, enforce_shape=False, orient="split")
 
 if sample_output is None:
     output_param = NoSampleParameterType()
@@ -226,9 +213,7 @@ else:
             param_arg[key] = NumpyParameterType(value, enforce_shape=False)
         output_param = StandardPythonParameterType(param_arg)
     else:
-        output_param = PandasParameterType(
-            sample_output, enforce_shape=False, orient="records"
-        )
+        output_param = PandasParameterType(sample_output, enforce_shape=False, orient="records")
 
 # we use mlflow.pyfunc's load_model function because it has a predict function on it we need for inferencing
 model = load_model(model_path)
@@ -279,11 +264,7 @@ def analyze_text(text):
 def run(input_data):
     if (
         isinstance(input_data, np.ndarray)
-        or (
-            isinstance(input_data, dict)
-            and input_data
-            and isinstance(list(input_data.values())[0], np.ndarray)
-        )
+        or (isinstance(input_data, dict) and input_data and isinstance(list(input_data.values())[0], np.ndarray))
         or (pandas_installed and isinstance(input_data, pd.DataFrame))
     ):
         result = model.predict(input_data)
@@ -300,20 +281,12 @@ def run(input_data):
     elif isinstance(input_data, list):
         # if a list, assume the input is a numpy array
         input = np.asarray(input_data)
-    elif (
-        isinstance(input_data, dict)
-        and "columns" in input_data
-        and "index" in input_data
-        and "data" in input_data
-    ):
+    elif isinstance(input_data, dict) and "columns" in input_data and "index" in input_data and "data" in input_data:
         # if the dictionary follows pandas split column format, deserialize into a pandas Dataframe
         input = pd.read_json(json.dumps(input_data), orient="split", dtype=False)
     else:
         # otherwise, assume input is a named tensor, and deserialize into a dict[str, numpy.ndarray]
-        input = {
-            input_name: np.asarray(input_value)
-            for input_name, input_value in input_data.items()
-        }
+        input = {input_name: np.asarray(input_value) for input_name, input_value in input_data.items()}
 
     result = model.predict(input)
     severity = max([analyze_text(row[0]) for _, row in result.iterrows()])
