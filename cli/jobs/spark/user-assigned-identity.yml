@@ -1,0 +1,6 @@
+# user-assigned-identity.yaml
+identity:
+  type: "system_assigned,user_assigned"
+  user_assigned_identities:
+    "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<AML_USER_MANAGED_ID>" : {}
+      

@@ -1,13 +1,13 @@
-# serverless-spark-pipeline-managed-identity.yaml
-$schema: http://azureml/sdk-2-0/PipelineJob.json
+# attached-spark-pipeline-default-identity.yaml
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: Titanic-Spark-CLI-Pipeline-4
+display_name: Titanic-Spark-CLI-Pipeline-3
 description: Spark component for Titanic data in Pipeline
 
 jobs:
   spark_job:
     type: spark
-    component: ./spark-job-component.yaml
+    component: ./spark-job-component.yml
     inputs:
       titanic_data: 
         type: uri_file
@@ -20,9 +20,4 @@ jobs:
         path: azureml://datastores/workspaceblobstore/paths/data/wrangled/
         mode: direct
 
-    identity:
-      type: managed
-    
-    resources:
-      instance_type: standard_e8s_v3
-      runtime_version: "3.2"
+    compute: mysparkcompute
