@@ -12,7 +12,6 @@ env_key_of_llama_score_uri = "LLAMA_SCORE_URI"
 env_key_of_subscription_id = "SUBSCRIPTION_ID"
 env_key_of_resource_group_name = "RESOURCE_GROUP_NAME"
 env_key_of_workspace_name = "WORKSPACE_NAME"
-env_key_of_llama_endpoint_name = "LLAMA_ENDPOINT_NAME"
 
 
 def init():
@@ -49,28 +48,3 @@ def _get_aad_token_for_aacs():
     aacs_token = credential.get_token(
         "https://cognitiveservices.azure.com/.default"
     )  # get token for AACS
-
-
-def _get_llama_access_key():
-    """
-    Helper function to get the access key for LLaMA endpoint
-    """
-    credential = ManagedIdentityCredential(client_id=os.environ.get(env_key_of_uai_id))
-    subscription_id = os.environ.get(env_key_of_subscription_id)
-    resource_group = os.environ.get(env_key_of_resource_group_name)
-    workspace_name = os.environ.get(env_key_of_workspace_name)
-
-    ml_client = MLClient(
-        credential,
-        subscription_id=subscription_id,
-        resource_group_name=resource_group,
-        workspace_name=workspace_name,
-    )
-    llama_endpoint_name = os.environ.get(env_key_of_llama_endpoint_name)
-    if not llama_endpoint_name:
-        raise ValueError("LLaMA endpoint name is not provided")
-
-    llama_access_key = ml_client.online_endpoints.get_keys(
-        name=llama_endpoint_name
-    ).primary_key
-    return llama_access_key
