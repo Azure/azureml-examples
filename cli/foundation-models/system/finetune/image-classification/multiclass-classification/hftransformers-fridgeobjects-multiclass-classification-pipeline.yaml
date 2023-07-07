@@ -57,10 +57,12 @@ jobs:
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
 
-      image_width: 224
-      image_height: 224
-      number_of_workers: 8
+      auto_hyperparameter_selection: False
+      image_width: -1
+      image_height: -1
+      metric_for_best_model: accuracy
       apply_augmentations: True
+      number_of_workers: 8
       apply_deepspeed: False
       deepspeed_config: ${{parent.inputs.ds_finetune}}
       apply_ort: False
@@ -74,9 +76,9 @@ jobs:
       warmup_steps: 0
       optimizer: adamw_hf
       weight_decay: 0.0
+      extra_optim_args: ""
       gradient_accumulation_step: 1
       precision: 32
-      metric_for_best_model: accuracy
       label_smoothing_factor: 0.0
       random_seed: 42
       evaluation_strategy: epoch
