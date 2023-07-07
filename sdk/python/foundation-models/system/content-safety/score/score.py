@@ -11,7 +11,6 @@ from inference_schema.schema_decorators import input_schema, output_schema
 from mlflow.models import Model
 from mlflow.pyfunc import load_model
 from mlflow.pyfunc.scoring_server import _get_jsonable_obj
-from mlmonitoring import Collector
 
 _logger = logging.getLogger(__name__)
 
@@ -187,38 +186,21 @@ model = load_model(model_path)
 
 
 def init():
-    global inputs_collector, outputs_collector
-    try:
-        inputs_collector = Collector(name='model_inputs')
-        outputs_collector = Collector(name='model_outputs')
-        _logger.info("Input and output collector initialized")
-    except Exception as e:
-        _logger.error("Error initializing model_inputs collector and model_outputs collector. {}".format(e))
+    _logger.info("init")
+
+
 
 
 @input_schema("input_data", input_param)
 @output_schema(output_param)
 def run(input_data):
-    context = None
     if (
         isinstance(input_data, np.ndarray)
         or (isinstance(input_data, dict) and input_data and isinstance(list(input_data.values())[0], np.ndarray))
         or (pandas_installed and isinstance(input_data, pd.DataFrame))
     ):
-        # Collect model input
-        try:
-            context = inputs_collector.collect(input_data)
-        except Exception as e:
-            _logger.error("Error collecting model_inputs collection request. {}".format(e))
 
         result = model.predict(input_data)
-
-        # Collect model output
-        try:
-            mdc_output_df = pd.DataFrame(result)
-            outputs_collector.collect(mdc_output_df, context)
-        except Exception as e:
-            _logger.error("Error collecting model_outputs collection request. {}".format(e))
 
         return _get_jsonable_obj(result, pandas_orient="records")
 
@@ -239,19 +221,7 @@ def run(input_data):
         # otherwise, assume input is a named tensor, and deserialize into a dict[str, numpy.ndarray]
         input = {input_name: np.asarray(input_value) for input_name, input_value in input_data.items()}
 
-    # Collect model input
-    try:
-        context = inputs_collector.collect(input)
-    except Exception as e:
-        _logger.error("Error collecting model_inputs collection request. {}".format(e))
-
     result = model.predict(input)
 
-    # Collect output data
-    try:
-        mdc_output_df = pd.DataFrame(result)
-        outputs_collector.collect(mdc_output_df, context)
-    except Exception as e:
-        _logger.error("Error collecting model_outputs collection request. {}".format(e))
 
     return _get_jsonable_obj(result, pandas_orient="records")
