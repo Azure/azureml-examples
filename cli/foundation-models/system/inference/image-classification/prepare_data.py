@@ -2,24 +2,34 @@ import argparse
 import base64
 import json
 import os
-import urllib
+import shutil
+import urllib.request
+import pandas as pd
 from zipfile import ZipFile
 
 
 def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int):
-
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # download data
     if is_multilabel_dataset == 0:
-        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
+        download_url = (
+            "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
+        )
     else:
-        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
+        download_url = (
+            "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
+        )
     print(f"Downloading data from {download_url}")
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
+    # Get dataset path for later use
+    dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
+
+    if os.path.exists(dataset_dir):
+        shutil.rmtree(dataset_dir)
 
     # Get the name of zip file
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
@@ -34,43 +44,75 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int):
         print("done")
     # delete zip file
     os.remove(data_file)
+    return dataset_dir
 
 
 def read_image(image_path):
     with open(image_path, "rb") as f:
         return f.read()
 
+
+def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0):
+    """Prepare request json for online inference"""
+    if is_multilabel == 0:
+        sample_image = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
+    else:
+        sample_image = os.path.join(dataset_dir, "images", "56.jpg")
+
+    request_json = {
+        "input_data": {
+            "columns": ["image"],
+            "index": [0],
+            "data": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
+        }
+    }
+
+    request_file_name = os.path.join(dataset_dir, "sample_request_data.json")
+
+    with open(request_file_name, "w") as request_file:
+        json.dump(request_json, request_file)
+
+
+def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0):
+    """Prepare image folder and csv file for batch inference.
+
+    This function will move all images to a single image folder and also create a csv 
+    file with images in base64 format.
+    """
+    image_list = []
+
+    csv_file_name = "ml_image_list.csv" if is_multilabel == 1 else "mc_image_list.csv"
+
+    for dir_name in os.listdir(dataset_dir):
+        dir_path = os.path.join(dataset_dir, dir_name)
+        for path, _, files in os.walk(dir_path):
+            for file in files:
+                image = read_image(os.path.join(path, file))
+                image_list.append(base64.encodebytes(image).decode("utf-8"))
+                shutil.move(os.path.join(path, file), dataset_dir)
+        if os.path.isdir(dir_path):
+            shutil.rmtree(dir_path)
+        else:
+            os.remove(dir_path)
+    df = pd.DataFrame(image_list, columns=["image"]).sample(10)
+    df.to_csv(os.path.join(os.path.dirname(dataset_dir), csv_file_name), index=False, header=True)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Prepare data for image classification"
-    )
-    parser.add_argument(
-        "--data_path", type=str, default="./data", help="Dataset location"
-    )
-    parser.add_argument(
-        "--is_multilabel", type=int, default=0, help="Is multilabel dataset"
-    )
+    parser = argparse.ArgumentParser(description="Prepare data for image classification")
+    parser.add_argument("--data_path", type=str, default="data", help="Dataset location")
+    parser.add_argument("--is_multilabel", type=int, default=0, help="Is multilabel dataset")
+    parser.add_argument("--mode", type=str, default="online", help="prepare data for online or batch inference")
 
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
 
-    download_and_unzip(
-        dataset_parent_dir=args.data_path,
+    dataset_dir = download_and_unzip(
+        dataset_parent_dir=os.path.join(os.path.dirname(os.path.abspath(__file__)), args.data_path),
         is_multilabel_dataset=args.is_multilabel,
     )
 
-    if args.is_multilabel == 0:
-        sample_image = os.path.join(args.data_path, "fridgeObjects", "milk_bottle", "99.jpg")
+    if args.mode == "online":
+        prepare_data_for_online_inference(dataset_dir=dataset_dir, is_multilabel=args.is_multilabel)
     else:
-        sample_image = os.path.join(args.data_path, "multilabelFridgeObjects", "images", "56.jpg")
-
-    request_json = {
-        "inputs": {
-            "image": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
-        }
-    }
-
-    request_file_name = "sample_request_data.json"
-
-    with open(request_file_name, "w") as request_file:
-        json.dump(request_json, request_file)
+        prepare_data_for_batch_inference(dataset_dir=dataset_dir, is_multilabel=args.is_multilabel)
