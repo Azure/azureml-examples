@@ -11,6 +11,9 @@ from inference_schema.schema_decorators import input_schema, output_schema
 from mlflow.models import Model
 from mlflow.pyfunc import load_model
 from mlflow.pyfunc.scoring_server import _get_jsonable_obj
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.contentsafety.models import AnalyzeTextOptions
 
 _logger = logging.getLogger(__name__)
 
@@ -189,6 +192,40 @@ def init():
     _logger.info("init")
 
 
+def analyze_text(text):
+    endpoint = os.environ.get('CONTENT_SAFETY_ENDPOINT')
+    key = os.environ.get('CONTENT_SAFETY_KEY')
+
+
+    # Create an Content Safety client
+    client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
+
+    # Build request
+    request = AnalyzeTextOptions(text = text)
+
+    # Analyze text
+    try:
+        response = client.analyze_text(request)
+    except Exception as e:
+        raise e
+    
+    severity = 0
+
+    if response.hate_result is not None:
+        _logger.info("Hate severity: {}".format(response.hate_result.severity))
+        severity = max(severity, response.hate_result.severity)
+    if response.self_harm_result is not None:
+        _logger.info("SelfHarm severity: {}".format(response.self_harm_result.severity))
+        severity = max(severity, response.self_harm_result.severity)
+    if response.sexual_result is not None:
+        _logger.info("Sexual severity: {}".format(response.sexual_result.severity))
+        severity = max(severity, response.sexual_result.severity)
+    if response.violence_result is not None:
+        _logger.info("Violence severity: {}".format(response.violence_result.severity))
+        severity = max(severity, response.violence_result.severity)
+    
+    return severity
+
 
 
 @input_schema("input_data", input_param)
@@ -222,6 +259,9 @@ def run(input_data):
         input = {input_name: np.asarray(input_value) for input_name, input_value in input_data.items()}
 
     result = model.predict(input)
+    severity = max([analyze_text(row[0]) for _, row in result.iterrows()])
+    if severity > 2:
+        return ""
 
 
     return _get_jsonable_obj(result, pandas_orient="records")
