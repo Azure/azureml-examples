@@ -1,9 +1,0 @@
-name: aacs-conda
-channels:
-  - defaults
-dependencies:
-  - python=3.9
-  - pip:
-    - azure-identity==1.13.0
-    - azure-ai-ml==1.8.0
-    - azureml-inference-server-http==0.8.4
