@@ -12,4 +12,5 @@ dependencies:
   - azure-ai-contentsafety==1.0.0b1
   - azureml-inference-server-http~=0.8.0
   - xformers==0.0.20
+  - aiolimiter==1.1.0
 name: mlflow-env
