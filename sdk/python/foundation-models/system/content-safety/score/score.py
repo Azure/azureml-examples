@@ -243,6 +243,13 @@ model = load_model(model_path)
 
 
 def init():
+    global aacs_client
+    endpoint = os.environ.get('CONTENT_SAFETY_ENDPOINT')
+    key = os.environ.get('CONTENT_SAFETY_KEY')
+
+    # Create an Content Safety client
+    aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
+
     _logger.info("init")
 
 
@@ -276,12 +283,6 @@ def analyze_response(response):
     return severity
 
 def analyze_text(text):
-    endpoint = os.environ.get('CONTENT_SAFETY_ENDPOINT')
-    key = os.environ.get('CONTENT_SAFETY_KEY')
-
-    # Create an Content Safety client
-    client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
-
     # Chunk text
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
     split_text = chunking_utils.split_by(text)
@@ -289,7 +290,7 @@ def analyze_text(text):
     tasks = []
     for i in split_text:
         request = AnalyzeTextOptions(text = i)
-        tasks.append(async_analyze_text_task(client, request))
+        tasks.append(async_analyze_text_task(aacs_client, request))
 
     done, pending = asyncio.get_event_loop().run_until_complete(
         asyncio.wait(tasks, timeout=60)
