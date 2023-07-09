@@ -302,6 +302,18 @@ def analyze_text(text):
     
     return max([d.result() for d in done])
 
+def get_safe_response(result):
+    jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
+    return_result = []
+    for d in jsonable_result:
+        result = d[0]
+        if analyze_text(result) > 2:
+            return_result.append({0: ''})
+        else:
+            return_result.append(d)
+    return return_result
+
+
 @input_schema("input_data", input_param)
 @output_schema(output_param)
 def run(input_data):
@@ -313,7 +325,7 @@ def run(input_data):
 
         result = model.predict(input_data)
 
-        return _get_jsonable_obj(result, pandas_orient="records")
+        return get_safe_response(result)
 
     # Format input
     if isinstance(input_data, str):
@@ -344,19 +356,9 @@ def run(input_data):
 
     # note, each additional separate sample would take about 15s to process. Given timeout of 90s, samples > 5 have high chance of timeout.
     result = model.predict(input)
-    jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
     # jsnoable result is a list that looks like this:
     """
     [{0: 'first result'}, {0: 'second result'}]
     """
 
-    return_result = []
-    for d in jsonable_result:
-        result = d[0]
-        if analyze_text(result) > 2:
-            return_result.append({0: ''})
-        else:
-            return_result.append(d)
-
-
-    return return_result
+    return get_safe_response(result)
