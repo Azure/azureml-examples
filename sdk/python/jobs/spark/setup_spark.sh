@@ -75,8 +75,8 @@ then
 #<setup_interactive_session_resources>
 elif [[ "$2" == *"run_interactive_session_notebook"* ]]
 then
-	NOTEBOOK_TO_CONVERT="../../data-wrangling/interactive_data_wrangling.ipynb"
-	ipython nbconvert $NOTEBOOK_TO_CONVERT --to script
+	#NOTEBOOK_TO_CONVERT="../../data-wrangling/interactive_data_wrangling.ipynb"
+	#ipython nbconvert $NOTEBOOK_TO_CONVERT --to script
 
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
@@ -88,7 +88,7 @@ then
 	az keyvault secret set --name $ACCESS_KEY_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $ACCOUNT_KEY
 
 	END_TIME=`date -u -d "60 minutes" '+%Y-%m-%dT%H:%MZ'`
-	SAS_TOKEN=`az storage container generate-sas -n $BLOB_CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --https-only --permissions dlrw --expiry $end -o tsv`
+	SAS_TOKEN=`az storage container generate-sas -n $AZUREML_DEFAULT_CONTAINER --account-name $AZURE_STORAGE_ACCOUNT --https-only --permissions dlrw --expiry $end -o tsv`
 	SAS_TOKEN_SECRET_NAME="autotestsastoken"
 	az keyvault secret set --name $SAS_TOKEN_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SAS_TOKEN
 
@@ -105,7 +105,7 @@ then
 	SP_OBJECTID=$(echo $LIST_SP_DETAILS | jq -r '[0].id')
 	SP_TENANTID=$(echo $LIST_SP_DETAILS | jq -r '[0].appOwnerOrganizationId')
 	SPA_SP_SECRET=$(az ad sp credential reset --id $SP_OBJECTID --query "password")
-
+	USER="azuremlsdk"
 	CLIENT_ID_SECRET_NAME="autotestspsecretclient"
 	TENANT_ID_SECRET_NAME="autotestspsecrettenant"
 	CLIENT_SECRET_NAME="autotestspsecret"
@@ -123,7 +123,8 @@ then
 		s/<FILE_SYSTEM_NAME>/$FILE_SYSTEM_NAME/g;
 		s/<CLIENT_ID_SECRET_NAME>/$CLIENT_ID_SECRET_NAME/g;
 		s/<TENANT_ID_SECRET_NAME>/$TENANT_ID_SECRET_NAME/g;
-		s/<CLIENT_SECRET_NAME>/$CLIENT_SECRET_NAME/g;" $NOTEBOOK_PY
+		s/<CLIENT_SECRET_NAME>/$CLIENT_SECRET_NAME/g;
+		s/<USER>/$USER/g;" $NOTEBOOK_PY
 #</setup_interactive_session_resources>
 else
 	#<create_attached_resources>
