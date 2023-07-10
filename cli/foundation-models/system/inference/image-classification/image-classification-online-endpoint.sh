@@ -11,18 +11,23 @@ workspace_name="<WORKSPACE_NAME>"
 # This is the model from system registry that needs to be deployed
 model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
 # using the latest version of the model - not working yet
-model_version=1
+model_version=2
 
 version=$(date +%s)
 endpoint_name="image-classification-$version"
 
 # todo: fetch deployment_sku from the min_inference_sku tag of the model
-deployment_sku="Standard_DS2_v3"
+deployment_sku="Standard_DS3_v2"
 
 # Prepare data for deployment
-python ./prepare_data.py --is_multilabel 0
+python ./prepare_data.py --is_multilabel 0 --data_path "data_online" --mode "online"
 # sample_request_data
-sample_request_data="./sample_request_data.json"
+if [ $multi_label -eq 1 ]
+then
+    sample_request_data="./data_online/multilabelFridgeObjects/sample_request_data.json"
+else
+    sample_request_data="./data_online/fridgeObjects/sample_request_data.json"
+fi
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
@@ -50,7 +55,7 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy.yml $workspace_info --all-traffic --set \
+az ml online-deployment create --file deploy-online.yaml $workspace_info --all-traffic --set \
   endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
