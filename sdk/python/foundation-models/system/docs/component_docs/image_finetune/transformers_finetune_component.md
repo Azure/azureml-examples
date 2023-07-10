@@ -21,16 +21,25 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
 5. _image_height_ (int, optional)
 
-    Final Image height after augmentation that is input to the network. The default value is 224.
+    Final Image height after augmentation that is input to the network. Default value is -1 which means it would be overwritten by default image height in Hugging Face feature extractor. If either image_width or image_height is set to -1, default value would be used for both width and height.
 
 6. _image_width_ (int, optional)
 
-    Final Image width after augmentation that is input to the network. The default value is 224.
+    Final Image width after augmentation that is input to the network. Default value is -1 which means it would be overwritten by default image width in Hugging Face feature extractor. If either image_width or image_height is set to -1, default value would be used for both width and height.
 
 7. _task_name_ (string, required)
 
     Which task the model is solving.
     It could be one of [`image-classification`, `image-classification-multilabel`].
+
+7. _metric_for_best_model_ (string, optional)
+
+    Specify the metric to use to compare two different models. The default value is accuracy. It could be one of
+    [`loss`, `f1_score_macro`, 
+     `accuracy`, `precision_score_macro`, 
+     `recall_score_macro`, `iou`, 
+     `iou_macro`, `iou_micro`, 
+     `iou_weighted`]
 
 8. _apply_augmentations_ (bool, optional)
 
@@ -81,7 +90,7 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
 19. _learning_rate_scheduler_ (string, optional)
 
-    The learning rate scheduler to use. The default value is warmup_linear.
+    The learning rate scheduler to use.
     It could be one of [`warmup_linear`, `warmup_cosine`, `warmup_cosine_with_restarts`, `warmup_polynomial`,
     `constant`, `warmup_constant`]
 
@@ -91,12 +100,18 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
 21. _optimizer_ (string, optional)
 
-    Optimizer to be used while training. The default value is adamw_hf.
+    Optimizer to be used while training.
     It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`]
 
 22. _weight_decay_ (float, optional)
 
     The weight decay to apply (if not zero) to all layers except all bias and LayerNorm weights in AdamW optimizer. The default value is 0.
+
+23. _extra_optim_args_: (string, optional)
+
+    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter
+    names, please refer https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay"
+    parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
 
 23. _gradient_accumulation_step_ (int, optional)
 
@@ -107,9 +122,6 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
     Apply mixed precision training. This can reduce memory footprint by performing operations in half-precision. The default value is 32.
     It could one of [`16`, `32`]
 
-25. _metric_for_best_model_ (string, optional)
-
-    Specify the metric to use to compare two different models. The default value is accuracy.
 
 26. _label_smoothing_factor_ (float, optional)
 
