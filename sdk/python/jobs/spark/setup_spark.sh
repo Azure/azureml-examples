@@ -76,12 +76,14 @@ then
 elif [[ "$2" == *"run_interactive_session_notebook"* ]]
 then
 	NOTEBOOK_TO_CONVERT="../../data-wrangling/interactive_data_wrangling.ipynb"
-	jupyter nbconvert $NOTEBOOK_TO_CONVERT --to script
+	ipython nbconvert $NOTEBOOK_TO_CONVERT --to script
 
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
-	KEY_VAULT=$(az ml workspace show -g $RESOURCE_GROUP -n $AML_WORKSPACE_NAME --query key_vault -o tsv)
-	KEY_VAULT_NAME=$(basename "$KEY_VAULT")
+
+	KEY_VAULT_NAME="autotestsparkkv"
+	az keyvault create -n $KEY_VAULT_NAME -g $RESOURCE_GROUP
+
 	NOTEBOOK_PY="../../data-wrangling/interactive_data_wrangling.py"
 	az keyvault secret set --name $ACCESS_KEY_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $ACCOUNT_KEY
 
