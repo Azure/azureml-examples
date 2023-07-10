@@ -43,10 +43,6 @@ az identity create --name $AML_USER_MANAGED_ID --resource-group $RESOURCE_GROUP 
 AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $AML_USER_MANAGED_ID --query principalId -o tsv)
 #</create_uai>
 
-#<copy_datawrangling_notebook>
-
-#</copy_datawrangling_notebook>
-ipython nbconvert --to script ../../data-wrangling/run_interactive_session_notebook.ipynb
 #<setup_vnet_resources>
 if [[ "$2" == *"managed_vnet"* ]]
 then
@@ -63,7 +59,7 @@ then
 
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
-	KEY_VAULT=$(az ml workspace show -g feli1devrg -n automation-eus --query key_vault -o tsv)
+	KEY_VAULT=$(az ml workspace show -g $RESOURCE_GROUP -n $AML_WORKSPACE_NAME --query key_vault -o tsv)
 	KEY_VAULT_NAME=$(basename "$KEY_VAULT")
 	az keyvault secret set --name $ACCESS_KEY_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $ACCOUNT_KEY
 
@@ -76,6 +72,57 @@ then
 		s/<GEN2_STORAGE_ACCOUNT_NAME>/$GEN2_STORAGE_ACCOUNT_NAME/g;
 		s/<ADLS_CONTAINER_NAME>/$ADLS_CONTAINER_NAME/g;" $2
 #</setup_vnet_resources>
+#<setup_interactive_session_resources>
+elif [[ "$2" == *"interactive_data_wrangling"* ]]
+then
+	NOTEBOOK_TO_CONVERT="../../data-wrangling/interactive_data_wrangling.ipynb"
+	jupyter nbconvert $NOTEBOOK_TO_CONVERT --to script
+
+	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
+	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
+	KEY_VAULT=$(az ml workspace show -g $RESOURCE_GROUP -n $AML_WORKSPACE_NAME --query key_vault -o tsv)
+	KEY_VAULT_NAME=$(basename "$KEY_VAULT")
+	NOTEBOOK_PY="../../data-wrangling/interactive_data_wrangling.py"
+	az keyvault secret set --name $ACCESS_KEY_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $ACCOUNT_KEY
+
+	END_TIME=`date -u -d "60 minutes" '+%Y-%m-%dT%H:%MZ'`
+	SAS_TOKEN=`az storage container generate-sas -n $BLOB_CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --https-only --permissions dlrw --expiry $end -o tsv`
+	SAS_TOKEN_SECRET_NAME="autotestsastoken"
+	az keyvault secret set --name $SAS_TOKEN_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SAS_TOKEN
+
+	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2
+	FILE_SYSTEM_NAME=${RESOURCE_GROUP}file
+	az storage account create --name $GEN2_STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
+	az storage fs create -n $FILE_SYSTEM_NAME --account-name $GEN2_STORAGE_ACCOUNT_NAME
+	az role assignment create --role "Storage Blob Data Contributor" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
+
+	SERVICE_PRINCIPAL_NAME="${RESOURCE_GROUP}sp"
+	az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME
+	LIST_SP_DETAILS=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME)
+	SP_APPID=$(echo $LIST_SP_DETAILS | jq -r '[0].appId')
+	SP_OBJECTID=$(echo $LIST_SP_DETAILS | jq -r '[0].id')
+	SP_TENANTID=$(echo $LIST_SP_DETAILS | jq -r '[0].appOwnerOrganizationId')
+	SPA_SP_SECRET=$(az ad sp credential reset --id $SP_OBJECTID --query "password")
+
+	CLIENT_ID_SECRET_NAME="autotestspsecretclient"
+	TENANT_ID_SECRET_NAME="autotestspsecrettenant"
+	CLIENT_SECRET_NAME="autotestspsecret"
+	az keyvault secret set --name $CLIENT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_APPID
+	az keyvault secret set --name $TENANT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_TENANTID
+	az keyvault secret set --name $CLIENT_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SPA_SP_SECRET
+	az role assignment create --role "Storage Blob Data Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
+
+	sed -i "s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;
+		s/<ACCESS_KEY_SECRET_NAME>/$ACCESS_KEY_SECRET_NAME/g;
+		s/<STORAGE_ACCOUNT_NAME>/$AZURE_STORAGE_ACCOUNT/g;
+		s/<BLOB_CONTAINER_NAME>/$BLOB_CONTAINER_NAME/g
+		s/<SAS_TOKEN_SECRET_NAME>/$SAS_TOKEN_SECRET_NAME/g;
+		s/<GEN2_STORAGE_ACCOUNT_NAME>/$GEN2_STORAGE_ACCOUNT_NAME/g
+		s/<FILE_SYSTEM_NAME>/$FILE_SYSTEM_NAME/g;
+		s/<CLIENT_ID_SECRET_NAME>/$CLIENT_ID_SECRET_NAME/g;
+		s/<TENANT_ID_SECRET_NAME>/$TENANT_ID_SECRET_NAME/g;
+		s/<CLIENT_SECRET_NAME>/$CLIENT_SECRET_NAME/g;" $NOTEBOOK_PY
+#</setup_interactive_session_resources>
 else
 	#<create_attached_resources>
 	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
