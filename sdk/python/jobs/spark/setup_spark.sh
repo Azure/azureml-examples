@@ -73,7 +73,7 @@ then
 		s/<ADLS_CONTAINER_NAME>/$ADLS_CONTAINER_NAME/g;" $2
 #</setup_vnet_resources>
 #<setup_interactive_session_resources>
-elif [[ "$2" == *"interactive_data_wrangling"* ]]
+elif [[ "$2" == *"run_interactive_session_notebook"* ]]
 then
 	NOTEBOOK_TO_CONVERT="../../data-wrangling/interactive_data_wrangling.ipynb"
 	jupyter nbconvert $NOTEBOOK_TO_CONVERT --to script
