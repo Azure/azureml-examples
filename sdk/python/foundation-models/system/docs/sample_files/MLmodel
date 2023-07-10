@@ -1,0 +1,4 @@
+flavors:
+  hftransformers:
+    # Below huggingface_id is a sample. Replace it with actual value
+    huggingface_id: bert-base-cased
