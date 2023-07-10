@@ -1,5 +1,5 @@
-# attached-spark-standalone-user-identity.yaml
-$schema: http://azureml/sdk-2-0/SparkJob.json
+# attached-spark-standalone-default-identity.yaml
+$schema: https://azuremlschemas.azureedge.net/latest/sparkJob.schema.json
 type: spark
 
 code: ./src
@@ -28,8 +28,5 @@ outputs:
 args: >-
   --titanic_data ${{inputs.titanic_data}}
   --wrangled_data ${{outputs.wrangled_data}}
-
-identity:
-  type: user_identity
 
 compute: mysparkcompute
