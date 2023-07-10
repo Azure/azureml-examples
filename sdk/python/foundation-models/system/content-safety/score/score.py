@@ -6,9 +6,13 @@ import os
 
 from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor
-from inference_schema.parameter_types.abstract_parameter_type import AbstractParameterType
+from inference_schema.parameter_types.abstract_parameter_type import (
+    AbstractParameterType,
+)
 from inference_schema.parameter_types.numpy_parameter_type import NumpyParameterType
-from inference_schema.parameter_types.standard_py_parameter_type import StandardPythonParameterType
+from inference_schema.parameter_types.standard_py_parameter_type import (
+    StandardPythonParameterType,
+)
 from inference_schema.schema_decorators import input_schema, output_schema
 from mlflow.models import Model
 from mlflow.pyfunc import load_model
@@ -25,16 +29,25 @@ _logger = logging.getLogger(__name__)
 pandas_installed = False
 try:
     import pandas as pd
-    from inference_schema.parameter_types.pandas_parameter_type import PandasParameterType
+    from inference_schema.parameter_types.pandas_parameter_type import (
+        PandasParameterType,
+    )
 
     pandas_installed = True
 except ImportError as exception:
-    _logger.warning('Unable to import pandas')
+    _logger.warning("Unable to import pandas")
+
 
 class AsyncRateLimitedOpsUtils:
     # 1000 requests / 10 seconds. Limiting to 800 request per 10 secods
     # limiting to 1000 concurrent requests
-    def __init__(self, ops_count=800, ops_seconds=10, concurrent_ops=1000, thread_max_workers=1000):
+    def __init__(
+        self,
+        ops_count=800,
+        ops_seconds=10,
+        concurrent_ops=1000,
+        thread_max_workers=1000,
+    ):
         self.limiter = AsyncLimiter(ops_count, ops_seconds)
         self.semaphore = asyncio.Semaphore(value=concurrent_ops)
         # need thread pool executor for sync function
@@ -49,19 +62,21 @@ class AsyncRateLimitedOpsUtils:
     def get_executor(self):
         return self.executor
 
+
 async_rate_limiter = AsyncRateLimitedOpsUtils()
+
 
 class CsChunkingUtils:
     def __init__(self, chunking_n=1000, delimiter="."):
         self.delimiter = delimiter
         self.chunking_n = chunking_n
-    
+
     def chunkstring(self, string, length):
-        return (string[0+i:length+i] for i in range(0, len(string), length))
+        return (string[0 + i : length + i] for i in range(0, len(string), length))
 
     def split_by(self, input):
         max_n = self.chunking_n
-        split = [e+self.delimiter for e in input.split(self.delimiter) if e]
+        split = [e + self.delimiter for e in input.split(self.delimiter) if e]
         ret = []
         buffer = ""
 
@@ -77,10 +92,11 @@ class CsChunkingUtils:
             else:
                 ret.append(buffer)
                 buffer = i
-                
+
         if len(buffer) > 0:
             ret.append(buffer)
         return ret
+
 
 class NoSampleParameterType(AbstractParameterType):
     def __init__(self):
@@ -142,7 +158,9 @@ def create_col_spec_sample_io(model_signature_io):
     return df.astype(dtype=schema)
 
 
-model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), os.getenv("MLFLOW_MODEL_FOLDER"))
+model_path = os.path.join(
+    os.getenv("AZUREML_MODEL_DIR"), os.getenv("MLFLOW_MODEL_FOLDER")
+)
 
 # model loaded here using mlfow.models import Model so we have access to the model signature
 model = Model.load(model_path)
@@ -159,27 +177,34 @@ output_param = None
 # signature information
 try:
     if model.saved_input_example_info:
-        sample_input_file_path = os.path.join(model_path, model.saved_input_example_info['artifact_path'])
-        with open(sample_input_file_path, 'r') as sample_input_file:
+        sample_input_file_path = os.path.join(
+            model_path, model.saved_input_example_info["artifact_path"]
+        )
+        with open(sample_input_file_path, "r") as sample_input_file:
             loaded_input = json.load(sample_input_file)
-            if model.saved_input_example_info['type'] == 'dataframe':
+            if model.saved_input_example_info["type"] == "dataframe":
                 sample_input = pd.read_json(
                     json.dumps(loaded_input),
-                    orient=model.saved_input_example_info['pandas_orient'],
-                    dtype=False
+                    orient=model.saved_input_example_info["pandas_orient"],
+                    dtype=False,
                 )
             elif model.saved_input_example_info["type"] == "ndarray":
                 inputs = loaded_input["inputs"]
                 if isinstance(inputs, dict):
                     sample_input = {
-                        input_name: np.asarray(input_value) for input_name, input_value in inputs.items()
+                        input_name: np.asarray(input_value)
+                        for input_name, input_value in inputs.items()
                     }
                 else:
                     sample_input = np.asarray(inputs)
             else:
-                _logger.warning('Unable to handle sample model input of type "{}", must be of type '
-                                '"dataframe" or "ndarray. For more information, please see: '
-                                'https://aka.ms/aml-mlflow-deploy."'.format(model.saved_input_example_info['type']))
+                _logger.warning(
+                    'Unable to handle sample model input of type "{}", must be of type '
+                    '"dataframe" or "ndarray. For more information, please see: '
+                    'https://aka.ms/aml-mlflow-deploy."'.format(
+                        model.saved_input_example_info["type"]
+                    )
+                )
 except Exception as e:
     _logger.warning(
         "Failure processing model sample input: {}.\nWill attempt to create sample input based on model signature. "
@@ -222,7 +247,9 @@ else:
             param_arg[key] = NumpyParameterType(value, enforce_shape=False)
         input_param = StandardPythonParameterType(param_arg)
     else:
-        input_param = PandasParameterType(sample_input, enforce_shape=False, orient='split')
+        input_param = PandasParameterType(
+            sample_input, enforce_shape=False, orient="split"
+        )
 
 if sample_output is None:
     output_param = NoSampleParameterType()
@@ -236,7 +263,9 @@ else:
             param_arg[key] = NumpyParameterType(value, enforce_shape=False)
         output_param = StandardPythonParameterType(param_arg)
     else:
-        output_param = PandasParameterType(sample_output, enforce_shape=False, orient='records')
+        output_param = PandasParameterType(
+            sample_output, enforce_shape=False, orient="records"
+        )
 
 # we use mlflow.pyfunc's load_model function because it has a predict function on it we need for inferencing
 model = load_model(model_path)
@@ -244,8 +273,8 @@ model = load_model(model_path)
 
 def init():
     global aacs_client
-    endpoint = os.environ.get('CONTENT_SAFETY_ENDPOINT')
-    key = os.environ.get('CONTENT_SAFETY_KEY')
+    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
+    key = os.environ.get("CONTENT_SAFETY_KEY")
 
     # Create an Content Safety client
     aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
@@ -263,6 +292,7 @@ async def async_analyze_text_task(client, request):
         sem.release()
         severity = analyze_response(response)
         return severity
+
 
 def analyze_response(response):
     severity = 0
@@ -282,6 +312,7 @@ def analyze_response(response):
 
     return severity
 
+
 def analyze_text(text):
     # Chunk text
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
@@ -289,7 +320,7 @@ def analyze_text(text):
 
     tasks = []
     for i in split_text:
-        request = AnalyzeTextOptions(text = i)
+        request = AnalyzeTextOptions(text=i)
         tasks.append(async_analyze_text_task(aacs_client, request))
 
     done, pending = asyncio.get_event_loop().run_until_complete(
@@ -299,8 +330,9 @@ def analyze_text(text):
     if len(pending) > 0:
         # not all task finished, assume failed
         return 2
-    
+
     return max([d.result() for d in done])
+
 
 def get_safe_response(result):
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
@@ -308,7 +340,7 @@ def get_safe_response(result):
     for d in jsonable_result:
         result = d[0]
         if analyze_text(result) > 2:
-            return_result.append({0: ''})
+            return_result.append({0: ""})
         else:
             return_result.append(d)
     return return_result
@@ -319,10 +351,13 @@ def get_safe_response(result):
 def run(input_data):
     if (
         isinstance(input_data, np.ndarray)
-        or (isinstance(input_data, dict) and input_data and isinstance(list(input_data.values())[0], np.ndarray))
+        or (
+            isinstance(input_data, dict)
+            and input_data
+            and isinstance(list(input_data.values())[0], np.ndarray)
+        )
         or (pandas_installed and isinstance(input_data, pd.DataFrame))
     ):
-
         result = model.predict(input_data)
 
         return get_safe_response(result)
@@ -330,21 +365,29 @@ def run(input_data):
     # Format input
     if isinstance(input_data, str):
         input_data = json.loads(input_data)
-    if 'input_data' in input_data:
-        input_data = input_data['input_data']
+    if "input_data" in input_data:
+        input_data = input_data["input_data"]
     if is_hfv2:
         input = input_data
     elif isinstance(input_data, list):
         # if a list, assume the input is a numpy array
         input = np.asarray(input_data)
-    elif isinstance(input_data, dict) and "columns" in input_data and "index" in input_data and "data" in input_data:
+    elif (
+        isinstance(input_data, dict)
+        and "columns" in input_data
+        and "index" in input_data
+        and "data" in input_data
+    ):
         # if the dictionary follows pandas split column format, deserialize into a pandas Dataframe
         input = pd.read_json(json.dumps(input_data), orient="split", dtype=False)
     else:
         # otherwise, assume input is a named tensor, and deserialize into a dict[str, numpy.ndarray]
-        input = {input_name: np.asarray(input_value) for input_name, input_value in input_data.items()}
+        input = {
+            input_name: np.asarray(input_value)
+            for input_name, input_value in input_data.items()
+        }
 
-    # input json string should look something like this: 
+    # input json string should look something like this:
     """{
         "input_data": {
             "any": {
