@@ -31,10 +31,10 @@ python ./prepare_data.py --is_multilabel $multi_label --mode "batch" --data_path
 # sample request data in csv format with image column
 if [ $multi_label -eq 1 ]
 then
-    sample_request_csv="./data_batch/ml_image_list.csv"
+    sample_request_csv="./data_batch/image_classification_multilabel_lis.csv"
     sample_request_folder="./data_batch/multilabelFridgeObjects"
 else
-    sample_request_csv="./data_batch/mc_image_list.csv"
+    sample_request_csv="./data_batch/image_classification_multiclass_list.csv"
     sample_request_folder="./data_batch/fridgeObjects"
 fi
 

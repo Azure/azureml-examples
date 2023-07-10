@@ -8,7 +8,14 @@ import pandas as pd
 from zipfile import ZipFile
 
 
-def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int):
+def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> None:
+    """Download image dataset and unzip it.
+
+    :param dataset_parent_dir: dataset parent directory to which dataset will be downloaded
+    :type dataset_parent_dir: str
+    :param is_multilabel_dataset: flag to indicate if dataset is multi-label or not
+    :type is_multilabel_dataset: int
+    """
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
@@ -47,13 +54,26 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int):
     return dataset_dir
 
 
-def read_image(image_path):
+def read_image(image_path: str) -> bytes:
+    """Read image from path.
+
+    :param image_path: image path
+    :type image_path: str
+    :return: image in bytes format
+    :rtype: bytes
+    """
     with open(image_path, "rb") as f:
         return f.read()
 
 
-def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0):
-    """Prepare request json for online inference"""
+def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0) -> None:
+    """Prepare request json for online inference.
+
+    :param dataset_dir: dataset directory
+    :type dataset_dir: str
+    :param is_multilabel: flag to indicate if dataset is multi-label or not
+    :type is_multilabel: int
+    """
     if is_multilabel == 0:
         sample_image = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
     else:
@@ -73,15 +93,20 @@ def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0):
         json.dump(request_json, request_file)
 
 
-def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0):
+def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0) -> None:
     """Prepare image folder and csv file for batch inference.
 
     This function will move all images to a single image folder and also create a csv
     file with images in base64 format.
+    :param dataset_dir: dataset directory
+    :type dataset_dir: str
+    :param is_multilabel: flag to indicate if dataset is multi-label or not
+    :type is_multilabel: int
     """
     image_list = []
 
-    csv_file_name = "ml_image_list.csv" if is_multilabel == 1 else "mc_image_list.csv"
+    csv_file_name = "image_classification_multilabel_lis.csv" if is_multilabel == 1 else \
+        "image_classification_multiclass_list.csv"
 
     for dir_name in os.listdir(dataset_dir):
         dir_path = os.path.join(dataset_dir, dir_name)
