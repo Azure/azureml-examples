@@ -43,11 +43,14 @@ az identity create --name $AML_USER_MANAGED_ID --resource-group $RESOURCE_GROUP 
 AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $AML_USER_MANAGED_ID --query principalId -o tsv)
 #</create_uai>
 
+#<copy_datawrangling_notebook>
 
+#</copy_datawrangling_notebook>
+ipython nbconvert --to script ../../data-wrangling/run_interactive_session_notebook.ipynb
 #<setup_vnet_resources>
 if [[ "$2" == *"managed_vnet"* ]]
 then
-	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}vnet
+	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet
 	AZURE_STORAGE_ACCOUNT="blobstoragevnet"
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME="gen2storagevnet"
