@@ -12,7 +12,7 @@ workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
-# using the latest version of the model - not working yet
+
 model_label="latest"
 
 deployment_compute="cpu-cluster"
