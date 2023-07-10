@@ -29,6 +29,7 @@ jobs:
       input_column_names: input_string
       label_column_name: title
       device: gpu
+      compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/fill-mask/eval-config.json"
         type: uri_file
