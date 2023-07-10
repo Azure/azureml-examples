@@ -22,7 +22,7 @@ huggingface_model_name="microsoft/beit-base-patch16-224-pt22k-ft22k"
 # This is the foundation model for finetuning from azureml system registry
 # using the latest version of the model - not working yet
 aml_registry_model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
-model_version=1
+model_label="latest"
 
 version=$(date +%s)
 finetuned_huggingface_model_name="microsoft-beit-base-patch16-224-pt22k-ft22k-fridge-objects-multiclass-classification"
@@ -120,11 +120,14 @@ fi
 
 # 3. Check if the model exists in the registry
 # need to confirm model show command works for registries outside the tenant (aka system registry)
-if ! az ml model show --name $aml_registry_model_name --version $model_version --registry-name $registry_name 
+if ! az ml model show --name $aml_registry_model_name --label $model_label --registry-name $registry_name 
 then
-    echo "Model $aml_registry_model_name:$model_version does not exist in registry $registry_name"
+    echo "Model $aml_registry_model_name:$model_label does not exist in registry $registry_name"
     exit 1
 fi
+
+# get the latest model version
+model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 # 4. Prepare data
 python prepare_data.py
