@@ -41,8 +41,8 @@ finetuning_pipeline_component="transformers_image_classification_pipeline"
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 
 # 1. Install dependencies
-pip install azure-ai-ml==1.0.0
-pip install azure-identity
+pip install azure-ai-ml --upgrade
+pip install azure-identity --upgrade
 pip install datasets==2.3.2
 
 unameOut=$(uname -a)
@@ -127,7 +127,7 @@ then
 fi
 
 # get the latest model version
-model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
+model_version=$(az ml model show --name $aml_registry_model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 # 4. Prepare data
 python prepare_data.py
