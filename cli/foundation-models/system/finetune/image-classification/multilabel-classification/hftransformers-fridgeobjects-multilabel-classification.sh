@@ -41,8 +41,8 @@ finetuning_pipeline_component="transformers_image_classification_pipeline"
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 
 # 1. Install dependencies
-pip install azure-ai-ml --upgrade
-pip install azure-identity --upgrade
+pip install azure-ai-ml==1.8.0
+pip install azure-identity==1.13.0
 pip install datasets==2.3.2
 
 unameOut=$(uname -a)
