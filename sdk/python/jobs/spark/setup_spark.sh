@@ -88,7 +88,7 @@ then
 	az keyvault secret set --name $ACCESS_KEY_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $ACCOUNT_KEY
 
 	END_TIME=`date -u -d "60 minutes" '+%Y-%m-%dT%H:%MZ'`
-	SAS_TOKEN=`az storage container generate-sas -n $AZUREML_DEFAULT_CONTAINER --account-name $AZURE_STORAGE_ACCOUNT --https-only --permissions dlrw --expiry $end -o tsv`
+	SAS_TOKEN=`az storage container generate-sas -n $AZUREML_DEFAULT_CONTAINER --account-name $AZURE_STORAGE_ACCOUNT --https-only --permissions dlrw --expiry $END_TIME -o tsv`
 	SAS_TOKEN_SECRET_NAME="autotestsastoken"
 	az keyvault secret set --name $SAS_TOKEN_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SAS_TOKEN
 
