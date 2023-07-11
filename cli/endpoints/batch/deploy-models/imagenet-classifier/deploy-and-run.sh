@@ -96,7 +96,7 @@ az ml job download --name $JOB_NAME --output-name score --download-path .
 
 echo "Creating batch deployment for endpoint $ENDPOINT_NAME with high throughput"
 # <create_deployment_ht>
-az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --default
+az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --set-default
 # </create_deployment_ht>
 
 echo "Invoking batch endpoint with local data"
