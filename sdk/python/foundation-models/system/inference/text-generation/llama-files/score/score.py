@@ -41,7 +41,6 @@ except ImportError as exception:
     _logger.warning("Unable to import pandas")
 
 
-
 class AsyncRateLimitedOpsUtils:
     # 1000 requests / 10 seconds. Limiting to 800 request per 10 secods
     # limiting to 1000 concurrent requests
@@ -347,7 +346,7 @@ model = load_model(model_path)
 
 
 def init():
-    global inputs_collector, outputs_collector,aacs_client
+    global inputs_collector, outputs_collector, aacs_client
     endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
     key = os.environ.get("CONTENT_SAFETY_KEY")
 
@@ -364,8 +363,6 @@ def init():
                 e
             )
         )
-
-        
 
 
 async def async_analyze_text_task(client, request):
@@ -420,15 +417,15 @@ def analyze_text(text):
     return max([d.result() for d in done])
 
 
-def iterate(obj): 
+def iterate(obj):
     if isinstance(obj, dict):
         result = {}
         for key, value in obj.items():
             result[key] = iterate(value)
         return result
-    elif isinstance(obj, list): 
+    elif isinstance(obj, list):
         return [iterate(item) for item in obj]
-    elif isinstance(obj, str): 
+    elif isinstance(obj, str):
         if analyze_text(obj) > 2:
             return ""
         else:
@@ -436,10 +433,11 @@ def iterate(obj):
     else:
         return obj
 
+
 def get_safe_response(result):
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
 
-    print (jsonable_result)
+    print(jsonable_result)
     return iterate(jsonable_result)
 
 
