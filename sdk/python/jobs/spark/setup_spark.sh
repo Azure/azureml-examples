@@ -84,7 +84,7 @@ then
 	KEY_VAULT_NAME="autotestsparkkv"
 	az keyvault create -n $KEY_VAULT_NAME -g $RESOURCE_GROUP
 
-	NOTEBOOK_PY="../../data-wrangling/interactive_data_wrangling.py"
+	NOTEBOOK_PY="./data-wrangling/interactive_data_wrangling.py"
 	az keyvault secret set --name $ACCESS_KEY_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $ACCOUNT_KEY
 
 	END_TIME=`date -u -d "60 minutes" '+%Y-%m-%dT%H:%MZ'`
