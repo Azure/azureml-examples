@@ -98,6 +98,9 @@ then
 	az storage fs create -n $FILE_SYSTEM_NAME --account-name $GEN2_STORAGE_ACCOUNT_NAME
 	az role assignment create --role "Storage Blob Data Contributor" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
 
+	TITANIC_DATA_FILE="titanic.csv"
+	az storage fs file upload --file-system $FILE_SYSTEM_NAME --source ./data-wrangling/data/$TITANIC_DATA_FILE --path data/$TITANIC_DATA_FILE --account-name $GEN2_STORAGE_ACCOUNT_NAME
+
 	SERVICE_PRINCIPAL_NAME="${RESOURCE_GROUP}sp"
 	az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME
 	LIST_SP_DETAILS=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME)
@@ -113,6 +116,7 @@ then
 	az keyvault secret set --name $TENANT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_TENANTID
 	az keyvault secret set --name $CLIENT_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SPA_SP_SECRET
 	az role assignment create --role "Storage Blob Data Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
+	az role assignment create --role "Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
 
 	sed -i "s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;
 		s/<ACCESS_KEY_SECRET_NAME>/$ACCESS_KEY_SECRET_NAME/g;

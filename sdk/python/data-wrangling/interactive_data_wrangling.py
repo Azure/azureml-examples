@@ -85,13 +85,13 @@ df.fillna(
 )  # Fill Cabin column with value "None" if missing
 df.dropna(inplace=True)  # Drop the rows which still have any missing value
 df.to_csv(
-    "abfss://<FILE_SYSTEM_NAME>@<STORAGE_ACCOUNT_NAME>.dfs.core.windows.net/data/wrangled",
+    "abfss://<FILE_SYSTEM_NAME>@<GEN2_STORAGE_ACCOUNT_NAME>.dfs.core.windows.net/data/wrangled",
     index_col="PassengerId",
 )
 
 ### Access and wrangle ADLS Gen 2 data using Service Principal
 
-#### - To enable read and write access, assign **Contributor** and **Storage Blob Data Contributor** roles to the user identity.
+#### - To enable read and write access, assign **Contributor** and **Storage Blob Data Contributor** roles to the Service Principal.
 #### - Set configuration properties as follows:
 ####     - Client ID property: `fs.azure.account.oauth2.client.id.<STORAGE_ACCOUNT_NAME>.dfs.core.windows.net`
 ####     - Client secret property: `fs.azure.account.oauth2.client.secret.<STORAGE_ACCOUNT_NAME>.dfs.core.windows.net`
