@@ -420,16 +420,27 @@ def analyze_text(text):
     return max([d.result() for d in done])
 
 
+def iterate(obj): 
+    if isinstance(obj, dict):
+        result = {}
+        for key, value in obj.items():
+            result[key] = iterate(value)
+        return result
+    elif isinstance(obj, list): 
+        return [iterate(item) for item in obj]
+    elif isinstance(obj, str): 
+        if analyze_text(obj) > 2:
+            return ""
+        else:
+            return obj
+    else:
+        return obj
+
 def get_safe_response(result):
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
-    return_result = []
-    for d in jsonable_result:
-        result = d[0]
-        if analyze_text(result) > 2:
-            return_result.append({0: ""})
-        else:
-            return_result.append(d)
-    return return_result
+
+    print (jsonable_result)
+    return iterate(jsonable_result)
 
 
 @input_schema("input_data", input_param)
