@@ -51,7 +51,7 @@ az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NA
 # </query_deployment>
 
 # <download_sample_data>
-wget https://azuremlexampledata.blob.core.windows.net/data/imagenet-1000.zip
+wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/imagenet-1000.zip
 unzip imagenet-1000.zip -d data
 # </download_sample_data>
 
