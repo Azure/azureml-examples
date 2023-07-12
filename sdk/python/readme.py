@@ -18,11 +18,7 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-with-sklearn",
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
-    "pipeline_with_spark_nodes",
     "interactive_data_wrangling",
-    "attach_manage_spark_pools",
-    "submit_spark_pipeline_jobs",
-    "submit_spark_standalone_jobs",
     "submit_spark_standalone_jobs_managed_vnet",
     # mlflow SDK samples notebooks
     "mlflow_sdk_online_endpoints_progresive",
@@ -194,6 +190,7 @@ def write_notebook_workflow(
     is_pipeline_notebook = ("jobs-pipelines" in classification) or (
         "assets-component" in classification
     )
+    is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
     creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
@@ -272,8 +269,10 @@ jobs:
           source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true
-    - name: run {posix_notebook}
+      continue-on-error: true\n"""
+    if is_spark_notebook_sample:
+        workflow_yaml += get_spark_config_workflow(posix_folder, name)
+    workflow_yaml += f"""    - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
           source "{github_workspace}/infra/bootstrapping/init_environment.sh";
@@ -451,6 +450,16 @@ def modify_notebooks(notebooks):
             f.write("\n")
 
     print("finished modifying notebooks...")
+
+
+def get_spark_config_workflow(folder_name, file_name):
+    workflow = f"""    - name: setup spark resources
+      run: |
+          bash -x jobs/spark/setup_spark.sh jobs/spark/ {folder_name}/{file_name}.ipynb
+      working-directory: sdk/python
+      continue-on-error: true\n"""
+
+    return workflow
 
 
 @contextlib.contextmanager

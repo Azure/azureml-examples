@@ -1,0 +1,16 @@
+name: myworkspace_aio
+managed_network:
+  isolation_mode: allow_internet_outbound
+  outbound_rules:
+  - name: added-perule
+    type: private_endpoint
+    destination:
+      service_resource_id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyGroup/providers/Microsoft.Storage/storageAccounts/MyAccount1
+      spark_enabled: true
+      subresource_target: blob
+  - name: added-perule2
+    type: private_endpoint
+    destination:
+      service_resource_id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyGroup/providers/Microsoft.Storage/storageAccounts/MyAccount2
+      spark_enabled: true
+      subresource_target: file

@@ -1,5 +1,5 @@
 # spark-job-component.yaml
-$schema: http://azureml/sdk-2-0/SparkComponent.json
+$schema: https://azuremlschemas.azureedge.net/latest/sparkComponent.schema.json
 name: titanic_spark_component
 type: spark
 version: 1
