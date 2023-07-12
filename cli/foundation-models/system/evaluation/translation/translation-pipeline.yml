@@ -28,7 +28,7 @@ jobs:
         path: azureml://registries/azureml/models/t5-base/versions/4
       input_column_names: input_string
       label_column_name: ro
-      device: gpu
+      device: auto
       compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/translation/eval-config.json"

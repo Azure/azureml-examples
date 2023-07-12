@@ -28,7 +28,7 @@ jobs:
         path: azureml://registries/azureml/models/jean-baptiste-camembert-ner/versions/4
       input_column_names: input_string
       label_column_name: ner_tags_str
-      device: gpu
+      device: auto
       compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/token-classification/eval-config.json"

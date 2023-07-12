@@ -27,7 +27,7 @@ jobs:
         path: azureml://registries/azureml/models/distilbert-base-uncased-distilled-squad/versions/4
       input_column_names: context,question
       label_column_name: answer_text
-      device: gpu
+      device: auto
       compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/question-answering/eval-config.json"

@@ -28,7 +28,7 @@ jobs:
         path: azureml://registries/azureml/models/microsoft-deberta-base-mnli/versions/4
       input_column_names: input_string
       label_column_name: label_string
-      device: gpu
+      device: auto
       compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/text-classification/eval-config.json"
