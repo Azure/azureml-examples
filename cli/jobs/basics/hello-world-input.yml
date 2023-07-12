@@ -7,4 +7,3 @@ environment:
 inputs:
   hello_string: "hello world"
   hello_number: 42
-compute: azureml:cpu-cluster
