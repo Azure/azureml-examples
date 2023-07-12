@@ -28,7 +28,8 @@ jobs:
         path: azureml://registries/azureml/models/sshleifer-distilbart-cnn-12-6/versions/4
       input_column_names: input_string
       label_column_name: summary
-      device: gpu
+      device: auto
+      compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/summarization/eval-config.json"
         type: uri_file
