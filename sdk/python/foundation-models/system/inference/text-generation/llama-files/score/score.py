@@ -437,7 +437,6 @@ def iterate(obj):
 def get_safe_response(result):
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
 
-    print(jsonable_result)
     return iterate(jsonable_result)
 
 
