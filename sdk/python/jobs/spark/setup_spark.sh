@@ -109,7 +109,7 @@ then
 	# SP_OBJECTID=$(echo $LIST_SP_DETAILS | jq -r '[0].id')
 	# SP_TENANTID=$(echo $LIST_SP_DETAILS | jq -r '[0].appOwnerOrganizationId')
 	# SPA_SP_SECRET=$(az ad sp credential reset --id $SP_OBJECTID --query "password")
-	# USER="azuremlsdk"
+
 	# CLIENT_ID_SECRET_NAME="autotestspsecretclient"
 	# TENANT_ID_SECRET_NAME="autotestspsecrettenant"
 	# CLIENT_SECRET_NAME="autotestspsecret"
@@ -124,15 +124,14 @@ then
 		s/<BLOB_CONTAINER_NAME>/$AZUREML_DEFAULT_CONTAINER/g
 		s/<CREDENTIAL_LESS_DATA_STORE_NAME>/$CREDENTIAL_LESS_DATA_STORE_NAME/g;" $CREAT_CREDENTIAL_LESS_DS_YML
 	az ml datastore create --file  $CREAT_CREDENTIAL_LESS_DS_YML --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
-
+	# USER="azuremlsdk"
 	sed -i "s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;
 		s/<ACCESS_KEY_SECRET_NAME>/$ACCESS_KEY_SECRET_NAME/g;
 		s/<STORAGE_ACCOUNT_NAME>/$AZURE_STORAGE_ACCOUNT/g;
 		s/<BLOB_CONTAINER_NAME>/$AZUREML_DEFAULT_CONTAINER/g
 		s/<SAS_TOKEN_SECRET_NAME>/$SAS_TOKEN_SECRET_NAME/g;
 		s/<GEN2_STORAGE_ACCOUNT_NAME>/$GEN2_STORAGE_ACCOUNT_NAME/g
-		s/<FILE_SYSTEM_NAME>/$FILE_SYSTEM_NAME/g;
-		s/<USER>/$USER/g;" $NOTEBOOK_PY
+		s/<FILE_SYSTEM_NAME>/$FILE_SYSTEM_NAME/g;" $NOTEBOOK_PY
 #</setup_interactive_session_resources>
 else
 	#<create_attached_resources>

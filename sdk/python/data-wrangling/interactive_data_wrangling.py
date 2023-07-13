@@ -235,13 +235,13 @@ df.to_csv(
 #     index_col="PassengerId",
 # )
 
-# ## Access mounted File Share
-#### Access data on mounted File share by constructing absolute path.
-import os
-import pyspark.pandas as pd
+# # ## Access mounted File Share
+# #### Access data on mounted File share by constructing absolute path.
+# import os
+# import pyspark.pandas as pd
 
-abspath = os.path.abspath(".")
-file = "file://" + abspath + "/Users/<USER>/data/titanic.csv"
-print(file)
-df = pd.read_csv(file)
-df.head()
+# abspath = os.path.abspath(".")
+# file = "file://" + abspath + "/Users/<USER>/data/titanic.csv"
+# print(file)
+# df = pd.read_csv(file)
+# df.head()
