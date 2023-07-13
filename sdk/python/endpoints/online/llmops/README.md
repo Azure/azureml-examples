@@ -17,9 +17,9 @@ Before proceeding, here are some concepts that need to be clarified. Please refe
 ## Langchain Sample Notebooks
 |Notebook|Description|
 |-|-|
-|[1_langchain_basic_deploy](/langchain/1_langchain_basic_deploy.ipynb)|Showcase how a basic **langchain agent** + **klarnal ChatGPT plugin***, can be tested and **deployed to Online Endpoint**. It also uses Azure Keyvault to **securely store the OpenAI Key**|
+|[1_langchain_basic_deploy](langchain/1_langchain_basic_deploy.ipynb)|Showcase how a basic **langchain agent** + **klarnal ChatGPT plugin***, can be tested and **deployed to Online Endpoint**. It also uses Azure Keyvault to **securely store the OpenAI Key**|
 
 ## Semantic Kernel Sample Notebooks
 |Notebook|Description|
 |-|-|
-|[1_semantic_http_server](/semantic-kernel/1_semantic_http_server.ipynb)|We created a **SemanticKernelHttpServer using flask**, import **Semantic Functions (Prompt Templates)**, test them and deploy Online Endpoint. This sample is based on [Planner Example from Semntic Kernel](https://github.com/microsoft/semantic-kernel/blob/main/samples/notebooks/python/05-using-the-planner.ipynb)|
+|[1_semantic_http_server](semantic-kernel/1_semantic_http_server.ipynb)|We created a **SemanticKernelHttpServer using flask**, import **Semantic Functions (Prompt Templates)**, test them and deploy Online Endpoint. This sample is based on [Planner Example from Semntic Kernel](https://github.com/microsoft/semantic-kernel/blob/main/samples/notebooks/python/05-using-the-planner.ipynb)|
