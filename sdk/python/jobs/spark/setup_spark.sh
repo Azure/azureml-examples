@@ -17,6 +17,7 @@ SQL_ADMIN_LOGIN_PASSWORD="auto123!"
 SPARK_POOL_NAME="automationpool"
 SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
 USER_IDENTITY_YML="jobs/spark/user-assigned-identity.yml"
+CREAT_CREDENTIAL_LESS_DS_YML="jobs/spark/create_credential_less_data_store.yml"
 AZURE_REGION_NAME=${LOCATION}
 OUTBOUND_RULE_NAME="automationtestrule"
 #</create_variables>
@@ -101,22 +102,28 @@ then
 	TITANIC_DATA_FILE="titanic.csv"
 	az storage fs file upload --file-system $FILE_SYSTEM_NAME --source ./data-wrangling/data/$TITANIC_DATA_FILE --path data/$TITANIC_DATA_FILE --account-name $GEN2_STORAGE_ACCOUNT_NAME
 
-	SERVICE_PRINCIPAL_NAME="${RESOURCE_GROUP}sp"
-	az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME
-	LIST_SP_DETAILS=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME)
-	SP_APPID=$(echo $LIST_SP_DETAILS | jq -r '[0].appId')
-	SP_OBJECTID=$(echo $LIST_SP_DETAILS | jq -r '[0].id')
-	SP_TENANTID=$(echo $LIST_SP_DETAILS | jq -r '[0].appOwnerOrganizationId')
-	SPA_SP_SECRET=$(az ad sp credential reset --id $SP_OBJECTID --query "password")
-	USER="azuremlsdk"
-	CLIENT_ID_SECRET_NAME="autotestspsecretclient"
-	TENANT_ID_SECRET_NAME="autotestspsecrettenant"
-	CLIENT_SECRET_NAME="autotestspsecret"
-	az keyvault secret set --name $CLIENT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_APPID
-	az keyvault secret set --name $TENANT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_TENANTID
-	az keyvault secret set --name $CLIENT_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SPA_SP_SECRET
-	az role assignment create --role "Storage Blob Data Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
-	az role assignment create --role "Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
+	# SERVICE_PRINCIPAL_NAME="${RESOURCE_GROUP}sp"
+	# az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME
+	# LIST_SP_DETAILS=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME)
+	# SP_APPID=$(echo $LIST_SP_DETAILS | jq -r '[0].appId')
+	# SP_OBJECTID=$(echo $LIST_SP_DETAILS | jq -r '[0].id')
+	# SP_TENANTID=$(echo $LIST_SP_DETAILS | jq -r '[0].appOwnerOrganizationId')
+	# SPA_SP_SECRET=$(az ad sp credential reset --id $SP_OBJECTID --query "password")
+	# USER="azuremlsdk"
+	# CLIENT_ID_SECRET_NAME="autotestspsecretclient"
+	# TENANT_ID_SECRET_NAME="autotestspsecrettenant"
+	# CLIENT_SECRET_NAME="autotestspsecret"
+	# az keyvault secret set --name $CLIENT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_APPID
+	# az keyvault secret set --name $TENANT_ID_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SP_TENANTID
+	# az keyvault secret set --name $CLIENT_SECRET_NAME --vault-name $KEY_VAULT_NAME --value $SPA_SP_SECRET
+	# az role assignment create --role "Storage Blob Data Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
+	# az role assignment create --role "Contributor" --assignee $SP_APPID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_ACCOUNT_NAME/blobServices/default/containers/$FILE_SYSTEM_NAME
+
+	CREDENTIAL_LESS_DATA_STORE_NAME="credlessblobdatastore"
+	sed -i "s/<STORAGE_ACCOUNT_NAME>/$AZURE_STORAGE_ACCOUNT/g;
+		s/<BLOB_CONTAINER_NAME>/$AZUREML_DEFAULT_CONTAINER/g
+		s/<CREDENTIAL_LESS_DATA_STORE_NAME>/$CREDENTIAL_LESS_DATA_STORE_NAME/g;" $CREAT_CREDENTIAL_LESS_DS_YML
+	az ml datastore create --file  $CREAT_CREDENTIAL_LESS_DS_YML --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 
 	sed -i "s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;
 		s/<ACCESS_KEY_SECRET_NAME>/$ACCESS_KEY_SECRET_NAME/g;
@@ -125,9 +132,6 @@ then
 		s/<SAS_TOKEN_SECRET_NAME>/$SAS_TOKEN_SECRET_NAME/g;
 		s/<GEN2_STORAGE_ACCOUNT_NAME>/$GEN2_STORAGE_ACCOUNT_NAME/g
 		s/<FILE_SYSTEM_NAME>/$FILE_SYSTEM_NAME/g;
-		s/<CLIENT_ID_SECRET_NAME>/$CLIENT_ID_SECRET_NAME/g;
-		s/<TENANT_ID_SECRET_NAME>/$TENANT_ID_SECRET_NAME/g;
-		s/<CLIENT_SECRET_NAME>/$CLIENT_SECRET_NAME/g;
 		s/<USER>/$USER/g;" $NOTEBOOK_PY
 #</setup_interactive_session_resources>
 else
@@ -176,7 +180,7 @@ else
 	az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $COMPUTE_MANAGED_IDENTITY
 	fi
 
-	az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $AML_USER_MANAGED_ID
+	az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $AML_USER_MANAGED_ID_OID
 fi
 
 #<replace_template_values>
