@@ -122,11 +122,11 @@ class NoSampleParameterType(AbstractParameterType):
 
 def init():
     global aacs_client
-    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT") #"https://bani-llama-endpt-aacs-16891181011306443.cognitiveservices.azure.com/"
-    key = os.environ.get("CONTENT_SAFETY_KEY") #"5e622b0f05c64ecaae5e3ae6e24cdc4f"
-    print("Key")
-    print(key)
-    print(endpoint)
+    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
+    key = os.environ.get("CONTENT_SAFETY_KEY")
+    # print("Key")
+    # print(key)
+    # print(endpoint)
     # Create an Content Safety client
     aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
     global model
@@ -164,7 +164,7 @@ def analyze_response(response):
     if response.violence_result is not None:
         _logger.info("Violence severity: {}".format(response.violence_result.severity))
         severity = max(severity, response.violence_result.severity)
-
+    print("Returning severity ", severity)
     return severity
 
 
@@ -176,7 +176,7 @@ def analyze_text(text):
     print("analyze_text")
 
     severity = [analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i))) for i in split_text]
-
+    print("Returning MAX severity ", severity)
     return max(severity)
 
 
