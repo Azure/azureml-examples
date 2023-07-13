@@ -1,23 +1,13 @@
-import asyncio
 import json
 import logging
 import numpy as np
 import os
-from copy import deepcopy
-from concurrent.futures import ThreadPoolExecutor
 from inference_schema.parameter_types.abstract_parameter_type import (
     AbstractParameterType,
 )
-from inference_schema.parameter_types.numpy_parameter_type import NumpyParameterType
-from inference_schema.parameter_types.standard_py_parameter_type import (
-    StandardPythonParameterType,
-)
-from inference_schema.schema_decorators import input_schema, output_schema
-from mlflow.models import Model
+
 from mlflow.pyfunc import load_model
 from mlflow.pyfunc.scoring_server import _get_jsonable_obj
-from mlflow.types.utils import _infer_schema
-from mlflow.exceptions import MlflowException
 from azure.ai.contentsafety import ContentSafetyClient
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.contentsafety.models import AnalyzeTextOptions
@@ -39,32 +29,6 @@ except ImportError as exception:
     _logger.warning("Unable to import pandas")
 
 
-class AsyncRateLimitedOpsUtils:
-    # 1000 requests / 10 seconds. Limiting to 800 request per 10 secods
-    # limiting to 1000 concurrent requests
-    def __init__(
-        self,
-        ops_count=800,
-        ops_seconds=10,
-        concurrent_ops=1000,
-        thread_max_workers=1000,
-    ):
-        self.limiter = AsyncLimiter(ops_count, ops_seconds)
-        self.semaphore = asyncio.Semaphore(value=concurrent_ops)
-        # need thread pool executor for sync function
-        self.executor = ThreadPoolExecutor(max_workers=thread_max_workers)
-
-    def get_limiter(self):
-        return self.limiter
-
-    def get_semaphore(self):
-        return self.semaphore
-
-    def get_executor(self):
-        return self.executor
-
-
-#async_rate_limiter = AsyncRateLimitedOpsUtils()
 
 
 class CsChunkingUtils:
@@ -99,58 +63,28 @@ class CsChunkingUtils:
         return ret
 
 
-class NoSampleParameterType(AbstractParameterType):
-    def __init__(self):
-        super(NoSampleParameterType, self).__init__(None)
-
-    def deserialize_input(self, input_data):
-        """
-        Passthrough, do nothing to the incoming data
-        """
-        return input_data
-
-    def input_to_swagger(self):
-        """
-        Return schema for an empty object
-        """
-        return {"type": "object", "example": {}}
-
-
-
-
-
 
 def init():
     global aacs_client
     endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
     key = os.environ.get("CONTENT_SAFETY_KEY")
-    # print("Key")
-    # print(key)
-    # print(endpoint)
     # Create an Content Safety client
     aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
     global model
     
 
     # AZUREML_MODEL_DIR is an environment variable created during deployment
-    print(os.environ["AZUREML_MODEL_DIR"])
-    import subprocess
     model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "mlflow_model_folder")
-    subprocess.run("find  $model_path -type f", shell=True, stdout=subprocess.PIPE)
-    print("model path is: ", model_path)
-    print("loading model")
+    print(f"## Model path is: {model_path} ##")
+    print("## Loading model ##")
     model = load_model(model_path)
-    print("model load is done")
-    # model_path = os.path.join(
-    # os.getenv("AZUREML_MODEL_DIR"), os.getenv("MLFLOW_MODEL_FOLDER")
-#)
-
+    print("## Model load is done ##")
 
 
 def analyze_response(response):
     severity = 0
 
-    print("analyze response")
+    print("## Analyze response ##")
 
     if response.hate_result is not None:
         _logger.info("Hate severity: {}".format(response.hate_result.severity))
@@ -164,7 +98,7 @@ def analyze_response(response):
     if response.violence_result is not None:
         _logger.info("Violence severity: {}".format(response.violence_result.severity))
         severity = max(severity, response.violence_result.severity)
-    print("Returning severity ", severity)
+    print(f"## Returning severity {severity} ##")
     return severity
 
 
@@ -173,10 +107,10 @@ def analyze_text(text):
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
     split_text = chunking_utils.split_by(text)
 
-    print("analyze_text")
+    print("## Calling ACS ##")
 
     severity = [analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i))) for i in split_text]
-    print("Returning MAX severity ", severity)
+    print(f"## Returning MAX from severity list {severity} ##")
     return max(severity)
 
 
@@ -205,11 +139,14 @@ def get_safe_response(result):
 
 
 def run(mini_batch):
+    resultList = []
+    print(f"## Mini batch is {mini_batch} ##")
     for file_path in mini_batch:
-        print("Inside mini_batch, with path, ", file_path)
+        print(f"## Handling file at {file_path} ##")
         input_data = pd.read_csv(file_path)
-        print("Doing predict with :", file_path)
         result = model.predict(input_data["text"])
-        print("calling ACS")
-        return get_safe_response(result)
+        filtered_result = get_safe_response(result)
+        print(f"## Adding filtered result {filtered_result} ##")
+        resultList.append(filtered_result)
+        return resultList
 
