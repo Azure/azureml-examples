@@ -1,0 +1,8 @@
+Flask==2.3.2
+semantic_kernel==0.2.9.dev0
+flask[async]
+azure-keyvault
+azure-keyvault-secrets
+azure-ai-ml==1.5.0
+pyyaml
+azure-cli
