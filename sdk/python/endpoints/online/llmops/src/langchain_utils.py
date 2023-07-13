@@ -1,7 +1,6 @@
 from langchain.agents import load_tools
 from langchain.tools import AIPluginTool
 from parse import *
-from plugin_type import *
 from langchain.chat_models.base import BaseChatModel
 from langchain.chat_models import ChatOpenAI, AzureChatOpenAI
 
