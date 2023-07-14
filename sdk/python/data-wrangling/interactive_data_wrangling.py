@@ -63,10 +63,10 @@ import pyspark.pandas as pd
 from pyspark.ml.feature import Imputer
 
 blob_container_name = "<BLOB_CONTAINER_NAME>"
-blob_container_name = "<STORAGE_ACCOUNT_NAME>"
+storage_account_name = "<STORAGE_ACCOUNT_NAME>"
 
 df = pd.read_csv(
-    f"wasbs://{blob_container_name}@{blob_container_name}.blob.core.windows.net/data/titanic.csv",
+    f"wasbs://{blob_container_name}@{storage_account_name}.blob.core.windows.net/data/titanic.csv",
     index_col="PassengerId",
 )
 imputer = Imputer(inputCols=["Age"], outputCol="Age").setStrategy(
@@ -77,7 +77,7 @@ df.fillna(
 )  # Fill Cabin column with value "None" if missing
 df.dropna(inplace=True)  # Drop the rows which still have any missing value
 df.to_csv(
-    f"wasbs://{blob_container_name}@{blob_container_name}.blob.core.windows.net/data/wrangled",
+    f"wasbs://{blob_container_name}@{storage_account_name}.blob.core.windows.net/data/wrangled",
     index_col="PassengerId",
 )
 
