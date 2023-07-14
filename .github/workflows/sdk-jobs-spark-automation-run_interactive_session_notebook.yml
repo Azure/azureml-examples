@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-spark-run_interactive_session_notebook
+name: sdk-jobs-spark-automation-run_interactive_session_notebook
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/jobs/spark/**
-      - .github/workflows/sdk-jobs-spark-run_interactive_session_notebook.yml
+      - sdk/python/jobs/spark/automation/**
+      - .github/workflows/sdk-jobs-spark-automation-run_interactive_session_notebook.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -60,10 +60,10 @@ jobs:
       continue-on-error: true
     - name: setup spark resources
       run: |
-          bash -x jobs/spark/setup_spark.sh jobs/spark/ jobs/spark/run_interactive_session_notebook.ipynb
+          bash -x jobs/spark/setup_spark.sh jobs/spark/ jobs/spark/automation/run_interactive_session_notebook.ipynb
       working-directory: sdk/python
       continue-on-error: true
-    - name: run jobs/spark/run_interactive_session_notebook.ipynb
+    - name: run jobs/spark/automation/run_interactive_session_notebook.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -71,10 +71,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "run_interactive_session_notebook.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python run_interactive_session_notebook.ipynb run_interactive_session_notebook.output.ipynb
-      working-directory: sdk/python/jobs/spark
+      working-directory: sdk/python/jobs/spark/automation
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: run_interactive_session_notebook
-        path: sdk/python/jobs/spark
+        path: sdk/python/jobs/spark/automation
