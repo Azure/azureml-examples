@@ -3,7 +3,7 @@ name: auto-ml-forecasting-orange-juice-sales
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 15 * * 2"
+    - cron: "0 18 * * 2"
   pull_request:
     branches:
       - main

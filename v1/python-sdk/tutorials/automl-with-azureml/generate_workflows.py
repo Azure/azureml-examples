@@ -92,7 +92,7 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
 
 def write_notebook_workflow(notebook, notebook_folder, cron_schedule):
     notebook_name = notebook.replace(".ipynb", "")
-    creds = "${{secrets.AZ_CREDS}}"
+    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     runner = "${{vars.V1_UBUNTU_RUNNER}}"
 
     run_update_env = ""
