@@ -19,7 +19,6 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
     "interactive_data_wrangling",
-    "submit_spark_standalone_jobs_managed_vnet",
     # mlflow SDK samples notebooks
     "mlflow_sdk_online_endpoints_progresive",
     "mlflow_sdk_online_endpoints",

@@ -3,7 +3,7 @@ name: auto-ml-forecasting-univariate-recipe-experiment-settings
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 17 * * 2"
+    - cron: "0 20 * * 2"
   pull_request:
     branches:
       - main
