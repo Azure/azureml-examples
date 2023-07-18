@@ -3,7 +3,7 @@ name: auto-ml-forecasting-pipelines
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 16 * * 2"
+    - cron: "0 19 * * 2"
   pull_request:
     branches:
       - main
@@ -45,7 +45,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: Run update-azure-extensions
       run: |
          chmod +x ./v1/scripts/update-azure-extensions.sh
