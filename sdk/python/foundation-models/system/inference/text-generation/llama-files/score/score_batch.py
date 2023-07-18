@@ -10,16 +10,17 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.contentsafety.models import AnalyzeTextOptions
 
 
-
 _logger = logging.getLogger(__name__)
 
 # Pandas installed, may not be necessary for tensorspec based models, so don't require it all the time
 pandas_installed = False
 try:
     import pandas as pd
+
     pandas_installed = True
 except ImportError as exception:
     _logger.warning("Unable to import pandas")
+
 
 class CsChunkingUtils:
     def __init__(self, chunking_n=1000, delimiter="."):
@@ -53,7 +54,6 @@ class CsChunkingUtils:
         return ret
 
 
-
 def init():
     global aacs_client
     endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
@@ -61,7 +61,6 @@ def init():
     # Create an Content Safety client
     aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
     global model
-    
 
     # AZUREML_MODEL_DIR is an environment variable created during deployment
     model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "mlflow_model_folder")
@@ -99,7 +98,10 @@ def analyze_text(text):
 
     print("## Calling ACS ##")
 
-    severity = [analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i))) for i in split_text]
+    severity = [
+        analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i)))
+        for i in split_text
+    ]
     print(f"## Returning MAX from severity list {severity} ##")
     return max(severity)
 
@@ -141,4 +143,3 @@ def run(mini_batch):
         print(f"## Adding filtered result {filtered_result} ##")
         resultList.append(filtered_result)
         return resultList
-

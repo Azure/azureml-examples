@@ -363,7 +363,9 @@ def init():
     # Create an Content Safety client
     headers_policy = HeadersPolicy()
     headers_policy.add_header("ms-azure-ai-sender", "llama")
-    aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key), headers_policy=headers_policy)
+    aacs_client = ContentSafetyClient(
+        endpoint, AzureKeyCredential(key), headers_policy=headers_policy
+    )
 
     try:
         inputs_collector = Collector(name="model_inputs")
@@ -435,11 +437,15 @@ def analyze_text(text):
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
     split_text = chunking_utils.split_by(text)
 
-    result = [analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i))) for i in split_text]
+    result = [
+        analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i)))
+        for i in split_text
+    ]
     severity = max(result)
     print(f"Analyzed, severity {severity}")
 
     return severity
+
 
 def iterate(obj):
     if isinstance(obj, dict):
@@ -456,8 +462,8 @@ def iterate(obj):
         return obj, severity
     elif isinstance(obj, pd.DataFrame):
         severity = 0
-        for i in range(obj.shape[0]): #iterate over rows
-            for j in range(obj.shape[1]): #iterate over columns
+        for i in range(obj.shape[0]):  # iterate over rows
+            for j in range(obj.shape[1]):  # iterate over columns
                 obj.at[i, j], value_severity = iterate(obj.at[i, j])
                 severity = max(severity, value_severity)
         return obj, severity
@@ -479,11 +485,12 @@ def get_safe_response(result):
     print(f"Response analyzed, severity {severity}")
     return result
 
+
 def get_safe_input(input_data):
     print("Analyzing input...")
     result, severity = iterate(input_data)
     print(f"Input analyzed, severity {severity}")
-    return result,severity
+    return result, severity
 
 
 @input_schema("input_data", input_param)
@@ -492,7 +499,7 @@ def run(input_data):
     context = None
     input_data, severity = get_safe_input(input_data)
     if severity > aacs_threshold:
-        return  {}
+        return {}
     if (
         isinstance(input_data, np.ndarray)
         or (
