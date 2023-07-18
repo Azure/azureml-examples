@@ -24,6 +24,16 @@ from azure.ai.contentsafety import ContentSafetyClient
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.contentsafety.models import AnalyzeTextOptions
 from aiolimiter import AsyncLimiter
+from azure.core.pipeline.policies import (
+    HeadersPolicy,
+)
+
+aacs_threshold = 2
+
+try:
+    aacs_threshold = int(os.environ["CONTENT_SAFETY_THRESHOLD"])
+except:
+    aacs_threshold = 2
 
 
 _logger = logging.getLogger(__name__)
@@ -351,7 +361,11 @@ def init():
     key = os.environ.get("CONTENT_SAFETY_KEY")
 
     # Create an Content Safety client
-    aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
+    headers_policy = HeadersPolicy()
+    headers_policy.add_header("ms-azure-ai-sender", "llama")
+    aacs_client = ContentSafetyClient(
+        endpoint, AzureKeyCredential(key), headers_policy=headers_policy
+    )
 
     try:
         inputs_collector = Collector(name="model_inputs")
@@ -381,22 +395,22 @@ def analyze_response(response):
     severity = 0
 
     if response.hate_result is not None:
-        _logger.info("Hate severity: {}".format(response.hate_result.severity))
+        print("Hate severity: {}".format(response.hate_result.severity))
         severity = max(severity, response.hate_result.severity)
     if response.self_harm_result is not None:
-        _logger.info("SelfHarm severity: {}".format(response.self_harm_result.severity))
+        print("SelfHarm severity: {}".format(response.self_harm_result.severity))
         severity = max(severity, response.self_harm_result.severity)
     if response.sexual_result is not None:
-        _logger.info("Sexual severity: {}".format(response.sexual_result.severity))
+        print("Sexual severity: {}".format(response.sexual_result.severity))
         severity = max(severity, response.sexual_result.severity)
     if response.violence_result is not None:
-        _logger.info("Violence severity: {}".format(response.violence_result.severity))
+        print("Violence severity: {}".format(response.violence_result.severity))
         severity = max(severity, response.violence_result.severity)
 
     return severity
 
 
-def analyze_text(text):
+def analyze_text_async(text):
     # Chunk text
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
     split_text = chunking_utils.split_by(text)
@@ -412,39 +426,80 @@ def analyze_text(text):
 
     if len(pending) > 0:
         # not all task finished, assume failed
-        return 2
+        return 6
 
     return max([d.result() for d in done])
 
 
+def analyze_text(text):
+    # Chunk text
+    print(f"Analyzing ...")
+    chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
+    split_text = chunking_utils.split_by(text)
+
+    result = [
+        analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i)))
+        for i in split_text
+    ]
+    severity = max(result)
+    print(f"Analyzed, severity {severity}")
+
+    return severity
+
+
 def iterate(obj):
     if isinstance(obj, dict):
-        result = {}
+        severity = 0
         for key, value in obj.items():
-            result[key] = iterate(value)
-        return result
-    elif isinstance(obj, list):
-        return [iterate(item) for item in obj]
+            obj[key], value_severity = iterate(value)
+            severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, list) or isinstance(obj, np.ndarray):
+        severity = 0
+        for idx in range(len(obj)):
+            obj[idx], value_severity = iterate(obj[idx])
+            severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, pd.DataFrame):
+        severity = 0
+        for i in range(obj.shape[0]):  # iterate over rows
+            for j in range(obj.shape[1]):  # iterate over columns
+                obj.at[i, j], value_severity = iterate(obj.at[i, j])
+                severity = max(severity, value_severity)
+        return obj, severity
     elif isinstance(obj, str):
-        if analyze_text(obj) > 2:
-            return ""
+        severity = analyze_text(obj)
+        if severity > aacs_threshold:
+            return "", severity
         else:
-            return obj
+            return obj, severity
     else:
-        return obj
+        return obj, 0
 
 
 def get_safe_response(result):
+    print("Analyzing response...")
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
 
-    print(jsonable_result)
-    return iterate(jsonable_result)
+    result, severity = iterate(jsonable_result)
+    print(f"Response analyzed, severity {severity}")
+    return result
+
+
+def get_safe_input(input_data):
+    print("Analyzing input...")
+    result, severity = iterate(input_data)
+    print(f"Input analyzed, severity {severity}")
+    return result, severity
 
 
 @input_schema("input_data", input_param)
 @output_schema(output_param)
 def run(input_data):
     context = None
+    input_data, severity = get_safe_input(input_data)
+    if severity > aacs_threshold:
+        return {}
     if (
         isinstance(input_data, np.ndarray)
         or (
