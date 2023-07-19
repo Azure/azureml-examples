@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+endpoint_name: my_endpoint 
+name: blue 
+model: azureml:my-model-m1:1 
+environment: azureml:env-m1:1 
+data_collector:
+  collections:
+    request:
+      enabled: 'True' # <'True', 'False'>
+    response:
+      enabled: 'True' # <'True', 'False'>
+  rolling_rate: hour # optional
+  sampling_rate: 1.0 # optional, 0.0-1.0, number to specify random sample % of traffic 
