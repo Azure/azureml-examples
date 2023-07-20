@@ -375,7 +375,6 @@ def get_aacs_access_key():
 
     credential = ManagedIdentityCredential(client_id=uai_client_id)
     cs_client = CognitiveServicesManagementClient(credential, subscription_id)
-    print(f"resource_group_name: {resource_group_name}, account_name: {aacs_account_name}")
     key = cs_client.accounts.list_keys(
         resource_group_name=resource_group_name, account_name=aacs_account_name
     ).key1
