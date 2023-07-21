@@ -28,7 +28,7 @@ environment_file = str(prefix.joinpath("environment.yml"))
 # azure ml settings
 environment_name = "tf-gpu-example"
 experiment_name = "tf-mnist-distributed-example"
-compute_name = "gpu-K80-2"
+compute_name = "gpu-V100-2"
 
 # create environment
 env = Environment.from_conda_specification(environment_name, environment_file)
