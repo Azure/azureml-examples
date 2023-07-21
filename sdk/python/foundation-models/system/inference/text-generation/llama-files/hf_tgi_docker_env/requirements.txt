@@ -1,0 +1,4 @@
+azureml-inference-server-http
+text-generation
+psutil
+pandas
