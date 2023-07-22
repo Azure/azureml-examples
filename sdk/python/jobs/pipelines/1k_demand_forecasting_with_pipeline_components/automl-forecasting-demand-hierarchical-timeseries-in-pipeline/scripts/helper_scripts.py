@@ -1,14 +1,6 @@
-from typing import Any, Dict, Optional, List
-
-import argparse
-import json
-import os
-import re
-import shutil
-
 import pandas as pd
 
-from typing import List, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
