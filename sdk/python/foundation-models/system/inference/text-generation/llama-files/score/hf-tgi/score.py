@@ -14,7 +14,7 @@ import logging
 from pathlib import Path
 from subprocess import PIPE, STDOUT
 from subprocess import run as subprocess_run
-from typing import Tuple
+from typing import List, Dict, Any, Tuple, Union
 from text_generation import Client
 
 
@@ -30,14 +30,10 @@ logger.addHandler(stream_handler)
 PORT = 80
 LOCAL_HOST_URI = f"http://0.0.0.0:{PORT}"
 
-PARENT_DIR = Path().parent.resolve()
-SCORING_DETAILS = "scoring.json"
 TEXT_GEN_LAUNCHER_PROCESS_NAME = "text-generation-launcher"
 
-# model init
-MODEL_INIT_ARGS = "model_init_args"
+# model init env vars
 MODEL_ID = "MODEL_ID"
-MLMODEL_PATH = "MLMODEL_PATH"
 SHARDED = "SHARDED"
 NUM_SHARD = "NUM_SHARD"
 QUANTIZE = "QUANTIZE"
@@ -49,8 +45,7 @@ MAX_STOP_SEQUENCES = "MAX_STOP_SEQUENCES"
 MAX_INPUT_LENGTH = "MAX_INPUT_LENGTH"
 MAX_TOTAL_TOKENS = "MAX_TOTAL_TOKENS"
 
-# client init
-CLIENT_INIT_ARGS = "client_init_args"
+# client init env vars
 CLIENT_TIMEOUT = "TIMEOUT"
 MAX_REQUEST_TIMEOUT = 90  # 90s
 
@@ -61,6 +56,9 @@ class SupportedTask:
     CHAT_COMPLETION = "chat-completion"
 
 
+# default values
+MLMODEL_PATH = "mlflow_model_folder/MLmodel"
+DEFAULT_MODEL_ID_PATH  = "mlflow_model_folder/data"
 client = None
 task_type = SupportedTask.TEXT_GENERATION
 
@@ -77,13 +75,6 @@ def run_command(cmd: str) -> Tuple[int, str]:
         errors="ignore",
     )
     return result
-
-
-def get_init_args():
-    model_info_path = PARENT_DIR / SCORING_DETAILS
-    with open(model_info_path) as f:
-        model_info = json.load(f)
-        return model_info
 
 
 def is_server_healthy():
@@ -130,19 +121,19 @@ def init():
     global task_type
 
     try:
-        model_init_args = configs.get(MODEL_INIT_ARGS)
-        client_init_args = configs.get(CLIENT_INIT_ARGS)
+        model_id = os.environ.get(MODEL_ID, DEFAULT_MODEL_ID_PATH)
+        client_timeout = os.environ.get(CLIENT_TIMEOUT, MAX_REQUEST_TIMEOUT)
 
-        model_id = model_init_args.pop(MODEL_ID, None)
-        mlmodel_path = model_init_args.pop(MLMODEL_PATH, None)        
-        client_timeout = client_init_args.get(CLIENT_TIMEOUT, MAX_REQUEST_TIMEOUT)
-
-        if not model_id:
-            raise Exception("model_id is not provided for scoring")
+        for k, v in os.environ.items():
+            logger.info(f"env: {k} = {v}")
 
         model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR", ""), model_id)
-        abs_mlmodel_path = os.path.join(os.getenv("AZUREML_MODEL_DIR", ""), mlmodel_path)
-
+        model_path = os.path.join(model_path, "model")  # default model path for MLFlow model
+        # Use safetensors if present
+        if os.path.isdir(os.path.join(model_path, "safetensors")):
+            model_path = os.path.join(model_path, "safetensors")
+        
+        abs_mlmodel_path = os.path.join(os.getenv("AZUREML_MODEL_DIR", ""), MLMODEL_PATH)
         mlmodel = {}
         if abs_mlmodel_path and os.path.exists(abs_mlmodel_path):
             with open(abs_mlmodel_path) as f:
@@ -158,19 +149,10 @@ def init():
         logger.info(f"Loading model from path {model_path} for task_type: {task_type}")
         logger.info(f"List model_path = {os.listdir(model_path)}")
 
-        logger.info("setting model_init args to env")
-        os.environ.update(model_init_args)
-        logger.info(f"OS env vars: {os.environ}")
-
-        cmd = f"text-generation-launcher --model-id {model_path} &"
-
         logger.info("Starting server")
+        cmd = f"text-generation-launcher --model-id {model_path} &"
         os.system(cmd)
         time.sleep(20)
-
-        # TODO: Make sure server is up and running
-        # Add heart beat for the server
-        # Once we get successful till timeout is reached
 
         WAIT_TIME = 60
         while not is_server_healthy():
@@ -314,7 +296,17 @@ for CC:
 
 """
 
-def get_processed_input_data_for_cc(data):
+def get_processed_input_data_for_cc(data: List[str]) -> str:
+    """
+    example input:
+    [
+        {"role": "user", "content": "What is the tallest building in the world?"},
+        {"role": "assistant", "content": "As of 2021, the Burj Khalifa in Dubai"},
+        {"role": "user", "content": "and in Africa?"},
+    ]
+    example output:
+    "[INST]What is the tallest building in the world?[\INST]As of 2021, the Burj Khalifa in Dubai\n[INST]and in Africa?[/INST]"
+    """
     B_INST, E_INST = "[INST]", "[/INST]"
     conv_arr = data
     history = ""
@@ -332,31 +324,40 @@ def get_processed_input_data_for_cc(data):
     return history
 
 
-def get_request_data(request_string):
+def get_request_data(request_string) -> Tuple[Union[str, List[str]], Dict[str, Any]]:
+    """
+    return type for cc: str, dict
+    return type for tg: list, dict
+    """
     global task_type
     try:
         data = json.loads(request_string)
         logger.info(f"data: {data}")
-        inputs = data["input_data"]
+        # hf-tgi expects "inputs", while mir inference payloads expect "input_data"
+        inputs = data.get("input_data", data.get("inputs", None))
 
-        # support both structure for now
+        input_data = []   # type: Union[str, List[str]]
+        params = {} # type: Dict[str, Any]
         if isinstance(inputs, dict):
             input_data = inputs["input_string"]
             params = inputs.get("parameters", {})
         elif isinstance(inputs, str):
             input_data = inputs
             params = data.get("parameters", {})
+        else:
+            raise Exception("input_data is not a dict or string")
 
         if not isinstance(params, dict):
             raise Exception("parameters is not a dict")
 
-        if task_type == SupportedTask.TEXT_GENERATION and not isinstance(input_data, str) or \
-                task_type == SupportedTask.CHAT_COMPLETION and not isinstance(input_data, list):
-            raise Exception("input_str is not a str (for text-gen) or a list (for cc)")
-
         if task_type == SupportedTask.CHAT_COMPLETION:
-            logger.info("CC task. Processing input data")
+            if not isinstance(input_data, list):
+                raise Exception("input_str is not a list (for cc)")
+            print("CC task. Processing input data")
             input_data = get_processed_input_data_for_cc(input_data)
+        
+        if task_type == SupportedTask.TEXT_GENERATION and isinstance(input_data, str):
+            input_data = [input_data]
 
         return input_data, params
     except Exception as e:
@@ -364,7 +365,7 @@ def get_request_data(request_string):
             "error": (
                 'Expected input format: \n'
                 '{"input_data": {"input_string": "<query>", "parameters": {"k1":"v1", "k2":"v2"}}} or '
-                '{"input_data": "<query>", "parameters": {"k1":"v1", "k2":"v2"}} \n'
+                '{"inputs": "<query>", "parameters": {"k1":"v1", "k2":"v2"}} \n'
                 '<query> should be string for text-generation and for chat-completion a list in below format: \n'
                 '[{"role": "user", "content": "str"}, {"role": "assistant", "content": "str"} ....]'
             ),
@@ -374,31 +375,40 @@ def get_request_data(request_string):
 
 def run(data):
     global client
+    global task_type
 
     try:
         if client is None:
             raise Exception("Client is not initialized")
 
         query, params = get_request_data(data)
-        logger.info(f"input_string: {query}, parameters: {params}")
+        logger.info(f"generating response for input_string: {query}, parameters: {params}")
 
-        logger.info(f"generating response")
-        time_start = time.time()
-        response_str = client.generate(query, **params).generated_text
-        time_taken = time.time() - time_start
+        if task_type == SupportedTask.CHAT_COMPLETION:
+            time_start = time.time()
+            response_str = client.generate(query, **params).generated_text
+            time_taken = time.time() - time_start
+            logger.info(f"time_taken: {time_taken}")
+            result_dict = {'0': f'{response_str}'}
+            return json.dumps(result_dict)
+    
+        assert task_type == SupportedTask.TEXT_GENERATION and isinstance(query, list), "query should be a list for text-generation"
+        
+        results = []
+        for i, q in enumerate(query):
+            time_start = time.time()
+            response_str = client.generate(q, **params).generated_text
+            time_taken = time.time() - time_start
+            logger.info(f"query {i} - time_taken: {time_taken}")
+            results.append({str(i): f'{response_str}'})
+        return json.dumps(results)
 
-        result_dict = {'responses': f'{response_str}', 'time': time_taken}
-        logger.info(result_dict)
-        return json.dumps(result_dict)
     except Exception as e:
         return json.dumps({
             "error": "Error in processing request",
             "exception": str(e)
         })
 
-
-configs = get_init_args()
-logger.info(configs)
 
 
 if __name__ == "__main__":
