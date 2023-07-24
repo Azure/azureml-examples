@@ -9,7 +9,7 @@ name: sdk-jobs-parallel-2a_iris_batch_prediction-iris_batch_prediction
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "22 3/12 * * *"
   pull_request:
     branches:
       - main
@@ -17,7 +17,7 @@ on:
       - sdk/python/jobs/parallel/2a_iris_batch_prediction/**
       - .github/workflows/sdk-jobs-parallel-2a_iris_batch_prediction-iris_batch_prediction.yml
       - sdk/python/dev-requirements.txt
-      - infra/**
+      - infra/bootstrapping/**
       - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
@@ -42,28 +42,28 @@ jobs:
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup SDK
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run jobs/parallel/2a_iris_batch_prediction/iris_batch_prediction.ipynb
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "iris_batch_prediction.ipynb";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "iris_batch_prediction.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python iris_batch_prediction.ipynb iris_batch_prediction.output.ipynb
       working-directory: sdk/python/jobs/parallel/2a_iris_batch_prediction
@@ -71,5 +71,5 @@ jobs:
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: 2a_iris_batch_prediction
+        name: iris_batch_prediction
         path: sdk/python/jobs/parallel/2a_iris_batch_prediction

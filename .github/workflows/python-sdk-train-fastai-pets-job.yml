@@ -11,7 +11,7 @@ on:
       - v1/python-sdk/requirements.txt
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{vars.V1_UBUNTU_RUNNER}}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -29,13 +29,13 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: Run update-azure-extensions
       run: |
          chmod +x ./v1/scripts/update-azure-extensions.sh
          ./v1/scripts/update-azure-extensions.sh
       shell: bash
     - name: attach to workspace
-      run: az ml folder attach -w main-python-sdk -g azureml-examples-rg
+      run: az ml folder attach -w main -g azureml-examples
     - name: run workflow
       run: python v1/python-sdk/workflows/train/fastai/pets/job.py

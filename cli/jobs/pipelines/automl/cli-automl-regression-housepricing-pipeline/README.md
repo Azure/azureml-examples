@@ -8,7 +8,7 @@ products:
 description: How to use AutoML `Regression` inside pipeline?
 ---
 
-# AutoML Classification task in pipeline
+# AutoML Regression task in pipeline
 
 This sample explains how to use `Regression` AutoML task to train model and predict house pricing inside pipeline.
 

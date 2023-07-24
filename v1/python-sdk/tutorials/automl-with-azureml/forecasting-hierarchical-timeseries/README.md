@@ -7,7 +7,7 @@ products:
 description: Tutorial showing how to solve a complex machine learning time series forecasting problems at scale by using Azure Automated ML and Hierarchical time series accelerator.
 ---
 
-## Microsoft Solution Accelerator: Hierachical Time Series Forecasting
+# Microsoft Solution Accelerator: Hierachical Time Series Forecasting
 
 In most applications, customers have a need to understand their forecasts at a macro and micro level of the business. Whether that be predicting sales of products at different geographic locations, or understanding the expected workforce demand for different organizations at a company, the ability to train a machine learning model to intelligently forecast on hierarchy data is essential.
 
@@ -20,7 +20,7 @@ This business pattern is common across a wide variety of industries and applicab
 | *Retail Organization*| Price optimization models for hundreds of thousands of products available. |
 
 
-### Technical Summary
+## Technical Summary
 
 A hierarchical time series is a structure in which each of the unique series are arranged into a hierarchy based on dimensions such as geography, or product type. The table below shows an example of data whose unique attributes form a hierarchy. Our hierarchy is defined by the `product type` such as headphones or tablets, the `product category` which splits product types into accessories and devices, and the `region` the products are sold in. The table below demonstrates the first input of each unique series in the hierarchy.
 

@@ -1,9 +1,9 @@
 # <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
+WORKSPACE=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 
-LOCATION=$(az ml workspace show| jq -r '.location')
+LOCATION=$(az ml workspace show --query location -o tsv)
 
 API_VERSION="2022-05-01"
 
@@ -149,7 +149,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
 }")
 #</create_endpoint>
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id $TOKEN
 
 # <create_deployment>
@@ -201,7 +201,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"location\": \"$LOCATION\"
 }")
 
-operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
 wait_for_completion $operation_id $TOKEN
 #</set_endpoint_defaults>
 
@@ -226,7 +226,7 @@ response=$(curl --location --request POST $SCORING_URI \
     \"properties\": {
         \"dataset\": {
             \"dataInputType\": \"DataUrl\",
-            \"Path\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
+            \"Path\": \"https://azuremlexampledata.blob.core.windows.net/data/mnist/sample\"
         }
     }
 }")
@@ -251,16 +251,12 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     \"properties\": {
         \"paths\": [
             {
-                \"folder\": \"https://pipelinedata.blob.core.windows.net/sampledata/mnist\"
+                \"folder\": \"https://azuremlexampledata.blob.core.windows.net/data/mnist/sample\"
             }
         ]
     }
 }")
 #</create_dataset>
-
-#<unique_output>
-export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-#</unique_output>
 
 # <score_endpoint_with_dataset>
 response=$(curl --location --request POST $SCORING_URI \
@@ -268,16 +264,18 @@ response=$(curl --location --request POST $SCORING_URI \
 --header "Content-Type: application/json" \
 --data-raw "{
     \"properties\": {
-        \"dataset\": {
-            \"dataInputType\": \"DatasetVersion\",
-            \"datasetName\": \"$DATASET_NAME\",
-            \"datasetVersion\": \"$DATASET_VERSION\"
+        \"InputData\": {
+            \"mnistinput\": {
+                \"JobInputType\": \"UriFolder\",
+                \"Uri\": \"azureml://locations/$LOCATION/workspaces/$WORKSPACE/data/$DATASET_NAME/versions/labels/latest\"
+            }
         },
-        \"outputDataset\": {
-            \"datastoreId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/datastores/workspaceblobstore\",
-            \"path\": \"$ENDPOINT_NAME\"
+        \"OutputData\": {
+            \"customOutput\": {
+                \"JobOutputType\": \"UriFolder\",
+                \"Uri\": \"azureml://datastores/workspaceblobstore/paths/batch/$ENDPOINT_NAME/$RANDOM/\"
+            }
         },
-        \"outputFileName\": \"$OUTPUT_FILE_NAME\"
     }
 }")
 # </score_endpoint_with_dataset>

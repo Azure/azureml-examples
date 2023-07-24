@@ -17,7 +17,7 @@ on:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-orange-juice-sales-automl-forecasting-orange-juice-sales-mlflow.yml
       - sdk/python/dev-requirements.txt
-      - infra/**
+      - infra/bootstrapping/**
       - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -46,30 +46,49 @@ jobs:
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup SDK
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales/automl-forecasting-orange-juice-sales-mlflow.ipynb
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-forecasting-orange-juice-sales-mlflow.ipynb";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-forecasting-orange-juice-sales-mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-orange-juice-sales-mlflow.ipynb automl-forecasting-orange-juice-sales-mlflow.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
+    - name: check notebook output
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+                --file_name automl-forecasting-orange-juice-sales-mlflow.output.ipynb \
+                --folder . \
+                --check warning stderr \
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
+    - name: check v2 experiment result
+      run: |
+         python ${{ github.workspace }}/v1/scripts/validation/check_v2_experiment_result.py \
+                --file_name automl-forecasting-orange-juice-sales-mlflow.output.ipynb \
+                --folder . \
+                --experiment_name dpv2-forecasting-experiment \
+                --minimum_median_score 0.01 \
+                --maximum_median_score 0.3 \
+                --metric_name normalized_root_mean_squared_error \
+                --absolute_minimum_score 0.0 \
+                --absolute_maximum_score 1.0 \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
@@ -79,4 +98,4 @@ jobs:
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
 
     - name: Remove the compute if notebook did not done it properly.
-      run: bash "${{ github.workspace }}/infra/remove_computes.sh" oj-cluster
+      run: bash "${{ github.workspace }}/infra/bootstrapping/remove_computes.sh" oj-cluster

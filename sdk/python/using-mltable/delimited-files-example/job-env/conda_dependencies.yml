@@ -1,0 +1,6 @@
+dependencies:
+  - python=3.10
+  - pip=21.2.4
+  - pip:
+      - mltable==1.3.0
+      - azureml-dataprep[pandas]==4.10.6

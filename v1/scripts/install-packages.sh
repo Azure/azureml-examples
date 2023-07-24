@@ -19,9 +19,9 @@ echo "Add the Microsoft package signing key"
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
-echo "Install the .NET Core 2.1 runtime"
+echo "Install the .NET Core 6.0 runtime"
 sudo apt-get update
 sudo apt-get install -y apt-transport-https
 sudo apt-get update
-sudo apt-get install -y dotnet-sdk-2.1
-echo ".NET Core 2.1 runtime package installed"
+sudo apt-get install -y dotnet-sdk-6.0
+echo ".NET Core 6.0 runtime package installed"

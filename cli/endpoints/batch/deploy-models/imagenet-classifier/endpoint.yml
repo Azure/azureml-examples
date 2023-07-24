@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: imagenet-classifier-batch
+description: A batch endpoint for performing image classification using a TFHub model ImageNet model.
+auth_mode: aad_token

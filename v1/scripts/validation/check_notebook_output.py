@@ -46,6 +46,17 @@ allowed_list = [
     "Downloading dataset",
     "logger.warning",
     "Importing plotly failed",
+    "Found the config file in:",
+    "Check: endpoint",
+    "data_collector is not a known attribute of class",
+    "Readonly attribute primary_metric will be ignored",
+    "Downloading artifact ",
+    "Warnings:",
+    "Downloading builder script",
+    "Downloading extra modules",
+    "custom base image or base dockerfile detected",
+    "TqdmWarning: IProgress not found.",
+    "from .autonotebook import tqdm as notebook_tqdm",
 ]
 
 with open(full_name, "r") as notebook_file:

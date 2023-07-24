@@ -4,10 +4,28 @@ import json
 import glob
 import argparse
 import hashlib
+import random
+import string
+import yaml
 
 # define constants
-EXCLUDED_JOBS = ["java", "spark"]
-EXCLUDED_ENDPOINTS = ["batch", "online", "amlarc"]
+EXCLUDED_JOBS = ["java", "spark-job-component", "storage_pe", "user-assigned-identity"]
+# TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
+EXCLUDED_ENDPOINTS = [
+    "1-uai-create-endpoint",
+    "1-sai-create-endpoint",
+    "tfserving-endpoint",
+]
+EXCLUDED_DEPLOYMENTS = [
+    "minimal-multimodel-deployment",
+    "minimal-single-model-conda-in-dockerfile-deployment",
+    "mlflow-deployment",
+    "r-deployment",
+    "torchserve-deployment",
+    "triton-cc-deployment",
+    "2-sai-deployment",
+    "kubernetes-green-deployment",
+]
 EXCLUDED_RESOURCES = [
     "workspace",
     "datastore",
@@ -59,6 +77,7 @@ def main(args):
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/spark/*.yml", recursive=False))
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/cli-automl-*.yml", recursive=True)
     )
@@ -88,7 +107,7 @@ def main(args):
     ]
 
     # get list of endpoints
-    endpoints = sorted(glob.glob("endpoints/**/*.yml", recursive=True))
+    endpoints = sorted(glob.glob("endpoints/**/*endpoint.yml", recursive=True))
     endpoints = [
         endpoint.replace(".yml", "")
         for endpoint in endpoints
@@ -176,7 +195,6 @@ def modify_notebooks(notebooks):
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r") as f:
             data = json.load(f)
@@ -352,8 +370,7 @@ def write_workflows(
     # process endpoints
     for endpoint in endpoints:
         # write workflow file
-        # write_endpoint_workflow(endpoint)
-        pass
+        write_endpoint_workflow(endpoint)
 
     # process assest
     for resource in resources:
@@ -404,6 +421,7 @@ def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
     is_pipeline_sample = "jobs/pipelines" in job
+    is_spark_sample = "jobs/spark" in job
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     # Duplicate name in working directory during checkout
@@ -419,10 +437,12 @@ on:
       - main
     paths:
       - cli/{posix_project_dir}/**
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-{hyphenated}.yml\n"""
     if is_pipeline_sample:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
+    if is_spark_sample:
+        workflow_yaml += "      - cli/jobs/spark/data/titanic.csv\n" ""
     workflow_yaml += f"""      - cli/setup.sh
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
@@ -441,25 +461,27 @@ jobs:
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true
-    - name: run job
+      continue-on-error: true\n"""
+    if is_spark_sample:
+        workflow_yaml += get_spark_setup_workflow(job)
+    workflow_yaml += f"""    - name: run job
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";\n"""
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";\n"""
     if "automl" in job and "image" in job:
-        workflow_yaml += f"""          bash \"{GITHUB_WORKSPACE}/infra/sdk_helpers.sh\" replace_template_values \"prepare_data.py\";
+        workflow_yaml += f"""          bash \"{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh\" replace_template_values \"prepare_data.py\";
           pip install azure-identity
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
-    elif "deepspeed" in job:
+    elif "autotuning" in job:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
@@ -494,7 +516,7 @@ on:
       - main
     paths:
       - cli/{posix_project_dir}/**
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-{hyphenated}-registry.yml\n"""
     if is_pipeline_sample:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
@@ -520,17 +542,17 @@ jobs:
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run job
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";\n"""
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";\n"""
     if "automl" in job and "image" in job:
-        workflow_yaml += f"""          bash \"{GITHUB_WORKSPACE}/infra/sdk_helpers.sh\" replace_template_values \"prepare_data.py\";
+        workflow_yaml += f"""          bash \"{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh\" replace_template_values \"prepare_data.py\";
           pip install azure-identity
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
@@ -547,9 +569,27 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    deployments = sorted(
+        glob.glob(project_dir + "/*deployment.yml", recursive=True)
+        + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
+    )
+    deployments = [
+        deployment
+        for deployment in deployments
+        if not any(excluded in deployment for excluded in EXCLUDED_DEPLOYMENTS)
+    ]
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
-    workflow_yaml = f"""{READONLY_HEADER}
+    endpoint_type = (
+        "online"
+        if "endpoints/online/" in endpoint
+        else "batch"
+        if "endpoints/batch/" in endpoint
+        else "unknown"
+    )
+    endpoint_name = hyphenated[-32:].replace("-", "")
+
+    create_endpoint_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
 on:
   workflow_dispatch:
@@ -560,7 +600,8 @@ on:
       - main
     paths:
       - cli/{project_dir}/**
-      - infra/**
+      - cli/endpoints/{endpoint_type}/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
@@ -583,17 +624,49 @@ jobs:
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: delete endpoint if existing
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
+          az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
-          az ml endpoint create -f {endpoint}.yml
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
+          cat {endpoint}.yml
+          az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml
       working-directory: cli\n"""
+
+    cleanup_yaml = f"""    - name: cleanup endpoint
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
+          az ml {endpoint_type}-endpoint delete -n {endpoint_name} -y
+      working-directory: cli\n"""
+
+    workflow_yaml = create_endpoint_yaml
+
+    if (deployments is not None) and (len(deployments) > 0):
+        for deployment in deployments:
+            deployment = deployment.replace(".yml", "").replace(".yaml", "")
+            deployment_yaml = f"""    - name: create deployment
+      run: |
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
+          cat {deployment}.yml
+          az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml
+      working-directory: cli\n"""
+
+            workflow_yaml += deployment_yaml
+
+    workflow_yaml += cleanup_yaml
 
     # write workflow
     with open(f"../.github/workflows/cli-{hyphenated}.yml", "w") as f:
@@ -616,7 +689,7 @@ on:
       - main
     paths:
       - cli/{posix_asset}.yml
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
@@ -634,20 +707,20 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          bash bootstrap.sh
+          bash bootstrapping/bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create asset
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml
       working-directory: cli\n"""
 
@@ -673,7 +746,7 @@ on:
       - main
     paths:
       - cli/{script}.sh
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-scripts-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
@@ -696,15 +769,15 @@ jobs:
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: test script script
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           set -e; bash -x {script}.sh
       working-directory: cli\n"""
 
@@ -729,7 +802,7 @@ on:
       - main
     paths:
       - cli/{posix_schedule}.yml
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-schedules-{hyphenated}.yml
       - cli/setup.sh
 concurrency:
@@ -752,21 +825,21 @@ jobs:
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: create schedule
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}"
       working-directory: cli\n
     - name: disable schedule
       run: |
-          source "{GITHUB_WORKSPACE}/infra/sdk_helpers.sh";
-          source "{GITHUB_WORKSPACE}/infra/init_environment.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
+          source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           az ml schedule disable --name ci_test_{filename}
       working-directory: cli\n"""
 
@@ -780,6 +853,49 @@ def get_schedule_time(filename):
     schedule_minute = name_hash % 60
     schedule_hour = (name_hash // 60) % hours_between_runs
     return schedule_hour, schedule_minute
+
+
+def get_endpoint_name(filename, hyphenated):
+    # gets the endpoint name from the .yml file
+    with open(filename, "r") as f:
+        endpoint_name = yaml.safe_load(f)["name"]
+    return endpoint_name
+
+
+def get_spark_setup_workflow(job):
+    is_attached = "attached-spark" in job
+    is_user_identity = "user-identity" in job
+    is_managed_identity = "managed-identity" in job
+    is_default_identity = "default-identity" in job
+    workflow = f"""    - name: upload data
+      run: |
+          bash -x upload-data-to-blob.sh jobs/spark/
+      working-directory: cli
+      continue-on-error: true\n"""
+    if is_managed_identity:
+        workflow += f"""    - name: setup identities
+      run: |
+          bash -x setup-identities.sh
+      working-directory: cli/jobs/spark
+      continue-on-error: true\n"""
+    if is_attached:
+        workflow += f"""    - name: setup attached spark
+      working-directory: cli
+      continue-on-error: true"""
+    if is_attached and is_user_identity:
+        workflow += f"""
+      run: |
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-user-identity.yml\n"""
+    if is_attached and is_managed_identity:
+        workflow += f"""
+      run: |
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-system-identity.yml\n"""
+    if is_attached and is_default_identity:
+        workflow += f"""
+      run: |
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark.yml\n"""
+
+    return workflow
 
 
 # run functions

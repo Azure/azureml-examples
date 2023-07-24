@@ -21,8 +21,8 @@ cp -r $ASSET_PATH/models $BASE_PATH
 cp $PARENT_PATH/triton-cc-deployment.yml $BASE_PATH/deployment.yaml
 cp $PARENT_PATH/triton-cc-endpoint.yml $BASE_PATH/endpoint.yaml
 sed -i "s/{{acr_name}}/$ACR_NAME/g;\
-        s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/deployment.yaml
-sed -i "s/{{endpoint_name}}/$ENDPOINT_NAME/g;" $BASE_PATH/endpoint.yaml
+        s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;" $BASE_PATH/deployment.yaml
+sed -i "s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;" $BASE_PATH/endpoint.yaml
 # </set_base_path_and_copy_assets>
 
 # <login_to_acr>
