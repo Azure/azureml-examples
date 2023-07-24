@@ -1,0 +1,30 @@
+$schema:  http://azureml/sdk-2-0/Schedule.json
+name: custom_monitor
+display_name: My custom monitor
+description: Custom model monitoring with your own signal metrics.
+
+trigger:
+  type: recurrence
+  frequency: day 
+  interval: 1
+
+create_monitor:
+  compute: 
+    instance_type: standard_e4s_v3
+    runtime_version: 3.2
+  monitoring_signals:
+    testSignal:
+      type: custom
+      component_id: azureml:my_custom_signal:0.0.2
+      input_datasets:
+        production_data:
+          input_dataset:
+            type: mltable
+            path: azureml:Direct:1
+          dataset_context: test
+      metric_thresholds:
+        - metric_name: std_deviation
+          threshold: 1
+  alert_notification:
+    emails:
+      - mastloui@microsoft.com
