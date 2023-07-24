@@ -11,6 +11,7 @@ import time
 import yaml
 import logging
 import pandas as pd
+import numpy as np
 
 from concurrent.futures import ThreadPoolExecutor
 from mlflow.pyfunc.scoring_server import _get_jsonable_obj
@@ -437,7 +438,7 @@ def run(data):
     global client
     global task_type
 
-    data, severity = get_safe_input(input_data)
+    data, severity = get_safe_input(data)
     if severity > aacs_threshold:
         logger.warning(f"Input severity ({severity}) greater than aacs threshold ({aacs_threshold}).")
         return {}
@@ -455,7 +456,7 @@ def run(data):
             time_taken = time.time() - time_start
             logger.info(f"time_taken: {time_taken}")
             result_dict = {'output': f'{response_str}'}
-            resp = pd.Dataframe([result_dict])
+            resp = pd.DataFrame([result_dict])
             return get_safe_response(resp)
 
         assert task_type == SupportedTask.TEXT_GENERATION and isinstance(query, list), "query should be a list for text-generation"
@@ -468,8 +469,7 @@ def run(data):
             logger.info(f"query {i} - time_taken: {time_taken}")
             results[str(i)] = [f'{response_str}']
 
-        # return json.dumps(results)
-        resp = pd.Dataframe(results)
+        resp = pd.DataFrame(results)
         return get_safe_response(resp)
 
     except Exception as e:
