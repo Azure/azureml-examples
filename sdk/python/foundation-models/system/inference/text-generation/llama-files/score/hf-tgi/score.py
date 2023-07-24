@@ -6,14 +6,10 @@ import json
 import os
 import psutil
 import requests
-import sys
 import time
 import yaml
 
 import logging
-from pathlib import Path
-from subprocess import PIPE, STDOUT
-from subprocess import run as subprocess_run
 from typing import List, Dict, Any, Tuple, Union
 from text_generation import Client
 
@@ -58,26 +54,13 @@ class SupportedTask:
 
 # default values
 MLMODEL_PATH = "mlflow_model_folder/MLmodel"
-DEFAULT_MODEL_ID_PATH  = "mlflow_model_folder/data"
+DEFAULT_MODEL_ID_PATH  = "mlflow_model_folder/data/model"
 client = None
 task_type = SupportedTask.TEXT_GENERATION
 
 
-def run_command(cmd: str) -> Tuple[int, str]:
-    """Run the command and returns the result."""
-    logger.info(f"run_command: executing {cmd}")
-    result = subprocess_run(
-        cmd,
-        shell=True,
-        stdout=PIPE,
-        stderr=STDOUT,
-        encoding=sys.stdout.encoding,
-        errors="ignore",
-    )
-    return result
-
-
 def is_server_healthy():
+    """Periodically checks if server is up and running."""
     # use psutil to go through active process 
     WAIT_TIME = 20
     RETRY_COUNT = 5
@@ -117,6 +100,7 @@ def is_server_healthy():
 
 
 def init():
+    """Initialize text-generation-inference server and client."""
     global client
     global task_type
 
@@ -128,11 +112,6 @@ def init():
             logger.info(f"env: {k} = {v}")
 
         model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR", ""), model_id)
-        model_path = os.path.join(model_path, "model")  # default model path for MLFlow model
-        # Use safetensors if present
-        if os.path.isdir(os.path.join(model_path, "safetensors")):
-            model_path = os.path.join(model_path, "safetensors")
-        
         abs_mlmodel_path = os.path.join(os.getenv("AZUREML_MODEL_DIR", ""), MLMODEL_PATH)
         mlmodel = {}
         if abs_mlmodel_path and os.path.exists(abs_mlmodel_path):
@@ -158,145 +137,20 @@ def init():
         while not is_server_healthy():
             logger.info(f"Server not up. Waiting for {WAIT_TIME}s, before querying again.")
             time.sleep(WAIT_TIME)
-
         logger.info("Server Started")
+
+        # run nvidia-smi
+        logger.info("###### GPU INFO ######")
+        logger.info(os.system("nvidia-smi"))
+        logger.info("###### GPU INFO ######")
+
         client = Client(LOCAL_HOST_URI, timeout=client_timeout)  # use deployment settings
         logger.info(f"Created Client: {client}")
     except Exception as e:
         raise Exception(f"Error in creating client or server: {e}")
 
 
-"""
-Read about client accepted parameters here:
-    https://github.com/huggingface/text-generation-inference/tree/5a1512c0253e759fb07142029127292d639ab117/clients/python/text_generation
-
-client.__init__():
-    base_url: str,
-    headers: Optional[Dict[str, str]] = None,
-    cookies: Optional[Dict[str, str]] = None,
-    timeout: int = 10,
-
-client:generate():
-    self,
-    prompt: str,
-    do_sample: bool = False,
-    max_new_tokens: int = 20,
-    best_of: Optional[int] = None,
-    repetition_penalty: Optional[float] = None,
-    return_full_text: bool = False,
-    seed: Optional[int] = None,
-    stop_sequences: Optional[List[str]] = None,
-    temperature: Optional[float] = None,
-    top_k: Optional[int] = None,
-    top_p: Optional[float] = None,
-    truncate: Optional[int] = None,
-    typical_p: Optional[float] = None,
-    watermark: bool = False,
-    decoder_input_details: bool = False,
-
-class Parameters(BaseModel):
-    # Activate logits sampling
-    do_sample: bool = False
-    # Maximum number of generated tokens
-    max_new_tokens: int = 20
-    # The parameter for repetition penalty. 1.0 means no penalty.
-    # See [this paper](https://arxiv.org/pdf/1909.05858.pdf) for more details.
-    repetition_penalty: Optional[float] = None
-    # Whether to prepend the prompt to the generated text
-    return_full_text: bool = False
-    # Stop generating tokens if a member of `stop_sequences` is generated
-    stop: List[str] = []
-    # Random sampling seed
-    seed: Optional[int]
-    # The value used to module the logits distribution.
-    temperature: Optional[float]
-    # The number of highest probability vocabulary tokens to keep for top-k-filtering.
-    top_k: Optional[int]
-    # If set to < 1, only the smallest set of most probable tokens with probabilities that add up to `top_p` or
-    # higher are kept for generation.
-    top_p: Optional[float]
-    # truncate inputs tokens to the given size
-    truncate: Optional[int]
-    # Typical Decoding mass
-    # See [Typical Decoding for Natural Language Generation](https://arxiv.org/abs/2202.00666) for more information
-    typical_p: Optional[float]
-    # Generate best_of sequences and return the one if the highest token logprobs
-    best_of: Optional[int]
-    # Watermarking with [A Watermark for Large Language Models](https://arxiv.org/abs/2301.10226)
-    watermark: bool = False
-    # Get generation details
-    details: bool = False
-    # Get decoder input token logprobs and ids
-    decoder_input_details: bool = False
-"""
-
-
-"""
-{
-   "input_data": {
-      "input_string":"the meaning of life is",
-      "parameters":{
-        "max_new_tokens":100,
-        "do_sample": True
-      }
-   }
-}
-
-or 
-
-{
-   "input_data": "the meaning of life is",
-    "parameters": {
-        "max_new_tokens":200,
-        "do_sample": True
-    }
-}
-
-{
-	"input_data": "User: Write an elaborate story about a hare and a tortoise that ends with a moral. The story should be set on the beautiful landscape of Bahamas.\nAssistant:",
-	"parameters": {
-		"max_new_tokens":500
-	}
-}
-
-for CC:
-{ 
-    "input_data": { 
-        "input_string": [ 
-            { 
-                "role": "user", 
-                "content": "What is the tallest building in the world?" 
-            }, 
-            { 
-                "role": "assistant", 
-                "content": "As of 2021, the Burj Khalifa in Dubai, United Arab Emirates is the tallest building in the world, standing at a height of 828 meters (2,722 feet). It was completed in 2010 and has 163 floors. The Burj Khalifa is not only the tallest building in the world but also holds several other records, such as the highest occupied floor, highest outdoor observation deck, elevator with the longest travel distance, and the tallest freestanding structure in the world." 
-            }, 
-            { 
-                "role": "user", 
-                "content": "and in Africa?" 
-            }, 
-            { 
-                "role": "assistant", 
-                "content": "In Africa, the tallest building is the Carlton Centre, located in Johannesburg, South Africa. It stands at a height of 50 floors and 223 meters (730 feet). The CarltonDefault Centre was completed in 1973 and was the tallest building in Africa for many years until the construction of the Leonardo, a 55-story skyscraper in Sandton, Johannesburg, which was completed in 2019 and stands at a height of 230 meters (755 feet). Other notable tall buildings in Africa include the Ponte City Apartments in Johannesburg, the John Hancock Center in Lagos, Nigeria, and the Alpha II Building in Abidjan, Ivory Coast" 
-            }, 
-            { 
-                "role": "user", 
-                "content": "and in Europe?" 
-            } 
-        ], 
-        "parameters":{ 
-            "max_length": 100,
-            "temperature": 0.9,
-            "top_p": 0.6,
-            "do_sample": true,
-            "max_new_tokens":100 
-        } 
-    } 
-}
-
-"""
-
-def get_processed_input_data_for_cc(data: List[str]) -> str:
+def get_processed_input_data_for_chat_completion(data: List[str]) -> str:
     """
     example input:
     [
@@ -326,54 +180,50 @@ def get_processed_input_data_for_cc(data: List[str]) -> str:
 
 def get_request_data(request_string) -> Tuple[Union[str, List[str]], Dict[str, Any]]:
     """
-    return type for cc: str, dict
-    return type for tg: list, dict
+    return type for chat-completion: str, dict
+    return type for text-generation: list, dict
     """
     global task_type
     try:
         data = json.loads(request_string)
         logger.info(f"data: {data}")
-        # hf-tgi expects "inputs", while mir inference payloads expect "input_data"
-        inputs = data.get("input_data", data.get("inputs", None))
+        inputs = data.get("input_data", None)
 
         input_data = []   # type: Union[str, List[str]]
         params = {} # type: Dict[str, Any]
-        if isinstance(inputs, dict):
-            input_data = inputs["input_string"]
-            params = inputs.get("parameters", {})
-        elif isinstance(inputs, str):
-            input_data = inputs
-            params = data.get("parameters", {})
-        else:
-            raise Exception("input_data is not a dict or string")
+
+        if not isinstance(inputs, dict):
+            raise Exception("Invalid input data")
+
+        input_data = inputs["input_string"]
+        params = inputs.get("parameters", {})
+
+        if not isinstance(input_data, list):
+            raise Exception("query is not a list")
 
         if not isinstance(params, dict):
             raise Exception("parameters is not a dict")
 
         if task_type == SupportedTask.CHAT_COMPLETION:
-            if not isinstance(input_data, list):
-                raise Exception("input_str is not a list (for cc)")
-            print("CC task. Processing input data")
-            input_data = get_processed_input_data_for_cc(input_data)
-        
-        if task_type == SupportedTask.TEXT_GENERATION and isinstance(input_data, str):
-            input_data = [input_data]
+            print("chat-completion task. Processing input data")
+            input_data = get_processed_input_data_for_chat_completion(input_data)
 
         return input_data, params
     except Exception as e:
         raise Exception(json.dumps({
             "error": (
                 'Expected input format: \n'
-                '{"input_data": {"input_string": "<query>", "parameters": {"k1":"v1", "k2":"v2"}}} or '
-                '{"inputs": "<query>", "parameters": {"k1":"v1", "k2":"v2"}} \n'
-                '<query> should be string for text-generation and for chat-completion a list in below format: \n'
-                '[{"role": "user", "content": "str"}, {"role": "assistant", "content": "str"} ....]'
+                '{"input_data": {"input_string": "<query>", "parameters": {"k1":"v1", "k2":"v2"}}}.\n '
+                '<query> should be in below format:\n '
+                'For text-generation: ["str1", "str2", ...]\n'
+                'For chat-completion : [{"role": "user", "content": "str1"}, {"role": "assistant", "content": "str2"} ....]'
             ),
             "exception": str(e)
         }))
 
 
 def run(data):
+    """Run for inference data provided."""
     global client
     global task_type
 
@@ -391,9 +241,9 @@ def run(data):
             logger.info(f"time_taken: {time_taken}")
             result_dict = {'0': f'{response_str}'}
             return json.dumps(result_dict)
-    
+
         assert task_type == SupportedTask.TEXT_GENERATION and isinstance(query, list), "query should be a list for text-generation"
-        
+
         results = []
         for i, q in enumerate(query):
             time_start = time.time()
@@ -410,51 +260,54 @@ def run(data):
         })
 
 
-
 if __name__ == "__main__":
     logger.info(init())
-    # cc
-    logger.info(run(json.dumps({ 
-        "input_data": { 
-            "input_string": [
-                { 
-                    "role": "user", 
-                    "content": "What is the tallest building in the world?" 
-                }, 
-                { 
-                    "role": "assistant", 
-                    "content": "As of 2021, the Burj Khalifa in Dubai, United Arab Emirates is the tallest building in the world, standing at a height of 828 meters (2,722 feet). It was completed in 2010 and has 163 floors. The Burj Khalifa is not only the tallest building in the world but also holds several other records, such as the highest occupied floor, highest outdoor observation deck, elevator with the longest travel distance, and the tallest freestanding structure in the world." 
-                }, 
-                { 
-                    "role": "user", 
-                    "content": "and in Africa?" 
-                }, 
-                { 
-                    "role": "assistant", 
-                    "content": "In Africa, the tallest building is the Carlton Centre, located in Johannesburg, South Africa. It stands at a height of 50 floors and 223 meters (730 feet). The CarltonDefault Centre was completed in 1973 and was the tallest building in Africa for many years until the construction of the Leonardo, a 55-story skyscraper in Sandton, Johannesburg, which was completed in 2019 and stands at a height of 230 meters (755 feet). Other notable tall buildings in Africa include the Ponte City Apartments in Johannesburg, the John Hancock Center in Lagos, Nigeria, and the Alpha II Building in Abidjan, Ivory Coast" 
-                }, 
-                { 
-                    "role": "user", 
-                    "content": "and in Europe?" 
-                } 
-            ], 
-            "parameters":{ 
-                "temperature": 0.9,
-                "top_p": 0.6,
-                "do_sample": True,
-                "max_new_tokens":100 
-            }
-        } 
-    })))
+    assert task_type is not None
 
-    # # text gen
-    # logger.info(run(json.dumps({
-    #     "input_data":{
-    #         "input_string":"the meaning of life is",
-    #         "parameters":{"max_new_tokens": 100, "do_sample": True}
-    #     }
-    # })))
-    # logger.info(run(json.dumps({
-    #     "input_data":"the meaning of life is",
-    #     "parameters":{"max_new_tokens": 100, "do_sample": True}
-    # })))
+    valid_inputs = {
+        "text-generation": [
+            {
+                "input_data":{
+                    "input_string": ["the meaning of life is"],
+                    "parameters":{"max_new_tokens": 100, "do_sample": True}
+                }
+            }
+        ],
+        "chat-completion": [
+            { 
+                "input_data": { 
+                    "input_string": [
+                        { 
+                            "role": "user", 
+                            "content": "What is the tallest building in the world?" 
+                        }, 
+                        { 
+                            "role": "assistant", 
+                            "content": "As of 2021, the Burj Khalifa in Dubai, United Arab Emirates is the tallest building in the world, standing at a height of 828 meters (2,722 feet). It was completed in 2010 and has 163 floors. The Burj Khalifa is not only the tallest building in the world but also holds several other records, such as the highest occupied floor, highest outdoor observation deck, elevator with the longest travel distance, and the tallest freestanding structure in the world." 
+                        }, 
+                        { 
+                            "role": "user", 
+                            "content": "and in Africa?" 
+                        }, 
+                        { 
+                            "role": "assistant", 
+                            "content": "In Africa, the tallest building is the Carlton Centre, located in Johannesburg, South Africa. It stands at a height of 50 floors and 223 meters (730 feet). The CarltonDefault Centre was completed in 1973 and was the tallest building in Africa for many years until the construction of the Leonardo, a 55-story skyscraper in Sandton, Johannesburg, which was completed in 2019 and stands at a height of 230 meters (755 feet). Other notable tall buildings in Africa include the Ponte City Apartments in Johannesburg, the John Hancock Center in Lagos, Nigeria, and the Alpha II Building in Abidjan, Ivory Coast" 
+                        }, 
+                        { 
+                            "role": "user", 
+                            "content": "and in Europe?" 
+                        } 
+                    ], 
+                    "parameters":{ 
+                        "temperature": 0.9,
+                        "top_p": 0.6,
+                        "do_sample": True,
+                        "max_new_tokens":100 
+                    }
+                } 
+            }
+        ]
+    }
+
+    for sample_ip in valid_inputs[task_type]:
+        logger.info(run(json.dumps(sample_ip)))
