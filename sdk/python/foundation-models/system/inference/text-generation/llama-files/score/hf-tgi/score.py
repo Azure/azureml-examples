@@ -438,12 +438,12 @@ def run(data):
     global client
     global task_type
 
-    data, severity = get_safe_input(data)
-    if severity > aacs_threshold:
-        logger.warning(f"Input severity ({severity}) greater than aacs threshold ({aacs_threshold}).")
-        return {}
-
     try:
+        data, severity = get_safe_input(data)
+        if severity > aacs_threshold:
+            logger.warning(f"Input severity ({severity}) greater than aacs threshold ({aacs_threshold}).")
+            return {}
+
         if client is None:
             raise Exception("Client is not initialized")
 
