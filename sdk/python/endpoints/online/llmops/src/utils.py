@@ -2,12 +2,13 @@ from azure.keyvault.secrets import SecretClient
 from azure.core.credentials import TokenCredential
 import os
 
-SECRET_VAULT_REF_KEY_START = 'keyvaultref:'
+SECRET_VAULT_REF_KEY_START = "keyvaultref:"
 secret_clients = {}
+
 
 def load_secret(v, credential: TokenCredential):
     """
-        secret_url: keyvaultref:https://mykeyvault.vault.azure.net/secrets/foo
+    secret_url: keyvaultref:https://mykeyvault.vault.azure.net/secrets/foo
     """
 
     try:
@@ -46,27 +47,30 @@ def load_secrets(credential: TokenCredential):
             print(f"Loaded secret for {k}, {secret[0:3]}*********")
             os.environ[k] = secret
 
-class OpenAIConfig():
-    OPENAI_API_TYPE:str=None
-    OPENAI_API_KEY=None
+
+class OpenAIConfig:
+    OPENAI_API_TYPE: str = None
+    OPENAI_API_KEY = None
 
     # required for OpenAI API
-    OPENAI_ORG_ID=None
-    OPENAI_MODEL_ID="gpt-3.5-turbo"
+    OPENAI_ORG_ID = None
+    OPENAI_MODEL_ID = "gpt-3.5-turbo"
 
     # required for Azure OpenAI API
-    AZURE_OPENAI_API_ENDPOINT=None
-    AZURE_OPENAI_API_DEPLOYMENT_NAME=None
+    AZURE_OPENAI_API_ENDPOINT = None
+    AZURE_OPENAI_API_DEPLOYMENT_NAME = None
 
-    AZURE_OPENAI_API_VERSION=None
+    AZURE_OPENAI_API_VERSION = None
+
     @staticmethod
     def from_env():
         config = OpenAIConfig()
         for att in dir(config):
             if not att.startswith("__") and not callable(getattr(config, att)):
-                config.__setattr__(att, os.environ.get(att, config.__getattribute__(att)))
+                config.__setattr__(
+                    att, os.environ.get(att, config.__getattribute__(att))
+                )
         return config
-    
+
     def is_azure_openai(self):
-        return self.OPENAI_API_TYPE and self.OPENAI_API_TYPE.lower() == 'azure'
-    
+        return self.OPENAI_API_TYPE and self.OPENAI_API_TYPE.lower() == "azure"
