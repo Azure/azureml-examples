@@ -58,7 +58,6 @@ jobs:
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
 
-      auto_hyperparameter_selection: False
       image_width: -1
       image_height: -1
       metric_for_best_model: iou

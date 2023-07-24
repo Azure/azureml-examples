@@ -1,4 +1,4 @@
-# Model import component
+# Transformers Model Import Component
 The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component is just a pass through. The component can be seen in your workspace component page.
 
 ![as shown in the figure](../../images/image_classification_model_import.jpg)
@@ -10,7 +10,7 @@ The component copies the input model folder to the component output directory wh
 
     Pytorch Model registered in AzureML Asset.
 
-    The continual finetune flag will be set to true in this case. If you want to resume from previous training state, set *resume_from_checkpoint* flag to True in [finetune component](transformers_finetune_component.md/#36-continual-finetuning).
+    The continual finetune flag will be set to true in this case. If you want to resume from previous training state, set *resume_from_checkpoint* flag to True in [finetune component](transformers_finetune_component.md/#38-resume-from-checkpoint).
 
 2. _mlflow_model_ (mlflow_model, optional)
 
@@ -52,7 +52,7 @@ The component copies the input model folder to the component output directory wh
 2. _model_name_ (string, optional)
 
     Please select models from AzureML Model Assets for all supported models.
-    For HuggingFace models, which are not supported in AuzreML model registry, input HuggingFace model name here. You can see supported image-classification models [here](https://huggingface.co/models?pipeline_tag=image-classification&sort=downloads).
+    For HuggingFace models, which are not supported in AuzreML model registry, input HuggingFace model name here. You can see supported image-classification models [here](https://huggingface.co/models?pipeline_tag=image-classification&library=transformers).
     The model will be downloaded from HuggingFace hub using this model_name and
     is subject to third party license terms available on the HuggingFace model details page.
     It is the user's responsibility to comply with the model's license terms.

@@ -1,28 +1,32 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: AzureML-Train-Finetune-Vision-MultiClass-Samples
+experiment_name: AzureML-Train-Finetune-Vision-Instance-Segmentation-Samples
 
 inputs:
-  # # model - specify the foundation model available in the azureml system registry
-  mlflow_model_path:
-    path: azureml://registries/azureml-preview/models/google-vit-base-patch16-224/versions/1
-    type: mlflow_model
-  # model_name: microsoft/beit-base-patch16-224-pt22k-ft22k
   # dataset files
   training_data:
-    path: ./data/training-mltable-folder
     type: mltable
+  
   validation_data:
-    path: ./data/validation-mltable-folder
     type: mltable
+  
   # deepspeed config file
   ds_finetune:
-    path: ./deepspeed_configs/zero1.json
+    path: deepspeed_configs/zero1.json
     type: uri_file
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu-nc6
+  # model_name: microsoft/beit-base-patch16-224
+  # model - specify the foundation model available in the azureml system registry
+  # pytorch_model:
+  #     path: azureml://registries/azureml-preview/models/mask_rcnn_r50_fpn_1x_coco/versions/1
+  #     type: custom_model
+  # TODO: update the path from azureml-preview once registered
+  mlflow_model: 
+    path: azureml://registries/azureml-preview/models/mask_rcnn_r50_fpn_1x_coco/versions/1
+    type: mlflow_model
 
 outputs:
   # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
@@ -35,32 +39,35 @@ settings:
   default_compute: azureml:sample-finetune-cluster-gpu-nc6
 
 jobs:
-  huggingface_transformers_model_finetune_job:
+  mmdetection_model_finetune_job:
     type: pipeline
-    component: azureml://registries/azureml-preview/components/image_classification_pipeline/labels/latest
+    # TODO change the asset id
+    component: azureml://registries/azureml-preview/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
     inputs:
 
       # Compute
       compute_model_import: ${{parent.inputs.compute_model_import}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
-      process_count_per_instance: 1
       instance_count: 1
+      process_count_per_instance: 1
 
-      # model
-      task_name: image-classification
-      model_family: HuggingFaceImage
-      # # specify the model_name instead of mlflow_model if you want to use a model from the huggingface hub
-      mlflow_model: ${{parent.inputs.mlflow_model_path}} 
+      # model selection
+      task_name: image-instance-segmentation
+
       # model_name: ${{parent.inputs.model_name}}
+      # pytorch_model: ${{parent.inputs.pytorch_model}}
+      mlflow_model: ${{parent.inputs.mlflow_model}}
+      model_family: MmDetectionImage
 
       # data
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
 
-      image_width: -1
-      image_height: -1
-      metric_for_best_model: accuracy
+      # finetuning parameters
       apply_augmentations: True
+      image_min_size: -1
+      image_max_size: -1
+      metric_for_best_model: mean_average_precision
       number_of_workers: 8
       apply_deepspeed: False
       deepspeed_config: ${{parent.inputs.ds_finetune}}
@@ -78,7 +85,6 @@ jobs:
       extra_optim_args: ""
       gradient_accumulation_step: 1
       precision: 32
-      label_smoothing_factor: 0.0
       random_seed: 42
       evaluation_strategy: epoch
       evaluation_steps: 500
@@ -91,7 +97,6 @@ jobs:
       early_stopping_patience: 1
       max_grad_norm: 1.0
       resume_from_checkpoint: False
-      save_as_mlflow_model: True
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}

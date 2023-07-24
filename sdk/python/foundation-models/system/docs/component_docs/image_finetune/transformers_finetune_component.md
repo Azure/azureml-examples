@@ -1,6 +1,5 @@
 # Transformers Model Finetune Component
-This component enables finetuning of pretrained models on custom or pre-available datasets. The component supports Deepspeed and ONNXRuntime configurations for performance enhancement. 
-The components can be seen here ![as shown in the figure](../../images/image_classification_transformers_finetune_components.jpg)
+This component enables finetuning of pretrained models on custom or pre-available datasets. The component supports Deepspeed and ONNXRuntime configurations for performance enhancement. The components can be seen here ![as shown in the figure](../../images/image_classification_transformers_finetune_components.jpg)
 
 # 1. Inputs
 1. _model_path_ (URI_FOLDER, required)
@@ -15,35 +14,28 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
     Path to the mltable folder of validation dataset.
 
-4. _auto_hyperparameter_selection_ (bool, optional)
-
-    If set to true, will automatically choose the best hyperparameters for the given model and will ignore the hyperparameters provided by the user. The default value is false.
-
-5. _image_height_ (int, optional)
+4. _image_height_ (int, optional)
 
     Final Image height after augmentation that is input to the network. Default value is -1 which means it would be overwritten by default image height in Hugging Face feature extractor. If either image_width or image_height is set to -1, default value would be used for both width and height.
 
-6. _image_width_ (int, optional)
+5. _image_width_ (int, optional)
 
     Final Image width after augmentation that is input to the network. Default value is -1 which means it would be overwritten by default image width in Hugging Face feature extractor. If either image_width or image_height is set to -1, default value would be used for both width and height.
 
-7. _task_name_ (string, required)
+6. _task_name_ (string, required)
 
     Which task the model is solving.
     It could be one of [`image-classification`, `image-classification-multilabel`].
 
 7. _metric_for_best_model_ (string, optional)
 
-    Specify the metric to use to compare two different models. The default value is accuracy. It could be one of
-    [`loss`, `f1_score_macro`, 
-     `accuracy`, `precision_score_macro`, 
-     `recall_score_macro`, `iou`, 
-     `iou_macro`, `iou_micro`, 
-     `iou_weighted`]
+    Specify the metric to use to compare two different models. The default value is accuracy. It could be one of [`loss`, `f1_score_macro`, `accuracy`, `precision_score_macro`, `recall_score_macro`, `iou`, `iou_macro`, `iou_micro`, `iou_weighted`].
+
+    Please select iou_* metrics in case of multi-label classification task.
 
 8. _apply_augmentations_ (bool, optional)
 
-    If set to true, will enable data augmentations for training and validation.
+    If set to true, will enable data augmentations for training.
     The default value is false.
 
 9. _number_of_workers_ (int, optional)
@@ -66,19 +58,27 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
 13. _number_of_epochs_ (int, optional)
 
-    Number of epochs to run for finetune. The default value is 15.
+    Number of epochs to run for finetune.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 14. _max_steps_ (int, optional)
 
-    If set to a positive number, it's the total number of training steps to perform. It overrides `epochs`. In case of using a finite iterable dataset the training may stop before reaching the set number of steps when all data is exhausted. The default value is -1.
+    If set to a positive number, it's the total number of training steps to perform. It overrides `number_of_epochs`. In case of using a finite iterable dataset the training may stop before reaching the set number of steps when all data is exhausted.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 15. _training_batch_size_ (int, optional)
 
-    Batch size used for training. The default value is 4.
+    Batch size used for training.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 16. _validation_batch_size_ (int, optional)
 
-    Batch size used for validation. The default value is 4.
+    Batch size used for validation.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 17. _auto_find_batch_size_ (bool, optional)
 
@@ -86,46 +86,53 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
 18. _learning_rate_ (float, optional)
 
-    Start learning rate used for training. The default value is 5e-5.
+    Start learning rate used for training.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 19. _learning_rate_scheduler_ (string, optional)
 
-    The learning rate scheduler to use.
-    It could be one of [`warmup_linear`, `warmup_cosine`, `warmup_cosine_with_restarts`, `warmup_polynomial`,
-    `constant`, `warmup_constant`]
+    The learning rate scheduler to use. It could be one of [`warmup_linear`, `warmup_cosine`, `warmup_cosine_with_restarts`, `warmup_polynomial`, `constant`, `warmup_constant`].
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 20. _warmup_steps_ (int, optional)
-    
-    The number of steps for the learning rate scheduler warmup phase. The default value is 0.
+
+    The number of steps for the learning rate scheduler warmup phase.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 21. _optimizer_ (string, optional)
 
-    Optimizer to be used while training.
-    It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`]
+    Optimizer to be used while training. It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`]
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 22. _weight_decay_ (float, optional)
 
-    The weight decay to apply (if not zero) to all layers except all bias and LayerNorm weights in AdamW optimizer. The default value is 0.
+    The weight decay to apply (if not zero) to all layers except all bias and LayerNorm weights in AdamW optimizer.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 23. _extra_optim_args_: (string, optional)
 
-    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter
-    names, please refer https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay"
-    parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
+    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter names, please refer https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay" parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
 
-23. _gradient_accumulation_step_ (int, optional)
+24. _gradient_accumulation_step_ (int, optional)
 
-    Number of updates steps to accumulate the gradients for, before performing a backward/update pass. The default value is 1.
+    Number of updates steps to accumulate the gradients for, before performing a backward/update pass.
 
-24. _precision_ (int, optional)
+    If left empty, will be chosen automatically based on the task type and model selected.
 
-    Apply mixed precision training. This can reduce memory footprint by performing operations in half-precision. The default value is 32.
-    It could one of [`16`, `32`]
+25. _precision_ (int, optional)
 
+    Apply mixed precision training. This can reduce memory footprint by performing operations in half-precision. It could one of [`16`, `32`].
 
 26. _label_smoothing_factor_ (float, optional)
 
     The label smoothing factor to use in range `[0.0, 1,0)`. Zero means no label smoothing, otherwise the underlying onehot-encoded labels are changed from 0s and 1s to label_smoothing_factor/num_labels and 1 - label_smoothing_factor + label_smoothing_factor/num_labels respectively. Not applicable to multi-label classification.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 27. _random_seed_ (int, optional)
 
@@ -173,7 +180,9 @@ The components can be seen here ![as shown in the figure](../../images/image_cla
 
 37. _max_grad_norm_ (float, optional)
 
-    Maximum gradient norm (for gradient clipping). The deafult value is 1.0.
+    Maximum gradient norm (for gradient clipping).
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 38. _resume_from_checkpoint_ (bool, optional)
 
@@ -208,7 +217,7 @@ This setting helps to choose the compute for running the component code. **For t
 
 ![set maximum nodes](../../images/maximum_num_nodes.png)
 
-> In case of distributed training, a.k.a multi-node training, the mode must be set to `Mount` and not `Upload` as shown in the figure below
+> In case of distributed training, a.k.a multi-node training, the mode must be set to `Mount` (not `Upload`) as shown in the figure below
 
 ![Output settings finetune](../../images/image_classification_output_settings.png)
 
