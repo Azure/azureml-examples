@@ -30,13 +30,7 @@ amlcomputes = {
         "idle_seconds_before_scaledown": 1200,
     },
     "gpu-cluster": {
-        "vm_size": "STANDARD_NC6",
-        "min_nodes": 0,
-        "max_nodes": 4,
-        "idle_seconds_before_scaledown": 1200,
-    },
-    "gpu-K80-2": {
-        "vm_size": "STANDARD_NC12",
+        "vm_size": "STANDARD_NC6s_v3",
         "min_nodes": 0,
         "max_nodes": 4,
         "idle_seconds_before_scaledown": 1200,
