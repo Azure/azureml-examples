@@ -12,6 +12,15 @@ import yaml
 import logging
 from typing import List, Dict, Any, Tuple, Union
 from text_generation import Client
+from mlflow.pyfunc.scoring_server import _get_jsonable_obj
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.contentsafety.models import AnalyzeTextOptions
+from azure.core.pipeline.policies import (
+    HeadersPolicy,
+)
+import pandas as pd
+import numpy as np
 
 
 # Configure logger
@@ -58,6 +67,45 @@ DEFAULT_MODEL_ID_PATH  = "mlflow_model_folder/data/model"
 client = None
 task_type = SupportedTask.TEXT_GENERATION
 
+aacs_threshold = 2
+
+try:
+    aacs_threshold = int(os.environ["CONTENT_SAFETY_THRESHOLD"])
+except:
+    aacs_threshold = 2
+
+
+class CsChunkingUtils:
+    def __init__(self, chunking_n=1000, delimiter="."):
+        self.delimiter = delimiter
+        self.chunking_n = chunking_n
+
+    def chunkstring(self, string, length):
+        return (string[0 + i : length + i] for i in range(0, len(string), length))
+
+    def split_by(self, input):
+        max_n = self.chunking_n
+        split = [e + self.delimiter for e in input.split(self.delimiter) if e]
+        ret = []
+        buffer = ""
+
+        for i in split:
+            # if a single element > max_n, chunk by max_n
+            if len(i) > max_n:
+                ret.append(buffer)
+                ret.extend(list(self.chunkstring(i, max_n)))
+                buffer = ""
+                continue
+            if len(buffer) + len(i) <= max_n:
+                buffer = buffer + i
+            else:
+                ret.append(buffer)
+                buffer = i
+
+        if len(buffer) > 0:
+            ret.append(buffer)
+        return ret
+
 
 def is_server_healthy():
     """Periodically checks if server is up and running."""
@@ -98,11 +146,47 @@ def is_server_healthy():
         logger.warning(f"Test request failed. Error {e}")
     return False
 
+def get_aacs_access_key():
+    key = os.environ.get("CONTENT_SAFETY_KEY")
+
+    if key:
+        return key
+
+    uai_client_id = os.environ.get("UAI_CLIENT_ID")
+    if not uai_client_id:
+        raise RuntimeError(
+            "Cannot get AACS access key, both UAI_CLIENT_ID and CONTENT_SAFETY_KEY are not set, exiting..."
+        )
+
+    subscription_id = os.environ.get("SUBSCRIPTION_ID")
+    resource_group_name = os.environ.get("RESOURCE_GROUP_NAME")
+    aacs_account_name = os.environ.get("CONTENT_SAFETY_ACCOUNT_NAME")
+    from azure.mgmt.cognitiveservices import CognitiveServicesManagementClient
+    from azure.identity import ManagedIdentityCredential
+
+    credential = ManagedIdentityCredential(client_id=uai_client_id)
+    cs_client = CognitiveServicesManagementClient(credential, subscription_id)
+    key = cs_client.accounts.list_keys(
+        resource_group_name=resource_group_name, account_name=aacs_account_name
+    ).key1
+
+    return key
+
 
 def init():
     """Initialize text-generation-inference server and client."""
     global client
     global task_type
+    global aacs_client
+    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
+    key = get_aacs_access_key()
+
+    # Create an Content Safety client
+    headers_policy = HeadersPolicy()
+    headers_policy.add_header("ms-azure-ai-sender", "llama")
+    aacs_client = ContentSafetyClient(
+        endpoint, AzureKeyCredential(key), headers_policy=headers_policy
+    )
 
     try:
         model_id = os.environ.get(MODEL_ID, DEFAULT_MODEL_ID_PATH)
@@ -148,6 +232,90 @@ def init():
         logger.info(f"Created Client: {client}")
     except Exception as e:
         raise Exception(f"Error in creating client or server: {e}")
+
+
+
+def analyze_response(response):
+    severity = 0
+
+    if response.hate_result is not None:
+        print("Hate severity: {}".format(response.hate_result.severity))
+        severity = max(severity, response.hate_result.severity)
+    if response.self_harm_result is not None:
+        print("SelfHarm severity: {}".format(response.self_harm_result.severity))
+        severity = max(severity, response.self_harm_result.severity)
+    if response.sexual_result is not None:
+        print("Sexual severity: {}".format(response.sexual_result.severity))
+        severity = max(severity, response.sexual_result.severity)
+    if response.violence_result is not None:
+        print("Violence severity: {}".format(response.violence_result.severity))
+        severity = max(severity, response.violence_result.severity)
+
+    return severity
+
+def analyze_text(text):
+    # Chunk text
+    if str.isspace(text):
+        return 0
+    print(f"Analyzing ...")
+    chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
+    split_text = chunking_utils.split_by(text)
+
+    result = [
+        analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i)))
+        for i in split_text
+    ]
+    severity = max(result)
+    print(f"Analyzed, severity {severity}")
+
+    return severity
+
+
+def iterate(obj):
+    if isinstance(obj, dict):
+        severity = 0
+        for key, value in obj.items():
+            obj[key], value_severity = iterate(value)
+            severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, list) or isinstance(obj, np.ndarray):
+        severity = 0
+        for idx in range(len(obj)):
+            obj[idx], value_severity = iterate(obj[idx])
+            severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, pd.DataFrame):
+        severity = 0
+        for i in range(obj.shape[0]):  # iterate over rows
+            for j in range(obj.shape[1]):  # iterate over columns
+                obj.at[i, j], value_severity = iterate(obj.at[i, j])
+                severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, str):
+        severity = analyze_text(obj)
+        if severity > aacs_threshold:
+            return "", severity
+        else:
+            return obj, severity
+    else:
+        return obj, 0
+
+
+def get_safe_response(result):
+    print("Analyzing response...")
+    jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
+
+    result, severity = iterate(jsonable_result)
+    print(f"Response analyzed, severity {severity}")
+    return result
+
+
+def get_safe_input(input_data):
+    print("Analyzing input...")
+    result, severity = iterate(input_data)
+    print(f"Input analyzed, severity {severity}")
+    return result, severity
+
 
 
 def get_processed_input_data_for_chat_completion(data: List[str]) -> str:
@@ -230,6 +398,9 @@ def run(data):
     try:
         if client is None:
             raise Exception("Client is not initialized")
+        data, severity = get_safe_input(data)
+        if severity > aacs_threshold:
+            return {}
 
         query, params = get_request_data(data)
         logger.info(f"generating response for input_string: {query}, parameters: {params}")
@@ -240,7 +411,7 @@ def run(data):
             time_taken = time.time() - time_start
             logger.info(f"time_taken: {time_taken}")
             result_dict = {'0': f'{response_str}'}
-            return json.dumps(result_dict)
+            return get_safe_response(result_dict)
 
         assert task_type == SupportedTask.TEXT_GENERATION and isinstance(query, list), "query should be a list for text-generation"
 
@@ -251,7 +422,7 @@ def run(data):
             time_taken = time.time() - time_start
             logger.info(f"query {i} - time_taken: {time_taken}")
             results.append({str(i): f'{response_str}'})
-        return json.dumps(results)
+        return get_safe_response(results)
 
     except Exception as e:
         return json.dumps({
