@@ -2,3 +2,8 @@ azureml-inference-server-http
 text-generation
 psutil
 pandas
+azure-ai-contentsafety==1.0.0b1
+aiolimiter==1.1.0
+azure-ai-mlmonitoring==0.1.0a3
+azure-mgmt-cognitiveservices==13.4.0
+azure-identity==1.13.0

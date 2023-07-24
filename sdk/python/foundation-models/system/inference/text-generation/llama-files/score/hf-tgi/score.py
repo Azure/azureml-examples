@@ -2,16 +2,26 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # ---------------------------------------------------------
 
+import asyncio
 import json
 import os
 import psutil
 import requests
 import time
 import yaml
-
 import logging
+import pandas as pd
+
+from concurrent.futures import ThreadPoolExecutor
+from mlflow.pyfunc.scoring_server import _get_jsonable_obj
 from typing import List, Dict, Any, Tuple, Union
 from text_generation import Client
+
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.contentsafety.models import AnalyzeTextOptions
+from aiolimiter import AsyncLimiter
+from azure.core.pipeline.policies import HeadersPolicy
 
 
 # Configure logger
@@ -44,6 +54,9 @@ MAX_TOTAL_TOKENS = "MAX_TOTAL_TOKENS"
 # client init env vars
 CLIENT_TIMEOUT = "TIMEOUT"
 MAX_REQUEST_TIMEOUT = 90  # 90s
+
+# AACS
+aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", 2))
 
 
 class SupportedTask:
@@ -98,11 +111,208 @@ def is_server_healthy():
         logger.warning(f"Test request failed. Error {e}")
     return False
 
+# ACS START
+
+
+class AsyncRateLimitedOpsUtils:
+    # 1000 requests / 10 seconds. Limiting to 800 request per 10 secods
+    # limiting to 1000 concurrent requests
+    def __init__(
+        self,
+        ops_count=800,
+        ops_seconds=10,
+        concurrent_ops=1000,
+        thread_max_workers=1000,
+    ):
+        self.limiter = AsyncLimiter(ops_count, ops_seconds)
+        self.semaphore = asyncio.Semaphore(value=concurrent_ops)
+        # need thread pool executor for sync function
+        self.executor = ThreadPoolExecutor(max_workers=thread_max_workers)
+
+    def get_limiter(self):
+        return self.limiter
+
+    def get_semaphore(self):
+        return self.semaphore
+
+    def get_executor(self):
+        return self.executor
+
+
+async_rate_limiter = AsyncRateLimitedOpsUtils()
+
+
+class CsChunkingUtils:
+    def __init__(self, chunking_n=1000, delimiter="."):
+        self.delimiter = delimiter
+        self.chunking_n = chunking_n
+
+    def chunkstring(self, string, length):
+        return (string[0 + i : length + i] for i in range(0, len(string), length))
+
+    def split_by(self, input):
+        max_n = self.chunking_n
+        split = [e + self.delimiter for e in input.split(self.delimiter) if e]
+        ret = []
+        buffer = ""
+
+        for i in split:
+            # if a single element > max_n, chunk by max_n
+            if len(i) > max_n:
+                ret.append(buffer)
+                ret.extend(list(self.chunkstring(i, max_n)))
+                buffer = ""
+                continue
+            if len(buffer) + len(i) <= max_n:
+                buffer = buffer + i
+            else:
+                ret.append(buffer)
+                buffer = i
+
+        if len(buffer) > 0:
+            ret.append(buffer)
+        return ret
+
+async def async_analyze_text_task(client, request):
+    loop = asyncio.get_event_loop()
+    executor = async_rate_limiter.get_executor()
+    sem = async_rate_limiter.get_semaphore()
+    await sem.acquire()
+    async with async_rate_limiter.get_limiter():
+        response = await loop.run_in_executor(executor, client.analyze_text, request)
+        sem.release()
+        severity = analyze_response(response)
+        return severity
+
+
+def analyze_response(response):
+    severity = 0
+
+    if response.hate_result is not None:
+        print("Hate severity: {}".format(response.hate_result.severity))
+        severity = max(severity, response.hate_result.severity)
+    if response.self_harm_result is not None:
+        print("SelfHarm severity: {}".format(response.self_harm_result.severity))
+        severity = max(severity, response.self_harm_result.severity)
+    if response.sexual_result is not None:
+        print("Sexual severity: {}".format(response.sexual_result.severity))
+        severity = max(severity, response.sexual_result.severity)
+    if response.violence_result is not None:
+        print("Violence severity: {}".format(response.violence_result.severity))
+        severity = max(severity, response.violence_result.severity)
+
+    return severity
+
+
+def analyze_text_async(text):
+    # Chunk text
+    chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
+    split_text = chunking_utils.split_by(text)
+
+    tasks = []
+    for i in split_text:
+        request = AnalyzeTextOptions(text=i)
+        tasks.append(async_analyze_text_task(aacs_client, request))
+
+    done, pending = asyncio.get_event_loop().run_until_complete(
+        asyncio.wait(tasks, timeout=60)
+    )
+
+    if len(pending) > 0:
+        # not all task finished, assume failed
+        return 6
+
+    return max([d.result() for d in done])
+
+
+def analyze_text(text):
+    # Chunk text
+    print(f"Analyzing ...")
+    chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
+    split_text = chunking_utils.split_by(text)
+
+    result = [
+        analyze_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i)))
+        for i in split_text
+    ]
+    severity = max(result)
+    print(f"Analyzed, severity {severity}")
+
+    return severity
+
+
+def iterate(obj):
+    if isinstance(obj, dict):
+        severity = 0
+        for key, value in obj.items():
+            obj[key], value_severity = iterate(value)
+            severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, list) or isinstance(obj, np.ndarray):
+        severity = 0
+        for idx in range(len(obj)):
+            obj[idx], value_severity = iterate(obj[idx])
+            severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, pd.DataFrame):
+        severity = 0
+        for i in range(obj.shape[0]):  # iterate over rows
+            for j in range(obj.shape[1]):  # iterate over columns
+                obj.at[i, j], value_severity = iterate(obj.at[i, j])
+                severity = max(severity, value_severity)
+        return obj, severity
+    elif isinstance(obj, str):
+        severity = analyze_text(obj)
+        if severity > aacs_threshold:
+            return "", severity
+        else:
+            return obj, severity
+    else:
+        return obj, 0
+
+
+def get_safe_response(result):
+    print("Analyzing response...")
+    jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
+
+    result, severity = iterate(jsonable_result)
+    print(f"Response analyzed, severity {severity}")
+    return result
+
+
+def get_safe_input(input_data):
+    print("Analyzing input...")
+    result, severity = iterate(input_data)
+    print(f"Input analyzed, severity {severity}")
+    return result, severity
+
+# ACS END
+
 
 def init():
     """Initialize text-generation-inference server and client."""
     global client
     global task_type
+    global aacs_client
+
+    try:
+        logger.info("Setting up AACS")
+        endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT", None)
+        key = os.environ.get("CONTENT_SAFETY_KEY", None)
+
+        if not endpoint:
+            raise Exception("CONTENT_SAFETY_ENDPOINT env not set for AACS.")
+        if not key:
+            raise Exception("CONTENT_SAFETY_KEY env not set for AACS.")
+
+        # Create an Content Safety client
+        headers_policy = HeadersPolicy()
+        headers_policy.add_header("ms-azure-ai-sender", "llama")
+        aacs_client = ContentSafetyClient(
+            endpoint, AzureKeyCredential(key), headers_policy=headers_policy
+        )
+    except Exception as e:
+        raise Exception("Error in setting up AACS client. Error  {e}")
 
     try:
         model_id = os.environ.get(MODEL_ID, DEFAULT_MODEL_ID_PATH)
@@ -227,6 +437,11 @@ def run(data):
     global client
     global task_type
 
+    data, severity = get_safe_input(input_data)
+    if severity > aacs_threshold:
+        logger.warning(f"Input severity ({severity}) greater than aacs threshold ({aacs_threshold}).")
+        return {}
+
     try:
         if client is None:
             raise Exception("Client is not initialized")
@@ -239,19 +454,23 @@ def run(data):
             response_str = client.generate(query, **params).generated_text
             time_taken = time.time() - time_start
             logger.info(f"time_taken: {time_taken}")
-            result_dict = {'0': f'{response_str}'}
-            return json.dumps(result_dict)
+            result_dict = {'output': f'{response_str}'}
+            resp = pd.Dataframe([result_dict])
+            return get_safe_response(resp)
 
         assert task_type == SupportedTask.TEXT_GENERATION and isinstance(query, list), "query should be a list for text-generation"
 
-        results = []
+        results = {}
         for i, q in enumerate(query):
             time_start = time.time()
             response_str = client.generate(q, **params).generated_text
             time_taken = time.time() - time_start
             logger.info(f"query {i} - time_taken: {time_taken}")
-            results.append({str(i): f'{response_str}'})
-        return json.dumps(results)
+            results[str(i)] = [f'{response_str}']
+
+        # return json.dumps(results)
+        resp = pd.Dataframe(results)
+        return get_safe_response(resp)
 
     except Exception as e:
         return json.dumps({
