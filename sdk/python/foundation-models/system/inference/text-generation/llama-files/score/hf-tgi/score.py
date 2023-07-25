@@ -67,11 +67,48 @@ class SupportedTask:
     CHAT_COMPLETION = "chat-completion"
 
 
+SUPPORTED_INFERENCE_PARAMS = {
+    # Activate logits sampling
+    "do_sample": {"type": bool, "default": True},
+    # Maximum number of generated tokens
+    "max_new_tokens": {"type": int, "default": 256},
+    # Maximum number of generated tokens
+    "repetition_penalty": {"type": int, "optional": True},
+    # Whether to prepend the prompt to the generated text
+    "return_full_text": {"type": bool, "default": True},
+    # Stop generating tokens if a member of `stop_sequences` is generated
+    "stop_sequences": {"type": list, "default": []},
+    # The value used to module the logits distribution.
+    "seed": {"type": int, "optional": True},
+    # Random sampling seed
+    "temperature": {"type": float, "optional": True},
+    # The number of highest probability vocabulary tokens to keep for top-k-filtering.
+    "top_k": {"type": int, "optional": True},
+    # If set to < 1, only the smallest set of most probable tokens with probabilities that add up to `top_p` or higher are kept for generation.
+    "top_p": {"type": float, "optional": True},
+    # Truncate inputs tokens to the given size
+    "truncate": {"type": int, "optional": True},
+    # Typical Decoding mass. See [Typical Decoding for Natural Language Generation](https://arxiv.org/abs/2202.00666) for more information
+    "typical_p": {"type": float, "optional": True},
+    # Generate best_of sequences and return the one if the highest token logprobs
+    "best_of": {"type": int, "optional": True},
+    # Watermarking with [A Watermark for Large Language Models](https://arxiv.org/abs/2301.10226)
+    "watermark": {"type": bool, "default": False},
+    # Get generation details
+    "details": {"type": bool, "default": False},
+    # Get decoder input token logprobs and ids
+    "decoder_input_details": {"type": bool, "default": False},
+}
+
 # default values
 MLMODEL_PATH = "mlflow_model_folder/MLmodel"
 DEFAULT_MODEL_ID_PATH = "mlflow_model_folder/data/model"
 client = None
 task_type = SupportedTask.TEXT_GENERATION
+model_generator_configs = {}  # loaded from MLmodel file of mlflow model
+default_generator_configs = {
+    k: v["default"] for k, v in SUPPORTED_INFERENCE_PARAMS.items() if "default" in v
+}
 
 
 def is_server_healthy():
@@ -301,6 +338,7 @@ def init():
     """Initialize text-generation-inference server and client."""
     global client
     global task_type
+    global model_generator_configs
     global aacs_client
 
     try:
@@ -342,6 +380,9 @@ def init():
             flavors = mlmodel.get("flavors", {})
             if "hftransformersv2" in flavors:
                 task_type = flavors["hftransformersv2"]["task_type"]
+                model_generator_configs = flavors["hftransformersv2"].get(
+                    "generator_config", {}
+                )
                 if task_type not in (
                     SupportedTask.TEXT_GENERATION,
                     SupportedTask.CHAT_COMPLETION,
@@ -485,6 +526,36 @@ def get_request_data(request_string) -> Tuple[Union[str, List[str]], Dict[str, A
         )
 
 
+def add_and_validate_gen_params(params: dict, new_params: dict):
+    """Add and validate inference params."""
+    if not new_params or not isinstanceof(new_params, dict):
+        return params
+    for k, v in new_params.items():
+        if not k in SUPPORTED_INFERENCE_PARAMS:
+            logger.warning(f"Ignoring unsupported inference param {k}.")
+        elif not isinstance(v, SUPPORTED_INFERENCE_PARAMS[k]["type"]):
+            logger.warning(
+                f"Ignoring inference param {k} as value passed is of type {type(v)} and not of type {SUPPORTED_INFERENCE_PARAMS[k]['type']}"
+            )
+        else:
+            params[k] = v
+    return params
+
+
+def get_generator_params(params: dict):
+    """Return accumulated generator params."""
+    global model_generator_configs
+    global default_generator_configs
+
+    updated_params = {}
+    updated_params.update(default_generator_configs)
+    updated_params = add_and_validate_gen_params(
+        updated_params, model_generator_configs
+    )
+    updated_params = add_and_validate_gen_params(updated_params, params)
+    return updated_params
+
+
 def run(data):
     """Run for inference data provided."""
     global client
@@ -502,6 +573,7 @@ def run(data):
             raise Exception("Client is not initialized")
 
         query, params = get_request_data(data)
+        params = get_generator_params(params)
         logger.info(
             f"generating response for input_string: {query}, parameters: {params}"
         )
@@ -512,8 +584,7 @@ def run(data):
             time_taken = time.time() - time_start
             logger.info(f"time_taken: {time_taken}")
             result_dict = {"output": f"{response_str}"}
-            resp = pd.DataFrame([result_dict])
-            return get_safe_response(resp)
+            return get_safe_response(result_dict)
 
         assert task_type == SupportedTask.TEXT_GENERATION and isinstance(
             query, list
