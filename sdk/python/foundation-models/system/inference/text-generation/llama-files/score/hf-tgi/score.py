@@ -57,7 +57,7 @@ CLIENT_TIMEOUT = "TIMEOUT"
 MAX_REQUEST_TIMEOUT = 90  # 90s
 
 # AACS
-aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", 2))
+aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", 0))
 
 
 class SupportedTask:
