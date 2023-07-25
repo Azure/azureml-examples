@@ -9,26 +9,18 @@ inputs:
   model_name: ada
 
 jobs:
-  model_selector:
-    type: command
-    component: azureml://registries/azure-openai-preview/components/openai_model_import/versions/0.2.0
-    inputs:
-      model: ${{parent.inputs.model_name}}
-    outputs:
-      output_model:
-        type: uri_folder
-        mode: mount
-
-  
-  finetune:
-    type: command
-    component: azureml://registries/azure-openai-preview/components/openai_completions_finetune/versions/0.2.1
+  pipeline_finetune:
+    type: pipeline
+    component: azureml://registries/azure-openai-preview/components/openai_completions_finetune/versions/0.2.9
     inputs:
       train_dataset: 
         type: uri_folder
         path: azureml:oai_sample_training_data:1
         mode: ro_mount
-      base_model: ${{parent.jobs.model_selector.outputs.output_model}}
+      validation_dataset: 
+        type: uri_folder
+        path: azureml:oai_sample_training_data:1
+        mode: ro_mount
       registered_model_name: ft_ada_model_from_cli_doc
       model: ${{parent.inputs.model_name}}
     outputs:
