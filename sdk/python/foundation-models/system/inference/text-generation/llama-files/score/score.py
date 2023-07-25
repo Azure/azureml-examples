@@ -460,7 +460,9 @@ def analyze_text_async(text):
 
 def analyze_text(text):
     # Chunk text
-    print(f"Analyzing ...")
+    print("Analyzing ...")
+    if (not text) or (not text.strip()):
+        return 0
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
     split_text = chunking_utils.split_by(text)
 
