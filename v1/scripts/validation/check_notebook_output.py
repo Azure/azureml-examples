@@ -57,6 +57,15 @@ allowed_list = [
     "custom base image or base dockerfile detected",
     "TqdmWarning: IProgress not found.",
     "from .autonotebook import tqdm as notebook_tqdm",
+    "Class AutoDeleteSettingSchema: This is an experimental class",
+    "Class AutoDeleteConditionSchema: This is an experimental class",
+    "Class BaseAutoDeleteSettingSchema: This is an experimental class",
+    "Class IntellectualPropertySchema: This is an experimental class",
+    "Class ProtectionLevelSchema: This is an experimental class",
+    "Class BaseIntellectualPropertySchema: This is an experimental class",
+    "Class PipelineComponentBatchDeployment: This is an experimental class",
+    "Field 'max_nodes': This is an experimental field",
+    "Uploading ",
 ]
 
 with open(full_name, "r") as notebook_file:
