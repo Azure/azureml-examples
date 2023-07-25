@@ -11,7 +11,7 @@
 If a pipeline fails in llm_rag_validate_deployments component, then it indicates that the RAG pipeline is unable to access model deployments from Azure Open AI connection. Some of the common scenarios include
 
 - Incorrect API Base or Key for the Azure Open AI workspace connection.
-- Deployment for selected model name (ex. text-embedding-ada-002, text-davinci-003, gpt-35-turbo, gpt-4 etc.) does not exist on the AOAI resource.
+- Deployment for selected model name (ex. text-embedding-ada-002, gpt-35-turbo, gpt-4 etc.) does not exist on the AOAI resource.
 - Incorrect deployment name for the selected AOAI model.
 
 ## Unable to retrieve OBO tokens for resource
