@@ -373,19 +373,46 @@ def get_processed_input_data_for_chat_completion(data: List[str]) -> str:
     "[INST]What is the tallest building in the world?[\INST]As of 2021, the Burj Khalifa in Dubai\n[INST]and in Africa?[/INST]"
     """
     B_INST, E_INST = "[INST]", "[/INST]"
-    conv_arr = data
+    B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
+    DEFAULT_SYSTEM_PROMPT = """\
+    You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+
+    If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."""
+
+    dialog = data
     history = ""
-    assert len(conv_arr) > 0
-    assert conv_arr[0]["role"] == "user"
-    history += B_INST + conv_arr[0]["content"].strip() + E_INST
-    assert conv_arr[-1]["role"] == "user"
-    for i, conv in enumerate(conv_arr[1:]):
-        if i % 2 == 0:
+    assert len(dialog) > 0
+    # add a system prompt if the first message is not a system prompt
+    if dialog[0]["role"] != "system":
+        dialog = [
+            {
+                "role": "system",
+                "content": DEFAULT_SYSTEM_PROMPT,
+            }
+        ] + dialog
+    # add a tag to the system prompt
+    dialog = [
+        {
+            "role": dialog[0]["role"],
+            "content": B_SYS + dialog[0]["content"] + E_SYS
+            # + dialog[1]["content"],
+        }
+    ] + dialog[1:]
+    assert all([msg["role"] == "user" for msg in dialog[1::2]]) and all(
+        [msg["role"] == "assistant" for msg in dialog[2::2]]
+    ), (
+        "model only supports 'system', 'user' and 'assistant' roles, "
+        "starting with 'system', then 'user' and alternating (u/a/u/a/u...)"
+    )
+    history += dialog[0]["content"]
+    assert dialog[-1]["role"] == "user"
+    for i, conv in enumerate(dialog[1:]):
+        if i % 2 == 1:
             assert conv["role"] == "assistant"
-            history += conv["content"].strip() + "\n"
+            history += f"{conv['content'].strip()}"
         else:
             assert conv["role"] == "user"
-            history += B_INST + conv["content"].strip() + E_INST
+            history += B_INST + f"{conv['content'].strip()}" + E_INST
     return history
 
 
