@@ -528,7 +528,7 @@ def get_request_data(request_string) -> Tuple[Union[str, List[str]], Dict[str, A
 
 def add_and_validate_gen_params(params: dict, new_params: dict):
     """Add and validate inference params."""
-    if not new_params or not isinstanceof(new_params, dict):
+    if not new_params or not isinstance(new_params, dict):
         return params
     for k, v in new_params.items():
         if not k in SUPPORTED_INFERENCE_PARAMS:
