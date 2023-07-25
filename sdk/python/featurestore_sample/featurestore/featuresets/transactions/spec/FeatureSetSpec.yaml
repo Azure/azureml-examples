@@ -1,0 +1,40 @@
+feature_transformation_code:
+  path: ./code
+  transformer_class: transaction_transform.TransactionFeatureTransformer
+features:
+- name: transaction_3d_count
+  type: long
+- name: transaction_amount_3d_sum
+  type: double
+- name: transaction_amount_3d_avg
+  type: double
+- name: transaction_7d_count
+  type: long
+- name: transaction_amount_7d_sum
+  type: double
+- name: transaction_amount_7d_avg
+  type: double
+index_columns:
+- name: accountID
+  type: string
+source:
+  kwargs:
+    k1: abfss://source-data@qiaxstoragevnet.dfs.core.windows.net/transactions-source/*.parquet
+  source_process_code:
+    path: ./source_process_code
+    process_class: source_process.MyDataSourceLoader
+  source_delay:
+    days: 0
+    hours: 0
+    minutes: 20
+  timestamp_column:
+    name: timestamp
+  type: custom
+source_lookback:
+  days: 7
+  hours: 0
+  minutes: 0
+temporal_join_lookback:
+  days: 1
+  hours: 0
+  minutes: 0
