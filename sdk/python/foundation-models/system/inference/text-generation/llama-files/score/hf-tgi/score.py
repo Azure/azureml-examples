@@ -27,11 +27,12 @@ from azure.core.pipeline.policies import HeadersPolicy
 
 # Configure logger
 logger = logging.getLogger(__name__)
+logger.propagate = False
+logger.setLevel(logging.DEBUG)
 format_str = "%(asctime)s [%(module)s] %(funcName)s %(lineno)s: %(levelname)-8s [%(process)d] %(message)s"
 formatter = logging.Formatter(format_str)
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
-logger.setLevel(logging.DEBUG)
 logger.addHandler(stream_handler)
 
 PORT = 80
@@ -72,14 +73,16 @@ SUPPORTED_INFERENCE_PARAMS = {
     "do_sample": {"type": bool, "default": True},
     # Maximum number of generated tokens
     "max_new_tokens": {"type": int, "default": 256},
-    # Maximum number of generated tokens
+    # Generate best_of sequences and return the one if the highest token logprobs
+    "best_of": {"type": int, "optional": True},
+    # 1.0 means no penalty. See [this paper](https://arxiv.org/pdf/1909.05858.pdf) for more details.
     "repetition_penalty": {"type": int, "optional": True},
     # Whether to prepend the prompt to the generated text
     "return_full_text": {"type": bool, "default": True},
-    # Stop generating tokens if a member of `stop_sequences` is generated
-    "stop_sequences": {"type": list, "default": []},
     # The value used to module the logits distribution.
     "seed": {"type": int, "optional": True},
+    # Stop generating tokens if a member of `stop_sequences` is generated
+    "stop_sequences": {"type": list, "default": []},
     # Random sampling seed
     "temperature": {"type": float, "optional": True},
     # The number of highest probability vocabulary tokens to keep for top-k-filtering.
@@ -90,12 +93,8 @@ SUPPORTED_INFERENCE_PARAMS = {
     "truncate": {"type": int, "optional": True},
     # Typical Decoding mass. See [Typical Decoding for Natural Language Generation](https://arxiv.org/abs/2202.00666) for more information
     "typical_p": {"type": float, "optional": True},
-    # Generate best_of sequences and return the one if the highest token logprobs
-    "best_of": {"type": int, "optional": True},
     # Watermarking with [A Watermark for Large Language Models](https://arxiv.org/abs/2301.10226)
     "watermark": {"type": bool, "default": False},
-    # Get generation details
-    "details": {"type": bool, "default": False},
     # Get decoder input token logprobs and ids
     "decoder_input_details": {"type": bool, "default": False},
 }
@@ -105,7 +104,6 @@ MLMODEL_PATH = "mlflow_model_folder/MLmodel"
 DEFAULT_MODEL_ID_PATH = "mlflow_model_folder/data/model"
 client = None
 task_type = SupportedTask.TEXT_GENERATION
-model_generator_configs = {}  # loaded from MLmodel file of mlflow model
 default_generator_configs = {
     k: v["default"] for k, v in SUPPORTED_INFERENCE_PARAMS.items() if "default" in v
 }
@@ -338,7 +336,7 @@ def init():
     """Initialize text-generation-inference server and client."""
     global client
     global task_type
-    global model_generator_configs
+    global default_generator_configs
     global aacs_client
 
     try:
@@ -383,11 +381,22 @@ def init():
                 model_generator_configs = flavors["hftransformersv2"].get(
                     "generator_config", {}
                 )
+                logger.info(f"model_generator_configs: {model_generator_configs}")
                 if task_type not in (
                     SupportedTask.TEXT_GENERATION,
                     SupportedTask.CHAT_COMPLETION,
                 ):
                     raise Exception(f"Unsupported task_type {task_type}")
+
+                if task_type == SupportedTask.CHAT_COMPLETION:
+                    default_generator_configs["return_full_text"] = False
+                # update default gen configs with model configs
+                default_generator_configs = get_generator_params(
+                    model_generator_configs
+                )
+                logger.info(
+                    f"updated default_generator_configs: {default_generator_configs}"
+                )
 
         logger.info(f"Loading model from path {model_path} for task_type: {task_type}")
         logger.info(f"List model_path = {os.listdir(model_path)}")
@@ -544,14 +553,10 @@ def add_and_validate_gen_params(params: dict, new_params: dict):
 
 def get_generator_params(params: dict):
     """Return accumulated generator params."""
-    global model_generator_configs
     global default_generator_configs
 
     updated_params = {}
     updated_params.update(default_generator_configs)
-    updated_params = add_and_validate_gen_params(
-        updated_params, model_generator_configs
-    )
     updated_params = add_and_validate_gen_params(updated_params, params)
     return updated_params
 
