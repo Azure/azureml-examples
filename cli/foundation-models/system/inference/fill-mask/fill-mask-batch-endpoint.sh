@@ -89,7 +89,7 @@ az ml batch-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
 
-# 6. Delete the compute cluster (Comment out the below lines to delete the created cluster)
+# 6. Delete the compute cluster (Uncomment the below lines to delete the created cluster)
 # az ml compute delete --name cpu-cluster $workspace_info --yes || {
 #     echo "compute delete failed"; exit 1;
 # }
