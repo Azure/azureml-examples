@@ -1,9 +1,7 @@
 # MMDetection Model Import Component
-The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component will download the config for the model from [MMDetection model zoo] (https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md). The component can be seen in your workspace component page.
+The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component will download the config for the model from [MMDetection model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md). The component can be seen in your workspace component page.
 
-![as shown in the figure](../../images/image_classification_model_import.jpg)
-Todo: Replace classification with OD Image.
-
+![as shown in the figure](../../images/image_mmd_od_is_model_import.jpg)
 
 # 1. Inputs
 
