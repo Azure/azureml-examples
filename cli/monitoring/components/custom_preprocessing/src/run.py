@@ -12,6 +12,7 @@ from datetime import datetime
 from dateutil import parser
 from pyspark.sql import SparkSession
 
+
 def init_spark():
     """Get or create spark session."""
     spark = SparkSession.builder.appName("AccessParquetFiles").getOrCreate()
@@ -68,7 +69,7 @@ def preprocess(
     table = table.extract_columns_from_partition_format(partitionFormat)
 
     # Filter on partitionFormat based on user data window
-    filterStr = f"PartitionDate >= datetime({start_datetime.year}, {start_datetime.month}, {start_datetime.day}, {start_datetime.hour}) and PartitionDate <= datetime({end_datetime.year}, {end_datetime.month}, {end_datetime.day}, {end_datetime.hour})" # noqa
+    filterStr = f"PartitionDate >= datetime({start_datetime.year}, {start_datetime.month}, {start_datetime.day}, {start_datetime.hour}) and PartitionDate <= datetime({end_datetime.year}, {end_datetime.month}, {end_datetime.day}, {end_datetime.hour})"  # noqa
     table = table.filter(filterStr)
 
     # Data column is a list of objects, convert it into string because spark.read_json cannot read object
