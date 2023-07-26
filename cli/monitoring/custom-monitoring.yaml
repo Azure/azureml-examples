@@ -24,7 +24,7 @@ create_monitor:
           threshold: 2
   alert_notification:
     emails:
-      - mastloui@microsoft.com
+      - abc@example.com
 properties:
   prop1: value
 tags:
