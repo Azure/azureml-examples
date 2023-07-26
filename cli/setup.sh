@@ -1,28 +1,27 @@
 #!/bin/bash
-# rc install - uncomment and adjust below to run all tests on a CLI release candidate
-# az extension remove -n ml
+
+### If installing a release candidate:
+###  * Update the "$wheel_url" 
+###  * Uncomment the following block surrounded by {}
+###  * Comment the ml extension install within <az_ml_install>
+
+# {
+#      wheel_url='https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.9.0-py3-none-any.whl'
+#
+#      az extension remove -n ml
+#      if ! az extension add --yes --upgrade --source "$wheel_url"; then
+#
+#          echo "Error: Failed to install release candidate"
+#          exit 1
+#      fi
+#      az version
+#      unset wheel_url
+#  }
+
 
 # <az_ml_install>
 az extension add -n ml -y
 # </az_ml_install>
-
-# Use a daily build
-# az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.9.0-py3-none-any.whl --yes
-# remove ml extension if it is installed
-# if az extension show -n ml &>/dev/null; then
-#     echo -n 'Removing ml extension...'
-#     if ! az extension remove -n ml -o none --only-show-errors &>/dev/null; then
-#         echo 'Error failed to remove ml extension' >&2
-#     fi
-#     echo -n 'Re-installing ml...'
-# fi
-
-# if ! az extension add --yes --source "https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.10.0-py3-none-any.whl" -o none --only-show-errors &>/dev/null; then
-#     echo 'Error failed to install ml azure-cli extension' >&2
-#     exit 1
-# fi
-
-# az version
 
 ## For backward compatibility - running on old subscription
 # <set_variables>
