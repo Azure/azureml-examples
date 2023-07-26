@@ -8,7 +8,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, FloatType
 from pyspark.sql.functions import stddev
 
-
 def init_spark():
     """Get or create spark session."""
     spark = SparkSession.builder.appName("AccessParquetFiles").getOrCreate()
@@ -24,53 +23,50 @@ def read_mltable_in_spark(mltable_path: str):
 
 def save_spark_df_as_mltable(metrics_df, folder_path: str):
     """Save spark dataframe as mltable."""
-    metrics_df.write.option("output_format", "parquet").option(
-        "overwrite", True
-    ).mltable(folder_path)
+    metrics_df.write.option("output_format", "parquet").option('overwrite', True).mltable(folder_path)
 
 
 def _create_output_dataframe(data):
     """Get Output DataFrame Schema."""
     schema = StructType(
         [
-            StructField("feature_name", StringType(), True),
+            StructField("group", StringType(), True),
             StructField("metric_value", FloatType(), True),
             StructField("metric_name", StringType(), True),
-            StructField("data_type", StringType(), True),
+            StructField("group_pivot", StringType(), True),
             StructField("threshold_value", FloatType(), True),
         ]
     )
     return init_spark().createDataFrame(data=data, schema=schema)
 
 
-def _create_row(metric, group, dimension, value, threshold):
+def _create_row(metric, group, group_pivot, value, threshold):
     return {
         "metric_name": metric,
-        "feature_name": group,
+        "group": group,
         "metric_value": value,
         "threshold_value": threshold,
-        "data_type": "Categorical",
+        "group_pivot": group_pivot
     }
 
 
 def _compute_max_standard_deviation(df, std_deviation_threshold: float):
-    standard_deviations = df.agg(
-        *[stddev(column).alias(column) for column in df.columns]
-    ).collect()[0]
+    standard_deviations = df.agg(*[stddev(column).alias(column) for column in df.columns]).collect()[0]
 
     rows = []
     for feature in df.columns:
-        rows.append(
-            _create_row(
-                "MaxStandardDeviation",
-                feature,
-                "",
-                standard_deviations[feature],
-                std_deviation_threshold,
-            )
-        )
+        
+        if feature == None:
+            continue
 
-    return _create_output_dataframe(rows)
+        rows.append(_create_row(
+            metric="MaxStandardDeviation",
+            group=feature, 
+            group_pivot="", 
+            value=standard_deviations[feature],
+            threshold=std_deviation_threshold))
+
+    return  _create_output_dataframe(rows)
 
 
 def run():
@@ -84,9 +80,7 @@ def run():
 
     df = read_mltable_in_spark(args.production_data)
 
-    signal_metrics = _compute_max_standard_deviation(
-        df, float(args.std_deviation_threshold)
-    )
+    signal_metrics = _compute_max_standard_deviation(df, float(args.std_deviation_threshold))
     signal_metrics.show()
 
     save_spark_df_as_mltable(signal_metrics, args.signal_metrics)

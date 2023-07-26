@@ -4,7 +4,7 @@ type: spark
 name: my_custom_signal
 display_name: Custom - Compute Metrics
 description: Compute metrics given a baseline and a deployment's model data input.
-version: 0.0.2
+version: 1.0.0
 is_deterministic: true
 
 code: ./src

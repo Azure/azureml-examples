@@ -12,10 +12,18 @@ Schedule your model monitor with this command: `az ml schedule create -f out-of-
 
 ### 2. Deploy model with AzureML online endpoints; advanced configuration with feature importance
 
-In this scenario, you have deployed your model to AzureML online endpoints (managed or kubernetes). You have enabled production inference data collection (documentation for it can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-collect-production-data?view=azureml-api-2&tabs=azure-cli)) for your deployment. With the `advanced-with-feature-importance-monitoring.yaml`, you can create a model monitor with configurable signals, metrics, and thresholds. The provided sample also determines the most important features and only computes the metrics for those features.
+In this scenario, you have deployed your model to AzureML online endpoints (managed or kubernetes). You have enabled production inference data collection (documentation for it can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-collect-production-data?view=azureml-api-2&tabs=azure-cli)) for your deployment. With the `advanced-monitoring.yaml`, you can create a model monitor with configurable signals, metrics, and thresholds. The provided sample also determines the most important features and only computes the metrics for those features.
 
 Schedule your model monitor with this command: `az ml schedule create -f advanced-with-feature-importance-monitoring.yaml`
 
-### 3. Create your own custom monitoring signal
+### 3. Deploy model with AzureML batch endpoints, AKS, or outside of AzureML
 
-In this scenario, you can create your own custom monitoring signal. Follow the steps in the `custom-monitoring-signal` directory to see how to do so and for an example.
+In this scenario, you can bring your own data to use as input to your monitoring job. When you bring your own production data, you need to provide a custom preprocessing component to get the data into MLTable format for the monitoring job to use. An example custom preprocessing component can be found in the `components/custom_preprocessing` directory. You will need to register your custom preprocessing component. From that directory, you can use the command `az ml component create -f spec.yaml --subscription <subscription_id> --workspace <workspace> --resource-group <resource_group>` to register the component. Then, you can schedule your monitoring job (found in the main `monitoring/` directory) with the following command: `az ml schedule create -f custom_monitoring.yaml --subscription <subscription_id> --workspace <workspace> --resource-group <resource_group>`.
+
+**Note**: The `custom-monitoring.yaml` configuration file is configured to use both custom preprocessing component and a custom monitoring signal. If you only want to use a custom preprocessing component to bring your own data, then format the configuration file with the included signals in the documentation.
+
+### 4. Create your own custom monitoring signal
+
+In this scenario, you can create your own custom monitoring signal. The custom signal component can be found in the `components/custom_signal/` directory. You will need to register your custom signal component. From that directory, you can use the command `az ml component create -f spec.yaml --subscription <subscription_id> --workspace <workspace> --resource-group <resource_group>` to register the component. Then, you can schedule your monitoring job (found in the main `monitoring/` directory) with the following command: `az ml schedule create -f custom_monitoring.yaml --subscription <subscription_id> --workspace <workspace> --resource-group <resource_group>`.
+
+**Note**: The `custom-monitoring.yaml` configuration file is configured to use both custom preprocessing component and a custom monitoring signal. If you only want to use a custom signal, you can remove the custom preprocessing component line.
