@@ -20,6 +20,7 @@ USER_IDENTITY_YML=$1"automation/user-assigned-identity.yml"
 CREAT_CREDENTIAL_LESS_DS_YML=$1"automation/create_credential_less_data_store.yml"
 AZURE_REGION_NAME=${LOCATION}
 OUTBOUND_RULE_NAME="automationtestrule"
+OUTBOUND_RULE_NAME_GEN2="automationtestrulegen2"
 #</create_variables>
 
 if [[ "$2" == *"resources/compute"* ]]

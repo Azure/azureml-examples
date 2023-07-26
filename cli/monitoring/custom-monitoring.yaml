@@ -1,0 +1,31 @@
+name: my-custom-signal
+trigger:
+  type: recurrence
+  frequency: day #can be minute, hour, day, week, month
+  interval: 7 # #every day
+create_monitor:
+  compute:
+    instance_type: "standard_e8s_v3"
+    runtime_version: "3.2"
+  monitoring_signals:
+    customSignal:
+      type: custom
+      data_window_size: 360
+      component_id: azureml:my_custom_signal:1.0.0
+      input_datasets:
+        production_data:
+          input_dataset:
+            type: uri_folder
+            path: azureml:custom_without_drift:1
+          dataset_context: test
+          pre_processing_component: azureml:custom_preprocessor:1.0.0
+      metric_thresholds:
+        - metric_name: std_deviation
+          threshold: 2
+  alert_notification:
+    emails:
+      - abc@example.com
+properties:
+  prop1: value
+tags:
+  tag1: tag
