@@ -29,8 +29,12 @@ def parse_args():
     parser = argparse.ArgumentParser()
     # add arguments
     parser.add_argument("--model_input_path", type=Path, help="Path to input model")
-    parser.add_argument("--pytorch_model_folder", type=Path, help="Pytorch custom model path")
-    parser.add_argument("--mlflow_model_folder", type=Path, help="mlflow custom model path")
+    parser.add_argument(
+        "--pytorch_model_folder", type=Path, help="Pytorch custom model path"
+    )
+    parser.add_argument(
+        "--mlflow_model_folder", type=Path, help="mlflow custom model path"
+    )
 
     # parse args
     args = parser.parse_args()
@@ -73,13 +77,13 @@ def get_mlclient(registry_name: str = None):
 def is_automl_run(job):
     if job != None:
         props = job.properties
-        if "runTemplate" in props and props['runTemplate'] == "AutoML":
+        if "runTemplate" in props and props["runTemplate"] == "AutoML":
             return True
-        if "attribution" in props and props['attribution'] == "AutoML":
+        if "attribution" in props and props["attribution"] == "AutoML":
             return True
-        if "root_attribution" in props and props['root_attribution'] == "automl":
+        if "root_attribution" in props and props["root_attribution"] == "automl":
             return True
-        if "azureml.runsource" in props and props['azureml.runsource'] == "automl":
+        if "azureml.runsource" in props and props["azureml.runsource"] == "automl":
             return True
     return False
 
@@ -98,7 +102,7 @@ def get_best_trial_run(current_run) -> Run:
     if automl_run.status.lower() != "completed":
         raise Exception("Run status is not completed")
 
-    best_child_run_id = automl_run.tags['automl_best_child_run_id']
+    best_child_run_id = automl_run.tags["automl_best_child_run_id"]
     return Run.get(current_run.experiment.workspace, best_child_run_id)
 
 
@@ -124,11 +128,24 @@ def run():
         pytorch_model_folder_src = Path(td) / named_outputs / pytorch_model_folder_name
         mlflow_model_folder_src = Path(td) / named_outputs / mlflow_model_folder_name
 
-        ml_client.jobs.download(name=best_trial_run_id, download_path=td, output_name=pytorch_model_folder_name)
-        ml_client.jobs.download(name=best_trial_run_id, download_path=td, output_name=mlflow_model_folder_name)
+        ml_client.jobs.download(
+            name=best_trial_run_id,
+            download_path=td,
+            output_name=pytorch_model_folder_name,
+        )
+        ml_client.jobs.download(
+            name=best_trial_run_id,
+            download_path=td,
+            output_name=mlflow_model_folder_name,
+        )
 
-        shutil.copytree(src=pytorch_model_folder_src, dst=pytorch_model_folder, dirs_exist_ok=True)
-        shutil.copytree(src=mlflow_model_folder_src, dst=mlflow_model_folder, dirs_exist_ok=True)
+        shutil.copytree(
+            src=pytorch_model_folder_src, dst=pytorch_model_folder, dirs_exist_ok=True
+        )
+        shutil.copytree(
+            src=mlflow_model_folder_src, dst=mlflow_model_folder, dirs_exist_ok=True
+        )
+
 
 if __name__ == "__main__":
     run()
