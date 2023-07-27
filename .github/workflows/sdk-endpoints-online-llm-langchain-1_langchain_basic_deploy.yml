@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-langchain-1_langchain_basic_deploy
+name: sdk-endpoints-online-llm-langchain-1_langchain_basic_deploy
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/langchain/**
-      - .github/workflows/sdk-langchain-1_langchain_basic_deploy.yml
+      - sdk/python/endpoints/online/llm/langchain/**
+      - .github/workflows/sdk-endpoints-online-llm-langchain-1_langchain_basic_deploy.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -58,7 +58,7 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run langchain/1_langchain_basic_deploy.ipynb
+    - name: run endpoints/online/llm/langchain/1_langchain_basic_deploy.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -66,10 +66,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "1_langchain_basic_deploy.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python 1_langchain_basic_deploy.ipynb 1_langchain_basic_deploy.output.ipynb
-      working-directory: sdk/python/langchain
+      working-directory: sdk/python/endpoints/online/llm/langchain
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: 1_langchain_basic_deploy
-        path: sdk/python/langchain
+        path: sdk/python/endpoints/online/llm/langchain

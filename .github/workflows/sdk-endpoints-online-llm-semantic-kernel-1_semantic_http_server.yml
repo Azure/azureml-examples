@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-semantic-kernel-1_semantic_http_server
+name: sdk-endpoints-online-llm-semantic-kernel-1_semantic_http_server
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/semantic-kernel/**
-      - .github/workflows/sdk-semantic-kernel-1_semantic_http_server.yml
+      - sdk/python/endpoints/online/llm/semantic-kernel/**
+      - .github/workflows/sdk-endpoints-online-llm-semantic-kernel-1_semantic_http_server.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -58,7 +58,7 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run semantic-kernel/1_semantic_http_server.ipynb
+    - name: run endpoints/online/llm/semantic-kernel/1_semantic_http_server.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -66,10 +66,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "1_semantic_http_server.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python 1_semantic_http_server.ipynb 1_semantic_http_server.output.ipynb
-      working-directory: sdk/python/semantic-kernel
+      working-directory: sdk/python/endpoints/online/llm/semantic-kernel
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: 1_semantic_http_server
-        path: sdk/python/semantic-kernel
+        path: sdk/python/endpoints/online/llm/semantic-kernel
