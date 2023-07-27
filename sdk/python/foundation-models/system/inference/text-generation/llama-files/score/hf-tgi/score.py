@@ -78,7 +78,7 @@ SUPPORTED_INFERENCE_PARAMS = {
     # 1.0 means no penalty. See [this paper](https://arxiv.org/pdf/1909.05858.pdf) for more details.
     "repetition_penalty": {"type": int, "optional": True},
     # Whether to prepend the prompt to the generated text
-    "return_full_text": {"type": bool, "default": True},
+    "return_full_text": {"type": bool, "default": False},
     # The value used to module the logits distribution.
     "seed": {"type": int, "optional": True},
     # Stop generating tokens if a member of `stop_sequences` is generated
@@ -103,6 +103,7 @@ SUPPORTED_INFERENCE_PARAMS = {
 MLMODEL_PATH = "mlflow_model_folder/MLmodel"
 DEFAULT_MODEL_ID_PATH = "mlflow_model_folder/data/model"
 client = None
+aacs_client = None
 task_type = SupportedTask.TEXT_GENERATION
 default_generator_configs = {
     k: v["default"] for k, v in SUPPORTED_INFERENCE_PARAMS.items() if "default" in v
@@ -314,15 +315,22 @@ def iterate(obj):
 
 
 def get_safe_response(result):
-    print("Analyzing response...")
+    global aacs_client
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
+    if not aacs_client:
+        return jsonable_result, 0
 
+    print("Analyzing response...")
     result, severity = iterate(jsonable_result)
     print(f"Response analyzed, severity {severity}")
     return result
 
 
 def get_safe_input(input_data):
+    global aacs_client
+    if not aacs_client:
+        return input_data, 0
+
     print("Analyzing input...")
     result, severity = iterate(input_data)
     print(f"Input analyzed, severity {severity}")
@@ -383,7 +391,7 @@ def init():
             endpoint, AzureKeyCredential(key), headers_policy=headers_policy
         )
     except Exception as e:
-        raise Exception("Error in setting up AACS client. Error  {e}")
+        logger.error("AACS not configured. Bypassing content moderation. Error {e}")
 
     try:
         model_id = os.environ.get(MODEL_ID, DEFAULT_MODEL_ID_PATH)
