@@ -78,7 +78,7 @@ SUPPORTED_INFERENCE_PARAMS = {
     # 1.0 means no penalty. See [this paper](https://arxiv.org/pdf/1909.05858.pdf) for more details.
     "repetition_penalty": {"type": int, "optional": True},
     # Whether to prepend the prompt to the generated text
-    "return_full_text": {"type": bool, "default": False},
+    "return_full_text": {"type": bool, "default": True},
     # The value used to module the logits distribution.
     "seed": {"type": int, "optional": True},
     # Stop generating tokens if a member of `stop_sequences` is generated
