@@ -1,4 +1,5 @@
 using CSV
+using DataFrames
 using Flux
 using Flux: logitcrossentropy, normalise, onecold, onehotbatch
 using Statistics: mean
@@ -10,7 +11,7 @@ using Parameters: @with_kw
 end
 
 function get_processed_data(args)
-    data = CSV.read("iris_data.csv")
+    data = CSV.read("iris_data.csv", DataFrame)
 
     # Extract labels and features from the DataFrame
     features = Matrix(data[:, 1:4])
