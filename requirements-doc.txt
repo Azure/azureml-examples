@@ -1,0 +1,2 @@
+sphinx==4.3.0
+pyyaml
