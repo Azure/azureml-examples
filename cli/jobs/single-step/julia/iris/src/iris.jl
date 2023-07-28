@@ -26,11 +26,11 @@ function get_processed_data(args)
     # Split into training and test sets, 2/3 for training, 1/3 for test.
     train_indices = [1:3:150 ; 2:3:150]
 
-    X_train = normed_features[:, train_indices]
-    y_train = onehot_labels[:, train_indices]
+    X_train = normed_features[train_indices, :]
+    y_train = onehot_labels[train_indices, :]
 
-    X_test = normed_features[:, 3:3:150]
-    y_test = onehot_labels[:, 3:3:150]
+    X_test = normed_features[3:3:150, :]
+    y_test = onehot_labels[3:3:150, :]
 
     #repeat the data `args.repeat` times
     train_data = Iterators.repeated((X_train, y_train), args.repeat)
