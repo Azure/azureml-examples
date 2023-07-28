@@ -159,7 +159,7 @@ if __name__ == "__main__":
 
     runs = []
 
-    target_names = ["gpu-cluster", "gpu-K80-2"]
+    target_names = ["gpu-cluster", "gpu-V100-2"]
     for target_name in target_names:
 
         target: ComputeTarget = ws.compute_targets[target_name]
