@@ -14,8 +14,8 @@ function get_processed_data(args)
     data = CSV.read("iris_data.csv", DataFrame)
 
     # Extract labels and features from the DataFrame
-    features = Matrix(data[:, 1:4])
-    labels = data[:, "labels"]
+    features =  Matrix{Float64}(data[1:end, 1:4])'
+    labels = Vector{String}(data[1:end, end])
 
     # Subract mean, divide by std dev for normed mean of 0 and std dev of 1.
     normed_features = normalise(features, dims=2)
@@ -26,11 +26,11 @@ function get_processed_data(args)
     # Split into training and test sets, 2/3 for training, 1/3 for test.
     train_indices = [1:3:150 ; 2:3:150]
 
-    X_train = normed_features[train_indices, :]
-    y_train = onehot_labels[train_indices, :]
+    X_train = normed_features[:, train_indices]
+    y_train = onehot_labels[:, train_indices]
 
-    X_test = normed_features[3:3:150, :]
-    y_test = onehot_labels[3:3:150, :]
+    X_test = normed_features[:, 3:3:150]
+    y_test = onehot_labels[:, 3:3:150]
 
     #repeat the data `args.repeat` times
     train_data = Iterators.repeated((X_train, y_train), args.repeat)
