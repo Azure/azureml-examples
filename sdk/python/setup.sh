@@ -5,7 +5,7 @@
 # </az_ml_sdk_install>
 
 # <mldesigner_install>
-pip install https://hodstorage.blob.core.windows.net/mldesigner/b12/4/mldesigner-0.1.0b12-py3-none-any.whl
+pip install mldesigner==0.1.0b14 --extra-index-url https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
 # </mldesigner_install>
 
 # <mltable_install>
