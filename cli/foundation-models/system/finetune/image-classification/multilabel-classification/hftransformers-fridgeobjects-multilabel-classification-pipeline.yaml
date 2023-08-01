@@ -22,7 +22,7 @@ inputs:
     type: uri_file
   # compute
   compute_model_import: sample-model-import-cluster
-  compute_finetune: sample-finetune-cluster-gpu-nc6sv3
+  compute_finetune: sample-finetune-cluster-gpu
 
 
 outputs:
@@ -33,7 +33,7 @@ outputs:
 
 settings:
   force_rerun: true
-  default_compute: azureml:sample-finetune-cluster-gpu-nc6sv3
+  default_compute: azureml:sample-finetune-cluster-gpu
 
 jobs:
   huggingface_transformers_model_finetune_job:

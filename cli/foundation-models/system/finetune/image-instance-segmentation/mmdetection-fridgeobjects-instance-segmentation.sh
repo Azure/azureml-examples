@@ -10,7 +10,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 compute_cluster_model_import="sample-model-import-cluster"
-compute_cluster_finetune="sample-finetune-cluster-gpu-nc6sv3"
+compute_cluster_finetune="sample-finetune-cluster-gpu"
 # if above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
 compute_finetune_sku="Standard_NC6s_v3"

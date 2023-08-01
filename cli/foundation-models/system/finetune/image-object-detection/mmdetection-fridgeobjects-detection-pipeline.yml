@@ -17,7 +17,7 @@ inputs:
     type: uri_file
   # compute
   compute_model_import: sample-model-import-cluster
-  compute_finetune: sample-finetune-cluster-gpu-nc6
+  compute_finetune: sample-finetune-cluster-gpu
   # model_name: vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco
   # # model - specify the foundation model available in the azureml system registry
   # pytorch_model:
@@ -35,7 +35,7 @@ outputs:
 
 settings:
   force_rerun: true
-  default_compute: azureml:sample-finetune-cluster-gpu-nc6
+  default_compute: azureml:sample-finetune-cluster-gpu
 
 jobs:
   mmdetection_model_finetune_job:
