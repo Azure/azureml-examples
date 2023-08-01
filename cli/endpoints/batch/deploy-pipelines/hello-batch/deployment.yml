@@ -1,4 +1,4 @@
-$schema: http://azureml/sdk-2-0/BatchDeployment.json
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 name: hello-batch-dpl
 description: A hello world deployment with a single step.
 endpoint_name: hello-pipeline-batch
