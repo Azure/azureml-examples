@@ -18,14 +18,13 @@ inputs:
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu-nc6
-  # model_name: microsoft/beit-base-patch16-224
+  # model_name: vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco
   # # model - specify the foundation model available in the azureml system registry
   # pytorch_model:
-  #     path: azureml://registries/azureml-preview/models/dummy_faster_rcnn_r50_fpn_1x_coco/versions/1
+  #     path: azureml://registries/azureml-staging/models/dummy_faster_rcnn_r50_fpn_1x_coco/versions/1
   #     type: custom_model
-  # TODO: update the path from azureml-preview once registered
   mlflow_model: 
-    path: azureml://registries/azureml-preview/models/faster_rcnn_r50_fpn_1x_coco/versions/1
+    path: azureml://registries/azureml-staging/models/vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco/versions/1
     type: mlflow_model
 
 outputs:
@@ -42,7 +41,7 @@ jobs:
   mmdetection_model_finetune_job:
     type: pipeline
     # TODO change the asset id
-    component: azureml://registries/azureml-preview/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
+    component: azureml://registries/azureml-staging/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
     inputs:
 
       # Compute

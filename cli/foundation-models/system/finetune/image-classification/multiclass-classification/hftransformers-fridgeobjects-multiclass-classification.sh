@@ -2,16 +2,16 @@
 set -x
 
 # script inputs
-registry_name="azureml-preview"
+registry_name="azureml-staging"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 compute_cluster_model_import="sample-model-import-cluster"
-compute_cluster_finetune="sample-finetune-cluster-gpu-nc6"
+compute_cluster_finetune="sample-finetune-cluster-gpu-nc6sv3"
 # if above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
-compute_finetune_sku="Standard_NC6"
+compute_finetune_sku="STANDARD_NC6s_v3"
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.
@@ -38,12 +38,12 @@ huggingface_sample_request_data="./huggingface_sample_request_data.json"
 # finetuning job parameters
 finetuning_pipeline_component="transformers_image_classification_pipeline"
 # Training settings
-number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
+process_count_per_instance=$gpus_per_node # set to the number of GPUs available in the compute
 
 # 1. Install dependencies
 pip install azure-ai-ml==1.8.0
 pip install azure-identity==1.13.0
-pip install datasets==2.3.2
+pip install datasets==2.12.0
 
 unameOut=$(uname -a)
 case "${unameOut}" in

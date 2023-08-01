@@ -6,7 +6,7 @@ experiment_name: AzureML-Train-Finetune-Vision-MultiClass-Samples
 inputs:
   # # model - specify the foundation model available in the azureml system registry
   mlflow_model_path:
-    path: azureml://registries/azureml-preview/models/google-vit-base-patch16-224/versions/1
+    path: azureml://registries/azureml-staging/models/google-vit-base-patch16-224/versions/1
     type: mlflow_model
   # model_name: microsoft/beit-base-patch16-224-pt22k-ft22k
   # dataset files
@@ -22,7 +22,7 @@ inputs:
     type: uri_file
   # compute
   compute_model_import: sample-model-import-cluster
-  compute_finetune: sample-finetune-cluster-gpu-nc6
+  compute_finetune: sample-finetune-cluster-gpu-nc6sv3
 
 outputs:
   # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
@@ -32,12 +32,12 @@ outputs:
 
 settings:
   force_rerun: true
-  default_compute: azureml:sample-finetune-cluster-gpu-nc6
+  default_compute: azureml:sample-finetune-cluster-gpu-nc6sv3
 
 jobs:
   huggingface_transformers_model_finetune_job:
     type: pipeline
-    component: azureml://registries/azureml-preview/components/image_classification_pipeline/labels/latest
+    component: azureml://registries/azureml-staging/components/image_classification_pipeline/labels/latest
     inputs:
 
       # Compute
