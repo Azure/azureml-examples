@@ -19,7 +19,6 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
     "interactive_data_wrangling",
-    "submit_spark_standalone_jobs_managed_vnet",
     # mlflow SDK samples notebooks
     "mlflow_sdk_online_endpoints_progresive",
     "mlflow_sdk_online_endpoints",
@@ -34,6 +33,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_nested_runs",
     "xgboost_service_principal",
     "using_mlflow_rest_api",
+    "yolov5/tutorial",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
@@ -79,14 +79,15 @@ def write_workflows(notebooks):
     cfg = ConfigParser()
     cfg.read(os.path.join("notebooks_config.ini"))
     for notebook in notebooks:
-        if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
+        notebook_path = notebook.replace(os.sep, "/")
+        if not any(excluded in notebook_path for excluded in NOT_TESTED_NOTEBOOKS):
             # get notebook name
             name = os.path.basename(notebook).replace(".ipynb", "")
             folder = os.path.dirname(notebook)
             classification = folder.replace(os.sep, "-")
 
             enable_scheduled_runs = True
-            if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+            if any(excluded in notebook_path for excluded in NOT_SCHEDULED_NOTEBOOKS):
                 enable_scheduled_runs = False
 
             # write workflow file
