@@ -21,11 +21,11 @@ gpus_per_node=1
 # This is the foundation model for finetuning
 # TODO: update the model name once it registered in preview registry
 # using the latest version of the model - not working yet
-mmdetection_model_name="vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco"
+mmdetection_model_name="yolof_r50_c5_8x8_1x_coco"
 model_version=1
 
 version=$(date +%s)
-finetuned_mmdetection_model_name="vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco_fridge_od"
+finetuned_mmdetection_model_name="yolof_r50_c5_8x8_1x_coco_fridge_od"
 mmdetection_endpoint_name="mmd-od-fridge-items-$version"
 deployment_sku="Standard_DS3_V2"
 

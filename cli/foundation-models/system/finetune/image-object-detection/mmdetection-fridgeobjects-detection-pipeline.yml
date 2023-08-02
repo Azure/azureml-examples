@@ -18,13 +18,13 @@ inputs:
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu
-  # model_name: vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco
+  # model_name: yolof_r50_c5_8x8_1x_coco
   # # model - specify the foundation model available in the azureml system registry
   # pytorch_model:
-  #     path: azureml://registries/azureml-staging/models/dummy_faster_rcnn_r50_fpn_1x_coco/versions/1
+  #     path: azureml://registries/azureml-staging/models/dummy_yolof_r50_c5_8x8_1x_coco/versions/1
   #     type: custom_model
   mlflow_model: 
-    path: azureml://registries/azureml-staging/models/vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco/versions/1
+    path: azureml://registries/azureml-staging/models/yolof_r50_c5_8x8_1x_coco/versions/1
     type: mlflow_model
 
 outputs:
