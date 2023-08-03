@@ -34,6 +34,7 @@ if [[ "$2" == *"managed-identity"* ]]
 then
 	ATTACHED_COMPUTE_NAME=${ATTACHED_COMPUTE_NAME}mi
 elif [[ "$2" == *"user-identity"* ]]
+then
 	ATTACHED_COMPUTE_NAME=${ATTACHED_COMPUTE_NAME}uai
 fi
 
