@@ -5,7 +5,7 @@ set -x
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml-preview"
+registry_name="azureml-staging"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
