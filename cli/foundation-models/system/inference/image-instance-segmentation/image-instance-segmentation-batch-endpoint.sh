@@ -1,8 +1,5 @@
-
-
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-classification
-# the sample scoring file available in the same folder as the above notebook
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-instance-segmentation
 
 # script inputs
 registry_name="azureml-staging"
@@ -11,7 +8,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
+model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
 
 model_label="latest"
 
@@ -21,22 +18,18 @@ deployment_sku="Standard_DS3_v2"
 
 
 version=$(date +%s)
-endpoint_name="image-classification-$version"
+endpoint_name="image-is-$version"
 deployment_name="demo-$version"
 
 # Prepare data for deployment
-multi_label=0
 data_path="data_batch"
-python ./prepare_data.py --is_multilabel $multi_label --mode "batch" --data_path $data_path
+python ./prepare_data.py --data_path $data_path --mode "batch"
+
 # sample request data in csv format with image column
-if [ $multi_label -eq 1 ]
-then
-    sample_request_csv="./data_batch/image_classification_multilabel_lis.csv"
-    sample_request_folder="./data_batch/multilabelFridgeObjects"
-else
-    sample_request_csv="./data_batch/image_classification_multiclass_list.csv"
-    sample_request_folder="./data_batch/fridgeObjects"
-fi
+sample_request_csv="./data_batch/odFridgeObjectsMask/image_instance_segmentation_list.csv"
+
+# sample request data in image folder format
+sample_request_folder="./data_batch/odFridgeObjectsMask/images"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
@@ -57,8 +50,8 @@ then
     exit 1
 fi
 
-# get the latest model version
 model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
+
 
 # 3. check if compute $deployment_compute exists, else create it
 if az ml compute show --name $deployment_compute $workspace_info
@@ -73,14 +66,15 @@ else
 fi
 
 # 4. Deploy the model to an endpoint
-# create online endpoint 
+# create batch endpoint 
 az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
 # deploy model from registry to endpoint in workspace
 az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
-  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
+  endpoint_name=$endpoint_name \
+  model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   compute=$deployment_compute \
   name=$deployment_name || {
     echo "deployment create failed"; exit 1;
