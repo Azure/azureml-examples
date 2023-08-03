@@ -10,7 +10,6 @@ workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
-# using the latest version of the model - not working yet
 model_label="latest"
 
 version=$(date +%s)
