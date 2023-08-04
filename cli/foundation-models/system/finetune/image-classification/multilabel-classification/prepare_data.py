@@ -5,7 +5,7 @@ import os
 import urllib
 from zipfile import ZipFile
 
-from azure.identity import InteractiveBrowserCredential
+from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
 
-    credential = InteractiveBrowserCredential()
+    credential = DefaultAzureCredential()
     ml_client = None
     subscription_id = args.subscription
     resource_group = args.group
