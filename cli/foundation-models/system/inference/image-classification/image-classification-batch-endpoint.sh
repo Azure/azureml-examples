@@ -1,18 +1,17 @@
 
 
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-classification
-# the sample scoring file available in the same folder as the above notebook
+# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-classification
+# The sample scoring file available in the same folder as the above notebook.
 
 # script inputs
-registry_name="azureml-staging"
+registry_name="azureml-preview"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
-
 model_label="latest"
 
 deployment_compute="cpu-cluster"
@@ -50,17 +49,17 @@ az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
 # 2. Check if the model exists in the registry
-# need to confirm model show command works for registries outside the tenant (aka system registry)
+# Need to confirm model show command works for registries outside the tenant (aka system registry)
 if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
 then
     echo "Model $model_name:$model_label does not exist in registry $registry_name"
     exit 1
 fi
 
-# get the latest model version
+# Get the latest model version
 model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
-# 3. check if compute $deployment_compute exists, else create it
+# 3. Check if compute $deployment_compute exists, else create it
 if az ml compute show --name $deployment_compute $workspace_info
 then
     echo "Compute cluster $deployment_compute already exists"
@@ -73,12 +72,12 @@ else
 fi
 
 # 4. Deploy the model to an endpoint
-# create online endpoint 
+# Create online endpoint 
 az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
-# deploy model from registry to endpoint in workspace
+# Deploy model from registry to endpoint in workspace
 az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
   endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   compute=$deployment_compute \
@@ -98,14 +97,14 @@ else
     exit 1
 fi
 
-# invoke the endpoint
+# Invoke the endpoint
 folder_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name --input $sample_request_folder --input-type \
   uri_folder $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }
 
-# wait for the job to complete
+# Wait for the job to complete
 az ml job stream --name $folder_inference_job $workspace_info || {
     echo "job stream failed"; exit 1;
 }
@@ -123,7 +122,7 @@ else
     exit 1
 fi
 
-# invoke the endpoint
+# Invoke the endpoint
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name --input $sample_request_csv --input-type \
   uri_file $workspace_info --query name --output tsv) || {

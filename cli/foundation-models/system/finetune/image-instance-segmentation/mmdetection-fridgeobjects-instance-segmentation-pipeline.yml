@@ -19,7 +19,7 @@ inputs:
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu
   # model_name: microsoft/beit-base-patch16-224
-  # model - specify the foundation model available in the azureml system registry
+  # # Model - specify the foundation model available in the azureml system registry
   # pytorch_model:
   #     path: azureml://registries/azureml-staging/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/versions/1
   #     type: custom_model
@@ -28,8 +28,7 @@ inputs:
     type: mlflow_model
 
 outputs:
-  # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
-  # registering the model is required to deploy the model to an online or batch endpoint
+  # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
   trained_model:
     type: mlflow_model
 
@@ -40,8 +39,8 @@ settings:
 jobs:
   mmdetection_model_finetune_job:
     type: pipeline
-    # TODO change the asset id
     component: azureml://registries/azureml-staging/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
+
     inputs:
 
       # Compute
@@ -50,40 +49,28 @@ jobs:
       instance_count: 1
       process_count_per_instance: 1
 
-      # model selection
+      # Model import args
       task_name: image-instance-segmentation
-
       # model_name: ${{parent.inputs.model_name}}
       # pytorch_model: ${{parent.inputs.pytorch_model}}
       mlflow_model: ${{parent.inputs.mlflow_model}}
       model_family: MmDetectionImage
 
-      # data
+      # Data
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
 
-      # finetuning parameters
+      # Finetuning parameters
       apply_augmentations: True
-      image_min_size: -1
-      image_max_size: -1
-      metric_for_best_model: mean_average_precision
       number_of_workers: 8
       apply_deepspeed: False
       deepspeed_config: ${{parent.inputs.ds_finetune}}
       apply_ort: False
-      number_of_epochs: 15
-      max_steps: -1
-      training_batch_size: 4
-      validation_batch_size: 4
       auto_find_batch_size: False
-      learning_rate: 5e-5
-      learning_rate_scheduler: warmup_linear
-      warmup_steps: 0
-      optimizer: adamw_hf
-      weight_decay: 0.0
       extra_optim_args: ""
-      gradient_accumulation_step: 1
       precision: 32
+      iou_threshold: 0.5
+      box_score_threshold: 0.3
       random_seed: 42
       evaluation_strategy: epoch
       evaluation_steps: 500
@@ -94,8 +81,23 @@ jobs:
       save_total_limit: -1
       early_stopping: False
       early_stopping_patience: 1
-      max_grad_norm: 1.0
       resume_from_checkpoint: False
+      save_as_mlflow_model: True
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # image_min_size: -1
+      # image_max_size: -1
+      # metric_for_best_model: mean_average_precision
+      # number_of_epochs: 15
+      # max_steps: -1
+      # training_batch_size: 4
+      # validation_batch_size: 4
+      # learning_rate: 5e-5
+      # learning_rate_scheduler: warmup_linear
+      # warmup_steps: 0
+      # optimizer: adamw_hf
+      # weight_decay: 0.0
+      # gradient_accumulation_step: 1
+      # max_grad_norm: 1.0
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}

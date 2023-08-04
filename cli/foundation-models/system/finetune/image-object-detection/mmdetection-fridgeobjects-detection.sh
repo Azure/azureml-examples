@@ -43,8 +43,8 @@ finetuning_pipeline_component="mmdetection_image_objectdetection_instancesegment
 process_count_per_instance=$gpus_per_node # set to the number of GPUs available in the compute
 
 # 1. Install dependencies
-pip install azure-ai-ml==1.0.0
-pip install azure-identity
+pip install azure-ai-ml==1.8.0
+pip install azure-identity==1.13.0
 
 # 2. Setup pre-requisites
 az account set -s $subscription_id
