@@ -5,14 +5,13 @@ set -x
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml-staging"
+registry_name="azureml-preview"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
-
 model_label="latest"
 
 deployment_compute="cpu-cluster"

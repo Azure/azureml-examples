@@ -3,15 +3,14 @@ set -x
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml-staging"
+registry_name="azureml-preview"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
-# using the latest version of the model - not working yet
-model_version=2
+model_label="latest"
 
 version=$(date +%s)
 endpoint_name="image-classification-$version"
@@ -42,11 +41,14 @@ workspace_info="--resource-group $resource_group_name --workspace-name $workspac
 
 # 2. Check if the model exists in the registry
 # need to confirm model show command works for registries outside the tenant (aka system registry)
-if ! az ml model show --name $model_name --version $model_version --registry-name $registry_name 
+if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
 then
-    echo "Model $model_name:$model_version does not exist in registry $registry_name"
+    echo "Model $model_name:$model_label does not exist in registry $registry_name"
     exit 1
 fi
+
+# get the latest model version
+model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 # 3. Deploy the model to an endpoint
 # create online endpoint 

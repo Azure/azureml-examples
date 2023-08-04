@@ -2,14 +2,13 @@ set -x
 # the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-object-detection
 
 # script inputs
-registry_name="azureml-staging"
+registry_name="azureml-preview"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="yolof_r50_c5_8x8_1x_coco"
-
 model_label="latest"
 
 deployment_compute="cpu-cluster"
