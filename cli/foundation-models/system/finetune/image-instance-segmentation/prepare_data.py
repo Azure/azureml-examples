@@ -53,7 +53,7 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 
     dataset_parent_dir = os.path.dirname(dataset_dir)
 
-    # We'll copy each JSONL file within its related MLTable folder
+    # We will copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
     validation_mltable_path = os.path.join(
         dataset_parent_dir, "validation-mltable-folder"
@@ -117,7 +117,7 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
                             "isCrowd": isCrowd,
                         }
                     )
-                # build the jsonl file
+                # Build the jsonl file
                 image_filename = root.find("filename").text
                 _, file_extension = os.path.splitext(image_filename)
                 json_line = dict(json_line_sample)
@@ -130,10 +130,10 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
                 json_line["label"] = labels
 
                 if i % train_validation_ratio == 0:
-                    # validation annotation
+                    # Validation annotation
                     validation_f.write(json.dumps(json_line) + "\n")
                 else:
-                    # train annotation
+                    # Train annotation
                     train_f.write(json.dumps(json_line) + "\n")
     print("done")
 
@@ -153,10 +153,10 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Download data from public url
 
-    # create data folder if it doesnt exist.
+    # Create data folder if it doesnt exist.
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
+    # Download data
     download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjectsMask.zip"
 
     # Extract current dataset name from dataset url
@@ -170,12 +170,12 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Download the dataset
     urllib.request.urlretrieve(download_url, filename=data_file)
 
-    # extract files
+    # Extract files
     with ZipFile(data_file, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
+    # Delete zip file
     os.remove(data_file)
 
     # Upload data and create a data asset URI folder
@@ -207,13 +207,13 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     convert_mask_in_VOC_to_jsonl(dataset_dir, uri_folder_data_asset.path)
     print("done")
 
-    # We'll copy each JSONL file within its related MLTable folder
+    # We will copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
     validation_mltable_path = os.path.join(
         dataset_parent_dir, "validation-mltable-folder"
     )
 
-    # First, let's create the folders if they don't exist
+    # Create the folders if they don't exist
     os.makedirs(training_mltable_path, exist_ok=True)
     os.makedirs(validation_mltable_path, exist_ok=True)
 

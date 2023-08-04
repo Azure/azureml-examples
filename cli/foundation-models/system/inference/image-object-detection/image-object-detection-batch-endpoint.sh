@@ -1,5 +1,5 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-object-detection
+# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-object-detection
 
 # script inputs
 registry_name="azureml-preview"
@@ -12,9 +12,8 @@ model_name="yolof_r50_c5_8x8_1x_coco"
 model_label="latest"
 
 deployment_compute="cpu-cluster"
-# todo: fetch deployment_sku from the min_inference_sku tag of the model
+# Todo: fetch deployment_sku from the min_inference_sku tag of the model
 deployment_sku="Standard_DS3_v2"
-
 
 version=$(date +%s)
 endpoint_name="image-od-$version"
@@ -24,10 +23,10 @@ deployment_name="demo-$version"
 data_path="data_batch"
 python ./prepare_data.py --data_path $data_path --mode "batch"
 
-# sample request data in csv format with image column
+# Sample request data in csv format with image column
 sample_request_csv="./data_batch/odFridgeObjects/image_object_detection_list.csv"
 
-# sample request data in image folder format
+# Sample request data in image folder format
 sample_request_folder="./data_batch/odFridgeObjects/images"
 
 # 1. Setup pre-requisites
@@ -42,7 +41,7 @@ az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
 # 2. Check if the model exists in the registry
-# need to confirm model show command works for registries outside the tenant (aka system registry)
+# Need to confirm model show command works for registries outside the tenant (aka system registry)
 if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
 then
     echo "Model $model_name:$model_label does not exist in registry $registry_name"
@@ -52,7 +51,7 @@ fi
 model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 
-# 3. check if compute $deployment_compute exists, else create it
+# 3. Check if compute $deployment_compute exists, else create it
 if az ml compute show --name $deployment_compute $workspace_info
 then
     echo "Compute cluster $deployment_compute already exists"
@@ -65,12 +64,12 @@ else
 fi
 
 # 4. Deploy the model to an endpoint
-# create batch endpoint 
+# Create batch endpoint 
 az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
-# deploy model from registry to endpoint in workspace
+# Deploy model from registry to endpoint in workspace
 az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
   endpoint_name=$endpoint_name \
   model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
@@ -91,14 +90,14 @@ else
     exit 1
 fi
 
-# invoke the endpoint
+# Invoke the endpoint
 folder_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name --input $sample_request_folder --input-type \
   uri_folder $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }
 
-# wait for the job to complete
+# Wait for the job to complete
 az ml job stream --name $folder_inference_job $workspace_info || {
     echo "job stream failed"; exit 1;
 }
@@ -116,14 +115,14 @@ else
     exit 1
 fi
 
-# invoke the endpoint
+# Invoke the endpoint
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name --input $sample_request_csv --input-type \
   uri_file $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }
 
-# wait for the job to complete
+# Wait for the job to complete
 az ml job stream --name $csv_inference_job $workspace_info || {
     echo "job stream failed"; exit 1;
 }

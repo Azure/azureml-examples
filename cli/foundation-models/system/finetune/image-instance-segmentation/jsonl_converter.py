@@ -130,13 +130,13 @@ def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
     dataset_parent_dir = os.path.dirname(dataset_dir)
     print(dataset_dir, dataset_parent_dir)
 
-    # We'll copy each JSONL file within its related MLTable folder
+    # We will copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
     validation_mltable_path = os.path.join(
         dataset_parent_dir, "validation-mltable-folder"
     )
 
-    # First, let's create the folders if they don't exist
+    # Create the folders if they don't exist
     os.makedirs(training_mltable_path, exist_ok=True)
     os.makedirs(validation_mltable_path, exist_ok=True)
 
@@ -154,7 +154,7 @@ def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
     annotations_folder = os.path.join(dataset_dir, "annotations")
     mask_folder = os.path.join(dataset_dir, "segmentation-masks")
 
-    # sample json line dictionary
+    # Sample json line dictionary
     json_line_sample = {
         "image_url": remote_path,
         "image_details": {"format": None, "width": None, "height": None},
@@ -176,7 +176,7 @@ def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
                 width = int(root.find("size/width").text)
                 height = int(root.find("size/height").text)
 
-                # convert mask into polygon
+                # Convert mask into polygon
                 mask_fname = os.path.join(mask_folder, filename[:-4] + ".png")
                 polygons = parsing_mask(mask_fname)
 
@@ -193,7 +193,7 @@ def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
                         }
                     )
 
-                # build the jsonl file
+                # Build the jsonl file
                 image_filename = root.find("filename").text
                 _, file_extension = os.path.splitext(image_filename)
                 json_line = dict(json_line_sample)
@@ -206,10 +206,10 @@ def convert_mask_in_VOC_to_jsonl(dataset_dir: str, remote_path: str) -> None:
                 json_line["label"] = labels
 
                 if i % train_validation_ratio == 0:
-                    # validation annotation
+                    # Validation annotation
                     validation_f.write(json.dumps(json_line) + "\n")
                 else:
-                    # train annotation
+                    # Train annotation
                     train_f.write(json.dumps(json_line) + "\n")
 
 
