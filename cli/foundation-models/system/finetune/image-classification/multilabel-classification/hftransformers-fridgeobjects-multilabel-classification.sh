@@ -3,15 +3,16 @@ set -x
 
 # script inputs
 registry_name="azureml-staging"
-subscription_id="dbd697c3-ef40-488f-83e6-5ad4dfb78f9b"
-resource_group_name="nilesh-new-rg"
-workspace_name="nilesh-ws-new"
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 compute_cluster_model_import="sample-model-import-cluster"
 compute_cluster_finetune="sample-finetune-cluster-gpu"
 # If above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
 compute_finetune_sku="STANDARD_NC6s_v3"
+
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.
