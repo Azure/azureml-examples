@@ -154,7 +154,7 @@ az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffi
     echo "deployment create failed"; exit 1;
 }
 
-# 8. Try a sample scoring request on the deployed MMDetection Transformers model
+# 8. Try a sample scoring request on the deployed MMDetection model
 
 # Check if scoring data file exists
 if [ -f $mmdetection_sample_request_data ] 
