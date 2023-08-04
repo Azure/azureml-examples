@@ -4,7 +4,7 @@ type: pipeline
 experiment_name: AzureML-Train-Finetune-Vision-MultiLabel-Samples
 
 inputs:
-  # # model - specify the foundation model available in the azureml system registry
+  # # Model - specify the foundation model available in the azureml system registry
   mlflow_model_path:
     path: azureml://registries/azureml-staging/models/google-vit-base-patch16-224/versions/1
     type: mlflow_model
@@ -26,8 +26,7 @@ inputs:
 
 
 outputs:
-  # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
-  # registering the model is required to deploy the model to an online or batch endpoint
+  # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
   trained_model:
     type: mlflow_model
 
@@ -50,7 +49,7 @@ jobs:
       # model
       task_name: image-classification-multilabel
       model_family: HuggingFaceImage
-      # # specify the model_name instead of mlflow_model if you want to use a model from the huggingface hub
+      # # Specify the model_name instead of mlflow_model if you want to use a model from the huggingface hub
       mlflow_model: ${{parent.inputs.mlflow_model_path}} 
       # model_name: ${{parent.inputs.model_name}}
 
@@ -58,28 +57,17 @@ jobs:
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
 
+      # Finetuning args
       image_width: -1
       image_height: -1
-      metric_for_best_model: iou
       apply_augmentations: True
       number_of_workers: 8
       apply_deepspeed: False
       deepspeed_config: ${{parent.inputs.ds_finetune}}
       apply_ort: False
-      number_of_epochs: 15
-      max_steps: -1
-      training_batch_size: 4
-      validation_batch_size: 4
       auto_find_batch_size: False
-      learning_rate: 5e-5
-      learning_rate_scheduler: warmup_linear
-      warmup_steps: 0
-      optimizer: adamw_hf
-      weight_decay: 0.0
       extra_optim_args: ""
-      gradient_accumulation_step: 1
       precision: 32
-      label_smoothing_factor: 0.0
       random_seed: 42
       evaluation_strategy: epoch
       evaluation_steps: 500
@@ -90,9 +78,22 @@ jobs:
       save_total_limit: -1
       early_stopping: False
       early_stopping_patience: 1
-      max_grad_norm: 1.0
       resume_from_checkpoint: False
       save_as_mlflow_model: True
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # metric_for_best_model: iou
+      # number_of_epochs: 15
+      # max_steps: -1
+      # training_batch_size: 4
+      # validation_batch_size: 4
+      # learning_rate: 5e-5
+      # learning_rate_scheduler: warmup_linear
+      # warmup_steps: 0
+      # optimizer: adamw_hf
+      # weight_decay: 0.0
+      # gradient_accumulation_step: 1
+      # label_smoothing_factor: 0.0
+      # max_grad_norm: 1.0
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}

@@ -38,7 +38,7 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 
     dataset_parent_dir = os.path.dirname(dataset_dir)
 
-    # We'll copy each JSONL file within its related MLTable folder
+    # We will copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
     validation_mltable_path = os.path.join(dataset_parent_dir, "validation-mltable-folder")
 
@@ -72,10 +72,10 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
                     json_line["label"] = class_name
 
                     if index % train_validation_ratio == 0:
-                        # validation annotation
+                        # Validation annotation
                         validation_f.write(json.dumps(json_line) + "\n")
                     else:
-                        # train annotation
+                        # Train annotation
                         train_f.write(json.dumps(json_line) + "\n")
                     index += 1
     print("done")
@@ -93,7 +93,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
+    # Download data
     print("Downloading data.")
     download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
 
@@ -108,12 +108,12 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Download data from public url
     urllib.request.urlretrieve(download_url, filename=data_file)
 
-    # extract files
+    # Extract files
     with ZipFile(data_file, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
+    # Delete zip file
     os.remove(data_file)
 
     # Upload data and create a data asset URI folder
