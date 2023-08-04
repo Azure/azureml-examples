@@ -45,45 +45,6 @@ process_count_per_instance=$gpus_per_node # set to the number of GPUs available 
 # 1. Install dependencies
 pip install azure-ai-ml==1.0.0
 pip install azure-identity
-pip install datasets==2.12.0
-
-unameOut=$(uname -a)
-case "${unameOut}" in
-    *Microsoft*)     OS="WSL";; #must be first since Windows subsystem for linux will have Linux in the name too
-    *microsoft*)     OS="WSL2";; #WARNING: My v2 uses ubuntu 20.4 at the moment slightly different name may not always work
-    Linux*)     OS="Linux";;
-    Darwin*)    OS="Mac";;
-    CYGWIN*)    OS="Cygwin";;
-    MINGW*)     OS="Windows";;
-    *Msys)      OS="Windows";;
-    *)          OS="UNKNOWN:${unameOut}"
-esac
-if [[ ${OS} == "Mac" ]] && sysctl -n machdep.cpu.brand_string | grep -q 'Apple M1'; then
-    OS="MacM1"
-fi
-echo ${OS};
-
-jq_version=$(jq --version)
-echo ${jq_version};
-if [[ $? -eq 0 ]]; then
-    echo "jq already installed"
-else
-    echo "Installing jq"
-    # Install jq
-    if [[ ${OS} == "Mac" ]] || [[ ${OS} == "MacM1" ]]; then
-        # Install jq on mac
-        brew install jq
-    elif [[ ${OS} == "WSL" ]] || [[ ${OS}=="WSL2" ]] || [[ ${OS} == "Linux" ]]; then
-        # Install jq on WSL
-        sudo apt-get install jq
-    elif [[ ${OS} == "Windows" ]] || [[ ${OS} == "Cygwin" ]]; then
-        # Install jq on windows
-        curl -L -o ./jq.exe https://github.com/stedolan/jq/releases/latest/download/jq-win64.exe
-    else
-        echo "Failed to install jq! This might cause issues"
-    fi
-fi
-
 
 # 2. Setup pre-requisites
 az account set -s $subscription_id
@@ -154,9 +115,10 @@ fi
 # If you want to use a MMDetection model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
 # inputs.model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
 
-mmdetection_parent_job=$( az ml job create \
+mmdetection_parent_job_name=$( az ml job create \
   --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yml \
   $workspace_info \
+  --query name -o tsv \
   --set \
   jobs.mmdetection_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.compute_model_import=$compute_cluster_model_import \
@@ -168,8 +130,6 @@ mmdetection_parent_job=$( az ml job create \
     echo "Failed to submit finetuning job"
     exit 1
   }
-
-mmdetection_parent_job_name=$(echo "$mmdetection_parent_job" | jq -r ".display_name")
 
 az ml job stream --name $mmdetection_parent_job_name $workspace_info || {
     echo "job stream failed"; exit 1;
