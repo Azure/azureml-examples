@@ -3,9 +3,9 @@ set -x
 
 # script inputs
 registry_name="azureml-staging"
-subscription_id="<SUBSCRIPTION_ID>"
-resource_group_name="<RESOURCE_GROUP>"
-workspace_name="<WORKSPACE_NAME>"
+subscription_id="dbd697c3-ef40-488f-83e6-5ad4dfb78f9b"
+resource_group_name="nilesh-new-rg"
+workspace_name="nilesh-ws-new"
 
 compute_cluster_model_import="sample-model-import-cluster"
 compute_cluster_finetune="sample-finetune-cluster-gpu"
