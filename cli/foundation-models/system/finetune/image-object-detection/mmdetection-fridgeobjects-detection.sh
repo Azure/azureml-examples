@@ -19,13 +19,11 @@ compute_finetune_sku="Standard_NC6s_v3"
 gpus_per_node=1
 
 # This is the foundation model for finetuning
-# TODO: update the model name once it registered in preview registry
-# using the latest version of the model - not working yet
 mmdetection_model_name="yolof_r50_c5_8x8_1x_coco"
 model_label="latest"
 
 version=$(date +%s)
-finetuned_mmdetection_model_name="yolof_r50_c5_8x8_1x_coco_fridge_od"
+finetuned_mmdetection_model_name="$mmdetection_model_name-fridge-od"
 mmdetection_endpoint_name="mmd-od-fridge-items-$version"
 deployment_sku="Standard_DS3_V2"
 
@@ -36,7 +34,6 @@ ds_finetune="./deepspeed_configs/zero1.json"
 mmdetection_sample_request_data="./mmdetection_sample_request_data.json"
 
 # finetuning job parameters
-# TODO: update with preview registry component name
 finetuning_pipeline_component="mmdetection_image_objectdetection_instancesegmentation_pipeline"
 
 # Training settings
@@ -50,7 +47,7 @@ pip install azure-identity==1.13.0
 az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
-# check if $compute_cluster_model_import exists, else create it
+# Check if $compute_cluster_model_import exists, else create it
 if az ml compute show --name $compute_cluster_model_import $workspace_info
 then
     echo "Compute cluster $compute_cluster_model_import already exists"
@@ -62,7 +59,7 @@ else
     }
 fi
 
-# check if $compute_cluster_finetune exists, else create it
+# Check if $compute_cluster_finetune exists, else create it
 if az ml compute show --name $compute_cluster_finetune $workspace_info
 then
     echo "Compute cluster $compute_cluster_finetune already exists"
@@ -74,7 +71,7 @@ else
     }
 fi
 
-# check if the finetuning pipeline component exists
+# Check if the finetuning pipeline component exists
 if ! az ml component show --name $finetuning_pipeline_component --label latest --registry-name $registry_name
 then
     echo "Finetuning pipeline component $finetuning_pipeline_component does not exist"
@@ -112,6 +109,7 @@ then
 fi
 
 # 5. Submit finetuning job using pipeline.yaml for a open-mmlab mmdetection model
+
 # If you want to use a MMDetection model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
 # inputs.model_name="conditional_detr_r50_8xb2-50e_coco"
 
@@ -142,12 +140,12 @@ az ml model create --name $finetuned_mmdetection_model_name --version $version -
 }
 
 # 7. Deploy the fine-tuned mmdetection model to an endpoint
-# create online endpoint 
+# Create online endpoint 
 az ml online-endpoint create --name $mmdetection_endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
-# deploy registered model to endpoint in workspace
+# Deploy registered model to endpoint in workspace
 az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffic --set \
   endpoint_name=$mmdetection_endpoint_name model=azureml:$finetuned_mmdetection_model_name:$version \
   instance_type=$deployment_sku || {
