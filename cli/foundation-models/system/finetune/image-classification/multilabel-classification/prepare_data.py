@@ -170,8 +170,9 @@ if __name__ == "__main__":
 
     sample_image = os.path.join(args.data_path, "multilabelFridgeObjects", "images", "56.jpg")
     huggingface_request_json = {
-        "inputs": {
-            "image": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
+        "input_data": {
+            "columns": ["image"],
+            "data": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
         }
     }
     huggingface_request_file_name = "huggingface_sample_request_data.json"

@@ -143,7 +143,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare data for image classification")
 
     parser.add_argument("--subscription", type=str, help="Subscription ID")
-    parser.add_argument("--resource_group", type=str, help="Resource group name")
+    parser.add_argument("--group", type=str, help="Resource group name")
     parser.add_argument("--workspace", type=str, help="Workspace name")
     parser.add_argument("--data_path", type=str, default="./data", help="Dataset location")
 
@@ -165,8 +165,9 @@ if __name__ == "__main__":
 
     sample_image = os.path.join(args.data_path, "fridgeObjects", "milk_bottle", "99.jpg")
     huggingface_request_json = {
-        "inputs": {
-            "image": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
+        "input_data": {
+            "columns": ["image"],
+            "data": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
         }
     }
     huggingface_request_file_name = "huggingface_sample_request_data.json"
