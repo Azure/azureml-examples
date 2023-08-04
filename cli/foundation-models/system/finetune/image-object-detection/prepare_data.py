@@ -225,14 +225,10 @@ if __name__ == "__main__":
 
     credential = InteractiveBrowserCredential()
     ml_client = None
-    try:
-        ml_client = MLClient.from_config(credential)
-    except Exception as ex:
-        # Enter details of your AML workspace
-        subscription_id = args.subscription
-        resource_group = args.group
-        workspace = args.workspace
-        ml_client = MLClient(credential, subscription_id, resource_group, workspace)
+    subscription_id = args.subscription
+    resource_group = args.group
+    workspace = args.workspace
+    ml_client = MLClient(credential, subscription_id, resource_group, workspace)
 
     upload_data_and_create_jsonl_mltable_files(
         ml_client=ml_client, dataset_parent_dir=args.data_path
