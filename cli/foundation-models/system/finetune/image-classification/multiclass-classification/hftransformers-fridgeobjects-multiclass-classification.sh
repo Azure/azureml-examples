@@ -130,7 +130,7 @@ fi
 model_version=$(az ml model show --name $aml_registry_model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 # 4. Prepare data
-python prepare_data.py
+python prepare_data.py --subscription $subscription_id --group $resource_group_name --workspace $workspace_name
 # training data
 train_data="./data/training-mltable-folder"
 # validation data

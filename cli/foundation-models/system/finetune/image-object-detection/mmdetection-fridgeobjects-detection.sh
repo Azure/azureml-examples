@@ -22,7 +22,7 @@ gpus_per_node=1
 # TODO: update the model name once it registered in preview registry
 # using the latest version of the model - not working yet
 mmdetection_model_name="yolof_r50_c5_8x8_1x_coco"
-model_version=1
+model_label="latest"
 
 version=$(date +%s)
 finetuned_mmdetection_model_name="yolof_r50_c5_8x8_1x_coco_fridge_od"
@@ -122,14 +122,15 @@ fi
 
 # # 3. Check if the model exists in the registry
 # # need to confirm model show command works for registries outside the tenant (aka system registry)
-if ! az ml model show --name $model_name --version $model_version --registry-name $registry_name 
+if ! az ml model show --name $mmdetection_model_name --label $model_label --registry-name $registry_name 
 then
-    echo "Model $mmdetection_model_name:$model_version does not exist in registry $registry_name"
+    echo "Model $mmdetection_model_name:$model_label does not exist in registry $registry_name"
     exit 1
 fi
-
+# get the latest model version
+model_version=$(az ml model show --name $mmdetection_model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 # 4. Prepare data
-python prepare_data.py
+python prepare_data.py --subscription $subscription_id --group $resource_group_name --workspace $workspace_name
 
 # training data
 train_data="./data/training-mltable-folder"
@@ -157,10 +158,10 @@ mmdetection_parent_job=$( az ml job create \
   --file ./mmdetection-fridgeobjects-detection-pipeline.yml \
   $workspace_info \
   --set \
-  jobs.mmdetection_model_finetune_job.component=$finetuning_pipeline_component \
+  jobs.mmdetection_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.compute_model_import=$compute_cluster_model_import \
   inputs.compute_finetune=$compute_cluster_finetune \
-  inputs.mlflow_model.path=$mmdetection_model_name \
+  inputs.mlflow_model.path="azureml://registries/$registry_name/models/$mmdetection_model_name/versions/$model_version" \
   inputs.training_data.path=$train_data \
   inputs.validation_data.path=$validation_data
   ) || {
