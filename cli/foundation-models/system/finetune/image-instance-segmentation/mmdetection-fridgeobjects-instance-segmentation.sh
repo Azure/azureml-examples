@@ -11,22 +11,21 @@ workspace_name="<WORKSPACE_NAME>"
 
 compute_cluster_model_import="sample-model-import-cluster"
 compute_cluster_finetune="sample-finetune-cluster-gpu"
-# if above compute cluster does not exist, create it with the following vm size
+# If above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
 compute_finetune_sku="Standard_NC6s_v3"
+
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.
 gpus_per_node=1
 
 # This is the foundation model for finetuning
-# TODO: update the model name once it registered in preview registry
-# using the latest version of the model - not working yet
 mmdetection_model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
 model_label="latest"
 
 version=$(date +%s)
-finetuned_mmdetection_model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco_fridge_is"
+finetuned_mmdetection_model_name="$mmdetection_model_name-fridge-is"
 mmdetection_endpoint_name="mmd-is-fridge-items-$version"
 deployment_sku="Standard_DS3_V2"
 
@@ -36,60 +35,21 @@ ds_finetune="./deepspeed_configs/zero1.json"
 # Scoring file
 mmdetection_sample_request_data="./mmdetection_sample_request_data.json"
 
-# finetuning job parameters
+# Finetuning job parameters
 finetuning_pipeline_component="mmdetection_image_objectdetection_instancesegmentation_pipeline"
 
 # Training settings
 process_count_per_instance=$gpus_per_node # set to the number of GPUs available in the compute
 
 # 1. Install dependencies
-pip install azure-ai-ml==1.0.0
-pip install azure-identity
-pip install datasets==2.12.0
-
-unameOut=$(uname -a)
-case "${unameOut}" in
-    *Microsoft*)     OS="WSL";; #must be first since Windows subsystem for linux will have Linux in the name too
-    *microsoft*)     OS="WSL2";; #WARNING: My v2 uses ubuntu 20.4 at the moment slightly different name may not always work
-    Linux*)     OS="Linux";;
-    Darwin*)    OS="Mac";;
-    CYGWIN*)    OS="Cygwin";;
-    MINGW*)     OS="Windows";;
-    *Msys)      OS="Windows";;
-    *)          OS="UNKNOWN:${unameOut}"
-esac
-if [[ ${OS} == "Mac" ]] && sysctl -n machdep.cpu.brand_string | grep -q 'Apple M1'; then
-    OS="MacM1"
-fi
-echo ${OS};
-
-jq_version=$(jq --version)
-echo ${jq_version};
-if [[ $? -eq 0 ]]; then
-    echo "jq already installed"
-else
-    echo "Installing jq"
-    # Install jq
-    if [[ ${OS} == "Mac" ]] || [[ ${OS} == "MacM1" ]]; then
-        # Install jq on mac
-        brew install jq
-    elif [[ ${OS} == "WSL" ]] || [[ ${OS}=="WSL2" ]] || [[ ${OS} == "Linux" ]]; then
-        # Install jq on WSL
-        sudo apt-get install jq
-    elif [[ ${OS} == "Windows" ]] || [[ ${OS} == "Cygwin" ]]; then
-        # Install jq on windows
-        curl -L -o ./jq.exe https://github.com/stedolan/jq/releases/latest/download/jq-win64.exe
-    else
-        echo "Failed to install jq! This might cause issues"
-    fi
-fi
-
+pip install azure-ai-ml==1.8.0
+pip install azure-identity==1.13.0
 
 # 2. Setup pre-requisites
 az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
-# check if $compute_cluster_model_import exists, else create it
+# Check if $compute_cluster_model_import exists, else create it
 if az ml compute show --name $compute_cluster_model_import $workspace_info
 then
     echo "Compute cluster $compute_cluster_model_import already exists"
@@ -101,7 +61,7 @@ else
     }
 fi
 
-# check if $compute_cluster_finetune exists, else create it
+# Check if $compute_cluster_finetune exists, else create it
 if az ml compute show --name $compute_cluster_finetune $workspace_info
 then
     echo "Compute cluster $compute_cluster_finetune already exists"
@@ -113,7 +73,7 @@ else
     }
 fi
 
-# check if the finetuning pipeline component exists
+# Check if the finetuning pipeline component exists
 if ! az ml component show --name $finetuning_pipeline_component --label latest --registry-name $registry_name
 then
     echo "Finetuning pipeline component $finetuning_pipeline_component does not exist"
@@ -151,12 +111,14 @@ then
 fi
 
 # 5. Submit finetuning job using pipeline.yaml for a open-mmlab mmdetection model
+
 # If you want to use a MMDetection model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
 # inputs.model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
 
-mmdetection_parent_job=$( az ml job create \
+mmdetection_parent_job_name=$( az ml job create \
   --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yml \
   $workspace_info \
+  --query name -o tsv \
   --set \
   jobs.mmdetection_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.compute_model_import=$compute_cluster_model_import \
@@ -169,8 +131,6 @@ mmdetection_parent_job=$( az ml job create \
     exit 1
   }
 
-mmdetection_parent_job_name=$(echo "$mmdetection_parent_job" | jq -r ".display_name")
-
 az ml job stream --name $mmdetection_parent_job_name $workspace_info || {
     echo "job stream failed"; exit 1;
 }
@@ -182,19 +142,19 @@ az ml model create --name $finetuned_mmdetection_model_name --version $version -
 }
 
 # 7. Deploy the fine-tuned mmdetection model to an endpoint
-# create online endpoint 
+# Create online endpoint 
 az ml online-endpoint create --name $mmdetection_endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
-# deploy registered model to endpoint in workspace
+# Deploy registered model to endpoint in workspace
 az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffic --set \
   endpoint_name=$mmdetection_endpoint_name model=azureml:$finetuned_mmdetection_model_name:$version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
 }
 
-# 8. Try a sample scoring request on the deployed MMDetection Transformers model
+# 8. Try a sample scoring request on the deployed MMDetection model
 
 # Check if scoring data file exists
 if [ -f $mmdetection_sample_request_data ] 

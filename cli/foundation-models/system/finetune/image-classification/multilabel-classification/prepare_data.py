@@ -5,7 +5,7 @@ import os
 import urllib
 from zipfile import ZipFile
 
-from azure.identity import InteractiveBrowserCredential
+from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
@@ -38,7 +38,7 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 
     dataset_parent_dir = os.path.dirname(dataset_dir)
 
-    # We'll copy each JSONL file within its related MLTable folder
+    # We will copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
     validation_mltable_path = os.path.join(dataset_parent_dir, "validation-mltable-folder")
 
@@ -76,10 +76,10 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
                     json_line["label"] = line_split[1].strip().split(" ")
 
                     if i % train_validation_ratio == 0:
-                        # validation annotation
+                        # Validation annotation
                         validation_f.write(json.dumps(json_line) + "\n")
                     else:
-                        # train annotation
+                        # Train annotation
                         train_f.write(json.dumps(json_line) + "\n")
     print("done")
 
@@ -96,7 +96,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
+    # Download data
     print("Downloading data.")
     download_url = (
         "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
@@ -113,12 +113,12 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Download data from public url
     urllib.request.urlretrieve(download_url, filename=data_file)
 
-    # extract files
+    # Extract files
     with ZipFile(data_file, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
+    # Delete zip file
     os.remove(data_file)
 
     # Upload data and create a data asset URI folder
@@ -155,16 +155,12 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
 
-    credential = InteractiveBrowserCredential()
+    credential = DefaultAzureCredential()
     ml_client = None
-    try:
-        ml_client = MLClient.from_config(credential)
-    except Exception as ex:
-        # Enter details of your AML workspace
-        subscription_id = args.subscription
-        resource_group = args.group
-        workspace = args.workspace
-        ml_client = MLClient(credential, subscription_id, resource_group, workspace)
+    subscription_id = args.subscription
+    resource_group = args.group
+    workspace = args.workspace
+    ml_client = MLClient(credential, subscription_id, resource_group, workspace)
 
     upload_data_and_create_jsonl_mltable_files(ml_client=ml_client, dataset_parent_dir=args.data_path)
 
