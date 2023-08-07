@@ -20,6 +20,9 @@ version=$(date +%s)
 endpoint_name="image-od-$version"
 deployment_name="demo-$version"
 
+# Install dependencies
+pip install pandas
+
 # Prepare data for deployment
 data_path="data_batch"
 python ./prepare_data.py --data_path $data_path --mode "batch"

@@ -23,6 +23,9 @@ version=$(date +%s)
 endpoint_name="image-classification-$version"
 deployment_name="demo-$version"
 
+# Install dependencies
+pip install pandas
+
 # Prepare data for deployment
 multi_label=0
 data_path="data_batch"

@@ -18,6 +18,9 @@ endpoint_name="image-classification-$version"
 # todo: fetch deployment_sku from the min_inference_sku tag of the model
 deployment_sku="Standard_DS3_v2"
 
+# Install dependencies
+pip install pandas
+
 # Prepare data for deployment
 python ./prepare_data.py --is_multilabel 0 --data_path "data_online" --mode "online"
 # sample_request_data
