@@ -88,7 +88,7 @@ then
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
 
-	KEY_VAULT_NAME="autotestsparkkv"
+	KEY_VAULT_NAME=${RESOURCE_GROUP}-kv
 	az keyvault create -n $KEY_VAULT_NAME -g $RESOURCE_GROUP
 
 	NOTEBOOK_PY="./data-wrangling/interactive_data_wrangling.py"
