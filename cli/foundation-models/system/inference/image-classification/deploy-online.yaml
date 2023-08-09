@@ -8,5 +8,5 @@ liveness_probe:
   failure_threshold: 49
   timeout: 299
 request_settings:
-  request_timeout_ms: 60000
+  request_timeout_ms: 90000
 
