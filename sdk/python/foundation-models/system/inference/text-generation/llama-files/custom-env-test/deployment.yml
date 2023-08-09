@@ -41,13 +41,7 @@ environment_variables:
   WORKER_TIMEOUT: 3600
 
   # aacs
-  CONTENT_SAFETY_ACCOUNT_NAME: 'llama-2-13b-chat-auseast-test-aacs-1689929246333324'
-  CONTENT_SAFETY_ENDPOINT: 'https://llama-2-13b-chat-auseast-test-aacs-1689929246333324.cognitiveservices.azure.com/'
-  CONTENT_SAFETY_KEY: '498f0e39d9fd461bb60d54f1249cd57e'
-  CONTENT_SAFETY_THRESHOLD: '0'
-  SUBSCRIPTION_ID: '72c03bf3-4e69-41af-9532-dfcdc3eefef4'
-  RESOURCE_GROUP_NAME: 'shared-finetuning-rg'
-  UAI_CLIENT_ID: ''
+  # <udpate aacs env as needed>
 
   # hftgi params
   MAX_INPUT_LENGTH: "2048"
