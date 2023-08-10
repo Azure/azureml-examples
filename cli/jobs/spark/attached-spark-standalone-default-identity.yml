@@ -29,4 +29,4 @@ args: >-
   --titanic_data ${{inputs.titanic_data}}
   --wrangled_data ${{outputs.wrangled_data}}
 
-compute: mysparkcompute
+compute: <ATTACHED_SPARK_POOL_NAME>

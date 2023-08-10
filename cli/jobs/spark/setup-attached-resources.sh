@@ -30,15 +30,24 @@ az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_
 az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.2 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
 az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
-TEMP_COMPUTE_FILE="temp-compute-setup.yml"
-cp $1 $TEMP_COMPUTE_FILE
+if [[ "$2" == *"managed-identity"* ]]
+then
+	ATTACHED_COMPUTE_NAME=${ATTACHED_COMPUTE_NAME}mi
+elif [[ "$2" == *"user-identity"* ]]
+then
+	ATTACHED_COMPUTE_NAME=${ATTACHED_COMPUTE_NAME}ui
+fi
+
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 		s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
 		s/<SYNAPSE_WORKSPACE_NAME>/$SYNAPSE_WORKSPACE_NAME/g;
 		s/<SPARK_POOL_NAME>/$SPARK_POOL_NAME/g;
-		s/<AML_USER_MANAGED_ID>/$AML_USER_MANAGED_ID/g;" $TEMP_COMPUTE_FILE
+		s/<AML_USER_MANAGED_ID>/$AML_USER_MANAGED_ID/g;
+		s/<ATTACHED_SPARK_POOL_NAME>/$ATTACHED_COMPUTE_NAME/g;" $1
 
-az ml compute attach --file $TEMP_COMPUTE_FILE --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
+sed -i "s/<ATTACHED_SPARK_POOL_NAME>/$ATTACHED_COMPUTE_NAME/g;" $2
+
+az ml compute attach --file $1 --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 az synapse role assignment create --workspace-name $SYNAPSE_WORKSPACE_NAME --role $SPARK_POOL_ADMIN_ROLE_ID --assignee $AML_USER_MANAGED_ID_OID
 
 COMPUTE_MANAGED_IDENTITY=$(az ml compute show --name $ATTACHED_COMPUTE_NAME --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME --query identity.principal_id --out tsv)
