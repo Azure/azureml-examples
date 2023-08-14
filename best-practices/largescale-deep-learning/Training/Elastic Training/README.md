@@ -30,8 +30,7 @@ By restarting the training portion of the job automatically using model checkpoi
 - Time: 2.37 hours
 - Elastic Training enabled
 
-
-> NOTE: Low-Priority nodes allow you to use excess unutilized capacity for azure machine learning jobs. See [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-optimize-cost?view=azureml-api-2) for more information on low-priority nodes. 
+Low-Priority nodes allow you to use excess unutilized capacity for azure machine learning jobs. See [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-optimize-cost?view=azureml-api-2) for more information on low-priority nodes. 
 
 ### Cost
 
@@ -41,8 +40,18 @@ By restarting the training portion of the job automatically using model checkpoi
 | Low Priority with Elastic |           $2.69       |    3    |       2.37           |  $19.13    |
 
 ### Performance
-Both jobs ended with similar performance metrics. The average loss calculated for the base training job was **0.0438**, while the average loss for the elastic training job was **0.0704**.
+Both jobs ended with similar performance metrics. The average loss calculated for the base training job was **0.0438**, while the average loss for the elastic training job was **0.0704**. The graphs below show the loss over time as the model is trained.
 
+Note that in the elastic training job, the loss graph jumps up when the number of nodes running the job (aka the world size) changes. Whenever the world size changes, the job is restarted from the most recent checkpoint. This checkpoint most likely is a handful of steps behind the current training when the job gets restarted (meaning it will have an outdated loss value), so this accounts for the strange breaks in the loss graph.  
+#### Job 1
+<img src="https://github.com/Azure/azureml-examples/assets/73311224/90d4a575-7e65-4fe9-922e-b063531344f8" alt="World size of elastic job throughout training." width="600"/>
+
+#### Job 2
+<img src="https://github.com/Azure/azureml-examples/assets/73311224/d318cd61-90db-4140-8544-7852dacbb8e9" alt="World size of elastic job throughout training." width="600"/>
+
+
+### Getting Started
+This feature is currently in private preview. For more information on using elastic training with Azure Machine Learning, see [this tuorial](https://github.com/Azure/azureai-insiders/tree/main/previews/torch-distributed-elastic).
 ### Future Steps
 
 - **Nebula Checkpointing**: Elastic Training does not currently work with Nebula Fast Checkpointing. Adding this feature so that both tools can be used together is in progress. As alternatives, Elastic Training currently works with both Huggingface and DeepSpeed default checkpointing.
