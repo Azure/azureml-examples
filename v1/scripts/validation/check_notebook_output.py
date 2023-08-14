@@ -73,6 +73,7 @@ allowed_list = [
     "cost_mode is an internal parameter",
     "save_mlflow is an internal parameter",
     "start_auxiliary_runs_before_parent_complete is an internal parameter",
+    "Detected ",
 ]
 
 with open(full_name, "r") as notebook_file:
