@@ -13,7 +13,15 @@ def run_inference(
     model_name,
 ):
 
-    inference_env = train_run.get_environment()
+    try:
+        inference_env = train_run.get_environment()
+    except BaseException:
+        run_details = train_run.get_details()
+        run_def = run_details.get("runDefinition")
+        env = run_def.get("environment")
+        if env is None:
+            raise
+        inference_env = Environment.get(train_run.experiment.workspace, env["name"])
 
     est = ScriptRunConfig(
         source_directory=script_folder,
