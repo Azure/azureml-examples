@@ -33,7 +33,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n withpreprocessingendpoint4161 -y
+          az ml batch-endpoint delete -n withpreprocessingendpoint6601 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,18 +54,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/endpoint.yml
-          az ml batch-endpoint create -n withpreprocessingendpoint4161 -f endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/endpoint.yml
+          az ml batch-endpoint create -n withpreprocessingendpoint6601 -f endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deployment.yml
-          az ml batch-deployment create -e withpreprocessingendpoint4161 -f endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deployment.yml
+          az ml batch-deployment create -e withpreprocessingendpoint6601 -f endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n withpreprocessingendpoint4161 -y
+          az ml batch-endpoint delete -n withpreprocessingendpoint6601 -y
       working-directory: cli

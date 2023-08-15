@@ -33,7 +33,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tclassifiermlflowendpoint2492 -y
+          az ml batch-endpoint delete -n tclassifiermlflowendpoint3191 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/heart-classifier-mlflow/endpoint.yml
-          az ml batch-endpoint create -n tclassifiermlflowendpoint2492 -f endpoints/batch/deploy-models/heart-classifier-mlflow/endpoint.yml
+          az ml batch-endpoint create -n tclassifiermlflowendpoint3191 -f endpoints/batch/deploy-models/heart-classifier-mlflow/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tclassifiermlflowendpoint2492 -y
+          az ml batch-endpoint delete -n tclassifiermlflowendpoint3191 -y
       working-directory: cli

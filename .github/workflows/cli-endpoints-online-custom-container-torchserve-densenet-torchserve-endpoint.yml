@@ -33,7 +33,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n densenettorchserveendpoint2400 -y
+          az ml online-endpoint delete -n densenettorchserveendpoint7556 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/custom-container/torchserve/densenet/torchserve-endpoint.yml
-          az ml online-endpoint create -n densenettorchserveendpoint2400 -f endpoints/online/custom-container/torchserve/densenet/torchserve-endpoint.yml
+          az ml online-endpoint create -n densenettorchserveendpoint7556 -f endpoints/online/custom-container/torchserve/densenet/torchserve-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n densenettorchserveendpoint2400 -y
+          az ml online-endpoint delete -n densenettorchserveendpoint7556 -y
       working-directory: cli
