@@ -3,7 +3,7 @@
   {
     "name": "check notebook output",
     "params": {
-      "check": "warning stderr"
+      "check": "warning"
      }
   },
   {

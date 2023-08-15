@@ -1,5 +1,5 @@
 # attached-spark-system-identity.yaml
-name: mysparkcompute
+name: <ATTACHED_SPARK_POOL_NAME>
   
 type: synapsespark
 

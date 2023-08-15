@@ -32,4 +32,4 @@ args: >-
 identity:
   type: user_identity
 
-compute: mysparkcompute
+compute: <ATTACHED_SPARK_POOL_NAME>
