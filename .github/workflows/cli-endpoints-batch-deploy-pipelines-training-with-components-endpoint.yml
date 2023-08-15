@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-endpoints-batch-deploy-models-custom-outputs-parquet-endpoint
+name: cli-endpoints-batch-deploy-pipelines-training-with-components-endpoint
 on:
   workflow_dispatch:
   schedule:
@@ -12,10 +12,10 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints/batch/deploy-models/custom-outputs-parquet/**
+      - cli/endpoints/batch/deploy-pipelines/training-with-components/**
       - cli/endpoints/batch/**
       - infra/bootstrapping/**
-      - .github/workflows/cli-endpoints-batch-deploy-models-custom-outputs-parquet-endpoint.yml
+      - .github/workflows/cli-endpoints-batch-deploy-pipelines-training-with-components-endpoint.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -46,26 +46,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint8648 -y
+          az ml batch-endpoint delete -n ingwithcomponentsendpoint5309 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-          az ml batch-endpoint create -n tomoutputsparquetendpoint8648 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-      working-directory: cli
-    - name: create deployment
-      run: |
-          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
-          az ml batch-deployment create -e tomoutputsparquetendpoint8648 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
+          cat endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml
+          az ml batch-endpoint create -n ingwithcomponentsendpoint5309 -f endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint8648 -y
+          az ml batch-endpoint delete -n ingwithcomponentsendpoint5309 -y
       working-directory: cli

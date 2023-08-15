@@ -33,7 +33,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra/bootstrapping
+      working-directory: infra
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n inemanagedvnetsampleendpoint -y
+          az ml online-endpoint delete -n managedvnetsampleendpoint9489 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/vnet/sample/endpoint.yml
-          az ml online-endpoint create -n inemanagedvnetsampleendpoint -f endpoints/online/managed/vnet/sample/endpoint.yml
+          az ml online-endpoint create -n managedvnetsampleendpoint9489 -f endpoints/online/managed/vnet/sample/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n inemanagedvnetsampleendpoint -y
+          az ml online-endpoint delete -n managedvnetsampleendpoint9489 -y
       working-directory: cli
