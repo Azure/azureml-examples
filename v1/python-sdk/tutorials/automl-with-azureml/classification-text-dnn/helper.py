@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from azureml.core import Environment, ScriptRunConfig
 from azureml.core.run import Run
@@ -21,7 +22,8 @@ def run_inference(
         env = run_def.get("environment")
         if env is None:
             raise
-        inference_env = Environment.get(train_run.experiment.workspace, env["name"])
+        json.dump(env, open('azureml_environment.json', 'w'))
+        inference_env = Environment.load_from_directory('.')
 
     est = ScriptRunConfig(
         source_directory=script_folder,
