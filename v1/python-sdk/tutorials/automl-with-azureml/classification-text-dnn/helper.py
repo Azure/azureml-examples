@@ -22,8 +22,8 @@ def run_inference(
         env = run_def.get("environment")
         if env is None:
             raise
-        json.dump(env, open('azureml_environment.json', 'w'))
-        inference_env = Environment.load_from_directory('.')
+        json.dump(env, open("azureml_environment.json", "w"))
+        inference_env = Environment.load_from_directory(".")
 
     est = ScriptRunConfig(
         source_directory=script_folder,
