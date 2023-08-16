@@ -64,8 +64,16 @@ allowed_list = [
     "Class ProtectionLevelSchema: This is an experimental class",
     "Class BaseIntellectualPropertySchema: This is an experimental class",
     "Class PipelineComponentBatchDeployment: This is an experimental class",
+    "Class LinkTabularOutputDatasetConfig: This is an experimental class",
     "Field 'max_nodes': This is an experimental field",
     "Uploading ",
+    "Forecasting parameter ",
+    "Parameter ",
+    "Get_data scripts will be deprecated",
+    "cost_mode is an internal parameter",
+    "save_mlflow is an internal parameter",
+    "start_auxiliary_runs_before_parent_complete is an internal parameter",
+    "Detected ",
 ]
 
 with open(full_name, "r") as notebook_file:

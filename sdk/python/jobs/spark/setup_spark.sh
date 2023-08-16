@@ -72,6 +72,7 @@ then
 		s/<AZURE_REGION_NAME>/$AZURE_REGION_NAME/g;
 		s/<STORAGE_ACCOUNT_NAME>/$AZURE_STORAGE_ACCOUNT/g;
 		s/<OUTBOUND_RULE_NAME>/$OUTBOUND_RULE_NAME/g;
+		s/<OUTBOUND_RULE_NAME_GEN2>/$OUTBOUND_RULE_NAME_GEN2/g;
 		s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;
 		s/<ACCESS_KEY_SECRET_NAME>/$ACCESS_KEY_SECRET_NAME/g;
 		s/<BLOB_CONTAINER_NAME>/$BLOB_CONTAINER_NAME/g;
@@ -87,7 +88,7 @@ then
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
 
-	KEY_VAULT_NAME="autotestsparkkv"
+	KEY_VAULT_NAME=${RESOURCE_GROUP}-kv
 	az keyvault create -n $KEY_VAULT_NAME -g $RESOURCE_GROUP
 
 	NOTEBOOK_PY="./data-wrangling/interactive_data_wrangling.py"

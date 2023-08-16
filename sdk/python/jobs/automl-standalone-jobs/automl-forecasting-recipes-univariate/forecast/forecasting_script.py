@@ -9,7 +9,7 @@ import os
 import pandas as pd
 
 from azureml.core import Dataset, Run
-from sklearn.externals import joblib
+import joblib
 from pandas.tseries.frequencies import to_offset
 
 

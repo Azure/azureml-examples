@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n modelsmnistclassifierendpoint -y
+          az ml batch-endpoint delete -n lsmnistclassifierendpoint9980 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/mnist-classifier/endpoint.yml
-          az ml batch-endpoint create -n modelsmnistclassifierendpoint -f endpoints/batch/deploy-models/mnist-classifier/endpoint.yml
+          az ml batch-endpoint create -n lsmnistclassifierendpoint9980 -f endpoints/batch/deploy-models/mnist-classifier/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n modelsmnistclassifierendpoint -y
+          az ml batch-endpoint delete -n lsmnistclassifierendpoint9980 -y
       working-directory: cli
