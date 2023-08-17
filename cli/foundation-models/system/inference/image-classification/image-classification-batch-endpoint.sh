@@ -24,18 +24,11 @@ endpoint_name="image-classification-$version"
 deployment_name="demo-$version"
 
 # Prepare data for deployment
-multi_label=0
 data_path="data_batch"
-python ./prepare_data.py --is_multilabel $multi_label --mode "batch" --data_path $data_path
+python ./prepare_data.py --is_multilabel 0 --mode "batch" --data_path $data_path
 # sample request data in csv format with image column
-if [ $multi_label -eq 1 ]
-then
-    sample_request_csv="./data_batch/image_classification_multilabel_lis.csv"
-    sample_request_folder="./data_batch/multilabelFridgeObjects"
-else
-    sample_request_csv="./data_batch/image_classification_multiclass_list.csv"
-    sample_request_folder="./data_batch/fridgeObjects"
-fi
+sample_request_csv="./data_batch/image_classification_multiclass_list.csv"
+sample_request_folder="./data_batch/fridgeObjects"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \

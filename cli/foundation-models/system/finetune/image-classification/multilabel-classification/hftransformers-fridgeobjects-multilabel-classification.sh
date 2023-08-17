@@ -37,6 +37,7 @@ huggingface_sample_request_data="./huggingface_sample_request_data.json"
 
 # finetuning job parameters
 finetuning_pipeline_component="transformers_image_classification_pipeline"
+
 # Training settings
 process_count_per_instance=$gpus_per_node # set to the number of GPUs available in the compute
 
