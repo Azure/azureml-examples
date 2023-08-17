@@ -11,7 +11,7 @@ on:
       - .github/workflows/python-sdk-tutorial-automl-nlp-multilabel.yml
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{vars.V1_UBUNTU_RUNNER}}
     defaults:
       run:
         shell: bash -l {0}
