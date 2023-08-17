@@ -158,9 +158,7 @@ az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffi
 # Check if scoring data file exists
 if [ -f $mmdetection_sample_request_data ] 
 then
-    echo "Invoking endpoint $mmdetection_sample_request_data with following input:\n\n"
-    cat $mmdetection_sample_request_data
-    echo "\n\n"
+    echo "Invoking endpoint $mmdetection_endpoint_name with $mmdetection_sample_request_data\n\n"
 else
     echo "Scoring file $mmdetection_sample_request_data does not exist"
     exit 1

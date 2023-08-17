@@ -155,9 +155,7 @@ az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffi
 
 # Check if scoring data file exists
 if [ -f $huggingface_sample_request_data ]; then
-    echo "Invoking endpoint $huggingface_endpoint_name with following input:\n\n"
-    cat $huggingface_sample_request_data
-    echo "\n\n"
+    echo "Invoking endpoint $huggingface_endpoint_name with $huggingface_sample_request_data\n\n"
 else
     echo "Scoring file $huggingface_sample_request_data does not exist"
     exit 1
