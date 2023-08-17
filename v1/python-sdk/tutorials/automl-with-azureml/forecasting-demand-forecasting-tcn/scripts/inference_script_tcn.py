@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from pandas.tseries.frequencies import to_offset
-from sklearn.externals import joblib
+import joblib
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 from azureml.data.dataset_factory import TabularDatasetFactory

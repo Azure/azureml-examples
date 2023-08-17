@@ -74,7 +74,7 @@ jobs:
 
   compute_metrics:
     type: command
-    component: azureml://registries/azureml/components/compute_metrics
+    component: azureml://registries/azureml/components/compute_metrics/versions/0.0.10
     inputs:
       task: "tabular-forecasting"
       ground_truth: ${{parent.jobs.automl_mm_inference.outputs.evaluation_data}}
