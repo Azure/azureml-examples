@@ -46,7 +46,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_AE_CREDS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: Run update-azure-extensions
       run: |
          chmod +x ./v1/scripts/update-azure-extensions.sh
