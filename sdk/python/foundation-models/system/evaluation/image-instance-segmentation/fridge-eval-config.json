@@ -1,0 +1,8 @@
+{
+  "metrics": ["mean_average_precision", "recall", "precision", "per_label_metrics"],
+  "class_labels": ["can", "carton", "milk_bottle", "water_bottle"],
+  "train_labels": ["can", "carton", "milk_bottle", "water_bottle"],
+  "enable_metric_confidence": true,
+  "confidence_metrics": ["mean_average_precision"],
+  "use_binary": false
+}

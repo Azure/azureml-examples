@@ -3,6 +3,6 @@
   "class_labels": ["can", "carton", "milk_bottle", "water_bottle"],
   "train_labels": ["can", "carton", "milk_bottle", "water_bottle"],
   "enable_metric_confidence": true,
-  "confidence_metrics": ["iou", "f1_score_micro"],
+  "confidence_metrics": ["mean_average_precision"],
   "use_binary": false
 }
