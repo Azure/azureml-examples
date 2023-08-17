@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: AzureML-Train-Finetune-Vision-MultiLabel-Samples
+experiment_name: AzureML-Cli-Train-Finetune-Vision-MultiLabel-Samples
 
 inputs:
   # # Model - specify the foundation model available in the azureml system registry
