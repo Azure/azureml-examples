@@ -23,10 +23,10 @@ inputs:
   # model_name: yolof_r50_c5_8x8_1x_coco
   # # model - specify the foundation model available in the azureml system registry
   # pytorch_model:
-  #     path: azureml://registries/azureml-staging/models/dummy_yolof_r50_c5_8x8_1x_coco/versions/1
+  #     path: azureml://registries/azureml/models/dummy_yolof_r50_c5_8x8_1x_coco/versions/1
   #     type: custom_model
   mlflow_model: 
-    path: azureml://registries/azureml-staging/models/yolof_r50_c5_8x8_1x_coco/versions/1
+    path: azureml://registries/azureml/models/yolof_r50_c5_8x8_1x_coco/versions/1
     type: mlflow_model
 
 outputs:
@@ -41,7 +41,7 @@ settings:
 jobs:
   mmdetection_model_finetune_job:
     type: pipeline
-    component: azureml://registries/azureml-staging/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
+    component: azureml://registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
     inputs:
 
       # # Compute
