@@ -20,11 +20,8 @@ inputs:
   compute_finetune: sample-finetune-cluster-gpu
   # model_name: microsoft/beit-base-patch16-224
   # # Model - specify the foundation model available in the azureml system registry
-  # pytorch_model:
-  #     path: azureml://registries/azureml/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/versions/1
-  #     type: custom_model
   mlflow_model: 
-    path: azureml://registries/azureml/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/versions/1
+    path: azureml://registries/azureml/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/versions/3
     type: mlflow_model
 
 outputs:

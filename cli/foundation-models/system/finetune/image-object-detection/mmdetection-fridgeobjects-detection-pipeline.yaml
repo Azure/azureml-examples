@@ -22,11 +22,8 @@ inputs:
 
   # model_name: yolof_r50_c5_8x8_1x_coco
   # # model - specify the foundation model available in the azureml system registry
-  # pytorch_model:
-  #     path: azureml://registries/azureml/models/dummy_yolof_r50_c5_8x8_1x_coco/versions/1
-  #     type: custom_model
   mlflow_model: 
-    path: azureml://registries/azureml/models/yolof_r50_c5_8x8_1x_coco/versions/1
+    path: azureml://registries/azureml/models/yolof_r50_c5_8x8_1x_coco/versions/3
     type: mlflow_model
 
 outputs:

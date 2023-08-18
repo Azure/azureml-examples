@@ -116,7 +116,7 @@ fi
 # inputs.model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
 
 mmdetection_parent_job_name=$( az ml job create \
-  --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yml \
+  --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yaml \
   $workspace_info \
   --query name -o tsv \
   --set \

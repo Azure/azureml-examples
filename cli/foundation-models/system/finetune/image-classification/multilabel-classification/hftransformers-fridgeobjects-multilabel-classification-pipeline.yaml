@@ -6,7 +6,7 @@ experiment_name: AzureML-Cli-Train-Finetune-Vision-MultiLabel-Samples
 inputs:
   # # Model - specify the foundation model available in the azureml system registry
   mlflow_model_path:
-    path: azureml://registries/azureml/models/google-vit-base-patch16-224/versions/1
+    path: azureml://registries/azureml/models/google-vit-base-patch16-224/versions/5
     type: mlflow_model
   # model_name: microsoft/beit-base-patch16-224-pt22k-ft22k
   # dataset files

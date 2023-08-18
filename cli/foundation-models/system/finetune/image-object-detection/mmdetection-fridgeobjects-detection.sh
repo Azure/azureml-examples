@@ -115,7 +115,7 @@ fi
 # inputs.model_name="conditional_detr_r50_8xb2-50e_coco"
 
 mmdetection_parent_job_name=$( az ml job create \
-  --file ./mmdetection-fridgeobjects-detection-pipeline.yml \
+  --file ./mmdetection-fridgeobjects-detection-pipeline.yaml \
   $workspace_info \
   --query name -o tsv \
   --set \
