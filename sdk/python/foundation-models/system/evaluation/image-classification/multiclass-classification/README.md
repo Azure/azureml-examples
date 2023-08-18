@@ -2,18 +2,11 @@
 
 ### List of supported keyword arguments:
 
+Note: The evaluation config is an optional configuration file that can be provided for model evaluation. If not provided, default values for the arguments below will be chosen based on the task type.
+
 |     Keyword Argument     | Description                                                                    | Type             | Sample                                                          |
 |:------------------------:|:-------------------------------------------------------------------------------|------------------|-----------------------------------------------------------------|
-|         metrics          | List for subset of metrics to be computed. All supported metrics listed below. | list<str>        | ["accuracy", "f1_score_micro", "average_precision_score_macro"] |
-|       class_labels       | List for superset of all existing labels in our dataset                        | list, np.ndarray | [0, 1, 2, 3], ["cat", "dog", "panda"]        |
-|       train_labels       | List for labels on which model is trained                                      | list, np.ndarray | [0, 1, 2, 3], ["cat", "dog", "panda"]        |
-|      sample_weights      | List containing the weight associated with each data sample                    | list, np.ndarray | [1, 2, 3, 4, 5, 6]                                              |
-|      y_transformer       | Transformer object to be applied on y_pred                                     |                  |                                                                 |
-|        use_binary        | Compute metrics only on the true class for binary classification               | boolean          | true, false                                                     |
-| enable_metric_confidence | Computes confidence interval for supported metrics                             | boolean          | true, false                                                     |
-|      positive_label      | Label to be treated as positive label                                          | int/str          | 0, "cat"                                              |
-|    confidence_metrics    | List of metrics to compute confidence intervals                                | list<str>        | ["accuracy", "f1_score_micro"]                                  |
-|    custom_dimensions     | Used to report telemetry data (can later be used to perform PII scrubbing)     | dict             |                                                                 |
+|         metrics        | List for subset of metrics to be computed. All supported metrics listed below. | list<str>        | ["accuracy", "f1_score_micro", "average_precision_score_macro"] |
 
 ### List of supported metrics:
 
