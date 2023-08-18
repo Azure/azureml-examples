@@ -21,13 +21,7 @@ deployment_sku="Standard_DS3_v2"
 # Prepare data for deployment
 python ./prepare_data.py --is_multilabel 0 --data_path "data_online" --mode "online"
 # sample_request_data
-if [ $multi_label -eq 1 ]
-then
-    sample_request_data="./data_online/multilabelFridgeObjects/sample_request_data.json"
-else
-    sample_request_data="./data_online/fridgeObjects/sample_request_data.json"
-fi
-
+sample_request_data="./data_online/fridgeObjects/sample_request_data.json"
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
    ["$resource_group_name" = "<RESOURCE_GROUP>" ] || \
@@ -67,9 +61,7 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --all-t
 
 # Check if scoring data file exists
 if [ -f $sample_request_data ]; then
-    echo "Invoking endpoint $endpoint_name with following input:\n\n"
-    cat $sample_request_data
-    echo "\n\n"
+    echo "Invoking endpoint $endpoint_name with $sample_request_data\n\n"
 else
     echo "Scoring file $sample_request_data does not exist"
     exit 1
