@@ -12,8 +12,8 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/**
-      - cli/endpoints/online/**
+      - cli/endpoints\online\custom-container\minimal\single-model\conda-in-dockerfile/**
+      - cli/endpoints/unknown/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-custom-container-minimal-single-model-conda-in-dockerfile-minimal-single-model-conda-in-dockerfile-endpoint.yml
       - cli/setup.sh
@@ -46,19 +46,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n condaindockerfileendpoint3179 -y
+          az ml unknown-endpoint delete -n condaindockerfileendpoint8180 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/minimal-single-model-conda-in-dockerfile-endpoint.yml
-          az ml online-endpoint create -n condaindockerfileendpoint3179 -f endpoints/online/custom-container/minimal/single-model/conda-in-dockerfile/minimal-single-model-conda-in-dockerfile-endpoint.yml
+          cat endpoints\online\custom-container\minimal\single-model\conda-in-dockerfile\minimal-single-model-conda-in-dockerfile-endpoint.yml
+          az ml unknown-endpoint create -n condaindockerfileendpoint8180 -f endpoints\online\custom-container\minimal\single-model\conda-in-dockerfile\minimal-single-model-conda-in-dockerfile-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n condaindockerfileendpoint3179 -y
+          az ml unknown-endpoint delete -n condaindockerfileendpoint8180 -y
       working-directory: cli

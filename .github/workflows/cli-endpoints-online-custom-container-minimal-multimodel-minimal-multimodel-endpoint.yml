@@ -12,8 +12,8 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints/online/custom-container/minimal/multimodel/**
-      - cli/endpoints/online/**
+      - cli/endpoints\online\custom-container\minimal\multimodel/**
+      - cli/endpoints/unknown/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-custom-container-minimal-multimodel-minimal-multimodel-endpoint.yml
       - cli/setup.sh
@@ -46,19 +46,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n minimalmultimodelendpoint9199 -y
+          az ml unknown-endpoint delete -n minimalmultimodelendpoint1640 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml
-          az ml online-endpoint create -n minimalmultimodelendpoint9199 -f endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml
+          cat endpoints\online\custom-container\minimal\multimodel\minimal-multimodel-endpoint.yml
+          az ml unknown-endpoint create -n minimalmultimodelendpoint1640 -f endpoints\online\custom-container\minimal\multimodel\minimal-multimodel-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n minimalmultimodelendpoint9199 -y
+          az ml unknown-endpoint delete -n minimalmultimodelendpoint1640 -y
       working-directory: cli
