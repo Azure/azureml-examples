@@ -1,0 +1,12 @@
+name: mlflow-diabetes
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - pandas
+  - scikit-learn
+  - pip
+  - pip:
+    - mlflow
+    - azureml-mlflow
+    - matplotlib
