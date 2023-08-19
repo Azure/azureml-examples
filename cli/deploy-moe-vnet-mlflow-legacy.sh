@@ -2,7 +2,6 @@
 
 set -e
 
-# This is now a legacy script that uses the old way of creating a managed vnet endpoint. The new way is to use Workspace Managed VNet. See cli\deploy-managed-online-endpoint-workspacevnet.sh for the new way.
 # This is the instructions for docs.User has to execute this from a test VM - that is why user cannot use defaults from their local setup
 
 # <set_env_vars> 
@@ -24,10 +23,10 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 export IMAGE_NAME="mlflow"
 
 # Yaml files that will be used to create endpoint and deployment. These are relative to azureml-examples/cli/ directory. Do not change these
-export ENDPOINT_FILE_PATH="endpoints/online/managed/vnet-legacy/mlflow/endpoint.yml"
-export DEPLOYMENT_FILE_PATH="endpoints/online/managed/vnet-legacy/mlflow/blue-deployment-vnet.yml"
-export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet-legacy/mlflow/sample-request.json"
-export ENV_DIR_PATH="endpoints/online/managed/vnet-legacy/mlflow/environment"
+export ENDPOINT_FILE_PATH="endpoints/online/managed/vnet/mlflow/endpoint.yml"
+export DEPLOYMENT_FILE_PATH="endpoints/online/managed/vnet/mlflow/blue-deployment-vnet.yml"
+export SAMPLE_REQUEST_PATH="endpoints/online/managed/vnet/mlflow/sample-request.json"
+export ENV_DIR_PATH="endpoints/online/managed/vnet/mlflow/environment"
 # </set_env_vars>
 
 export SUFFIX="mevnet" # used during setup of secure vnet workspace: setup/setup-repo/azure-github.sh
@@ -39,9 +38,9 @@ export LOCATION="$(echo -e "${LOCATION}" | tr -d '[:space:]')"
 export IDENTITY_NAME=uai$SUFFIX
 export WORKSPACE=mlw-$SUFFIX
 export ENDPOINT_NAME=$ENDPOINT_NAME
-# VM name used during creation: endpoints/online/managed/vnet-legacy/setup_vm/vm-main.bicep
+# VM name used during creation: endpoints/online/managed/vnet/setup_vm/vm-main.bicep
 export VM_NAME="moevnet-mlflow-vm"
-# VNET name and subnet name used during vnet worskapce setup: endpoints/online/managed/vnet-legacy/setup_ws/main.bicep
+# VNET name and subnet name used during vnet worskapce setup: endpoints/online/managed/vnet/setup_ws/main.bicep
 export VNET_NAME=vnet-$SUFFIX
 export SUBNET_NAME="snet-scoring"
 export ENDPOINT_NAME=endpt-vnet-mlflow-`echo $RANDOM`
@@ -75,19 +74,19 @@ then
 fi
 
 # Create the VM. In the docs we will provide instructions to create a VM using az vm create -n $VM_NAME
-az deployment group create  --name $VM_NAME-$ENDPOINT_NAME --template-file endpoints/online/managed/vnet-legacy/setup_vm/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
+az deployment group create  --name $VM_NAME-$ENDPOINT_NAME --template-file endpoints/online/managed/vnet/setup_vm/vm-main.bicep --parameters vmName=$VM_NAME identityName=$IDENTITY_NAME vnetName=$VNET_NAME subnetName=$SUBNET_NAME
 
-# command in script: az deployment group create --template-file endpoints/online/managed/vnet-legacy/setup/vm_main.bicep #identity name is hardcoded uai-identity 
-az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet-legacy/setup_vm/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
+# command in script: az deployment group create --template-file endpoints/online/managed/vnet/setup/vm_main.bicep #identity name is hardcoded uai-identity 
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/vmsetup.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "GIT_BRANCH:$GIT_BRANCH"
 
 # build image
-az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet-legacy/setup_vm/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENV_DIR_PATH:$ENV_DIR_PATH"
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/build_image.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENV_DIR_PATH:$ENV_DIR_PATH"
 
 # create endpoint/deployment inside managed vnet
-az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet-legacy/setup_vm/scripts/create_moe.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENDPOINT_FILE_PATH:$ENDPOINT_FILE_PATH" "DEPLOYMENT_FILE_PATH:$DEPLOYMENT_FILE_PATH" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH"
+az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/create_moe.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "ACR_NAME=$ACR_NAME" "IMAGE_NAME:$IMAGE_NAME" "ENDPOINT_FILE_PATH:$ENDPOINT_FILE_PATH" "DEPLOYMENT_FILE_PATH:$DEPLOYMENT_FILE_PATH" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH"
 
 # test the endpoint by scoring it
-export CMD_OUTPUT=$(az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet-legacy/setup_vm/scripts/score_endpoint.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH")
+export CMD_OUTPUT=$(az vm run-command invoke -n $VM_NAME --command-id RunShellScript --scripts @endpoints/online/managed/vnet/setup_vm/scripts/score_endpoint.sh --parameters "SUBSCRIPTION:$SUBSCRIPTION" "RESOURCE_GROUP:$RESOURCE_GROUP" "LOCATION:$LOCATION" "IDENTITY_NAME:$IDENTITY_NAME" "WORKSPACE:$WORKSPACE" "ENDPOINT_NAME:$ENDPOINT_NAME" "SAMPLE_REQUEST_PATH:$SAMPLE_REQUEST_PATH")
 
 # the scoring output for sample request should be [6141.267272547523, 6407.1333176127255]. We are validating if part of the number is available in the output (not comparing all the decimals to accomodate rounding discrepencies)
 if [[ $CMD_OUTPUT =~ "6141" ]]; then
