@@ -3,9 +3,15 @@ set -e
 export RESOURCEGROUP_NAME="<YOUR_RESOURCEGROUP_NAME>"
 export WORKSPACE_NAME="<YOUR_WORKSPACE_NAME>"
 
-# <create_workspace>
-az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_internet_outbound
-# </create_workspace>
+# If you want to allow outbound traffic, use below instead.
+# <create_workspace_internet_outbound>
+# az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_internet_outbound
+# </create_workspace_internet_outbound>
+
+# If you want to block outbound traffic, use below instead.
+# <create_workspace_allow_only_approved_outbound>
+az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_only_approved_outbound
+# </create_workspace_allow_only_approved_outbound>
 
 az configure --defaults workspace=$WORKSPACE_NAME group=$RESOURCEGROUP_NAME
 
@@ -15,9 +21,15 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 
-# <create_endpoint>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
-# </create_endpoint>
+# If you want to allow inbound traffic, use below instead.
+# <create_endpoint_inbound_allowed>
+# az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
+# </create_endpoint_inbound_allowed>
+
+# If you want to block inbound traffic, use below instead.
+# <create_endpoint_inbound_blocked>
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml --set public_network_access=disabled
+# </create_endpoint_inbound_blocked>
 
 # <create_deployment>
 az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
