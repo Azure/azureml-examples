@@ -2,6 +2,7 @@
 
 set -e
 
+# This is now a legacy script that uses the old way of creating a managed vnet endpoint. The new way is to use Workspace Managed VNet. See cli\deploy-managed-online-endpoint-workspacevnet.sh for the new way.
 # This is the instructions for docs.User has to execute this from a test VM - that is why user cannot use defaults from their local setup
 
 # <set_env_vars> 
