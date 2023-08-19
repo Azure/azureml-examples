@@ -1,0 +1,16 @@
+{
+  "validations": [
+  {
+    "name": "check notebook output",
+    "params": {
+      "check": "warning"
+     }
+  },
+  {
+    "name": "check timeseries",
+    "params": {
+      "experiment_name": "automl-hts"
+    }
+  }
+  ]
+}
