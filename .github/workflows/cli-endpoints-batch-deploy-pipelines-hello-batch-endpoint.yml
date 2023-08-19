@@ -12,8 +12,8 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints\batch\deploy-pipelines\hello-batch/**
-      - cli/endpoints/unknown/**
+      - cli/endpoints/batch/deploy-pipelines/hello-batch/**
+      - cli/endpoints/batch/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-batch-deploy-pipelines-hello-batch-endpoint.yml
       - cli/setup.sh
@@ -46,26 +46,26 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n pelineshellobatchendpoint4228 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint9006 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\batch\deploy-pipelines\hello-batch\endpoint.yml
-          az ml unknown-endpoint create -n pelineshellobatchendpoint4228 -f endpoints\batch\deploy-pipelines\hello-batch\endpoint.yml
+          cat endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml
+          az ml batch-endpoint create -n pelineshellobatchendpoint9006 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\batch\deploy-pipelines\hello-batch\deployment.yml
-          az ml unknown-deployment create -e pelineshellobatchendpoint4228 -f endpoints\batch\deploy-pipelines\hello-batch\deployment.yml
+          cat endpoints/batch/deploy-pipelines/hello-batch/deployment.yml
+          az ml batch-deployment create -e pelineshellobatchendpoint9006 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n pelineshellobatchendpoint4228 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint9006 -y
       working-directory: cli

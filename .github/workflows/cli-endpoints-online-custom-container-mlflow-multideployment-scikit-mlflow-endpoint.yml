@@ -12,8 +12,8 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints\online\custom-container\mlflow\multideployment-scikit/**
-      - cli/endpoints/unknown/**
+      - cli/endpoints/online/custom-container/mlflow/multideployment-scikit/**
+      - cli/endpoints/online/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-custom-container-mlflow-multideployment-scikit-mlflow-endpoint.yml
       - cli/setup.sh
@@ -46,19 +46,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ymentscikitmlflowendpoint1075 -y
+          az ml online-endpoint delete -n ymentscikitmlflowendpoint4848 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\online\custom-container\mlflow\multideployment-scikit\mlflow-endpoint.yml
-          az ml unknown-endpoint create -n ymentscikitmlflowendpoint1075 -f endpoints\online\custom-container\mlflow\multideployment-scikit\mlflow-endpoint.yml
+          cat endpoints/online/custom-container/mlflow/multideployment-scikit/mlflow-endpoint.yml
+          az ml online-endpoint create -n ymentscikitmlflowendpoint4848 -f endpoints/online/custom-container/mlflow/multideployment-scikit/mlflow-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ymentscikitmlflowendpoint1075 -y
+          az ml online-endpoint delete -n ymentscikitmlflowendpoint4848 -y
       working-directory: cli
