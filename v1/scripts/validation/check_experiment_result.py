@@ -164,6 +164,37 @@ def check_experiment_model_explanation_of_best_run(
     print("check_experiment_model_explanation_of_best_run() completed.")
 
 
+def check_experiment_model_rai_of_best_run(
+    experiment_name, file_name, folder, is_local_run=False
+):
+    print("Start running check_experiment_model_rai_of_best_run().")
+    ws = Workspace.from_config(folder)
+
+    experiment = Experiment(ws, experiment_name)
+    automl_runs = list(experiment.get_runs(type="automl"))
+    automl_runs = getNotebookRuns(automl_runs, file_name, folder)
+
+    for run in automl_runs:
+        print("Validating run: " + run.id)
+        ml_run = AutoMLRun(experiment=experiment, run_id=run.id)
+
+        if not is_local_run:
+            model_rai_run_id = ml_run.id + "_" + "RAI"
+            print("Checking the Model RAI run: " + model_rai_run_id)
+            # Wait for the ME run to complete before accessing the result.
+            model_rai_run = Run(
+                experiment=experiment, run_id=model_rai_run_id
+            )
+            model_rai_run.wait_for_completion()
+
+        # The best run should have RAI result.
+        best_run = ml_run.get_best_child()
+
+        # TODO: Add validation for making sure RAI artifacts are uploaded into best run
+
+    print("check_experiment_model_rai_of_best_run() completed.")
+
+
 def checkVisionTrainRun(child_runs, expected_min_score, expected_max_score):
     for hd_run in child_runs:
         print(hd_run.id + ": " + hd_run.status)
@@ -293,3 +324,10 @@ if inputArgs.check_explanation_best_run:
         inputArgs.folder,
         inputArgs.is_local_run,
     )
+    check_experiment_model_rai_of_best_run(
+        inputArgs.experiment_name,
+        inputArgs.file_name,
+        inputArgs.folder,
+        inputArgs.is_local_run,
+    )
+
