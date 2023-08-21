@@ -47,7 +47,7 @@ Enforced naming includes:
 - job definition file(s) under `workflows` must contain `job` in the name
 - tutorial workflows (and workflow files, inclduing experimental tutorials) use the naming convention `tutorial-*name*`, where *name* is the directory name
 - `experiment_name` = "logical-words-example|tutorial" e.g. "hello-world-tutorial"
-- `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-K80-2"
+- `compute_name` = "compute-defined-in-setup-workspace.py" e.g. "gpu-V100-2"
 
 ### Unenforced naming
 

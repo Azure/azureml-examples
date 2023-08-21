@@ -26,7 +26,7 @@ az ml model create --name $MODEL_NAME --path "model"
 
 echo "Creating compute with GPU"
 # <create_compute>
-az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC6 --min-instances 0 --max-instances 2
+az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC6s_v3 --min-instances 0 --max-instances 2
 # </create_compute>
 
 echo "Creating batch endpoint $ENDPOINT_NAME"
@@ -51,7 +51,7 @@ az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NA
 # </query_deployment>
 
 # <download_sample_data>
-wget https://azuremlexampledata.blob.core.windows.net/data/imagenet-1000.zip
+wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/imagenet-1000.zip
 unzip imagenet-1000.zip -d data
 # </download_sample_data>
 
@@ -96,7 +96,7 @@ az ml job download --name $JOB_NAME --output-name score --download-path .
 
 echo "Creating batch deployment for endpoint $ENDPOINT_NAME with high throughput"
 # <create_deployment_ht>
-az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --default
+az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --set-default
 # </create_deployment_ht>
 
 echo "Invoking batch endpoint with local data"
