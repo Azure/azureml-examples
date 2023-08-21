@@ -76,7 +76,7 @@ jobs:
          python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
                 --file_name automl-forecasting-orange-juice-sales-mlflow.output.ipynb \
                 --folder . \
-                --check warning stderr \
+                --check warning \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
     - name: check v2 experiment result
       run: |

@@ -18,7 +18,7 @@ inputs:
 jobs:
 
   retrieval_step:
-    component: azureml://registries/azureml/components/feature_retrieval/versions/0.1.0
+    component: azureml://registries/azureml/components/feature_retrieval/versions/0.3.0
     inputs:
       input_model:
         path: ${{parent.inputs.input_model}}
