@@ -587,7 +587,9 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
-    endpoint_name = hyphenated[-32:].replace("-", "")
+    endpoint_name = hyphenated[-28:].replace("-", "") + str(
+        random.randrange(1000, 9999)
+    )
 
     create_endpoint_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
@@ -620,7 +622,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
