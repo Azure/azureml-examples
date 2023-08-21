@@ -67,8 +67,6 @@ jobs:
       auto_find_batch_size: False
       extra_optim_args: ""
       precision: 32
-      iou_threshold: 0.5
-      box_score_threshold: 0.3
       random_seed: 42
       evaluation_strategy: epoch
       evaluation_steps: 500
@@ -96,6 +94,8 @@ jobs:
       # weight_decay: 0.0
       # gradient_accumulation_step: 1
       # max_grad_norm: 1.0
+      # iou_threshold: 0.5
+      # box_score_threshold: 0.3
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}
