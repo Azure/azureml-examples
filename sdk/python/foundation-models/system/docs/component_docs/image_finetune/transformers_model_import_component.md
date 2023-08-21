@@ -1,7 +1,7 @@
 # Transformers Model Import Component
 The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component is just a pass through. The component can be seen in your workspace component page.
 
-![as shown in the figure](../../images/image_classification_model_import.jpg)
+![as shown in the figure](../../images/image_classification_model_import.png)
 
 
 # 1. Inputs
@@ -14,15 +14,15 @@ The component copies the input model folder to the component output directory wh
 
 2. _mlflow_model_ (mlflow_model, optional)
 
-    MlFlow Model registered in AzureML Asset. Some HuggingFace models are registered in azureml-preview registry and can be used directly. The user can also register HuggingFace models into their workspace or organisation's registry, and use them.
+    MlFlow Model registered in AzureML Asset. Some HuggingFace models are registered in azureml registry and can be used directly. The user can also register HuggingFace models into their workspace or organisation's registry, and use them.
 
-    Following models are registered in azureml-preview registry, and can be used directly.
+    Following models are registered in azureml registry, and can be used directly.
     | Model Name | Source |
     | ------ | ---------- |
-    | [microsoft-beit-base-patch16-224-pt22k-ft22k](https://ml.azure.com/registries/azureml-preview/models/microsoft-beit-base-patch16-224-pt22k-ft22k/version/1?tid=72f988bf-86f1-41af-91ab-2d7cd011db47#overview) | azureml-preview registry |
-    | [microsoft-swinv2-base-patch4-window12-192-22k](https://ml.azure.com/registries/azureml-preview/models/microsoft-swinv2-base-patch4-window12-192-22k/version/1?tid=72f988bf-86f1-41af-91ab-2d7cd011db47#overview) | azureml-preview registry |
-    | [facebook-deit-base-patch16-224](https://ml.azure.com/registries/azureml-preview/models/facebook-deit-base-patch16-224/version/1?tid=72f988bf-86f1-41af-91ab-2d7cd011db47#overview) | azureml-preview registry |
-    | [google-vit-base-patch16-224](https://ml.azure.com/registries/azureml-preview/models/google-vit-base-patch16-224/version/1?tid=72f988bf-86f1-41af-91ab-2d7cd011db47#overview) | azureml-preview registry |
+    | [microsoft-beit-base-patch16-224-pt22k-ft22k](https://ml.azure.com/registries/azureml/models/microsoft-beit-base-patch16-224-pt22k-ft22k/version/5) | azureml registry |
+    | [microsoft-swinv2-base-patch4-window12-192-22k](https://ml.azure.com/registries/azureml/models/microsoft-swinv2-base-patch4-window12-192-22k/version/5) | azureml registry |
+    | [facebook-deit-base-patch16-224](https://ml.azure.com/registries/azureml/models/facebook-deit-base-patch16-224/version/5) | azureml registry |
+    | [google-vit-base-patch16-224](https://ml.azure.com/registries/azureml/models/google-vit-base-patch16-224/version/5) | azureml registry |
 
     Here is the folder structure of a registered MLFlow model.
     ![Mlflow Model Tree](../../images/mlflow_model_tree_for_hf_image_cls_comp.png)
@@ -30,7 +30,7 @@ The component copies the input model folder to the component output directory wh
     - All the configuration files should be stored in _data/config_
     - All the model files should be stored in _data/model_
     - All the tokenizer files should be kept in _data/tokenizer_
-    - **`MLmodel`** is a yaml file and this should contain relavant information. See the sample MLmodel file [here](../../sample_files/HfImageMLmodel.yml)
+    - **`MLmodel`** is a yaml file and this should contain relavant information. See the sample MLmodel file [here](../../sample_files/HfImageMLmodel.yaml)
 
     > Currently _resume_from_checkpoint_ is **NOT** fully enabled with _mlflow_model_. Only the saved model weights can be reloaded but not the optimizer, scheduler and random states
 

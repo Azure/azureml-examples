@@ -1,7 +1,7 @@
 # MMDetection Model Import Component
 The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component will download the config for the model from [MMDetection model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md). The component can be seen in your workspace component page.
 
-![as shown in the figure](../../images/image_mmd_od_is_model_import.jpg)
+![as shown in the figure](../../images/image_mmd_od_is_model_import.png)
 
 # 1. Inputs
 
@@ -13,18 +13,24 @@ The component copies the input model folder to the component output directory wh
 
 2. _mlflow_model_ (mlflow_model, optional)
 
-    MlFlow Model registered in AzureML Asset. Some MMDetection models are registered in azureml-preview registry and can be used directly. The user can also register MMDetection models into their workspace or organisation's registry, and use them.
+    MlFlow Model registered in AzureML Asset. Some MMDetection models are registered in azureml registry and can be used directly. The user can also register MMDetection models into their workspace or organisation's registry, and use them.
 
-    Following models are registered in azureml-preview registry, and can be used directly.
+    Following models are registered in azureml registry, and can be used directly.
     | Model Name | Source |
-    | ------ | ---------- |
-    | TO BE ADDED | azureml-preview registry |
+    | :------------: | :-------:  |
+    | [deformable_detr_twostage_refine_r50_16x2_50e_coco](https://ml.azure.com/registries/azureml/models/deformable_detr_twostage_refine_r50_16x2_50e_coco/version/3) | azureml registry |
+    | [sparse_rcnn_r50_fpn_300_proposals_crop_mstrain_480-800_3x_coco](https://ml.azure.com/registries/azureml/models/sparse_rcnn_r50_fpn_300_proposals_crop_mstrain_480-800_3x_coco/version/3) | azureml registry |
+    | [sparse_rcnn_r101_fpn_300_proposals_crop_mstrain_480-800_3x_coco](https://ml.azure.com/registries/azureml/models/sparse_rcnn_r101_fpn_300_proposals_crop_mstrain_480-800_3x_coco/version/3) | azureml registry |
+    | [vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco](https://ml.azure.com/registries/azureml/models/vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco/version/3) | azureml registry |
+    | [vfnet_x101_64x4d_fpn_mdconv_c3-c5_mstrain_2x_coco](https://ml.azure.com/registries/azureml/models/vfnet_x101_64x4d_fpn_mdconv_c3-c5_mstrain_2x_coco/version/3) | azureml registry |
+    | [yolof_r50_c5_8x8_1x_coco](https://ml.azure.com/registries/azureml/models/yolof_r50_c5_8x8_1x_coco/version/3) | azureml registry |
+    | [mask_rcnn_swin-t-p4-w7_fpn_1x_coco](https://ml.azure.com/registries/azureml/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/version/3) | azureml registry |
 
     Below is the folder structure of a registered MLFlow model.
 
     ![Mlflow Model Tree](../../images/mmd_mlflow_model.png)
 
-    - All the augmentations should be specified in artifacts/augmentations.yaml file.
+    - In the finetuned model, all the augmentations should be specified in artifacts/augmentations.yaml file.
     - All the model files should be stored in artifacts/<model_name>*.pth or artifacts/<model_name>*.py file.
     - **`MLmodel`** is a yaml file and this should contain relavant information. See the sample MLmodel file [here](../../sample_files/MMDMLmodel). Please note that the
     <PYTORCH_MODEL_FOLDER_MOUNTPOINT> is kept as a placeholder only and in the your MLmodel file, you should see an absolute path to the artifact. 
