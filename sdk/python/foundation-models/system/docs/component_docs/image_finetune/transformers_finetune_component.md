@@ -32,7 +32,7 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 7. _metric_for_best_model_ (string, optional)
 
-    Specify the metric to use to compare two different models. If left empty, will be chosen automatically based on the task type and model selected. It could be one of [`loss`, `f1_score_macro`, `accuracy`, `precision_score_macro`, `recall_score_macro`, `iou`, `iou_macro`, `iou_micro`, `iou_weighted`].
+    Specify the metric to use to compare two different models. If left empty, will be chosen automatically based on the task type selected. It could be one of [`loss`, `f1_score_macro`, `accuracy`, `precision_score_macro`, `recall_score_macro`, `iou`, `iou_macro`, `iou_micro`, `iou_weighted`].
 
     If selecting by yourself, use iou_* metrics in case of multi-label classification task.
 
@@ -173,7 +173,7 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 34. _save_total_limit_ (int, optional)
 
-    If a value is passed, will limit the total amount of checkpoints. Deletes the older checkpoints in output_dir. If the value is -1 saves all checkpoints". The default value is -1.
+    If a value is passed, will limit the total number of checkpoints. Deletes the older checkpoints in output_dir. If the value is -1 saves all checkpoints". The default value is -1.
 
 35. _early_stopping_ (bool, optional)
 
@@ -181,7 +181,7 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 36. _early_stopping_patience_ (int, optional)
 
-    Stop training when the specified metric worsens for early_stopping_patience evaluation calls. The default value is 1.
+    Stop training when the specified metric doesn't improve for early_stopping_patience evaluation calls. The default value is 1.
 
 37. _max_grad_norm_ (float, optional)
 
@@ -200,11 +200,11 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 # 2. Outputs
 1. _output_dir_pytorch_ (custom_model, required)
 
-    The folder containing finetuned model output with checkpoints, model config, tokenizer, optimzer and scheduler states and random number states in case of distributed training.
+    The folder containing finetuned model output with checkpoints, model config, tokenizer, optimizer and scheduler states and random number states in case of distributed training.
 
 2. _output_dir_mlflow_ (URI_FOLDER, optional)
 
-    Output dir to save the finetuned model as mlflow model.
+    Output directory to save the finetuned model as mlflow model.
 
 # 4. Run Settings
 

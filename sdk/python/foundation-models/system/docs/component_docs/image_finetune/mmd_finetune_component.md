@@ -35,7 +35,7 @@ The components can be seen in your workspace component page as below:
 
     Specify the metric to use to compare two different models. It could be one of [`mean_average_precision`, `precision`, `recall`].
 
-    If left empty, will be chosen automatically based on the task type and model selected.
+    If left empty, will be chosen automatically based on the task type selected.
 
 8. _apply_augmentations_ (bool, optional)
 
@@ -192,7 +192,7 @@ The components can be seen in your workspace component page as below:
 
 35. _save_total_limit_ (int, optional)
 
-    If a value is passed, will limit the total amount of checkpoints. Deletes the older checkpoints in output_dir. If the value is -1 saves all checkpoints". The default value is -1.
+    If a value is passed, will limit the total number of checkpoints. Deletes the older checkpoints in output_dir. If the value is -1 saves all checkpoints". The default value is -1.
 
 36. _early_stopping_ (bool, optional)
 
@@ -200,7 +200,7 @@ The components can be seen in your workspace component page as below:
 
 37. _early_stopping_patience_ (int, optional)
 
-    Stop training when the specified metric worsens for early_stopping_patience evaluation calls. The default value is 1.
+    Stop training when the specified metric doesn't improve for early_stopping_patience evaluation calls. The default value is 1.
 
 38. _max_grad_norm_ (float, optional)
 
@@ -220,16 +220,16 @@ The components can be seen in your workspace component page as below:
 # 2. Outputs
 1. _output_dir_pytorch_ (custom_model, required)
 
-    The folder containing finetuned model output with checkpoints, model config, optimzer and scheduler states and random number states in case of distributed training.
+    The folder containing finetuned model output with checkpoints, model config, optimizer and scheduler states and random number states in case of distributed training.
 
 2. _output_dir_mlflow_ (URI_FOLDER, optional)
 
-    Output dir to save the finetuned model as mlflow model.
+    Output directory to save the finetuned model as mlflow model.
 
 
 # 4. Run Settings
 
-This setting helps to choose the compute for running the component code. **For the purpose of finetune, gpu compute should be used**. We recommend using Standard_NC6s or Standard_NC6s_v3 compute.
+This setting helps to choose the compute for running the component code. **For the purpose of finetune, gpu compute should be used**. We recommend using Standard_NC6s_v3 compute.
 
 > Select *Use other compute target*
 
