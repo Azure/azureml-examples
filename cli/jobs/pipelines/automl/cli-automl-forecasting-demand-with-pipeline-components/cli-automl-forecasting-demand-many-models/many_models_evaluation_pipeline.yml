@@ -38,7 +38,7 @@ outputs:
 jobs:
   automl_mm_training:
     type: command
-    component: azureml://registries/azureml-preview/components/automl_many_models_training
+    component: azureml://registries/azureml/components/automl_many_models_training
     inputs:
       raw_data: ${{parent.inputs.raw_data}}
       automl_config: ${{parent.inputs.automl_config}}
@@ -53,7 +53,7 @@ jobs:
 
   automl_mm_inference:
     type: command
-    component: azureml://registries/azureml-preview/components/automl_many_models_inference
+    component: azureml://registries/azureml/components/automl_many_models_inference
     inputs:
       raw_data: ${{parent.inputs.inference_data}}
       max_concurrency_per_node: ${{parent.inputs.max_concurrency_per_node}}
@@ -74,7 +74,7 @@ jobs:
 
   compute_metrics:
     type: command
-    component: azureml://registries/azureml/components/compute_metrics
+    component: azureml://registries/azureml/components/compute_metrics/versions/0.0.10
     inputs:
       task: "tabular-forecasting"
       ground_truth: ${{parent.jobs.automl_mm_inference.outputs.evaluation_data}}

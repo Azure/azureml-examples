@@ -105,7 +105,12 @@ def get_additional_requirements(req_name, req_path):
 
 def get_mlflow_import(notebook, validation_yml):
     with open(notebook, "r", encoding="utf-8") as f:
-        if validation_yml or "import mlflow" in f.read():
+        string_file = f.read()
+        if (
+            validation_yml
+            or "import mlflow" in string_file
+            or "from mlflow" in string_file
+        ):
             return get_additional_requirements(
                 "mlflow", "sdk/python/mlflow-requirements.txt"
             )
@@ -162,7 +167,7 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
     check_yml = f"""
     - name: {validation_name}
       run: |
-         python {github_workspace}/v1/scripts/validation/{validation_file_name}.py \\
+         python {github_workspace}/.github/test/scripts/{validation_file_name}.py \\
                 --file_name {notebook_output_file} \\
                 --folder . \\"""
 

@@ -38,7 +38,7 @@ outputs:
 jobs:
   automl_hts_training:
     type: command
-    component: azureml://registries/azureml-preview/components/automl_hts_training
+    component: azureml://registries/azureml/components/automl_hts_training
     inputs:
       raw_data: ${{parent.inputs.raw_data}}
       automl_config: ${{parent.inputs.automl_config}}
@@ -52,7 +52,7 @@ jobs:
         
   automl_hts_inference:
     type: command
-    component: azureml://registries/azureml-preview/components/automl_hts_inference
+    component: azureml://registries/azureml/components/automl_hts_inference
     inputs:
       raw_data: ${{parent.inputs.inference_data}}
       forecast_level: ${{parent.inputs.forecast_level}}
@@ -74,7 +74,7 @@ jobs:
 
   compute_metrics:
     type: command
-    component: azureml://registries/azureml/components/compute_metrics
+    component: azureml://registries/azureml/components/compute_metrics/versions/0.0.10
     inputs:
       task: "tabular-forecasting"
       ground_truth: ${{parent.jobs.automl_hts_inference.outputs.evaluation_data}}
