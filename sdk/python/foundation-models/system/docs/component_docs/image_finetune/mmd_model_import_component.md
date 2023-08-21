@@ -52,7 +52,7 @@ The component copies the input model folder to the component output directory wh
 
 2. _model_name_ (string, optional)
 
-    Please select models from AzureML Model Assets for all supported models. For MMDetection models, which are not supported in AzureML model registry, the model's config name is required, same as it's specified in MMDetection Model Zoo. For e.g. fast_rcnn_r101_fpn_1x_coco for [this config file](https://github.com/open-mmlab/mmdetection/blob/master/configs/fast_rcnn/fast_rcnn_r101_fpn_1x_coco.py). You can see the comprehensive list of model configs [here] (https://github.com/open-mmlab/mmdetection/tree/master/configs) and the documentation of model zoo [here] (https://github.com/open-mmlab/mmdetection/blob/main/docs/en/model_zoo.md).
+    Please select models from AzureML Model Assets for all supported models. For MMDetection models, which are not supported in AzureML model registry, the model's config name is required, same as it's specified in MMDetection Model Zoo. For e.g. fast_rcnn_r101_fpn_1x_coco for [this config file](https://github.com/open-mmlab/mmdetection/blob/master/configs/fast_rcnn/fast_rcnn_r101_fpn_1x_coco.py). You can see the comprehensive list of model configs [here](https://github.com/open-mmlab/mmdetection/tree/v2.28.2/configs) and the documentation of model zoo [here](https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md).
     Please note that it is the user responsibility to comply with the model's license terms.
 
 # 4. Run Settings
