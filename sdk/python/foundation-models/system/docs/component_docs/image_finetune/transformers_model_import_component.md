@@ -50,7 +50,7 @@ The component copies the input model folder to the component output directory wh
 2. _model_name_ (string, optional)
 
     Please select models from AzureML Model Assets for all supported models.
-    For HuggingFace models, which are not supported in AuzreML model registry, input HuggingFace model name here. You can see supported image-classification models [here](https://huggingface.co/models?pipeline_tag=image-classification&library=transformers).
+    For HuggingFace models, which are not supported in AzureML model registry, input HuggingFace model name here. You can see supported image-classification models [here](https://huggingface.co/models?pipeline_tag=image-classification&library=transformers).
     The model will be downloaded from HuggingFace hub using this model_name and
     is subject to third party license terms available on the HuggingFace model details page.
     It is the user's responsibility to comply with the model's license terms.
