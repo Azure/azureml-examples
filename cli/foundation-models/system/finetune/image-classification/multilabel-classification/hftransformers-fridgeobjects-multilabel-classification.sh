@@ -2,7 +2,7 @@
 set -x
 
 # script inputs
-registry_name="azureml-staging"
+registry_name="azureml"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"

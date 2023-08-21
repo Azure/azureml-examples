@@ -3,7 +3,7 @@ set -x
 # the data files are available in the same folder as the above notebook
 
 # script inputs
-registry_name="azureml-staging"
+registry_name="azureml"
 
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
@@ -116,7 +116,7 @@ fi
 # inputs.model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
 
 mmdetection_parent_job_name=$( az ml job create \
-  --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yml \
+  --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yaml \
   $workspace_info \
   --query name -o tsv \
   --set \

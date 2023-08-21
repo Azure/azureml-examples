@@ -2,7 +2,7 @@ set -x
 # The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-instance-segmentation
 
 # script inputs
-registry_name="azureml-preview"
+registry_name="azureml"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
