@@ -1,0 +1,14 @@
+azure-ai-ml==1.5.0
+azure-core==1.26.4
+azure-identity==1.13.0b3
+azureml-inference-server-http
+azure-keyvault-secrets
+azure-mgmt-keyvault
+azure-keyvault
+azure-search-documents==11.4.0b3
+langchain==0.0.164
+openai==0.27.6
+parse
+requests
+pyyaml
+azure-cli
