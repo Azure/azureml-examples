@@ -1,5 +1,8 @@
 # Transformers Model Finetune Component
-This component enables finetuning of pretrained models on custom or pre-available datasets. The component supports Deepspeed and ONNXRuntime configurations for performance enhancement. The components can be seen here ![as shown in the figure](../../images/image_classification_transformers_finetune_components.png)
+This component enables finetuning of pretrained models on custom or pre-available datasets. The component supports Deepspeed and ONNXRuntime configurations for performance enhancement. The components can be seen in your workspace component page as below:
+- [transformers_image_classification_model_import](https://ml.azure.com/registries/azureml/components/transformers_image_classification_model_import)
+- [transformers_image_classification_finetune](https://ml.azure.com/registries/azureml/components/transformers_image_classification_finetune)
+- [transformers_image_classification_pipeline](https://ml.azure.com/registries/azureml/components/transformers_image_classification_pipeline)
 
 # 1. Inputs
 1. _model_path_ (URI_FOLDER, required)

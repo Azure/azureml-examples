@@ -1,6 +1,9 @@
 # MMDetection Model Finetune Component
 This component enables finetuning of pretrained models on custom or pre-available datasets. The component supports Deepspeed and ONNXRuntime configurations for performance enhancement. 
-The components can be seen here ![as shown in the figure](../../images/image_mmd_od_is_finetune_components.png)
+The components can be seen in your workspace component page as below:
+- [mmdetection_image_objectdetection_instancesegmentation_model_import](https://ml.azure.com/registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_model_import)
+- [mmdetection_image_objectdetection_instancesegmentation_finetune](https://ml.azure.com/registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_finetune)
+- [mmdetection_image_objectdetection_instancesegmentation_pipeline](https://ml.azure.com/registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_pipeline)
 
 # 1. Inputs
 1. _model_path_ (URI_FOLDER, required)

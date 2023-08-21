@@ -1,7 +1,5 @@
 # Transformers Model Import Component
-The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component is just a pass through. The component can be seen in your workspace component page.
-
-![as shown in the figure](../../images/image_classification_model_import.png)
+The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component is just a pass through. The component can be seen in your workspace component page - [transformers_image_classification_model_import](https://ml.azure.com/registries/azureml/components/transformers_image_classification_model_import).
 
 
 # 1. Inputs
