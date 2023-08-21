@@ -167,7 +167,7 @@ def get_validation_check_yml(notebook_folder, notebook_name, validation):
     check_yml = f"""
     - name: {validation_name}
       run: |
-         python {github_workspace}/v1/scripts/validation/{validation_file_name}.py \\
+         python {github_workspace}/.github/test/scripts/{validation_file_name}.py \\
                 --file_name {notebook_output_file} \\
                 --folder . \\"""
 
