@@ -237,6 +237,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     )
     save_ml_table_file(validation_mltable_path, validation_mltable_file_contents)
 
+
 def read_image(image_path: str):
     """Read image from path"""
     with open(image_path, "rb") as f:
@@ -244,9 +245,7 @@ def read_image(image_path: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Prepare data for object detection"
-    )
+    parser = argparse.ArgumentParser(description="Prepare data for object detection")
 
     parser.add_argument("--subscription", type=str, help="Subscription ID")
     parser.add_argument("--group", type=str, help="Resource group name")
@@ -268,9 +267,11 @@ if __name__ == "__main__":
     upload_data_and_create_jsonl_mltable_files(
         ml_client=ml_client, dataset_parent_dir=args.data_path
     )
-    
-    sample_image = os.path.join(args.data_path, "odFridgeObjectsMask", "images", "1.jpg")
-    
+
+    sample_image = os.path.join(
+        args.data_path, "odFridgeObjectsMask", "images", "1.jpg"
+    )
+
     mmd_request_json = {
         "input_data": {
             "columns": ["image"],
@@ -278,6 +279,6 @@ if __name__ == "__main__":
         }
     }
     mmd_request_file_name = "mmdetection_sample_request_data.json"
-    
+
     with open(mmd_request_file_name, "w") as mmd_request_file:
         json.dump(mmd_request_json, mmd_request_file)

@@ -102,15 +102,26 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for image object detection")
-    parser.add_argument("--data_path", type=str, default="data", help="Dataset location")
-    parser.add_argument("--mode", type=str, default="online", help="Prepare data for online or batch inference")
+    parser = argparse.ArgumentParser(
+        description="Prepare data for image object detection"
+    )
+    parser.add_argument(
+        "--data_path", type=str, default="data", help="Dataset location"
+    )
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default="online",
+        help="Prepare data for online or batch inference",
+    )
 
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
 
     dataset_dir = download_and_unzip(
-        dataset_parent_dir=os.path.join(os.path.dirname(os.path.abspath(__file__)), args.data_path),
+        dataset_parent_dir=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), args.data_path
+        ),
     )
     if args.mode == "batch":
         prepare_data_for_batch_inference(dataset_dir=dataset_dir)

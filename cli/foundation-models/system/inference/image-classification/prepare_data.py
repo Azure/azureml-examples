@@ -21,13 +21,9 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
 
     # download data
     if is_multilabel_dataset == 0:
-        download_url = (
-            "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
-        )
+        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
     else:
-        download_url = (
-            "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
-        )
+        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
     print(f"Downloading data from {download_url}")
 
     # Extract current dataset name from dataset url
@@ -105,8 +101,11 @@ def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0) -
     """
     image_list = []
 
-    csv_file_name = "image_classification_multilabel_lis.csv" if is_multilabel == 1 else \
-        "image_classification_multiclass_list.csv"
+    csv_file_name = (
+        "image_classification_multilabel_lis.csv"
+        if is_multilabel == 1
+        else "image_classification_multiclass_list.csv"
+    )
 
     for dir_name in os.listdir(dataset_dir):
         dir_path = os.path.join(dataset_dir, dir_name)
@@ -120,24 +119,45 @@ def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0) -
         else:
             os.remove(dir_path)
     df = pd.DataFrame(image_list, columns=["image"]).sample(10)
-    df.to_csv(os.path.join(os.path.dirname(dataset_dir), csv_file_name), index=False, header=True)
+    df.to_csv(
+        os.path.join(os.path.dirname(dataset_dir), csv_file_name),
+        index=False,
+        header=True,
+    )
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for image classification")
-    parser.add_argument("--data_path", type=str, default="data", help="Dataset location")
-    parser.add_argument("--is_multilabel", type=int, default=0, help="Is multilabel dataset")
-    parser.add_argument("--mode", type=str, default="online", help="prepare data for online or batch inference")
+    parser = argparse.ArgumentParser(
+        description="Prepare data for image classification"
+    )
+    parser.add_argument(
+        "--data_path", type=str, default="data", help="Dataset location"
+    )
+    parser.add_argument(
+        "--is_multilabel", type=int, default=0, help="Is multilabel dataset"
+    )
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default="online",
+        help="prepare data for online or batch inference",
+    )
 
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
 
     dataset_dir = download_and_unzip(
-        dataset_parent_dir=os.path.join(os.path.dirname(os.path.abspath(__file__)), args.data_path),
+        dataset_parent_dir=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), args.data_path
+        ),
         is_multilabel_dataset=args.is_multilabel,
     )
 
     if args.mode == "online":
-        prepare_data_for_online_inference(dataset_dir=dataset_dir, is_multilabel=args.is_multilabel)
+        prepare_data_for_online_inference(
+            dataset_dir=dataset_dir, is_multilabel=args.is_multilabel
+        )
     else:
-        prepare_data_for_batch_inference(dataset_dir=dataset_dir, is_multilabel=args.is_multilabel)
+        prepare_data_for_batch_inference(
+            dataset_dir=dataset_dir, is_multilabel=args.is_multilabel
+        )
