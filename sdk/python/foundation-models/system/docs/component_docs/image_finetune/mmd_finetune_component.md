@@ -20,11 +20,11 @@ The components can be seen in your workspace component page as below:
 
 4. _image_min_size_ (int, optional)
 
-    Minimum image size after augmentation that is input to the network. Default is -1 which means it would be overwritten by image_scale provided in model config. The image will be rescaled as large as possible within the range [image_min_size, image_max_size]. The image size will be constraint so that the max edge is no longer than image_max_size and short edge is no longer than image_min_size.
+    Minimum image size after augmentation that is input to the network. If left empty, it would either be overwritten by image_scale in model config or would be chosen based on the task type and model selected. The image will be rescaled as large as possible within the range [image_min_size, image_max_size]. The image size will be constraint so that the max edge is no longer than image_max_size and short edge is no longer than image_min_size.
 
 5. _image_max_size_ (int, optional)
 
-    Maximum image size after augmentation that is input to the network. Default is -1 which means it would be overwritten by image_scale provided in model config. The image will be rescaled as large as possible within the range [image_min_size, image_max_size]. The image size will be constraint so that the max edge is no longer than image_max_size and short edge is no longer than image_min_size.
+    Maximum image size after augmentation that is input to the network. If left empty, it would either be overwritten by image_scale in model config or would be chosen based on the task type and model selected. The image will be rescaled as large as possible within the range [image_min_size, image_max_size]. The image size will be constraint so that the max edge is no longer than image_max_size and short edge is no longer than image_min_size.
 
 6. _task_name_ (string, required)
 
@@ -33,13 +33,15 @@ The components can be seen in your workspace component page as below:
 
 7. _metric_for_best_model_ (string, optional)
 
-    Specify the metric to use to compare two different models. The default value is mean_average_precision.
-    It could be one of [`mean_average_precision`, `precision`, `recall`]
+    Specify the metric to use to compare two different models. It could be one of [`mean_average_precision`, `precision`, `recall`].
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 8. _apply_augmentations_ (bool, optional)
 
-    If set to true, will enable data augmentations for training and validation.
-    The default value is true. Please note, if it is set to false, normalization and resize augmentation would still be applied to pre-process the image.
+    If set to true, will enable data augmentations for training and validation. Please note, if it is set to false, normalization and resize augmentation would still be applied to pre-process the image.
+
+    The default value is true.
 
 9. _number_of_workers_ (int, optional)
 
@@ -57,29 +59,37 @@ The components can be seen in your workspace component page as below:
 
     Path to the deepspeed config file.
 
-    Please note deepspeed is not yet supported for MMDetection, will be enabled in future.
+    Please note deepspeed is not yet supported for MMDetection models, will be enabled in future.
 
 12. _apply_ort_ (bool, optional)
 
     If true, apply ORT optimization. The default value is false.
 
-    Please note ORT is not yet supported for MMDetection, will be enabled in future.
+    Please note ORT is not yet supported for MMDetection models, will be enabled in future.
 
 13. _number_of_epochs_ (int, optional)
 
-    Number of epochs to run for finetune. The default value is 15.
+    Number of training epochs.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 14. _max_steps_ (int, optional)
 
-    If set to a positive number, it's the total number of training steps to perform. It overrides `epochs`. In case of using a finite iterable dataset the training may stop before reaching the set number of steps when all data is exhausted. The default value is -1.
+    If set to a positive number, the total number of training steps to perform. Overrides 'number_of_epochs'. In case of using a finite iterable dataset the training may stop before reaching the set number of steps when all data is exhausted.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 15. _training_batch_size_ (int, optional)
 
-    Batch size used for training. The default value is 4.
+    Batch size used for training.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 16. _validation_batch_size_ (int, optional)
 
-    Batch size used for validation. The default value is 4.
+    Batch size used for validation.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 17. _auto_find_batch_size_ (bool, optional)
 
@@ -87,47 +97,64 @@ The components can be seen in your workspace component page as below:
 
 18. _learning_rate_ (float, optional)
 
-    Start learning rate used for training. The default value is 5e-5.
+    Start learning rate used for training.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 19. _learning_rate_scheduler_ (string, optional)
 
     The learning rate scheduler to use. The default value is warmup_linear.
-    It could be one of [`warmup_linear`, `warmup_cosine`, `warmup_cosine_with_restarts`, `warmup_polynomial`, `constant`, `warmup_constant`]
+    It could be one of [`warmup_linear`, `warmup_cosine`, `warmup_cosine_with_restarts`, `warmup_polynomial`, `constant`, `warmup_constant`].
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 20. _warmup_steps_ (int, optional)
     
-    The number of steps used for the learning rate scheduler warmup phase. It is the number of steps used for a linear warmup from 0 to learning_rate. The default value is 0.
+    The number of steps used for the learning rate scheduler warmup phase. It is the number of steps used for a linear warmup from 0 to learning_rate.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 21. _optimizer_ (string, optional)
 
     Optimizer to be used while training. The default value is adamw_hf.
-    It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`]
+    It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`].
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 22. _weight_decay_ (float, optional)
 
-    The weight decay to apply (if not zero) to all layers except all bias and LayerNorm weights in AdamW optimizer. The default value is 0.
+    The weight decay to apply (if not zero) to all layers except all bias and LayerNorm weights in AdamW optimizer.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 23. _extra_optim_args_: (string, optional)
 
-    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter names, please refer https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay" parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
+    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter names, please refer to https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay" parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
 
 24. _gradient_accumulation_step_ (int, optional)
 
-    Number of updates steps to accumulate the gradients for, before performing a backward/update pass. The default value is 1.
+    Number of updates steps to accumulate the gradients for, before performing a backward/update pass.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 25. _precision_ (int, optional)
 
-    Apply mixed precision training. This can reduce memory footprint by performing operations in half-precision. The default value is 32.
-    It could one of [`16`, `32`]
+    Apply mixed precision training. This can reduce memory footprint by performing operations in half-precision. It could one of [`16`, `32`].
+
+    The default value is "32".
 
 26. _iou_threshold_ (float, optional)
 
-    This is the IOU threshold used during inference for non-maximum suppression while post processing the predictions. The default value is `0.5`.
+    This is the IOU threshold used during inference for non-maximum suppression while post processing the predictions.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 27. _box_score_threshold_ (float, optional)
 
     During inference, only return proposals with a score greater than `box_score_threshold`.
-    The score is the multiplication of the objectness score and classification probability. The default value is `0.3`.
+    The score is the multiplication of the objectness score and classification probability.
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 28. _random_seed_ (int, optional)
 
@@ -177,7 +204,9 @@ The components can be seen in your workspace component page as below:
 
 38. _max_grad_norm_ (float, optional)
 
-    Maximum gradient norm (for gradient clipping). The deafult value is 1.0.
+    Maximum gradient norm (for gradient clipping).
+
+    If left empty, will be chosen automatically based on the task type and model selected.
 
 39. _resume_from_checkpoint_ (bool, optional)
 

@@ -32,14 +32,14 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 7. _metric_for_best_model_ (string, optional)
 
-    Specify the metric to use to compare two different models. The default value is accuracy. It could be one of [`loss`, `f1_score_macro`, `accuracy`, `precision_score_macro`, `recall_score_macro`, `iou`, `iou_macro`, `iou_micro`, `iou_weighted`].
+    Specify the metric to use to compare two different models. If left empty, will be chosen automatically based on the task type and model selected. It could be one of [`loss`, `f1_score_macro`, `accuracy`, `precision_score_macro`, `recall_score_macro`, `iou`, `iou_macro`, `iou_micro`, `iou_weighted`].
 
-    Please select iou_* metrics in case of multi-label classification task.
+    If selecting by yourself, use iou_* metrics in case of multi-label classification task.
 
 8. _apply_augmentations_ (bool, optional)
 
     If set to true, will enable data augmentations for training.
-    The default value is false.
+    The default value is true.
 
 9. _number_of_workers_ (int, optional)
 
@@ -85,7 +85,7 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 17. _auto_find_batch_size_ (bool, optional)
 
-    If set to true, the train batch size will be automatically downscaled recursively till if finds a valid batch size that fits into memory. The default value is false.
+    If set to true, the train batch size will be automatically downscaled recursively till if finds a valid batch size that fits into memory. If the provided 'per_device_train_batch_size' goes into Out Of Memory (OOM) enabling auto_find_batch_size will find the correct batch size by iteratively reducing 'per_device_train_batch_size' by a factor of 2 till the OOM is fixed. The default value is false.
 
 18. _learning_rate_ (float, optional)
 
@@ -107,7 +107,7 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 21. _optimizer_ (string, optional)
 
-    Optimizer to be used while training. It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`]
+    Optimizer to be used while training. 'adamw_ort_fused' optimizer is only supported for ORT training. It could be one of [`adamw_hf`, `adamw`, `sgd`, `adafactor`, `adagrad`, `adamw_ort_fused`]
 
     If left empty, will be chosen automatically based on the task type and model selected.
 
@@ -119,7 +119,7 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
 23. _extra_optim_args_: (string, optional)
 
-    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter names, please refer https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay" parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
+    Optional additional arguments that are supplied to SGD Optimizer. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes. For example, "momentum=0.5; nesterov=True" for sgd. Please make sure to use a valid parameter names for the chosen optimizer. For exact parameter names, please refer to https://pytorch.org/docs/1.13/generated/torch.optim.SGD.html#torch.optim.SGD for SGD. Parameters supplied in extra_optim_args will take precedence over the parameter supplied via other arguments such as weight_decay. If weight_decay is provided via "weight_decay" parameter and via extra_optim_args both, values specified in extra_optim_args will be used.
 
 24. _gradient_accumulation_step_ (int, optional)
 
@@ -130,6 +130,8 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 25. _precision_ (int, optional)
 
     Apply mixed precision training. This can reduce memory footprint by performing operations in half-precision. It could one of [`16`, `32`].
+
+    The default value is "32".
 
 26. _label_smoothing_factor_ (float, optional)
 
