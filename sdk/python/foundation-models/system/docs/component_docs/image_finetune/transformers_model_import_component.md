@@ -28,7 +28,7 @@ The component copies the input model folder to the component output directory wh
     - All the configuration files should be stored in _data/config_
     - All the model files should be stored in _data/model_
     - All the tokenizer files should be kept in _data/tokenizer_
-    - **`MLmodel`** is a yaml file and this should contain relavant information. See the sample MLmodel file [here](../../sample_files/HfImageMLmodel.yaml)
+    - **`MLmodel`** is a yaml file and this should contain relavant information. See the sample MLmodel file [here](../../sample_files/HFMLmodel)
 
     > Currently _resume_from_checkpoint_ is **NOT** fully enabled with _mlflow_model_. Only the saved model weights can be reloaded but not the optimizer, scheduler and random states
 
