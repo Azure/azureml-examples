@@ -58,6 +58,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: setup feature-store resources
+      run: |
+          bash -x setup-resources.sh automation/run_featurestore_sdk_samples.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true
     - name: run featurestore_sample/automation/run_featurestore_sdk_samples.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
