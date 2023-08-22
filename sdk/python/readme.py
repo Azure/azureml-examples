@@ -197,6 +197,7 @@ def write_notebook_workflow(
         "assets-component" in classification
     )
     is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
+    is_featurestore_sample = ("sdk-featurestore_sample" in classification)
     creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
@@ -278,6 +279,8 @@ jobs:
       continue-on-error: true\n"""
     if is_spark_notebook_sample:
         workflow_yaml += get_spark_config_workflow(posix_folder, name)
+    if is_featurestore_sample:
+        workflow_yaml += get_featurestore_config_workflow(posix_folder, name)
     workflow_yaml += f"""    - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
@@ -467,6 +470,12 @@ def get_spark_config_workflow(folder_name, file_name):
 
     return workflow
 
+def get_featurestore_config_workflow(folder_name, file_name):
+    workflow = f"""    - name: setup feature-store resources
+      run: |
+          bash -x setup-resources.sh automation/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
 
 @contextlib.contextmanager
 def change_working_dir(path):
