@@ -9,19 +9,23 @@ OUTPUT_COMMAND="print"
 # </create_variables>
 
 # <convert_notebook_to_py>
-jupytext --to py "notebooks/sdk_only/1. Develop a feature set and register with managed feature store.ipynb"
-jupytext --to py "notebooks/sdk_only/2. Enable materialization and backfill feature data.ipynb"
-jupytext --to py "notebooks/sdk_only/3. Experiment and train models using features.ipynb"
-jupytext --to py "notebooks/sdk_only/4. Enable recurrent materialization and run batch inference.ipynb"
-
-#jupytext --to py "notebooks/sdk_and_cli/1. Develop a feature set and register with managed feature store.ipynb"
-#jupytext --to py "notebooks/sdk_and_cli/2. Enable materialization and backfill feature data.ipynb"
-#jupytext --to py "notebooks/sdk_and_cli/3. Experiment and train models using features.ipynb"
-#jupytext --to py "notebooks/sdk_and_cli/4. Enable recurrent materialization and run batch inference.ipynb"
+NOTEBOOK_1="notebooks/sdk_only/1. Develop a feature set and register with managed feature store"
+NOTEBOOK_2="notebooks/sdk_only/2. Enable materialization and backfill feature data"
+NOTEBOOK_3="notebooks/sdk_only/3. Experiment and train models using features"
+NOTEBOOK_4="notebooks/sdk_only/4. Enable recurrent materialization and run batch inference"
+jupytext --to py "${NOTEBOOK_1}.ipynb"
+jupytext --to py "${NOTEBOOK_2}.ipynb"
+jupytext --to py "${NOTEBOOK_3}.ipynb"
+jupytext --to py "${NOTEBOOK_4}.ipynb"
 # <convert_notebook_to_py>
 
 #<replace_template_values>
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
-    s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;
-    s/display/$OUTPUT_COMMAND/g;" $1
+    s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;" $1
+
+#<replace_template_values>
+sed -i "s/display/$OUTPUT_COMMAND/g;" "${NOTEBOOK_1}.py"
+sed -i "s/display/$OUTPUT_COMMAND/g;" "${NOTEBOOK_2}.py"
+sed -i "s/display/$OUTPUT_COMMAND/g;" "${NOTEBOOK_3}.py"
+sed -i "s/display/$OUTPUT_COMMAND/g;" "${NOTEBOOK_4}.py"
