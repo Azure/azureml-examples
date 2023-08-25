@@ -6,6 +6,8 @@ LOCATION=$(az ml workspace show --query location -o tsv)
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 OUTPUT_COMMAND="print"
+FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
+USER_ID=$(az ad signed-in-user show --query id -o tsv)
 # </create_variables>
 
 # <convert_notebook_to_py>
@@ -26,6 +28,8 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 
 #<replace_template_values>
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_1}.py"
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_2}.py"
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+    s/<FEATURE_STORAGE_ACCOUNT_NAME>/$FEATURE_STORAGE_ACCOUNT_NAME/g;
+    s/<USER_AAD_OBJECTID>/$USER_ID/g;" "${NOTEBOOK_2}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_3}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_4}.py"
