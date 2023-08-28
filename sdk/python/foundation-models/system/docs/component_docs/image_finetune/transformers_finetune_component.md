@@ -34,7 +34,8 @@ This component enables finetuning of pretrained models on custom or pre-availabl
 
     Specify the metric to use to compare two different models. If left empty, will be chosen automatically based on the task type and model selected. It could be one of [`loss`, `f1_score_macro`, `accuracy`, `precision_score_macro`, `recall_score_macro`, `iou`, `iou_macro`, `iou_micro`, `iou_weighted`].
 
-    If selecting by yourself, use iou_* metrics in case of multi-label classification task.
+    If selecting by yourself, use iou_* metrics only in case of multi-label classification task.
+    Generally, `accuracy` is chosen for multi-class classification task, and `iou` is chosen for multi-label classification task.
 
 8. _apply_augmentations_ (bool, optional)
 

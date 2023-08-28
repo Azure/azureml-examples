@@ -36,6 +36,7 @@ The components can be seen in your workspace component page as below:
     Specify the metric to use to compare two different models. It could be one of [`mean_average_precision`, `precision`, `recall`].
 
     If left empty, will be chosen automatically based on the task type and model selected.
+    Generally, `mean_average_precision` is chosen for object detection and instance segmentation tasks.
 
 8. _apply_augmentations_ (bool, optional)
 
