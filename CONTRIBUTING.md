@@ -20,12 +20,12 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Goals
 
-- source for all code snippets in documentation
+This repository contains notebooks and sample code that demonstrate how to develop and manage ML workflows using Azure Machine Learning v2 SDK and CLI.
 
 ## Non-goals
 
-- serve as documentation (see https://docs.microsoft.com/azure/machine-learning)
-- serve as scenario-specific project templates (coming soon!)
+- This repository is not meant to serve as reference documentation. Reference documentation for the azure-ai-ml package can be found [here](https://learn.microsoft.com/en-us/python/api/azure-ai-ml/?view=azure-python).
+- This repository is not meant to serve as conceptual overview or comprehensive getting started documents. All long-form textual documentation can be found [here](https://learn.microsoft.com/en-us/python/api/azure-ai-ml/?view=azure-python).
 
 ## Issues
 
@@ -92,14 +92,7 @@ description: Example description.
 
 **Edit the description** and update the languages as needed.
 
-### CLI 2.0
-
-[CLI contributing guide.](cli/CONTRIBUTING.md)
-
-### Python SDK
-
-[Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
-
-### Notebooks
-
-[Notebooks contributing guide.](notebooks/CONTRIBUTING.md)
+### Other resources
+* [CLI contributing guide.](cli/CONTRIBUTING.md)
+* [Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
+* [Notebooks contributing guide.](notebooks/CONTRIBUTING.md)
