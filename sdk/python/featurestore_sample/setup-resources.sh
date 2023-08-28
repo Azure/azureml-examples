@@ -7,7 +7,10 @@ RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 OUTPUT_COMMAND="print"
 FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
-USER_ID=$(az ad signed-in-user show --query id -o tsv)
+# Test to get sign in user
+az ad signed-in-user show
+az ad user show --id azuremlsdk@microsoft.com
+USER_ID=$(az ad user show --id azuremlsdk@microsoft.com --query id -o tsv)
 # </create_variables>
 
 # <convert_notebook_to_py>
