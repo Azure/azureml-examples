@@ -20,7 +20,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Goals
 
-This repository contains notebooks and sample code that demonstrate how to develop and manage ML workflows using Azure Machine Learning v2 SDK and CLI.
+This repository contains notebooks and sample code that demonstrate how to develop and manage ML workflows using Azure Machine Learning v2 SDK and CLI. Use the samples in this repository to try out AzureML SDK and CLI examples on your local machine.
 
 ## Non-goals
 
