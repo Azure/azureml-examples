@@ -20,4 +20,4 @@ jobs:
         path: azureml://datastores/workspaceblobstore/paths/data/wrangled/
         mode: direct
 
-    compute: mysparkcompute
+    compute: <ATTACHED_SPARK_POOL_NAME>
