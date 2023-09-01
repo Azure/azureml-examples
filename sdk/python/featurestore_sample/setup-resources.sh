@@ -7,7 +7,7 @@ RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 OUTPUT_COMMAND="print"
 FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
-USER_ID="8aa1ba0b-13ee-47ee-afbc-ee598ed0046a"
+USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
 
 # </create_variables>
 
