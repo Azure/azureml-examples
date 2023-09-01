@@ -1,0 +1,9 @@
+$schema: http://azureml/sdk-2-0/OneLakeDatastore.json
+name: onelake_example_id
+type: one_lake
+description: "Credential-less datastore pointing to an OneLake Lakehouse.""
+one_lake_workspace_name: "AzureML_Sample_OneLakeWS"
+endpoint: "msit-onelake.dfs.fabric.microsoft.com"
+artifact:
+  type: lake_house
+  name: "AzML_Sample_LH"
