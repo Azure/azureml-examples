@@ -22,13 +22,12 @@ from mlflow.types.utils import _infer_schema
 from mlflow.exceptions import MlflowException
 from azure.ai.contentsafety import ContentSafetyClient
 from azure.core.credentials import AzureKeyCredential
-from azure.ai.contentsafety.models import AnalyzeTextOptions
+from azure.ai.contentsafety.models import AnalyzeTextOptions, AnalyzeImageOptions, ImageData
 from aiolimiter import AsyncLimiter
 from azure.core.pipeline.policies import (
     HeadersPolicy,
 )
 
-aacs_threshold = 2
 
 try:
     aacs_threshold = int(os.environ["CONTENT_SAFETY_THRESHOLD"])
@@ -389,7 +388,7 @@ def init():
 
     # Create an Content Safety client
     headers_policy = HeadersPolicy()
-    headers_policy.add_header("ms-azure-ai-sender", "llama")
+    headers_policy.add_header("ms-azure-ai-sender", "text-to-image")
     aacs_client = ContentSafetyClient(
         endpoint, AzureKeyCredential(key), headers_policy=headers_policy
     )
@@ -476,11 +475,51 @@ def analyze_text(text):
     return severity
 
 
-def iterate(obj):
+def analyze_image(image_in_byte64: str) -> int:
+    """Analyze image severity using azure content safety service
+
+    :param image_in_byte64: image in base64 format
+    :type image_in_byte64: str
+    :return: maximum severity of all categories
+    :rtype: int
+    """
+    print("Analyzing image...")
+    if image_in_byte64 is None:
+        return 0
+    request = AnalyzeImageOptions(image=ImageData(content=image_in_byte64))
+    safety_response = aacs_client.analyze_image(request)
+    severity = analyze_response(safety_response)
+    print(f"Image Analyzed, severity {severity}")
+    return severity
+
+
+def _check_data_type_from_model_signature(key: str) -> str:
+    """Check key data type from model signature
+
+    :param key: key of data (to analyze by AACS) in model input or output
+    :type key: str
+    :return: data type of key from model signature else return "str"
+    :rtype: str
+    """
+    if model_signature is None or key is None:
+        return "str"
+    input_schema = model_signature.inputs.to_dict()
+    output_schema = model_signature.outputs.to_dict()
+
+    def _get_type(schema):
+        for item in schema:
+            if item["name"] == key:
+                return item["type"]
+        return None
+
+    return _get_type(input_schema) or _get_type(output_schema) or "str"
+
+
+def iterate(obj, current_key=None):
     if isinstance(obj, dict):
         severity = 0
         for key, value in obj.items():
-            obj[key], value_severity = iterate(value)
+            obj[key], value_severity = iterate(value, key)
             severity = max(severity, value_severity)
         return obj, severity
     elif isinstance(obj, list) or isinstance(obj, np.ndarray):
@@ -491,14 +530,18 @@ def iterate(obj):
         return obj, severity
     elif isinstance(obj, pd.DataFrame):
         severity = 0
+        columns = obj.columns
         for i in range(obj.shape[0]):  # iterate over rows
             for j in range(obj.shape[1]):  # iterate over columns
-                obj.at[i, j], value_severity = iterate(obj.at[i, j])
+                obj.iloc[i][columns[j]], value_severity = iterate(obj.iloc[i][columns[j]], columns[j])
                 severity = max(severity, value_severity)
         return obj, severity
     elif isinstance(obj, str):
-        severity = analyze_text(obj)
-        if severity > aacs_threshold:
+        if _check_data_type_from_model_signature(current_key) == "binary":
+            severity = analyze_image(obj)
+        else:
+            severity = analyze_text(obj)
+        if severity >= aacs_threshold:
             return "", severity
         else:
             return obj, severity
@@ -509,7 +552,6 @@ def iterate(obj):
 def get_safe_response(result):
     print("Analyzing response...")
     jsonable_result = _get_jsonable_obj(result, pandas_orient="records")
-
     result, severity = iterate(jsonable_result)
     print(f"Response analyzed, severity {severity}")
     return result
