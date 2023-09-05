@@ -21,7 +21,7 @@ def init():
     # AZUREML_MODEL_DIR is an environment variable created during deployment
     # It is the path to the model folder (./azureml-models)
     # Please provide your model's folder name if there's one
-    model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "model.pkl")
+    model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "outputs", "model.pkl")
     fitted_model = joblib.load(model_path)
 
 
