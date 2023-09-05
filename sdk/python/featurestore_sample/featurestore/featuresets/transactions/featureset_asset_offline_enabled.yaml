@@ -9,7 +9,6 @@ specification:
   path: ./spec
 materialization_settings:
   offline_enabled: true
-  online_enabled: false
   resource:
     instance_type: Standard_E8S_V3
   spark_configuration:
