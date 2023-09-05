@@ -474,7 +474,7 @@ def get_spark_config_workflow(folder_name, file_name):
 def get_featurestore_config_workflow(folder_name, file_name):
     workflow = f"""    - name: setup feature-store resources
       run: |
-          bash -x setup-resources.sh automation/{file_name}.ipynb
+          bash -x setup-resources.sh {file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
 
