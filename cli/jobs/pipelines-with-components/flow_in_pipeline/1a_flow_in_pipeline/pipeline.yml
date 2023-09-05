@@ -1,0 +1,39 @@
+type: pipeline
+
+name: simplePipelineJobWithFlow
+description: The hello world pipeline job with flow option 1
+
+compute: "azureml:cpu-cluster"
+
+inputs:
+  web_classification_input:
+    type: uri_file
+    path: "./data/data.jsonl"
+
+outputs:
+  output_data:
+    mode: mount
+  debug_info:
+    mode: mount
+
+jobs:
+  flow_node_from_dag:
+    type: parallel
+    component: ./web_classification/flow.dag.yaml
+    inputs:
+      data: ${{parent.inputs.web_classification_input}}
+      url: "${data.url}"
+      connections.summarize_text_content.connection: azure_open_ai_connection
+      connections.summarize_text_content.deployment_name: text-davinci-003
+    outputs:
+      flow_outputs: ${{parent.outputs.output_data}}
+      debug_info: ${{parent.outputs.debug_info}}
+
+  flow_node_from_run:
+    type: parallel
+    component: ./run.yaml
+    inputs:
+      data: ${{parent.inputs.web_classification_input}}
+      url: "${data.url}"
+      connections.summarize_text_content.connection: azure_open_ai_connection
+      connections.summarize_text_content.deployment_name: text-davinci-003
