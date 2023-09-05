@@ -3,6 +3,7 @@ import logging
 import json
 import time
 import pandas as pd
+import json
 import pickle
 import pyarrow
 
@@ -34,8 +35,8 @@ def init():
 
 
 
-    # with open(model_path, 'rb') as pickle_file:
-        # model = pickle.load(pickle_file)
+    with open(model_path, 'rb') as pickle_file:
+        model = pickle.load(pickle_file)
     # AZUREML_MODEL_DIR is an environment variable created during deployment.
     # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
     # Please provide your model's folder name if there is one
@@ -79,7 +80,7 @@ def run(raw_data):
     obs = pd.DataFrame(data, index=[0])
     obs_entity = obs.loc[:,['accountID']].to_dict('list')
     obs = pyarrow.Table.from_pandas(df=obs)
-    df = get_online_features(features, obs, on_the_fly_entities=pickle.dumps(obs_entity))
+    df = get_online_features(features, obs, on_the_fly_entities=json.dumps(obs_entity))
 
     print("feature retrieved")
     print(df)

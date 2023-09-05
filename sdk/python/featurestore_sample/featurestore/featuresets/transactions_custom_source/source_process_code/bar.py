@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import Union
 
-import pickle
+import json
 import pandas as pd
 from azureml.featurestore._utils._constants import ONLINE_ON_THE_FLY
 
@@ -64,7 +64,7 @@ class CustomerTransactionsTransformer:
             df = df.query("{0} < '{1}'".format("timestamp", pd.to_datetime(end_time)))
 
         if "on_the_fly_entities" in kwargs:
-            entity_values = pickle.loads(kwargs["on_the_fly_entities"])
+            entity_values = json.loads(kwargs["on_the_fly_entities"])
             output_df = pd.DataFrame()
             for entity_name, entity_value in entity_values.items():
                 df = df.query("{} in @entity_value".format(entity_name))

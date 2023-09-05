@@ -6,7 +6,7 @@ dependencies:
       - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/on_the_fly/azure_ai_ml-1.10.0-py3-none-any.whl
       - azureml-featurestore[online] @ https://featurestoreprp.blob.core.windows.net/featurestore-sdk/on_the_fly/azureml_featurestore-0.0.1-py3-none-any.whl
       - scikit-learn
-      - pandas
+      - pandas==1.5.3
       - azure-identity
       - azureml-inference-server-http
 
