@@ -1,0 +1,25 @@
+flavors:
+  hftransformersv2:
+    code: code
+    hf_config_class: CLIPConfig
+    hf_predict_module: hf_test_predict
+    hf_pretrained_class: CLIPModel
+    hf_tokenizer_class: CLIPProcessor
+    model_data: data
+    pytorch_version: 1.13.1
+    task_type: image-classification
+    train_label_list:
+      path_list: train_label_list.npy
+    transformers_version: 4.29.1
+  python_function:
+    code: code
+    data: data
+    env: conda.yaml
+    loader_module: azureml.evaluate.mlflow.hftransformers
+    python_version: 3.8.16
+mlflow_version: 2.3.1
+model_uuid: 2e1cb591217d4de5bc4fc717fe952b9d
+signature:
+  inputs: '[{"name": "image", "type": "binary"},{"name": "text", "type": "string"}]'
+  outputs: '[{"name": "probs", "type": "string"}, {"name": "labels", "type": "string"}]'
+utc_time_created: '2023-09-05 20:21:37.776430'

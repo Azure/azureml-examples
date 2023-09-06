@@ -42,7 +42,6 @@ def create_temp_file(request_body: bytes, parent_dir: str) -> str:
         img.save(img_path)
         return img_path
 
-
 def process_image(img: pd.Series) -> pd.Series:
     """If input image is in base64 string format, decode it to bytes. If input image is in url format,
     download it and return bytes.
