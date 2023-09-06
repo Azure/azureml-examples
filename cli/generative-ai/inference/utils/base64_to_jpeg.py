@@ -15,8 +15,8 @@ def base64_str_to_image(response_file: str) -> bytes:
 
     json_obj = json.loads(serialized_image_json)
     for obj in json_obj:
-        text_prompt = obj["text_prompt"].strip()
-        generated_image = obj["generated_image"]
+        text_prompt = obj["prompt"].strip()
+        generated_image = obj["image"]
         img = Image.open(io.BytesIO(base64.b64decode(generated_image)))
         text_prompt=re.sub(r"[^a-zA-Z0-9 ]+", "", text_prompt)
         img.save(text_prompt + ".jpg", "JPEG")

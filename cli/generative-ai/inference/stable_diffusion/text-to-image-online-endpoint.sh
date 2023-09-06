@@ -1,6 +1,4 @@
 set -x
-# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-sdk-image-classification
-# The sample scoring file available in the same folder as the above notebook
 
 # script inputs
 registry_name="azureml-preview"
@@ -9,24 +7,18 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
+model_name="runwayml/stable-diffusion-v1-5"
 model_label="latest"
+response_file="generated_image.txt"
 
 version=$(date +%s)
-endpoint_name="image-classification-$version"
+endpoint_name="text-to-image-$version"
 
 # Todo: fetch deployment_sku from the min_inference_sku tag of the model
-deployment_sku="Standard_DS3_v2"
+deployment_sku="Standard_NC6s_v3"
 
-# Prepare data for deployment
-python ./prepare_data.py --is_multilabel 0 --data_path "data_online" --mode "online"
 # sample_request_data
-if [ $multi_label -eq 1 ]
-then
-    sample_request_data="./data_online/multilabelFridgeObjects/sample_request_data.json"
-else
-    sample_request_data="./data_online/fridgeObjects/sample_request_data.json"
-fi
+sample_request_data="./sample_request_data.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
@@ -63,7 +55,7 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --all-t
     echo "deployment create failed"; exit 1;
 }
 
-# 4. Try a sample scoring request
+# 4. Submit a sample request to endpoint
 
 # Check if scoring data file exists
 if [ -f $sample_request_data ]; then
@@ -71,13 +63,16 @@ if [ -f $sample_request_data ]; then
     cat $sample_request_data
     echo "\n\n"
 else
-    echo "Scoring file $sample_request_data does not exist"
+    echo "Request file $sample_request_data does not exist"
     exit 1
 fi
 
-az ml online-endpoint invoke --name $endpoint_name --request-file $sample_request_data $workspace_info || {
+az ml online-endpoint invoke --name $endpoint_name --request-file $sample_request_data $workspace_info > $response_file || {
     echo "endpoint invoke failed"; exit 1;
 }
+
+# 5. Convert bas64 form of image to jpeg
+python ../utils/base64_to_jpeg.py --response_file $response_file
 
 # 6. Delete the endpoint and sample_request_data.json
 az ml online-endpoint delete --name $endpoint_name $workspace_info --yes || {
