@@ -1,0 +1,27 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8.16
+- pip<=23.0.1
+- pip:
+  - mlflow==2.3.1
+  - cloudpickle==2.2.1
+  - jsonpickle==3.0.2
+  - mlflow-skinny==2.3.1
+  - azureml-core==1.52.0
+  - azureml-mlflow==1.52.0
+  - azureml-metrics==0.0.24
+  - scikit-learn==1.1.0
+  - cryptography==41.0.3
+  - python-dateutil==2.8.2
+  - datasets==2.12.0
+  - soundfile==0.12.1
+  - librosa==0.10.0
+  - diffusers==0.17.1
+  - sentencepiece==0.1.99
+  - transformers==4.29.1
+  - torch==1.13.1
+  - accelerate==0.19.0
+  - Pillow==9.4.0
+  - azureml-evaluate-mlflow==0.0.24
+name: mlflow-env

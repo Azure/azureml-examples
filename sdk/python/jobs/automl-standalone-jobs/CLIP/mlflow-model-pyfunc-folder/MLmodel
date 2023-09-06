@@ -1,0 +1,21 @@
+flavors:
+  python_function:
+    artifacts:
+      model_dir:
+        path: artifacts
+    cloudpickle_version: 2.2.1
+    code: code
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.8.16
+metadata:
+  model_name: null
+mlflow_version: 2.3.1
+model_uuid: 347d7583985d4739a01cb24a5870d3e5
+signature:
+  inputs: '[{"name": "image", "type": "binary"},{"name": "text", "type": "string"}]'
+  outputs: '[{"name": "probs", "type": "string"}, {"name": "labels", "type": "string"}]'
+utc_time_created: '2023-07-27 15:40:33.852681'
