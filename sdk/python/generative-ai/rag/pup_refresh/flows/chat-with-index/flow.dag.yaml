@@ -1,0 +1,61 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Flow.schema.json
+inputs:
+  chat_history:
+    type: list
+    default: []
+  mlindex_uri:
+    type: string
+    default: ""
+  question:
+    type: string
+    is_chat_input: true
+    default: What is an MLIndex?
+  config:
+    type: object
+    default:
+      CHAT_MODEL_DEPLOYMENT_NAME: gpt-35-turbo # change to gpt-3.5-turbo when using openai
+      PROMPT_TOKEN_LIMIT: 3000
+      MAX_COMPLETION_TOKENS: 256
+      VERBOSE: true
+outputs:
+  answer:
+    type: string
+    is_chat_output: true
+    reference: ${qna_tool.output.answer}
+  context:
+    type: string
+    reference: ${find_context_tool.output.context}
+nodes:
+- name: setup_env
+  type: python
+  source:
+    type: code
+    path: setup_env.py
+  inputs:
+    connection: azureml-rag-oai
+    config: ${inputs.config}
+- name: rewrite_question_tool
+  type: python
+  source:
+    type: code
+    path: rewrite_question_tool.py
+  inputs:
+    question: ${inputs.question}
+    history: ${inputs.chat_history}
+    env_ready_signal: ${setup_env.output}
+- name: find_context_tool
+  type: python
+  source:
+    type: code
+    path: find_context_tool.py
+  inputs:
+    mlindex_uri: ${inputs.mlindex_uri}
+    question: ${rewrite_question_tool.output}
+- name: qna_tool
+  type: python
+  source:
+    type: code
+    path: qna_tool.py
+  inputs:
+    prompt: ${find_context_tool.output.prompt}
+    history: ${inputs.chat_history}
