@@ -24,7 +24,6 @@ if not os.path.exists(args.download_dir):
 
 # import hugging face datasets library
 from datasets import load_dataset, get_dataset_split_names
-from functools import partial
 
 for split in get_dataset_split_names(args.dataset):
     # load the split of the dataset
