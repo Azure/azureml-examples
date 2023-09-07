@@ -9,6 +9,7 @@ specification:
   path: ./spec
 materialization_settings:
   offline_enabled: true
+  online_enabled: false
   schedule:
     type: recurrence
     interval: 3
