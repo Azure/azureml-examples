@@ -1,0 +1,8 @@
+embeddings:
+  dimension: 0
+  kind: none
+  schema_version: '2'
+index:
+  engine: indexes.faiss.FaissAndDocStore
+  kind: faiss
+  method: FlatL2

@@ -30,7 +30,7 @@ data_index = DataIndex(
     source=IndexSource(
         input_data=Data(
             type="uri_folder",
-            path="<your path to onelake>",
+            path="abfss://9aa7b19e-c117-4a74-8654-cf1559ba9f4f@msit-onelake.dfs.fabric.microsoft.com/1606ee55-ec68-4658-8d6b-58bf8dd26636/Files/lupickup-test-s3",
         ),
         citation_url="s3://lupickup-test",
     ),
@@ -77,3 +77,5 @@ import json
 
 for doc in docs:
     print(json.dumps({"content": doc.page_content, **doc.metadata}, indent=2))
+
+# %%
