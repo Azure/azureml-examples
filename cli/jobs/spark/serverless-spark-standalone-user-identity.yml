@@ -1,0 +1,38 @@
+# serverless-spark-standalone-user-identity.yaml
+$schema: https://azuremlschemas.azureedge.net/latest/sparkJob.schema.json
+type: spark
+
+code: ./src
+entry:
+  file: titanic.py
+
+conf:
+  spark.driver.cores: 1
+  spark.driver.memory: 2g
+  spark.executor.cores: 2
+  spark.executor.memory: 2g
+  spark.executor.instances: 2
+
+inputs:
+  titanic_data:
+    type: uri_file
+    path: azureml://datastores/workspaceblobstore/paths/data/titanic.csv
+    mode: direct
+
+outputs:
+  wrangled_data:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/data/wrangled/
+    mode: direct
+
+args: >-
+  --titanic_data ${{inputs.titanic_data}}
+  --wrangled_data ${{outputs.wrangled_data}}
+
+identity:
+  type: user_identity
+
+resources:
+  instance_type: standard_e4s_v3
+  runtime_version: "3.2"
+  

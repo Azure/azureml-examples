@@ -1,0 +1,85 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+description: HTS evaluation pipeline using AutoML
+
+display_name: hts-evaluation-pipeline
+experiment_name: automl-hts-evaluation-pipeline
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+inputs:
+  raw_data:
+    type: uri_folder
+    path: ../data/train
+  inference_data:
+    type: uri_folder
+    path: ../data/test
+  automl_config:
+    type: uri_file
+    path: automl_settings_hts.yml
+  max_concurrency_per_node: 2
+  parallel_step_timeout_in_seconds: 3700
+  max_nodes: 5
+  forecast_level: "customer_id"
+  forecast_mode: "rolling"
+  forecast_step: 24
+  compute_name: "cpu-cluster"
+
+outputs: 
+  forecast_results:
+    type: uri_file
+    mode: upload
+  evaluation_results:
+    type: uri_folder
+    mode: upload
+
+jobs:
+  automl_hts_training:
+    type: command
+    component: azureml://registries/azureml/components/automl_hts_training
+    inputs:
+      raw_data: ${{parent.inputs.raw_data}}
+      automl_config: ${{parent.inputs.automl_config}}
+      max_nodes: ${{parent.inputs.max_nodes}}
+      max_concurrency_per_node: ${{parent.inputs.max_concurrency_per_node}}
+      parallel_step_timeout_in_seconds: ${{parent.inputs.parallel_step_timeout_in_seconds}}
+      compute_name: ${{parent.inputs.compute_name}}
+    outputs:
+      run_output:
+        type: uri_folder
+        
+  automl_hts_inference:
+    type: command
+    component: azureml://registries/azureml/components/automl_hts_inference
+    inputs:
+      raw_data: ${{parent.inputs.inference_data}}
+      forecast_level: ${{parent.inputs.forecast_level}}
+      max_concurrency_per_node: ${{parent.inputs.max_concurrency_per_node}}
+      parallel_step_timeout_in_seconds: ${{parent.inputs.parallel_step_timeout_in_seconds}}
+      forecast_mode: ${{parent.inputs.forecast_mode}}
+      forecast_step: ${{parent.inputs.forecast_step}}
+      max_nodes: ${{parent.inputs.max_nodes}}
+      optional_train_metadata: ${{parent.jobs.automl_hts_training.outputs.run_output}}
+      compute_name: ${{parent.inputs.compute_name}}
+    outputs:
+      run_output:
+        type: uri_folder
+      evaluation_configs:
+        type: uri_file
+      evaluation_data:
+        type: uri_file
+        path: ${{parent.outputs.forecast_results}}
+
+  compute_metrics:
+    type: command
+    component: azureml://registries/azureml/components/compute_metrics/versions/0.0.10
+    inputs:
+      task: "tabular-forecasting"
+      ground_truth: ${{parent.jobs.automl_hts_inference.outputs.evaluation_data}}
+      prediction: ${{parent.jobs.automl_hts_inference.outputs.evaluation_data}}
+      evaluation_config: ${{parent.jobs.automl_hts_inference.outputs.evaluation_configs}}
+    compute: ${{parent.inputs.compute_name}}
+    outputs:
+      evaluation_result: ${{parent.outputs.evaluation_results}}

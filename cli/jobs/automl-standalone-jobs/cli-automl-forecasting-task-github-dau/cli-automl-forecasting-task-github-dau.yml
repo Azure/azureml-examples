@@ -4,7 +4,6 @@ type: automl
 experiment_name: dpv2-cli-automl-forecasting-github-dau-experiment
 description: A Time-Series Forecasting job using Github DAU dataset that trains only the TCNForecaster model.
 
-compute: azureml:automl-gpu-cluster
 
 task: forecasting
 primary_metric: normalized_root_mean_squared_error
@@ -33,3 +32,6 @@ training:
   enable_stack_ensemble: false
   allowed_training_algorithms:
     - TCNForecaster
+resources:
+  instance_type: Standard_E4s_v3
+  instance_count: 4

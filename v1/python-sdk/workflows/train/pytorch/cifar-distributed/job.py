@@ -22,7 +22,7 @@ script_name = "train.py"
 # azure ml settings
 environment_name = "AzureML-PyTorch-1.6-GPU"  # using curated environment
 experiment_name = "pytorch-cifar10-distributed-example"
-compute_name = "gpu-K80-2"
+compute_name = "gpu-V100-2"
 
 # get environment
 env = Environment.get(ws, name=environment_name)

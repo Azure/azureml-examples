@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
     ws: Workspace = Workspace.from_config()
 
-    target: ComputeTarget = ws.compute_targets["gpu-K80-2"]
+    target: ComputeTarget = ws.compute_targets["gpu-V100-2"]
 
     env: Environment = transformers_environment(use_gpu=True)
 

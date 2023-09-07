@@ -1,0 +1,26 @@
+flavors:
+  hftransformersv2:
+    code: code
+    hf_config_class: AutoConfig
+    hf_predict_module: predict
+    hf_pretrained_class: AutoModelForImageClassification
+    hf_tokenizer_class: AutoImageProcessor
+    huggingface_id: microsoft/beit-base-patch16-224-pt22k-ft22k
+    model_data: data
+    pytorch_version: 2.0.1+cu117
+    task_type: image-classification
+    train_label_list:
+      path_list: train_label_list.npy
+    transformers_version: 4.30.2
+  python_function:
+    code: code
+    data: data
+    env: conda.yaml
+    loader_module: azureml.evaluate.mlflow.hftransformers
+    python_version: 3.8.16
+mlflow_version: 2.3.1
+model_uuid: e69aa5cecf614626a0c1d3334526b4d4
+signature:
+  inputs: '[{"name": "image", "type": "binary"}]'
+  outputs: '[{"name": "probs", "type": "string"}, {"name": "labels", "type": "string"}]'
+utc_time_created: '2023-07-04 07:38:38.114772'

@@ -1,5 +1,5 @@
 'jsonpickle',
-'mlflow==2.2.1',
+'mlflow==2.3.1',
 'azureml-core>=1.43.0',
 'azureml-mlflow>=1.47.0',
 'azureml-metrics',
