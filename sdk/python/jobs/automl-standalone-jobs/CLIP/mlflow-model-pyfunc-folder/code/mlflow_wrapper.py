@@ -1,25 +1,30 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+"""MLflow PythonModel wrapper class that loads the MLflow model, preprocess inputs and performs inference."""
+
 import mlflow
 from PIL import Image
 import pandas as pd
 import torch
 import tempfile
-from transformers import CLIPProcessor, CLIPModel
-from common_constants import (HFMiscellaneousLiterals, Tasks, MLFlowSchemaLiterals)
-from common_utils import create_temp_file, process_image
-from typing import List, Dict, Any, Tuple
 
-class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
-    """MLflow model wrapper for stable diffusion models."""
+from transformers import CLIPProcessor, CLIPModel
+from common_constants import MLflowSchemaLiterals, MLflowLiterals, Tasks
+from common_utils import create_temp_file, process_image, get_current_device
+from typing import List, Tuple
+
+
+class CLIPMLFlowModelWrapper(mlflow.pyfunc.PythonModel):
+    """MLflow model wrapper for CLIP model."""
 
     def __init__(
-            self,
-            task_type: str,
+        self,
+        task_type: str,
     ) -> None:
         """Constructor for MLflow wrapper class
         :param task_type: Task type used in training.
         :type task_type: str
-        :param model_id: Hugging face model id corresponding to stable diffusion models supported by AML.
-        :type model_id: str
         """
         super().__init__()
         self._processor = None
@@ -32,14 +37,13 @@ class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
         :param context: MLflow context containing artifacts that the model can use for inference
         :type context: mlflow.pyfunc.PythonModelContext
         """
-        if self._task_type == Tasks.HF_MULTI_CLASS_IMAGE_CLASSIFICATION:
+        if self._task_type == Tasks.ZERO_SHOT_IMAGE_CLASSIFICATION.value:
             try:
-                # _map_location = "cuda" if torch.cuda.is_available() else "cpu"
-                model_dir = context.artifacts['model_dir']
+                model_dir = context.artifacts[MLflowLiterals.MODEL_DIR]
                 self._processor = CLIPProcessor.from_pretrained(model_dir)
                 self._model = CLIPModel.from_pretrained(model_dir)
-                # self._processor.to(_map_location)
-                # self._model.to(_map_location)
+                self._device = get_current_device()
+                self._model.to(self._device)
 
                 print("Model loaded successfully")
             except Exception as e:
@@ -51,7 +55,6 @@ class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
 
     def predict(self, context: mlflow.pyfunc.PythonModelContext, input_data: pd.DataFrame) -> pd.DataFrame:
         """Perform inference on the input data.
-
         :param input_data: Input images for prediction.
         :type input_data: Pandas DataFrame with a first column name ["image"] of images where each
         image is in base64 String format.
@@ -67,10 +70,10 @@ class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
         """
         # Decode the base64 image column
         decoded_images = input_data.loc[
-            :, [MLFlowSchemaLiterals.INPUT_COLUMN_IMAGE]
+            :, [MLflowSchemaLiterals.INPUT_COLUMN_IMAGE]
         ].apply(axis=1, func=process_image)
 
-        captions = input_data['text'].iloc[0].split(',')
+        captions = input_data[MLflowSchemaLiterals.INPUT_COLUMN_TEXT].iloc[0].split(',')
 
         # To Do: change image height and width based on kwargs.
 
@@ -90,13 +93,13 @@ class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
 
         df_result = pd.DataFrame(
             columns=[
-                MLFlowSchemaLiterals.OUTPUT_COLUMN_PROBS,
-                MLFlowSchemaLiterals.OUTPUT_COLUMN_LABELS,
+                MLflowSchemaLiterals.OUTPUT_COLUMN_PROBS,
+                MLflowSchemaLiterals.OUTPUT_COLUMN_LABELS,
             ]
         )
 
         labels = [captions] * len(conf_scores)
-        df_result[MLFlowSchemaLiterals.OUTPUT_COLUMN_PROBS], df_result[MLFlowSchemaLiterals.OUTPUT_COLUMN_LABELS]\
+        df_result[MLflowSchemaLiterals.OUTPUT_COLUMN_PROBS], df_result[MLflowSchemaLiterals.OUTPUT_COLUMN_LABELS]\
             = (conf_scores.tolist(), labels)
         return df_result
 
@@ -110,7 +113,6 @@ class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
         task_type: Tasks,
     ) -> Tuple[torch.tensor]:
         """Perform inference on batch of input images.
-
         :param test_args: Training arguments path.
         :type test_args: transformers.TrainingArguments
         :param image_processor: Preprocessing configuration loader.
@@ -127,6 +129,7 @@ class CLIPMLflowWrapper(mlflow.pyfunc.PythonModel):
 
         image_list = [Image.open(img_path) for img_path in image_path_list]
         inputs = processor(text=text_list, images=image_list, return_tensors="pt", padding=True)
+        inputs = inputs.to(self._device)
         outputs = model(**inputs)
         logits_per_image = outputs.logits_per_image # this is the image-text similarity score
         probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities

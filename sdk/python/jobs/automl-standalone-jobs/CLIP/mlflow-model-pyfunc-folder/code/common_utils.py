@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 
 def create_temp_file(request_body: bytes, parent_dir: str) -> str:
     """Create temporory file, save image and return path to the file.
-
     :param request_body: Image
     :type request_body: bytes
     :param parent_dir: directory name
@@ -46,7 +45,6 @@ def process_image(img: pd.Series) -> pd.Series:
     """If input image is in base64 string format, decode it to bytes. If input image is in url format,
     download it and return bytes.
     https://github.com/mlflow/mlflow/blob/master/examples/flower_classifier/image_pyfunc.py
-
     :param img: pandas series with image in base64 string format or url.
     :type img: pd.Series
     :return: decoded image in pandas series format.
