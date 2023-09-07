@@ -1,0 +1,11 @@
+dependencies:
+  - python=3.8
+  - pip:
+      - protobuf==3.19.6
+      - aiohttp==3.8.4
+      - https://featurestoreprp.blob.core.windows.net/featurestore-sdk/on_the_fly/azure_ai_ml-1.10.0-py3-none-any.whl
+      - azureml-featurestore[online] @ https://featurestoreprp.blob.core.windows.net/featurestore-sdk/on_the_fly/azureml_featurestore-0.0.1-py3-none-any.whl
+      - scikit-learn
+      - pandas==1.5.3
+
+name: fs_online_env
