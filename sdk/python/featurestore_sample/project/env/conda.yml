@@ -6,7 +6,7 @@ dependencies:
     - protobuf==3.19.6
     - aiohttp==3.8.4
     # Feature store core SDK
-    - azureml-featurestore[online]==0.1.0b2
+    - azureml-featurestore==0.1.0b3
     # This is needed if you want to execute the Part 2 of the "SDK" track or execute "SDK+CLI" track in the docs tutorial
     - azure-cli    
 
