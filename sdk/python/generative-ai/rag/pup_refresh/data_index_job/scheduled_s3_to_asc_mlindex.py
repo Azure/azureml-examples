@@ -9,10 +9,18 @@
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 
-ml_client = MLClient.from_config(credential=DefaultAzureCredential(), path="config.json")
+ml_client = MLClient.from_config(
+    credential=DefaultAzureCredential(), path="config.json"
+)
 
 # %% Create DataIndex configuration
-from azureml.rag.dataindex.entities import Data, DataIndex, IndexSource, Embedding, IndexStore
+from azureml.rag.dataindex.entities import (
+    Data,
+    DataIndex,
+    IndexSource,
+    Embedding,
+    IndexStore,
+)
 
 asset_name = "s3_aoai_acs"
 
@@ -36,7 +44,7 @@ data_index = DataIndex(
         connection="azureml-rag-acs",
     ),
     # name is replaced with a unique value each time the job is run
-    path=f"azureml://datastores/workspaceblobstore/paths/indexes/{asset_name}/{{name}}"
+    path=f"azureml://datastores/workspaceblobstore/paths/indexes/{asset_name}/{{name}}",
 )
 
 # %% Create the DataIndex Job to be scheduled
@@ -47,7 +55,7 @@ index_job = ml_client.data.index_data(
     # The DataIndex Job will use the identity of the MLClient within the DataIndex Job to access source data.
     identity=UserIdentityConfiguration(),
     # Instead of submitting the Job and returning the Run a PipelineJob configuration is returned which can be used in with a Schedule.
-    submit_job=False
+    submit_job=False,
 )
 
 # %% Create Schedule for DataIndex Job
@@ -61,13 +69,16 @@ schedule_start_time = datetime.utcnow() + timedelta(minutes=1)
 recurrence_trigger = RecurrenceTrigger(
     frequency="day",
     interval=1,
-    #schedule=RecurrencePattern(hours=16, minutes=[15]),
+    # schedule=RecurrencePattern(hours=16, minutes=[15]),
     start_time=schedule_start_time,
     time_zone=TimeZone.UTC,
 )
 
 job_schedule = JobSchedule(
-    name=schedule_name, trigger=recurrence_trigger, create_job=index_job, properties=index_job.properties
+    name=schedule_name,
+    trigger=recurrence_trigger,
+    create_job=index_job,
+    properties=index_job.properties,
 )
 
 # %% Enable Schedule
@@ -89,7 +100,7 @@ from azureml.rag.mlindex import MLIndex
 mlindex = MLIndex(onelake_s3_index_asset)
 
 index = mlindex.as_langchain_vectorstore()
-docs = index.similarity_search('What is RAG?', k=5)
+docs = index.similarity_search("What is RAG?", k=5)
 docs
 
 # %% Take a look at those chunked docs

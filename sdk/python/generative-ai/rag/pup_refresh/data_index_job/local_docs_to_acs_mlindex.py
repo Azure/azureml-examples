@@ -9,7 +9,9 @@
 from azure.ai.ml import MLClient, load_data
 from azure.identity import DefaultAzureCredential
 
-ml_client = MLClient.from_config(credential=DefaultAzureCredential(), path="config.json")
+ml_client = MLClient.from_config(
+    credential=DefaultAzureCredential(), path="config.json"
+)
 
 # %% Load DataIndex configuration from file
 data_index = load_data("local_docs_to_acs_mlindex.yaml")
@@ -31,7 +33,7 @@ from azureml.rag.mlindex import MLIndex
 mlindex = MLIndex(mlindex_docs_index_asset)
 
 index = mlindex.as_langchain_vectorstore()
-docs = index.similarity_search('What is an MLIndex?', k=5)
+docs = index.similarity_search("What is an MLIndex?", k=5)
 docs
 
 # %% Take a look at those chunked docs
@@ -41,4 +43,3 @@ for doc in docs:
     print(json.dumps({"content": doc.page_content, **doc.metadata}, indent=2))
 
 # %% Try it out with Promptflow
-

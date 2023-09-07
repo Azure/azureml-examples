@@ -19,18 +19,16 @@ from azureml.rag.mlindex import MLIndex
 
 # Process data into FAISS Index using HuggingFace embeddings
 mlindex = MLIndex.from_files(
-    source_uri='../',
-    source_glob='**/*',
+    source_uri="../",
+    source_glob="**/*",
     chunk_size=200,
     embeddings_model="azure_open_ai://deployment/text-embedding-ada-002/model/text-embedding-ada-002",
     embeddings_connection=aoai_connection,
     embeddings_container="./.embeddings_cache/mlindex_docs_aoai_acs",
-    index_type='acs',
+    index_type="acs",
     index_connection=acs_connection,
-    index_config={
-        'index_name': 'mlindex_docs_aoai_acs'
-    },
-    output_path="./acs_open_ai_index"
+    index_config={"index_name": "mlindex_docs_aoai_acs"},
+    output_path="./acs_open_ai_index",
 )
 
 # %% Load MLIndex from local
@@ -40,5 +38,5 @@ mlindex = MLIndex("./acs_open_ai_index")
 
 # %% Query documents, use with inferencing framework
 index = mlindex.as_langchain_vectorstore()
-docs = index.similarity_search('Topic in my data.', k=5)
+docs = index.similarity_search("Topic in my data.", k=5)
 print(docs)

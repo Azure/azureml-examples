@@ -10,7 +10,9 @@
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 
-ml_client = MLClient.from_config(credential=DefaultAzureCredential(), path="config.json")
+ml_client = MLClient.from_config(
+    credential=DefaultAzureCredential(), path="config.json"
+)
 
 acs_connection = ml_client.connections.get("azureml-rag-acs")
 aoai_connection = ml_client.connections.get("azureml-rag-oai")
@@ -18,13 +20,15 @@ aoai_connection = ml_client.connections.get("azureml-rag-oai")
 # %% https://python.langchain.com/en/latest/modules/indexes/document_loaders/examples/wikipedia.html
 from langchain.document_loaders import WikipediaLoader
 
-docs = WikipediaLoader(query='HUNTER X HUNTER', load_max_docs=10).load()
+docs = WikipediaLoader(query="HUNTER X HUNTER", load_max_docs=10).load()
 len(docs)
 
 # %%
 from langchain.text_splitter import MarkdownTextSplitter
 
-split_docs = MarkdownTextSplitter.from_tiktoken_encoder(chunk_size=1024).split_documents(docs)
+split_docs = MarkdownTextSplitter.from_tiktoken_encoder(
+    chunk_size=1024
+).split_documents(docs)
 
 # %%
 from azureml.rag.mlindex import MLIndex
@@ -35,14 +39,12 @@ mlindex = MLIndex.from_documents(
     embeddings_model="azure_open_ai://deployment/text-embedding-ada-002/model/text-embedding-ada-002",
     embeddings_connection=aoai_connection,
     embeddings_container="./.embeddings_cache/hunter_x_hunter_aoai_acs",
-    index_type='acs',
+    index_type="acs",
     index_connection=acs_connection,
-    index_config={
-        'index_name': 'hunter_x_hunter_aoai_acs'
-    }
+    index_config={"index_name": "hunter_x_hunter_aoai_acs"},
 )
 
 # %% Query documents, use with inferencing framework
 index = mlindex.as_langchain_vectorstore()
-docs = index.similarity_search('What is bungie gum?', k=5)
+docs = index.similarity_search("What is bungie gum?", k=5)
 print(docs)

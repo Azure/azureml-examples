@@ -1,5 +1,5 @@
 from promptflow import tool
-from chat_with_index.rewrite_question import rewrite_question
+from src.rewrite_question import rewrite_question
 
 
 @tool

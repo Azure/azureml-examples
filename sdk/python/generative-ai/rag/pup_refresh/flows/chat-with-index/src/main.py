@@ -5,6 +5,7 @@ import os
 from qna import qna
 from find_context import find_context
 from rewrite_question import rewrite_question
+
 # from build_index import create_faiss_index
 # from utils.lock import acquire_lock
 
@@ -52,7 +53,9 @@ def main_loop(mlindex_uri: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Ask questions about the contents of an MLIndex.")
+    parser = argparse.ArgumentParser(
+        description="Ask questions about the contents of an MLIndex."
+    )
     parser.add_argument("mlindex_uri", help="URI to MLIndex")
     args = parser.parse_args()
 

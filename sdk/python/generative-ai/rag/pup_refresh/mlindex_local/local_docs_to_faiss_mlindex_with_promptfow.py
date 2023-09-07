@@ -19,14 +19,14 @@ mlindex_name = "mlindex_docs_aoai_faiss"
 mlindex_local_path = f"./{mlindex_name}"
 
 mlindex = MLIndex.from_files(
-    source_uri='../',
-    source_glob='**/*',
+    source_uri="../",
+    source_glob="**/*",
     chunk_size=200,
     embeddings_model="azure_open_ai://deployment/text-embedding-ada-002/model/text-embedding-ada-002",
     embeddings_connection=aoai_connection,
     embeddings_container=f"./.embeddings_cache/{mlindex_name}",
     index_type="faiss",
-    output_path=mlindex_local_path
+    output_path=mlindex_local_path,
 )
 
 # %% Get Promptflow client
@@ -72,7 +72,9 @@ config = {
 
 column_mapping = {
     "chat_history": "${data.chat_history}",
-    "mlindex_uri": str(Path.cwd() / mlindex_local_path,),
+    "mlindex_uri": str(
+        Path.cwd() / mlindex_local_path,
+    ),
     "question": "${data.chat_input}",
     "answer": "${data.answer}",
     "config": config,

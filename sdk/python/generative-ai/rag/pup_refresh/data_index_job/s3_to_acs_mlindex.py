@@ -9,10 +9,18 @@
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 
-ml_client = MLClient.from_config(credential=DefaultAzureCredential(), path="config.json")
+ml_client = MLClient.from_config(
+    credential=DefaultAzureCredential(), path="config.json"
+)
 
 # %% Create DataIndex configuration
-from azureml.rag.dataindex.entities import Data, DataIndex, IndexSource, Embedding, IndexStore
+from azureml.rag.dataindex.entities import (
+    Data,
+    DataIndex,
+    IndexSource,
+    Embedding,
+    IndexStore,
+)
 
 asset_name = "s3_aoai_acs"
 
@@ -36,7 +44,7 @@ data_index = DataIndex(
         connection="azureml-rag-acs",
     ),
     # name is replaced with a unique value each time the job is run
-    path=f"azureml://datastores/workspaceblobstore/paths/indexes/{asset_name}/{{name}}"
+    path=f"azureml://datastores/workspaceblobstore/paths/indexes/{asset_name}/{{name}}",
 )
 
 # %% Create the DataIndex Job to be scheduled
@@ -55,13 +63,13 @@ ml_client.jobs.stream(index_job.name)
 mlindex_docs_index_asset = ml_client.data.get(data_index.name, label="latest")
 mlindex_docs_index_asset
 
-## %% Try it out with langchain by loading the MLIndex asset using the azureml-rag SDK
+# %% Try it out with langchain by loading the MLIndex asset using the azureml-rag SDK
 from azureml.rag.mlindex import MLIndex
 
 mlindex = MLIndex(mlindex_docs_index_asset)
 
 index = mlindex.as_langchain_vectorstore()
-docs = index.similarity_search('What is RAG?', k=5)
+docs = index.similarity_search("What is RAG?", k=5)
 docs
 
 # %% Take a look at those chunked docs

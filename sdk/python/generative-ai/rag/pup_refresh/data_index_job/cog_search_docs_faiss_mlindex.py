@@ -10,10 +10,19 @@
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 
-ml_client = MLClient.from_config(credential=DefaultAzureCredential(), path="config.json")
+ml_client = MLClient.from_config(
+    credential=DefaultAzureCredential(), path="config.json"
+)
 
 # %% Create DataIndex configuration
-from azureml.rag.dataindex.entities import Data, DataIndex, IndexSource, CitationRegex, Embedding, IndexStore
+from azureml.rag.dataindex.entities import (
+    Data,
+    DataIndex,
+    IndexSource,
+    CitationRegex,
+    Embedding,
+    IndexStore,
+)
 
 asset_name = "azure_search_docs_aoai_faiss"
 
@@ -29,20 +38,17 @@ data_index = DataIndex(
         citation_url="https://learn.microsoft.com/en-us/azure",
         # Remove articles from the final citation url and remove the file extension so url points to hosted docs, not GitHub.
         citation_url_replacement_regex=CitationRegex(
-            match_pattern="(.*)/articles/(.*)(\\.[^.]+)$",
-            replacement_pattern="\\1/\\2"
-        )
+            match_pattern="(.*)/articles/(.*)(\\.[^.]+)$", replacement_pattern="\\1/\\2"
+        ),
     ),
     embedding=Embedding(
         model="text-embedding-ada-002",
         connection="azureml-rag-oai",
         cache_path=f"azureml://datastores/workspaceblobstore/paths/embeddings_cache/{asset_name}",
     ),
-    index=IndexStore(
-        type="faiss"
-    ),
+    index=IndexStore(type="faiss"),
     # name is replaced with a unique value each time the job is run
-    path=f"azureml://datastores/workspaceblobstore/paths/indexes/{asset_name}/{{name}}"
+    path=f"azureml://datastores/workspaceblobstore/paths/indexes/{asset_name}/{{name}}",
 )
 
 # %% Use git_clone Component to clone Azure Search docs from github
@@ -54,17 +60,17 @@ git_clone_component = ml_registry.components.get("llm_rag_git_clone", label="lat
 from azure.ai.ml.dsl import pipeline
 from azureml.rag.dataindex.data_index import index_data
 
+
 @pipeline(default_compute="serverless")
 def git_to_faiss(
     git_url,
     branch_name="",
     git_connection_id="",
 ):
-    git_clone = git_clone_component(
-        git_repository=git_url,
-        branch_name=branch_name
-    )
-    git_clone.environment_variables["AZUREML_WORKSPACE_CONNECTION_ID_GIT"] = git_connection_id
+    git_clone = git_clone_component(git_repository=git_url, branch_name=branch_name)
+    git_clone.environment_variables[
+        "AZUREML_WORKSPACE_CONNECTION_ID_GIT"
+    ] = git_connection_id
 
     index_job = index_data(
         description=data_index.description,
@@ -75,10 +81,11 @@ def git_to_faiss(
 
     return index_job.outputs
 
+
 # %%
 git_index_job = git_to_faiss("https://github.com/MicrosoftDocs/azure-docs.git")
 # Ensure repo cloned each run to get latest, comment out to have first clone reused.
-git_index_job.settings.force_rerun = True 
+git_index_job.settings.force_rerun = True
 
 # %% Submit the DataIndex Job
 git_index_run = ml_client.jobs.create_or_update(
@@ -100,7 +107,7 @@ from azureml.rag.mlindex import MLIndex
 mlindex = MLIndex(mlindex_docs_index_asset)
 
 index = mlindex.as_langchain_vectorstore()
-docs = index.similarity_search('How can I enable Semantic Search on my Index?', k=5)
+docs = index.similarity_search("How can I enable Semantic Search on my Index?", k=5)
 docs
 
 # %% Take a look at those chunked docs
@@ -131,10 +138,7 @@ import re
 with open(flow_path / "flow.dag.yaml", "r") as f:
     flow_yaml = f.read()
     flow_yaml = re.sub(
-        r"path: (.*)# Index uri",
-        f"path: {mlindex_path} # Index uri",
-        flow_yaml,
-        re.M
+        r"path: (.*)# Index uri", f"path: {mlindex_path} # Index uri", flow_yaml, re.M
     )
 with open(flow_path / "flow.dag.yaml", "w") as f:
     f.write(flow_yaml)

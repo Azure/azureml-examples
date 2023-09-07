@@ -1,5 +1,5 @@
 from promptflow import tool
-from chat_with_index.qna import qna
+from src.qna import qna
 
 
 @tool

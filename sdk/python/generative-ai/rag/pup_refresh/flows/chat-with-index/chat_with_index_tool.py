@@ -1,5 +1,5 @@
 from promptflow import tool
-from chat_with_index.main import chat_with_index
+from src.main import chat_with_index
 
 
 @tool

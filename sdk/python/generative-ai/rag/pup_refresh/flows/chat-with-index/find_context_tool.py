@@ -1,5 +1,6 @@
 from promptflow import tool
-from chat_with_index.find_context import find_context
+from src.find_context import find_context
+
 
 @tool
 def find_context_tool(question: str, mlindex_uri: str):
