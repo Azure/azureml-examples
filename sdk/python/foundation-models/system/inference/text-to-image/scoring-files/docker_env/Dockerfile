@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20230620.v1
 
-ENV CONDA_ENVIRONMENT_PATH /azureml-envs/llama
+ENV CONDA_ENVIRONMENT_PATH /azureml-envs/text-to-image
 
 # Prepend path to AzureML conda environment
 ENV PATH $CONDA_ENVIRONMENT_PATH/bin:$PATH

@@ -1,8 +1,10 @@
 # Copyright (c) Microsoft. All rights reserved.
 # Licensed under the MIT license.
 
+import base64
 import os
 import traceback
+from typing import Dict, List, Set, Union
 import yaml
 import pandas as pd
 import numpy as np
@@ -12,16 +14,28 @@ from mlflow.pyfunc.scoring_server import _get_jsonable_obj
 from mlflow.types import DataType
 from mlflow.types.schema import Schema
 
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.contentsafety.models import (
+    AnalyzeTextOptions,
+    AnalyzeImageOptions,
+    ImageData,
+    AnalyzeImageResult,
+    AnalyzeTextResult,
+)
+
 from PIL import Image
 import logging
 
 
 def init():
     global g_model
-    global g_schema
+    global g_schema_input
+    global g_schema_output
     global g_dtypes
     global g_logger
     global g_file_loader_dictionary
+    global aacs_client
 
     g_logger = logging.getLogger("azureml")
     g_logger.setLevel(logging.INFO)
@@ -31,8 +45,9 @@ def init():
     model_path = os.path.join(model_dir, model_rootdir)
 
     g_model = load_model(model_path)
-    g_schema = get_input_schema(model_path)
-    g_dtypes = get_dtypes(g_schema)
+    g_schema_input = get_input_schema(model_path)
+    g_dtypes = get_dtypes(g_schema_input)
+    g_schema_output = get_output_schema(model_path)
     g_file_loader_dictionary = {
         ".csv": load_csv,
         ".png": load_image,
@@ -45,6 +60,11 @@ def init():
         ".pqt": load_parquet,
     }
 
+    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
+    key = os.environ.get("CONTENT_SAFETY_KEY")
+    # Create an Content Safety client
+    aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
+
 
 def get_input_schema(model_path):
     try:
@@ -53,6 +73,31 @@ def get_input_schema(model_path):
         if "signature" in ml_model:
             if "inputs" in ml_model["signature"]:
                 return Schema.from_json(ml_model["signature"]["inputs"])
+        g_logger.warn(
+            "No signature present in MLmodel file: "
+            + ml_model.__str__()
+            + "\nSignatures are encouraged, but AzureML will take a "
+            + "best effort approach to loading the data files."
+        )
+    except Exception as e:
+        raise Exception("Error reading model signature: " + ml_model.__str__() + str(e))
+
+
+def get_output_schema(model_path: str) -> Schema:
+    """Get output schema from model signature.
+
+    :param model_path: path to model
+    :type model_path: str
+    :raises Exception: Error reading model signature
+    :return: output schema
+    :rtype: MLflow.types.Schema
+    """
+    try:
+        with open(os.path.join(model_path, "MLmodel"), "r") as stream:
+            ml_model = yaml.load(stream, Loader=yaml.BaseLoader)
+        if "signature" in ml_model:
+            if "outputs" in ml_model["signature"]:
+                return Schema.from_json(ml_model["signature"]["outputs"])
         g_logger.warn(
             "No signature present in MLmodel file: "
             + ml_model.__str__()
@@ -98,7 +143,7 @@ def load_data(data_file):
 
 
 def load_csv(data_file):
-    if g_schema and g_schema.is_tensor_spec():
+    if g_schema_input and g_schema_input.is_tensor_spec():
         g_logger.info("Reading csv input file into numpy array because the model specifies tensor input signature.")
         return np.genfromtxt(data_file, dtype=g_dtypes)
     else:
@@ -142,13 +187,13 @@ def load_image(data_file):
 
     data_array = _load_image_as_array(data_file)
 
-    if g_schema is None:
+    if g_schema_input is None:
         g_logger.warn("Model input signature is not provided.")
         # Default data_shape:
         #   Create a batch of 1 element with the tensor size of the data_file after it is cast to numpy.ndarray.
         #   Use asterisk to unpack the ndarray.shape tuple and prepend the 1.
         data_type, data_shape = np.uint8, (1, *data_array.shape)
-    elif g_schema.is_tensor_spec():
+    elif g_schema_input.is_tensor_spec():
         data_type, data_shape = g_dtypes
         if data_shape == (-1,):
             batchsize = 1
@@ -163,10 +208,10 @@ def load_image(data_file):
         # Schema is ColSpec. Since binary dtype gets interpretted as 'object'
         # when schema.pandas_types() is called in get_dtypes, we must check the
         # actual mlflow input types for binary.
-        data_type = g_schema.input_types()
+        data_type = g_schema_input.input_types()
         if len(data_type) == 1 and data_type[0] == DataType.binary:
             g_logger.info("Loading the input image file into bytes to put within the pd.DataFrame column.")
-            return pd.DataFrame({g_schema.input_names()[0]: [_load_image_as_bytes(data_file)]})
+            return pd.DataFrame({g_schema_input.input_names()[0]: [_load_image_as_bytes(data_file)]})
         else:
             raise TypeError(
                 "Scoring image files with a ColSpec signature containing "
@@ -302,9 +347,197 @@ def input_filelist_decorator(run_function):
 def run(batch_input):
     predict_result = []
     try:
+        aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", default=1))
+        blocked_input = analyze_data(batch_input, aacs_threshold, blocked_input=None, is_input=True)
         predict_result = g_model.predict(batch_input)
+        _ = analyze_data(predict_result, aacs_threshold, blocked_input=blocked_input, is_input=False)
     except Exception as e:
         g_logger.error("Processing mini batch failed with exception: " + str(e))
         g_logger.error(traceback.format_exc())
         raise e
     return predict_result
+
+
+def analyze_data(
+    data_frame: pd.DataFrame, aacs_threshold: int, blocked_input: Set = None, is_input: bool = True
+) -> Set:
+    """Analyze and remove un-safe data from data-frame using azure content safety service.
+
+    :param data_frame: model input or output data-frame
+    :type data_frame: pd.DataFrame
+    :param aacs_threshold: azure ai content safety threshold
+    :type aacs_threshold: int
+    :param blocked_input: set of blocked row index from input data-frame.
+    For input data-frame, pass None as it's not evaluated yet, defaults to None
+    :type blocked_input: Set, optional
+    :param is_input: True if analysis is for input data-frame else False, defaults to True
+    :type is_input: bool, optional
+    :raises TypeError: Raise exception if passed data-frame is not of pandas data-frame type.
+    :return: set of blocked row index if any cell in the row has un-safe content.
+    :rtype: Set
+    """
+    if not isinstance(data_frame, pd.DataFrame):
+        raise TypeError("Only pandas data-frame is supported.")
+    columns = data_frame.columns
+    output_dir = os.environ.get("AZUREML_BI_OUTPUT_PATH", default="")
+    mlflow_schema = g_schema_input.to_dict() if is_input else g_schema_output.to_dict()
+    blocked_input = set() if blocked_input is None else blocked_input
+
+    for index, row in data_frame.iterrows():
+        for column in columns:
+            data_type = _check_data_type_from_model_signature(column, mlflow_schema)
+            if data_type is None:
+                continue
+            blocked_index = True if index in blocked_input else False
+            image_path = ""
+            if blocked_index is False:
+                if data_type == "binary":
+                    image_path = os.path.join(output_dir, row[column])
+                    if os.path.isfile(image_path) and analyze_image(image_path) > aacs_threshold:
+                        blocked_index = True
+                elif data_type == "string" and analyze_text(row[column]) > aacs_threshold:
+                    blocked_index = True
+
+            if blocked_index:
+                if is_input:
+                    blocked_input.add(index)
+                else:
+                    image_path = os.path.join(output_dir, row[column])
+                    if data_type == "binary" and os.path.isfile(image_path):
+                        os.remove(image_path)
+                    data_frame.at[index, column] = "Blocked By Azure AI Content Safety"
+    return blocked_input
+
+
+def _check_data_type_from_model_signature(column_name: str, schema: Dict = None) -> str:
+    """Check column data type from model signature
+
+    :param column_name: column name to find it's type
+    :type column_name: str
+    :param schema: mlflow signature input or output schema
+    :type schema: Dict
+    :return: type of column name from model signature else return "str"
+    :rtype: str
+    """
+    if schema is None:
+        return "string"
+
+    for item in schema:
+        if item["name"] == column_name:
+            return item["type"]
+
+    return None
+
+
+class CsChunkingUtils:
+    """Chunking utils for text input"""
+
+    def __init__(self, chunking_n=1000, delimiter="."):
+        """Initialize chunking utils
+
+        :param chunking_n: chunking size, defaults to 1000
+        :type chunking_n: int, optional
+        :param delimiter: delimiter character, defaults to "."
+        :type delimiter: str, optional
+        """
+        self.delimiter = delimiter
+        self.chunking_n = chunking_n
+
+    def _chunkstring(self, string, length):
+        return (string[0 + i : length + i] for i in range(0, len(string), length))
+
+    def split_by(self, input: str) -> List[str]:
+        """Split input by delimiter and chunk by chunking_n
+
+        :param input: text input
+        :type input: str
+        :return: chunked text
+        :rtype: List[str]
+        """
+        max_n = self.chunking_n
+        split = [e + self.delimiter for e in input.split(self.delimiter) if e]
+        ret = []
+        buffer = ""
+
+        for i in split:
+            # if a single element > max_n, chunk by max_n
+            if len(i) > max_n:
+                ret.append(buffer)
+                ret.extend(list(self._chunkstring(i, max_n)))
+                buffer = ""
+                continue
+            if len(buffer) + len(i) <= max_n:
+                buffer = buffer + i
+            else:
+                ret.append(buffer)
+                buffer = i
+
+        if len(buffer) > 0:
+            ret.append(buffer)
+        return ret
+
+
+def analyze_text(text: str) -> int:
+    """Analyze text severity using azure content safety service
+
+    :param image_in_byte64: image in base64 format
+    :type image_in_byte64: str
+    :return: maximum severity of all categories
+    :rtype: int
+    """
+    chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
+    split_text = chunking_utils.split_by(text)
+
+    print("## Calling ACS ##")
+
+    severity = [analyze_aacs_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i))) for i in split_text]
+    print(f"## Returning MAX from severity list {severity} ##")
+    return max(severity)
+
+
+def analyze_image(image_path: str) -> int:
+    """Analyze image severity using azure content safety service
+
+    :param image_in_byte64: image in base64 format
+    :type image_in_byte64: str
+    :return: maximum severity of all categories
+    :rtype: int
+    """
+    print("Analyzing image...")
+    with open(image_path, "rb") as f:
+        image = f.read()
+        image_in_byte64 = base64.encodebytes(image).decode("utf-8")
+
+    request = AnalyzeImageOptions(image=ImageData(content=image_in_byte64))
+    safety_response = aacs_client.analyze_image(request)
+    severity = analyze_aacs_response(safety_response)
+    print(f"Image Analyzed, severity {severity}")
+    return severity
+
+
+def analyze_aacs_response(response: Union[AnalyzeImageResult, AnalyzeTextResult]) -> int:
+    """Analyze response from azure content safety service.
+
+    :param response: response from azure content safety service
+    :type response: Union[AnalyzeImageResult, AnalyzeTextResult]
+    :return: maximum severity of all categories
+    :rtype: int
+    """
+    severity = 0
+
+    print("## Analyze response ##")
+
+    if response.hate_result is not None:
+        severity = max(severity, response.hate_result.severity)
+        class_name = "hate"
+    if response.self_harm_result is not None:
+        severity = max(severity, response.self_harm_result.severity)
+        class_name = "self_harm"
+    if response.sexual_result is not None:
+        severity = max(severity, response.sexual_result.severity)
+        class_name = "sexual"
+    if response.violence_result is not None:
+        severity = max(severity, response.violence_result.severity)
+        class_name = "violence"
+    print(f"## Returning severity for {class_name} : {severity} ##")
+    return severity
