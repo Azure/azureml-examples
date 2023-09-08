@@ -81,37 +81,6 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
         json.dump(request_json, request_file)
 
 
-def prepare_data_for_batch_inference(dataset_dir: str) -> None:
-    """Prepare image folder and csv file for batch inference.
-
-    This function will move all images to a single image folder and also create a csv
-    file with images in base64 format.
-    :param dataset_dir: dataset directory
-    :type dataset_dir: str
-    """
-    image_list = []
-
-    csv_file_name = "image_classification_multiclass_list.csv"
-
-    for dir_name in os.listdir(dataset_dir):
-        dir_path = os.path.join(dataset_dir, dir_name)
-        for path, _, files in os.walk(dir_path):
-            for file in files:
-                image = read_image(os.path.join(path, file))
-                image_list.append(base64.encodebytes(image).decode("utf-8"))
-                shutil.move(os.path.join(path, file), dataset_dir)
-        if os.path.isdir(dir_path):
-            shutil.rmtree(dir_path)
-        else:
-            os.remove(dir_path)
-    df = pd.DataFrame(image_list, columns=["image"]).sample(10)
-    df.to_csv(
-        os.path.join(os.path.dirname(dataset_dir), csv_file_name),
-        index=False,
-        header=True,
-    )
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Prepare data for image classification"
@@ -137,9 +106,5 @@ if __name__ == "__main__":
 
     if args.mode == "online":
         prepare_data_for_online_inference(
-            dataset_dir=dataset_dir
-        )
-    else:
-        prepare_data_for_batch_inference(
             dataset_dir=dataset_dir
         )

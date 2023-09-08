@@ -3,13 +3,13 @@ set -x
 # The sample scoring file available in the same folder as the above notebook
 
 # script inputs
-registry_name="rbhimani-registry"
-subscription_id="dbd697c3-ef40-488f-83e6-5ad4dfb78f9b"
-resource_group_name="rbhimani-rg"
-workspace_name="rbhimani-ws"
+registry_name="azureml"
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="clip-poc"
+model_name="openai-clip-vit-base-patch32"
 model_label="latest"
 
 version=$(date +%s)
