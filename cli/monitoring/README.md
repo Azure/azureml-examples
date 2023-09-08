@@ -16,7 +16,7 @@ In this scenario, you have deployed your model to AzureML online endpoints (mana
 
 Schedule your model monitor with this command: `az ml schedule create -f advanced-monitoring.yaml`
 
-### 3. Deploy model with AzureML batch endpoints, AKS, or outside of AzureML
+### 3. Deploy model with AzureML batch endpoints, AKS with CLI v1, or outside of AzureML
 
 In this scenario, you can bring your own data to use as input to your monitoring job. When you bring your own production data, you need to provide a custom preprocessing component to get the data into MLTable format for the monitoring job to use. An example custom preprocessing component can be found in the `components/custom_preprocessing` directory. You will need to register your custom preprocessing component. From that directory, you can use the command `az ml component create -f spec.yaml --subscription <subscription_id> --workspace <workspace> --resource-group <resource_group>` to register the component. Then, you can schedule your monitoring job (found in the main `monitoring/` directory) with the following command: `az ml schedule create -f custom_monitoring.yaml --subscription <subscription_id> --workspace <workspace> --resource-group <resource_group>`.
 
