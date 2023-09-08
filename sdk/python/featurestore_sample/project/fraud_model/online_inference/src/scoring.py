@@ -18,26 +18,20 @@ def init():
     """
 
     global model
-    
+
     # load the model
     print("check model path")
 
-    model_path = os.path.join(
-        os.getenv("AZUREML_MODEL_DIR"), "model_output/clf.pkl"
-    )
+    model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), "model_output/clf.pkl")
 
-
-
-    with open(model_path, 'rb') as pickle_file:
+    with open(model_path, "rb") as pickle_file:
         model = pickle.load(pickle_file)
     # AZUREML_MODEL_DIR is an environment variable created during deployment.
     # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
     # Please provide your model's folder name if there is one
-    
-        
+
     # load feature retrieval spec
     print("load feature spec")
-
 
     credential = ManagedIdentityCredential()
 
@@ -45,12 +39,9 @@ def init():
 
     global features
 
-    featurestore = FeatureStoreClient(
-        credential = credential
-    )
+    featurestore = FeatureStoreClient(credential=credential)
 
     features = featurestore.resolve_feature_retrieval_spec(spec_path)
-
 
     init_online_lookup(features, credential)
 
@@ -75,7 +66,7 @@ def run(raw_data):
     print(df)
 
     logging.info("model 1: feature joined")
-    
+
     data = df.drop(["accountID"], axis="columns").to_numpy()
     result = model.predict(data)
     logging.info("Request processed")
