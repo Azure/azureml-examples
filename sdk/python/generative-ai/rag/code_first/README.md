@@ -5,7 +5,7 @@ Read more about their structure [here](./docs/mlindex.md).
 
 ## Pre-requisites
 
-0. Install `azure-ai-ml` and `azureml-rag:
+0. Install `azure-ai-ml` and `azureml-rag`:
     - `pip install 'azure-ai-ml==1.10.0a20230825006' --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/`
     - `pip install -U 'azureml-rag[document_parsing,faiss,cognitive_search]>=0.2.0'`
 1. You have unstructured data.
@@ -32,7 +32,6 @@ Opening them in vscode enables executing each block below a `# %%` comment like 
 ##### Process this documentation using Azure OpenAI and Azure Cognitive Search
 
 - [local_docs_to_acs_mlindex.py](./data_index_job/local_docs_to_acs_mlindex.py)
-- [local_docs_to_acs_mlindex.ipynb](./data_index_job/local_docs_to_acs_mlindex.ipynb)
 
 ##### Index data from S3 using OneLake
 
