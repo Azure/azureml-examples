@@ -14,18 +14,16 @@ create_monitor:
       component_id: azureml:my_custom_signal:1.0.0
       input_datasets:
         production_data:
-          input_dataset:
+          input_data:
             type: uri_folder
             path: azureml:custom_without_drift:1
-          dataset_context: test
+          data_context: test
           pre_processing_component: azureml:custom_preprocessor:1.0.0
       metric_thresholds:
-        - metric_name: std_deviation
-          threshold: 2
+        numerical:
+          std_deviation: 2
+        categorical:
+          std_deviation: 2
   alert_notification:
     emails:
       - abc@example.com
-properties:
-  prop1: value
-tags:
-  tag1: tag
