@@ -6,6 +6,7 @@ dependencies:
   - python=3.8
   - dask==2022.2.1
   - distributed==2022.2.1
+  - pandas==2.0.3
   - pip==21.3.1
   - jupyterlab
   - jupyter-server-proxy
