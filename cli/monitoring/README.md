@@ -14,7 +14,7 @@ Schedule your model monitor with this command: `az ml schedule create -f out-of-
 
 In this scenario, you have deployed your model to AzureML online endpoints (managed or kubernetes). You have enabled production inference data collection (documentation for it can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-collect-production-data?view=azureml-api-2&tabs=azure-cli)) for your deployment. With the `advanced-monitoring.yaml`, you can create a model monitor with configurable signals, metrics, and thresholds. The provided sample also determines the most important features and only computes the metrics for those features.
 
-Schedule your model monitor with this command: `az ml schedule create -f advanced-with-feature-importance-monitoring.yaml`
+Schedule your model monitor with this command: `az ml schedule create -f advanced-monitoring.yaml`
 
 ### 3. Deploy model with AzureML batch endpoints, AKS, or outside of AzureML
 
