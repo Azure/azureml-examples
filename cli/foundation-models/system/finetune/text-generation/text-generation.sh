@@ -4,8 +4,8 @@ set -x
 
 # script inputs
 subscription_id="<SUBSCRIPTION_ID>"
-resource_group_name="<RESOURCE_GROUP>",
-workspace_name="<WORKSPACE_NAME>",
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="WORKSPACE_NAME>"
 registry_name="azureml"
 model_registry_name="azureml-meta"
 
@@ -35,22 +35,26 @@ train_data="samsum-dataset/small_train.jsonl"
 validation_data="samsum-dataset/small_validation.jsonl"
 # test data
 test_data="samsum-dataset/small_test.jsonl"
-# evaluation config
-evaluation_config="../../../../../sdk/python/foundation-models/system/finetune/text-classification/text-classification-config.json"
 # scoring_file
 scoring_file="samsum-dataset/sample_score.json"
 
 # finetuning job parameters
-finetuning_pipeline_component="text_classification_pipeline"
+finetuning_pipeline_component="text_generation_pipeline"
 # The following parameters map to the dataset fields
 text_key="text"
-ground_truth_key="label_string"
+ground_truth_key="summary"
 # Training settings
 number_of_gpu_to_use_finetuning=$gpus_per_node # set to the number of GPUs available in the compute
 num_train_epochs=3
 per_device_train_batch_size=1
 per_device_eval_batch_size=1
 learning_rate=2e-5
+
+# optimization params
+apply_lora="true"
+apply_deepspeed="false"
+apply_ort="true"
+precision=4
 
 # 1. Setup pre-requisites
 
@@ -78,7 +82,7 @@ fi
 
 # download the dataset
 
-python ./download-dataset.py || {
+python ./download-dataset.py --download_dir samsum-dataset || {
     echo "Failed to download dataset"
     exit 1
 }
@@ -117,7 +121,7 @@ fi
 # need to switch to using latest version for model, currently blocked with a bug.
 # submit finetuning job
 parent_job_name=$( az ml job create --file ./text-generation-pipeline.yml $workspace_info --query name -o tsv --set \
-  jobs.text_classification_pipeline.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
+  jobs.text_generation_pipeline.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.compute_model_import=$compute_cluster \
   inputs.compute_preprocess=$compute_cluster \
   inputs.compute_finetune=$compute_cluster \
@@ -126,14 +130,17 @@ parent_job_name=$( az ml job create --file ./text-generation-pipeline.yml $works
   inputs.train_file_path.path=$train_data \
   inputs.validation_file_path.path=$validation_data \
   inputs.test_file_path.path=$test_data \
-  inputs.evaluation_config.path=$evaluation_config \
   inputs.text_key=$text_key \
   inputs.ground_truth_key=$ground_truth_key \
   inputs.number_of_gpu_to_use_finetuning=$number_of_gpu_to_use_finetuning \
   inputs.num_train_epochs=$num_train_epochs \
   inputs.per_device_train_batch_size=$per_device_train_batch_size \
   inputs.per_device_eval_batch_size=$per_device_eval_batch_size \
-  inputs.learning_rate=$learning_rate ) || {
+  inputs.learning_rate=$learning_rate \
+  inputs.apply_lora=$apply_lora \
+  inputs.apply_deepspeed=$apply_deepspeed \
+  inputs.apply_ort=$apply_ort \
+  inputs.precision=$precision ) || {
     echo "Failed to submit finetuning job"
     exit 1
   }

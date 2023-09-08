@@ -25,9 +25,6 @@ inputs:
   test_file_path:
     type: uri_file
     path: "samsum-dataset/small_test.jsonl"
-  evaluation_config_path:
-    type: uri_file
-    path: "../../../../../sdk/python/foundation-models/system/finetune/text-generation/text-generation-config.json"
   
   
   # The following parameters map to the dataset fields
@@ -40,6 +37,12 @@ inputs:
   per_device_train_batch_size: 1
   per_device_eval_batch_size: 1
   learning_rate: 2e-5
+
+  # optimization params
+  apply_lora: "true"
+  apply_deepspeed: "true"
+  apply_ort: "true"
+  precision: 16
 
 outputs:
   # map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model
@@ -66,15 +69,19 @@ jobs:
       train_file_path: ${{parent.inputs.train_file_path}}
       validation_file_path: ${{parent.inputs.validation_file_path}}
       test_file_path: ${{parent.inputs.test_file_path}}
-      evaluation_config: ${{parent.inputs.evaluation_config_path}}
 
-      text_key: ${{parent.inputs.sentence1_key}}
-      ground_truth_key: ${{parent.inputs.label_key}}
+      text_key: ${{parent.inputs.text_key}}
+      ground_truth_key: ${{parent.inputs.ground_truth_key}}
 
       number_of_gpu_to_use_finetuning: ${{parent.inputs.number_of_gpu_to_use_finetuning}}
       num_train_epochs: ${{parent.inputs.num_train_epochs}}
       per_device_train_batch_size: ${{parent.inputs.per_device_train_batch_size}}
       per_device_eval_batch_size: ${{parent.inputs.per_device_eval_batch_size}}
       learning_rate: ${{parent.inputs.learning_rate}}
+      apply_lora: ${{parent.inputs.apply_lora}}
+      apply_deepspeed: ${{parent.inputs.apply_deepspeed}}
+      apply_ort: ${{parent.inputs.apply_ort}}
+      precision: ${{parent.inputs.precision}}
+
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}
