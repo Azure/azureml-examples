@@ -55,25 +55,31 @@ class CLIPMLFlowModelWrapper(mlflow.pyfunc.PythonModel):
 
     def predict(self, context: mlflow.pyfunc.PythonModelContext, input_data: pd.DataFrame) -> pd.DataFrame:
         """Perform inference on the input data.
-        :param input_data: Input images for prediction.
+        :param input_data: Input images for prediction and candidate labels.
         :type input_data: Pandas DataFrame with a first column name ["image"] of images where each
-        image is in base64 String format.
+        image is in base64 String format, and second column name ["text"] where the first row contains the
+        candidate labels and the remaining rows are ignored.
         :param task: Task type of the model.
         :type task: HFTaskLiterals
-        :param tokenizer: Preprocessing configuration loader.
-        :type tokenizer: transformers.AutoImageProcessor
-        :param model: Pytorch model weights.
-        :type model: transformers.AutoModelForImageClassification
+        :param context: Pyfunc context.
+        :type context: mlflow.pyfunc.PythonModelContext
         :return: Output of inferencing
-        :rtype: Pandas DataFrame with columns ["filename", "probs", "labels"] for classification and
-        ["filename", "boxes"] for object detection, instance segmentation
+        :rtype: Pandas DataFrame with columns ["probs", "labels"]
         """
         # Decode the base64 image column
         decoded_images = input_data.loc[
             :, [MLflowSchemaLiterals.INPUT_COLUMN_IMAGE]
         ].apply(axis=1, func=process_image)
 
-        captions = input_data[MLflowSchemaLiterals.INPUT_COLUMN_TEXT].iloc[0].split(',')
+        try:
+            captions = input_data[MLflowSchemaLiterals.INPUT_COLUMN_TEXT].iloc[0].split(',')
+            captions = list(filter(None, captions)) # remove any empty strings
+            if len(captions) == 0:
+                raise ValueError("No labels were provided")
+        except Exception:
+            raise ValueError(
+                    "The provided labels cannot be parsed. The first row of the \"text\" column is expected to contain a string with the comma-separated labels"
+                )
 
         # To Do: change image height and width based on kwargs.
 
