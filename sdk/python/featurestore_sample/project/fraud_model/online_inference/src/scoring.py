@@ -70,6 +70,7 @@ def run(raw_data):
     obs = pyarrow.Table.from_pydict(data)
     feat_table = get_online_features(features, obs)
     df = feat_table.to_pandas()
+    df.fillna(0, inplace=True)
     print("feature retrieved")
     print(df)
 
