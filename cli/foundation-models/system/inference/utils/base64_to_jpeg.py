@@ -29,11 +29,12 @@ def base64_str_to_image(response_file: str):
     serialized_image_json=serialized_image_json.replace("\\\"","\"")[1:-1] 
 
     json_obj = json.loads(serialized_image_json)
-    for obj in json_obj:
+    for i, obj in enumerate(json_obj):
         text_prompt = obj[INPUT_PROMPT_COLUMN].strip()
         generated_image = obj[OUTPUT_IMAGE_COLUMN]
         img = Image.open(io.BytesIO(base64.b64decode(generated_image)))
-        text_prompt=re.sub(r"[^a-zA-Z0-9 ]+", "", text_prompt)
+        text_prompt=f"Img{i}_" + re.sub(r"[^a-zA-Z0-9 ]+", "", text_prompt)
+        text_prompt=text_prompt[:50]
         img.save(text_prompt + ".jpg", "JPEG")
 
 

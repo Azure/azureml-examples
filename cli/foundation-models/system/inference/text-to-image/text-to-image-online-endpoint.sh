@@ -78,5 +78,3 @@ python ../utils/base64_to_jpeg.py --response_file $response_file
 az ml online-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
-
-rm $sample_request_data
