@@ -87,11 +87,9 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """Prepare image folder and csv file for batch inference.
 
     This function will move all images to a single image folder and also create a csv
-    file with images in base64 format.
+    file with images in base64 format and the candidate labels
     :param dataset_dir: dataset directory
     :type dataset_dir: str
-    :param is_multilabel: flag to indicate if dataset is multi-label or not
-    :type is_multilabel: int
     """
     image_list = []
 
@@ -99,7 +97,9 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
         "zero_shot_image_classification_lis.csv"
     )
 
+    dir_names = []
     for dir_name in os.listdir(dataset_dir):
+        dir_names.append(dir_name)
         dir_path = os.path.join(dataset_dir, dir_name)
         for path, _, files in os.walk(dir_path):
             for file in files:
@@ -110,9 +110,10 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
             shutil.rmtree(dir_path)
         else:
             os.remove(dir_path)
+    labels = ",".join(dir_names)
     data = [[image, ""] for image in image_list]
     df = pd.DataFrame(data, columns=["image", "text"]).sample(10)
-    df["text"].iloc[0] = LABELS
+    df["text"].iloc[0] = labels
     df.to_csv(
         os.path.join(os.path.dirname(dataset_dir), csv_file_name),
         index=False,
