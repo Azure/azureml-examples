@@ -55,14 +55,12 @@ class CLIPMLFlowModelWrapper(mlflow.pyfunc.PythonModel):
 
     def predict(self, context: mlflow.pyfunc.PythonModelContext, input_data: pd.DataFrame) -> pd.DataFrame:
         """Perform inference on the input data.
+        :param context: MLflow context containing artifacts that the model can use for inference
+        :type context: mlflow.pyfunc.PythonModelContext
         :param input_data: Input images for prediction and candidate labels.
         :type input_data: Pandas DataFrame with a first column name ["image"] of images where each
         image is in base64 String format, and second column name ["text"] where the first row contains the
         candidate labels and the remaining rows are ignored.
-        :param task: Task type of the model.
-        :type task: HFTaskLiterals
-        :param context: Pyfunc context.
-        :type context: mlflow.pyfunc.PythonModelContext
         :return: Output of inferencing
         :rtype: Pandas DataFrame with columns ["probs", "labels"]
         """
@@ -79,9 +77,7 @@ class CLIPMLFlowModelWrapper(mlflow.pyfunc.PythonModel):
         except Exception:
             raise ValueError(
                     "The provided labels cannot be parsed. The first row of the \"text\" column is expected to contain a string with the comma-separated labels"
-                )
-
-        # To Do: change image height and width based on kwargs.
+            )
 
         with tempfile.TemporaryDirectory() as tmp_output_dir:
             image_path_list = (
