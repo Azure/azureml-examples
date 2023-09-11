@@ -24,8 +24,8 @@ This repository contains notebooks and sample code that demonstrate how to devel
 
 ## Non-goals
 
-- This repository is not meant to serve as reference documentation. Reference documentation for the azure-ai-ml package can be found [here](https://learn.microsoft.com/en-us/python/api/azure-ai-ml/?view=azure-python).
-- This repository is not meant to serve as conceptual overview or comprehensive getting started documents. All long-form textual documentation can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/?view=azureml-api-2).
+- This repository is not meant to serve as reference documentation. Small code examples that are just comprehensive enough to show how an object or function works are categorized as reference documentation and should be placed in the object or function docstring in the [azure-ai-ml repository](https://learn.microsoft.com/en-us/python/api/azure-ai-ml/?view=azure-python).
+- This repository is not meant to serve as conceptual overview or comprehensive getting started documents. Long-form textual documentation, especially ones with minimal or no code should be added in the [azure-docs repository](https://github.com/MicrosoftDocs/azure-docs).
 
 ## Issues
 
