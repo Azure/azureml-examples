@@ -12,7 +12,7 @@ create_monitor:
       type: custom
       data_window_size: 360
       component_id: azureml:my_custom_signal:1.0.0
-      input_datasets:
+      input_data:
         production_data:
           input_data:
             type: uri_folder
