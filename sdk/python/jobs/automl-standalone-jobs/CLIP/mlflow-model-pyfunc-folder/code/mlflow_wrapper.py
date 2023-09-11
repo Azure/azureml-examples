@@ -9,7 +9,7 @@ import pandas as pd
 import torch
 import tempfile
 
-from transformers import CLIPProcessor, CLIPModel
+from transformers import AutoProcessor, AutoModelForZeroShotImageClassification
 from common_constants import MLflowSchemaLiterals, MLflowLiterals, Tasks
 from common_utils import create_temp_file, process_image, get_current_device
 from typing import List, Tuple
@@ -40,8 +40,8 @@ class CLIPMLFlowModelWrapper(mlflow.pyfunc.PythonModel):
         if self._task_type == Tasks.ZERO_SHOT_IMAGE_CLASSIFICATION.value:
             try:
                 model_dir = context.artifacts[MLflowLiterals.MODEL_DIR]
-                self._processor = CLIPProcessor.from_pretrained(model_dir)
-                self._model = CLIPModel.from_pretrained(model_dir)
+                self._processor = AutoProcessor.from_pretrained(model_dir)
+                self._model = AutoModelForZeroShotImageClassification.from_pretrained(model_dir)
                 self._device = get_current_device()
                 self._model.to(self._device)
 
