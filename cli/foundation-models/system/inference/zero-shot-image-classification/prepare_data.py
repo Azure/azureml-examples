@@ -10,6 +10,7 @@ from zipfile import ZipFile
 # Change this to match the inference dataset
 LABELS = "water_bottle,milk_bottle,carton,can"
 
+
 def download_and_unzip(dataset_parent_dir: str) -> None:
     """Download image dataset and unzip it.
 
@@ -71,7 +72,9 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
         "input_data": {
             "columns": ["image", "text"],
             "index": [0],
-            "data": [[base64.encodebytes(read_image(sample_image)).decode("utf-8"), LABELS]],
+            "data": [
+                [base64.encodebytes(read_image(sample_image)).decode("utf-8"), LABELS]
+            ],
         }
     }
 
@@ -105,6 +108,4 @@ if __name__ == "__main__":
     )
 
     if args.mode == "online":
-        prepare_data_for_online_inference(
-            dataset_dir=dataset_dir
-        )
+        prepare_data_for_online_inference(dataset_dir=dataset_dir)
