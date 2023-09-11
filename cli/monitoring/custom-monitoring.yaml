@@ -20,10 +20,8 @@ create_monitor:
           data_context: test
           pre_processing_component: azureml:custom_preprocessor:1.0.0
       metric_thresholds:
-        numerical:
-          std_deviation: 2
-        categorical:
-          std_deviation: 2
+        - metric_name: std_deviation
+          threshold: 2
   alert_notification:
     emails:
       - abc@example.com
