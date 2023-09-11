@@ -2,7 +2,7 @@
 # # Build an ACS Index using MLIndex SDK
 
 # %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10.0a20230825006' --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
+# %pip install 'azure-ai-ml==1.10'
 # %pip install 'azureml-rag[document_parsing,cognitive_search]>=0.2.0'
 
 # %% Get Azure Cognitive Search Connection
@@ -17,6 +17,7 @@ aoai_connection = ml_client.connections.get("azureml-rag-oai")
 # %%
 from azureml.rag.mlindex import MLIndex
 
+mlindex_output_path = "./acs_open_ai_index"
 # Process data into FAISS Index using HuggingFace embeddings
 mlindex = MLIndex.from_files(
     source_uri="../",
@@ -28,15 +29,39 @@ mlindex = MLIndex.from_files(
     index_type="acs",
     index_connection=acs_connection,
     index_config={"index_name": "mlindex_docs_aoai_acs"},
-    output_path="./acs_open_ai_index",
+    output_path=mlindex_output_path,
 )
 
 # %% Load MLIndex from local
 from azureml.rag.mlindex import MLIndex
 
-mlindex = MLIndex("./acs_open_ai_index")
+mlindex = MLIndex(mlindex_output_path)
 
 # %% Query documents, use with inferencing framework
 index = mlindex.as_langchain_vectorstore()
 docs = index.similarity_search("Topic in my data.", k=5)
 print(docs)
+
+# %% Register local MLIndex as remote asset
+from azure.ai.ml.entities import Data
+
+# TODO: MLIndex should help registering FAISS as asset with all the properties.
+asset_name = "mlindex_docs_aoai_acs_mlindex"
+asset = ml_client.data.create_or_update(
+    Data(
+        name=asset_name,
+        version="1",
+        path=mlindex_output_path,
+        description="MLIndex Documentation Embedded using Azure OpenAI indexed using Azure Cognitive Search.",
+        properties={
+            "azureml.mlIndexAssetKind": "acs",
+            "azureml.mlIndexAsset": "true",
+            "azureml.mlIndexAssetSource": "Local Data",
+            "azureml.mlIndexAssetPipelineRunId": "Local",
+        },
+    )
+)
+
+print(asset)
+
+# %%
