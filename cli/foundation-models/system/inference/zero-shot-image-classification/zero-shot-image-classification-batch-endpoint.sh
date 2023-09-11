@@ -1,5 +1,3 @@
-
-
 set -x
 # The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-classification
 # The sample scoring file available in the same folder as the above notebook.
@@ -25,7 +23,7 @@ deployment_name="demo-$version"
 
 # Prepare data for deployment
 data_path="data_batch"
-python ./prepare_data.py --is_multilabel 0 --mode "batch" --data_path $data_path
+python ./prepare_data.py --mode "batch" --data_path $data_path
 # sample request data in csv format with image column
 sample_request_csv="./data_batch/zero_shot_image_classification_lis.csv"
 sample_request_folder="./data_batch/fridgeObjects"
