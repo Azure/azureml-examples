@@ -24,11 +24,9 @@ def base64_str_to_image(response_file: str):
     :return: None
     """
     with open(response_file) as f:
-        serialized_image_json = f.read().strip()
+        json_str = json.load(f)
 
-    serialized_image_json=serialized_image_json.replace("\\\"","\"")[1:-1] 
-
-    json_obj = json.loads(serialized_image_json)
+    json_obj = json.loads(json_str)
     for i, obj in enumerate(json_obj):
         text_prompt = obj[INPUT_PROMPT_COLUMN].strip()
         generated_image = obj[OUTPUT_IMAGE_COLUMN]
@@ -40,7 +38,7 @@ def base64_str_to_image(response_file: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare data for image classification")
-    parser.add_argument("--response_file", type=str, default="generated_image.txt", help="File having image response from endpoint.")
+    parser.add_argument("--response_file", type=str, default="generated_image.json", help="File having image response from endpoint.")
     args, unknown = parser.parse_known_args()
     
     base64_str_to_image(args.response_file)

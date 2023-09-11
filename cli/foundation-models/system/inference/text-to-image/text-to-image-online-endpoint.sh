@@ -9,7 +9,7 @@ workspace_name="<WORKSPACE_NAME>"
 # This is the model from system registry that needs to be deployed
 model_name="runwayml-stable-diffusion-v1-5"
 model_label="latest"
-response_file="generated_image.txt"
+response_file="generated_image.json"
 
 version=$(date +%s)
 endpoint_name="text-to-image-$version"
@@ -67,7 +67,7 @@ else
     exit 1
 fi
 
-az ml online-endpoint invoke --name $endpoint_name --request-file $sample_request_data $workspace_info > $response_file || {
+az ml online-endpoint invoke --name $endpoint_name --request-file $sample_request_data $workspace_info  -o json > $response_file || {
     echo "endpoint invoke failed"; exit 1;
 }
 
