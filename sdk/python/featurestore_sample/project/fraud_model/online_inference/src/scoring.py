@@ -45,8 +45,6 @@ def init():
 
     init_online_lookup(features, credential)
 
-    time.sleep(20)
-
     logging.info("Init complete")
 
 
