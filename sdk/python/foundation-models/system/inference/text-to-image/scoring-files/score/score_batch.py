@@ -438,10 +438,11 @@ def analyze_data(
                 if is_input:
                     blocked_input.add(index)
                 else:
-                    image_path = os.path.join(output_dir, row[column])
-                    if data_type == "binary" and os.path.isfile(image_path):
-                        os.remove(image_path)
-                    data_frame.at[index, column] = "Blocked By Azure AI Content Safety"
+                    if data_type == "binary":
+                        image_path = os.path.join(output_dir, str(row[column]))
+                        if os.path.isfile(image_path):
+                            os.remove(image_path)
+                        data_frame.at[index, column] = "Blocked By Azure AI Content Safety"
     return blocked_input
 
 
@@ -518,9 +519,11 @@ def analyze_text(text: str) -> int:
 
     :param image_in_byte64: image in base64 format
     :type image_in_byte64: str
-    :return: maximum severity of all categories
+    :return: maximum severity of all categories. If input type is not text then return 0.
     :rtype: int
     """
+    if not isinstance(text, str):
+        return 0
     chunking_utils = CsChunkingUtils(chunking_n=1000, delimiter=".")
     split_text = chunking_utils.split_by(text)
 
