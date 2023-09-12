@@ -71,7 +71,7 @@ This will also generate a GitHub Actions workflow file for any new examples in t
 
 ### Discoverability
 
-Examples in this repository can be index in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
+Examples in this repository can be indexed in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
 
 - add an excellent `README.md` file in the example directory
 - add required YAML frontmatter at the top of the `README.md`
@@ -94,5 +94,3 @@ description: Example description.
 
 ### Other resources
 * [CLI contributing guide.](cli/CONTRIBUTING.md)
-* [Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
-* [Notebooks contributing guide.](notebooks/CONTRIBUTING.md)
