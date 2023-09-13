@@ -2,7 +2,7 @@
 # # Build an ACS Index using langchain data loaders and MLIndex SDK
 
 # %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10.0a20230825006' --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
+# %pip install 'azure-ai-ml==1.10'
 # %pip install 'azureml-rag[cognitive_search]>=0.2.0'
 # %pip install wikipedia
 
@@ -33,6 +33,7 @@ split_docs = MarkdownTextSplitter.from_tiktoken_encoder(
 # %%
 from azureml.rag.mlindex import MLIndex
 
+mlindex_output_path = "./hunter_x_hunter_aoai_acs"
 # Process data into FAISS Index using HuggingFace embeddings
 mlindex = MLIndex.from_documents(
     documents=split_docs,
@@ -42,9 +43,31 @@ mlindex = MLIndex.from_documents(
     index_type="acs",
     index_connection=acs_connection,
     index_config={"index_name": "hunter_x_hunter_aoai_acs"},
+    output_path=mlindex_output_path,
 )
 
 # %% Query documents, use with inferencing framework
 index = mlindex.as_langchain_vectorstore()
 docs = index.similarity_search("What is bungie gum?", k=5)
 print(docs)
+
+# %% Register local MLIndex as remote asset
+from azure.ai.ml.entities import Data
+
+asset_name = "hunter_x_hunter_aoai_acs_mlindex"
+asset = ml_client.data.create_or_update(
+    Data(
+        name=asset_name,
+        version="1",
+        path=mlindex_output_path,
+        description="MLIndex Documentation Embedded using Azure OpenAI indexed using Azure Cognitive Search.",
+        properties={
+            "azureml.mlIndexAssetKind": "acs",
+            "azureml.mlIndexAsset": "true",
+            "azureml.mlIndexAssetSource": "Local Data",
+            "azureml.mlIndexAssetPipelineRunId": "Local",
+        },
+    )
+)
+
+print(asset)
