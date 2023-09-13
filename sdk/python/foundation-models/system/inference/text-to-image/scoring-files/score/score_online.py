@@ -40,7 +40,7 @@ except:
 
 _logger = logging.getLogger(__name__)
 
-# Pandas installed, may not be necessary for tensorspec based models, so don't require it all the time
+# Pandas library might not be required for tensorspec based models, so don't require it all the time
 pandas_installed = False
 try:
     import pandas as pd
@@ -54,7 +54,7 @@ except ImportError as exception:
 
 
 class AsyncRateLimitedOpsUtils:
-    # 1000 requests / 10 seconds. Limiting to 800 request per 10 secods
+    # 1000 requests / 10 seconds. Limiting to 800 request per 10 seconds
     # limiting to 1000 concurrent requests
     def __init__(
         self,
