@@ -1,10 +1,6 @@
 # %%[markdown]
 # # Local Documents to Azure Cognitive Search Index
 
-# %% Prerequisites
-# %pip install 'azure-ai-ml==1.10'
-# %pip install 'azureml-rag[cognitive_search]>=0.2.0'
-
 # %% Authenticate to you AzureML Workspace, download a `config.json` from the top right hand corner menu of the Workspace.
 from azureml.rag.dataindex import DataIndex
 from azure.ai.ml import MLClient, load_data

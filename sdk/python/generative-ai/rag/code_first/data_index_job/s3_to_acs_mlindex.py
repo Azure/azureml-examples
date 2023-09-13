@@ -1,10 +1,6 @@
 # %%[markdown]
 # # S3 via OneLake to Azure Cognitive Search Index
 
-# %% Prerequisites
-# %pip install 'azure-ai-ml==1.10'
-# %pip install 'azureml-rag[cognitive_search]>=0.2.0'
-
 # %% Authenticate to an AzureML Workspace, you can download a `config.json` from the top-right-hand corner menu of a Workspace.
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential

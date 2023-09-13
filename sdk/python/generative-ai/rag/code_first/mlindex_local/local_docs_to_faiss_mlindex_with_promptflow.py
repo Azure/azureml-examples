@@ -1,6 +1,7 @@
+# %%[markdown]
+# # Build a Faiss Index using MLIndex SDK and use it in Promptflow
+
 # %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10'
-# %pip install 'azureml-rag[document_parsing,faiss]>=0.2.0'
 # %pip install -U 'promptflow[azure]' promptflow-tools promptflow-vectordb
 
 # %% Get Azure Cognitive Search Connection

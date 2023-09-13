@@ -1,10 +1,6 @@
 # %%[markdown]
 # # Build a Faiss Index using MLIndex SDK
 
-# %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10'
-# %pip install 'azureml-rag[document_parsing,faiss,hugging_face]>=0.2.0'
-
 # %%
 from azureml.rag.mlindex import MLIndex
 

@@ -1,10 +1,6 @@
 # %%[markdown]
 # # Build an ACS Index using MLIndex SDK
 
-# %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10'
-# %pip install 'azureml-rag[document_parsing,cognitive_search]>=0.2.0'
-
 # %% Get Azure Cognitive Search Connection
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential

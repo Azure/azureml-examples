@@ -2,8 +2,6 @@
 # # Build an ACS Index using langchain data loaders and MLIndex SDK
 
 # %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10'
-# %pip install 'azureml-rag[cognitive_search]>=0.2.0'
 # %pip install wikipedia
 
 # %% Get Azure Cognitive Search Connection
