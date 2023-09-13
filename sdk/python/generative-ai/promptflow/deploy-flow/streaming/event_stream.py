@@ -11,7 +11,7 @@ class EventStream:
 
     """
 
-    def __init__(self, lines, encoding='utf-8'):
+    def __init__(self, lines, encoding="utf-8"):
         self._lines = lines
         self._encoding = encoding
 
@@ -37,26 +37,34 @@ class Event:
 
     def append_line(self, line):
         if not line:
-            raise ValueError("Not supposed to accept empty lines. Please handle this outside of the Event class.")
+            raise ValueError(
+                "Not supposed to accept empty lines. Please handle this outside of the Event class."
+            )
 
         if ":" not in line:
             raise ValueError("Bad format: Each line must contain `:`.")
 
-        parts = line.split(':', maxsplit=1)
+        parts = line.split(":", maxsplit=1)
         if len(parts) < 2:
-            raise ValueError("Bad format: Each line must could be splited into two parts by ':'.")
+            raise ValueError(
+                "Bad format: Each line must could be splited into two parts by ':'."
+            )
 
         prefix = parts[0]
         data = parts[1].strip()
 
         if prefix == "id":
             if self.id is not None:
-                raise ValueError("Bad event: event id cannot be specified multiple times.")
+                raise ValueError(
+                    "Bad event: event id cannot be specified multiple times."
+                )
             self.event = data
 
         if prefix == "event":
             if self.event is not None:
-                raise ValueError("Bad event: event type cannot be specified multiple times.")
+                raise ValueError(
+                    "Bad event: event type cannot be specified multiple times."
+                )
             self.event = data
 
         if prefix == "data":

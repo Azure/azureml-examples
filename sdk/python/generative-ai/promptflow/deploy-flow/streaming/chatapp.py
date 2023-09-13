@@ -12,11 +12,11 @@ from event_stream import EventStream
 class ColoredFormatter(logging.Formatter):
     # Color code dictionary
     color_codes = {
-        'debug': '\033[0;32m',  # Green
-        'info': '\033[0;36m',  # Cyan
-        'warning': '\033[0;33m',  # Yellow
-        'error': '\033[0;31m',  # Red
-        'critical': '\033[0;35m',  # Magenta
+        "debug": "\033[0;32m",  # Green
+        "info": "\033[0;36m",  # Cyan
+        "warning": "\033[0;33m",  # Yellow
+        "error": "\033[0;31m",  # Red
+        "critical": "\033[0;35m",  # Magenta
     }
 
     def format(self, record):
@@ -24,7 +24,9 @@ class ColoredFormatter(logging.Formatter):
         message = super().format(record)
 
         # Add color codes
-        message = f"{self.color_codes.get(record.levelname.lower(), '')}{message}\033[0m"
+        message = (
+            f"{self.color_codes.get(record.levelname.lower(), '')}{message}\033[0m"
+        )
 
         return message
 
@@ -51,7 +53,9 @@ def score(url, api_key, body, stream=True, on_event=None):
         # The azureml-model-deployment header will force the request to go to a specific deployment.
         # Remove this header to have the request observe the endpoint traffic rules
         "azureml-model-deployment": "keli19-chat-0727",
-        "Accept": "text/event-stream, application/json" if stream else "application/json"
+        "Accept": "text/event-stream, application/json"
+        if stream
+        else "application/json",
     }
 
     logger.info("Sending HTTP request...")
@@ -82,7 +86,7 @@ def score(url, api_key, body, stream=True, on_event=None):
 
     time1 = datetime.now()
     try:
-        content_type = response.headers.get('Content-Type')
+        content_type = response.headers.get("Content-Type")
         if "text/event-stream" in content_type:
             output = {}
             event_stream = EventStream(response.iter_lines())
@@ -101,7 +105,15 @@ def score(url, api_key, body, stream=True, on_event=None):
 
 
 class ChatApp:
-    def __init__(self, ml_client, endpoint_name, chat_input_name, chat_output_name, stream=True, debug=False):
+    def __init__(
+        self,
+        ml_client,
+        endpoint_name,
+        chat_input_name,
+        chat_output_name,
+        stream=True,
+        debug=False,
+    ):
         self._chat_input_name = chat_input_name
         self._chat_output_name = chat_output_name
 
@@ -114,7 +126,9 @@ class ChatApp:
         endpoint = ml_client.online_endpoints.get(endpoint_name)
         keys = ml_client.online_endpoints.get_keys(endpoint_name)
         self._endpoint_url = endpoint.scoring_uri
-        self._endpoint_key = keys.primary_key if endpoint.auth_mode == "key" else keys.access_token
+        self._endpoint_key = (
+            keys.primary_key if endpoint.auth_mode == "key" else keys.access_token
+        )
 
         logger.info(f"Done.")
         logger.debug(f"Target endpoint: {endpoint.id}")
@@ -138,7 +152,7 @@ class ChatApp:
             dct = json.loads(event.data)
             answer_delta = dct.get(self._chat_output_name)
             if answer_delta:
-                print(answer_delta, end='')
+                print(answer_delta, end="")
                 # We need to flush the output
                 # otherwise the text does not appear on the console
                 # unless a new line comes.
@@ -147,8 +161,12 @@ class ChatApp:
                 time.sleep(0.02)
 
         try:
-            payload = self.get_payload(chat_input=chat_input, chat_history=self._chat_history)
-            output, stream = score(self.url, self.api_key, payload, stream=self._stream, on_event=on_event)
+            payload = self.get_payload(
+                chat_input=chat_input, chat_history=self._chat_history
+            )
+            output, stream = score(
+                self.url, self.api_key, payload, stream=self._stream, on_event=on_event
+            )
             # We don't use self._stream here since the result may not always be the same as self._stream specified.
             if stream:
                 # Print a new line at the end of the content to make sure
@@ -158,12 +176,14 @@ class ChatApp:
             else:
                 print(output.get(self._chat_output_name, "<empty>"))
 
-            self._chat_history.append({
-                "inputs": {
-                    self._chat_input_name: chat_input,
-                },
-                "outputs": output,
-            })
+            self._chat_history.append(
+                {
+                    "inputs": {
+                        self._chat_input_name: chat_input,
+                    },
+                    "outputs": output,
+                }
+            )
             logger.info("Length of chat history: %s", len(self._chat_history))
         except requests.HTTPError as e:
             logger.error(e.response.text)
