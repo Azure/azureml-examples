@@ -17,7 +17,6 @@ from azureml.rag.utils.logging import get_logger
 logger = get_logger("document_intelligence_loader")
 
 
-
 class SingletonDocumentIntelligenceClient:
     """Singleton class for FormRecognizerClient."""
 
@@ -27,12 +26,18 @@ class SingletonDocumentIntelligenceClient:
 
     def __new__(cls, *args, **kwargs):
         if not cls.instance:
-            logger.info("SingletonFormRecognizerClient: Creating instance of Form recognizer per process")
+            logger.info(
+                "SingletonFormRecognizerClient: Creating instance of Form recognizer per process"
+            )
             if cls.url and cls.key:
-                cls.instance = DocumentAnalysisClient(endpoint=cls.url, credential=AzureKeyCredential(cls.key))
+                cls.instance = DocumentAnalysisClient(
+                    endpoint=cls.url, credential=AzureKeyCredential(cls.key)
+                )
             else:
-                logger.info("SingletonFormRecognizerClient: Skipping since credentials not provided. Assuming NO form recognizer extensions(like .pdf) in directory")
-                cls.instance = object() # dummy object
+                logger.info(
+                    "SingletonFormRecognizerClient: Skipping since credentials not provided. Assuming NO form recognizer extensions(like .pdf) in directory"
+                )
+                cls.instance = object()  # dummy object
         return cls.instance
 
     def __getstate__(self):
@@ -40,7 +45,9 @@ class SingletonDocumentIntelligenceClient:
 
     def __setstate__(self, state):
         url, key = state
-        self.instance = DocumentAnalysisClient(endpoint=url, credential=AzureKeyCredential(key))
+        self.instance = DocumentAnalysisClient(
+            endpoint=url, credential=AzureKeyCredential(key)
+        )
 
 
 class DocumentIntelligencePDFLoader(BaseDocumentLoader):
@@ -49,17 +56,26 @@ class DocumentIntelligencePDFLoader(BaseDocumentLoader):
     document_intelligence_client = None
     use_layout = None
 
-    def __init__(self, file: IO, document_source: DocumentSource, metadata: dict = None):
+    def __init__(
+        self, file: IO, document_source: DocumentSource, metadata: dict = None
+    ):
         """Initialize a PDF loader."""
         if file.mode == "r":
             file = file.buffer
         super().__init__(file, document_source, metadata=metadata)
 
         if DocumentIntelligencePDFLoader.document_intelligence_client is None:
-            DocumentIntelligencePDFLoader.document_intelligence_client = SingletonDocumentIntelligenceClient()
+            DocumentIntelligencePDFLoader.document_intelligence_client = (
+                SingletonDocumentIntelligenceClient()
+            )
 
         if self.use_layout is None:
-            self.use_layout = os.environ.get("AZURE_AI_DOCUMENT_INTELLIGENCE_USE_LAYOUT", "false").lower() == "true"
+            self.use_layout = (
+                os.environ.get(
+                    "AZURE_AI_DOCUMENT_INTELLIGENCE_USE_LAYOUT", "false"
+                ).lower()
+                == "true"
+            )
         logger.info(f"{self.use_layout = }")
 
     def load_chunked_document(self) -> ChunkedDocument:
@@ -74,12 +90,12 @@ class DocumentIntelligencePDFLoader(BaseDocumentLoader):
                 path=self.document_source.path.with_suffix(".html"),
                 filename=self.document_source.filename,
                 url=self.document_source.url,
-                mtime=self.document_source.mtime
+                mtime=self.document_source.mtime,
             )
         return ChunkedDocument(
             chunks=pages,
             source=document_source,
-            metadata={**self.metadata, "chunk_prefix": chunk_prefix}
+            metadata={**self.metadata, "chunk_prefix": chunk_prefix},
         )
 
     def load(self) -> List[Document]:
@@ -88,14 +104,17 @@ class DocumentIntelligencePDFLoader(BaseDocumentLoader):
 
         from azureml.rag.utils import merge_dicts
 
-        page_map = extract_pdf_content(self.file, self.document_intelligence_client, use_layout=self.use_layout)
-        #full_text = "".join([page_text for _, _, page_text in page_map])
+        page_map = extract_pdf_content(
+            self.file, self.document_intelligence_client, use_layout=self.use_layout
+        )
+        # full_text = "".join([page_text for _, _, page_text in page_map])
         metadata = copy.deepcopy(self.metadata)
         return [
             StaticDocument(
                 cleanup_content(page_text) if self.use_layout else page_text,
-                metadata=merge_dicts(metadata, {"source": {"page_number": page_num}})
-            ) for page_num, _, page_text in page_map
+                metadata=merge_dicts(metadata, {"source": {"page_number": page_num}}),
+            )
+            for page_num, _, page_text in page_map
         ]
 
     @classmethod
@@ -108,26 +127,35 @@ class DocumentIntelligencePDFLoader(BaseDocumentLoader):
         return [".pdf"]
 
 
-PDF_HEADERS = {
-    "title": "h1",
-    "sectionHeading": "h2"
-}
+PDF_HEADERS = {"title": "h1", "sectionHeading": "h2"}
 
 
 def table_to_html(table):
     import html
 
     table_html = "<table>"
-    rows = [sorted([cell for cell in table.cells if cell.row_index == i], key=lambda cell: cell.column_index) for i in range(table.row_count)]
+    rows = [
+        sorted(
+            [cell for cell in table.cells if cell.row_index == i],
+            key=lambda cell: cell.column_index,
+        )
+        for i in range(table.row_count)
+    ]
     for row_cells in rows:
         table_html += "<tr>"
         for cell in row_cells:
-            tag = "th" if (cell.kind == "columnHeader" or cell.kind == "rowHeader") else "td"
+            tag = (
+                "th"
+                if (cell.kind == "columnHeader" or cell.kind == "rowHeader")
+                else "td"
+            )
             cell_spans = ""
-            if cell.column_span > 1: cell_spans += f" colSpan={cell.column_span}"
-            if cell.row_span > 1: cell_spans += f" rowSpan={cell.row_span}"
+            if cell.column_span > 1:
+                cell_spans += f" colSpan={cell.column_span}"
+            if cell.row_span > 1:
+                cell_spans += f" rowSpan={cell.row_span}"
             table_html += f"<{tag}{cell_spans}>{html.escape(cell.content)}</{tag}>"
-        table_html +="</tr>"
+        table_html += "</tr>"
     table_html += "</table>"
     return table_html
 
@@ -136,7 +164,7 @@ def extract_pdf_content(file, form_recognizer_client, use_layout=False):
     offset = 0
     page_map = []
     model = "prebuilt-layout" if use_layout else "prebuilt-read"
-    poller = form_recognizer_client.begin_analyze_document(model, document = file)
+    poller = form_recognizer_client.begin_analyze_document(model, document=file)
     form_recognizer_results = poller.result()
 
     # (if using layout) mark all the positions of headers
@@ -150,18 +178,22 @@ def extract_pdf_content(file, form_recognizer_client, use_layout=False):
             roles_end[para_end] = paragraph.role
 
     for page_num, page in enumerate(form_recognizer_results.pages):
-        tables_on_page = [table for table in form_recognizer_results.tables if table.bounding_regions[0].page_number == page_num + 1]
+        tables_on_page = [
+            table
+            for table in form_recognizer_results.tables
+            if table.bounding_regions[0].page_number == page_num + 1
+        ]
 
         # (if using layout) mark all positions of the table spans in the page
         page_offset = page.spans[0].offset
         page_length = page.spans[0].length
-        table_chars = [-1]*page_length
+        table_chars = [-1] * page_length
         for table_id, table in enumerate(tables_on_page):
             for span in table.spans:
                 # replace all table spans with "table_id" in table_chars array
                 for i in range(span.length):
                     idx = span.offset - page_offset + i
-                    if idx >=0 and idx < page_length:
+                    if idx >= 0 and idx < page_length:
                         table_chars[idx] = table_id
 
         # build page text by replacing charcters in table spans with table html and replace the characters corresponding to headers with html headers, if using layout
@@ -189,7 +221,7 @@ def extract_pdf_content(file, form_recognizer_client, use_layout=False):
         page_map.append((page_num, offset, page_text))
         offset += len(page_text)
 
-    #full_text = "".join([page_text for _, _, page_text in page_map])
+    # full_text = "".join([page_text for _, _, page_text in page_map])
     return page_map
 
 
