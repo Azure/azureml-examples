@@ -42,6 +42,8 @@ jobs:
       # Compute
       compute_model_import: ${{parent.inputs.compute_model_import}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
+      # using same compute for model evaluation as finetuning
+      compute_model_evaluation: ${{parent.inputs.compute_finetune}}
       process_count_per_instance: 1
       instance_count: 1
 
@@ -55,6 +57,7 @@ jobs:
       # data
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
+      test_data: ${{parent.inputs.validation_data}}
 
       # Finetuning args
       image_width: -1
@@ -93,6 +96,11 @@ jobs:
       # gradient_accumulation_step: 1
       # label_smoothing_factor: 0.0
       # max_grad_norm: 1.0
+
+      # Model evaluation args
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # label_column_name: label
+      # input_column_names: image_url
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}
