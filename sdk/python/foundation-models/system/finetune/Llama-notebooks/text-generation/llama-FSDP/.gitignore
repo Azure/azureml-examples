@@ -1,0 +1,6 @@
+**/*.amlignore
+**/*.amltmp
+**/*.DS_Store
+**/__pycache__
+**/*.ipynb_checkpoints
+**/*.ipynb_aml_checkpoints
