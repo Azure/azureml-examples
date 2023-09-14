@@ -25,7 +25,7 @@ deployment_name="demo-$version"
 data_path="data_batch"
 python ./prepare_data.py --mode "batch" --data_path $data_path
 # sample request data in csv format with image column
-sample_request_csv="./data_batch/zero_shot_image_classification_lis.csv"
+sample_request_csv="./data_batch/zero_shot_image_classification_data.csv"
 sample_request_folder="./data_batch/fridgeObjects"
 
 # 1. Setup pre-requisites
