@@ -86,7 +86,7 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Prepare data for image classification"
+        description="Prepare data for zero-shot image classification"
     )
     parser.add_argument(
         "--data_path", type=str, default="data", help="Dataset location"
@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
     dataset_dir = download_and_unzip(
         dataset_parent_dir=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), args.data_path
+            os.path.dirname(os.path.realpath(__file__)), args.data_path
         ),
     )
 

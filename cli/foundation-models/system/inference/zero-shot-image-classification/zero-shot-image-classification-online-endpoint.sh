@@ -19,9 +19,10 @@ endpoint_name="zero-shot-image-cls-$version"
 deployment_sku="Standard_DS3_v2"
 
 # Prepare data for deployment
-python ./prepare_data.py --data_path "data_online" --mode "online"
+data_path="./data_online"
+python ./prepare_data.py --data_path $data_path --mode "online"
 # sample_request_data
-sample_request_data="./data_online/fridgeObjects/sample_request_data.json"
+sample_request_data="$data_path/fridgeObjects/sample_request_data.json"
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
    ["$resource_group_name" = "<RESOURCE_GROUP>" ] || \
