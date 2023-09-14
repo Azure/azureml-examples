@@ -94,7 +94,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """
     image_list = []
 
-    csv_file_name = "zero_shot_image_classification_lis.csv"
+    csv_file_name = "zero_shot_image_classification_data.csv"
 
     dir_names = []
     for dir_name in os.listdir(dataset_dir):
