@@ -88,7 +88,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """Prepare image folder and csv file for batch inference.
 
     This function will move all images to a single image folder and also create a csv
-    file with images in base64 format and the candidate labels
+    file with images in base64 format and the candidate labels.
     :param dataset_dir: dataset directory
     :type dataset_dir: str
     """
@@ -109,6 +109,9 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
             shutil.rmtree(dir_path)
         else:
             os.remove(dir_path)
+
+    # labels are only added to the first row
+    # all other rows in the "text" column are ignored
     labels = ",".join(dir_names)
     data = [[image, ""] for image in image_list]
     df = pd.DataFrame(data, columns=["image", "text"]).sample(10)
