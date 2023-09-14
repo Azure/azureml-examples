@@ -9,17 +9,10 @@ workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="runwayml-stable-diffusion-v1-5"
+model_label="latest"
 
 # Path to input .csv file
-inputs_dir="./batch_data"
-
-# Validate the existence of the model in the registry and get the latest version
-model_list=$(az ml model list --name ${model_name} --registry-name ${registry_name} 2>&1)
-if [[ ${model_list} == *"[]"* ]]; then
-    echo "Model doesn't exist in registry. Check the model list and try again."; exit 1;
-fi
-version_temp=${model_list#*\"version\": \"}
-model_version=${version_temp%%\"*}
+base_dir="./batch_data"
 
 version=$(date +%s)
 endpoint_name="text-to-image-$version"
@@ -39,12 +32,14 @@ az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
 # 2. Check if the model exists in the registry
-# need to confirm model show command works for registries outside the tenant (aka system registry)
-if ! az ml model show --name $model_name --version $model_version --registry-name $registry_name 
+# Need to confirm model show command works for registries outside the tenant (aka system registry)
+if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
 then
-    echo "Model $model_name:$model_version does not exist in registry $registry_name"
+    echo "Model $model_name:$model_label does not exist in registry $registry_name"
     exit 1
 fi
+
+model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 # Create an AML compute for the batch deployment
 az ml compute create --name gpu-cluster --type AmlCompute --min-instances 0 --max-instances 3 --size $compute_sku $workspace_info || {
@@ -64,7 +59,7 @@ az ml batch-deployment create --file batch-deploy.yml --set-default $workspace_i
 }
 
 # 4. Invoke a job on the batch endpoint
-invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $inputs_dir $workspace_info 2>&1) || {
+invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $base_dir $workspace_info 2>&1) || {
     echo "endpoint invoke failed"; exit 1;
 }
 invoke_temp=${invoke_output#*\"name\": \"}
@@ -76,7 +71,7 @@ az ml job stream --name $job_name $workspace_info || {
 }
 
 # 6. Download the job output
-az ml job download --name $job_name --download-path "$inputs_dir/output" $workspace_info || {
+az ml job download --name $job_name --download-path "$base_dir/output" $workspace_info || {
     echo "job output download failed"; exit 1;
 }
 
