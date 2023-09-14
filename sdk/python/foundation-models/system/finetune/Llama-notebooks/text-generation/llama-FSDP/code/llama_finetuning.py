@@ -6,6 +6,7 @@ from dataclasses import asdict
 import fire
 import torch
 from torch.distributed.fsdp.fully_sharded_data_parallel import CPUOffload
+
 # Unused imports removed
 from utils import fsdp_auto_wrap_policy
 from transformers import (
@@ -25,7 +26,7 @@ from utils.train_utils import (
     setup_environ_flags,
     print_model_size,
     get_policies,
-    predict
+    predict,
 )
 
 from utils.dataset_utils import get_preprocessed_dataset
@@ -50,18 +51,19 @@ import torch.distributed as dist
 from transformers.models.llama.modeling_llama import LlamaDecoderLayer
 from torch.distributed.elastic.multiprocessing.errors import record
 
+
 @record
 def main(**kwargs):
     # Update the configuration for the training and sharding process
     print("*****************Command line Arguments*******************")
-    for k,v in kwargs.items():
+    for k, v in kwargs.items():
         print(f"{k} = {v}")
     update_config((train_config, fsdp_config), **kwargs)
     train_config.task_name = kwargs["task_name"]
     print("*****************Training Configuration************************")
     for key in train_config.__annotations__.keys():
         print(f"{key} = {getattr(train_config, key)}")
-    
+
     print("****************FSDP Configuration********************")
     for key in fsdp_config.__annotations__.keys():
         print(f"{key} = {getattr(fsdp_config, key)}")
@@ -82,9 +84,9 @@ def main(**kwargs):
         setup_environ_flags(local_rank)
 
     # Calculate gradient accumulation steps
-    #gradient_accumulation_steps = train_config.batch_size_training // train_config.micro_batch_size
+    # gradient_accumulation_steps = train_config.batch_size_training // train_config.micro_batch_size
     gradient_accumulation_steps = 1
-     
+
     dataset_config = generate_dataset_config(train_config, kwargs)
     print("****************Dataset Configuration********************")
     for key in dataset_config.__annotations__.keys():
@@ -93,7 +95,7 @@ def main(**kwargs):
     print(f"Loading the model for process {os.environ['LOCAL_RANK']}")
     # Load the pre-trained model and setup its configuration
 
-    if train_config.task_name  == "text-classification":
+    if train_config.task_name == "text-classification":
         # For Text-classification
         if train_config.enable_fsdp and train_config.low_cpu_fsdp:
             if rank == 0:
@@ -101,10 +103,12 @@ def main(**kwargs):
                     train_config.model_name,
                     load_in_8bit=True if train_config.quantization else None,
                     device_map="auto" if train_config.quantization else None,
-                    num_labels=dataset_config.num_labels
+                    num_labels=dataset_config.num_labels,
                 )
             else:
-                llama_config = LlamaConfig.from_pretrained(train_config.model_name, num_labels=dataset_config.num_labels)
+                llama_config = LlamaConfig.from_pretrained(
+                    train_config.model_name, num_labels=dataset_config.num_labels
+                )
                 with torch.device("meta"):
                     model = LlamaForSequenceClassification(llama_config)
         else:
@@ -112,7 +116,7 @@ def main(**kwargs):
                 train_config.model_name,
                 load_in_8bit=True if train_config.quantization else None,
                 device_map="auto" if train_config.quantization else None,
-                num_labels = dataset_config.num_labels
+                num_labels=dataset_config.num_labels,
             )
     else:
         if train_config.enable_fsdp and train_config.low_cpu_fsdp:
@@ -120,7 +124,7 @@ def main(**kwargs):
                 model = LlamaForCausalLM.from_pretrained(
                     train_config.model_name,
                     load_in_8bit=True if train_config.quantization else None,
-                    device_map="auto" if train_config.quantization else None
+                    device_map="auto" if train_config.quantization else None,
                 )
             else:
                 llama_config = LlamaConfig.from_pretrained(train_config.model_name)
@@ -130,38 +134,43 @@ def main(**kwargs):
             model = LlamaForCausalLM.from_pretrained(
                 train_config.model_name,
                 load_in_8bit=True if train_config.quantization else None,
-                device_map="auto" if train_config.quantization else None
+                device_map="auto" if train_config.quantization else None,
             )
 
     if train_config.enable_fsdp and train_config.use_fast_kernels:
         """
         For FSDP and FSDP+PEFT, setting 'use_fast_kernels' will enable
-        using of Flash Attention or Xformer memory-efficient kernels 
+        using of Flash Attention or Xformer memory-efficient kernels
         based on the hardware being used. This would speed up fine-tuning.
         """
         try:
             from optimum.bettertransformer import BetterTransformer
-            model = BetterTransformer.transform(model) 
+
+            model = BetterTransformer.transform(model)
         except ImportError:
-            print("Module 'optimum' not found. Please install 'optimum' it before proceeding.")
+            print(
+                "Module 'optimum' not found. Please install 'optimum' it before proceeding."
+            )
     print_model_size(model, train_config, rank if train_config.enable_fsdp else 0)
-    
+
     print_model_size(model, train_config, rank if train_config.enable_fsdp else 0)
-    
+
     # Prepare the model for int8 training if quantization is enabled
     if train_config.quantization:
         model = prepare_model_for_int8_training(model)
-        
+
     # Convert the model to bfloat16 if fsdp and pure_bf16 is enabled
     if train_config.enable_fsdp and fsdp_config.pure_bf16:
         model.to(torch.bfloat16)
 
     # Load the tokenizer and add special tokens
-    tokenizer = LlamaTokenizer.from_pretrained(os.path.join(train_config.model_name, "../tokenizer"), legacy=False)
+    tokenizer = LlamaTokenizer.from_pretrained(
+        os.path.join(train_config.model_name, "../tokenizer"), legacy=False
+    )
     tokenizer.pad_token = tokenizer.eos_token
     # tokenizer.add_special_tokens(
     #         {
-            
+
     #             "pad_token": "<PAD>",
     #         }
     #     )
@@ -176,39 +185,48 @@ def main(**kwargs):
 
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
-    
-    #setting up FSDP if enable_fsdp is enabled
+
+    # setting up FSDP if enable_fsdp is enabled
     if train_config.enable_fsdp:
         if not train_config.use_peft and train_config.freeze_layers:
             freeze_transformer_layers(train_config.num_freeze_layers)
 
         mixed_precision_policy, wrapping_policy = get_policies(fsdp_config, rank)
         my_auto_wrapping_policy = fsdp_auto_wrap_policy(model, LlamaDecoderLayer)
-   
+
         model = FSDP(
             model,
-            auto_wrap_policy= my_auto_wrapping_policy if train_config.use_peft else wrapping_policy,
-            mixed_precision=mixed_precision_policy if not fsdp_config.pure_bf16 else None,
+            auto_wrap_policy=my_auto_wrapping_policy
+            if train_config.use_peft
+            else wrapping_policy,
+            mixed_precision=mixed_precision_policy
+            if not fsdp_config.pure_bf16
+            else None,
             sharding_strategy=fsdp_config.sharding_strategy,
             device_id=torch.cuda.current_device(),
-            cpu_offload=CPUOffload(offload_params=True) if fsdp_config.cpu_offload else None,
+            cpu_offload=CPUOffload(offload_params=True)
+            if fsdp_config.cpu_offload
+            else None,
             limit_all_gathers=True,
             sync_module_states=train_config.low_cpu_fsdp,
-            param_init_fn=lambda module: module.to_empty(device=torch.device("cuda"), recurse=False)
-            if train_config.low_cpu_fsdp and rank != 0 else None,
+            param_init_fn=lambda module: module.to_empty(
+                device=torch.device("cuda"), recurse=False
+            )
+            if train_config.low_cpu_fsdp and rank != 0
+            else None,
         )
         if fsdp_config.fsdp_activation_checkpointing:
             policies.apply_fsdp_checkpointing(model)
     elif not train_config.quantization and not train_config.enable_fsdp:
         model.to("cuda")
-    
-     # Load and preprocess the dataset for training and validation
+
+    # Load and preprocess the dataset for training and validation
     dataset_train = get_preprocessed_dataset(
         tokenizer,
         dataset_config,
         split="train",
     )
-    
+
     if not train_config.enable_fsdp or rank == 0:
         print(f"--> Training Set Length = {len(dataset_train)}")
 
@@ -234,9 +252,9 @@ def main(**kwargs):
                 dataset_val,
                 rank=dist.get_rank(),
                 num_replicas=dist.get_world_size(),
-                shuffle=False
+                shuffle=False,
             )
-        
+
     # Create DataLoaders for the training and validation dataset
     train_dataloader = torch.utils.data.DataLoader(
         dataset_train,
@@ -258,7 +276,7 @@ def main(**kwargs):
             drop_last=False,
             collate_fn=default_data_collator,
         )
-        
+
     # Initialize the optimizer and learning rate scheduler
     if fsdp_config.pure_bf16 and fsdp_config.optimizer == "anyprecision":
         optimizer = AnyPrecisionAdamW(
@@ -280,7 +298,7 @@ def main(**kwargs):
     results = train(
         model,
         train_dataloader,
-        eval_dataloader, 
+        eval_dataloader,
         tokenizer,
         optimizer,
         scheduler,
@@ -290,11 +308,14 @@ def main(**kwargs):
         local_rank if train_config.enable_fsdp else None,
         rank if train_config.enable_fsdp else None,
     )
-    if not train_config.enable_fsdp or rank==0:
-        [print(f'Key: {k}, Value: {v}') for k, v in results.items()]
+    if not train_config.enable_fsdp or rank == 0:
+        [print(f"Key: {k}, Value: {v}") for k, v in results.items()]
 
     # Generate predictions works for text-generation task only
-    if train_config.generate_predictions and train_config.task_name == "text-generation":
+    if (
+        train_config.generate_predictions
+        and train_config.task_name == "text-generation"
+    ):
         prediction_dataset = get_preprocessed_dataset(
             tokenizer,
             dataset_config,
@@ -305,11 +326,19 @@ def main(**kwargs):
             batch_size=train_config.val_batch_size,
             num_workers=train_config.num_workers_dataloader,
             pin_memory=True,
-            sampler= None,
+            sampler=None,
             drop_last=False,
             collate_fn=default_data_collator,
         )
-        predict(local_rank, model, pred_dataloader, tokenizer, dataset_config.max_gen_length, train_config.artifacts_dir, train_config.task_name)
+        predict(
+            local_rank,
+            model,
+            pred_dataloader,
+            tokenizer,
+            dataset_config.max_gen_length,
+            train_config.artifacts_dir,
+            train_config.task_name,
+        )
 
 
 if __name__ == "__main__":

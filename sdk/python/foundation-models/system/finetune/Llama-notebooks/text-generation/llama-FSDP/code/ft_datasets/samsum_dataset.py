@@ -6,8 +6,9 @@
 import datasets
 import numpy as np
 
+
 def get_preprocessed_samsum(dataset_config, tokenizer, split):
-    if split==dataset_config.prediction_split:
+    if split == dataset_config.prediction_split:
         dataset = datasets.load_dataset("samsum", split=dataset_config.validation_split)
     else:
         dataset = datasets.load_dataset("samsum", split=split)
@@ -15,39 +16,46 @@ def get_preprocessed_samsum(dataset_config, tokenizer, split):
     train_prompt = (
         f"Summarize this dialog:\n{{dialog}}\n---\nSummary:\n{{summary}}{{eos_token}}"
     )
-    val_prompt = (
-        f"Summarize this dialog:\n{{dialog}}\n---\nSummary:\n"
-    )
+    val_prompt = f"Summarize this dialog:\n{{dialog}}\n---\nSummary:\n"
 
     def train_apply_prompt_template(sample):
         return {
-            "text": train_prompt.format(dialog=sample["dialogue"], summary=sample["summary"], eos_token=tokenizer.eos_token)
+            "text": train_prompt.format(
+                dialog=sample["dialogue"],
+                summary=sample["summary"],
+                eos_token=tokenizer.eos_token,
+            )
         }
 
     def val_apply_prompt_template(sample):
-        return {
-            "text": val_prompt.format(dialog=sample["dialogue"])
-        }
-            
+        return {"text": val_prompt.format(dialog=sample["dialogue"])}
+
     if split == dataset_config.train_split:
-        dataset = dataset.map(train_apply_prompt_template, remove_columns=list(dataset.features))
+        dataset = dataset.map(
+            train_apply_prompt_template, remove_columns=list(dataset.features)
+        )
     else:
-        dataset = dataset.map(val_apply_prompt_template, remove_columns=list(dataset.features))
+        dataset = dataset.map(
+            val_apply_prompt_template, remove_columns=list(dataset.features)
+        )
 
     def add_label_ids(sample):
         sample["labels"] = sample["input_ids"]
         return sample
-    
+
     dataset = dataset.map(
-        lambda sample: tokenizer(sample["text"], truncation=True, padding="max_length", max_length=dataset_config.max_input_length),
+        lambda sample: tokenizer(
+            sample["text"],
+            truncation=True,
+            padding="max_length",
+            max_length=dataset_config.max_input_length,
+        ),
         batched=True,
-        remove_columns=list(dataset.features)
+        remove_columns=list(dataset.features),
     )
-    dataset = dataset.map(
-        lambda sample: add_label_ids(sample),
-        batched=True)
-    
-    if split==dataset_config.prediction_split:
+    dataset = dataset.map(lambda sample: add_label_ids(sample), batched=True)
+
+    if split == dataset_config.prediction_split:
         dataset = dataset.select(np.arange(300))
 
     return dataset

@@ -22,6 +22,7 @@ PROMPT_DICT = {
     ),
 }
 
+
 class InstructionDataset(Dataset):
     def __init__(self, dataset_config, tokenizer, partition="train", max_words=30):
         self.ann = json.load(open(dataset_config.data_path))
@@ -45,14 +46,10 @@ class InstructionDataset(Dataset):
         else:
             prompt = PROMPT_DICT["prompt_input"].format_map(ann)
         example = prompt + ann["output"]
-        prompt = torch.tensor(
-            self.tokenizer.encode(prompt), dtype=torch.int64
-        )
+        prompt = torch.tensor(self.tokenizer.encode(prompt), dtype=torch.int64)
         example = self.tokenizer.encode(example)
         example.append(self.tokenizer.eos_token_id)
-        example = torch.tensor(
-            example, dtype=torch.int64
-        )
+        example = torch.tensor(example, dtype=torch.int64)
         padding = self.max_words - example.shape[0]
         if padding > 0:
             example = torch.cat((example, torch.zeros(padding, dtype=torch.int64) - 1))
@@ -70,5 +67,5 @@ class InstructionDataset(Dataset):
         return {
             "input_ids": example,
             "labels": labels,
-            "attention_mask":example_mask,
+            "attention_mask": example_mask,
         }

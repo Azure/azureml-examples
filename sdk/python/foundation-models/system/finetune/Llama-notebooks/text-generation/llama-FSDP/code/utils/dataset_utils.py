@@ -10,7 +10,7 @@ from ft_datasets import (
     get_alpaca_dataset,
     get_samsum_dataset,
     get_emotion_detection_dataset,
-    get_bing_text_classification_dataset
+    get_bing_text_classification_dataset,
 )
 from typing import Optional
 
@@ -20,7 +20,7 @@ DATASET_PREPROC = {
     "grammar_dataset": get_grammar_dataset,
     "samsum_dataset": get_samsum_dataset,
     "emotion_detection_dataset": get_emotion_detection_dataset,
-    "bing_text_classification_dataset": get_bing_text_classification_dataset
+    "bing_text_classification_dataset": get_bing_text_classification_dataset,
 }
 
 
@@ -36,7 +36,7 @@ def get_preprocessed_dataset(
             if split == "train"
             else dataset_config.test_split
         )
-    
+
     return DATASET_PREPROC[dataset_config.dataset](
         dataset_config,
         tokenizer,

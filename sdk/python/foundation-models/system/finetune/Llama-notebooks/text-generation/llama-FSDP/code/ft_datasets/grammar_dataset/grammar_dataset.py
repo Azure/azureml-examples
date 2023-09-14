@@ -28,7 +28,6 @@ from pathlib import Path
 from ft_datasets.utils import ConcatDataset
 
 
-
 class grammar(Dataset):
     def __init__(
         self,
@@ -43,7 +42,9 @@ class grammar(Dataset):
                 delimiter=",",
             )
         except Exception as e:
-            print("Loading of grammar dataset failed! Please see recipes/ft_datasets/grammar_dataset/grammar_dataset_process.ipynb for details on how to download the dataset.")
+            print(
+                "Loading of grammar dataset failed! Please see recipes/ft_datasets/grammar_dataset/grammar_dataset_process.ipynb for details on how to download the dataset."
+            )
             raise e
 
         # self.dataset = load_dataset("wikihow", "all", data_dir="data/", split=type_path)
@@ -64,10 +65,12 @@ class grammar(Dataset):
 
         input_ = example_batch["input"]
         target_ = example_batch["target"]
-        
-        prompt = f"Correct this to standard English: {input_}\n---\nCorrected: {target_}"
+
+        prompt = (
+            f"Correct this to standard English: {input_}\n---\nCorrected: {target_}"
+        )
         sample = self.tokenizer(prompt)
-        
+
         return sample
 
     def __getitem__(self, index):
@@ -83,9 +86,7 @@ class grammar(Dataset):
         }
 
 
-def get_dataset(
-    dataset_config, tokenizer, csv_name=None
-):
+def get_dataset(dataset_config, tokenizer, csv_name=None):
     """cover function for handling loading the working dataset"""
     """dataset loading"""
     if csv_name is None:
@@ -96,6 +97,5 @@ def get_dataset(
         tokenizer=tokenizer,
         csv_name=csv_name,
     )
-    
-    return ConcatDataset(dataset, chunk_size=dataset_config.input_length)
 
+    return ConcatDataset(dataset, chunk_size=dataset_config.input_length)
