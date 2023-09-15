@@ -1,13 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 name: demo
+description: "Batch endpoint for for text-to-image task"
 compute: gpu-cluster
+type: model
 resources:
-  instance_count: 1
-error_threshold: 0
-logging_level: info
-max_concurrency_per_instance: 2
-mini_batch_size: 10
-output_file_name: predictions.csv
-retry_settings:
-  max_retries: 3
-  timeout: 300
+    instance_count: 1
+settings:
+    mini_batch_size: 1
