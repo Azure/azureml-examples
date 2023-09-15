@@ -18,6 +18,7 @@ version=$(date +%s)
 endpoint_name="text-to-image-$version"
 job_name="text-to-image-job-$version"
 
+deployment_compute="gpu-cluster"
 compute_sku="Standard_NC6s_v3"
 
 # 1. Setup pre-requisites
@@ -41,12 +42,19 @@ fi
 
 model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
-# Create an AML compute for the batch deployment
-az ml compute create --name gpu-cluster --type AmlCompute --min-instances 0 --max-instances 3 --size $compute_sku $workspace_info || {
-    echo "compute create failed"; exit 1;
-}
+# 3. Check if compute $deployment_compute exists, else create it
+if az ml compute show --name $deployment_compute $workspace_info
+then
+    echo "Compute cluster $deployment_compute already exists"
+else
+    echo "Creating compute cluster $deployment_compute"
+    az ml compute create --name $deployment_compute --type amlcompute --min-instances 0 --max-instances 2 --size $compute_sku $workspace_info || {
+        echo "Failed to create compute cluster $deployment_compute"
+        exit 1
+    }
+fi
 
-# 3. Deploy the model to an endpoint
+# 4. Deploy the model to an endpoint
 # create batch endpoint 
 az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
@@ -58,7 +66,7 @@ az ml batch-deployment create --file batch-deploy.yml --set-default $workspace_i
     echo "deployment create failed"; exit 1;
 }
 
-# 4. Invoke a job on the batch endpoint
+# 5. Invoke a job on the batch endpoint
 invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $base_dir $workspace_info 2>&1) || {
     echo "endpoint invoke failed. If the job failed with Assertion Error stating actual size of csv exceeds \
     100 MB, then try splitting input csv file into multiple csv files each of size less than 100MB."; exit 1;
@@ -66,23 +74,23 @@ invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $base_
 invoke_temp=${invoke_output#*\"name\": \"}
 job_name=${invoke_temp%%\"*}
 
-# 5. Stream the job logs
+# 6. Stream the job logs
 az ml job stream --name $job_name $workspace_info || {
     echo "job stream-logs failed"; exit 1;
 }
 
-# 6. Download the job output
+# 7. Download the job output
 az ml job download --name $job_name --download-path "generated_images" $workspace_info || {
     echo "job output download failed"; exit 1;
 }
 
-# 5. Delete the endpoint
+# 8. Delete the endpoint
 az ml batch-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
 
-# 6. Delete the compute cluster (Uncomment the below lines to delete the created cluster)
-# az ml compute delete --name gpu-cluster $workspace_info --yes || {
+# 9. Delete the compute cluster (Uncomment the below lines to delete the created cluster)
+# az ml compute delete --name $deployment_compute $workspace_info --yes || {
 #     echo "compute delete failed"; exit 1;
 # }
 
