@@ -64,6 +64,7 @@ az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
 az ml batch-deployment create --file batch-deploy.yml $workspace_info --set \
   endpoint_name=$endpoint_name \
   name=$deployment_name \
+  compute=$deployment_compute \
   model=azureml://registries/$registry_name/models/$model_name/versions/$model_version || {
     echo "deployment create failed"; exit 1;
 }
