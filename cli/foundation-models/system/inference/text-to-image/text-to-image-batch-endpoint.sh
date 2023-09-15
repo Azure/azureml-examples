@@ -75,7 +75,7 @@ job_name=${invoke_temp%%\"*}
 
 # 6. Stream the job logs
 az ml job stream --name $job_name $workspace_info || {
-    echo "job stream-logs failed"; exit 1;
+    echo "job stream-logs failed. If the job failed with Assertion Error stating actual size of csv exceeds 100 MB, then try splitting input csv file into multiple csv files."; exit 1;
 }
 
 # 7. Download the job output
