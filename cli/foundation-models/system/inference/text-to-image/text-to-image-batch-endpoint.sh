@@ -69,7 +69,6 @@ az ml batch-deployment create --file batch-deploy.yml --set-default $workspace_i
 # 5. Invoke a job on the batch endpoint
 invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $base_dir $workspace_info 2>&1) || {
     echo "endpoint invoke failed"; exit 1;
-    
 }
 invoke_temp=${invoke_output#*\"name\": \"}
 job_name=${invoke_temp%%\"*}
