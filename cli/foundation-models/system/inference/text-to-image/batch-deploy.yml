@@ -1,5 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
-name: demo
 description: "Batch endpoint for for text-to-image task"
 compute: gpu-cluster
 type: model

@@ -16,7 +16,7 @@ base_dir="./batch_data"
 
 version=$(date +%s)
 endpoint_name="text-to-image-$version"
-job_name="text-to-image-job-$version"
+deployment_name="stablediffusion-demo"
 
 deployment_compute="gpu-cluster"
 compute_sku="Standard_NC6s_v3"
@@ -61,17 +61,30 @@ az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # deploy model from registry to endpoint in workspace
-az ml batch-deployment create --file batch-deploy.yml --set-default $workspace_info --set \
-  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version || {
+az ml batch-deployment create --file batch-deploy.yml $workspace_info --set \
+  endpoint_name=$endpoint_name \
+  name=$deployment_name \
+  model=azureml://registries/$registry_name/models/$model_name/versions/$model_version || {
     echo "deployment create failed"; exit 1;
 }
 
+# Check if scoring folder exists
+if [ -d $base_dir ]; then
+    echo "Invoking endpoint $endpoint_name with following input:\n\n"
+    ls $data_path
+    echo "\n\n"
+else
+    echo "Scoring folder $data_path does not exist"
+    exit 1
+fi
+
 # 5. Invoke a job on the batch endpoint
-invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $base_dir $workspace_info 2>&1) || {
+job_name=$(az ml batch-endpoint invoke --name $endpoint_name \
+ --deployment-name $deployment_name \
+ --input $base_dir \
+ --input-type uri_folder --query name --output tsv $workspace_info) || {
     echo "endpoint invoke failed"; exit 1;
 }
-invoke_temp=${invoke_output#*\"name\": \"}
-job_name=${invoke_temp%%\"*}
 
 # 6. Stream the job logs
 az ml job stream --name $job_name $workspace_info || {
