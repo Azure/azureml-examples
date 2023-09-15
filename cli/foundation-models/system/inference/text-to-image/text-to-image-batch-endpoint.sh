@@ -68,7 +68,7 @@ az ml batch-deployment create --file batch-deploy.yml --set-default $workspace_i
 
 # 5. Invoke a job on the batch endpoint
 invoke_output=$(az ml batch-endpoint invoke --name $endpoint_name --input $base_dir $workspace_info 2>&1) || {
-    echo "endpoint invoke failed. If the job failed with Assertion Error stating actual size of csv exceeds \
+    echo "endpoint invoke failed"; exit 1;
     100 MB, then try splitting input csv file into multiple csv files each of size less than 100MB."; exit 1;
 }
 invoke_temp=${invoke_output#*\"name\": \"}
