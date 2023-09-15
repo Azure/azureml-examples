@@ -4,7 +4,6 @@ type: automl
 experiment_name: dpv2-cli-automl-forecasting-orange-juice-sales
 # name: dpv2-sdk-forecasting-train-job-01
 description: A Time-Series Forecasting job using orange juice sales dataset
-compute: azureml:cpu-cluster
 task: forecasting
 primary_metric: normalized_root_mean_squared_error
 log_verbosity: info

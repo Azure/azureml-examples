@@ -1,10 +1,10 @@
 set -x
 
 # <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az ml workspace show --query location | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+LOCATION=$(az ml workspace show --query location -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
+WORKSPACE=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 schema='$schema'
 #</create_variables>
 
@@ -35,7 +35,7 @@ wait_for_completion () {
     do
         sleep 5
         response=$($1)
-        operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+        operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
     done
 
   while [[ $status != "Succeeded" && $status != "Failed" ]]

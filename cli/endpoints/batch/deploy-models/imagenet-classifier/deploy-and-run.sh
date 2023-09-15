@@ -4,9 +4,13 @@ set -e
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_variables>
 
+# <name_endpoint>
+ENDPOINT_NAME="imagenet-classifier"
+# </name_endpoint>
+
 # The following code ensures the created deployment has a unique name
 ENDPOINT_SUFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-5} | head -n 1)
-ENDPOINT_NAME="imagenet-classifier-$ENDPOINT_SUFIX"
+ENDPOINT_NAME="$ENDPOINT_NAME-$ENDPOINT_SUFIX"
 
 echo "Download model from Azure Storage"
 # <download_model>
@@ -22,32 +26,32 @@ az ml model create --name $MODEL_NAME --path "model"
 
 echo "Creating compute with GPU"
 # <create_compute>
-az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC6 --min-instances 0 --max-instances 2
+az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC6s_v3 --min-instances 0 --max-instances 2
 # </create_compute>
 
 echo "Creating batch endpoint $ENDPOINT_NAME"
-# <create_batch_endpoint>
+# <create_endpoint>
 az ml batch-endpoint create --file endpoint.yml  --name $ENDPOINT_NAME
-# </create_batch_endpoint>
-
-echo "Creating batch deployment for endpoint $ENDPOINT_NAME"
-# <create_batch_deployment_set_default>
-az ml batch-deployment create --file deployment-by-file.yml --endpoint-name $ENDPOINT_NAME --set-default
-# </create_batch_deployment_set_default>
+# </create_endpoint>
 
 echo "Showing details of the batch endpoint"
-# <check_batch_endpooint_detail>
+# <query_endpoint>
 az ml batch-endpoint show --name $ENDPOINT_NAME
-# </check_batch_endpooint_detail>
+# </query_endpoint>
+
+echo "Creating batch deployment for endpoint $ENDPOINT_NAME"
+# <create_deployment>
+az ml batch-deployment create --file deployment-by-file.yml --endpoint-name $ENDPOINT_NAME --set-default
+# </create_deployment>
 
 echo "Showing details of the batch deployment"
-# <check_batch_deployment_detail>
+# <query_deployment>
 DEPLOYMENT_NAME="imagenet-classifier-resnetv2"
 az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME
-# </check_batch_deployment_detail>
+# </query_deployment>
 
 # <download_sample_data>
-wget https://azuremlexampledata.blob.core.windows.net/data/imagenet-1000.zip
+wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/imagenet-1000.zip
 unzip imagenet-1000.zip -d data
 # </download_sample_data>
 
@@ -66,9 +70,9 @@ az ml job show -n $JOB_NAME --web
 # </show_job_in_studio>
 
 echo "Stream job logs to console"
-# <stream_job_logs_to_console>
+# <stream_job_logs>
 az ml job stream -n $JOB_NAME
-# </stream_job_logs_to_console>
+# </stream_job_logs>
 
 # <check_job_status>
 STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
@@ -86,14 +90,14 @@ else
 fi
 # </check_job_status>
 
-# <download_scores>
+# <download_outputs>
 az ml job download --name $JOB_NAME --output-name score --download-path .
-# </download_scores>
+# </download_outputs>
 
 echo "Creating batch deployment for endpoint $ENDPOINT_NAME with high throughput"
-# <create_batch_deployment_ht>
-az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --default
-# </create_batch_deployment_ht>
+# <create_deployment_ht>
+az ml batch-deployment create --file deployment-by-batch.yml --endpoint-name $ENDPOINT_NAME --set-default
+# </create_deployment_ht>
 
 echo "Invoking batch endpoint with local data"
 # <start_batch_scoring_job_ht>
@@ -101,9 +105,9 @@ JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input azureml:ima
 # </start_batch_scoring_job_ht>
 
 echo "Stream job logs to console"
-# <stream_job_logs_to_console_ht>
+# <stream_job_logs_ht>
 az ml job stream -n $JOB_NAME
-# </stream_job_logs_to_console_ht>
+# </stream_job_logs_ht>
 
 # <check_job_status_ht>
 STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
@@ -122,9 +126,9 @@ fi
 # </check_job_status_ht>
 
 echo "Download scores to local path"
-# <download_scores>
+# <download_outputs>
 az ml job download --name $JOB_NAME --output-name score --download-path ./
-# </download_scores>
+# </download_outputs>
 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes

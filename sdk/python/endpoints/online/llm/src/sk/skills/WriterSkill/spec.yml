@@ -1,0 +1,15 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+
+name: plugin_sk_writer
+display_name: Semantic Kernel Writer Plugin
+description: Writer plugin for semantic kernel, offering a variaty of skills to write novels.
+version: 0.0.1
+type: command
+
+code: .
+tags:
+  semantic_kernel: "true"
+
+# Not really used, but required by the schema
+command: n/a
+environment: azureml://registries/azureml/environments/sklearn-1.1-ubuntu20.04-py38-cpu/versions/17

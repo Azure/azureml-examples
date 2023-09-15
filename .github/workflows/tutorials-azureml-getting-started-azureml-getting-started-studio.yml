@@ -17,7 +17,7 @@ on:
       - tutorials/azureml-getting-started/**
       - .github/workflows/tutorials-azureml-getting-started-azureml-getting-started-studio.yml
       - sdk/python/dev-requirements.txt
-      - infra/**
+      - infra/bootstrapping/**
       - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -44,28 +44,28 @@ jobs:
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup SDK
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run azureml-getting-started/azureml-getting-started-studio.ipynb
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "azureml-getting-started-studio.ipynb";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "azureml-getting-started-studio.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python azureml-getting-started-studio.ipynb azureml-getting-started-studio.output.ipynb
       working-directory: tutorials/azureml-getting-started

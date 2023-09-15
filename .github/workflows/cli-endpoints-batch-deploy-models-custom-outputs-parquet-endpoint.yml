@@ -14,7 +14,7 @@ on:
     paths:
       - cli/endpoints/batch/deploy-models/custom-outputs-parquet/**
       - cli/endpoints/batch/**
-      - infra/**
+      - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-batch-deploy-models-custom-outputs-parquet-endpoint.yml
       - cli/setup.sh
 concurrency:
@@ -33,39 +33,39 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: delete endpoint if existing
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml batch-endpoint delete -n customoutputsparquetendpoint -y
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint8741 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-          az ml batch-endpoint create -n customoutputsparquetendpoint -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
+          az ml batch-endpoint create -n tomoutputsparquetendpoint8741 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
-          az ml batch-deployment create -e customoutputsparquetendpoint -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
+          az ml batch-deployment create -e tomoutputsparquetendpoint8741 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
-          source "${{ github.workspace }}/infra/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/init_environment.sh";
-          az ml batch-endpoint delete -n customoutputsparquetendpoint -y
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint8741 -y
       working-directory: cli
