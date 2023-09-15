@@ -1,10 +1,6 @@
 # %%[markdown]
 # # Build a Faiss Index using MLIndex SDK
 
-# %% Pre-requisites
-# %pip install 'azure-ai-ml==1.10.0a20230825006' --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
-# %pip install 'azureml-rag[document_parsing,faiss,hugging_face]>=0.2.0'
-
 # %%
 from azureml.rag.mlindex import MLIndex
 
@@ -13,7 +9,6 @@ mlindex = MLIndex.from_files(
     source_uri="../",
     source_glob="**/*",
     chunk_size=200,
-    # embeddings_model=sentence_transformers.SentenceTransformer('sentence-transformers/all-mpnet-base-v2'),
     embeddings_model="hugging_face://model/sentence-transformers/all-mpnet-base-v2",
     embeddings_container="./.embeddings_cache/mlindex_docs_mpnet_faiss",
     index_type="faiss",
