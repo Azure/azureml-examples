@@ -3,6 +3,7 @@ following.
 - Added support for cpu_offload and meta_tensors(via low_cpu_fsdp flag). This enabled us to finetune 70b on A100 & ND40 machine.
 - Support for Image classification task. Tested with [emotion-detection dataset](https://huggingface.co/datasets/dair-ai/emotion)
 - Integrated azureml-metrics for evaluation
+- Added model.generate for prediction dataset
 
 # Quick Start command job
 Follow the FSDP_notebook.ipynb to submit the command job on a compute. 
@@ -26,7 +27,7 @@ Here we load the model in bf16(pure_bf16 argument) which only works on high-end 
 # Additional Details:
 - We are installing the PyTorch Nightlies since FSDP is only support via nightlies.
 - Int8 quantization from bit&bytes currently is not supported with FSDP.
-- For LLaMA 70b, finetuning with FSDP + PEFT(LoRA) works on A100 machine. On ND40, LLaMA-70b runs out of GPU memory. A little caveat for finetuning 70b on A100 is, use only 6 out of 8 gpus for finetuning, otherwise the the CPU RAM becomes bootleneck and the process freezes. Use the following command for 70b 
+- For LLaMA 70b, finetuning with FSDP + PEFT(LoRA) works on A100 machine. On ND40, LLaMA-70b requires atleast 2 ND40 nodes with cpu_offloading. Use the following command for 70b 
 ```bash
 torchrun --nnodes 1 --nproc_per_node 6  llama_finetuning.py --enable_fsdp --use_peft --peft_method lora --model_name /patht_of_model_folder/70B --pure_bf16 --output_dir Path/to/save/PEFT/model
 ```

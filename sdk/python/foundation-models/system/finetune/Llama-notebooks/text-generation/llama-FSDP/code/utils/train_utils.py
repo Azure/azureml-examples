@@ -32,6 +32,11 @@ import numpy as np
 import mlflow
 import json
 import time
+from transformers import (
+    LlamaForCausalLM,
+)
+from peft import PeftModel
+import datetime
 
 
 def train(
@@ -153,7 +158,7 @@ def train(
                     if train_config.enable_fsdp:
                         print(f"we are about to save the PEFT modules")
                         save_policy = FullStateDictConfig(
-                            offload_to_cpu=False, rank0_only=True
+                            offload_to_cpu=True, rank0_only=True
                         )
                         with FSDP.state_dict_type(
                             model, StateDictType.FULL_STATE_DICT, save_policy
@@ -378,7 +383,7 @@ def check_frozen_layers_peft_model(model):
 
 def setup():
     """Initialize the process group for distributed training"""
-    dist.init_process_group("nccl")
+    dist.init_process_group("nccl", timeout=datetime.timedelta(seconds=3600))
 
 
 def setup_environ_flags(rank):
@@ -498,6 +503,32 @@ def compute_additional_metrics(predictions, labels, task_type, tokenizer, num_la
     return metrics
 
 
+def load_llama_model(train_config, fsdp_config):
+    """Load the llama model from the train_config.output_dir folder.
+    :train_config: The Training configuration
+    :type train_config: dataclasses.dataclass
+    :fsdp_config: The fsdp configuration
+    :type fsdp_config: dataclasses.dataclass
+    """
+    if fsdp_config.pure_bf16:
+        dtype = torch.bfloat16
+    elif fsdp_config.use_fp16:
+        dtype = torch.float16
+    else:
+        dtype = torch.float32
+    model = LlamaForCausalLM.from_pretrained(
+        train_config.model_name,
+        load_in_8bit=True if train_config.quantization else None,
+        device_map="auto",
+        torch_dtype=dtype,
+    )
+    print(f"Loading the model from {train_config.output_dir}")
+    peft_model = PeftModel.from_pretrained(model, train_config.output_dir)
+    print("Model loaded")
+    model = peft_model.merge_and_unload()
+    return model
+
+
 def predict(
     rank, model, pred_dataloader, tokenizer, max_gen_length, artifacts_folder, task_type
 ):
@@ -545,17 +576,15 @@ def predict(
                     labels.append(label)
             for pred_text in pred_texts:
                 summary = pred_text.split("Summary:")[-1].strip()
-                if summary:
-                    print(summary)
                 all_predicted_texts.append({"predicted_text": summary})
 
     os.makedirs(artifacts_folder, exist_ok=True)
-    filename = f"predictions_{rank}.jsonl"
+    filename = "generated_text.jsonl"
     with open(os.path.join(artifacts_folder, filename), "w") as f:
         for entry in all_predicted_texts:
             json.dump(entry, f)
             f.write("\n")
-    save_location = os.path.join("outputs", f"output_test_{rank}.jsonl")
+    save_location = os.path.join("outputs", "generated_text.jsonl")
     with open(save_location, "w") as f:
         for entry in all_predicted_texts:
             json.dump(entry, f)
@@ -564,5 +593,5 @@ def predict(
         "Time taken to infer on samples = {} seconds".format(time.time() - start_time)
     )
     if len(labels) > 0:
-        print("compyting additional metrics")
+        print("computing additional metrics")
         compute_additional_metrics(generated_tokens, labels, task_type, tokenizer)

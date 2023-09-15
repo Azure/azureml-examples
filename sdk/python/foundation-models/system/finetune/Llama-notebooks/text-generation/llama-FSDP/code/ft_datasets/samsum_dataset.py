@@ -43,19 +43,24 @@ def get_preprocessed_samsum(dataset_config, tokenizer, split):
         sample["labels"] = sample["input_ids"]
         return sample
 
-    dataset = dataset.map(
-        lambda sample: tokenizer(
-            sample["text"],
-            truncation=True,
-            padding="max_length",
-            max_length=dataset_config.max_input_length,
-        ),
-        batched=True,
-        remove_columns=list(dataset.features),
-    )
-    dataset = dataset.map(lambda sample: add_label_ids(sample), batched=True)
-
     if split == dataset_config.prediction_split:
+        dataset = dataset.map(
+            lambda sample: tokenizer(sample["text"]),
+            batched=True,
+            remove_columns=list(dataset.features),
+        )
         dataset = dataset.select(np.arange(300))
+    else:
+        dataset = dataset.map(
+            lambda sample: tokenizer(
+                sample["text"],
+                truncation=True,
+                padding="max_length",
+                max_length=dataset_config.max_input_length,
+            ),
+            batched=True,
+            remove_columns=list(dataset.features),
+        )
+        dataset = dataset.map(lambda sample: add_label_ids(sample), batched=True)
 
     return dataset

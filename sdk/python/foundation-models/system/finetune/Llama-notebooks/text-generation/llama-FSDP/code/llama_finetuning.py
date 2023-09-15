@@ -17,6 +17,7 @@ from transformers import (
     default_data_collator,
 )
 import torch.distributed as dist
+import gc
 
 # Unused imports removed
 from utils.train_utils import (
@@ -26,7 +27,9 @@ from utils.train_utils import (
     setup_environ_flags,
     print_model_size,
     get_policies,
+    load_llama_model,
     predict,
+    cleanup,
 )
 
 from utils.dataset_utils import get_preprocessed_dataset
@@ -167,13 +170,12 @@ def main(**kwargs):
     tokenizer = LlamaTokenizer.from_pretrained(
         os.path.join(train_config.model_name, "../tokenizer"), legacy=False
     )
+    tokenizer.add_special_tokens(
+        {
+            "pad_token": "<PAD>",
+        }
+    )
     tokenizer.pad_token = tokenizer.eos_token
-    # tokenizer.add_special_tokens(
-    #         {
-
-    #             "pad_token": "<PAD>",
-    #         }
-    #     )
     if train_config.use_peft:
         peft_config = generate_peft_config(train_config, kwargs)
         print("****************PEFT Configuration********************")
@@ -311,34 +313,44 @@ def main(**kwargs):
     if not train_config.enable_fsdp or rank == 0:
         [print(f"Key: {k}, Value: {v}") for k, v in results.items()]
 
-    # Generate predictions works for text-generation task only
-    if (
-        train_config.generate_predictions
-        and train_config.task_name == "text-generation"
-    ):
-        prediction_dataset = get_preprocessed_dataset(
-            tokenizer,
-            dataset_config,
-            split=dataset_config.prediction_split,
-        )
-        pred_dataloader = torch.utils.data.DataLoader(
-            prediction_dataset,
-            batch_size=train_config.val_batch_size,
-            num_workers=train_config.num_workers_dataloader,
-            pin_memory=True,
-            sampler=None,
-            drop_last=False,
-            collate_fn=default_data_collator,
-        )
-        predict(
-            local_rank,
-            model,
-            pred_dataloader,
-            tokenizer,
-            dataset_config.max_gen_length,
-            train_config.artifacts_dir,
-            train_config.task_name,
-        )
+    print("*****************Training Completed*******************")
+    # End the distributed process communication
+    cleanup()
+    del model
+    gc.collect()
+    clear_gpu_cache()
+
+    if rank == 0:
+        # if True:
+        # Generate predictions works for text-generation task only
+        if (
+            train_config.generate_predictions
+            and train_config.task_name == "text-generation"
+        ):
+            prediction_dataset = get_preprocessed_dataset(
+                tokenizer,
+                dataset_config,
+                split=dataset_config.prediction_split,
+            )
+            pred_dataloader = torch.utils.data.DataLoader(
+                prediction_dataset,
+                batch_size=1,
+                num_workers=train_config.num_workers_dataloader,
+                pin_memory=True,
+                sampler=None,
+                drop_last=False,
+                collate_fn=default_data_collator,
+            )
+            model = load_llama_model(train_config, fsdp_config)
+            predict(
+                local_rank,
+                model,
+                pred_dataloader,
+                tokenizer,
+                dataset_config.max_gen_length,
+                train_config.artifacts_dir,
+                train_config.task_name,
+            )
 
 
 if __name__ == "__main__":
