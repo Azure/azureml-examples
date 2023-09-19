@@ -25,32 +25,35 @@ The managed identity used by serverless Spark compute is user-assigned managed i
     ```cmd
     armclient PATCH https://management.azure.com/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.MachineLearningServices/workspaces/<AML_WORKSPACE_NAME>?api-version=2022-05-01 '@user-assigned-identity.json'
 
-## Provision Managed VNet for Serverless Spark (Preview)
+## Provision Managed VNet for Serverless Spark
 To provision managed VNet for serverless Spark:
-1. Create a workspace using parameter `--managed-network allow_internet_outbound`. To allows only approved outbound communications, use either `--managed-network allow_only_approved_outbound`:
+1. Create a workspace using parameter `--managed-network allow_internet_outbound`. To allows only approved outbound traffic to enable data exfiltration protection (DEP), use `--managed-network allow_only_approved_outbound`:
     ```azurecli
     az ml workspace create --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --location <AZURE_REGION_NAME> --name <AML_WORKSPACE_NAME> --managed-network allow_internet_outbound
     ```
-1. Once workspace is created update it to define outbound rule to add a Private Endpoint connection to a storage account use the file `storage_pe.yaml` provided in this directory with `--file` parameter:
+2. Once workspace is created update it to define outbound rule to add a Private Endpoint connection to a storage account use the file `storage_pe.yaml` provided in this directory with `--file` parameter:
+
+    > [!NOTE]
+    > If you used parameter `--managed-network allow_only_approved_outbound` in the previous CLI command, edit `storage_pe.yaml` to define `isolation_mode: allow_only_approved_outbound`. A workspace created with `isolation_mode: allow_internet_outbound` can not be updated later to use `isolation_mode: allow_only_approved_outbound`.
     ```azurecli
     az ml workspace update --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --name <AML_WORKSPACE_NAME> --file storage_pe.yaml
     ```
-1. Provision managed VNet for serverless Spark compute. This command will also provision the Private Endpoints defines at the previous step:
+3. Provision managed VNet for serverless Spark compute. This command will also provision the Private Endpoints defines at the previous step:
     ```azurecli
     az ml workspace provision-network --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --name <AML_WORKSPACE_NAME> --include-spark
     ```
     > NOTE
     > If the Azure Machine Learning workspace and storage account are in different resource groups, then Private Endpoints needs to be manually activated in [Azure portal](https://portal.azure.com) before accessing data from the storage account in Spark jobs.
 
-1. To see a list of outbound rules, execute the following command:
+4. To see a list of outbound rules, execute the following command:
     ```azurecli
     az ml workspace outbound-rule list --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --workspace-name <AML_WORKSPACE_NAME>
     ```
-1. To show details of an outbound rule, execute the following command:
+5. To show details of an outbound rule, execute the following command:
     ```azurecli
     az ml workspace outbound-rule show --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --workspace-name <AML_WORKSPACE_NAME> --rule <OUTBOUND_RULE_NAME>
     ```
-1. To remove an outbound rule, execute the following command:
+6. To remove an outbound rule, execute the following command:
     ```azurecli
     az ml workspace outbound-rule remove --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --workspace-name <AML_WORKSPACE_NAME> --rule <OUTBOUND_RULE_NAME>
     ```
