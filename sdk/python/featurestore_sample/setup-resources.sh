@@ -8,6 +8,7 @@ AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv
 OUTPUT_COMMAND="print"
 FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
 USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
+UAI_NAME=${RESOURCE_GROUP}uai
 
 # </create_variables>
 
@@ -31,6 +32,7 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_1}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<FEATURE_STORAGE_ACCOUNT_NAME>/$FEATURE_STORAGE_ACCOUNT_NAME/g;
-    s/<USER_AAD_OBJECTID>/$USER_ID/g;" "${NOTEBOOK_2}.py"
+    s/<USER_AAD_OBJECTID>/$USER_ID/g;
+    s/<FEATURE_STORE_UAI_NAME>/$UAI_NAME/g;" "${NOTEBOOK_2}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_3}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_4}.py"

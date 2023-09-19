@@ -8,7 +8,6 @@ with open(
 ) as f:
     exec(f.read())
 
-# Enable test for notebook 1 first
 print("=======Test Notebook 2============")
 with open(
     "notebooks/sdk_only/2. Enable materialization and backfill feature data.py"
