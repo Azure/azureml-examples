@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 name: demo
-description: "Batch endpoint for for zero-shot-image-classification task"
+description: "Batch endpoint for zero-shot-image-classification task"
 type: model
 resources:
     instance_count: 1

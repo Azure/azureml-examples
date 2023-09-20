@@ -77,8 +77,6 @@ az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
 }
 
 # 5 Try a scoring request with csv file
-# Note: If job failed with error Assertion Error (The actual length exceeded max length 100 MB) then 
-# please try with less number of input images or use ImageFolder Input mode.
 
 # Check if scoring data file exists
 if [ -f $sample_request_csv ]; then
@@ -90,6 +88,9 @@ else
 fi
 
 # Invoke the endpoint
+# Note: If job failed with Out of Memory Error then 
+# please try splitting your csv input file into several smaller csv files.
+# To run a batch request with a folder of csv files indicate --input-type as uri_folder
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name --input $sample_request_csv --input-type \
   uri_file $workspace_info --query name --output tsv) || {
