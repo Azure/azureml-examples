@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-responsible-ai-responsibleaidashboard-diabetes-regression-model-debugging-responsibleaidashboard-diabetes-regression-model-debugging
+name: sdk-responsible-ai-tabular-responsibleaidashboard-housing-decision-making-responsibleaidashboard-housing-decision-making
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "24 8/12 * * *"
+    - cron: "12 7/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/responsible-ai/responsibleaidashboard-diabetes-regression-model-debugging/**
-      - .github/workflows/sdk-responsible-ai-responsibleaidashboard-diabetes-regression-model-debugging-responsibleaidashboard-diabetes-regression-model-debugging.yml
+      - sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-decision-making/**
+      - .github/workflows/sdk-responsible-ai-tabular-responsibleaidashboard-housing-decision-making-responsibleaidashboard-housing-decision-making.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -60,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run responsible-ai/responsibleaidashboard-diabetes-regression-model-debugging/responsibleaidashboard-diabetes-regression-model-debugging.ipynb
+    - name: run responsible-ai/tabular/responsibleaidashboard-housing-decision-making/responsibleaidashboard-housing-decision-making.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-diabetes-regression-model-debugging.ipynb";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-housing-decision-making.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python responsibleaidashboard-diabetes-regression-model-debugging.ipynb responsibleaidashboard-diabetes-regression-model-debugging.output.ipynb
-      working-directory: sdk/python/responsible-ai/responsibleaidashboard-diabetes-regression-model-debugging
+          papermill -k python responsibleaidashboard-housing-decision-making.ipynb responsibleaidashboard-housing-decision-making.output.ipynb
+      working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-decision-making
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: responsibleaidashboard-diabetes-regression-model-debugging
-        path: sdk/python/responsible-ai/responsibleaidashboard-diabetes-regression-model-debugging
+        name: responsibleaidashboard-housing-decision-making
+        path: sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-decision-making

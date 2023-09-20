@@ -1,4 +1,4 @@
-name: sdk-foundation-models-system-import-import_model_into_registry_new_model_image_classification
+name: sdk-foundation-models-system-import-import_model_into_registry_new_model_image_tasks
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -10,13 +10,15 @@ on:
       - main
     paths:
       - sdk/python/foundation-models/system/import/**
-      - .github/workflows/sdk-foundation-models-system-import-import_model_into_registry_new_model_image_classification.yml
+      - .github/workflows/sdk-foundation-models-system-import-import_model_into_registry_new_model_image_tasks.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
 env:
   MODEL_ID: microsoft/resnet-18
   TASK_NAME: image-classification
+  MMDETECTION_MODEL_ID: faster_rcnn_r50_fpn_1x_coco
+  MMDETECTION_TASK_NAME: image-object-detection
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

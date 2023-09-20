@@ -17,6 +17,8 @@ on:
 env:
   MODEL_ID: ai4bharat/indic-bert
   TASK_NAME: fill-mask
+  MMDETECTION_MODEL_ID: None
+  MMDETECTION_TASK_NAME: image-object-detection
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

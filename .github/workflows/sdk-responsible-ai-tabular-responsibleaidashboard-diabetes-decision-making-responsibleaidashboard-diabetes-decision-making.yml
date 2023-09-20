@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-responsible-ai-responsibleaidashboard-diabetes-decision-making-responsibleaidashboard-diabetes-decision-making
+name: sdk-responsible-ai-tabular-responsibleaidashboard-diabetes-decision-making-responsibleaidashboard-diabetes-decision-making
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/responsible-ai/responsibleaidashboard-diabetes-decision-making/**
-      - .github/workflows/sdk-responsible-ai-responsibleaidashboard-diabetes-decision-making-responsibleaidashboard-diabetes-decision-making.yml
+      - sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making/**
+      - .github/workflows/sdk-responsible-ai-tabular-responsibleaidashboard-diabetes-decision-making-responsibleaidashboard-diabetes-decision-making.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -60,7 +60,7 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run responsible-ai/responsibleaidashboard-diabetes-decision-making/responsibleaidashboard-diabetes-decision-making.ipynb
+    - name: run responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making/responsibleaidashboard-diabetes-decision-making.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -68,10 +68,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-diabetes-decision-making.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python responsibleaidashboard-diabetes-decision-making.ipynb responsibleaidashboard-diabetes-decision-making.output.ipynb
-      working-directory: sdk/python/responsible-ai/responsibleaidashboard-diabetes-decision-making
+      working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: responsibleaidashboard-diabetes-decision-making
-        path: sdk/python/responsible-ai/responsibleaidashboard-diabetes-decision-making
+        path: sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making
