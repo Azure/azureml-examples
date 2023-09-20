@@ -8,7 +8,9 @@ AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv
 OUTPUT_COMMAND="print"
 FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
 USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
-UAI_NAME=${RESOURCE_GROUP}-ui
+import random
+RAND_NUM = random.randrange(1, 100)
+UAI_NAME=fstoreuai${RAND_NUM}
 
 # </create_variables>
 
