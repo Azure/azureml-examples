@@ -10,7 +10,7 @@ FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
 USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
 RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
-
+REDIS_NAME=${RESOURCE_GROUP}rds
 # </create_variables>
 
 # <convert_notebook_to_py>
@@ -39,4 +39,5 @@ sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_
     s/<FEATURE_STORE_UAI_NAME>/$UAI_NAME/g;" "${NOTEBOOK_2}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_3}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_4}.py"
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;" "${NOTEBOOK_5}.py"
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+    s/<REDIS_NAME>/$REDIS_NAME/g;" "${NOTEBOOK_5}.py"
