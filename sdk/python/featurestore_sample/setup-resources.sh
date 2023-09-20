@@ -8,7 +8,7 @@ AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv
 OUTPUT_COMMAND="print"
 FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
 USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
-UAI_NAME=${RESOURCE_GROUP}uai
+UAI_NAME=${RESOURCE_GROUP}-ui
 
 # </create_variables>
 
