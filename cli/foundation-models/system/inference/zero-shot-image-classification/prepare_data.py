@@ -8,7 +8,7 @@ import pandas as pd
 from zipfile import ZipFile
 
 # Change this to match the inference dataset
-LABELS = "water_bottle,milk_bottle,carton,can"
+LABELS = "water_bottle, milk_bottle, carton, can"
 
 
 def download_and_unzip(dataset_parent_dir: str) -> None:
