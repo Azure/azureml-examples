@@ -8,10 +8,10 @@ You can execute the above command from:
 - terminal of [Visual Studio Code connected to an Azure Machine Learning compute instance](https://learn.microsoft.com/azure/machine-learning/how-to-set-up-vs-code-remote?tabs=studio).
 - your local computer that has [Azure Machine Learning CLI](https://learn.microsoft.com/azure/machine-learning/how-to-configure-cli?tabs=public) installed.
 
-## Attach user assigned managed identity to a workspace
+## Attach user-assigned managed identity to a workspace
 The managed identity used by serverless Spark compute is user-assigned managed identity attached to the workspace. You can attach a user-assigned managed identity to a workspace either using CLI v2 or using `ARMClient`.
 
-### Attach user assigned managed identity using CLI v2
+### Attach user-assigned managed identity using CLI v2
 
 1. Use `user-assigned-identity.yaml` file provided in this directory with the `--file` parameter in the `az ml workspace update` command to attach the user assigned managed identity:
     ```azurecli
@@ -24,6 +24,7 @@ The managed identity used by serverless Spark compute is user-assigned managed i
 1. Use `user-assigned-identity.json` file provided in this directory to execute the following command in the PowerShell prompt or the command prompt, to attach the user-assigned managed identity to the workspace.
     ```cmd
     armclient PATCH https://management.azure.com/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.MachineLearningServices/workspaces/<AML_WORKSPACE_NAME>?api-version=2022-05-01 '@user-assigned-identity.json'
+    ```
 
 ## Provision Managed VNet for Serverless Spark
 To provision managed VNet for serverless Spark:
@@ -33,7 +34,7 @@ To provision managed VNet for serverless Spark:
     ```
     If you want to allow only approved outbound traffic to enable data exfiltration protection (DEP), use `--managed-network allow_only_approved_outbound`:
     ```azurecli
-    az ml workspace create --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --location <AZURE_REGION_NAME> --name <AML_WORKSPACE_NAME> --managed-network allow_internet_outbound
+    az ml workspace create --subscription <SUBSCRIPTION_ID> --resource-group <RESOURCE_GROUP> --location <AZURE_REGION_NAME> --name <AML_WORKSPACE_NAME> --managed-network allow_only_approved_outbound
     ```
 2. Once workspace is created update it to define outbound rules. To add a Private Endpoint connection to a storage account, use the file `storage_pe.yaml` provided in this directory with `--file` parameter:
 
