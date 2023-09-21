@@ -18,7 +18,7 @@ print("=======Test Notebook 3============")
 with open("notebooks/sdk_only/3. Experiment and train models using features.py") as f:
     exec(f.read())
 
-print("=======Test Notebook 3============")
+print("=======Test Notebook 4============")
 with open(
     "notebooks/sdk_only/4. Enable recurrent materialization and run batch inference.py"
 ) as f:
