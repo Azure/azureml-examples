@@ -79,8 +79,7 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
                     LABELS,
                 ],  # the labels are required in the first row of the "text" column
                 [
-                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8"),
-                    "",
+                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8")
                 ],  # all other rows in the "text" column are ignored
             ],
         }
