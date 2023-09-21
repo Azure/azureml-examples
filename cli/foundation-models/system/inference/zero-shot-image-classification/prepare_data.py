@@ -66,14 +66,22 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     :param dataset_dir: dataset directory
     :type dataset_dir: str
     """
-    sample_image = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
+    sample_image_1 = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
+    sample_image_2 = os.path.join(dataset_dir, "can", "1.jpg")
 
     request_json = {
         "input_data": {
             "columns": ["image", "text"],
-            "index": [0],
+            "index": [0, 1],
             "data": [
-                [base64.encodebytes(read_image(sample_image)).decode("utf-8"), LABELS]
+                [
+                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
+                    LABELS,
+                ],  # the labels are required in the first row of the "text" column
+                [
+                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8"),
+                    "",
+                ],  # all other rows in the "text" column are ignored
             ],
         }
     }
