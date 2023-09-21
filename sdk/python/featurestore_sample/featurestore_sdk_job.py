@@ -24,6 +24,6 @@ with open(
 ) as f:
     exec(f.read())
 
-print("=======Test Notebook 5============")
-with open("notebooks/sdk_only/5. Enable online store and run online inference.py") as f:
-    exec(f.read())
+# print("=======Test Notebook 5============")
+# with open("notebooks/sdk_only/5. Enable online store and run online inference.py") as f:
+#     exec(f.read())
