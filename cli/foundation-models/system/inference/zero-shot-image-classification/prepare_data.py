@@ -87,8 +87,8 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """Prepare image folder and csv file for batch inference.
 
-    This function will move all images to a single image folder and also create a csv
-    file with images in base64 format and the candidate labels.
+    This function will move all images to a single image folder and also create a folder of csv
+    files with images in base64 format and the candidate labels.
     :param dataset_dir: dataset directory
     :type dataset_dir: str
     """

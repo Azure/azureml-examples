@@ -88,7 +88,8 @@ fi
 
 # Invoke the endpoint
 # Note: If job failed with Out of Memory Error then 
-# please try splitting your input into smaller csv files.
+# please try splitting your input into smaller csv files or
+# decrease the mini_batch_size for the deployment (see deploy-batch.yaml).
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name --input $sample_request_csv_folder --input-type \
   uri_folder $workspace_info --query name --output tsv) || {
