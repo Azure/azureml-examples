@@ -94,8 +94,6 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """
     image_list = []
 
-    csv_file_name = "zero_shot_image_classification_data.csv"
-
     dir_names = []
     for dir_name in os.listdir(dataset_dir):
         dir_names.append(dir_name)
@@ -114,13 +112,19 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     # all other rows in the "text" column are ignored
     labels = ",".join(dir_names)
     data = [[image, ""] for image in image_list]
-    df = pd.DataFrame(data, columns=["image", "text"]).sample(10)
-    df["text"].iloc[0] = labels
-    df.to_csv(
-        os.path.join(os.path.dirname(dataset_dir), csv_file_name),
-        index=False,
-        header=True,
-    )
+    batch_df = pd.DataFrame(data, columns=["image", "text"])
+
+    csv_folder_path = os.path.join(dataset_dir, "batch")
+    os.makedirs(csv_folder_path, exist_ok=True)
+    batch_input_file = "batch_input.csv"
+    # Divide this into files of 10 rows each
+    batch_size_per_predict = 10
+    for i in range(0, len(batch_df), batch_size_per_predict):
+        j = i + batch_size_per_predict
+        batch_df["text"].iloc[
+            i
+        ] = labels  # each csv file includes the labels in the first row
+        batch_df[i:j].to_csv(os.path.join(csv_folder_path, str(i) + batch_input_file))
 
 
 if __name__ == "__main__":

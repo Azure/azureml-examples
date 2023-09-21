@@ -24,9 +24,8 @@ deployment_name="demo-$version"
 # Prepare data for deployment
 data_path="data_batch"
 python ./prepare_data.py --mode "batch" --data_path $data_path
-# sample request data in csv format with image column
-sample_request_csv="./data_batch/zero_shot_image_classification_data.csv"
-sample_request_folder="./data_batch/fridgeObjects"
+# sample request data in folder of csv files with image and text columns
+sample_request_csv_folder="./data_batch/fridgeObjects/batch"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
@@ -79,21 +78,20 @@ az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
 # 5 Try a scoring request with csv file
 
 # Check if scoring data file exists
-if [ -f $sample_request_csv ]; then
+if [ -d $sample_request_csv_folder ]; then
     echo "Invoking endpoint $endpoint_name with following input:\n\n"
     echo "\n\n"
 else
-    echo "Scoring file $sample_request_csv does not exist"
+    echo "Scoring file $sample_request_csv_folder does not exist"
     exit 1
 fi
 
 # Invoke the endpoint
 # Note: If job failed with Out of Memory Error then 
-# please try splitting your csv input file into several smaller csv files.
-# To run a batch request with a folder of csv files indicate --input-type as uri_folder
+# please try splitting your input into smaller csv files.
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
- --deployment-name $deployment_name --input $sample_request_csv --input-type \
-  uri_file $workspace_info --query name --output tsv) || {
+ --deployment-name $deployment_name --input $sample_request_csv_folder --input-type \
+  uri_folder $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }
 
