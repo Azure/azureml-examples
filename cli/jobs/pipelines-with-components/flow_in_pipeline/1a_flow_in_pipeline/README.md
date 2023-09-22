@@ -7,7 +7,10 @@ Note that you will need to install a private version of cli and make sure that t
 To use this feature, you'll need to install a private version of `mldesigner` and cli:
 
 ```bash
-python -m pip install mldesigner==0.0.103828913 --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+# install the private version azure-ai-ml first. mldesigner depends this to compile flow as component
+python -m pip install azure-ai-ml==1.10.0a20230904003 --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
+# install the private version mldesigner
+python -m pip install mldesigner[promptflow]==0.0.105430780 --extra-index-url https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
 
 az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.139-py3-none-any.whl
 ```
