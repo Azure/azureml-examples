@@ -35,7 +35,7 @@ jobs:
     type: command
     component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_constructor/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 3600
     inputs:
       title: Programmers Analysis
       task_type: regression
@@ -49,7 +49,7 @@ jobs:
     type: command
     component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_explanation/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 7200
     inputs:
       comment: Some random string
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
@@ -58,7 +58,7 @@ jobs:
     type: command
     component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_causal/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 7200
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       treatment_features: '["Number of github repos contributed to", "YOE"]'
@@ -70,7 +70,7 @@ jobs:
     type: command
     component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_counterfactual/versions/0.9.0
     limits:
-      timeout: 600
+      timeout: 7200
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       total_CFs: 10
@@ -79,7 +79,7 @@ jobs:
 
   error_analysis_01:
     limits:
-      timeout: 120
+      timeout: 7200
     type: command
     component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_erroranalysis/versions/0.9.0
     inputs:
@@ -91,7 +91,7 @@ jobs:
     type: command
     component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_gather/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 7200
     inputs:
       constructor: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       insight_1: ${{parent.jobs.causal_01.outputs.causal}}
