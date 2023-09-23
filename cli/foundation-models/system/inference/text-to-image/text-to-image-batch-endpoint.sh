@@ -12,7 +12,7 @@ model_name="runwayml-stable-diffusion-v1-5"
 model_label="latest"
 
 # Path to input .csv file
-base_dir="./batch_data"
+base_dir="./text_to_image_batch_data"
 
 version=$(date +%s)
 endpoint_name="text-to-image-$version"
