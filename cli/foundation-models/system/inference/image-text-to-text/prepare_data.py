@@ -73,7 +73,11 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "columns": ["image", "prompt", "direct_question"],
             "index": [0],
             "data": [
-                [base64.encodebytes(read_image(sample_image)).decode("utf-8"), "", DIRECT_QUESTION]
+                [
+                    base64.encodebytes(read_image(sample_image)).decode("utf-8"),
+                    "",
+                    DIRECT_QUESTION,
+                ]
             ],
         }
     }
