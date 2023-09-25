@@ -1,0 +1,10 @@
+{
+    "data": {
+        "accountID": ["A1055521510328860"],
+        "transactionAmount": [299],
+        "localHour": [21],
+        "transactionAmountUSD": [21],
+        "digitalItemCount": [1],
+        "physicalItemCount": [1]
+    }
+}
