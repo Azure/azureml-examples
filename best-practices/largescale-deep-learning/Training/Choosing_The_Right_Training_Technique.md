@@ -47,11 +47,15 @@ https://arxiv.org/abs/2305.02301 + any repro
 
 https://github.com/openai/openai-cookbook/blob/main/examples/fine-tuned_qa/ft_retrieval_augmented_generation_qdrant.ipynb + any repro
 
+### C
+
 ## RAG
 
 ### When fact retrieval is helpful
 
-### When selecting 
+### When selecting similar examples is helpful
+
+Cite: hallucination study above
 
 ### Stacking Techniques
 
