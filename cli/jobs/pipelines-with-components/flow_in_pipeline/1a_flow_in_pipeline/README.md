@@ -68,3 +68,6 @@ def prettify_string(response_text: str):
     soup.prettify()
     return soup.get_text()[:2000]
 ```
+
+Besides, `shrike` used a component_specification_glob to detect component specifications. For flow, you'll also need to detect `flow.dag.yaml`
+so the glob must be updated. For example, you can use `**/*[sf][pl][eo][cw]*.yaml` instead of `**/*spec*.yaml`.
