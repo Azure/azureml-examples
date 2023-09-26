@@ -20,7 +20,7 @@ deployment_sku="Standard_NC6s_v3"
 
 # Prepare data for deployment
 data_path="./data_online"
-python ./prepare_data.py --data_path $data_path --mode "online"
+python ./prepare_data.py --data_path $data_path
 # sample_request_data
 sample_request_data="$data_path/fridgeObjects/sample_request_data.json"
 # 1. Setup pre-requisites
