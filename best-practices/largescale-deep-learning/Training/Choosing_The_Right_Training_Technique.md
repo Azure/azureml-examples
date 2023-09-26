@@ -20,8 +20,19 @@ TODO: build this
 
 ### When to finetune
 
+### Things to Know
+
+
+
 
 
 ## RAG
 
 ### When to use RAG
+
+#### When fact retrieval is helpful
+
+#### When
+
+
+## Stacking Techniques
