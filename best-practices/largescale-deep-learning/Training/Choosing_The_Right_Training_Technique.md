@@ -20,17 +20,22 @@ TODO: build this
 
 ## Prompt Engineering
 
-### Few-Shot Learning
+### Few-Shot Learning (FSL)
 
 ### CoT
 
 ## Finetuning
 
-### 
+### Cutting Few-Shot Costs and Latency
 
-### Cut
+TODO: show GPT-4 cost curves here with FSL, inferencing volume, Twitter dataset. Mention that accuracy consistent but price is not
+TODO: latency study and/or experiments?
 
-### Things to Know
+### Altering Model Behavior (TODO: come up with a better name)
+
+### Learning a Ne S
+
+TODO: chess dataset, Bing dataset, 
 
 
 
