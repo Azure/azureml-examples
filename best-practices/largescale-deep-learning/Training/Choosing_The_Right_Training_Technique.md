@@ -22,7 +22,11 @@ TODO: build this
 
 ### Few-Shot Learning
 
+### CoT
+
 ## Finetuning
+
+### 
 
 ### Cut
 
