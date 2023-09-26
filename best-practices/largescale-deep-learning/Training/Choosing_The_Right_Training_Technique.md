@@ -33,21 +33,28 @@ TODO: latency study and/or experiments?
 
 ### Altering Model Behavior (TODO: come up with a better name)
 
-### Learning a Ne S
+* Learning a new skill
+* "Show not tell"
+  * Too many edge cases
 
-TODO: chess dataset, Bing dataset, 
+Nuance dataset, chess dataset, describe Bing dataset
 
+### Model distillation
 
+https://arxiv.org/abs/2305.02301 + any repro
 
+### Reduce hallucination
 
+https://github.com/openai/openai-cookbook/blob/main/examples/fine-tuned_qa/ft_retrieval_augmented_generation_qdrant.ipynb + any repro
 
 ## RAG
 
-### When to use RAG
+### When fact retrieval is helpful
 
-#### When fact retrieval is helpful
+### When selecting 
 
-#### When
+### Stacking Techniques
 
+## MSR Ag study
 
-## Stacking Techniques
+## Todo: Cite hallucination study above
