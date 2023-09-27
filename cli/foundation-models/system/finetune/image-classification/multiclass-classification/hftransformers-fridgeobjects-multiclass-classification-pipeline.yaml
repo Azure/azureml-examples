@@ -16,6 +16,9 @@ inputs:
   validation_data:
     path: ./data/validation-mltable-folder
     type: mltable
+  test_data:
+    path: ./data/validation-mltable-folder
+    type: mltable
   # deepspeed config file
   ds_finetune:
     path: ./deepspeed_configs/zero1.json
@@ -23,6 +26,7 @@ inputs:
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu
+  compute_model_evaluation: sample-finetune-cluster-gpu
 
 outputs:
   # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
@@ -42,8 +46,7 @@ jobs:
       # Compute
       compute_model_import: ${{parent.inputs.compute_model_import}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
-      # using same compute for model evaluation as finetuning
-      compute_model_evaluation: ${{parent.inputs.compute_finetune}}
+      compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
       process_count_per_instance: 1
       instance_count: 1
 
@@ -57,7 +60,7 @@ jobs:
       # data
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
-      test_data: ${{parent.inputs.validation_data}}
+      test_data: ${{parent.inputs.test_data}}
 
       # Finetuning args
       image_width: -1
