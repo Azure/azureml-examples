@@ -1,5 +1,5 @@
 {
-    "train_micro_batch_size_per_gpu": 93,
+    "train_micro_batch_size_per_gpu": "auto",
     "fp16": {
         "enabled": true
     },
@@ -17,14 +17,14 @@
     "tensorboard": {
         "enabled": true,
         "output_path": "outputs/runs/",
-        "job_name": "train_bert"
+        "job_name": "BERT-pretrain"
     },
     "nebula": {
-        "enabled": true,
+        "enabled": false,
         "persistent_storage_path": "/outputs/nebula_checkpoint/",
         "persistent_time_interval": 10,
         "num_of_version_in_retention": 2,
         "enable_nebula_load": true
     },
-    "gradient_accumulation_steps": 1
+    "gradient_accumulation_steps": "auto"
 }
