@@ -25,7 +25,7 @@ command: >-
  --max_steps=10000
 
 experiment_name: BERT-pretrain
-environment: azureml:BERT@latest
+environment: azureml:ACPT_Nebula@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
