@@ -133,6 +133,8 @@ node_variants:
           connection: azure_open_ai_connection
           api: completion
           module: promptflow.tools.aoai
+environment:
+    python_requirements_txt: requirements.txt 
 additional_includes:
   - ../additional_includes/convert_to_dict.py
   - ../additional_includes/fetch_text_content_from_url.py
