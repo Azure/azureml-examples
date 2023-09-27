@@ -74,8 +74,7 @@ class ExplanationWrapper(mlflow.pyfunc.PythonModel):
             context: MLFlow context where the model artifact is stored
         """
         # Load model dependencies
-        formatted_path = pathlib.PureWindowsPath(
-            context.artifacts["model"]).as_posix()
+        formatted_path = pathlib.PureWindowsPath(context.artifacts["model"]).as_posix()
         try:
             conda_file = mlflow.pyfunc.get_model_dependencies(
                 formatted_path, format="conda"
@@ -92,8 +91,9 @@ class ExplanationWrapper(mlflow.pyfunc.PythonModel):
         self.model = mlflow.pyfunc.load_model(formatted_path)
 
         # Load explainer
-        self.rai_insights = RAIInsights.load(pathlib.PureWindowsPath(
-            context.artifacts["RAI insights"]).as_posix())
+        self.rai_insights = RAIInsights.load(
+            pathlib.PureWindowsPath(context.artifacts["RAI insights"]).as_posix()
+        )
 
     def predict(self, context, model_input):
         """This is an abstract function. It is customized to provide explanations
