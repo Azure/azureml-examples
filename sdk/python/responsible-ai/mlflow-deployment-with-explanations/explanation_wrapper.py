@@ -1,6 +1,7 @@
 import mlflow
 import sys
 import subprocess
+import pathlib
 import pandas as pd
 
 from ml_wrappers.model.wrapped_classification_without_proba_model import (
@@ -73,9 +74,11 @@ class ExplanationWrapper(mlflow.pyfunc.PythonModel):
             context: MLFlow context where the model artifact is stored
         """
         # Load model dependencies
+        formatted_path = pathlib.PureWindowsPath(
+            context.artifacts["model"]).as_posix()
         try:
             conda_file = mlflow.pyfunc.get_model_dependencies(
-                context.artifacts["model"], format="conda"
+                formatted_path, format="conda"
             )
             # call conda env update in subprocess
             subprocess.check_call(
@@ -86,10 +89,11 @@ class ExplanationWrapper(mlflow.pyfunc.PythonModel):
             print(e)
 
         # Load model
-        self.model = mlflow.pyfunc.load_model(context.artifacts["model"])
+        self.model = mlflow.pyfunc.load_model(formatted_path)
 
         # Load explainer
-        self.rai_insights = RAIInsights.load(context.artifacts["RAI insights"])
+        self.rai_insights = RAIInsights.load(pathlib.PureWindowsPath(
+            context.artifacts["RAI insights"]).as_posix())
 
     def predict(self, context, model_input):
         """This is an abstract function. It is customized to provide explanations
