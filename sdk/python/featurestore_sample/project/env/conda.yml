@@ -4,8 +4,9 @@ dependencies:
   - pip:
     # Protobuf is needed to avoid conflict with managed spark
     - protobuf==3.19.6
+    - azure-ai-ml==1.10.1
     # Feature store core SDK
-    - azureml-featurestore==0.1.0b3
+    - azureml-featurestore==0.1.0b4
     # This is needed if you want to execute the Part 2 of the "SDK" track or execute "SDK+CLI" track in the docs tutorial
     - azure-cli    
 
