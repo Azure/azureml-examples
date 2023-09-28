@@ -13,7 +13,7 @@ from azureml.automl.dnn.vision.common.model_export_utils import (
     load_model,
     run_inference_batch,
 )
-from azureml.automl.dnn.vision.object_detection.writers.score import (
+from azureml.automl.dnn.vision.object_detection_yolo.writers.score import (
     _score_with_model,
 )
 from azureml.automl.dnn.vision.common.utils import _set_logging_parameters
