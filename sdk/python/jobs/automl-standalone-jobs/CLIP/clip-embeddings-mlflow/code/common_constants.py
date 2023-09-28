@@ -30,6 +30,8 @@ class MLflowSchemaLiterals:
     OUTPUT_COLUMN_DATA_TYPE = DataType.string
     OUTPUT_COLUMN_PROBS = "probs"
     OUTPUT_COLUMN_LABELS = "labels"
+    OUTPUT_IMAGE_FEATURES = "image_features"
+    OUTPUT_TEXT_FEATURES = "text_features"
 
 
 class MLflowLiterals:
