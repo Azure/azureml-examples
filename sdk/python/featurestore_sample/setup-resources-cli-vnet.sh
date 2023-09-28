@@ -29,13 +29,6 @@ TRANSACTION_ASSET_MAT_YML="./featurestore/featuresets/transactions/featureset_as
 STORAGE_FILE_SYSTEM_NAME="offlinestore"
 RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
-FEATURE_STORE_ARM_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.MachineLearningServices/workspaces/${FEATURESTORE_NAME}"
-GEN2_CONTAINER_ARM_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT_NAME}/blobServices/default/containers/${STORAGE_FILE_SYSTEM_NAME}"
-# </create_variables>
-COMPUTE_CLUSTER_NAME="cpu-cluster"
-COMPUTE_TYPE="amlcompute"
-COMPUTE_SIZE="STANDARD_F4S_V2"
-az ml compute create --name $COMPUTE_CLUSTER_NAME --type $COMPUTE_TYPE --size $COMPUTE_SIZE --idle-time-before-scale-down 360 --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 
 # <convert_notebook_to_py>
 NOTEBOOK_VNET="notebooks/sdk_and_cli/network_isolation/Network Isolation for Feature store"
@@ -51,10 +44,11 @@ az storage fs create --name $STORAGE_FILE_SYSTEM_NAME_OFFLINE_STORE --account-na
 az storage fs create --name $STORAGE_FILE_SYSTEM_NAME_SOURCE_DATA --account-name $STORAGE_ACCOUNT_NAME --subscription $SUBSCRIPTION_ID
 az storage fs create --name $STORAGE_FILE_SYSTEM_NAME_OBSERVATION_DATA --account-name $STORAGE_ACCOUNT_NAME --subscription $SUBSCRIPTION_ID
 
+az identity create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --location $LOCATION --name $UAI_NAME
 #<replace_template_values>
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
-    s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;" $1
+    s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME_VNET/g;" $1
 
 #<replace_template_values>
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
