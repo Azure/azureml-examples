@@ -480,7 +480,7 @@ def get_featurestore_config_workflow(folder_name, file_name):
     elif is_cli_notebook:
         run_script = "setup-resources-cli"
 
-    workflow += f"""    - name: setup feature-store resources
+    workflow = f"""    - name: setup feature-store resources
       run: |
           bash -x {run_script}.sh {file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
