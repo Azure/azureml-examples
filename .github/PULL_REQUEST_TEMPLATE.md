@@ -4,7 +4,7 @@
 # Checklist
 
 
-- [ ] I have read the [contribution guidelines]
+- [ ] I have read the contribution guidelines.
   - [General](https://github.com/Azure/azureml-examples/blob/main/CONTRIBUTING.md)
   - [SDK](https://github.com/Azure/azureml-examples/blob/main/sdk/CONTRIBUTING.md)
   - [CLI](https://github.com/Azure/azureml-examples/blob/main/cli/CONTRIBUTING.md)
