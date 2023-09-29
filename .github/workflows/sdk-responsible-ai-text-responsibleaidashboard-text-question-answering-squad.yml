@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: tutorials-azureml-in-a-day-azureml-in-a-day
-# This file is created by tutorials/readme.py.
+name: sdk-responsible-ai-text-responsibleaidashboard-text-question-answering-squad
+# This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */8 * * *"
+    - cron: "50 9/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - tutorials/azureml-in-a-day/**
-      - .github/workflows/tutorials-azureml-in-a-day-azureml-in-a-day.yml
+      - sdk/python/responsible-ai/text/**
+      - .github/workflows/sdk-responsible-ai-text-responsibleaidashboard-text-question-answering-squad.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-      with: 
+      with:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
@@ -60,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run azureml-in-a-day/azureml-in-a-day.ipynb
+    - name: run responsible-ai/text/responsibleaidashboard-text-question-answering-squad.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "azureml-in-a-day.ipynb";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-text-question-answering-squad.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python azureml-in-a-day.ipynb azureml-in-a-day.output.ipynb
-      working-directory: tutorials/azureml-in-a-day
+          papermill -k python responsibleaidashboard-text-question-answering-squad.ipynb responsibleaidashboard-text-question-answering-squad.output.ipynb
+      working-directory: sdk/python/responsible-ai/text
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: azureml-in-a-day
-        path: tutorials/azureml-in-a-day
+        name: responsibleaidashboard-text-question-answering-squad
+        path: sdk/python/responsible-ai/text
