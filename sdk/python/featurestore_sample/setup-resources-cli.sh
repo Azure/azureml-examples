@@ -16,7 +16,7 @@ FEATURESTORE_NAME="my-featurestore"
 ACCOUNT_ENTITY_PATH="./featurestore/entities/account.yaml"
 ACCOUNT_FEATURESET_PATH="./featurestore/featuresets/transactions/featureset_asset.yaml"
 TRANSACTION_ASSET_MAT_YML="./featurestore/featuresets/transactions/featureset_asset_offline_enabled.yaml"
-STORAGE_ACCOUNT_NAME="fstorestorage"
+STORAGE_ACCOUNT_NAME="${RESOURCE_GROUP}fst"
 STORAGE_FILE_SYSTEM_NAME="offlinestore"
 RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
@@ -24,9 +24,6 @@ FEATURE_STORE_ARM_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURC
 GEN2_CONTAINER_ARM_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT_NAME}/blobServices/default/containers/${STORAGE_FILE_SYSTEM_NAME}"
 # </create_variables>
 
-az ml feature-store create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --location $LOCATION --name $FEATURESTORE_NAME
-az ml feature-store-entity create --file $ACCOUNT_ENTITY_PATH --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
-az ml feature-set create --file $ACCOUNT_FEATURESET_PATH --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
 az storage account create --name $STORAGE_ACCOUNT_NAME --enable-hierarchical-namespace true --resource-group $RESOURCE_GROUP --location $LOCATION --subscription $SUBSCRIPTION_ID
 az storage fs create --name $STORAGE_FILE_SYSTEM_NAME --account-name $STORAGE_ACCOUNT_NAME --subscription $SUBSCRIPTION_ID
 
