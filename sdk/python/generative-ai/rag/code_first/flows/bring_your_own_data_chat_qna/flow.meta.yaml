@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/flow.schema.json
+name: bring_your_own_data_chat_qna
+display_name: Bring Your Own Data Chat QnA
+type: chat
+path: ./flow.dag.yaml
+description: Create flow for multi-round Q&A with GPT3.5 using data from your own indexed files to make the answer more grounded for enterprise chat scenarios.
+properties:
+  promptflow.stage: prod
+  promptflow.details.type: markdown
+  promptflow.details.source: README.md
+  promptflow.batch_inputs: samples.json

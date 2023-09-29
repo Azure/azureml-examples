@@ -48,7 +48,8 @@ AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $
 #<setup_vnet_resources>
 if [[ "$2" == *"managed_vnet"* ]]
 then
-	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet
+	TIMESTAMP=`date +%H%M%S`
+	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT="blobstoragevnet"
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME="gen2storagevnet"

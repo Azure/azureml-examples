@@ -39,9 +39,9 @@ jobs:
 
   create_rai_job:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_constructor/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_constructor/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 3600
     inputs:
       title: Housing Analysis
       task_type: classification
@@ -54,18 +54,18 @@ jobs:
 
   explain_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_explanation/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_explanation/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 7200
     inputs:
       comment: Some random string
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
 
   causal_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_causal/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_causal/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 7200
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       treatment_features: '["OverallCond", "OverallQual", "Fireplaces", "GarageCars", "ScreenPorch"]'
@@ -75,9 +75,9 @@ jobs:
 
   counterfactual_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_counterfactual/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_counterfactual/versions/0.9.0
     limits:
-      timeout: 600
+      timeout: 7200
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       total_CFs: 10
@@ -86,18 +86,18 @@ jobs:
 
   error_analysis_01:
     limits:
-      timeout: 120
+      timeout: 7200
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_erroranalysis/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_erroranalysis/versions/0.9.0
     inputs:
       rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       max_depth: 3
 
   gather_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_gather/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_insight_gather/versions/0.9.0
     limits:
-      timeout: 120
+      timeout: 7200
     inputs:
       constructor: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
       insight_1: ${{parent.jobs.causal_01.outputs.causal}}
@@ -107,7 +107,7 @@ jobs:
 
   scorecard_01:
     type: command
-    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_score_card/versions/0.8.0
+    component: azureml://registries/azureml/components/microsoft_azureml_rai_tabular_score_card/versions/0.9.0
     inputs:
       dashboard: ${{parent.jobs.gather_01.outputs.dashboard}}
       pdf_generation_config:

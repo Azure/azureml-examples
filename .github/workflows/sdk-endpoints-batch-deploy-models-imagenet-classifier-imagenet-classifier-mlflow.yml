@@ -67,7 +67,7 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "imagenet-classifier-mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python imagenet-classifier-mlflow.ipynb imagenet-classifier-mlflow.output.ipynb
+          papermill -k python imagenet-classifier-mlflow.ipynb imagenet-classifier-mlflow.output.ipynb --log-output
       working-directory: sdk/python/endpoints/batch/deploy-models/imagenet-classifier
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

@@ -1,3 +1,0 @@
-dependencies:
-- pip:
-  - azureml-contrib-automl-pipeline-steps

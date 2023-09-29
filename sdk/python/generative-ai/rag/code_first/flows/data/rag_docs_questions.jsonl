@@ -1,0 +1,3 @@
+{"chat_history":[], "chat_input": "Hi", "answer": "Hello! How can I assist you today?"}
+{"chat_history":[], "chat_input": "What is an MLIndex?", "answer": "MLIndex is a representation of a model used to generate embeddings from text and an index which can be searched using embedding vectors. It contains information such as the API base, API type, connection type, deployment, model, schema version, endpoint, field mapping, and more."}
+{"chat_history":[], "chat_input": "What are somes examples I can run which use MLIndex?", "answer": ""}

@@ -1,0 +1,16 @@
+dependencies:
+  - python=3.8
+  - pip:
+      # Protobuf is needed to avoid conflict with managed spark
+      - protobuf==3.19.6
+      # For asynchronous HTTP requests
+      - aiohttp==3.8.4
+      # Online feature store core SDK
+      - azureml-featurestore[online]==0.1.0b4
+      # Azure management libraries
+      - azure-mgmt-msi
+      - azure-mgmt-redis
+      - azure-mgmt-authorization==3.0.0
+      # Required for working with observation data in online feature set samples
+      - pandas==1.5.3
+name: fs_online_env

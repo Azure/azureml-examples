@@ -10,6 +10,9 @@ inputs:
   
   validation_data:
     type: mltable
+
+  test_data:
+    type: mltable
   
   # deepspeed config file
   ds_finetune:
@@ -19,7 +22,7 @@ inputs:
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu
-
+  compute_model_evaluation: sample-finetune-cluster-gpu
   # model_name: yolof_r50_c5_8x8_1x_coco
   # # model - specify the foundation model available in the azureml system registry
   mlflow_model: 
@@ -44,6 +47,7 @@ jobs:
       # # Compute
       compute_model_import: ${{parent.inputs.compute_model_import}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
+      compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
       instance_count: 1
       process_count_per_instance: 1
 
@@ -57,6 +61,7 @@ jobs:
       # # Data
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
+      test_data: ${{parent.inputs.test_data}}
 
       # # Finetuning parameters
       apply_augmentations: True
@@ -96,6 +101,11 @@ jobs:
       # max_grad_norm: 1.0
       # iou_threshold: 0.5
       # box_score_threshold: 0.3
+
+      # Model evaluation args
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # label_column_name: label
+      # input_column_names: image_url
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}

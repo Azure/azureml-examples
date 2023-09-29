@@ -20,12 +20,12 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Goals
 
-- source for all code snippets in documentation
+This repository contains notebooks and sample code that demonstrate how to develop and manage ML workflows using Azure Machine Learning v2 SDK and CLI. Use the samples in this repository to try out AzureML SDK and CLI scenarios from your local machine.
 
 ## Non-goals
 
-- serve as documentation (see https://docs.microsoft.com/azure/machine-learning)
-- serve as scenario-specific project templates (coming soon!)
+- This repository is not meant to serve as reference documentation. Small code examples that are just comprehensive enough to show how an object or function works are categorized as reference documentation and should be placed in the object or function docstring in the [azure-ai-ml folder of the azure-sdk-for-python repository](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ml/azure-ai-ml) following [these guidelines](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ml/azure-ai-ml/documentation_guidelines.md).
+- This repository is not the place for long-form textual documentation. Documentation resources containing minimal or no code should be added in the [azure-docs repository](https://github.com/MicrosoftDocs/azure-docs).
 
 ## Issues
 
@@ -71,7 +71,7 @@ This will also generate a GitHub Actions workflow file for any new examples in t
 
 ### Discoverability
 
-Examples in this repository can be index in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
+Examples in this repository can be indexed in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
 
 - add an excellent `README.md` file in the example directory
 - add required YAML frontmatter at the top of the `README.md`
@@ -92,14 +92,5 @@ description: Example description.
 
 **Edit the description** and update the languages as needed.
 
-### CLI 2.0
-
-[CLI contributing guide.](cli/CONTRIBUTING.md)
-
-### Python SDK
-
-[Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
-
-### Notebooks
-
-[Notebooks contributing guide.](notebooks/CONTRIBUTING.md)
+### Other resources
+* [CLI contributing guide.](cli/CONTRIBUTING.md)

@@ -9,9 +9,12 @@ workspace_name="<WORKSPACE_NAME>"
 
 compute_cluster_model_import="sample-model-import-cluster"
 compute_cluster_finetune="sample-finetune-cluster-gpu"
+# using the same compute cluster for model evaluation as finetuning. If you want to use a different cluster, specify it below
+compute_model_evaluation="sample-finetune-cluster-gpu"
 # If above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
-compute_finetune_sku="STANDARD_NC6s_v3"
+compute_finetune_sku="Standard_NC6s_v3"
+compute_model_evaluation_sku="Standard_NC6s_v3"
 
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
@@ -73,6 +76,18 @@ else
     }
 fi
 
+# Check if $compute_model_evaluation exists, else create it
+if az ml compute show --name $compute_model_evaluation $workspace_info
+then
+    echo "Compute cluster $compute_model_evaluation already exists"
+else
+    echo "Creating compute cluster $compute_model_evaluation"
+    az ml compute create --name $compute_model_evaluation --type amlcompute --min-instances 0 --max-instances 2 --size $compute_model_evaluation_sku $workspace_info || {
+        echo "Failed to create compute cluster $compute_model_evaluation"
+        exit 1
+    }
+fi
+
 # Check if the finetuning pipeline component exists
 if ! az ml component show --name $finetuning_pipeline_component --label latest --registry-name $registry_name
 then
@@ -97,6 +112,9 @@ python prepare_data.py --subscription $subscription_id --group $resource_group_n
 train_data="./data/training-mltable-folder"
 # validation data
 validation_data="./data/validation-mltable-folder"
+# test data
+# Using the same data for validation and test. If you want to use a different dataset for test, specify it below
+test_data="./data/validation-mltable-folder"
 
 # Check if training data, validation data exist
 if [ ! -d $train_data ]; then
@@ -108,6 +126,10 @@ if [ ! -d $validation_data ]; then
     exit 1
 fi
 
+if [ ! -d $test_data ]; then
+    echo "Test data $test_data does not exist"
+    exit 1
+fi
 # 5. Submit finetuning job using pipeline.yaml for a HuggingFace Transformers model
 
 # # If you want to use a HuggingFace model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
@@ -121,8 +143,10 @@ huggingface_parent_job_name=$( az ml job create \
   inputs.mlflow_model_path.path="azureml://registries/$registry_name/models/$aml_registry_model_name/versions/$model_version" \
   inputs.training_data.path=$train_data \
   inputs.validation_data.path=$validation_data \
+  inputs.test_data.path=$test_data \
   inputs.compute_model_import=$compute_cluster_model_import \
-  inputs.compute_finetune=$compute_cluster_finetune
+  inputs.compute_finetune=$compute_cluster_finetune \
+  inputs.compute_model_evaluation=$compute_model_evaluation
   ) || {
     echo "Failed to submit finetuning job"
     exit 1

@@ -1,0 +1,11 @@
+dependencies:
+  - python=3.8
+  - pip:
+      - protobuf==3.19.6
+      - azureml-featurestore[online]==0.1.0b4
+      - aiohttp==3.8.4
+      - azureml-inference-server-http
+      - scikit-learn
+      - pandas
+      - azure-identity
+name: fs_env

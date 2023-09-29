@@ -18,10 +18,6 @@ is using Deepspeed, you will need to have
 - ACPT image in the environment. See [Azure Container for PyTorch - Azure Machine Learning | Microsoft Learn](https://learn.microsoft.com/en-us/azure/machine-learning/resource-azure-container-for-pytorch) for more details about ACPT image.
 - DeepSpeed version is no late than 0.7.3, which all the services of Nebula have already be integrated.
 
-## Original Example Repo
-
-In this tutorial, we use an example code of AzureML with DeepSpeed that trains a simple CNN model on CIFAR. You can find the original repo [over here](../../../../v1/python-sdk/workflows/train/deepspeed/cifar).
-
 ## Using ACPT Environment for Azure Machine Learning
 
 To use Nebula with the training script, you need to use Azure Container for PyTorch (ACPT) image in the environment. The dependencies of Nebula are already included in the ACPT image. 

@@ -1,0 +1,96 @@
+inputs:
+  chat_history:
+    type: list
+  chat_input:
+    type: string
+    is_chat_input: true
+outputs:
+  chat_output:
+    type: string
+    reference: ${chat_with_context.output}
+    is_chat_output: true
+nodes:
+- name: embed_the_question
+  type: python
+  source:
+    type: package
+    tool: promptflow.tools.embedding.embedding
+  inputs:
+    connection: azureml-rag-oai
+    input: ${flow.chat_input}
+    deployment_name: text-embedding-ada-002
+- name: search_question_from_indexed_docs
+  type: python
+  source:
+    type: package
+    tool: promptflow_vectordb.tool.vector_index_lookup.VectorIndexLookup.search
+  inputs:
+    path: # Index uri
+    query: ${embed_the_question.output}
+    top_k: '2'
+- name: generate_prompt_context
+  type: python
+  source:
+    type: code
+    path: generate_prompt_context.py
+  inputs:
+    search_result: ${search_question_from_indexed_docs.output}
+- name: Prompt_variants
+  use_variants: true
+- name: chat_with_context
+  type: llm
+  source:
+    type: code
+    path: chat_with_context.jinja2
+  inputs:
+    deployment_name: gpt-35-turbo-16k
+    temperature: '0'
+    top_p: '1.0'
+    stop: ''
+    max_tokens: '1000'
+    presence_penalty: '0'
+    frequency_penalty: '0'
+    logit_bias: ''
+    prompt_text: ${Prompt_variants.output}
+  provider: AzureOpenAI
+  connection: azureml-rag-oai
+  api: chat
+  module: promptflow.tools.aoai
+node_variants:
+  Prompt_variants:
+    default_variant_id: variant_0
+    variants:
+      variant_0:
+        node:
+          type: prompt
+          source:
+            type: code
+            path: Prompt_variants.jinja2
+          inputs:
+            contexts: ${generate_prompt_context.output}
+            chat_history: ${inputs.chat_history}
+            chat_input: ${inputs.chat_input}
+      variant_1:
+        node:
+          type: prompt
+          source:
+            type: code
+            path: Prompt_variants__variant_1.jinja2
+          inputs:
+            chat_input: ${inputs.chat_input}
+            contexts: ${generate_prompt_context.output}
+            chat_history: ${inputs.chat_history}
+      variant_2:
+        node:
+          type: prompt
+          source:
+            type: code
+            path: Prompt_variants__variant_2.jinja2
+          inputs:
+            contexts: ${generate_prompt_context.output}
+            chat_history: ${inputs.chat_history}
+            chat_input: ${inputs.chat_input}
+id: bring_your_own_data_chat_qna
+name: Bring Your Own Data Chat QnA
+environment:
+    python_requirements_txt: requirements.txt

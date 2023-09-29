@@ -65,7 +65,7 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "custom-output-batch.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python custom-output-batch.ipynb custom-output-batch.output.ipynb
+          papermill -k python custom-output-batch.ipynb custom-output-batch.output.ipynb --log-output
       working-directory: sdk/python/endpoints/batch/deploy-models/custom-outputs-parquet
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
