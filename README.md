@@ -14,20 +14,33 @@ description: Top-level directory for official Azure Machine Learning sample code
 
 Welcome to the Azure Machine Learning examples repository!
 
-## Contents
+## About This Repository
 
-|directory||description|
-|-|-|-|
-|[`.github`](.github)||GitHub files like issue templates and actions workflows.|
-|[`cli`](cli)||Azure Machine Learning CLI v2 examples.||
-|[`sdk`](sdk)||Azure Machine Learning SDK v2 examples.||
-||[`python`](sdk/python/)| Azure Machine Learning Python SDK v2 examples.|
-||[`dotnet`](sdk/dotnet)| Azure Machine Learning .Net SDK v2 examples.|
-|[`setup`](setup)||Folder with setup scripts|
-||[`setup-ci`](setup/setup-ci)|Setup scripts to customize and configure ||an Azure Machine Learning compute instance.|
-||[`setupdsvm`](setup/setup-dsvm/RStudio/)|Setup RStudio on Data Science Virtual Machine (DSVM)|
-||[`setup-repo`](setup/setup-repo)|Setup scripts for Azure/azureml-examples.|
-|[`tutorials`](tutorials/)||Azure Machine Learning end to end Python SDK v2 tutorials|
+The azureml-examples repository contains examples and tutorials to help you learn how to use Azure Machine Learning
+(Azure ML) services and features.
+
+
+### Getting Started
+
+If you're getting started with Azure ML, consider working through our [tutorials] for the v2 Python SDK. You may
+also want to read through our [documentation](#supplementary-documentation).
+
+### SDKs
+
+The `sdk/` folder houses the examples for the Azure ML SDKs across several languages.
+
+We have an extensive collection of examples for the [Azure ML Python SDK v2][azure cli ml extension v2 overview] in
+[`sdk/python`][azureml python sdk v2 examples].
+
+We also offer some examples for our SDKs in other languages:
+
+* .NET: [`sdk/dotnet`][azureml dotnet sdk v2 examples]
+* TypeScript: [`sdk/typescript`][azureml typescript sdk v2 examples]
+
+### Azure Machine Extension for Azure CLI
+
+The [`cli/` folder][azureml cli extension examples] hosts our examples to use the
+[Azure Machine Learning Extension][azure cli ml extension v2 overview] for [Azure CLI][azure cli overview].
 
 ## Contributing
 
@@ -40,4 +53,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Reference
  
 - [Documentation](https://docs.microsoft.com/azure/machine-learning)
- 
+
+
+[tutorials]: ./tutorials
+[azure cli overview]: https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli
+[azureml cli extension examples]: ./cli
+[azureml python sdk v2 examples]: ./sdk/python
+[azureml dotnet sdk v2 examples]: ./sdk/dotnet
+[azureml typescript sdk v2 examples]: ./sdk/typescript
+[azure cli ml extension v2 overview]: https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2?view=azureml-api-2#azure-machine-learning-cli-v2
+[azureml python sdk v2 overview]: https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2?view=azureml-api-2#azure-machine-learning-python-sdk-v2
