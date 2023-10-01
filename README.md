@@ -42,6 +42,13 @@ We also offer some examples for our SDKs in other languages:
 The [`cli/` folder][azureml cli extension examples] hosts our examples to use the
 [Azure Machine Learning Extension][azure cli ml extension v2 overview] for [Azure CLI][azure cli overview].
 
+
+## Supplementary Documentation
+
+- [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
+- [AzureML Python SDK v2 Overview]
+- [Azure CLI ml extension v2 Overview]
+
 ## Contributing
 
 We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
@@ -49,11 +56,6 @@ We welcome contributions and suggestions! Please see the [contributing guideline
 ## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
-
-## Reference
- 
-- [Documentation](https://docs.microsoft.com/azure/machine-learning)
-
 
 [tutorials]: ./tutorials
 [azure cli overview]: https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli
