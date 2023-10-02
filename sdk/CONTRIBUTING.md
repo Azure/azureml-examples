@@ -1,8 +1,6 @@
 [Azure/azureml-examples overall contributing guide.](../CONTRIBUTING.md)
 
-## Pull Requests
-
-Pull requests (PRs) to this repository require review and approval by the Azure Machine Learning team to merge. 
+## Adding a new SDK sample
 
 All SDK samples should be provided as Jupyter notebooks. Please follow the [pre-defined notebook template](<INSERT LINK HERE ONCE KEVIN'S PR IN>) and the instructions on [the main CONTRIBUTING page](../CONTRIBUTING.md).
 
