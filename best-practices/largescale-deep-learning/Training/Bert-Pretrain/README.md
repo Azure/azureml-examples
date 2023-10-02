@@ -123,3 +123,12 @@ To try BERT pretraining with DeepSpeed and ORT, submit the following command fro
 ```
 az ml job create --file AML-DeepSpeed-submit.yml
 ```
+
+## Results
+
+Some results achieved using this example:
+| Batch Size | Gradient Accumulation Steps | Time | Loss | Throughput |
+|------------|------------------|------|------|-----------|
+|64 |32 |23h 1min |2.46 |3712 |
+|16 |32 |25h 46min |2.49 |2064 |
+|64 |128 |21h 19min |2.34 |3713 |
