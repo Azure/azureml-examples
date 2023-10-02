@@ -24,10 +24,10 @@ create_monitor:
   monitoring_signals:
     advanced_data_drift: # monitoring signal name, any user defined name works
       type: data_drift
-      # target_dataset is optional. By default target dataset is the production inference data associated with Azure Machine Learning online endpoint
+      # reference_dataset is optional. By default referece_dataset is the production inference data associated with Azure Machine Learning online endpoint
       reference_data:
         input_data:
-          path: azureml:my_model_training_data:1 # use training data as comparison baseline
+          path: azureml:my_model_training_data:1 # use training data as comparison reference dataset
           type: mltable
         data_context: training
         target_column_name: fraud_detected
@@ -40,7 +40,7 @@ create_monitor:
           pearsons_chi_squared_test: 0.02
     advanced_data_quality:
       type: data_quality
-      # target_dataset is optional. By default target dataset is the production inference data associated with Azure Machine Learning online depoint
+      # reference_dataset is optional. By default referece_dataset is the production inference data associated with Azure Machine Learning online endpoint
       reference_data:
         input_data:
           path: azureml:my_model_training_data:1
