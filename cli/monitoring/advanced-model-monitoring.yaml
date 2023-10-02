@@ -1,3 +1,4 @@
+# advanced-model-monitoring.yaml
 $schema:  http://azureml/sdk-2-0/Schedule.json
 name: fraud_detection_model_monitoring
 display_name: Fraud detection model monitoring
@@ -17,6 +18,7 @@ create_monitor:
     instance_type: standard_e4s_v3
     runtime_version: 3.2
   monitoring_target:
+    ml_task: classfiication
     endpoint_deployment_id: azureml:fraud-detection-endpoint:fraud-detection-deployment
   
   monitoring_signals:
@@ -32,10 +34,10 @@ create_monitor:
       features: 
         top_n_feature_importance: 20 # monitor drift for top 20 features
       metric_thresholds:
-          numerical:
-            jensen_shannon_distance: 0.01
-          categorical:
-            pearsons_chi_squared_test: 0.02
+        numerical:
+          jensen_shannon_distance: 0.01
+        categorical:
+          pearsons_chi_squared_test: 0.02
     advanced_data_quality:
       type: data_quality
       # target_dataset is optional. By default target dataset is the production inference data associated with Azure Machine Learning online depoint
@@ -53,26 +55,12 @@ create_monitor:
           null_value_rate: 0.05
         categorical:
           out_of_bounds_rate: 0.03
+
     feature_attribution_drift_signal:
       type: feature_attribution_drift
-      production_data:
-      # using production_data collected outside of AzureML
-        - input_data:
-            path: azureml:my_model_inputs:1
-            type: uri_folder
-          data_context: model_inputs
-          data_column_names:
-            correlation_id: correlation_id
-          pre_processing_component: azureml:model_inputs_preprocessing
-        - input_data:
-            path: azureml:my_model_outputs:1
-            type: uri_folder
-          data_context: model_outputs
-          data_column_names:
-            correlation_id: correlation_id
-            prediction: is_fraud
-            prediction_probability: is_fraund_probability
-          pre_processing_component: azureml:model_outputs_preprocessing
+      # production_data: is not required input here
+      # Please ensure Azure Machine Learning online endpoint is enabled to collected both model_inputs and model_outputs data
+      # Azure Machine Learning model monitoring will automatically join both model_inputs and model_outputs data and used it for computation
       reference_data:
         input_data:
           path: azureml:my_model_training_data:1
