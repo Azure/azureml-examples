@@ -1,3 +1,4 @@
+# out-of-box-monitoring.yaml
 $schema:  http://azureml/sdk-2-0/Schedule.json
 name: fraud_detection_model_monitoring
 display_name: Fraud detection model monitoring
