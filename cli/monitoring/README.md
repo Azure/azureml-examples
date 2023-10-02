@@ -2,7 +2,7 @@
 
 **AzureML model monitoring** enables you to track the performance of your models from a data science perspective whilst in production. This directory contains YAML configuration samples for different scenarios you may encounter when trying to monitor your models. Comprehensive documentation on model monitoring, its capabilities, and a list of supported signals & metrics can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2). 
 
-> **Note**: For monitoring your models deployed with AzureML online endpoints (kubernetes or online), you can use **Model Data Collector (MDC)** to collect production inference data from your deployed model with ease. Samples for MDC can be found [here](). Documentation for MDC can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-collect-production-data?view=azureml-api-2&tabs=azure-cli).
+> **Note**: For monitoring your models deployed with AzureML online endpoints (kubernetes or online), you can use **Model Data Collector (MDC)** to collect production inference data from your deployed model with ease. Documentation for data collection can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-collect-production-data?view=azureml-api-2&tabs=azure-cli).
 
 > **Note**: Comprehensive configuration schema information can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/reference-yaml-monitor?view=azureml-api-2). 
 
@@ -26,7 +26,7 @@ Schedule your model monitor with this command: `az ml schedule create -f advance
 
 In this scenario, you are interested in continuously monitoring your deployed flow of your LLM application. Comprehensive documentation on this scenario can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/prompt-flow/how-to-monitor-generative-ai-applications?view=azureml-api-2). We recommend creating your model monitor from the StudioUI in this case, but we have provided an example YAML configuration file here for your convenience as well. 
 
-Schedule your model monitor with this command: `az ml schedule create -f `
+Schedule your model monitor with this command: `az ml schedule create -f generation-safety-quality-monitoring.yaml`
 
 ### 4. Deploy model with AzureML batch endpoints, AKS with CLI v1, or outside of AzureML
 
