@@ -1,4 +1,3 @@
-$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: my_endpoint
 model: azureml:iris_mlflow_model@latest
