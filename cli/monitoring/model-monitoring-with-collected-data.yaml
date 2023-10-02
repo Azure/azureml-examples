@@ -24,7 +24,7 @@ create_monitor:
   monitoring_signals:
     advanced_data_drift: # monitoring signal name, any user defined name works
       type: data_drift
-      # define target dataset with your collected data
+      # define production dataset with your collected data
       production_data:
         input_data:
           path: azureml:my_production_inference_data_model_inputs:1  # your collected data is registered as Azure Machine Learning asset
@@ -46,7 +46,7 @@ create_monitor:
           pearsons_chi_squared_test: 0.02
     advanced_prediction_drift: # monitoring signal name, any user defined name works
       type: prediction_drift
-      # define target dataset with your collected data
+      # define production dataset with your collected data
       production_data:
         input_data:
           path: azureml:my_production_inference_data_model_outputs:1  # your collected data is registered as Azure Machine Learning asset
@@ -55,7 +55,7 @@ create_monitor:
         pre_processing_component: azureml:production_data_preprocessing:1
       reference_data:
         input_data:
-          path: azureml:my_model_validation_data:1 # use training data as comparison baseline
+          path: azureml:my_model_validation_data:1 # use training data as comparison reference dataset
           type: mltable
         data_context: validation
       metric_thresholds:
