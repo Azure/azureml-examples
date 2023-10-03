@@ -1,13 +1,3 @@
----
-page_type: sample
-languages:
-- azurecli
-- python
-products:
-- azure-machine-learning
-description: Top-level directory for official Azure Machine Learning sample code and examples.
----
-
 # Azure Machine Learning examples
 
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
