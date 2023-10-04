@@ -31,3 +31,7 @@ az ml online-endpoint invoke -n $ENDPOINT_NAME -d with-package -f sample-request
 #<delete_resources>
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 #</delete_resources>
+
+#<build_package_copy>
+az ml model package -n $MODEL_NAME -l latest --file package-external.yml
+#</build_package_copy>
