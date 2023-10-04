@@ -3,19 +3,19 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-automl-standalone-jobs-automl-image-instance-segmentation-task-fridge-items-automl-image-instance-segmentation-task-fridge-items
+name: sdk-responsible-ai-mlflow-deployment-with-explanations-mlflow-deployment-with-explanations
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "32 10/12 * * *"
+    - cron: "31 5/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - sdk/python/jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items/**
-      - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-instance-segmentation-task-fridge-items-automl-image-instance-segmentation-task-fridge-items.yml
+      - sdk/python/responsible-ai/mlflow-deployment-with-explanations/**
+      - .github/workflows/sdk-responsible-ai-mlflow-deployment-with-explanations-mlflow-deployment-with-explanations.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -60,18 +60,18 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items/automl-image-instance-segmentation-task-fridge-items.ipynb
+    - name: run responsible-ai/mlflow-deployment-with-explanations/mlflow-deployment-with-explanations.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-image-instance-segmentation-task-fridge-items.ipynb";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "mlflow-deployment-with-explanations.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python automl-image-instance-segmentation-task-fridge-items.ipynb automl-image-instance-segmentation-task-fridge-items.output.ipynb
-      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items
+          papermill -k python mlflow-deployment-with-explanations.ipynb mlflow-deployment-with-explanations.output.ipynb
+      working-directory: sdk/python/responsible-ai/mlflow-deployment-with-explanations
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: automl-image-instance-segmentation-task-fridge-items
-        path: sdk/python/jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items
+        name: mlflow-deployment-with-explanations
+        path: sdk/python/responsible-ai/mlflow-deployment-with-explanations
