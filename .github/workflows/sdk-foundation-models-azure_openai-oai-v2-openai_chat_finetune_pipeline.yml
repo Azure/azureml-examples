@@ -9,7 +9,7 @@ name: sdk-foundation-models-azure_openai-oai-v2-openai_chat_finetune_pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 11/12 * * *"
+    - cron: "23 2/12 * * *"
   pull_request:
     branches:
       - main
