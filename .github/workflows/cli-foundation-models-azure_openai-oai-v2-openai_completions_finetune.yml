@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-foundation-models-azure_openai-openai_completions_finetune
+name: cli-foundation-models-azure_openai-oai-v2-openai_completions_finetune
 # This file is created by readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - cli/foundation-models/azure_openai/oai-v1/openai_completions_finetune/**
-      - .github/workflows/cli-foundation-models-azure_openai-openai_completions_finetune.yml
+      - cli/foundation-models/azure_openai/oai-v1/openai_completions_finetune_pipeline/**
+      - .github/workflows/cli-foundation-models-azure_openai-oai-v2-openai_completions_finetune.yml
       - infra/bootstrapping/**
       - cli/run-pipeline-jobs.sh
       - cli/setup.sh
@@ -52,5 +52,5 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           bash -x ../dataset-create.sh
-          bash -x ../../../run-job.sh openai_completions_finetune_spec.yaml
-      working-directory: cli/foundation-models/azure_openai/oai-v1/openai_completions_finetune
+          bash -x ../../../run-job.sh openai_completions_finetune_pipeline_spec.yaml
+      working-directory: cli/foundation-models/azure_openai/oai-v1/openai_completions_finetune_pipeline
