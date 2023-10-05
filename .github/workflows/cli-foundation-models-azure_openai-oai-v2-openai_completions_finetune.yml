@@ -52,5 +52,5 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           bash -x ../dataset-create.sh
-          bash -x ../../../run-job.sh openai_completions_finetune_pipeline_spec.yaml
-      working-directory: cli/foundation-models/azure_openai/oai-v1/openai_completions_finetune_pipeline
+          bash -x ../../../../run-job.sh openai_completions_finetune_pipeline_spec.yaml
+      working-directory: cli/foundation-models/azure_openai/oai-v2/openai_completions_finetune_pipeline
