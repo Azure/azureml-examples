@@ -3,20 +3,19 @@ set -x
 
 # script inputs
 registry_name="azureml"
+
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="runwayml-stable-diffusion-v1-5"
+model_name="runwayml-stable-diffusion-inpainting"
 model_label="latest"
 
-# Path to input .csv file
-base_dir="./text_to_image_batch_data"
 
 version=$(date +%s)
 endpoint_name="text-to-image-$version"
-deployment_name="stablediffusion-demo"
+deployment_name="inpainting-batch-deploy"
 
 deployment_compute="gpu-cluster"
 compute_sku="Standard_NC6s_v3"
@@ -69,8 +68,12 @@ az ml batch-deployment create --file batch-deploy.yml $workspace_info --set \
     echo "deployment create failed"; exit 1;
 }
 
+# 4. Submit a sample request to endpoint
+data_path="./inpainting_data/batch_data"
+python utils/prepare_inpainting_request.py --payload-path $data_path --mode "batch"
+
 # Check if scoring folder exists
-if [ -d $base_dir ]; then
+if [ -d $data_path ]; then
     echo "Invoking endpoint $endpoint_name with following input:\n\n"
     ls $data_path
     echo "\n\n"
@@ -82,7 +85,7 @@ fi
 # 5. Invoke a job on the batch endpoint
 job_name=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name \
- --input $base_dir \
+ --input $data_path \
  --input-type uri_folder --query name --output tsv $workspace_info) || {
     echo "endpoint invoke failed"; exit 1;
 }
