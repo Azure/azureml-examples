@@ -73,7 +73,7 @@ jobs:
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
     - name: check notebook output
       run: |
-         python ${{ github.workspace }}/v1/scripts/validation/check_notebook_output.py \
+         python ${{ github.workspace }}/.github/test/scripts/check_notebook_output.py \
                 --file_name auto-ml-forecasting-github-dau.output.ipynb \
                 --folder . \
                 --check warning \
