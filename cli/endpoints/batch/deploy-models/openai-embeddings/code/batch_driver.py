@@ -7,15 +7,16 @@ from pathlib import Path
 from typing import List
 from datasets import load_dataset
 
-DATA_READERS = { 
-    ".csv": "csv", 
+DATA_READERS = {
+    ".csv": "csv",
     ".tsv": "tsv",
     ".parquet": "parquet",
     ".json": "json",
     ".jsonl": "json",
     ".arrow": "arrow",
-    ".txt": "text"
+    ".txt": "text",
 }
+
 
 def init():
     global model
@@ -39,9 +40,13 @@ def init():
             "The indicated model doesn't have an OpenAI flavor on it. Use "
             "``mlflow.openai.log_model`` to log OpenAI models."
         )
-    
+
     if text_column:
-        if model.metadata and model.metadata.signature and len(model.metadata.signature.inputs) > 1:
+        if (
+            model.metadata
+            and model.metadata.signature
+            and len(model.metadata.signature.inputs) > 1
+        ):
             raise ValueError(
                 "The model requires more than 1 input column to run. You can't use "
                 "AZUREML_BI_TEXT_COLUMN to indicate which column to send to the model. Format your "
@@ -52,6 +57,7 @@ def init():
     output_path = os.environ["AZUREML_BI_OUTPUT_PATH"]
     output_file = os.path.join(output_path, f"{task_name}.jsonl")
 
+
 def run(mini_batch: List[str]):
     if mini_batch:
         filtered_files = filter(lambda x: Path(x).suffix in DATA_READERS, mini_batch)
@@ -59,7 +65,9 @@ def run(mini_batch: List[str]):
 
         for file in filtered_files:
             data_format = Path(file).suffix
-            data = load_dataset(DATA_READERS[data_format], data_files={'data': file})['data'].data.to_pandas()
+            data = load_dataset(DATA_READERS[data_format], data_files={"data": file})[
+                "data"
+            ].data.to_pandas()
             if text_column:
                 data = data.loc[[text_column]]
             scores = model.predict(data)
@@ -68,11 +76,13 @@ def run(mini_batch: List[str]):
                     {
                         "file": np.repeat(Path(file).name, len(scores)),
                         "row": range(0, len(scores)),
-                        task_name: scores
+                        task_name: scores,
                     }
                 )
             )
 
-        pd.concat(results, axis="rows").to_json(output_file, orient='records', mode='a', lines=True)
-    
+        pd.concat(results, axis="rows").to_json(
+            output_file, orient="records", mode="a", lines=True
+        )
+
     return mini_batch
