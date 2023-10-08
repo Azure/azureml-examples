@@ -5,6 +5,7 @@ from promptflow import tool
 @tool
 def fetch_text_content_from_url(url: str):
     import bs4
+
     # Send a request to the URL
     try:
         headers = {
@@ -17,9 +18,7 @@ def fetch_text_content_from_url(url: str):
             soup.prettify()
             return soup.get_text()[:2000]
         else:
-            msg = (
-                f"Get url failed with status code {response.status_code}.\nURL: {url}\nResponse: {response.text[:100]}"
-            )
+            msg = f"Get url failed with status code {response.status_code}.\nURL: {url}\nResponse: {response.text[:100]}"
             print(msg)
             return "No available content"
     except Exception as e:
