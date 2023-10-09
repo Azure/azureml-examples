@@ -18,12 +18,12 @@ jobs:
     type: pipeline
     component: azureml://registries/azureml/components/openai_completions_finetune_pipeline/versions/0.0.9
     inputs:
-      train_dataset: 
+      train_dataset:
         type: uri_folder
-        path: azureml:identity-train-chat:1
-      validation_dataset: 
+        path: azureml:oai_sample_training_data:1
+      validation_dataset:
         type: uri_folder
-        path: azureml:identity-train-chat:1
+        path: azureml:oai_sample_training_data:1
       registered_model_name: ${{parent.inputs.registered_model_name}}
       model: ${{parent.inputs.model}}
       task_type: ${{parent.inputs.task_type}}
