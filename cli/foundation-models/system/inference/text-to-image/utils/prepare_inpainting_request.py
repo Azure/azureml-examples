@@ -12,8 +12,14 @@ import pandas as pd
 from PIL import Image
 
 
-def read_image(image_path) -> bytes:
-    """Reads an image from a file path into a byte array."""
+def read_image(image_path: str) -> bytes:
+    """Reads an image from a file path into a byte array.
+
+    :param image_path: Path to image file.
+    :type image_path: str
+    :return: Byte array of image.
+    :rtype: bytes
+    """
     with open(image_path, "rb") as f:
         return f.read()
 
@@ -27,9 +33,9 @@ def prepare_batch_payload(payload_path: str) -> None:
     """
 
     base_image1 = "inpainting_data/images/dog_on_bench.png"
-    mask_image1 = "inpainting_data/images/dog_on_bench_mask.png"
+    mask_image1 = "inpainting_data/masks/dog_on_bench.png"
     base_image2 = "inpainting_data/images/teapot.png"
-    mask_image2 = "inpainting_data/images/teapot_mask.png"
+    mask_image2 = "inpainting_data/masks/teapot.png"
 
     os.makedirs(payload_path, exist_ok=True)
 
@@ -93,7 +99,7 @@ def prepare_online_payload(payload_path: str) -> None:
         base_directory, "inpainting_data", "images", "dog_on_bench.png"
     )
     mask_image = os.path.join(
-        base_directory, "inpainting_data", "images", "dog_on_bench_mask.png"
+        base_directory, "inpainting_data", "masks", "dog_on_bench.png"
     )
 
     request_json = {
