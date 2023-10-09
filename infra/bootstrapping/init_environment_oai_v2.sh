@@ -69,7 +69,7 @@ fi
 WORKSPACE_NAME=${WORKSPACE_NAME:-}
 if [[ -z "$WORKSPACE_NAME" ]]
 then
-    export WORKSPACE_NAME="${PREFIX}${SUFFIX}${DATE_ONLY}-ws"
+    export WORKSPACE_NAME="${PREFIX}${SUFFIX}${DATE_ONLY}-dv3-ws"
     echo_warning "No workspace name [WORKSPACE_NAME] specified, defaulting to ${WORKSPACE_NAME}."
 fi
 
