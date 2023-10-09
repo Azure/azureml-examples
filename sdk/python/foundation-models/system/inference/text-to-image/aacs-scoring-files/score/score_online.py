@@ -25,7 +25,11 @@ from mlflow.types.utils import _infer_schema
 from mlflow.exceptions import MlflowException
 from azure.ai.contentsafety import ContentSafetyClient
 from azure.core.credentials import AzureKeyCredential
-from azure.ai.contentsafety.models import AnalyzeTextOptions, AnalyzeImageOptions, ImageData
+from azure.ai.contentsafety.models import (
+    AnalyzeTextOptions,
+    AnalyzeImageOptions,
+    ImageData,
+)
 from aiolimiter import AsyncLimiter
 from azure.core.pipeline.policies import (
     HeadersPolicy,
@@ -536,7 +540,9 @@ def iterate(obj, current_key=None):
         columns = obj.columns
         for i in range(obj.shape[0]):  # iterate over rows
             for j in range(obj.shape[1]):  # iterate over columns
-                obj.iloc[i][columns[j]], value_severity = iterate(obj.iloc[i][columns[j]], columns[j])
+                obj.iloc[i][columns[j]], value_severity = iterate(
+                    obj.iloc[i][columns[j]], columns[j]
+                )
                 severity = max(severity, value_severity)
         return obj, severity
     elif isinstance(obj, str):

@@ -1,4 +1,3 @@
-
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
@@ -14,6 +13,7 @@ from PIL import Image
 
 INPUT_PROMPT_COLUMN = "prompt"
 OUTPUT_IMAGE_COLUMN = "generated_image"
+
 
 def base64_str_to_image(response_file: str):
     """
@@ -33,14 +33,21 @@ def base64_str_to_image(response_file: str):
         text_prompt = ""
         if INPUT_PROMPT_COLUMN in obj:
             text_prompt = obj[INPUT_PROMPT_COLUMN].strip()
-        text_prompt=f"Img_{i}_" + re.sub(r"[^a-zA-Z0-9 ]+", "", text_prompt)
-        text_prompt=text_prompt[:50]
+        text_prompt = f"Img_{i}_" + re.sub(r"[^a-zA-Z0-9 ]+", "", text_prompt)
+        text_prompt = text_prompt[:50]
         img.save(text_prompt + ".jpg", "JPEG")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for image classification")
-    parser.add_argument("--response_file", type=str, default="generated_image.json", help="File having image response from endpoint.")
+    parser = argparse.ArgumentParser(
+        description="Prepare data for image classification"
+    )
+    parser.add_argument(
+        "--response_file",
+        type=str,
+        default="generated_image.json",
+        help="File having image response from endpoint.",
+    )
     args, unknown = parser.parse_known_args()
-    
+
     base64_str_to_image(args.response_file)

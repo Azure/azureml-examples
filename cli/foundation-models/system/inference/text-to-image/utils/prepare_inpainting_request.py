@@ -36,36 +36,48 @@ def prepare_batch_payload(payload_path: str) -> None:
     input_data = {
         "columns": ["image", "mask_image", "prompt"],
         "data": [
-                    {
-                        "image": base64.encodebytes(read_image(base_image1)).decode("utf-8"),
-                        "mask_image": base64.encodebytes(read_image(mask_image1)).decode("utf-8"),
-                        "prompt": "A yellow cat, high resolution, sitting on a park bench"
-                    },
-                    {
-                        "image": base64.encodebytes(read_image(base_image2)).decode("utf-8"),
-                        "mask_image": base64.encodebytes(read_image(mask_image2)).decode("utf-8"),
-                        "prompt": "A small flower featuring a blend of pink and purple colors."
-                    }
+            {
+                "image": base64.encodebytes(read_image(base_image1)).decode("utf-8"),
+                "mask_image": base64.encodebytes(read_image(mask_image1)).decode(
+                    "utf-8"
+                ),
+                "prompt": "A yellow cat, high resolution, sitting on a park bench",
+            },
+            {
+                "image": base64.encodebytes(read_image(base_image2)).decode("utf-8"),
+                "mask_image": base64.encodebytes(read_image(mask_image2)).decode(
+                    "utf-8"
+                ),
+                "prompt": "A small flower featuring a blend of pink and purple colors.",
+            },
         ],
     }
-    pd.DataFrame(**input_data).to_csv(os.path.join(payload_path, "input1.csv"), index=False)
+    pd.DataFrame(**input_data).to_csv(
+        os.path.join(payload_path, "input1.csv"), index=False
+    )
 
     input_data = {
         "columns": ["image", "mask_image", "prompt"],
         "data": [
-                    {
-                        "image": base64.encodebytes(read_image(base_image1)).decode("utf-8"),
-                        "mask_image": base64.encodebytes(read_image(mask_image1)).decode("utf-8"),
-                        "prompt": "Pikachu, cinematic, digital art, sitting on bench"
-                    },
-                    {
-                        "image": base64.encodebytes(read_image(base_image2)).decode("utf-8"),
-                        "mask_image": base64.encodebytes(read_image(mask_image2)).decode("utf-8"),
-                        "prompt": "A woman with red hair in the style of Tamara de Lempicka."
-                    }
+            {
+                "image": base64.encodebytes(read_image(base_image1)).decode("utf-8"),
+                "mask_image": base64.encodebytes(read_image(mask_image1)).decode(
+                    "utf-8"
+                ),
+                "prompt": "Pikachu, cinematic, digital art, sitting on bench",
+            },
+            {
+                "image": base64.encodebytes(read_image(base_image2)).decode("utf-8"),
+                "mask_image": base64.encodebytes(read_image(mask_image2)).decode(
+                    "utf-8"
+                ),
+                "prompt": "A woman with red hair in the style of Tamara de Lempicka.",
+            },
         ],
     }
-    pd.DataFrame(**input_data).to_csv(os.path.join(payload_path, "input2.csv"), index=False)
+    pd.DataFrame(**input_data).to_csv(
+        os.path.join(payload_path, "input2.csv"), index=False
+    )
 
 
 def prepare_online_payload(payload_path: str) -> None:

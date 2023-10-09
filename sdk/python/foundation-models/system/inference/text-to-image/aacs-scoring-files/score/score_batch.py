@@ -442,7 +442,9 @@ def analyze_data(
                         image_path = os.path.join(output_dir, str(row[column]))
                         if os.path.isfile(image_path):
                             os.remove(image_path)
-                        data_frame.at[index, column] = "Blocked By Azure AI Content Safety"
+                        data_frame.at[
+                            index, column
+                        ] = "Blocked By Azure AI Content Safety"
     return blocked_input
 
 
