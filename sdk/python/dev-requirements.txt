@@ -1,13 +1,13 @@
 # required for notebook testing in workflow actions
 # pinned to avoid surprises
-ipython-genutils
+ipython-genutils==0.2.0
 ipykernel==5.5.5
 papermill==2.3.3
-pandas
-matplotlib
-torch
-tensorflow
-tensorflow-hub
-transformers
+pandas==2.0.3
+matplotlib==3.7.3
+torch==2.1.0
+tensorflow==2.9.3
+tensorflow-hub==0.15.0
+transformers==4.34.0
 keras==2.9
 jupyter-client==7.4.9
