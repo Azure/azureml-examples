@@ -73,6 +73,7 @@ then
     echo_warning "No workspace name [WORKSPACE_NAME] specified, defaulting to ${WORKSPACE_NAME}."
 fi
 
+LOCATION=${LOCATION:-}
 if [[ -z "$LOCATION" ]]
 then
     export LOCATION="northcentralus"
