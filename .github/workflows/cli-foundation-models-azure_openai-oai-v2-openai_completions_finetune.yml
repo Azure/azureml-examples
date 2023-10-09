@@ -26,31 +26,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
-    - name: bootstrap resources
-      run: |
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZUREML_CREDENTIALS}}
+      - name: bootstrap resources
+        run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra/bootstrapping
-      continue-on-error: false
-    - name: setup-cli
-      run: |
+        working-directory: infra/bootstrapping
+        continue-on-error: false
+      - name: setup-cli
+        run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: run job
-      run: |
+        working-directory: cli
+        continue-on-error: true
+      - name: run job
+        run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          export LOCATION="northcentralus";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           bash -x ../dataset-create.sh
           bash -x ../../../../run-job.sh openai_completions_finetune_pipeline_spec.yaml
-      working-directory: cli/foundation-models/azure_openai/oai-v2/openai_completions_finetune_pipeline
+        working-directory: cli/foundation-models/azure_openai/oai-v2/openai_completions_finetune_pipeline
