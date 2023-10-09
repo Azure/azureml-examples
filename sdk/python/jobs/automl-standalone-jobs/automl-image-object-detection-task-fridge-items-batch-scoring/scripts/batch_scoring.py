@@ -52,7 +52,6 @@ def init():
 
 def run(mini_batch):
     logger.info("Running inference.")
-    result = run_inference_batch(
-        model, mini_batch, _score_with_model, batch_size)
+    result = run_inference_batch(model, mini_batch, _score_with_model, batch_size)
     logger.info("Finished inferencing.")
     return result
