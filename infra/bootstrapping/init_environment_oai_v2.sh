@@ -73,12 +73,8 @@ then
     echo_warning "No workspace name [WORKSPACE_NAME] specified, defaulting to ${WORKSPACE_NAME}."
 fi
 
-# LOCATION=${LOCATION:-}
-# if [[ -z "$LOCATION" ]]
-# then
-export LOCATION="northcentralus"
+LOCATION=${LOCATION:-"northcentralus"}
 echo_warning "No resource group location [LOCATION] specified, defaulting to ${LOCATION}."
-# fi
 
 REGISTRY_NAME=${REGISTRY_NAME:-}
 if [[ -z "$REGISTRY_NAME" ]]
