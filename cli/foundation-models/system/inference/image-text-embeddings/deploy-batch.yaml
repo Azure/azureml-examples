@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 name: demo
-description: "Batch endpoint for for image-classification task"
+description: "Batch endpoint for image and text embeddings task"
 type: model
 resources:
     instance_count: 1

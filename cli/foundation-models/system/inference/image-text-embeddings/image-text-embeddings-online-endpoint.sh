@@ -1,5 +1,5 @@
 set -x
-# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-sdk-image-classification
+# The commands in this file map to steps in this notebook: <TODO>
 # The sample scoring file available in the same folder as the above notebook
 
 # script inputs
@@ -9,19 +9,22 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="microsoft-beit-base-patch16-224-pt22k-ft22k"
+model_name="image-text-embeddings-openai-clip-vit-base-patch32"
 model_label="latest"
 
 version=$(date +%s)
-endpoint_name="image-classification-$version"
+endpoint_name="clip-embeddings-$version"
 
 # Todo: fetch deployment_sku from the min_inference_sku tag of the model
 deployment_sku="Standard_DS3_v2"
 
 # Prepare data for deployment
-python ./prepare_data.py --is_multilabel 0 --data_path "data_online" --mode "online"
+data_path="./data_online"
+python ./prepare_data.py --data_path $data_path --mode "online"
 # sample_request_data
-sample_request_data="./data_online/fridgeObjects/sample_request_data.json"
+image_request_data="$data_path/fridgeObjects/image_request_data.json"
+text_request_data="$data_path/fridgeObjects/text_request_data.json"
+image_text_request_data="$data_path/fridgeObjects/image_text_request_data.json"
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
    ["$resource_group_name" = "<RESOURCE_GROUP>" ] || \
@@ -57,17 +60,43 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --all-t
     echo "deployment create failed"; exit 1;
 }
 
-# 4. Try a sample scoring request
+# 4.1 Try a sample scoring request for image embeddings
 
 # Check if scoring data file exists
-if [ -f $sample_request_data ]; then
-    echo "Invoking endpoint $endpoint_name with $sample_request_data\n\n"
+if [ -f $image_request_data ]; then
+    echo "Invoking endpoint $endpoint_name with $image_request_data\n\n"
 else
-    echo "Scoring file $sample_request_data does not exist"
+    echo "Scoring file $image_request_data does not exist"
     exit 1
 fi
 
-az ml online-endpoint invoke --name $endpoint_name --request-file $sample_request_data $workspace_info || {
+az ml online-endpoint invoke --name $endpoint_name --request-file $image_request_data $workspace_info || {
+    echo "endpoint invoke failed"; exit 1;
+}
+# 4.2 Try a sample scoring request for text embeddings
+
+# Check if scoring data file exists
+if [ -f $text_request_data ]; then
+    echo "Invoking endpoint $endpoint_name with $text_request_data\n\n"
+else
+    echo "Scoring file $text_request_data does not exist"
+    exit 1
+fi
+
+az ml online-endpoint invoke --name $endpoint_name --request-file $text_request_data $workspace_info || {
+    echo "endpoint invoke failed"; exit 1;
+}
+# 4.1 Try a sample scoring request for image and text embeddings
+
+# Check if scoring data file exists
+if [ -f $image_text_request_data ]; then
+    echo "Invoking endpoint $endpoint_name with $image_text_request_data\n\n"
+else
+    echo "Scoring file $image_text_request_data does not exist"
+    exit 1
+fi
+
+az ml online-endpoint invoke --name $endpoint_name --request-file $image_text_request_data $workspace_info || {
     echo "endpoint invoke failed"; exit 1;
 }
 
@@ -76,4 +105,6 @@ az ml online-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
 
-rm $sample_request_data
+rm $image_request_data
+rm $text_request_data
+rm $image_text_request_data
