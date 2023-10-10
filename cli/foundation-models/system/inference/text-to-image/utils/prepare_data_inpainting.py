@@ -107,7 +107,9 @@ def prepare_batch_payload(payload_path: str) -> None:
         )
 
     # Check out the first and last file name created
-    input_paths = sorted(Path(processed_dataset_parent_dir).iterdir(), key=os.path.getmtime)
+    input_paths = sorted(
+        Path(processed_dataset_parent_dir).iterdir(), key=os.path.getmtime
+    )
     input_files = [os.path.basename(path) for path in input_paths]
     print(f"{input_files[0]} to {str(i)}{batch_input_file}.")
 
