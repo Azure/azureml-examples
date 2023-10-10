@@ -55,7 +55,7 @@ fi
 data_path="./text_to_image_batch_data/batch_data"
 python utils/prepare_data.py --payload-path $data_path --mode "batch"
 # Path where the processes csvs are dumped. This is the input to the endpoint
-processed_data_path="./text_to_image_batch_data/batch_data/processed_batch_data"
+processed_data_path="./text_to_image_batch_data/processed_batch_data"
 
 # Check if scoring folder exists
 if [ -d $processed_data_path ]; then
