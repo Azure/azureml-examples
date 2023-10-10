@@ -93,7 +93,7 @@ fi
 # please try splitting your input into smaller csv files or
 # decrease the mini_batch_size for the deployment (see deploy-batch.yaml).
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
- --deployment-name $deployment_name --input $image_request_csv_folder --input-type \
+ --deployment-name $deployment_name --input $image_csv_folder --input-type \
   uri_folder $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }
@@ -119,7 +119,7 @@ fi
 # please try splitting your input into smaller csv files or
 # decrease the mini_batch_size for the deployment (see deploy-batch.yaml).
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
- --deployment-name $deployment_name --input $text_request_csv_folder --input-type \
+ --deployment-name $deployment_name --input $text_csv_folder --input-type \
   uri_folder $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }
@@ -145,7 +145,7 @@ fi
 # please try splitting your input into smaller csv files or
 # decrease the mini_batch_size for the deployment (see deploy-batch.yaml).
 csv_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
- --deployment-name $deployment_name --input $image_text_request_csv_folder --input-type \
+ --deployment-name $deployment_name --input $image_text_csv_folder --input-type \
   uri_folder $workspace_info --query name --output tsv) || {
     echo "endpoint invoke failed"; exit 1;
 }

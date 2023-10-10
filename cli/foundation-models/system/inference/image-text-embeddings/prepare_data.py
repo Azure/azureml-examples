@@ -162,7 +162,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     data = [[image, ""] for image in image_list]
     batch_df = pd.DataFrame(data, columns=["image", "text"])
 
-    image_csv_folder_path = os.path.join(dataset_dir, "batch_image")
+    image_csv_folder_path = os.path.join(dataset_dir, "image_batch")
     os.makedirs(image_csv_folder_path, exist_ok=True)
     # Divide this into files of 10 rows each
     batch_size_per_predict = 10
@@ -175,7 +175,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     data = [["", ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))] for image in image_list]
     batch_df = pd.DataFrame(data, columns=["image", "text"])
 
-    text_csv_folder_path = os.path.join(dataset_dir, "batch_text")
+    text_csv_folder_path = os.path.join(dataset_dir, "text_batch")
     os.makedirs(text_csv_folder_path, exist_ok=True)
     # Divide this into files of 10 rows each
     batch_size_per_predict = 10
@@ -188,7 +188,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     data = [[image, ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))] for image in image_list]
     batch_df = pd.DataFrame(data, columns=["image", "text"])
 
-    image_text_csv_folder_path = os.path.join(dataset_dir, "batch_text")
+    image_text_csv_folder_path = os.path.join(dataset_dir, "image_text_batch")
     os.makedirs(image_text_csv_folder_path, exist_ok=True)
     # Divide this into files of 10 rows each
     batch_size_per_predict = 10
