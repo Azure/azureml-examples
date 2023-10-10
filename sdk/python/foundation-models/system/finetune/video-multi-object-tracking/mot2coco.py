@@ -159,7 +159,7 @@ def main():
             # video-level infos
             assert video_name == infos[1].strip().split('=')[1]
             img_folder = infos[2].strip().split('=')[1]
-            img_names = os.listdir(f'{video_folder}/{img_folder}')
+            img_names = [fname for fname in os.listdir(f'{video_folder}/{img_folder}') if fname.endswith(".jpg") or fname.endswith(".png")]
             img_names = sorted(img_names)
             fps = int(infos[3].strip().split('=')[1])
             num_imgs = int(infos[4].strip().split('=')[1])
