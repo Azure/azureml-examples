@@ -90,6 +90,48 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     with open(request_file_name, "w") as request_file:
         json.dump(request_json, request_file)
 
+def prepare_data_for_batch_inference(dataset_dir: str) -> None:
+    """Prepare image folder and csv file for batch inference.
+
+    This function will move all images to a single image folder and also create a folder of csv
+    files with images in base64 format and the candidate labels.
+    :param dataset_dir: dataset directory
+    :type dataset_dir: str
+    """
+    image_list = []
+
+    dir_names = []
+    for dir_name in os.listdir(dataset_dir):
+        dir_names.append(dir_name)
+        dir_path = os.path.join(dataset_dir, dir_name)
+        for path, _, files in os.walk(dir_path):
+            for file in files:
+                image = read_image(os.path.join(path, file))
+                image_list.append(base64.encodebytes(image).decode("utf-8"))
+                shutil.move(os.path.join(path, file), dataset_dir)
+        if os.path.isdir(dir_path):
+            shutil.rmtree(dir_path)
+        else:
+            os.remove(dir_path)
+
+    # labels are only added to the first row
+    # all other rows in the "text" column are ignored
+    labels = ",".join(dir_names)
+    data = [[image, ""] for image in image_list]
+    batch_df = pd.DataFrame(data, columns=["image", "text"])
+
+    csv_folder_path = os.path.join(dataset_dir, "batch")
+    os.makedirs(csv_folder_path, exist_ok=True)
+    batch_input_file = "batch_input.csv"
+    # Divide this into files of 10 rows each
+    batch_size_per_predict = 10
+    for i in range(0, len(batch_df), batch_size_per_predict):
+        j = i + batch_size_per_predict
+        batch_df["text"].iloc[
+            i
+        ] = labels  # each csv file includes the labels in the first row
+        batch_df[i:j].to_csv(os.path.join(csv_folder_path, str(i) + batch_input_file))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -116,3 +158,5 @@ if __name__ == "__main__":
 
     if args.mode == "online":
         prepare_data_for_online_inference(dataset_dir=dataset_dir)
+    else:
+        prepare_data_for_batch_inference(dataset_dir=dataset_dir)
