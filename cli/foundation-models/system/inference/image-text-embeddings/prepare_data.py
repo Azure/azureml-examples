@@ -6,24 +6,21 @@ import shutil
 import urllib.request
 import pandas as pd
 from zipfile import ZipFile
+import random
+import string
 
 
-def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> None:
+def download_and_unzip(dataset_parent_dir: str) -> None:
     """Download image dataset and unzip it.
 
     :param dataset_parent_dir: dataset parent directory to which dataset will be downloaded
     :type dataset_parent_dir: str
-    :param is_multilabel_dataset: flag to indicate if dataset is multi-label or not
-    :type is_multilabel_dataset: int
     """
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # download data
-    if is_multilabel_dataset == 0:
-        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
-    else:
-        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
+    download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
     print(f"Downloading data from {download_url}")
 
     # Extract current dataset name from dataset url
@@ -62,52 +59,95 @@ def read_image(image_path: str) -> bytes:
         return f.read()
 
 
-def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0) -> None:
-    """Prepare request json for online inference.
+def prepare_data_for_online_inference(dataset_dir: str) -> None:
+    """Prepare request json files for online inference.
 
     :param dataset_dir: dataset directory
     :type dataset_dir: str
-    :param is_multilabel: flag to indicate if dataset is multi-label or not
-    :type is_multilabel: int
     """
-    if is_multilabel == 0:
-        sample_image = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
-    else:
-        sample_image = os.path.join(dataset_dir, "images", "56.jpg")
+    sample_image_1 = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
+    sample_image_2 = os.path.join(dataset_dir, "can", "1.jpg")
 
-    request_json = {
+    # Generate sample request for image embeddings
+    image_request_json = {
         "input_data": {
-            "columns": ["image"],
-            "index": [0],
-            "data": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
+            "columns": ["image", "text"],
+            "index": [0, 1],
+            "data": [
+                [
+                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"), "",
+                ],  # the "text" column should contain empty string
+                [
+                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8"), ""
+                ],
+            ],
         }
     }
 
-    request_file_name = os.path.join(dataset_dir, "sample_request_data.json")
+    request_file_name = os.path.join(dataset_dir, "image_request_data.json")
 
     with open(request_file_name, "w") as request_file:
-        json.dump(request_json, request_file)
+        json.dump(image_request_json, request_file)
 
+    # Generate sample request for text embeddings
+    text_request_json = {
+        "input_data": {
+            "columns": ["image", "text"],
+            "index": [0, 1],
+            "data": [
+                [
+                    "", "text sample 1"
+                ],   # the "text" column should contain empty string
+                [
+                    "", "text sample 2"
+                ],
+            ],
+        }
+    }
 
-def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0) -> None:
-    """Prepare image folder and csv file for batch inference.
+    request_file_name = os.path.join(dataset_dir, "text_request_data.json")
 
-    This function will move all images to a single image folder and also create a csv
-    file with images in base64 format.
+    with open(request_file_name, "w") as request_file:
+        json.dump(text_request_json, request_file)
+
+    # Generate sample request for image and text embeddings
+    image_text_request_json = {
+        "input_data": {
+            "columns": ["image", "text"],
+            "index": [0, 1],
+            "data": [
+                [
+                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
+                    "text sample 1"
+                ],  # all rows should have both images and text
+                [
+                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8"),
+                    "text sample 2"
+                ],
+            ],
+        }
+    }
+
+    request_file_name = os.path.join(dataset_dir, "image_text_request_data.json")
+
+    with open(request_file_name, "w") as request_file:
+        json.dump(image_text_request_json, request_file)
+
+def prepare_data_for_batch_inference(dataset_dir: str) -> None:
+    """Prepare image folder and csv files for batch inference.
+
+    This function will move all images to a single image folder and also create folders of csv
+    files. Each folder will have csv files that contain images in base64 format, text samples, or both.
     :param dataset_dir: dataset directory
     :type dataset_dir: str
-    :param is_multilabel: flag to indicate if dataset is multi-label or not
-    :type is_multilabel: int
     """
+    batch_input_file = "batch_input.csv"
+    # Generate batch input for image embeddings
     image_list = []
 
-    csv_file_name = (
-        "image_classification_multilabel_lis.csv"
-        if is_multilabel == 1
-        else "image_classification_multiclass_list.csv"
-    )
-
+    dir_names = []
     for dir_name in os.listdir(dataset_dir):
+        dir_names.append(dir_name)
         dir_path = os.path.join(dataset_dir, dir_name)
         for path, _, files in os.walk(dir_path):
             for file in files:
@@ -118,23 +158,50 @@ def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0) -
             shutil.rmtree(dir_path)
         else:
             os.remove(dir_path)
-    df = pd.DataFrame(image_list, columns=["image"]).sample(10)
-    df.to_csv(
-        os.path.join(os.path.dirname(dataset_dir), csv_file_name),
-        index=False,
-        header=True,
-    )
 
+    data = [[image, ""] for image in image_list]
+    batch_df = pd.DataFrame(data, columns=["image", "text"])
+
+    image_csv_folder_path = os.path.join(dataset_dir, "batch_image")
+    os.makedirs(image_csv_folder_path, exist_ok=True)
+    # Divide this into files of 10 rows each
+    batch_size_per_predict = 10
+    for i in range(0, len(batch_df), batch_size_per_predict):
+        j = i + batch_size_per_predict
+        batch_df[i:j].to_csv(os.path.join(image_csv_folder_path, str(i) + batch_input_file))
+
+    # Generate batch input for text embeddings
+    # supply random strings for text samples
+    data = [["", ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))] for image in image_list]
+    batch_df = pd.DataFrame(data, columns=["image", "text"])
+
+    text_csv_folder_path = os.path.join(dataset_dir, "batch_text")
+    os.makedirs(text_csv_folder_path, exist_ok=True)
+    # Divide this into files of 10 rows each
+    batch_size_per_predict = 10
+    for i in range(0, len(batch_df), batch_size_per_predict):
+        j = i + batch_size_per_predict
+        batch_df[i:j].to_csv(os.path.join(text_csv_folder_path, str(i) + batch_input_file))
+
+    # Generate batch input for image and text embeddings
+    # supply base64 images for images samples and random strings for text samples
+    data = [[image, ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))] for image in image_list]
+    batch_df = pd.DataFrame(data, columns=["image", "text"])
+
+    image_text_csv_folder_path = os.path.join(dataset_dir, "batch_text")
+    os.makedirs(image_text_csv_folder_path, exist_ok=True)
+    # Divide this into files of 10 rows each
+    batch_size_per_predict = 10
+    for i in range(0, len(batch_df), batch_size_per_predict):
+        j = i + batch_size_per_predict
+        batch_df[i:j].to_csv(os.path.join(image_text_csv_folder_path, str(i) + batch_input_file))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Prepare data for image classification"
+        description="Prepare data for zero-shot image classification"
     )
     parser.add_argument(
         "--data_path", type=str, default="data", help="Dataset location"
-    )
-    parser.add_argument(
-        "--is_multilabel", type=int, default=0, help="Is multilabel dataset"
     )
     parser.add_argument(
         "--mode",
@@ -148,16 +215,11 @@ if __name__ == "__main__":
 
     dataset_dir = download_and_unzip(
         dataset_parent_dir=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), args.data_path
+            os.path.dirname(os.path.realpath(__file__)), args.data_path
         ),
-        is_multilabel_dataset=args.is_multilabel,
     )
 
     if args.mode == "online":
-        prepare_data_for_online_inference(
-            dataset_dir=dataset_dir, is_multilabel=args.is_multilabel
-        )
+        prepare_data_for_online_inference(dataset_dir=dataset_dir)
     else:
-        prepare_data_for_batch_inference(
-            dataset_dir=dataset_dir, is_multilabel=args.is_multilabel
-        )
+        prepare_data_for_batch_inference(dataset_dir=dataset_dir)
