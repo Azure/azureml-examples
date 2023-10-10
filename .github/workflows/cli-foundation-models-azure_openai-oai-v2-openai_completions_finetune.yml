@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-foundation-models-azure_openai-openai_completions_finetune
+name: cli-foundation-models-azure_openai-oai-v2-openai_completions_finetune
 # This file is created by readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - cli/foundation-models/azure_openai/openai_completions_finetune/**
-      - .github/workflows/cli-foundation-models-azure_openai-openai_completions_finetune.yml
+      - cli/foundation-models/azure_openai/oai-v1/openai_completions_finetune_pipeline/**
+      - .github/workflows/cli-foundation-models-azure_openai-oai-v2-openai_completions_finetune.yml
       - infra/bootstrapping/**
       - cli/run-pipeline-jobs.sh
       - cli/setup.sh
@@ -26,31 +26,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
-    - name: bootstrap resources
-      run: |
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZUREML_CREDENTIALS}}
+      - name: bootstrap resources
+        run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
-          bash bootstrap.sh
-      working-directory: infra/bootstrapping
-      continue-on-error: false
-    - name: setup-cli
-      run: |
+          bash bootstrap_oai_v2.sh
+        working-directory: infra/bootstrapping
+        continue-on-error: false
+      - name: setup-cli
+        run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: run job
-      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment_oai_v2.sh";
+          bash setup_oai_v2.sh
+        working-directory: cli
+        continue-on-error: true
+      - name: run job
+        run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment_oai_v2.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           bash -x ../dataset-create.sh
-          bash -x ../../../run-job.sh openai_completions_finetune_spec.yaml
-      working-directory: cli/foundation-models/azure_openai/openai_completions_finetune
+          bash -x ../../../../run-job.sh openai_completions_finetune_pipeline_spec.yaml
+        working-directory: cli/foundation-models/azure_openai/oai-v2/openai_completions_finetune_pipeline
