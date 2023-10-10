@@ -20,4 +20,8 @@ pip install azure-ai-ml
 # https://docsupport.blob.core.windows.net/ml-sample-submissions/1905732/azure_ai_ml-1.0.0-py3-none-any.whl
 # </az_ml_sdk_test_install>
 
+# <connection_manage_install>
+pip install promptflow
+# </connection_manage_install>
+
 pip list

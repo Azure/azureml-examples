@@ -162,6 +162,17 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
       timeout-minutes: 30
       continue-on-error: true
+    - name: create asset for cli/jobs/pipelines-with-components/pipeline_job_with_flow_as_component
+      if: ${{ always() }}
+      run: |
+        source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+        set -x
+        pip install promptflow
+        pf connection create -f connection.yaml --set api_key="${{ github.workspace }}" --set api_base="${{ github.workspace }}"
+      working-directory: cli/jobs/pipelines-with-components/basics/pipeline_job_with_flow_as_component
+      timeout-minutes: 30
+      continue-on-error: true
     - name: setup env for cli/jobs/pipelines-with-components/rai_pipeline_adult_analyse/
       if: ${{ always() }}
       run: |
