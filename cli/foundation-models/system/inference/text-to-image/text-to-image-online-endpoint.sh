@@ -56,7 +56,7 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --all-t
 }
 
 # 4. Submit a sample request to endpoint
-
+python utils/prepare_data.py --payload-path $sample_request_data --mode "online"
 # Check if scoring data file exists
 if [ -f $sample_request_data ]; then
     echo "Invoking endpoint $endpoint_name with following input:\n\n"
