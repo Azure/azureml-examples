@@ -58,8 +58,7 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --all-t
 }
 
 # 4. Submit a sample request to endpoint
-
-python utils/prepare_inpainting_request.py --payload-path $sample_request_data --mode "online"
+python utils/prepare_data_inpainting.py --payload-path $sample_request_data --mode "online"
 
 # Check if scoring data file exists
 if [ -f $sample_request_data ]; then

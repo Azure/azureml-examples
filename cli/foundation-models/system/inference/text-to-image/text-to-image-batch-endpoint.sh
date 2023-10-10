@@ -11,9 +11,6 @@ workspace_name="<WORKSPACE_NAME>"
 model_name="runwayml-stable-diffusion-v1-5"
 model_label="latest"
 
-# Path to input .csv file
-base_dir="./text_to_image_batch_data"
-
 version=$(date +%s)
 endpoint_name="text-to-image-$version"
 deployment_name="stablediffusion-demo"
@@ -54,7 +51,23 @@ else
     }
 fi
 
-# 4. Deploy the model to an endpoint
+# 4. Submit a sample request to endpoint
+data_path="./text_to_image_batch_data/batch_data"
+python utils/prepare_data.py --payload-path $data_path --mode "batch"
+# Path where the processes csvs are dumped. This is the input to the endpoint
+processed_data_path="./text_to_image_batch_data/batch_data/processed_batch_data"
+
+# Check if scoring folder exists
+if [ -d $processed_data_path ]; then
+    echo "Invoking endpoint $endpoint_name with following input:\n\n"
+    ls $processed_data_path
+    echo "\n\n"
+else
+    echo "Scoring folder $processed_data_path does not exist"
+    exit 1
+fi
+
+# 5. Deploy the model to an endpoint
 # create batch endpoint 
 az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
@@ -69,40 +82,30 @@ az ml batch-deployment create --file batch-deploy.yml $workspace_info --set \
     echo "deployment create failed"; exit 1;
 }
 
-# Check if scoring folder exists
-if [ -d $base_dir ]; then
-    echo "Invoking endpoint $endpoint_name with following input:\n\n"
-    ls $data_path
-    echo "\n\n"
-else
-    echo "Scoring folder $data_path does not exist"
-    exit 1
-fi
-
-# 5. Invoke a job on the batch endpoint
+# 6. Invoke a job on the batch endpoint
 job_name=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name \
- --input $base_dir \
+ --input $processed_data_path \
  --input-type uri_folder --query name --output tsv $workspace_info) || {
     echo "endpoint invoke failed"; exit 1;
 }
 
-# 6. Stream the job logs
+# 7. Stream the job logs
 az ml job stream --name $job_name $workspace_info || {
     echo "job stream-logs failed. If the job failed with Assertion Error stating actual size of csv exceeds 100 MB, then try splitting input csv file into multiple csv files."; exit 1;
 }
 
-# 7. Download the job output
+# 8. Download the job output
 az ml job download --name $job_name --download-path "generated_images" $workspace_info || {
     echo "job output download failed"; exit 1;
 }
 
-# 8. Delete the endpoint
+# 9. Delete the endpoint
 az ml batch-endpoint delete --name $endpoint_name $workspace_info --yes || {
     echo "endpoint delete failed"; exit 1;
 }
 
-# 9. Delete the compute cluster (Uncomment the below lines to delete the created cluster)
+# 10. Delete the compute cluster (Uncomment the below lines to delete the created cluster)
 # az ml compute delete --name $deployment_compute $workspace_info --yes || {
 #     echo "compute delete failed"; exit 1;
 # }

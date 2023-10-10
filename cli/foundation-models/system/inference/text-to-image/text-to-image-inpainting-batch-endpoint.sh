@@ -70,22 +70,24 @@ az ml batch-deployment create --file batch-deploy.yml $workspace_info --set \
 
 # 4. Submit a sample request to endpoint
 data_path="./inpainting_data/batch_data"
-python utils/prepare_inpainting_request.py --payload-path $data_path --mode "batch"
+python utils/prepare_data_inpainting.py --payload-path $data_path --mode "batch"
+# Path where the processes csvs are dumped. This is the input to the endpoint
+processed_data_path="./inpainting_data/batch_data/processed_batch_data"
 
 # Check if scoring folder exists
-if [ -d $data_path ]; then
+if [ -d $processed_data_path ]; then
     echo "Invoking endpoint $endpoint_name with following input:\n\n"
-    ls $data_path
+    ls $processed_data_path
     echo "\n\n"
 else
-    echo "Scoring folder $data_path does not exist"
+    echo "Scoring folder $processed_data_path does not exist"
     exit 1
 fi
 
 # 5. Invoke a job on the batch endpoint
 job_name=$(az ml batch-endpoint invoke --name $endpoint_name \
  --deployment-name $deployment_name \
- --input $data_path \
+ --input $processed_data_path \
  --input-type uri_folder --query name --output tsv $workspace_info) || {
     echo "endpoint invoke failed"; exit 1;
 }

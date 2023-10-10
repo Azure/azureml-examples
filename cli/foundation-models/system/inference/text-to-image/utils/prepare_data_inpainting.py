@@ -4,12 +4,14 @@
 # Prepare request payload for the inpainting task
 
 import argparse
+import glob
 import json
 import io
 import base64
 import os
 import pandas as pd
 from PIL import Image
+from pathlib import Path
 
 
 def read_image(image_path: str) -> bytes:
@@ -85,6 +87,30 @@ def prepare_batch_payload(payload_path: str) -> None:
         os.path.join(payload_path, "input2.csv"), index=False
     )
 
+    # Use glob to get a list of CSV files in the folder
+    csv_files = glob.glob(os.path.join(payload_path, "*.csv"))
+
+    # Read all CSV files into a single DataFrame using pd.concat
+    batch_df = pd.concat((pd.read_csv(file) for file in csv_files), ignore_index=True)
+
+    # Specify the folder where your CSV files should be saved
+    processed_dataset_parent_dir = os.path.join(payload_path, "processed_batch_data")
+    os.makedirs(processed_dataset_parent_dir, exist_ok=True)
+    batch_input_file = "batch_input.csv"
+
+    # Divide this into files of <x> rows each
+    batch_size_per_predict = 2
+    for i in range(0, len(batch_df), batch_size_per_predict):
+        j = i + batch_size_per_predict
+        batch_df[i:j].to_csv(
+            os.path.join(processed_dataset_parent_dir, str(i) + batch_input_file)
+        )
+
+    # Check out the first and last file name created
+    input_paths = sorted(Path(processed_dataset_parent_dir).iterdir(), key=os.path.getmtime)
+    input_files = [os.path.basename(path) for path in input_paths]
+    print(f"{input_files[0]} to {str(i)}{batch_input_file}.")
+
 
 def prepare_online_payload(payload_path: str) -> None:
     """Prepare payload for online deployment.
@@ -117,7 +143,8 @@ def prepare_online_payload(payload_path: str) -> None:
             ],
         }
     }
-
+    print(base_directory)
+    print(payload_path)
     payload_path = os.path.join(base_directory, payload_path)
     with open(payload_path, "w") as request_file:
         json.dump(request_json, request_file)
