@@ -1,6 +1,0 @@
-numpy
-pandas
-scikit-learn
-xgboost
-matplotlib 
-azureml-mlflow 

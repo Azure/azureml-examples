@@ -8,7 +8,7 @@ import pandas as pd
 from zipfile import ZipFile
 
 # Change this to match the inference dataset
-LABELS = "water_bottle,milk_bottle,carton,can"
+LABELS = "water_bottle, milk_bottle, carton, can"
 
 
 def download_and_unzip(dataset_parent_dir: str) -> None:
@@ -66,14 +66,21 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     :param dataset_dir: dataset directory
     :type dataset_dir: str
     """
-    sample_image = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
+    sample_image_1 = os.path.join(dataset_dir, "milk_bottle", "99.jpg")
+    sample_image_2 = os.path.join(dataset_dir, "can", "1.jpg")
 
     request_json = {
         "input_data": {
             "columns": ["image", "text"],
-            "index": [0],
+            "index": [0, 1],
             "data": [
-                [base64.encodebytes(read_image(sample_image)).decode("utf-8"), LABELS]
+                [
+                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
+                    LABELS,
+                ],  # the labels are required in the first row of the "text" column
+                [
+                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8")
+                ],  # all other rows in the "text" column are ignored
             ],
         }
     }
@@ -82,7 +89,6 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 
     with open(request_file_name, "w") as request_file:
         json.dump(request_json, request_file)
-
 
 def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """Prepare image folder and csv file for batch inference.
@@ -129,7 +135,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Prepare data for image classification"
+        description="Prepare data for zero-shot image classification"
     )
     parser.add_argument(
         "--data_path", type=str, default="data", help="Dataset location"
@@ -146,7 +152,7 @@ if __name__ == "__main__":
 
     dataset_dir = download_and_unzip(
         dataset_parent_dir=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), args.data_path
+            os.path.dirname(os.path.realpath(__file__)), args.data_path
         ),
     )
 
