@@ -11,7 +11,7 @@ USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
 RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
 REDIS_NAME=${RESOURCE_GROUP}rds
-VERSION=$(((RANDOM%100)+1))
+VERSION=$(((RANDOM%1000)+1))
 # </create_variables>
 
 # <convert_notebook_to_py>
