@@ -15,22 +15,16 @@ with open(
     exec(f.read())
 
 print("=======Test Notebook 2============")
-with open(
-    "notebooks/sdk_only/2. Enable materialization and backfill feature data.py"
-) as f:
+with open("notebooks/sdk_only/2. Experiment and train models using features.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 3============")
-with open("notebooks/sdk_only/3. Experiment and train models using features.py") as f:
-    exec(f.read())
-
-print("=======Test Notebook 4============")
 with open(
-    "notebooks/sdk_only/4. Enable recurrent materialization and run batch inference.py"
+    "notebooks/sdk_only/3. Enable recurrent materialization and run batch inference.py"
 ) as f:
     exec(f.read())
 
 # # exclude 5th notebook for now
-# print("=======Test Notebook 5============")
-# with open("notebooks/sdk_only/5. Enable online store and run online inference.py") as f:
+# print("=======Test Notebook 4============")
+# with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
 #     exec(f.read())
