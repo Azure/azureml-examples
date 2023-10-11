@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+description: "Batch endpoint for for text-to-image task"
+type: model
+resources:
+    instance_count: 1
+settings:
+    mini_batch_size: 1
+    retry_settings:
+        max_retries: 2
+        timeout: 9999
