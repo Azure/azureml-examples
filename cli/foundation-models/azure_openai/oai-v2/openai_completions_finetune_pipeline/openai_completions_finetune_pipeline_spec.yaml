@@ -1,0 +1,32 @@
+$schema: http://azureml/sdk-2-0/PipelineJob.json
+type: pipeline
+display_name: CLI OpenAI Completions Finetune
+description: CLI OpenAI Completions Finetune
+settings:
+  default_compute: azureml:serverless
+  force_rerun: true
+inputs:
+  model: gpt-35-turbo
+  task_type: chat
+  registered_model_name: ft_gpt_35_turbo_model_from_cli
+  n_epochs: -1
+  learning_rate_multiplier: 1.0
+  batch_size: -1
+
+jobs:
+  pipeline_finetune:
+    type: pipeline
+    component: azureml://registries/azureml/components/openai_completions_finetune_pipeline/versions/0.0.9
+    inputs:
+      train_dataset:
+        type: uri_folder
+        path: azureml:oai_sample_training_data:1
+      validation_dataset:
+        type: uri_folder
+        path: azureml:oai_sample_training_data:1
+      registered_model_name: ${{parent.inputs.registered_model_name}}
+      model: ${{parent.inputs.model}}
+      task_type: ${{parent.inputs.task_type}}
+      n_epochs: ${{parent.inputs.n_epochs}}
+      learning_rate_multiplier: ${{parent.inputs.learning_rate_multiplier}}
+      batch_size: ${{parent.inputs.batch_size}}
