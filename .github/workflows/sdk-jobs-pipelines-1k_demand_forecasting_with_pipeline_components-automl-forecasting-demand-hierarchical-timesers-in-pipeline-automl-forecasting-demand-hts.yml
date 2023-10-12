@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-jobs-pipelines-1k_demand_forecasting_with_pipeline_components-automl-forecasting-demand-hierarchical-timeseries-in-pipeline-automl-forecasting-demand-hierarchical-timeseries-in-pipeline
+name: sdk-jobs-pipelines-1k_demand_forecasting_with_pipeline_components-automl-forecasting-demand-hierarchical-timeseries-in-pipeline-automl-forecasting-demand-hts
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -15,7 +15,7 @@ on:
       - main
     paths:
       - sdk/python/jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-hierarchical-timeseries-in-pipeline/**
-      - .github/workflows/sdk-jobs-pipelines-1k_demand_forecasting_with_pipeline_components-automl-forecasting-demand-hierarchical-timeseries-in-pipeline-automl-forecasting-demand-hierarchical-timeseries-in-pipeline.yml
+      - .github/workflows/sdk-jobs-pipelines-1k_demand_forecasting_with_pipeline_components-automl-forecasting-demand-hierarchical-timeseries-in-pipeline-automl-forecasting-demand-hts.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -58,14 +58,14 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-hierarchical-timeseries-in-pipeline/automl-forecasting-demand-hierarchical-timeseries-in-pipeline.ipynb
+    - name: run jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-hierarchical-timeseries-in-pipeline/automl-forecasting-demand-hts.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-forecasting-demand-hierarchical-timeseries-in-pipeline.ipynb";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-forecasting-demand-hts.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-demand-hierarchical-timeseries-in-pipeline.ipynb automl-forecasting-demand-hierarchical-timeseries-in-pipeline.output.ipynb
+          papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-demand-hts.ipynb automl-forecasting-demand-hts.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-hierarchical-timeseries-in-pipeline
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

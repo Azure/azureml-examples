@@ -90,6 +90,7 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     with open(request_file_name, "w") as request_file:
         json.dump(request_json, request_file)
 
+
 def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """Prepare image folder and csv file for batch inference.
 
