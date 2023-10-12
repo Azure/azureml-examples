@@ -1,0 +1,19 @@
+flavors:
+  openai:
+    code: null
+    data: model.yaml
+    openai_version: 0.27.8
+  python_function:
+    data: model.yaml
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.openai
+    python_version: 3.8.5
+mlflow_version: 2.5.1.dev0
+model_uuid: b9a39a71f54e41efbd83b8307294b4d8
+signature:
+  inputs: '[{"type": "string"}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: '[{"name": "batch_size", "dtype": "long", "default": 16, "shape": null}]'
+utc_time_created: '2023-08-15 05:08:52.461694'
