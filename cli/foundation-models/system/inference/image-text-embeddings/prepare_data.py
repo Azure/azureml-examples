@@ -75,11 +75,10 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "index": [0, 1],
             "data": [
                 [
-                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"), "",
+                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
+                    "",
                 ],  # the "text" column should contain empty string
-                [
-                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8"), ""
-                ],
+                [base64.encodebytes(read_image(sample_image_2)).decode("utf-8"), ""],
             ],
         }
     }
@@ -95,12 +94,8 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "columns": ["image", "text"],
             "index": [0, 1],
             "data": [
-                [
-                    "", "text sample 1"
-                ],   # the "text" column should contain empty string
-                [
-                    "", "text sample 2"
-                ],
+                ["", "text sample 1"],  # the "text" column should contain empty string
+                ["", "text sample 2"],
             ],
         }
     }
@@ -118,11 +113,11 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "data": [
                 [
                     base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
-                    "text sample 1"
+                    "text sample 1",
                 ],  # all rows should have both images and text
                 [
                     base64.encodebytes(read_image(sample_image_2)).decode("utf-8"),
-                    "text sample 2"
+                    "text sample 2",
                 ],
             ],
         }
@@ -132,6 +127,7 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 
     with open(request_file_name, "w") as request_file:
         json.dump(image_text_request_json, request_file)
+
 
 def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     """Prepare image folder and csv files for batch inference.
@@ -168,11 +164,16 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     batch_size_per_predict = 10
     for i in range(0, len(batch_df), batch_size_per_predict):
         j = i + batch_size_per_predict
-        batch_df[i:j].to_csv(os.path.join(image_csv_folder_path, str(i) + batch_input_file))
+        batch_df[i:j].to_csv(
+            os.path.join(image_csv_folder_path, str(i) + batch_input_file)
+        )
 
     # Generate batch input for text embeddings
     # supply random strings for text samples
-    data = [["", ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))] for image in image_list]
+    data = [
+        ["", "".join(random.choices(string.ascii_uppercase + string.digits, k=10))]
+        for image in image_list
+    ]
     batch_df = pd.DataFrame(data, columns=["image", "text"])
 
     text_csv_folder_path = os.path.join(dataset_dir, "text_batch")
@@ -181,11 +182,16 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     batch_size_per_predict = 10
     for i in range(0, len(batch_df), batch_size_per_predict):
         j = i + batch_size_per_predict
-        batch_df[i:j].to_csv(os.path.join(text_csv_folder_path, str(i) + batch_input_file))
+        batch_df[i:j].to_csv(
+            os.path.join(text_csv_folder_path, str(i) + batch_input_file)
+        )
 
     # Generate batch input for image and text embeddings
     # supply base64 images for images samples and random strings for text samples
-    data = [[image, ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))] for image in image_list]
+    data = [
+        [image, "".join(random.choices(string.ascii_uppercase + string.digits, k=10))]
+        for image in image_list
+    ]
     batch_df = pd.DataFrame(data, columns=["image", "text"])
 
     image_text_csv_folder_path = os.path.join(dataset_dir, "image_text_batch")
@@ -194,7 +200,10 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     batch_size_per_predict = 10
     for i in range(0, len(batch_df), batch_size_per_predict):
         j = i + batch_size_per_predict
-        batch_df[i:j].to_csv(os.path.join(image_text_csv_folder_path, str(i) + batch_input_file))
+        batch_df[i:j].to_csv(
+            os.path.join(image_text_csv_folder_path, str(i) + batch_input_file)
+        )
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
