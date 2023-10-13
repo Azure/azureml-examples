@@ -6,7 +6,7 @@ dependencies:
       # For asynchronous HTTP requests
       - aiohttp==3.8.4
       # Online feature store core SDK
-      - azureml-featurestore[online]==0.1.0b4
+      - azureml-featurestore[online]==0.1.0b5
       # Azure management libraries
       - azure-mgmt-msi
       - azure-mgmt-redis
