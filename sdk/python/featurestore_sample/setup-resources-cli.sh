@@ -73,7 +73,7 @@ sed -i "s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
     s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
     s/<WORKSPACE_ID>/$WORKSPACE_ID/g;" $TRAINING_PIPELINE_PATH
-az ml job create --file $TRAINING_PIPELINE_PATH --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
+#az ml job create --file $TRAINING_PIPELINE_PATH --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 
 
 # notebook 4
