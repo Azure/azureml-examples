@@ -26,6 +26,7 @@ jupytext --to py "${NOTEBOOK_4}.ipynb"
 # <convert_notebook_to_py>
 
 #<replace_template_values>
+
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
     s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;" $1
