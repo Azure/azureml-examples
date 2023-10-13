@@ -63,7 +63,7 @@ jobs:
 
   evaluation_step: # this is a placeholder no-op step for illustration purpose only
     type: command
-    compute: azureml:cpu-cluster
+    compute: azureml:cpu-cluster-fs
     code: ../evaluate/src
     environment:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
@@ -72,7 +72,7 @@ jobs:
       model_input: ${{parent.jobs.training_step.outputs.model_output}}
     outputs:
       evaluation_output:
-        type: uri_folder        
+        type: uri_folder
     command: >-
       python evaluate.py
       --model_input ${{inputs.model_input}}
@@ -80,7 +80,7 @@ jobs:
 
   register_model_step:
     type: command
-    compute: azureml:cpu-cluster
+    compute: azureml:cpu-cluster-fs
     code: ../register_model/src
     environment:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04

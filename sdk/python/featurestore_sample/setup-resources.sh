@@ -12,8 +12,6 @@ RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
 REDIS_NAME=${RESOURCE_GROUP}rds
 VERSION=$(((RANDOM%1000)+1))
-FEATURE_RETRIEVAL_SPEC="./project/fraud_model/feature_retrieval_spec/feature_retrieval_spec.yaml"
-FEATURESTORE_NAME="my-featurestore"
 # </create_variables>
 
 # <convert_notebook_to_py>
@@ -28,9 +26,6 @@ jupytext --to py "${NOTEBOOK_4}.ipynb"
 # <convert_notebook_to_py>
 
 #<replace_template_values>
-sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
-    s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
-    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" $FEATURE_RETRIEVAL_SPEC
 
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
