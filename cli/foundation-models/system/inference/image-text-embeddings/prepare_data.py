@@ -167,7 +167,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     # Generate batch input for text embeddings
     # supply strings describing the images
     text_data = [
-        ["", "a photo of a " + os.path.basename(image_path)]
+        ["", "a photo of a " +  os.path.basename(os.path.dirname(image_path))]
         for image_path in image_path_list
     ]
     batch_df = pd.DataFrame(text_data, columns=["image", "text"])
@@ -185,7 +185,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     # Generate batch input for image and text embeddings
     # supply base64 images for images samples and random strings for text samples
     image_text_data = [
-        [image_list[i], "a photo of a " + os.path.basename(image_path_list[i])]
+        [image_list[i], "a photo of a " +  os.path.basename(os.path.dirname(image_path))]
         for i in range(len(image_list))
     ]
     batch_df = pd.DataFrame(image_text_data, columns=["image", "text"])
