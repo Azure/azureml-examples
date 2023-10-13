@@ -24,6 +24,12 @@ with open(
 ) as f:
     exec(f.read())
 
+# The backfill job started in 1st notebook takes time to complete.
+# Backfill jobs is currently running, please wait for the current run to finish before submitting a new one
+import time
+
+time.sleep(300)
+
 # exclude 4th notebook for now
 print("=======Test Notebook 4============")
 with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
