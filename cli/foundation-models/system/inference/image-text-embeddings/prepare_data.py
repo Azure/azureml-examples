@@ -94,8 +94,8 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "columns": ["image", "text"],
             "index": [0, 1],
             "data": [
-                ["", "text sample 1"],  # the "text" column should contain empty string
-                ["", "text sample 2"],
+                ["", "a photo of a milk bottle"],  # the "image" column should contain empty string
+                ["", "a photo of a metal can"],
             ],
         }
     }
@@ -113,11 +113,11 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "data": [
                 [
                     base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
-                    "text sample 1",
+                    "a photo of a milk bottle",
                 ],  # all rows should have both images and text
                 [
                     base64.encodebytes(read_image(sample_image_2)).decode("utf-8"),
-                    "text sample 2",
+                    "a photo of a metal can",
                 ],
             ],
         }
@@ -140,23 +140,19 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     batch_input_file = "batch_input.csv"
     # Generate batch input for image embeddings
     image_list = []
+    image_path_list = []
 
-    dir_names = []
     for dir_name in os.listdir(dataset_dir):
-        dir_names.append(dir_name)
         dir_path = os.path.join(dataset_dir, dir_name)
         for path, _, files in os.walk(dir_path):
             for file in files:
-                image = read_image(os.path.join(path, file))
+                image_path = os.path.join(path, file)
+                image = read_image(image_path)
+                image_path_list.append(image_path)
                 image_list.append(base64.encodebytes(image).decode("utf-8"))
-                shutil.move(os.path.join(path, file), dataset_dir)
-        if os.path.isdir(dir_path):
-            shutil.rmtree(dir_path)
-        else:
-            os.remove(dir_path)
 
-    data = [[image, ""] for image in image_list]
-    batch_df = pd.DataFrame(data, columns=["image", "text"])
+    image_data = [[image, ""] for image in image_list]
+    batch_df = pd.DataFrame(image_data, columns=["image", "text"])
 
     image_csv_folder_path = os.path.join(dataset_dir, "image_batch")
     os.makedirs(image_csv_folder_path, exist_ok=True)
@@ -169,12 +165,12 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
         )
 
     # Generate batch input for text embeddings
-    # supply random strings for text samples
-    data = [
-        ["", "".join(random.choices(string.ascii_uppercase + string.digits, k=10))]
-        for image in image_list
+    # supply strings describing the images
+    text_data = [
+        ["", "a photo of a " + os.path.basename(image_path)]
+        for image_path in image_path_list
     ]
-    batch_df = pd.DataFrame(data, columns=["image", "text"])
+    batch_df = pd.DataFrame(text_data, columns=["image", "text"])
 
     text_csv_folder_path = os.path.join(dataset_dir, "text_batch")
     os.makedirs(text_csv_folder_path, exist_ok=True)
@@ -188,11 +184,11 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
 
     # Generate batch input for image and text embeddings
     # supply base64 images for images samples and random strings for text samples
-    data = [
-        [image, "".join(random.choices(string.ascii_uppercase + string.digits, k=10))]
-        for image in image_list
+    image_text_data = [
+        [image_list[i], "a photo of a " + os.path.basename(image_path_list[i])]
+        for i in range(len(image_list))
     ]
-    batch_df = pd.DataFrame(data, columns=["image", "text"])
+    batch_df = pd.DataFrame(image_text_data, columns=["image", "text"])
 
     image_text_csv_folder_path = os.path.join(dataset_dir, "image_text_batch")
     os.makedirs(image_text_csv_folder_path, exist_ok=True)
