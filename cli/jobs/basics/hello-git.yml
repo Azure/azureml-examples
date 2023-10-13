@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >-
-  pip install pygit2; python hello-git.py
+  pip install -U pip; pip install pygit2; python hello-git.py
 code: src
 environment:
   image: library/python:latest
