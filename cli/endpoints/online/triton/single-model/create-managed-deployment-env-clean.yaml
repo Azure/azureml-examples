@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: my-endpoint
+model: azureml:/subscriptions/ea4faa5b-5e44-4236-91f6-5483d5b17d14/resourceGroups/arunsu/providers/Microsoft.MachineLearningServices/workspaces/exp/models/sample-densenet-onnx-model/versions/1
+#model_mount_path: /var/azureml-app/azureml-models/sample-densenet-onnx-model/1/models
+environment: azureml:/subscriptions/ea4faa5b-5e44-4236-91f6-5483d5b17d14/resourceGroups/arunsu/providers/Microsoft.MachineLearningServices/workspaces/exp/environments/triton-cc-env/versions/4
+instance_count: 1
+instance_type: Standard_DS3_v2
