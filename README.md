@@ -10,7 +10,6 @@ description: Top-level directory for official Azure Machine Learning sample code
 
 # Azure Machine Learning examples
 
-[![smoke](https://github.com/Azure/azureml-examples/workflows/smoke/badge.svg)](https://github.com/Azure/azureml-examples/actions/workflows/smoke.yml)
 [![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
@@ -30,9 +29,6 @@ Welcome to the Azure Machine Learning examples repository!
 ||[`setupdsvm`](setup/setup-dsvm/RStudio/)|Setup RStudio on Data Science Virtual Machine (DSVM)|
 ||[`setup-repo`](setup/setup-repo)|Setup scripts for Azure/azureml-examples.|
 |[`tutorials`](tutorials/)||Azure Machine Learning end to end Python SDK v2 tutorials|
-|[`v1`](v1)||Azure Machine Learning Python SDK v1 examples.|
-||[`python-sdk`](v1/python-sdk)|Azure Machine Learning Python SDK v1 examples.|
-||[`notebooks`](v1/notebooks)|Jupyter notebooks with MLflow tracking to an Azure ML workspace.|
 
 ## Contributing
 
