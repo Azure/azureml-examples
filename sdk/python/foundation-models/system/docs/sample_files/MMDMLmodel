@@ -1,0 +1,28 @@
+flavors:
+  python_function:
+    artifacts:
+      config_path:
+        path: artifacts/yolof_r50_c5_8x8_1x_coco.py
+        uri: /mnt/azureml/cr/j/55490231b74a4eb8b636a0b891f81e2a/cap/data-capability/wd/INPUT_model_path/model/yolof_r50_c5_8x8_1x_coco.py
+      model_metadata:
+        path: artifacts/model_metadata.json
+        uri: /mnt/azureml/cr/j/55490231b74a4eb8b636a0b891f81e2a/cap/data-capability/wd/INPUT_model_path/model/model_metadata.json
+      weights_path:
+        path: artifacts/yolof_r50_c5_8x8_1x_coco_weights.pth
+        uri: /mnt/azureml/cr/j/55490231b74a4eb8b636a0b891f81e2a/cap/data-capability/wd/INPUT_model_path/model/yolof_r50_c5_8x8_1x_coco_weights.pth
+    cloudpickle_version: 2.2.1
+    code: code
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.8.16
+metadata:
+  model_name: null
+mlflow_version: 2.3.1
+model_uuid: 16639924bbc64882955b58d3211eb052
+signature:
+  inputs: '[{"name": "image", "type": "binary"}]'
+  outputs: '[{"name": "boxes", "type": "string"}]'
+utc_time_created: '2023-07-27 17:17:34.930160'

@@ -1,2 +1,5 @@
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+
+# config files are required to use Semantic Kernel
+!endpoints/online/llm/src/sk/skills/*/*/config.json
