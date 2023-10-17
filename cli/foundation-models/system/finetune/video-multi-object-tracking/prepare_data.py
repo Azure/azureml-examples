@@ -50,9 +50,9 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
     :param dataset_dir: Path to the dataset folder
     """
     # We'll copy each JSONL file within its related MLTable folder
-    training_mltable_path = os.path.join(dataset_dir, "training-mltable-folder")
-    validation_mltable_path = os.path.join(dataset_dir, "validation-mltable-folder")
-    testing_mltable_path = os.path.join(dataset_dir, "testing-mltable-folder")
+    training_mltable_path = os.path.join(dataset_dir, "../training-mltable-folder")
+    validation_mltable_path = os.path.join(dataset_dir, "../validation-mltable-folder")
+    testing_mltable_path = os.path.join(dataset_dir, "../testing-mltable-folder")
 
     # First, let's create the folders if they don't exist
     os.makedirs(training_mltable_path, exist_ok=True)
@@ -163,12 +163,6 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     create_jsonl_and_mltable_files(
         uri_folder_data_path=uri_folder_data_asset.path, dataset_dir=dataset_dir
     )
-
-
-def read_image(image_path: str):
-    """Read image from path"""
-    with open(image_path, "rb") as f:
-        return f.read()
 
 
 if __name__ == "__main__":

@@ -11,16 +11,13 @@ inputs:
   validation_data:
     type: mltable
 
-  test_data:
-    type: mltable
-
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu
   # model_name: bytetrack-yolox-x-crowdhuman-mot17-private-half
   # # model - specify the foundation model available in the azureml system registry
   mlflow_model: 
-    path: azureml://registries/azmlft-dev-registry01/models/bytetrack-yolox-x-crowdhuman-mot17-private-half/versions/4
+    path: azureml://registries/azmlft-dev-registry01/models/bytetrack-yolox-x-crowdhuman-mot17-private-half/versions/9
     type: mlflow_model
 
 outputs:
@@ -33,11 +30,10 @@ settings:
   default_compute: azureml:sample-finetune-cluster-gpu
 
 jobs:
-  mmdetection_model_finetune_job:
+  mmtracking_model_finetune_job:
     type: pipeline
-    component: azureml://registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
+    component: azureml://registries/azmlft-dev-registry01/components/mmtracking_video_multi_object_tracking_pipeline_bugbash/labels/latest
     inputs:
-
       # # Compute
       compute_model_import: ${{parent.inputs.compute_model_import}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
@@ -52,16 +48,24 @@ jobs:
       # # Data
       training_data: ${{parent.inputs.training_data}}
       validation_data: ${{parent.inputs.validation_data}}
-      test_data: ${{parent.inputs.test_data}}
 
       # Finetuning parameters
       image_width: 1920
       image_height: 1080
       learning_rate: 0.00001
-      number_of_epochs: 5
+      number_of_epochs: 15
+      metric_for_best_model: MOTA
+      training_batch_size: 1
 
       # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
-      # apply_augmentations: True
+      # learning_rate_scheduler: warmup_linear
+      # warmup_steps: 0
+      # optimizer: sgd
+      # weight_decay: 0.0
+      # gradient_accumulation_step: 1
+      # max_grad_norm: 1.0
+      # iou_threshold: 0.5
+      # box_score_threshold: 0.3
       # number_of_workers: 8
       # extra_optim_args: ""
       # precision: 32
@@ -77,17 +81,6 @@ jobs:
       # early_stopping_patience: 1
       # resume_from_checkpoint: False
       # save_as_mlflow_model: True
-
-      # metric_for_best_model: MOTA
-      # training_batch_size: 1
-      # learning_rate_scheduler: warmup_linear
-      # warmup_steps: 0
-      # optimizer: sgd
-      # weight_decay: 0.0
-      # gradient_accumulation_step: 1
-      # max_grad_norm: 1.0
-      # iou_threshold: 0.5
-      # box_score_threshold: 0.3
 
     outputs:
       mlflow_model_folder: ${{parent.outputs.trained_model}}
