@@ -1,5 +1,5 @@
 #<register_model>
-MODEL_NAME='sklearn-diabetes'
+MODEL_NAME='sklearn-regression'
 MODEL_PATH='model'
 az ml model create --name $MODEL_NAME --path $MODEL_PATH --type custom_model
 #</register_model>
@@ -31,6 +31,10 @@ az ml online-deployment create -f deployment.yml
 #<test_deployment>
 az ml online-endpoint invoke -n $ENDPOINT_NAME -d with-package -f sample-request.json
 #</test_deployment>
+
+#<create_deployment_with_package>
+az ml online-deployment create -f model-deployment.yml --with-package
+#</create_deployment_with_package>
 
 #<delete_resources>
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes
