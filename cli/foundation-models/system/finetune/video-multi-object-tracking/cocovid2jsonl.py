@@ -129,23 +129,7 @@ class BoundingBoxConverter(CocoVidToJSONLinesConverter):
         return self.json_lines_data
 
 
-def main():
-    # Parse arguments that are passed into the script
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input_cocovid_file_path", type=str, required=True)
-    parser.add_argument("--output_dir", type=str, required=True)
-    parser.add_argument("--output_file_name", type=str, required=True)
-    parser.add_argument(
-        "--task_type",
-        type=str,
-        required=True,
-        choices=["ObjectTracking"],
-        default="ObjectTracking",
-    )
-    parser.add_argument("--base_url", type=str, default=None)
-
-    args = parser.parse_args()
-
+def main(args):
     input_coco_file_path = args.input_cocovid_file_path
     output_dir = args.output_dir
     output_file_path = output_dir + "/" + args.output_file_name
@@ -186,4 +170,19 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Parse arguments that are passed into the script
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input_cocovid_file_path", type=str, required=True)
+    parser.add_argument("--output_dir", type=str, required=True)
+    parser.add_argument("--output_file_name", type=str, required=True)
+    parser.add_argument(
+        "--task_type",
+        type=str,
+        required=True,
+        choices=["ObjectTracking"],
+        default="ObjectTracking",
+    )
+    parser.add_argument("--base_url", type=str, default=None)
+
+    args = parser.parse_args()
+    main(args)

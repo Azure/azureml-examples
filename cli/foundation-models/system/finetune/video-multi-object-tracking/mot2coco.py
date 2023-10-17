@@ -125,8 +125,7 @@ def dump_to_pickle(pickle_object, pickle_file_name):
         pickle.dump(pickle_object, outfile)
 
 
-def main():
-    args = parse_args()
+def main(args):
     if not osp.isdir(args.output):
         os.makedirs(args.output)
 
@@ -243,4 +242,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    args = parse_args()
+    main(args)

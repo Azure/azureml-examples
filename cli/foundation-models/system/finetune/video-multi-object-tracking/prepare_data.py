@@ -70,10 +70,12 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
     print("Creating jsonl files")
 
     # Second, convert the COCO format to jsonl
+    print("convert MOT format to COCO format")
     mot2coco_converter(argparse.Namespace(input=dataset_dir,
                                           output=f"{dataset_dir}/annotations",
                                           convert_det=True,
                                           split_train=True))
+    print("Converting COCO video format to jsonl")
     cocovid2jsonl_converter(argparse.Namespace(
         input_cocovid_file_path=f"{dataset_dir}/annotations/half-train_cocoformat.json",
         output_dir=training_mltable_path,
@@ -88,12 +90,14 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
         base_url=f"{uri_folder_data_path}train"))
 
     # Create and save train mltable
+    print("create and save train mltable")
     train_mltable_file_contents = create_ml_table_file(
         os.path.basename(train_annotations_file)
     )
     save_ml_table_file(training_mltable_path, train_mltable_file_contents)
 
     # Create and save validation mltable
+    print("create and save validation mltable")
     validation_mltable_file_contents = create_ml_table_file(
         os.path.basename(validation_annotations_file)
     )
