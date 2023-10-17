@@ -85,8 +85,6 @@ train_data="./data/training-mltable-folder"
 # validation data
 validation_data="./data/validation-mltable-folder"
 # test data
-# Using the same data for validation and test. If you want to use a different dataset for test, specify it below
-test_data="./data/validation-mltable-folder"
 
 # Check if training data, validation data
 if [ ! -d $train_data ] 
@@ -101,12 +99,6 @@ then
     exit 1
 fi
 
-if [ ! -d $test_data ] 
-then
-    echo "Test data $test_data does not exist"
-    exit 1
-fi
-
 # 5. Submit finetuning job using pipeline.yaml for a open-mmlab mmtracking model
 
 # If you want to use a MMTracking model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
@@ -114,7 +106,7 @@ fi
 # inputs.model_name="ocsort_yolox_x_crowdhuman_mot17-private-half"
 
 mmtracking_parent_job_name=$( az ml job create \
-  --file ./mmtracking-mot17-tiny-tracking-pipeline.yaml \
+  --file ./mmtracking-mot17tiny-mot-pipeline.yaml \
   $workspace_info \
   --query name -o tsv \
   --set \
@@ -123,8 +115,7 @@ mmtracking_parent_job_name=$( az ml job create \
   inputs.compute_finetune=$compute_cluster_finetune \
   inputs.mlflow_model.path="azureml://registries/$registry_name/models/$mmtracking_model_name/versions/$model_version" \
   inputs.training_data.path=$train_data \
-  inputs.validation_data.path=$validation_data \
-  inputs.test_data.path=$test_data
+  inputs.validation_data.path=$validation_data
   ) || {
     echo "Failed to submit finetuning job"
     exit 1
