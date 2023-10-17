@@ -1,6 +1,5 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-sdk-image-object-detection
-# the sample scoring file available in the same folder as the above notebook
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-video-mutli-object-tracking-online-inference
 
 # script inputs
 registry_name="azureml"
@@ -9,21 +8,20 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="yolof_r50_c5_8x8_1x_coco"
+model_name="bytetrack-yolox-x-crowdhuman-mot17-private-half"
 model_label="latest"
 
 version=$(date +%s)
-endpoint_name="image-od-$version"
+endpoint_name="video-mot-$version"
 
 # todo: fetch deployment_sku from the min_inference_sku tag of the model
-deployment_sku="Standard_DS3_v2"
+deployment_sku="Standard_NC6s_V3"
 
 # Prepare data for deployment
-python ./prepare_data.py --data_path "data_online"
+python ./prepare_data.py
 # sample_request_data
 
-sample_request_data="./data_online/odFridgeObjects/sample_request_data.json"
-
+sample_request_data="./sample_request_data.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
@@ -61,10 +59,12 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --all-t
 }
 
 # 4. Try a sample scoring request
-
+sample_request_data="./sample_request_data.json"
+endpoint_name="video-mot-1697487413"
 # Check if scoring data file exists
 if [ -f $sample_request_data ]; then
-    echo "Invoking endpoint $endpoint_name with $sample_request_data\n\n"
+    echo "Invoking endpoint $endpoint_name with $sample_request_data
+"
 else
     echo "Scoring file $sample_request_data does not exist"
     exit 1
