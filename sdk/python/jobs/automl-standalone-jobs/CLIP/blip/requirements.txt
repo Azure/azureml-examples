@@ -1,0 +1,4 @@
+mlflow==2.6.0
+torch==1.13.1
+transformers==4.33.1
+accelerate==0.22.0

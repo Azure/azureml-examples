@@ -1,0 +1,11 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8.17
+- pip<=23.2.1
+- pip:
+  - mlflow==2.6.0
+  - torch==1.13.1
+  - transformers==4.33.1
+  - accelerate==0.22.0
+name: mlflow-env
