@@ -26,7 +26,7 @@ jobs:
     - name: check out repo
       uses: actions/checkout@v2
     - name: validate readme
-      run: bash check_readme.sh ../../cli/assets/component/"
+      run: bash check_readme.sh ../../cli/assets/component/
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: azure login
