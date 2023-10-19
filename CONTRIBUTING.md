@@ -92,6 +92,8 @@ description: Example description.
 
 **Edit the description** and update the languages as needed.
 
+The Code Samples browser content is updated twice a week, so it may take a few days for your changes to be reflected.
+
 ### Other resources
 * [CLI contributing guide.](cli/CONTRIBUTING.md)
 * [Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
