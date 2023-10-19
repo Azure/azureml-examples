@@ -25,6 +25,9 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+    - name: validate readme
+      run: source "${{ github.workspace }}/infra/bootstrapping/check_readme.sh assets/component"
+      working-directory: cli
     - name: azure login
       uses: azure/login@v1
       with:
