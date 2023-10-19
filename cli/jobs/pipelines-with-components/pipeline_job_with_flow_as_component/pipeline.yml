@@ -23,9 +23,6 @@ jobs:
     inputs:
       data: ${{parent.inputs.flow_input}}
       text: "${data.text}"
-    outputs:
-      flow_outputs: ${{parent.outputs.output_data}}
-      debug_info: ${{parent.outputs.debug_info}}
     environment_variables:
       AZURE_OPENAI_API_KEY: <your-api-key>
       AZURE_OPENAI_API_BASE: <your-api-base>
