@@ -1,4 +1,0 @@
-keyrings.alt
-promptflow-tools
-promptflow
-bs4

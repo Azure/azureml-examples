@@ -1,4 +1,4 @@
-This is a dummy pipeline job with anonymous reference of a flow as a component. Flow directory is copied from [sample in promptflow repository](https://github.com/microsoft/promptflow/tree/main/examples/flows/standard/web-classification).
+This is a dummy pipeline job with anonymous reference of a flow as a component. Flow directory is copied from [sample in promptflow repository](https://github.com/microsoft/promptflow/tree/main/examples/flows/standard/basic).
 
 Prerequirements:
 1. `.promptflow/flow.tools.json` in the flow directory is required to use a flow as a component. Usually you can use `pf flow validate` or `pf run validate` to generate it.
