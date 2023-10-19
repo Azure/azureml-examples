@@ -10,12 +10,6 @@ inputs:
     type: uri_file
     path: "./data/data.jsonl"
 
-outputs:
-  output_data:
-    mode: mount
-  debug_info:
-    mode: mount
-
 jobs:
   flow_node_from_dag:
     type: parallel
