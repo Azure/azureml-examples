@@ -47,31 +47,5 @@ def my_python_tool(
         api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2023-07-01-preview"),
     )
 
-    # TODO: remove below type conversion after client can pass json rather than string.
-    echo = to_bool(echo)
-
-    response = openai.Completion.create(
-        prompt=prompt,
-        engine=deployment_name,
-        # empty string suffix should be treated as None.
-        suffix=suffix if suffix else None,
-        max_tokens=int(max_tokens),
-        temperature=float(temperature),
-        top_p=float(top_p),
-        n=int(n),
-        logprobs=int(logprobs) if logprobs else None,
-        echo=echo,
-        # fix bug "[] is not valid under any of the given schemas-'stop'"
-        stop=stop if stop else None,
-        presence_penalty=float(presence_penalty),
-        frequency_penalty=float(frequency_penalty),
-        best_of=int(best_of),
-        # Logit bias must be a dict if we passed it to openai api.
-        logit_bias=logit_bias if logit_bias else {},
-        user=user,
-        request_timeout=30,
-        **conn,
-    )
-
-    # get first element because prompt is single.
-    return response.choices[0].text
+    # return directly to avoid using promptflow connection in azure ml example repository
+    return f"fake answer based on {prompt}"
