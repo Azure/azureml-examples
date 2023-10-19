@@ -29,7 +29,7 @@ az ml online-endpoint invoke -n $ENDPOINT_NAME -d with-package -f sample-request
 #</test_deployment>
 
 #<create_deployment_inline>
-az ml online-deployment create -f model-deployment.yml -e $ENDPOINT_NAME
+az ml online-deployment create --with-package -f model-deployment.yml -e $ENDPOINT_NAME
 #</create_deployment_inline>
 
 #<delete_resources>
