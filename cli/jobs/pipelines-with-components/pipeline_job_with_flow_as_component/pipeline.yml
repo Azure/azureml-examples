@@ -22,7 +22,7 @@ jobs:
     component: ./basic/flow.dag.yaml
     inputs:
       data: ${{parent.inputs.flow_input}}
-      url: "${data.url}"
+      url: "${data.text}"
     outputs:
       flow_outputs: ${{parent.outputs.output_data}}
       debug_info: ${{parent.outputs.debug_info}}
@@ -32,4 +32,4 @@ jobs:
     component: ./run.yaml
     inputs:
       data: ${{parent.inputs.flow_input}}
-      url: "${data.url}"
+      url: "${data.text}"
