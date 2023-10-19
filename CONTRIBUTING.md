@@ -24,18 +24,18 @@ This repository contains notebooks and sample code that demonstrate how to devel
 
 ## Non-goals
 
-- This repository is not meant to serve as reference documentation. Reference documentation for the azure-ai-ml package can be found [here](https://learn.microsoft.com/en-us/python/api/azure-ai-ml/?view=azure-python).
-- This repository is not meant to serve as conceptual overview or comprehensive getting started documents. All long-form textual documentation can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/?view=azureml-api-2).
+- This repository is not meant to serve as reference documentation. Small code examples that are just comprehensive enough to show how an object or function works are categorized as reference documentation and should be placed in the object or function docstring in the [azure-ai-ml folder of the azure-sdk-for-python repository](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ml/azure-ai-ml) following [these guidelines](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ml/azure-ai-ml/documentation_guidelines.md).
+- This repository is not the place for long-form textual documentation. Documentation resources containing minimal or no code should be added in the [azure-docs repository](https://github.com/MicrosoftDocs/azure-docs).
 
 ## Issues
 
-All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues/new/choose) - please follow the pre-defined templates where applicable.
+All forms of feedback are welcome through [issues](https://github.com/Azure/azureml-examples/issues/new/choose). Please follow the pre-defined templates where applicable.
 
 ## Repository structure
 
 Azure Machine Learning has multiple developer experiences. The subdirectories at the root of the repo correspond to a developer experience, with the slight exception of `notebooks`.
 
-The `notebooks` directory is intended for iterative, interactive code development examples such as exploratory data anlysis or querying logged metrics.
+The `notebooks` directory is intended for iterative, interactive code development examples such as exploratory data analysis or querying logged metrics.
 
 ## Pull Requests
 
@@ -67,34 +67,33 @@ Also if adding new examples or changing existing descriptions, run the `readme.p
 python readme.py
 ```
 
-This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with exceptions) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details. If the new notebook uses compute cluster, please add it to the `sdk/python/notebooks_config.ini` file so the compute clusters will be properly deleted after notebook run was finished. Create a section with the notebook name and add the option `COMPUTE_NAMES` with the compute cluster name. 
+This will also generate a GitHub Actions workflow file for any new examples in the `.github/workflows` directory (with exceptions) to test the examples on the PR and regularly after merging into the main branch. PRs which edit existing examples will generally trigger a workflow to test the example. See the specific contributing guidelines for the subdirectories for further details. If the new notebook uses a compute cluster, please add it to the `sdk/python/notebooks_config.ini` file so the compute clusters will be properly deleted after notebook run was finished. Create a section with the notebook name and add the option `COMPUTE_NAMES` with the compute cluster name. 
 
 ### Discoverability
 
-Examples in this repository can be index in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
+Examples in this repository can be indexed in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
 
-- add an excellent `README.md` file in the example directory
+- add an excellent `README.md` file in the example directory noting the overview, objective, and estimated runtime. (Note than estimated runtimes should not exceed 30 minutes).
 - add required YAML frontmatter at the top of the `README.md`
 
-The YAML frontmatter is this:
+The YAML frontmatter format looks like this:
 
 ```YAML
 ---
 page_type: sample
 languages:
 - azurecli
-- python
+- language1
+- language2
 products:
 - azure-machine-learning
 description: Example description.
 ---
 ```
 
-**Edit the description** and update the languages as needed.
+Edit the description and update the languages as needed.
 
 The Code Samples browser content is updated twice a week, so it may take a few days for your changes to be reflected.
 
 ### Other resources
 * [CLI contributing guide.](cli/CONTRIBUTING.md)
-* [Python SDK contributing guide.](python-sdk/CONTRIBUTING.md)
-* [Notebooks contributing guide.](notebooks/CONTRIBUTING.md)

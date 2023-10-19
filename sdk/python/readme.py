@@ -197,6 +197,7 @@ def write_notebook_workflow(
         "assets-component" in classification
     )
     is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
+    is_featurestore_sample = "featurestore_sample" in classification
     creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
@@ -278,6 +279,8 @@ jobs:
       continue-on-error: true\n"""
     if is_spark_notebook_sample:
         workflow_yaml += get_spark_config_workflow(posix_folder, name)
+    if is_featurestore_sample:
+        workflow_yaml += get_featurestore_config_workflow(posix_folder, name)
     workflow_yaml += f"""    - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
@@ -463,6 +466,26 @@ def get_spark_config_workflow(folder_name, file_name):
       run: |
           bash -x jobs/spark/setup_spark.sh jobs/spark/ {folder_name}/{file_name}.ipynb
       working-directory: sdk/python
+      continue-on-error: true\n"""
+
+    return workflow
+
+
+def get_featurestore_config_workflow(folder_name, file_name):
+    is_sdk_noteobook = "_sdk_" in file_name
+    is_cli_notebook = "_cli_" in file_name
+    workflow = f"""    - name: setup feature-store resources"""
+    if is_sdk_noteobook:
+        workflow += f"""
+      run: |
+          bash -x setup-resources.sh {file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+    if is_cli_notebook:
+        workflow += f"""
+      run: |
+          bash -x setup-resources-cli.sh {file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
 
     return workflow
