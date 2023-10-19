@@ -6,16 +6,23 @@ folder_path="$1"
 echo "Checking if $folder_path contains a README.md file with all required words..."
 
 # Check if the "README.md" file exists in the folder
+invalid_readme_message="The sample does not contain a README.md file with the required sections. See CONTRIBUTING.md."
+
 if [ -e "$folder_path/README.md" ]; then
 
-    # Check if the required words exist in the README.md file
-    if grep -qi "overview:" "$folder_path/README.md" && grep -qi "objective:" "$folder_path/README.md" && grep -qi "programming languages:" "$folder_path/README.md" && grep -qi "estimated runtime:" "$folder_path/README.md"; then
-        echo "The folder contains a README.md file with all required words."
-    else
-        echo "The folder contains a README.md file, but it does not have all required words."
-        exit 1
-    fi
+    # Define an array of required words
+    required_words=("overview:" "objective:" "programming languages:" "estimated runtime:")
+
+    # Iterate through the required words and check for their presence in the README.md file (case-insensitive)
+    for word in "${required_words[@]}"; do
+        if ! grep -qi "$word" "$folder_path/README.md"; then
+            echo $invalid_readme_message
+            exit 1
+        fi
+    done
 else
-    echo "The folder does not contain a README.md file."
+    echo $invalid_readme_message
     exit 1
 fi
+
+echo "This sample contains a valid README."
