@@ -25,10 +25,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - name: validate readme
-      run: bash check_readme.sh ../../cli/assets/component/
-      working-directory: infra/bootstrapping
-      continue-on-error: false
     - name: azure login
       uses: azure/login@v1
       with:
@@ -36,6 +32,11 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
+      working-directory: infra/bootstrapping
+      continue-on-error: false
+    - name: validate readme
+      run: |
+          bash check_readme.sh "${{ github.workspace }}/../../cli/assets/component/"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
