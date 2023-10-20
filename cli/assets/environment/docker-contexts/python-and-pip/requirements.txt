@@ -19,7 +19,7 @@ matplotlib==3.4.3
 
 # python tools
 tqdm==4.62.2
-joblib==1.0.1
+joblib==1.2.0
 jupyter==1.0.0
 ipykernel==6.4.1
 papermill==2.3.3
