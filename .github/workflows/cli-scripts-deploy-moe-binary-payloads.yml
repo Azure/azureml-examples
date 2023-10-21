@@ -32,7 +32,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra/bootstrapping
+      working-directory: infra
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -41,6 +41,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${ github.workspace }/../../cli/"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: test script script
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";

@@ -31,8 +31,8 @@ jobs:
         creds: ${{secrets.AZUREML_CREDENTIALS}}
     - name: bootstrap resources
       run: |
-          bash bootstrap.sh
-      working-directory: infra/bootstrapping
+          bash bootstrapping/bootstrap.sh
+      working-directory: infra
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -41,6 +41,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${ github.workspace }/../../cli/assets\environment"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create asset
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";

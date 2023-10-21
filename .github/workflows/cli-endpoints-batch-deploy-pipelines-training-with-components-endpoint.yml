@@ -12,8 +12,8 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints/batch/deploy-pipelines/training-with-components/**
-      - cli/endpoints/batch/**
+      - cli/endpoints\batch\deploy-pipelines\training-with-components/**
+      - cli/endpoints/unknown/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-batch-deploy-pipelines-training-with-components-endpoint.yml
       - cli/setup.sh
@@ -42,23 +42,28 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${ github.workspace }/../../cli/endpoints\batch\deploy-pipelines\training-with-components"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n ingwithcomponentsendpoint9219 -y
+          az ml unknown-endpoint delete -n ingwithcomponentsendpoint6876 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml
-          az ml batch-endpoint create -n ingwithcomponentsendpoint9219 -f endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml
+          cat endpoints\batch\deploy-pipelines\training-with-components\endpoint.yml
+          az ml unknown-endpoint create -n ingwithcomponentsendpoint6876 -f endpoints\batch\deploy-pipelines\training-with-components\endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n ingwithcomponentsendpoint9219 -y
+          az ml unknown-endpoint delete -n ingwithcomponentsendpoint6876 -y
       working-directory: cli
