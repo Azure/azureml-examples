@@ -8,6 +8,12 @@ echo "Checking if $folder_path contains a README.md file with all required words
 # Check if the "README.md" file exists in the folder
 invalid_readme_message="The sample does not contain a README.md file with the required sections. See CONTRIBUTING.md."
 
+# If clause to check if folder path is in ./readme_exclusions.txt file
+if grep -Fxq "$folder_path" infra/bootstrapping/readme_exclusions.txt; then
+    echo "Skipping $folder_path since it is excluded from the README check."
+    exit 0
+fi
+
 if [ -e "$folder_path/README.md" ]; then
 
     # Define an array of required words
