@@ -44,14 +44,14 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${ github.workspace }/../../cli/endpoints\online\managed\sample"
+          bash check-readme.sh "${{ github.workspace }}/../../cli/endpoints\online\managed\sample"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n linemanagedsampleendpoint1657 -y
+          az ml unknown-endpoint delete -n linemanagedsampleendpoint9325 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,25 +59,25 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\managed\sample\endpoint.yml
-          az ml unknown-endpoint create -n linemanagedsampleendpoint1657 -f endpoints\online\managed\sample\endpoint.yml
+          az ml unknown-endpoint create -n linemanagedsampleendpoint9325 -f endpoints\online\managed\sample\endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\managed\sample\blue-deployment.yml
-          az ml unknown-deployment create -e linemanagedsampleendpoint1657 -f endpoints\online\managed\sample\blue-deployment.yml
+          az ml unknown-deployment create -e linemanagedsampleendpoint9325 -f endpoints\online\managed\sample\blue-deployment.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\managed\sample\green-deployment.yml
-          az ml unknown-deployment create -e linemanagedsampleendpoint1657 -f endpoints\online\managed\sample\green-deployment.yml
+          az ml unknown-deployment create -e linemanagedsampleendpoint9325 -f endpoints\online\managed\sample\green-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n linemanagedsampleendpoint1657 -y
+          az ml unknown-endpoint delete -n linemanagedsampleendpoint9325 -y
       working-directory: cli

@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline
     - name: validate readme
       run: |
-          bash check-readme.sh "${ github.workspace }/../../cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline"
+          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline"
       working-directory: infra/bootstrapping
       continue-on-error: false

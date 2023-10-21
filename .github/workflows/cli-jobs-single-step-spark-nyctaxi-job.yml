@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/single-step/spark/nyctaxi
     - name: validate readme
       run: |
-          bash check-readme.sh "${ github.workspace }/../../cli/jobs/single-step/spark/nyctaxi"
+          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/single-step/spark/nyctaxi"
       working-directory: infra/bootstrapping
       continue-on-error: false

@@ -488,7 +488,7 @@ jobs:
       working-directory: cli/{posix_project_dir}
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/{posix_project_dir}"
+          bash check-readme.sh "{GITHUB_WORKSPACE}/../../cli/{posix_project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false\n"""
 
@@ -555,7 +555,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-        bash check-readme.sh "${{ github.workspace }}/../../cli/{posix_project_dir}"
+        bash check-readme.sh "{GITHUB_WORKSPACE}/../../cli/{posix_project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: run job
@@ -644,7 +644,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+          bash check-readme.sh "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: delete endpoint if existing
@@ -738,7 +738,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+          bash check-readme.sh "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create asset
@@ -800,7 +800,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+          bash check-readme.sh "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: test script script
@@ -861,7 +861,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+          bash check-readme.sh "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create schedule

@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines/add-column-and-word-count-using-spark
     - name: validate readme
       run: |
-          bash check-readme.sh "${ github.workspace }/../../cli/jobs/pipelines/add-column-and-word-count-using-spark"
+          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/pipelines/add-column-and-word-count-using-spark"
       working-directory: infra/bootstrapping
       continue-on-error: false

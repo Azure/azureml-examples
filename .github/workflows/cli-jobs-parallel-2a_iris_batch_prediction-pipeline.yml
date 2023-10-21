@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/parallel/2a_iris_batch_prediction
     - name: validate readme
       run: |
-          bash check-readme.sh "${ github.workspace }/../../cli/jobs/parallel/2a_iris_batch_prediction"
+          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/parallel/2a_iris_batch_prediction"
       working-directory: infra/bootstrapping
       continue-on-error: false
