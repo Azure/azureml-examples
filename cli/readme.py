@@ -693,6 +693,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
+    project_dir = project_dir.replace(os.sep, "/")
     posix_asset = asset.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
