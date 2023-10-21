@@ -51,7 +51,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n glemodeltritonccendpoint2893 -y
+          az ml unknown-endpoint delete -n glemodeltritonccendpoint3932 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,11 +59,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\custom-container\triton\single-model\triton-cc-endpoint.yml
-          az ml unknown-endpoint create -n glemodeltritonccendpoint2893 -f endpoints\online\custom-container\triton\single-model\triton-cc-endpoint.yml
+          az ml unknown-endpoint create -n glemodeltritonccendpoint3932 -f endpoints\online\custom-container\triton\single-model\triton-cc-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n glemodeltritonccendpoint2893 -y
+          az ml unknown-endpoint delete -n glemodeltritonccendpoint3932 -y
       working-directory: cli

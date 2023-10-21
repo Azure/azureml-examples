@@ -726,8 +726,8 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          bash bootstrapping/bootstrap.sh
-      working-directory: infra
+          bash bootstrap.sh
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
