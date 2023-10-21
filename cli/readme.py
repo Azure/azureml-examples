@@ -485,7 +485,12 @@ jobs:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
-      working-directory: cli/{posix_project_dir}\n"""
+      working-directory: cli/{posix_project_dir}
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}/../../cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false\n"""
 
     # write workflow
     with open(
@@ -547,6 +552,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}/../../cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -631,6 +641,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -719,6 +734,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create asset
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -776,6 +796,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: test script script
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -832,6 +857,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}/../../cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create schedule
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
