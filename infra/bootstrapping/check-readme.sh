@@ -17,6 +17,8 @@ if [ -f "$exclusions_file" ]; then
         if [ "$line" = "$folder_path" ]; then
             echo "Skipping $folder_path since it is excluded from the README check."
             exit 0
+        else
+            echo "Checking if $line matches $folder_path"
         fi
     done < "$exclusions_file"
 fi
