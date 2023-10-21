@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data"
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data"
       working-directory: infra/bootstrapping
       continue-on-error: false

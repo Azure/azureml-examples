@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/nebulaml/PyTorch_CNN_MNIST
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/nebulaml/PyTorch_CNN_MNIST"
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/nebulaml/PyTorch_CNN_MNIST"
       working-directory: infra/bootstrapping
       continue-on-error: false

@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components"
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components"
       working-directory: infra/bootstrapping
       continue-on-error: false

@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/5c_env_conda_file
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/5c_env_conda_file"
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/5c_env_conda_file"
       working-directory: infra/bootstrapping
       continue-on-error: false

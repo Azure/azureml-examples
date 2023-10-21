@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/single-step/scikit-learn/diabetes
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/single-step/scikit-learn/diabetes"
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/single-step/scikit-learn/diabetes"
       working-directory: infra/bootstrapping
       continue-on-error: false

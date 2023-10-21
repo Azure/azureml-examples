@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component/train_pipeline
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component/train_pipeline"
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component/train_pipeline"
       working-directory: infra/bootstrapping
       continue-on-error: false

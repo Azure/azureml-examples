@@ -1,15 +1,16 @@
 #!/bin/bash
 
-# Get the folder path from the command-line argument
-folder_path="$1"
+# Get the folder path from the command-line arguments
+working_directory="$1"
+folder_path="$2"
 
 echo "Checking if $folder_path contains a README.md file with all required words..."
 
 # Check if the "README.md" file exists in the folder
 invalid_readme_message="The sample does not contain a README.md file with the required sections. See CONTRIBUTING.md."
 
-# If clause to check if folder path is in ./readme_exclusions.txt file
-if grep -Fxq "$folder_path" infra/bootstrapping/readme_exclusions.txt; then
+# Check if folder path is in ./readme_exclusions.txt file
+if grep -Fxq "$folder_path" "$working_directory/infra/bootstrapping/readme_exclusions.txt"; then
     echo "Skipping $folder_path since it is excluded from the README check."
     exit 0
 fi
