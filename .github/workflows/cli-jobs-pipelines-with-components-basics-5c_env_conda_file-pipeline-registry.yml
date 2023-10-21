@@ -45,8 +45,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-        posix_project_dir = posix_project_dir.replace("\", "/")
-        bash check-readme.sh "${ github.workspace }/../../cli/$posix_project_dir"
+        bash check-readme.sh "${ github.workspace }/../../cli/jobs/pipelines-with-components/basics/5c_env_conda_file"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: run job

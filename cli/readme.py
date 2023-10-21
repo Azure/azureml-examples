@@ -503,6 +503,7 @@ jobs:
 def write_job_using_registry_components_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
+    posix_project_dir = project_dir.replace("\\", "/")
 
     folder_name = project_dir.split(os.sep)[-1]
     is_pipeline_sample = "jobs/pipelines" in job
@@ -554,7 +555,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}/../../cli/{posix_project_dir}"
+        bash check-readme.sh "${{ github.workspace }}/../../cli/{posix_project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: run job
