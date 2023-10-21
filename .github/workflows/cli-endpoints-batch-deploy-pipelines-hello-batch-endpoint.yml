@@ -51,7 +51,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n pelineshellobatchendpoint1493 -y
+          az ml unknown-endpoint delete -n pelineshellobatchendpoint3589 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,18 +59,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-pipelines\hello-batch\endpoint.yml
-          az ml unknown-endpoint create -n pelineshellobatchendpoint1493 -f endpoints\batch\deploy-pipelines\hello-batch\endpoint.yml
+          az ml unknown-endpoint create -n pelineshellobatchendpoint3589 -f endpoints\batch\deploy-pipelines\hello-batch\endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-pipelines\hello-batch\deployment.yml
-          az ml unknown-deployment create -e pelineshellobatchendpoint1493 -f endpoints\batch\deploy-pipelines\hello-batch\deployment.yml
+          az ml unknown-deployment create -e pelineshellobatchendpoint3589 -f endpoints\batch\deploy-pipelines\hello-batch\deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n pelineshellobatchendpoint1493 -y
+          az ml unknown-endpoint delete -n pelineshellobatchendpoint3589 -y
       working-directory: cli

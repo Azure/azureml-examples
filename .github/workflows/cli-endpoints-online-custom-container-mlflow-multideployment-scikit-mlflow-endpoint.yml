@@ -51,7 +51,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ymentscikitmlflowendpoint2005 -y
+          az ml unknown-endpoint delete -n ymentscikitmlflowendpoint4010 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,11 +59,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\custom-container\mlflow\multideployment-scikit\mlflow-endpoint.yml
-          az ml unknown-endpoint create -n ymentscikitmlflowendpoint2005 -f endpoints\online\custom-container\mlflow\multideployment-scikit\mlflow-endpoint.yml
+          az ml unknown-endpoint create -n ymentscikitmlflowendpoint4010 -f endpoints\online\custom-container\mlflow\multideployment-scikit\mlflow-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ymentscikitmlflowendpoint2005 -y
+          az ml unknown-endpoint delete -n ymentscikitmlflowendpoint4010 -y
       working-directory: cli
