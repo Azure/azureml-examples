@@ -45,7 +45,8 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${ github.workspace }/../../cli/jobs/pipelines-with-components/basics/3a_basic_pipeline"
+        posix_project_dir = posix_project_dir.replace("\", "/")
+        bash check-readme.sh "${ github.workspace }/../../cli/$posix_project_dir"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: run job

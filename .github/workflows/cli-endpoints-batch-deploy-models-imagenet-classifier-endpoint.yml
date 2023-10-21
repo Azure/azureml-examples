@@ -51,7 +51,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n imagenetclassifierendpoint7659 -y
+          az ml unknown-endpoint delete -n imagenetclassifierendpoint4587 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,11 +59,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-models\imagenet-classifier\endpoint.yml
-          az ml unknown-endpoint create -n imagenetclassifierendpoint7659 -f endpoints\batch\deploy-models\imagenet-classifier\endpoint.yml
+          az ml unknown-endpoint create -n imagenetclassifierendpoint4587 -f endpoints\batch\deploy-models\imagenet-classifier\endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n imagenetclassifierendpoint7659 -y
+          az ml unknown-endpoint delete -n imagenetclassifierendpoint4587 -y
       working-directory: cli
