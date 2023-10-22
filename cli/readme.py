@@ -489,6 +489,7 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
       continue-on-error: false\n"""
 
     # write workflow
@@ -553,6 +554,7 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: run job
       run: |
@@ -642,6 +644,7 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
@@ -735,6 +738,7 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create asset
       run: |
@@ -797,6 +801,7 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: test script script
       run: |
@@ -858,6 +863,7 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create schedule
       run: |

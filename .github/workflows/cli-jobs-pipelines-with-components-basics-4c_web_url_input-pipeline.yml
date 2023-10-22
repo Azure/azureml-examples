@@ -52,4 +52,5 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/4c_web_url_input"
+      working-directory: infra/bootstrapping
       continue-on-error: false

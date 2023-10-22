@@ -45,12 +45,13 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/endpoints/batch/deploy-models/custom-outputs-parquet"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n tomoutputsparquetendpoint8118 -y
+          az ml unknown-endpoint delete -n tomoutputsparquetendpoint1809 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -58,18 +59,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-models\custom-outputs-parquet\endpoint.yml
-          az ml unknown-endpoint create -n tomoutputsparquetendpoint8118 -f endpoints\batch\deploy-models\custom-outputs-parquet\endpoint.yml
+          az ml unknown-endpoint create -n tomoutputsparquetendpoint1809 -f endpoints\batch\deploy-models\custom-outputs-parquet\endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet\deployment.yml
-          az ml unknown-deployment create -e tomoutputsparquetendpoint8118 -f endpoints/batch/deploy-models/custom-outputs-parquet\deployment.yml
+          az ml unknown-deployment create -e tomoutputsparquetendpoint1809 -f endpoints/batch/deploy-models/custom-outputs-parquet\deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n tomoutputsparquetendpoint8118 -y
+          az ml unknown-endpoint delete -n tomoutputsparquetendpoint1809 -y
       working-directory: cli

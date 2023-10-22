@@ -45,12 +45,13 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/endpoints/batch/deploy-models/openai-embeddings"
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n sopenaiembeddingsendpoint9580 -y
+          az ml unknown-endpoint delete -n sopenaiembeddingsendpoint7401 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -58,18 +59,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-models\openai-embeddings\endpoint.yml
-          az ml unknown-endpoint create -n sopenaiembeddingsendpoint9580 -f endpoints\batch\deploy-models\openai-embeddings\endpoint.yml
+          az ml unknown-endpoint create -n sopenaiembeddingsendpoint7401 -f endpoints\batch\deploy-models\openai-embeddings\endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/openai-embeddings\deployment.yml
-          az ml unknown-deployment create -e sopenaiembeddingsendpoint9580 -f endpoints/batch/deploy-models/openai-embeddings\deployment.yml
+          az ml unknown-deployment create -e sopenaiembeddingsendpoint7401 -f endpoints/batch/deploy-models/openai-embeddings\deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n sopenaiembeddingsendpoint9580 -y
+          az ml unknown-endpoint delete -n sopenaiembeddingsendpoint7401 -y
       working-directory: cli

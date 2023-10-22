@@ -56,4 +56,5 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline"
+      working-directory: infra/bootstrapping
       continue-on-error: false

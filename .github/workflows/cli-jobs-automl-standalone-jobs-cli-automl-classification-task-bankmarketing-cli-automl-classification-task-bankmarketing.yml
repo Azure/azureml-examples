@@ -51,4 +51,5 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing"
+      working-directory: infra/bootstrapping
       continue-on-error: false

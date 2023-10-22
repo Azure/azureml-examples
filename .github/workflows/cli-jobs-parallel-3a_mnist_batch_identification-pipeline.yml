@@ -51,4 +51,5 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/parallel/3a_mnist_batch_identification"
+      working-directory: infra/bootstrapping
       continue-on-error: false
