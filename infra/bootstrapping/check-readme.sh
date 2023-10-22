@@ -14,6 +14,8 @@ exclusions_file="$working_directory/infra/bootstrapping/readme_validation_exclus
 
 if [ -f "$exclusions_file" ]; then
     while IFS= read -r line; do
+        echo $line
+
         if [ "$line" = "$folder_path" ]; then
             echo "Skipping $folder_path since it is excluded from the README check."
             exit 0
