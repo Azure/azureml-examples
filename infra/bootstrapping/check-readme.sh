@@ -21,6 +21,8 @@ if [ -f "$exclusions_file" ]; then
             echo "Checking if $line matches $folder_path"
         fi
     done < "$exclusions_file"
+else
+    echo "No exclusions file found at $exclusions_file."
 fi
 
 if [ -e "$folder_path/README.md" ]; then
