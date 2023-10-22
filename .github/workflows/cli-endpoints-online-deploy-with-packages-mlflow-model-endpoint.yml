@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints\online\deploy-with-packages\mlflow-model/**
+      - cli/endpoints/online/deploy-with-packages/mlflow-model/**
       - cli/endpoints/unknown/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-deploy-with-packages-mlflow-model-endpoint.yml
@@ -44,14 +44,13 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/endpoints\online\deploy-with-packages\mlflow-model"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/endpoints/online/deploy-with-packages/mlflow-model"
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ckagesmlflowmodelendpoint1202 -y
+          az ml unknown-endpoint delete -n ckagesmlflowmodelendpoint1674 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,25 +58,25 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\deploy-with-packages\mlflow-model\endpoint.yml
-          az ml unknown-endpoint create -n ckagesmlflowmodelendpoint1202 -f endpoints\online\deploy-with-packages\mlflow-model\endpoint.yml
+          az ml unknown-endpoint create -n ckagesmlflowmodelendpoint1674 -f endpoints\online\deploy-with-packages\mlflow-model\endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\online\deploy-with-packages\mlflow-model\deployment.yml
-          az ml unknown-deployment create -e ckagesmlflowmodelendpoint1202 -f endpoints\online\deploy-with-packages\mlflow-model\deployment.yml
+          cat endpoints/online/deploy-with-packages/mlflow-model\deployment.yml
+          az ml unknown-deployment create -e ckagesmlflowmodelendpoint1674 -f endpoints/online/deploy-with-packages/mlflow-model\deployment.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\online\deploy-with-packages\mlflow-model\model-deployment.yml
-          az ml unknown-deployment create -e ckagesmlflowmodelendpoint1202 -f endpoints\online\deploy-with-packages\mlflow-model\model-deployment.yml
+          cat endpoints/online/deploy-with-packages/mlflow-model\model-deployment.yml
+          az ml unknown-deployment create -e ckagesmlflowmodelendpoint1674 -f endpoints/online/deploy-with-packages/mlflow-model\model-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ckagesmlflowmodelendpoint1202 -y
+          az ml unknown-endpoint delete -n ckagesmlflowmodelendpoint1674 -y
       working-directory: cli

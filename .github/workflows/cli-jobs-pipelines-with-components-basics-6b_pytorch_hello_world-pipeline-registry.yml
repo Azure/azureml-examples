@@ -45,8 +45,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-        bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/6b_pytorch_hello_world"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/6b_pytorch_hello_world"
       continue-on-error: false
     - name: run job
       run: |

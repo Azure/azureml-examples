@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints\online\kubernetes/**
+      - cli/endpoints/online/kubernetes/**
       - cli/endpoints/unknown/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-kubernetes-kubernetes-endpoint.yml
@@ -44,14 +44,13 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/endpoints\online\kubernetes"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/endpoints/online/kubernetes"
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n berneteskubernetesendpoint7105 -y
+          az ml unknown-endpoint delete -n berneteskubernetesendpoint9377 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,18 +58,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\kubernetes\kubernetes-endpoint.yml
-          az ml unknown-endpoint create -n berneteskubernetesendpoint7105 -f endpoints\online\kubernetes\kubernetes-endpoint.yml
+          az ml unknown-endpoint create -n berneteskubernetesendpoint9377 -f endpoints\online\kubernetes\kubernetes-endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\online\kubernetes\kubernetes-blue-deployment.yml
-          az ml unknown-deployment create -e berneteskubernetesendpoint7105 -f endpoints\online\kubernetes\kubernetes-blue-deployment.yml
+          cat endpoints/online/kubernetes\kubernetes-blue-deployment.yml
+          az ml unknown-deployment create -e berneteskubernetesendpoint9377 -f endpoints/online/kubernetes\kubernetes-blue-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n berneteskubernetesendpoint7105 -y
+          az ml unknown-endpoint delete -n berneteskubernetesendpoint9377 -y
       working-directory: cli

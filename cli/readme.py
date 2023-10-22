@@ -488,8 +488,7 @@ jobs:
       working-directory: cli/{posix_project_dir}
     - name: validate readme
       run: |
-          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/../../cli/{posix_project_dir}"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
       continue-on-error: false\n"""
 
     # write workflow
@@ -503,8 +502,6 @@ jobs:
 def write_job_using_registry_components_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
-    posix_project_dir = project_dir.replace("\\", "/")
-
     folder_name = project_dir.split(os.sep)[-1]
     is_pipeline_sample = "jobs/pipelines" in job
     creds = CREDENTIALS
@@ -555,8 +552,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-        bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/../../cli/{posix_project_dir}"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
       continue-on-error: false
     - name: run job
       run: |
@@ -580,6 +576,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    project_dir = project_dir.replace(os.sep, "/")
     deployments = sorted(
         glob.glob(project_dir + "/*deployment.yml", recursive=True)
         + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
@@ -644,8 +641,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
       continue-on-error: false
     - name: delete endpoint if existing
       run: |
@@ -739,7 +735,6 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
-      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create asset
       run: |
@@ -757,6 +752,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
+    project_dir = project_dir.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
@@ -800,8 +796,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
       continue-on-error: false
     - name: test script script
       run: |
@@ -817,6 +812,7 @@ jobs:
 
 def write_schedule_workflow(schedule):
     filename, project_dir, hyphenated = parse_path(schedule)
+    project_dir = project_dir.replace(os.sep, "/")
     posix_schedule = schedule.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
@@ -861,8 +857,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
       continue-on-error: false
     - name: create schedule
       run: |

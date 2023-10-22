@@ -51,6 +51,5 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/6a_tf_hello_world
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/6a_tf_hello_world"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/6a_tf_hello_world"
       continue-on-error: false

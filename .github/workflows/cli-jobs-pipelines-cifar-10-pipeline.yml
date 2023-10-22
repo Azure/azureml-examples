@@ -51,6 +51,5 @@ jobs:
       working-directory: cli/jobs/pipelines/cifar-10
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines/cifar-10"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/cifar-10"
       continue-on-error: false

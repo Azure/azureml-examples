@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/single-step/gpu_perf
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/single-step/gpu_perf"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/gpu_perf"
       continue-on-error: false

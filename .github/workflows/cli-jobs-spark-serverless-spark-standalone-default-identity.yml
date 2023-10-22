@@ -56,6 +56,5 @@ jobs:
       working-directory: cli/jobs/spark
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/spark"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/spark"
       continue-on-error: false

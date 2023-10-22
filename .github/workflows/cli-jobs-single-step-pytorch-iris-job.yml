@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/single-step/pytorch/iris
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/single-step/pytorch/iris"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/pytorch/iris"
       continue-on-error: false

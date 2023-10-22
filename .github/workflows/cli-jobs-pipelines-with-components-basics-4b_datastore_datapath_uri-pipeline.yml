@@ -51,6 +51,5 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/4b_datastore_datapath_uri"
       continue-on-error: false

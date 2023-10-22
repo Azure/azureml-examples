@@ -44,7 +44,6 @@ jobs:
     - name: validate readme
       run: |
           bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/assets/data"
-      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create asset
       run: |

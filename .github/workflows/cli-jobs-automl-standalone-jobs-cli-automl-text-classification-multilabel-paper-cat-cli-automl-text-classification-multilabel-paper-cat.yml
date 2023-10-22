@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat"
       continue-on-error: false

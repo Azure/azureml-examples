@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/responsible-ai/cli-responsibleaidashboard-housing-classification
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/responsible-ai/cli-responsibleaidashboard-housing-classification"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/responsible-ai/cli-responsibleaidashboard-housing-classification"
       continue-on-error: false

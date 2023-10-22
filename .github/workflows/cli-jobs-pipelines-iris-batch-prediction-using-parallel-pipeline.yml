@@ -51,6 +51,5 @@ jobs:
       working-directory: cli/jobs/pipelines/iris-batch-prediction-using-parallel
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines/iris-batch-prediction-using-parallel"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/iris-batch-prediction-using-parallel"
       continue-on-error: false

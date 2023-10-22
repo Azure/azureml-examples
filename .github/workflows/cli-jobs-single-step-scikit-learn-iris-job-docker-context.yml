@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/single-step/scikit-learn/iris
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/single-step/scikit-learn/iris"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/scikit-learn/iris"
       continue-on-error: false

@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/nebulaml/cifar10_deepspeed
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/nebulaml/cifar10_deepspeed"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/nebulaml/cifar10_deepspeed"
       continue-on-error: false

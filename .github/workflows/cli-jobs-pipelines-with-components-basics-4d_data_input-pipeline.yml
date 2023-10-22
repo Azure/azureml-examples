@@ -51,6 +51,5 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/4d_data_input
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/pipelines-with-components/basics/4d_data_input"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/4d_data_input"
       continue-on-error: false

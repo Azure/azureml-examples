@@ -43,8 +43,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/"
       continue-on-error: false
     - name: test script script
       run: |

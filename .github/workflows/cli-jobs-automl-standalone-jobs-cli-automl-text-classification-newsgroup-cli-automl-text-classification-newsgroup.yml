@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-text-classification-newsgroup
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/automl-standalone-jobs/cli-automl-text-classification-newsgroup"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-text-classification-newsgroup"
       continue-on-error: false

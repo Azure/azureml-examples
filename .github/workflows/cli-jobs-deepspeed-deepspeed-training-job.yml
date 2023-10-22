@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/deepspeed/deepspeed-training
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/deepspeed/deepspeed-training"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/deepspeed/deepspeed-training"
       continue-on-error: false

@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/single-step/r/accidents
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/single-step/r/accidents"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/r/accidents"
       continue-on-error: false

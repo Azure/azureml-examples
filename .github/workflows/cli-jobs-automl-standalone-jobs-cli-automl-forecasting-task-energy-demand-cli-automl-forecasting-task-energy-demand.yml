@@ -50,6 +50,5 @@ jobs:
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/../../cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand"
-      working-directory: infra/bootstrapping
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand"
       continue-on-error: false
