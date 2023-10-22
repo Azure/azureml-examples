@@ -19,14 +19,8 @@ if [ -f "$exclusions_file" ]; then
         if [ "$line" = "$folder_path" ]; then
             echo "Skipping $folder_path since it is excluded from the README check."
             exit 0
-        else
-            echo "Checking if $line matches $folder_path"
         fi
     done < "$exclusions_file"
-
-    echo "No match found for $folder_path in $exclusions_file."
-else
-    echo "No exclusions file found at $exclusions_file."
 fi
 
 if [ -e "$folder_path/README.md" ]; then
