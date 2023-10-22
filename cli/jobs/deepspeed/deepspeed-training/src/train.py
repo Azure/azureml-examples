@@ -162,8 +162,9 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         if args.with_aml_log:
             try:
                 mlflow.log_metrics({"loss": loss})
-            except NameError:
+            except Exception as e:
                 print("MLFlow logging failed. Continuing without MLflow.")
+                print(e)
                 pass
         running_loss = 0.0
 
