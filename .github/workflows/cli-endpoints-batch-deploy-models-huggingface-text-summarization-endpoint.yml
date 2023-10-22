@@ -51,7 +51,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n textsummarizationendpoint7615 -y
+          az ml unknown-endpoint delete -n textsummarizationendpoint9716 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -59,18 +59,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-models\huggingface-text-summarization\endpoint.yml
-          az ml unknown-endpoint create -n textsummarizationendpoint7615 -f endpoints\batch\deploy-models\huggingface-text-summarization\endpoint.yml
+          az ml unknown-endpoint create -n textsummarizationendpoint9716 -f endpoints\batch\deploy-models\huggingface-text-summarization\endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-models\huggingface-text-summarization\deployment.yml
-          az ml unknown-deployment create -e textsummarizationendpoint7615 -f endpoints\batch\deploy-models\huggingface-text-summarization\deployment.yml
+          az ml unknown-deployment create -e textsummarizationendpoint9716 -f endpoints\batch\deploy-models\huggingface-text-summarization\deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n textsummarizationendpoint7615 -y
+          az ml unknown-endpoint delete -n textsummarizationendpoint9716 -y
       working-directory: cli

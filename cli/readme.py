@@ -738,7 +738,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/../../cli/{project_dir}"
+          bash check-readme.sh "{GITHUB_WORKSPACE}" "{GITHUB_WORKSPACE}/cli/{project_dir}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: create asset

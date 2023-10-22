@@ -10,7 +10,7 @@ echo "Checking if $folder_path contains a README.md file with all required words
 invalid_readme_message="$folder_path does not contain a README.md file with the required sections. See CONTRIBUTING.md."
 
 # Check if folder path is in ./readme_exclusions.txt file
-exclusions_file="$working_directory/readme_validation_exclusions.txt"
+exclusions_file="$working_directory/infra/bootstrapping/readme_validation_exclusions.txt"
 
 if [ -f "$exclusions_file" ]; then
     while IFS= read -r line; do
