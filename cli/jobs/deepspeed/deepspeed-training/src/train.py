@@ -159,7 +159,8 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         # if i % 2000 == 1999:  # print every 2000 mini-batches
         loss = running_loss / 2000
         print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
-        if args.with_aml_log:
+        # To avoid throttling, we will log metrics for each 100-th batch.
+        if args.with_aml_log and i % 100 == 0:
             try:
                 mlflow.log_metrics({"loss": loss})
             except NameError:
