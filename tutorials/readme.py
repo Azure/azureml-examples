@@ -181,6 +181,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "{github_workspace}" "{github_workspace}/tutorials/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
