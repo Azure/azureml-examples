@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/online/custom-container/minimal/single-model/**
-      - cli/endpoints/unknown/**
+      - cli/endpoints/online/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-custom-container-minimal-single-model-minimal-single-model-endpoint.yml
       - cli/setup.sh
@@ -51,19 +51,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n inimalsinglemodelendpoint1369 -y
+          az ml online-endpoint delete -n inimalsinglemodelendpoint2770 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\online\custom-container\minimal\single-model\minimal-single-model-endpoint.yml
-          az ml unknown-endpoint create -n inimalsinglemodelendpoint1369 -f endpoints\online\custom-container\minimal\single-model\minimal-single-model-endpoint.yml
+          cat endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml
+          az ml online-endpoint create -n inimalsinglemodelendpoint2770 -f endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n inimalsinglemodelendpoint1369 -y
+          az ml online-endpoint delete -n inimalsinglemodelendpoint2770 -y
       working-directory: cli

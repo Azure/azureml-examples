@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/batch/deploy-models/mnist-classifier/**
-      - cli/endpoints/unknown/**
+      - cli/endpoints/batch/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-batch-deploy-models-mnist-classifier-endpoint.yml
       - cli/setup.sh
@@ -51,19 +51,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n lsmnistclassifierendpoint3668 -y
+          az ml batch-endpoint delete -n lsmnistclassifierendpoint9980 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\batch\deploy-models\mnist-classifier\endpoint.yml
-          az ml unknown-endpoint create -n lsmnistclassifierendpoint3668 -f endpoints\batch\deploy-models\mnist-classifier\endpoint.yml
+          cat endpoints/batch/deploy-models/mnist-classifier/endpoint.yml
+          az ml batch-endpoint create -n lsmnistclassifierendpoint9980 -f endpoints/batch/deploy-models/mnist-classifier/endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n lsmnistclassifierendpoint3668 -y
+          az ml batch-endpoint delete -n lsmnistclassifierendpoint9980 -y
       working-directory: cli

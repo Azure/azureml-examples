@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: cli-endpoints-online-managed-vnet-sample-endpoint
+name: cli-endpoints-online-managed-sample-endpoint
 on:
   workflow_dispatch:
   schedule:
@@ -12,10 +12,10 @@ on:
     branches:
       - main
     paths:
-      - cli/endpoints/online/managed/vnet/sample/**
-      - cli/endpoints/unknown/**
+      - cli/endpoints/online/managed/sample/**
+      - cli/endpoints/online/**
       - infra/bootstrapping/**
-      - .github/workflows/cli-endpoints-online-managed-vnet-sample-endpoint.yml
+      - .github/workflows/cli-endpoints-online-managed-sample-endpoint.yml
       - cli/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -51,19 +51,33 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n managedvnetsampleendpoint2554 -y
+          az ml online-endpoint delete -n linemanagedsampleendpoint6303 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\online\managed\vnet\sample\endpoint.yml
-          az ml unknown-endpoint create -n managedvnetsampleendpoint2554 -f endpoints\online\managed\vnet\sample\endpoint.yml
+          cat endpoints/online/managed/sample/endpoint.yml
+          az ml online-endpoint create -n linemanagedsampleendpoint6303 -f endpoints/online/managed/sample/endpoint.yml
+      working-directory: cli
+    - name: create deployment
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          cat endpoints/online/managed/sample/blue-deployment.yml
+          az ml online-deployment create -e linemanagedsampleendpoint6303 -f endpoints/online/managed/sample/blue-deployment.yml
+      working-directory: cli
+    - name: create deployment
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          cat endpoints/online/managed/sample/green-deployment.yml
+          az ml online-deployment create -e linemanagedsampleendpoint6303 -f endpoints/online/managed/sample/green-deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n managedvnetsampleendpoint2554 -y
+          az ml online-endpoint delete -n linemanagedsampleendpoint6303 -y
       working-directory: cli
