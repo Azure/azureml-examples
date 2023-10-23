@@ -72,12 +72,10 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "index": [0, 1],
             "data": [
                 [
-                    base64.encodebytes(read_image(
-                        sample_image_1)).decode("utf-8"),
+                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
                 ],  # the labels are required in the first row of the "text" column
                 [
-                    base64.encodebytes(read_image(
-                        sample_image_2)).decode("utf-8")
+                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8")
                 ],  # all other rows in the "text" column are ignored
             ],
         }
@@ -112,22 +110,23 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
 
     # Divide the image list into files of 10 rows each
     batch_size_per_predict = 10
-    divided_list = [image_list[i * batch_size_per_predict:(i + 1) * batch_size_per_predict] for i in range(
-        (len(image_list) + batch_size_per_predict - 1) // batch_size_per_predict)]
+    divided_list = [
+        image_list[i * batch_size_per_predict : (i + 1) * batch_size_per_predict]
+        for i in range(
+            (len(image_list) + batch_size_per_predict - 1) // batch_size_per_predict
+        )
+    ]
 
     list_num = 0
     for l in divided_list:
         batch_df = pd.DataFrame(l, columns=["image"])
-        filepath = os.path.join(
-            csv_folder_path, str(list_num) + batch_input_file)
+        filepath = os.path.join(csv_folder_path, str(list_num) + batch_input_file)
         list_num = list_num + 1
         batch_df.to_csv(filepath)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Prepare data for image-to-text task"
-    )
+    parser = argparse.ArgumentParser(description="Prepare data for image-to-text task")
     parser.add_argument(
         "--data_path", type=str, default="data", help="Dataset location"
     )
