@@ -39,7 +39,7 @@ az role assignment create --role "Storage Blob Data Contributor" --assignee-obje
 
 # az ml feature-set update --file $TRANSACTION_ASSET_MAT_YML --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
 
-COMPUTE_CLUSTER_NAME="cpu-cluster"
+COMPUTE_CLUSTER_NAME="cpu-cluster-fs"
 COMPUTE_TYPE="amlcompute"
 COMPUTE_SIZE="STANDARD_F4S_V2"
 az ml compute create --name $COMPUTE_CLUSTER_NAME --type $COMPUTE_TYPE --size $COMPUTE_SIZE --idle-time-before-scale-down 360 --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME

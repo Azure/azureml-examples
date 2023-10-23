@@ -41,7 +41,7 @@ jobs:
   
   training_step:
     type: command
-    compute: azureml:cpu-cluster
+    compute: azureml:cpu-cluster-fs
     code: ../train/src
     environment:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
