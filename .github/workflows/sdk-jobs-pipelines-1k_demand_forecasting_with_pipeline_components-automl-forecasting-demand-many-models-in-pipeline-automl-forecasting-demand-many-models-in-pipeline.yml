@@ -51,6 +51,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-many-models-in-pipeline"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
@@ -73,3 +78,6 @@ jobs:
       with:
         name: automl-forecasting-demand-many-models-in-pipeline
         path: sdk/python/jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-many-models-in-pipeline
+
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "${{ github.workspace }}/infra/bootstrapping/remove_computes.sh" demand-fcst-mm-cluster

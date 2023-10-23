@@ -19,9 +19,6 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
-env:
-  MMDETECTION_MODEL_ID: None
-  MMDETECTION_TASK_NAME: image-object-detection
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -54,6 +51,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/foundation-models/system/import"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";

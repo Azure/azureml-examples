@@ -36,8 +36,6 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
-    - name: pip install forecasting reqs
-      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -55,6 +53,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
