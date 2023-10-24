@@ -32,6 +32,10 @@ We also offer some examples for our SDKs in other languages:
 The [`cli/` folder][azureml cli extension examples] hosts our examples to use the
 [Azure Machine Learning Extension][azure cli ml extension v2 overview] for [Azure CLI][azure cli overview].
 
+_Note_: If you're looking for examples that submit Azure ML jobs that run non-Python code, see:
+
+* **R**: [`cli/jobs/single-step/r`](./cli/jobs/single-step/r)
+
 
 ## Supplementary Documentation
 
