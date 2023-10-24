@@ -27,10 +27,10 @@ We also offer some examples for our SDKs in other languages:
 * .NET: [`sdk/dotnet`][azureml dotnet sdk v2 examples]
 * TypeScript: [`sdk/typescript`][azureml typescript sdk v2 examples]
 
-### Azure Machine Extension for Azure CLI
+### Azure Machine Learning extension for Azure CLI
 
 The [`cli/` folder][azureml cli extension examples] hosts our examples to use the
-[Azure Machine Learning Extension][azure cli ml extension v2 overview] for [Azure CLI][azure cli overview].
+[Azure Machine Learning extension][azure cli ml extension v2 overview] for [Azure CLI][azure cli overview].
 
 _Note_: If you're looking for examples that submit Azure ML jobs that run non-Python code, see:
 
@@ -41,7 +41,7 @@ _Note_: If you're looking for examples that submit Azure ML jobs that run non-Py
 
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
 - [AzureML Python SDK v2 Overview]
-- [Azure CLI ml extension v2 Overview]
+- [Azure CLI ML extension v2 Overview]
 
 ## Contributing
 
