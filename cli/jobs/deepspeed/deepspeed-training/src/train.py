@@ -145,7 +145,6 @@ if args.with_aml_log:
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
 for epoch in range(args.epochs):  # loop over the dataset multiple times
-
     running_loss = 0.0
     for i, data in enumerate(trainloader):
         # get the inputs; data is a list of [inputs, labels]
@@ -180,7 +179,7 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
                     print("Unable to write metric because of throttling.")
                 else:
                     raise
-            
+
         running_loss = 0.0
 
 print("Finished Training")
