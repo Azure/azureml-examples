@@ -71,12 +71,8 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
             "columns": ["image"],
             "index": [0, 1],
             "data": [
-                [
-                    base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
-                ],
-                [
-                    base64.encodebytes(read_image(sample_image_2)).decode("utf-8")
-                ],
+                [base64.encodebytes(read_image(sample_image_1)).decode("utf-8")],
+                [base64.encodebytes(read_image(sample_image_2)).decode("utf-8")],
             ],
         }
     }
