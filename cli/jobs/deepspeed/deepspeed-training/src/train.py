@@ -9,6 +9,7 @@ import torchvision
 import torchvision.transforms as transforms
 import time
 from model import Net, nn
+from mlflow.exceptions import MlflowException
 
 # import MLflow if available. Continue with a warning if not installed on the system.
 try:
@@ -131,7 +132,15 @@ criterion = nn.CrossEntropyLoss()
 #
 # Showcasing logging metrics to automl.
 if args.with_aml_log:
-    mlflow.log_metrics({"hello": 12345})
+    try:
+        mlflow.log_metrics({"hello": 12345})
+    except MlflowException as e:
+        if "too many 429" in e.args[0]:
+            # Handle multiple requests here as we may run to many
+            # instances of this script depending on settings.
+            print("Unable to write metric because of throttling.")
+        else:
+            raise
 # This is when things start to get interesting.
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
@@ -159,13 +168,19 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
         # if i % 2000 == 1999:  # print every 2000 mini-batches
         loss = running_loss / 2000
         print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, loss))
-        # To avoid throttling, we will log metrics for each 100-th batch.
         if args.with_aml_log and i % 100 == 0:
             try:
                 mlflow.log_metrics({"loss": loss})
             except NameError:
                 print("MLFlow logging failed. Continuing without MLflow.")
-                pass
+            except MlflowException as e:
+                if "too many 429" in e.args[0]:
+                    # Handle multiple requests here as we may run to many
+                    # instances of this script depending on settings.
+                    print("Unable to write metric because of throttling.")
+                else:
+                    raise
+            
         running_loss = 0.0
 
 print("Finished Training")
