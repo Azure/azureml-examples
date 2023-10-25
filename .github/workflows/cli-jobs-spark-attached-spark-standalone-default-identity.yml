@@ -52,7 +52,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
       run: |
-          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark.yml jobs/spark/attached-spark-standalone-default-identity.yml
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-system-identity.yml jobs/spark/attached-spark-standalone-default-identity.yml
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
