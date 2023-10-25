@@ -12,6 +12,7 @@ RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
 REDIS_NAME=${RESOURCE_GROUP}rds
 VERSION=$(((RANDOM%1000)+1))
+ENDPOINT_NAME=fraudmodel${VERSION}
 # </create_variables>
 
 # <convert_notebook_to_py>
@@ -39,4 +40,5 @@ sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_
     s/<VERSION>/$VERSION/g;" "${NOTEBOOK_3}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<REDIS_NAME>/$REDIS_NAME/g;
+    s/<ENDPOINT_NAME>/$ENDPOINT_NAME/g;
     s/<VERSION>/$VERSION/g;" "${NOTEBOOK_4}.py"

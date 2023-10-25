@@ -14,20 +14,20 @@ with open(
 ) as f:
     exec(f.read())
 
+# print("=======Test CLI Notebook 2============")
+# with open(
+#     "notebooks/sdk_and_cli/2. Enable materialization and backfill feature data.py"
+# ) as f:
+#     exec(f.read())
+
 print("=======Test CLI Notebook 2============")
 with open(
-    "notebooks/sdk_and_cli/2. Enable materialization and backfill feature data.py"
+    "notebooks/sdk_and_cli/2. Experiment and train models using features.py"
 ) as f:
     exec(f.read())
 
 print("=======Test CLI Notebook 3============")
 with open(
-    "notebooks/sdk_and_cli/3. Experiment and train models using features.py"
-) as f:
-    exec(f.read())
-
-print("=======Test CLI Notebook 4============")
-with open(
-    "notebooks/sdk_and_cli/4. Enable recurrent materialization and run batch inference.py"
+    "notebooks/sdk_and_cli/3. Enable recurrent materialization and run batch inference.py"
 ) as f:
     exec(f.read())
