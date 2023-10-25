@@ -45,14 +45,12 @@ COMPUTE_SIZE="STANDARD_F4S_V2"
 az ml compute create --name $COMPUTE_CLUSTER_NAME --type $COMPUTE_TYPE --size $COMPUTE_SIZE --idle-time-before-scale-down 360 --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 
 # <convert_notebook_to_py>
-NOTEBOOK_1="notebooks/sdk_and_cli/1. Develop a feature set and register with managed feature store"
-NOTEBOOK_2="notebooks/sdk_and_cli/2. Enable materialization and backfill feature data"
-NOTEBOOK_3="notebooks/sdk_and_cli/3. Experiment and train models using features"
-NOTEBOOK_4="notebooks/sdk_and_cli/4. Enable recurrent materialization and run batch inference"
+NOTEBOOK_1="../notebooks/sdk_and_cli/1. Develop a feature set and register with managed feature store"
+NOTEBOOK_2="../notebooks/sdk_and_cli/2. Experiment and train models using features"
+NOTEBOOK_3="../notebooks/sdk_and_cli/3. Enable recurrent materialization and run batch inference"
 jupytext --to py "${NOTEBOOK_1}.ipynb"
 jupytext --to py "${NOTEBOOK_2}.ipynb"
 jupytext --to py "${NOTEBOOK_3}.ipynb"
-jupytext --to py "${NOTEBOOK_4}.ipynb"
 # <convert_notebook_to_py>
 
 #<replace_template_values>
@@ -65,22 +63,22 @@ sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_
     s/<FEATURE_VERSION>/$FEATURE_VERSION/g;
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_1}.py"
 
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
-    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
-    s/<FEATURE_STORAGE_ACCOUNT_NAME>/$FEATURE_STORAGE_ACCOUNT_NAME/g;
-    s/<USER_AAD_OBJECTID>/$USER_ID/g
-    s/<STORAGE_ACCOUNT_NAME>/$STORAGE_ACCOUNT_NAME/g
-    s/<STORAGE_FILE_SYSTEM_NAME>/$STORAGE_FILE_SYSTEM_NAME/g
-    s/<FEATURE_VERSION>/$FEATURE_VERSION/g;;
-    s/<FEATURE_STORE_UAI_NAME>/$UAI_NAME/g;" "${NOTEBOOK_2}.py"
+# sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+#     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
+#     s/<FEATURE_STORAGE_ACCOUNT_NAME>/$FEATURE_STORAGE_ACCOUNT_NAME/g;
+#     s/<USER_AAD_OBJECTID>/$USER_ID/g
+#     s/<STORAGE_ACCOUNT_NAME>/$STORAGE_ACCOUNT_NAME/g
+#     s/<STORAGE_FILE_SYSTEM_NAME>/$STORAGE_FILE_SYSTEM_NAME/g
+#     s/<FEATURE_VERSION>/$FEATURE_VERSION/g;;
+#     s/<FEATURE_STORE_UAI_NAME>/$UAI_NAME/g;" "${NOTEBOOK_2}.py"
 
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
     s/<COMPUTE_CLUSTER_NAME>/$COMPUTE_CLUSTER_NAME/g;
     s/<COMPUTE_TYPE>/$COMPUTE_TYPE/g;
     s/<COMPUTE_SIZE>/$COMPUTE_SIZE/g;
-    s/<FEATURE_VERSION>/$FEATURE_VERSION/g;" "${NOTEBOOK_3}.py"
+    s/<FEATURE_VERSION>/$FEATURE_VERSION/g;" "${NOTEBOOK_2}.py"
 
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
-    s/<FEATURE_VERSION>/$FEATURE_VERSION/g;" "${NOTEBOOK_4}.py"
+    s/<FEATURE_VERSION>/$FEATURE_VERSION/g;" "${NOTEBOOK_3}.py"
