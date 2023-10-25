@@ -59,7 +59,7 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;" $1
 
 #<replace_template_values>
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<FEATURE_VERSION>/$FEATURE_VERSION/g;
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_1}.py"
 
@@ -72,13 +72,13 @@ sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_
 #     s/<FEATURE_VERSION>/$FEATURE_VERSION/g;;
 #     s/<FEATURE_STORE_UAI_NAME>/$UAI_NAME/g;" "${NOTEBOOK_2}.py"
 
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
     s/<COMPUTE_CLUSTER_NAME>/$COMPUTE_CLUSTER_NAME/g;
     s/<COMPUTE_TYPE>/$COMPUTE_TYPE/g;
     s/<COMPUTE_SIZE>/$COMPUTE_SIZE/g;
     s/<FEATURE_VERSION>/$FEATURE_VERSION/g;" "${NOTEBOOK_2}.py"
 
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
     s/<FEATURE_VERSION>/$FEATURE_VERSION/g;" "${NOTEBOOK_3}.py"

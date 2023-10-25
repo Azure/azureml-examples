@@ -28,3 +28,22 @@ with open(
 # print("=======Test Notebook 4============")
 # with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
 #     exec(f.read())
+
+
+print("======clean up==========")
+from azure.ai.ml import MLClient
+from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
+
+ml_client = MLClient(
+    AzureMLOnBehalfOfCredential(),
+    subscription_id="<SUBSCRIPTION_ID>",
+    resource_group_name="<RESOURCE_GROUP>"
+)
+
+result = ml_client.feature_stores.begin_delete(
+    name="<FEATURESTORE_NAME>",
+    permanently_delete=True,
+    delete_dependent_resources=False
+).result()
+
+print(result)
