@@ -31,12 +31,12 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;" $1
 
 #<replace_template_values>
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
     s/<VERSION>/$VERSION/g;" "${NOTEBOOK_1}.py"
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
     s/<VERSION>/$VERSION/g;" "${NOTEBOOK_2}.py"
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
     s/<VERSION>/$VERSION/g;" "${NOTEBOOK_3}.py"
-sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/..\//g;
     s/<REDIS_NAME>/$REDIS_NAME/g;
     s/<VERSION>/$VERSION/g;" "${NOTEBOOK_4}.py"
