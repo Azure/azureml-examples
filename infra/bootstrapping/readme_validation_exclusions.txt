@@ -166,3 +166,6 @@
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing
+/home/runner/work/azureml-examples/azureml-examples/cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline
+/home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand
+/home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share
