@@ -45,9 +45,9 @@ COMPUTE_SIZE="STANDARD_F4S_V2"
 az ml compute create --name $COMPUTE_CLUSTER_NAME --type $COMPUTE_TYPE --size $COMPUTE_SIZE --idle-time-before-scale-down 360 --resource-group $RESOURCE_GROUP --workspace-name $AML_WORKSPACE_NAME
 
 # <convert_notebook_to_py>
-NOTEBOOK_1="../notebooks/sdk_and_cli/1. Develop a feature set and register with managed feature store"
-NOTEBOOK_2="../notebooks/sdk_and_cli/2. Experiment and train models using features"
-NOTEBOOK_3="../notebooks/sdk_and_cli/3. Enable recurrent materialization and run batch inference"
+NOTEBOOK_1="notebooks/sdk_and_cli/1. Develop a feature set and register with managed feature store"
+NOTEBOOK_2="notebooks/sdk_and_cli/2. Experiment and train models using features"
+NOTEBOOK_3="notebooks/sdk_and_cli/3. Enable recurrent materialization and run batch inference"
 jupytext --to py "${NOTEBOOK_1}.ipynb"
 jupytext --to py "${NOTEBOOK_2}.ipynb"
 jupytext --to py "${NOTEBOOK_3}.ipynb"
