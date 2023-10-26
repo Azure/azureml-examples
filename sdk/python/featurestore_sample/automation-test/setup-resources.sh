@@ -12,6 +12,8 @@ RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
 REDIS_NAME=${RESOURCE_GROUP}rds
 VERSION=$(((RANDOM%1000)+1))
+FEATURESTORE_NAME="my-featurestore"${VERSION}
+SDK_PY_JOB_FILE="automation-test/featurestore_sdk_job.py"
 # </create_variables>
 
 # <convert_notebook_to_py>
@@ -30,13 +32,17 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
     s/<AML_WORKSPACE_NAME>/$AML_WORKSPACE_NAME/g;" $1
 
+sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
+    s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" $SDK_PY_JOB_FILE
+
 #<replace_template_values>
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
-    s/<VERSION>/$VERSION/g;" "${NOTEBOOK_1}.py"
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_1}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
-    s/<VERSION>/$VERSION/g;" "${NOTEBOOK_2}.py"
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_2}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
-    s/<VERSION>/$VERSION/g;" "${NOTEBOOK_3}.py"
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_3}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<REDIS_NAME>/$REDIS_NAME/g;
-    s/<VERSION>/$VERSION/g;" "${NOTEBOOK_4}.py"
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_4}.py"
