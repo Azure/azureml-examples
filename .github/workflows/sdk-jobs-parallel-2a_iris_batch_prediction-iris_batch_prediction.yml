@@ -53,7 +53,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/parallel/2a_iris_batch_prediction"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/parallel/2a_iris_batch_prediction"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

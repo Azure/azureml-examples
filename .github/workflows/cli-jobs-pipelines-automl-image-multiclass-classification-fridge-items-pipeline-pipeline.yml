@@ -55,6 +55,6 @@ jobs:
       working-directory: cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline"
       working-directory: infra/bootstrapping
       continue-on-error: false

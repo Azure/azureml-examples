@@ -55,7 +55,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multiclass-task-fridge-items"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multiclass-task-fridge-items"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

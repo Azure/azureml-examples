@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/pipeline_job_with_flow_as_component
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/pipeline_job_with_flow_as_component"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/pipeline_job_with_flow_as_component"
       working-directory: infra/bootstrapping
       continue-on-error: false

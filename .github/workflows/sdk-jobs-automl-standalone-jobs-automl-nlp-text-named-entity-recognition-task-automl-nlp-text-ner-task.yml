@@ -55,7 +55,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

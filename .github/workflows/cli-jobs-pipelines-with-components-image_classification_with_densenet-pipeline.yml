@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/image_classification_with_densenet
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/image_classification_with_densenet"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/image_classification_with_densenet"
       working-directory: infra/bootstrapping
       continue-on-error: false

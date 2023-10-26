@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/basics/hello-automl
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/basics/hello-automl"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/basics/hello-automl"
       working-directory: infra/bootstrapping
       continue-on-error: false

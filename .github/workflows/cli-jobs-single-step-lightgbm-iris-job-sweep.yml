@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/single-step/lightgbm/iris
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/lightgbm/iris"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/lightgbm/iris"
       working-directory: infra/bootstrapping
       continue-on-error: false

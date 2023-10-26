@@ -54,6 +54,6 @@ jobs:
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items"
       working-directory: infra/bootstrapping
       continue-on-error: false

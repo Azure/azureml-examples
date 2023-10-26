@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/single-step/pytorch/cifar-distributed
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/pytorch/cifar-distributed"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/pytorch/cifar-distributed"
       working-directory: infra/bootstrapping
       continue-on-error: false

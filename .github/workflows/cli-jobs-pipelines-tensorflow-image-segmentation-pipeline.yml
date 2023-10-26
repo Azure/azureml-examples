@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines/tensorflow-image-segmentation
     - name: validate readme
       run: |
-          bash check-readme.sh "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/tensorflow-image-segmentation"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/tensorflow-image-segmentation"
       working-directory: infra/bootstrapping
       continue-on-error: false
