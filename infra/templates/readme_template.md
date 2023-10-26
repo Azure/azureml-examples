@@ -1,3 +1,14 @@
+---
+page_type: sample
+languages:
+- azurecli
+- language1
+- language2
+products:
+- azure-machine-learning
+description: Example description.
+---
+
 ## Your Sample Name
 
 ### Overview
