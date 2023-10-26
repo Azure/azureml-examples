@@ -478,13 +478,13 @@ def get_featurestore_config_workflow(folder_name, file_name):
     if is_sdk_noteobook:
         workflow += f"""
       run: |
-          bash -x setup-resources.sh {file_name}.ipynb
+          bash -x automation-test/setup-resources.sh automation-test/{file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
     if is_cli_notebook:
         workflow += f"""
       run: |
-          bash -x setup-resources-cli.sh {file_name}.ipynb
+          bash -x automation-test/setup-resources-cli.sh automation-test/{file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
 
