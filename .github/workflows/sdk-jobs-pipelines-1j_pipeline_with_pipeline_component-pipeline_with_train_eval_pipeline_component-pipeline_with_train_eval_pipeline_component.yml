@@ -53,7 +53,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component"
+          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

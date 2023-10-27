@@ -45,7 +45,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/6c_r_iris"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/6c_r_iris"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: run job

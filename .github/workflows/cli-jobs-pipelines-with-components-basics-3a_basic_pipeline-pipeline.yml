@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines-with-components/basics/3a_basic_pipeline
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/3a_basic_pipeline"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/3a_basic_pipeline"
       working-directory: infra/bootstrapping
       continue-on-error: false

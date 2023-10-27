@@ -53,7 +53,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch"
+          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

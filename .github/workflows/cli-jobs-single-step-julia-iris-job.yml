@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/single-step/julia/iris
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/julia/iris"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/single-step/julia/iris"
       working-directory: infra/bootstrapping
       continue-on-error: false

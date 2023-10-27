@@ -53,7 +53,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/endpoints/batch/deploy-models/imagenet-classifier"
+          python check-readme.py "${{ github.workspace }}/sdk/python/endpoints/batch/deploy-models/imagenet-classifier"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

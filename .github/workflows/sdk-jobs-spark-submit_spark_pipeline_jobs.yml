@@ -53,7 +53,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/spark"
+          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/spark"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

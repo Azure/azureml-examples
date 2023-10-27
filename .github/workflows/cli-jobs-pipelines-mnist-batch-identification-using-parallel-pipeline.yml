@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines/mnist-batch-identification-using-parallel
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/mnist-batch-identification-using-parallel"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines/mnist-batch-identification-using-parallel"
       working-directory: infra/bootstrapping
       continue-on-error: false

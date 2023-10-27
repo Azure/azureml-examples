@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-regression-task-hardware-perf
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-regression-task-hardware-perf"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-regression-task-hardware-perf"
       working-directory: infra/bootstrapping
       continue-on-error: false

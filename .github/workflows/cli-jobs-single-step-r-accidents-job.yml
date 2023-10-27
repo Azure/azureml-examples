@@ -50,6 +50,6 @@ jobs:
       working-directory: cli/jobs/single-step/r/accidents
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/single-step/r/accidents"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/single-step/r/accidents"
       working-directory: infra/bootstrapping
       continue-on-error: false

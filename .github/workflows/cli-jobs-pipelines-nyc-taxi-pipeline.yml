@@ -51,6 +51,6 @@ jobs:
       working-directory: cli/jobs/pipelines/nyc-taxi
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/cli/jobs/pipelines/nyc-taxi"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines/nyc-taxi"
       working-directory: infra/bootstrapping
       continue-on-error: false

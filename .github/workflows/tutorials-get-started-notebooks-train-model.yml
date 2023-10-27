@@ -55,7 +55,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/tutorials/get-started-notebooks"
+          python check-readme.py "${{ github.workspace }}/tutorials/get-started-notebooks"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

@@ -57,7 +57,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring"
+          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
