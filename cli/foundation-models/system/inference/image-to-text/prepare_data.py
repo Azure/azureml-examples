@@ -97,11 +97,10 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     dataset_dir = os.path.join(dataset_dir, "images")
 
     image_list = []
-    for image in os.listdir(dataset_dir):
-        with open(os.path.join(dataset_dir, image), "rb") as f:
-            data = f.read()
-            data = base64.encodebytes(data).decode("utf-8")
-            image_list.append(data)
+    for image_name in os.listdir(dataset_dir):
+        image = read_image(os.path.join(dataset_dir, image_name))
+        data = base64.encodebytes(image).decode("utf-8")
+        image_list.append(data)
 
     # Divide the image list into files of 10 rows each
     batch_size_per_predict = 10

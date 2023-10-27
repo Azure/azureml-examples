@@ -1,5 +1,5 @@
 set -x
-# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-sdk-blip2-image-to-text
+# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-online-sdk-blip-image-to-text
 # The sample scoring file available in the same folder as the above notebook
 
 # script inputs
@@ -9,7 +9,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="salesforce-blip2-opt-2-7b"
+model_name="Salesforce-BLIP-image-captioning-base"
 model_label="latest"
 
 version=$(date +%s)
