@@ -3,8 +3,7 @@ name: sanity_runs for new released FT components
 # Please do not edit directly.
 on:
   schedule:
-    - cron: "33 10/12 * * *"
-jobs:
+    - cron: "33 12 * * 5"
   build:
     runs-on: ubuntu-latest
     steps:
