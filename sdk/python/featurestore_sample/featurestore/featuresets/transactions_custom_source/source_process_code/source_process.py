@@ -23,9 +23,13 @@ class CustomSourceTransformer:
         df = spark.read.json(self.path)
 
         if start_time:
-            df = df.filter(col(self.timestamp_column_name) >= to_timestamp(lit(start_time)))
+            df = df.filter(
+                col(self.timestamp_column_name) >= to_timestamp(lit(start_time))
+            )
 
         if end_time:
-            df = df.filter(col(self.timestamp_column_name) < to_timestamp(lit(end_time)))
+            df = df.filter(
+                col(self.timestamp_column_name) < to_timestamp(lit(end_time))
+            )
 
         return df
