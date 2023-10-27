@@ -26,19 +26,6 @@ jobs:
         python-version: "3.8"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
-    
-    - name: setup SDK
-      run: |
-          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          bash setup.sh
-      working-directory: sdk/python
-      continue-on-error: true
-      
     - name: Jupyter Notebook Execution
       run: 
           papermill -k python emotion-detection.ipynb 
