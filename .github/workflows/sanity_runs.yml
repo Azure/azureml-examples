@@ -4,15 +4,6 @@ name: sanity_runs for new released FT components
 on:
   schedule:
     - cron: "33 10/12 * * *"
-  pull_request:
-    branches:
-      - main
-    paths:
-      - sdk/python/foundation-models/system/finetune/**
-      - .github/workflows/sanity_runs.yml
-      - sdk/python/dev-requirements.txt
-      - infra/bootstrapping/**
-      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
