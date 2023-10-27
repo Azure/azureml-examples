@@ -18,20 +18,18 @@ def main():
 
     print(f"Checking if {sample_path} contains a README.md file with all required words...")
 
+    working_directory = Path(__file__).parent.parent
+    print(f"Working directory is {working_directory}.")
+
     if Path(EXCLUSIONS_FILE_PATH).exists():
         # Check if sample is excluded from README validation
         with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
             exclusions = exclusions_file.read().splitlines()
-            print("exclusions: ", exclusions)
             if sample_path in exclusions:
                 print(f"Skipping {sample_path} since it is excluded from README validation.")
                 sys.exit(0)
-            else:
-                print(f"Checking {sample_path} since it is not excluded from README validation in {exclusions_file}.")
     else:
-        working_directory = Path(__file__).parent.parent
-        print(f"Working directory is {working_directory}.")
-        print(f"{EXCLUSIONS_FILE_PATH }does not exist.")
+        print(f"{EXCLUSIONS_FILE_PATH} does not exist.")
         print(f"current working directory is {os.getcwd()}")
 
     # Check if sample contains a valid README.md file
