@@ -28,7 +28,7 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: Jupyter Notebook Execution
       run: 
-          papermill -k python emotion-detection.ipynb 
+          jupyter execute emotion-detection.ipynb 
       working-directory: sdk/python/foundation-models/system/finetune/text-classification
 
 
