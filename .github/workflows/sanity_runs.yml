@@ -2,8 +2,18 @@ name: sanity_runs for new released FT components
 
 # Please do not edit directly.
 on:
+  workflow_dispatch:
   schedule:
     - cron: "33 12 * * 5"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/python/foundation-models/system/finetune/text-classification**
+      - .github/workflows/sanity_run.yml
+      - sdk/python/dev-requirements.txt
+      - infra/bootstrapping/**
+      - sdk/python/setup.sh
 jobs:
   build:
     runs-on: ubuntu-latest
