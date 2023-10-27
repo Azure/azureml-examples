@@ -1,0 +1,73 @@
+name: sanity_runs for new released FT components
+
+# Please do not edit directly.
+on:
+  schedule:
+    - cron: "33 10/12 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/python/foundation-models/system/import/**
+      - .github/workflows/sdk-foundation-models-system-import-import_model_into_registry.yml
+      - sdk/python/dev-requirements.txt
+      - infra/bootstrapping/**
+      - sdk/python/setup.sh
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: pip install notebook reqs
+      run: pip install -r sdk/python/dev-requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    
+    - name: setup SDK
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash setup.sh
+      working-directory: sdk/python
+      continue-on-error: true
+  
+    - name: run foundation-models/system/import/import_model_into_registry.ipynb
+      run: 
+          papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb
+      working-directory: sdk/python/foundation-models/system/import
+
+
+# name: Jupyter Notebook Workflow
+on:
+  schedule:
+    - cron: '0 0 * * *' # Schedule the workflow to run daily at midnight (UTC)
+
+jobs:
+  run_notebook:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - name: Install Jupyter
+      run: |
+        python -m pip install --upgrade pip
+        pip install jupyter
+
+    - name: Start Jupyter Notebook
+      run: |
+        jupyter nbconvert --execute path/to/your/notebook.ipynb
+
