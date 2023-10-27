@@ -4,6 +4,7 @@ name: sanity_runs for new released FT components
 on:
   schedule:
     - cron: "33 12 * * 5"
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
