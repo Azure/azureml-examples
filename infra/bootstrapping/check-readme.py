@@ -9,17 +9,15 @@ argParser = argparse.ArgumentParser()
 argParser.add_argument("sample_path", help="The absolute path to the sample directory.", type=Path)
 args = argParser.parse_args()
 sample_path = args.sample_path
+working_directory = Path(__file__).parent.parent
 
 
 def main():
     INVALID_README_MSG = f"{sample_path} does not contain a README.md file with all required words. See the Discoverability section of CONTRIBUTING.md."
-    EXCLUSIONS_FILE_PATH = "/home/runner/work/azureml-examples/azureml-examples/infra/bootstrapping/readme_validation_exclusions.txt"
+    EXCLUSIONS_FILE_PATH = f"{working_directory}/bootstrapping/readme_validation_exclusions.txt"
     required_sections = ["overview", "objective", "programming languages", "estimated runtime", "page_type: sample", "languages:", "products:", "description:"]
 
     print(f"Checking if {sample_path} contains a README.md file with all required words...")
-
-    working_directory = Path(__file__).parent.parent
-    print(f"Working directory is {working_directory}.")
 
     if Path(EXCLUSIONS_FILE_PATH).exists():
         # Check if sample is excluded from README validation
@@ -28,6 +26,9 @@ def main():
             if sample_path in exclusions:
                 print(f"Skipping {sample_path} since it is excluded from README validation.")
                 sys.exit(0)
+            else:
+                print(f"{sample_path} is not excluded from README validation.")
+                print(f"{sample_path} not in {exclusions}")
     else:
         print(f"{EXCLUSIONS_FILE_PATH} does not exist.")
         print(f"current working directory is {os.getcwd()}")
