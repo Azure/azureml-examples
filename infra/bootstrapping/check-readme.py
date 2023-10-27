@@ -29,6 +29,8 @@ def main():
             else:
                 print(f"Checking {sample_path} since it is not excluded from README validation in {exclusions_file}.")
     else:
+        working_directory = Path(__file__).parent.parent
+        print(f"Working directory is {working_directory}.")
         print(f"{EXCLUSIONS_FILE_PATH }does not exist.")
         print(f"current working directory is {os.getcwd()}")
 
