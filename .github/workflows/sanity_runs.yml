@@ -27,8 +27,8 @@ on:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
-  
-    - name: run foundation-models/system/finetune/text-classification/emotion-detection.ipynb
+      
+    - name: Jupyter Notebook Execution
       run: 
           papermill -k python emotion-detection.ipynb 
       working-directory: sdk/python/foundation-models/system/finetune/text-classification
