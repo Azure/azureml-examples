@@ -25,9 +25,6 @@ def main():
         if sample_path in exclusions:
             print(f"Skipping {sample_path} since it is excluded from README validation.")
             sys.exit(0)
-        else:
-            print(f"{sample_path} is not excluded from README validation.")
-            print(f"{sample_path} not in {exclusions}")
 
     # Check if sample contains a valid README.md file
     try:
