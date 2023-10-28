@@ -8,7 +8,7 @@ from pathlib import Path
 argParser = argparse.ArgumentParser()
 argParser.add_argument("sample_path", help="The absolute path to the sample directory.", type=Path)
 args = argParser.parse_args()
-sample_path = args.sample_path
+sample_path = args.sample_path.strip()
 working_directory = Path(__file__).parent.parent
 
 
@@ -19,19 +19,15 @@ def main():
 
     print(f"Checking if {sample_path} contains a README.md file with all required words...")
 
-    if Path(EXCLUSIONS_FILE_PATH).exists():
-        # Check if sample is excluded from README validation
-        with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
-            exclusions = exclusions_file.read().splitlines()
-            if sample_path in exclusions:
-                print(f"Skipping {sample_path} since it is excluded from README validation.")
-                sys.exit(0)
-            else:
-                print(f"{sample_path} is not excluded from README validation.")
-                print(f"{sample_path} not in {exclusions}")
-    else:
-        print(f"{EXCLUSIONS_FILE_PATH} does not exist.")
-        print(f"current working directory is {os.getcwd()}")
+    # Check if sample is excluded from README validation
+    with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
+        exclusions = exclusions_file.read().splitlines().strip()
+        if sample_path in exclusions:
+            print(f"Skipping {sample_path} since it is excluded from README validation.")
+            sys.exit(0)
+        else:
+            print(f"{sample_path} is not excluded from README validation.")
+            print(f"{sample_path} not in {exclusions}")
 
     # Check if sample contains a valid README.md file
     try:
