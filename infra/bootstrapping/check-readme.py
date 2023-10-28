@@ -8,7 +8,7 @@ from pathlib import Path
 argParser = argparse.ArgumentParser()
 argParser.add_argument("sample_path", help="The absolute path to the sample directory.", type=Path)
 args = argParser.parse_args()
-sample_path = args.sample_path.strip()
+sample_path = str(args.sample_path).strip()
 working_directory = Path(__file__).parent.parent
 
 
