@@ -1,3 +1,4 @@
 # See for instructions on this file https://help.github.com/articles/about-codeowners/
 
 /python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @lauralj103 @jeff-shepherd @raduk @swatig007 @martinezgjuan @MercyPrasanna @PhaniShekhar @yoyolin @sjinthehouse @vadthyavath @mispa-ms
+/python-sdk/tutorials @sdgilley
