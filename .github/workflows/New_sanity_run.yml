@@ -22,5 +22,5 @@ jobs:
       with:
         python-version: "3.8"
     - name: Python file Execution
-      run: python emotion-detection-sanityRun.py
+      run: ipython emotion-detection-sanityRun.py
       working-directory: sdk/python/foundation-models/system/finetune/text-classification
