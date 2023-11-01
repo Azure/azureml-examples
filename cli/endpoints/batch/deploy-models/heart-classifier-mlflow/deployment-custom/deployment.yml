@@ -1,7 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 endpoint_name: heart-classifier-batch
 name: classifier-xgboost-custom
-description: A heart condition classifier based on XGBoost
 type: model
 model: azureml:heart-classifier-mlflow@latest
 environment:
