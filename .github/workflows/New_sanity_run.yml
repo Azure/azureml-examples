@@ -14,6 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS_JSON }}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -23,6 +25,10 @@ jobs:
         python-version: "3.8"
     - name: Install IPython
       run: pip install ipython
+    - name: Run IPython script with Azure credentials
+      run: |
+        # Parse the Azure credentials from the secret and save them to a JSON file
+        echo "$AZURE_CREDENTIALS" > azure_credentials.json
     - name: Python file Execution
       run: ipython emotion-detection-sanityRun.py
       working-directory: sdk/python/foundation-models/system/finetune/text-classification
