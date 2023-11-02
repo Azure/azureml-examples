@@ -68,16 +68,18 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 
     request_json = {
         "input_data": {
-            "columns": ["image"],
+            "columns": ["image", "text"],
             "index": [0, 1],
             "data": [
                 [
                     base64.encodebytes(read_image(sample_image_1)).decode("utf-8"),
-                    "What is the color of can?",
+                    # For BLIP2 append "Answer:" to the below prompt
+                    "Describe the beverage in the image?",
                 ],
                 [
                     base64.encodebytes(read_image(sample_image_2)).decode("utf-8"),
-                    "How many objects are in the image?",
+                    # For BLIP2 append "Answer:" to the below prompt
+                    "What are the drinks on the table?",
                 ],
             ],
         }
