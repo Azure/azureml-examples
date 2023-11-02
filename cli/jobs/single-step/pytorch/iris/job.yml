@@ -13,7 +13,6 @@ inputs:
   epochs: 10
   lr: 0.1
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:cpu-cluster
 display_name: pytorch-iris-example
 experiment_name: pytorch-iris-example
 description: Train a neural network with PyTorch on the Iris dataset.

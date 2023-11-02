@@ -5,7 +5,6 @@ experiment_name: dpv2-cli-automl-classifier-experiment
 # name: dpv2-cli-classifier-train-job-advanced-01
 description: A Classification job using bank marketing
 
-compute: azureml:cpu-cluster
 
 task: classification
 log_verbosity: debug

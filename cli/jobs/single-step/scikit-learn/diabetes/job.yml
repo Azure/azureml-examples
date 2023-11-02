@@ -8,7 +8,6 @@ inputs:
     type: uri_file
     path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:cpu-cluster
 display_name: sklearn-diabetes-example
 experiment_name: sklearn-diabetes-example
 description: Train a scikit-learn LinearRegression model on the Diabetes dataset.
