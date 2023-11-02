@@ -2,4 +2,4 @@
 
 /python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @lauralj103 @jeff-shepherd @raduk @swatig007 @martinezgjuan @MercyPrasanna @PhaniShekhar @yoyolin @sjinthehouse @vadthyavath @mispa-ms
 /tutorials/ @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_and_cli/2.%20Experiment%20and%20train%20models%20using%20features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
+/sdk/python/featurestore_sample/notebooks/sdk_only/2.\ Experiment\ and\ train\ models\ using\ features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
