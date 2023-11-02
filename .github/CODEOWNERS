@@ -1,6 +1,8 @@
 # See for instructions on this file https://help.github.com/articles/about-codeowners/
 
 /python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @lauralj103 @jeff-shepherd @raduk @swatig007 @martinezgjuan @MercyPrasanna @PhaniShekhar @yoyolin @sjinthehouse @vadthyavath @mispa-ms
+
+#### files referenced in docs ##############################################################################################################################################################
 /tutorials/ @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/endpoints/batch/deploy-models/mnist-classifier/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
 /CLI/jobs/basics/hello-model-as-input.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
@@ -258,3 +260,4 @@
 /cli/resources/datastore/adls-gen1-credless.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
 /cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
 /cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
+# End of docs files ##############################################################################################################################################################
