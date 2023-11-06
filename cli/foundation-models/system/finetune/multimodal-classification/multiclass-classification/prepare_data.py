@@ -41,15 +41,21 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir, csv_file_p
 
     # We will copy each JSONL file within its related MLTable folder
     training_mltable_path = os.path.join(dataset_parent_dir, "training-mltable-folder")
-    validation_mltable_path = os.path.join(dataset_parent_dir, "validation-mltable-folder")
+    validation_mltable_path = os.path.join(
+        dataset_parent_dir, "validation-mltable-folder"
+    )
 
     # Create the folders if they don't exist
     os.makedirs(training_mltable_path, exist_ok=True)
     os.makedirs(validation_mltable_path, exist_ok=True)
 
     # Path to the training and validation files
-    train_annotations_file = os.path.join(training_mltable_path, "train_annotations.jsonl")
-    validation_annotations_file = os.path.join(validation_mltable_path, "validation_annotations.jsonl")
+    train_annotations_file = os.path.join(
+        training_mltable_path, "train_annotations.jsonl"
+    )
+    validation_annotations_file = os.path.join(
+        validation_mltable_path, "validation_annotations.jsonl"
+    )
 
     train_validation_ratio = 0.2
 
@@ -57,7 +63,10 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir, csv_file_p
     df = pd.read_csv(csv_file_path)
     label_column_name = "room_type"
     train_df, val_df = train_test_split(
-        df, test_size=train_validation_ratio, random_state=0, stratify=df[[label_column_name]]
+        df,
+        test_size=train_validation_ratio,
+        random_state=0,
+        stratify=df[[label_column_name]],
     )
 
     # Save the DataFrame to a JSON Lines file
@@ -65,11 +74,15 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir, csv_file_p
     val_df.to_json(validation_annotations_file, orient="records", lines=True)
 
     # Create and save train mltable
-    train_mltable_file_contents = create_ml_table_file(os.path.basename(train_annotations_file))
+    train_mltable_file_contents = create_ml_table_file(
+        os.path.basename(train_annotations_file)
+    )
     save_ml_table_file(training_mltable_path, train_mltable_file_contents)
 
     # Create and save validation mltable
-    validation_mltable_file_contents = create_ml_table_file(os.path.basename(validation_annotations_file))
+    validation_mltable_file_contents = create_ml_table_file(
+        os.path.basename(validation_annotations_file)
+    )
     save_ml_table_file(validation_mltable_path, validation_mltable_file_contents)
 
 
@@ -124,7 +137,9 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     print("local path replaced with AML path")
 
     create_jsonl_and_mltable_files(
-        uri_folder_data_path=uri_folder_data_asset.path, dataset_dir=dataset_dir, csv_file_path=csv_file_path
+        uri_folder_data_path=uri_folder_data_asset.path,
+        dataset_dir=dataset_dir,
+        csv_file_path=csv_file_path,
     )
 
 
@@ -156,12 +171,16 @@ def update_img_url(img_col_name: str, image_url_prefix: str, file_name: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for image classification")
+    parser = argparse.ArgumentParser(
+        description="Prepare data for image classification"
+    )
 
     parser.add_argument("--subscription", type=str, help="Subscription ID")
     parser.add_argument("--group", type=str, help="Resource group name")
     parser.add_argument("--workspace", type=str, help="Workspace name")
-    parser.add_argument("--data_path", type=str, default="./data", help="Dataset location")
+    parser.add_argument(
+        "--data_path", type=str, default="./data", help="Dataset location"
+    )
 
     args, unknown = parser.parse_known_args()
     args_dict = vars(args)
@@ -173,4 +192,6 @@ if __name__ == "__main__":
     workspace = args.workspace
     ml_client = MLClient(credential, subscription_id, resource_group, workspace)
 
-    upload_data_and_create_jsonl_mltable_files(ml_client=ml_client, dataset_parent_dir=args.data_path)
+    upload_data_and_create_jsonl_mltable_files(
+        ml_client=ml_client, dataset_parent_dir=args.data_path
+    )
