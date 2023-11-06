@@ -246,7 +246,8 @@ def update_img_url(
     """
     df = pd.read_csv(input_file_name)
     df[img_col_name] = df[img_col_name].apply(
-        lambda x: image_url_prefix  + "/".join(x.strip("/").split('/')[-2:]))
+        lambda x: image_url_prefix + "/".join(x.strip("/").split("/")[-2:])
+    )
     df.to_csv(output_file_name, index=False)
 
 
