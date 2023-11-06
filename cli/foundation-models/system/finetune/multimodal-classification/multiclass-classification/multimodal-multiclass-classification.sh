@@ -24,7 +24,7 @@ aml_registry_model_name="mmeft"
 model_label="latest"
 
 version=$(date +%s)
-finetuned_mmeft_model_name="mmeft-fridge-objects-multiclass-classification"
+finetuned_mmeft_model_name="mmeft-multiclass-classification-model"
 online_endpoint_name="multimodal-classif-$version"
 deployment_sku="Standard_DS3_V2"
 # Deepspeed config
@@ -110,7 +110,7 @@ fi
 # 5. Submit finetuning job using pipeline.yaml for mmeft model
 
 mmeft_parent_job_name=$( az ml job create \
-  --file "./multimodal-fridgeobjects-multiclass-classification-pipeline.yaml" \
+  --file "./multimodal-multiclass-classification-pipeline.yaml" \
   $workspace_info \
   --query name -o tsv \
   --set jobs.transformers_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \

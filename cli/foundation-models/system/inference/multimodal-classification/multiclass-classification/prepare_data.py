@@ -41,12 +41,14 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
     return dataset_dir
 
 
-def read_dataframe_from_csv(csv_file_path: str) -> pd.DataFrame:
+def read_dataframe_from_csv(csv_file_path: str, dataset_dir: str) -> pd.DataFrame:
     """
     Read csv file and return dataframe.
 
     :param csv_file_path: csv file path
     :type csv_file_path: str
+    :param dataset_dir: dataset directory
+    :type dataset_dir: str
     :return: dataframe
     :rtype: pd.DataFrame
     """
@@ -79,7 +81,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     # Initialize dataset specific fields
     csv_file_path = os.path.join(dataset_dir, "airbnb_multiclass_dataset.csv")
     # get dataframe and change image path to base64 encoded string
-    df = read_dataframe_from_csv(csv_file_path=csv_file_path)
+    df = read_dataframe_from_csv(csv_file_path=csv_file_path, dataset_dir=dataset_dir)
 
     csv_file_name = "multimodal_multiclass_classification_list.csv"
     # Directory in which we have our images
@@ -97,7 +99,7 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     # Initialize dataset specific fields
     csv_file_path = os.path.join(dataset_dir, "airbnb_multiclass_dataset.csv")
     # get dataframe and change image path to base64 encoded string
-    df = read_dataframe_from_csv(csv_file_path=csv_file_path)
+    df = read_dataframe_from_csv(csv_file_path, dataset_dir)
 
     request_json = {
         "input_data": {
@@ -113,12 +115,8 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Prepare data for multimodal multi-class classification"
-    )
-    parser.add_argument(
-        "--data_path", type=str, default="data", help="Dataset location"
-    )
+    parser = argparse.ArgumentParser(description="Prepare data for multimodal multi-class classification")
+    parser.add_argument("--data_path", type=str, default="data", help="Dataset location")
     parser.add_argument(
         "--mode",
         type=str,
@@ -130,9 +128,7 @@ if __name__ == "__main__":
     args_dict = vars(args)
 
     dataset_dir = download_and_unzip(
-        dataset_parent_dir=os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), args.data_path
-        ),
+        dataset_parent_dir=os.path.join(os.path.dirname(os.path.abspath(__file__)), args.data_path),
     )
     if args.mode == "batch":
         prepare_data_for_batch_inference(dataset_dir=dataset_dir)
