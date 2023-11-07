@@ -54,7 +54,7 @@ jobs:
       data_modalities: text-image-tabular
 
       ## Data preprocessing args
-      problem_type: single_label_classification
+      problem_type: multimodal-classification-singlelabel
       label_column: room_type
       image_column: picture_url
       # columns to be ignored while training
