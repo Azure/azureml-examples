@@ -55,6 +55,10 @@ The component copies the input model folder to the component output directory wh
     Please select models from AzureML Model Assets for all supported models. For MMDetection models, which are not supported in AzureML model registry, the model's config name is required, same as it's specified in MMDetection Model Zoo. For e.g. fast_rcnn_r101_fpn_1x_coco for [this config file](https://github.com/open-mmlab/mmdetection/blob/master/configs/fast_rcnn/fast_rcnn_r101_fpn_1x_coco.py). You can see the comprehensive list of model configs [here](https://github.com/open-mmlab/mmdetection/tree/v2.28.2/configs) and the documentation of model zoo [here](https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md).
     Please note that it is the user responsibility to comply with the model's license terms.
 
+3. __download_from_source__ (boolean, optional)
+    Set to True for downloading model directly from MMDetection instead of system registry.
+    Defaults to `False`.
+
 # 4. Run Settings
 
 This setting helps to choose the compute for running the component code. For the purpose of model selector, cpu compute should work. We recommend using D12 compute.
