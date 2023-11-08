@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: AzureML-Cli-Train-Finetune-Vision-OD-Samples
+experiment_name: AzureML-Cli-Train-Finetune-Vision-MOT-Samples
 
 inputs:
   # dataset files
@@ -14,10 +14,10 @@ inputs:
   # compute
   compute_model_import: sample-model-import-cluster
   compute_finetune: sample-finetune-cluster-gpu
-  # model_name: bytetrack-yolox-x-crowdhuman-mot17-private-half
+  # model_name: bytetrack_yolox_x_crowdhuman_mot17-private-half
   # # model - specify the foundation model available in the azureml system registry
   mlflow_model: 
-    path: azureml://registries/azmlft-dev-registry01/models/bytetrack-yolox-x-crowdhuman-mot17-private-half/versions/9
+    path: azureml://registries/azureml/models/bytetrack_yolox_x_crowdhuman_mot17-private-half/versions/3
     type: mlflow_model
 
 outputs:
@@ -32,7 +32,7 @@ settings:
 jobs:
   mmtracking_model_finetune_job:
     type: pipeline
-    component: azureml://registries/azmlft-dev-registry01/components/mmtracking_video_multi_object_tracking_pipeline_bugbash/labels/latest
+    component: azureml://registries/azureml/components/mmtracking_video_multi_object_tracking_pipeline/labels/latest
     inputs:
       # # Compute
       compute_model_import: ${{parent.inputs.compute_model_import}}
@@ -53,7 +53,7 @@ jobs:
       image_width: 1920
       image_height: 1080
       learning_rate: 0.00001
-      number_of_epochs: 15
+      number_of_epochs: 5
       metric_for_best_model: MOTA
       training_batch_size: 1
 

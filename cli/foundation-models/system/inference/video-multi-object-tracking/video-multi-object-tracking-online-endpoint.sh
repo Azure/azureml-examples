@@ -8,7 +8,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="bytetrack-yolox-x-crowdhuman-mot17-private-half"
+model_name="bytetrack_yolox_x_crowdhuman_mot17-private-half"
 model_label="latest"
 
 version=$(date +%s)

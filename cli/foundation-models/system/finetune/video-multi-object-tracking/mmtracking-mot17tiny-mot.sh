@@ -27,7 +27,7 @@ deployment_sku="Standard_NC6s_v3"
 mmtracking_sample_request_data="./sample_request_data.json"
 
 # finetuning job parameters
-finetuning_pipeline_component="mmtracking_video_multi_object_tracking_pipeline_bugbash"
+finetuning_pipeline_component="mmtracking_video_multi_object_tracking_pipeline"
 
 # 1. Install dependencies
 pip install azure-ai-ml==1.8.0
