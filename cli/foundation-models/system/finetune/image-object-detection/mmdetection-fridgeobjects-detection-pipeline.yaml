@@ -53,6 +53,7 @@ jobs:
 
       # # Model import args
       task_name: image-object-detection
+      download_from_source: False # True for downloading a model directly from MMDetection
       # model_name: ${{parent.inputs.model_name}}
       # pytorch_model: ${{parent.inputs.pytorch_model}}
       mlflow_model: ${{parent.inputs.mlflow_model}}
