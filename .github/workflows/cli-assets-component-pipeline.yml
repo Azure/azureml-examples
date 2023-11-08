@@ -69,9 +69,5 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
         appInsightsInstrumentationKey: ${{ secrets.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
-        telemetryName: 'Sample Notebook Results'
-        telemetryProperties: |
-          Name: cli-assets-component-pipeline
-          Result: ${{ job.status }}
-          FailureReason: ${{ env.FAILURE_REASON }}
+        event-name: "cli-assets-component-pipeline_${{ job.status }}_${{ env.FAILURE_REASON }}"
       if: always()
