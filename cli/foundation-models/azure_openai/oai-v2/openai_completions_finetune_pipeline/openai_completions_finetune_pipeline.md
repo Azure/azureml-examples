@@ -16,4 +16,4 @@
 
 6. Now you can view the fine-tuned model (LoRA model) in `Models` section.
 
-![plot](./images/registered_model.png)
+![plot](./images/registered_model_cropped.png)
