@@ -14,6 +14,6 @@
 
 ![plot](./images/pipeline_completed.png)
 
-6. Now you can view both fine-tuned model (LoRA model) in `Models` section.
+6. Now you can view the fine-tuned model (LoRA model) in `Models` section.
 
 ![plot](./images/registered_model.png)
