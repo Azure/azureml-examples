@@ -59,7 +59,6 @@ jobs:
       image_column: picture_url
       # columns to be ignored while training
       drop_columns: id,listing_url,scrape_id,last_scraped,host_id,host_url,host_name,host_since,neighbourhood_group,last_review,host_thumbnail_url,host_picture_url,calendar_last_scraped,first_review,last_review
-      # columns to be ignored while training
 
       ## Finetune_args
       deepspeed_config: ${{parent.inputs.ds_finetune}}
@@ -68,7 +67,7 @@ jobs:
       lora_alpha: 128
       lora_r: 8
       lora_dropout: 0.0
-      number_of_epochs: 1
+      number_of_epochs: 15
       max_steps: -1
       training_batch_size: 8
       validation_batch_size: 8
