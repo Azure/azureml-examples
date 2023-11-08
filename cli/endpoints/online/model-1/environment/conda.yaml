@@ -11,4 +11,3 @@ dependencies:
     - azureml-defaults==1.53.0
     - inference-schema[numpy-support]==1.5.1
     - joblib==1.2.0
-    - Werkzeug==2.2.2
