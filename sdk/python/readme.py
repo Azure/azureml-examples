@@ -301,18 +301,48 @@ jobs:
 
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb
+          log_output=$(papermill -k python {name}.ipynb {name}.output.ipynb 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
+          log_output=$(papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
       working-directory: sdk/python/{posix_folder}"""
     else:
         # need CPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
+          log_output=$(papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
       working-directory: sdk/python/{posix_folder}"""
+
+    workflow_yaml += f"""
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/{posix_folder}
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: ${{{{ always() }}}}"""
 
     if name == "connections":
         workflow_yaml += """
