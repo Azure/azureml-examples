@@ -69,8 +69,9 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-forecasting-orange-juice-sales-mlflow.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          log_output=$(papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-orange-juice-sales-mlflow.ipynb automl-forecasting-orange-juice-sales-mlflow.output.ipynb 2>&1)
+          log_output=$(papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-orange-juice-sales-mlflow.ipynb automl-forecasting-orange-juice-sales-mlflow.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
     - name: Determine Failure Reason

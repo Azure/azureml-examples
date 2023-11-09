@@ -65,8 +65,9 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-image-object-detection-in-pipeline.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          log_output=$(papermill -k python -p compute_name automl-gpu-cluster automl-image-object-detection-in-pipeline.ipynb automl-image-object-detection-in-pipeline.output.ipynb 2>&1)
+          log_output=$(papermill -k python -p compute_name automl-gpu-cluster automl-image-object-detection-in-pipeline.ipynb automl-image-object-detection-in-pipeline.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-object-detection-in-pipeline
     - name: Determine Failure Reason

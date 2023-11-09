@@ -65,8 +65,9 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "delimited-files-example.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          log_output=$(papermill -k python delimited-files-example.ipynb delimited-files-example.output.ipynb 2>&1)
+          log_output=$(papermill -k python delimited-files-example.ipynb delimited-files-example.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/using-mltable/delimited-files-example
     - name: Determine Failure Reason

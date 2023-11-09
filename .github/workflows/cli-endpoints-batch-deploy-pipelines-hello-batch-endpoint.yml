@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n pelineshellobatchendpoint1852 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint1334 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml
-          log_output=$(az ml batch-endpoint create -n pelineshellobatchendpoint1852 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml 2>&1)
+          log_output=$(az ml batch-endpoint create -n pelineshellobatchendpoint1334 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -87,7 +87,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/hello-batch/deployment.yml
-          log_output=$(az ml batch-deployment create -e pelineshellobatchendpoint1852 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml 2>&1)
+          log_output=$(az ml batch-deployment create -e pelineshellobatchendpoint1334 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -119,5 +119,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n pelineshellobatchendpoint1852 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint1334 -y
       working-directory: cli

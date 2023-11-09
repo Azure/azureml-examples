@@ -484,7 +484,7 @@ jobs:
     elif "autotuning" in job:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
-    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml 2>&1)
+    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli/{posix_project_dir}
@@ -582,7 +582,7 @@ jobs:
           pip install azure-identity
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
-    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name} 2>&1)
+    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name}  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli/{posix_project_dir}
@@ -698,7 +698,7 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {endpoint}.yml
-          log_output=$(az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml 2>&1)
+          log_output=$(az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -745,7 +745,7 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {deployment}.yml
-          log_output=$(az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml 2>&1)
+          log_output=$(az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -831,7 +831,7 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          log_output=$(az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml 2>&1)
+          log_output=$(az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -914,7 +914,7 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          log_output=$(set -e; bash -x {script}.sh 2>&1)
+          log_output=$(set -e; bash -x {script}.sh  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -996,7 +996,7 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          log_output=$(az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}" 2>&1)
+          log_output=$(az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}"  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli

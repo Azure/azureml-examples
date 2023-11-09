@@ -65,8 +65,9 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "flow_in_pipeline.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          log_output=$(papermill -k python flow_in_pipeline.ipynb flow_in_pipeline.output.ipynb 2>&1)
+          log_output=$(papermill -k python flow_in_pipeline.ipynb flow_in_pipeline.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/jobs/pipelines/1l_flow_in_pipeline
     - name: Determine Failure Reason

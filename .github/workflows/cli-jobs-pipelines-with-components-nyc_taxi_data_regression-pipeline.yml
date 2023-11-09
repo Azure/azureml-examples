@@ -47,7 +47,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          log_output=$(bash -x ../../../run-job.sh pipeline.yml 2>&1)
+          log_output=$(bash -x ../../../run-job.sh pipeline.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression

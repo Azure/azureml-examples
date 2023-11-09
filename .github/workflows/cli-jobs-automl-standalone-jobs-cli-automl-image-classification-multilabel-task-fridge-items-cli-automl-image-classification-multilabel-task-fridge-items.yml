@@ -50,7 +50,7 @@ jobs:
           pip install azure-identity
           bash "${{ github.workspace }}/sdk/python/setup.sh"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
-          log_output=$(bash -x ../../../run-job.sh cli-automl-image-classification-multilabel-task-fridge-items.yml 2>&1)
+          log_output=$(bash -x ../../../run-job.sh cli-automl-image-classification-multilabel-task-fridge-items.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items

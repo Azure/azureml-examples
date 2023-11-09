@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint2656 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint4494 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-          log_output=$(az ml batch-endpoint create -n tomoutputsparquetendpoint2656 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml 2>&1)
+          log_output=$(az ml batch-endpoint create -n tomoutputsparquetendpoint4494 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -87,7 +87,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
-          log_output=$(az ml batch-deployment create -e tomoutputsparquetendpoint2656 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml 2>&1)
+          log_output=$(az ml batch-deployment create -e tomoutputsparquetendpoint4494 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -119,5 +119,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint2656 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint4494 -y
       working-directory: cli

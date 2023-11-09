@@ -301,22 +301,25 @@ jobs:
 
     if not ("automl" in folder):
         workflow_yaml += f"""
-          log_output=$(papermill -k python {name}.ipynb {name}.output.ipynb 2>&1)
+          log_output=$(papermill -k python {name}.ipynb {name}.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          log_output=$(papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb 2>&1)
+          log_output=$(papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/{posix_folder}"""
     else:
         # need CPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          log_output=$(papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb 2>&1)
+          log_output=$(papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/{posix_folder}"""
 

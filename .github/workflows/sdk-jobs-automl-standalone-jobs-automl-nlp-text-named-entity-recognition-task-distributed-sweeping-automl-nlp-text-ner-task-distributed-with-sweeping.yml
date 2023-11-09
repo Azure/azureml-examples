@@ -67,8 +67,9 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-nlp-text-ner-task-distributed-with-sweeping.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          log_output=$(papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-ner-task-distributed-with-sweeping.ipynb automl-nlp-text-ner-task-distributed-with-sweeping.output.ipynb 2>&1)
+          log_output=$(papermill -k python -p compute_name automl-gpu-cluster automl-nlp-text-ner-task-distributed-with-sweeping.ipynb automl-nlp-text-ner-task-distributed-with-sweeping.output.ipynb  2>&1 >/dev/tty)
           echo "$log_output" > sample.log
+          echo "printing error logs: "
           cat sample.log
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task-distributed-sweeping
     - name: Determine Failure Reason
