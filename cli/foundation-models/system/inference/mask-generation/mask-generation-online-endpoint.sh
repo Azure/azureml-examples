@@ -1,5 +1,5 @@
 set -x
-# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-sdk-image-object-detection
+# the commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-sdk-mask-generation
 # the sample scoring file available in the same folder as the above notebook
 
 # script inputs
