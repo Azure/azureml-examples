@@ -68,10 +68,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-automl-image-classification-fridge.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python responsibleaidashboard-automl-image-classification-fridge.ipynb responsibleaidashboard-automl-image-classification-fridge.output.ipynb > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: sdk/python/responsible-ai/vision
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then

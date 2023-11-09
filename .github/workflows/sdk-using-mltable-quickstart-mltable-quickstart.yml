@@ -66,10 +66,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "mltable-quickstart.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python mltable-quickstart.ipynb mltable-quickstart.output.ipynb > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: sdk/python/using-mltable/quickstart
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then

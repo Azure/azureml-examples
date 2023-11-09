@@ -485,10 +485,10 @@ jobs:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli/{posix_project_dir}
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -582,10 +582,10 @@ jobs:
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name} > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli/{posix_project_dir}
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -697,10 +697,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {endpoint}.yml
           az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -743,10 +743,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {deployment}.yml
           az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -828,10 +828,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+        cat sample_log.txt
         failure_reason="N/A"
         if [ "${{{{ job.status }}}}" == "failure" ]; then
           if grep -q "ResourceNotReady" sample_log.txt; then
@@ -910,10 +910,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           set -e; bash -x {script}.sh > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+        cat sample_log.txt
         failure_reason="N/A"
         if [ "${{{{ job.status }}}}" == "failure" ]; then
           if grep -q "ResourceNotReady" sample_log.txt; then
@@ -991,10 +991,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}"  > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then

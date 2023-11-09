@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n inimalsinglemodelendpoint5310 -y
+          az ml online-endpoint delete -n inimalsinglemodelendpoint4424 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml
-          az ml online-endpoint create -n inimalsinglemodelendpoint5310 -f endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml online-endpoint create -n inimalsinglemodelendpoint4424 -f endpoints/online/custom-container/minimal/single-model/minimal-single-model-endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -85,5 +85,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n inimalsinglemodelendpoint5310 -y
+          az ml online-endpoint delete -n inimalsinglemodelendpoint4424 -y
       working-directory: cli

@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n textsummarizationendpoint9694 -y
+          az ml batch-endpoint delete -n textsummarizationendpoint3224 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml
-          az ml batch-endpoint create -n textsummarizationendpoint9694 -f endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml batch-endpoint create -n textsummarizationendpoint3224 -f endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -86,11 +86,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml
-          az ml batch-deployment create -e textsummarizationendpoint9694 -f endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml batch-deployment create -e textsummarizationendpoint3224 -f endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -117,5 +117,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n textsummarizationendpoint9694 -y
+          az ml batch-endpoint delete -n textsummarizationendpoint3224 -y
       working-directory: cli

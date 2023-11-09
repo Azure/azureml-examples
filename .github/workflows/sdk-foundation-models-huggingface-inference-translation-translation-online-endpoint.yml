@@ -66,10 +66,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "translation-online-endpoint.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python translation-online-endpoint.ipynb translation-online-endpoint.output.ipynb > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: sdk/python/foundation-models/huggingface/inference/translation
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then

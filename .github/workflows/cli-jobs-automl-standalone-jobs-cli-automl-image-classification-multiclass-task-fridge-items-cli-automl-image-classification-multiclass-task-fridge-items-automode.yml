@@ -51,10 +51,10 @@ jobs:
           bash "${{ github.workspace }}/sdk/python/setup.sh"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../run-job.sh cli-automl-image-classification-multiclass-task-fridge-items-automode.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then

@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n pelineshellobatchendpoint9428 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint7344 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml
-          az ml batch-endpoint create -n pelineshellobatchendpoint9428 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml batch-endpoint create -n pelineshellobatchendpoint7344 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -86,11 +86,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/hello-batch/deployment.yml
-          az ml batch-deployment create -e pelineshellobatchendpoint9428 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml batch-deployment create -e pelineshellobatchendpoint7344 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -117,5 +117,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n pelineshellobatchendpoint9428 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint7344 -y
       working-directory: cli

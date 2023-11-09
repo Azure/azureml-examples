@@ -47,10 +47,10 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh cli-automl-forecasting-task-energy-demand.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then

@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n linemanagedsampleendpoint3245 -y
+          az ml online-endpoint delete -n linemanagedsampleendpoint2842 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/endpoint.yml
-          az ml online-endpoint create -n linemanagedsampleendpoint3245 -f endpoints/online/managed/sample/endpoint.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml online-endpoint create -n linemanagedsampleendpoint2842 -f endpoints/online/managed/sample/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -86,11 +86,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/blue-deployment.yml
-          az ml online-deployment create -e linemanagedsampleendpoint3245 -f endpoints/online/managed/sample/blue-deployment.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml online-deployment create -e linemanagedsampleendpoint2842 -f endpoints/online/managed/sample/blue-deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -118,11 +118,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/green-deployment.yml
-          az ml online-deployment create -e linemanagedsampleendpoint3245 -f endpoints/online/managed/sample/green-deployment.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml online-deployment create -e linemanagedsampleendpoint2842 -f endpoints/online/managed/sample/green-deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -149,5 +149,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n linemanagedsampleendpoint3245 -y
+          az ml online-endpoint delete -n linemanagedsampleendpoint2842 -y
       working-directory: cli
