@@ -65,7 +65,7 @@ jobs:
         fi
         echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
-    - name: Log Results to Application Insights
+    - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
         instrumentation-key: ${{ secrets.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
