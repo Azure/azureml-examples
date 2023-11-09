@@ -59,10 +59,8 @@ def read_image(image_path: str) -> bytes:
 
 
 def prepare_data_for_batch_inference(dataset_dir: str) -> None:
-    """Prepare image folder and csv file for batch inference.
+    """Prepare csv file for batch inference. This function create a csv file with images in base64 format.
 
-    This function will move all images to a single image folder and also create a csv
-    file with images in base64 format.
     :param dataset_dir: dataset directory
     :type dataset_dir: str
     """
