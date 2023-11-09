@@ -491,7 +491,7 @@ jobs:
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
-          if [ "${{ job.status }}" == "failure" ]; then
+          if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample.log; then
               failure_reason = "ResourceNotReady"
             elif grep -q "quota" sample.log; then
@@ -507,8 +507,8 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
       if: always()\n"""
 
     # write workflow
@@ -587,7 +587,7 @@ jobs:
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
-          if [ "${{ job.status }}" == "failure" ]; then
+          if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample.log; then
               failure_reason = "ResourceNotReady"
             elif grep -q "quota" sample.log; then
@@ -603,8 +603,8 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
       if: always()\n"""
 
     # write workflow
@@ -701,7 +701,7 @@ jobs:
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
-          if [ "${{ job.status }}" == "failure" ]; then
+          if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample.log; then
               failure_reason = "ResourceNotReady"
             elif grep -q "quota" sample.log; then
@@ -717,8 +717,8 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
       if: always()\n"""
 
     cleanup_yaml = f"""    - name: cleanup endpoint
@@ -806,7 +806,7 @@ jobs:
     - name: Determine Failure Reason
       run: |
         failure_reason="N/A"
-        if [ "${{ job.status }}" == "failure" ]; then
+        if [ "${{{{ job.status }}}}" == "failure" ]; then
           if grep -q "ResourceNotReady" sample.log; then
             failure_reason = "ResourceNotReady"
           elif grep -q "quota" sample.log; then
@@ -822,8 +822,8 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-        instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-        event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+        instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+        event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
       if: always()\n"""
 
     # write workflow
@@ -943,7 +943,7 @@ jobs:
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
-          if [ "${{ job.status }}" == "failure" ]; then
+          if [ "${{{{ job.status }}}}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample.log; then
               failure_reason = "ResourceNotReady"
             elif grep -q "quota" sample.log; then
@@ -959,8 +959,8 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
       if: always()\n
     - name: disable schedule
       run: |

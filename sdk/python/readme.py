@@ -340,8 +340,8 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          instrumentation-key: "${{{{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
       if: ${{{{ always() }}}}"""
 
     if name == "connections":
