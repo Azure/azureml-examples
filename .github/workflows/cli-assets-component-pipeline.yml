@@ -68,6 +68,6 @@ jobs:
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
-        instrumentation-key: ${{ secrets.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
+        instrumentation-key: ${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}
         event-name: "cli-assets-component-pipeline_${{ job.status }}_${{ env.FAILURE_REASON }}"
       if: always()
