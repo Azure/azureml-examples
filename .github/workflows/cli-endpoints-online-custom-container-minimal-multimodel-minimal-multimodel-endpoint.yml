@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n minimalmultimodelendpoint1452 -y
+          az ml online-endpoint delete -n minimalmultimodelendpoint4098 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml
-          log_output=$(az ml online-endpoint create -n minimalmultimodelendpoint1452 -f endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml 2>&1)
+          log_output=$(az ml online-endpoint create -n minimalmultimodelendpoint4098 -f endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -74,6 +74,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -84,5 +86,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n minimalmultimodelendpoint1452 -y
+          az ml online-endpoint delete -n minimalmultimodelendpoint4098 -y
       working-directory: cli

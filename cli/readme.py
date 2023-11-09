@@ -504,6 +504,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli/{posix_project_dir}
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -600,6 +602,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli/{posix_project_dir}
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -714,6 +718,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -759,6 +765,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -843,6 +851,8 @@ jobs:
         fi
         echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -924,6 +934,8 @@ jobs:
         fi
         echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -1004,6 +1016,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{{{ always() }}}}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:

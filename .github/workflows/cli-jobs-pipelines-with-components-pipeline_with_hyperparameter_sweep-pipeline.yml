@@ -67,6 +67,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:

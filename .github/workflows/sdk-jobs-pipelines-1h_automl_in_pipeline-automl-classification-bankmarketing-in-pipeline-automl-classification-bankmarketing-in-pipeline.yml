@@ -85,6 +85,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-classification-bankmarketing-in-pipeline
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:

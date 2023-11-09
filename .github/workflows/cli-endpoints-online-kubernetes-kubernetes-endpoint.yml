@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n berneteskubernetesendpoint4999 -y
+          az ml online-endpoint delete -n berneteskubernetesendpoint1399 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/kubernetes/kubernetes-endpoint.yml
-          log_output=$(az ml online-endpoint create -n berneteskubernetesendpoint4999 -f endpoints/online/kubernetes/kubernetes-endpoint.yml 2>&1)
+          log_output=$(az ml online-endpoint create -n berneteskubernetesendpoint1399 -f endpoints/online/kubernetes/kubernetes-endpoint.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -74,6 +74,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -85,7 +87,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/kubernetes/kubernetes-blue-deployment.yml
-          log_output=$(az ml online-deployment create -e berneteskubernetesendpoint4999 -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml 2>&1)
+          log_output=$(az ml online-deployment create -e berneteskubernetesendpoint1399 -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -105,6 +107,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -115,5 +119,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n berneteskubernetesendpoint4999 -y
+          az ml online-endpoint delete -n berneteskubernetesendpoint1399 -y
       working-directory: cli

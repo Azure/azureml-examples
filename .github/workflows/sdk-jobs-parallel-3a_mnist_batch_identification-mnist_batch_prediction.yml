@@ -85,6 +85,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: sdk/python/jobs/parallel/3a_mnist_batch_identification
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:

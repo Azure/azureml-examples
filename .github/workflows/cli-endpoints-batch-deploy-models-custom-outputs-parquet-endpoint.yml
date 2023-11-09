@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint5475 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint2656 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-          log_output=$(az ml batch-endpoint create -n tomoutputsparquetendpoint5475 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml 2>&1)
+          log_output=$(az ml batch-endpoint create -n tomoutputsparquetendpoint2656 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -74,6 +74,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -85,7 +87,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
-          log_output=$(az ml batch-deployment create -e tomoutputsparquetendpoint5475 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml 2>&1)
+          log_output=$(az ml batch-deployment create -e tomoutputsparquetendpoint2656 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -105,6 +107,8 @@ jobs:
           fi
           echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
+      if: ${{ always() }}
+      continue-on-error: true
     - name: Log Job Results to Application Insights
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
@@ -115,5 +119,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint5475 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint2656 -y
       working-directory: cli
