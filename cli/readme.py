@@ -497,6 +497,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -594,6 +598,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -709,6 +717,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -755,6 +767,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -840,6 +856,10 @@ jobs:
             failure_reason="QuotaIssue"
           elif grep -q "ParentResourceNotFound" sample_log.txt; then
             failure_reason="ParentResourceNotFound"
+          elif grep -q "already exists" sample_log.txt; then
+            failure_reason="ResourceAlreadyExists"
+          elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            failure_reason="InvalidStorageAccount"
           else
             failure_reason="UncategorizedFailure"
           fi
@@ -922,6 +942,10 @@ jobs:
             failure_reason="QuotaIssue"
           elif grep -q "ParentResourceNotFound" sample_log.txt; then
             failure_reason="ParentResourceNotFound"
+          elif grep -q "already exists" sample_log.txt; then
+            failure_reason="ResourceAlreadyExists"
+          elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            failure_reason="InvalidStorageAccount"
           else
             failure_reason="UncategorizedFailure"
           fi
@@ -1003,6 +1027,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi

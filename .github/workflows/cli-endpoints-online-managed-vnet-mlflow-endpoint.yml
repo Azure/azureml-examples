@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n managedvnetmlflowendpoint2607 -y
+          az ml online-endpoint delete -n managedvnetmlflowendpoint4985 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/vnet/mlflow/endpoint.yml
-          az ml online-endpoint create -n managedvnetmlflowendpoint2607 -f endpoints/online/managed/vnet/mlflow/endpoint.yml > sample_log.txt 2>&1
+          az ml online-endpoint create -n managedvnetmlflowendpoint4985 -f endpoints/online/managed/vnet/mlflow/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -67,6 +67,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -85,5 +89,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n managedvnetmlflowendpoint2607 -y
+          az ml online-endpoint delete -n managedvnetmlflowendpoint4985 -y
       working-directory: cli
