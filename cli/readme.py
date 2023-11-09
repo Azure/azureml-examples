@@ -513,7 +513,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n"""
 
     # write workflow
@@ -614,7 +614,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n"""
 
     # write workflow
@@ -733,7 +733,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n"""
 
     cleanup_yaml = f"""    - name: cleanup endpoint
@@ -783,7 +783,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n"""
 
             workflow_yaml += deployment_yaml
@@ -872,7 +872,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
         instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-        event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+        event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n"""
 
     # write workflow
@@ -958,7 +958,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
         instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-        event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+        event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n"""
 
     # write workflow
@@ -1043,7 +1043,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
-          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
       if: always()\n
     - name: disable schedule
       run: |

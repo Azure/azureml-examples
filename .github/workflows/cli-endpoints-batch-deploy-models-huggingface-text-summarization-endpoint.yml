@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n textsummarizationendpoint4215 -y
+          az ml batch-endpoint delete -n textsummarizationendpoint3184 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml
-          az ml batch-endpoint create -n textsummarizationendpoint4215 -f endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml > sample_log.txt 2>&1
+          az ml batch-endpoint create -n textsummarizationendpoint3184 -f endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -83,14 +83,14 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: always()
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml
-          az ml batch-deployment create -e textsummarizationendpoint4215 -f endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml > sample_log.txt 2>&1
+          az ml batch-deployment create -e textsummarizationendpoint3184 -f endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -119,11 +119,11 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n textsummarizationendpoint4215 -y
+          az ml batch-endpoint delete -n textsummarizationendpoint3184 -y
       working-directory: cli
