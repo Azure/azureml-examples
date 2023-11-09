@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated.
 
-name: sdk-featurestore_sample-test_featurestore_sdk_samples
+name: sdk-featurestore_sample-automation-test-test_featurestore_sdk_samples
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/featurestore_sample/**
-      - .github/workflows/sdk-featurestore_sample-test_featurestore_sdk_samples.yml
+      - sdk/python/featurestore_sample/automation-test/**
+      - .github/workflows/sdk-featurestore_sample-automation-test-test_featurestore_sdk_samples.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -60,10 +60,10 @@ jobs:
       continue-on-error: true
     - name: setup feature-store resources
       run: |
-          bash -x setup-resources.sh test_featurestore_sdk_samples.ipynb
+          bash -x automation-test/setup-resources.sh automation-test/test_featurestore_sdk_samples.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true
-    - name: run featurestore_sample/test_featurestore_sdk_samples.ipynb
+    - name: run featurestore_sample/automation-test/test_featurestore_sdk_samples.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -71,10 +71,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "test_featurestore_sdk_samples.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python test_featurestore_sdk_samples.ipynb test_featurestore_sdk_samples.output.ipynb
-      working-directory: sdk/python/featurestore_sample
+      working-directory: sdk/python/featurestore_sample/automation-test
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: test_featurestore_sdk_samples
-        path: sdk/python/featurestore_sample
+        path: sdk/python/featurestore_sample/automation-test
