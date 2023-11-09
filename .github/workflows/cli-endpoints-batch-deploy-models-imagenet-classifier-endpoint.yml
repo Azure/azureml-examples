@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n imagenetclassifierendpoint2181 -y
+          az ml batch-endpoint delete -n imagenetclassifierendpoint8459 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml
-          log_output=$(az ml batch-endpoint create -n imagenetclassifierendpoint2181 -f endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml 2>&1)
+          log_output=$(az ml batch-endpoint create -n imagenetclassifierendpoint8459 -f endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -84,5 +84,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n imagenetclassifierendpoint2181 -y
+          az ml batch-endpoint delete -n imagenetclassifierendpoint8459 -y
       working-directory: cli

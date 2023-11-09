@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint3174 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint5475 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-          log_output=$(az ml batch-endpoint create -n tomoutputsparquetendpoint3174 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml 2>&1)
+          log_output=$(az ml batch-endpoint create -n tomoutputsparquetendpoint5475 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml 2>&1)
           echo "$log_output" > sample.log
           cat sample.log
       working-directory: cli
@@ -85,11 +85,35 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
-          az ml batch-deployment create -e tomoutputsparquetendpoint3174 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
+          log_output=$(az ml batch-deployment create -e tomoutputsparquetendpoint5475 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
       working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint3174 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint5475 -y
       working-directory: cli

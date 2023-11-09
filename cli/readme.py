@@ -739,8 +739,32 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {deployment}.yml
-          az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml
-      working-directory: cli\n"""
+          log_output=$(az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{{{ job.status }}}}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
+      if: always()\n"""
 
             workflow_yaml += deployment_yaml
 
@@ -880,8 +904,32 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          set -e; bash -x {script}.sh
-      working-directory: cli\n"""
+          log_output=$(set -e; bash -x {script}.sh 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+        failure_reason="N/A"
+        if [ "${{{{ job.status }}}}" == "failure" ]; then
+          if grep -q "ResourceNotReady" sample.log; then
+            failure_reason = "ResourceNotReady"
+          elif grep -q "quota" sample.log; then
+            failure_reason="QuotaIssue"
+          elif grep -q "ParentResourceNotFound" sample.log; then
+            failure_reason="ParentResourceNotFound"
+          else
+            failure_reason="UncategorizedFailure"
+          fi
+        fi
+        echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+        instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
+        event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}"
+      if: always()\n"""
 
     # write workflow
     with open(f"../.github/workflows/cli-scripts-{hyphenated}.yml", "w") as f:
