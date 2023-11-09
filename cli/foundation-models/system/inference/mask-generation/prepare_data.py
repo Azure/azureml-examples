@@ -58,6 +58,45 @@ def read_image(image_path: str) -> bytes:
         return f.read()
 
 
+def prepare_data_for_batch_inference(dataset_dir: str) -> None:
+    """Prepare image folder and csv file for batch inference.
+
+    This function will move all images to a single image folder and also create a csv
+    file with images in base64 format.
+    :param dataset_dir: dataset directory
+    :type dataset_dir: str
+    """
+
+    csv_file_name = "sample_request_data.csv"
+
+    sample_image = os.path.join(dataset_dir, "images", "99.jpg")
+
+    # Convert the image to base64 and prepare the data for DataFrame
+    image_base64 = base64.encodebytes(read_image(sample_image)).decode("utf-8")
+    data = [
+        [image_base64, "[[[280,320]], [[300,350]]]", "", "", False],
+        [image_base64, "[[[280,320], [300,350]]]", "", "", False],
+        [image_base64, "", "[[125,240,375,425]]", "", False],
+        [image_base64, "[[[280,320]]]", "[[125,240,375,425]]", "", False],
+        [image_base64, "[[[280,320]]]", "[[125,240,375,425]]", "[[0]]", False],
+    ]
+
+    # Create DataFrame
+    df = pd.DataFrame(
+        data,
+        columns=[
+            "image",
+            "input_points",
+            "input_boxes",
+            "input_labels",
+            "multimask_output",
+        ],
+    )
+
+    # Save DataFrame to CSV
+    df.to_csv(os.path.join(dataset_dir, csv_file_name), index=False)
+
+
 def prepare_data_for_online_inference(dataset_dir: str) -> None:
     """Prepare request json for online inference.
 
