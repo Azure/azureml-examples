@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n ingwithcomponentsendpoint2438 -y
+          az ml batch-endpoint delete -n ingwithcomponentsendpoint1278 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,19 +54,18 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml
-          log_output=$(az ml batch-endpoint create -n ingwithcomponentsendpoint2438 -f endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+          az ml batch-endpoint create -n ingwithcomponentsendpoint1278 -f endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"
@@ -86,5 +85,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n ingwithcomponentsendpoint2438 -y
+          az ml batch-endpoint delete -n ingwithcomponentsendpoint1278 -y
       working-directory: cli

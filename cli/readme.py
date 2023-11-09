@@ -484,19 +484,18 @@ jobs:
     elif "autotuning" in job:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
-    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+    workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli/{posix_project_dir}
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"
@@ -582,19 +581,18 @@ jobs:
           pip install azure-identity
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
-    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name}  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+    workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name} > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli/{posix_project_dir}
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"
@@ -698,19 +696,18 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {endpoint}.yml
-          log_output=$(az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+          az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"
@@ -745,19 +742,18 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {deployment}.yml
-          log_output=$(az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+          az ml {endpoint_type}-deployment create -e {endpoint_name} -f {deployment}.yml > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"
@@ -831,19 +827,18 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          log_output=$(az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+          az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
         failure_reason="N/A"
         if [ "${{{{ job.status }}}}" == "failure" ]; then
-          if grep -q "ResourceNotReady" sample.log; then
+          if grep -q "ResourceNotReady" sample_log.txt; then
             failure_reason = "ResourceNotReady"
-          elif grep -q "quota" sample.log; then
+          elif grep -q "quota" sample_log.txt; then
             failure_reason="QuotaIssue"
-          elif grep -q "ParentResourceNotFound" sample.log; then
+          elif grep -q "ParentResourceNotFound" sample_log.txt; then
             failure_reason="ParentResourceNotFound"
           else
             failure_reason="UncategorizedFailure"
@@ -914,19 +909,18 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          log_output=$(set -e; bash -x {script}.sh  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+          set -e; bash -x {script}.sh > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
         failure_reason="N/A"
         if [ "${{{{ job.status }}}}" == "failure" ]; then
-          if grep -q "ResourceNotReady" sample.log; then
+          if grep -q "ResourceNotReady" sample_log.txt; then
             failure_reason = "ResourceNotReady"
-          elif grep -q "quota" sample.log; then
+          elif grep -q "quota" sample_log.txt; then
             failure_reason="QuotaIssue"
-          elif grep -q "ParentResourceNotFound" sample.log; then
+          elif grep -q "ParentResourceNotFound" sample_log.txt; then
             failure_reason="ParentResourceNotFound"
           else
             failure_reason="UncategorizedFailure"
@@ -996,19 +990,18 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          log_output=$(az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}"  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          cat sample.log
+          az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}"  > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: cli
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"

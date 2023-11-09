@@ -67,20 +67,18 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "responsibleaidashboard-housing-classification-model-debugging.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          log_output=$(papermill -k python responsibleaidashboard-housing-classification-model-debugging.ipynb responsibleaidashboard-housing-classification-model-debugging.output.ipynb  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          echo "printing error logs: "
-          cat sample.log
+          papermill -k python responsibleaidashboard-housing-classification-model-debugging.ipynb responsibleaidashboard-housing-classification-model-debugging.output.ipynb > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-classification-model-debugging
     - name: Determine Failure Reason
       run: |
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"

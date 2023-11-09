@@ -301,26 +301,20 @@ jobs:
 
     if not ("automl" in folder):
         workflow_yaml += f"""
-          log_output=$(papermill -k python {name}.ipynb {name}.output.ipynb  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          echo "printing error logs: "
-          cat sample.log
+          papermill -k python {name}.ipynb {name}.output.ipynb > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          log_output=$(papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          echo "printing error logs: "
-          cat sample.log
+          papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: sdk/python/{posix_folder}"""
     else:
         # need CPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          log_output=$(papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb  2>&1 >/dev/tty)
-          echo "$log_output" > sample.log
-          echo "printing error logs: "
-          cat sample.log
+          papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb > sample_log.txt 2>&1
+          cat sample_log.txt
       working-directory: sdk/python/{posix_folder}"""
 
     workflow_yaml += f"""
@@ -328,11 +322,11 @@ jobs:
       run: |
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample.log; then
+            if grep -q "ResourceNotReady" sample_log.txt; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample.log; then
+            elif grep -q "quota" sample_log.txt; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample.log; then
+            elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
             else
               failure_reason="UncategorizedFailure"
