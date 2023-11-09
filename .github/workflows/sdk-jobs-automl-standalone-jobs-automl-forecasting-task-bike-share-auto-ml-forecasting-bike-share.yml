@@ -70,10 +70,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "auto-ml-forecasting-bike-share.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster auto-ml-forecasting-bike-share.ipynb auto-ml-forecasting-bike-share.output.ipynb > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-bike-share
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -82,6 +82,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -94,7 +98,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: ${{ always() }}
     - name: check notebook output
       run: |

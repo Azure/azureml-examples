@@ -51,10 +51,10 @@ jobs:
           bash "${{ github.workspace }}/sdk/python/setup.sh"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../run-job.sh cli-automl-image-object-detection-task-fridge-items.yml > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -63,6 +63,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -75,5 +79,5 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: always()

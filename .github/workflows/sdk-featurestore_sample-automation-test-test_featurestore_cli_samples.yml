@@ -71,10 +71,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "test_featurestore_cli_samples.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python test_featurestore_cli_samples.ipynb test_featurestore_cli_samples.output.ipynb > sample_log.txt 2>&1
-          cat sample_log.txt
       working-directory: sdk/python/featurestore_sample/automation-test
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -83,6 +83,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -95,7 +99,7 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

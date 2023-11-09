@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n berneteskubernetesendpoint3605 -y
+          az ml online-endpoint delete -n berneteskubernetesendpoint4290 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/kubernetes/kubernetes-endpoint.yml
-          az ml online-endpoint create -n berneteskubernetesendpoint3605 -f endpoints/online/kubernetes/kubernetes-endpoint.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml online-endpoint create -n berneteskubernetesendpoint4290 -f endpoints/online/kubernetes/kubernetes-endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -67,6 +67,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -79,18 +83,18 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: always()
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/kubernetes/kubernetes-blue-deployment.yml
-          az ml online-deployment create -e berneteskubernetesendpoint3605 -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml > sample_log.txt 2>&1
-          cat sample_log.txt
+          az ml online-deployment create -e berneteskubernetesendpoint4290 -f endpoints/online/kubernetes/kubernetes-blue-deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
+          cat sample_log.txt
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
             if grep -q "ResourceNotReady" sample_log.txt; then
@@ -99,6 +103,10 @@ jobs:
               failure_reason="QuotaIssue"
             elif grep -q "ParentResourceNotFound" sample_log.txt; then
               failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sample_log.txt; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+              failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
             fi
@@ -111,11 +119,11 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
       if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n berneteskubernetesendpoint3605 -y
+          az ml online-endpoint delete -n berneteskubernetesendpoint4290 -y
       working-directory: cli
