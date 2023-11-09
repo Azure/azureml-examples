@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n pelineshellobatchendpoint7344 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint4331 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml
-          az ml batch-endpoint create -n pelineshellobatchendpoint7344 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml > sample_log.txt 2>&1
+          az ml batch-endpoint create -n pelineshellobatchendpoint4331 -f endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -79,14 +79,14 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-pipelines/hello-batch/deployment.yml
-          az ml batch-deployment create -e pelineshellobatchendpoint7344 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml > sample_log.txt 2>&1
+          az ml batch-deployment create -e pelineshellobatchendpoint4331 -f endpoints/batch/deploy-pipelines/hello-batch/deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -111,11 +111,11 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n pelineshellobatchendpoint7344 -y
+          az ml batch-endpoint delete -n pelineshellobatchendpoint4331 -y
       working-directory: cli

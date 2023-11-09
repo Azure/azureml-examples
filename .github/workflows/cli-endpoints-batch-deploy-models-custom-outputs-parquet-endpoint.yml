@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint2415 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint1985 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml
-          az ml batch-endpoint create -n tomoutputsparquetendpoint2415 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml > sample_log.txt 2>&1
+          az ml batch-endpoint create -n tomoutputsparquetendpoint1985 -f endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -79,14 +79,14 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml
-          az ml batch-deployment create -e tomoutputsparquetendpoint2415 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml > sample_log.txt 2>&1
+          az ml batch-deployment create -e tomoutputsparquetendpoint1985 -f endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -111,11 +111,11 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml batch-endpoint delete -n tomoutputsparquetendpoint2415 -y
+          az ml batch-endpoint delete -n tomoutputsparquetendpoint1985 -y
       working-directory: cli

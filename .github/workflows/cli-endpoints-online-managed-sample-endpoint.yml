@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n linemanagedsampleendpoint2842 -y
+          az ml online-endpoint delete -n linemanagedsampleendpoint5122 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,7 +54,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/endpoint.yml
-          az ml online-endpoint create -n linemanagedsampleendpoint2842 -f endpoints/online/managed/sample/endpoint.yml > sample_log.txt 2>&1
+          az ml online-endpoint create -n linemanagedsampleendpoint5122 -f endpoints/online/managed/sample/endpoint.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -79,14 +79,14 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/blue-deployment.yml
-          az ml online-deployment create -e linemanagedsampleendpoint2842 -f endpoints/online/managed/sample/blue-deployment.yml > sample_log.txt 2>&1
+          az ml online-deployment create -e linemanagedsampleendpoint5122 -f endpoints/online/managed/sample/blue-deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -111,14 +111,14 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/managed/sample/green-deployment.yml
-          az ml online-deployment create -e linemanagedsampleendpoint2842 -f endpoints/online/managed/sample/green-deployment.yml > sample_log.txt 2>&1
+          az ml online-deployment create -e linemanagedsampleendpoint5122 -f endpoints/online/managed/sample/green-deployment.yml > sample_log.txt 2>&1
       working-directory: cli
     - name: Determine Failure Reason
       run: |
@@ -143,11 +143,11 @@ jobs:
       uses: syedhassaanahmed/app-insights-event-action@main
       with:
           instrumentation-key: "${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}"
-          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref }}"
       if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n linemanagedsampleendpoint2842 -y
+          az ml online-endpoint delete -n linemanagedsampleendpoint5122 -y
       working-directory: cli
