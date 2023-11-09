@@ -64,7 +64,8 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     :param dataset_dir: dataset directory
     :type dataset_dir: str
     """
-
+    csv_folder_path = os.path.join(dataset_dir, "batch")
+    os.makedirs(csv_folder_path, exist_ok=True)
     csv_file_name = "sample_request_data.csv"
 
     sample_image = os.path.join(dataset_dir, "images", "99.jpg")
@@ -92,7 +93,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     )
 
     # Save DataFrame to CSV
-    df.to_csv(os.path.join(dataset_dir, csv_file_name), index=False)
+    df.to_csv(os.path.join(dataset_dir, csv_folder_path, csv_file_name), index=False)
 
 
 def prepare_data_for_online_inference(dataset_dir: str) -> None:
