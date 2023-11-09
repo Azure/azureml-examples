@@ -46,7 +46,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n minimalmultimodelendpoint9199 -y
+          az ml online-endpoint delete -n minimalmultimodelendpoint4343 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -54,11 +54,35 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml
-          az ml online-endpoint create -n minimalmultimodelendpoint9199 -f endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml
+          log_output=$(az ml online-endpoint create -n minimalmultimodelendpoint4343 -f endpoints/online/custom-container/minimal/multimodel/minimal-multimodel-endpoint.yml 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
       working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${ job.status }" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}"
+          event-name: "${ job.status }_${ env.FAILURE_REASON }"
+      if: always()
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n minimalmultimodelendpoint9199 -y
+          az ml online-endpoint delete -n minimalmultimodelendpoint4343 -y
       working-directory: cli

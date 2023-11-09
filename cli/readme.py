@@ -484,8 +484,32 @@ jobs:
     elif "autotuning" in job:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
-    workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
-      working-directory: cli/{posix_project_dir}\n"""
+    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli/{posix_project_dir}
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli/{posix_project_dir}
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: always()\n"""
 
     # write workflow
     with open(
@@ -538,7 +562,7 @@ jobs:
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -556,8 +580,32 @@ jobs:
           pip install azure-identity
           bash \"{GITHUB_WORKSPACE}/sdk/python/setup.sh\"  
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME\n"""
-    workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name}
-      working-directory: cli/{posix_project_dir}\n"""
+    workflow_yaml += f"""          log_output=$(bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-pipeline-job-with-registry-components.sh {filename} {folder_name} 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli/{posix_project_dir}
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli/{posix_project_dir}
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: always()\n"""
 
     # write workflow
     with open(
@@ -569,6 +617,8 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    project_dir = project_dir.replace(os.sep, "/")
+    hyphenated = hyphenated.replace(os.sep, "/")
     deployments = sorted(
         glob.glob(project_dir + "/*deployment.yml", recursive=True)
         + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
@@ -582,14 +632,15 @@ def write_endpoint_workflow(endpoint):
     schedule_hour, schedule_minute = get_schedule_time(filename)
     endpoint_type = (
         "online"
-        if "endpoints/online/" in endpoint
+        if "endpoints/online/" in project_dir
         else "batch"
-        if "endpoints/batch/" in endpoint
+        if "endpoints/batch/" in project_dir
         else "unknown"
     )
     endpoint_name = hyphenated[-28:].replace("-", "") + str(
         random.randrange(1000, 9999)
     )
+    endpoint = endpoint.replace(os.sep, "/")
 
     create_endpoint_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
@@ -643,8 +694,32 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           cat {endpoint}.yml
-          az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml
-      working-directory: cli\n"""
+          log_output=$(az ml {endpoint_type}-endpoint create -n {endpoint_name} -f {endpoint}.yml 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: always()\n"""
 
     cleanup_yaml = f"""    - name: cleanup endpoint
       run: |
@@ -658,6 +733,7 @@ jobs:
     if (deployments is not None) and (len(deployments) > 0):
         for deployment in deployments:
             deployment = deployment.replace(".yml", "").replace(".yaml", "")
+            deployment = deployment.replace(os.sep, "/")
             deployment_yaml = f"""    - name: create deployment
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -709,8 +785,8 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          bash bootstrapping/bootstrap.sh
-      working-directory: infra
+          bash bootstrap.sh
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -723,8 +799,32 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml
-      working-directory: cli\n"""
+          log_output=$(az ml {asset.split(os.sep)[1]} create -f {posix_asset}.yml 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+        failure_reason="N/A"
+        if [ "${{ job.status }}" == "failure" ]; then
+          if grep -q "ResourceNotReady" sample.log; then
+            failure_reason = "ResourceNotReady"
+          elif grep -q "quota" sample.log; then
+            failure_reason="QuotaIssue"
+          elif grep -q "ParentResourceNotFound" sample.log; then
+            failure_reason="ParentResourceNotFound"
+          else
+            failure_reason="UncategorizedFailure"
+          fi
+        fi
+        echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+        instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+        event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: always()\n"""
 
     # write workflow
     with open(
@@ -767,7 +867,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -823,7 +923,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -836,8 +936,32 @@ jobs:
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
-          az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}"
-      working-directory: cli\n
+          log_output=$(az ml schedule create -f ./{posix_schedule}.yml --set name="ci_test_{filename}" 2>&1)
+          echo "$log_output" > sample.log
+          cat sample.log
+      working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sample.log; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sample.log; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sample.log; then
+              failure_reason="ParentResourceNotFound"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: cli
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}"
+      if: always()\n
     - name: disable schedule
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -872,8 +996,7 @@ def get_spark_setup_workflow(job, posix_project_dir, filename):
     workflow = f"""    - name: upload data
       run: |
           bash -x upload-data-to-blob.sh jobs/spark/
-      working-directory: cli
-      continue-on-error: true\n"""
+      working-directory: cli\n"""
     if is_managed_identity:
         workflow += f"""    - name: setup identities
       run: |
