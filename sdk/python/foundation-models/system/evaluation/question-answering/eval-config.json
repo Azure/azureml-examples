@@ -1,0 +1,7 @@
+{
+  "metrics": ["exact_match", "f1_score"],
+  "regexes_to_ignore": ["$[A-Z]+"],
+  "ignore_case": false,
+  "ignore_numbers": false,
+  "ignore_punctuations": true
+}

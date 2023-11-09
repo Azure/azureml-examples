@@ -1,0 +1,99 @@
+# This is a pipeline is for illustration purpose only. Do not use it for production use.
+description: training pipeline
+display_name: training
+experiment_name: training on fraud model
+type: pipeline
+
+inputs:
+  feature_retrieval_spec: # this will be used by the feature_retrieval_step. it expects a feature_retrieval_spec.yaml in the folder
+    mode: ro_mount
+    path: ../feature_retrieval_spec
+    type: uri_folder
+  observation_data: # this will be used by the feature_retrieval_step
+    mode: ro_mount
+    path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/observation_data/train/*.parquet
+    type: uri_folder
+  timestamp_column: timestamp # this will be used by the feature_retrieval_step
+
+jobs:
+  feature_retrieval_step:
+    component: azureml://registries/azureml/components/feature_retrieval/versions/0.3.0
+    inputs:
+      feature_retrieval_spec:
+        path: ${{parent.inputs.feature_retrieval_spec}}
+      observation_data:
+        path: ${{parent.inputs.observation_data}}
+      timestamp_column:
+        path: ${{parent.inputs.timestamp_column}}
+      observation_data_format: parquet
+    resources:
+      instance_type: standard_e4s_v3
+      runtime_version: "3.2"
+    outputs:
+      output_data:
+    conf:
+      spark.driver.cores: 4
+      spark.driver.memory: 28g
+      spark.executor.cores: 4
+      spark.executor.memory: 28g
+      spark.executor.instances: 2
+    type: spark
+  
+  training_step:
+    type: command
+    compute: azureml:cpu-cluster-fs
+    code: ../train/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
+    inputs:
+      training_data: 
+        path: ${{parent.jobs.feature_retrieval_step.outputs.output_data}}
+        mode: ro_mount
+    outputs:
+      model_output:
+        type: custom_model
+      run_id_output:
+        type: uri_file
+    command: >-
+      python train.py
+      --training_data ${{inputs.training_data}}
+      --model_output ${{outputs.model_output}}
+      --run_id_output ${{outputs.run_id_output}}
+
+  evaluation_step: # this is a placeholder no-op step for illustration purpose only
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../evaluate/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
+    inputs:
+      model_input: ${{parent.jobs.training_step.outputs.model_output}}
+    outputs:
+      evaluation_output:
+        type: uri_folder        
+    command: >-
+      python evaluate.py
+      --model_input ${{inputs.model_input}}
+      --evaluation_output ${{outputs.evaluation_output}}
+
+  register_model_step:
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../register_model/src
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../../env/conda.yml
+    inputs:
+      model_input: ${{parent.jobs.training_step.outputs.model_output}}
+      evaluation_input: ${{parent.jobs.evaluation_step.outputs.evaluation_output}}
+    outputs:
+      model_output:
+        type: custom_model
+        name: fraud_model
+    command: >-
+      python register_model.py
+      --model_input ${{inputs.model_input}}
+      --evaluation_input ${{inputs.evaluation_input}}
+      --model_output ${{outputs.model_output}}

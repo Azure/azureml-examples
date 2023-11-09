@@ -1,3 +1,5 @@
+[![Python code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 # **Bert Pretraining**
 
 This example will focus on pretraining a BERT model for Masked Language Modeling (MLM) on the GLUE dataset. Bert is a large model and in this article you can learn on tips and tricks to be able to train with high efficiency for compute and memory without impacting the quality of model.
@@ -10,7 +12,7 @@ V100 GPUs (STANDARD_ND40RS_V2) are recommended for this job. This example was or
 To attain linear scaling for large model, one important step can be to use InfiniBand. InfiniBand enables low-latency, GPU-to-GPU communication across nodes in a cluster. InfiniBand requires specialized hardware to operate. Only some VM SKUs on Azure contain this required hardware. You can view the full list of InfiniBand-enabled machine SKUs [here](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-hpc#rdma-capable-instances). 
 
 ### **Environment**
-The environment found at ``src/envrionment`` is an ACPT environment with multiple accelerators to boost the training job. If you would like to add additional packages, edit the appropriate files in ``src/environment`` with your changes, then create the custom environment using the following command:
+The environment found at ``src/environment`` is an ACPT environment with multiple accelerators to boost the training job. If you would like to add additional packages, edit the appropriate files in ``src/environment`` with your changes, then create the custom environment using the following command:
 ```
 az ml environment create --file ./src/environment/env.yml
 ```

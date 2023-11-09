@@ -1,0 +1,10 @@
+name: <AML_WORKSPACE_NAME>
+managed_network:
+  isolation_mode: allow_internet_outbound
+  outbound_rules:
+  - name: <OUTBOUND_RULE_NAME>
+    destination:
+      service_resource_id: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Storage/storageAccounts/<STORAGE_ACCOUNT_NAME>
+      spark_enabled: true
+      subresource_target: blob
+    type: private_endpoint

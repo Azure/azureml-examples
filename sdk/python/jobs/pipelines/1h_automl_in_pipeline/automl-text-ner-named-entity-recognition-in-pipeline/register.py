@@ -58,7 +58,7 @@ def main(args):
                 runid = line.split(":")[1].strip()
 
     # Construct Model URI from run ID extract previously
-    model_uri = "runs:/{}/outputs/".format(runid)
+    model_uri = "runs:/{}/outputs/mlflow-model".format(runid)
     print("Model URI: " + model_uri)
 
     # Register the model with Model URI and Name of choice

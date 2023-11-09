@@ -1,0 +1,76 @@
+# advanced-model-monitoring.yaml
+$schema:  http://azureml/sdk-2-0/Schedule.json
+name: fraud_detection_model_monitoring
+display_name: Fraud detection model monitoring
+description: Fraud detection model monitoring with advanced configurations
+
+trigger:
+  # perform model monitoring activity daily at 3:15am
+  type: recurrence
+  frequency: day #can be minute, hour, day, week, month
+  interval: 1 # #every day
+  schedule: 
+    hours: 3 # at 3am
+    minutes: 15 # at 15 mins after 3am
+
+create_monitor:
+  compute: 
+    instance_type: standard_e4s_v3
+    runtime_version: 3.2
+  monitoring_target:
+    ml_task: classification
+    endpoint_deployment_id: azureml:fraud-detection-endpoint:fraud-detection-deployment
+  
+  monitoring_signals:
+    advanced_data_drift: # monitoring signal name, any user defined name works
+      type: data_drift
+      # reference_dataset is optional. By default referece_dataset is the production inference data associated with Azure Machine Learning online endpoint
+      reference_data:
+        input_data:
+          path: azureml:my_model_training_data:1 # use training data as comparison reference dataset
+          type: mltable
+        data_context: training
+        target_column_name: fraud_detected
+      features: 
+        top_n_feature_importance: 20 # monitor drift for top 20 features
+      metric_thresholds:
+        numerical:
+          jensen_shannon_distance: 0.01
+        categorical:
+          pearsons_chi_squared_test: 0.02
+    advanced_data_quality:
+      type: data_quality
+      # reference_dataset is optional. By default referece_dataset is the production inference data associated with Azure Machine Learning online endpoint
+      reference_data:
+        input_data:
+          path: azureml:my_model_training_data:1
+          type: mltable
+        data_context: training
+      features: # monitor data quality for 3 individual features only
+        - feature_A
+        - feature_B
+        - feature_C
+      metric_thresholds:
+        numerical:
+          null_value_rate: 0.05
+        categorical:
+          out_of_bounds_rate: 0.03
+
+    feature_attribution_drift_signal:
+      type: feature_attribution_drift
+      # production_data: is not required input here
+      # Please ensure Azure Machine Learning online endpoint is enabled to collected both model_inputs and model_outputs data
+      # Azure Machine Learning model monitoring will automatically join both model_inputs and model_outputs data and used it for computation
+      reference_data:
+        input_data:
+          path: azureml:my_model_training_data:1
+          type: mltable
+        data_context: training
+        target_column_name: is_fraud
+      metric_thresholds:
+        normalized_discounted_cumulative_gain: 0.9
+  
+  alert_notification:
+    emails:
+      - abc@example.com
+      - def@example.com

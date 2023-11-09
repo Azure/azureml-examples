@@ -1,17 +1,17 @@
 set -x
 
 # <create_variables>
-SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
-LOCATION=$(az ml workspace show --query location | tr -d '\r"')
-RESOURCE_GROUP=$(az group show --query name | tr -d '\r"')
-WORKSPACE=$(az configure -l | jq -r '.[] | select(.name=="workspace") | .value')
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+LOCATION=$(az ml workspace show --query location -o tsv)
+RESOURCE_GROUP=$(az group show --query name -o tsv)
+WORKSPACE=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 schema='$schema'
 #</create_variables>
 
 echo -e "Using:\nSUBSCRIPTION_ID=$SUBSCRIPTION_ID\nLOCATION=$LOCATION\nRESOURCE_GROUP=$RESOURCE_GROUP\nWORKSPACE=$WORKSPACE"
 
 # <read_condafile>
-CONDA_FILE=$(< cli/endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(< cli/endpoints/online/model-1/environment/conda.yaml)
 # <read_condafile>
 
 #<get_access_token>
@@ -35,7 +35,7 @@ wait_for_completion () {
     do
         sleep 5
         response=$($1)
-        operation_id=$(echo $response | jq -r '.properties' | jq -r '.properties' | jq -r '.AzureAsyncOperationUri')
+        operation_id=$(echo $response | jq -r '.properties.properties.AzureAsyncOperationUri')
     done
 
   while [[ $status != "Succeeded" && $status != "Failed" ]]
@@ -234,7 +234,7 @@ curl --location --request PUT "https://management.azure.com/subscriptions/$SUBSC
 # <\create_model>
 
 # <read_condafile>
-CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yml)
+CONDA_FILE=$(cat cli/endpoints/online/model-1/environment/conda.yaml)
 # <read_condafile>
 
 # <create_environment>

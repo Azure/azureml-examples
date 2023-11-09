@@ -2,6 +2,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: echo $hello_env_var
 environment:
   image: library/python:latest
-compute: azureml:cpu-cluster
 environment_variables:
   hello_env_var: "hello world"

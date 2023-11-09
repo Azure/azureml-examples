@@ -1,0 +1,8 @@
+$schema: http://azureml/sdk-2-0/FeaturestoreEntity.json
+
+name: account
+version: "1"
+description: account  entity
+index_columns:
+  - name: accountID
+    type: string
