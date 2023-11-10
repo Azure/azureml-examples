@@ -18,10 +18,11 @@
 #      unset wheel_url
 #  }
 
-
-# <az_ml_install>
+# <sdg-testing>
+# </sdg-testing>
+# <az_ml_install2>
 az extension add -n ml -y
-# </az_ml_install>
+# </az_ml_install2>
 
 ## For backward compatibility - running on old subscription
 # <set_variables>
