@@ -8,7 +8,7 @@ resource_group = "<AOAI-ACCOUNT-RESOURCE-GROUP>"
 resource_name = "<AOAI-RESOURCE-NAME>"
 model_deployment_name = "<NEW-AOAI-DEPLOYMENT-NAME>"
 
-# 2. Add the AzureML registered model name, registered model version, and the AzureML (AML) workspace path for your fine-tuned model. 
+# 2. Add the AzureML registered model name, registered model version, and the AzureML (AML) workspace path for your fine-tuned model.
 # Your registered models data can be found in the `Models` tab of your AzureML workspace.
 registered_model_name = "<AML-REGISTERED-MODEL-NAME>"
 registered_model_version = "<AML-REGISTERED-MODEL-VERSION>"
@@ -29,10 +29,7 @@ deploy_headers = {
 
 # 4. Set model deployment configuration. Here capacity refers to support for `1K Tokens Per Minute (TPM)` for your deployment.
 deploy_data = {
-    "sku": {
-        "name": "Standard", 
-        "capacity": 1
-    },
+    "sku": {"name": "Standard", "capacity": 1},
     "properties": {
         "model": {
             "format": "OpenAI",
