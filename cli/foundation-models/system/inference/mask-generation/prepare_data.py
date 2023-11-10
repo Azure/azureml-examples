@@ -105,39 +105,54 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     sample_image = os.path.join(dataset_dir, "images", "99.jpg")
     request_json = {
         "input_data": {
-        "columns": [
-        "image",
-        "input_points",
-        "input_boxes",
-        "input_labels",
-        "multimask_output"
-        ],
-            "index": [0,1,2,3,4],
+            "columns": [
+                "image",
+                "input_points",
+                "input_boxes",
+                "input_labels",
+                "multimask_output",
+            ],
+            "index": [0, 1, 2, 3, 4],
             "data": [
                 # segmentation mask per input point
                 [
                     base64.encodebytes(read_image(sample_image)).decode("utf-8"),
-                    "[[[280,320]], [[300,350]]]", "", "", True
+                    "[[[280,320]], [[300,350]]]",
+                    "",
+                    "",
+                    True,
                 ],
                 # single segmentation mask for multiple input points
                 [
                     base64.encodebytes(read_image(sample_image)).decode("utf-8"),
-                    "[[[280,320], [300,350]]]", "", "", True
+                    "[[[280,320], [300,350]]]",
+                    "",
+                    "",
+                    True,
                 ],
                 # single segmentation mask per single bounding box
                 [
                     base64.encodebytes(read_image(sample_image)).decode("utf-8"),
-                    "", "[[125,240,375,425]]", "", True
+                    "",
+                    "[[125,240,375,425]]",
+                    "",
+                    True,
                 ],
                 # segmentation mask using both bounding box and input points
                 [
                     base64.encodebytes(read_image(sample_image)).decode("utf-8"),
-                    "[[[280,320]]]", "[[125,240,375,425]]", "", True
+                    "[[[280,320]]]",
+                    "[[125,240,375,425]]",
+                    "",
+                    True,
                 ],
                 # segmentation mask using both bounding box and input points and labels
                 [
                     base64.encodebytes(read_image(sample_image)).decode("utf-8"),
-                    "[[[280,320]]]", "[[125,240,375,425]]", "[[0]]", True
+                    "[[[280,320]]]",
+                    "[[125,240,375,425]]",
+                    "[[0]]",
+                    True,
                 ],
             ],
         }
