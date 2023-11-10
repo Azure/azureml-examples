@@ -52,7 +52,7 @@ def get_model(model_path, model_file_name):
     else:
         # Load the sklearn pipeline.
         with open(model_full_path, "rb") as f:
-            fitted_model = pickle.load(model_full_path)
+            fitted_model = pickle.load(f)
     return fitted_model
 
 
