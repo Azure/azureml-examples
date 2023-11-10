@@ -116,6 +116,8 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
     with open("list_of_questions.txt", "r") as f:
         data = f.read()
         question_list = data.split("\n")
+        # For BLIP2, append "Answer: " to the questions
+        # question_list = [s + " Answer:" for s in question_list]
 
     # Divide the image & questions list into files of 10 rows each
     batch_size_per_predict = 10
