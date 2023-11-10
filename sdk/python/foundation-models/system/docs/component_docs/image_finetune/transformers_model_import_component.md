@@ -55,6 +55,10 @@ The component copies the input model folder to the component output directory wh
     is subject to third party license terms available on the HuggingFace model details page.
     It is the user's responsibility to comply with the model's license terms.
 
+3. __download_from_source__ (boolean, optional)
+    Set to True for downloading model directly from HuggingFace instead of system registry.
+    Defaults to `False`.
+
 # 4. Run Settings
 
 This setting helps to choose the compute for running the component code. For the purpose of model selector, cpu compute should work. We recommend using D12 compute.

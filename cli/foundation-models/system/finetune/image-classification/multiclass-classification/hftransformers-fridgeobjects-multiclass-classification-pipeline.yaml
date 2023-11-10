@@ -52,6 +52,7 @@ jobs:
 
       # Model import args
       task_name: image-classification
+      download_from_source: False # True for downloading a model directly from HuggingFace
       model_family: HuggingFaceImage
       # # Specify the model_name instead of mlflow_model if you want to use a model from the huggingface hub
       mlflow_model: ${{parent.inputs.mlflow_model_path}} 
