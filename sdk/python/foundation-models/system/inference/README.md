@@ -19,4 +19,4 @@ To achieve new levels of performance that surpass existing inferencing systems, 
 - Text Generation
 > More supported tasks on the way soon.
 
-For more information on this container and to use it with foundation models, see the [text-generation example](https://github.com/Azure/azureml-examples/blob/main/sdk/python/foundation-models/system/inference/text-generation/llama-safe-online-deployment.ipynb).
+For more information on this container and to use it with foundation models, see section 3.4 of the [text-generation example](https://github.com/Azure/azureml-examples/blob/main/sdk/python/foundation-models/system/inference/text-generation/llama-safe-online-deployment.ipynb).
