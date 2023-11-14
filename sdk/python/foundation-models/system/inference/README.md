@@ -18,7 +18,7 @@ DeepSpeed FastGen features include:
 - Continuous batching of incoming requests
 - Optimized CUDA kernals
 - Tensor parallelism support
-- New Dynamic Splitfuse technique to increase overall performance and provide better throughput consistancy.
+- New Dynamic Splitfuse technique to increase overall performance and provide better throughput consistency.
 
 DeepSpeed FastGen achieves superior performance by using a new technique called Dynamic Splitfuse. This technique enhances responsiveness, efficiency, and result consistency. For more information, visit the DeepSpeed FastGen [github page](https://github.com/microsoft/DeepSpeed/blob/master/blogs/deepspeed-fastgen/README.md).
 
