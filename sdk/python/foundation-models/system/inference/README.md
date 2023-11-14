@@ -12,7 +12,13 @@ vLLM is a high-performance inferencing server that offers several features, maki
 
 ## DeepSpeed FastGen
 DeepSpeed FastGen, a recent release from DeepSpeed, offers up to 2.3x faster throughput than vLLM, which already outperforms similar frameworks like Huggingface TGI. DeepSpeed-FastGen combines DeepSpeed-MII and DeepSpeed-Inference to deliver a fast and user-friendly serving system.
-
+DeepSpeed FastGen features include:
+- Upt to 2.3x faster throughput than vLLM
+- Optimized memory handling with a blocked KV cache
+- Continuous batching of incoming requests
+- Optimized CUDA kernals
+- Tensor parallelism support
+- New Dynamic Splitfuse technique to increase overall performance and provide better throughput consistancy.
 DeepSpeed FastGen achieves superior performance by using a new technique called Dynamic Splitfuse. This technique enhances responsiveness, efficiency, and result consistency. For more information, visit the DeepSpeed FastGen [github page](https://github.com/microsoft/DeepSpeed/blob/master/blogs/deepspeed-fastgen/README.md).
 
 ## Supported Tasks by the Container
