@@ -1,22 +1,22 @@
 # Foundation Model Inferencing
-For inferencing foundation models on Azure ML, the curated container __foundation-model-inference__ is used. The container leverages the best inferencing frameworks available to have optimal throughput and latency for requests, and is easy to get started with using Azure ML. The container utilizes:
+The __foundation-model-inference__ container is a curated solution for inferencing foundation models on Azure ML. It incorporates the best inferencing frameworks to ensure optimal request throughput and latency. The container is user-friendly and integrates seamlessly with Azure ML. It utilizes:
 
 ## vLLM
-vLLM is an easy to use fast inferencing server with several features that put it at the top of the list of inferencing systems. vLLM has:
-- state-of-the-art serving throughput
-- Efficient management of attention key and value memory with PagedAttention (see [this blog post](https://vllm.ai/) for more details)
+vLLM is a high-performance inferencing server that offers several features, making it a top choice for inferencing systems. vLLM provides:
+- Top-tier serving throughput
+- Efficient handling of attention key and value memory with PagedAttention
 - Continuous batching of incoming requests
 - Optimized CUDA kernels
 - High-throughput serving with various decoding algorithms, including parallel sampling, beam search, and more
-- Tensor parallelism support for distributed inference
+- Support for tensor parallelism for distributed inference
 
 ## DeepSpeed FastGen
-DeepSpeed FastGen is the recently released inferencing framework from DeepSpeed that has shown to have up to 2.3x faster throughout than vLLM, which is already faster than other similar frameworks such as Huggingface TGI. DeepSpeed-FastGen leverages the combination of DeepSpeed-MII and DeepSpeed-Inference to provide a fast, easy-to-use serving system.
+DeepSpeed FastGen, a recent release from DeepSpeed, offers up to 2.3x faster throughput than vLLM, which already outperforms similar frameworks like Huggingface TGI. DeepSpeed-FastGen combines DeepSpeed-MII and DeepSpeed-Inference to deliver a fast and user-friendly serving system.
 
-To achieve new levels of performance that surpass existing inferencing systems, DeepSpeed FastGen uses a new technique called Dynamic Splitfuse that provides better responsiveness, higher efficiency, and lower variance in results. For more information, see the DeepSpeed FastGen [github page](https://github.com/microsoft/DeepSpeed/blob/master/blogs/deepspeed-fastgen/README.md).
+DeepSpeed FastGen achieves superior performance by using a new technique called Dynamic Splitfuse. This technique enhances responsiveness, efficiency, and result consistency. For more information, visit the DeepSpeed FastGen [github page](https://github.com/microsoft/DeepSpeed/blob/master/blogs/deepspeed-fastgen/README.md).
 
-## Container Supported tasks
+## Supported Tasks by the Container
 - Text Generation
-> More supported tasks on the way soon.
+> More tasks will be supported soon.
 
-For more information on this container and to use it with foundation models, see section 3.4 of the [text-generation example](https://github.com/Azure/azureml-examples/blob/main/sdk/python/foundation-models/system/inference/text-generation/llama-safe-online-deployment.ipynb).
+For additional information on this container and its use with foundation models, refer to section 3.4 of the [text-generation example](https://github.com/Azure/azureml-examples/blob/main/sdk/python/foundation-models/system/inference/text-generation/llama-safe-online-deployment.ipynb).
