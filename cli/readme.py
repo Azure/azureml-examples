@@ -510,7 +510,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
           event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
@@ -611,7 +611,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
           event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
@@ -730,7 +730,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
           event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
@@ -780,7 +780,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
           event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
@@ -869,7 +869,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
         instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
         event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
@@ -957,7 +957,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
         instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
         event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
@@ -1042,7 +1042,7 @@ jobs:
       if: ${{{{ always() }}}}
       continue-on-error: true
     - name: Log Job Results to Application Insights
-      uses: syedhassaanahmed/app-insights-event-action@main
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
       with:
           instrumentation-key: "${{{{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}}}"
           event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
