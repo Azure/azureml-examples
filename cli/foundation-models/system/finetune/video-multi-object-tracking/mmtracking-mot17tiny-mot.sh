@@ -15,7 +15,7 @@ compute_model_import_sku="Standard_D12"
 compute_finetune_sku="Standard_NC6s_v3"
 
 # This is the foundation model for finetuning
-mmtracking_model_name="bytetrack-yolox-x-crowdhuman-mot17-private-half"
+mmtracking_model_name="bytetrack_yolox_x_crowdhuman_mot17-private-half"
 model_label="latest"
 
 version=$(date +%s)
