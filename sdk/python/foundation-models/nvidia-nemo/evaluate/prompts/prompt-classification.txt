@@ -1,0 +1,12 @@
+Article: Britain's plan to become a science and technology superpower is so lacking in focus and so full of new organisational structures that the country risks becoming a bureaucracy superpower instead, an influential crossbench peer has said.
+Class: Politics
+===
+Article: It is the middle of the European winter, and sprinter Evan O'Hanlon is shovelling snow off a track in the Czech Republic, where he lives, so he can train in -8C weather.
+Class: Sport
+===
+Article: NASA is 'in the final stretch' of launching its Artemis I mission as it will roll out the worlds most powerful rocket, the Space Launch System (SLS), and the Orion capsule to the launch pad in just two weeks.
+NASA Administrator Bill Nelson said during a Wednesday briefing: 'This is now the Artemis generation,' Nelson said.
+Class: Science
+===
+Article: {prompt}
+Class: 
