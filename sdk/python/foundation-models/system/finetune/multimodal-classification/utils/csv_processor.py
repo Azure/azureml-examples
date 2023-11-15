@@ -4,10 +4,28 @@ import pandas as pd
 parser = argparse.ArgumentParser()
 
 # Input file name
-parser.add_argument("-img_col_name", "--img_col_name", help="Column name of column in .csv file which has path to images.")
-parser.add_argument("-image_url_prefix", "--image_url_prefix", help="URL of datastore where images are uploaded.")
-parser.add_argument("-input_file_name", "--input_file_name", default="", help=".csv file that has the data.")
-parser.add_argument("-output_file_name", "--output_file_name", default="", help=".csv file that has the formatted data.")
+parser.add_argument(
+    "-img_col_name",
+    "--img_col_name",
+    help="Column name of column in .csv file which has path to images.",
+)
+parser.add_argument(
+    "-image_url_prefix",
+    "--image_url_prefix",
+    help="URL of datastore where images are uploaded.",
+)
+parser.add_argument(
+    "-input_file_name",
+    "--input_file_name",
+    default="",
+    help=".csv file that has the data.",
+)
+parser.add_argument(
+    "-output_file_name",
+    "--output_file_name",
+    default="",
+    help=".csv file that has the formatted data.",
+)
 
 args = parser.parse_args()
 
@@ -43,7 +61,9 @@ def update_img_url(
 
 
 if __name__ == "__main__":
-    update_img_url(args.img_col_name,
-                   args.image_url_prefix,
-                   args.input_file_name,
-                   args.output_file_name)
+    update_img_url(
+        args.img_col_name,
+        args.image_url_prefix,
+        args.input_file_name,
+        args.output_file_name,
+    )
