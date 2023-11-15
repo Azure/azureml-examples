@@ -18,7 +18,7 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # Download data
-    download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/multimodal_classification/AirBnb.zip"
+    download_url = "https://automlresources-prod.azureedge.net/datasets/AirBnb.zip"
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.split(download_url)[-1].split(".")[0]
