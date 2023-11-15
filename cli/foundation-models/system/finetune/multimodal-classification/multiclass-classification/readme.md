@@ -2,7 +2,7 @@
 
 You can launch a sample pipeline for multimodal multi-class classification using `multimodal_classification_pipeline` component.
 
-For using this component, run the shell script file `bash ./multimodal-fridgeobjects-multiclass-classification.sh`.
+For using this component, run the shell script file `bash ./mmeft-airbnb-multiclass-classification.sh`.
 
 Currently following models are supported:
 | Model Name | Source |

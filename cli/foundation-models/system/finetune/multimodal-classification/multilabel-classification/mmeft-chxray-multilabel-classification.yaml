@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-experiment_name: AzureML-Cli-Train-Finetune-Multimodal-MultiClass-Samples
+experiment_name: AzureML-Cli-Train-Finetune-Multimodal-MultiLabel-Samples
 
 inputs:
   # # Model - specify the foundation model available in the azureml system registry
@@ -20,7 +20,7 @@ inputs:
     path: ./deepspeed_configs/zero1.json
     type: uri_file
   # compute
-  compute_model_selector: sample-model-import-cluster
+  compute_model_selector: sample-cpu-cluster
   compute_finetune: sample-finetune-cluster-gpu
 
 outputs:
@@ -54,11 +54,11 @@ jobs:
       data_modalities: text-image-tabular
 
       ## Data preprocessing args
-      problem_type: multimodal-classification-singlelabel
-      label_column: room_type
-      image_column: picture_url
+      problem_type: multimodal-classification-multilabel
+      label_column: Image_Index
+      image_column: Finding_Labels
       # columns to be ignored while training
-      drop_columns: id,listing_url,scrape_id,last_scraped,host_id,host_url,host_name,host_since,neighbourhood_group,last_review,host_thumbnail_url,host_picture_url,calendar_last_scraped,first_review,last_review
+      drop_columns: Patient_Id,OriginalImage_Width,OriginalImage_Height,OriginalImagePixelSpacing_x,OriginalImagePixelSpacing_y
 
       ## Finetune_args
       deepspeed_config: ${{parent.inputs.ds_finetune}}
