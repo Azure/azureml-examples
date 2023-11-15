@@ -175,7 +175,6 @@ if __name__ == "__main__":
 
     print(f"Converting for {task_type}")
 
-    # Defined in azureml.contrib.dataset.labeled_dataset.LabeledDatasetTask.OBJECT_DETECTION.value
     if task_type == "ObjectTracking":
         converter = BoundingBoxConverter(coco_data)
         write_json_lines(converter, output_file_path, base_url)

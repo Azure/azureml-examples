@@ -166,7 +166,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare data for object detection")
+    parser = argparse.ArgumentParser(description="Prepare data for video multi-object tracking")
 
     parser.add_argument("--subscription", type=str, help="Subscription ID")
     parser.add_argument("--group", type=str, help="Resource group name")

@@ -84,7 +84,6 @@ python prepare_data.py --subscription $subscription_id --group $resource_group_n
 train_data="./data/training-mltable-folder"
 # validation data
 validation_data="./data/validation-mltable-folder"
-# test data
 
 # Check if training data, validation data
 if [ ! -d $train_data ] 
