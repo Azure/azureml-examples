@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/best-practices/largescale-deep-learning/Training/Bloom-Pretrain/src/Megatron-DeepSpeed" vcs="Git" />
+  </component>
+</project>
