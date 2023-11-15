@@ -69,6 +69,36 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python azureml-getting-started-studio.ipynb azureml-getting-started-studio.output.ipynb
       working-directory: tutorials/azureml-getting-started
+    - name: Determine Failure Reason
+      run: |
+          cat azureml-getting-started-studio.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" azureml-getting-started-studio.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" azureml-getting-started-studio.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" azureml-getting-started-studio.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" azureml-getting-started-studio.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" azureml-getting-started-studio.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: tutorials/azureml-getting-started
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
+
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
