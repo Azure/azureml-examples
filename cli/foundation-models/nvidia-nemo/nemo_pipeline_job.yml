@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: correct_test_task_type
-description: correct task type testing
+display_name: TextGen_Finetuning_and_Evaluation
+description: Finetune the base model for text generation task and evaluation of the finetuned model.
 
 
 inputs:
