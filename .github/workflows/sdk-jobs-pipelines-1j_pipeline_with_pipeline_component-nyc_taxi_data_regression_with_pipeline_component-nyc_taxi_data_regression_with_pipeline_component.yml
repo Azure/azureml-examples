@@ -65,22 +65,22 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "nyc_taxi_data_regression_with_pipeline_component.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python nyc_taxi_data_regression_with_pipeline_component.ipynb nyc_taxi_data_regression_with_pipeline_component.output.ipynb > sample_log.txt 2>&1
+          papermill -k python nyc_taxi_data_regression_with_pipeline_component.ipynb nyc_taxi_data_regression_with_pipeline_component.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component
     - name: Determine Failure Reason
       run: |
-          cat sample_log.txt
+          cat nyc_taxi_data_regression_with_pipeline_component.output.ipynb
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample_log.txt; then
+            if grep -q "ResourceNotReady" nyc_taxi_data_regression_with_pipeline_component.output.ipynb; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample_log.txt; then
+            elif grep -q "quota" nyc_taxi_data_regression_with_pipeline_component.output.ipynb; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample_log.txt; then
+            elif grep -q "ParentResourceNotFound" nyc_taxi_data_regression_with_pipeline_component.output.ipynb; then
               failure_reason="ParentResourceNotFound"
-            elif grep -q "already exists" sample_log.txt; then
+            elif grep -q "already exists" nyc_taxi_data_regression_with_pipeline_component.output.ipynb; then
               failure_reason="ResourceAlreadyExists"
-            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            elif grep -q "StorageAccountTypeConversionNotAllowed" nyc_taxi_data_regression_with_pipeline_component.output.ipynb; then
               failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"

@@ -69,9 +69,41 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python responsibleaidashboard-text-classification-financial-news.ipynb responsibleaidashboard-text-classification-financial-news.output.ipynb
       working-directory: sdk/python/responsible-ai/text/responsibleaidashboard-text-classification-financial-news
+    - name: Determine Failure Reason
+      run: |
+          cat responsibleaidashboard-text-classification-financial-news.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" responsibleaidashboard-text-classification-financial-news.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" responsibleaidashboard-text-classification-financial-news.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" responsibleaidashboard-text-classification-financial-news.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" responsibleaidashboard-text-classification-financial-news.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" responsibleaidashboard-text-classification-financial-news.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/responsible-ai/text/responsibleaidashboard-text-classification-financial-news
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@main
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: responsibleaidashboard-text-classification-financial-news
         path: sdk/python/responsible-ai/text/responsibleaidashboard-text-classification-financial-news
+
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "${{ github.workspace }}/infra/bootstrapping/remove_computes.sh" "cpucluster"

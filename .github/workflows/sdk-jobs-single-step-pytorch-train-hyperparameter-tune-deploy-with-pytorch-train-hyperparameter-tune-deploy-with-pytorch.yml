@@ -65,22 +65,22 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "train-hyperparameter-tune-deploy-with-pytorch.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python train-hyperparameter-tune-deploy-with-pytorch.ipynb train-hyperparameter-tune-deploy-with-pytorch.output.ipynb > sample_log.txt 2>&1
+          papermill -k python train-hyperparameter-tune-deploy-with-pytorch.ipynb train-hyperparameter-tune-deploy-with-pytorch.output.ipynb
       working-directory: sdk/python/jobs/single-step/pytorch/train-hyperparameter-tune-deploy-with-pytorch
     - name: Determine Failure Reason
       run: |
-          cat sample_log.txt
+          cat train-hyperparameter-tune-deploy-with-pytorch.output.ipynb
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample_log.txt; then
+            if grep -q "ResourceNotReady" train-hyperparameter-tune-deploy-with-pytorch.output.ipynb; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample_log.txt; then
+            elif grep -q "quota" train-hyperparameter-tune-deploy-with-pytorch.output.ipynb; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample_log.txt; then
+            elif grep -q "ParentResourceNotFound" train-hyperparameter-tune-deploy-with-pytorch.output.ipynb; then
               failure_reason="ParentResourceNotFound"
-            elif grep -q "already exists" sample_log.txt; then
+            elif grep -q "already exists" train-hyperparameter-tune-deploy-with-pytorch.output.ipynb; then
               failure_reason="ResourceAlreadyExists"
-            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            elif grep -q "StorageAccountTypeConversionNotAllowed" train-hyperparameter-tune-deploy-with-pytorch.output.ipynb; then
               failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"

@@ -301,34 +301,34 @@ jobs:
 
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb > sample_log.txt 2>&1
+          papermill -k python {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb > sample_log.txt 2>&1
+          papermill -k python -p compute_name automl-gpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
     else:
         # need CPU cluster, so override the compute cluster name to dedicated
         workflow_yaml += f"""
-          papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb > sample_log.txt 2>&1
+          papermill -k python -p compute_name automl-cpu-cluster {name}.ipynb {name}.output.ipynb
       working-directory: sdk/python/{posix_folder}"""
 
     workflow_yaml += f"""
     - name: Determine Failure Reason
       run: |
-          cat sample_log.txt
+          cat {name}.output.ipynb
           failure_reason="N/A"
           if [ "${{{{ job.status }}}}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample_log.txt; then
+            if grep -q "ResourceNotReady" {name}.output.ipynb; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample_log.txt; then
+            elif grep -q "quota" {name}.output.ipynb; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample_log.txt; then
+            elif grep -q "ParentResourceNotFound" {name}.output.ipynb; then
               failure_reason="ParentResourceNotFound"
-            elif grep -q "already exists" sample_log.txt; then
+            elif grep -q "already exists" {name}.output.ipynb; then
               failure_reason="ResourceAlreadyExists"
-            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            elif grep -q "StorageAccountTypeConversionNotAllowed" {name}.output.ipynb; then
               failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"

@@ -946,6 +946,8 @@ jobs:
             failure_reason="ResourceAlreadyExists"
           elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
             failure_reason="InvalidStorageAccount"
+          elif grep -q "InvalidComputeState" sample_log.txt; then
+            failure_reason="InvalidComputeState"
           else
             failure_reason="UncategorizedFailure"
           fi

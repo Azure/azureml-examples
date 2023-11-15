@@ -65,22 +65,22 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "tensorflow-mnist.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python tensorflow-mnist.ipynb tensorflow-mnist.output.ipynb > sample_log.txt 2>&1
+          papermill -k python tensorflow-mnist.ipynb tensorflow-mnist.output.ipynb
       working-directory: sdk/python/jobs/single-step/tensorflow/mnist
     - name: Determine Failure Reason
       run: |
-          cat sample_log.txt
+          cat tensorflow-mnist.output.ipynb
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample_log.txt; then
+            if grep -q "ResourceNotReady" tensorflow-mnist.output.ipynb; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample_log.txt; then
+            elif grep -q "quota" tensorflow-mnist.output.ipynb; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample_log.txt; then
+            elif grep -q "ParentResourceNotFound" tensorflow-mnist.output.ipynb; then
               failure_reason="ParentResourceNotFound"
-            elif grep -q "already exists" sample_log.txt; then
+            elif grep -q "already exists" tensorflow-mnist.output.ipynb; then
               failure_reason="ResourceAlreadyExists"
-            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            elif grep -q "StorageAccountTypeConversionNotAllowed" tensorflow-mnist.output.ipynb; then
               failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"

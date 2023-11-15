@@ -65,22 +65,22 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "mnist_batch_prediction.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python mnist_batch_prediction.ipynb mnist_batch_prediction.output.ipynb > sample_log.txt 2>&1
+          papermill -k python mnist_batch_prediction.ipynb mnist_batch_prediction.output.ipynb
       working-directory: sdk/python/jobs/parallel/3a_mnist_batch_identification
     - name: Determine Failure Reason
       run: |
-          cat sample_log.txt
+          cat mnist_batch_prediction.output.ipynb
           failure_reason="N/A"
           if [ "${{ job.status }}" == "failure" ]; then
-            if grep -q "ResourceNotReady" sample_log.txt; then
+            if grep -q "ResourceNotReady" mnist_batch_prediction.output.ipynb; then
               failure_reason = "ResourceNotReady"
-            elif grep -q "quota" sample_log.txt; then
+            elif grep -q "quota" mnist_batch_prediction.output.ipynb; then
               failure_reason="QuotaIssue"
-            elif grep -q "ParentResourceNotFound" sample_log.txt; then
+            elif grep -q "ParentResourceNotFound" mnist_batch_prediction.output.ipynb; then
               failure_reason="ParentResourceNotFound"
-            elif grep -q "already exists" sample_log.txt; then
+            elif grep -q "already exists" mnist_batch_prediction.output.ipynb; then
               failure_reason="ResourceAlreadyExists"
-            elif grep -q "StorageAccountTypeConversionNotAllowed" sample_log.txt; then
+            elif grep -q "StorageAccountTypeConversionNotAllowed" mnist_batch_prediction.output.ipynb; then
               failure_reason="InvalidStorageAccount"
             else
               failure_reason="UncategorizedFailure"
