@@ -1,6 +1,5 @@
 dependencies:
   - python=3.8
-  - pip=21.1.1
   - pip:
     # Protobuf is needed to avoid conflict with managed spark
     - protobuf==3.19.6
