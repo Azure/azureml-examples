@@ -12,7 +12,7 @@ RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
 REDIS_NAME=${RESOURCE_GROUP}rds
 VERSION=$(((RANDOM%1000)+1))
-FEATURESTORE_NAME="my-featurestore"${VERSION}
+FEATURESTORE_NAME="my-featurestore"
 SDK_PY_JOB_FILE="automation-test/featurestore_sdk_job.py"
 # </create_variables>
 
