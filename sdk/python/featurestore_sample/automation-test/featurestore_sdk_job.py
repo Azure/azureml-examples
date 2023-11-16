@@ -30,20 +30,20 @@ with open(
 #     exec(f.read())
 
 
-print("======clean up==========")
-from azure.ai.ml import MLClient
-from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
+# print("======clean up==========")
+# from azure.ai.ml import MLClient
+# from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 
-ml_client = MLClient(
-    AzureMLOnBehalfOfCredential(),
-    subscription_id="<SUBSCRIPTION_ID>",
-    resource_group_name="<RESOURCE_GROUP>",
-)
+# ml_client = MLClient(
+#     AzureMLOnBehalfOfCredential(),
+#     subscription_id="<SUBSCRIPTION_ID>",
+#     resource_group_name="<RESOURCE_GROUP>",
+# )
 
-result = ml_client.feature_stores.begin_delete(
-    name="<FEATURESTORE_NAME>",
-    permanently_delete=True,
-    delete_dependent_resources=False,
-).result()
+# result = ml_client.feature_stores.begin_delete(
+#     name="<FEATURESTORE_NAME>",
+#     permanently_delete=True,
+#     delete_dependent_resources=False,
+# ).result()
 
-print(result)
+# print(result)
