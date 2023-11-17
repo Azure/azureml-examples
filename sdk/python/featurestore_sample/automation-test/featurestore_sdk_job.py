@@ -24,26 +24,69 @@ with open(
 ) as f:
     exec(f.read())
 
-# # exclude 5th notebook for now
-# print("=======Test Notebook 4============")
-# with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
-#     exec(f.read())
+print("=======Test Notebook 4============")
+with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
+    exec(f.read())
+
+print("=======Test Notebook 5============")
+with open("notebooks/sdk_only/5. Develop a feature set with custom source.py") as f:
+    exec(f.read())
+
+print("=======Clean up==========")
+subscription_id = "<SUBSCRIPTION_ID>"
+resource_group_name = "<RESOURCE_GROUP>"
+featurestore_name = "<FEATURESTORE_NAME>"
+workspace_name = "<AML_WORKSPACE_NAME>"
 
 
-print("======clean up==========")
 from azure.ai.ml import MLClient
 from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 
+print("----Delete feature store----------")
 ml_client = MLClient(
     AzureMLOnBehalfOfCredential(),
-    subscription_id="<SUBSCRIPTION_ID>",
-    resource_group_name="<RESOURCE_GROUP>",
+    subscription_id=subscription_id,
+    resource_group_name=resource_group_name,
 )
 
 result = ml_client.feature_stores.begin_delete(
-    name="<FEATURESTORE_NAME>",
+    name=featurestore_name,
     permanently_delete=True,
     delete_dependent_resources=False,
 ).result()
+print(result)
 
+
+print("----Delete UAI----------")
+uai_name = f"materialization-uai-{resource_group_name}-{featurestore_name}"
+
+from azure.mgmt.msi import ManagedServiceIdentityClient
+
+msi_client = ManagedServiceIdentityClient(
+    AzureMLOnBehalfOfCredential(), subscription_id
+)
+msi_client.user_assigned_identities.delete(resource_group_name, uai_name)
+
+
+print("-----Delete redis------------")
+redis_name = "<REDIS_NAME>"
+from azure.mgmt.redis import RedisManagementClient
+
+management_client = RedisManagementClient(
+    AzureMLOnBehalfOfCredential(), subscription_id
+)
+
+result = management_client.redis.begin_delete(
+    resource_group_name=resource_group_name,
+    name=redis_name,
+).result()
+print(result)
+
+
+print("-----Delete endpoint------------")
+ws_client = MLClient(
+    AzureMLOnBehalfOfCredential(), subscription_id, resource_group_name, workspace_name
+)
+endpoint_name = "<ENDPOINT_NAME>"
+result = ws_client.online_endpoints.begin_delete(name=endpoint_name).result()
 print(result)

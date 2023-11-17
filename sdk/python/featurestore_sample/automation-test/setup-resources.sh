@@ -10,10 +10,11 @@ FEATURE_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}fs
 USER_ID="36b5b70a-a2b2-45e6-a496-df3c2ffde085"
 RAND_NUM=$RANDOM
 UAI_NAME=fstoreuai${RAND_NUM}
-REDIS_NAME=${RESOURCE_GROUP}rds
 VERSION=$(((RANDOM%1000)+1))
 FEATURESTORE_NAME="my-featurestore"${VERSION}
 SDK_PY_JOB_FILE="automation-test/featurestore_sdk_job.py"
+ENDPOINT_NAME="fraud-model"${VERSION}
+REDIS_NAME="redis"${VERSION}
 # </create_variables>
 
 # <convert_notebook_to_py>
@@ -21,10 +22,12 @@ NOTEBOOK_1="notebooks/sdk_only/1. Develop a feature set and register with manage
 NOTEBOOK_2="notebooks/sdk_only/2. Experiment and train models using features"
 NOTEBOOK_3="notebooks/sdk_only/3. Enable recurrent materialization and run batch inference"
 NOTEBOOK_4="notebooks/sdk_only/4. Enable online store and run online inference"
+NOTEBOOK_5="notebooks/sdk_only/5. Develop a feature set with custom source"
 jupytext --to py "${NOTEBOOK_1}.ipynb"
 jupytext --to py "${NOTEBOOK_2}.ipynb"
 jupytext --to py "${NOTEBOOK_3}.ipynb"
 jupytext --to py "${NOTEBOOK_4}.ipynb"
+jupytext --to py "${NOTEBOOK_5}.ipynb"
 # <convert_notebook_to_py>
 
 #<replace_template_values>
@@ -45,4 +48,7 @@ sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_
     s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_3}.py"
 sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
     s/<REDIS_NAME>/$REDIS_NAME/g;
-    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_4}.py"
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
+    s/<ENDPOINT_NAME>/$ENDPOINT_NAME/g;" "${NOTEBOOK_4}.py"
+sed -i "s/display/$OUTPUT_COMMAND/g;s/.\/Users\/<your_user_alias>\/featurestore_sample/.\//g;
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" "${NOTEBOOK_5}.py"
