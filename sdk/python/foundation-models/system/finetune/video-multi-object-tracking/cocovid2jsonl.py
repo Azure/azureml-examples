@@ -46,6 +46,7 @@ class BoundingBoxConverter(CocoVidToJSONLinesConverter):
       ]
     }
     """
+
     def __init__(self, coco_data):
         self.json_lines_data = []
         self.categories = {}
@@ -66,6 +67,7 @@ class BoundingBoxConverter(CocoVidToJSONLinesConverter):
             self.video_id_to_name[coco_data["videos"][i]["id"]] = coco_data["videos"][
                 i
             ]["name"]
+
     def _populate_image_url(self, index, coco_image):
         self.json_lines_data[index]["image_url"] = coco_image["file_name"]
         self.image_id_to_data_index[coco_image["id"]] = index
@@ -77,11 +79,14 @@ class BoundingBoxConverter(CocoVidToJSONLinesConverter):
         ]
         self.json_lines_data[index]["image_details"]["width"] = coco_image["width"]
         self.json_lines_data[index]["image_details"]["height"] = coco_image["height"]
-    
+
     def _populate_video_details(self, index, coco_image):
-        self.json_lines_data[index]["video_details"]["frame_id"] = coco_image["frame_id"]
-        self.json_lines_data[index]["video_details"]["video_name"] = self.video_id_to_name[
-            coco_image["video_id"]]
+        self.json_lines_data[index]["video_details"]["frame_id"] = coco_image[
+            "frame_id"
+        ]
+        self.json_lines_data[index]["video_details"][
+            "video_name"
+        ] = self.video_id_to_name[coco_image["video_id"]]
 
     def _populate_bbox_in_label(self, label, annotation, image_details):
         # if bbox comes as normalized, skip normalization.
@@ -105,14 +110,14 @@ class BoundingBoxConverter(CocoVidToJSONLinesConverter):
         self._populate_isCrowd(label, annotation)
         self._populate_visibility(label, annotation)
         self.json_lines_data[index]["label"].append(label)
-    
+
     def _populate_instanceId(self, label, annotation):
         label["instance_id"] = annotation["instance_id"]
 
     def _populate_isCrowd(self, label, annotation):
         if "iscrowd" in annotation.keys():
             label["isCrowd"] = int(annotation["iscrowd"])
-    
+
     def _populate_visibility(self, label, annotation):
         if "visibility" in annotation.keys():
             label["visibility"] = annotation["visibility"]
@@ -163,9 +168,7 @@ if __name__ == "__main__":
             for json_line in json_lines_data:
                 if base_url is not None:
                     image_url = json_line["image_url"]
-                    json_line["image_url"] = os.path.join(
-                        base_url, image_url
-                    )
+                    json_line["image_url"] = os.path.join(base_url, image_url)
                     json_line["image_url"] = json_line["image_url"].replace("\\", "/")
                 json.dump(json_line, outfile, separators=(",", ":"))
                 outfile.write("\n")
