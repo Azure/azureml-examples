@@ -1,0 +1,28 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+endpoint_name: text-embedding-ada-qwerty
+name: default
+description: The default deployment for generating embeddings
+type: model
+model: azureml:text-embedding-ada-002@latest
+environment:
+  name: batch-openai-mlflow
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  conda_file: environment/conda.yaml
+code_configuration:
+  code: code
+  scoring_script: batch_driver.py
+compute: azureml:batch-cluster-lp
+resources:
+  instance_count: 1
+settings:
+  max_concurrency_per_instance: 1
+  mini_batch_size: 1
+  output_action: summary_only
+  retry_settings:
+    max_retries: 1
+    timeout: 9999
+  logging_level: info
+  environment_variables:
+    OPENAI_API_TYPE: azure_ad
+    OPENAI_API_BASE: $OPENAI_API_BASE
+    OPENAI_API_VERSION: 2023-03-15-preview

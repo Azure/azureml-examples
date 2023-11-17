@@ -15,3 +15,4 @@ dependencies:
     - tabulate==0.8.9
     - azureml-mlflow
     - pandas==1.5.3
+    - click==8.0.2
