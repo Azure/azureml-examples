@@ -71,6 +71,7 @@ echo_title "RESOURCE_GROUP_NAME = \"${RESOURCE_GROUP_NAME}\" & LOCATION=\"${LOCA
 az configure --defaults group="${RESOURCE_GROUP_NAME}" workspace="${WORKSPACE_NAME}" location="${LOCATION}"  # for subsequent commands.
 az account set -s "${SUBSCRIPTION_ID}" || exit 1
 
+LOCATION=${LOCATION:-"northcentralus"}
 
 # RUN_BOOTSTRAP=1
 if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
@@ -82,8 +83,8 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
-    "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet-oai-v2"
+    "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet-oai-v2"
 
     echo_title "Ensuring Permissions on RG"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"
