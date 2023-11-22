@@ -34,6 +34,7 @@ jobs:
           creds: ${{secrets.AZUREML_CREDENTIALS}}
       - name: bootstrap resources
         run: |
+          [[ -z "${RUN_BOOTSTRAP:-}" ]] && RUN_BOOTSTRAP='true'
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap_oai_v2.sh
         working-directory: infra/bootstrapping
