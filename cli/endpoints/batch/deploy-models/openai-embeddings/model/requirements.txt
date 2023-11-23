@@ -1,0 +1,7 @@
+mlflow==2.7.0
+gunicorn==20.1.0
+numpy==1.24.4
+openai==0.27.8
+requests==2.31.0
+tenacity==8.2.2
+tiktoken==0.4.0
