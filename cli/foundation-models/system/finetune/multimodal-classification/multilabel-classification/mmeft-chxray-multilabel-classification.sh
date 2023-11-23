@@ -130,7 +130,7 @@ az ml job stream --name $mmeft_parent_job_name $workspace_info || {
 
 # 6. Create model in workspace from train job output for fine-tuned Transformers model
 az ml model create --name $finetuned_mmeft_model_name --version $version --type mlflow_model \
- --path azureml://jobs/$mmeft_parent_job_name/outputs/trained_model $workspace_info  || {
+ --path azureml://jobs/$mmeft_parent_job_name/outputs/mlflow_model_folder $workspace_info  || {
     echo "model create in workspace failed"; exit 1;
 }
 
