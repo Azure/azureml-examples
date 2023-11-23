@@ -113,11 +113,11 @@ mmeft_parent_job_name=$( az ml job create \
   --file "./mmeft-chxray-multilabel-classification.yaml" \
   $workspace_info \
   --query name -o tsv \
-  --set jobs.transformers_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
+  --set jobs.multimodal_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.mlflow_model_path.path="azureml://registries/$registry_name/models/$aml_registry_model_name/versions/$model_version" \
   inputs.training_data.path=$train_data \
   inputs.validation_data.path=$validation_data \
-  inputs.compute_model_selector=$compute_cluster_model_import \
+  inputs.compute_model_import=$compute_cluster_model_import \
   inputs.compute_finetune=$compute_cluster_finetune \
   ) || {
     echo "Failed to submit finetuning job"

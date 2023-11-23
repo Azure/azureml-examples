@@ -113,11 +113,11 @@ mmeft_parent_job_name=$( az ml job create \
   --file "./mmeft-airbnb-multiclass-classification.yaml" \
   $workspace_info \
   --query name -o tsv \
-  --set jobs.transformers_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
+  --set jobs.multimodal_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
   inputs.mlflow_model_path.path="azureml://registries/$registry_name/models/$aml_registry_model_name/versions/$model_version" \
   inputs.training_data.path=$train_data \
   inputs.validation_data.path=$validation_data \
-  inputs.compute_model_selector=$compute_cluster_model_import \
+  inputs.compute_model_import=$compute_cluster_model_import \
   inputs.compute_finetune=$compute_cluster_finetune \
   ) || {
     echo "Failed to submit finetuning job"
@@ -128,7 +128,7 @@ az ml job stream --name $mmeft_parent_job_name $workspace_info || {
     echo "job stream failed"; exit 1;
 }
 
-# 6. Create model in workspace from train job output for fine-tuned Transformers model
+# 6. Create model in workspace from train job output for fine-tuned Multimodal model
 az ml model create --name $finetuned_mmeft_model_name --version $version --type mlflow_model \
  --path azureml://jobs/$mmeft_parent_job_name/outputs/mlflow_model_folder $workspace_info  || {
     echo "model create in workspace failed"; exit 1;

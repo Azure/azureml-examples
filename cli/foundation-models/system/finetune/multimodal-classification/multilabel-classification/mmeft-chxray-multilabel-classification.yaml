@@ -20,7 +20,7 @@ inputs:
     path: ./deepspeed_configs/zero1.json
     type: uri_file
   # compute
-  compute_model_selector: sample-cpu-cluster
+  compute_model_import: sample-cpu-cluster
   compute_finetune: sample-finetune-cluster-gpu
 
 outputs:
@@ -33,14 +33,14 @@ settings:
   default_compute: azureml:sample-finetune-cluster-gpu
 
 jobs:
-  transformers_model_finetune_job:
+  multimodal_model_finetune_job:
     type: pipeline
     component: azureml://registries/azureml/components/multimodal_classification_pipeline/labels/latest
     inputs:
 
       # Compute
-      compute_model_selector: ${{parent.inputs.compute_model_selector}}
-      compute_preprocess: ${{parent.inputs.compute_model_selector}}
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_preprocess: ${{parent.inputs.compute_model_import}}
       compute_finetune: ${{parent.inputs.compute_finetune}}
       process_count_per_instance: 1
       instance_count: 1
