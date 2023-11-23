@@ -4,16 +4,13 @@ set -x
 # script inputs
 registry_name="azureml"
 
-
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
-
 # This is the model from system registry that needs to be deployed
 model_name="stabilityai-stable-diffusion-xl-refiner-1-0"
 model_label="latest"
-
 
 version=$(date +%s)
 endpoint_name="image-text-to-image-$version"
