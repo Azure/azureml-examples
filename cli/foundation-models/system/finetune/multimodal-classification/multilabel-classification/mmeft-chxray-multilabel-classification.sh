@@ -8,7 +8,7 @@ subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
-compute_cluster_model_import="sample-model-import-cluster"
+compute_cluster_model_import="sample-cpu-cluster"
 compute_cluster_finetune="sample-finetune-cluster-gpu"
 
 # If above compute cluster does not exist, create it with the following vm size
@@ -24,7 +24,7 @@ aml_registry_model_name="mmeft"
 model_label="latest"
 
 version=$(date +%s)
-finetuned_mmeft_model_name="mmeft-multiclass-classification-model"
+finetuned_mmeft_model_name="mmeft-multilabel-classification-model"
 online_endpoint_name="multimodal-classif-$version"
 deployment_sku="Standard_DS3_V2"
 # Deepspeed config
@@ -110,7 +110,7 @@ fi
 # 5. Submit finetuning job using pipeline.yaml for mmeft model
 
 mmeft_parent_job_name=$( az ml job create \
-  --file "./mmeft-airbnb-multiclass-classification.yaml" \
+  --file "./mmeft-chxray-multilabel-classification.yaml" \
   $workspace_info \
   --query name -o tsv \
   --set jobs.multimodal_model_finetune_job.component="azureml://registries/$registry_name/components/$finetuning_pipeline_component/labels/latest" \
@@ -128,7 +128,7 @@ az ml job stream --name $mmeft_parent_job_name $workspace_info || {
     echo "job stream failed"; exit 1;
 }
 
-# 6. Create model in workspace from train job output for fine-tuned Multimodal model
+# 6. Create model in workspace from train job output for fine-tuned Transformers model
 az ml model create --name $finetuned_mmeft_model_name --version $version --type mlflow_model \
  --path azureml://jobs/$mmeft_parent_job_name/outputs/mlflow_model_folder $workspace_info  || {
     echo "model create in workspace failed"; exit 1;
