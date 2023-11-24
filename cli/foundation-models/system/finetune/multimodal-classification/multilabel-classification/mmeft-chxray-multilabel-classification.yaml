@@ -55,8 +55,8 @@ jobs:
 
       ## Data preprocessing args
       problem_type: multimodal-classification-multilabel
-      label_column: Image_Index
-      image_column: Finding_Labels
+      label_column: Finding_Labels
+      image_column: Image_Index
       # columns to be ignored while training
       drop_columns: Patient_Id,OriginalImage_Width,OriginalImage_Height,OriginalImagePixelSpacing_x,OriginalImagePixelSpacing_y
 
