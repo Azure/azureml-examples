@@ -24,7 +24,7 @@ compute_model_evaluation_sku="Standard_NC6s_v3"
 gpus_per_node=1
 
 # This is the foundation model for finetuning
-mmdetection_model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
+mmdetection_model_name="mmd-3x-mask-rcnn_swin-t-p4-w7_fpn_1x_coco"
 model_label="latest"
 
 version=$(date +%s)
