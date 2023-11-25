@@ -133,7 +133,9 @@ def prepare_online_payload(payload_path: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Prepare sample data for image-text to image")
+    parser = argparse.ArgumentParser(
+        description="Prepare sample data for image-text to image"
+    )
     parser.add_argument("--payload-path", type=str, help="payload file/ folder path")
     parser.add_argument(
         "--mode",
