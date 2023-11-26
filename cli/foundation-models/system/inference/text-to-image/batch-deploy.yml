@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
-description: "Batch endpoint for for image-text-to-image task"
+description: "Batch endpoint for for (image-)text-to-image task"
 type: model
 resources:
     instance_count: 1
