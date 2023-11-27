@@ -197,7 +197,7 @@ def read_dataframe_from_csv(csv_file_path: str, dataset_dir: str) -> pd.DataFram
     """
 
     def image_to_str(img_path) -> str:
-        with open(os.path.join(dataset_dir, img_path), "rb") as f:
+        with open(os.path.join(dataset_dir, "images", img_path), "rb") as f:
             encoded_image = base64.encodebytes(f.read()).decode("utf-8")
             return encoded_image
 
