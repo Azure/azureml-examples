@@ -24,7 +24,7 @@ data_path="data_batch"
 python ./prepare_data.py --data_path $data_path --mode "batch"
 
 # Sample request data in csv format.
-sample_request_csv="./data/AirBnb/multimodal_multiclass_classification_list.csv"
+sample_request_csv="./$data_path/AirBnb/multimodal_multiclass_classification_list.csv"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
