@@ -109,7 +109,7 @@ def prepare_data_for_online_inference(dataset_dir: str) -> None:
     }
 
     # Create request json
-    request_file_name = "sample_request_data.json"
+    request_file_name = os.path.join(dataset_dir, "sample_request_data.json")
     with open(request_file_name, "w") as request_file:
         json.dump(request_json, request_file)
 

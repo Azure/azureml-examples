@@ -19,7 +19,7 @@ deployment_sku="Standard_DS3_v2"
 #  Here we assume you are using model that was fine tuned on AirBnb dataset.
 #  If not replace this with .csv file having your dataset.
 data_path="data_online"
-python ./prepare_data.py --data_path $data_path
+python ./prepare_data.py --data_path $data_path --mode "online"
 
 # sample_request_data
 sample_request_data="./$data_path/AirBnb/sample_request_data.json"
