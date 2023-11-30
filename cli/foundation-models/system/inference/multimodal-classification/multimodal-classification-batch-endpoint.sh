@@ -1,13 +1,12 @@
 set -x
 
 # script inputs
-registry_name="azureml"
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
-# This is the model from system registry that needs to be deployed
-model_name="mmeft"
+# Replace <NAME_OF_MODEL> with name of finetuned model registered in your workspace under Model Catalogue.
+model_name="<NAME_OF_MODEL>"
 model_label="latest"
 
 deployment_compute="cpu-cluster"
@@ -19,11 +18,13 @@ endpoint_name="multimodal-classif-$version"
 deployment_name="demo-$version"
 
 # Prepare data for deployment
+#  Here we assume you are using model that was fine tuned on AirBnb dataset.
+#  If not replace this with .csv file having your dataset.
 data_path="data_batch"
 python ./prepare_data.py --data_path $data_path --mode "batch"
 
-# Sample request data in csv format with image column
-sample_request_csv="./data/AirBnb/multimodal_multiclass_classification_list.csv"
+# Sample request data in csv format.
+sample_request_csv="./$data_path/AirBnb/multimodal_multiclass_classification_list.csv"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
@@ -38,13 +39,13 @@ workspace_info="--resource-group $resource_group_name --workspace-name $workspac
 
 # 2. Check if the model exists in the registry
 # Need to confirm model show command works for registries outside the tenant (aka system registry)
-if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
+if ! az ml model show --name $model_name --label $model_label --workspace-name $workspace_name
 then
-    echo "Model $model_name:$model_label does not exist in registry $registry_name"
+    echo "Model $model_name:$model_label does not exist in workspace $workspace_name"
     exit 1
 fi
 
-model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
+model_version=$(az ml model show --name $model_name --label $model_label --workspace-name $workspace_name --query version --output tsv)
 
 
 # 3. Check if compute $deployment_compute exists, else create it
@@ -68,7 +69,7 @@ az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
 # Deploy model from registry to endpoint in workspace
 az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
   endpoint_name=$endpoint_name \
-  model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
+  model=azureml:$model_name:$model_version \
   compute=$deployment_compute \
   name=$deployment_name || {
     echo "deployment create failed"; exit 1;
