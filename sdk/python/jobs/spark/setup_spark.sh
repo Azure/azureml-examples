@@ -48,16 +48,19 @@ AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $
 #<setup_vnet_resources>
 if [[ "$2" == *"managed_vnet"* ]]
 then
-	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet
-	AZURE_STORAGE_ACCOUNT="blobstoragevnet"
+	TIMESTAMP=`date +%m%d%H%M%S`
+	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
+	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
-	GEN2_STORAGE_ACCOUNT_NAME="gen2storagevnet"
+	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
+
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
 	az storage container create -n $BLOB_CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT
 
 	az storage account create --name $GEN2_STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
 	az storage container create -n $ADLS_CONTAINER_NAME --account-name $GEN2_STORAGE_ACCOUNT_NAME
+
 
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
