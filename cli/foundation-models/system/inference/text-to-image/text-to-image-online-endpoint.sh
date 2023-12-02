@@ -2,9 +2,9 @@ set -x
 
 # script inputs
 registry_name="azureml"
-subscription_id=""
-resource_group_name=""
-workspace_name=""
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 model_name="CompVis-stable-diffusion-ds-mii"
@@ -32,29 +32,25 @@ az account set -s $subscription_id
 workspace_info="--resource-group $resource_group_name --workspace-name $workspace_name"
 
 # 2. Check if the model exists in the registry
-# Need to confirm model show command works for registries outside the tenant (aka system registry)
-# if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
-if ! az ml model show --name $model_name --label $model_label $workspace_info
+if ! az ml model show --name $model_name --label $model_label --registry-name $registry_name 
 then
     echo "Model $model_name:$model_label does not exist in registry $registry_name"
     exit 1
 fi
 
 # Get the latest model version
-# model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
-
-model_version=$(az ml model show --name $model_name --label $model_label $workspace_info --query version --output tsv)
+model_version=$(az ml model show --name $model_name --label $model_label --registry-name $registry_name --query version --output tsv)
 
 # 3. Deploy the model to an endpoint
 # Create online endpoint 
-az ml online-endpoint create --name $endpoint_name $workspace_info --no-wait False || {
+az ml online-endpoint create --name $endpoint_name $workspace_info || {
     echo "endpoint create failed"; exit 1;
 }
 
 # 3.1 Setup Deployment Parameters
 max_concurrent_request=2  # the maximum number of concurrent requests supported by the endpoint
 
-# Note: We have set the value of `MAX_CONCURRENT_REQUESTS` to 2, 
+# Note: We have set the value of `max_concurrent_request` to 2, 
 # as we are utilizing the `Standard_NC6s_v3` SKU for deployment, which has one GPU. 
 # If you are using a larger SKU, please increase this value to get the maximum performance.
 
