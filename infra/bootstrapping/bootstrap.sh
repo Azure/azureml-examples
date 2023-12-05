@@ -79,64 +79,9 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_resourcegroup
     echo_title "Ensuring Workspace"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "${WORKSPACE_NAME}"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_ml_workspace "mlw-mevnet"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
-    "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
 
     echo_title "Ensuring Permissions on RG"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"
-
-    echo_title "Ensuring Registry ${REGISTRY_NAME}"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME}"
-    echo_title "Ensuring Registry of tomorrow ${REGISTRY_NAME_TOMORROW}"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_registry "${REGISTRY_NAME_TOMORROW}"
-    
-    echo_title "Ensuring CPU compute"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster" 0 20 "Standard_DS3_v2"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-cpu-cluster" 0 4 "Standard_DS3_v2"
-    # Larger CPU cluster for Dask and Spark examples
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
-    
-    echo_title "Ensuring GPU compute"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "STANDARD_NC6s_v3"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6s_v3"
-    # v100 single GPU cluster for pytorch 2.0 based notebooks
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-v100-1GPU-cluster" 0 4 "Standard_NC6s_v3"
-    # v100 GPU cluster for deepspeed cli examples
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-v100-cluster" 0 2 "Standard_ND40rs_v2"
-    
-    echo_title "Running prerequisites"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_prerequisites_in_workspace
-    "$SCRIPT_DIR"/sdk_helpers.sh update_dataset
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_prerequisites_in_registry
-
-    "$SCRIPT_DIR"/sdk_helpers.sh register_providers
-
-    echo_title "Creating AKS clusters."
-    configure_aks_cluster=(
-      aks-cpu-is
-      aks-cpu-ml
-      aks-cpu-od
-      aks-cpu-mc
-      scoring-explain
-    )
-    for aks_compute in "${configure_aks_cluster[@]}"; do
-      (
-        echo_info "Creating AKS cluster: '$aks_compute'"
-        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
-      ) &
-    done
-    wait # until all AKS are created
-    for aks_compute in "${configure_aks_cluster[@]}"; do
-      (
-        echo_info "Attaching AKS cluster: '$aks_compute'"
-        "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${aks_compute}" "managedClusters" "Microsoft.ContainerService/managedClusters"
-        "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${aks_compute}" "${aks_compute}" "managedClusters" "azureml"
-      )
-    done
-    echo_info ">>> Done creating AKS clusters"
 
     # Arc cluster configuration
     configure_arc_cluster=(
