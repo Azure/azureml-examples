@@ -2,3 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schem
 name: basic-chat-endpoint
 description: basic chat endpoint deployed using CLI
 auth_mode: key
+identity:
+  type: user_assigned
+  user_assigned_identities:
+    - resource_id: user_identity_ARM_id_place_holder

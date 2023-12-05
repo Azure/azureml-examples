@@ -1,10 +1,21 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: basic-chat-deployment
+name: basic-chat-custom-docker
 endpoint_name: basic-chat-endpoint
-model: azureml:basic-chat-model:1
+model:
+  path: ./basic-chat
+  properties:
+    azureml.promptflow.source_flow_id: {insert random GUID}
+    # Following are properties only for chat flow 
+    # endpoint detail UI Test tab needs this property to know it's a chat flow
+    azureml.promptflow.mode: chat
+    # endpoint detail UI Test tab needs this property to know which is the input column for chat flow
+    azureml.promptflow.chat_input: question
+    # endpoint detail UI Test tab needs this property to know which is the output column for chat flow
+    azureml.promptflow.chat_output: answer
 environment: 
-  # recommend to use latest version of promptflow-runtime image
-  image: mcr.microsoft.com/azureml/promptflow/promptflow-runtime:latest
+  build:
+    path: image_build_with_reqirements
+    dockerfile_path: Dockerfile
   # deploy prompt flow is BYOC, so we need to specify the inference config
   inference_config:
     liveness_route:
@@ -26,11 +37,4 @@ environment_variables:
   # if you want to deploy to serving mode, you need to set this env variable to "serving"
   PROMPTFLOW_RUN_MODE: serving
   # currently it is for pulling connections from workspace
-  PRT_CONFIG_OVERRIDE: deployment.subscription_id=ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9,deployment.resource_group=keli19-aml,deployment.workspace_name=keli19-eastus,deployment.endpoint_name=basic-chat-endpoint-1025,deployment.deployment_name=basic-chat-monitor
-app_insights_enabled: true
-data_collector:
-  collections:
-    model_inputs:
-      enabled: "true"
-    model_outputs:
-      enabled: "true"
+  PRT_CONFIG_OVERRIDE: deployment.subscription_id=<subscription_id>,deployment.resource_group=<resource_group_name>,deployment.workspace_name=<workspace_name>,deployment.endpoint_name=basic-chat-endpoint,deployment.deployment_name=basic-chat-custom-docker
