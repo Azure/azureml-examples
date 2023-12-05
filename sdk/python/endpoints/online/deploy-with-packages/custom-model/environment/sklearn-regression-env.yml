@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: sklearn-regression-env
+image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+conda_file: conda.yaml
+description: An environment for models built with XGBoost and Scikit-learn.
