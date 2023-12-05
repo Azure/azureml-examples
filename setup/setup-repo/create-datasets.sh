@@ -1,6 +1,6 @@
 # this dataset is needed for the sample under cli/jobs/pipelines-with-components/basics/4d_dataset_input
 
-az ml data create -f ../cli/jobs/pipelines-with-components/basics/4d_dataset_input/data.yml
+az ml data create -f ../../cli/jobs/pipelines-with-components/basics/4d_data_input/data.yml 
 
 
 
