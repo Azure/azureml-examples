@@ -26,8 +26,10 @@ environment_variables:
   # if you want to deploy to serving mode, you need to set this env variable to "serving"
   PROMPTFLOW_RUN_MODE: serving
   # currently it is for pulling connections from workspace
-  PRT_CONFIG_OVERRIDE: deployment.subscription_id=ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9,deployment.resource_group=keli19-aml,deployment.workspace_name=keli19-eastus,deployment.endpoint_name=basic-chat-endpoint-1025,deployment.deployment_name=basic-chat-monitor
+  PRT_CONFIG_OVERRIDE: deployment.subscription_id=<subscription_id>,deployment.resource_group=<resource_group_name>,deployment.workspace_name=<workspace_name>,deployment.endpoint_name=basic-chat-endpoint,deployment.deployment_name=basic-chat-deployment
+# enable this will collect metrics such as latency/token/etc during inference time to workspace default appinsights
 app_insights_enabled: true
+# enable this will collect model inputs and outputs during inference time for later model monitoring
 data_collector:
   collections:
     model_inputs:
