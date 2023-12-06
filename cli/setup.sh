@@ -38,9 +38,9 @@ then
     # Installing extension temporarily assuming the run is on old subscription
     # without bootstrap script.
 
-    # <az_configure_defaults>
+    # <az_defaults>
     az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
-    # </az_configure_defaults>
+    # </az_defaults>
     echo "Default resource group set to $GROUP"
 else
     echo "Workflows are using the new subscription."
