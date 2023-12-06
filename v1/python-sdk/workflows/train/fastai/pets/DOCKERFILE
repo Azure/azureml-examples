@@ -1,7 +1,0 @@
-FROM fastdotai/fastai:latest
-#RUN pip uninstall -y enum34 
-#RUN pip uninstall -y fastai
-#RUN pip install aenum 
-#RUN pip install "fastai<2"
-RUN conda install -y pip=20.1.1
-RUN pip install azureml-mlflow
