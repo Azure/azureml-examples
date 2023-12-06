@@ -1,5 +1,5 @@
 # pydata
-numpy==1.21.2
+numpy==1.22
 scipy==1.7.1
 pandas==1.3.0
 scikit-learn==0.24.2
@@ -19,7 +19,7 @@ matplotlib==3.4.3
 
 # python tools
 tqdm==4.62.2
-joblib==1.0.1
+joblib==1.2.0
 jupyter==1.0.0
 ipykernel==6.4.1
 papermill==2.3.3
