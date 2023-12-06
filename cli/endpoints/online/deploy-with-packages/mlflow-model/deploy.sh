@@ -4,12 +4,16 @@ MODEL_PATH='model'
 az ml model create --name $MODEL_NAME --path $MODEL_PATH --type mlflow_model
 #</register_model>
 
+#<model_version>
+MODEL_VERSION=$(az ml model show --name $MODEL_NAME --label latest | jq -r .version)
+#</model_version>
+
 #<build_package>
-az ml model package -n $MODEL_NAME -l latest --file package.yml
+az ml model package --name $MODEL_NAME --version $MODEL_VERSION --file package.yml
 #</build_package>
 
 #<endpoint_name>
-ENDPOINT_NAME = "heart-classifier"
+ENDPOINT_NAME="heart-classifier"
 #</endpoint_name>
 
 # The following code ensures the created deployment has a unique name
@@ -25,7 +29,7 @@ az ml online-deployment create -f deployment.yml -e $ENDPOINT_NAME
 #</create_deployment>
 
 #<test_deployment>
-az ml online-endpoint invoke -n $ENDPOINT_NAME -d with-package -f sample-request.json
+az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment with-package -r sample-request.json
 #</test_deployment>
 
 #<create_deployment_inline>
@@ -37,5 +41,5 @@ az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 #</delete_resources>
 
 #<build_package_copy>
-az ml model package -n $MODEL_NAME -l latest --file package-external.yml
+az ml model package --name $MODEL_NAME --version $MODEL_VERSION --file package-external.yml
 #</build_package_copy>
