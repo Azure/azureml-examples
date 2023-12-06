@@ -24,7 +24,7 @@ compute_model_evaluation_sku="Standard_NC6s_v3"
 gpus_per_node=1
 
 # This is the foundation model for finetuning
-mmdetection_model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
+mmdetection_model_name="mmd-3x-mask-rcnn_swin-t-p4-w7_fpn_1x_coco"
 model_label="latest"
 
 version=$(date +%s)
@@ -137,7 +137,7 @@ fi
 # 5. Submit finetuning job using pipeline.yaml for a open-mmlab mmdetection model
 
 # If you want to use a MMDetection model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
-# inputs.model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
+# inputs.model_name="mask-rcnn_swin-t-p4-w7_fpn_1x_coco"
 
 mmdetection_parent_job_name=$( az ml job create \
   --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yaml \
