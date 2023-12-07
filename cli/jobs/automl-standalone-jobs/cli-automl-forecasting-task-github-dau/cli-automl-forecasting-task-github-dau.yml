@@ -2,7 +2,7 @@ $schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schem
 type: automl
 
 experiment_name: dpv2-cli-automl-forecasting-github-dau-experiment
-description: A Time-Series Forecasting job using Github DAU dataset that trains only the TCNForecaster model.
+description: A Time-Series Forecasting job using GitHub DAU dataset that trains only the TCNForecaster model.
 
 
 task: forecasting
