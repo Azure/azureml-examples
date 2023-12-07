@@ -6,7 +6,7 @@ experiment_name: AzureML-Cli-Train-Finetune-Vision-MultiClass-Samples
 inputs:
   # # Model - specify the foundation model available in the azureml system registry
   mlflow_model_path:
-    path: azureml://registries/azureml/models/google-vit-base-patch16-224/versions/5
+    path: azureml://registries/azureml/models/google-vit-base-patch16-224/versions/10
     type: mlflow_model
   # model_name: microsoft/beit-base-patch16-224-pt22k-ft22k
   # dataset files
@@ -52,6 +52,7 @@ jobs:
 
       # Model import args
       task_name: image-classification
+      download_from_source: False # True for downloading a model directly from HuggingFace
       model_family: HuggingFaceImage
       # # Specify the model_name instead of mlflow_model if you want to use a model from the huggingface hub
       mlflow_model: ${{parent.inputs.mlflow_model_path}} 
