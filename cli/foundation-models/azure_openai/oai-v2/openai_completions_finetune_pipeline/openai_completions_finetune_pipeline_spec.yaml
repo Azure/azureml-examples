@@ -20,10 +20,10 @@ jobs:
     inputs:
       train_dataset:
         type: uri_folder
-        path: azureml:oai_sample_training_data:1
+        path: azureml:oai_sample_training_data_chat:1
       validation_dataset:
         type: uri_folder
-        path: azureml:oai_sample_training_data:1
+        path: azureml:oai_sample_training_data_chat:1
       registered_model_name: ${{parent.inputs.registered_model_name}}
       model: ${{parent.inputs.model}}
       task_type: ${{parent.inputs.task_type}}
