@@ -14,7 +14,7 @@ The image used for this example is defined in file `ts-hf-tg.dockerfile`. It use
 
 ## Model
 
-To prepare the model, the [Huggingface_Transformers](https://github.com/pytorch/serve/tree/master/examples/Huggingface_Transformers) directory is cloned from the `pytorch/serve` Github repo. We use the same image built for deployment above to prepare the model per the instructions in the Huggingface example. 
+To prepare the model, the [Huggingface_Transformers](https://github.com/pytorch/serve/tree/master/examples/Huggingface_Transformers) directory is cloned from the `pytorch/serve` GitHub repo. We use the same image built for deployment above to prepare the model per the instructions in the Huggingface example. 
 
 ## Environment
 The environment is defined inline in the deployment yaml and references the ACR url of the image. The ACR must be associated with the workspace (or have a user-assigned managed identity that enables ACRPull) in order to successfully deploy.
