@@ -1,0 +1,5 @@
+{
+  "metrics": ["mean_average_precision", "recall", "precision", "per_label_metrics", "image_level_binary_classsifier_metrics", "confusion_matrices_per_score_threshold"],
+  "iou_threshold" : 0.5,
+  "box_score_threshold" : 0.3
+}

@@ -5,6 +5,9 @@ experiment_name: fill-mask-model-evaluation-subgraph
 
 compute: gpu-cluster-big
 
+settings:
+  continue_on_step_failure: false
+
 jobs:
   prepare_data_job:
     type: command
@@ -25,7 +28,8 @@ jobs:
         path: azureml://registries/azureml/models/bert-base-uncased/versions/4
       input_column_names: input_string
       label_column_name: title
-      device: gpu
+      device: auto
+      compute_name: gpu-cluster-big
       evaluation_config:
         path: "../../../../../sdk/python/foundation-models/system/evaluation/fill-mask/eval-config.json"
         type: uri_file

@@ -142,6 +142,7 @@ jobs:
                       name=sys.argv[3],
                       auth=cli_auth)
         datastore = ws.datastores["workspaceblobstore"]
+        Dataset.File.upload_directory("example-data", (datastore, "example-data"))
         dataset = Dataset.File.from_files(path=[(datastore, "example-data")])
         dataset.register(ws, "sampledata")
         ' "$SUBSCRIPTION_ID" "$RESOURCE_GROUP_NAME" "$WORKSPACE_NAME"
