@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: mmlu_humanities_claude
-description: Claude eval on MMLU Humanities
+display_name: mmlu_stem_claude
+description: Claude eval on MMLU STEM
 inputs:
   endpoint_url: https://bedrock-runtime.us-east-1.amazonaws.com/model/anthropic.claude-v2:1/invoke
   ws_connection_name: <connection name>
@@ -14,7 +14,7 @@ jobs:
     limits:
       timeout: 900
     inputs:
-      configuration: formal_logic,high_school_european_history,high_school_us_history,high_school_world_history,international_law,jurisprudence,logical_fallacies,moral_disputes,moral_scenarios,philosophy,prehistory,professional_law,world_religions
+      configuration: abstract_algebra,anatomy,astronomy,college_biology,college_chemistry,college_computer_science,college_mathematics,college_physics,computer_security,conceptual_physics,electrical_engineering,elementary_mathematics,high_school_biology,high_school_chemistry,high_school_computer_science,high_school_mathematics,high_school_physics,high_school_statistics,machine_learning
       split: test
       script_path:
         type: uri_file
@@ -60,7 +60,7 @@ jobs:
     limits:
       timeout: 900
     inputs:
-      configuration: formal_logic,high_school_european_history,high_school_us_history,high_school_world_history,international_law,jurisprudence,logical_fallacies,moral_disputes,moral_scenarios,philosophy,prehistory,professional_law,world_religions
+      configuration: abstract_algebra,anatomy,astronomy,college_biology,college_chemistry,college_computer_science,college_mathematics,college_physics,computer_security,conceptual_physics,electrical_engineering,elementary_mathematics,high_school_biology,high_school_chemistry,high_school_computer_science,high_school_mathematics,high_school_physics,high_school_statistics,machine_learning
       split: dev
       script_path:
         type: uri_file
