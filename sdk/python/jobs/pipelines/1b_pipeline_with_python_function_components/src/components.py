@@ -12,7 +12,8 @@ def train_model(
     max_epochs: int,
     model_output: Output(type="uri_folder"),
     learning_rate=0.02,
-):
+    input_int: int=None
+) -> int:
     """A dummy train component.
 
     Args:
@@ -37,6 +38,8 @@ def train_model(
     model = str(uuid4())
     (Path(model_output) / "model").write_text(model)
 
+    return input_int
+
 
 @command_component(
     display_name="Score",
@@ -50,7 +53,9 @@ def score_data(
     model_input: Input(type="uri_folder"),
     test_data: Input(type="uri_file"),
     score_output: Output(type="uri_folder"),
-):
+    input_int: int,
+    input_str: str
+) -> str:
     """A dummy score component."""
 
     lines = [
@@ -71,10 +76,15 @@ def score_data(
     # Here only print text to output file as demo
     (Path(score_output) / "score").write_text("scored with {}".format(model))
 
+    print("input_int:", input_int)
+    print("input_str:", input_str)
+
+    return input_str
+
 
 @command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
-    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder")
+    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), input_int:int, input_str: str
 ):
     """A dummy evaluate component."""
 
@@ -90,13 +100,5 @@ def eval_model(
     # Here only output a dummy file for demo.
     (Path(eval_output) / "eval_result").write_text("eval_result")
 
-
-# int, float, string, bool are used the same way when define a primary output.
-@command_component()
-def component_return_int_output(input_int: int) -> int:
-    return input_int
-
-
-@command_component()
-def component_return_integer_output(input_int: int) -> Output(type="integer"):
-    return input_int
+    print("input_int:", input_int)
+    print("input_str:", input_str)
