@@ -53,8 +53,8 @@ def score_data(
     model_input: Input(type="uri_folder"),
     test_data: Input(type="uri_file"),
     score_output: Output(type="uri_folder"),
-    input_int: int,
-    input_str: str
+    input_int: int=None,
+    input_str: str=None
 ) -> str:
     """A dummy score component."""
 
@@ -84,7 +84,7 @@ def score_data(
 
 @command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
-    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), input_int:int, input_str: str
+    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), input_int:int=None, input_str: str=None
 ):
     """A dummy evaluate component."""
 
