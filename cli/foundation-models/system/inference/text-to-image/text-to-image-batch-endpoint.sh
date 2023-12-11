@@ -8,7 +8,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="runwayml-stable-diffusion-v1-5"
+model_name="Deci-DeciDiffusion-v1-0"
 model_label="latest"
 
 version=$(date +%s)
@@ -52,10 +52,10 @@ else
 fi
 
 # 4. Submit a sample request to endpoint
-data_path="./text_to_image_batch_data/batch_data"
+data_path="./text_to_image_batch_data"
 python utils/prepare_data.py --payload-path $data_path --mode "batch"
 # Path where the processes csvs are dumped. This is the input to the endpoint
-processed_data_path="./text_to_image_batch_data/processed_batch_data"
+processed_data_path="./text_to_image_batch_data"
 
 # Check if scoring folder exists
 if [ -d $processed_data_path ]; then
