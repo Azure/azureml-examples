@@ -3,8 +3,7 @@ from random import randint
 from uuid import uuid4
 
 # mldesigner package contains the command_component which can be used to define component from a python function
-from mldesigner import command_component, Input, Output, Meta
-from typing_extensions import Annotated
+from mldesigner import command_component, Input, Output
 
 
 @command_component()
@@ -93,11 +92,6 @@ def eval_model(
 
 
 # int, float, string, bool are used the same way when define a primary output.
-@command_component()
-def component_return_annotated_output(input_int: int) -> Annotated[int, Meta(description="test annotation int")]:
-    return 1
-
-
 @command_component()
 def component_return_int_output(input_int: int) -> int:
     return input_int
