@@ -1,0 +1,35 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+
+name: download_and_register_model
+version: 0.0.0
+type: command
+
+is_deterministic: True
+
+display_name: Download and register model to ws
+description: Component downloads and registers model to workspace for deployement purpose
+inputs:
+  registry_name: 
+    type: string
+  subscription_id:
+    type: string
+  resource_group: 
+    type: string
+  workspace_name: 
+    type: string
+  model_name:
+    type: string
+outputs:
+  local_model:
+    type: uri_folder
+environment: azureml://registries/azureml/environments/model-management/versions/17
+
+code: ./
+command: >
+  python download_model_to_ws.py
+  --registry_name ${{inputs.registry_name}}
+  --subscription_id ${{inputs.subscription_id}}
+  --resource_group ${{inputs.resource_group}}
+  --workspace_name ${{inputs.workspace_name}}
+  --model_name ${{inputs.model_name}}
+  --local_model_path ${{outputs.local_model}}
