@@ -8,7 +8,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="runwayml-stable-diffusion-inpainting"
+model_name="runwayml-stable-diffusion-v1-5"
 model_label="latest"
 
 version=$(date +%s)
