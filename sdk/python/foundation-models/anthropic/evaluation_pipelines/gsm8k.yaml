@@ -29,7 +29,7 @@ jobs:
       dataset:
         type: uri_folder
         path: ${{parent.jobs.downloader.outputs.output_dataset}}
-      sampling_style: random
+      sampling_style: head
       sampling_ratio: ${{parent.inputs.sample_ratio}}
       random_seed: 0
     outputs:
@@ -109,19 +109,15 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_preprocessor.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a problem and asked to find the answer after thinking and calculating step by step. \
+      prefix: "\n\nYou are given a problem and asked to find the answer after thinking and calculating step by step. \
       There are examples within <example> tags for you to learn from. For the last question respond \
       with the number you calculated within the tags <answer> and </answer>. Do not add other text inside the answer tags.\n\nHuman:"
-      prompt_pattern: |-
-        Q: {{question}}
-        A:
-
-        Assistant:
-      few_shot_pattern: |-
-        <example>
-        Q: {{question}}
-        A: {{solution}} The answer is {{answer}}.
-        </example>
+      prompt_pattern: "\nQ: {{question}}\n\
+      A:\n\nAssistant:\n\n"
+      few_shot_pattern: "<example>\n\
+      Q: {{question}}\n\
+      A: {{solution}} The answer is {{answer}}.\n\
+      </example>"
       n_shots: 8
       output_pattern: '{{answer}}'
       few_shot_separator: "\n\n"

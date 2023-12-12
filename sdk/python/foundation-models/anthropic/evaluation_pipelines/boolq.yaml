@@ -109,26 +109,22 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_preprocessor.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a question along with context and asked to choose whether the question is true or false. \
+      prefix: "\n\nYou are given a question along with context and asked to choose whether the question is true or false. \
         There are examples within <example> tags for you to learn from. For the last question respond \
         with only true or false. The answer must be within the tags \
         <answer> and </answer>. Do not add other text to the response.\n\nHuman:"
-      prompt_pattern: |-
-        Given the context answer the question: context: {{context}}
-        question: {{question}}
-        1.: {{answerA}}
-        2.: {{answerB}}
-        Answer:
-
-        Assistant:
-      few_shot_pattern: |-
-        <example>
-        Given the context answer the question: context: {{context}}
-        question: {{question}}
-        1.: {{answerA}}
-        2.: {{answerB}}
-        Answer: {{target}}
-        </example>
+      prompt_pattern: "\nGiven the context answer the question: context: {{context}}\n\
+      question: {{question}}\n\
+      1.: {{answerA}}\n\
+      2.: {{answerB}}\n\
+      Answer:\n\nAssistant:\n\n"
+      few_shot_pattern: "<example>\n\
+      Given the context answer the question: context: {{context}}\n\
+      question: {{question}}\n\
+      1.: {{answerA}}\n\
+      2.: {{answerB}}\n\
+      Answer: {{target}}\n\
+      </example>"
       n_shots: 5
       output_pattern: ' {{target}}'
       few_shot_separator: "\n\n"

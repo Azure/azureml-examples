@@ -109,30 +109,26 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_preprocessor.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a problem and asked to choose between answers in options 1, 2, 3, or 4. \
+      prefix: "\n\nYou are given a problem and asked to choose between answers in options 1, 2, 3, or 4. \
         There are examples within <example> tags for you to learn from. For the last question respond \
         with only the number of the option you choose. This number must be within the tags \
         <answer> and </answer>. Do not add other text to the response.\n\nHuman:"
-      prompt_pattern: |-
-        Question: {{question}}
-        Answer options:
-        (1) {{choices[0]}}
-        (2) {{choices[1]}}
-        (3) {{choices[2]}}
-        (4) {{choices[3]}}
-        The answer is:
-
-        Assistant:
-      few_shot_pattern: |-
-        <example>
-        Question: {{question}}
-        Answer options:
-        (1) {{choices[0]}}
-        (2) {{choices[1]}}
-        (3) {{choices[2]}}
-        (4) {{choices[3]}}
-        The answer is: {{answer}}
-        </example>
+      prompt_pattern: "\nQuestion: {{question}}\n\
+      Answer options:\n\
+      (1) {{choices[0]}}\n\
+      (2) {{choices[1]}}\n\
+      (3) {{choices[2]}}\n\
+      (4) {{choices[3]}}\n\
+      The answer is:\n\nAssistant:\n\n"
+      few_shot_pattern: "<example>\n\
+      Question: {{question}}\n\
+      Answer options:\n\
+      (1) {{choices[0]}}\n\
+      (2) {{choices[1]}}\n\
+      (3) {{choices[2]}}\n\
+      (4) {{choices[3]}}\n\
+      The answer is: {{answer}}\n\
+      </example>"
       n_shots: 10
       output_pattern: '{{answer}}'
       few_shot_separator: "\n\n"

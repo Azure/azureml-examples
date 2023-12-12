@@ -75,26 +75,22 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_sampler.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a problem and asked to choose between answers in options 1 or 2. \
+      prefix: "\n\nYou are given a problem and asked to choose between answers in options 1 or 2. \
         There are examples within <example> tags for you to learn from. For the last question respond \
         with only the number of the option you choose. This number must be within the tags \
         <answer> and </answer>. Do not add other text to the response.\n\nHuman:"
-      prompt_pattern: |-
-        Goal: {{goal}}
-        Answer options:
-        (1) {{sol1}}
-        (2) {{sol2}}
-        The answer is:
-
-        Assistant:
-      few_shot_pattern: |-
-        <example>
-        Goal: {{goal}}
-        Answer options:
-        (1) {{sol1}}
-        (2) {{sol2}}
-        The answer is: {{ (label + 1) }}
-        </example>
+      prompt_pattern: "\nGoal: {{goal}}\n\
+      Answer options:\n\
+      (1) {{sol1}}\n\
+      (2) {{sol2}}\n\
+      The answer is:\n\nAssistant:\n\n"
+      few_shot_pattern: "<example>\n\
+      Goal: {{goal}}\n\
+      Answer options:\n\
+      (1) {{sol1}}\n\
+      (2) {{sol2}}\n\
+      The answer is: {{ (label + 1) }}\n\
+      </example>"
       n_shots: 5
       output_pattern: '{{ (label + 1) }}'
       few_shot_separator: "\n\n"

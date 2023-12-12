@@ -45,12 +45,12 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.sampler.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a function definition with comments inside it describing what the function must do. \
+      prefix: "\n\nYou are given a function definition with comments inside it describing what the function must do. \
       You are asked to fill in the function body with code that satisfies the comments. Your function must pass the test \
       functions given in the input. Output must be code only with no explanations. \
       Output must be only code beginning with [BEGIN] and ending with [DONE] tags. \
-      Make sure to include the function definition statement and the function body.\n\nHuman:"
-      prompt_pattern: "{{prompt}}\n\nAssistant:"
+      Make sure to include the function definition statement and the function body.\n\nHuman:\n"
+      prompt_pattern: "{{prompt}}\n\nAssistant:\n\n"
       n_shots: 0
       output_pattern: |-
         {{test}}

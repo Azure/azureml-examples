@@ -31,7 +31,7 @@ jobs:
       dataset:
         type: uri_folder
         path: ${{parent.jobs.downloader.outputs.output_dataset}}
-      sampling_style: random
+      sampling_style: head
       sampling_ratio: ${{parent.inputs.sample_ratio}}
       random_seed: 0
     outputs:
@@ -113,28 +113,24 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_preprocessor.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a problem and asked to choose between options A, B, C, or D. \
+      prefix: "\n\nYou are given a problem and asked to choose between options A, B, C, or D. \
         There are examples within <example> tags for you to learn from. For the last question respond \
         with only the letter of the option you choose. This letter must be within the tags \
         <answer> and </answer>. Do not add other text to the response.\n\nHuman:"
-      prompt_pattern: |-
-        ### Question: {{question}}
-        A. {{choices[0]}}
-        B. {{choices[1]}}
-        C. {{choices[2]}}
-        D. {{choices[3]}}
-        ###Answer:
-        
-        Assistant:
-      few_shot_pattern: |- 
-        <example>
-        ### Question: {{question}}
-        A. {{choices[0]}}
-        B. {{choices[1]}}
-        C. {{choices[2]}}
-        D. {{choices[3]}}
-        ###Answer: {{answer}}
-        </example>
+      prompt_pattern: "\n### Question: {{question}}\n\
+      A. {{choices[0]}}\n\
+      B. {{choices[1]}}\n\
+      C. {{choices[2]}}\n\
+      D. {{choices[3]}}\n\
+      ###Answer:\n\nAssistant:\n\n"
+      few_shot_pattern: "<example>\n\
+      ### Question: {{question}}\n\
+      A. {{choices[0]}}\n\
+      B. {{choices[1]}}\n\
+      C. {{choices[2]}}\n\
+      D. {{choices[3]}}\n\
+      ###Answer: {{answer}}\n\
+      </example>"
       n_shots: 5
       output_pattern: '{{answer}}'
       few_shot_separator: "\n\n"

@@ -77,41 +77,25 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_sampler.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "You are given a text with a blank and asked to choose between answers in options 1 or 2 to fill in the blank. \
+      prefix: "\n\nYou are given a text with a blank and asked to choose between answers in options 1 or 2 to fill in the blank. \
       There are examples within <example> tags for you to learn from. For the last question respond with only the number of the option you choose. \
       This number must be within the tags <answer> and </answer>. Do not add other text to the response.\n\nHuman:"
-      prompt_pattern: |-
-        ### Text:
-
-        {{sentence}}
-
-        ### Option 1:
-
-        {{option1}}
-
-        ### Option 2:
-
-        {{option2}}
-
-        ### Answer:
-
-        Assistant:
-      few_shot_pattern: |-
-        <example>
-        ### Text:
-
-        {{sentence}}
-
-        ### Option 1:
-
-        {{option1}}
-
-        ### Option 2:
-
-        {{option2}}
-
-        ### Answer: {{answer}}
-        </example>
+      prompt_pattern: "\n### Text:\n\n\
+      {{sentence}}\n\n\
+      ### Option 1:\n\n\
+      {{option1}}\n\n\
+      ### Option 2:\n\n\
+      {{option2}}\n\n\
+      ### Answer:\n\nAssistant:\n\n"
+      few_shot_pattern: "<example>\n\
+      ### Text:\n\n\
+      {{sentence}}\n\n\
+      ### Option 1:\n\n\
+      {{option1}}\n\n\
+      ### Option 2:\n\n\
+      {{option2}}\n\n\
+      ### Answer: {{answer}}\n\
+      </example>"
       n_shots: 5
       output_pattern: '{{answer}}'
       few_shot_separator: "\n\n"
