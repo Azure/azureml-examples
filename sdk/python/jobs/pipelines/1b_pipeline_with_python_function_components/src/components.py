@@ -80,7 +80,7 @@ def score_data(
 
 @command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
-    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), input_int:int=None, scoring_file: str=None
+    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), scoring_file: str=None
 ):
     """A dummy evaluate component."""
 
