@@ -19,6 +19,7 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -31,13 +32,11 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
-    - name: pip install forecasting reqs
-      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
