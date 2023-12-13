@@ -2,8 +2,8 @@ SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 LOCATION=$(az ml workspace show --query location -o tsv)
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
-TIMESTAMP=`date +%H%M%S`
-PROJECT_WORKSPACE_NAME_VNET="fs-proj-ws"{$TIMESTAMP}
+VERSION=$(((RANDOM%1000)+1))
+PROJECT_WORKSPACE_NAME_VNET="fs-proj-ws"{$VERSION}
 
 ## Create a project workspace
 az ml workspace create --name $PROJECT_WORKSPACE_NAME_VNET --resource-group $RESOURCE_GROUP --location $LOCATION
@@ -17,13 +17,13 @@ az ml workspace provision-network --resource-group $RESOURCE_GROUP --name $PROJE
 az ml workspace show --name $PROJECT_WORKSPACE_NAME_VNET --resource-group $RESOURCE_GROUP
 
 ## Create a featurestore
-FEATURESTORE_NAME="my-featurestore"${TIMESTAMP}
+FEATURESTORE_NAME="my-featurestore"${VERSION}
 FEATURESTORE_YML="featurestore/featurestore.yaml"
 sed -i "s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
     s/<LOCATION>/$LOCATION/g;" $FEATURESTORE_YML
 az ml feature-store create --file $FEATURESTORE_YML --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP
 
-#STORAGE_ACCOUNT_NAME="fsst${TIMESTAMP}"
+#STORAGE_ACCOUNT_NAME="fsst${VERSION}"
 STORAGE_ACCOUNT_NAME=$(az ml feature-store show --name ${FEATURESTORE_NAME} --resource-group ${RESOURCE_GROUP} --query storage_account -o tsv)
 STORAGE_FILE_SYSTEM_NAME_OFFLINE_STORE="offline-store"
 STORAGE_FILE_SYSTEM_NAME_SOURCE_DATA="source-data"
