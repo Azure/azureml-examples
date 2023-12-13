@@ -3,7 +3,7 @@ LOCATION=$(az ml workspace show --query location -o tsv)
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 VERSION=$(((RANDOM%1000)+1))
-PROJECT_WORKSPACE_NAME_VNET="fs-proj-ws"{$VERSION}
+PROJECT_WORKSPACE_NAME_VNET="fs-proj-ws"${VERSION}
 
 ## Create a project workspace
 az ml workspace create --name $PROJECT_WORKSPACE_NAME_VNET --resource-group $RESOURCE_GROUP --location $LOCATION
