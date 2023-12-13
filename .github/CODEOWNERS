@@ -1,6 +1,6 @@
 # See for instructions on this file https://help.github.com/articles/about-codeowners/
 
-/python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @lauralj103 @jeff-shepherd @raduk @swatig007 @martinezgjuan @MercyPrasanna @PhaniShekhar @yoyolin @sjinthehouse @vadthyavath @mispa-ms
+/python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @jeff-shepherd @raduk @swatig007 @MercyPrasanna @PhaniShekhar @sjinthehouse @vadthyavath @mispa-ms
 
 #### files referenced in docs #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
