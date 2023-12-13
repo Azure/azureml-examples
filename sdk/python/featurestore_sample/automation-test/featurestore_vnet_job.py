@@ -23,13 +23,13 @@ ml_client = MLClient(
     featurestore_name,
 )
 feature_store = ml_client.workspaces.get()
-assert len(feature_store.managed_network.outbound_rules) == 5
+assert len(feature_store.managed_network.outbound_rules) == 6
 
 ml_client = MLClient(
     AzureMLOnBehalfOfCredential(), subscription_id, resource_group_name, project_ws_vnet
 )
 project_ws = ml_client.workspaces.get()
-assert len(project_ws.managed_network.outbound_rules) == 6
+assert len(project_ws.managed_network.outbound_rules) == 7
 
 print("=======Clean up==========")
 

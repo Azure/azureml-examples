@@ -24,7 +24,10 @@ sed -i "s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
 az ml feature-store create --file $FEATURESTORE_YML --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP
 
 #STORAGE_ACCOUNT_NAME="fsst${VERSION}"
-STORAGE_ACCOUNT_NAME=$(az ml feature-store show --name ${FEATURESTORE_NAME} --resource-group ${RESOURCE_GROUP} --query storage_account -o tsv)
+STORAGE_ACCOUNT_RESOURCE_ID=$(az ml feature-store show --name ${FEATURESTORE_NAME} --resource-group ${RESOURCE_GROUP} --query storage_account -o tsv)
+STORAGE_ACCOUNT_NAME=${STORAGE_ACCOUNT_RESOURCE_ID##*/}
+KEY_VALUE_RESOURCE_ID=$(az ml feature-store show --name ${FEATURESTORE_NAME} --resource-group ${RESOURCE_GROUP} --query key_vault -o tsv)
+KEY_VAULT_NAME=${KEY_VALUE_RESOURCE_ID##*/}
 STORAGE_FILE_SYSTEM_NAME_OFFLINE_STORE="offline-store"
 STORAGE_FILE_SYSTEM_NAME_SOURCE_DATA="source-data"
 STORAGE_FILE_SYSTEM_NAME_OBSERVATION_DATA="observation-data"
@@ -39,7 +42,8 @@ az storage account update --name $STORAGE_ACCOUNT_NAME --resource-group $RESOURC
 FEATURE_STORE_MANAGED_VNET_YML="automation-test/feature_store_managed_vnet_config.yaml"
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
-    s/<STORAGE_ACCOUNT_NAME>/$STORAGE_ACCOUNT_NAME/g;" $FEATURE_STORE_MANAGED_VNET_YML
+    s/<STORAGE_ACCOUNT_NAME>/$STORAGE_ACCOUNT_NAME/g;
+    s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;" $FEATURE_STORE_MANAGED_VNET_YML
 az ml feature-store update --file $FEATURE_STORE_MANAGED_VNET_YML --name $FEATURESTORE_NAME --resource-group $RESOURCE_GROUP
 
 # Provision network to create necessary private endpoints (it may take approximately 20 minutes)
@@ -53,7 +57,8 @@ PROJECT_WS_NAME_VNET_YAML="automation-test/project_ws_managed_vnet_config.yaml"
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<RESOURCE_GROUP>/$RESOURCE_GROUP/g;
     s/<STORAGE_ACCOUNT_NAME>/$STORAGE_ACCOUNT_NAME/g;
-    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;" $PROJECT_WS_NAME_VNET_YAML
+    s/<FEATURESTORE_NAME>/$FEATURESTORE_NAME/g;
+    s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;" $PROJECT_WS_NAME_VNET_YAML
 az ml workspace update --file $PROJECT_WS_NAME_VNET_YAML --name $PROJECT_WORKSPACE_NAME_VNET --resource-group $RESOURCE_GROUP
 
 az ml workspace show --name $project_ws_name --resource-group $project_ws_rg
