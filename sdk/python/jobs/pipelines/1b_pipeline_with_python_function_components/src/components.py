@@ -11,9 +11,8 @@ def train_model(
     training_data: Input(type="uri_file"),
     max_epochs: int,
     model_output: Output(type="uri_folder"),
-    learning_rate=0.02,
-    input_int: int=None
-) -> int:
+    learning_rate=0.02
+) -> str:
     """A dummy train component.
 
     Args:
@@ -38,7 +37,7 @@ def train_model(
     model = str(uuid4())
     (Path(model_output) / "model").write_text(model)
 
-    return input_int
+    return str((Path(model_output) / "model"))
 
 
 @command_component(
@@ -53,13 +52,13 @@ def score_data(
     model_input: Input(type="uri_folder"),
     test_data: Input(type="uri_file"),
     score_output: Output(type="uri_folder"),
-    input_int: int=None,
-    input_str: str=None
+    model_file: str=None
 ) -> str:
     """A dummy score component."""
 
     lines = [
         f"Model path: {model_input}",
+        f"Model file: {model_file}",
         f"Test data path: {test_data}",
         f"Scoring output path: {score_output}",
     ]
@@ -76,20 +75,18 @@ def score_data(
     # Here only print text to output file as demo
     (Path(score_output) / "score").write_text("scored with {}".format(model))
 
-    print("input_int:", input_int)
-    print("input_str:", input_str)
-
-    return input_str
+    return str(Path(score_output) / "score")
 
 
 @command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
-    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), input_int:int=None, input_str: str=None
+    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), input_int:int=None, scoring_file: str=None
 ):
     """A dummy evaluate component."""
 
     lines = [
         f"Scoring result path: {scoring_result}",
+        f"Scoring file: {scoring_file}",
         f"Evaluation output path: {eval_output}",
     ]
 
@@ -99,6 +96,3 @@ def eval_model(
     # Evaluate the incoming scoring result and output evaluation result.
     # Here only output a dummy file for demo.
     (Path(eval_output) / "eval_result").write_text("eval_result")
-
-    print("input_int:", input_int)
-    print("input_str:", input_str)
