@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: mmlu_social_sciences_claude
-description: Claude eval on MMLU Social Sciences
+display_name: mmlu_other_claude
+description: Claude eval on MMLU Other
 inputs:
   endpoint_url: https://bedrock-runtime.us-east-1.amazonaws.com/model/anthropic.claude-v2:1/invoke
   ws_connection_name: <connection name>
@@ -14,7 +14,7 @@ jobs:
     limits:
       timeout: 900
     inputs:
-      configuration: econometrics,high_school_geography,high_school_government_and_politics,high_school_macroeconomics,high_school_microeconomics,high_school_psychology,human_sexuality,professional_psychology,public_relations,security_studies,sociology,us_foreign_policy
+      configuration: business_ethics,clinical_knowledge,college_medicine,global_facts,human_aging,management,marketing,medical_genetics,miscellaneous,nutrition,professional_accounting,professional_medicine,virology
       split: test
       script_path:
         type: uri_file
@@ -60,7 +60,7 @@ jobs:
     limits:
       timeout: 900
     inputs:
-      configuration: econometrics,high_school_geography,high_school_government_and_politics,high_school_macroeconomics,high_school_microeconomics,high_school_psychology,human_sexuality,professional_psychology,public_relations,security_studies,sociology,us_foreign_policy
+      configuration: business_ethics,clinical_knowledge,college_medicine,global_facts,human_aging,management,marketing,medical_genetics,miscellaneous,nutrition,professional_accounting,professional_medicine,virology
       split: dev
       script_path:
         type: uri_file
@@ -102,7 +102,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
-    component: azureml://registries/azureml-preview-test1/components/prompt_crafter/labels/latest
+    component: azureml://registries/azureml-preview-test1/components/prompt_crafter_with_few_shot_pattern/labels/latest
     limits:
       timeout: 900
     inputs:
@@ -154,7 +154,7 @@ jobs:
       handle_response_failure: use_fallback
       ensure_ascii: false
       initial_worker_count: 1
-      max_worker_count: 1
+      max_worker_count: 10
       instance_count: 1
       max_concurrency_per_instance: 1
       debug_mode: false

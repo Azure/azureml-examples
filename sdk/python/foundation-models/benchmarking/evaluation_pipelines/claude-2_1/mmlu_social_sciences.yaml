@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: boolq_claude
-description: Claude eval on BoolQ
+display_name: mmlu_social_sciences_claude
+description: Claude eval on MMLU Social Sciences
 inputs:
   endpoint_url: https://bedrock-runtime.us-east-1.amazonaws.com/model/anthropic.claude-v2:1/invoke
   ws_connection_name: <connection name>
@@ -14,9 +14,11 @@ jobs:
     limits:
       timeout: 900
     inputs:
-      dataset_name: boolq
-      configuration: all
-      split: validation
+      configuration: econometrics,high_school_geography,high_school_government_and_politics,high_school_macroeconomics,high_school_microeconomics,high_school_psychology,human_sexuality,professional_psychology,public_relations,security_studies,sociology,us_foreign_policy
+      split: test
+      script_path:
+        type: uri_file
+        path: https://raw.githubusercontent.com/Azure/azureml-assets/main/assets/aml-benchmark/scripts/data_loaders/mmlu.py
     outputs:
       output_dataset:
         type: uri_folder
@@ -45,9 +47,9 @@ jobs:
       dataset:
         type: uri_folder
         path: ${{parent.jobs.sampler.outputs.output_dataset}}
-      template_input: "{\n  \"question\": {{question}},\n  \"answerA\": true,\n  \"\
-        answerB\": false,\n  \"context\": {{passage}},\n  \"target\": {{answer}}\n\
-        }"
+      template_input: '{"question":{{question}}, "choices":{{choices}}, "answer":{{answer|string}}}'
+      encoder_config: '{"column_name": "answer", "0": "A", "1": "B", "2": "C", "3":
+        "D"}'
     outputs:
       output_dataset:
         type: uri_file
@@ -58,9 +60,11 @@ jobs:
     limits:
       timeout: 900
     inputs:
-      dataset_name: boolq
-      configuration: all
-      split: train
+      configuration: econometrics,high_school_geography,high_school_government_and_politics,high_school_macroeconomics,high_school_microeconomics,high_school_psychology,human_sexuality,professional_psychology,public_relations,security_studies,sociology,us_foreign_policy
+      split: dev
+      script_path:
+        type: uri_file
+        path: https://raw.githubusercontent.com/Azure/azureml-assets/main/assets/aml-benchmark/scripts/data_loaders/mmlu.py
     outputs:
       output_dataset:
         type: uri_folder
@@ -73,7 +77,7 @@ jobs:
       dataset:
         type: uri_folder
         path: ${{parent.jobs.fewshot_downloader.outputs.output_dataset}}
-      sampling_style: random
+      sampling_style: head
       sampling_ratio: 1.0
       random_seed: 0
     outputs:
@@ -89,16 +93,16 @@ jobs:
       dataset:
         type: uri_folder
         path: ${{parent.jobs.fewshot_sampler.outputs.output_dataset}}
-      template_input: "{\n  \"question\": {{question}},\n  \"answerA\": true,\n  \"\
-        answerB\": false,\n  \"context\": {{passage}},\n  \"target\": {{answer}}\n\
-        }"
+      template_input: '{"question":{{question}}, "choices":{{choices}}, "answer":{{answer|string}}}'
+      encoder_config: '{"column_name": "answer", "0": "A", "1": "B", "2": "C", "3":
+        "D"}'
     outputs:
       output_dataset:
         type: uri_file
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
-    component: azureml://registries/azureml-preview-test1/components/prompt_crafter/labels/latest
+    component: azureml://registries/azureml-preview-test1/components/prompt_crafter_with_few_shot_pattern/labels/latest
     limits:
       timeout: 900
     inputs:
@@ -109,24 +113,26 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.fewshot_preprocessor.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "\n\nYou are given a question along with context and asked to choose whether the question is true or false. \
+      prefix: "\n\nYou are given a problem and asked to choose between options A, B, C, or D. \
         There are examples within <example> tags for you to learn from. For the last question respond \
-        with only true or false. The answer must be within the tags \
+        with only the letter of the option you choose. This letter must be within the tags \
         <answer> and </answer>. Do not add other text to the response.\n\nHuman:"
-      prompt_pattern: "\nGiven the context answer the question: context: {{context}}\n\
-      question: {{question}}\n\
-      1.: {{answerA}}\n\
-      2.: {{answerB}}\n\
-      Answer:\n\nAssistant:\n\n"
+      prompt_pattern: "\n### Question: {{question}}\n\
+      A. {{choices[0]}}\n\
+      B. {{choices[1]}}\n\
+      C. {{choices[2]}}\n\
+      D. {{choices[3]}}\n\
+      ###Answer:\n\nAssistant:\n\n"
       few_shot_pattern: "<example>\n\
-      Given the context answer the question: context: {{context}}\n\
-      question: {{question}}\n\
-      1.: {{answerA}}\n\
-      2.: {{answerB}}\n\
-      Answer: {{target}}\n\
+      ### Question: {{question}}\n\
+      A. {{choices[0]}}\n\
+      B. {{choices[1]}}\n\
+      C. {{choices[2]}}\n\
+      D. {{choices[3]}}\n\
+      ###Answer: {{answer}}\n\
       </example>"
       n_shots: 5
-      output_pattern: ' {{target}}'
+      output_pattern: '{{answer}}'
       few_shot_separator: "\n\n"
       random_seed: 0
     outputs:
@@ -148,7 +154,7 @@ jobs:
       handle_response_failure: use_fallback
       ensure_ascii: false
       initial_worker_count: 1
-      max_worker_count: 1
+      max_worker_count: 10
       instance_count: 1
       max_concurrency_per_instance: 1
       debug_mode: false
@@ -196,7 +202,7 @@ jobs:
       task: question-answering
       ground_truth_column_name: completion
       prediction_column_name: prediction
-      evaluation_config_params: '{"regexes_to_ignore": ["\\W"], "ignore_case": true}'
+      evaluation_config_params: '{"regexes_to_ignore": ["\\W"]}'
     outputs:
       evaluation_result:
         type: uri_folder

@@ -100,7 +100,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
-    component: azureml://registries/azureml-preview-test1/components/prompt_crafter/labels/latest
+    component: azureml://registries/azureml-preview-test1/components/prompt_crafter_with_few_shot_pattern/labels/latest
     limits:
       timeout: 900
     inputs:
@@ -156,7 +156,7 @@ jobs:
       handle_response_failure: use_fallback
       ensure_ascii: false
       initial_worker_count: 1
-      max_worker_count: 1
+      max_worker_count: 10
       instance_count: 1
       max_concurrency_per_instance: 1
       debug_mode: false
