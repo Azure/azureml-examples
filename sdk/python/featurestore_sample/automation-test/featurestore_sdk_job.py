@@ -24,10 +24,20 @@ with open(
 ) as f:
     exec(f.read())
 
-# # exclude 5th notebook for now
-# print("=======Test Notebook 4============")
-# with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
-#     exec(f.read())
+print("=======Test Notebook 4============")
+with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
+    exec(f.read())
+
+print("=======Test Notebook 5============")
+with open("notebooks/sdk_only/5. Develop a feature set with custom source.py") as f:
+    exec(f.read())
+
+print("=======Clean up==========")
+subscription_id = "<SUBSCRIPTION_ID>"
+resource_group_name = "<RESOURCE_GROUP>"
+featurestore_name = "<FEATURESTORE_NAME>"
+workspace_name = "<AML_WORKSPACE_NAME>"
+
 
 
 # print("======clean up==========")
