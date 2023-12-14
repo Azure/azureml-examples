@@ -61,7 +61,7 @@ sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
     s/<KEY_VAULT_NAME>/$KEY_VAULT_NAME/g;" $PROJECT_WS_NAME_VNET_YAML
 az ml workspace update --file $PROJECT_WS_NAME_VNET_YAML --name $PROJECT_WORKSPACE_NAME_VNET --resource-group $RESOURCE_GROUP
 
-az ml workspace show --name $project_ws_name --resource-group $project_ws_rg
+az ml workspace show --name $PROJECT_WORKSPACE_NAME_VNET --resource-group $RESOURCE_GROUP
 
 SDK_PY_JOB_FILE="automation-test/featurestore_vnet_job.py"
 sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;

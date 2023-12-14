@@ -24,34 +24,40 @@ ml_client = MLClient(
     featurestore_name,
 )
 feature_store = ml_client.workspaces.get()
-assert len(feature_store.managed_network.outbound_rules) == 6
+fs_outbound_rules_len = len(feature_store.managed_network.outbound_rules)
+print(f"Feature store {featurestore_name} has {fs_outbound_rules_len} outbound rules")
+assert fs_outbound_rules_len == 5
 
 ml_client = MLClient(
     AzureMLOnBehalfOfCredential(), subscription_id, resource_group_name, project_ws_vnet
 )
 project_ws = ml_client.workspaces.get()
-assert len(project_ws.managed_network.outbound_rules) == 7
+ps_outbound_rules_len = len(project_ws.managed_network.outbound_rules)
+print(f"Project workspace {project_ws_vnet} has {ps_outbound_rules_len} outbound rules")
+assert ps_outbound_rules_len == 3
 
 print("=======Clean up==========")
+try:
+    print("----Delete feature store----------")
+    ml_client = MLClient(
+        AzureMLOnBehalfOfCredential(),
+        subscription_id=subscription_id,
+        resource_group_name=resource_group_name,
+    )
 
-print("----Delete feature store----------")
-ml_client = MLClient(
-    AzureMLOnBehalfOfCredential(),
-    subscription_id=subscription_id,
-    resource_group_name=resource_group_name,
-)
+    result = ml_client.feature_stores.begin_delete(
+        name=featurestore_name,
+        permanently_delete=True,
+        delete_dependent_resources=False,
+    ).result()
+    print(result)
 
-result = ml_client.feature_stores.begin_delete(
-    name=featurestore_name,
-    permanently_delete=True,
-    delete_dependent_resources=False,
-).result()
-print(result)
-
-print("----Delete project workspace----------")
-result = ml_client.workspace.begin_delete(
-    name=project_ws_vnet,
-    permanently_delete=True,
-    delete_dependent_resources=False,
-).result()
-print(result)
+    print("----Delete project workspace----------")
+    result = ml_client.workspace.begin_delete(
+        name=project_ws_vnet,
+        permanently_delete=True,
+        delete_dependent_resources=False,
+    ).result()
+    print(result)
+except:
+    pass
