@@ -6,7 +6,7 @@ inputs:
   endpoint_url: https://bedrock-runtime.us-east-1.amazonaws.com/model/anthropic.claude-v2:1/invoke
   ws_connection_name: <connection name>
   payload_pattern: '{"prompt": "###<prompt>", "temperature": 0.0, "max_tokens_to_sample": 10, "top_p": 1.0}'
-  sample_ratio: 0.01
+  sample_ratio: 1.0
 jobs:
   downloader:
     type: command
@@ -102,7 +102,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
-    component: azureml://registries/azureml-preview-test1/components/prompt_crafter_with_few_shot_pattern/labels/latest
+    component: azureml://registries/azureml/components/prompt_crafter/labels/latest
     limits:
       timeout: 900
     inputs:
@@ -221,3 +221,4 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.json
 settings:
   force_rerun: false
+  default_compute: azureml:serverless
