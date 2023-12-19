@@ -21,7 +21,7 @@ def run(raw_data):
     if "input_data" not in json_data.keys():
         raise Exception("Request must contain a top level key named 'input_data'")
 
-    serving_input = { "dataframe_split": json_data["input_data"] }
+    serving_input = {"dataframe_split": json_data["input_data"]}
     data = infer_and_parse_data(serving_input, input_schema)
     predictions = model.predict(data)
 

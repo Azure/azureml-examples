@@ -1,7 +1,7 @@
 channels:
 - conda-forge
 dependencies:
-- python=3.10
+- python=3.10.11
 - pip<=23.1.2
 - pip:
   - mlflow==2.7.1
