@@ -1,0 +1,45 @@
+name: submit-azure-machine-learning-job
+
+trigger:
+- none
+
+variables:
+  service-connection: 'AzureML202312' # replace with your service connection name
+  resource-group: 'AzureML202312' # replace with your resource group name
+  workspace: 'AzureML202312' # replace with your workspace name
+
+jobs:
+- job: SubmitAzureMLJob
+  displayName: Submit AzureML Job
+  timeoutInMinutes: 300
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - checkout: none
+  - task: UsePythonVersion@0
+    displayName: Use Python >=3.8
+    inputs:
+      versionSpec: '>=3.8'
+
+  - bash: |
+      set -ex
+
+      az version
+      az extension add -n ml
+    displayName: 'Add AzureML Extension'
+
+  - task: AzureCLI@2
+    name: submit_azureml_job_task
+    displayName: Submit AzureML Job Task
+    inputs:
+      azureSubscription: $(service-connection)
+      workingDirectory: 'cli/jobs/pipelines-with-components/nyc_taxi_data_regression'
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+      
+      # submit component job and get the run name
+      job_name=$(az ml job create --file single-job-pipeline.yml -g $(resource-group) -w $(workspace) --query name --output tsv)
+
+      # Set output variable for next task
+      echo "##vso[task.setvariable variable=JOB_NAME;isOutput=true;]$job_name"
