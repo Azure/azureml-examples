@@ -49,10 +49,10 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # Deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy-online.yaml $workspace_info --all-traffic --set \
-  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
-  instance_type=$deployment_sku || {
-    echo "deployment create failed"; exit 1;
+az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
+endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
+instance_type=$deployment_sku || {
+echo "deployment create failed"; exit 1;
 }
 
 # 4. Submit a sample request to endpoint
