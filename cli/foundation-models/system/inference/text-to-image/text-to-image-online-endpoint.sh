@@ -2,12 +2,12 @@ set -x
 
 # script inputs
 registry_name="azureml"
-subscription_id="<SUBSCRIPTION_ID>"
-resource_group_name="<RESOURCE_GROUP>"
-workspace_name="<WORKSPACE_NAME>"
+subscription_id="72c03bf3-4e69-41af-9532-dfcdc3eefef4"
+resource_group_name="shared-finetuning-rg"
+workspace_name="v-swathikon"
 
 # This is the model from system registry that needs to be deployed
-model_name="runwayml-stable-diffusion-v1-5"
+model_name="deci-decidiffusion-v1-0"
 model_label="latest"
 response_file="generated_image.json"
 
@@ -54,7 +54,13 @@ endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$m
 instance_type=$deployment_sku || {
 echo "deployment create failed"; exit 1;
 }
+yaml_file="deploy-online.yaml"
+get_yaml_value() {
+    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
+}
+traffic=$(get_yaml_value "name")
 
+az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$traffic=100"
 # 4. Submit a sample request to endpoint
 python utils/prepare_data.py --payload-path $sample_request_data --mode "online"
 # Check if scoring data file exists
