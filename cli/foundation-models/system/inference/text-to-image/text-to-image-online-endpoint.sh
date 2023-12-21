@@ -2,12 +2,12 @@ set -x
 
 # script inputs
 registry_name="azureml"
-subscription_id="72c03bf3-4e69-41af-9532-dfcdc3eefef4"
-resource_group_name="shared-finetuning-rg"
-workspace_name="v-swathikon"
+subscription_id="<SUBSCRIPTION_ID>"
+resource_group_name="<RESOURCE_GROUP>"
+workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="deci-decidiffusion-v1-0"
+model_name="runwayml-stable-diffusion-v1-5"
 model_label="latest"
 response_file="generated_image.json"
 
