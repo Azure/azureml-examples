@@ -1,5 +1,5 @@
 # MMDetection Model Import Component
-The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component will download the config for the model from [MMDetection model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md). The component can be seen in your workspace component page - [mmdetection_image_objectdetection_instancesegmentation_model_import](https://ml.azure.com/registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_model_import).
+The component copies the input model folder to the component output directory when the model is passed as an input to the `pytorch_model` or `mlflow_model` nodes. If `model_name `is selected, the component will download the config for the model from [MMDetection model zoo](https://github.com/open-mmlab/mmdetection/blob/v3.1.0/docs/en/model_zoo.md). The component can be seen in your workspace component page - [mmdetection_image_objectdetection_instancesegmentation_model_import](https://ml.azure.com/registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_model_import).
 
 # 1. Inputs
 
@@ -16,13 +16,13 @@ The component copies the input model folder to the component output directory wh
     Following models are registered in azureml registry, and can be used directly.
     | Model Name | Source |
     | :------------: | :-------:  |
-    | [deformable_detr_twostage_refine_r50_16x2_50e_coco](https://ml.azure.com/registries/azureml/models/deformable_detr_twostage_refine_r50_16x2_50e_coco/version/3) | azureml registry |
-    | [sparse_rcnn_r50_fpn_300_proposals_crop_mstrain_480-800_3x_coco](https://ml.azure.com/registries/azureml/models/sparse_rcnn_r50_fpn_300_proposals_crop_mstrain_480-800_3x_coco/version/3) | azureml registry |
-    | [sparse_rcnn_r101_fpn_300_proposals_crop_mstrain_480-800_3x_coco](https://ml.azure.com/registries/azureml/models/sparse_rcnn_r101_fpn_300_proposals_crop_mstrain_480-800_3x_coco/version/3) | azureml registry |
-    | [vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco](https://ml.azure.com/registries/azureml/models/vfnet_r50_fpn_mdconv_c3-c5_mstrain_2x_coco/version/3) | azureml registry |
-    | [vfnet_x101_64x4d_fpn_mdconv_c3-c5_mstrain_2x_coco](https://ml.azure.com/registries/azureml/models/vfnet_x101_64x4d_fpn_mdconv_c3-c5_mstrain_2x_coco/version/3) | azureml registry |
-    | [yolof_r50_c5_8x8_1x_coco](https://ml.azure.com/registries/azureml/models/yolof_r50_c5_8x8_1x_coco/version/3) | azureml registry |
-    | [mask_rcnn_swin-t-p4-w7_fpn_1x_coco](https://ml.azure.com/registries/azureml/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/version/3) | azureml registry |
+    | [deformable-detr_refine_twostage_r50_16xb2-50e_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-deformable-detr_refine_twostage_r50_16xb2-50e_coco/version/8) | azureml registry |
+    | [sparse-rcnn_r50_fpn_300-proposals_crop-ms-480-800-3x_coco-800_3x_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-sparse-rcnn_r50_fpn_300-proposals_crop-ms-480-800-3x_coco-800_3x_coco/version/8) | azureml registry |
+    | [sparse-rcnn_r101_fpn_300-proposals_crop-ms-480-800-3x_coco-800_3x_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-sparse-rcnn_r101_fpn_300-proposals_crop-ms-480-800-3x_coco-800_3x_coco/version/8) | azureml registry |
+    | [vfnet_r50-mdconv-c3-c5_fpn_ms-2x_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-vfnet_r50-mdconv-c3-c5_fpn_ms-2x_coco/version/8) | azureml registry |
+    | [vfnet_x101-64x4d-mdconv-c3-c5_fpn_ms-2x_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-vfnet_x101-64x4d-mdconv-c3-c5_fpn_ms-2x_coco/version/8) | azureml registry |
+    | [yolof_r50_c5_8x8_1x_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-yolof_r50_c5_8x8_1x_coco/version/8) | azureml registry |
+    | [mmd-3x-mask-rcnn_swin-t-p4-w7_fpn_1x_coco](https://ml.azure.com/registries/azureml/models/mmd-3x-mask-rcnn_swin-t-p4-w7_fpn_1x_coco/version/8) | azureml registry |
 
     Below is the folder structure of a registered MLFlow model.
 
@@ -52,7 +52,7 @@ The component copies the input model folder to the component output directory wh
 
 2. _model_name_ (string, optional)
 
-    Please select models from AzureML Model Assets for all supported models. For MMDetection models, which are not supported in AzureML model registry, the model's config name is required, same as it's specified in MMDetection Model Zoo. For e.g. fast_rcnn_r101_fpn_1x_coco for [this config file](https://github.com/open-mmlab/mmdetection/blob/master/configs/fast_rcnn/fast_rcnn_r101_fpn_1x_coco.py). You can see the comprehensive list of model configs [here](https://github.com/open-mmlab/mmdetection/tree/v2.28.2/configs) and the documentation of model zoo [here](https://github.com/open-mmlab/mmdetection/blob/v2.28.2/docs/en/model_zoo.md).
+    Please select models from AzureML Model Assets for all supported models. For MMDetection models, which are not supported in AzureML model registry, the model's config name is required, same as it's specified in MMDetection Model Zoo. For e.g. fast_rcnn_r101_fpn_1x_coco for [this config file](https://github.com/open-mmlab/mmdetection/blob/master/configs/fast_rcnn/fast_rcnn_r101_fpn_1x_coco.py). You can see the comprehensive list of model configs [here](https://github.com/open-mmlab/mmdetection/tree/v3.1.0/configs) and the documentation of model zoo [here](https://github.com/open-mmlab/mmdetection/blob/v3.1.0/docs/en/model_zoo.md).
     Please note that it is the user responsibility to comply with the model's license terms.
 
 3. __download_from_source__ (boolean, optional)
