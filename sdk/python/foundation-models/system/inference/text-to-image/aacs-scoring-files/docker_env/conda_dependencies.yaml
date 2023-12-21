@@ -7,7 +7,7 @@ dependencies:
   - mlflow==2.3.2
   - torch==1.13.0
   - transformers==4.29.1
-  - diffusers==0.20.0
+  - diffusers==0.23.0
   - accelerate==0.22.0
   - azureml-core==1.52.0
   - azureml-mlflow==1.52.0
