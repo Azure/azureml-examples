@@ -59,9 +59,9 @@ yaml_file="deploy-online.yaml"
 get_yaml_value() {
     grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
 }
-traffic=$(get_yaml_value "name")
+deployment_name=$(get_yaml_value "name")
 
-az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$traffic=100"
+az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$deployment_name=100"
 
 # 4. Submit a sample request to endpoint
 python utils/prepare_data_inpainting.py --payload-path $sample_request_data --mode "online"
