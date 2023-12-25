@@ -11,7 +11,7 @@ def train_model(
     training_data: Input(type="uri_file"),
     max_epochs: int,
     model_output: Output(type="uri_folder"),
-    learning_rate=0.02
+    learning_rate=0.02,
 ) -> str:
     """A dummy train component.
 
@@ -52,7 +52,7 @@ def score_data(
     model_input: Input(type="uri_folder"),
     test_data: Input(type="uri_file"),
     score_output: Output(type="uri_folder"),
-    model_file: str=None
+    model_file: str = None,
 ) -> str:
     """A dummy score component."""
 
@@ -80,7 +80,9 @@ def score_data(
 
 @command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
-    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder"), scoring_file: str=None
+    scoring_result: Input(type="uri_folder"),
+    eval_output: Output(type="uri_folder"),
+    scoring_file: str = None,
 ):
     """A dummy evaluate component."""
 
