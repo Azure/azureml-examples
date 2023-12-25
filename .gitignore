@@ -1,4 +1,5 @@
 *.amlignore
+*.amlignore.amltmp
 *.azureml
 *pythonenv
 *dask-worker-space
