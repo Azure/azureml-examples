@@ -25,7 +25,7 @@ inputs:
   # model_name: microsoft/beit-base-patch16-224
   # # Model - specify the foundation model available in the azureml system registry
   mlflow_model: 
-    path: azureml://registries/azureml/models/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/versions/3
+    path: azureml://registries/azureml/models/mmd-3x-mask-rcnn_swin-t-p4-w7_fpn_1x_coco/versions/8
     type: mlflow_model
 
 outputs:

@@ -3,7 +3,7 @@ import os
 import json
 import mlflow
 from io import StringIO
-from mlflow.pyfunc.scoring_server import infer_and_parse_json_input, predictions_to_json
+from mlflow.pyfunc.scoring_server import infer_and_parse_data, predictions_to_json
 
 
 def init():
@@ -21,8 +21,8 @@ def run(raw_data):
     if "input_data" not in json_data.keys():
         raise Exception("Request must contain a top level key named 'input_data'")
 
-    serving_input = json.dumps(json_data["input_data"])
-    data = infer_and_parse_json_input(serving_input, input_schema)
+    serving_input = {"dataframe_split": json_data["input_data"]}
+    data = infer_and_parse_data(serving_input, input_schema)
     predictions = model.predict(data)
 
     result = StringIO()
