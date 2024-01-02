@@ -37,8 +37,6 @@ jobs:
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
-    - name: pip install forecasting reqs
-      run: pip install -r sdk/python/forecasting-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -72,6 +70,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-cpu-cluster auto-ml-forecasting-github-dau.ipynb auto-ml-forecasting-github-dau.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
+    - name: Determine Failure Reason
+      run: |
+          cat auto-ml-forecasting-github-dau.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" auto-ml-forecasting-github-dau.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" auto-ml-forecasting-github-dau.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" auto-ml-forecasting-github-dau.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" auto-ml-forecasting-github-dau.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" auto-ml-forecasting-github-dau.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: check notebook output
       run: |
          python ${{ github.workspace }}/.github/test/scripts/check_notebook_output.py \

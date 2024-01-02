@@ -67,6 +67,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python 1_langchain_basic_deploy.ipynb 1_langchain_basic_deploy.output.ipynb
       working-directory: sdk/python/endpoints/online/llm/langchain
+    - name: Determine Failure Reason
+      run: |
+          cat 1_langchain_basic_deploy.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" 1_langchain_basic_deploy.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" 1_langchain_basic_deploy.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" 1_langchain_basic_deploy.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" 1_langchain_basic_deploy.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" 1_langchain_basic_deploy.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/endpoints/online/llm/langchain
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

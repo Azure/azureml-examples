@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -51,8 +51,6 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
-          pip install azureml-core
-          pip install azureml-pipeline-core
       working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
@@ -69,8 +67,37 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "image-object-detection-batch-scoring-non-mlflow-model.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python image-object-detection-batch-scoring-non-mlflow-model.ipynb image-object-detection-batch-scoring-non-mlflow-model.output.ipynb
+          papermill -k python -p compute_name automl-gpu-cluster image-object-detection-batch-scoring-non-mlflow-model.ipynb image-object-detection-batch-scoring-non-mlflow-model.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring
+    - name: Determine Failure Reason
+      run: |
+          cat image-object-detection-batch-scoring-non-mlflow-model.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" image-object-detection-batch-scoring-non-mlflow-model.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" image-object-detection-batch-scoring-non-mlflow-model.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" image-object-detection-batch-scoring-non-mlflow-model.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" image-object-detection-batch-scoring-non-mlflow-model.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" image-object-detection-batch-scoring-non-mlflow-model.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

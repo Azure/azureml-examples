@@ -19,9 +19,6 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
-env:
-  MMDETECTION_MODEL_ID: None
-  MMDETECTION_TASK_NAME: image-object-detection
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -70,6 +67,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb
       working-directory: sdk/python/foundation-models/system/import
+    - name: Determine Failure Reason
+      run: |
+          cat import_model_into_registry.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" import_model_into_registry.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" import_model_into_registry.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" import_model_into_registry.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" import_model_into_registry.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" import_model_into_registry.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/foundation-models/system/import
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

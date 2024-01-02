@@ -230,6 +230,37 @@ jobs:
       working-directory: tutorials/{posix_folder}"""
 
     workflow_yaml += f"""
+    - name: Determine Failure Reason
+      run: |
+          cat {name}.output.ipynb
+          failure_reason="N/A"
+          if [ "${{{{ job.status }}}}" == "failure" ]; then
+            if grep -q "ResourceNotReady" {name}.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" {name}.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" {name}.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" {name}.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" {name}.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: tutorials/{posix_folder}
+      if: ${{{{ always() }}}}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{{{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}}}"
+          event-name: "${{{{ job.status }}}}_${{{{ env.FAILURE_REASON }}}}_${{{{ github.ref_name }}}}"
+      if: ${{{{ always() }}}}\n"""
+
+    workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
       uses: actions/upload-artifact@v2

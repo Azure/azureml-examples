@@ -72,6 +72,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python run_interactive_session_notebook.ipynb run_interactive_session_notebook.output.ipynb
       working-directory: sdk/python/jobs/spark/automation
+    - name: Determine Failure Reason
+      run: |
+          cat run_interactive_session_notebook.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" run_interactive_session_notebook.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" run_interactive_session_notebook.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" run_interactive_session_notebook.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" run_interactive_session_notebook.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" run_interactive_session_notebook.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/spark/automation
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

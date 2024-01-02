@@ -18,7 +18,7 @@ on:
       - .github/workflows/sdk-foundation-models-azure_openai-oai-v2-openai_chat_finetune_pipeline.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup_oai_v2.sh
+      - sdk/python/setup.sh
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -43,32 +43,61 @@ jobs:
           export RUN_BOOTSTRAP='true'
           export LOCATION='northcentralus'
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
-          bash bootstrap_oai_v2.sh
+          bash bootstrap.sh
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup SDK
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment_oai_v2.sh";
-          bash setup_oai_v2.sh
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment_oai_v2.sh";
-          bash setup_oai_v2.sh
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run foundation-models/azure_openai/oai-v2/openai_chat_finetune_pipeline.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
-          source "${{ github.workspace }}/infra/bootstrapping/init_environment_oai_v2.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "openai_chat_finetune_pipeline.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python openai_chat_finetune_pipeline.ipynb openai_chat_finetune_pipeline.output.ipynb
       working-directory: sdk/python/foundation-models/azure_openai/oai-v2
+    - name: Determine Failure Reason
+      run: |
+          cat openai_chat_finetune_pipeline.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" openai_chat_finetune_pipeline.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" openai_chat_finetune_pipeline.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" openai_chat_finetune_pipeline.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" openai_chat_finetune_pipeline.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" openai_chat_finetune_pipeline.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/foundation-models/azure_openai/oai-v2
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

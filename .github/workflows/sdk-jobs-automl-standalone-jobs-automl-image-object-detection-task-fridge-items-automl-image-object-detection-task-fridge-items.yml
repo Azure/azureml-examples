@@ -9,7 +9,7 @@ name: sdk-jobs-automl-standalone-jobs-automl-image-object-detection-task-fridge-
 on:
   workflow_dispatch:
   schedule:
-    - cron: "51 10/12 * * *"
+    - cron: "51 5/12 * * *"
   pull_request:
     branches:
       - main
@@ -67,8 +67,37 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-image-object-detection-task-fridge-items.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python automl-image-object-detection-task-fridge-items.ipynb automl-image-object-detection-task-fridge-items.output.ipynb
+          papermill -k python -p compute_name automl-gpu-cluster automl-image-object-detection-task-fridge-items.ipynb automl-image-object-detection-task-fridge-items.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items
+    - name: Determine Failure Reason
+      run: |
+          cat automl-image-object-detection-task-fridge-items.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" automl-image-object-detection-task-fridge-items.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" automl-image-object-detection-task-fridge-items.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" automl-image-object-detection-task-fridge-items.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" automl-image-object-detection-task-fridge-items.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" automl-image-object-detection-task-fridge-items.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

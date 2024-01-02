@@ -68,6 +68,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python sklearn-mnist.ipynb sklearn-mnist.output.ipynb
       working-directory: sdk/python/jobs/single-step/scikit-learn/mnist
+    - name: Determine Failure Reason
+      run: |
+          cat sklearn-mnist.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" sklearn-mnist.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" sklearn-mnist.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" sklearn-mnist.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" sklearn-mnist.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" sklearn-mnist.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/single-step/scikit-learn/mnist
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

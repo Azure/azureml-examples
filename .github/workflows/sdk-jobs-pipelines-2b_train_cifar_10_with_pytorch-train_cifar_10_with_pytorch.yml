@@ -67,6 +67,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python train_cifar_10_with_pytorch.ipynb train_cifar_10_with_pytorch.output.ipynb
       working-directory: sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch
+    - name: Determine Failure Reason
+      run: |
+          cat train_cifar_10_with_pytorch.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" train_cifar_10_with_pytorch.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" train_cifar_10_with_pytorch.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" train_cifar_10_with_pytorch.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" train_cifar_10_with_pytorch.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" train_cifar_10_with_pytorch.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

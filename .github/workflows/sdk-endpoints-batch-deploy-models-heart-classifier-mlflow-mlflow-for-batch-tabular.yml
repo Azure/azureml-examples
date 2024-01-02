@@ -67,8 +67,37 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "mlflow-for-batch-tabular.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python mlflow-for-batch-tabular.ipynb mlflow-for-batch-tabular.output.ipynb --log-output
+          papermill -k python mlflow-for-batch-tabular.ipynb mlflow-for-batch-tabular.output.ipynb
       working-directory: sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow
+    - name: Determine Failure Reason
+      run: |
+          cat mlflow-for-batch-tabular.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" mlflow-for-batch-tabular.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" mlflow-for-batch-tabular.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" mlflow-for-batch-tabular.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" mlflow-for-batch-tabular.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" mlflow-for-batch-tabular.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

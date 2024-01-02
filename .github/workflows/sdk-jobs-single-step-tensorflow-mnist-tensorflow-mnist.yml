@@ -67,6 +67,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python tensorflow-mnist.ipynb tensorflow-mnist.output.ipynb
       working-directory: sdk/python/jobs/single-step/tensorflow/mnist
+    - name: Determine Failure Reason
+      run: |
+          cat tensorflow-mnist.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" tensorflow-mnist.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" tensorflow-mnist.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" tensorflow-mnist.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" tensorflow-mnist.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" tensorflow-mnist.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/jobs/single-step/tensorflow/mnist
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

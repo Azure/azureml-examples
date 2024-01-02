@@ -67,6 +67,35 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python token-classification-online-endpoint.ipynb token-classification-online-endpoint.output.ipynb
       working-directory: sdk/python/foundation-models/huggingface/inference/token-classification
+    - name: Determine Failure Reason
+      run: |
+          cat token-classification-online-endpoint.output.ipynb
+          failure_reason="N/A"
+          if [ "${{ job.status }}" == "failure" ]; then
+            if grep -q "ResourceNotReady" token-classification-online-endpoint.output.ipynb; then
+              failure_reason = "ResourceNotReady"
+            elif grep -q "quota" token-classification-online-endpoint.output.ipynb; then
+              failure_reason="QuotaIssue"
+            elif grep -q "ParentResourceNotFound" token-classification-online-endpoint.output.ipynb; then
+              failure_reason="ParentResourceNotFound"
+            elif grep -q "already exists" token-classification-online-endpoint.output.ipynb; then
+              failure_reason="ResourceAlreadyExists"
+            elif grep -q "StorageAccountTypeConversionNotAllowed" token-classification-online-endpoint.output.ipynb; then
+              failure_reason="InvalidStorageAccount"
+            else
+              failure_reason="UncategorizedFailure"
+            fi
+          fi
+          echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
+      working-directory: sdk/python/foundation-models/huggingface/inference/token-classification
+      if: ${{ always() }}
+      continue-on-error: true
+    - name: Log Job Results to Application Insights
+      uses: syedhassaanahmed/app-insights-event-action@v0.1-alpha
+      with:
+          instrumentation-key: "${{secrets.APP_INSIGHTS_INSTRUMENTATION_KEY}}"
+          event-name: "${{ job.status }}_${{ env.FAILURE_REASON }}_${{ github.ref_name }}"
+      if: ${{ always() }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
