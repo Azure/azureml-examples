@@ -14,7 +14,7 @@ echo $STORAGE_ACCOUNT_LIST
 CI_LIST=$(az ml compute list --type ComputeInstance --query "[*].[name]" -o tsv)
 echo $CI_LIST
 
-# fine UAI
+# find UAI
 NAME_LIST=$(az identity list --query "[].{name:name}" -o tsv | sort -u)
 echo $NAME_LIST
 
