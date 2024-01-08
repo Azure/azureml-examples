@@ -247,6 +247,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
