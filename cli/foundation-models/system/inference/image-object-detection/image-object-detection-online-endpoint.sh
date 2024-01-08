@@ -52,14 +52,19 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
-# deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy-online.yaml $workspace_info --all-traffic --set \
-  endpoint_name=$endpoint_name \
-  model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
-  instance_type=$deployment_sku || {
-    echo "deployment create failed"; exit 1;
+# Deploy model from registry to endpoint in workspace
+az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
+endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
+instance_type=$deployment_sku || {
+echo "deployment create failed"; exit 1;
 }
+yaml_file="deploy-online.yaml"
+get_yaml_value() {
+    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
+}
+deployment_name=$(get_yaml_value "name")
 
+az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$deployment_name=100"
 # 4. Try a sample scoring request
 
 # Check if scoring data file exists
