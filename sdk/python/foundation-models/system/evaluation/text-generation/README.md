@@ -9,7 +9,6 @@
 |     smoothing     | Boolean flag to indicate if bleu score needs to be smoothened                         | boolean   | false, true                              |
 |    aggregator     | Boolean flag to indicate if need to aggregate rouge scores for individual data points | boolean   | true, false                              |
 |      stemmer      | Boolean flag to indicate whether to use Porter Stemmer for suffixes                   | boolean   | true, false                              |
-| custom_dimensions | Used to report telemetry data (can later be used to perform PII scrubbing)            | dict      |                                          |
 
 ### List of supported metrics:
 

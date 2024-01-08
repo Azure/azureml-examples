@@ -17,10 +17,10 @@ The component copies the input model folder to the component output directory wh
     Following models are registered in azureml registry, and can be used directly.
     | Model Name | Source |
     | ------ | ---------- |
-    | [microsoft-beit-base-patch16-224-pt22k-ft22k](https://ml.azure.com/registries/azureml/models/microsoft-beit-base-patch16-224-pt22k-ft22k/version/5) | azureml registry |
-    | [microsoft-swinv2-base-patch4-window12-192-22k](https://ml.azure.com/registries/azureml/models/microsoft-swinv2-base-patch4-window12-192-22k/version/5) | azureml registry |
-    | [facebook-deit-base-patch16-224](https://ml.azure.com/registries/azureml/models/facebook-deit-base-patch16-224/version/5) | azureml registry |
-    | [google-vit-base-patch16-224](https://ml.azure.com/registries/azureml/models/google-vit-base-patch16-224/version/5) | azureml registry |
+    | [microsoft-beit-base-patch16-224-pt22k-ft22k](https://ml.azure.com/registries/azureml/models/microsoft-beit-base-patch16-224-pt22k-ft22k/version/11) | azureml registry |
+    | [microsoft-swinv2-base-patch4-window12-192-22k](https://ml.azure.com/registries/azureml/models/microsoft-swinv2-base-patch4-window12-192-22k/version/11) | azureml registry |
+    | [facebook-deit-base-patch16-224](https://ml.azure.com/registries/azureml/models/facebook-deit-base-patch16-224/version/10) | azureml registry |
+    | [google-vit-base-patch16-224](https://ml.azure.com/registries/azureml/models/google-vit-base-patch16-224/version/10) | azureml registry |
 
     Here is the folder structure of a registered MLFlow model.
     ![Mlflow Model Tree](../../images/mlflow_model_tree_for_hf_image_cls_comp.png)

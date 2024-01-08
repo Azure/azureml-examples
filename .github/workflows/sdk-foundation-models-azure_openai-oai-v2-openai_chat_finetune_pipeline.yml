@@ -31,7 +31,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
@@ -41,6 +41,7 @@ jobs:
     - name: bootstrap resources
       run: |
           export RUN_BOOTSTRAP='true'
+          export LOCATION='northcentralus'
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap_oai_v2.sh
       working-directory: infra/bootstrapping
