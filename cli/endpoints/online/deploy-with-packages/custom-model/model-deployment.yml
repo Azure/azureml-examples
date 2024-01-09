@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: with-package
+name: regular_deployment
 endpoint_name: hello-packages
 model: azureml:sklearn-regression@latest
 environment: azureml:sklearn-regression-env@latest
