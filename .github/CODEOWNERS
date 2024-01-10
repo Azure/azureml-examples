@@ -218,6 +218,7 @@
 /cli/setup.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/train.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /deploy-arm-templates-az-cli.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/assets/environment/environment.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/assets/model/model.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/batch/deploy-models/custom-outputs-parquet/custom-output-batch.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow/mlflow-for-batch-tabular.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
