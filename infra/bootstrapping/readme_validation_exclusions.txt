@@ -78,6 +78,7 @@
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/single-step/tensorflow/mnist-distributed
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/single-step/tensorflow/mnist
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/spark
+/home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-github-dau
 /home/runner/work/azureml-examples/azureml-examples/cli/resources/compute
 /home/runner/work/azureml-examples/azureml-examples/cli/responsible-ai/cli-responsibleaidashboard-housing-classification
 /home/runner/work/azureml-examples/azureml-examples/cli/responsible-ai/cli-responsibleaidashboard-programmer-regression
