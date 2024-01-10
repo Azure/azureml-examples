@@ -16,7 +16,7 @@ inputs:
 jobs:
   pipeline_finetune:
     type: pipeline
-    component: azureml://registries/azureml/components/openai_completions_finetune_pipeline/versions/0.1.1
+    component: azureml://registries/azureml/components/openai_completions_finetune_pipeline/versions/0.1.2
     inputs:
       train_dataset:
         type: uri_folder
