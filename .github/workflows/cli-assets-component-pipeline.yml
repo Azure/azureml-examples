@@ -70,13 +70,3 @@ jobs:
         fi
         echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli
-    - name: Log Results to Application Insights
-      uses: Azure/application-insights-action@v0.2
-      with:
-        appInsightsInstrumentationKey: ${{ secrets.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
-        telemetryName: 'Sample Notebook Results'
-        telemetryProperties: |
-          Name: cli-assets-component-pipeline
-          Result: ${{ job.status }}
-          FailureReason: ${{ env.FAILURE_REASON }}
-      if: always()
