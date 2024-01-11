@@ -218,6 +218,7 @@
 /cli/setup.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/train.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /deploy-arm-templates-az-cli.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/assets/environment/environment.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/assets/model/model.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/batch/deploy-models/custom-outputs-parquet/custom-output-batch.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow/mlflow-for-batch-tabular.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -243,7 +244,10 @@
 /sdk/python/featurestore_sample/notebooks/sdk_only/2.\ Experiment\ and\ train\ models\ using\ features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/featurestore_sample/notebooks/sdk_only/3.\ Enable\ recurrent\ materialization\ and\ run\ batch\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/featurestore_sample/notebooks/sdk_only/4.\ Enable\ online\ store\ and\ run\ online\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1
+/sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
+/sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
+/sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora  
 /sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing-serverless.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/configuration.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
