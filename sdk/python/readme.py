@@ -239,7 +239,8 @@ on:\n"""
       - infra/bootstrapping/**
       - sdk/python/setup.sh\n"""
     if is_featurestore_sample:
-        workflow_yaml += f"""      - sdk/python/featurestore_sample
+        workflow_yaml += f"""      - sdk/python/featurestore_sample"""
+    workflow_yaml += f"""
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -252,7 +253,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
@@ -306,9 +307,13 @@ jobs:
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
 
+    papermill_option = ""
+    if "endpoints-batch" in classification:
+        papermill_option = " --log-output"
+
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb
+          papermill -k python {name}.ipynb {name}.output.ipynb{papermill_option}
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
