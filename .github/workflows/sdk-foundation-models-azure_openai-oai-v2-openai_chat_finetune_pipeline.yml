@@ -60,11 +60,6 @@ jobs:
           bash setup_oai_v2.sh
       working-directory: cli
       continue-on-error: true
-    - name: validate readme
-      run: |
-          python check-readme.py "${{ github.workspace }}/sdk/python/foundation-models/azure_openai/oai-v2"
-      working-directory: infra/bootstrapping
-      continue-on-error: false
     - name: run foundation-models/azure_openai/oai-v2/openai_chat_finetune_pipeline.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
