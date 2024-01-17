@@ -302,9 +302,13 @@ jobs:
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
 
+    papermill_option = ""
+    if "endpoints-batch" in classification:
+        papermill_option = " --log-output"
+
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb
+          papermill -k python {name}.ipynb {name}.output.ipynb{papermill_option}
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated

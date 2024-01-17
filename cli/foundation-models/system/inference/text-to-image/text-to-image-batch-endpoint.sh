@@ -52,7 +52,7 @@ else
 fi
 
 # 4. Submit a sample request to endpoint
-data_path="./text_to_image_batch_data/batch_data"
+data_path="./text_to_image_batch_data"
 python utils/prepare_data.py --payload-path $data_path --mode "batch"
 # Path where the processes csvs are dumped. This is the input to the endpoint
 processed_data_path="./text_to_image_batch_data/processed_batch_data"
@@ -73,11 +73,32 @@ az ml batch-endpoint create --name $endpoint_name $workspace_info  || {
     echo "endpoint create failed"; exit 1;
 }
 
+# create a environment for batch deployment
+
+environment_name="text-to-image-model-env"
+environment_label="latest"
+
+if ! az ml environment show --name $environment_name --label $environment_label $workspace_info
+then
+    echo "Environment $environment_name:$environment_label does not exist in Workspace."
+    echo "---Creating environment---"
+    az ml environment create --name $environment_name  --build-context "./scoring-files/docker_env" \
+    $workspace_info || {
+    echo "environment create failed"; exit 1;
+}
+    exit 1
+fi
+
+environment_version=$(az ml environment show --name $environment_name --label $environment_label $workspace_info --query version --output tsv)
+
 # deploy model from registry to endpoint in workspace
 az ml batch-deployment create --file batch-deploy.yml $workspace_info --set \
   endpoint_name=$endpoint_name \
   name=$deployment_name \
   compute=$deployment_compute \
+  environment=azureml:$environment_name:$environment_version \
+  code_configuration.code="scoring-files/score" \
+  code_configuration.scoring_script="score_batch.py" \
   model=azureml://registries/$registry_name/models/$model_name/versions/$model_version || {
     echo "deployment create failed"; exit 1;
 }
