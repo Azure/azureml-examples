@@ -36,6 +36,7 @@ def init():
     global g_logger
     global g_file_loader_dictionary
     global aacs_client
+    global aacs_enabled
 
     g_logger = logging.getLogger("azureml")
     g_logger.setLevel(logging.INFO)
@@ -60,10 +61,15 @@ def init():
         ".pqt": load_parquet,
     }
 
-    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT")
-    key = os.environ.get("CONTENT_SAFETY_KEY")
+    endpoint = os.environ.get("CONTENT_SAFETY_ENDPOINT", None)
+    key = os.environ.get("CONTENT_SAFETY_KEY", None)
     # Create an Content Safety client
-    aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
+    if endpoint is not None and key is not None:
+        aacs_client = ContentSafetyClient(endpoint, AzureKeyCredential(key))
+        aacs_enabled = True
+    else:
+        aacs_enabled = False
+        g_logger.warn("Azure AI Content Safety (aacs) is disabled.")
 
 
 def get_input_schema(model_path):
@@ -372,13 +378,18 @@ def run(batch_input):
     predict_result = []
     try:
         aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", default=1))
-        blocked_input = analyze_data(
-            batch_input, aacs_threshold, blocked_input=None, is_input=True
-        )
+        if aacs_enabled:
+            blocked_input = analyze_data(
+                batch_input, aacs_threshold, blocked_input=None, is_input=True
+            )
         predict_result = g_model.predict(batch_input)
-        _ = analyze_data(
-            predict_result, aacs_threshold, blocked_input=blocked_input, is_input=False
-        )
+        if aacs_enabled:
+            _ = analyze_data(
+                predict_result,
+                aacs_threshold,
+                blocked_input=blocked_input,
+                is_input=False,
+            )
     except Exception as e:
         g_logger.error("Processing mini batch failed with exception: " + str(e))
         g_logger.error(traceback.format_exc())
