@@ -385,7 +385,10 @@ def run(batch_input):
         predict_result = g_model.predict(batch_input)
         if aacs_enabled:
             _ = analyze_data(
-                predict_result, aacs_threshold, blocked_input=blocked_input, is_input=False
+                predict_result,
+                aacs_threshold,
+                blocked_input=blocked_input,
+                is_input=False,
             )
     except Exception as e:
         g_logger.error("Processing mini batch failed with exception: " + str(e))
