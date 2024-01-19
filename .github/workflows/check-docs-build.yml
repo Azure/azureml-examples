@@ -20,7 +20,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - name: Clone azure-docs-pr repository
-          run: git clone https://github.com/MicrosoftDocs/azure-docs-pr.git
+          run: |
+            git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/MicrosoftDocs/azure-docs-pr.git
         - name: Run docs build
           working-directory: azure-docs-pr
           run: |
