@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
 name: uci-classifier-train-onehot
 description: A sample deployment that trains an XGBoost model for the UCI dataset using onehot encoding for variables.
 endpoint_name: uci-classifier-train
