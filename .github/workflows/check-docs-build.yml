@@ -22,8 +22,8 @@ jobs:
         - name: Clone azure-docs-pr repository
           run: |
             git clone https://x-access-token:${{ secrets.AZURE_DOCS_ACCESS_PAT }}@github.com/MicrosoftDocs/azure-docs-pr.git        - name: Run docs build
-          working-directory: azure-docs-pr
         - name: Run docs build on current branch
+          working-directory: azure-docs-pr
           run: |
             sed -i 's/azureml-examples-main/azureml-examples-new-branch/g' .openpublishing.build.ps1
             pwsh .openpublishing.build.ps1
