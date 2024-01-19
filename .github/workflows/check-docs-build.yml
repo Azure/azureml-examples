@@ -1,0 +1,31 @@
+name: Check docs build
+
+on:
+    workflow_dispatch:
+    pull_request:
+      branches:
+        - main
+      paths:
+        - sdk/**
+        - .github/workflows/bootstrapping-infra.yml
+        - cli/**
+        - infra/bootstrapping/**
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Clone azure-docs-pr repository
+          run: git clone https://github.com/MicrosoftDocs/azure-docs-pr.git
+        - name: Run docs build
+          working-directory: azure-docs-pr
+          run: |
+            sed -i 's/azureml-examples-main/azureml-examples-new-branch/g' .openpublishing.build.ps1
+            pwsh .openpublishing.build.ps1
+    
+    
+  
