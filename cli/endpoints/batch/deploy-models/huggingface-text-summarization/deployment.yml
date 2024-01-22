@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/modelBatchDeployment.schema.json
 endpoint_name: text-summarization-batch
 name: text-summarization-optimum
 description: A text summarization deployment implemented with HuggingFace and BART architecture with GPU optimization using Optimum.
