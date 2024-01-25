@@ -1,6 +1,7 @@
 /home/runner/work/azureml-examples/azureml-examples/cli/assets/component
 /home/runner/work/azureml-examples/azureml-examples/cli/endpoints/online/custom-container/minimal/multimodel
 /home/runner/work/azureml-examples/azureml-examples/cli/assets/data
+/home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-github-dau
 /home/runner/work/azureml-examples/azureml-examples/cli/assets/environment
 /home/runner/work/azureml-examples/azureml-examples/cli/assets/model
 /home/runner/work/azureml-examples/azureml-examples/cli/endpoints/batch/deploy-models/custom-outputs-parquet

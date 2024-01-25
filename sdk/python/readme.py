@@ -486,6 +486,7 @@ def get_spark_config_workflow(folder_name, file_name):
 def get_featurestore_config_workflow(folder_name, file_name):
     is_sdk_noteobook = "_sdk_" in file_name
     is_cli_notebook = "_cli_" in file_name
+    is_vnet_notebook = "_vnet_" in file_name
     workflow = f"""    - name: setup feature-store resources"""
     if is_sdk_noteobook:
         workflow += f"""
@@ -497,6 +498,12 @@ def get_featurestore_config_workflow(folder_name, file_name):
         workflow += f"""
       run: |
           bash -x automation-test/setup-resources-cli.sh automation-test/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+    if is_vnet_notebook:
+        workflow += f"""
+      run: |
+          bash -x automation-test/setup-resources-vnet.sh automation-test/{file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
 
