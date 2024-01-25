@@ -1,0 +1,28 @@
+
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: register_model
+display_name: Register Model
+version: 27
+type: command
+is_deterministic: False
+inputs:
+  model_input_path:
+    type: path
+  model_base_name:
+    type: string
+  model_name_suffix: # Set negative to use epoch_secs
+    type: integer
+    default: -1
+outputs:
+  model_info_output_path:
+    type: path
+code: ./register_model_src/
+environment: azureml://registries/azureml/environments/responsibleai-vision-ubuntu20.04-py38-cpu/versions/41
+command: >-
+  pip install sktime &&
+  python register.py
+  --model_input_path ${{inputs.model_input_path}}
+  --model_base_name ${{inputs.model_base_name}}
+  --model_name_suffix ${{inputs.model_name_suffix}}
+  --model_info_output_path ${{outputs.model_info_output_path}}
+

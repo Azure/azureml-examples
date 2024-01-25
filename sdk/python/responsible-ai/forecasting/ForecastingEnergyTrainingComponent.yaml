@@ -1,0 +1,23 @@
+
+$schema: http://azureml/sdk-2-0/CommandComponent.json
+name: forecasting_energy_training_component
+display_name: Forecasting energy training component for RAI example
+version: 27
+type: command
+inputs:
+  training_data:
+    type: path
+  target_column_name:
+    type: string
+outputs:
+  model_output:
+    type: path
+code: ./component_src/
+environment: azureml://registries/azureml/environments/responsibleai-vision-ubuntu20.04-py38-cpu/versions/41
+
+command: >-
+  pip install sktime &&
+  python forecasting_energy_training_script.py
+  --training_data ${{inputs.training_data}}
+  --target_column_name ${{inputs.target_column_name}}
+  --model_output ${{outputs.model_output}}

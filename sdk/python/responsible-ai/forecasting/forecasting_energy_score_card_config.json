@@ -1,0 +1,1 @@
+{"Model": {"ModelName": "Diabetes disease progression measure", "ModelType": "Regression", "ModelSummary": "This model provides a quantitative measure of disease progression one year after baseline"}, "Metrics": {"mean_absolute_error": {"threshold": "<=5"}, "mean_squared_error": {}}}
