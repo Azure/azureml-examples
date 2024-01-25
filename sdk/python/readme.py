@@ -239,7 +239,7 @@ on:\n"""
       - infra/bootstrapping/**
       - sdk/python/setup.sh\n"""
     if is_featurestore_sample:
-        workflow_yaml += f"""      - sdk/python/featurestore_sample"""
+        workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
     workflow_yaml += f"""
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
