@@ -78,7 +78,9 @@ def main(args: Namespace) -> None:
     y = df[TARGET]
 
     # split into train and test sets (80% for training, 20% for testing)
-    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
     # train model
     estimator = make_classifer_pipeline(params)
