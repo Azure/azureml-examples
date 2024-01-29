@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/modelBatchDeployment.schema.json
 endpoint_name: imagenet-classifier-batch
 name: imagenet-classifier-resnetv2
 description: A ResNetV2 model architecture for performing ImageNet classification in batch
