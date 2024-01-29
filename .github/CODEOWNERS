@@ -180,9 +180,9 @@
 /cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/spark-job-component.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/misc.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/azureml-e2e-model-monitoring @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub    
-/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub   
-/cli/monitoring/custom-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub  
+/cli/monitoring/azureml-e2e-model-monitoring @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub 
+/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub   
+/cli/monitoring/custom-monitoring.yaml @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub  
 /cli/monitoring/generation-safety-quality-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
 /cli/monitoring/model-monitoring-with-collected-data.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
 /cli/monitoring/out-of-box-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
