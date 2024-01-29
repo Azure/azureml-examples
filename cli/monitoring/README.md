@@ -6,6 +6,10 @@
 
 > **Note**: Comprehensive configuration schema information can be found [here](https://learn.microsoft.com/en-us/azure/machine-learning/reference-yaml-monitor?view=azureml-api-2). 
 
+## End-to-end monitoring example
+
+Please see the notebook contained in the [azureml-e2e-model-monitoring/notebooks](azureml-e2e-model-monitoring\notebooks\model-monitoring-e2e.ipynb) folder to run an end-to-end notebook to try out **AzureML model monitoring**.
+
 ## Scenario coverage
 
 **AzureML model monitoring** supports multiple different scenarios so you can monitor your models regardless of your deployment approach. Below, we detail each scenario and the necessary steps to configure your model monitor in each specific case. 
