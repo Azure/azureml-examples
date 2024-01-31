@@ -68,7 +68,8 @@ create_monitor:
           path: azureml:credit-reference:1
           type: mltable
         data_context: training
-        target_column_name: DEFAULT_NEXT_MONTH
+        data_column_names:
+          target_column: DEFAULT_NEXT_MONTH
       metric_thresholds:
         normalized_discounted_cumulative_gain: 0.9
   
