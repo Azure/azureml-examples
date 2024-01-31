@@ -41,6 +41,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/assets/environment"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create asset
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
