@@ -37,7 +37,7 @@ UAI_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $UAI_NAME --query
 az role assignment create --role "AzureML Data Scientist" --assignee-object-id  $UAI_OID --assignee-principal-type ServicePrincipal --scope $FEATURE_STORE_ARM_ID
 az role assignment create --role "Storage Blob Data Contributor" --assignee-object-id $UAI_OID --assignee-principal-type ServicePrincipal --scope $GEN2_CONTAINER_ARM_ID
 
-!az ml feature-set create --file $ACCOUNT_FEATURESET_PATH --resource-group $RESOURCE_GROUP --feature-store-name $FEATURESTORE_NAME
+az ml feature-set create --file $ACCOUNT_FEATURESET_PATH --resource-group $RESOURCE_GROUP --feature-store-name $FEATURESTORE_NAME
 # az ml feature-set update --file $TRANSACTION_ASSET_MAT_YML --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
 
 COMPUTE_CLUSTER_NAME="cpu-cluster-fs"
