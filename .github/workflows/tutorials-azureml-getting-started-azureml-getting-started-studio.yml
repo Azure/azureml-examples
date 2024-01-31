@@ -53,6 +53,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/tutorials/azureml-getting-started"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
