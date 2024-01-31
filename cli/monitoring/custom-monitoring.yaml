@@ -27,9 +27,6 @@ create_monitor:
             type: mltable
             path: azureml:Direct:1
           data_context: test
-          data_window:
-            trailing_window_size: P30D
-            trailing_window_offset: P7D
           pre_processing_component: azureml:custom_preprocessor:1.0.0
 
       metric_thresholds:

@@ -37,7 +37,8 @@ create_monitor:
           path: azureml:my_model_training_data:1 # use training data as comparison baseline
           type: mltable
         data_context: training
-        target_column_name: is_fraud
+        data_column_names:
+          target_column: is_fraud
       features: 
         top_n_feature_importance: 20 # monitor drift for top 20 features
       metric_thresholds:
@@ -60,7 +61,6 @@ create_monitor:
           path: azureml:my_model_validation_data:1 # use training data as comparison reference dataset
           type: mltable
         data_context: validation
-        target_column_name: DEFAULT_NEXT_MONTH
       metric_thresholds:
         categorical:
           pearsons_chi_squared_test: 0.02
