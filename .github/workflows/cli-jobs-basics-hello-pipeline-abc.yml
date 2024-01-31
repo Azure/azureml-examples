@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../run-job.sh hello-pipeline-abc.yml
       working-directory: cli/jobs/basics
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/basics"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
