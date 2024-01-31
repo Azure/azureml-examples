@@ -1,0 +1,7 @@
+{
+    "sub_task": "code",
+    "tokenizer_config": {
+        "return_full_text": true,
+        "max_length": 512
+    }
+}
