@@ -32,7 +32,8 @@ create_monitor:
           path: azureml:credit-reference:1 # use training data as comparison reference dataset
           type: mltable
         data_context: training
-        target_column_name: DEFAULT_NEXT_MONTH
+        data_column_names:
+          target_column: DEFAULT_NEXT_MONTH
       features: 
         top_n_feature_importance: 10 # monitor drift for top 10 features
       metric_thresholds:
