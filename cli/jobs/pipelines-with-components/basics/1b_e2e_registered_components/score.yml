@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: my_score
-# version: 1b
+version: 1b
 display_name: Score
 type: command
 inputs:

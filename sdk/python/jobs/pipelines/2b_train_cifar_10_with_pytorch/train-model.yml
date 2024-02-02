@@ -20,4 +20,4 @@ distribution:
   process_count_per_instance: 1
 resources:
   instance_count: 2
-environment: azureml:acpt-pytorch-1.13-cuda11.7:latest
+environment: mcr.microsoft.com/azureml/curated/acpt-pytorch-1.13-cuda11.7:27
