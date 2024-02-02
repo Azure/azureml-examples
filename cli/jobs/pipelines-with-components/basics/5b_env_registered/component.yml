@@ -7,7 +7,7 @@ version: 1
 
 code: ./src
 
-environment: azureml:azureml-sklearn-1.0@latest
+environment: azureml:azureml-sklearn-1.0:23
 
 command: >-
   python hello.py
