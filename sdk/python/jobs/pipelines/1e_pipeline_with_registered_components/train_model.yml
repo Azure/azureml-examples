@@ -4,7 +4,7 @@ type: command
 name: train_model
 display_name: Train Model
 description: A dummy training component
-version: 0.0.2
+version: 0.0.3
 inputs:
   training_data: 
     type: uri_folder

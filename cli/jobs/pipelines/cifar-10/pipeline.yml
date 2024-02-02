@@ -33,7 +33,7 @@ jobs:
       model_dir:
         type: uri_folder
         mode: upload
-    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:26
+    environment: azureml:acpt-pytorch-1.13-cuda11.7:latest
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
@@ -47,7 +47,7 @@ jobs:
       --data-dir ${{inputs.cifar}}
       --model-dir ${{inputs.model_dir}}/model
     code: src/eval-model
-    environment: azureml:AzureML-pytorch-1.9-ubuntu18.04-py37-cuda11-gpu:26
+    environment: azureml:acpt-pytorch-1.13-cuda11.7:latest
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
