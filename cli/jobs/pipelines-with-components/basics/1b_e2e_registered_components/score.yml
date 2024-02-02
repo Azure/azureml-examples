@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: my_score
-# version: 1b
+#version: 1b
 display_name: Score
 type: command
 inputs:
@@ -11,7 +11,7 @@ inputs:
 outputs:
   score_output:
     type: uri_folder
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+environment: azureml:azureml-sklearn-1.0:23
 code: ./score_src
 command: >-
   python score.py 

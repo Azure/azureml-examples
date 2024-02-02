@@ -47,7 +47,6 @@ def main():
     try:
         with open(f"{sample_path}/README.md", encoding="utf-8") as readme_file:
             readme_content = readme_file.read()
-
             if all(section in readme_content for section in required_sections):
                 print(
                     f"{sample_path} contains a README.md file with all required sections."
