@@ -142,6 +142,16 @@
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multilabel-in-pipeline
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-instance-segmentation-in-pipeline
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-object-detection-in-pipeline
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1l_flow_in_pipeline
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1i_pipeline_with_spark_nodes
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2a_train_mnist_with_tensorflow
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2c_nyc_taxi_data_regression
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2d_image_classification_with_densenet
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/schedules
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/pipelines/automl/cli-automl-forecasting-demand-with-pipeline-components/cli-automl-forecasting-demand-many-models
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/assets/data
