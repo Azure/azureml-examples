@@ -1,3 +1,12 @@
+---
+page_type: sample
+languages:
+- python
+products:
+- azure-machine-learning
+description: This sample shows how to responsible ai dashboard for image datasets.
+---
+
 # Azure Machine Learning Responsible AI Dashboard and Scorecard 
 
 Read more about how to generate the Responsible AI (RAI) dashboard [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-dashboard-sdk-cli?tabs=yaml) and Responsible AI scorecard [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-scorecard).
