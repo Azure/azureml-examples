@@ -14,7 +14,8 @@ REDIS_NAME=${RESOURCE_GROUP}rds
 FEATURE_VERSION=$(((RANDOM%10)+1))
 FEATURESTORE_NAME="my-featurestore"
 ACCOUNT_ENTITY_PATH="./featurestore/entities/account.yaml"
-ACCOUNT_FEATURESET_PATH="./featurestore/featuresets/transactions/featureset_asset.yaml"
+TRANSACTIONS_FEATURESET_PATH="./featurestore/featuresets/transactions/featureset_asset.yaml"
+ACCOUNT_FEATURESET_PATH="./featurestore/featuresets/accounts/featureset_asset.yaml"
 TRANSACTION_ASSET_MAT_YML="./featurestore/featuresets/transactions/featureset_asset_offline_enabled.yaml"
 STORAGE_ACCOUNT_NAME="fstorestorage"
 STORAGE_FILE_SYSTEM_NAME="offlinestore"
@@ -26,7 +27,7 @@ GEN2_CONTAINER_ARM_ID="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOUR
 
 az ml feature-store create --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP --location $LOCATION --name $FEATURESTORE_NAME
 az ml feature-store-entity create --file $ACCOUNT_ENTITY_PATH --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
-az ml feature-set create --file $ACCOUNT_FEATURESET_PATH --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
+az ml feature-set create --file $TRANSACTIONS_FEATURESET_PATH --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
 az storage account create --name $STORAGE_ACCOUNT_NAME --enable-hierarchical-namespace true --resource-group $RESOURCE_GROUP --location $LOCATION --subscription $SUBSCRIPTION_ID
 az storage fs create --name $STORAGE_FILE_SYSTEM_NAME --account-name $STORAGE_ACCOUNT_NAME --subscription $SUBSCRIPTION_ID
 
@@ -36,7 +37,7 @@ UAI_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $UAI_NAME --query
 az role assignment create --role "AzureML Data Scientist" --assignee-object-id  $UAI_OID --assignee-principal-type ServicePrincipal --scope $FEATURE_STORE_ARM_ID
 az role assignment create --role "Storage Blob Data Contributor" --assignee-object-id $UAI_OID --assignee-principal-type ServicePrincipal --scope $GEN2_CONTAINER_ARM_ID
 
-
+az ml feature-set create --file $ACCOUNT_FEATURESET_PATH --resource-group $RESOURCE_GROUP --feature-store-name $FEATURESTORE_NAME
 # az ml feature-set update --file $TRANSACTION_ASSET_MAT_YML --resource-group $RESOURCE_GROUP --workspace-name $FEATURESTORE_NAME
 
 COMPUTE_CLUSTER_NAME="cpu-cluster-fs"
