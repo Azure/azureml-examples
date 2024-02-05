@@ -26,7 +26,7 @@ image_request_data="$data_path/fridgeObjects/image_request_data.json"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
-   ["$resource_group_name" = "<RESOURCE_GROUP>" ] || \
+   [ "$resource_group_name" = "<RESOURCE_GROUP>" ] || \
    [ "$workspace_name" = "<WORKSPACE_NAME>" ]; then 
     echo "Please update the script with the subscription_id, resource_group_name and workspace_name"
     exit 1
