@@ -4,7 +4,7 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: This sample shows how to responsible ai dashboard for image datasets.
+description: This sample shows how to create responsible ai dashboard for image datasets.
 ---
 
 # Azure Machine Learning Responsible AI Dashboard and Scorecard 
