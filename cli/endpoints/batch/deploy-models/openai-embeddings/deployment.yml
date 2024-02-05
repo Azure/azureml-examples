@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/modelBatchDeployment.schema.json
 endpoint_name: text-embedding-ada-qwerty
 name: default
 description: The default deployment for generating embeddings

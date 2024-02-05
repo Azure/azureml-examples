@@ -1,6 +1,6 @@
 $schema: http://azureml/sdk-2-0/FeatureStore.json
 
-name: my_featurestore
+name: <FEATURESTORE_NAME>
 description: feature store description
 tags: {"k1":"v1", "k2":"v2"}
-location: eastus
+location: <LOCATION>
