@@ -31,6 +31,10 @@ echo "AUTOSCALE_SETTINGS_LIST: $AUTOSCALE_SETTINGS_LIST"
 SAMPLES_WORKSPACE_LIST=$(az ml workspace list --query "[*].[name]" -o tsv | grep -E "mlw-basic-prod-|mlw-basicex-prod-" | sort -u)
 echo "SAMPLES_WORKSPACE_LIST: $SAMPLES_WORKSPACE_LIST"
 
+# Wait for 2 hours so that we don't delete entities that are still in use.
+echo waiting
+sleep 2h
+
 # Delete online endpoints
 for i in $ONLINE_ENDPOINT_LIST; do 
     echo "Deleting online-endpoint:$i" && az ml online-endpoint delete --name $i --yes --no-wait && echo "online-endpoint delete initiated for $i" ;

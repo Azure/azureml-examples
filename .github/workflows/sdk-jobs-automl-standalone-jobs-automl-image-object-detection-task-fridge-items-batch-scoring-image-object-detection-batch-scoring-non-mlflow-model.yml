@@ -19,19 +19,20 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
@@ -51,10 +52,13 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
-          pip install azureml-core
-          pip install azureml-pipeline-core
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
@@ -69,7 +73,7 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "image-object-detection-batch-scoring-non-mlflow-model.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python image-object-detection-batch-scoring-non-mlflow-model.ipynb image-object-detection-batch-scoring-non-mlflow-model.output.ipynb
+          papermill -k python -p compute_name automl-gpu-cluster image-object-detection-batch-scoring-non-mlflow-model.ipynb image-object-detection-batch-scoring-non-mlflow-model.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items-batch-scoring
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

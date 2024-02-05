@@ -19,6 +19,7 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -31,7 +32,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
@@ -51,6 +52,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-many-models-in-pipeline"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
@@ -73,3 +79,6 @@ jobs:
       with:
         name: automl-forecasting-demand-many-models-in-pipeline
         path: sdk/python/jobs/pipelines/1k_demand_forecasting_with_pipeline_components/automl-forecasting-demand-many-models-in-pipeline
+
+    - name: Remove the compute if notebook did not done it properly.
+      run: bash "${{ github.workspace }}/infra/bootstrapping/remove_computes.sh" demand-fcst-mm-cluster

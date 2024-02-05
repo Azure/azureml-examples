@@ -1,6 +1,6 @@
 # See for instructions on this file https://help.github.com/articles/about-codeowners/
 
-/python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @lauralj103 @jeff-shepherd @raduk @swatig007 @martinezgjuan @MercyPrasanna @PhaniShekhar @yoyolin @sjinthehouse @vadthyavath @mispa-ms
+/python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @jeff-shepherd @raduk @swatig007 @MercyPrasanna @PhaniShekhar @sjinthehouse @vadthyavath @mispa-ms
 
 #### files referenced in docs #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -180,6 +180,12 @@
 /cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/spark-job-component.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/misc.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/cli/monitoring/azureml-e2e-model-monitoring @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub 
+/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub   
+/cli/monitoring/custom-monitoring.yaml @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub  
+/cli/monitoring/generation-safety-quality-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
+/cli/monitoring/model-monitoring-with-collected-data.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
+/cli/monitoring/out-of-box-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
 /cli/resources/compute/cluster-basic.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/resources/compute/cluster-location.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/resources/compute/cluster-low-priority.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -218,6 +224,7 @@
 /cli/setup.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/train.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /deploy-arm-templates-az-cli.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/assets/environment/environment.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/assets/model/model.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/batch/deploy-models/custom-outputs-parquet/custom-output-batch.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow/mlflow-for-batch-tabular.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -243,7 +250,10 @@
 /sdk/python/featurestore_sample/notebooks/sdk_only/2.\ Experiment\ and\ train\ models\ using\ features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/featurestore_sample/notebooks/sdk_only/3.\ Enable\ recurrent\ materialization\ and\ run\ batch\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/featurestore_sample/notebooks/sdk_only/4.\ Enable\ online\ store\ and\ run\ online\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1
+/sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
+/sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
+/sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora  
 /sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing-serverless.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/configuration.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
