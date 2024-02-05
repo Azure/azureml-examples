@@ -199,3 +199,14 @@
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/vision/
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/text/
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/text/responsibleaidashboard-text-classification-financial-news
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-regression-model-debugging
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-education-student-attrition-classificaton
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-finance-loan-classification
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-healthcare-covid-classification
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-classification-model-debugging
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-decision-making
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/responsible-ai/tabular/responsibleaidashboard-programmer-regression-model-debugging
