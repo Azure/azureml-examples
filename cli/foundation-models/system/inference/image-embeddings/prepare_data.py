@@ -123,9 +123,7 @@ def prepare_data_for_batch_inference(dataset_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Prepare data for image embedding"
-    )
+    parser = argparse.ArgumentParser(description="Prepare data for image embedding")
     parser.add_argument(
         "--data_path", type=str, default="data", help="Dataset location"
     )
