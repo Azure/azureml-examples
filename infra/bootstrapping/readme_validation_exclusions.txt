@@ -80,6 +80,7 @@
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/single-step/tensorflow/mnist
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/spark
 /home/runner/work/azureml-examples/azureml-examples/cli/resources/compute
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/resources/compute
 /home/runner/work/azureml-examples/azureml-examples/cli/responsible-ai/cli-responsibleaidashboard-housing-classification
 /home/runner/work/azureml-examples/azureml-examples/cli/responsible-ai/cli-responsibleaidashboard-programmer-regression
 /home/runner/work/azureml-examples/azureml-examples/cli/schedules
