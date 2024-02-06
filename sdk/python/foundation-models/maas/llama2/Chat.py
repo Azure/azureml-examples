@@ -3,7 +3,7 @@ import urllib.request
 import json
 import os
 import ssl
-
+from dotenv import load_dotenv
 
 
 
@@ -40,9 +40,13 @@ data =  {
 
 body = str.encode(json.dumps(data))
 
-url = 'Endpoint URL'
-# Replace this with the primary/secondary key or AMLToken for the endpoint
-api_key = 'AMLToken/Key'
+#Load the environment variable from the .env file
+load_dotenv()
+# Load the URL from the .env file using this os.getenv() method
+url = os.getenv("CHAT_API_URL")
+# Load the primary/secondary key or AMLToken for the endpoint from the .env file
+api_key = os.getenv("CHAT_API_KEY")
+
 if not api_key:
     raise Exception("A key should be provided to invoke the endpoint")
 

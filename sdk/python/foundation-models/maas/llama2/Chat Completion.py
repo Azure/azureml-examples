@@ -3,6 +3,7 @@ import urllib.request
 import json
 import os
 import ssl
+from dotenv import load_dotenv
 
 def allowSelfSignedHttps(allowed):
     # bypass the server certificate verification on client side
@@ -24,10 +25,13 @@ data =  {
 
 body = str.encode(json.dumps(data))
 
-# Replace this with the URL of the endpoint
-url = 'Endpoint URL'
-# Replace this with the primary/secondary key or AMLToken for the endpoint
-api_key = 'AMLToken/Key'
+#Load the environmet variable from the .env file
+load_dotenv()
+# Load the URL from the .env file using this os.getenv()
+url = os.getenv("CHAT_COMPLETION_API_URL")
+# Load the primary/secondary key or AMLToken for the endpoint from the .env file using os.getenv()
+api_key = os.getenv("CHAT_COMPLETION_API_KEY")
+
 if not api_key:
     raise Exception("A key should be provided to invoke the endpoint")
 
