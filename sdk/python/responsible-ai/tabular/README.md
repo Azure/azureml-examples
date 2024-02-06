@@ -17,13 +17,13 @@ The Responsible AI components are supported for MLflow models with `scikit-learn
 The components accept both models and SciKit-Learn pipelines as input as long as the model or pipeline implements `predict` and `predict_proba` functions that conforms to the `scikit-learn` convention.
 If not compatible, you can wrap your model's prediction function into a wrapper class that transforms the output into the format that is supported (`predict` and `predict_proba` of `scikit-learn`), and pass that wrapper class to modules in this repo.
 
-### Objective
+### objective
 The main objective of this tutorial is to help users understand the process of creating responsible ai dashboard with explanations & error analysis for tabular dataset.
 
-### Programming Languages
+### programming languages
  - Python
 
-### Directory 📖
+### directory 📖
 
 | Scenario | Dataset | Data type | RAI component included | Link to sample | Documentation |
 | --- | --- | --- | --- | --- | --- |
@@ -40,9 +40,9 @@ The main objective of this tutorial is to help users understand the process of c
 To learn more about the different types of Dashboard visit the tutorial - 
  [Tabular Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-dashboard?view=azureml-api-2)
 
-### Estimated Runtime
+### estimated runtime
 
-### Supportability 🧰
+### supportability 🧰
 Currently, we support datasets having numerical and categorical features. The following table provides the scenarios supported for each of the four responsible AI components:
 > **Note**: Model overview (performance metrics and fairness disparity metrics) and Data explorer are generated for every Responsible AI dashboard by default and do not require a component to be configured.
 
