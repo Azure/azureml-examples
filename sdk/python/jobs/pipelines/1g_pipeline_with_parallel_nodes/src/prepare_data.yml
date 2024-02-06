@@ -4,7 +4,7 @@ type: command
 
 name: prepare_file_tabular_data
 display_name: Prepare File Tabular Data
-version: 1
+version: 2
 
 inputs:
   input_data:
