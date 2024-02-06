@@ -9,7 +9,7 @@ inputs:
   model_base_name:
     type: string
 code: ./src/
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1
+environment: azureml:azureml-sklearn-1.0:23
 command: >-
   python register.py
   --model_input_path ${{inputs.model_input_path}}
