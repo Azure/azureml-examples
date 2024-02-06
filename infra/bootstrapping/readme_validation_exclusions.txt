@@ -202,3 +202,8 @@
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-task-energy-demand
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/resources/workspace
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/resources/compute
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/resources/connections
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/resources/datastores
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/resources/registry
