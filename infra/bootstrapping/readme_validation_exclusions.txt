@@ -129,7 +129,10 @@
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/debug-and-monitor
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/lightgbm/iris
-/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/pytorch
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/pytorch/distributed-training
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/pytorch/distributed-training-yolov5
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/pytorch/iris
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/pytorch/train-hyperparameter-tune-deploy-with-pytorch
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/r/accidents
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/scikit-learn/diabetes
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/single-step/scikit-learn/iris
