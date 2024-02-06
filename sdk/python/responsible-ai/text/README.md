@@ -7,7 +7,9 @@ products:
 description: This sample shows how to create responsible ai dashboard for text datasets.
 ---
 
-# Azure Machine Learning Responsible AI Dashboard and Scorecard 
+## Azure Machine Learning Responsible AI Dashboard and Scorecard 
+
+### Overview
 
 Read more about how to generate the Responsible AI (RAI) dashboard [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-dashboard-sdk-cli?tabs=yaml) and Responsible AI scorecard [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-scorecard).
 
@@ -15,10 +17,13 @@ The Responsible AI components are supported for MLflow models with `scikit-learn
 The components accept both models and SciKit-Learn pipelines as input as long as the model or pipeline implements `predict` and `predict_proba` functions that conforms to the `scikit-learn` convention.
 If not compatible, you can wrap your model's prediction function into a wrapper class that transforms the output into the format that is supported (`predict` and `predict_proba` of `scikit-learn`), and pass that wrapper class to modules in this repo.
 
-## Directory 📖
- 
+### Objective
+The main objective of this tutorial is to help users understand the process of creating responsible ai dashboard with explanations & error analysis for text dataset.
 
+### Programming Languages
+ - Python
 
+### Directory 📖
 
 | Scenario | Dataset | Data type | RAI component included | Link to sample | Documentation |
 | --- | --- | --- | --- | --- | --- |
@@ -32,8 +37,9 @@ If not compatible, you can wrap your model's prediction function into a wrapper 
 To learn more about the different types of Dashboard visit the tutorial -
 [Text Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-text-dashboard?view=azureml-api-2)
 
+### Estimated Runtime
 
-## Supportability 🧰
+### Supportability 🧰
 Currently, we support datasets having numerical and categorical features. The following table provides the scenarios supported for each of the four responsible AI components:
 > **Note**: Model overview (performance metrics and fairness disparity metrics) and Data explorer are generated for every Responsible AI dashboard by default and do not require a component to be configured.
 
