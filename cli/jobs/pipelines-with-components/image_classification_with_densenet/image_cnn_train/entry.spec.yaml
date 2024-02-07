@@ -111,7 +111,7 @@ outputs:
 code: ./
 
 environment:
-  image: mcr.microsoft.com/azureml/openmpi3.1.2-cuda10.2-cudnn7-ubuntu18.04
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.8-cudnn8-ubuntu22.04:latest
   conda_file: ./conda.yaml
 
 resources:
