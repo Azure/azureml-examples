@@ -1,5 +1,5 @@
 set -x
-# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-batch-sdk-image-classification
+# The commands in this file map to steps in this notebook: https://aka.ms/azureml-infer-cli-image-embeddings
 # The sample scoring file available in the same folder as the above notebook.
 
 # script inputs
