@@ -1,0 +1,9 @@
+transformers
+datasets
+accelerate
+scikit-learn
+apache_beam
+evaluate
+optimum
+azureml-mlflow
+tensorboard
