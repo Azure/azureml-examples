@@ -18,18 +18,7 @@ RUN wget https://github.com/prometheus/prometheus/releases/download/v2.30.3/prom
     mv /var/azureml-util/prometheus_client/prometheus-2.30.3.linux-amd64 /var/azureml-util/prometheus_client/client && \
     rm prometheus-2.30.3.linux-amd64.tar.gz
 
-# Conda Environment
-ENV PATH=/opt/miniconda/bin:$PATH
-ARG MINICONDA_URL="https://repo.continuum.io/miniconda/Miniconda3-py39_23.3.1-0-Linux-x86_64.sh"
-RUN wget -qO /tmp/miniconda.sh $MINICONDA_URL && \
-    bash /tmp/miniconda.sh -bf -p /opt/miniconda && \
-    #https://github.com/advisories/GHSA-qwmp-2cf2-g9g6
-    #https://github.com/advisories/GHSA-r9hx-vwmv-q579
-    conda install -c conda-forge cryptography==41.0.4 certifi=2023.07.22 requests==2.31.0 && \
-    conda clean -ay && \
-    rm -rf /opt/miniconda/pkgs && \
-    rm -f /tmp/miniconda.sh && \
-    find /opt/miniconda -type d -name __pycache__ | xargs rm -rf
+RUN pip install requests
 
 COPY utilities /var/azureml-util/metrics_utilities
 RUN chmod +x /var/azureml-util/metrics_utilities/crontab
