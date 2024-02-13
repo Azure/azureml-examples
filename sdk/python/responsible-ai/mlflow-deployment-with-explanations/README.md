@@ -18,7 +18,7 @@ The components accept both models and SciKit-Learn pipelines as input as long as
 If not compatible, you can wrap your model's prediction function into a wrapper class that transforms the output into the format that is supported (`predict` and `predict_proba` of `scikit-learn`), and pass that wrapper class to modules in this repo.
 
 ### objective
-The main objective of this tutorial is to help users understand the process of creating responsible ai dashboard with explanations & error analysis for tabular dataset.
+The main objective of this tutorial is to help users learn how to implement scoring-time explanations for [MLflow](https://www.mlflow.org/) model. This tutorial produces (1) a new model whose `predict()` method returns both predictions and explanations and (2) a custom deployment of that model to an [online endpoint](https://docs.microsoft.com/azure/machine-learning/concept-endpoints) for that model.
 
 ### programming languages
  - Python
