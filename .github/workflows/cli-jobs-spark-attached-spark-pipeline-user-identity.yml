@@ -52,10 +52,15 @@ jobs:
       working-directory: cli
       continue-on-error: true
       run: |
-          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-user-identity.yml
+          bash -x jobs/spark/setup-attached-resources.sh resources/compute/attached-spark-user-identity.yml jobs/spark/attached-spark-pipeline-user-identity.yml
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../run-job.sh attached-spark-pipeline-user-identity.yml
       working-directory: cli/jobs/spark
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/spark"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

@@ -49,3 +49,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/pipelines-with-components/basics/4c_web_url_input
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/basics/4c_web_url_input"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

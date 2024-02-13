@@ -83,7 +83,12 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
-    "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
+
+    (
+      # TODO: Figure out why this sometimes fails
+      #       Currently errors out and prevents script from running
+      "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
+    ) || :
 
     echo_title "Ensuring Permissions on RG"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"
@@ -100,8 +105,8 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
     
     echo_title "Ensuring GPU compute"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "Standard_NC6"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "STANDARD_NC6s_v3"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6s_v3"
     # v100 single GPU cluster for pytorch 2.0 based notebooks
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-v100-1GPU-cluster" 0 4 "Standard_NC6s_v3"
     # v100 GPU cluster for deepspeed cli examples

@@ -49,3 +49,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/pipelines/tensorflow-image-segmentation
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines/tensorflow-image-segmentation"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

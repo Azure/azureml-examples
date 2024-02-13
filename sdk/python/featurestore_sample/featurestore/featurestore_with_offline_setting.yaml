@@ -2,7 +2,7 @@ $schema: http://azureml/sdk-2-0/FeatureStore.json
 name: my-featurestore
 description: feature store description
 tags: {"k1":"v1", "k2":"v2"}
-locaton: eastus
+location: eastus
 
 offline_store:
   target: /subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/{storage-account}/blobServices/default/containers/{container-name}

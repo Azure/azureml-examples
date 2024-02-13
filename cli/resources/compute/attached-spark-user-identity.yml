@@ -1,5 +1,5 @@
 # attached-spark-user-identity.yml
-name: mysparkcompute
+name: <ATTACHED_SPARK_POOL_NAME>
   
 type: synapsespark
 
