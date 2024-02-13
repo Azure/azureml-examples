@@ -34,4 +34,5 @@ The main objectives of the tutorials in this directory are as following:
 
 ### Programming Languages
  - Python
+ - Azure CLI
 ### Estimated Runtime: 30 mins
