@@ -11,7 +11,7 @@ argParser.add_argument(
 )
 args = argParser.parse_args()
 sample_path = str(args.sample_path).strip()
-working_directory = Path(__file__).parent.parent
+working_directory = Path(__file__).resolve().parent.parent
 
 
 def main():
