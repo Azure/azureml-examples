@@ -33,20 +33,20 @@ def main():
     )
 
     # Check if sample is excluded from README validation
-    with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
-        exclusions = exclusions_file.read().splitlines()
-        
-        for exclusion in exclusions:
-            print(exclusion + "\n")
-
-        if sample_path in exclusions:
-            print(
-                f"Skipping {sample_path} since it is excluded from README validation."
-            )
-            sys.exit(0)
-
-    # Check if sample contains a valid README.md file
     try:
+        with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
+            exclusions = exclusions_file.read().splitlines()
+            
+            for exclusion in exclusions:
+                print(exclusion + "\n")
+
+            if sample_path in exclusions:
+                print(
+                    f"Skipping {sample_path} since it is excluded from README validation."
+                )
+                sys.exit(0)
+
+        # Check if sample contains a valid README.md file
         with open(f"{sample_path}/README.md", encoding="utf-8") as readme_file:
             readme_content = readme_file.read()
             if all(section in readme_content for section in required_sections):
@@ -54,8 +54,8 @@ def main():
                     f"{sample_path} contains a README.md file with all required sections."
                 )
                 sys.exit(0)
-    except FileNotFoundError:
-        pass
+    except FileNotFoundError as e:
+        print(f"hit error {e}")
 
     print(INVALID_README_MSG)
     sys.exit(1)
