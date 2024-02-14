@@ -15,7 +15,7 @@ repo_root = Path(__file__).resolve().parent.parent
 
 
 def main():
-    INVALID_README_MSG = f"{sample_path} does not contain a README.md file with all required words. See the Discoverability section of CONTRIBUTING.md."
+    INVALID_README_MSG = f"{sample_path} does not contain a README.md file with all required words. See the Discoverability section of CONTRIBUTING.md to create a valid README or add the file path to ./infra/bootstrapping/readme_validation_exclusions.txt."
     EXCLUSIONS_FILE_PATH = f"{repo_root}/bootstrapping/readme_validation_exclusions.txt"
     required_sections = [
         "overview",
@@ -35,6 +35,10 @@ def main():
     # Check if sample is excluded from README validation
     with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
         exclusions = exclusions_file.read().splitlines()
+        
+        for exclusion in exclusions:
+            print(exclusion + "\n")
+
         if sample_path in exclusions:
             print(
                 f"Skipping {sample_path} since it is excluded from README validation."
