@@ -222,5 +222,5 @@
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/using-mltable/from-paths-example
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/using-mltable/local-to-cloud
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/using-mltable/quickstart
-
-
+/home/runner/work/azureml-examples/azureml-examples/tutorials/e2e-distributed-pytorch-image
+/home/runner/work/azureml-examples/azureml-examples/tutorials/e2e-ds-experience
