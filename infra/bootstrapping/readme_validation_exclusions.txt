@@ -173,6 +173,7 @@
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2c_nyc_taxi_data_regression
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2d_image_classification_with_densenet
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/spark
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/schedules
 /home/runner/work/azureml-examples/azureml-examples/cli/jobs/pipelines/automl/cli-automl-forecasting-demand-with-pipeline-components/cli-automl-forecasting-demand-many-models
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/jobs/automl-standalone-jobs/automl-image-classification-multilabel-task-fridge-items
