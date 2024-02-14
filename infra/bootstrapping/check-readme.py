@@ -11,14 +11,12 @@ argParser.add_argument(
 )
 args = argParser.parse_args()
 sample_path = str(args.sample_path).strip()
-working_directory = Path(__file__).parent.parent
+repo_root = Path(__file__).resolve().parent.parent
 
 
 def main():
     INVALID_README_MSG = f"{sample_path} does not contain a README.md file with all required words. See the Discoverability section of CONTRIBUTING.md."
-    EXCLUSIONS_FILE_PATH = (
-        f"{working_directory}/bootstrapping/readme_validation_exclusions.txt"
-    )
+    EXCLUSIONS_FILE_PATH = f"{repo_root}/bootstrapping/readme_validation_exclusions.txt"
     required_sections = [
         "overview",
         "objective",
