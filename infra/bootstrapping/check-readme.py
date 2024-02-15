@@ -36,7 +36,7 @@ def main():
     try:
         with open(EXCLUSIONS_FILE_PATH, encoding="utf-8") as exclusions_file:
             exclusions = exclusions_file.read().splitlines()
-            
+
             for exclusion in exclusions:
                 print(exclusion + "\n")
 
