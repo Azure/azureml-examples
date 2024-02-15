@@ -224,3 +224,4 @@
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/using-mltable/quickstart
 /home/runner/work/azureml-examples/azureml-examples/tutorials/e2e-distributed-pytorch-image
 /home/runner/work/azureml-examples/azureml-examples/tutorials/e2e-ds-experience
+/home/runner/work/azureml-examples/azureml-examples/tutorials/get-started-notebooks
