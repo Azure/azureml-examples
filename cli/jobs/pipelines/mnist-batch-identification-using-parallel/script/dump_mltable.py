@@ -2,7 +2,7 @@ import yaml
 import argparse
 import os
 
-d = {"paths": [{"file": "./mnist"}]}
+d = {"paths": [{"folder": "./mnist"}]}
 
 parser = argparse.ArgumentParser(allow_abbrev=False, description="dump mltable")
 

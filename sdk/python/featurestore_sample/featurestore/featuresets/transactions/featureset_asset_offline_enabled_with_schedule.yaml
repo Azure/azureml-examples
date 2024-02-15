@@ -28,3 +28,4 @@ materialization_settings:
     spark.executor.cores: 4
     spark.executor.instances: 2
     spark.executor.memory: 36g
+    spark.sql.shuffle.partitions: 1

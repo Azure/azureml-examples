@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: regular_deployment
+endpoint_name: hello-packages
+model: azureml:sklearn-regression@latest
+environment: azureml:sklearn-regression-env@latest
+code_configuration:
+  code: src
+  scoring_script: score.py
+instance_type: Standard_DS3_v2
+instance_count: 1

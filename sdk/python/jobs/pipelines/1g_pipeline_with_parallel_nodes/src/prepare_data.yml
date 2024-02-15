@@ -4,7 +4,7 @@ type: command
 
 name: prepare_file_tabular_data
 display_name: Prepare File Tabular Data
-version: 1
+version: 2
 
 inputs:
   input_data:
@@ -18,7 +18,7 @@ outputs:
 
 code: ./
 
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+environment: azureml:azureml-sklearn-1.0:23
 
 command: >-
   python prepare_data.py

@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh job.yml
       working-directory: cli/jobs/deepspeed/deepspeed-training
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/deepspeed/deepspeed-training"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

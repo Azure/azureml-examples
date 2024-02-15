@@ -13,7 +13,7 @@ outputs:
   predict_result:
     type: uri_folder
 code: ./predict-src
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+environment: azureml:azureml-sklearn-1.0:23
 command: >-
   python predict.py 
   --model ${{inputs.model}} 

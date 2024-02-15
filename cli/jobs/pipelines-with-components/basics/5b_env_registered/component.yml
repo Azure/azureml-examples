@@ -7,7 +7,7 @@ version: 1
 
 code: ./src
 
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+environment: azureml:azureml-sklearn-1.0:23
 
 command: >-
   python hello.py

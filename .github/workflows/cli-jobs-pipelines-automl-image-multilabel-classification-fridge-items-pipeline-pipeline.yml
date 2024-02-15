@@ -53,3 +53,8 @@ jobs:
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

@@ -8,7 +8,7 @@ resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
-model_name="yolof_r50_c5_8x8_1x_coco"
+model_name="mmd-3x-yolof_r50_c5_8x8_1x_coco"
 model_label="latest"
 
 deployment_compute="cpu-cluster"

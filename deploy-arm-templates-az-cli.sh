@@ -131,7 +131,7 @@ az deployment group create -g $RESOURCE_GROUP \
  codeId="$resourceScope/workspaces/$WORKSPACE/codes/score-sklearn/versions/1" \
  scoringScript=score.py \
  environmentId="$resourceScope/workspaces/$WORKSPACE/environments/sklearn-env/versions/$ENV_VERSION" \
- model="$resourceScope/workspaces/$WORKSPACE/models/score-sklearn/versions/1" \
+ model="$resourceScope/workspaces/$WORKSPACE/models/sklearn/versions/1" \
  endpointComputeType=Managed \
  skuName=Standard_F2s_v2 \
  skuCapacity=1

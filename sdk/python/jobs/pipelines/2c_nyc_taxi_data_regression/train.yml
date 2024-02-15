@@ -13,7 +13,7 @@ outputs:
   test_data:
     type: uri_folder
 code: ./train_src
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+environment: azureml:azureml-sklearn-1.0:23
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 

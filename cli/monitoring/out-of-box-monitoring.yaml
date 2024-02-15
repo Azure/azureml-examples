@@ -1,8 +1,8 @@
 # out-of-box-monitoring.yaml
 $schema:  http://azureml/sdk-2-0/Schedule.json
-name: fraud_detection_model_monitoring
-display_name: Fraud detection model monitoring
-description: Loan approval model monitoring setup with minimal configurations
+name: credit_default_model_monitoring
+display_name: Credit default model monitoring
+description: Credit default model monitoring setup with minimal configurations
 
 trigger:
   # perform model monitoring activity daily at 3:15am
@@ -14,9 +14,16 @@ trigger:
     minutes: 15 # at 15 mins after 3am
 
 create_monitor:
+
   compute: # specify a spark compute for monitoring job
     instance_type: standard_e4s_v3
-    runtime_version: 3.2
-  monitoring_target:
-    ml_task: classification
-    endpoint_deployment_id: azureml:fraud-detection-endpoint:fraud-detection-deployment
+    runtime_version: "3.3"
+
+  monitoring_target: 
+    ml_task: classification # model task type: [classification, regression, question_answering]
+    endpoint_deployment_id: azureml:credit-default:main # azureml endpoint deployment id
+
+  alert_notification: # emails to get alerts
+    emails:
+      - abc@example.com
+      - def@example.com

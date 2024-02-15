@@ -83,7 +83,12 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_vnet "vnet-mevnet"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_subnet "vnet-mevnet" "snet-scoring"
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_identity "uaimevnet"
-    "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
+
+    (
+      # TODO: Figure out why this sometimes fails
+      #       Currently errors out and prevents script from running
+      "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_identity_on_acr "uaimevnet"
+    ) || :
 
     echo_title "Ensuring Permissions on RG"
     "$SCRIPT_DIR"/sdk_helpers.sh grant_permission_app_id_on_rg "${APP_NAME}"

@@ -4,7 +4,7 @@ type: command
 name: train_model
 display_name: Train Model
 description: A dummy training component
-version: 0.0.2
+version: 0.0.3
 inputs:
   training_data: 
     type: uri_folder
@@ -21,7 +21,7 @@ outputs:
   model_output:
     type: uri_folder
 code: ./train_src
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+environment: azureml:azureml-sklearn-1.0:23
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 

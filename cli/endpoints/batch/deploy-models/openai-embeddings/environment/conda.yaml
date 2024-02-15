@@ -1,0 +1,14 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8.5
+- pip<=23.2.1
+- pip:
+  - openai==0.27.8
+  - requests==2.31.0
+  - tenacity==8.2.2
+  - tiktoken==0.4.0
+  - azureml-core
+  - azure-identity
+  - datasets
+  - mlflow

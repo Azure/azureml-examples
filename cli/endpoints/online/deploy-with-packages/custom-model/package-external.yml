@@ -1,0 +1,12 @@
+$schema: http://azureml/sdk-2-0/ModelVersionPackage.json
+base_environment_source:
+    type: environment_asset
+    resource_id: azureml:sklearn-regression-env:1
+target_environment: sklearn-regression-docker-pkg
+inferencing_server: 
+    type: azureml_online
+    code_configuration:
+      code: src
+      scoring_script: score.py
+model_configuration:
+  mode: copy

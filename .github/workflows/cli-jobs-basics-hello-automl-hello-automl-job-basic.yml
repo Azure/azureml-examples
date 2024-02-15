@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh hello-automl-job-basic.yml
       working-directory: cli/jobs/basics/hello-automl
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/basics/hello-automl"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

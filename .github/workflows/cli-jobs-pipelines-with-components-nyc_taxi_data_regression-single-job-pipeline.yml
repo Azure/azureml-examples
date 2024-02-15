@@ -49,3 +49,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh single-job-pipeline.yml
       working-directory: cli/jobs/pipelines-with-components/nyc_taxi_data_regression
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/nyc_taxi_data_regression"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

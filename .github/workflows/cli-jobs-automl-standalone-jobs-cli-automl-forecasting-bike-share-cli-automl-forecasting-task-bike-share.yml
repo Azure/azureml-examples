@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh cli-automl-forecasting-task-bike-share.yml
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-forecasting-bike-share"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

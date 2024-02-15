@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Run.schema.json
+flow: ./basic
+environment_variables:
+  AZURE_OPENAI_API_KEY: <your-api-key>
+  AZURE_OPENAI_API_BASE: <your-api-base>
+  AZURE_OPENAI_API_TYPE: azure

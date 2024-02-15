@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: main
+code_configuration:
+  code: ../code
+  scoring_script: score.py
+endpoint_name: credit-default
+environment: 
+  conda_file: ../environments/score.yaml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+model: azureml:credit-default-model@latest
+instance_type: Standard_F2s_v2
+instance_count: 1
+data_collector:
+  collections:
+    model_inputs:
+      enabled: "true"
+    model_outputs:
+      enabled: "true"
+    model_inputs_outputs:
+      enabled: "true"

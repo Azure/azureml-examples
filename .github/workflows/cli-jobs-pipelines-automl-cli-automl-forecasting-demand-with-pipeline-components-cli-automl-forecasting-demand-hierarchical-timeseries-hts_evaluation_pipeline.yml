@@ -49,3 +49,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../../../run-job.sh hts_evaluation_pipeline.yml
       working-directory: cli/jobs/pipelines/automl/cli-automl-forecasting-demand-with-pipeline-components/cli-automl-forecasting-demand-hierarchical-timeseries
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines/automl/cli-automl-forecasting-demand-with-pipeline-components/cli-automl-forecasting-demand-hierarchical-timeseries"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

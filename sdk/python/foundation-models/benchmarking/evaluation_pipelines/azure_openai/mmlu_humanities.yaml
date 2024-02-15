@@ -1,0 +1,224 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: mmlu_humanities_aoai
+description: Azure OpenAI eval on MMLU Humanities
+inputs:
+  endpoint_url: https://resource-name.openai.azure.com/openai/deployments/gpt-4/chat/completions?api-version=2023-07-01-preview
+  ws_connection_name: <connection name>
+  payload_pattern: '{"messages": ###<prompt>, "temperature": 0.0, "max_tokens": 10, "top_p": 1.0, "frequency_penalty": 0.0, "presence_penalty": 0.0, "stop": null}'
+  sample_ratio: 1.0
+jobs:
+  downloader:
+    type: command
+    component: azureml://registries/azureml/components/dataset_downloader/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      configuration: formal_logic,high_school_european_history,high_school_us_history,high_school_world_history,international_law,jurisprudence,logical_fallacies,moral_disputes,moral_scenarios,philosophy,prehistory,professional_law,world_religions
+      split: test
+      script_path:
+        type: uri_file
+        path: https://raw.githubusercontent.com/Azure/azureml-assets/main/assets/aml-benchmark/scripts/data_loaders/mmlu.py
+    outputs:
+      output_dataset:
+        type: uri_folder
+  sampler:
+    type: command
+    component: azureml://registries/azureml/components/dataset_sampler/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.downloader.outputs.output_dataset}}
+      sampling_style: head
+      sampling_ratio: ${{parent.inputs.sample_ratio}}
+      random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  preprocessor:
+    type: command
+    component: azureml://registries/azureml/components/dataset_preprocessor/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.sampler.outputs.output_dataset}}
+      template_input: '{"question":{{question}}, "choices":{{choices}}, "answer":{{answer|string}}}'
+      encoder_config: '{"column_name": "answer", "0": "A", "1": "B", "2": "C", "3":
+        "D"}'
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  fewshot_downloader:
+    type: command
+    component: azureml://registries/azureml/components/dataset_downloader/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      configuration: formal_logic,high_school_european_history,high_school_us_history,high_school_world_history,international_law,jurisprudence,logical_fallacies,moral_disputes,moral_scenarios,philosophy,prehistory,professional_law,world_religions
+      split: dev
+      script_path:
+        type: uri_file
+        path: https://raw.githubusercontent.com/Azure/azureml-assets/main/assets/aml-benchmark/scripts/data_loaders/mmlu.py
+    outputs:
+      output_dataset:
+        type: uri_folder
+  fewshot_sampler:
+    type: command
+    component: azureml://registries/azureml/components/dataset_sampler/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.fewshot_downloader.outputs.output_dataset}}
+      sampling_style: head
+      sampling_ratio: 1.0
+      random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  fewshot_preprocessor:
+    type: command
+    component: azureml://registries/azureml/components/dataset_preprocessor/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.fewshot_sampler.outputs.output_dataset}}
+      template_input: '{"question":{{question}}, "choices":{{choices}}, "answer":{{answer|string}}}'
+      encoder_config: '{"column_name": "answer", "0": "A", "1": "B", "2": "C", "3":
+        "D"}'
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  promptcrafter:
+    type: command
+    component: azureml://registries/azureml/components/prompt_crafter/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      test_data:
+        type: uri_folder
+        path: ${{parent.jobs.preprocessor.outputs.output_dataset}}
+      few_shot_data:
+        type: uri_folder
+        path: ${{parent.jobs.fewshot_preprocessor.outputs.output_dataset}}
+      prompt_type: chat
+      prompt_pattern: '### Question: {{question}}
+
+        A. {{choices[0]}}
+
+        B. {{choices[1]}}
+
+        C. {{choices[2]}}
+
+        D. {{choices[3]}}
+
+        ###Answer:'
+      n_shots: 5
+      output_pattern: ' {{answer}}'
+      few_shot_separator: '
+
+
+        '
+      random_seed: 0
+    outputs:
+      output_file:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  endpoint:
+    type: pipeline
+    component: azureml://registries/azureml/components/batch_benchmark_inference/labels/latest
+    inputs:
+      input_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.promptcrafter.outputs.output_file}}
+      batch_input_pattern: ${{parent.inputs.payload_pattern}}
+      endpoint_url: ${{parent.inputs.endpoint_url}}
+      is_performance_test: false
+      connections_name: ${{parent.inputs.ws_connection_name}}
+      label_column_name: completion
+      handle_response_failure: use_fallback
+      ensure_ascii: false
+      initial_worker_count: 5
+      max_worker_count: 200
+      instance_count: 1
+      max_concurrency_per_instance: 1
+      debug_mode: false
+    outputs:
+      predictions:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      performance_metadata:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      ground_truth:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  postprocessor:
+    type: command
+    component: azureml://registries/azureml/components/inference_postprocessor/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      ground_truth_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.endpoint.outputs.ground_truth}}
+      prediction_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.endpoint.outputs.predictions}}
+      ground_truth_column_name: completion
+      prediction_column_name: prediction
+      separator: '
+
+
+        '
+      find_first: A,B,C,D
+    outputs:
+      output_dataset_result:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  quality:
+    type: command
+    component: azureml://registries/azureml/components/compute_metrics/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      ground_truth:
+        type: uri_folder
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
+      prediction:
+        type: uri_folder
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
+      task: question-answering
+      ground_truth_column_name: completion
+      prediction_column_name: prediction
+      evaluation_config_params: '{"regexes_to_ignore": ["\\W"]}'
+    outputs:
+      evaluation_result:
+        type: uri_folder
+  aggregator:
+    type: command
+    component: azureml://registries/azureml/components/benchmark_result_aggregator/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      quality_metrics:
+        type: uri_folder
+        path: ${{parent.jobs.quality.outputs.evaluation_result}}
+    outputs:
+      benchmark_result:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.json
+settings:
+  force_rerun: false
+  default_compute: azureml:serverless

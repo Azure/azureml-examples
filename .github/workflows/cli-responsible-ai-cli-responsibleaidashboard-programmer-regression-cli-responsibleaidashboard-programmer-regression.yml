@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../run-job.sh cli-responsibleaidashboard-programmer-regression.yml
       working-directory: cli/responsible-ai/cli-responsibleaidashboard-programmer-regression
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/responsible-ai/cli-responsibleaidashboard-programmer-regression"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

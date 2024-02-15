@@ -17,7 +17,7 @@ inputs:
 
 jobs:
   feature_retrieval_step:
-    component: azureml://registries/azureml/components/feature_retrieval/versions/0.3.0
+    component: azureml://registries/azureml/components/feature_retrieval/versions/1.0.0
     inputs:
       feature_retrieval_spec:
         path: ${{parent.inputs.feature_retrieval_spec}}
@@ -41,7 +41,7 @@ jobs:
   
   training_step:
     type: command
-    compute: azureml:cpu-cluster
+    compute: azureml:cpu-cluster-fs
     code: ../train/src
     environment:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
@@ -63,7 +63,7 @@ jobs:
 
   evaluation_step: # this is a placeholder no-op step for illustration purpose only
     type: command
-    compute: azureml:cpu-cluster
+    compute: azureml:cpu-cluster-fs
     code: ../evaluate/src
     environment:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
@@ -80,7 +80,7 @@ jobs:
 
   register_model_step:
     type: command
-    compute: azureml:cpu-cluster
+    compute: azureml:cpu-cluster-fs
     code: ../register_model/src
     environment:
       image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04

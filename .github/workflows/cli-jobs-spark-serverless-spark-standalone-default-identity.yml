@@ -53,3 +53,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../run-job.sh serverless-spark-standalone-default-identity.yml
       working-directory: cli/jobs/spark
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/spark"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

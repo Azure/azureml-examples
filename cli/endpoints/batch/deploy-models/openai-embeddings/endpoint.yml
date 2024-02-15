@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: text-embedding-ada-qwerty
+description: An endpoint to generate embeddings in batch for the ADA-002 model from OpenAI
+auth_mode: aad_token

@@ -41,9 +41,32 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/assets/component"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create asset
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml component create -f assets/component/pipeline.yml
+          log_output=$(az ml component create -f assets/component/pipeline.yml 2>&1)
+          echo "$log_output" > create-asset.log
+          cat create-asset.log
+      working-directory: cli
+    - name: Determine Failure Reason
+      run: |
+        failure_reason="N/A"
+        if [ "${{ job.status }}" == "failure" ]; then
+          if grep -q "ResourceNotReady" create-asset.log; then
+            failure_reason = "ResourceNotReady"
+          elif grep -q "quota" create-asset.log; then
+            failure_reason="QuotaIssue"
+          elif grep -q "ParentResourceNotFound" create-asset.log; then
+            failure_reason="ParentResourceNotFound"
+          else
+            failure_reason="UncategorizedFailure"
+          fi
+        fi
+        echo "FAILURE_REASON=$failure_reason" >> $GITHUB_ENV
       working-directory: cli

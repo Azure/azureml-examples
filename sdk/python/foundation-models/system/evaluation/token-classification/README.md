@@ -6,7 +6,6 @@
 |:------------------------:|:-------------------------------------------------------------------------------|-----------|---------------------------------------------------------------|
 |         metrics          | List for subset of metrics to be computed. All supported metrics listed below. | list<str> | ["accuracy", "f1_score_macro", "f1_score_micro"]              |
 |       labels_list        | List for supported labels for tokens                                           | list<str> | ["B-PER", "I-PER", "O", "B-LOC", "I-LOC", "B-MISC", "I-MISC"] |
-|    custom_dimensions     | Used to report telemetry data (can later be used to perform PII scrubbing)     | dict      |                                                               |
 
 ### List of supported metrics:
 
