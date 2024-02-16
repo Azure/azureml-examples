@@ -3,10 +3,10 @@ set -x
 
 # script inputs
 registry_name="azureml"
-
 subscription_id="<SUBSCRIPTION_ID>"
 resource_group_name="<RESOURCE_GROUP>"
 workspace_name="<WORKSPACE_NAME>"
+
 
 # This is the model from system registry that needs to be deployed
 model_name="stabilityai-stable-diffusion-xl-refiner-1-0"
@@ -51,12 +51,18 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # Deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy-online.yaml $workspace_info --all-traffic --set \
-  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
-  name=$deployment_name \
-  instance_type=$deployment_sku || {
-    echo "deployment create failed"; exit 1;
+az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
+endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
+instance_type=$deployment_sku || {
+echo "deployment create failed"; exit 1;
 }
+yaml_file="deploy-online.yaml"
+get_yaml_value() {
+    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
+}
+deployment_name=$(get_yaml_value "name")
+
+az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$deployment_name=100"
 
 # 4. Submit a sample request to endpoint
 python utils/prepare_data_image_text_to_image.py --payload-path $sample_request_data --mode "online"

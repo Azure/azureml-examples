@@ -55,13 +55,18 @@ max_concurrent_request=2  # the maximum number of concurrent requests supported 
 # If you are using a larger SKU, please increase this value to get the maximum performance.
 
 # Deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy-online.yaml $workspace_info --all-traffic --set \
-  endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
-  request_settings.max_concurrent_requests_per_instance=$max_concurrent_request \
-  environment_variables.WORKER_COUNT=$max_concurrent_request \
-  instance_type=$deployment_sku || {
-    echo "deployment create failed"; exit 1;
+az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
+endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
+instance_type=$deployment_sku || {
+echo "deployment create failed"; exit 1;
 }
+yaml_file="deploy-online.yaml"
+get_yaml_value() {
+    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
+}
+traffic=$(get_yaml_value "name")
+
+az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$traffic=100"
 
 # 4. Submit a sample request to endpoint
 python utils/prepare_data.py --payload-path $sample_request_data --mode "online"
