@@ -1,0 +1,39 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: abyoc-minimal
+endpoint_name: abyoc
+model: azureml:abyoc:1
+model_mount_path: /var/abyoc/models
+environment:
+  image: ACR_NAME.azurecr.io/abyoc-minimal:1 
+  name: abyoc
+  version: 1
+  os_type: linux
+  inference_config:
+      liveness_route:
+          path: /live
+          port: 5001
+      readiness_route:
+          path: /ready
+          port: 5001 
+      scoring_route:
+          path: /
+          port: 5001
+environment_variables:
+  ENV_WORKER_COUNT: 4
+  AZUREML_MODEL_DIR: /var/abyoc/models
+request_settings: 
+  request_timeout_ms: 10000
+liveness_probe:
+  initial_delay: 600
+  timeout: 1
+  period: 60
+  success_threshold: 1 
+  failure_threshold: 30
+readiness_probe:
+  initial_delay: 600
+  timeout: 1
+  period: 60
+  success_threshold: 1
+  failure_threshold: 30
+instance_type: Standard_DS2_v2
+instance_count: 1 
