@@ -23,7 +23,7 @@ RUN mkdir /tmp/nccltests && \
         cp ./build/* /usr/local/bin && \
     rm -rf /tmp/nccltests
 
-# for lstopo
-RUN apt update && \
-    apt install hwloc -y && \
-    rm -rf /var/lib/apt/lists/*
+# if you want lstopo
+# RUN apt update && \
+#     apt install hwloc -y && \
+#     rm -rf /var/lib/apt/lists/*
