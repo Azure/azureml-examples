@@ -1,0 +1,17 @@
+# Training job submission via AzureML CLI v2
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: cd ~/.. && sudo -E bash /azure-nhc/aznhc-entrypoint.sh
+environment: azureml:Node-Health-Env@latest
+experiment_name: Node-Health-Checks
+compute: <name of compute>
+distribution:
+  type: pytorch
+  process_count_per_instance: <GPU count here>
+resources:
+  instance_count: 1
+  docker_args: --volume=/var/log/syslog:/azure-nhc/syslog
+environment_variables:
+  # -d for debug, -v for verbose, -a for all (to run all checks even if some fail)
+  NHC_ARGS: -v -d -a
+  AZ_NHC_ROOT: /azure-nhc/
