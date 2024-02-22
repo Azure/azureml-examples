@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: my-endpoint
+model:
+  name: sample-densenet-onnx-model
+  version: 1
+  path: ./models
+  type: triton_model
+instance_count: 1
+instance_type: Standard_NC6s_v3

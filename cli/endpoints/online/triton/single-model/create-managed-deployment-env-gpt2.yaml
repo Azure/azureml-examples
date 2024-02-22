@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: my-endpoint
+#model: azureml://registries/azureml-preview-test1/models/NV-GPT-8B-Chat-4k-SFT-Mcore/versions/1
+#model: azureml://registries/azureml-preview-test1/models/NV-GPT-8B-4k/versions/1
+model:
+  name: GPT-2B
+  version: 1
+  path: ./GPT-2B/
+  type: triton_model
+environment: 
+  name: beta-inf-prerelease
+  image: f713c34a3dbd45abb91f843ab890ce2f.azurecr.io/azureml-infer:23.10.v3
+  inference_config:
+      liveness_route:
+          path: /v2/health/live
+          port: 8000
+      readiness_route:
+          path: /v2/health/ready
+          port: 8000
+      scoring_route:
+          path: /
+          port: 8000
+#environment: azureml://registries/azureml-preview-test1/environments/tme_genai_model_server_nemo8b/versions/1
+instance_count: 1
+instance_type: Standard_NC96ads_A100_v4

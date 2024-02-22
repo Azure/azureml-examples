@@ -1,0 +1,2 @@
+tritonclient==2.39.0
+gevent==23.9.1

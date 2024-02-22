@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: my-endpoint
+#model: azureml://registries/azureml-preview-test1/models/NV-GPT-8B-Chat-4k-SFT-Mcore/versions/1
+model: azureml://registries/azureml-preview-test1/models/NV-GPT-8B-4k/versions/1
+environment: azureml://registries/azureml-preview-test1/environments/tme_genai_model_server_nemo8b/versions/1
+instance_count: 1
+instance_type: Standard_NC96ads_A100_v4
