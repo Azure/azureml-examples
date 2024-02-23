@@ -7,7 +7,7 @@ experiment_name: Node-Health-Checks
 compute: <name of compute>
 distribution:
   type: pytorch
-  process_count_per_instance: <GPU count here>
+  process_count_per_instance: 1 # Do not change
 resources:
   instance_count: 1
   docker_args: --volume=/var/log/syslog:/azure-nhc/syslog
