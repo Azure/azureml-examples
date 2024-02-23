@@ -17,5 +17,5 @@ environment:
       scoring_route:
           path: /
           port: 8000
-instance_type: Standard_F4s_v2
+instance_type: Standard_F8s_v2
 instance_count: 1

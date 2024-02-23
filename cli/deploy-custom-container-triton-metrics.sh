@@ -9,7 +9,7 @@ export ENDPOINT_NAME="<ENDPOINT_NAME>"
 export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
 # </set_variables>
 
-export ENDPOINT_NAME=endpoint-`echo $RANDOM`
+export ENDPOINT_NAME=triton-metrics-`echo $RANDOM`
 export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 
 # <set_base_path_and_copy_assets>
@@ -44,7 +44,7 @@ az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/depl
 # </create_deployment> 
 
 # Check if deployment was successful
-deploy_status=`az ml online-deployment show --name triton-cc-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name triton-metrics-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
