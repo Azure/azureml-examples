@@ -1,0 +1,2 @@
+###### Requirements with Version Specifiers ######
+langchain == 0.0.149        # Version Matching. Must be version 0.6.1
