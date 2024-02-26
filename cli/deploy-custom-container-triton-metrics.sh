@@ -14,12 +14,11 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 
 # <set_base_path_and_copy_assets>
 export PARENT_PATH="endpoints/online/custom-container/triton/triton_metrics"
-export ASSET_PATH="endpoints/online/triton/single-model"
 export BASE_PATH="$PARENT_PATH/triton_context"
 rm -rf $BASE_PATH && mkdir -p $BASE_PATH/models 
 cp -r $PARENT_PATH/runit $BASE_PATH
 cp -r $PARENT_PATH/utilities $BASE_PATH
-cp -r $ASSET_PATH/models $BASE_PATH
+cp -r $PARENT_PATH/models $BASE_PATH
 cp $PARENT_PATH/triton-metrics-deployment.yml $BASE_PATH/deployment.yaml
 cp $PARENT_PATH/triton-metrics-endpoint.yml $BASE_PATH/endpoint.yaml
 sed -i "s/{{acr_name}}/$ACR_NAME/g;\
@@ -64,7 +63,7 @@ SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -
 echo "Scoring url is $SCORING_URL"
 
 # <test_online_endpoint>
-python endpoints/online/triton/single-model/triton_densenet_scoring.py --base_url $SCORING_URL --token $KEY --image_path endpoints/online/triton/single-model/data/peacock.jpg
+python endpoints/online/tcustom-container/triton/triton-metrics/triton_phi2_scoring.py --base_url $SCORING_URL --token $KEY
 # </test_online_endpoint>
 
 # <delete_online_endpoint>
