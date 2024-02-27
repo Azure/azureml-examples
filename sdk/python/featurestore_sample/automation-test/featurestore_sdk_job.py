@@ -39,54 +39,21 @@ featurestore_name = "<FEATURESTORE_NAME>"
 workspace_name = "<AML_WORKSPACE_NAME>"
 
 
-from azure.ai.ml import MLClient
-from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 
-print("----Delete feature store----------")
-ml_client = MLClient(
-    AzureMLOnBehalfOfCredential(),
-    subscription_id=subscription_id,
-    resource_group_name=resource_group_name,
-)
+# print("======clean up==========")
+# from azure.ai.ml import MLClient
+# from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
 
-result = ml_client.feature_stores.begin_delete(
-    name=featurestore_name,
-    permanently_delete=True,
-    delete_dependent_resources=False,
-).result()
-print(result)
+# ml_client = MLClient(
+#     AzureMLOnBehalfOfCredential(),
+#     subscription_id="<SUBSCRIPTION_ID>",
+#     resource_group_name="<RESOURCE_GROUP>",
+# )
 
+# result = ml_client.feature_stores.begin_delete(
+#     name="<FEATURESTORE_NAME>",
+#     permanently_delete=True,
+#     delete_dependent_resources=False,
+# ).result()
 
-print("----Delete UAI----------")
-uai_name = f"materialization-uai-{resource_group_name}-{featurestore_name}"
-
-from azure.mgmt.msi import ManagedServiceIdentityClient
-
-msi_client = ManagedServiceIdentityClient(
-    AzureMLOnBehalfOfCredential(), subscription_id
-)
-msi_client.user_assigned_identities.delete(resource_group_name, uai_name)
-
-
-print("-----Delete redis------------")
-redis_name = "<REDIS_NAME>"
-from azure.mgmt.redis import RedisManagementClient
-
-management_client = RedisManagementClient(
-    AzureMLOnBehalfOfCredential(), subscription_id
-)
-
-result = management_client.redis.begin_delete(
-    resource_group_name=resource_group_name,
-    name=redis_name,
-).result()
-print(result)
-
-
-print("-----Delete endpoint------------")
-ws_client = MLClient(
-    AzureMLOnBehalfOfCredential(), subscription_id, resource_group_name, workspace_name
-)
-endpoint_name = "<ENDPOINT_NAME>"
-result = ws_client.online_endpoints.begin_delete(name=endpoint_name).result()
-print(result)
+# print(result)
