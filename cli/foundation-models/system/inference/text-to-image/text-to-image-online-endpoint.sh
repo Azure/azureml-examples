@@ -48,7 +48,7 @@ az ml online-endpoint create --name $endpoint_name $workspace_info || {
 }
 
 # 3.1 Setup Deployment Parameters
-max_concurrent_request=2  # the maximum number of concurrent requests supported by the endpoint
+max_concurrent_request=1  # the maximum number of concurrent requests supported by the endpoint
 
 # Note: We have set the value of `max_concurrent_request` to 2, 
 # as we are utilizing the `Standard_NC6s_v3` SKU for deployment, which has one GPU. 
