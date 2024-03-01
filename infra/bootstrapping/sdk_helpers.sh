@@ -494,7 +494,7 @@ function setup_compute() {
     then
         echo_info "Cluster is already attached to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}..."
     else
-        echo_info "Delete compute ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} first" 
+        echo_info "Detach compute ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} first" 
         az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${COMPUTE_NAME}" -y || true
 
         echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
