@@ -1,0 +1,34 @@
+name: Text_classification_sanity_run
+
+# Please do not edit directly.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "33 12 * * 5"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/python/foundation-models/system/finetune/text-classification/**
+      - .github/workflows/New_sanity_run.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS_JSON }}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: Install IPython
+      run: pip install ipython
+    - name: Run IPython script with Azure credentials
+      run: |
+        # Parse the Azure credentials from the secret and save them to a JSON file
+        echo "$AZURE_CREDENTIALS" > azure_credentials.json
+    - name: Python file Execution
+      run: ipython emotion-detection-sanityRun.py
+      working-directory: sdk/python/foundation-models/system/finetune/text-classification
