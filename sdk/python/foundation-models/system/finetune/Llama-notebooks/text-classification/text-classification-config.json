@@ -1,0 +1,7 @@
+{
+  "metrics": ["average_precision_score_macro", "AUC_macro", "recall_score_macro", "average_precision_score_binary", "average_precision_score_micro", "AUC_binary", "recall_score_micro", "AUC_micro", "norm_macro_recall", "average_precision_score_weighted", "weighted_accuracy", "precision_score_micro", "f1_score_binary", "accuracy_table", "precision_score_macro", "f1_score_micro", "precision_score_weighted", "f1_score_weighted", "confusion_matrix", "recall_score_binary", "matthews_correlation", "log_loss", "accuracy", "precision_score_binary", "balanced_accuracy", "AUC_weighted", "f1_score_macro", "recall_score_weighted"],
+  "multilabel": false,
+  "enable_metric_confidence": true,
+  "confidence_metrics": ["accuracy", "f1_score_micro"],
+  "use_binary": false
+}

@@ -9,7 +9,7 @@ import string
 import yaml
 
 # define constants
-EXCLUDED_JOBS = ["java", "spark"]
+EXCLUDED_JOBS = ["java", "spark-job-component", "storage_pe", "user-assigned-identity"]
 # TODO: Re-include these below endpoints and deployments when the workflow generation code supports substituting vars in .yaml files.
 EXCLUDED_ENDPOINTS = [
     "1-uai-create-endpoint",
@@ -77,6 +77,7 @@ def main(args):
     jobs += sorted(glob.glob("jobs/basics/*.yml", recursive=False))
     jobs += sorted(glob.glob("jobs/*/basics/**/*job*.yml", recursive=True))
     jobs += sorted(glob.glob("jobs/pipelines/**/*pipeline*.yml", recursive=True))
+    jobs += sorted(glob.glob("jobs/spark/*.yml", recursive=False))
     jobs += sorted(
         glob.glob("jobs/automl-standalone-jobs/**/cli-automl-*.yml", recursive=True)
     )
@@ -420,6 +421,7 @@ def write_job_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
     is_pipeline_sample = "jobs/pipelines" in job
+    is_spark_sample = "jobs/spark" in job
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     # Duplicate name in working directory during checkout
@@ -439,6 +441,8 @@ on:
       - .github/workflows/cli-{hyphenated}.yml\n"""
     if is_pipeline_sample:
         workflow_yaml += "      - cli/run-pipeline-jobs.sh\n" ""
+    if is_spark_sample:
+        workflow_yaml += "      - cli/jobs/spark/data/titanic.csv\n" ""
     workflow_yaml += f"""      - cli/setup.sh
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
@@ -465,8 +469,10 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true
-    - name: run job
+      continue-on-error: true\n"""
+    if is_spark_sample:
+        workflow_yaml += get_spark_setup_workflow(job, posix_project_dir, filename)
+    workflow_yaml += f"""    - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";\n"""
@@ -479,7 +485,12 @@ jobs:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
-      working-directory: cli/{posix_project_dir}\n"""
+      working-directory: cli/{posix_project_dir}
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false\n"""
 
     # write workflow
     with open(
@@ -492,7 +503,6 @@ jobs:
 def write_job_using_registry_components_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
-
     folder_name = project_dir.split(os.sep)[-1]
     is_pipeline_sample = "jobs/pipelines" in job
     creds = CREDENTIALS
@@ -541,6 +551,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -563,6 +578,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    project_dir = project_dir.replace(os.sep, "/")
     deployments = sorted(
         glob.glob(project_dir + "/*deployment.yml", recursive=True)
         + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
@@ -581,7 +597,9 @@ def write_endpoint_workflow(endpoint):
         if "endpoints/batch/" in endpoint
         else "unknown"
     )
-    endpoint_name = hyphenated[-32:].replace("-", "")
+    endpoint_name = hyphenated[-28:].replace("-", "") + str(
+        random.randrange(1000, 9999)
+    )
 
     create_endpoint_yaml = f"""{READONLY_HEADER}
 name: cli-{hyphenated}
@@ -614,7 +632,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -623,6 +641,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -669,6 +692,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
+    project_dir = project_dir.replace(os.sep, "/")
     posix_asset = asset.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
@@ -701,7 +725,7 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          bash bootstrap.sh
+          bash bootstrapping/bootstrap.sh
       working-directory: infra
       continue-on-error: false
     - name: setup-cli
@@ -711,6 +735,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create asset
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -727,6 +756,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
+    project_dir = project_dir.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
@@ -768,6 +798,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: test script script
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -782,6 +817,7 @@ jobs:
 
 def write_schedule_workflow(schedule):
     filename, project_dir, hyphenated = parse_path(schedule)
+    project_dir = project_dir.replace(os.sep, "/")
     posix_schedule = schedule.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
@@ -824,6 +860,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create schedule
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -854,6 +895,42 @@ def get_endpoint_name(filename, hyphenated):
     with open(filename, "r") as f:
         endpoint_name = yaml.safe_load(f)["name"]
     return endpoint_name
+
+
+def get_spark_setup_workflow(job, posix_project_dir, filename):
+    is_attached = "attached-spark" in job
+    is_user_identity = "user-identity" in job
+    is_managed_identity = "managed-identity" in job
+    is_default_identity = "default-identity" in job
+    workflow = f"""    - name: upload data
+      run: |
+          bash -x upload-data-to-blob.sh jobs/spark/
+      working-directory: cli
+      continue-on-error: true\n"""
+    if is_managed_identity:
+        workflow += f"""    - name: setup identities
+      run: |
+          bash -x setup-identities.sh
+      working-directory: cli/{posix_project_dir}
+      continue-on-error: true\n"""
+    if is_attached:
+        workflow += f"""    - name: setup attached spark
+      working-directory: cli
+      continue-on-error: true"""
+    if is_attached and is_user_identity:
+        workflow += f"""
+      run: |
+          bash -x {posix_project_dir}/setup-attached-resources.sh resources/compute/attached-spark-user-identity.yml {posix_project_dir}/{filename}.yml\n"""
+    if is_attached and is_managed_identity:
+        workflow += f"""
+      run: |
+          bash -x {posix_project_dir}/setup-attached-resources.sh resources/compute/attached-spark-system-identity.yml {posix_project_dir}/{filename}.yml\n"""
+    if is_attached and is_default_identity:
+        workflow += f"""
+      run: |
+          bash -x {posix_project_dir}/setup-attached-resources.sh resources/compute/attached-spark.yml {posix_project_dir}/{filename}.yml\n"""
+
+    return workflow
 
 
 # run functions
