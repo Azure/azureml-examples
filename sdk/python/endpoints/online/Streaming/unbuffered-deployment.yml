@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: aml-streaming
+endpoint_name: endpt-stream-111
+model:
+  path: model
+code_configuration:
+  code: code
+  scoring_script: score.py
+environment:
+  build: 
+    path: .
+    dockerfile_path: unbuffered.dockerfile
+request_settings:
+  request_timeout_ms: 11000
+  max_queue_wait_ms: 11000
+instance_type: Standard_DS2_v2
+instance_count: 1
