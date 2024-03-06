@@ -48,7 +48,7 @@ try:
     result = ml_client.feature_stores.begin_delete(
         name=featurestore_name,
         permanently_delete=True,
-        delete_dependent_resources=False,
+        delete_dependent_resources=True,
     ).result()
     print(result)
 
@@ -56,7 +56,7 @@ try:
     result = ml_client.workspace.begin_delete(
         name=project_ws_vnet,
         permanently_delete=True,
-        delete_dependent_resources=False,
+        delete_dependent_resources=True,
     ).result()
     print(result)
 except:
