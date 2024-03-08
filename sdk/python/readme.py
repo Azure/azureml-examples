@@ -34,6 +34,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_service_principal",
     "using_mlflow_rest_api",
     "yolov5/tutorial",
+    "4. Provision a feature store in various ways",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
