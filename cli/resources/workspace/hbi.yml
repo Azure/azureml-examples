@@ -2,7 +2,13 @@ $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: mlw-hbiexample-prod
 location: eastus
 display_name: High business impact-example
-description: This configuration shows how to configure a workspace with the hbi flag enabled. This flag specifies whether to reduce telemetry collection and enable additional encryption when high-business-impact data is used.
+
+description: |
+  # High business impact workspace
+  This configuration shows how to configure a workspace with the hbi flag enabled. This flag specifies whether to reduce telemetry collection and enable additional encryption when high-business-impact data is used.
+  ## Description
+  Markdown is supported in the studio for workspace descriptions! You can edit the description there or via CLI.
+  Use descriptions to capture your machine learning experimentation goals, hypothesis, KPIs and subject matter expertise.
 hbi_workspace: true
 tags:
   purpose: demonstration

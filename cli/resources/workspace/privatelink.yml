@@ -2,7 +2,12 @@ $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: mlw-privatelink-prod
 location: eastus
 display_name: Private Link endpoint workspace-example
-description: When using private link, you must set the image_build_compute property to a cluster name to use for Docker image environment building. You can also specify whether the workspace should be accessible over the internet.
+description: |
+  # Customer managed key-encrypted workspace
+  When using private link, you must set the image_build_compute property to a cluster name to use for Docker image environment building. You can also specify whether the workspace should be accessible over the internet.
+  ## Description
+  Markdown is supported in the studio for workspace descriptions! You can edit the description there or via CLI.
+  Use descriptions to capture your machine learning experimentation goals, hypothesis, KPIs and subject matter expertise.
 image_build_compute: cpu-compute
 public_network_access: Disabled
 tags:
