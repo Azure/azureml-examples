@@ -331,7 +331,7 @@ Test Status is for branch - **_main_**
 
 ## Contributing
 
-We welcome contributions and suggestions! Please see the [contributing guidelines](../CONTRIBUTING.mdCONTRIBUTING.md) for details.
+We welcome contributions and suggestions! Please see the [contributing guidelines](../CONTRIBUTING.md) for details.
 
 ## Code of Conduct
 
