@@ -38,7 +38,7 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
+        creds: ${{secrets.AZUREML_CREDENTIALS_TEST}}
     - name: bootstrap resources
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
