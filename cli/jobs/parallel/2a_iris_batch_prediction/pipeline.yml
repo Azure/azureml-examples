@@ -10,10 +10,10 @@ tags:
 
 settings:
   default_compute: azureml:cpu-cluster
-
 jobs:
   batch_prediction:
     type: parallel
+    component: azureml:xiwe_test_pararallel_partition_key@latest
     compute: azureml:cpu-cluster
     inputs:
       input_data: 
@@ -29,37 +29,3 @@ jobs:
         type: uri_file
         path: azureml://datastores/${{default_datastore}}/paths/${{name}}/aggregated_returns.csv
         mode: rw_mount
-
-    input_data: ${{inputs.input_data}}
-    mini_batch_size: "10kb"
-    resources:
-        instance_count: 2
-    max_concurrency_per_instance: 2
-
-    logging_level: "DEBUG"
-    error_threshold: 5
-    mini_batch_error_threshold: 5
-    retry_settings:
-      max_retries: 2
-      timeout: 60
-
-    environment_variables:
-      "AZUREML_PARALLEL_EXAMPLE": "2a_yaml"
-    
-    task:
-      type: run_function
-      code: "./script"
-      entry_script: iris_prediction.py
-      environment:
-        name: "prs-env"
-        version: 1
-        image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
-        conda_file: ./environment/environment_parallel.yml
-      program_arguments: >-
-        --model ${{inputs.score_model}}
-        --allowed_failed_percent 30
-        --task_overhead_timeout 1200
-        --progress_update_timeout 600
-        --first_task_creation_timeout 600
-        --resource_monitor_interval 20
-      append_row_to: ${{outputs.job_output_file}}
