@@ -1,0 +1,673 @@
+No custom conf file specified, detecting VM SKU...
+Running health checks for Standard_nc24s_v3 SKU...
+DEBUG:  Debugging activated via -d option.
+DEBUG:  Force running of all checks.
+[0] - DEBUG:  NHC process 66 is not session leader.
+[0] - DEBUG:  Restarting via setsid:  setsid /usr/sbin/nhc -v -d -a CONFFILE=/azure-nhc//default/conf/nc24s_v3.conf LOGFILE=/azure-nhc//output/aznhc.log TIMEOUT=500 FORCE_SETSID=0
+DEBUG:  Debugging activated via -d option.
+DEBUG:  Force running of all checks.
+[0] - DEBUG:  NHC process 66 is session leader.
+[0] - DEBUG:  Unable to detect resource manager.
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 0 failed. Bandwidth 4.83 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 1 failed. Bandwidth 6.57 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 2 failed. Bandwidth 6.59 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 3 failed. Bandwidth 6.55 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 0 failed. Bandwidth 3.12 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 1 failed. Bandwidth 4.24 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 2 failed. Bandwidth 3.19 is less than 10
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 3 failed. Bandwidth 5.57 is less than 10
+[1708650197] - ERROR:  nhc:  8 health checks failed.
+[1708650178] - DEBUG:  Output redirected per LOGFILE variable >>/azure-nhc//output/aznhc.log 2>&1
+[1708650178] - DEBUG:  Output redirected per LOGFILE variable >>/azure-nhc//output/aznhc.log 2>&1
+[1708650178] - Node Health Check starting.
+[1708650178] - DEBUG:  Loading scripts from /etc/nhc/scripts...
+[1708650178] - Node Health Check starting.
+[1708650178] - DEBUG:  Loading scripts from /etc/nhc/scripts...
+[1708650178] - DEBUG:  Loading azure_common.nhc
+[1708650178] - DEBUG:  Loading azure_common.nhc
+[1708650178] - DEBUG:  Output redirected per LOGFILE variable >>/azure-nhc//output/aznhc.log 2>&1
+[1708650178] - DEBUG:  Output redirected per LOGFILE variable >>/azure-nhc//output/aznhc.log 2>&1
+[1708650178] - Node Health Check starting.
+[1708650178] - DEBUG:  Loading scripts from /etc/nhc/scripts...
+[1708650178] - DEBUG:  Loading azure_cpu_stream.nhc
+[1708650178] - Node Health Check starting.
+[1708650178] - DEBUG:  Loading azure_cpu_stream.nhc
+[1708650178] - DEBUG:  Loading scripts from /etc/nhc/scripts...
+[1708650178] - DEBUG:  Loading azure_common.nhc
+[1708650178] - DEBUG:  Loading azure_common.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_amd_xgmi.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_amd_xgmi.nhc
+[1708650178] - DEBUG:  Loading azure_cpu_stream.nhc
+[1708650178] - DEBUG:  Loading azure_cpu_stream.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_app_clocks.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_app_clocks.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_amd_xgmi.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_bandwidth.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_bandwidth.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_amd_xgmi.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_app_clocks.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_app_clocks.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_bandwidth.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_bandwidth.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_clock_throttling.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_clock_throttling.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_count.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_count.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_ecc.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_ecc.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_clock_throttling.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_clock_throttling.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_nvlink.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_nvlink.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_count.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_count.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_persistence.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_persistence.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_ecc.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_ecc.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_vbios.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_vbios.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_xid.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_xid.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_nvlink.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_nvlink.nhc
+[1708650178] - DEBUG:  Loading azure_hw_topology_check.nhc
+[1708650178] - DEBUG:  Loading azure_hw_topology_check.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_persistence.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_persistence.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_vbios.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_vbios.nhc
+[1708650178] - DEBUG:  Loading azure_ib_link_flapping.nhc
+[1708650178] - DEBUG:  Loading azure_ib_link_flapping.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_xid.nhc
+[1708650178] - DEBUG:  Loading azure_gpu_xid.nhc
+[1708650178] - DEBUG:  Loading azure_hw_topology_check.nhc
+[1708650178] - DEBUG:  Loading azure_hw_topology_check.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_link_flapping.nhc
+[1708650178] - DEBUG:  Loading azure_ib_link_flapping.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_non_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_non_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_non_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_ib_write_bw_non_gdr.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce_ib_loopback.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce_ib_loopback.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce_ib_loopback.nhc
+[1708650178] - DEBUG:  Loading azure_nccl_allreduce_ib_loopback.nhc
+[1708650178] - DEBUG:  Loading common.nhc
+[1708650178] - DEBUG:  Loading common.nhc
+[1708650178] - DEBUG:  Loading common.nhc
+[1708650178] - DEBUG:  Loading common.nhc
+[1708650178] - DEBUG:  Loading csc_nvidia_smi.nhc
+[1708650178] - DEBUG:  Loading csc_nvidia_smi.nhc
+[1708650178] - DEBUG:  Loading lbnl_cmd.nhc
+[1708650178] - DEBUG:  Loading csc_nvidia_smi.nhc
+[1708650178] - DEBUG:  Loading lbnl_cmd.nhc
+[1708650178] - DEBUG:  Loading csc_nvidia_smi.nhc
+[1708650178] - DEBUG:  Loading lbnl_cmd.nhc
+[1708650178] - DEBUG:  Loading lbnl_cmd.nhc
+[1708650178] - DEBUG:  Loading lbnl_dmi.nhc
+[1708650178] - DEBUG:  Loading lbnl_dmi.nhc
+[1708650178] - DEBUG:  Loading lbnl_dmi.nhc
+[1708650178] - DEBUG:  Loading lbnl_dmi.nhc
+[1708650178] - DEBUG:  Loading lbnl_file.nhc
+[1708650178] - DEBUG:  Loading lbnl_file.nhc
+[1708650178] - DEBUG:  Loading lbnl_file.nhc
+[1708650178] - DEBUG:  Loading lbnl_file.nhc
+[1708650178] - DEBUG:  Loading lbnl_fs.nhc
+[1708650178] - DEBUG:  Loading lbnl_fs.nhc
+[1708650178] - DEBUG:  Loading lbnl_fs.nhc
+[1708650178] - DEBUG:  Loading lbnl_fs.nhc
+[1708650178] - DEBUG:  Loading lbnl_hw.nhc
+[1708650178] - DEBUG:  Loading lbnl_hw.nhc
+[1708650178] - DEBUG:  Loading lbnl_hw.nhc
+[1708650178] - DEBUG:  Loading lbnl_hw.nhc
+[1708650178] - DEBUG:  Loading lbnl_job.nhc
+[1708650178] - DEBUG:  Loading lbnl_job.nhc
+[1708650178] - DEBUG:  Loading lbnl_job.nhc
+[1708650178] - DEBUG:  Loading lbnl_moab.nhc
+[1708650178] - DEBUG:  Loading lbnl_job.nhc
+[1708650178] - DEBUG:  Loading lbnl_moab.nhc
+[1708650178] - DEBUG:  Loading lbnl_moab.nhc
+[1708650178] - DEBUG:  Loading lbnl_moab.nhc
+[1708650178] - DEBUG:  Loading lbnl_net.nhc
+[1708650178] - DEBUG:  Loading lbnl_net.nhc
+[1708650178] - DEBUG:  Loading lbnl_net.nhc
+[1708650178] - DEBUG:  Loading lbnl_net.nhc
+[1708650178] - DEBUG:  Loading lbnl_nv.nhc
+[1708650178] - DEBUG:  Loading lbnl_nv.nhc
+[1708650178] - DEBUG:  Loading lbnl_nv.nhc
+[1708650178] - DEBUG:  Loading lbnl_ps.nhc
+[1708650178] - DEBUG:  Loading lbnl_ps.nhc
+[1708650178] - DEBUG:  Loading lbnl_ps.nhc
+[1708650178] - DEBUG:  Loading lbnl_nv.nhc
+[1708650178] - DEBUG:  Loading lbnl_ps.nhc
+[1708650178] - DEBUG:  In 67:  Watchdog PID is 76, NHC PID is 67
+[1708650178] - DEBUG:  In 66:  Watchdog PID is 77, NHC PID is 66
+[1708650178] - DEBUG:  In 65:  Watchdog PID is 78, NHC PID is 65
+[1708650178] - DEBUG:  Loading configuration from /azure-nhc//default/conf/nc24s_v3.conf.
+[1708650178] - DEBUG:  Loading configuration from /azure-nhc//default/conf/nc24s_v3.conf.
+[1708650178] - DEBUG:  Loading configuration from /azure-nhc//default/conf/nc24s_v3.conf.
+[1708650178] - DEBUG:  In 64:  Watchdog PID is 79, NHC PID is 64
+[1708650178] - DEBUG:  Loading configuration from /azure-nhc//default/conf/nc24s_v3.conf.
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_cpuinfo 2 24 24
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_cpuinfo 2 24 24
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_cpuinfo 2 24 24
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_physmem 451308MB 451308MB 5%
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_physmem 451308MB 451308MB 5%
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_physmem 451308MB 451308MB 5%
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_swap 0kB 0kB 3%
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_swap 0kB 0kB 3%
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_swap 0kB 0kB 3%
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth eth0
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth eth0
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_cpuinfo 2 24 24
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth eth0
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth lo
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth lo
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_physmem 451308MB 451308MB 5%
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth lo
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_swap 0kB 0kB 3%
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_count 4
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_count 4
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_count 4
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth eth0
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_xid
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_xid
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_xid
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_hw_eth lo
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_nvsmi_healthmon
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_nvsmi_healthmon
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_nvsmi_healthmon
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_clock_throttling
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_clock_throttling
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_clock_throttling
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_count 4
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_bw 10
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_bw 10
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - Running check:  "check_hw_cpuinfo 2 24 24"
+[1708650178] - Running check:  "check_hw_cpuinfo 2 24 24"
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_bw 10
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_xid
+[1708650178] - Running check:  "check_hw_cpuinfo 2 24 24"
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_nvsmi_healthmon
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_clock_throttling
+[1708650178] - DEBUG:  Glob match check:  44a3ff8aa3a84f528defdeff411e1b8d000000 matches *
+[1708650178] - DEBUG:  Host match check:  "44a3ff8aa3a84f528defdeff411e1b8d000000" matches "*" for check:  check_gpu_bw 10
+[1708650178] - Running check:  "check_hw_cpuinfo 2 24 24"
+[1708650179] - DEBUG:  Got 2 2593 MHz processors (24 cores, 24 threads)
+[1708650179] - DEBUG:  Got 2 2593 MHz processors (24 cores, 24 threads)
+[1708650179] - DEBUG:  Found 462299460 kB RAM (459559716 kB free)
+[1708650179] - DEBUG:  Found 0 kB swap (0 kB free)
+[1708650179] - DEBUG:  Got 2 2593 MHz processors (24 cores, 24 threads)
+[1708650179] - DEBUG:  Found kernel module nvidia_uvm
+[1708650179] - DEBUG:  Found kernel module xt_MASQUERADE
+[1708650179] - DEBUG:  Got 2 2593 MHz processors (24 cores, 24 threads)
+[1708650179] - DEBUG:  Found kernel module nf_conntrack_netlink
+[1708650179] - DEBUG:  Found kernel module nfnetlink
+[1708650179] - DEBUG:  Found kernel module xfrm_user
+[1708650179] - DEBUG:  Found kernel module xfrm_algo
+[1708650179] - DEBUG:  Found kernel module iptable_nat
+[1708650179] - DEBUG:  Found kernel module nf_nat
+[1708650179] - DEBUG:  Found kernel module xt_addrtype
+[1708650179] - DEBUG:  Found kernel module iptable_filter
+[1708650179] - DEBUG:  Found kernel module br_netfilter
+[1708650179] - DEBUG:  Found kernel module bridge
+[1708650179] - DEBUG:  Found kernel module stp
+[1708650179] - DEBUG:  Found 462299460 kB RAM (459559716 kB free)
+[1708650179] - DEBUG:  Found 0 kB swap (0 kB free)
+[1708650179] - DEBUG:  Found kernel module llc
+[1708650179] - DEBUG:  Found kernel module xt_tcpudp
+[1708650179] - DEBUG:  Found kernel module xt_owner
+[1708650179] - DEBUG:  Found kernel module nvidia_uvm
+[1708650179] - DEBUG:  Found kernel module xt_conntrack
+[1708650179] - DEBUG:  Found kernel module xt_MASQUERADE
+[1708650179] - DEBUG:  Found 462299460 kB RAM (459559716 kB free)
+[1708650179] - DEBUG:  Found 0 kB swap (0 kB free)
+[1708650179] - DEBUG:  Found kernel module nf_conntrack
+[1708650179] - DEBUG:  Found kernel module nf_conntrack_netlink
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv6
+[1708650179] - DEBUG:  Found kernel module nfnetlink
+[1708650179] - DEBUG:  Found 462299460 kB RAM (459559716 kB free)
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv4
+[1708650179] - DEBUG:  Found 0 kB swap (0 kB free)
+[1708650179] - DEBUG:  Found kernel module nvidia_uvm
+[1708650179] - DEBUG:  Found kernel module xfrm_user
+[1708650179] - DEBUG:  Found kernel module libcrc32c
+[1708650179] - DEBUG:  Found kernel module xt_MASQUERADE
+[1708650179] - DEBUG:  Found kernel module xfrm_algo
+[1708650179] - DEBUG:  Found kernel module nvidia_uvm
+[1708650179] - DEBUG:  Found kernel module iptable_security
+[1708650179] - DEBUG:  Found kernel module nf_conntrack_netlink
+[1708650179] - DEBUG:  Found kernel module iptable_nat
+[1708650179] - DEBUG:  Found kernel module xt_MASQUERADE
+[1708650179] - DEBUG:  Found kernel module bpfilter
+[1708650179] - DEBUG:  Found kernel module nfnetlink
+[1708650179] - DEBUG:  Found kernel module nf_nat
+[1708650179] - DEBUG:  Found kernel module nf_conntrack_netlink
+[1708650179] - DEBUG:  Found kernel module aufs
+[1708650179] - DEBUG:  Found kernel module xfrm_user
+[1708650179] - DEBUG:  Found kernel module xt_addrtype
+[1708650179] - DEBUG:  Found kernel module nfnetlink
+[1708650179] - DEBUG:  Found kernel module overlay
+[1708650179] - DEBUG:  Found kernel module xfrm_algo
+[1708650179] - DEBUG:  Found kernel module iptable_filter
+[1708650179] - DEBUG:  Found kernel module xfrm_user
+[1708650179] - DEBUG:  Found kernel module udf
+[1708650179] - DEBUG:  Found kernel module iptable_nat
+[1708650179] - DEBUG:  Found kernel module br_netfilter
+[1708650179] - DEBUG:  Found kernel module xfrm_algo
+[1708650179] - DEBUG:  Found kernel module crc_itu_t
+[1708650179] - DEBUG:  Found kernel module nf_nat
+[1708650179] - DEBUG:  Found kernel module bridge
+[1708650179] - DEBUG:  Found kernel module iptable_nat
+[1708650179] - DEBUG:  Found kernel module nls_iso8859_1
+[1708650179] - DEBUG:  Found kernel module xt_addrtype
+[1708650179] - DEBUG:  Found kernel module stp
+[1708650179] - DEBUG:  Found kernel module nf_nat
+[1708650179] - DEBUG:  Found kernel module dm_multipath
+[1708650179] - DEBUG:  Found kernel module iptable_filter
+[1708650179] - DEBUG:  Found kernel module llc
+[1708650179] - DEBUG:  Found kernel module xt_addrtype
+[1708650179] - DEBUG:  Found kernel module scsi_dh_rdac
+[1708650179] - DEBUG:  Found kernel module br_netfilter
+[1708650179] - DEBUG:  Found kernel module iptable_filter
+[1708650179] - DEBUG:  Found kernel module bridge
+[1708650179] - DEBUG:  Found kernel module xt_tcpudp
+[1708650179] - DEBUG:  Found kernel module scsi_dh_emc
+[1708650179] - DEBUG:  Found kernel module br_netfilter
+[1708650179] - DEBUG:  Found kernel module stp
+[1708650179] - DEBUG:  Found kernel module xt_owner
+[1708650179] - DEBUG:  Found kernel module scsi_dh_alua
+[1708650179] - DEBUG:  Found kernel module bridge
+[1708650179] - DEBUG:  Found kernel module llc
+[1708650179] - DEBUG:  Found kernel module xt_conntrack
+[1708650179] - DEBUG:  Found kernel module nvidia_drm
+[1708650179] - DEBUG:  Found kernel module stp
+[1708650179] - DEBUG:  Found kernel module xt_tcpudp
+[1708650179] - DEBUG:  Found kernel module nf_conntrack
+[1708650179] - DEBUG:  Found kernel module nvidia_modeset
+[1708650179] - DEBUG:  Found kernel module llc
+[1708650179] - DEBUG:  Found kernel module xt_owner
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv6
+[1708650179] - DEBUG:  Found kernel module nvidia
+[1708650179] - DEBUG:  Found kernel module xt_tcpudp
+[1708650179] - DEBUG:  Found kernel module xt_conntrack
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv4
+[1708650179] - DEBUG:  Found kernel module joydev
+[1708650179] - DEBUG:  Found kernel module xt_owner
+[1708650179] - DEBUG:  Found kernel module nf_conntrack
+[1708650179] - DEBUG:  Found kernel module libcrc32c
+[1708650179] - DEBUG:  Found kernel module hid_generic
+[1708650179] - DEBUG:  Found kernel module xt_conntrack
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv6
+[1708650179] - DEBUG:  Found kernel module iptable_security
+[1708650179] - DEBUG:  Found kernel module binfmt_misc
+[1708650179] - DEBUG:  Found kernel module nf_conntrack
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv4
+[1708650179] - DEBUG:  Found kernel module bpfilter
+[1708650179] - DEBUG:  Found kernel module hyperv_drm
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv6
+[1708650179] - DEBUG:  Found kernel module libcrc32c
+[1708650179] - DEBUG:  Found kernel module aufs
+[1708650179] - DEBUG:  Found kernel module drm_kms_helper
+[1708650179] - DEBUG:  Found kernel module iptable_security
+[1708650179] - DEBUG:  Found kernel module overlay
+[1708650179] - DEBUG:  Found kernel module nf_defrag_ipv4
+[1708650179] - DEBUG:  Found kernel module crct10dif_pclmul
+[1708650179] - DEBUG:  Found kernel module bpfilter
+[1708650179] - DEBUG:  Found kernel module udf
+[1708650179] - DEBUG:  Found kernel module libcrc32c
+[1708650179] - DEBUG:  Found kernel module crc32_pclmul
+[1708650179] - DEBUG:  Found kernel module aufs
+[1708650179] - DEBUG:  Found kernel module crc_itu_t
+[1708650179] - DEBUG:  Found kernel module iptable_security
+[1708650179] - DEBUG:  Found kernel module syscopyarea
+[1708650179] - DEBUG:  Found kernel module overlay
+[1708650179] - DEBUG:  Found kernel module nls_iso8859_1
+[1708650179] - DEBUG:  Found kernel module bpfilter
+[1708650179] - DEBUG:  Found kernel module ghash_clmulni_intel
+[1708650179] - DEBUG:  Found kernel module udf
+[1708650179] - DEBUG:  Found kernel module dm_multipath
+[1708650179] - DEBUG:  Found kernel module aufs
+[1708650179] - DEBUG:  Found kernel module sysfillrect
+[1708650179] - DEBUG:  Found kernel module crc_itu_t
+[1708650179] - DEBUG:  Found kernel module scsi_dh_rdac
+[1708650179] - DEBUG:  Found kernel module overlay
+[1708650179] - DEBUG:  Found kernel module aesni_intel
+[1708650179] - DEBUG:  Found kernel module nls_iso8859_1
+[1708650179] - DEBUG:  Found kernel module scsi_dh_emc
+[1708650179] - DEBUG:  Found kernel module udf
+[1708650179] - DEBUG:  Found kernel module sysimgblt
+[1708650179] - DEBUG:  Found kernel module dm_multipath
+[1708650179] - DEBUG:  Found kernel module scsi_dh_alua
+[1708650179] - DEBUG:  Found kernel module crc_itu_t
+[1708650179] - DEBUG:  Found kernel module crypto_simd
+[1708650179] - DEBUG:  Found kernel module scsi_dh_rdac
+[1708650179] - DEBUG:  Found kernel module nvidia_drm
+[1708650179] - DEBUG:  Found kernel module nls_iso8859_1
+[1708650179] - DEBUG:  Found kernel module fb_sys_fops
+[1708650179] - DEBUG:  Found kernel module scsi_dh_emc
+[1708650179] - DEBUG:  Found kernel module nvidia_modeset
+[1708650179] - DEBUG:  Found kernel module dm_multipath
+[1708650179] - DEBUG:  Found kernel module cryptd
+[1708650179] - DEBUG:  Found kernel module scsi_dh_alua
+[1708650179] - DEBUG:  Found kernel module nvidia
+[1708650179] - DEBUG:  Found kernel module scsi_dh_rdac
+[1708650179] - DEBUG:  Found kernel module nvidia_drm
+[1708650179] - DEBUG:  Found kernel module cec
+[1708650179] - DEBUG:  Found kernel module joydev
+[1708650179] - DEBUG:  Found kernel module scsi_dh_emc
+[1708650179] - DEBUG:  Found kernel module nvidia_modeset
+[1708650179] - DEBUG:  Found kernel module hid_hyperv
+[1708650179] - DEBUG:  Found kernel module hid_generic
+[1708650179] - DEBUG:  Found kernel module scsi_dh_alua
+[1708650179] - DEBUG:  Found kernel module nvidia
+[1708650179] - DEBUG:  Found kernel module rc_core
+[1708650179] - DEBUG:  Found kernel module binfmt_misc
+[1708650179] - DEBUG:  Found kernel module nvidia_drm
+[1708650179] - DEBUG:  Found kernel module joydev
+[1708650179] - DEBUG:  Found kernel module hv_netvsc
+[1708650179] - DEBUG:  Found kernel module hyperv_drm
+[1708650179] - DEBUG:  Found kernel module nvidia_modeset
+[1708650179] - DEBUG:  Found kernel module hid_generic
+[1708650179] - DEBUG:  Found kernel module hid
+[1708650179] - DEBUG:  Found kernel module drm_kms_helper
+[1708650179] - DEBUG:  Found kernel module nvidia
+[1708650179] - DEBUG:  Found kernel module binfmt_misc
+[1708650179] - DEBUG:  Found kernel module serio_raw
+[1708650179] - DEBUG:  Found kernel module crct10dif_pclmul
+[1708650179] - DEBUG:  Found kernel module joydev
+[1708650179] - DEBUG:  Found kernel module hyperv_drm
+[1708650179] - DEBUG:  Found kernel module hyperv_keyboard
+[1708650179] - DEBUG:  Found kernel module crc32_pclmul
+[1708650179] - DEBUG:  Found kernel module hid_generic
+[1708650179] - DEBUG:  Found kernel module drm_kms_helper
+[1708650179] - DEBUG:  Found kernel module pata_acpi
+[1708650179] - DEBUG:  Found kernel module syscopyarea
+[1708650179] - DEBUG:  Found kernel module binfmt_misc
+[1708650179] - DEBUG:  Found kernel module crct10dif_pclmul
+[1708650179] - DEBUG:  Found kernel module sch_fq_codel
+[1708650179] - DEBUG:  Found kernel module ghash_clmulni_intel
+[1708650179] - DEBUG:  Found kernel module hyperv_drm
+[1708650179] - DEBUG:  Found kernel module crc32_pclmul
+[1708650179] - DEBUG:  Found kernel module nfsd
+[1708650179] - DEBUG:  Found kernel module sysfillrect
+[1708650179] - DEBUG:  Found kernel module drm_kms_helper
+[1708650179] - DEBUG:  Found kernel module syscopyarea
+[1708650179] - DEBUG:  Found kernel module msr
+[1708650179] - DEBUG:  Found kernel module aesni_intel
+[1708650179] - DEBUG:  Found kernel module crct10dif_pclmul
+[1708650179] - DEBUG:  Found kernel module ghash_clmulni_intel
+[1708650179] - DEBUG:  Found kernel module auth_rpcgss
+[1708650179] - DEBUG:  Found kernel module sysimgblt
+[1708650179] - DEBUG:  Found kernel module crc32_pclmul
+[1708650179] - DEBUG:  Found kernel module sysfillrect
+[1708650179] - DEBUG:  Found kernel module nfs_acl
+[1708650179] - DEBUG:  Found kernel module crypto_simd
+[1708650179] - DEBUG:  Found kernel module syscopyarea
+[1708650179] - DEBUG:  Found kernel module aesni_intel
+[1708650179] - DEBUG:  Found kernel module lockd
+[1708650179] - DEBUG:  Found kernel module fb_sys_fops
+[1708650179] - DEBUG:  Found kernel module ghash_clmulni_intel
+[1708650179] - DEBUG:  Found kernel module sysimgblt
+[1708650179] - DEBUG:  Found kernel module drm
+[1708650179] - DEBUG:  Found kernel module cryptd
+[1708650179] - DEBUG:  Found kernel module sysfillrect
+[1708650179] - DEBUG:  Found kernel module crypto_simd
+[1708650179] - DEBUG:  Found kernel module grace
+[1708650179] - DEBUG:  Found kernel module cec
+[1708650179] - DEBUG:  Found kernel module aesni_intel
+[1708650179] - DEBUG:  Found kernel module fb_sys_fops
+[1708650179] - DEBUG:  Found kernel module efi_pstore
+[1708650179] - DEBUG:  Found kernel module hid_hyperv
+[1708650179] - DEBUG:  Found kernel module sysimgblt
+[1708650179] - DEBUG:  Found kernel module cryptd
+[1708650179] - DEBUG:  Found kernel module i2c_core
+[1708650179] - DEBUG:  Found kernel module rc_core
+[1708650179] - DEBUG:  Found kernel module crypto_simd
+[1708650179] - DEBUG:  Found kernel module cec
+[1708650179] - DEBUG:  Found kernel module sunrpc
+[1708650179] - DEBUG:  Found kernel module hv_netvsc
+[1708650179] - DEBUG:  Found kernel module fb_sys_fops
+[1708650179] - DEBUG:  Found kernel module hid_hyperv
+[1708650179] - DEBUG:  Found kernel module ip_tables
+[1708650179] - DEBUG:  Found kernel module hid
+[1708650179] - DEBUG:  Found kernel module cryptd
+[1708650179] - DEBUG:  Found kernel module rc_core
+[1708650179] - DEBUG:  Found kernel module x_tables
+[1708650179] - DEBUG:  Found kernel module serio_raw
+[1708650179] - DEBUG:  Found kernel module cec
+[1708650179] - DEBUG:  Found kernel module autofs4
+[1708650179] - DEBUG:  Found kernel module hv_netvsc
+[1708650179] - DEBUG:  Found kernel module hyperv_keyboard
+[1708650179] - DEBUG:  Found kernel module hid_hyperv
+[1708650179] - DEBUG:  Found kernel module hid
+[1708650179] - DEBUG:  Found kernel module pata_acpi
+[1708650179] - DEBUG:  Found Ethernet device lo
+[1708650179] - DEBUG:  Found kernel module rc_core
+[1708650179] - DEBUG:  Found kernel module serio_raw
+[1708650179] - DEBUG:  Found Ethernet device eth0
+[1708650179] - DEBUG:  Found kernel module sch_fq_codel
+[1708650179] - DEBUG:  Found Ethernet device docker0
+[1708650179] - DEBUG:  Found kernel module hv_netvsc
+[1708650179] - DEBUG:  Found kernel module hyperv_keyboard
+[1708650179] - DEBUG:  Found kernel module nfsd
+[1708650179] - Running check:  "check_hw_physmem 451308MB 451308MB 5%"
+[1708650179] - DEBUG:  Found kernel module hid
+[1708650179] - DEBUG:  Found kernel module pata_acpi
+[1708650179] - DEBUG:  Found kernel module msr
+[1708650179] - DEBUG:  Found kernel module serio_raw
+[1708650179] - DEBUG:  Found kernel module sch_fq_codel
+[1708650179] - DEBUG:  Found kernel module auth_rpcgss
+[1708650179] - Running check:  "check_hw_swap 0kB 0kB 3%"
+[1708650179] - DEBUG:  Found kernel module hyperv_keyboard
+[1708650179] - DEBUG:  Found kernel module nfsd
+[1708650179] - DEBUG:  Found kernel module nfs_acl
+[1708650179] - DEBUG:  Found kernel module pata_acpi
+[1708650179] - DEBUG:  Found kernel module msr
+[1708650179] - Running check:  "check_hw_eth eth0"
+[1708650179] - DEBUG:  Found kernel module lockd
+[1708650179] - DEBUG:  Found kernel module sch_fq_codel
+[1708650179] - DEBUG:  Found kernel module auth_rpcgss
+[1708650179] - Running check:  "check_hw_eth lo"
+[1708650179] - DEBUG:  Found kernel module drm
+[1708650179] - DEBUG:  Found kernel module nfsd
+[1708650179] - Running check:  "check_gpu_count 4"
+[1708650179] - DEBUG:  Found kernel module nfs_acl
+[1708650179] - DEBUG:  Found kernel module grace
+[1708650179] - DEBUG:  Found kernel module msr
+[1708650179] - DEBUG:  Found kernel module lockd
+[1708650179] - DEBUG:  Found kernel module efi_pstore
+[1708650179] - DEBUG:  Found kernel module auth_rpcgss
+[1708650179] - DEBUG:  Found kernel module drm
+[1708650179] - DEBUG:  Found kernel module i2c_core
+[1708650179] - DEBUG:  Found kernel module nfs_acl
+[1708650179] - DEBUG:  Found kernel module grace
+[1708650179] - DEBUG:  Found kernel module sunrpc
+[1708650179] - DEBUG:  Found kernel module lockd
+[1708650179] - DEBUG:  Found kernel module efi_pstore
+[1708650179] - DEBUG:  Found kernel module ip_tables
+[1708650179] - DEBUG:  Found kernel module drm
+[1708650179] - DEBUG:  Found kernel module i2c_core
+[1708650179] - DEBUG:  Found kernel module x_tables
+[1708650179] - DEBUG:  Found kernel module grace
+[1708650179] - DEBUG:  Found kernel module sunrpc
+[1708650179] - DEBUG:  Found kernel module autofs4
+[1708650179] - DEBUG:  Found kernel module efi_pstore
+[1708650179] - DEBUG:  Found kernel module ip_tables
+[1708650179] - DEBUG:  Found kernel module i2c_core
+[1708650179] - DEBUG:  Found Ethernet device lo
+[1708650179] - DEBUG:  Found kernel module x_tables
+[1708650179] - DEBUG:  Found kernel module sunrpc
+[1708650179] - DEBUG:  Found kernel module autofs4
+[1708650179] - DEBUG:  Found Ethernet device eth0
+[1708650179] - DEBUG:  Found Ethernet device docker0
+[1708650179] - DEBUG:  Found kernel module ip_tables
+[1708650179] - DEBUG:  Found kernel module x_tables
+[1708650179] - Running check:  "check_hw_physmem 451308MB 451308MB 5%"
+[1708650179] - DEBUG:  Found kernel module autofs4
+[1708650179] - DEBUG:  Found Ethernet device lo
+[1708650179] - DEBUG:  Found Ethernet device eth0
+[1708650179] - DEBUG:  Found Ethernet device docker0
+[1708650179] - DEBUG:  Found Ethernet device lo
+[1708650179] - Running check:  "check_hw_swap 0kB 0kB 3%"
+[1708650179] - DEBUG:  Found Ethernet device eth0
+[1708650179] - Running check:  "check_hw_physmem 451308MB 451308MB 5%"
+[1708650179] - DEBUG:  Found Ethernet device docker0
+[1708650179] - Running check:  "check_hw_physmem 451308MB 451308MB 5%"
+[1708650179] - Running check:  "check_hw_eth eth0"
+[1708650179] - Running check:  "check_hw_swap 0kB 0kB 3%"
+[1708650179] - Running check:  "check_hw_eth lo"
+[1708650179] - Running check:  "check_gpu_count 4"
+[1708650179] - Running check:  "check_hw_swap 0kB 0kB 3%"
+[1708650179] - Running check:  "check_hw_eth eth0"
+[1708650179] - Running check:  "check_hw_eth lo"
+[1708650179] - Running check:  "check_hw_eth eth0"
+[1708650179] - Running check:  "check_gpu_count 4"
+[1708650179] - Running check:  "check_hw_eth lo"
+[1708650179] - Running check:  "check_gpu_count 4"
+[1708650179] - Running check:  "check_gpu_xid"
+[1708650179] - Running check:  "check_gpu_xid"
+[1708650179] - DEBUG:  No GPU Xid error found in dmesg
+[1708650179] - DEBUG:  No GPU Xid error found in dmesg
+[1708650179] - Running check:  "check_nvsmi_healthmon"
+[1708650179] - Running check:  "check_nvsmi_healthmon"
+[1708650179] - Running check:  "check_gpu_xid"
+[1708650179] - Running check:  "check_gpu_xid"
+[1708650179] - DEBUG:  No GPU Xid error found in dmesg
+[1708650179] - Running check:  "check_nvsmi_healthmon"
+[1708650179] - DEBUG:  No GPU Xid error found in dmesg
+[1708650179] - Running check:  "check_nvsmi_healthmon"
+[1708650180] - DEBUG:  check_nvsmi_healthmon:  nvidia-smi completed successfully
+[1708650180] - Running check:  "check_gpu_clock_throttling"
+[1708650180] - DEBUG:  check_nvsmi_healthmon:  nvidia-smi completed successfully
+[1708650180] - Running check:  "check_gpu_clock_throttling"
+[1708650180] - DEBUG:  check_nvsmi_healthmon:  nvidia-smi completed successfully
+[1708650180] - Running check:  "check_gpu_clock_throttling"
+[1708650180] - DEBUG:  check_nvsmi_healthmon:  nvidia-smi completed successfully
+[1708650180] - Running check:  "check_gpu_clock_throttling"
+[1708650180] - DEBUG:  gpu_clock_throttle_query_out=0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+[1708650180] - Running check:  "check_gpu_bw 10"
+[1708650180] - DEBUG:  gpu_clock_throttle_query_out=0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+[1708650180] - Running check:  "check_gpu_bw 10"
+[1708650180] - DEBUG:  gpu_clock_throttle_query_out=0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+[1708650180] - Running check:  "check_gpu_bw 10"
+[1708650180] - DEBUG:  gpu_clock_throttle_query_out=0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+0x0000000000000001
+[1708650180] - Running check:  "check_gpu_bw 10"
+[1708650194] - DEBUG:  D2H_GPU_0: 13.13 GB/s
+[1708650194] - DEBUG:  D2H_GPU_1: 13.13 GB/s
+[1708650194] - DEBUG:  D2H_GPU_2: 10.73 GB/s
+[1708650194] - DEBUG:  D2H_GPU_3: 13.14 GB/s
+[1708650194] - DEBUG:  H2D_GPU_0: 4.20 GB/s
+[1708650194] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 0 failed. Bandwidth 4.20 is less than 10
+[1708650194] - DEBUG:  H2D_GPU_1: 5.45 GB/s
+[1708650194] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 1 failed. Bandwidth 5.45 is less than 10
+[1708650194] - DEBUG:  H2D_GPU_2: 11.74 GB/s
+[1708650194] - DEBUG:  H2D_GPU_3: 5.74 GB/s
+[1708650194] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 3 failed. Bandwidth 5.74 is less than 10
+[1708650194] - ERROR:  nhc:  3 health checks failed.
+[1708650194] - DEBUG:  kill_watchdog:  Watchdog PID is 76.
+[1708650194] - DEBUG:  Killing watchdog timer 76 -- Attempt #1
+[1708650194] - DEBUG:  Killing watchdog timer 76 -- Attempt #2
+[1708650194] - DEBUG:  Unlocking graphics clock  before exit...
+Health checks completed.
+[1708650195] - DEBUG:  D2H_GPU_0: 13.13 GB/s
+[1708650195] - DEBUG:  D2H_GPU_1: 6.58 GB/s
+[1708650195] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 1 failed. Bandwidth 6.58 is less than 10
+[1708650195] - DEBUG:  D2H_GPU_2: 13.11 GB/s
+[1708650195] - DEBUG:  D2H_GPU_3: 13.11 GB/s
+[1708650195] - DEBUG:  H2D_GPU_0: 3.11 GB/s
+[1708650195] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 0 failed. Bandwidth 3.11 is less than 10
+[1708650195] - DEBUG:  H2D_GPU_1: 5.90 GB/s
+[1708650195] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 1 failed. Bandwidth 5.90 is less than 10
+[1708650195] - DEBUG:  H2D_GPU_2: 3.92 GB/s
+[1708650195] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 2 failed. Bandwidth 3.92 is less than 10
+[1708650195] - DEBUG:  H2D_GPU_3: 5.73 GB/s
+[1708650195] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 3 failed. Bandwidth 5.73 is less than 10
+[1708650195] - ERROR:  nhc:  5 health checks failed.
+[1708650195] - DEBUG:  kill_watchdog:  Watchdog PID is 78.
+[1708650195] - DEBUG:  Killing watchdog timer 78 -- Attempt #1
+[1708650195] - DEBUG:  Killing watchdog timer 78 -- Attempt #2
+[1708650195] - DEBUG:  Unlocking graphics clock  before exit...
+Health checks completed.
+[1708650197] - DEBUG:  D2H_GPU_0: 4.83 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 0 failed. Bandwidth 4.83 is less than 10
+[1708650197] - DEBUG:  D2H_GPU_1: 6.57 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 1 failed. Bandwidth 6.57 is less than 10
+[1708650197] - DEBUG:  D2H_GPU_2: 6.59 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 2 failed. Bandwidth 6.59 is less than 10
+[1708650197] - DEBUG:  D2H_GPU_3: 6.55 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: D2H test on GPU 3 failed. Bandwidth 6.55 is less than 10
+[1708650197] - DEBUG:  H2D_GPU_0: 3.12 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 0 failed. Bandwidth 3.12 is less than 10
+[1708650197] - DEBUG:  H2D_GPU_1: 4.24 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 1 failed. Bandwidth 4.24 is less than 10
+[1708650197] - DEBUG:  H2D_GPU_2: 3.19 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 2 failed. Bandwidth 3.19 is less than 10
+[1708650197] - DEBUG:  H2D_GPU_3: 5.57 GB/s
+[1708650197] - ERROR:  nhc:  Health check failed:  check_gpu_bw: H2D test on GPU 3 failed. Bandwidth 5.57 is less than 10
+[1708650197] - ERROR:  nhc:  8 health checks failed.
+[1708650197] - DEBUG:  kill_watchdog:  Watchdog PID is 77.
+[1708650197] - DEBUG:  Killing watchdog timer 77 -- Attempt #1
+[1708650197] - DEBUG:  Killing watchdog timer 77 -- Attempt #2
+[1708650197] - DEBUG:  Unlocking graphics clock  before exit...
+Health checks completed.

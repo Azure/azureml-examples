@@ -8,13 +8,18 @@ This command job is used to test compute nodes being used for LLM training. Duri
 - Out-of-Memory errors in logs
 
 ### Expected Output
-The job should typically complete quickly, likely under 5 minutes. Results of the job can be seen in the user logs folder under the "outputs + logs" tab of the job. At the bottom of the ```std_log_process_0.txt``` file, you will see a message that says 'Health Checks completed' once the checks are done. If one or more of the checks fails, messages will be shown in the logs that will look similar to this:
+The job should typically complete quickly, likely under 5 minutes. Results of the job can be seen in the user logs folder under the "outputs + logs" tab of the job page. At the bottom of the ```std_log_process_0.txt``` file, you will see a message that says 'Health Checks completed' once the checks are done. A list of the checks run will also be shown at the bottom of the log file with a short description of each check. If one or more of the checks fails, the job will fail and the failing checks will be shown in the job overview tab like below: 
+
+![image](https://github.com/Azure/azureml-examples/assets/73311224/e4d8df01-40ff-4b3f-8560-8182dd427287)
+
+When a job fails, messages will be shown in the logs that will look similar to this:
 ![image](https://github.com/Azure/azureml-examples/assets/73311224/aa31c29c-9669-40e4-acb1-52d7843f8a56)
+
+The job will succeed without errors if all health checks have passed.
 
 ### How To Run
 > This readme assumes azureml-cli is installed with the az-ai-ml extension. It also assumes you are logged into a workspace and subscription.
-1. Create the environment to be used by the command job using the command ```az ml environment create --file env.yaml```
-2. Create a compute in the AzureML Studio with the type of nodes you want to run a health check on. In the health_job.yaml file, specify the following arguments:
+1. Create a compute in the AzureML Studio with the type of nodes you want to run a health check on. In the health_job.yaml file, specify the following arguments:
     - The "compute" argument with the name of the compute you created.
     - The "instance_count" resource variable with the number of compute nodes you want to run the job on.
 3. Start the command job by running the command: ```az ml job create --file health_job.yaml```
