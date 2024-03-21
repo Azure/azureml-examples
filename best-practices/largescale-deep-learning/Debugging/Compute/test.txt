@@ -1,8 +1,0 @@
-This is my test file. Hopefully the test works. LOl.
-* || check_ib_bw_non_gdr
-
-* || check_gpu_clock_throttling 24 35
-
-# Comment that is saying nothing
-
-* || check_gpu_xid 43
