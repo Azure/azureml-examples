@@ -13,7 +13,7 @@ jobs:
       world_output:
   world_job:
     command: cat ${{inputs.world_input}}/world.txt
-    environment: azureml://registries/azureml/environments/sklearn-1.0/versions/27
+    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.world_output}}
  
