@@ -1,0 +1,71 @@
+name: automl-nlp-v2-ner
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 2"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task/**
+      - .github/workflows/python-sdk-tutorial-automl-nlp-v2-ner.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: Run Install packages
+      run: |
+         chmod +x ./v1/scripts/install-packages.sh
+         ./v1/scripts/install-packages.sh
+      shell: bash
+    - name: create automl conda environment
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+          activate-environment: azure_automl
+          environment-file: v1/python-sdk/tutorials/automl-with-azureml/automl_env_linux.yml
+          auto-activate-base: false
+    - name: update conda env with the update_env.yml
+      run: |
+        conda env update --file v1/python-sdk/tutorials/automl-with-azureml/automl-nlp-ner/update_env.yml
+    - name: install papermill and set up the IPython kernel
+      run: |
+        pip install papermill==2.3.3
+        python -m ipykernel install --user --name azure_automl --display-name "Python (azure_automl)"
+        pip list
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZUREML_CREDENTIALS}}
+    - name: Run update-azure-extensions
+      run: |
+         chmod +x ./v1/scripts/update-azure-extensions.sh
+         ./v1/scripts/update-azure-extensions.sh
+      shell: bash
+    - name: attach to workspace
+      run: az ml folder attach -w main -g azureml-examples
+    - name: run automl-nlp-text-ner-task.ipynb
+      run: |
+        source "${{ github.workspace }}/infra/sdk_helpers.sh";
+        source "${{ github.workspace }}/infra/init_environment.sh";
+        bash "${{ github.workspace }}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+        bash "${{ github.workspace }}/infra/sdk_helpers.sh" replace_template_values "automl-nlp-text-ner-task.ipynb";
+        [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
+        papermill -k python automl-nlp-text-ner-task.ipynb automl-nlp-text-ner-task.output.ipynb
+      working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task
+    - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: automl-nlp-text-ner-task
+        path: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task
