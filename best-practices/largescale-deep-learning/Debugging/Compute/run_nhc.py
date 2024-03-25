@@ -80,9 +80,10 @@ def parse_output(output_file):
                 full_errors = full_errors + error_message
         if full_errors:
             print(
-                "Errors found while running node health checks. Removing node from cluster."
+                "Errors found while running node health checks. The node is failing, node id below:"
             )
-            subprocess.run(["fallocate", "-l", "1T", "bigfile"])
+            print(os.environ['AZ_BATCH_NODE_ID'])
+            # subprocess.run(["fallocate", "-l", "1T", "bigfile"])
             raise Exception(
                 "Failures were found while running the node health checks. Please see the std_log_process.txt files under the 'outputs and logs' tab of the job for more information."
                 + full_errors
