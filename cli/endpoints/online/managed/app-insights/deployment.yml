@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+app_insights_enabled: true
+endpoint_name: <ENDPOINT_NAME> 
+model:
+  path: ../../model-1/model
+code_configuration:
+  code: ../../model-1/onlinescoring
+  scoring_script: score.py
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  conda_file: ../../model-1/environment/conda.yml
+environment_variables:
+  APP_INSIGHTS_LOG_RESPONSE_ENABLED: true
+  AML_MODEL_DC_STORAGE_ENABLED: true
+instance_type: Standard_DS2_v2
+instance_count: 1
