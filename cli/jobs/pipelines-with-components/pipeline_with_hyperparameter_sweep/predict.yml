@@ -2,7 +2,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: predict_component
 display_name: predict_component
-version: 1
+version: 2
 type: command
 inputs:
   model: 
