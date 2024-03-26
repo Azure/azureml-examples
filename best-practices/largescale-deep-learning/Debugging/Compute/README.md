@@ -15,7 +15,7 @@ The job should typically complete quickly, likely under 5 minutes. Results of th
 When a job fails, messages will be shown in the logs that will look similar to this:
 ![image](https://github.com/Azure/azureml-examples/assets/73311224/aa31c29c-9669-40e4-acb1-52d7843f8a56)
 
-The job will succeed without errors if all health checks have passed.
+The job can be run on multiple nodes, so there will be a log file for each node. Some nodes may pass all the checks without fail and some nodes will fail the tests. If a node fails any of the checks, it will also be automatically kicked from the cluster and a good node will be reallocated. The job will succeed without errors if all health checks have passed on all nodes.
 
 ### How To Run
 > This readme assumes azureml-cli is installed with the az-ai-ml extension. It also assumes you are logged into a workspace and subscription.
