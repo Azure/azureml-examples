@@ -79,14 +79,22 @@ def parse_output(output_file):
             if error_message not in full_errors:
                 full_errors = full_errors + error_message
         if full_errors:
-            print(
-                "Errors found while running node health checks. Deallocating the node. The node is failing, node id below:"
-            )
-            print(os.environ['AZ_BATCH_NODE_ID'])
-            subprocess.run(["fallocate", "-l", "1T", "bigfile"])
+            # Overload disk to kick bad node off cluster
+            print("Errors detected during node health checks. Kicking bad node off cluster.")
+            device = "/dev/root"
+            mount_point = "/mnt/my_mount_point"
+            if not os.path.exists(mount_point):
+                os.makedirs(mount_point)
+            os.system(f"mount {device} {mount_point}")
+            os.system(f"ls /mnt/")
+            command = "fallocate -l 1T /mnt/my_mount_point/bigfile"
+            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = process.communicate()
+            print(output)
+            print(error)
             raise Exception(
-                "Failures were found while running the node health checks. Please see the std_log_process.txt files under the 'outputs and logs' tab of the job for more information."
-                + full_errors
+               "Failures were found while running the node health checks. Please see the std_log_process.txt files under the 'outputs and logs' tab of the job for more information."
+               + full_errors
             )
 
 
