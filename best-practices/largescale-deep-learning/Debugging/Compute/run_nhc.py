@@ -89,7 +89,7 @@ def parse_output(output_file):
                 os.makedirs(mount_point)
             os.system(f"mount {device} {mount_point}")
             os.system(f"ls /mnt/")
-            command = "fallocate -l 1T /mnt/my_mount_point/bigfile"
+            command = "fallocate -l 3T /mnt/my_mount_point/bigfile"
             process = subprocess.Popen(
                 command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
