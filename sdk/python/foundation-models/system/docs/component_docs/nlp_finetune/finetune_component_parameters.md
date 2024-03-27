@@ -1,13 +1,23 @@
 # Finetune Pipeline Component
-This component enables finetuning of pretrained models on custom or pre-available datasets. The component supports Deepspeed for performance enhancement. The component supports parameter efficient finetuning with techniques like LoRA.
+This component enables finetuning of pretrained models on custom datasets. The component supports Deepspeed for performance enhancement.
+
+The component supports following optimizations:
+1. Parameter efficient finetuning with techniques like LoRA.
+2. Supports Multi-GPU finetuning using Distributed Data Parallel (DDP) and DeepSpeed.
+3. Supports Mixed Precision Training.
+4. Supports Multi-Node training.
+5. Supports flash attention for speed up finetuning and reducing memory footprint.
+
 
 At the time of writing, following tasks are supported through finetuning components:
-1. Text Generation
-2. Text Classification
-3. Named Entity Recognition/Token Classification
-4. Question Answering
-5. Summarization
-6. Translation
+| Task | Notebook |
+| --- | --- |
+| Text Generation | https://github.com/Azure/azureml-examples/tree/main/sdk/python/foundation-models/system/finetune/Llama-notebooks/text-generation
+| Text Classification | https://github.com/Azure/azureml-examples/tree/main/sdk/python/foundation-models/system/finetune/text-classification
+| Named Entity Recognition/Token Classification | https://github.com/Azure/azureml-examples/tree/main/sdk/python/foundation-models/system/finetune/token-classification
+| Question Answering | https://github.com/Azure/azureml-examples/tree/main/sdk/python/foundation-models/system/finetune/question-answering
+| Summarization | https://github.com/Azure/azureml-examples/tree/main/sdk/python/foundation-models/system/finetune/summarization
+| Translation | https://github.com/Azure/azureml-examples/tree/main/sdk/python/foundation-models/system/finetune/translation
 
 Respective components can be found in the azureml registry:
 - [text_generation_pipeline](https://ml.azure.com/registries/azureml/components/text_generation_pipeline)
