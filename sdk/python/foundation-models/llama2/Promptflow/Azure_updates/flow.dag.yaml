@@ -1,0 +1,34 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  topic:
+    type: string
+    is_chat_input: false
+  topic1:
+    type: string
+    is_chat_input: false
+outputs:
+  joke:
+    type: string
+    reference: ${windows_features.output}
+nodes:
+- name: windows_features
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: windows_features.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-70b-chat-ikmiw
+    deployment_name: Llama-2-70b-chat-ikmiw
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    topic: ${inputs.topic}
+    topic1: ${inputs.topic1}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

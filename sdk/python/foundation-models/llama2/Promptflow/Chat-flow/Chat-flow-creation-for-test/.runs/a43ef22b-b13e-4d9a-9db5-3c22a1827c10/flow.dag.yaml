@@ -1,0 +1,57 @@
+id: template_chat_flow
+name: Template Chat Flow
+inputs:
+  chat_history:
+    type: list
+    is_chat_input: false
+    is_chat_history: true
+  question:
+    type: string
+    is_chat_input: true
+outputs:
+  answer:
+    type: string
+    reference: ${chat.output}
+    is_chat_output: true
+nodes:
+- name: chat
+  type: llm
+  source:
+    type: code
+    path: chat.jinja2
+  inputs:
+    deployment_name: gpt-4
+    temperature: 0.7
+    top_p: 1
+    max_tokens: 256
+    response_format:
+      type: text
+    presence_penalty: 0
+    frequency_penalty: 0
+    question: ${inputs.question}
+    chat_history: ${inputs.chat_history}
+  provider: AzureOpenAI
+  connection: Default_AzureOpenAI
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+- name: chat_with_llama
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: chat_with_llama.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: chat
+    endpoint_name: Llama-2-7b-chat-mass
+    deployment_name: Llama-2-7b-chat-mass
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    chat_history: ${inputs.chat_history}
+    question: ${inputs.question}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

@@ -1,0 +1,42 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  Language:
+    type: string
+    is_chat_input: false
+  Genre:
+    type: string
+    is_chat_input: false
+  Age_Group:
+    type: string
+    is_chat_input: false
+  Ott:
+    type: string
+    is_chat_input: false
+outputs:
+  Movie:
+    type: string
+    reference: ${Movie.output}
+nodes:
+- name: Movie
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: Movie.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-70b-zdlkk
+    deployment_name: Llama-2-70b-zdlkk
+    temperature: 1
+    max_new_tokens: 100
+    top_p: 1
+    model_kwargs: {}
+    Age_Group: ${inputs.Age_Group}
+    Genre: ${inputs.Genre}
+    Language: ${inputs.Language}
+    Ott: ${inputs.Ott}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

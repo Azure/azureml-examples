@@ -1,0 +1,169 @@
+{
+  "package": {
+    "promptflow.tools.open_model_llm.OpenModelLLM.call": {
+      "name": "Open Model LLM",
+      "type": "custom_llm",
+      "inputs": {
+        "api": {
+          "type": [
+            "string"
+          ],
+          "enum": [
+            "chat",
+            "completion"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "chat",
+          "id": "p2mrbhf5"
+        },
+        "deployment_name": {
+          "type": [
+            "string"
+          ],
+          "default": "",
+          "dynamic_list": {
+            "func_path": "promptflow.tools.open_model_llm.list_deployment_names",
+            "func_kwargs": [
+              {
+                "name": "endpoint",
+                "optional": true,
+                "reference": "${inputs.endpoint}",
+                "type": [
+                  "string"
+                ]
+              }
+            ]
+          },
+          "allow_manual_entry": true,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "Llama-2-7b-chat",
+          "id": "11dcp5gn",
+          "valueHint": []
+        },
+        "endpoint_name": {
+          "type": [
+            "string"
+          ],
+          "dynamic_list": {
+            "func_path": "promptflow.tools.open_model_llm.list_endpoint_names"
+          },
+          "allow_manual_entry": true,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "serverlessEndpoint/Llama-2-7b-chat-mass",
+          "id": "2cezt8d3",
+          "valueHint": [
+            {
+              "description": "Serverless Endpoint:  Llama-2-7b-chat-mass",
+              "display_value": "[Serverless] Llama-2-7b-chat-mass",
+              "value": "serverlessEndpoint/Llama-2-7b-chat-mass"
+            }
+          ]
+        },
+        "max_new_tokens": {
+          "type": [
+            "int"
+          ],
+          "default": 500,
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": 500,
+          "id": "gfkip1ji"
+        },
+        "model_kwargs": {
+          "type": [
+            "object"
+          ],
+          "default": "{}",
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "advanced": true,
+          "value": "{}",
+          "id": "53r1r577"
+        },
+        "temperature": {
+          "type": [
+            "double"
+          ],
+          "default": 1,
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": 1,
+          "id": "6hrj6d68"
+        },
+        "top_p": {
+          "type": [
+            "double"
+          ],
+          "default": 1,
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "advanced": true,
+          "value": 1,
+          "id": "abodo9cp"
+        }
+      },
+      "description": "Use an open model from the Azure Model catalog, deployed to an AzureML Online Endpoint for LLM Chat or Completion API calls.",
+      "module": "promptflow.tools.open_model_llm",
+      "class_name": "OpenModelLLM",
+      "function": "call",
+      "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACgElEQVR4nGWSz2vcVRTFP/e9NzOZ1KDGohASslLEH6VLV0ak4l/QpeDCrfQPcNGliODKnVm4EBdBsIjQIlhciKW0ycKFVCSNbYnjdDLtmPnmO/nO9917XcxMkjYX3uLx7nnn3HOuMK2Nix4fP78ZdrYXVkLVWjf3l3B1B+HpcjzGFtmqa6cePz7/x0dnn1n5qhj3iBJPYREIURAJuCtpY8PjReDbrf9WG7H1fuefwQU9qKztTcMJT+PNnEFvjGVDBDlSsH6p/9MLzy6+NxwVqI8RAg4IPmWedMckdLYP6O6UpIaQfvyyXG012+e79/ZfHukoS1ISMT2hGTB1RkUmNgQ5QZ0w+a2VWDq73MbdEWmfnnv6UWe7oNzPaLapl5CwuLTXK9WUGBuCjqekzhP+z52ZXOrKMD3OJg0Hh778aiOuvpnYvp05d6GJO4iAO4QAe/eV36/X5LFRV4Zmn+AdkqlL8Vjp3oVioOz+WTPzzYEgsN+fgPLYyJVheSbPPVl2ikeGZRjtG52/8rHuaV9VOlpP2OtKyVndcRVCSqOhsvxa4vW359i6OuKdD+aP8Q4SYPdOzS/flGjt1JUSaMqZ5nwa1Y8qWb/Ud/eZZkHisYezEM0m+fcelDr8F1SqW2LNK6r1jXQwyLzy1hxvrLXZulry7ocL+FS6G4QIu3fG/Px1gdYeW7LIgXU2P/115TOA5G7e3Rmj2aS/m7l5pThiZzrCcE/d1XHzbln373nw7y6veeoUm5KCNKT/IPPwbiY1hYd/l5MIT65BMFt87sU4v9D7/JMflr44uV6hGh1+L4RCkg6z5iK2tAhNLeLsNGwYA4fDYnC/drvuuFxe86NV/x+Ut27g0FvykgAAAABJRU5ErkJggg==",
+      "is_builtin": true,
+      "package": "promptflow-tools",
+      "package_version": "1.2.0rc1",
+      "enable_kwargs": false,
+      "tool_state": "stable",
+      "toolId": "promptflow.tools.open_model_llm.OpenModelLLM.call"
+    }
+  },
+  "code": {
+    "echo.py": {
+      "name": "echo.py",
+      "type": "python",
+      "inputs": {
+        "input": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default",
+          "value": "${joke.output}",
+          "id": "rd98gvhf"
+        }
+      },
+      "source": "echo.py",
+      "function": "user_input",
+      "is_builtin": false,
+      "enable_kwargs": false,
+      "tool_state": "stable",
+      "toolId": "echo.py"
+    },
+    "joke_with_llama.jinja2": {
+      "name": "joke_with_llama.jinja2",
+      "type": "prompt",
+      "inputs": {
+        "topic": {
+          "type": [
+            "string"
+          ],
+          "allow_manual_entry": false,
+          "is_multi_select": false,
+          "input_type": "default"
+        }
+      },
+      "source": "joke_with_llama.jinja2",
+      "is_builtin": false,
+      "enable_kwargs": false,
+      "tool_state": "stable",
+      "toolId": "joke_with_llama.jinja2"
+    }
+  }
+}

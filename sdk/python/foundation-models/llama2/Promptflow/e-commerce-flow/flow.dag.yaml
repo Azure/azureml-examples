@@ -1,0 +1,30 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  category:
+    type: string
+    is_chat_input: false
+outputs:
+  e_commerce_policies_details:
+    type: string
+    reference: ${items_policies.output}
+nodes:
+- name: items_policies
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: items_policies.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-70b-chat-ikmiw
+    deployment_name: Llama-2-70b-chat-ikmiw
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    category: ${inputs.category}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

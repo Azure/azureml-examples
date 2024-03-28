@@ -1,0 +1,25 @@
+{
+  "nodes": {
+    "joke_with_llama": {
+      "variant_0": {
+        "inputs": {
+          "deployment_name": [],
+          "endpoint_name": [
+            {
+              "description": "Serverless Endpoint:  Llama-2-7b-chat-mass",
+              "display_value": "[Serverless] Llama-2-7b-chat-mass",
+              "value": "serverlessEndpoint/Llama-2-7b-chat-mass"
+            }
+          ]
+        },
+        "inputsValue": {}
+      }
+    },
+    "user_input": {
+      "variant_0": {
+        "inputs": {},
+        "inputsValue": {}
+      }
+    }
+  }
+}
