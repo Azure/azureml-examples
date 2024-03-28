@@ -3,7 +3,7 @@ type: command
 
 name: train_model
 display_name: train_model
-version: 2
+version: 1
 
 inputs: 
   data:
@@ -59,7 +59,7 @@ outputs:
   
 code: ./train-src
 
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml:azureml-sklearn-1.0:23
 
 command: >-
   python train.py 
