@@ -2,7 +2,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: predict_component
 display_name: predict_component
-version: 1
+version: 2
 type: command
 inputs:
   model: 
@@ -13,7 +13,7 @@ outputs:
   predict_result:
     type: uri_folder
 code: ./predict-src
-environment: azureml:azureml-sklearn-1.0:23
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
 command: >-
   python predict.py 
   --model ${{inputs.model}} 
