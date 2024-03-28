@@ -1,0 +1,42 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  type:
+    type: string
+    is_chat_input: false
+  main_course:
+    type: string
+    is_chat_input: false
+  location:
+    type: string
+    is_chat_input: false
+  time:
+    type: string
+    is_chat_input: false
+outputs:
+  output:
+    type: string
+    reference: ${Hotel.output}
+nodes:
+- name: Hotel
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: Hotel.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    type: ${inputs.type}
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-70b-gskjb
+    deployment_name: Llama-2-70b-gskjb
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    location: ${inputs.location}
+    main_course: ${inputs.main_course}
+    time: ${inputs.time}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

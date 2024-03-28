@@ -1,0 +1,37 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  topic:
+    type: string
+    is_chat_input: false
+outputs:
+  joke:
+    type: string
+    reference: ${echo.output}
+nodes:
+- name: user_input
+  type: python
+  source:
+    type: code
+    path: echo.py
+  inputs:
+    input: ${inputs.topic}
+  use_variants: false
+- name: joke
+  type: llm
+  source:
+    type: code
+    path: joke.jinja2
+  inputs:
+    deployment_name: ""
+    temperature: 1
+    max_tokens: 256
+    topic: ${inputs.topic}
+  provider: AzureOpenAI
+  connection: ""
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
