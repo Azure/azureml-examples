@@ -1,0 +1,19 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8.16
+- pip<=23.1.2
+- pip:
+  - mlflow==2.3.2
+  - torch==1.13.0
+  - transformers==4.29.1
+  - diffusers==0.23.0
+  - accelerate==0.22.0
+  - azureml-core==1.52.0
+  - azureml-mlflow==1.52.0
+  - azure-ai-contentsafety==1.0.0b1
+  - aiolimiter==1.1.0
+  - azure-ai-mlmonitoring==0.1.0a3
+  - azure-mgmt-cognitiveservices==13.4.0
+  - azure-identity==1.13.0
+name: mlflow-env

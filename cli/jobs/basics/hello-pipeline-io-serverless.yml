@@ -13,7 +13,7 @@ jobs:
       world_output:
   world_job:
     command: cat ${{inputs.world_input}}/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1    
+    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.world_output}}
  

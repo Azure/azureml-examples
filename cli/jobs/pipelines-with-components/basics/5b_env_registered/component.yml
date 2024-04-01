@@ -3,11 +3,11 @@ type: command
 
 name: hello_python_world
 display_name: Hello_Python_World
-version: 1
+version: 3
 
 code: ./src
 
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
 
 command: >-
   python hello.py
