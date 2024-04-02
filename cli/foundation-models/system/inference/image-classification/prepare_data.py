@@ -79,7 +79,7 @@ def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0) 
         "input_data": {
             "columns": ["image"],
             "index": [0],
-            "data": [base64.encodebytes(read_image(sample_image)).decode("utf-8")],
+            "data": [base64.b64encode(read_image(sample_image)).decode("utf-8")],
         }
     }
 
@@ -112,7 +112,7 @@ def prepare_data_for_batch_inference(dataset_dir: str, is_multilabel: int = 0) -
         for path, _, files in os.walk(dir_path):
             for file in files:
                 image = read_image(os.path.join(path, file))
-                image_list.append(base64.encodebytes(image).decode("utf-8"))
+                image_list.append(base64.b64encode(image).decode("utf-8"))
                 shutil.move(os.path.join(path, file), dataset_dir)
         if os.path.isdir(dir_path):
             shutil.rmtree(dir_path)
