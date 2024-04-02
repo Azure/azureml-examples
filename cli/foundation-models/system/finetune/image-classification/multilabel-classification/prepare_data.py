@@ -185,7 +185,6 @@ if __name__ == "__main__":
     )
     huggingface_request_json = {
         "input_data": {
-            "columns": ["image"],
             "data": [base64.b64encode(read_image(sample_image)).decode("utf-8")],
         }
     }

@@ -77,8 +77,6 @@ def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0) 
 
     request_json = {
         "input_data": {
-            "columns": ["image"],
-            "index": [0],
             "data": [base64.b64encode(read_image(sample_image)).decode("utf-8")],
         }
     }
