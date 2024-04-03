@@ -76,9 +76,7 @@ def prepare_data_for_online_inference(dataset_dir: str, is_multilabel: int = 0) 
         sample_image = os.path.join(dataset_dir, "images", "56.jpg")
 
     request_json = {
-        "input_data": {
-            "data": [base64.b64encode(read_image(sample_image)).decode("utf-8")],
-        }
+    "input_data": [base64.b64encode(read_image(sample_image)).decode("utf-8")],
     }
 
     request_file_name = os.path.join(dataset_dir, "sample_request_data.json")
