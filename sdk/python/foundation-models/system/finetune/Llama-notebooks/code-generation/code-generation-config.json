@@ -1,7 +1,10 @@
 {
-    "sub_task": "code",
-    "tokenizer_config": {
+    "token_count_per_sample": false,
+    "generator_config": {
         "return_full_text": true,
-        "max_length": 512
+        "max_new_tokens": 500,
+        "do_sample": false,
+        "temperature": 0.0,
+        "top_p": 1.0
     }
 }
