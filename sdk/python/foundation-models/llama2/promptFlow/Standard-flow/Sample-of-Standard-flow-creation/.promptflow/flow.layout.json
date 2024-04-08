@@ -1,0 +1,37 @@
+{
+  "orientation": "Vertical",
+  "nodeLayouts": {
+    "inputs": {
+      "x": 187,
+      "y": 62,
+      "index": -1
+    },
+    "outputs": {
+      "x": 362,
+      "y": 392,
+      "index": -1
+    },
+    "user_input": {
+      "x": 362,
+      "y": 172,
+      "height": 75,
+      "index": 0
+    },
+    "joke_with_llama": {
+      "x": 362,
+      "y": 282,
+      "height": 75,
+      "index": 1
+    }
+  },
+  "viewport": {
+    "transformMatrix": [
+      1,
+      0,
+      0,
+      1,
+      -204.47396850585938,
+      -351.03646087646484
+    ]
+  }
+}

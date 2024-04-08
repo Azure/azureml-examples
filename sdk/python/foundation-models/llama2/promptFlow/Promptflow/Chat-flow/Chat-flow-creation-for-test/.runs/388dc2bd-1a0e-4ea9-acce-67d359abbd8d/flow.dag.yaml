@@ -1,0 +1,36 @@
+id: template_chat_flow
+name: Template Chat Flow
+inputs:
+  chat_history:
+    type: list
+    is_chat_input: false
+    is_chat_history: true
+  question:
+    type: string
+    is_chat_input: true
+outputs:
+  answer:
+    type: string
+    reference: ${chat_with_llama.output}
+    is_chat_output: true
+nodes:
+- name: chat_with_llama
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: chat_with_llama.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: chat
+    endpoint_name: serverlessEndpoint/Llama-2-7b-chat-mass
+    deployment_name: Llama-2-7b-chat-mass
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    chat_history: ${inputs.chat_history}
+    question: ${inputs.question}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

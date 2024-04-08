@@ -1,0 +1,62 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  from:
+    type: string
+    is_chat_input: false
+  destination:
+    type: string
+    is_chat_input: false
+  travel_date:
+    type: string
+    is_chat_input: false
+  number_of_members:
+    type: string
+    is_chat_input: false
+  cabin_class:
+    type: string
+    is_chat_input: false
+outputs:
+  flight_fare_details:
+    type: string
+    reference: ${flight_fare.output}
+nodes:
+- name: flight_fare
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: flight_fare.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-7b-chat-brfcm
+    deployment_name: Llama-2-7b-chat-brfcm
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    cabin_class: ${inputs.cabin_class}
+    destination: ${inputs.destination}
+    from: ${inputs.from}
+    number_of_members: ${inputs.number_of_members}
+    travel_date: ${inputs.travel_date}
+  use_variants: false
+- name: airline_details
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: airline_details.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-7b-chat-brfcm
+    deployment_name: Llama-2-7b-chat-brfcm
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    flight_fare: ${flight_fare.output}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt

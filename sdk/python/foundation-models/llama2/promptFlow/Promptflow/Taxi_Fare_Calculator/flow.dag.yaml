@@ -1,0 +1,38 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  Destination:
+    type: string
+    is_chat_input: false
+  From:
+    type: string
+    is_chat_input: false
+  vechicle_types:
+    type: string
+    is_chat_input: false
+outputs:
+  Taxi_Fare:
+    type: string
+    reference: ${Taxi_Fare.output}
+nodes:
+- name: Taxi_Fare
+  type: custom_llm
+  source:
+    type: package_with_prompt
+    path: Taxi_Fare.jinja2
+    tool: promptflow.tools.open_model_llm.OpenModelLLM.call
+  inputs:
+    api: completion
+    endpoint_name: serverlessEndpoint/Llama-2-70b-zdlkk
+    deployment_name: Llama-2-70b-zdlkk
+    temperature: 1
+    max_new_tokens: 500
+    top_p: 1
+    model_kwargs: {}
+    Destination: ${inputs.Destination}
+    From: ${inputs.From}
+    vechicle_types: ${inputs.vechicle_types}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
