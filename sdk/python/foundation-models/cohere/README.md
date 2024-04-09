@@ -17,10 +17,10 @@ todo|Command R+ tool/function calling using LangChain| todo
 ### Retrieval Augmented Generation (RAG) samples
 Sample | Description | SDKs
 --|--|--
-todo|Create and retrive embeddings using Embedding models with LangChain and save them to a local vector store (FAISS) | todo
-todo|Create embeddings using Embedding models with LangChain, save them to a local vector store, and retrive them when applicable using Command R+ function calling (FAISS)|todo
-todo|RAG with LangChain using Cohere Embed, Cohere Command R+  and Azure AI Search vector - Advanced example using Command R+ function calling and cloud vector store (Azure AI Search)|tpdp 
-todo|RAG with Promptflow using Cohere Embed, Cohere Command R+  and Azure AI Search - Promptflow SDK| todo
+todo|Create a local (FAISS) vector index using Cohere embeddings - Langchain| todo
+todo|Use Cohere Command R/R+ to answer questions from data in local (FAISS) vector index - Langchain|todo
+todo|Use Cohere Command R/R+ to answer questions from data in AI search vector index - Langchain|tpdp 
+todo|Use Cohere Command R/R+ to answer questions from data in AI search vector index - Cohere SDK| todo
 
 
 
