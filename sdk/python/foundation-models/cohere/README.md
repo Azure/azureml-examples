@@ -24,3 +24,10 @@ todo|Use Cohere Command R/R+ to answer questions from data in AI search vector i
 
 
 
+### Temp description of RAG Samples (delete after creating samples)
+Scenario|Vector store|Inference|Comments
+--|--|--|--
+Create a local vector index using Cohere embeddings - Langchain|Store: FAISS local. Using LangChain FAISS extension|N/A|This is to introduce basic embedding, without any LLM in picture
+Use Cohere Command R/R+ to answer questions from data in local vector index - Langchain|Store: FAISS local. Using LangChain FAISS extension|Using Cohere LangChain extension|Showcase how we can use a cohere embedded vector index with Command R+ to do retrieval and answer questions based on the retrieved data
+Use Cohere Command R/R+ to answer questions from data in AI search vector index - Langchain|Store: Azure AI search. Using LangChain Azure AI Search extension. Should use cohered embed.|Using Cohere LangChain extension|we now teach how to store embeddings in cloud vector store - Azure AI search
+Use Cohere Command R/R+ to answer questions from data in AI search vector index - Cohere SDK|tbd|tbd|Cohere team to decide what to showcase here
