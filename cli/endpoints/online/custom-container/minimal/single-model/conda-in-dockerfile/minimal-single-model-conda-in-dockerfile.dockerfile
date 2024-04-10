@@ -6,7 +6,6 @@ USER dockeruser
 ENV CONDA_ENV_DIR=/opt/miniconda/envs
 
 # We will pre-install the conda environment at build time
-# Alternatively, the AZUREML_EXTRA_CONDA_YAML variable can be set for dynamic installation
 # or can be added alongside the image in the environment yaml definition for Azure to build 
 
 # Create a new conda environment and install the same version of the server
