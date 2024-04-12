@@ -2,10 +2,18 @@
 
 /python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @jeff-shepherd @raduk @swatig007 @MercyPrasanna @PhaniShekhar @sjinthehouse @vadthyavath @mispa-ms
 
+/cli/monitoring/azureml-e2e-model-monitoring @nemanjarajic @ahughes-msft @yunjie-hub
+/cli/monitoring/advanced-model-monitoring.yaml @nemanjarajic @ahughes-msft @yunjie-hub
+/cli/monitoring/custom-monitoring.yaml @nemanjarajic @ahughes-msft @yunjie-hub  
+/cli/monitoring/generation-safety-quality-monitoring.yaml @ahughes-msft @yunjie-hub
+/cli/monitoring/model-monitoring-with-collected-data.yaml @ahughes-msft @yunjie-hub
+/cli/monitoring/out-of-box-monitoring.yaml @ahughes-msft @yunjie-hub
+/sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
+/sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
+/sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora
+/sdk/python/resources/workspace/workspace.ipynb @joshharrin @seanyao1
+
 #### files referenced in docs #############################################################################################
-/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/model-monitoring-with-collected-data.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/out-of-box-monitoring.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/assets/data/cloud-file-https.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/assets/data/cloud-file-wasbs.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -183,12 +191,9 @@
 /cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/spark-job-component.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/misc.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/azureml-e2e-model-monitoring @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub 
-/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub   
-/cli/monitoring/custom-monitoring.yaml @sdgilley @msakande @Blackmist @nemanjarajic @ahughes-msft @yunjie-hub  
-/cli/monitoring/generation-safety-quality-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
-/cli/monitoring/model-monitoring-with-collected-data.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
-/cli/monitoring/out-of-box-monitoring.yaml @sdgilley @msakande @Blackmist @ahughes-msft @yunjie-hub
+/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/cli/monitoring/model-monitoring-with-collected-data.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/cli/monitoring/out-of-box-monitoring.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/resources/compute/cluster-basic.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/resources/compute/cluster-location.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/resources/compute/cluster-low-priority.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -253,10 +258,7 @@
 /sdk/python/featurestore_sample/notebooks/sdk_only/2.\ Experiment\ and\ train\ models\ using\ features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/featurestore_sample/notebooks/sdk_only/3.\ Enable\ recurrent\ materialization\ and\ run\ batch\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/featurestore_sample/notebooks/sdk_only/4.\ Enable\ online\ store\ and\ run\ online\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1
-/sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
-/sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
-/sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora  
+/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing-serverless.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/configuration.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -281,12 +283,11 @@
 /sdk/python/jobs/single-step/tensorflow/train-hyperparameter-tune-deploy-with-tensorflow/train-hyperparameter-tune-deploy-with-tensorflow.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/resources/compute/compute.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/resources/workspace/workspace.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/resources/workspace/workspace.ipynb @joshharrin @seanyao1 @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/schedules/job-schedule.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/using-mlflow/deploy/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/using-mlflow/deploy/model/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /setup/setup-ci/install-pip-package.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /setup/setup-repo/azure-github.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /tutorials/get-started-notebooks/cloud-workstation.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1
+/tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
 # End of docs files ########################################################################################################

@@ -256,7 +256,7 @@ jobs:
       with:
         python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
