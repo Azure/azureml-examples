@@ -1,0 +1,25 @@
+{
+  "nodes": {
+    "chat_with_users": {
+      "variant_0": {
+        "inputs": {
+          "endpoint_name": [
+            {
+              "description": "Serverless Endpoint:  Llama-2-70b-chat-slrkz",
+              "display_value": "[Serverless] Llama-2-70b-chat-slrkz",
+              "value": "serverlessEndpoint/Llama-2-70b-chat-slrkz"
+            }
+          ],
+          "deployment_name": []
+        },
+        "inputsValue": {}
+      }
+    },
+    "get_url": {
+      "variant_0": {
+        "inputs": {},
+        "inputsValue": {}
+      }
+    }
+  }
+}
