@@ -78,30 +78,6 @@ az ml batch-deployment create --file ./deploy-batch.yaml $workspace_info --set \
     echo "deployment create failed"; exit 1;
 }
 
-# # 5.2 Try a scoring request with image folder
-
-# # Check if scoring folder exists
-# if [ -d $data_path ]; then
-#     echo "Invoking endpoint $endpoint_name with following input:\n\n"
-#     ls $data_path
-#     echo "\n\n"
-# else
-#     echo "Scoring folder $data_path does not exist"
-#     exit 1
-# fi
-
-# # Invoke the endpoint
-# folder_inference_job=$(az ml batch-endpoint invoke --name $endpoint_name \
-#  --deployment-name $deployment_name --input $sample_request_folder --input-type \
-#   uri_folder $workspace_info --query name --output tsv) || {
-#     echo "endpoint invoke failed"; exit 1;
-# }
-
-# # Wait for the job to complete
-# az ml job stream --name $folder_inference_job $workspace_info || {
-#     echo "job stream failed"; exit 1;
-# }
-
 # 5.2 Try a scoring request with csv file
 # Note: If job failed with error Assertion Error (The actual length exceeded max length 100 MB) then 
 # please try with less number of input images or use ImageFolder Input mode.
