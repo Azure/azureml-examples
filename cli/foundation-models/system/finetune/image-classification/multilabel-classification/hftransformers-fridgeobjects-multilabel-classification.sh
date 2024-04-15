@@ -169,23 +169,12 @@ az ml online-endpoint create --name $huggingface_endpoint_name $workspace_info  
 }
 
 # Deploy model from registry to endpoint in workspace
-az ml online-deployment create --file ./deploy.yaml $workspace_info --set \
+az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffic --set \
   endpoint_name=$huggingface_endpoint_name model=azureml:$finetuned_huggingface_model_name:$version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
 }
 
-# get deployment name and set all traffic to the new deployment
-yaml_file="deploy.yaml"
-get_yaml_value() {
-    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
-}
-deployment_name=$(get_yaml_value "name")
-
-az ml online-endpoint update $workspace_info --name=$huggingface_endpoint_name --traffic="$deployment_name=100" || {
-    echo "Failed to set all traffic to the new deployment"
-    exit 1
-}
 
 # 8. Try a sample scoring request on the deployed HuggingFace Transformers model
 

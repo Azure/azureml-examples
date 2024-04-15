@@ -51,24 +51,13 @@ az ml online-endpoint create --name $endpoint_name $workspace_info  || {
 }
 
 # deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy.yaml $workspace_info --set \
+az ml online-deployment create --file deploy.yaml $workspace_info --all-traffic --set \
   endpoint_name=$endpoint_name \
   model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
 }
 
-# get deployment name and set all traffic to the new deployment
-yaml_file="deploy.yaml"
-get_yaml_value() {
-    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
-}
-deployment_name=$(get_yaml_value "name")
-
-az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$deployment_name=100" || {
-    echo "Failed to set all traffic to the new deployment"
-    exit 1
-}
 
 # 4. Try a sample scoring request
 sample_request_data="./sample_request_data.json"
