@@ -14,4 +14,4 @@ dependencies:
       - azureml-core
       - scikit-learn~=1.2.2
       - cloudpickle==1.1.1
-      - tensorflow==2.1.4
+      - tensorflow==2.9.3
