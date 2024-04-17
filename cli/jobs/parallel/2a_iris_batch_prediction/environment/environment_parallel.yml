@@ -2,7 +2,7 @@ name: prs-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.7.6
   - pip
   - pip:
       - mlflow
@@ -12,6 +12,6 @@ dependencies:
       - pandas
       - pillow
       - azureml-core
-      - scikit-learn~=1.2.2
-      - cloudpickle==2.2.1
-      - tensorflow==2.9.3
+      - scikit-learn~=0.20.0
+      - cloudpickle==1.1.1
+      - tensorflow==2.1.4
