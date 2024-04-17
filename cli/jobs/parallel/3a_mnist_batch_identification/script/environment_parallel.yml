@@ -12,6 +12,6 @@ dependencies:
       - pillow
       - azureml-core
       - scikit-learn~=1.2.2
-      - cloudpickle==1.1.1
+      - cloudpickle==2.2.1
       - tensorflow==2.9.3
       - protobuf==3.20.0
