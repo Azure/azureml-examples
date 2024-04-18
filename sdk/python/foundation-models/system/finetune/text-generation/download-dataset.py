@@ -8,6 +8,9 @@ parser.add_argument("--dataset", type=str, default="samsum", help="dataset name"
 parser.add_argument(
     "--dataset_subset", type=str, default=None, help="dataset subset name"
 )
+parser.add_argument(
+    "--dataset_split_pc", type=str, default=None, help="percentage of each split to be downloaded"
+)
 # add an argument to specify the directory to download the dataset to
 parser.add_argument(
     "--download_dir",
@@ -26,8 +29,9 @@ if not os.path.exists(args.download_dir):
 from datasets import load_dataset, get_dataset_split_names
 
 for split in get_dataset_split_names(args.dataset, args.dataset_subset):
+    split_pc = split + f"[0%:{args.dataset_split_pc}%]"
     # load the split of the dataset
-    dataset = load_dataset(args.dataset, args.dataset_subset, split=split)
+    dataset = load_dataset(args.dataset, args.dataset_subset, split=split_pc)
     # save the split of the dataset to the download directory as json lines file
     dataset.to_json(os.path.join(args.download_dir, f"{split}.jsonl"))
     # print dataset features
