@@ -1,3 +1,3 @@
 These are the samples of Prompt flows.
-Inside chat flow sample (chatting-with-gitdoc) Model will reply input questions answer.
-Inside standard flow sample (flight-fare) Model is providing  cheapest flight fare.
+chat flow sample (chatting-with-gitdoc)  will reply input questions answer.
+standard flow sample (flight-fare) we can know cheapest flight fare.
