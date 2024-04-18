@@ -3,7 +3,7 @@ name: template_standard_flow
 display_name: flight fare
 type: standard
 path: ./flow.dag.yaml
-description: for getting update cheapest flight fare
+description: To find the cheapest flight fare
 properties:
   promptflow.stage: prod
   promptflow.section: template
