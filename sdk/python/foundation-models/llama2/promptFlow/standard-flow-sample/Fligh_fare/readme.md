@@ -1,1 +1,1 @@
-This is prompt flow sample for knowing flight fare with Llama-2-7b-chat.
+This is  standard prompt flow sample for knowing  cheapest flight fare.
