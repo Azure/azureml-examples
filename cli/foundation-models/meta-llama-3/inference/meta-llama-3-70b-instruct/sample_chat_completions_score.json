@@ -1,5 +1,5 @@
 {
-    "inputs": {
+    "input_data": {
         "input_string": [
             {
                 "role": "system",
@@ -9,11 +9,11 @@
                 "role": "user",
                 "content": "Who won the world series in 2020?"
             }
-        ]
-    },
-    "parameters": {
-        "top_p": 0.8,
-        "temperature": 0.8,
-        "max_new_tokens": 100
+        ],
+        "parameters": {
+            "top_p": 0.8,
+            "temperature": 0.8,
+            "max_new_tokens": 100
+        }
     }
 }

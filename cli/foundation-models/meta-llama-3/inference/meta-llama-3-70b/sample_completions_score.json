@@ -1,13 +1,13 @@
 {
-    "inputs": {
+    "input_data": {
         "input_string": [
             "she liked to think being surrounded by adults and older kids was one reason why he was a such a good talker for his age ."
-        ]
-    },
-    "parameters": {
-        "top_p": 0.8,
-        "temperature": 0.8,
-        "max_new_tokens": 100,
-        "return_full_text": false
+        ],
+        "parameters": {
+            "top_p": 0.8,
+            "temperature": 0.8,
+            "max_new_tokens": 100,
+            "return_full_text": false
+        }
     }
 }
