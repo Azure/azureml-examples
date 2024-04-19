@@ -13,7 +13,7 @@
 /sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora
 /sdk/python/resources/workspace/workspace.ipynb @joshharrin @seanyao1
 
-#### files referenced in docs #############################################################################################
+#### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/assets/data/cloud-file-https.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/assets/data/cloud-file-wasbs.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -264,6 +264,7 @@
 /sdk/python/foundation-models/cohere/cohere-aisearch-langchain-rag.ipynb @stewart-co @kseniia-cohere  
 sdk/python/foundation-models/cohere/command_faiss_langchain.ipynb @stewart-co @kseniia-cohere  
 sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @kseniia-cohere  
+/sdk/python/featurestore_sample/notebooks/sdk_only/7.\ Develop\ a\ feature\ set\ using\ Domain\ Specific\ Language\ DSL @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing-serverless.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/configuration.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -294,5 +295,5 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /setup/setup-ci/install-pip-package.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /setup/setup-repo/azure-github.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /tutorials/get-started-notebooks/cloud-workstation.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1 
+/tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 # End of docs files ########################################################################################################
