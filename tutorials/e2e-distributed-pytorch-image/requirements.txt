@@ -4,7 +4,7 @@ torch==1.10.2
 
 # for metrics reporting/plotting
 azureml-mlflow==1.40.0
-mlflow==1.23.1
+mlflow==2.2.1
 matplotlib==3.5.1
 
 # to run the notebooks locally
