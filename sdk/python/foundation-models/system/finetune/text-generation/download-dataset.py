@@ -9,7 +9,10 @@ parser.add_argument(
     "--dataset_subset", type=str, default=None, help="dataset subset name"
 )
 parser.add_argument(
-    "--dataset_split_pc", type=str, default=None, help="percentage of each split to be downloaded"
+    "--dataset_split_pc",
+    type=str,
+    default=None,
+    help="percentage of each split to be downloaded",
 )
 # add an argument to specify the directory to download the dataset to
 parser.add_argument(
