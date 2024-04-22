@@ -5,7 +5,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: apt-get update -y && apt-get install python3.10 python3-pip -y && pip install requests && python3 run_nhc.py
 code: .
 environment: 
-  image: aznhc.azurecr.io/nvrt
+  image: mcr.microsoft.com/aznhc/aznhc-nv
 experiment_name: Node-Health-Checks
 compute: low-pri-nc24s
 distribution:
