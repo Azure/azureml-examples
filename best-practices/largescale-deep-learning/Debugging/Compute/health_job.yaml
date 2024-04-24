@@ -18,3 +18,4 @@ environment_variables:
   # -d for debug, -v for verbose, -a for all (to run all checks even if some fail)
   NHC_ARGS: -v -d -a
   AZ_NHC_ROOT: /azure-nhc/
+  KICK_BAD_NODE: 'false'

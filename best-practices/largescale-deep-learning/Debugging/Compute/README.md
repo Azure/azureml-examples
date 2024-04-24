@@ -22,4 +22,5 @@ The job can be run on multiple nodes, so there will be a log file for each node.
 1. Create a compute in the AzureML Studio with the type of nodes you want to run a health check on. In the health_job.yaml file, specify the following arguments:
     - The "compute" argument with the name of the compute you created.
     - The "instance_count" resource variable with the number of compute nodes you want to run the job on.
+    - The "KICK_BAD_NODE" environment variable with 'true' or 'false' depending on whether or not you want the job to remove an unhealthy node from your cluster if one is discovered and replace it with a healthy node. (Warning: removing a node from a cluster and replacing it can take several minutes. Sometimes deallocating and reallocating the cluster manually is faster.)
 3. Start the command job by running the command: ```az ml job create --file health_job.yaml```
