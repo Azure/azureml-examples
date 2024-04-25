@@ -1,0 +1,34 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: chat-completion-model-evaluation-subgraph
+
+compute: gpu-cluster-big
+
+settings:
+  continue_on_step_failure: false
+
+jobs:
+  prepare_data_job:
+    type: command
+    command: python prepare-dataset.py --test-data ${{outputs.test_data}}
+    code: ./
+    environment: azureml://registries/azureml/environments/model-evaluation/versions/24
+    outputs:
+      test_data:
+        type: uri_file
+
+  pipeline_component_job:
+    type: pipeline
+    component: azureml://registries/azureml/components/model_evaluation_pipeline/labels/latest
+    inputs:
+      task: chat-completion
+      test_data: ${{parent.jobs.prepare_data_job.outputs.test_data}}
+      mlflow_model: 
+        path: azureml://registries/azureml/models/Phi-3-mini-4k-instruct/versions/2
+      input_column_names: messages
+      device: auto
+      compute_name: gpu-cluster-big
+      evaluation_config:
+        path: "../../../../../sdk/python/foundation-models/system/evaluation/chat-completion/eval-config.json"
+        type: uri_file
