@@ -28,7 +28,7 @@ jobs:
         type: uri_folder
         mode: upload
 
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
 
     compute: azureml:cpu-cluster
 

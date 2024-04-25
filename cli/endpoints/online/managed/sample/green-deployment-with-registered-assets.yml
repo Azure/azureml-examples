@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: green
+endpoint_name: my-endpoint
+model: azureml:my-model:2
+code_configuration:
+  code: ../../model-2/onlinescoring/
+  scoring_script: score.py
+environment: azureml:my-env:1
+instance_type: Standard_DS3_v2
+instance_count: 1

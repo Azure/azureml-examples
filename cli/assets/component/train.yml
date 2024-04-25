@@ -4,7 +4,7 @@ display_name: train_data
 description: A example train component
 tags:
   author: azureml-sdk-team
-version: 7
+version: 9
 type: command
 inputs:
   training_data: 
@@ -24,7 +24,7 @@ outputs:
   model_output:
     type: uri_folder
 code: ./train_src
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
