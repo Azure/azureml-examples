@@ -78,7 +78,11 @@ def parse_output(output_file):
             error_message = read_output_log[index : first_endline + 1]
             if error_message not in full_errors:
                 full_errors = full_errors + error_message
-        if full_errors and os.getenv("KICK_BAD_NODE", 'False').lower() in ('true', '1', 't'):
+        if full_errors and os.getenv("KICK_BAD_NODE", "False").lower() in (
+            "true",
+            "1",
+            "t",
+        ):
             # Overload disk to kick bad node off cluster
             print(
                 "Errors detected during node health checks. Kicking bad node off cluster."
