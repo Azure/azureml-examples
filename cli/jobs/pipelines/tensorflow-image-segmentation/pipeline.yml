@@ -28,7 +28,7 @@ jobs:
         type: uri_folder
         mode: upload
 
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.1
 
     compute: azureml:cpu-cluster
 
@@ -44,7 +44,7 @@ jobs:
       type: tensorflow
       worker_count: 1 # needs to match instance_count (!)
 
-    environment: azureml:AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest
+    environment: azureml://registries/azureml/environments/tensorflow-2.12-cuda11
     # uncomment below to use custom environment
     # environment:
     #   build: 
