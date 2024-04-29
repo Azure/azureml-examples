@@ -59,7 +59,7 @@ outputs:
   
 code: ./train-src
 
-environment: azureml:azureml-sklearn-1.0:23
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
 
 command: >-
   python train.py 

@@ -8,7 +8,7 @@ settings:
 jobs:
   hello_job:
     command: echo "hello" && echo "world" > ${{outputs.world_output}}/world.txt
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest    
+    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest    
     outputs:
       world_output:
   world_job:
