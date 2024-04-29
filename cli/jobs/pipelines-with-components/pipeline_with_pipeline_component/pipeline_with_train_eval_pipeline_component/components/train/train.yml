@@ -19,7 +19,7 @@ outputs:
   model_output:
     type: uri_folder
 code: .
-environment: azureml://registries/azureml/environments/AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+environment: azureml://registries/azureml/environments/sklearn-1.1/versions/29
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
