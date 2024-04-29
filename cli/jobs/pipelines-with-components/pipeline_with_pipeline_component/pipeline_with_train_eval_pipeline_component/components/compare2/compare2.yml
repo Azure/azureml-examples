@@ -18,7 +18,7 @@ outputs:
     type: uri_folder
   best_result:
     type: uri_folder
-environment: azureml://registries/azureml/environments/AzureML-sklearn-0.24-ubuntu18.04-py37-cpu
+environment: azureml://registries/azureml/environments/sklearn-1.1/labels/latest
 code: .
 command: >-
   python compare2.py 
