@@ -7,7 +7,7 @@ name: py_torch_hello_world
 display_name: PyTorch-hello-world
 version: 1
 
-environment: azureml://registries/azureml/environments/sklearn-1.1
+environment: azureml://registries/azureml/environments/sklearn-1.1/versions/29
 command: >-
   echo "
   RANK: $RANK \n

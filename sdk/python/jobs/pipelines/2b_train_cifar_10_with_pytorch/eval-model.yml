@@ -17,4 +17,4 @@ distribution:
   process_count_per_instance: 1
 resources:
   instance_count: 2
-environment: azureml://registries/azureml/environments/sklearn-1.1
+environment: azureml://registries/azureml/environments/sklearn-1.1/versions/29

@@ -13,7 +13,7 @@ jobs:
       tar -xvzf cifar-10-python.tar.gz -C ${{outputs.cifar}};
       rm cifar-10-python.tar.gz;
     compute: azureml:gpu-cluster
-    environment: azureml://registries/azureml/environments/sklearn-1.1
+    environment: azureml://registries/azureml/environments/sklearn-1.1/versions/29
     outputs:
       cifar:
         type: uri_folder
@@ -33,7 +33,7 @@ jobs:
       model_dir:
         type: uri_folder
         mode: upload
-    environment: azureml://registries/azureml/environments/sklearn-1.1
+    environment: azureml://registries/azureml/environments/sklearn-1.1/versions/29
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
@@ -47,7 +47,7 @@ jobs:
       --data-dir ${{inputs.cifar}}
       --model-dir ${{inputs.model_dir}}/model
     code: src/eval-model
-    environment: azureml://registries/azureml/environments/sklearn-1.1
+    environment: azureml://registries/azureml/environments/sklearn-1.1/versions/29
     compute: azureml:gpu-cluster
     distribution:
       type: pytorch
