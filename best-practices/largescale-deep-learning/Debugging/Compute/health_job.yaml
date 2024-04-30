@@ -1,0 +1,20 @@
+# Training job submission via AzureML CLI v2
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: sudo -E bash setup_nhc.sh
+code: .
+environment: 
+  image: mcr.microsoft.com/aznhc/aznhc-nv
+experiment_name: Node-Health-Checks
+compute: low-pri-nc24s
+distribution:
+  type: pytorch
+  process_count_per_instance: 1
+resources:
+  instance_count: 1
+  docker_args: --volume=/var/log/syslog:/azure-nhc/syslog
+environment_variables:
+  # -d for debug, -v for verbose, -a for all (to run all checks even if some fail)
+  NHC_ARGS: -v -d -a
+  AZ_NHC_ROOT: /azure-nhc/
+  KICK_BAD_NODE: 'false'
