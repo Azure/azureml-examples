@@ -9,7 +9,6 @@ import shutil
 
 from azureml.rag.documents.cracking import file_extension_loaders
 from azureml.rag.tasks.crack_and_chunk import (
-    __main__,
     crack_and_chunk_arg_parser,
     str2bool,
 )
