@@ -14,6 +14,6 @@ outputs:
 jobs:
   hello_world:
     command: echo "hello" && echo "world" > ${{outputs.output}}
-    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest    
+    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest    
     outputs:
       output: ${{parent.outputs.output}}

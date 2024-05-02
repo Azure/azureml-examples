@@ -1,0 +1,252 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceName": {
+            "value": "my-featurestore"
+        },
+        "description": {
+            "value": "my-featurestore"
+        },
+        "friendlyName": {
+            "value": "my-featurestore"
+        },
+        "kind": {
+            "value": "featurestore"
+        },
+        "location": {
+            "value": "eastus2"
+        },
+        "resourceGroupName": {
+            "value": "my-resource-group"
+        },
+        "storageAccountOption": {
+            "value": "new"
+        },
+        "storageAccountName": {
+            "value": "myfeaturestorestorage4116d3e469"
+        },
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountBehindVNet": {
+            "value": "false"
+        },
+        "storageAccountResourceGroupName": {
+            "value": "my-resource-group"
+        },
+        "storageAccountLocation": {
+            "value": "eastus2"
+        },
+        "keyVaultOption": {
+            "value": "new"
+        },
+        "keyVaultName": {
+            "value": "myfeaturestorekeyvaultf7a63f0f7"
+        },
+        "keyVaultBehindVNet": {
+            "value": "false"
+        },
+        "keyVaultResourceGroupName": {
+            "value": "my-resource-group"
+        },
+        "keyVaultLocation": {
+            "value": "eastus2"
+        },
+        "applicationInsightsOption": {
+            "value": "new"
+        },
+        "logAnalyticsName": {
+            "value": "myfeaturestorelogalyti09a8f09c8"
+        },
+        "logAnalyticsArmId": {
+            "value": "/subscriptions/my-subscription-id/resourceGroups/my-resource-group/providers/Microsoft.OperationalInsights/workspaces/myfeaturestorelogalyti09a8f09c8"
+        },
+        "applicationInsightsName": {
+            "value": "myfeaturestoreinsights4684a3029"
+        },
+        "applicationInsightsResourceGroupName": {
+            "value": "my-resource-group"
+        },
+        "applicationInsightsLocation": {
+            "value": "eastus2"
+        },
+        "containerRegistryOption": {
+            "value": "none"
+        },
+        "containerRegistryName": {
+            "value": "name"
+        },
+        "containerRegistrySku": {
+            "value": "Standard"
+        },
+        "containerRegistryResourceGroupName": {
+            "value": ""
+        },
+        "containerRegistryBehindVNet": {
+            "value": "false"
+        },
+        "containerRegistryLocation": {
+            "value": "eastus2"
+        },
+        "vnetOption": {
+            "value": "existing"
+        },
+        "vnetName": {
+            "value": "name"
+        },
+        "vnetResourceGroupName": {
+            "value": "name"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.0.0.0/16"
+            ]
+        },
+        "subnetOption": {
+            "value": "existing"
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "subnetPrefix": {
+            "value": "10.0.0.0/24"
+        },
+        "adbWorkspace": {
+            "value": ""
+        },
+        "confidential_data": {
+            "value": "false"
+        },
+        "encryption_status": {
+            "value": "Disabled"
+        },
+        "cmk_keyvault": {
+            "value": ""
+        },
+        "resource_cmk_uri": {
+            "value": ""
+        },
+        "privateEndpointType": {
+            "value": "none"
+        },
+        "tagValues": {
+            "value": {
+                "createdByToolkit": "sdk-v2-1.13.0"
+            }
+        },
+        "privateEndpointName": {
+            "value": "name"
+        },
+        "privateEndpointResourceGroupName": {
+            "value": "name"
+        },
+        "imageBuildCompute": {
+            "value": ""
+        },
+        "publicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "soft_delete_enabled": {
+            "value": "false"
+        },
+        "allow_recover_softdeleted_workspace": {
+            "value": "false"
+        },
+        "encryption_cosmosdb_resourceid": {
+            "value": ""
+        },
+        "encryption_storage_resourceid": {
+            "value": ""
+        },
+        "encryption_search_resourceid": {
+            "value": ""
+        },
+        "identity": {
+            "value": {
+                "type": "SystemAssigned"
+            }
+        },
+        "primaryUserAssignedIdentity": {
+            "value": ""
+        },
+        "managedNetwork": {
+            "value": {
+                "isolationMode": "Disabled",
+                "outboundRules": {}
+            }
+        },
+        "spark_runtime_version": {
+            "value": "3.2.0"
+        },
+        "offlineStoreStorageAccountOption": {
+            "value": "new"
+        },
+        "offline_store_storage_account_name": {
+            "value": "myfeaturestorestorage4116d3e469"
+        },
+        "offline_store_container_name": {
+            "value": "myfeaturestorecontaine8ebdffb55"
+        },
+        "offline_store_resource_group_name": {
+            "value": "my-resource-group"
+        },
+        "offline_store_subscription_id": {
+            "value": "my-subscription-id"
+        },
+        "offline_store_connection_name": {
+            "value": "OfflineStoreConnectionName-b4bb8712"
+        },
+        "online_store_resource_id": {
+            "value": ""
+        },
+        "online_store_resource_group_name": {
+            "value": ""
+        },
+        "online_store_subscription_id": {
+            "value": ""
+        },
+        "online_store_connection_name": {
+            "value": ""
+        },
+        "materializationIdentityOption": {
+            "value": "new"
+        },
+        "materialization_identity_name": {
+            "value": "materialization-uai-dbebceefeb2c331aab47f9c1a4716666"
+        },
+        "materialization_identity_subscription_id": {
+            "value": "my-subscription-id"
+        },
+        "materialization_identity_resource_group_name": {
+            "value": "my-resource-group"
+        },
+        "grant_materialization_permissions": {
+            "value": "true"
+        },
+        "enable_data_isolation": {
+            "value": "false"
+        },
+        "workspace_hub_config": {
+            "value": {}
+        },
+        "existing_workspaces": {
+            "value": []
+        },
+        "workspace_hub": {
+            "value": ""
+        },
+        "serverless_compute_settings": {
+            "value": {}
+        },
+        "endpoint_resource_id": {
+            "value": "null"
+        },
+        "endpoint_kind": {
+            "value": "AIServices"
+        },
+        "endpoint_option": {
+            "value": "new"
+        }
+    }
+}
