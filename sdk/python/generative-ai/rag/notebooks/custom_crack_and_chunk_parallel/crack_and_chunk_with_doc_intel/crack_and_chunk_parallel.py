@@ -148,4 +148,3 @@ def run(mini_batch):
             raise
 
     return mini_batch
-
