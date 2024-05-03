@@ -7,4 +7,6 @@ mltable
 ml-wrappers
 plotly
 nbformat
-responsibleai==0.29.0
+responsibleai==0.34.1
+# make sure this matches the version in the RAI tabular image
+scikit-learn~=1.3.2
