@@ -485,7 +485,12 @@ jobs:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
-      working-directory: cli/{posix_project_dir}\n"""
+      working-directory: cli/{posix_project_dir}
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false\n"""
 
     # write workflow
     with open(
@@ -498,7 +503,6 @@ jobs:
 def write_job_using_registry_components_workflow(job):
     filename, project_dir, hyphenated = parse_path(job)
     posix_project_dir = project_dir.replace(os.sep, "/")
-
     folder_name = project_dir.split(os.sep)[-1]
     is_pipeline_sample = "jobs/pipelines" in job
     creds = CREDENTIALS
@@ -547,6 +551,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: run job
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -569,6 +578,7 @@ jobs:
 
 def write_endpoint_workflow(endpoint):
     filename, project_dir, hyphenated = parse_path(endpoint)
+    project_dir = project_dir.replace(os.sep, "/")
     deployments = sorted(
         glob.glob(project_dir + "/*deployment.yml", recursive=True)
         + glob.glob(project_dir + "/*deployment.yaml", recursive=True)
@@ -631,6 +641,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -677,6 +692,7 @@ jobs:
 
 def write_asset_workflow(asset):
     filename, project_dir, hyphenated = parse_path(asset)
+    project_dir = project_dir.replace(os.sep, "/")
     posix_asset = asset.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
@@ -719,6 +735,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create asset
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -735,6 +756,7 @@ jobs:
 
 def write_script_workflow(script):
     filename, project_dir, hyphenated = parse_path(script)
+    project_dir = project_dir.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
     workflow_yaml = f"""{READONLY_HEADER}
@@ -776,6 +798,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: test script script
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";
@@ -790,6 +817,7 @@ jobs:
 
 def write_schedule_workflow(schedule):
     filename, project_dir, hyphenated = parse_path(schedule)
+    project_dir = project_dir.replace(os.sep, "/")
     posix_schedule = schedule.replace(os.sep, "/")
     creds = CREDENTIALS
     schedule_hour, schedule_minute = get_schedule_time(filename)
@@ -832,6 +860,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: create schedule
       run: |
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/sdk_helpers.sh";

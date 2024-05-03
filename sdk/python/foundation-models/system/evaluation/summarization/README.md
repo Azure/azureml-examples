@@ -7,7 +7,6 @@
 |      metrics      | List for subset of metrics to be computed. All supported metrics listed below.        | list<str> | ["rouge1", "rouge2", "rougeL", "rougeLsum"] |
 |    aggregator     | Boolean flag to indicate if need to aggregate rouge scores for individual data points | boolean   | true, false                                 |
 |      stemmer      | Boolean flag to indicate whether to use Porter Stemmer for suffixes                   | boolean   | true, false                                 |
-| custom_dimensions | Used to report telemetry data (can later be used to perform PII scrubbing)            | dict      |                                             |
 
 ### List of supported metrics:
 

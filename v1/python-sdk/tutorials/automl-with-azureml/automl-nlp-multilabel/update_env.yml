@@ -1,5 +1,0 @@
-dependencies:
-- pytorch==1.12.0
-
-- pip:
-  - azureml-automl-dnn-nlp==1.52.0

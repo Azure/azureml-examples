@@ -2,8 +2,6 @@
 # # Local Documents to Azure Cognitive Search Index
 
 # %% Prerequisites
-# %pip install 'azure-ai-ml==1.10.0a20230825006' --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/
-# %pip install 'azureml-rag[faiss]>=0.2.0'
 # %pip install 'promptflow[azure]' promptflow-tools promptflow-vectordb
 
 # %% Authenticate to you AzureML Workspace, download a `config.json` from the top right hand corner menu of the Workspace.

@@ -75,6 +75,8 @@ allowed_list = [
     "save_mlflow is an internal parameter",
     "start_auxiliary_runs_before_parent_complete is an internal parameter",
     "Detected ",
+    "FutureWarning: promote has been superseded by mode",
+    "dataframe_reader.complete_incoming_dataframe",
 ]
 
 with open(full_name, "r") as notebook_file:

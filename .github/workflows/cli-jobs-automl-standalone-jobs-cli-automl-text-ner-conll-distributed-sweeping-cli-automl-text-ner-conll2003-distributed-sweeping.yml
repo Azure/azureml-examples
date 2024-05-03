@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh cli-automl-text-ner-conll2003-distributed-sweeping.yml
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll-distributed-sweeping
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll-distributed-sweeping"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

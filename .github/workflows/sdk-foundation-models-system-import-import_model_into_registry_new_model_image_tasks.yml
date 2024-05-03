@@ -17,7 +17,7 @@ on:
 env:
   MODEL_ID: microsoft/resnet-18
   TASK_NAME: image-classification
-  MMDETECTION_MODEL_ID: faster_rcnn_r50_fpn_1x_coco
+  MMDETECTION_MODEL_ID: faster-rcnn_r50_fpn_1x_coco
   MMDETECTION_TASK_NAME: image-object-detection
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

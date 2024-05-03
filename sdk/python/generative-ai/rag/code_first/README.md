@@ -6,8 +6,8 @@ Read more about their structure [here](./docs/mlindex.md).
 ## Pre-requisites
 
 0. Install `azure-ai-ml` and `azureml-rag`:
-    - `pip install 'azure-ai-ml==1.10.0a20230825006' --extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/`
-    - `pip install -U 'azureml-rag[document_parsing,faiss,cognitive_search]>=0.2.0'`
+    - `pip install 'azure-ai-ml>=1.10'`
+    - `pip install 'azureml-rag[document_parsing,faiss,cognitive_search]>=0.2.0'`
 1. You have unstructured data.
     - In one of [AzureMLs supported data sources](https://learn.microsoft.com/azure/machine-learning/concept-data?view=azureml-api-2): Blob, ADLSgen2, OneLake, S3, Git
     - In any of these supported file formats: md, txt, py, pdf, ppt(x), doc(x)

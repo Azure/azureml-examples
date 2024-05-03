@@ -1,0 +1,4 @@
+$schema: http://azureml/sdk-2-0/ModelVersionPackage.json
+target_environment: pkg-t5-base-online
+inferencing_server: 
+    type: azureml_online

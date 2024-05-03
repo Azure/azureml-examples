@@ -13,7 +13,7 @@ GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2
 GEN2_FILE_SYSTEM=${RESOURCE_GROUP}file
 SYNAPSE_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-syws
 SQL_ADMIN_LOGIN_USER="automation"
-SQL_ADMIN_LOGIN_PASSWORD="auto123!"
+RANDOM_STRING=$(cat /dev/urandom | tr -cd '[:graph:]' | head -c 18)
 SPARK_POOL_NAME="automationpool"
 SPARK_POOL_ADMIN_ROLE_ID="6e4bf58a-b8e1-4cc3-bbf9-d73143322b78"
 USER_IDENTITY_YML=$1"automation/user-assigned-identity.yml"
@@ -48,16 +48,19 @@ AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $
 #<setup_vnet_resources>
 if [[ "$2" == *"managed_vnet"* ]]
 then
-	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet
-	AZURE_STORAGE_ACCOUNT="blobstoragevnet"
+	TIMESTAMP=`date +%m%d%H%M%S`
+	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
+	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
-	GEN2_STORAGE_ACCOUNT_NAME="gen2storagevnet"
+	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
+
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
 	az storage container create -n $BLOB_CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT
 
 	az storage account create --name $GEN2_STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
 	az storage container create -n $ADLS_CONTAINER_NAME --account-name $GEN2_STORAGE_ACCOUNT_NAME
+
 
 	ACCOUNT_KEY=$(az storage account keys list --account-name $AZURE_STORAGE_ACCOUNT --query "[0].value" -o tsv)
 	ACCESS_KEY_SECRET_NAME="autotestaccountkey"
@@ -147,7 +150,7 @@ else
 	#<create_attached_resources>
 	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
 	az storage fs create -n $GEN2_FILE_SYSTEM --account-name $GEN2_STORAGE_NAME
-	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password $SQL_ADMIN_LOGIN_PASSWORD --location $LOCATION
+	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password $RANDOM_STRING --location $LOCATION
 	az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_NAME/blobServices/default/containers/$GEN2_FILE_SYSTEM
 	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.2 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
 	az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255

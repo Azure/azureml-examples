@@ -1,0 +1,6 @@
+$schema: http://azureml/sdk-2-0/ModelVersionPackage.json
+target_environment: heart-classifier-mlflow-pkg
+inferencing_server: 
+    type: azureml_online
+model_configuration:
+    mode: copy
