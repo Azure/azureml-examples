@@ -9,6 +9,7 @@
 	*  [**Estimate Memory Requirements**](#estimate-memory-requirements)
 	*  [**Compute Cluster**](#compute-cluster)
 		*  [**Linear Scaling with Infiniband Enabled SKUs**](#linear-scaling-with-infiniband-enabled-skus)
+        * [**Compute Cluster Issues**](#compute-cluster-issues)
 	*  [**Environment**](#environment)
 	*  [**Data Loading**](#data-loading)
 *  [**Optimizations**](#optimizations)
@@ -97,6 +98,9 @@ This guide will show best practices to allow you to train large models very effi
   > [!NOTE]
   > While InifiBand helps attain linear scaling, there are other reasons/factors that can impact linear scaling and you will see in the document below and solution.. 
   
+  #### <a name='ComputeClusterIssues'></a>**Compute Cluster Issues**
+  Sometimes compute clusters will behave unexpectedly. That might mean loading data slower than expected, low GPU utilization, mismatched logs between nodes, etc. If this is happening there could be a node in a failed state on the cluster that needs to be removed. For more information, see [this page](../Debugging/Compute/README.md).
+
   
 ### <a name='Environment'></a>**Environment**
   The recommended environment for a large scale distributed training job is an Azure Container for PyTorch (ACPT) environment with several built in optimizers and is 	described in more detail [here](../Environment/ACPT.md). This environment is built and ready to use under the 	'Environments' tab in AzureML studio. Some optimizers included in the environment are: 
@@ -313,7 +317,7 @@ For an example that enables these tools, see [here](./Bert-Pretrain/README.md).
   <img src="https://user-images.githubusercontent.com/73311224/225174576-df95695c-fa14-4cf4-ac9e-0bf4ecac20e7.png" alt="Tensorboard" width="400"/>
 
 ## <a name='Resiliency'></a>**Resiliency**
-When training with multiple compute nodes, the likelyhood of hardware faults occuring is increased. Fortunately, AzureML will automatically restart training jobs that fail due to hardware errors. With the length and resource consumption of large scale distributed training jobs however, it is ideal that training is not restarted scratch. With model checkpointing the training process can be saved at periodic checkpoints and if the training fails due to hardware faults, the training can be resumed from before it failed. Nebula Checkpointing is an optimized version of this feature.
+When training with multiple compute nodes, the likelyhood of hardware faults occuring is increased. Fortunately, AzureML will automatically restart training jobs that fail due to hardware errors. With the length and resource consumption of large scale distributed training jobs however, it is ideal that training is not restarted scratch. With model checkpointing the training process can be saved at periodic checkpoints and if the training fails due to hardware faults, the training can be resumed from before it failed. Nebula Checkpointing is an optimized version of this feature. 
 
 ### <a name='Nebulacheckpointing'></a>**Nebula checkpointing**
 
