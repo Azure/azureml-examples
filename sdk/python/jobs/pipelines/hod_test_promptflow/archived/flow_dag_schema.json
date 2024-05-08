@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "FlowInputSchema": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "default": {
+                    "title": "default",
+                    "type": "string"
+                },
+                "description": {
+                    "title": "description",
+                    "type": "string"
+                },
+                "type": {
+                    "title": "type",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "FlowOutputSchema": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "description": {
+                    "title": "description",
+                    "type": "string"
+                },
+                "reference": {
+                    "title": "reference",
+                    "type": "string"
+                },
+                "type": {
+                    "title": "type",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "FlowDagSchema": {
+            "type": "object",
+            "properties": {
+                "additional_includes": {
+                    "title": "additional_includes",
+                    "type": "array",
+                    "items": {
+                        "title": "additional_includes",
+                        "type": "string"
+                    }
+                },
+                "environment": {
+                    "title": "environment",
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "id": {
+                    "title": "id",
+                    "type": "string"
+                },
+                "inputs": {
+                    "title": "inputs",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "$ref": "#/definitions/FlowInputSchema"
+                    }
+                },
+                "name": {
+                    "title": "name",
+                    "type": "string"
+                },
+                "node_variants": {
+                    "title": "node_variants",
+                    "type": "object",
+                    "additionalProperties": {
+                        "title": "node_variants",
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "nodes": {
+                    "title": "nodes",
+                    "type": "array",
+                    "items": {
+                        "title": "nodes",
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "outputs": {
+                    "title": "outputs",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "$ref": "#/definitions/FlowOutputSchema"
+                    }
+                },
+                "$schema": {
+                    "title": "schema_ignored",
+                    "type": "string",
+                    "readOnly": true
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "$ref": "#/definitions/FlowDagSchema"
+}

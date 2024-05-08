@@ -1,0 +1,57 @@
+{
+    "name": "",
+    "hash": null,
+    "type": "Directory",
+    "timestamp": "0001-01-01T00:00:00+00:00",
+    "sasUrl": null,
+    "absoluteUrl": null,
+    "sizeBytes": 0,
+    "sizeSet": false,
+    "children": {
+        "__pycache__": {
+            "name": "__pycache__",
+            "hash": null,
+            "type": "Directory",
+            "timestamp": "0001-01-01T00:00:00+00:00",
+            "sasUrl": null,
+            "absoluteUrl": null,
+            "sizeBytes": 0,
+            "sizeSet": false,
+            "children": {
+                "hello_world.cpython-39.pyc": {
+                    "name": "hello_world.cpython-39.pyc",
+                    "hash": null,
+                    "type": "File",
+                    "timestamp": "0001-01-01T00:00:00+00:00",
+                    "sasUrl": "https://promptfloweast4063704120.blob.core.windows.net/azureml-blobstore-3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/runs/c619f648-c809-4545-9f94-f67b0a680706/__pycache__/hello_world.cpython-39.pyc?sv=2019-07-07&sr=b&sig=rZNtT4VQ06OLluJTl3yBE6Q8GHKCIAYwwstw2y7J1o0%3D&st=2023-12-04T07%3A51%3A13Z&se=2023-12-04T16%3A01%3A13Z&sp=r&rscd=filename%3Dhello_world.cpython-39.pyc",
+                    "absoluteUrl": "https://promptfloweast4063704120.blob.core.windows.net/azureml-blobstore-3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/runs/c619f648-c809-4545-9f94-f67b0a680706/__pycache__/hello_world.cpython-39.pyc",
+                    "sizeBytes": 368,
+                    "sizeSet": true,
+                    "children": {}
+                }
+            }
+        },
+        "flow.dag.yaml": {
+            "name": "flow.dag.yaml",
+            "hash": "62F0A1A8051F7271F319C0D12B016592",
+            "type": "File",
+            "timestamp": "0001-01-01T00:00:00+00:00",
+            "sasUrl": "https://promptfloweast4063704120.blob.core.windows.net/azureml-blobstore-3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/runs/c619f648-c809-4545-9f94-f67b0a680706/flow.dag.yaml?sv=2019-07-07&sr=b&sig=mI253Rti7SbpCH0PHXAC9QAyltJsZk9VfwClJgkjAMI%3D&st=2023-12-04T07%3A51%3A13Z&se=2023-12-04T16%3A01%3A13Z&sp=r&rscd=filename%3Dflow.dag.yaml",
+            "absoluteUrl": "https://promptfloweast4063704120.blob.core.windows.net/azureml-blobstore-3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/runs/c619f648-c809-4545-9f94-f67b0a680706/flow.dag.yaml",
+            "sizeBytes": 349,
+            "sizeSet": true,
+            "children": {}
+        },
+        "hello_world.py": {
+            "name": "hello_world.py",
+            "hash": null,
+            "type": "File",
+            "timestamp": "0001-01-01T00:00:00+00:00",
+            "sasUrl": "https://promptfloweast4063704120.blob.core.windows.net/azureml-blobstore-3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/runs/c619f648-c809-4545-9f94-f67b0a680706/hello_world.py?sv=2019-07-07&sr=b&sig=t5vNw1oOK1pSN7E9drZsvdLrUvs%2FG%2B2gUDK9lCZ8Vuc%3D&st=2023-12-04T07%3A51%3A13Z&se=2023-12-04T16%3A01%3A13Z&sp=r&rscd=filename%3Dhello_world.py",
+            "absoluteUrl": "https://promptfloweast4063704120.blob.core.windows.net/azureml-blobstore-3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/runs/c619f648-c809-4545-9f94-f67b0a680706/hello_world.py",
+            "sizeBytes": 105,
+            "sizeSet": true,
+            "children": {}
+        }
+    }
+}

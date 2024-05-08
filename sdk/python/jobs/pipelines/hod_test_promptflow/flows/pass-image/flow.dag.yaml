@@ -1,0 +1,16 @@
+inputs:
+  input_image:
+    type: image
+    default: https://developer.microsoft.com/_devcom/images/logo-ms-social.png
+outputs:
+  output_image:
+    type: string
+    reference: ${passthrough.output}
+nodes:
+- name: passthrough
+  type: python
+  source:
+    type: code
+    path: passthrough.py
+  inputs:
+    input_image: ${inputs.input_image}

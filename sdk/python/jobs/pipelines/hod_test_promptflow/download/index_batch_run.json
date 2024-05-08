@@ -1,0 +1,206 @@
+{
+    "totalCount": null,
+    "value": [
+        {
+            "relevancyScore": 1.0,
+            "entityResourceName": "promptflow-eastus",
+            "highlights": {},
+            "usage": {
+                "totalCount": 0
+            },
+            "schemaId": "974ab09e-bfc2-56a6-9be4-97bcfe3d33ca",
+            "entityId": "azureml://location/eastus/workspaceId/3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/type/runs/objectId/ecfa0b5b-3d15-48f6-8587-53462ad34a09",
+            "kind": "Unversioned",
+            "annotations": {
+                "archived": false,
+                "tags": {},
+                "displayName": "c619f648-c809-4545-9f94-f67b0a680706",
+                "status": "Completed",
+                "primaryMetricName": null,
+                "estimatedCost": null,
+                "primaryMetricSummary": null,
+                "metrics": {
+                    "__pf__.nodes.hello_world.completed": {
+                        "count": 1,
+                        "lastValue": 1.0,
+                        "minimumValue": 1.0,
+                        "maximumValue": 1.0,
+                        "metricType": "azureml.v1.scalar"
+                    },
+                    "__pf__.lines.completed": {
+                        "count": 1,
+                        "lastValue": 1.0,
+                        "minimumValue": 1.0,
+                        "maximumValue": 1.0,
+                        "metricType": "azureml.v1.scalar"
+                    },
+                    "__pf__.lines.failed": {
+                        "count": 1,
+                        "lastValue": 0.0,
+                        "minimumValue": 0.0,
+                        "maximumValue": 0.0,
+                        "metricType": "azureml.v1.scalar"
+                    }
+                },
+                "parameters": {},
+                "settings": {},
+                "modifiedTime": "2023-11-29T07:22:32.0966589Z",
+                "retainForLifetimeOfWorkspace": false,
+                "error": {
+                    "code": null,
+                    "errorCodeHierarchy": null,
+                    "message": null,
+                    "time": null,
+                    "componentName": null,
+                    "severity": null,
+                    "detailsUri": null,
+                    "referenceCode": null
+                },
+                "resourceMetricSummary": {
+                    "gpuUtilizationPercentLastHour": null,
+                    "gpuMemoryUtilizationPercentLastHour": null,
+                    "gpuEnergyJoules": null,
+                    "resourceMetricNames": null
+                },
+                "jobCost": {
+                    "chargedCpuCoreSeconds": null,
+                    "chargedCpuMemoryMegabyteSeconds": null,
+                    "chargedGpuSeconds": null,
+                    "chargedNodeUtilizationSeconds": null
+                },
+                "computeDuration": "00:00:04.5801086",
+                "computeDurationMilliseconds": 4580.1086,
+                "effectiveStartTimeUtc": null,
+                "name": null,
+                "description": null
+            },
+            "properties": {
+                "updatedTime": "0001-01-01T00:00:00+00:00",
+                "creationContext": {
+                    "createdTime": "2023-11-29T07:22:10.3435643+00:00",
+                    "createdBy": {
+                        "userObjectId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+                        "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                        "userName": "Honglin Du"
+                    },
+                    "creationSource": null
+                },
+                "dataContainerId": "dcid.c619f648-c809-4545-9f94-f67b0a680706",
+                "targetName": null,
+                "runName": null,
+                "experimentName": "07e55474-fb84-4247-b3c3-d7e4aa255445",
+                "runId": "c619f648-c809-4545-9f94-f67b0a680706",
+                "parentRunId": null,
+                "rootRunId": "c619f648-c809-4545-9f94-f67b0a680706",
+                "runType": "azureml.promptflow.FlowRun",
+                "runTypeV2": {
+                    "orchestrator": null,
+                    "traits": {},
+                    "attribution": "PromptFlow",
+                    "computeType": "AmlcDsi"
+                },
+                "scriptName": null,
+                "experimentId": "16faeb76-011e-42a7-a0b0-4e792e15cbcb",
+                "runUuid": "ecfa0b5b-3d15-48f6-8587-53462ad34a09",
+                "parentRunUuid": null,
+                "runNumber": 1701242530,
+                "startTime": "2023-11-29T07:22:27.4869297Z",
+                "endTime": "2023-11-29T07:22:32.0670383Z",
+                "computeRequest": null,
+                "compute": null,
+                "userProperties": {
+                    "azureml.promptflow.runtime_name": "hod-ci",
+                    "azureml.promptflow.runtime_version": "20231114.v2",
+                    "azureml.promptflow.definition_file_name": "flow.dag.yaml",
+                    "azureml.promptflow.session_id": "07e55474-fb84-4247-b3c3-d7e4aa255445",
+                    "azureml.promptflow.flow_lineage_id": "07e55474-fb84-4247-b3c3-d7e4aa255445",
+                    "azureml.promptflow.flow_definition_resource_id": "azureml://locations/eastus/workspaces/3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/flows/07e55474-fb84-4247-b3c3-d7e4aa255445",
+                    "azureml.promptflow.input_data": "azureml://datastores/workspaceblobstore/paths/LocalUpload/79f088fae0e502653c43146c9682f425/simple_hello_world.jsonl",
+                    "azureml.promptflow.inputs_mapping": "{\"name\":\"${data.name}\"}",
+                    "azureml.promptflow.snapshot_id": "194d5c58-3176-4311-88f0-e01a31a5f706",
+                    "_azureml.evaluation_run": "promptflow.BatchRun",
+                    "azureml.promptflow.total_tokens": "0",
+                    "_azureml.evaluate_artifacts": "[{\"path\": \"instance_results.jsonl\", \"type\": \"table\"}]"
+                },
+                "actionUris": {},
+                "duration": "00:00:04.5801086",
+                "durationMilliseconds": 4580.1086
+            },
+            "internal": {},
+            "updateSequence": 5,
+            "type": "runs",
+            "version": null,
+            "entityContainerId": "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5",
+            "entityObjectId": "ecfa0b5b-3d15-48f6-8587-53462ad34a09",
+            "resourceType": "Workspace",
+            "relationships": [
+                {
+                    "relationType": "CreatedBy",
+                    "targetEntityId": null,
+                    "assetId": "azureml://locations/eastus/workspaces/3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/data/azureml_c619f648-c809-4545-9f94-f67b0a680706_output_data_debug_info/versions/1",
+                    "entityType": "data",
+                    "direction": "Output",
+                    "entityContainerId": "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5"
+                },
+                {
+                    "relationType": "CreatedBy",
+                    "targetEntityId": null,
+                    "assetId": "azureml://locations/eastus/workspaces/3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/data/azureml_c619f648-c809-4545-9f94-f67b0a680706_output_data_flow_outputs/versions/1",
+                    "entityType": "data",
+                    "direction": "Output",
+                    "entityContainerId": "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5"
+                }
+            ]
+        }
+    ],
+    "nextSkip": null,
+    "continuationToken": null,
+    "entityContainerIdsToEntityContainerMetadata": {
+        "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5": {
+            "resourceId": "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5",
+            "subscriptionId": "96aede12-2f73-41cb-b983-6d11a904839b",
+            "resourceGroup": "promptflow",
+            "resourceName": "promptflow-eastus",
+            "entityContainerType": "Workspace",
+            "regions": [
+                {
+                    "regionName": "eastus",
+                    "isPrimaryRegion": true
+                }
+            ],
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "immutableResourceId": "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5",
+            "isPublicResource": false
+        }
+    },
+    "resourcesNotQueriedReasons": {},
+    "numberOfEntityContainersNotQueried": 0,
+    "fanoutData": {
+        "AzureSearch/Multitenant/001/azureml-v0-9": {
+            "nextSkip": 1,
+            "isShardDone": true,
+            "didShardFail": false,
+            "totalCount": null,
+            "resourceIdsOnShardThisPage": [
+                "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5"
+            ]
+        }
+    },
+    "regionalFanoutState": {
+        "shardFanoutStates": [
+            {
+                "shardId": "AzureSearch/Multitenant/001/azureml-v0-9",
+                "nextSkip": 1,
+                "isPlanExecutionDone": true,
+                "didPlanExecutionFail": false,
+                "totalCount": null,
+                "resourceIdsOnShardThisPage": [
+                    "3e123da1-f9a5-4c91-9234-8d9ffbb39ff5"
+                ]
+            }
+        ],
+        "firstPageStartTime": "2023-11-29T08:47:52.2186211+00:00"
+    },
+    "shardErrors": {},
+    "canSupportSkip": true
+}

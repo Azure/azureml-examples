@@ -1,0 +1,11 @@
+{
+    "run_id": "web_classification_default_20230804_143634_056856",
+    "root_run_id": "web_classification_default_20230804_143634_056856",
+    "status": "Completed",
+    "variant_id": "",
+    "system_metrics": {
+        "total_tokens": 3446,
+        "total_child_runs": 3,
+        "duration": 12.521037
+    }
+}

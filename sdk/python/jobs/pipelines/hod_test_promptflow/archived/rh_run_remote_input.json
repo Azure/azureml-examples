@@ -1,0 +1,443 @@
+{
+    "runMetadata": {
+        "runNumber": 1691738716,
+        "rootRunId": "web_classification_variant_0_20230811_152502_412548",
+        "createdUtc": "2023-08-11T07:25:16.0398379+00:00",
+        "createdBy": {
+            "userObjectId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+            "userPuId": "10032000324F7449",
+            "userIdp": null,
+            "userAltSecId": null,
+            "userIss": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "userName": "Honglin Du",
+            "upn": null
+        },
+        "userId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+        "token": null,
+        "tokenExpiryTimeUtc": null,
+        "error": null,
+        "warnings": null,
+        "revision": 4,
+        "statusRevision": 2,
+        "runUuid": "7b6638c3-984f-457d-a9db-842752d79140",
+        "parentRunUuid": null,
+        "rootRunUuid": "7b6638c3-984f-457d-a9db-842752d79140",
+        "lastStartTimeUtc": null,
+        "currentComputeTime": null,
+        "computeDuration": "00:00:17.4153635",
+        "effectiveStartTimeUtc": null,
+        "lastModifiedBy": {
+            "userObjectId": "74013e41-d17e-462a-8db6-5c0e26c0368c",
+            "userPuId": null,
+            "userIdp": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userAltSecId": null,
+            "userIss": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "userName": "ec6824af-81f6-47fa-a07e-5a04ff0b94e7",
+            "upn": null
+        },
+        "lastModifiedUtc": "2023-08-11T07:25:36.1239446+00:00",
+        "duration": "00:00:17.4153635",
+        "cancelationReason": null,
+        "currentAttemptId": 1,
+        "runId": "web_classification_variant_0_20230811_152502_412548",
+        "parentRunId": null,
+        "experimentId": "d30efbeb-f81d-4cfa-b5cc-a0570a049009",
+        "status": "Completed",
+        "startTimeUtc": "2023-08-11T07:25:19.5697403+00:00",
+        "endTimeUtc": "2023-08-11T07:25:36.9851038+00:00",
+        "scheduleId": null,
+        "displayName": "web_classification_variant_0_20230811_152502_412548",
+        "name": null,
+        "dataContainerId": "dcid.web_classification_variant_0_20230811_152502_412548",
+        "description": null,
+        "hidden": false,
+        "runType": "azureml.promptflow.FlowRun",
+        "runTypeV2": {
+            "orchestrator": null,
+            "traits": [],
+            "attribution": "PromptFlow",
+            "computeType": "MIR_v2"
+        },
+        "properties": {
+            "azureml.promptflow.runtime_name": "demo-mir",
+            "azureml.promptflow.runtime_version": "20230801.v1",
+            "azureml.promptflow.definition_file_name": "flow.dag.yaml",
+            "azureml.promptflow.node_variant": "${summarize_text_content.variant_0}",
+            "azureml.promptflow.input_data": "azureml:/subscriptions/96aede12-2f73-41cb-b983-6d11a904839b/resourceGroups/promptflow/providers/Microsoft.MachineLearningServices/workspaces/promptflow-eastus/data/webClassification1/versions/1",
+            "azureml.promptflow.inputs_mapping": "{\"url\":\"${data.url}\"}",
+            "azureml.promptflow.snapshot_id": "3405e5f4-e7a1-4b6c-b3cd-c7bc7ab3e5a6",
+            "azureml.promptflow.total_tokens": "780"
+        },
+        "parameters": {},
+        "actionUris": {},
+        "scriptName": null,
+        "target": null,
+        "uniqueChildRunComputeTargets": [],
+        "tags": {},
+        "settings": {},
+        "services": {},
+        "inputDatasets": [],
+        "outputDatasets": [],
+        "runDefinition": null,
+        "jobSpecification": null,
+        "primaryMetricName": null,
+        "createdFrom": null,
+        "cancelUri": null,
+        "completeUri": null,
+        "diagnosticsUri": null,
+        "computeRequest": null,
+        "compute": null,
+        "retainForLifetimeOfWorkspace": false,
+        "queueingInfo": null,
+        "inputs": null,
+        "outputs": {
+            "flow_outputs": {
+                "assetId": "azureml://locations/eastus/workspaces/3e123da1-f9a5-4c91-9234-8d9ffbb39ff5/data/azureml_web_classification_variant_0_20230811_152502_412548_output_data_flow_outputs/versions/1",
+                "type": "UriFolder"
+            }
+        }
+    },
+    "runDefinition": {
+        "Nodes": [
+            {
+                "Name": "fetch_text_content_from_url",
+                "Tool": "fetch_text_content_from_url.py",
+                "Comment": null,
+                "Inputs": {
+                    "url": "${inputs.url}"
+                },
+                "Api": null,
+                "Provider": null,
+                "Connection": null,
+                "Module": null,
+                "Reduce": false
+            },
+            {
+                "Name": "prepare_examples",
+                "Tool": "prepare_examples.py",
+                "Comment": null,
+                "Inputs": {},
+                "Api": null,
+                "Provider": null,
+                "Connection": null,
+                "Module": null,
+                "Reduce": false
+            },
+            {
+                "Name": "classify_with_llm",
+                "Tool": "classify_with_llm.jinja2",
+                "Comment": null,
+                "Inputs": {
+                    "deployment_name": "text-davinci-003",
+                    "suffix": "",
+                    "max_tokens": "128",
+                    "temperature": "0.1",
+                    "top_p": "1.0",
+                    "logprobs": "",
+                    "echo": "False",
+                    "stop": "",
+                    "presence_penalty": "0",
+                    "frequency_penalty": "0",
+                    "best_of": "1",
+                    "logit_bias": "",
+                    "url": "${inputs.url}",
+                    "examples": "${prepare_examples.output}",
+                    "text_content": "${summarize_text_content.output}"
+                },
+                "Api": "completion",
+                "Provider": "AzureOpenAI",
+                "Connection": "azure_open_ai_connection",
+                "Module": "promptflow.tools.aoai",
+                "Reduce": false
+            },
+            {
+                "Name": "convert_to_dict",
+                "Tool": "convert_to_dict.py",
+                "Comment": null,
+                "Inputs": {
+                    "input_str": "${classify_with_llm.output}"
+                },
+                "Api": null,
+                "Provider": null,
+                "Connection": null,
+                "Module": null,
+                "Reduce": false
+            },
+            {
+                "Name": "summarize_text_content",
+                "Tool": "summarize_text_content.jinja2",
+                "Comment": null,
+                "Inputs": {
+                    "deployment_name": "text-davinci-003",
+                    "suffix": "",
+                    "max_tokens": "128",
+                    "temperature": "0.2",
+                    "top_p": "1.0",
+                    "logprobs": "",
+                    "echo": "False",
+                    "stop": "",
+                    "presence_penalty": "0",
+                    "frequency_penalty": "0",
+                    "best_of": "1",
+                    "logit_bias": "",
+                    "text": "${fetch_text_content_from_url.output}"
+                },
+                "Api": "completion",
+                "Provider": "AzureOpenAI",
+                "Connection": "azure_open_ai_connection",
+                "Module": "promptflow.tools.aoai",
+                "Reduce": false
+            }
+        ],
+        "Tools": [
+            {
+                "Name": "fetch_text_content_from_url.py",
+                "Type": "python",
+                "Inputs": {
+                    "url": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    }
+                },
+                "Outputs": null,
+                "Description": null,
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": null,
+                "LkgCode": null,
+                "Code": null,
+                "Function": "fetch_text_content_from_url",
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            },
+            {
+                "Name": "summarize_text_content.jinja2",
+                "Type": "llm",
+                "Inputs": {
+                    "text": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    }
+                },
+                "Outputs": null,
+                "Description": "Summarize webpage content into a short paragraph.",
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": null,
+                "LkgCode": null,
+                "Code": null,
+                "Function": null,
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            },
+            {
+                "Name": "summarize_text_content__variant_1.jinja2",
+                "Type": "llm",
+                "Inputs": {
+                    "text": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    }
+                },
+                "Outputs": null,
+                "Description": null,
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": null,
+                "LkgCode": null,
+                "Code": null,
+                "Function": null,
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            },
+            {
+                "Name": "prepare_examples.py",
+                "Type": "python",
+                "Inputs": null,
+                "Outputs": null,
+                "Description": null,
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": null,
+                "LkgCode": null,
+                "Code": null,
+                "Function": "prepare_examples",
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            },
+            {
+                "Name": "classify_with_llm.jinja2",
+                "Type": "llm",
+                "Inputs": {
+                    "url": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    },
+                    "examples": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    },
+                    "text_content": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    }
+                },
+                "Outputs": null,
+                "Description": "Multi-class classification of a given url and text content.",
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": null,
+                "LkgCode": null,
+                "Code": null,
+                "Function": null,
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            },
+            {
+                "Name": "convert_to_dict.py",
+                "Type": "python",
+                "Inputs": {
+                    "input_str": {
+                        "Name": null,
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    }
+                },
+                "Outputs": null,
+                "Description": null,
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": null,
+                "LkgCode": null,
+                "Code": null,
+                "Function": "convert_to_dict",
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            }
+        ],
+        "Codes": null,
+        "Inputs": {
+            "url": {
+                "Name": null,
+                "Type": "string",
+                "Default": "https://www.microsoft.com/en-us/d/xbox-wireless-controller-stellar-shift-special-edition/94fbjc7h0h6h",
+                "Description": null,
+                "is_chat_input": false
+            }
+        },
+        "Outputs": {
+            "category": {
+                "Name": null,
+                "Type": "string",
+                "Description": null,
+                "Reference": "${convert_to_dict.output.category}",
+                "evaluation_only": false,
+                "is_chat_output": false
+            },
+            "evidence": {
+                "Name": null,
+                "Type": "string",
+                "Description": null,
+                "Reference": "${convert_to_dict.output.evidence}",
+                "evaluation_only": false,
+                "is_chat_output": false
+            }
+        }
+    },
+    "jobSpecification": null,
+    "systemSettings": null
+}

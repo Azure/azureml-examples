@@ -1,0 +1,165 @@
+{
+    "value": [
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.nodes.fetch_text_content_from_url.completed",
+            "columns": {
+                "__pf__.nodes.fetch_text_content_from_url.completed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "3f81d717-90e8-49c2-8c54-5d48152335be",
+                    "createdUtc": "2024-04-26T08:23:02.335+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.nodes.fetch_text_content_from_url.completed": 3.0
+                    }
+                }
+            ]
+        },
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.nodes.prepare_examples.completed",
+            "columns": {
+                "__pf__.nodes.prepare_examples.completed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "c7ad3458-4487-48b2-aaa8-6cb609698542",
+                    "createdUtc": "2024-04-26T08:23:02.712+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.nodes.prepare_examples.completed": 3.0
+                    }
+                }
+            ]
+        },
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.nodes.summarize_text_content.completed",
+            "columns": {
+                "__pf__.nodes.summarize_text_content.completed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "d379639e-c05e-4d0d-a884-2a5f75aeae35",
+                    "createdUtc": "2024-04-26T08:23:03.023+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.nodes.summarize_text_content.completed": 3.0
+                    }
+                }
+            ]
+        },
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.nodes.classify_with_llm.completed",
+            "columns": {
+                "__pf__.nodes.classify_with_llm.completed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "5b1b2736-d1f8-4995-9d25-dd390d87aea1",
+                    "createdUtc": "2024-04-26T08:23:03.353+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.nodes.classify_with_llm.completed": 3.0
+                    }
+                }
+            ]
+        },
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.nodes.convert_to_dict.completed",
+            "columns": {
+                "__pf__.nodes.convert_to_dict.completed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "ef361840-0c72-4edb-8dae-1889990589ad",
+                    "createdUtc": "2024-04-26T08:23:03.672+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.nodes.convert_to_dict.completed": 3.0
+                    }
+                }
+            ]
+        },
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.lines.completed",
+            "columns": {
+                "__pf__.lines.completed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "c1e8cfaa-ede1-4487-bdb6-d6bcc151bb37",
+                    "createdUtc": "2024-04-26T08:23:04.036+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.lines.completed": 3.0
+                    }
+                }
+            ]
+        },
+        {
+            "dataContainerId": "dcid.0db9f8df-5f13-4798-93f9-d5157acb0dcb",
+            "name": "__pf__.lines.failed",
+            "columns": {
+                "__pf__.lines.failed": "Double"
+            },
+            "properties": {
+                "uxMetricType": "azureml.v1.scalar",
+                "dataLocation": null
+            },
+            "namespace": null,
+            "standardSchemaId": null,
+            "value": [
+                {
+                    "metricId": "7a9ca42a-c979-4589-8ad3-f2fe4974b73a",
+                    "createdUtc": "2024-04-26T08:23:04.372+00:00",
+                    "step": 0,
+                    "data": {
+                        "__pf__.lines.failed": 0.0
+                    }
+                }
+            ]
+        }
+    ]
+}

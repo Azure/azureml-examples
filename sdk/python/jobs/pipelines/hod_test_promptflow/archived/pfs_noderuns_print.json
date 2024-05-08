@@ -1,0 +1,86 @@
+[
+    {
+        "node": "echo_my_prompt",
+        "flow_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_echo_my_prompt_0",
+        "status": "Completed",
+        "inputs": {
+            "input1": ""
+        },
+        "output": "Prompt: ",
+        "metrics": null,
+        "error": null,
+        "parent_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_0",
+        "start_time": "2023-07-18T02:30:52.016568Z",
+        "end_time": "2023-07-18T02:30:52.025591Z",
+        "index": 0,
+        "api_calls": [],
+        "variant_id": "variant_0",
+        "cached_run_id": null,
+        "cached_flow_run_id": null,
+        "logs": {
+            "stdout": "[2023-07-18T02:30:52+0000] @@@ My input data is ...\n",
+            "stderr": "[2023-07-18T02:30:52+0000] ### This is an error message "
+        },
+        "system_metrics": {
+            "duration": 0.009023
+        },
+        "result": "Prompt: "
+    },
+    {
+        "node": "echo_my_prompt",
+        "flow_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_echo_my_prompt_1",
+        "status": "Completed",
+        "inputs": {
+            "input1": ""
+        },
+        "output": "Prompt: ",
+        "metrics": null,
+        "error": null,
+        "parent_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_1",
+        "start_time": "2023-07-18T02:30:52.114976Z",
+        "end_time": "2023-07-18T02:30:52.125373Z",
+        "index": 1,
+        "api_calls": [],
+        "variant_id": "variant_0",
+        "cached_run_id": null,
+        "cached_flow_run_id": null,
+        "logs": {
+            "stdout": "[2023-07-18T02:30:52+0000] @@@ My input data is ...\n",
+            "stderr": "[2023-07-18T02:30:52+0000] ### This is an error message "
+        },
+        "system_metrics": {
+            "duration": 0.010397
+        },
+        "result": "Prompt: "
+    },
+    {
+        "node": "echo_my_prompt",
+        "flow_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_echo_my_prompt_2",
+        "status": "Completed",
+        "inputs": {
+            "input1": ""
+        },
+        "output": "Prompt: ",
+        "metrics": null,
+        "error": null,
+        "parent_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_2",
+        "start_time": "2023-07-18T02:30:51.952931Z",
+        "end_time": "2023-07-18T02:30:52.004316Z",
+        "index": 2,
+        "api_calls": [],
+        "variant_id": "variant_0",
+        "cached_run_id": null,
+        "cached_flow_run_id": null,
+        "logs": {
+            "stdout": "[2023-07-18T02:30:51+0000] @@@ My input data is ...\n",
+            "stderr": "[2023-07-18T02:30:52+0000] ### This is an error message "
+        },
+        "system_metrics": {
+            "duration": 0.051385
+        },
+        "result": "Prompt: "
+    }
+]

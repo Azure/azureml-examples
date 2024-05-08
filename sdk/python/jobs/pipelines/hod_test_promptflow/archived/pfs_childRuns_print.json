@@ -1,0 +1,182 @@
+[
+    {
+        "run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_0",
+        "status": "Completed",
+        "error": null,
+        "inputs": {
+            "question": "what is apple?"
+        },
+        "output": {
+            "output_prompt": "Prompt: "
+        },
+        "metrics": null,
+        "request": null,
+        "parent_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "root_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "source_run_id": null,
+        "flow_id": "6f0d05fd-2cc1-495a-be6d-c60c3f3b1f14",
+        "start_time": "2023-07-18T02:30:51.900331Z",
+        "end_time": "2023-07-18T02:30:52.044247Z",
+        "index": 0,
+        "api_calls": [
+            {
+                "name": "hello_prompt",
+                "type": "Tool",
+                "inputs": {
+                    "template": "{{question}}"
+                },
+                "output": "",
+                "start_time": 1689647451.990417,
+                "end_time": 1689647451.991653,
+                "error": null,
+                "children": [],
+                "node_name": "hello_prompt"
+            },
+            {
+                "name": "echo_my_prompt",
+                "type": "Tool",
+                "inputs": {
+                    "input1": ""
+                },
+                "output": "Prompt: ",
+                "start_time": 1689647452.016568,
+                "end_time": 1689647452.025591,
+                "error": null,
+                "children": [],
+                "node_name": "echo_my_prompt"
+            }
+        ],
+        "variant_id": "variant_0",
+        "name": "",
+        "description": "",
+        "tags": null,
+        "system_metrics": {
+            "total_tokens": 0,
+            "duration": 0.143916
+        },
+        "result": {
+            "output_prompt": "Prompt: "
+        },
+        "upload_metrics": false
+    },
+    {
+        "run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_1",
+        "status": "Completed",
+        "error": null,
+        "inputs": {
+            "question": "what is banana?"
+        },
+        "output": {
+            "output_prompt": "Prompt: "
+        },
+        "metrics": null,
+        "request": null,
+        "parent_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "root_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "source_run_id": null,
+        "flow_id": "6f0d05fd-2cc1-495a-be6d-c60c3f3b1f14",
+        "start_time": "2023-07-18T02:30:51.901167Z",
+        "end_time": "2023-07-18T02:30:52.143506Z",
+        "index": 1,
+        "api_calls": [
+            {
+                "name": "hello_prompt",
+                "type": "Tool",
+                "inputs": {
+                    "template": "{{question}}"
+                },
+                "output": "",
+                "start_time": 1689647452.085433,
+                "end_time": 1689647452.086833,
+                "error": null,
+                "children": [],
+                "node_name": "hello_prompt"
+            },
+            {
+                "name": "echo_my_prompt",
+                "type": "Tool",
+                "inputs": {
+                    "input1": ""
+                },
+                "output": "Prompt: ",
+                "start_time": 1689647452.114976,
+                "end_time": 1689647452.125373,
+                "error": null,
+                "children": [],
+                "node_name": "echo_my_prompt"
+            }
+        ],
+        "variant_id": "variant_0",
+        "name": "",
+        "description": "",
+        "tags": null,
+        "system_metrics": {
+            "total_tokens": 0,
+            "duration": 0.242339
+        },
+        "result": {
+            "output_prompt": "Prompt: "
+        },
+        "upload_metrics": false
+    },
+    {
+        "run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4_2",
+        "status": "Completed",
+        "error": null,
+        "inputs": {
+            "question": "what is orange?"
+        },
+        "output": {
+            "output_prompt": "Prompt: "
+        },
+        "metrics": null,
+        "request": null,
+        "parent_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "root_run_id": "47a86c90-16fe-4232-8426-bb82561c6bf4",
+        "source_run_id": null,
+        "flow_id": "6f0d05fd-2cc1-495a-be6d-c60c3f3b1f14",
+        "start_time": "2023-07-18T02:30:51.901763Z",
+        "end_time": "2023-07-18T02:30:52.029781Z",
+        "index": 2,
+        "api_calls": [
+            {
+                "name": "hello_prompt",
+                "type": "Tool",
+                "inputs": {
+                    "template": "{{question}}"
+                },
+                "output": "",
+                "start_time": 1689647451.924041,
+                "end_time": 1689647451.930581,
+                "error": null,
+                "children": [],
+                "node_name": "hello_prompt"
+            },
+            {
+                "name": "echo_my_prompt",
+                "type": "Tool",
+                "inputs": {
+                    "input1": ""
+                },
+                "output": "Prompt: ",
+                "start_time": 1689647451.952931,
+                "end_time": 1689647452.004316,
+                "error": null,
+                "children": [],
+                "node_name": "echo_my_prompt"
+            }
+        ],
+        "variant_id": "variant_0",
+        "name": "",
+        "description": "",
+        "tags": null,
+        "system_metrics": {
+            "total_tokens": 0,
+            "duration": 0.128018
+        },
+        "result": {
+            "output_prompt": "Prompt: "
+        },
+        "upload_metrics": false
+    }
+]

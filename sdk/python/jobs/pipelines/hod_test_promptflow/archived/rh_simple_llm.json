@@ -1,0 +1,193 @@
+{
+    "runMetadata": {
+        "runNumber": 1695628653,
+        "rootRunId": "ca5bfa79-55a0-4209-915a-09611a973b0e",
+        "createdUtc": "2023-09-25T07:57:33.4166376+00:00",
+        "createdBy": {
+            "userObjectId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+            "userPuId": "10032000324F7449",
+            "userIdp": null,
+            "userAltSecId": null,
+            "userIss": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "userName": "Honglin Du",
+            "upn": null
+        },
+        "userId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+        "token": null,
+        "tokenExpiryTimeUtc": null,
+        "error": null,
+        "warnings": null,
+        "revision": 5,
+        "statusRevision": 3,
+        "runUuid": "6f0ae484-e7de-4d85-8870-11dbb2a8e9cc",
+        "parentRunUuid": "dfe0007b-59ad-4c17-91c6-8a0c83721823",
+        "rootRunUuid": "dfe0007b-59ad-4c17-91c6-8a0c83721823",
+        "lastStartTimeUtc": null,
+        "currentComputeTime": null,
+        "computeDuration": "00:00:05.4790735",
+        "effectiveStartTimeUtc": null,
+        "lastModifiedBy": {
+            "userObjectId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+            "userPuId": "10032000324F7449",
+            "userIdp": null,
+            "userAltSecId": null,
+            "userIss": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "userName": "Honglin Du",
+            "upn": "hod@microsoft.com"
+        },
+        "lastModifiedUtc": "2023-09-25T07:57:53.5257888+00:00",
+        "duration": "00:00:05.4790735",
+        "cancelationReason": null,
+        "currentAttemptId": 1,
+        "runId": "d360affb-c01f-460f-beca-db9a8b88b625",
+        "parentRunId": "ca5bfa79-55a0-4209-915a-09611a973b0e",
+        "experimentId": "6b8bfa72-7d48-43bb-9424-f69169c74144",
+        "status": "Completed",
+        "startTimeUtc": "2023-09-25T07:57:50.0306569+00:00",
+        "endTimeUtc": "2023-09-25T07:57:55.5097304+00:00",
+        "scheduleId": null,
+        "displayName": "Simple_Hello_World-variant_0-202309250757",
+        "name": null,
+        "dataContainerId": "dcid.d360affb-c01f-460f-beca-db9a8b88b625",
+        "description": "",
+        "hidden": false,
+        "runType": "azureml.promptflow.FlowRun",
+        "runTypeV2": {
+            "orchestrator": null,
+            "traits": [],
+            "attribution": "PromptFlow",
+            "computeType": "AmlcDsi"
+        },
+        "properties": {
+            "azureml.promptflow.flow_id": "e2d4836d-e2d6-4aba-912a-c54b28dc9633",
+            "azureml.promptflow.flow_type": "Default",
+            "azureml.promptflow.variant_id": "variant_0",
+            "azureml.promptflow.baseline_variant_run_id": "d360affb-c01f-460f-beca-db9a8b88b625",
+            "azureml.promptflow.bulk_test_id": "ca5bfa79-55a0-4209-915a-09611a973b0e",
+            "azureml.promptflow.flow_experiment_id": "f40fcfba-ed15-4c0c-a522-6798d8d89094",
+            "azureml.promptflow.runtime_name": "hod-ci",
+            "azureml.promptflow.runtime_version": "20230911.v1",
+            "azureml.promptflow.input_data": "azureml://locations/eastus/workspaces/f40fcfba-ed15-4c0c-a522-6798d8d89094/data/hod-qa-sample/versions/1",
+            "azureml.promptflow.inputs_mapping": "{\"question\":\"${data.question}\"}",
+            "azureml.promptflow.snapshot_id": "6667d3e5-4140-4d07-a075-199a21dcdbb1",
+            "azureml.promptflow.total_tokens": "0"
+        },
+        "parameters": {},
+        "actionUris": {},
+        "scriptName": null,
+        "target": null,
+        "uniqueChildRunComputeTargets": [],
+        "tags": {},
+        "settings": {},
+        "services": {},
+        "inputDatasets": [],
+        "outputDatasets": [],
+        "runDefinition": null,
+        "jobSpecification": null,
+        "primaryMetricName": null,
+        "createdFrom": null,
+        "cancelUri": null,
+        "completeUri": null,
+        "diagnosticsUri": null,
+        "computeRequest": null,
+        "compute": null,
+        "retainForLifetimeOfWorkspace": null,
+        "queueingInfo": null,
+        "inputs": {
+            "data": {
+                "assetId": "azureml://locations/eastus/workspaces/f40fcfba-ed15-4c0c-a522-6798d8d89094/data/hod-qa-sample/versions/1",
+                "type": "UriFolder"
+            }
+        },
+        "outputs": {
+            "debug_info": {
+                "assetId": "azureml://locations/eastus/workspaces/f40fcfba-ed15-4c0c-a522-6798d8d89094/data/azureml_d360affb-c01f-460f-beca-db9a8b88b625_output_data_debug_info/versions/1",
+                "type": "UriFolder"
+            },
+            "flow_outputs": {
+                "assetId": "azureml://locations/eastus/workspaces/f40fcfba-ed15-4c0c-a522-6798d8d89094/data/azureml_d360affb-c01f-460f-beca-db9a8b88b625_output_data_flow_outputs/versions/1",
+                "type": "UriFolder"
+            }
+        }
+    },
+    "runDefinition": {
+        "Nodes": [
+            {
+                "Name": "Python_uz4k",
+                "Tool": "Python_uz4k.py",
+                "Comment": null,
+                "Inputs": {
+                    "input1": "${inputs.question}"
+                },
+                "Api": null,
+                "Provider": null,
+                "Connection": null,
+                "Module": null,
+                "Reduce": false
+            }
+        ],
+        "Tools": [
+            {
+                "Name": "Python_uz4k.py",
+                "Type": "python",
+                "Inputs": {
+                    "input1": {
+                        "Name": "input1",
+                        "Type": [
+                            "string"
+                        ],
+                        "Default": null,
+                        "Description": null,
+                        "Enum": null,
+                        "enabled_by": null,
+                        "enabled_by_type": null,
+                        "model_list": null,
+                        "Capabilities": null
+                    }
+                },
+                "Outputs": null,
+                "Description": null,
+                "connection_type": null,
+                "Module": null,
+                "class_name": null,
+                "Source": "Python_uz4k.py",
+                "LkgCode": null,
+                "Code": null,
+                "Function": "my_python_tool",
+                "action_type": null,
+                "provider_config": null,
+                "function_config": null,
+                "Icon": null,
+                "Structure": null,
+                "is_builtin": false,
+                "package": null,
+                "package_version": null
+            }
+        ],
+        "Codes": null,
+        "Inputs": {
+            "question": {
+                "Name": null,
+                "Type": "string",
+                "Default": null,
+                "Description": null,
+                "is_chat_input": false,
+                "is_chat_history": null
+            }
+        },
+        "Outputs": {
+            "output": {
+                "Name": null,
+                "Type": "string",
+                "Description": null,
+                "Reference": "${Python_uz4k.output}",
+                "evaluation_only": false,
+                "is_chat_output": false
+            }
+        }
+    },
+    "jobSpecification": null,
+    "systemSettings": null
+}

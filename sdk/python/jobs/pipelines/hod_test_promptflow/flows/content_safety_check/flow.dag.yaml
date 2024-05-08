@@ -1,0 +1,40 @@
+inputs:
+  query:
+    type: string
+    default: how to change integrated terminal in vscode?
+outputs:
+  answer:
+    type: string
+    reference: ${llm_request.output}
+nodes:
+- inputs:
+    connection: acs-connection
+    text: ${inputs.query}
+    hate_category: high_sensitivity
+    sexual_category: high_sensitivity
+    self_harm_category: high_sensitivity
+    violence_category: high_sensitivity
+  name: content_safety_check
+  type: python
+  source:
+    type: package
+    tool: promptflow.tools.azure_content_safety.analyze_text
+- inputs:
+    check_result: ${content_safety_check.output}
+  name: acs_check
+  type: python
+  source:
+    type: code
+    path: acs_check.py
+- inputs:
+    query: ${inputs.query}
+    request: ${inputs.query}
+  name: llm_request
+  type: python
+  activate:
+    condition: ${acs_check.output}
+    return_on_false: No answer found.
+  source:
+    type: code
+    path: get_response.py
+node_variants: {}

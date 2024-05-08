@@ -1,0 +1,103 @@
+{
+  "package": {
+    "promptflow.tools.azure_content_safety.analyze_text": {
+      "name": "Content Safety (Text)",
+      "type": "python",
+      "inputs": {
+        "connection": {
+          "type": [
+            "AzureContentSafetyConnection"
+          ]
+        },
+        "text": {
+          "type": [
+            "string"
+          ]
+        },
+        "hate_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ]
+        },
+        "sexual_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ]
+        },
+        "self_harm_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ]
+        },
+        "violence_category": {
+          "type": [
+            "string"
+          ],
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ]
+        }
+      },
+      "description": "Use Azure Content Safety to detect harmful content.",
+      "module": "promptflow.tools.azure_content_safety",
+      "class_name": "AzureContentSafety",
+      "function": "analyze_text"
+    }
+  },
+  "code": {
+    "acs_check.py": {
+      "type": "python",
+      "inputs": {
+        "check_result": {
+          "type": [
+            "object"
+          ]
+        }
+      },
+      "source": "acs_check.py",
+      "function": "acs_check"
+    },
+    "get_response.py": {
+      "type": "python",
+      "inputs": {
+        "connection": {
+          "type": [
+            "AzureOpenAIConnection"
+          ]
+        },
+        "request": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "get_response.py",
+      "function": "get_response"
+    }
+  }
+}

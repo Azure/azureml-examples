@@ -1,0 +1,54 @@
+{
+	"nodeLayouts": {
+		"inputs": {
+			"x": 231.5,
+			"y": 62.0,
+			"width": 0.0,
+			"height": 0.0,
+			"index": -1
+		},
+		"outputs": {
+			"x": 237.0,
+			"y": 562.0,
+			"width": 0.0,
+			"height": 0.0,
+			"index": -1
+		},
+		"fetch_text_content_from_url": {
+			"x": 413.0,
+			"y": 162.0,
+			"width": 0.0,
+			"height": 75.0,
+			"index": 0
+		},
+		"summarize_text_content": {
+			"x": 413.0,
+			"y": 262.0,
+			"width": 0.0,
+			"height": 75.0,
+			"index": 1
+		},
+		"prepare_examples": {
+			"x": 108.0,
+			"y": 262.0,
+			"width": 0.0,
+			"height": 75.0,
+			"index": 2
+		},
+		"classify_with_llm": {
+			"x": 295.0,
+			"y": 362.0,
+			"width": 0.0,
+			"height": 75.0,
+			"index": 3
+		},
+		"convert_to_dict": {
+			"x": 317.0,
+			"y": 462.0,
+			"width": 0.0,
+			"height": 75.0,
+			"index": 4
+		}
+	},
+	"orientation": "Horizontal"
+}

@@ -1,0 +1,21 @@
+image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+name: myTestEnv
+version: 1
+description: Environment with inline conda definition
+conda_file:
+  name: example-environment
+  channels:
+    - conda-forge
+  dependencies:
+    - python=3.8
+    - pip
+    - pip:
+        - azure-ai-ml
+        - mldesigner
+
+
+$schema: https://azuremlschemas.azureedge.net/latest/MLTable.schema.json
+
+type: mltable
+paths:
+    - folder: azureml:mltable_test_data:1

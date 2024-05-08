@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Flow.schema.json
+display_name: Basic
+language: csharp
+inputs:
+  question:
+    type: string
+    default: Could you please recommend a song?
+  detail:
+    type: string
+    default: The atmosphere of the song is light and cheerful.
+outputs:
+  answer:
+    type: string
+    reference: ${get_answer.output}
+nodes:
+- name: get_prompt
+  type: prompt
+  source:
+    type: package
+    tool: (Promptflow.Tools)Promptflow.Tools.BuiltInTools.PromptTool.Parse
+    path: get_prompt.scriban
+  inputs:
+    question: ${inputs.question}
+    detail: ${inputs.detail}
+- name: get_answer
+  type: llm
+  source:
+    type: package
+    tool: (Promptflow.Tools)Promptflow.Tools.BuiltInTools.AOAI.Chat
+    path: get_answer.scriban
+  inputs:
+    connection: aoai_connection
+    deployment_name: gpt-35-turbo
+    max_tokens: 1024
+    temperature: 0.5
+    prompt_content: ${get_prompt.output}

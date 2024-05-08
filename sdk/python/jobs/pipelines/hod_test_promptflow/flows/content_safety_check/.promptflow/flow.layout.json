@@ -1,0 +1,30 @@
+{
+  "nodeLayouts": {
+    "acs_check": {
+      "x": 72.8203125,
+      "y": 312.1875,
+      "index": 0
+    },
+    "llm_request": {
+      "x": 271.0703125,
+      "y": 404.703125,
+      "index": 1
+    },
+    "content_safety_check": {
+      "x": 63.953125,
+      "y": 210.4765625,
+      "index": 2
+    },
+    "inputs": {
+      "x": 258.3046875,
+      "y": 109.859375,
+      "index": -1
+    },
+    "outputs": {
+      "x": 311.6484375,
+      "y": 512.8125,
+      "index": -1
+    }
+  },
+  "orientation": "Vertical"
+}

@@ -1,0 +1,145 @@
+{
+    "runMetadata": {
+        "runNumber": 1713598498,
+        "rootRunId": "3c43e06e-06c2-460e-9e36-51b553195e53",
+        "createdUtc": "2024-04-20T07:34:58.1838362+00:00",
+        "createdBy": {
+            "userObjectId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+            "userPuId": "10032000324F7449",
+            "userIdp": null,
+            "userAltSecId": null,
+            "userIss": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "userName": "Honglin Du",
+            "upn": null
+        },
+        "userId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+        "token": null,
+        "tokenExpiryTimeUtc": null,
+        "error": null,
+        "warnings": null,
+        "revision": 1,
+        "statusRevision": 0,
+        "runUuid": "934cd8e1-65c4-4af4-a4e1-b2c645920680",
+        "parentRunUuid": null,
+        "rootRunUuid": "934cd8e1-65c4-4af4-a4e1-b2c645920680",
+        "lastStartTimeUtc": "2024-04-20T15:34:11.86436+00:00",
+        "currentComputeTime": "00:00:00",
+        "computeDuration": "00:00:00",
+        "effectiveStartTimeUtc": "2024-04-20T15:34:11.86436+00:00",
+        "lastModifiedBy": {
+            "userObjectId": "c05e0746-e125-4cb3-9213-a8b535eacd79",
+            "userPuId": "10032000324F7449",
+            "userIdp": null,
+            "userAltSecId": null,
+            "userIss": "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/",
+            "userTenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "userName": "Honglin Du",
+            "upn": null
+        },
+        "lastModifiedUtc": "2024-04-20T07:34:58.1838362+00:00",
+        "duration": "00:00:25.6108380",
+        "cancelationReason": null,
+        "currentAttemptId": 1,
+        "runId": "3c43e06e-06c2-460e-9e36-51b553195e53",
+        "parentRunId": null,
+        "experimentId": "e57eb79e-3e83-45f1-810c-ee22c20b2ebd",
+        "status": "Completed",
+        "startTimeUtc": "2024-04-20T15:34:11.86436+00:00",
+        "endTimeUtc": "2024-04-20T15:34:37.475198+00:00",
+        "scheduleId": null,
+        "displayName": "3c43e06e-06c2-460e-9e36-51b553195e53",
+        "name": null,
+        "dataContainerId": "dcid.3c43e06e-06c2-460e-9e36-51b553195e53",
+        "description": null,
+        "hidden": false,
+        "runType": "azureml.promptflow.FlowRun",
+        "runTypeV2": {
+            "orchestrator": null,
+            "traits": [],
+            "attribution": "PromptFlow",
+            "computeType": null
+        },
+        "properties": {
+            "azureml.promptflow.total_tokens": "0",
+            "azureml.promptflow.runtime_name": null,
+            "azureml.promptflow.input_run_id": "a3e29cc2-e1ee-4281-be93-bc5770929d19",
+            "azureml.promptflow.variant_run_id": "a3e29cc2-e1ee-4281-be93-bc5770929d19",
+            "azureml.promptflow.disable_trace": "false",
+            "azureml.promptflow.local_to_cloud": "true",
+            "azureml.promptflow.snapshot_id": "7d5580f6-fde8-4686-a884-2bec35799861",
+            "_azureml.evaluation_run": "promptflow.BatchRun"
+        },
+        "parameters": {},
+        "actionUris": {},
+        "scriptName": null,
+        "target": null,
+        "uniqueChildRunComputeTargets": [],
+        "tags": {},
+        "settings": {},
+        "services": {},
+        "inputDatasets": [],
+        "outputDatasets": [],
+        "runDefinition": null,
+        "jobSpecification": null,
+        "primaryMetricName": null,
+        "createdFrom": null,
+        "cancelUri": null,
+        "completeUri": null,
+        "diagnosticsUri": null,
+        "computeRequest": null,
+        "compute": null,
+        "retainForLifetimeOfWorkspace": false,
+        "queueingInfo": null,
+        "inputs": null,
+        "outputs": null
+    },
+    "runDefinition": {
+        "Nodes": [
+            {
+                "Name": "hello_world",
+                "Type": "python",
+                "Source": {
+                    "Type": "code",
+                    "Tool": null,
+                    "Path": "hello_world.py"
+                },
+                "Inputs": {
+                    "name": "${inputs.name}"
+                },
+                "Tool": "hello_world.py",
+                "Reduce": false,
+                "Activate": null,
+                "Comment": null,
+                "Api": null,
+                "Provider": null,
+                "Connection": null,
+                "Module": null
+            }
+        ],
+        "Tools": [],
+        "Codes": null,
+        "Inputs": {
+            "name": {
+                "name": null,
+                "type": "string",
+                "default": "hod",
+                "description": null,
+                "is_chat_input": false,
+                "is_chat_history": null
+            }
+        },
+        "Outputs": {
+            "result": {
+                "name": null,
+                "type": "string",
+                "description": null,
+                "reference": "${hello_world.output}",
+                "evaluation_only": false,
+                "is_chat_output": false
+            }
+        }
+    },
+    "jobSpecification": null,
+    "systemSettings": null
+}
