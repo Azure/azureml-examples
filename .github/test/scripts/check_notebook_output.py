@@ -77,6 +77,7 @@ allowed_list = [
     "Detected ",
     "FutureWarning: promote has been superseded by mode",
     "dataframe_reader.complete_incoming_dataframe",
+    "Method connections: This is an experimental method",
 ]
 
 with open(full_name, "r") as notebook_file:
