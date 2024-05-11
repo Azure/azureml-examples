@@ -69,8 +69,8 @@ az monitor autoscale profile create \
 # disable the autoscale profile
 # <disable_profile>
 az monitor autoscale update \
-> --autoscale-name $AUTOSCALE_SETTINGS_NAME \
-> --enabled false
+  --autoscale-name $AUTOSCALE_SETTINGS_NAME \
+  --enabled false
 # </disable_profile>
 
 # <delete_endpoint>
