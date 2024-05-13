@@ -104,7 +104,7 @@ def parse_output(output_file):
             raise Exception(
                 "Failures were found while running the node health checks. Please see the std_log_process.txt files under the 'outputs and logs' tab of the job for more information."
                 + full_errors
-            ) 
+            )
 
 
 # open conf file to read in tests being performed for this SKU type
