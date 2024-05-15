@@ -1,0 +1,1 @@
+{"input_data": {"input_string": [{"role": "user", "content": [{"type": "image_url", "image_url": {"url": "https://www.ilankelman.org/stopsigns/australia.jpg"}}, {"type": "text", "text": "What is shown in this image?"}]}], "parameters": {"temperature": 0.9}}}
