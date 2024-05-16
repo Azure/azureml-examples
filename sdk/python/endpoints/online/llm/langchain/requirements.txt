@@ -12,3 +12,4 @@ parse
 requests
 pyyaml
 azure-cli
+langserve
