@@ -450,6 +450,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -531,6 +532,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -622,6 +624,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -716,6 +719,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -725,8 +729,8 @@ jobs:
         creds: {creds}
     - name: bootstrap resources
       run: |
-          bash bootstrapping/bootstrap.sh
-      working-directory: infra
+          bash bootstrap.sh
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -779,6 +783,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -789,7 +794,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -841,6 +846,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -851,7 +857,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
