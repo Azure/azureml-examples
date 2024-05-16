@@ -7,8 +7,8 @@ workspace_name="<WORKSPACE_NAME>"
 
 # This is the model from system registry that needs to be deployed
 registry_name="azureml"
-model_name="Phi-3-mini-v-128k-instruct-patched-vllm"
-deployment_sku="Standard_NC24ads_A100_v4"
+model_name="Phi-3-vision-128k-instruct"
+deployment_sku="phi-3-vision-128k-instruct"
 
 # Validate the existence of the model in the registry and get the latest version
 model_list=$(az ml model list --name ${model_name} --registry-name ${registry_name} 2>&1)
