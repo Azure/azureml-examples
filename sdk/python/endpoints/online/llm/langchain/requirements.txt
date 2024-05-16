@@ -13,3 +13,4 @@ requests
 pyyaml
 azure-cli
 langserve
+fastapi
