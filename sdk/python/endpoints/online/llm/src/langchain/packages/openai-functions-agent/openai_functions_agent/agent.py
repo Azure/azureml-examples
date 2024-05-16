@@ -9,22 +9,25 @@ from langchain_openai import AzureChatOpenAI
 import os
 from langchain_prompty import create_chat_prompt
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+
+
 # Define the arguments schema model
 class SearchQueryArgs(BaseModel):
     query: str = Field(..., example="What is the current state of the stock market?")
 
-token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
-    )
 
-llm = AzureChatOpenAI(
-    azure_deployment=os.getenv('AZURE_OPENAI_DEPLOYMENT'),
-    azure_ad_token_provider=token_provider
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
 
-prompt = create_chat_prompt(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'basic_chat.prompty'))
+llm = AzureChatOpenAI(
+    azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
+    azure_ad_token_provider=token_provider,
+)
 
-
+prompt = create_chat_prompt(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "basic_chat.prompty")
+)
 
 
 def _format_chat_history(chat_history: List[Tuple[str, str]]):
@@ -33,6 +36,7 @@ def _format_chat_history(chat_history: List[Tuple[str, str]]):
         buffer.append(HumanMessage(content=human))
         buffer.append(AIMessage(content=ai))
     return buffer
+
 
 agent = (
     {

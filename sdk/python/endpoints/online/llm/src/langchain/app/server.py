@@ -5,13 +5,17 @@ from langserve import add_routes
 app = FastAPI()
 
 from dotenv import load_dotenv
-load_dotenv('.env')
+
+load_dotenv(".env")
+
 
 @app.get("/")
 async def redirect_root_to_docs():
     return RedirectResponse("/docs")
 
+
 from openai_functions_agent import agent_executor as openai_functions_agent_chain
+
 add_routes(app, openai_functions_agent_chain, path="/openai-functions-agent")
 
 if __name__ == "__main__":
