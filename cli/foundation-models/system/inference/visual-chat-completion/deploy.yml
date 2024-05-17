@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: demo
+name: phi-3-vision
 instance_type: Standard_NC48ads_A100_v4
 instance_count: 1
 liveness_probe:
