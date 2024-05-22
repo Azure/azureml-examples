@@ -17,6 +17,7 @@
 /sdk/python/foundation-models/cohere/cohere-aisearch-langchain-rag.ipynb @stewart-co @kseniia-cohere  
 sdk/python/foundation-models/cohere/command_faiss_langchain.ipynb @stewart-co @kseniia-cohere  
 sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @kseniia-cohere
+/sdk/python/foundation-models/nixtla/ @AzulGarza
 
 #### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
