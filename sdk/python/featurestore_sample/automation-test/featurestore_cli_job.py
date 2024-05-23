@@ -9,9 +9,7 @@ for path, subdirs, files in os.walk("./"):
         print(os.path.join(path, name))
 
 print("=======Test CLI Notebook 1============")
-with open(
-    "notebooks/sdk_and_cli/1.Develop-feature-set-and-register.ipynb"
-) as f:
+with open("notebooks/sdk_and_cli/1.Develop-feature-set-and-register.ipynb") as f:
     exec(f.read())
 
 # print("=======Test CLI Notebook 2============")
@@ -21,9 +19,7 @@ with open(
 #     exec(f.read())
 
 print("=======Test CLI Notebook 2============")
-with open(
-    "notebooks/sdk_and_cli/2.Experiment-train-models-using-features.ipynb"
-) as f:
+with open("notebooks/sdk_and_cli/2.Experiment-train-models-using-features.ipynb") as f:
     exec(f.read())
 
 print("=======Test CLI Notebook 3============")

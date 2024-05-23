@@ -9,9 +9,7 @@ for path, subdirs, files in os.walk("./"):
         print(os.path.join(path, name))
 
 print("=======Test Notebook 1============")
-with open(
-    "notebooks/sdk_only/1.Develop-feature-set-and-register.ipynb"
-) as f:
+with open("notebooks/sdk_only/1.Develop-feature-set-and-register.ipynb") as f:
     exec(f.read())
 
 print("=======Test Notebook 2============")
@@ -33,7 +31,9 @@ with open("notebooks/sdk_only/5.Develop-feature-set-custom-source.ipynb") as f:
     exec(f.read())
 
 print("=======Test Notebook 7============")
-with open("notebooks/sdk_only/7.Develop-feature-set-domain-specific-language-dsl.ipynb") as f:
+with open(
+    "notebooks/sdk_only/7.Develop-feature-set-domain-specific-language-dsl.ipynb"
+) as f:
     exec(f.read())
 
 print("=======Clean up==========")
