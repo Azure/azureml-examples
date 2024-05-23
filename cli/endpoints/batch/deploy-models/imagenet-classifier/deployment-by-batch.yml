@@ -7,7 +7,7 @@ model: azureml:imagenet-classifier@latest
 compute: azureml:gpu-cluster
 environment:
   name: tensorflow212-cuda11-gpu
-  image: mcr.microsoft.com/azureml/curated/tensorflow-2.12-cuda11:latest
+  image: mcr.microsoft.com/azureml/curated/tensorflow-2.16-cuda11:latest
   conda_file: environment/conda.yaml
 code_configuration:
   code: code/score-by-batch
