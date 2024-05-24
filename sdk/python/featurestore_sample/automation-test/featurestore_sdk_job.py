@@ -9,30 +9,30 @@ for path, subdirs, files in os.walk("./"):
         print(os.path.join(path, name))
 
 print("=======Test Notebook 1============")
-with open("notebooks/sdk_only/1.Develop-feature-set-and-register.ipynb") as f:
+with open("notebooks/sdk_only/1.Develop-feature-set-and-register.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 2============")
-with open("notebooks/sdk_only/2.Experiment-train-models-using-features.ipynb") as f:
+with open("notebooks/sdk_only/2.Experiment-train-models-using-features.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 3============")
 with open(
-    "notebooks/sdk_only/3.Enable-recurrent-materialization-run-batch-inference.ipynb"
+    "notebooks/sdk_only/3.Enable-recurrent-materialization-run-batch-inference.py"
 ) as f:
     exec(f.read())
 
 print("=======Test Notebook 4============")
-with open("notebooks/sdk_only/4.Enable-online-store-run-inference.ipynb") as f:
+with open("notebooks/sdk_only/4.Enable-online-store-run-inference.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 5============")
-with open("notebooks/sdk_only/5.Develop-feature-set-custom-source.ipynb") as f:
+with open("notebooks/sdk_only/5.Develop-feature-set-custom-source.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 7============")
 with open(
-    "notebooks/sdk_only/7.Develop-feature-set-domain-specific-language-dsl.ipynb"
+    "notebooks/sdk_only/7.Develop-feature-set-domain-specific-language-dsl.py"
 ) as f:
     exec(f.read())
 
