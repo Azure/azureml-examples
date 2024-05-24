@@ -4,6 +4,7 @@ import requests
 import os
 from typing import List, Dict
 
+
 def get_data(url: str) -> List[Dict]:
     """Send a GET request to the specified URL, parse the JSON content of the response.
 
@@ -16,6 +17,7 @@ def get_data(url: str) -> List[Dict]:
     response.raise_for_status()
     data = json.loads(response.content)
     return data["rows"]
+
 
 def download_images(data: List[Dict], dataset_dir: str) -> None:
     """Create a directory for the images and download each image to the directory.
@@ -30,24 +32,27 @@ def download_images(data: List[Dict], dataset_dir: str) -> None:
 
     # Iterate over the parsed data and download each image
     for i, item in enumerate(data):
-        image_url = item["row"]["image"]['src']
+        image_url = item["row"]["image"]["src"]
         image_response = requests.get(image_url)
 
         # Check if the request was successful
         image_response.raise_for_status()
 
         # Write the image data to a file
-        with open(os.path.join(dataset_dir, f'image_{i}.jpg'), 'wb') as f:
+        with open(os.path.join(dataset_dir, f"image_{i}.jpg"), "wb") as f:
             f.write(image_response.content)
+
 
 if __name__ == "__main__":
     """
     Parse command-line arguments for the URL and directory name, and pass them to the
     get_data() and download_images() functions.
     """
-    parser = argparse.ArgumentParser(description='Download images from a dataset.')
-    parser.add_argument('--url', required=True, help='URL of the dataset.')
-    parser.add_argument('--dataset_dir', required=True, help='Directory to save the images.')
+    parser = argparse.ArgumentParser(description="Download images from a dataset.")
+    parser.add_argument("--url", required=True, help="URL of the dataset.")
+    parser.add_argument(
+        "--dataset_dir", required=True, help="Directory to save the images."
+    )
     args = parser.parse_args()
 
     data = get_data(args.url)
