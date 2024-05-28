@@ -44,3 +44,12 @@ class TransactionFeatureTransformer(Transformer):
             )
         )
         return res
+
+class MultiDaySpendTransformer(Transformer):
+    def _transform(self, df: DataFrame) -> DataFrame:
+        df1 = df.groupBy("accountID", F.window("timestamp", windowDuration="30 day", slideDuration="30 day")) \
+            .agg(F.sum("transaction_3d_count").alias("30day_spend"))
+        df2 = df1.select("accountID", df1.window.end.cast("timestamp").alias("end"), "30day_spend")
+        tumbling = df2.withColumn('timestamp', F.expr("end - INTERVAL 1 milliseconds")) \
+            .select("accountID", "timestamp","30day_spend")
+        return tumbling
