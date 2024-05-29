@@ -1,5 +1,8 @@
 .ipynb_checkpoints
+.ipynb_aml_checkpoints
+named-outputs
 */.ipynb_checkpoints/*
+*.amltmp
 
 # config files are required to use Semantic Kernel
 !endpoints/online/llm/src/sk/skills/*/*/config.json

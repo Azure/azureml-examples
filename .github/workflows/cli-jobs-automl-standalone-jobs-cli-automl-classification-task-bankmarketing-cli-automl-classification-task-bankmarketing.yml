@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh cli-automl-classification-task-bankmarketing.yml
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

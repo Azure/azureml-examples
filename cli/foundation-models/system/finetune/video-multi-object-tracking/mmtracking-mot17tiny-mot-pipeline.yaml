@@ -1,0 +1,87 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: AzureML-Cli-Train-Finetune-Vision-MOT-Samples
+
+inputs:
+  # dataset files
+  training_data:
+    type: mltable
+  
+  validation_data:
+    type: mltable
+
+  # compute
+  compute_model_import: sample-model-import-cluster
+  compute_finetune: sample-finetune-cluster-gpu
+  # model_name: bytetrack_yolox_x_crowdhuman_mot17-private-half
+  # # model - specify the foundation model available in the azureml system registry
+  mlflow_model: 
+    path: azureml://registries/azureml/models/bytetrack_yolox_x_crowdhuman_mot17-private-half/versions/3
+    type: mlflow_model
+
+outputs:
+  # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
+  trained_model:
+    type: mlflow_model
+
+settings:
+  force_rerun: true
+  continue_on_step_failure: false
+  default_compute: azureml:sample-finetune-cluster-gpu
+
+jobs:
+  mmtracking_model_finetune_job:
+    type: pipeline
+    component: azureml://registries/azureml/components/mmtracking_video_multi_object_tracking_pipeline/labels/latest
+    inputs:
+      # # Compute
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+
+      # # Model import args
+      task_name: video-multi-object-tracking
+      # model_name: ${{parent.inputs.model_name}}
+      # pytorch_model: ${{parent.inputs.pytorch_model}}
+      mlflow_model: ${{parent.inputs.mlflow_model}}
+      model_family: MmTrackingVideo
+
+      # # Data
+      training_data: ${{parent.inputs.training_data}}
+      validation_data: ${{parent.inputs.validation_data}}
+
+      # Finetuning parameters
+      image_width: 1920
+      image_height: 1080
+      learning_rate: 0.00001
+      number_of_epochs: 5
+      metric_for_best_model: MOTA
+      training_batch_size: 1
+
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # learning_rate_scheduler: warmup_linear
+      # warmup_steps: 0
+      # optimizer: sgd
+      # weight_decay: 0.0
+      # gradient_accumulation_step: 1
+      # max_grad_norm: 1.0
+      # iou_threshold: 0.5
+      # box_score_threshold: 0.3
+      # number_of_workers: 8
+      # extra_optim_args: ""
+      # precision: 32
+      # random_seed: 42
+      # evaluation_strategy: epoch
+      # evaluation_steps: 500
+      # logging_strategy: epoch
+      # logging_steps: 500
+      # save_strategy: epoch
+      # save_steps: 500
+      # save_total_limit: -1
+      # early_stopping: False
+      # early_stopping_patience: 1
+      # resume_from_checkpoint: False
+      # save_as_mlflow_model: True
+
+    outputs:
+      mlflow_model_folder: ${{parent.outputs.trained_model}}

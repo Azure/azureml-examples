@@ -24,7 +24,7 @@ compute_model_evaluation_sku="Standard_NC6s_v3"
 gpus_per_node=1
 
 # This is the foundation model for finetuning
-mmdetection_model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
+mmdetection_model_name="mmd-3x-mask-rcnn_swin-t-p4-w7_fpn_1x_coco"
 model_label="latest"
 
 version=$(date +%s)
@@ -137,7 +137,7 @@ fi
 # 5. Submit finetuning job using pipeline.yaml for a open-mmlab mmdetection model
 
 # If you want to use a MMDetection model, specify the inputs.model_name instead of inputs.mlflow_model_path.path like below
-# inputs.model_name="mask_rcnn_swin-t-p4-w7_fpn_1x_coco"
+# inputs.model_name="mask-rcnn_swin-t-p4-w7_fpn_1x_coco"
 
 mmdetection_parent_job_name=$( az ml job create \
   --file ./mmdetection-fridgeobjects-instance-segmentation-pipeline.yaml \
@@ -174,10 +174,22 @@ az ml online-endpoint create --name $mmdetection_endpoint_name $workspace_info  
 }
 
 # Deploy registered model to endpoint in workspace
-az ml online-deployment create --file ./deploy.yaml $workspace_info --all-traffic --set \
+az ml online-deployment create --file ./deploy.yaml $workspace_info --set \
   endpoint_name=$mmdetection_endpoint_name model=azureml:$finetuned_mmdetection_model_name:$version \
   instance_type=$deployment_sku || {
     echo "deployment create failed"; exit 1;
+}
+
+# get deployment name and set all traffic to the new deployment
+yaml_file="deploy.yaml"
+get_yaml_value() {
+    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
+}
+deployment_name=$(get_yaml_value "name")
+
+az ml online-endpoint update $workspace_info --name=$mmdetection_endpoint_name --traffic="$deployment_name=100" || {
+    echo "Failed to set all traffic to the new deployment"
+    exit 1
 }
 
 # 8. Try a sample scoring request on the deployed MMDetection model

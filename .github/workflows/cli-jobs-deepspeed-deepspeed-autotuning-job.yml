@@ -49,3 +49,8 @@ jobs:
           bash -x generate-yml.sh
           bash -x ../../../run-job.sh job.yml
       working-directory: cli/jobs/deepspeed/deepspeed-autotuning
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/deepspeed/deepspeed-autotuning"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

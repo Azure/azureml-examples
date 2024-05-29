@@ -14,7 +14,6 @@
 |        multilabel        | Boolean variable that computes multilabel metrics when set to True             | boolean          | false (Should be false for single label classification)         |
 |      positive_label      | Label to be treated as positive label                                          | int/str          | 0, "CONTRADICTION"                                              |
 |    confidence_metrics    | List of metrics to compute confidence intervals                                | list<str>        | ["accuracy", "f1_score_micro"]                                  |
-|    custom_dimensions     | Used to report telemetry data (can later be used to perform PII scrubbing)     | dict             |                                                                 |
 
 ### List of supported metrics:
 

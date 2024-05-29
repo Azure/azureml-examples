@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../run-job.sh cli-responsibleaidashboard-housing-classification.yml
       working-directory: cli/responsible-ai/cli-responsibleaidashboard-housing-classification
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/responsible-ai/cli-responsibleaidashboard-housing-classification"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
