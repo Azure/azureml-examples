@@ -30,12 +30,6 @@ print("=======Test Notebook 5============")
 with open("notebooks/sdk_only/5.Develop-feature-set-custom-source.py") as f:
     exec(f.read())
 
-print("=======Test Notebook 7============")
-with open(
-    "notebooks/sdk_only/7.Develop-feature-set-domain-specific-language-dsl.py"
-) as f:
-    exec(f.read())
-
 print("=======Clean up==========")
 subscription_id = "<SUBSCRIPTION_ID>"
 resource_group_name = "<RESOURCE_GROUP>"
