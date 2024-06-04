@@ -257,16 +257,16 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/endpoints/online/managed/online-endpoints-safe-rollout.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/online/mlflow/sklearn-diabetes/model/MLmodel @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/endpoints/online/mlflow/sklearn-diabetes/model/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_and_cli/1.\ Develop\ a\ feature\ set\ and\ register\ with\ managed\ feature\ store.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_and_cli/2.\ Experiment\ and\ train\ models\ using\ features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_and_cli/3.\ Enable\ recurrent\ materialization\ and\ run\ batch\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_and_cli/network_isolation/Network\ Isolation\ for\ Feature\ store.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/1.\ Develop\ a\ feature\ set\ and\ register\ with\ managed\ feature\ store.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/2.\ Experiment\ and\ train\ models\ using\ features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/3.\ Enable\ recurrent\ materialization\ and\ run\ batch\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/4.\ Enable\ online\ store\ and\ run\ online\ inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/5.\ Develop\ a\ feature\ set\ with\ custom\ source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/featurestore_sample/notebooks/sdk_only/7.\ Develop\ a\ feature\ set\ using\ Domain\ Specific\ Language\ (DSL).ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_and_cli/1.Develop-feature-set-and-register.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_and_cli/2.Experiment-train-models-using-features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_and_cli/3.Enable-recurrent-materialization-run-batch-inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_and_cli/network_isolation/Network-isolation-feature-store.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/1.Develop-feature-set-and-register.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/2.Experiment-train-models-using-features.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/3.Enable-recurrent-materialization-run-batch-inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/4.Enable-online-store-run-inference.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/5.Develop-feature-set-custom-source.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/featurestore_sample/notebooks/sdk_only/7.Develop-feature-set-domain-specific-language-dsl.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing/automl-classification-task-bankmarketing-serverless.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/jobs/configuration.ipynb @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  

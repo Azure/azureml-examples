@@ -18,11 +18,11 @@ REDIS_NAME="redis"${VERSION}
 # </create_variables>
 
 # <convert_notebook_to_py>
-NOTEBOOK_1="notebooks/sdk_only/1. Develop a feature set and register with managed feature store"
-NOTEBOOK_2="notebooks/sdk_only/2. Experiment and train models using features"
-NOTEBOOK_3="notebooks/sdk_only/3. Enable recurrent materialization and run batch inference"
-NOTEBOOK_4="notebooks/sdk_only/4. Enable online store and run online inference"
-NOTEBOOK_5="notebooks/sdk_only/5. Develop a feature set with custom source"
+NOTEBOOK_1="notebooks/sdk_only/1.Develop-feature-set-and-register"
+NOTEBOOK_2="notebooks/sdk_only/2.Experiment-train-models-using-features"
+NOTEBOOK_3="notebooks/sdk_only/3.Enable-recurrent-materialization-run-batch-inference"
+NOTEBOOK_4="notebooks/sdk_only/4.Enable-online-store-run-inference"
+NOTEBOOK_5="notebooks/sdk_only/5.Develop-feature-set-custom-source"
 jupytext --to py "${NOTEBOOK_1}.ipynb"
 jupytext --to py "${NOTEBOOK_2}.ipynb"
 jupytext --to py "${NOTEBOOK_3}.ipynb"
