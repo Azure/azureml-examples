@@ -96,6 +96,18 @@ As `learning_rate` and `learning_rate_schedule` have default value defined which
 python train.py --training_data some_input_path --max_epocs 10 --learning_rate 0.01 --learning_rate_schedule time-based --model_output some_output_path
 ```
 
+## Adding common libraries/dependencies to components
+In complex machine learning projects, it is common for multiple components to use the same libraries/dependencies. To avoid duplicating these in each component, we provide a way to add common libraries/dependencies to a component. You can add `addtional_includes` propertity to `command` component yaml, and specify the common libraries/dependencies in this property. you can add any file or folder to the `additional_includes` property. 
+
+Here is an example of how to add local files and folders to the `additional_includes` property:
+
+```yaml
+additional_includes:
+ - your/local/folder
+ - your/local/file
+```
+
+
 To learn more details about `az ml component` commands, Please refer [this link](https://docs.microsoft.com/en-us/cli/azure/ml/component?view=azure-cli-latest).
 
 To learn more details about `component` , Please refer [this link](https://docs.microsoft.com/en-us/azure/machine-learning/concept-component).
