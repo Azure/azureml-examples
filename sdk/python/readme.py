@@ -34,6 +34,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_service_principal",
     "using_mlflow_rest_api",
     "yolov5/tutorial",
+    "4.Provision-feature-store",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
@@ -239,7 +240,8 @@ on:\n"""
       - infra/bootstrapping/**
       - sdk/python/setup.sh\n"""
     if is_featurestore_sample:
-        workflow_yaml += f"""      - sdk/python/featurestore_sample
+        workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
+    workflow_yaml += f"""
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -252,9 +254,9 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
@@ -272,6 +274,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{github_workspace}" "{github_workspace}/sdk/python/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
@@ -301,9 +308,13 @@ jobs:
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
 
+    papermill_option = ""
+    if "endpoints-batch" in classification:
+        papermill_option = " --log-output"
+
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb
+          papermill -k python {name}.ipynb {name}.output.ipynb{papermill_option}
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
@@ -476,6 +487,7 @@ def get_spark_config_workflow(folder_name, file_name):
 def get_featurestore_config_workflow(folder_name, file_name):
     is_sdk_noteobook = "_sdk_" in file_name
     is_cli_notebook = "_cli_" in file_name
+    is_vnet_notebook = "_vnet_" in file_name
     workflow = f"""    - name: setup feature-store resources"""
     if is_sdk_noteobook:
         workflow += f"""
@@ -487,6 +499,12 @@ def get_featurestore_config_workflow(folder_name, file_name):
         workflow += f"""
       run: |
           bash -x automation-test/setup-resources-cli.sh automation-test/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+    if is_vnet_notebook:
+        workflow += f"""
+      run: |
+          bash -x automation-test/setup-resources-vnet.sh automation-test/{file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
 

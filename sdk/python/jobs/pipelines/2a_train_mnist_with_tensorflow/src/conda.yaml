@@ -5,7 +5,7 @@ name: project_environment
 channels:
   - defaults
 dependencies:
-  - python=3.7.6
+  - python=3.8
   - pip=20.0
   - pip:
     - mldesigner==0.1.0b4

@@ -9,4 +9,5 @@ liveness_probe:
   timeout: 299
 request_settings:
   request_timeout_ms: 90000
-
+environment_variables:
+  "WORKER_COUNT": 2

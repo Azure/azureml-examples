@@ -48,3 +48,8 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash -x ../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/parallel/2a_iris_batch_prediction
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/parallel/2a_iris_batch_prediction"
+      working-directory: infra/bootstrapping
+      continue-on-error: false

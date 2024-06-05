@@ -2,8 +2,7 @@ $schema: http://azureml/sdk-2-0/ModelVersionPackage.json
 base_environment_source:
     type: environment_asset
     resource_id: azureml:sklearn-regression-env:1
-target_environment:
-    name: sklearn-regression-online-pkg
+target_environment: sklearn-regression-online-pkg
 inferencing_server: 
     type: azureml_online
     code_configuration:

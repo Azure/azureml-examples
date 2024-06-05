@@ -1,13 +1,13 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
 command: >-
-  python train.py 
+  python train.py
   --epochs ${{inputs.epochs}}
   --model-dir ${{inputs.model_dir}}
 inputs:
   epochs: 1
   model_dir: outputs/keras-model
-environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu@latest
+environment: azureml:AzureML-tensorflow-2.12-cuda11@latest
 compute: azureml:gpu-cluster
 resources:
   instance_count: 2

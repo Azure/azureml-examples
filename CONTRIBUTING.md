@@ -73,7 +73,7 @@ This will also generate a GitHub Actions workflow file for any new examples in t
 
 Examples in this repository can be indexed in the [Microsoft code samples browser](https://docs.microsoft.com/samples), enabling organic discoverability. To accomplish this:
 
-- add an excellent `README.md` file in the example directory noting the overview, objective, and estimated runtime. (Note than estimated runtimes should not exceed 30 minutes).
+- add an excellent `README.md` file in the example directory noting the overview, objective, and estimated runtime. (Note than estimated runtimes should not exceed 30 minutes). Follow the README template [here](https://github.com/Azure/azureml-examples/blob/main/infra/templates/readme_template.md)
 - add required YAML frontmatter at the top of the `README.md`
 
 The YAML frontmatter format looks like this:

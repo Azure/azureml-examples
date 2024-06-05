@@ -52,3 +52,8 @@ jobs:
           python prepare_data.py --subscription $SUBSCRIPTION_ID --group $RESOURCE_GROUP_NAME --workspace $WORKSPACE_NAME
           bash -x ../../../run-job.sh cli-automl-image-classification-multiclass-task-fridge-items.yml
       working-directory: cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
