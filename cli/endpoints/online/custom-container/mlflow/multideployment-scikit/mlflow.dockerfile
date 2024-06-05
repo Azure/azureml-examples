@@ -8,8 +8,8 @@ ARG MLFLOW_MODEL_NAME=model_name
 ENV CONDA_ENV_DIR=/opt/miniconda/envs
 
 # Create a new conda environment and install the same version of the server
-COPY $MLFLOW_MODEL_NAME/model/conda.yaml /tmp/conda.yml
-RUN conda env create -n userenv -f /tmp/conda.yml && \
+COPY $MLFLOW_MODEL_NAME/model/conda.yaml /tmp/conda.yaml
+RUN conda env create -n userenv -f /tmp/conda.yaml && \
     export SERVER_VERSION=$(pip show azureml-inference-server-http | grep Version | sed -e 's/.*: //')  && \ 
     $CONDA_ENV_DIR/userenv/bin/pip install azureml-inference-server-http==$SERVER_VERSION
 

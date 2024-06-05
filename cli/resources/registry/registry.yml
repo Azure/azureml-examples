@@ -1,7 +1,7 @@
 name: DemoRegistry
-description: Basic registry with one primary region and to additional regions
 tags:
   foo: bar
+  description: Basic registry with one primary region and to additional regions
 location: eastus
 replication_locations:
   - location: eastus

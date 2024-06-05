@@ -3,4 +3,3 @@ command: ls
 code: src
 environment:
   image: library/python:latest
-compute: azureml:cpu-cluster

@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: {{deployment_name}} 
-endpoint_name: {{endpoint_name}}
+endpoint_name: "{{ENDPOINT_NAME}}"
 model:
   name: {{model_name}}
   path: ./{{model_name}}/model

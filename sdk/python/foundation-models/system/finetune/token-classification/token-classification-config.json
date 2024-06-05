@@ -1,0 +1,3 @@
+{
+  "metrics": ["precision_score_macro", "f1_score_micro", "recall_score_macro", "f1_score_weighted", "recall_score_micro", "accuracy", "precision_score_weighted", "precision_score_micro", "f1_score_macro", "recall_score_weighted"]
+}

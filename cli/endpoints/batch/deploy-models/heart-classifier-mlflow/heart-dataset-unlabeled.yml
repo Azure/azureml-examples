@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: heart-dataset-unlabeled
+description: An unlabeled dataset for heart classification.
+type: uri_folder
+path: data

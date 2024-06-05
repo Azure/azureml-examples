@@ -1,7 +1,7 @@
 name: DemoRegistry2
-description: Registry with additional configuration for storage accounts
 tags:
   foo: bar
+  description: Registry with additional configuration for storage accounts
 location: eastus
 replication_locations:
   - location: eastus

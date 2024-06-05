@@ -7,10 +7,9 @@ trial:
     --B ${{search_space.B}}
     --C ${{search_space.C}}
   code: src
-  environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+  environment: azureml:AzureML-sklearn-1.1@latest
 inputs:
   A: 0.5
-compute: azureml:cpu-cluster
 sampling_algorithm: random
 search_space:
   B:

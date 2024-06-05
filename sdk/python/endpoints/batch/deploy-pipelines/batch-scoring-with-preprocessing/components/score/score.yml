@@ -1,0 +1,24 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: uci_heart_score
+display_name: UCI Heart Classifier Score
+type: command
+inputs:
+  model:
+    type: mlflow_model
+  data:
+    type: uri_folder
+  score_mode:
+    type: string
+outputs:
+  scores:
+    type: uri_folder
+environment: azureml:xgboost-sklearn-py38@latest
+code: src
+command: >-
+  python score.py 
+  --model_path ${{inputs.model}} 
+  --data_path ${{inputs.data}}
+  --score_mode ${{inputs.score_mode}}
+  --scores_path ${{outputs.scores}}
+# </component>

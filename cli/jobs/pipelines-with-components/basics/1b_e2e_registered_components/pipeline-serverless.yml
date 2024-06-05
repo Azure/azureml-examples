@@ -1,0 +1,66 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: 1b_e2e_registered_components
+description: E2E dummy train-score-eval pipeline with registered components
+# Serverless compute is used to run this pipeline job. 
+# Through serverless compute, Azure Machine Learning takes care of creating, scaling, deleting, patching and managing compute, along with providing managed network isolation, reducing the burden on you.
+inputs:
+  pipeline_job_training_max_epocs: 20
+  pipeline_job_training_learning_rate: 1.8
+  pipeline_job_learning_rate_schedule: 'time-based'
+
+outputs: 
+  pipeline_job_trained_model:
+    mode: upload
+  pipeline_job_scored_data:
+    mode: upload
+  pipeline_job_evaluation_report:
+    mode: upload
+
+settings:
+ default_compute: azureml:serverless
+
+jobs:
+  train_job:
+    type: command
+    component: azureml:my_train@latest
+    inputs:
+      training_data: 
+        type: uri_folder 
+        path: ./data      
+      max_epocs: ${{parent.inputs.pipeline_job_training_max_epocs}}
+      learning_rate: ${{parent.inputs.pipeline_job_training_learning_rate}}
+      learning_rate_schedule: ${{parent.inputs.pipeline_job_learning_rate_schedule}}
+    outputs:
+      model_output: ${{parent.outputs.pipeline_job_trained_model}}
+    services:
+      my_vscode:
+        type: vs_code
+      my_jupyter_lab:
+        type: jupyter_lab
+      my_tensorboard:
+        type: tensor_board
+        log_dir: "outputs/tblogs"
+    #  my_ssh:
+    #    type: tensor_board
+    #    ssh_public_keys: <paste the entire pub key content>
+    #    nodes: all # Use the `nodes` property to pick which node you want to enable interactive services on. If `nodes` are not selected, by default, interactive applications are only enabled on the head node.
+
+  score_job:
+    type: command
+    component: azureml:my_score@latest
+    inputs:
+      model_input: ${{parent.jobs.train_job.outputs.model_output}}
+      test_data: 
+        type: uri_folder 
+        path: ./data
+    outputs:
+      score_output: ${{parent.outputs.pipeline_job_scored_data}}
+
+  evaluate_job:
+    type: command
+    component: azureml:my_eval@latest
+    inputs:
+      scoring_result: ${{parent.jobs.score_job.outputs.score_output}}
+    outputs:
+      eval_output: ${{parent.outputs.pipeline_job_evaluation_report}}

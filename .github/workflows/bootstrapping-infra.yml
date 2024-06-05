@@ -22,7 +22,7 @@ on:
       - sdk/**
       - .github/workflows/bootstrapping-infra.yml
       - cli/**
-      - infra/**
+      - infra/bootstrapping/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -52,5 +52,5 @@ jobs:
           [[ -z "${RUN_BOOTSTRAP:-}" ]] && RUN_BOOTSTRAP='true'
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: true

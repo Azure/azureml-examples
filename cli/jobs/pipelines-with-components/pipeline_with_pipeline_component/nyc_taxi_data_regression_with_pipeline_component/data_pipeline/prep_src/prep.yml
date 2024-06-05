@@ -1,0 +1,20 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: prep_taxi_data
+display_name: PrepTaxiData
+version: 1
+type: command
+inputs:
+  raw_data: 
+    type: uri_folder 
+    optional: true
+outputs:
+  prep_data:
+    type: uri_folder
+code: .
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+command: >-
+  python prep.py 
+  $[[--raw_data ${{inputs.raw_data}}]]
+  --prep_data ${{outputs.prep_data}}
+# </component>

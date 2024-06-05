@@ -1,0 +1,18 @@
+$schema:  http://azureml/sdk-2-0/Schedule.json
+name: schedule_data_import_inline
+display_name: Schedule data import inline
+description: Schedule data import inline
+
+trigger:
+  type: cron
+  expression: "15 10 * * 1"
+  time_zone: "Pacific Standard Time" # optional - default will be UTC
+
+import_data:
+  type: mltable
+  name: my_snowflake_ds
+  path: azureml://datastores/workspaceblobstore/paths/snowflake/${{name}}
+  source:
+    type: database
+    query: select * from my_table
+    connection: azureml:my_snowflake_connection

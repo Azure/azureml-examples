@@ -1,0 +1,15 @@
+dependencies:
+  - python=3.8
+  - pip:
+    # Protobuf is needed to avoid conflict with managed spark
+    - protobuf==3.19.6
+    # Feature store core SDK
+    - azureml-featurestore==1.1.0
+    # Azure management libraries
+    - azure-mgmt-authorization==3.0.0
+    # This is needed if you want to execute the Part 2 of the "SDK" track or execute "SDK+CLI" track in the docs tutorial
+    - azure-cli
+    # Following are required for training and batch inference pipeline of *this* sample. Users can remove this for their own projects
+    - scikit-learn
+    - pandas
+name: fs_env

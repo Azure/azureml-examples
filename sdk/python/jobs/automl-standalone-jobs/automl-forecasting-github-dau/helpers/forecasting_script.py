@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 
 from azureml.core import Dataset, Run
-from sklearn.externals import joblib
+import joblib
 from pandas.tseries.frequencies import to_offset
 import torch
 

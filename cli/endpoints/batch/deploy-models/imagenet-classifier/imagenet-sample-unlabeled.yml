@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: imagenet-sample-unlabeled
+description: A sample of 1000 images from the original ImageNet dataset. Download content from https://azuremlexampledata.blob.core.windows.net/data/imagenet-1000.zip.
+type: uri_folder
+path: data

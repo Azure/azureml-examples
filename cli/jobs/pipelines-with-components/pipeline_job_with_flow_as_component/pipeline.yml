@@ -1,0 +1,30 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: pipeline_job_with_flow
+description: The hello world pipeline job with flow as component
+
+compute: "azureml:cpu-cluster"
+
+inputs:
+  flow_input:
+    type: uri_file
+    path: "./data/data.jsonl"
+
+jobs:
+  flow_node_from_dag:
+    type: parallel
+    component: ./basic/flow.dag.yaml
+    inputs:
+      data: ${{parent.inputs.flow_input}}
+      text: "${data.text}"
+    environment_variables:
+      AZURE_OPENAI_API_KEY: <your-api-key>
+      AZURE_OPENAI_API_BASE: <your-api-base>
+      AZURE_OPENAI_API_TYPE: azure
+
+  flow_node_from_run:
+    type: parallel
+    component: ./run.yml
+    inputs:
+      data: ${{parent.inputs.flow_input}}
+      text: "${data.text}"

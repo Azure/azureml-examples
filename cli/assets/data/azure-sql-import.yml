@@ -1,0 +1,14 @@
+$schema: http://azureml/sdk-2-0/DataImport.json
+# Supported connections include:
+# Connection: azureml:<workspace_connection_name>
+# Supported paths include:
+# Datastore: azureml://datastores/<data_store_name>/paths/<my_path>/${{name}}
+
+
+type: mltable
+name: azuresql_sample
+source:
+  type: database
+  query: select * from my_table
+  connection: azureml:my_sqldb_connection
+path: azureml://datastores/workspaceblobstore/paths/azuresql/${{name}}

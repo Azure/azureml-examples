@@ -18,11 +18,7 @@ NOT_TESTED_NOTEBOOKS = [
     "train-hyperparameter-tune-with-sklearn",
     "train-hyperparameter-tune-deploy-with-keras",
     "train-hyperparameter-tune-deploy-with-tensorflow",
-    "pipeline_with_spark_nodes",
     "interactive_data_wrangling",
-    "attach_manage_spark_pools",
-    "submit_spark_pipeline_jobs",
-    "submit_spark_standalone_jobs",
     # mlflow SDK samples notebooks
     "mlflow_sdk_online_endpoints_progresive",
     "mlflow_sdk_online_endpoints",
@@ -37,6 +33,8 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_nested_runs",
     "xgboost_service_principal",
     "using_mlflow_rest_api",
+    "yolov5/tutorial",
+    "4.Provision-feature-store",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
@@ -55,7 +53,6 @@ COMPUTE_NAMES = "COMPUTE_NAMES"
 
 
 def main(args):
-
     # get list of notebooks
     notebooks = sorted(glob.glob("**/*.ipynb", recursive=True))
 
@@ -83,14 +80,15 @@ def write_workflows(notebooks):
     cfg = ConfigParser()
     cfg.read(os.path.join("notebooks_config.ini"))
     for notebook in notebooks:
-        if not any(excluded in notebook for excluded in NOT_TESTED_NOTEBOOKS):
+        notebook_path = notebook.replace(os.sep, "/")
+        if not any(excluded in notebook_path for excluded in NOT_TESTED_NOTEBOOKS):
             # get notebook name
             name = os.path.basename(notebook).replace(".ipynb", "")
             folder = os.path.dirname(notebook)
             classification = folder.replace(os.sep, "-")
 
             enable_scheduled_runs = True
-            if any(excluded in notebook for excluded in NOT_SCHEDULED_NOTEBOOKS):
+            if any(excluded in notebook_path for excluded in NOT_SCHEDULED_NOTEBOOKS):
                 enable_scheduled_runs = False
 
             # write workflow file
@@ -106,9 +104,14 @@ def get_additional_requirements(req_name, req_path):
       run: pip install -r {req_path}"""
 
 
-def get_mlflow_import(notebook):
+def get_mlflow_import(notebook, validation_yml):
     with open(notebook, "r", encoding="utf-8") as f:
-        if "import mlflow" in f.read():
+        string_file = f.read()
+        if (
+            validation_yml
+            or "import mlflow" in string_file
+            or "from mlflow" in string_file
+        ):
             return get_additional_requirements(
                 "mlflow", "sdk/python/mlflow-requirements.txt"
             )
@@ -130,17 +133,76 @@ def get_forecast_reqs(notebook_name, nb_config):
         return ""
 
 
+def get_validation_yml(notebook_folder, notebook_name):
+    validation_yml = ""
+    validation_json_file_name = os.path.join(
+        "..",
+        "..",
+        ".github",
+        "test",
+        "sdk",
+        notebook_name.replace(".ipynb", ".json"),
+    )
+
+    if os.path.exists(validation_json_file_name):
+        with open(validation_json_file_name, "r") as json_file:
+            validation_file = json.load(json_file)
+            for validation in validation_file["validations"]:
+                validation_yml += get_validation_check_yml(
+                    notebook_folder, notebook_name, validation
+                )
+
+    return validation_yml
+
+
+def get_validation_check_yml(notebook_folder, notebook_name, validation):
+    validation_name = validation["name"]
+    validation_file_name = validation_name.replace(" ", "_")
+    notebook_output_file = (
+        os.path.basename(notebook_name).replace(".", ".output.").replace(os.sep, "/")
+    )
+    notebook_folder = notebook_folder.replace(os.sep, "/")
+    full_folder_name = f"sdk/python/{notebook_folder}"
+    github_workspace = "${{ github.workspace }}"
+
+    check_yml = f"""
+    - name: {validation_name}
+      run: |
+         python {github_workspace}/.github/test/scripts/{validation_file_name}.py \\
+                --file_name {notebook_output_file} \\
+                --folder . \\"""
+
+    for param_name, param_value in validation["params"].items():
+        if type(param_value) is list:
+            check_yml += f"""
+                --{param_name} \\"""
+
+            for param_item in param_value:
+                param_item_value = param_item.replace("\n", "\\n")
+                check_yml += f"""
+                  \"{param_item_value}\" \\"""
+        else:
+            check_yml += f"""
+                --{param_name} {param_value} \\"""
+
+    check_yml += f"""
+      working-directory: {full_folder_name} \\"""
+
+    return check_yml[:-2]
+
+
 def write_notebook_workflow(
     notebook, name, classification, folder, enable_scheduled_runs, nb_config
 ):
     is_pipeline_notebook = ("jobs-pipelines" in classification) or (
         "assets-component" in classification
     )
+    is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
+    is_featurestore_sample = "featurestore_sample" in classification
     creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
-    mlflow_import = get_mlflow_import(notebook)
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
@@ -150,6 +212,9 @@ def write_notebook_workflow(
     schedule_minute = name_hash % 60
     hours_between_runs = 12
     schedule_hour = (name_hash // 60) % hours_between_runs
+
+    validation_yml = get_validation_yml(folder, notebook)
+    mlflow_import = get_mlflow_import(notebook, validation_yml)
 
     workflow_yaml = f"""{READONLY_HEADER}
 name: sdk-{classification}-{name}
@@ -172,8 +237,11 @@ on:\n"""
       - sdk/python/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
       - sdk/python/dev-requirements.txt
-      - infra/**
-      - sdk/python/setup.sh
+      - infra/bootstrapping/**
+      - sdk/python/setup.sh\n"""
+    if is_featurestore_sample:
+        workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
+    workflow_yaml += f"""
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -186,9 +254,9 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
@@ -197,28 +265,37 @@ jobs:
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup SDK
       run: |
-          source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{github_workspace}" "{github_workspace}/sdk/python/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
-          source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true
-    - name: run {posix_notebook}
+      continue-on-error: true\n"""
+    if is_spark_notebook_sample:
+        workflow_yaml += get_spark_config_workflow(posix_folder, name)
+    if is_featurestore_sample:
+        workflow_yaml += get_featurestore_config_workflow(posix_folder, name)
+    workflow_yaml += f"""    - name: run {posix_notebook}
       run: |
-          source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
-          bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values "{name}.ipynb";
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
+          bash "{github_workspace}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "{github_workspace}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "{name}.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";"""
 
     if name == "debug-online-endpoints-locally-in-visual-studio-code":
@@ -231,9 +308,13 @@ jobs:
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
 
+    papermill_option = ""
+    if "endpoints-batch" in classification:
+        papermill_option = " --log-output"
+
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb
+          papermill -k python {name}.ipynb {name}.output.ipynb{papermill_option}
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
@@ -254,6 +335,8 @@ jobs:
         GIT_PAT: ${{ secrets.GIT_PAT }}
         PYTHON_FEED_SAS: ${{ secrets.PYTHON_FEED_SAS }}"""
 
+    workflow_yaml += validation_yml
+
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
@@ -265,7 +348,7 @@ jobs:
     if nb_config.get(section=name, option=COMPUTE_NAMES, fallback=None):
         workflow_yaml += f"""
     - name: Remove the compute if notebook did not done it properly.
-      run: bash "{github_workspace}/infra/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
+      run: bash "{github_workspace}/infra/bootstrapping/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
 
     workflow_file = os.path.join(
         "..", "..", ".github", "workflows", f"sdk-{classification}-{name}.yml"
@@ -376,7 +459,6 @@ def modify_notebooks(notebooks):
 
     # for each notebooks
     for notebook in notebooks:
-
         # read in notebook
         with open(notebook, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -390,6 +472,43 @@ def modify_notebooks(notebooks):
             f.write("\n")
 
     print("finished modifying notebooks...")
+
+
+def get_spark_config_workflow(folder_name, file_name):
+    workflow = f"""    - name: setup spark resources
+      run: |
+          bash -x jobs/spark/setup_spark.sh jobs/spark/ {folder_name}/{file_name}.ipynb
+      working-directory: sdk/python
+      continue-on-error: true\n"""
+
+    return workflow
+
+
+def get_featurestore_config_workflow(folder_name, file_name):
+    is_sdk_noteobook = "_sdk_" in file_name
+    is_cli_notebook = "_cli_" in file_name
+    is_vnet_notebook = "_vnet_" in file_name
+    workflow = f"""    - name: setup feature-store resources"""
+    if is_sdk_noteobook:
+        workflow += f"""
+      run: |
+          bash -x automation-test/setup-resources.sh automation-test/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+    if is_cli_notebook:
+        workflow += f"""
+      run: |
+          bash -x automation-test/setup-resources-cli.sh automation-test/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+    if is_vnet_notebook:
+        workflow += f"""
+      run: |
+          bash -x automation-test/setup-resources-vnet.sh automation-test/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+
+    return workflow
 
 
 @contextlib.contextmanager
@@ -406,7 +525,6 @@ def change_working_dir(path):
 
 # run functions
 if __name__ == "__main__":
-
     # setup argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--check-readme", type=bool, default=False)

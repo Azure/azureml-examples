@@ -2,8 +2,6 @@
 page_type: sample
 languages:
 - azurecli
-- shell
-- docker
 products:
 - azure-machine-learning
 description: This sample shows how to run standard health checks on a GPU cluster to test performance and correctness of distributed multinode GPU jobs. It helps with troubleshooting performance issues related to the environment and container.

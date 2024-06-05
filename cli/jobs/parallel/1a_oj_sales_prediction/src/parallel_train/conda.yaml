@@ -1,0 +1,17 @@
+name: prs-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - mlflow
+      - mltable>=1.2.0
+      - azureml-dataset-runtime[pandas,fuse]
+      - azureml-telemetry
+      - pandas
+      - pillow
+      - azureml-core
+      - scikit-learn~=1.2.2
+      - cloudpickle==1.1.1
+      - tensorflow==2.9.3

@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
+name: hello-batch-dpl
+endpoint_name: hello-pipeline-batch
+type: pipeline
+component: azureml:hello_batch@latest
+settings:
+    default_compute: batch-cluster

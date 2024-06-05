@@ -1,0 +1,28 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_linear_regression_model
+display_name: TrainLinearRegressionModel
+# version: 1
+type: command
+inputs:
+  train_data: 
+    type: uri_folder
+  test_split_ratio:
+    type: number
+    min: 0
+    max: 1
+    default: 0.2
+outputs:
+  model_output:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+code: .
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+command: >-
+  python train.py 
+  --train_data ${{inputs.train_data}} 
+  --test_data ${{outputs.test_data}} 
+  --model_output ${{outputs.model_output}}
+  --test_split_ratio ${{inputs.test_split_ratio}}
+# </component>

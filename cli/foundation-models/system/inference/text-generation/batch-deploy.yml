@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+name: demo
+compute: cpu-cluster
+resources:
+  instance_count: 1
+error_threshold: 0
+logging_level: info
+max_concurrency_per_instance: 2
+mini_batch_size: 10
+output_file_name: predictions.csv
+retry_settings:
+  max_retries: 3
+  timeout: 300

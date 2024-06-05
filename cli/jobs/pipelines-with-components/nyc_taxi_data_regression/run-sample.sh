@@ -40,8 +40,8 @@ az ml model create --name nyc-taxi-model --version $version --type mlflow_model 
     echo "model create in workspace failed"; exit 1;
 }
 
-# copy model created in workspace to registry
-az ml model create --registry-name <REGISTRY_NAME> --path azureml://subscriptions/$ws_sub/resourceGroups/$ws_rg/workspaces/$ws_name/models/nyc-taxi-model/versions/$version || {
+# share model created in workspace to registry
+az ml model share --name nyc-taxi-model --version $version --share-with-name nyc-taxi-model --share-with-version $version --registry-name <REGISTRY_NAME> || {
     echo "model create in registry failed"; exit 1;
 }
 

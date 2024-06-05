@@ -3,5 +3,4 @@ command: >-
   pip install pygit2; python hello-git.py
 code: src
 environment:
-  image: library/python:latest
-compute: azureml:cpu-cluster
+  image: library/python:3.11.6

@@ -1,0 +1,1 @@
+This is a 3 nodes dummy pipeline job. There are 2 pipeline nodes in the job, each of the pipeline node uses locally defined components - train, score and eval. You need to edit the compute cluster in the defaults section and run the `az ml job create --file pipeline.yml` to submit the pipeline job. 

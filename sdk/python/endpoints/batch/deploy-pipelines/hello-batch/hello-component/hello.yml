@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+name: hello_batch
+display_name: Hello Batch component
+version: 2
+type: pipeline
+jobs:
+  main_job:
+    type: command
+    component:
+      is_deterministic: false
+      code: src
+      environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+      command: >-
+        python hello.py

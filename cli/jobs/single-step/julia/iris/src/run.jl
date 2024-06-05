@@ -1,1 +1,1 @@
-using Pkg; Pkg.activate("."); Pkg.instantiate(); include("iris.jl")
+using Pkg; Pkg.activate("."); Pkg.instantiate(); Pkg.add("CSV"); Pkg.add("DataFrames"); include("iris.jl")

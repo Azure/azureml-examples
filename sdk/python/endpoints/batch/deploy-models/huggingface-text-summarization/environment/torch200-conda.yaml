@@ -1,0 +1,16 @@
+name: huggingface-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8.5
+  - pip
+  - pip:
+    - torch==2.0
+    - transformers
+    - accelerate
+    - optimum
+    - datasets
+    - mlflow
+    - azureml-mlflow
+    - azureml-core
+    - azureml-dataset-runtime[fuse]

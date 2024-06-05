@@ -9,7 +9,7 @@ code_configuration:
   code: ../model-2/onlinescoring/
   scoring_script: score.py
 environment:
-  conda_file: ../model-2/environment/conda.yml
+  conda_file: ../model-2/environment/conda.yaml
   image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
 instance_type: defaultinstancetype
 resources:

@@ -48,7 +48,7 @@ internal class AMLComputeOperations
                     {
                         ScaleSettings = new ScaleSettings(4),
                         VmSize = "Standard_DS3_v2",
-                        // VmSize = "STANDARD_NC6",
+                        // VmSize = "STANDARD_NC6s_v3",
                     }
                 },
             };

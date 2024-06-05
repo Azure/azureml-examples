@@ -1,12 +1,12 @@
 import argparse
 from datetime import datetime
 import os
+import pickle
 import uuid
 import numpy as np
 import pandas as pd
 
 from pandas.tseries.frequencies import to_offset
-from sklearn.externals import joblib
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 from azureml.data.dataset_factory import TabularDatasetFactory
@@ -25,7 +25,6 @@ except ImportError:
 def infer_forecasting_dataset(
     X_test, y_test, model, output_dataset, output_dataset_name="results"
 ):
-
     y_pred, df_all = model.forecast(X_test, y_test, ignore_data_errors=True)
     df_all.reset_index(inplace=True, drop=False)
     df_all.to_csv(
@@ -52,7 +51,8 @@ def get_model(model_path, model_file_name):
             fitted_model = torch.load(fh, map_location=map_location)
     else:
         # Load the sklearn pipeline.
-        fitted_model = joblib.load(model_full_path)
+        with open(model_full_path, "rb") as f:
+            fitted_model = pickle.load(f)
     return fitted_model
 
 
@@ -94,7 +94,6 @@ def get_args():
 
 
 def get_data(target_column_name, test_dataset):
-
     dfs = []
     for fle in filter(lambda x: x.endswith(".csv"), os.listdir(test_dataset)):
         dfs.append(pd.read_csv(os.path.join(test_dataset, fle)))

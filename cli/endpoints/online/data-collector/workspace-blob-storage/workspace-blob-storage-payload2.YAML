@@ -1,0 +1,19 @@
+name: blue
+endpoint_name: my_endpoint
+model: azureml:iris_mlflow_model@latest
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda_file: model/conda.yaml
+code_configuration:
+  code: scripts
+  scoring_script: score.py
+instance_type: Standard_F2s_v2
+instance_count: 1
+data_collector:
+  collections:
+    request:
+      enabled: 'True' # <'True', 'False'>
+    response:
+      enabled: 'True' # <'True', 'False'>
+  rolling_rate: hour # optional
+  sampling_rate: 1.0 # optional, 0.0-1.0, number to specify random sample % of traffic 

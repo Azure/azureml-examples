@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
+name: hello-batch-from-job
+endpoint_name: hello-pipeline-batch
+type: pipeline
+job_definition: azureml:job_name_placeholder
+settings:
+    continue_on_step_failure: false
+    default_compute: batch-cluster 

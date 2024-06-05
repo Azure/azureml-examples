@@ -170,11 +170,11 @@ Asset labels are still in preview and may resolve to an incorrect asset version.
   "services": {
     "Studio": {
       "endpoint": "https://ml.azure.com/runs/6cef8ff4-2bd3-4101-adf2-11e0b62e6f6d?wsid=/subscriptions/ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9/resourcegroups/pipeline-pm/workspaces/pm-dev&tid=72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "job_service_type": "Studio"
+      "type": "Studio"
     },
     "Tracking": {
       "endpoint": "azureml://eastus.api.azureml.ms/mlflow/v1.0/subscriptions/ee85ed72-2b26-48f6-a0e8-cb5bcf98fbd9/resourceGroups/pipeline-pm/providers/Microsoft.MachineLearningServices/workspaces/pm-dev?",
-      "job_service_type": "Tracking"
+      "type": "Tracking"
     }
   },
   "settings": {

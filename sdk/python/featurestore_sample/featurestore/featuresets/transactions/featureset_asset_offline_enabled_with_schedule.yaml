@@ -1,0 +1,31 @@
+$schema: http://azureml/sdk-2-0/FeatureSet.json
+name: transactions
+version: '1'
+description: 7-day and 3-day rolling aggregation of transactions featureset
+stage: Development
+entities:
+- azureml:account:1
+specification:
+  path: ./spec
+materialization_settings:
+  offline_enabled: true
+  online_enabled: false
+  schedule:
+    type: recurrence
+    interval: 3
+    frequency: Hour
+    start_time: "2023-04-15T00:04:10"
+  notification:
+    email_on:
+    - JobFailed
+    emails:
+    - alice@microsoft.com
+  resource:
+    instance_type: Standard_E8S_V3
+  spark_configuration:
+    spark.driver.cores: 4
+    spark.driver.memory: 36g
+    spark.executor.cores: 4
+    spark.executor.instances: 2
+    spark.executor.memory: 36g
+    spark.sql.shuffle.partitions: 1

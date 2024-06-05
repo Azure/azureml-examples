@@ -1,0 +1,58 @@
+$schema: http://azureml/sdk-2-0/SparkComponent.json
+type: spark
+
+name: my_custom_signal
+display_name: Custom - Compute Metrics
+description: Compute metrics given a baseline and a deployment's model data input.
+version: 1.0.0
+is_deterministic: true
+
+code: ./src
+entry:
+  file: ./run.py
+
+inputs:
+  production_data:
+    mode: direct
+    type: mltable
+  std_deviation_threshold:
+    type: number
+outputs:
+  signal_metrics:
+    mode: direct
+    type: mltable
+conf:
+  spark.driver.cores: 1
+  spark.driver.memory: 2g
+  spark.executor.cores: 2
+  spark.executor.memory: 2g
+  spark.executor.instances: 1
+  spark.dynamicAllocation.enabled: True
+  spark.dynamicAllocation.minExecutors: 1
+  spark.dynamicAllocation.maxExecutors: 4
+  spark.jars.packages: com.microsoft.azure:synapseml_2.12:0.11.0-26-52919ce4-SNAPSHOT,org.apache.spark:spark-avro_2.12:3.3.1
+  spark.jars.repositories: https://mmlspark.azureedge.net/maven
+  spark.jars.excludes: org.scala-lang:scala-reflect,org.apache.spark:spark-tags_2.12,org.scalactic:scalactic_2.12,org.scalatest:scalatest_2.12,com.fasterxml.jackson.core:jackson-databind
+  spark.yarn.user.classpath.first: true
+  spark.sql.parquet.enableVectorizedReader: false
+  spark.sql.legacy.replaceDatabricksSparkAvro.enabled: true
+  spark.driver.userClassPathFirst: false
+  spark.executor.userClassPathFirst: false
+  spark.synapse.library.python.env: |
+    channels:
+      - conda-forge
+    dependencies:
+      - python=3.8
+      - pip:
+        - scipy~=1.10.0
+        - numpy~=1.21.0
+        - pandas~=1.4.3
+        - azureml-mlflow~=1.49.0
+        - mltable~=1.3.0
+        - azureml-fsspec
+        - fsspec~=2023.4.0
+    name: momo-base-spark
+args: >-
+  --production_data ${{inputs.production_data}}
+  --std_deviation_threshold ${{inputs.std_deviation_threshold}}
+  --signal_metrics ${{outputs.signal_metrics}}

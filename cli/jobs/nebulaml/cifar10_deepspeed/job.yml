@@ -1,0 +1,23 @@
+# Training job submission via AML CLI v2
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: pip list && python cifar10_deepspeed.py --deepspeed --deepspeed_config ds_config.json --deepspeed_mpi --global_rank $RANK 
+
+experiment_name: cifar10-ds-nebulaml
+environment: < your environment name > # Should replace your environment
+environment_variables:
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
+  AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
+code: src
+outputs:
+  output:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/workspaceblobstore/paths/outputs
+compute: < your compute name > # Should replace your compute
+distribution:
+  type: pytorch 
+  process_count_per_instance: 4
+resources:
+  instance_count: 4

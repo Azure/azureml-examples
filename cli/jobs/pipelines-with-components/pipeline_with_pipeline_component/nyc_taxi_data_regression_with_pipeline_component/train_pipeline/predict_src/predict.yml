@@ -1,0 +1,22 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: predict_taxi_fares
+# version: 1
+display_name: PredictTaxiFares
+type: command
+inputs:
+  model_input:
+    type: mlflow_model
+  test_data:
+    type: uri_folder
+outputs:
+  predictions:
+    type: uri_folder
+environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+code: .
+command: >-
+  python predict.py 
+  --model_input ${{inputs.model_input}} 
+  --test_data ${{inputs.test_data}}
+  --predictions ${{outputs.predictions}}
+# </component>

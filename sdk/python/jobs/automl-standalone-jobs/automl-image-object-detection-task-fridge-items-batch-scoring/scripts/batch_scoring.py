@@ -2,10 +2,7 @@
 # Licensed under the MIT license.
 
 import os
-import argparse
-import json
 
-from azureml.core.model import Model
 from azureml.automl.core.shared import logging_utilities
 
 from azureml.automl.dnn.vision.common.logging_utils import get_logger
@@ -13,6 +10,12 @@ from azureml.automl.dnn.vision.common.model_export_utils import (
     load_model,
     run_inference_batch,
 )
+
+# Uncomment line 16-18 and comment line 19-21 to run batch scoring
+# for models other than yolo.
+# from azureml.automl.dnn.vision.object_detection.writers.score import (
+#     _score_with_model,
+# )
 from azureml.automl.dnn.vision.object_detection_yolo.writers.score import (
     _score_with_model,
 )

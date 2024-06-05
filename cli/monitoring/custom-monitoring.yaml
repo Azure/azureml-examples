@@ -1,0 +1,38 @@
+# custom-monitoring.yaml
+$schema:  http://azureml/sdk-2-0/Schedule.json
+name: my-custom-signal
+
+trigger:
+  type: recurrence
+  frequency: day # can be minute, hour, day, week, month
+  interval: 7 # #every day
+
+create_monitor:
+  compute:
+    instance_type: "standard_e8s_v3"
+    runtime_version: "3.3"
+
+  monitoring_signals:
+    customSignal:
+      type: custom
+      component_id: azureml:my_custom_signal:1.0.0
+      input_data:
+        test_data_1:
+          input_data:
+            type: mltable
+            path: azureml:Direct:1
+          data_context: test
+        test_data_2:
+          input_data:
+            type: mltable
+            path: azureml:Direct:1
+          data_context: test
+          pre_processing_component: azureml:custom_preprocessor:1.0.0
+
+      metric_thresholds:
+        - metric_name: std_dev
+          threshold: 2
+          
+  alert_notification:
+    emails:
+      - abc@example.com

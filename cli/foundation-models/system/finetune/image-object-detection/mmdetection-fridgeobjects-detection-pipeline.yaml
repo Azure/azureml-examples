@@ -1,0 +1,113 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: AzureML-Cli-Train-Finetune-Vision-OD-Samples
+
+inputs:
+  # dataset files
+  training_data:
+    type: mltable
+  
+  validation_data:
+    type: mltable
+
+  test_data:
+    type: mltable
+  
+  # deepspeed config file
+  ds_finetune:
+    path: deepspeed_configs/zero1.json
+    type: uri_file
+
+  # compute
+  compute_model_import: sample-model-import-cluster
+  compute_finetune: sample-finetune-cluster-gpu
+  compute_model_evaluation: sample-finetune-cluster-gpu
+  # model_name: yolof_r50_c5_8x8_1x_coco
+  # # model - specify the foundation model available in the azureml system registry
+  mlflow_model: 
+    path: azureml://registries/azureml/models/mmd-3x-yolof_r50_c5_8x8_1x_coco/versions/8
+    type: mlflow_model
+
+outputs:
+  # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
+  trained_model:
+    type: mlflow_model
+
+settings:
+  force_rerun: true
+  continue_on_step_failure: false
+  default_compute: azureml:sample-finetune-cluster-gpu
+
+jobs:
+  mmdetection_model_finetune_job:
+    type: pipeline
+    component: azureml://registries/azureml/components/mmdetection_image_objectdetection_instancesegmentation_pipeline/labels/latest
+    inputs:
+
+      # # Compute
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+      compute_model_evaluation: ${{parent.inputs.compute_model_evaluation}}
+      instance_count: 1
+      process_count_per_instance: 1
+
+      # # Model import args
+      task_name: image-object-detection
+      download_from_source: False # True for downloading a model directly from MMDetection
+      # model_name: ${{parent.inputs.model_name}}
+      # pytorch_model: ${{parent.inputs.pytorch_model}}
+      mlflow_model: ${{parent.inputs.mlflow_model}}
+      model_family: MmDetectionImage
+
+      # # Data
+      training_data: ${{parent.inputs.training_data}}
+      validation_data: ${{parent.inputs.validation_data}}
+      test_data: ${{parent.inputs.test_data}}
+
+      # # Finetuning parameters
+      apply_augmentations: True
+      number_of_workers: 8
+      apply_deepspeed: False
+      deepspeed_config: ${{parent.inputs.ds_finetune}}
+      apply_ort: False
+      auto_find_batch_size: False
+      extra_optim_args: ""
+      precision: 32
+      random_seed: 42
+      evaluation_strategy: epoch
+      evaluation_steps: 500
+      logging_strategy: epoch
+      logging_steps: 500
+      save_strategy: epoch
+      save_steps: 500
+      save_total_limit: -1
+      early_stopping: False
+      early_stopping_patience: 1
+      resume_from_checkpoint: False
+      save_as_mlflow_model: True
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # image_min_size: -1
+      # image_max_size: -1
+      # metric_for_best_model: mean_average_precision
+      # number_of_epochs: 15
+      # max_steps: -1
+      # training_batch_size: 4
+      # validation_batch_size: 4
+      # learning_rate: 5e-5
+      # learning_rate_scheduler: warmup_linear
+      # warmup_steps: 0
+      # optimizer: adamw_hf
+      # weight_decay: 0.0
+      # gradient_accumulation_step: 1
+      # max_grad_norm: 1.0
+      # iou_threshold: 0.5
+      # box_score_threshold: 0.3
+
+      # Model evaluation args
+      # # Uncomment one or more lines below to provide specific values, if you wish you override the autoselected default values.
+      # label_column_name: label
+      # input_column_names: image_url
+
+    outputs:
+      mlflow_model_folder: ${{parent.outputs.trained_model}}

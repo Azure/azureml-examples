@@ -1,0 +1,12 @@
+$schema: http://azureml/sdk-2-0/Featureset.json
+
+name: accounts
+version: "1"
+description: accounts featureset
+specification:
+  path: ./spec # path to feature set specification folder
+entities: # entities associated with this feature-set
+  - azureml:account:1
+stage: Development
+tags:
+  "data_type": "nonPII"

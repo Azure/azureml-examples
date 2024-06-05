@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: nyc_taxi_data_regression
+description: nyc_taxi_data_regression
+path: ./data
+type: uri_folder

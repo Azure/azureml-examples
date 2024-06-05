@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: with-package
+endpoint_name: heart-classifier
+environment: azureml:heart-classifier-mlflow-pkg@latest
+instance_type: Standard_DS3_v2
+instance_count: 1

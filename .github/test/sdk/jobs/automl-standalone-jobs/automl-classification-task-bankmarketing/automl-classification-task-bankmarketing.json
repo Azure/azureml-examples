@@ -1,0 +1,18 @@
+{
+  "validations": [
+  {
+    "name": "check notebook output",
+    "params": {
+      "check": "warning"
+     }
+  },
+  {
+    "name": "check v2 experiment result",
+    "params": {
+      "experiment_name": "dpv2-classifier-experiment",
+      "minimum_median_score": "0.7",
+      "metric_name": "AUC_weighted"
+    }
+   }
+   ]
+}

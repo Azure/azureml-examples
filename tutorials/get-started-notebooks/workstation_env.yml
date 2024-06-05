@@ -1,0 +1,14 @@
+name: workstation_env
+# This file serves as an example - you can update packages or versions to fit your use case
+dependencies:
+  - python=3.8
+  - pip=21.2.4
+  - scikit-learn=0.24.2
+  - scipy=1.7.1
+  - pandas>=1.1,<1.2
+  - pip:
+    - mlflow-skinny 
+    - azureml-mlflow
+    - psutil>=5.8,<5.9
+    - ipykernel~=6.0
+    - matplotlib

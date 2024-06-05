@@ -6,8 +6,12 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 
 #  endpoint name
 export ENDPOINT_NAME=endpt-ncd-`echo $RANDOM`
-AML_MODEL_NAME=mir-sample-sklearn-ncd-model
-echo $AML_MODEL_NAME
+
+AML_SKLEARN_MODEL_NAME=mir-sample-sklearn-ncd-model
+echo $AML_SKLEARN_MODEL_NAME
+
+AML_LIGHTGBM_MODEL_NAME=mir-sample-lightgbm-ncd-model
+echo $AML_LIGHTGBM_MODEL_NAME
 
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/ncd/create-endpoint.yaml
@@ -24,8 +28,10 @@ else
   exit 1
 fi
 
-# cleanup of existing model
-model_archive=$(az ml model archive -n $AML_MODEL_NAME --version 1 || true)
+# cleanup of existing models
+model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 1 || true)
+model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 1 || true)
+
 
 # <create_sklearn_deployment>
 az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/ncd/sklearn-deployment.yaml --all-traffic
@@ -63,8 +69,9 @@ fi
 az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deployment --request-file endpoints/online/ncd/sample-request-lightgbm.json
 # </test_lightgbm_deployment>
 
-# cleanup of model
-model_archive=$(az ml model archive -n $AML_MODEL_NAME --version 1 || true)
+# cleanup of models
+model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 1 || true)
+model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 1 || true)
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes 

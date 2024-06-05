@@ -1,0 +1,4 @@
+age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal
+65,1,4,135,254,0,2,127,0,2.8,2,1,reversible
+48,1,4,130,256,1,2,150,1,0.0,1,2,reversible
+63,0,4,150,407,0,2,154,0,4.0,2,3,reversible

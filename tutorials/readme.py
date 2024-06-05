@@ -119,6 +119,12 @@ def write_notebook_workflow(
     forecast_import = get_forecast_reqs(name, nb_config)
     posix_folder = folder.replace(os.sep, "/")
     posix_notebook = notebook.replace(os.sep, "/")
+    runs_on = "ubuntu-latest"
+    workflow_sched = "0 */8 * * *"
+    if "explore-data" in name:
+        runs_on = "ubuntu-20.04"
+    if "deploy-model" in name:
+        workflow_sched = "0 */12 * * *"
 
     workflow_yaml = f"""{READONLY_HEADER}
 name: tutorials-{classification}-{name}
@@ -129,7 +135,7 @@ on:\n"""
         workflow_yaml += f"""  workflow_dispatch:\n"""
     if enable_scheduled_runs:
         workflow_yaml += f"""  schedule:
-    - cron: "0 */8 * * *"\n"""
+    - cron: "{workflow_sched}"\n"""
     workflow_yaml += f"""  pull_request:
     branches:
       - main\n"""
@@ -141,14 +147,14 @@ on:\n"""
       - tutorials/{posix_folder}/**
       - .github/workflows/tutorials-{classification}-{name}.yml
       - sdk/python/dev-requirements.txt
-      - infra/**
+      - infra/bootstrapping/**
       - sdk/python/setup.sh
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: {runs_on}
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -166,28 +172,33 @@ jobs:
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup SDK
       run: |
-          source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{github_workspace}" "{github_workspace}/tutorials/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
-          source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
       continue-on-error: true
     - name: run {posix_notebook}
       run: |
-          source "{github_workspace}/infra/sdk_helpers.sh";
-          source "{github_workspace}/infra/init_environment.sh";
-          bash "{github_workspace}/infra/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
-          bash "{github_workspace}/infra/sdk_helpers.sh" replace_template_values "{name}.ipynb";
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
+          bash "{github_workspace}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "{github_workspace}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "{name}.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";"""
 
     if name == "debug-online-endpoints-locally-in-visual-studio-code":
@@ -199,6 +210,14 @@ jobs:
           touch /tmp/code/code
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
+    if "explore-data" in name:
+        workflow_yaml += f"""
+
+          # load data into 'data' subdirectory
+          mkdir data
+          cd data
+          wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
+          cd .."""
 
     if not ("automl" in folder):
         workflow_yaml += f"""
@@ -226,27 +245,7 @@ jobs:
     if nb_config.get(section=name, option=COMPUTE_NAMES, fallback=None):
         workflow_yaml += f"""
     - name: Remove the compute if notebook did not done it properly.
-      run: bash "{github_workspace}/infra/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
-
-    workflow_yaml += f"""
-    - name: Send IcM on failure
-      if: ${{{{ failure() && github.ref_type == 'branch' && (github.ref_name == 'main' || contains(github.ref_name, 'release')) }}}}
-      uses: ./.github/actions/generate-icm
-      with:
-        host: ${{{{ secrets.AZUREML_ICM_CONNECTOR_HOST_NAME }}}}
-        connector_id: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CONNECTOR_ID }}}}
-        certificate: ${{{{ secrets.AZUREML_ICM_CONNECTOR_CERTIFICATE }}}}
-        private_key: ${{{{ secrets.AZUREML_ICM_CONNECTOR_PRIVATE_KEY }}}}
-        args: |
-            incident:
-                Title: "[azureml-examples] Notebook validation failed on branch '${{{{ github.ref_name }}}}' for notebook '{posix_notebook}'"
-                Summary: |
-                    Notebook '{posix_notebook}' is failing on branch '${{{{ github.ref_name }}}}': ${{{{ github.server_url }}}}/${{{{ github.repository }}}}/actions/runs/${{{{ github.run_id }}}}
-                Severity: 4
-                RoutingId: "github://azureml-examples"
-                Status: Active
-                Source:
-                    IncidentId: "{posix_notebook}[${{{{ github.ref_name }}}}]"\n"""
+      run: bash "{github_workspace}/infra/bootstrapping/remove_computes.sh" {nb_config.get(section=name, option=COMPUTE_NAMES)}\n"""
 
     workflow_file = os.path.join(
         "..", ".github", "workflows", f"tutorials-{classification}-{name}.yml"
@@ -351,7 +350,7 @@ def modify_notebooks(notebooks):
     print("modifying notebooks...")
     # setup variables
     kernelspec = {
-        "display_name": "Python 3.10 - SDK V2",
+        "display_name": "Python 3.10 - SDK v2",
         "language": "python",
         "name": "python310-sdkv2",
     }
