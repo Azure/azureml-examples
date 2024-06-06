@@ -7,6 +7,7 @@ dependencies:
     - azureml-featurestore==1.1.0
     # Azure management libraries
     - azure-mgmt-authorization==3.0.0
+    - azure-ai-ml @ https://docsupport.blob.core.windows.net/ml-sample-submissions/3851693/azure_ai_ml-1.17.0-py3-none-any.whl
     # This is needed if you want to execute the Part 2 of the "SDK" track or execute "SDK+CLI" track in the docs tutorial
     - azure-cli
     # Following are required for training and batch inference pipeline of *this* sample. Users can remove this for their own projects

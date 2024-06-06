@@ -7,6 +7,7 @@ dependencies:
     - aiohttp==3.8.4
     # Online feature store core SDK
     - azureml-featurestore[online]==1.1.0
+    - azure-ai-ml @ https://docsupport.blob.core.windows.net/ml-sample-submissions/3851693/azure_ai_ml-1.17.0-py3-none-any.whl
     # Azure management libraries
     - azure-mgmt-msi
     - azure-mgmt-redis
