@@ -27,7 +27,7 @@ export async function createOrUpdateComponentVersion() : Promise<void> {
       description: "This is the basic command component",
       componentSpec: {
         'command': 'echo Hello World & echo $[[${{inputs.component_in_number}}]] & echo $[[${{inputs.component_in_path}}]] & echo ${{outputs.component_out_path}} > ${{outputs.component_out_path}}/component_in_number',
-        'environment': 'azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1',
+        'environment': 'azureml://registries/azureml/environments/sklearn-1.0/labels/latest',
         'name': 'command_component_basic',
         'description': 'This is the basic command component',
         'tags': { 'tag': 'tagvalue', 'owner': 'sdkteam' },

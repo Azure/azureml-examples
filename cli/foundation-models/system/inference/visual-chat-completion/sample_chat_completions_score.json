@@ -1,0 +1,22 @@
+{
+  "input_data": {
+    "input_string": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "https://www.ilankelman.org/stopsigns/australia.jpg"
+            }
+          },
+          {
+            "type": "text",
+            "text": "What is shown in this image? Be extremely detailed and specific."
+          }
+        ]
+      }
+    ],
+    "parameters": { "temperature": 0.7, "max_new_tokens": 2048 }
+  }
+}
