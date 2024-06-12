@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
 command: >-
   python train.py
-environment: azureml:AzureML-tensorflow-2.12-cuda11@latest
+environment: azureml:AzureML-tensorflow-2.16-cuda11@latest
 compute: azureml:gpu-cluster
 display_name: tensorflow-mnist-example
 experiment_name: tensorflow-mnist-example
