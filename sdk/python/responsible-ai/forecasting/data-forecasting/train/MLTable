@@ -1,0 +1,6 @@
+$schema: http://azureml/sdk-2-0/MLTable.json
+type: mltable
+paths:
+  - file: ./train.parquet
+transformations:
+  - read_parquet
