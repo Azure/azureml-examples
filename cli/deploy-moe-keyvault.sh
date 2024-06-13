@@ -25,7 +25,7 @@ fi
 # </check_endpoint> 
 
 # <create_keyvault> 
-az keyvault create -n $KV_NAME -g $RESOURCE_GROUP 
+az keyvault create -n $KV_NAME -g $RESOURCE_GROUP --enable-rbac-authorization false
 # </create_keyvault>
 
 # <set_access_policy>
