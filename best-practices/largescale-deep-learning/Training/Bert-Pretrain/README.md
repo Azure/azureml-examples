@@ -2,7 +2,7 @@
 [![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 # **Bert Pretraining**
 
-This example will focus on pretraining a BERT model for Masked Language Modeling (MLM) on the GLUE dataset. Bert is a large model and in this article you can learn on tips and tricks to be able to train with high efficiency for compute and memory without impacting the quality of model.
+This example will focus on pretraining a BERT model for Masked Language Modeling (MLM) on the combined Wikipedia and bookcorpus dataset. Bert is a large language model and in this article you can learn on tips and tricks to be able to train with high efficiency for compute and memory without impacting the quality of model.
 
 ## **Setup**
 ### **Hardware**
@@ -52,68 +52,62 @@ tokenizer = AutoTokenizer.from_pretrained(args.model_checkpoint, use_fast=True)
 ```
 This tokenizer will be created based on the value of ``args.model_checkpoint``. In this case, ``BertTokenizer`` from HuggingFace Transformers will be used. To ready the data for training, the tokenizer will split the data into words or subwords (tokens) and encode them by converting them to integers.
 
-Next we load the dataset from HuggingFace preprocessed data for GLUE.
+Next we load the dataset from HuggingFace preprocessed data for Wikipedia + Bookcorpus.
 ```
-encoded_dataset_train, encoded_dataset_eval = load_encoded_glue_dataset(
-    task=task, tokenizer=tokenizer
-)
-```
-This is done from within the [``glue_datasets.py``](./src/glue_datasets.py) file.
-```
-def load_raw_glue_dataset(task: str) -> Union[DatasetDict, Dataset]:
-    dataset = load_dataset("glue", actual_task(task))
-    return dataset
-
-def load_encoded_glue_dataset(
-    task: str, tokenizer: PreTrainedTokenizerBase
+def load_encoded_wiki_dataset(
+    tokenizer: PreTrainedTokenizerBase
 ) -> Union[DatasetDict, Dataset]:
-    """Load GLUE data, apply tokenizer and split into train/validation."""
-    tokenizer_func = construct_tokenizer_function(tokenizer=tokenizer, task=task)
-    raw_dataset = load_raw_glue_dataset(task)
-    encoded_dataset = raw_dataset.map(tokenizer_func, batched=True)
 
-    validation_key = (
-        "validation_mismatched"
-        if task == "mnli-mm"
-        else "validation_matched"
-        if task == "mnli"
-        else "validation"
-    )
-    return encoded_dataset["train"], encoded_dataset[validation_key]
+    """Load wiki + corpus data, apply tokenizer and split into train/validation."""
+    # Construct tokenizer function
+    tokenizer_func = construct_tokenizer_function(tokenizer=tokenizer)
+    # load raw data
+    raw_wiki_dataset = load_raw_wiki_dataset()
+    raw_corpus_dataset = load_raw_corpus_dataset()
+    assert raw_corpus_dataset.features.type == raw_wiki_dataset.features.type
+    # Combine datasets
+    full_raw_dataset = interleave_datasets([raw_corpus_dataset, raw_wiki_dataset])
+    # tokenize dataset
+    encoded_dataset = full_raw_dataset.map(tokenizer_func, batched=True, remove_columns=["text"])
+    # Prepare function for grouping text into batches
+    group_texts=construct_group_texts(tokenizer=tokenizer)
+    # Batch the data
+    encoded_dataset = encoded_dataset.map(group_texts, batched=True)
+    return encoded_dataset
 ```
-Before training the model, we also load a metric function specific to the GLUE dataset task we perform. The default task is [CoLA](https://nyu-mll.github.io/CoLA/).
-```
-compute_metrics = construct_compute_metrics_function(args.task)
-```
+This is done from within the [``wiki_datasets.py``](./src/glue_datasets.py) file.
+
 ### **Train the Model**
 Next we train the model, but first we prepare the model configuration:
 ```
 model_config = AutoConfig.from_pretrained(
     args.model_checkpoint,
     vocab_size=len(tokenizer),
-    n_ctx=context_length, # context_length = 512; Value specific to BERT Large
+    n_ctx=context_length,
     bos_token_id=tokenizer.bos_token_id,
     eos_token_id=tokenizer.eos_token_id,
 )
-model = AutoModelForSequenceClassification.from_config(model_config)
+
+model = AutoModelForMaskedLM.from_config(model_config)
+encoded_dataset_train = load_encoded_wiki_dataset(
+    tokenizer=tokenizer
+)
 ```
 Since this is a pretraining job and we don't want a pretrained model already, the model will be created from a config instead of using a ``from_pretrained()`` method like the tokenizer. In this case we create a ``BertForMaskedLM`` model.
 
 Finally, we create the Trainer and train the model. Instead of a visible training loop, the ``Trainer.train()`` method will internally execute the loop.
 ```
-trainer = Trainer(
-    model,
-    training_args,
+
+trainer = ORTTrainer(
+    model=model,
+    args=training_args,
     train_dataset=encoded_dataset_train,
-    eval_dataset=encoded_dataset_eval,
+    data_collator=data_collator,
     tokenizer=tokenizer,
     compute_metrics=compute_metrics,
-    callbacks=[ProfilerCallback]
+    callbacks=[AzureMLCallback, ProfilerCallback]
 )
 
-trainer.pop_callback(MLflowCallback)
-
-result = trainer.train()
 ```
 The ``ProfilerCallback`` in the above code is used to integrate the experiment with [Pytorch Profiler](https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html). For more information on this code, see [this page](../README.md#pytorch-profiler).
 
@@ -129,60 +123,11 @@ To try BERT pretraining with DeepSpeed and ORT, submit the following command fro
 az ml job create --file AML-DeepSpeed-submit.yml
 ```
 
-## **Results**
-### **Recorded Metrics**
+## Results
 
-- **Training time**: This refers to the total time taken to train the model from start to finish. Using DeepSpeed may complete the training process in less time.
-
-- **Training throughput**: This metric refers to the number of training examples that can be processed per second during training. With DeepSpeed, you may be able to achieve higher training throughput, which can help speed up the training process.
-
-These metrics were calculated while using two ND40rs compute nodes with 8 V100 gpus each.
-|      Metrics      |   Vanilla Pytorch     | DeepSpeed | Improvement |
-| ----------------- | --------------- | ------------------ |----------|
-| Training Time     |      351.75 s   |   253.79 s     |    27.8%     |
-| samples/second    |      2431.02    |   3369.37      | 27.8%        |
-
-## **Additional Experiments**
-
-In addition to BERT-large, this repository also contains code for pretraining for both DistilBERT and BERT-base models. These experiments can be run with the same setup as BERT-large.
-
-### **BERT-base**
-
-To pretrain the BERT-base model using vanilla pytorch, edit the ``AML-submit.yml`` file and replace the existing command with the following:
-```
-python pretrain_glue.py --num_train_epochs 100 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch" --logging_strategy "epoch" --per_device_train_batch_size 128 --gradient_accumulation_steps 1 --per_device_eval_batch_size 128 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "bert-base-uncased"
-```
-To pretrain using the optimal DeepSpeed configuration file found by DeepSpeed Autotuning, edit the ``AML-DeepSpeed-submit.yml`` file and replace the existing command with the following:
-```
-python pretrain_glue.py --deepspeed ds_config_bertbase.json --num_train_epochs 100 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch" --logging_strategy "epoch" --per_device_train_batch_size 532 --gradient_accumulation_steps 1 --per_device_eval_batch_size 532 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "bert-base-uncased"
-```
-
-### **DistilBERT**
-
-To pretrain the BERT-base model using vanilla pytorch, edit the ``AML-submit.yml`` file and replace the existing command with the following:
-```
-python pretrain_glue.py --num_train_epochs 100 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch" --logging_strategy "epoch" --per_device_train_batch_size 256 --gradient_accumulation_steps 1 --per_device_eval_batch_size 256 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "distilbert-base-uncased"
-```
-To pretrain using the optimal DeepSpeed configuration file found by DeepSpeed Autotuning, edit the ``AML-DeepSpeed-submit.yml`` file and replace the existing command with the following:
-```
-python pretrain_glue.py --deepspeed ds_config_distilbert.json --num_train_epochs 100 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch" --logging_strategy "epoch" --per_device_train_batch_size 512 --gradient_accumulation_steps 2 --per_device_eval_batch_size 512 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "distilbert-base-uncased"
-```
-
-### **Result Comparison**
-#### **DistilBERT**
-| Optimizations  | Model size  | GPU  | MBS  | Samples/Second  | Improvement |
-|----------------|-------------|------|------|-----------------|-------------|
-| Vanilla Pytorch| 66M         | 16   | 256  | 12373.53        |     --      |
-| DeepSpeed + Autotuning| 66M  | 16   | 512  | 14419.00        | 14%         |
-
-#### **BERT-base**
-| Optimizations  | Model size  | GPU  | MBS  | Samples/Second  | Improvement |
-|----------------|-------------|------|------|-----------------|-------------|
-| Vanilla Pytorch| 110M        | 16   | 128  | 7837.66         |     --      |
-| DeepSpeed + Autotuning| 110M | 16   | 532  | 9916.19         | 21%         |
-
-#### **BERT-large**
-| Optimizations  | Model size        | GPU  | MBS  | Samples/Second  | Improvement |
-|----------------|-------------------|------|------|-----------------|-------------|
-| Vanilla Pytorch| 330M              | 16   | 64   | 2431.02         |     --      |
-| DeepSpeed + Autotuning| 330M | 16   | 93   | 3369.37         | 28%         |
+Some results achieved using this example:
+| Batch Size | Gradient Accumulation Steps | Time | Loss | Throughput |
+|------------|------------------|------|------|-----------|
+|64 |32 |23h 1min |2.46 |3712 |
+|16 |32 |25h 46min |2.49 |2064 |
+|64 |128 |21h 19min |2.34 |3713 |

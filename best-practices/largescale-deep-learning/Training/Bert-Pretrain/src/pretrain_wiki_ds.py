@@ -19,70 +19,51 @@ import numpy as np
 import mlflow
 import time
 from typing import Dict, Callable
-import json
 import os
 
-# from dataclasses import dataclass, field
-import transformers
 from transformers import (
-    AutoModelForSequenceClassification,
     AutoTokenizer,
     EvalPrediction,
-    Trainer,
     HfArgumentParser,
-    TrainingArguments,
-)
-from glue_datasets import (
-    load_encoded_glue_dataset,
-    num_labels_from_task,
-    load_metric_from_task,
+    DataCollatorForLanguageModeling,
+    AutoModelForMaskedLM,
+    logging,
+    AutoConfig,
+    integrations,
+    TrainerCallback
 )
 
-# pretraining
-from transformers import AutoConfig
-from transformers import DataCollatorForLanguageModeling
+from wiki_datasets import (
+    load_encoded_wiki_dataset,
+    load_metric_from_wiki
+)
 
-# Azure ML imports - could replace this with e.g. wandb or mlflow
-from transformers.integrations import MLflowCallback
+# Onnx Runtime for training
+from optimum.onnxruntime import ORTTrainer, ORTTrainingArguments
 
 # Pytorch Profiler
 import torch.profiler.profiler as profiler
-from transformers import TrainerCallback
 
-
-def construct_compute_metrics_function(task: str) -> Callable[[EvalPrediction], Dict]:
-    metric = load_metric_from_task(task)
-
-    if task != "stsb":
-
-        def compute_metrics_function(eval_pred: EvalPrediction) -> Dict:
-            predictions, labels = eval_pred
-            predictions = np.argmax(predictions, axis=1)
-            return metric.compute(predictions=predictions, references=labels)
-
-    else:
-
-        def compute_metrics_function(eval_pred: EvalPrediction) -> Dict:
-            predictions, labels = eval_pred
-            predictions = predictions[:, 0]
-            return metric.compute(predictions=predictions, references=labels)
+def construct_compute_metrics_function() -> Callable[[EvalPrediction], Dict]:
+    metric = load_metric_from_wiki() # metric is set to accuracy
+    
+    def compute_metrics_function(eval_pred: EvalPrediction) -> Dict:
+        predictions, labels = eval_pred
+        predictions = np.argmax(predictions, axis=1)
+        return metric.compute(predictions=predictions, references=labels)
 
     return compute_metrics_function
 
-
 if __name__ == "__main__":
-    parser = HfArgumentParser(TrainingArguments)
-    parser.add_argument("--task", default="cola", help="name of GLUE task to compute")
+    parser = HfArgumentParser(ORTTrainingArguments)
     parser.add_argument("--model_checkpoint", default="bert-large-uncased")
     parser.add_argument("--tensorboard_log_dir", default="/outputs/runs/")
 
     training_args, args = parser.parse_args_into_dataclasses()
 
-    transformers.logging.set_verbosity_debug()
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-    task: str = args.task.lower()
-
-    num_labels = num_labels_from_task(task)
+    logging.set_verbosity_debug()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_checkpoint, use_fast=True)
     context_length = 512
@@ -94,13 +75,15 @@ if __name__ == "__main__":
         bos_token_id=tokenizer.bos_token_id,
         eos_token_id=tokenizer.eos_token_id,
     )
-    model = AutoModelForSequenceClassification.from_config(model_config)
 
-    encoded_dataset_train, encoded_dataset_eval = load_encoded_glue_dataset(
-        task=task, tokenizer=tokenizer
+    model = AutoModelForMaskedLM.from_config(model_config)
+    encoded_dataset_train = load_encoded_wiki_dataset(
+        tokenizer=tokenizer
     )
 
-    compute_metrics = construct_compute_metrics_function(args.task)
+    # This one will take care of randomly masking the tokens.
+    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer)
+    compute_metrics = construct_compute_metrics_function()
 
     # Create path for logging to tensorboard
     my_logs = os.environ["PWD"] + args.tensorboard_log_dir
@@ -109,7 +92,7 @@ if __name__ == "__main__":
     class ProfilerCallback(TrainerCallback):
         def on_train_begin(self, args, state, control, model=None, **kwargs):
             self.prof = profiler.profile(
-                schedule=profiler.schedule(wait=2, warmup=1, active=3, repeat=2),
+                schedule=profiler.schedule(wait=20, warmup=1, active=3, repeat=20),
                 activities=[
                     profiler.ProfilerActivity.CPU,
                     profiler.ProfilerActivity.CUDA,
@@ -127,19 +110,34 @@ if __name__ == "__main__":
         def on_step_begin(self, args, state, control, model=None, **kwargs):
             self.prof.step()
 
+    # This callback takes care of mlflow logging
+    class AzureMLCallback(TrainerCallback):
+        def on_log(self, args, state, control, logs, model=None, **kwargs):
+            if state.is_world_process_zero:
+                metrics = {}
+                for k, v in logs.items():
+                    if isinstance(v, (int, float)):
+                        metrics[k] = v
+                    else:
+                        logger.warning(
+                            f'Trainer is attempting to log a value of "{v}" of type {type(v)} for key "{k}" as a metric. '
+                            "MLflow's log_metric() only accepts float and int types so we dropped this attribute."
+                        )
+                # metrics["world_size"] = int(os.environ.get("GROUP_WORLD_SIZE", 1))
+                mlflow.log_metrics(metrics=metrics)
+
     # Initialize huggingface trainer. This trainer will internally execute the training loop
-    trainer = Trainer(
-        model,
-        training_args,
+    trainer = ORTTrainer(
+        model=model,
+        args=training_args,
         train_dataset=encoded_dataset_train,
-        eval_dataset=encoded_dataset_eval,
-        # data_collator=data_collator,
+        data_collator=data_collator,
         tokenizer=tokenizer,
         compute_metrics=compute_metrics,
-        callbacks=[ProfilerCallback],
+        callbacks=[AzureMLCallback, ProfilerCallback]
     )
 
-    trainer.pop_callback(MLflowCallback)
+    trainer.pop_callback(integrations.MLflowCallback)
 
     start = time.time()
 
