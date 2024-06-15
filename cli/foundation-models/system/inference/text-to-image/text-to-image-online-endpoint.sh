@@ -56,7 +56,7 @@ max_concurrent_request=2  # the maximum number of concurrent requests supported 
 # For model `stabilityai-stable-diffusion-xl-base-1-0`, set the value of `MAX_CONCURRENT_REQUESTS` to 1
 
 # Deploy model from registry to endpoint in workspace
-az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
+az ml online-deployment create --file deploy-online.yaml $workspace_info --all-traffic --set \
   endpoint_name=$endpoint_name model=azureml://registries/$registry_name/models/$model_name/versions/$model_version \
   request_settings.max_concurrent_requests_per_instance=$max_concurrent_request \
   environment_variables.WORKER_COUNT=$max_concurrent_request \
@@ -64,17 +64,6 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
     echo "deployment create failed"; exit 1;
 }
 
-# get deployment name and set all traffic to the new deployment
-yaml_file="deploy-online.yaml"
-get_yaml_value() {
-    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
-}
-deployment_name=$(get_yaml_value "name")
-
-az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$deployment_name=100" || {
-    echo "Failed to set all traffic to the new deployment"
-    exit 1
-}
 # 4. Submit a sample request to endpoint
 python utils/prepare_data.py --payload-path $sample_request_data --mode "online"
 # Check if scoring data file exists
