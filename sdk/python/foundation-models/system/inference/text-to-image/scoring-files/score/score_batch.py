@@ -357,9 +357,7 @@ def run(batch_input):
     try:
         aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", default=1))
         if aacs_enabled:
-            blocked_input = analyze_data(
-                batch_input, aacs_threshold, blocked_input=None, is_input=True
-            )
+            blocked_input = analyze_data(batch_input, aacs_threshold, blocked_input=None, is_input=True)
         predict_result = g_model.predict(batch_input)
         if aacs_enabled:
             _ = analyze_data(
