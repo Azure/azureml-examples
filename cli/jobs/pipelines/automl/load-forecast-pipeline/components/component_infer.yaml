@@ -1,0 +1,27 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: model_inference
+display_name: Model Inference
+version: 1
+type: command
+inputs:
+  ouput_dataset_name:
+    type: string
+  model_path:
+    type: mlflow_model
+  target_column_name:
+    type: string
+  test_data:
+    type: uri_folder
+outputs:
+  output_path:
+    type: uri_folder
+code: ./infer_src/
+# The environment needs to be the same as the one in the AutoML training part.
+environment: azureml:AzureML-AutoML@prod
+command: >-
+  python infer.py
+  --model_path ${{inputs.model_path}}
+  --ouput_dataset_name ${{inputs.ouput_dataset_name}}
+  --target_column_name ${{inputs.target_column_name}}
+  --test_data ${{inputs.test_data}}
+  --output_path ${{outputs.output_path}}

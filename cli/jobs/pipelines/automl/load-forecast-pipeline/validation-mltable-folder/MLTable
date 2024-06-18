@@ -1,0 +1,13 @@
+paths:
+  - file: ./nyc_energy_validation_clean.csv
+transformations:
+  - read_delimited:
+        delimiter: ','
+        encoding: 'ascii'
+  # - convert_column_types:
+  #     - columns: demand
+  #       column_type: float
+  #     - columns: precip
+  #       column_type: float
+  #     - columns: temp
+  #       column_type: float
