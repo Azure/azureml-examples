@@ -123,14 +123,20 @@ def get_dtypes(schema):
         elif schema.is_tensor_spec():
             data_type = schema.numpy_types()[0]
             data_shape = schema.inputs[0].shape
-            g_logger.info(f"Enforcing tensor type : {data_type} and shape: {data_shape}")
+            g_logger.info(
+                f"Enforcing tensor type : {data_type} and shape: {data_shape}"
+            )
             return data_type, data_shape
         else:
             column_dtypes = dict(zip(schema.input_names(), schema.pandas_types()))
             g_logger.info("Enforcing datatypes:" + str(column_dtypes))
             return column_dtypes
     except Exception as e:
-        raise Exception("Error reading types from model signature schema: " + schema.__str__() + str(e))
+        raise Exception(
+            "Error reading types from model signature schema: "
+            + schema.__str__()
+            + str(e)
+        )
 
 
 def _get_data_loader(file_extension):
@@ -152,7 +158,9 @@ def load_data(data_file):
 
 def load_csv(data_file):
     if g_schema_input and g_schema_input.is_tensor_spec():
-        g_logger.info("Reading csv input file into numpy array because the model specifies tensor input signature.")
+        g_logger.info(
+            "Reading csv input file into numpy array because the model specifies tensor input signature."
+        )
         return np.genfromtxt(data_file, dtype=g_dtypes)
     else:
         g_logger.info(
@@ -191,7 +199,9 @@ def _load_image_as_bytes(data_file):
 
 def load_image(data_file):
     def loading_message(data_shape, data_type):
-        g_logger.info(f"Loading the input image file into a numpy array of shape {data_shape} and type {data_type}.")
+        g_logger.info(
+            f"Loading the input image file into a numpy array of shape {data_shape} and type {data_type}."
+        )
 
     data_array = _load_image_as_array(data_file)
 
@@ -218,8 +228,12 @@ def load_image(data_file):
         # actual mlflow input types for binary.
         data_type = g_schema_input.input_types()
         if len(data_type) == 1 and data_type[0] == DataType.binary:
-            g_logger.info("Loading the input image file into bytes to put within the pd.DataFrame column.")
-            return pd.DataFrame({g_schema_input.input_names()[0]: [_load_image_as_bytes(data_file)]})
+            g_logger.info(
+                "Loading the input image file into bytes to put within the pd.DataFrame column."
+            )
+            return pd.DataFrame(
+                {g_schema_input.input_names()[0]: [_load_image_as_bytes(data_file)]}
+            )
         else:
             raise TypeError(
                 "Scoring image files with a ColSpec signature containing "
@@ -328,7 +342,12 @@ def input_filelist_decorator(run_function):
                         for prediction in output:
                             result.append([baseFilename, str(prediction)])
                 except Exception as e:
-                    err_message = "Error processing input file: '" + str(data_file) + "'. Exception:" + str(e)
+                    err_message = (
+                        "Error processing input file: '"
+                        + str(data_file)
+                        + "'. Exception:"
+                        + str(e)
+                    )
                     g_logger.error(err_message)
                     file_error_messages[
                         baseFilename
@@ -336,7 +355,10 @@ def input_filelist_decorator(run_function):
             if len(result) < len(arguments):
                 # Error Threshold should be used here.
                 printed_errs = "\n".join(
-                    [str(filename) + ":\n" + str(error) + "\n" for filename, error in file_error_messages.items()]
+                    [
+                        str(filename) + ":\n" + str(error) + "\n"
+                        for filename, error in file_error_messages.items()
+                    ]
                 )
                 raise Exception(
                     f"Not all input files were processed successfully. Record of errors by filename:\n{printed_errs}"
@@ -345,7 +367,9 @@ def input_filelist_decorator(run_function):
                 return pd.concat(result)
             if attemptToJsonify:
                 for idx, model_output in enumerate(result):
-                    result[idx] = _get_jsonable_obj(model_output, pandas_orient="records")
+                    result[idx] = _get_jsonable_obj(
+                        model_output, pandas_orient="records"
+                    )
             return result
 
     return wrapper
@@ -357,7 +381,9 @@ def run(batch_input):
     try:
         aacs_threshold = int(os.environ.get("CONTENT_SAFETY_THRESHOLD", default=1))
         if aacs_enabled:
-            blocked_input = analyze_data(batch_input, aacs_threshold, blocked_input=None, is_input=True)
+            blocked_input = analyze_data(
+                batch_input, aacs_threshold, blocked_input=None, is_input=True
+            )
         predict_result = g_model.predict(batch_input)
         if aacs_enabled:
             _ = analyze_data(
@@ -412,7 +438,9 @@ def analyze_data(
                 if data_type == "binary":
                     if analyze_image(row[column]) > aacs_threshold:
                         blocked_index = True
-                elif data_type == "string" and analyze_text(row[column]) > aacs_threshold:
+                elif (
+                    data_type == "string" and analyze_text(row[column]) > aacs_threshold
+                ):
                     blocked_index = True
 
             if blocked_index:
@@ -423,7 +451,9 @@ def analyze_data(
                         image_path = os.path.join(output_dir, str(row[column]))
                         if os.path.isfile(image_path):
                             os.remove(image_path)
-                        data_frame.at[index, column] = "Blocked By Azure AI Content Safety"
+                        data_frame.at[
+                            index, column
+                        ] = "Blocked By Azure AI Content Safety"
     return blocked_input
 
 
@@ -510,7 +540,10 @@ def analyze_text(text: str) -> int:
 
     print("## Calling ACS ##")
 
-    severity = [analyze_aacs_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i))) for i in split_text]
+    severity = [
+        analyze_aacs_response(aacs_client.analyze_text(AnalyzeTextOptions(text=i)))
+        for i in split_text
+    ]
     print(f"## Returning MAX from severity list {severity} ##")
     return max(severity)
 
@@ -539,7 +572,9 @@ def analyze_image(image_path: str) -> int:
     return severity
 
 
-def analyze_aacs_response(response: Union[AnalyzeImageResult, AnalyzeTextResult]) -> int:
+def analyze_aacs_response(
+    response: Union[AnalyzeImageResult, AnalyzeTextResult]
+) -> int:
     """Analyze response from azure content safety service.
 
     :param response: response from azure content safety service
@@ -551,12 +586,28 @@ def analyze_aacs_response(response: Union[AnalyzeImageResult, AnalyzeTextResult]
 
     print("## Analyze response ##")
 
-    category = TextCategory if isinstance(response, AnalyzeTextResult) else ImageCategory
+    category = (
+        TextCategory if isinstance(response, AnalyzeTextResult) else ImageCategory
+    )
 
-    hate_result = next(item for item in response.categories_analysis if item.category == category.HATE)
-    self_harm_result = next(item for item in response.categories_analysis if item.category == category.SELF_HARM)
-    sexual_result = next(item for item in response.categories_analysis if item.category == category.SEXUAL)
-    violence_result = next(item for item in response.categories_analysis if item.category == category.VIOLENCE)
+    hate_result = next(
+        item for item in response.categories_analysis if item.category == category.HATE
+    )
+    self_harm_result = next(
+        item
+        for item in response.categories_analysis
+        if item.category == category.SELF_HARM
+    )
+    sexual_result = next(
+        item
+        for item in response.categories_analysis
+        if item.category == category.SEXUAL
+    )
+    violence_result = next(
+        item
+        for item in response.categories_analysis
+        if item.category == category.VIOLENCE
+    )
 
     if hate_result is not None:
         severity = max(severity, hate_result.severity)
