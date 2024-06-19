@@ -20,6 +20,8 @@ on:
       - infra/bootstrapping/**
       - sdk/python/setup.sh
 
+permissions:
+  id-token: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -42,7 +44,9 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
+        client-id: ${{ secrets.OIDC_AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.OIDC_AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}
     - name: bootstrap resources
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
