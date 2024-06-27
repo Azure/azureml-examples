@@ -70,6 +70,17 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Fetch OID token every 4 mins
+      shell: bash
+      run: |
+        while true; do
+          token_request=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
+          token_uri=$ACTIONS_ID_TOKEN_REQUEST_URL
+          token=$(curl -H "Authorization: bearer $token_request" "${token_uri}&audience=api://AzureADTokenExchange" | jq .value -r)
+          az login --service-principal -u ${{ secrets.CLIENT_ID }} -t ${{ secrets.TENANT_ID }} --federated-token $token --output none
+          # Sleep for 4 minutes
+          sleep 240
+        done &
     - name: run jobs/automl-standalone-jobs/automl-forecasting-distributed-tcn/automl-forecasting-distributed-tcn.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
