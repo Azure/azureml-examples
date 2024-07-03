@@ -119,29 +119,29 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
 
     "$SCRIPT_DIR"/sdk_helpers.sh register_providers
 
-    echo_title "Creating AKS clusters."
-    configure_aks_cluster=(
-      aks-cpu-is
-      aks-cpu-ml
-      aks-cpu-od
-      aks-cpu-mc
-      scoring-explain
-    )
-    for aks_compute in "${configure_aks_cluster[@]}"; do
-      (
-        echo_info "Creating AKS cluster: '$aks_compute'"
-        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
-      ) &
-    done
-    wait # until all AKS are created
-    for aks_compute in "${configure_aks_cluster[@]}"; do
-      (
-        echo_info "Attaching AKS cluster: '$aks_compute'"
-        "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${aks_compute}" "managedClusters" "Microsoft.ContainerService/managedClusters"
-        "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${aks_compute}" "${aks_compute}" "managedClusters" "azureml"
-      )
-    done
-    echo_info ">>> Done creating AKS clusters"
+    # echo_title "Creating AKS clusters."
+    # configure_aks_cluster=(
+    #   aks-cpu-is
+    #   aks-cpu-ml
+    #   aks-cpu-od
+    #   aks-cpu-mc
+    #   scoring-explain
+    # )
+    # for aks_compute in "${configure_aks_cluster[@]}"; do
+    #   (
+    #     echo_info "Creating AKS cluster: '$aks_compute'"
+    #     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
+    #   ) &
+    # done
+    # wait # until all AKS are created
+    # for aks_compute in "${configure_aks_cluster[@]}"; do
+    #   (
+    #     echo_info "Attaching AKS cluster: '$aks_compute'"
+    #     "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${aks_compute}" "managedClusters" "Microsoft.ContainerService/managedClusters"
+    #     "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${aks_compute}" "${aks_compute}" "managedClusters" "azureml"
+    #   )
+    # done
+    # echo_info ">>> Done creating AKS clusters"
 
     # Arc cluster configuration
     configure_arc_cluster=(
