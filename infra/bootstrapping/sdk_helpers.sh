@@ -539,7 +539,7 @@ function ensure_aks_compute() {
         CREATE_COMPUTE=$(az aks create \
             --subscription "${SUBSCRIPTION_ID}" \
             --resource-group "${RESOURCE_GROUP_NAME}" \
-            --location "${LOCATION}" \
+            --location eastus2 \
             --name "${AKS_CLUSTER_NAME}" \
             --enable-cluster-autoscaler \
             --node-count "$MIN_COUNT" \
