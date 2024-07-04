@@ -815,7 +815,7 @@ function ensure_k8s_compute(){
     echo_info "Creating amlarc cluster: '$arc_compute'"
 
     # Check current state of AKS
-    provisioning_state=$(az aks show --subscription dd21e9f4-d52f-406f-ab5e-d164e7d7dc65 --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --query "provisioningState" -o tsv)
+    provisioning_state=$(az aks show --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --query "provisioningState" -o tsv)
     provisioning_state=${provisioning_state,,}
     echo_info "AKS provisioning state: '$provisioning_state'"
     if [[ $provisioning_state == "failed" ]]; then
