@@ -136,7 +136,7 @@ def main(args):
     ]
 
     # get list of scripts
-    scripts = sorted(glob.glob("*.sh", recursive=False))
+    scripts = sorted(glob.glob("deploy-managed-online-endpoint-workspacevnet.sh", recursive=False))
     scripts = [
         script.replace(".sh", "")
         for script in scripts
@@ -157,13 +157,13 @@ def main(args):
 
     # write workflows
     write_workflows(
-        jobs,
-        jobs_using_registry_components,
-        endpoints,
-        resources,
-        assets,
+        [],
+        [],
+        [],
+        [],
+        [],
         scripts,
-        schedules,
+        [],
     )
 
     # read existing README.md

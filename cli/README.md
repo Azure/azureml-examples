@@ -71,6 +71,7 @@ path|status|
 [mlflow-uri.sh](mlflow-uri.sh)|[![mlflow-uri](https://github.com/Azure/azureml-examples/workflows/cli-scripts-mlflow-uri/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-mlflow-uri.yml)
 [train-rest.sh](train-rest.sh)|[![train-rest](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train-rest/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-train-rest.yml)
 [train.sh](train.sh)|[![train](https://github.com/Azure/azureml-examples/workflows/cli-scripts-train/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-train.yml)
+[deploy-managed-online-endpoint-workspacevnet.sh](deploy-managed-online-endpoint-workspacevnet.sh)|[![deploy-managed-online-endpoint-workspacevnet](https://github.com/Azure/azureml-examples/workflows/cli-scripts-deploy-managed-online-endpoint-workspacevnet/badge.svg?branch=main)](https://github.com/Azure/azureml-examples/actions/workflows/cli-scripts-deploy-managed-online-endpoint-workspacevnet.yml)
 
 **Jobs** ([jobs](jobs))
 
