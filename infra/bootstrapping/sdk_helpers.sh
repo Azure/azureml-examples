@@ -809,14 +809,10 @@ function replace_version(){
     echo "$(<"${FILENAME}")"
 }
 
-function ensure_amlarc_compute(){
+function ensure_k8s_compute(){
     # Arc cluster configuration
     arc_compute=${ARC_CLUSTER_NAME}
     echo_info "Creating amlarc cluster: '$arc_compute'"
-
-    export LOCATION="eastus2"
-    RESOURCE_GROUP_NAME=test-rg-eastus2euap-240702
-    AKS_CLUSTER_NAME=op-eastus2euap56a83374b
 
     # Check current state of AKS
     provisioning_state=$(az aks show --subscription dd21e9f4-d52f-406f-ab5e-d164e7d7dc65 --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --query "provisioningState" -o tsv)
@@ -827,7 +823,7 @@ function ensure_amlarc_compute(){
         az aks delete --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --yes
     fi
     
-    ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
+    LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
     install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
     setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
     setup_instance_type_aml_arc "${arc_compute}"
