@@ -809,6 +809,28 @@ function replace_version(){
     echo "$(<"${FILENAME}")"
 }
 
+function ensure_k8s_compute(){
+    # Arc cluster configuration
+    arc_compute=${ARC_CLUSTER_NAME}
+    echo_info "Creating amlarc cluster: '$arc_compute'"
+
+    # Check current state of AKS
+    provisioning_state=$(az aks show --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --query "provisioningState" -o tsv)
+    provisioning_state=${provisioning_state,,}
+    echo_info "AKS provisioning state: '$provisioning_state'"
+    if [[ $provisioning_state == "failed" ]]; then
+        echo_info "Remove unhealthy AKS: '$arc_compute' in '$provisioning_state'"
+        az aks delete --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --yes
+    fi
+    
+    LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
+    install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
+    setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
+    setup_instance_type_aml_arc "${arc_compute}"
+
+    echo_info ">>> Done creating amlarc clusters"
+}
+
 help(){
     echo "All functions:"
     declare -F
