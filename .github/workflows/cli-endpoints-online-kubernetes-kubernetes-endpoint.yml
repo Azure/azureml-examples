@@ -51,6 +51,13 @@ jobs:
           python check-readme.py "${{ github.workspace }}/cli/endpoints/online/kubernetes"
       working-directory: infra/bootstrapping
       continue-on-error: false
+    - name: ensure k8s compute
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" ensure_k8s_compute;
+      working-directory: cli
+      continue-on-error: true
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
