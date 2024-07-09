@@ -7,7 +7,7 @@ name: tf_hello_world
 display_name: TF-hello-world
 version: 1
 
-environment: azureml://registries/azureml/environments/tensorflow-2.12-cuda11/labels/latest
+environment: azureml://registries/azureml/environments/tensorflow-2.16-cuda11/labels/latest
 command: echo $TF_CONFIG
 resources:
   instance_count: 2
