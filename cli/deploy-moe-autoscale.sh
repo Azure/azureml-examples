@@ -57,7 +57,7 @@ az monitor autoscale rule create \
  --resource $ENDPOINT_RESOURCE_ID
 # </scale_up_on_request_latency>
 
-#create weekend profile: scale to 2 nodes in weekend
+# create weekend profile: scale to 2 nodes in weekend
 # <weekend_profile>
 az monitor autoscale profile create \
   --name weekend-profile \
@@ -65,6 +65,13 @@ az monitor autoscale profile create \
   --min-count 2 --count 2 --max-count 2 \
   --recurrence week sat sun --timezone "Pacific Standard Time" 
 # </weekend_profile>
+
+# disable the autoscale profile
+# <disable_profile>
+az monitor autoscale update \
+  --autoscale-name $AUTOSCALE_SETTINGS_NAME \
+  --enabled false
+# </disable_profile>
 
 # <delete_endpoint>
 # delete the autoscaling profile

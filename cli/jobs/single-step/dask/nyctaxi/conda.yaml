@@ -16,3 +16,4 @@ dependencies:
     - azureml-mlflow
     - pandas==1.5.3
     - click==8.0.2
+    - notebook==6.5.6

@@ -17,6 +17,8 @@ on:
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-managed-vnet-mlflow-endpoint.yml
       - cli/setup.sh
+permissions:
+  id-token: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -29,7 +31,9 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZUREML_CREDENTIALS}}
+        client-id: ${{ secrets.OIDC_AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.OIDC_AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
@@ -42,6 +46,11 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "${{ github.workspace }}/cli/endpoints/online/managed/vnet/mlflow"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: delete endpoint if existing
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";

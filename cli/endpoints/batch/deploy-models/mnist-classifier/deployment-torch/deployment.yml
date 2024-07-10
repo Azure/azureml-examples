@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/modelBatchDeployment.schema.json
 name: mnist-torch-dpl
 description: A deployment using Torch to solve the MNIST classification dataset.
 endpoint_name: mnist-batch

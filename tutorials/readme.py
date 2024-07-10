@@ -111,7 +111,6 @@ def write_notebook_workflow(
     is_pipeline_notebook = ("jobs-pipelines" in classification) or (
         "assets-component" in classification
     )
-    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
@@ -149,6 +148,8 @@ on:\n"""
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+permissions:
+  id-token: write
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -167,7 +168,9 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: {creds}
+        client-id: ${{{{ secrets.OIDC_AZURE_CLIENT_ID }}}}
+        tenant-id: ${{{{ secrets.OIDC_AZURE_TENANT_ID }}}}
+        subscription-id: ${{{{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
     - name: bootstrap resources
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
@@ -181,6 +184,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{github_workspace}" "{github_workspace}/tutorials/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";

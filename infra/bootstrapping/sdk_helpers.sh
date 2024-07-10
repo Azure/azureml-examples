@@ -494,6 +494,9 @@ function setup_compute() {
     then
         echo_info "Cluster is already attached to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}..."
     else
+        echo_info "Detach compute ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} first, as k8s compute doesn't support update" 
+        az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${COMPUTE_NAME}" -y || true
+
         echo_info "Attaching compute to workspace for the cluster: ${CLUSTER_NAME} as ${COMPUTE_NAME} in workspace:${WORKSPACE_NAME} under namespace: ${COMPUTE_NS}"
         ATTACH_COMPUTE=$(az ml compute attach \
                 --subscription "${SUBSCRIPTION_ID}" \
@@ -804,6 +807,28 @@ function replace_version(){
     sed -i -e "s/<VERSION>/$(echo "$timestamp")/g" \
         "${FILENAME}"
     echo "$(<"${FILENAME}")"
+}
+
+function ensure_k8s_compute(){
+    # Arc cluster configuration
+    arc_compute=${ARC_CLUSTER_NAME}
+    echo_info "Creating amlarc cluster: '$arc_compute'"
+
+    # Check current state of AKS
+    provisioning_state=$(az aks show --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --query "provisioningState" -o tsv)
+    provisioning_state=${provisioning_state,,}
+    echo_info "AKS provisioning state: '$provisioning_state'"
+    if [[ $provisioning_state == "failed" ]]; then
+        echo_info "Remove unhealthy AKS: '$arc_compute' in '$provisioning_state'"
+        az aks delete --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --yes
+    fi
+    
+    LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
+    install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
+    setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
+    setup_instance_type_aml_arc "${arc_compute}"
+
+    echo_info ">>> Done creating amlarc clusters"
 }
 
 help(){
