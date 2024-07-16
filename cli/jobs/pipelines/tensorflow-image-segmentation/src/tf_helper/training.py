@@ -363,7 +363,7 @@ class TensorflowDistributedModelTrainingSequence:
         self.model = model
 
         params_count = np.sum(
-            [np.prod(v.get_shape()) for v in self.model.trainable_weights]
+            [np.prod(v.shape.as_list()) for v in self.model.trainable_weights]
         )
         self.logger.info(
             "MLFLOW: model_param_count={:.2f} (millions)".format(
