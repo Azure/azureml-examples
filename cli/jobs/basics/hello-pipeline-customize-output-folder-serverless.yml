@@ -8,7 +8,7 @@ settings:
 jobs:
   hello_world:
     command: echo "hello" && echo "world" > ${{outputs.output}}/hello_world-folder.txt
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     outputs:
       output:
         type: uri_folder
