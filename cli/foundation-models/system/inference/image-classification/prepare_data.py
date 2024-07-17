@@ -21,7 +21,7 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
 
     # download data
     if is_multilabel_dataset == 0:
-        download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/fridgeObjects.zip"
+        download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-classification/fridgeObjects.zip"
     else:
         download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/image_classification/multilabelFridgeObjects.zip"
     print(f"Downloading data from {download_url}")
