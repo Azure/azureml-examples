@@ -7,4 +7,4 @@ inputs:
   iris_csv:
     type: uri_file 
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
