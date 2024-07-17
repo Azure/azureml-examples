@@ -1,0 +1,22 @@
+# $schema: https://azuremlsdk2.blob.core.windows.net/preview/LLMFineTuningJob/LLMFineTuningJob.json
+# https://azuremlsdk2.blob.core.windows.net/preview/LLMFineTuningJob/LLMFineTuningJob.json
+#http://azureml/sdk-2-0/LLMFineTuningJob.json
+experiment_name: "FTaaS-fine-tuning-text-completion"
+name: "FTaaS-fine-tuning-text-completion-private-sdk-1"
+model: 
+  path: "azureml://registries/azureml-meta/models/llama-2-7b/versions/21"
+  type: mlflow_model
+task: text_completion
+model_provider: custom
+training_data: "azureml://locations/westus3/workspaces/a7cd11a2-80c5-41ab-b56d-161c57f62fbd/data/samsum_dataset_train/versions/1"
+  #azureml:samsum-train-data-small@latest
+type: finetuning
+hyperparameters: # Optional
+  learning_rate_multiplier: "0.2"
+  num_train_epochs: "5"
+  per_device_train_batch_size: "2"
+
+outputs:
+  registered_model:
+    name: "my-registered-model-name"
+    type: mlflow_model
