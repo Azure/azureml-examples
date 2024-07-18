@@ -7,4 +7,4 @@ inputs:
   iris_csv:
     type: uri_file 
     path: azureml://datastores/workspaceblobstore/paths/example-data/iris.csv
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest

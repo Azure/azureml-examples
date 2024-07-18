@@ -4,10 +4,10 @@ display_name: hello_pipeline
 jobs:
   hello_job:
     command: echo "hello"
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
   world_job:
     command: echo "world"
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
  

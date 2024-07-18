@@ -7,7 +7,7 @@ trial:
     --B ${{search_space.B}}
     --C ${{search_space.C}}
   code: src
-  environment: azureml:AzureML-sklearn-1.1@latest
+  environment: azureml:AzureML-sklearn-1.5@latest
 inputs:
   A: 0.5
 sampling_algorithm: random
