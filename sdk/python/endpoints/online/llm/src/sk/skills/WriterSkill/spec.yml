@@ -12,4 +12,4 @@ tags:
 
 # Not really used, but required by the schema
 command: n/a
-environment: azureml://registries/azureml/environments/sklearn-1.1-ubuntu20.04-py38-cpu/versions/17
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
