@@ -12,7 +12,7 @@ inputs:
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
   epochs: 10
   lr: 0.1
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 compute: azureml:cpu-cluster
 display_name: pytorch-iris-example
 experiment_name: pytorch-iris-example

@@ -6,7 +6,7 @@ tags:
   author: azureml-sdk-team
 type: command
 code: ./component_src
-environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:1
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 additional_includes:
     - common_src
 command: >-
