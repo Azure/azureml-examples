@@ -170,7 +170,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
         path=dataset_dir,
         type=AssetTypes.URI_FOLDER,
         description="Fridge-items images Object detection",
-        name="fridge-items-images-object-detection",
+        name="fridge-items-images-od-p",
     )
 
     uri_folder_data_asset = ml_client.data.create_or_update(my_data)
