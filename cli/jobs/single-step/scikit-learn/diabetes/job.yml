@@ -7,7 +7,7 @@ inputs:
   diabetes_csv: 
     type: uri_file
     path: https://azuremlexamples.blob.core.windows.net/datasets/diabetes.csv
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 compute: azureml:cpu-cluster
 display_name: sklearn-diabetes-example
 experiment_name: sklearn-diabetes-example

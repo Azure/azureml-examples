@@ -28,7 +28,7 @@ jobs:
         type: uri_folder
         mode: upload
 
-    environment: azureml://registries/azureml/environments/sklearn-1.1/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 
     compute: azureml:cpu-cluster
 

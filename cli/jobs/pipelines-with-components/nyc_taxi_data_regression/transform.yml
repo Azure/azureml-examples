@@ -11,7 +11,7 @@ outputs:
   transformed_data:
     type: uri_folder
 code: ./transform_src
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 command: >-
   python transform.py 
   --clean_data ${{inputs.clean_data}} 

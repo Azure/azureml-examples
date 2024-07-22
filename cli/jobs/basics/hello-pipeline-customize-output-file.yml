@@ -10,7 +10,7 @@ outputs:
 jobs:
   hello_world:
     command: echo "hello" && echo "world" > ${{outputs.output}}
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     outputs:
       output: ${{parent.outputs.output}}

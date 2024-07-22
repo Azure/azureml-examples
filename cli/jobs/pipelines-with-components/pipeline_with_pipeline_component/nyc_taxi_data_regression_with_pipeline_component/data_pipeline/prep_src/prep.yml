@@ -12,7 +12,7 @@ outputs:
   prep_data:
     type: uri_folder
 code: .
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 command: >-
   python prep.py 
   $[[--raw_data ${{inputs.raw_data}}]]
