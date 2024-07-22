@@ -198,6 +198,8 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", "scikit-image==0.19.3"]
     )
+    # Install numpy version compatible with scikit-image==0.19.3.
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy==1.26.4"])
     subprocess.check_call([sys.executable, "-m", "pip", "install", "simplification"])
     print("done")
 
