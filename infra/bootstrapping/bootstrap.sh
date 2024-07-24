@@ -7,7 +7,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 # set -o xtrace # For debugging
-
+echo "Hello!! from DevSec"
 # set -Eeuo pipefail # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # set -o xtrace # For debugging
 
