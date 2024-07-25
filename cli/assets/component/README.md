@@ -73,7 +73,7 @@ outputs:
   model_output:
     type: uri_folder
 code: ./train_src
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 command: >-
   python train.py 
   --training_data ${{inputs.training_data}} 
