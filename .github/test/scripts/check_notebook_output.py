@@ -7,7 +7,6 @@
 #                     stderr indicates anything written to stderr.
 
 import json
-import requests
 import os
 import argparse
 
@@ -77,6 +76,7 @@ allowed_list = [
     "Detected ",
     "FutureWarning: promote has been superseded by mode",
     "dataframe_reader.complete_incoming_dataframe",
+    "This is an experimental method, and may change at any time."
 ]
 
 with open(full_name, "r") as notebook_file:
