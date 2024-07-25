@@ -3,5 +3,5 @@ type: container_registry
 target: https://test-feed.com
 credentials:
   type: managed_identity
-  client_id: client_id
-  resource_id: resource_id
+    client_id: client_id
+    resource_id: resource_id
