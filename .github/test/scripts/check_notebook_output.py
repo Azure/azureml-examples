@@ -10,6 +10,7 @@ import json
 import requests
 import os
 import argparse
+import warnings
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--file_name")
@@ -18,6 +19,7 @@ parser.add_argument("--check", nargs="+")
 
 inputArgs = parser.parse_args()
 full_name = os.path.join(inputArgs.folder, inputArgs.file_name)
+warnings.filterwarnings('ignore', message='This is an experimental method, and may change at any time')
 
 allowed_list = [
     "UserWarning: Matplotlib is building the font cache",
