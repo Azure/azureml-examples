@@ -12,6 +12,5 @@ dependencies:
       - pandas
       - pillow
       - azureml-core
-      - scikit-learn~=0.20.0
+      - scikit-learn==0.20.3
       - cloudpickle==1.1.1
-      - tensorflow==2.1.4

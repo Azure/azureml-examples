@@ -34,7 +34,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_service_principal",
     "using_mlflow_rest_api",
     "yolov5/tutorial",
-    "4. Provision a feature store in various ways",
+    "4.Provision-feature-store",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
@@ -199,7 +199,6 @@ def write_notebook_workflow(
     )
     is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
     is_featurestore_sample = "featurestore_sample" in classification
-    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
@@ -242,6 +241,8 @@ on:\n"""
     if is_featurestore_sample:
         workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
     workflow_yaml += f"""
+permissions:
+  id-token: write
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -256,11 +257,13 @@ jobs:
       with:
         python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: {creds}
+        client-id: ${{{{ secrets.OIDC_AZURE_CLIENT_ID }}}}
+        tenant-id: ${{{{ secrets.OIDC_AZURE_TENANT_ID }}}}
+        subscription-id: ${{{{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
     - name: bootstrap resources
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';

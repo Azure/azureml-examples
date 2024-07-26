@@ -22,6 +22,8 @@ from azure.ai.contentsafety.models import (
     ImageData,
     AnalyzeImageResult,
     AnalyzeTextResult,
+    TextCategory,
+    ImageCategory,
 )
 
 from PIL import Image
@@ -434,11 +436,7 @@ def analyze_data(
             image_path = ""
             if blocked_index is False:
                 if data_type == "binary":
-                    image_path = os.path.join(output_dir, row[column])
-                    if (
-                        os.path.isfile(image_path)
-                        and analyze_image(image_path) > aacs_threshold
-                    ):
+                    if analyze_image(row[column]) > aacs_threshold:
                         blocked_index = True
                 elif (
                     data_type == "string" and analyze_text(row[column]) > aacs_threshold
@@ -559,9 +557,13 @@ def analyze_image(image_path: str) -> int:
     :rtype: int
     """
     print("Analyzing image...")
-    with open(image_path, "rb") as f:
-        image = f.read()
-        image_in_byte64 = base64.encodebytes(image).decode("utf-8")
+    output_dir = os.environ.get("AZUREML_BI_OUTPUT_PATH", default="")
+    if os.path.isfile(os.path.join(output_dir, image_path)) is False:
+        image_in_byte64 = image_path
+    else:
+        with open(os.path.join(output_dir, image_path), "rb") as f:
+            image = f.read()
+            image_in_byte64 = base64.encodebytes(image).decode("utf-8")
 
     request = AnalyzeImageOptions(image=ImageData(content=image_in_byte64))
     safety_response = aacs_client.analyze_image(request)
@@ -584,17 +586,40 @@ def analyze_aacs_response(
 
     print("## Analyze response ##")
 
-    if response.hate_result is not None:
-        severity = max(severity, response.hate_result.severity)
+    category = (
+        TextCategory if isinstance(response, AnalyzeTextResult) else ImageCategory
+    )
+
+    hate_result = next(
+        item for item in response.categories_analysis if item.category == category.HATE
+    )
+    self_harm_result = next(
+        item
+        for item in response.categories_analysis
+        if item.category == category.SELF_HARM
+    )
+    sexual_result = next(
+        item
+        for item in response.categories_analysis
+        if item.category == category.SEXUAL
+    )
+    violence_result = next(
+        item
+        for item in response.categories_analysis
+        if item.category == category.VIOLENCE
+    )
+
+    if hate_result is not None:
+        severity = max(severity, hate_result.severity)
         class_name = "hate"
-    if response.self_harm_result is not None:
-        severity = max(severity, response.self_harm_result.severity)
+    if self_harm_result is not None:
+        severity = max(severity, self_harm_result.severity)
         class_name = "self_harm"
-    if response.sexual_result is not None:
-        severity = max(severity, response.sexual_result.severity)
+    if sexual_result is not None:
+        severity = max(severity, sexual_result.severity)
         class_name = "sexual"
-    if response.violence_result is not None:
-        severity = max(severity, response.violence_result.severity)
+    if violence_result is not None:
+        severity = max(severity, violence_result.severity)
         class_name = "violence"
     print(f"## Returning severity for {class_name} : {severity} ##")
     return severity

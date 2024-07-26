@@ -57,13 +57,6 @@ az ml online-deployment create --file deploy-online.yaml $workspace_info --set \
     echo "deployment create failed"; exit 1;
 }
 
-# get deployment name and set all traffic to the new deployment
-yaml_file="deploy-online.yaml"
-get_yaml_value() {
-    grep "$1:" "$yaml_file" | awk '{print $2}' | sed 's/[",]//g'
-}
-deployment_name=$(get_yaml_value "name")
-
 az ml online-endpoint update $workspace_info --name=$endpoint_name --traffic="$deployment_name=100" || {
     echo "Failed to set all traffic to the new deployment"
     exit 1

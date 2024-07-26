@@ -1,15 +1,15 @@
 $schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
 type: sweep
 trial:
-  code: src 
+  code: src
   command: >-
-    python main.py 
+    python main.py
     --iris-csv ${{inputs.iris_csv}}
     --learning-rate ${{search_space.learning_rate}}
     --boosting ${{search_space.boosting}}
-  environment: azureml:AzureML-lightgbm-3.2-ubuntu18.04-py37-cpu@latest
+  environment: azureml:AzureML-lightgbm-3.3@latest
 inputs:
-  iris_csv: 
+  iris_csv:
     type: uri_file
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
 compute: azureml:cpu-cluster
