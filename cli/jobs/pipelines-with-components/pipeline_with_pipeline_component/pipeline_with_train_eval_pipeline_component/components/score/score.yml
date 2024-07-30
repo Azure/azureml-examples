@@ -13,7 +13,7 @@ inputs:
 outputs:
   score_output:
     type: uri_folder
-environment: azureml://registries/azureml/environments/sklearn-1.1/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 code: .
 command: >-
   python score.py 

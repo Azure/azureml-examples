@@ -73,4 +73,4 @@ jobs:
       inference_result: ${{parent.jobs.predict_digits_mnist.outputs.job_output_file}}
     command: >-
       cat ${{inputs.inference_result}}
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest

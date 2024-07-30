@@ -12,12 +12,12 @@ description: pipeline component with inline job
 jobs:
   hello_job:
     type: command
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     command: echo 'hello'
 
   world_job:
     type: command
     command: echo 'world'
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 
 # </jobs>

@@ -6,6 +6,6 @@ model:
 code_configuration:
   code: ../../model-2/onlinescoring/
   scoring_script: score.py
-environment: azureml://registries/azureml/environments/sklearn-1.1/versions/30
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 instance_type: Standard_DS3_v2
 instance_count: 1

@@ -17,7 +17,7 @@ jobs:
       prep_data: 
         mode: upload
     code: src/prep
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     command: >-
       python prep.py 
@@ -32,7 +32,7 @@ jobs:
       transformed_data:
         mode: upload
     code: src/transform
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     command: >-
       python transform.py 
@@ -48,7 +48,7 @@ jobs:
       test_data: 
         mode: upload
     code: src/train
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     command: >-
       python train.py 
@@ -64,7 +64,7 @@ jobs:
     outputs:
       predictions: 
     code: src/predict
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     command: >-
       python predict.py 
@@ -80,7 +80,7 @@ jobs:
     outputs:
       score_report: 
     code: src/score
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     command: >-      
       python score.py 
