@@ -4,13 +4,13 @@ display_name: hello_pipeline_default_artifacts
 jobs:
   hello_job:
     command: echo "hello" && echo "world" > ./outputs/world.txt
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     outputs:
       artifacts:
   world_job:
     command: cat ${{inputs.world_input}}/outputs/world.txt
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     compute: azureml:cpu-cluster
     inputs:
       world_input: ${{parent.jobs.hello_job.outputs.artifacts}}

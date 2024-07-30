@@ -13,7 +13,7 @@ jobs:
       tar -xvzf cifar-10-python.tar.gz -C ${{outputs.cifar}};
       rm cifar-10-python.tar.gz;
     compute: azureml:gpu-cluster
-    environment: azureml://registries/azureml/environments/sklearn-1.1/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     outputs:
       cifar:
         type: uri_folder
