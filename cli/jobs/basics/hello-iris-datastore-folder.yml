@@ -8,4 +8,4 @@ inputs:
   data_dir:
     type: uri_folder 
     path: azureml://datastores/workspaceblobstore/paths/example-data/
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest

@@ -17,7 +17,6 @@ def main(args):
     # setup parameters
     params = {
         "fit_intercept": args.fit_intercept,
-        "normalize": args.normalize,
         "positive": args.positive,
     }
 

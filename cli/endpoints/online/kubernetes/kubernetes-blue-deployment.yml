@@ -9,7 +9,7 @@ code_configuration:
   scoring_script: score.py
 environment: 
   conda_file: ../model-1/environment/conda.yaml
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
 request_settings:
   request_timeout_ms: 3000
   max_queue_wait_ms: 3000

@@ -1,4 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: python hello-mlflow.py
 code: src
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest

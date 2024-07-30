@@ -9,17 +9,17 @@ inputs:
 jobs:
   a:
     command: echo hello ${{inputs.hello_string}}
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     inputs:
       hello_string: ${{parent.inputs.hello_string_top_level_input}}
   b:
     command: echo "world" >> ${{outputs.world_output}}/world.txt
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     outputs:
       world_output:
   c:
     command: echo ${{inputs.world_input}}/world.txt
-    environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
     inputs:
       world_input: ${{parent.jobs.b.outputs.world_output}}
  

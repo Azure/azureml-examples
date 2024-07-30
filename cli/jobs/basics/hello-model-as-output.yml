@@ -19,4 +19,4 @@ inputs:
 outputs:
   output_folder: 
     type: custom_model # mlflow_model,custom_model, triton_model
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest

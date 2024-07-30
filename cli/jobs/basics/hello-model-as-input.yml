@@ -12,4 +12,4 @@ inputs:
   my_model:
     type: mlflow_model # List of all model types here: https://learn.microsoft.com/azure/machine-learning/reference-yaml-model#yaml-syntax
     path: ../../assets/model/mlflow-model
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest

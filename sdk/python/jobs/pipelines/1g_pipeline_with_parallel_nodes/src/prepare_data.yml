@@ -18,7 +18,7 @@ outputs:
 
 code: ./
 
-environment: azureml://registries/azureml/environments/sklearn-1.0/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 
 command: >-
   python prepare_data.py
