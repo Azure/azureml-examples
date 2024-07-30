@@ -3,6 +3,9 @@ set -e
 export RESOURCEGROUP_NAME="<YOUR_RESOURCEGROUP_NAME>"
 export WORKSPACE_NAME="<YOUR_WORKSPACE_NAME>"
 
+export WORKSPACE_NAME=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
+export RESOURCEGROUP_NAME=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
+
 # If you want to allow outbound traffic, use below instead.
 # <create_workspace_internet_outbound>
 # az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_internet_outbound
