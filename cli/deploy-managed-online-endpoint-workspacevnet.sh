@@ -3,7 +3,7 @@ set -e
 export RESOURCEGROUP_NAME="<YOUR_RESOURCEGROUP_NAME>"
 export WORKSPACE_NAME="<YOUR_WORKSPACE_NAME>"
 
-export WORKSPACE_NAME=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)
+export WORKSPACE_NAME=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)_vnet
 export RESOURCEGROUP_NAME=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
 
 # If you want to allow outbound traffic, use below instead.
