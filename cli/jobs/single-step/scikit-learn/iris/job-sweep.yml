@@ -8,7 +8,7 @@ trial:
     --C ${{search_space.C}}
     --kernel ${{search_space.kernel}}
     --coef0 ${{search_space.coef0}}
-  environment: azureml:AzureML-sklearn-1.1@latest
+  environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 inputs:
   iris_csv: 
     type: uri_file

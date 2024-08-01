@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: python hello-interactive.py && sleep 600
 code: src
-environment: azureml:AzureML-tensorflow-2.12-cuda11@latest
+environment: azureml:AzureML-tensorflow-2.16-cuda11@latest
 
 services:
   my_vscode:
