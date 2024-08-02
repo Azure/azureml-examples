@@ -834,7 +834,7 @@ function ensure_k8s_compute(){
     else
         echo_info "Compute is unhealthy: $Status"
         az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${ARC_COMPUTE_NAME}" -y || true
-
+    fi
 
     LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
     install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
