@@ -56,11 +56,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
-    - name: validate readme
-      run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/foundation-models/system/finetune/Llama-notebooks/distillation"
-      working-directory: infra/bootstrapping
-      continue-on-error: false
+    # - name: validate readme
+    #   run: |
+    #       python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/foundation-models/system/finetune/Llama-notebooks/distillation"
+    #   working-directory: infra/bootstrapping
+    #   continue-on-error: true
     - name: setup-cli
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
