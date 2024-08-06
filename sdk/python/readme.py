@@ -288,7 +288,16 @@ jobs:
           source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true\n"""
+      continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none\n"""
     if is_spark_notebook_sample:
         workflow_yaml += get_spark_config_workflow(posix_folder, name)
     if is_featurestore_sample:

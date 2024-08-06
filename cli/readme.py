@@ -471,7 +471,16 @@ jobs:
           source "{GITHUB_WORKSPACE}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true\n"""
+      continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none\n"""
     if is_spark_sample:
         workflow_yaml += get_spark_setup_workflow(job, posix_project_dir, filename)
     workflow_yaml += f"""    - name: run job
@@ -556,6 +565,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: validate readme
       run: |
           python check-readme.py "{GITHUB_WORKSPACE}/cli/{posix_project_dir}"
@@ -649,6 +667,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: validate readme
       run: |
           python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
@@ -746,6 +773,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: validate readme
       run: |
           python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
@@ -812,6 +848,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: validate readme
       run: |
           python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
@@ -877,6 +922,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: validate readme
       run: |
           python check-readme.py "{GITHUB_WORKSPACE}/cli/{project_dir}"
