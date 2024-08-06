@@ -825,6 +825,14 @@ function ensure_k8s_compute(){
         fi
     fi
 
+    # Remove Arc if unhealthy
+    clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${arc_compute}-arc" --query connectivityStatus -o tsv)
+    echo_info "Cluster: ${arc_compute}-arc current state: ${clusterState}"
+    if [[ "${clusterState}" != "Connected" ]]; then
+        echo_info "Remove unhealthy ARC: '${arc_compute}-arc'"
+        az connectedk8s delete --resource-group "${RESOURCE_GROUP_NAME}" --name "${arc_compute}-arc" --yes
+    fi
+
     # Remove k8s compute if unhealthy
     Status=$(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_COMPUTE_NAME}" --query provisioning_state --output tsv)
     if
