@@ -54,7 +54,7 @@ code_configuration:
   code: code
   scoring_script: score.py
 environment:
-  image: mcr.microsoft.com/azureml/minimal-ubuntu20.04-py38-cpu-inference:latest
+  image: mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cpu-inference:latest
   conda_file: env.yml
 environment_variables:
   KV_SECRET_MULTIPLIER: multiplier@https://<KV_NAME>.vault.azure.net
