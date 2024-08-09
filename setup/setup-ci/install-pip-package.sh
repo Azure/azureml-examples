@@ -8,6 +8,7 @@ sudo -u azureuser -i <<'EOF'
 
 PACKAGE=numpy
 ENVIRONMENT=azureml_py38 
+source /anaconda/etc/profile.d/conda.sh
 conda activate "$ENVIRONMENT"
 pip install "$PACKAGE"
 conda deactivate
