@@ -1,5 +1,5 @@
 # Start from a azure ml inference curated base image
-FROM mcr.microsoft.com/azureml/minimal-ubuntu20.04-py38-cpu-inference:latest
+FROM mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cpu-inference:latest
 
 # copy the conda.yaml inside the container
 COPY conda.yaml /tmp/conda.yaml
