@@ -814,15 +814,28 @@ function ensure_k8s_compute(){
     arc_compute=${ARC_CLUSTER_NAME}
     echo_info "Creating amlarc cluster: '$arc_compute'"
 
-    # Check current state of AKS
-    provisioning_state=$(az aks show --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --query "provisioningState" -o tsv)
-    provisioning_state=${provisioning_state,,}
-    echo_info "AKS provisioning state: '$provisioning_state'"
-    if [[ $provisioning_state == "failed" ]]; then
-        echo_info "Remove unhealthy AKS: '$arc_compute' in '$provisioning_state'"
-        az aks delete --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --yes
+    # Remove AKS if unhealthy
+    compute_exists=$(az aks list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${arc_compute}']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${compute_exists}" = "[]" ]]; then
+        echo_info "AKS Compute ${arc_compute} does not exist; will create"
+    else
+        if ! AKS_CLUSTER_NAME=${arc_compute} MAX_RETRIES=10 SLEEP_SECONDS=30 check_aks_status; then
+            echo_info "Remove unhealthy AKS: '$arc_compute'"
+            az aks delete --resource-group "${RESOURCE_GROUP_NAME}" --name ${arc_compute} --yes
+        fi
     fi
-    
+
+    # Remove k8s compute if unhealthy
+    Status=$(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_COMPUTE_NAME}" --query provisioning_state --output tsv)
+    if
+        [[ $Status == "Succeeded" ]]
+    then
+        echo_info "Compute is healthy: $Status"
+    else
+        echo_info "Compute is unhealthy: $Status"
+        az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${ARC_COMPUTE_NAME}" -y || true
+    fi
+
     LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
     install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
     setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
