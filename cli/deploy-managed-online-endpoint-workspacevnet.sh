@@ -19,7 +19,7 @@ az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_only_a
 # Before creating an online deployment, manually provision managed network for the workspace, and verify it's completed.
 # <manually_provision_managed_network>
 az ml workspace provision-network -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME
-az ml workspace show -n $WORKSPACE_NAME -g $RESOURCEGROUP_NAME --query $WORKSPACE_NAME
+az ml workspace show -n $WORKSPACE_NAME -g $RESOURCEGROUP_NAME
 # </manually_provision_managed_network>
 
 az configure --defaults workspace=$WORKSPACE_NAME group=$RESOURCEGROUP_NAME
