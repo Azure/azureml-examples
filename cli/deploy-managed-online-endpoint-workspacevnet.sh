@@ -37,7 +37,7 @@ export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 
 # If you want to block inbound traffic, use below instead.
 # <create_endpoint_inbound_blocked>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml --set public_network_access=disabled
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
 # </create_endpoint_inbound_blocked>
 
 # <create_deployment>
