@@ -160,7 +160,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # download data
-    download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip"
+    download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-object-detection/odFridgeObjects.zip"
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
@@ -187,7 +187,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
         path=dataset_dir,
         type=AssetTypes.URI_FOLDER,
         description="Fridge-items images Object detection",
-        name="fridge-items-images-object-detection",
+        name="fridge-items-images-od-ft",
     )
 
     uri_folder_data_asset = ml_client.data.create_or_update(my_data)

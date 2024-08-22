@@ -19,7 +19,7 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
 
     # download data
 
-    download_url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip"
+    download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-object-detection/odFridgeObjects.zip"
     print(f"Downloading data from {download_url}")
 
     # Extract current dataset name from dataset url
