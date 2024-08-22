@@ -29,6 +29,7 @@ export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # </set_endpoint_name>
 
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
+export DEPLOYMENT_NAME="blue"
 
 # If you want to allow inbound traffic, use below instead.
 # <create_endpoint_inbound_allowed>
@@ -37,11 +38,11 @@ export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 
 # If you want to block inbound traffic, use below instead.
 # <create_endpoint_inbound_blocked>
-az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml --set public_network_access=disabled
+az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/sample/endpoint.yml
 # </create_endpoint_inbound_blocked>
 
 # <create_deployment>
-az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
+az ml online-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
 # </create_deployment>
 
 # <get_status>
@@ -59,7 +60,7 @@ else
   exit 1
 fi
 
-deploy_status=`az ml online-deployment show --name blue --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status=`az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
@@ -89,7 +90,7 @@ curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY
 # </test_endpoint_using_curl>
 
 # <get_logs>
-az ml online-deployment get-logs --name blue --endpoint $ENDPOINT_NAME
+az ml online-deployment get-logs --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME
 # </get_logs>
 
 # <delete_endpoint>
