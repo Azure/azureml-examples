@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: vllm-phi3-deployment
 endpoint_name: vllm-phi3-endpoint
 environment_variables:
-  HUGGING_FACE_HUB_TOKEN: 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 # need to make sure they provide their token
+  HUGGING_FACE_HUB_TOKEN: <YOUR_TOKEN> # need to make sure they provide token
 environment:
   name: vllm-env
   image: wswestus3registry.azurecr.io/vllm:latest
