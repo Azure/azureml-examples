@@ -1,18 +1,17 @@
 # Deploy Phi-3-mini-4k-instruct model from Huggingface using vLLM Inferencing Framework
 
-This example demonstrates how to deploy Llama-3-8B model from Huggingface to a managed online endpoint and follows along with the [Llama-3-8B model from Huggingface using vLLM Inferencing Framework](https://github.com/pytorch/serve/tree/master/examples/vllm). 
+This example demonstrates how to deploy Phi-3-mini-4k-instruct model from Huggingface to a managed online endpoint and follows along with the using vLLM Inferencing Framework.
 
 ## How to deploy
-This example can be run end-to-end using the `deploy-customcontainer-vllm-huggingface-test.sh` script in the `CLI` folder. 
+This example can be run end-to-end using the `deploy-customcontainer-vllm-huggingface-phi3.sh` script in the `CLI` folder. 
 
-Before running please insure that you have GPU capacity. Also, please add your HUGGING_FACE_HUB_TOKEN to the vllm-deployment.yml. 
-
+Before running please insure that you have CPU capacity. Also, please add your HUGGING_FACE_HUB_TOKEN to the vllm-deployment-phi3.yml. 
 
 ## Image
-The image used for this example is defined in file `vllm.dockerfile`. It uses `vllm/vllm-openai:latest` as a base image and overrides the default `ENTRYPOINT`. 
+The image used for this example is defined in file `vllm-phi3.dockerfile`. It uses `vllm/vllm-openai:latest` as a base image and overrides the default `ENTRYPOINT`. 
 
 ## Model
-The model is downloaded from huggingface. 
+The model is downloaded from Hugging Face. 
 
 ## Environment
 The environment is defined inline in the deployment yaml and references the ACR url of the image. The ACR must be associated with the workspace (or have a user-assigned managed identity that enables ACRPull) in order to successfully deploy.
