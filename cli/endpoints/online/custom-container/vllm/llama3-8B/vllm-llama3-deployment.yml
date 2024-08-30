@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: vllm-llama3-deployment
-endpoint_name: vllm-llama3-endpoint
+endpoint_name: "{{ENDPOINT_NAME}}"
 environment_variables:
-  HUGGING_FACE_HUB_TOKEN: <YOUR_TOKEN> # need to make sure they provide token
+  HUGGING_FACE_HUB_TOKEN: "{{HUGGING_FACE_TOKEN}}"
 environment:
-  name: vllm-env
-  image: wswestus3registry.azurecr.io/vllm:latest
+  name: vllm-llama3-env
+  image: {{acr_name}}.azurecr.io/azureml-examples/vllm:llama3
   inference_config:
     liveness_route:
       port: 8000
