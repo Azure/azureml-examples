@@ -1,22 +1,61 @@
-# Deploy Phi-3-mini-4k-instruct model from Huggingface using vLLM Inferencing Framework
+# Azure Machine Learning examples
 
-This example demonstrates how to deploy Llama-3-8B model from Huggingface to a managed online endpoint and follows along with the [Llama-3-8B model from Huggingface using vLLM Inferencing Framework](https://github.com/pytorch/serve/tree/master/examples/vllm). 
+[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
-## How to deploy
-This example can be run end-to-end using the `deploy-customcontainer-vllm-huggingface-test.sh` script in the `CLI` folder. 
+Welcome to the Azure Machine Learning examples repository!
 
-Before running please insure that you have GPU capacity. Also, please add your HUGGING_FACE_HUB_TOKEN to the vllm-deployment.yml. 
+## About This Repository
+
+The azureml-examples repository contains examples and tutorials to help you learn how to use Azure Machine Learning
+(Azure ML) services and features.
 
 
-## Image
-The image used for this example is defined in file `vllm.dockerfile`. It uses `vllm/vllm-openai:latest` as a base image and overrides the default `ENTRYPOINT`. 
+### Getting Started
 
-## Model
-The model is downloaded from huggingface. 
+If you're getting started with Azure ML, consider working through our [tutorials] for the v2 Python SDK. You may
+also want to read through our [documentation](#supplementary-documentation).
 
-## Environment
-The environment is defined inline in the deployment yaml and references the ACR url of the image. The ACR must be associated with the workspace (or have a user-assigned managed identity that enables ACRPull) in order to successfully deploy.
+### SDKs
 
-We define an additional env var called `THUGGING_FACE_HUB_TOKEN` which is used by the image upon initialization. 
+The `sdk/` folder houses the examples for the Azure ML SDKs across several languages.
 
-The environment also contains an `inference_config` block that defines the `liveness`, `readiness`, and `scoring` routes by path and port. Because the images used in this examples are based on the AzureML Inference Minimal images, these values are the same as those in a non-BYOC deployment, however they must be included since we are now using a custom image. 
+We have an extensive collection of examples for the [Azure ML Python SDK v2][azure cli ml extension v2 overview] in
+[`sdk/python`][azureml python sdk v2 examples].
+
+We also offer some examples for our SDKs in other languages:
+
+* .NET: [`sdk/dotnet`][azureml dotnet sdk v2 examples]
+* TypeScript: [`sdk/typescript`][azureml typescript sdk v2 examples]
+
+### Azure Machine Learning extension for Azure CLI
+
+The [`cli/` folder][azureml cli extension examples] hosts our examples to use the
+[Azure Machine Learning extension][azure cli ml extension v2 overview] for [Azure CLI][azure cli overview].
+
+_Note_: If you're looking for examples that submit Azure ML jobs that run non-Python code, see:
+
+* **R**: [`cli/jobs/single-step/r`](./cli/jobs/single-step/r)
+
+
+## Supplementary Documentation
+
+- [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
+- [AzureML Python SDK v2 Overview]
+- [Azure CLI ML extension v2 Overview]
+
+## Contributing
+
+We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
+
+## Code of Conduct
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
+
+[tutorials]: ./tutorials
+[azure cli overview]: https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli
+[azureml cli extension examples]: ./cli
+[azureml python sdk v2 examples]: ./sdk/python
+[azureml dotnet sdk v2 examples]: ./sdk/dotnet
+[azureml typescript sdk v2 examples]: ./sdk/typescript
+[azure cli ml extension v2 overview]: https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2?view=azureml-api-2#azure-machine-learning-cli-v2
+[azureml python sdk v2 overview]: https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2?view=azureml-api-2#azure-machine-learning-python-sdk-v2
