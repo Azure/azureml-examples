@@ -15,7 +15,7 @@ export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -
 
 
 # <set_base_path_and_copy_assets>
-export BASE_PATH="endpoints/online/custom-container/tgi"
+export BASE_PATH="endpoints/online/custom-container/huggingface-tgi"
 sed -i "s/{{acr_name}}/$ACR_NAME/g;\
         s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;
         s/{{HUGGING_FACE_TOKEN}}/$HUGGINGFACE_TOKEN/g;" $BASE_PATH/tgi-deployment.yml
