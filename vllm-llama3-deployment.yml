@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: vllm-phi3-deployment
+name: vllm-llama3-deployment
 endpoint_name: "{{ENDPOINT_NAME}}"
 environment_variables:
   HUGGING_FACE_HUB_TOKEN: "{{HUGGING_FACE_TOKEN}}"
 environment:
-  name: vllm-phi3-env
-  image: {{acr_name}}.azurecr.io/azureml-examples/vllm:phi3
+  name: vllm-llama3-env
+  image: {{acr_name}}.azurecr.io/azureml-examples/vllm:llama3
   inference_config:
     liveness_route:
       port: 8000
