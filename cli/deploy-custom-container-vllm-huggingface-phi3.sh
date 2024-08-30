@@ -3,60 +3,66 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# <set_parameters>
-# Set the endpoint name, appending a random number for uniqueness
-ENDPOINT_NAME=vllm-openai-`echo $RANDOM`
+# <set_variables>
+export ENDPOINT_NAME="<ENDPOINT_NAME>"
+export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
+export HUGGINGFACE_TOKEN = "<HUGGING_FACE_TOKEN>"
+# </set_variables>
 
-# Set the base path for storing the endpoint configuration files
-BASE_PATH=endpoints/online/custom-container/vllm/Phi-3-mini-4k-instruct
+export IMAGE_TAG=azureml-examples/vllm:phi3
+export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
+export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
+
+
+# <set_base_path_and_copy_assets>
+export BASE_PATH="endpoints/online/custom-container/vllm/Phi-3-mini-4k-instruct"
+sed -i "s/{{acr_name}}/$ACR_NAME/g;\
+        s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;
+        s/{{HUGGING_FACE_TOKEN}}/$HUGGINGFACE_TOKEN/g;" $BASE_PATH/vllm-phi3-deployment.yml
+sed -i "s/{{ENDPOINT_NAME}}/$ENDPOINT_NAME/g;" $BASE_PATH/vllm-phi3-endpoint.yml
+# </set_base_path_and_copy_assets>
+
+# <login_to_acr>
+az acr login -n $ACR_NAME
+# </login_to_acr> 
+
+# <build_with_acr>
+az acr build -t $IMAGE_TAG -r $ACR_NAME -f $BASE_PATH/vllm-phi3.dockerfile $BASE_PATH 
+# </build_with_acr>
 
 # <create_endpoint>
-# Create an online endpoint in Azure Machine Learning with the specified endpoint name
-az ml online-endpoint create -n $ENDPOINT_NAME -f endpoints/online/custom-container/vllm/Phi-3-mini-4k-instruct/vllm-phi3-endpoint.yml
+az ml online-endpoint create -f $BASE_PATH/vllm-phi3-endpoint.yml
 # </create_endpoint>
 
-# Create a deployment on the online endpoint, directing all traffic to this deployment
-az ml online-deployment create -n yellow --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/vllm-phi3-deployment.yml --all-traffic
+# <create_deployment>
+az ml online-deployment create --endpoint-name $ENDPOINT_NAME -f $BASE_PATH/vllm-phi3-deployment.yml --all-traffic
 # </create_deployment>
 
-# <check_deployment_status>
-# Check the status of the deployment to ensure it was deployed successfully
-deploy_status=`az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name vllm-phi3-deployment --query "provisioning_state" -o tsv`
+
+# Check if deployment was successful
+deploy_status=`az ml online-deployment show --name  vllm-phi3-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
 echo $deploy_status
 if [[ $deploy_status == "Succeeded" ]]
 then
-    echo "Deployment completed successfully"
+  echo "Deployment completed successfully"
 else
-    echo "Deployment failed"
-    exit 1
+  echo "Deployment failed"
+  exit 1
 fi
-# </check_deployment_status>
 
-# <get_endpoint_details>
-# Retrieve the access key for the online endpoint
+# Get accessToken
 echo "Getting access key..."
 KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME --query primaryKey -o tsv)
 
-# Retrieve the scoring URL for the online endpoint
+# Get scoring url
 echo "Getting scoring url..."
 SCORING_URL=$(az ml online-endpoint show -n $ENDPOINT_NAME --query scoring_uri -o tsv)
 echo "Scoring url is $SCORING_URL"
-# </get_endpoint_details>
 
-# Test the deployed model endpoint
-# curl -X POST -H "Authorization: Bearer $KEY" 
+# <test_online_endpoint>
+curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer $KEY' $SCORING_URL -d '{ "microsoft/Phi-3-mini-4k-instruct", "prompt": "Once upon a time",  "max_tokens": 50 }'
+# </test_online_endpoint>
 
-# cleanup  # Clean up by removing the serve directory and deleting the endpoint
-
-# <test_endpoint> 
-echo "Uploading testing image, the scoring is..."
-curl -i -H 'Content-Type: application/json' -H "Authorization: {Bearer $TOKEN}" $SCORING_URL
-# </test_endpoint> 
-
-echo "Tested successfully, cleaning up"
-cleanTestingFiles
-
-# <delete_endpoint> 
-echo "Deleting endpoint..."
-az ml online-endpoint delete -n $ENDPOINT_NAME --yes
-# </delete_endpoint> 
+# <delete_online_endpoint>
+az ml online-endpoint delete -y -n $ENDPOINT_NAME
+# </delete_online_endpoint>
