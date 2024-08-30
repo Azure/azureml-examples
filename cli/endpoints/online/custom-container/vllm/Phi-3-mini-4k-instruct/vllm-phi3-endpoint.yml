@@ -1,3 +1,3 @@
 $schema: https://azuremlsdk2.blob.core.windows.net/latest/managedOnlineEndpoint.schema.json
-name: vllm-phi3-endpoint
+name: "{{ENDPOINT_NAME}}"
 auth_mode: aml_token

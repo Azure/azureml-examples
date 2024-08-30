@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: vllm-phi3-deployment
-endpoint_name: vllm-phi3-endpoint
+endpoint_name: "{{ENDPOINT_NAME}}"
 environment_variables:
-  HUGGING_FACE_HUB_TOKEN: <YOUR_TOKEN> # need to make sure they provide token
+  HUGGING_FACE_HUB_TOKEN: "{{HUGGING_FACE_TOKEN}}"
 environment:
-  name: vllm-env
-  image: wswestus3registry.azurecr.io/vllm:latest
+  name: vllm-phi3-env
+  image: {{acr_name}}.azurecr.io/azureml-examples/vllm:phi3
   inference_config:
     liveness_route:
       port: 8000
@@ -16,5 +16,5 @@ environment:
     scoring_route:
       port: 8000
       path: /
-instance_type: Standard_F16s_v2
+instance_type: Standard_NC80adis_H100_v5
 instance_count: 1
