@@ -848,9 +848,9 @@ function ensure_k8s_compute(){
         if
             [[ $Status == "Succeeded" ]]
         then
-            echo_info "Compute is healthy: $Status"
+            echo_info "K8s Compute is healthy: $Status"
         else
-            echo_info "Compute is unhealthy: $Status"
+            echo_info "K8s Compute is unhealthy: $Status"
             az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${ARC_COMPUTE_NAME}" -y || true
         fi
     fi 
