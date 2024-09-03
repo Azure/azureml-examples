@@ -34,6 +34,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_service_principal",
     "using_mlflow_rest_api",
     "yolov5/tutorial",
+    "4.Provision-feature-store",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
@@ -198,7 +199,6 @@ def write_notebook_workflow(
     )
     is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
     is_featurestore_sample = "featurestore_sample" in classification
-    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
@@ -241,6 +241,8 @@ on:\n"""
     if is_featurestore_sample:
         workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
     workflow_yaml += f"""
+permissions:
+  id-token: write
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -255,11 +257,13 @@ jobs:
       with:
         python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: {creds}
+        client-id: ${{{{ secrets.OIDC_AZURE_CLIENT_ID }}}}
+        tenant-id: ${{{{ secrets.OIDC_AZURE_TENANT_ID }}}}
+        subscription-id: ${{{{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
     - name: bootstrap resources
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
@@ -284,7 +288,16 @@ jobs:
           source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true\n"""
+      continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none\n"""
     if is_spark_notebook_sample:
         workflow_yaml += get_spark_config_workflow(posix_folder, name)
     if is_featurestore_sample:

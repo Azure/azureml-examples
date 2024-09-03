@@ -9,27 +9,25 @@ for path, subdirs, files in os.walk("./"):
         print(os.path.join(path, name))
 
 print("=======Test Notebook 1============")
-with open(
-    "notebooks/sdk_only/1. Develop a feature set and register with managed feature store.py"
-) as f:
+with open("notebooks/sdk_only/1.Develop-feature-set-and-register.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 2============")
-with open("notebooks/sdk_only/2. Experiment and train models using features.py") as f:
+with open("notebooks/sdk_only/2.Experiment-train-models-using-features.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 3============")
 with open(
-    "notebooks/sdk_only/3. Enable recurrent materialization and run batch inference.py"
+    "notebooks/sdk_only/3.Enable-recurrent-materialization-run-batch-inference.py"
 ) as f:
     exec(f.read())
 
 print("=======Test Notebook 4============")
-with open("notebooks/sdk_only/4. Enable online store and run online inference.py") as f:
+with open("notebooks/sdk_only/4.Enable-online-store-run-inference.py") as f:
     exec(f.read())
 
 print("=======Test Notebook 5============")
-with open("notebooks/sdk_only/5. Develop a feature set with custom source.py") as f:
+with open("notebooks/sdk_only/5.Develop-feature-set-custom-source.py") as f:
     exec(f.read())
 
 print("=======Clean up==========")
@@ -52,7 +50,7 @@ ml_client = MLClient(
 result = ml_client.feature_stores.begin_delete(
     name=featurestore_name,
     permanently_delete=True,
-    delete_dependent_resources=False,
+    delete_dependent_resources=True,
 ).result()
 print(result)
 
