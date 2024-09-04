@@ -1,6 +1,6 @@
 # See for instructions on this file https://help.github.com/articles/about-codeowners/
 
-/cli/ @kingernupur @jayesh-tanna @achauhan-scc
+/cli/ @kingernupur @jayesh-tanna @achauhan-scc @imatiach-msft
 /infra/ @kingernupur @jayesh-tanna @achauhan-scc
 
 /python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @jeff-shepherd @raduk @swatig007 @MercyPrasanna @PhaniShekhar @sjinthehouse @vadthyavath @mispa-ms
