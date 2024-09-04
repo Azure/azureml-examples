@@ -243,6 +243,7 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/train/train_component.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/using-mlflow/deploy/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/using-mlflow/deploy/model/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/sdk/python/jobs/finetuning/standalone/chat-completion/chat_completion_with_model_as_service.ipynb  @sagarsumant @srsaggam  
 /setup/setup-ci/install-pip-package.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /setup/setup-repo/azure-github.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
