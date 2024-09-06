@@ -14,7 +14,7 @@ description: An explanation on model distillaton and step-by-step guide on creat
 - [Welcome](#welcome)
 - [Getting Started](#getting-started)
 - [Model Distillation](#model-distillation)
-- [Distillation Examples](#distillation-examples)
+- [Examples](#examples)
 
 
 ## Welcome
