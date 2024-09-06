@@ -9,10 +9,10 @@ environment:
   inference_config:
     liveness_route:
       port: 8080
-      path: /
+      path: /health
     readiness_route:
       port: 8080
-      path: /
+      path: /health
     scoring_route:
       port: 8080
       path: /
