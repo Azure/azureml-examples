@@ -58,7 +58,7 @@ jobs:
       continue-on-error: true
     # - name: validate readme
     #   run: |
-    #       python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/foundation-models/system/finetune/Llama-notebooks/distillation"
+    #       python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/foundation-models/system/distillation"
     #   working-directory: infra/bootstrapping
     #   continue-on-error: false 
     - name: setup-cli
@@ -68,7 +68,7 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/system/finetune/Llama-notebooks/distillation/distillation_chat_completion.ipynb
+    - name: run foundation-models/system/distillation/distillation_chat_completion.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -76,10 +76,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "distillation_chat_completion.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python distillation_chat_completion.ipynb distillation_chat_completion.output.ipynb
-      working-directory: sdk/python/foundation-models/system/finetune/Llama-notebooks/distillation
+      working-directory: sdk/python/foundation-models/system/distillation
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: distillation_chat_completion
-        path: sdk/python/foundation-models/system/finetune/Llama-notebooks/distillation
+        path: sdk/python/foundation-models/system/distillation
