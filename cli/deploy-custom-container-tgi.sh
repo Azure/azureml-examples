@@ -9,7 +9,7 @@ export ACR_NAME="<CONTAINER_REGISTRY_NAME>"
 export HUGGINGFACE_TOKEN = "<HUGGING_FACE_TOKEN>"
 # </set_variables>
 
-export IMAGE_TAG=azureml-examples/tgi
+export IMAGE_TAG=azureml-examples/tgi:latest
 export ENDPOINT_NAME=endpt-moe-`echo $RANDOM`
 export ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f9-)
 
