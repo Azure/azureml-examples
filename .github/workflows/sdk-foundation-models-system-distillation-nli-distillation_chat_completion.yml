@@ -3,7 +3,7 @@
 # Any manual changes to this file may cause incorrect behavior.
 # Any manual changes will be overwritten if the code is regenerated. 
 
-name: sdk-foundation-models-system-distillation-distillation_chat_completion
+name: sdk-foundation-models-system-distillation-nli-distillation_chat_completion
 # This file is created by sdk/python/readme.py.
 # Please do not edit directly.
 on:
@@ -14,8 +14,8 @@ on:
     branches:
       - main
     paths:
-      - sdk/python/foundation-models/system/distillation/**
-      - .github/workflows/sdk-foundation-models-system-distillation-distillation_chat_completion.yml
+      - sdk/python/foundation-models/system/distillation/nli/
+      - .github/workflows/sdk-foundation-models-system-distillation-nli-distillation_chat_completion.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
@@ -68,7 +68,7 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: run foundation-models/system/distillation/distillation_chat_completion.ipynb
+    - name: run foundation-models/system/distillation/nli/distillation_chat_completion.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
@@ -76,10 +76,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "distillation_chat_completion.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python distillation_chat_completion.ipynb distillation_chat_completion.output.ipynb
-      working-directory: sdk/python/foundation-models/system/distillation
+      working-directory: sdk/python/foundation-models/system/distillation/nli
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: distillation_chat_completion
-        path: sdk/python/foundation-models/system/distillation
+        path: sdk/python/foundation-models/system/distillation/nli

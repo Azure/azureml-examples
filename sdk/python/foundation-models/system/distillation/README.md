@@ -64,9 +64,9 @@ sequenceDiagram
 
 ## Examples
 We currently support numerous task types for model distillation. To view examples on how to distill and consume a model, click on the following task type of interest
-- [NLI (Natural Language Interpretation)](./NLI/distillation_chat_completion.ipynb)
-- [Conversation](./Conversation/distillation_conversational_task.ipynb)
-- [NLU QA (Natural Language Understanding Question and Answer)](./NLU_QA/distillation_nlu_qa_task.ipynb)
-- [Math](./Math/distillation_math.ipynb)
+- [NLI (Natural Language Interpretation)](./nli/distillation_chat_completion.ipynb)
+- [Conversation](./conversation/distillation_conversational_task.ipynb)
+- [NLU QA (Natural Language Understanding Question and Answer)](./nlu_qa/distillation_nlu_qa_task.ipynb)
+- [Math](./math/distillation_math.ipynb)
 - Summarization
 
