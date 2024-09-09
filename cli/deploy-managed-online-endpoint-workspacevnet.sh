@@ -3,7 +3,7 @@ set -e
 export RESOURCEGROUP_NAME="<YOUR_RESOURCEGROUP_NAME>"
 export WORKSPACE_NAME="<YOUR_WORKSPACE_NAME>"
 
-export WORKSPACE_NAME=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)_vnet
+export WORKSPACE_NAME=$(az config get --query "defaults[?name == 'workspace'].value" -o tsv)_
 export RESOURCEGROUP_NAME=$(az config get --query "defaults[?name == 'group'].value" -o tsv)
 
 # If you want to allow outbound traffic, use below instead.
@@ -13,7 +13,7 @@ export RESOURCEGROUP_NAME=$(az config get --query "defaults[?name == 'group'].va
 
 # If you want to block outbound traffic, use below instead.
 # <create_workspace_allow_only_approved_outbound>
-az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_only_approved_outbound
+az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_only_approved_outbound -f .\resources\workspace\workspacevnet-allow-only-approved-outbound.yml
 # </create_workspace_allow_only_approved_outbound>
 
 # Before creating an online deployment, manually provision managed network for the workspace, and verify it's completed.
