@@ -90,7 +90,7 @@ jobs:
       working-directory: sdk/python/responsible-ai/text
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: responsibleaidashboard-multilabel-text-classification-covid-events
         path: sdk/python/responsible-ai/text

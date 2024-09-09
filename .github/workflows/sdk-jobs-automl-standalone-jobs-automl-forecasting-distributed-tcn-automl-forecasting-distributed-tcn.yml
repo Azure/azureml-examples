@@ -98,7 +98,7 @@ jobs:
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-distributed-tcn
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: automl-forecasting-distributed-tcn
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-distributed-tcn

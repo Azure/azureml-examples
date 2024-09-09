@@ -93,7 +93,7 @@ jobs:
       working-directory: tutorials/get-started-notebooks
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: explore-data
         path: tutorials/get-started-notebooks
