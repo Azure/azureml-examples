@@ -35,8 +35,8 @@ jobs:
         subscription-id: ${{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}
     - name: bootstrap resources
       run: |
-          bash bootstrap.sh
-      working-directory: infra/bootstrapping
+          bash bootstrapping/bootstrap.sh
+      working-directory: infra
       continue-on-error: false
     - name: setup-cli
       run: |
