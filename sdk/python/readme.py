@@ -352,7 +352,7 @@ jobs:
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: {name}
         path: sdk/python/{posix_folder}\n"""

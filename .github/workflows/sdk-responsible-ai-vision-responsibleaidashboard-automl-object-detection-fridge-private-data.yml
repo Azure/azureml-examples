@@ -90,7 +90,7 @@ jobs:
       working-directory: sdk/python/responsible-ai/vision
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: responsibleaidashboard-automl-object-detection-fridge-private-data
         path: sdk/python/responsible-ai/vision

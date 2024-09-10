@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/single-step/scikit-learn/iris
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: iris-scikit-learn
         path: sdk/python/jobs/single-step/scikit-learn/iris
