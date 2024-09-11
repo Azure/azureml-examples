@@ -23,8 +23,6 @@ environment_variables:
   # For example, if there are 2 flow outputs: "answer", "context", and I only want to have "answer" in the endpoint response, I can set this env variable to '["answer"]'
   # PROMPTFLOW_RESPONSE_INCLUDED_FIELDS: '["category", "evidence"]'
 
-  # if you want to deploy to serving mode, you need to set this env variable to "serving"
-  PROMPTFLOW_RUN_MODE: serving
   # currently it is for pulling connections from workspace
   PRT_CONFIG_OVERRIDE: deployment.subscription_id=<subscription_id>,deployment.resource_group=<resource_group_name>,deployment.workspace_name=<workspace_name>,deployment.endpoint_name=basic-chat-endpoint,deployment.deployment_name=basic-chat-deployment
 # enable this will collect metrics such as latency/token/etc during inference time to workspace default appinsights

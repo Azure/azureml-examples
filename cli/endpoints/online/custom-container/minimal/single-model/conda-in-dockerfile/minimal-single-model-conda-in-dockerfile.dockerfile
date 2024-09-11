@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azureml/minimal-ubuntu20.04-py38-cpu-inference:latest
+FROM mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cpu-inference:latest
 
 USER dockeruser
 
