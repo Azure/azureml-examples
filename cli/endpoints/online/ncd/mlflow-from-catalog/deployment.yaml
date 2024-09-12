@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: llama31-8b-instruct
+model: azureml:Meta-Llama-31-8B-Instruct:1
+instance_type: Standard_NC40ads_H100_v5
+instance_count: 1

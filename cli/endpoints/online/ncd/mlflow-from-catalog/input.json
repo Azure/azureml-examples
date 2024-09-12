@@ -1,0 +1,1 @@
+{"input_data": {"input_string": [{"role": "assistant","content": "I'm a useful and concise bot. How can I help?"},{"role": "user","content": "Hello, I could use some inspirations."}],"parameters": {"max_new_tokens": 50}}}
