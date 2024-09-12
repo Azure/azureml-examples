@@ -74,7 +74,6 @@ jobs:
       run: |
           # Workaround for azure-cli's lack of support for ID token refresh
           # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
-
           # Management
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
@@ -90,7 +89,7 @@ jobs:
       working-directory: sdk/python/responsible-ai/text
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: responsibleaidashboard-multilabel-text-classification-covid-events
         path: sdk/python/responsible-ai/text
