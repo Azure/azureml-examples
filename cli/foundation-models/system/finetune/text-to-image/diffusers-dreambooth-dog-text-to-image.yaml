@@ -1,0 +1,118 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: AzureML-Train-Finetune-MultiModal-TextToImage-DreamBooth-Samples
+
+inputs:
+  # # Model - specify the foundation model available in the azureml system registry
+  mlflow_model_path:
+    path: azureml://registries/azureml/models/stabilityai-stable-diffusion-2-1/labels/latest
+    type: mlflow_model
+  # model_name: stabilityai/stable-diffusion-2-1
+
+  # # compute
+  compute_model_import: sample-model-import-cluster
+  compute_finetune: sample-finetune-cluster-gpu
+  process_count_per_instance: 1
+  instance_count: 1
+  
+  # # Dataset
+  instance_data_dir:
+      path: ./dog-example
+      type: uri_folder
+
+outputs:
+  # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
+  trained_model:
+    type: mlflow_model
+
+settings:
+  force_rerun: true
+  continue_on_step_failure: false
+  default_compute: azureml:sample-finetune-cluster-gpu
+
+jobs:
+  huggingface_diffusers_model_finetune_job:
+    type: pipeline
+    component: azureml:diffusers_text_to_image_dreambooth_pipeline:latest
+    inputs:
+      # Compute
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+      instance_data_dir: ${{parent.inputs.instance_data_dir}}
+      
+      process_count_per_instance: ${{parent.inputs.process_count_per_instance}}
+      instance_count: ${{parent.inputs.instance_count}}
+
+      # Model import args
+      download_from_source: False # True for downloading a model directly from HuggingFace
+      model_family: HuggingFaceImage
+      # # Specify the model_name instead of mlflow_model if you want to use a model from the huggingface hub
+      mlflow_model: ${{parent.inputs.mlflow_model_path}}
+      # model_name: ${{parent.inputs.model_name}}
+
+      # # Instance prompt
+      task_name: stable-diffusion-text-to-image
+      instance_prompt: "\"A photo of a sks dog\""
+      resolution: 512
+
+      # # Prior preservation loss
+      with_prior_preservation: True
+      # Class prompt - a prompt without the unique identifier. This prompt is used for generating "class images" for prior preservation
+      class_prompt: "\"a photo of dog\""  # Please note that we need to escape the double inverted comma.
+      num_class_images: 100  # Number of images to generate with the class prompt for prior preservation.
+      # class_data_dir: None  # Specify Datastore URI of existing uri_folder containing class images if you have, and the training job will generate any additional images so that num_class_images are present in class_data_dir during training time.
+      prior_generation_precision: fp32
+      prior_loss_weight: 1.0
+      sample_batch_size: 2  # Number of samples to generate class images in each batch.
+
+      # # Lora parameters
+      # # LoRA reduces the number of trainable parameters by learning pairs of rank-decompostion matrices while freezing the original weights. This vastly reduces the storage requirement for large models adapted to specific tasks and enables efficient task-switching during deployment all without introducing inference latency. LoRA also outperforms several other adaptation methods including adapter, prefix-tuning, and fine-tuning.
+      apply_lora: True
+      # lora_alpha: 128
+      # lora_r: 16
+      # lora_dropout: 0.0
+      # tokenizer_max_length: 77
+
+      # # Text Encoder
+      pre_compute_text_embeddings: True
+      train_text_encoder: False
+      #text_encoder_type: CLIPTextModel
+      #text_encoder_name: openai/clip-vit-base-patch32 # Huggingface id of text encoder.
+      #text_encoder_use_attention_mask: False
+
+      # # UNET related
+      #class_labels_conditioning: timesteps
+
+      # # Noise Scheduler
+      noise_scheduler_name: DDPMScheduler  # Optional, default is used from the base model. If following scheduler related parameters are not provided, it is taken from model's scheduler config.
+      # noise_scheduler_num_train_timesteps: 1000
+      # noise_scheduler_variance_type: fixed_small
+      # noise_scheduler_prediction_type: epsilon
+      # noise_scheduler_timestep_spacing: leading,
+      # extra_noise_scheduler_args: "clip_sample_range=1.0; clip_sample=True" # Optional additional arguments that are supplied to noise scheduler. The arguments should be semi-colon separated key value pairs and should be enclosed in double quotes.
+      # offset_noise: False
+
+      # # Training related
+      num_validation_images: 3 # Number of images to generate using instance_prompt. Images are stored in the output/checkpoint-* directories. Please note that this will increase the training time.
+      number_of_workers: 3
+      number_of_epochs: 15
+      max_steps: -1
+      training_batch_size: 3
+      auto_find_batch_size: False
+      learning_rate: 1e-4  # Learning rate is recommended to be set to a lower value, if not fine-tuning with Lora
+      # learning_rate_scheduler: warmup_linear,
+      # warmup_steps: 0
+      # optimizer: adamw_hf
+      # weight_decay: 0.0
+      # gradient_accumulation_step: 1
+      # max_grad_norm: 1.0
+      precision: 32
+      random_seed: 42
+      logging_strategy: epoch
+      # logging_steps: 500  # Number of update steps between two logs if logging_strategy='steps'.
+      save_total_limit: -1 # If you face issues related to disk space, you can limit the number of checkpoints saved.
+      save_as_mlflow_model: True
+      
+    outputs:
+      mlflow_model_folder: ${{parent.outputs.trained_model}}

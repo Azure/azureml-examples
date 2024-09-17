@@ -111,7 +111,6 @@ def write_notebook_workflow(
     is_pipeline_notebook = ("jobs-pipelines" in classification) or (
         "assets-component" in classification
     )
-    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
@@ -149,6 +148,8 @@ on:\n"""
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+permissions:
+  id-token: write
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -167,7 +168,9 @@ jobs:
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: {creds}
+        client-id: ${{{{ secrets.OIDC_AZURE_CLIENT_ID }}}}
+        tenant-id: ${{{{ secrets.OIDC_AZURE_TENANT_ID }}}}
+        subscription-id: ${{{{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
     - name: bootstrap resources
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
@@ -181,6 +184,11 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{github_workspace}" "{github_workspace}/tutorials/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
@@ -188,6 +196,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
@@ -232,7 +249,7 @@ jobs:
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: {name}
         path: tutorials/{posix_folder}\n"""

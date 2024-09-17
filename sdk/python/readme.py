@@ -34,6 +34,7 @@ NOT_TESTED_NOTEBOOKS = [
     "xgboost_service_principal",
     "using_mlflow_rest_api",
     "yolov5/tutorial",
+    "4.Provision-feature-store",
 ]  # cannot automate lets exclude
 NOT_SCHEDULED_NOTEBOOKS = []  # these are too expensive, lets not run everyday
 # define branch where we need this
@@ -198,7 +199,6 @@ def write_notebook_workflow(
     )
     is_spark_notebook_sample = ("jobs-spark" in classification) or ("_spark_" in name)
     is_featurestore_sample = "featurestore_sample" in classification
-    creds = "${{secrets.AZUREML_CREDENTIALS}}"
     # Duplicate name in working directory during checkout
     # https://github.com/actions/checkout/issues/739
     github_workspace = "${{ github.workspace }}"
@@ -239,7 +239,10 @@ on:\n"""
       - infra/bootstrapping/**
       - sdk/python/setup.sh\n"""
     if is_featurestore_sample:
-        workflow_yaml += f"""      - sdk/python/featurestore_sample
+        workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
+    workflow_yaml += f"""
+permissions:
+  id-token: write
 concurrency:
   group: {GITHUB_CONCURRENCY_GROUP}
   cancel-in-progress: true
@@ -252,13 +255,15 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: {creds}
+        client-id: ${{{{ secrets.OIDC_AZURE_CLIENT_ID }}}}
+        tenant-id: ${{{{ secrets.OIDC_AZURE_TENANT_ID }}}}
+        subscription-id: ${{{{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
     - name: bootstrap resources
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
@@ -272,13 +277,27 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: validate readme
+      run: |
+          python check-readme.py "{github_workspace}" "{github_workspace}/sdk/python/{posix_folder}"
+      working-directory: infra/bootstrapping
+      continue-on-error: false
     - name: setup-cli
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
           source "{github_workspace}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-      continue-on-error: true\n"""
+      continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none\n"""
     if is_spark_notebook_sample:
         workflow_yaml += get_spark_config_workflow(posix_folder, name)
     if is_featurestore_sample:
@@ -301,9 +320,13 @@ jobs:
           chmod +x /tmp/code/code
           export PATH="/tmp/code:$PATH"\n"""
 
+    papermill_option = ""
+    if "endpoints-batch" in classification:
+        papermill_option = " --log-output"
+
     if not ("automl" in folder):
         workflow_yaml += f"""
-          papermill -k python {name}.ipynb {name}.output.ipynb
+          papermill -k python {name}.ipynb {name}.output.ipynb{papermill_option}
       working-directory: sdk/python/{posix_folder}"""
     elif "nlp" in folder or "image" in folder:
         # need GPU cluster, so override the compute cluster name to dedicated
@@ -329,7 +352,7 @@ jobs:
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: {name}
         path: sdk/python/{posix_folder}\n"""
@@ -476,6 +499,7 @@ def get_spark_config_workflow(folder_name, file_name):
 def get_featurestore_config_workflow(folder_name, file_name):
     is_sdk_noteobook = "_sdk_" in file_name
     is_cli_notebook = "_cli_" in file_name
+    is_vnet_notebook = "_vnet_" in file_name
     workflow = f"""    - name: setup feature-store resources"""
     if is_sdk_noteobook:
         workflow += f"""
@@ -487,6 +511,12 @@ def get_featurestore_config_workflow(folder_name, file_name):
         workflow += f"""
       run: |
           bash -x automation-test/setup-resources-cli.sh automation-test/{file_name}.ipynb
+      working-directory: sdk/python/featurestore_sample
+      continue-on-error: true\n"""
+    if is_vnet_notebook:
+        workflow += f"""
+      run: |
+          bash -x automation-test/setup-resources-vnet.sh automation-test/{file_name}.ipynb
       working-directory: sdk/python/featurestore_sample
       continue-on-error: true\n"""
 

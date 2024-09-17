@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
 name: hello-batch-from-job
 endpoint_name: hello-pipeline-batch
 type: pipeline

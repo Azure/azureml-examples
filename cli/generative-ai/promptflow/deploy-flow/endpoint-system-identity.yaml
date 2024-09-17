@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+name: basic-chat-endpoint
+description: basic chat endpoint deployed using CLI
+auth_mode: key
+properties:
+# this property only works for system-assigned identity.
+# if the deploy user has access to connection secrets, 
+# the endpoint system-assigned identity will be auto-assigned connection secrets reader role as well
+  enforce_access_to_default_secret_stores: enabled

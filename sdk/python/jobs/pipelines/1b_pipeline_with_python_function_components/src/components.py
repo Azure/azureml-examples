@@ -12,7 +12,7 @@ def train_model(
     max_epochs: int,
     model_output: Output(type="uri_folder"),
     learning_rate=0.02,
-):
+) -> str:
     """A dummy train component.
 
     Args:
@@ -37,6 +37,8 @@ def train_model(
     model = str(uuid4())
     (Path(model_output) / "model").write_text(model)
 
+    return str((Path(model_output) / "model"))
+
 
 @command_component(
     display_name="Score",
@@ -50,11 +52,13 @@ def score_data(
     model_input: Input(type="uri_folder"),
     test_data: Input(type="uri_file"),
     score_output: Output(type="uri_folder"),
-):
+    model_file: str = None,
+) -> str:
     """A dummy score component."""
 
     lines = [
         f"Model path: {model_input}",
+        f"Model file: {model_file}",
         f"Test data path: {test_data}",
         f"Scoring output path: {score_output}",
     ]
@@ -71,15 +75,20 @@ def score_data(
     # Here only print text to output file as demo
     (Path(score_output) / "score").write_text("scored with {}".format(model))
 
+    return str(Path(score_output) / "score")
+
 
 @command_component(display_name="Evaluate", environment="./env.yaml")
 def eval_model(
-    scoring_result: Input(type="uri_folder"), eval_output: Output(type="uri_folder")
+    scoring_result: Input(type="uri_folder"),
+    eval_output: Output(type="uri_folder"),
+    scoring_file: str = None,
 ):
     """A dummy evaluate component."""
 
     lines = [
         f"Scoring result path: {scoring_result}",
+        f"Scoring file: {scoring_file}",
         f"Evaluation output path: {eval_output}",
     ]
 

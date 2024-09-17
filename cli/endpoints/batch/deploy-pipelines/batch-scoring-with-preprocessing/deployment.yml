@@ -1,4 +1,4 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
 name: uci-classifier-prepros-xgb
 endpoint_name: uci-classifier-batch
 type: pipeline

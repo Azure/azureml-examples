@@ -1,0 +1,30 @@
+description: credit default training pipeline
+display_name: credit-default-model-training
+experiment_name: credit-default-model-training
+type: pipeline
+
+inputs:
+  training_dataset:
+    type: uri_file
+    path: azureml:credit-default-reference@latest
+
+jobs:
+  train_register_model_step:
+    type: command
+    compute: azureml:cpu-cluster
+    code: ../code
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      conda_file: ../environments/train.yaml
+    inputs:
+      training_data: 
+        path: ${{parent.inputs.training_dataset}}
+        mode: ro_mount
+    outputs:
+      model_output:
+        type: mlflow_model
+        name: credit-default-model
+    command: >-
+      python train.py
+      --training_data ${{inputs.training_data}}
+      --model_output ${{outputs.model_output}}

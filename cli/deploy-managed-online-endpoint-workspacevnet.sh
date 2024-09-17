@@ -13,6 +13,12 @@ export WORKSPACE_NAME="<YOUR_WORKSPACE_NAME>"
 az ml workspace create -g $RESOURCEGROUP_NAME -n $WORKSPACE_NAME -m allow_only_approved_outbound
 # </create_workspace_allow_only_approved_outbound>
 
+# Before creating an online deployment, manually provision managed network for the workspace, and verify it's completed.
+# <manually_provision_managed_network>
+az ml workspace provision-network -g my_resource_group -n my_workspace_name
+az ml workspace show -n my_workspace_name -g my_resource_group --query managed_network
+# </manually_provision_managed_network>
+
 az configure --defaults workspace=$WORKSPACE_NAME group=$RESOURCEGROUP_NAME
 
 # <set_endpoint_name> 
