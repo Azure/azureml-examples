@@ -1,0 +1,4 @@
+Summarize this dialog:
+{prompt}
+---
+Summary:
