@@ -3,7 +3,7 @@ name: sklearn-deployment-script
 endpoint_name: my-endpoint
 model:
   name: mir-sample-sklearn-mlflow-model
-  version: 1
+  version: 2
   path: sklearn-diabetes/model
   type: mlflow_model
 environment:
