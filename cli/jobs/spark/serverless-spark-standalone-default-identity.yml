@@ -31,5 +31,5 @@ args: >-
 
 resources:
   instance_type: standard_e4s_v3
-  runtime_version: "3.2"
+  runtime_version: "3.3"
   
