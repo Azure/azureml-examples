@@ -139,7 +139,7 @@ response=$(curl --location --request PUT "https://management.azure.com/subscript
     },
     \"properties\": {
         \"endpointComputeType\": \"Managed\",
-        \"instanceType\": \"Standard_DS3_v2\"
+        \"instanceType\": \"Standard_DS3_v2\",
         \"model\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/sklearn/versions/1\",
         \"codeConfiguration\": {
             \"codeId\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/codes/score-sklearn/versions/1\",
