@@ -27,7 +27,7 @@ az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_G
 az storage fs create -n $GEN2_FILE_SYSTEM --account-name $GEN2_STORAGE_NAME
 az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password $RANDOM_STRING --location $LOCATION
 az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_NAME/blobServices/default/containers/$GEN2_FILE_SYSTEM
-az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.2 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
+az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.3 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
 az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
 if [[ "$2" == *"managed-identity"* ]]
