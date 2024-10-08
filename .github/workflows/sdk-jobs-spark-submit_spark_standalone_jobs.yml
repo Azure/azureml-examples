@@ -92,8 +92,7 @@ jobs:
           papermill -k python submit_spark_standalone_jobs.ipynb submit_spark_standalone_jobs.output.ipynb
       working-directory: sdk/python/jobs/spark
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: submit_spark_standalone_jobs
         path: sdk/python/jobs/spark

@@ -89,8 +89,7 @@ jobs:
           papermill -k python -p compute_name automl-gpu-cluster automl-nlp-multiclass-sentiment-mlflow.ipynb automl-nlp-multiclass-sentiment-mlflow.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: automl-nlp-multiclass-sentiment-mlflow
         path: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-classification-multiclass-task-sentiment-analysis

@@ -72,8 +72,7 @@ jobs:
           papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb -p MODEL_ID "${{ env.MODEL_ID }}" -p TASK_NAME "${{ env.TASK_NAME }}"
       working-directory: sdk/python/foundation-models/system/import
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: import_model_into_registry
         path: sdk/python/foundation-models/system/import

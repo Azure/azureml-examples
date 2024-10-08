@@ -87,8 +87,7 @@ jobs:
           papermill -k python openai_completions_finetune.ipynb openai_completions_finetune.output.ipynb
       working-directory: sdk/python/foundation-models/azure_openai/oai-v1
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: openai_completions_finetune
         path: sdk/python/foundation-models/azure_openai/oai-v1

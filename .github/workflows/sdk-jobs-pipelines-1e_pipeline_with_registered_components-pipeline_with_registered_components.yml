@@ -87,8 +87,7 @@ jobs:
           papermill -k python pipeline_with_registered_components.ipynb pipeline_with_registered_components.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1e_pipeline_with_registered_components
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: pipeline_with_registered_components
         path: sdk/python/jobs/pipelines/1e_pipeline_with_registered_components

@@ -87,8 +87,7 @@ jobs:
           papermill -k python mltable-local-to-cloud.ipynb mltable-local-to-cloud.output.ipynb
       working-directory: sdk/python/using-mltable/local-to-cloud
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: mltable-local-to-cloud
         path: sdk/python/using-mltable/local-to-cloud

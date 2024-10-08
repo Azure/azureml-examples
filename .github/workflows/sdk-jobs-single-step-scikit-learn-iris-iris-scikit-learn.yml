@@ -87,8 +87,7 @@ jobs:
           papermill -k python iris-scikit-learn.ipynb iris-scikit-learn.output.ipynb
       working-directory: sdk/python/jobs/single-step/scikit-learn/iris
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: iris-scikit-learn
         path: sdk/python/jobs/single-step/scikit-learn/iris

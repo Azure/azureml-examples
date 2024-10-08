@@ -87,8 +87,7 @@ jobs:
           papermill -k python token-classification-online-endpoint.ipynb token-classification-online-endpoint.output.ipynb
       working-directory: sdk/python/foundation-models/huggingface/inference/token-classification
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: token-classification-online-endpoint
         path: sdk/python/foundation-models/huggingface/inference/token-classification

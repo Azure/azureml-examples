@@ -87,8 +87,7 @@ jobs:
           papermill -k python lightgbm-iris-sweep.ipynb lightgbm-iris-sweep.output.ipynb
       working-directory: sdk/python/jobs/single-step/lightgbm/iris
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: lightgbm-iris-sweep
         path: sdk/python/jobs/single-step/lightgbm/iris

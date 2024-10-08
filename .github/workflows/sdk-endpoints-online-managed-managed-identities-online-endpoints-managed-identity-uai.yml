@@ -87,8 +87,7 @@ jobs:
           papermill -k python online-endpoints-managed-identity-uai.ipynb online-endpoints-managed-identity-uai.output.ipynb
       working-directory: sdk/python/endpoints/online/managed/managed-identities
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-managed-identity-uai
         path: sdk/python/endpoints/online/managed/managed-identities

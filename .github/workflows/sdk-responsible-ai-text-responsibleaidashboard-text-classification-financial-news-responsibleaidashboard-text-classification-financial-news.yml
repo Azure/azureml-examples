@@ -83,8 +83,7 @@ jobs:
           papermill -k python responsibleaidashboard-text-classification-financial-news.ipynb responsibleaidashboard-text-classification-financial-news.output.ipynb
       working-directory: sdk/python/responsible-ai/text/responsibleaidashboard-text-classification-financial-news
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-text-classification-financial-news
         path: sdk/python/responsible-ai/text/responsibleaidashboard-text-classification-financial-news

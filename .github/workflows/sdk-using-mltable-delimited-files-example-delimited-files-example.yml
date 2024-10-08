@@ -87,8 +87,7 @@ jobs:
           papermill -k python delimited-files-example.ipynb delimited-files-example.output.ipynb
       working-directory: sdk/python/using-mltable/delimited-files-example
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: delimited-files-example
         path: sdk/python/using-mltable/delimited-files-example
