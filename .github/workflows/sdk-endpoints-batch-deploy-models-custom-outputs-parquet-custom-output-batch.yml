@@ -87,8 +87,7 @@ jobs:
           papermill -k python custom-output-batch.ipynb custom-output-batch.output.ipynb --log-output
       working-directory: sdk/python/endpoints/batch/deploy-models/custom-outputs-parquet
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/upload-artifact
       with:
         name: custom-output-batch
         path: sdk/python/endpoints/batch/deploy-models/custom-outputs-parquet

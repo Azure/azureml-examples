@@ -92,8 +92,7 @@ jobs:
           papermill -k python attach_manage_spark_pools.ipynb attach_manage_spark_pools.output.ipynb
       working-directory: sdk/python/resources/compute
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: attach_manage_spark_pools
         path: sdk/python/resources/compute

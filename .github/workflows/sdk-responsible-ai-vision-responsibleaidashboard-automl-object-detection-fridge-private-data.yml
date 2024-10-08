@@ -89,8 +89,7 @@ jobs:
           papermill -k python responsibleaidashboard-automl-object-detection-fridge-private-data.ipynb responsibleaidashboard-automl-object-detection-fridge-private-data.output.ipynb
       working-directory: sdk/python/responsible-ai/vision
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-automl-object-detection-fridge-private-data
         path: sdk/python/responsible-ai/vision

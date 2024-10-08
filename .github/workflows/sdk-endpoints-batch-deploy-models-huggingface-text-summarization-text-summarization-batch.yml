@@ -89,8 +89,7 @@ jobs:
           papermill -k python text-summarization-batch.ipynb text-summarization-batch.output.ipynb --log-output
       working-directory: sdk/python/endpoints/batch/deploy-models/huggingface-text-summarization
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/upload-artifact
       with:
         name: text-summarization-batch
         path: sdk/python/endpoints/batch/deploy-models/huggingface-text-summarization

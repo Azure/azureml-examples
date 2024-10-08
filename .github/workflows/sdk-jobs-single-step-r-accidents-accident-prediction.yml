@@ -87,8 +87,7 @@ jobs:
           papermill -k python accident-prediction.ipynb accident-prediction.output.ipynb
       working-directory: sdk/python/jobs/single-step/r/accidents
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: accident-prediction
         path: sdk/python/jobs/single-step/r/accidents

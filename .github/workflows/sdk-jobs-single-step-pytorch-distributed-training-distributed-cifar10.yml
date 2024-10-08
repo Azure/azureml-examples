@@ -87,8 +87,7 @@ jobs:
           papermill -k python distributed-cifar10.ipynb distributed-cifar10.output.ipynb
       working-directory: sdk/python/jobs/single-step/pytorch/distributed-training
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: distributed-cifar10
         path: sdk/python/jobs/single-step/pytorch/distributed-training

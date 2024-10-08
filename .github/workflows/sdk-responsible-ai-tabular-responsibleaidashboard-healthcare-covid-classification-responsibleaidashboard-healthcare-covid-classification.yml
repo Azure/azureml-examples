@@ -83,8 +83,7 @@ jobs:
           papermill -k python responsibleaidashboard-healthcare-covid-classification.ipynb responsibleaidashboard-healthcare-covid-classification.output.ipynb
       working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-healthcare-covid-classification
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-healthcare-covid-classification
         path: sdk/python/responsible-ai/tabular/responsibleaidashboard-healthcare-covid-classification

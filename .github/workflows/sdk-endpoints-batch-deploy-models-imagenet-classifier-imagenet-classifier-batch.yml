@@ -87,8 +87,7 @@ jobs:
           papermill -k python imagenet-classifier-batch.ipynb imagenet-classifier-batch.output.ipynb --log-output
       working-directory: sdk/python/endpoints/batch/deploy-models/imagenet-classifier
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/upload-artifact
       with:
         name: imagenet-classifier-batch
         path: sdk/python/endpoints/batch/deploy-models/imagenet-classifier

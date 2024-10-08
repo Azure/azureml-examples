@@ -87,8 +87,7 @@ jobs:
           papermill -k python online-endpoints-custom-container.ipynb online-endpoints-custom-container.output.ipynb
       working-directory: sdk/python/endpoints/online/custom-container
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-custom-container
         path: sdk/python/endpoints/online/custom-container

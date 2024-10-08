@@ -89,8 +89,7 @@ jobs:
           papermill -k python responsibleaidashboard-diabetes-decision-making.ipynb responsibleaidashboard-diabetes-decision-making.output.ipynb
       working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-diabetes-decision-making
         path: sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-decision-making

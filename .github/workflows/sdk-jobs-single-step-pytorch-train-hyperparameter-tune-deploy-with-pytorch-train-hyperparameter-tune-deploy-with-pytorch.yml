@@ -87,8 +87,7 @@ jobs:
           papermill -k python train-hyperparameter-tune-deploy-with-pytorch.ipynb train-hyperparameter-tune-deploy-with-pytorch.output.ipynb
       working-directory: sdk/python/jobs/single-step/pytorch/train-hyperparameter-tune-deploy-with-pytorch
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: train-hyperparameter-tune-deploy-with-pytorch
         path: sdk/python/jobs/single-step/pytorch/train-hyperparameter-tune-deploy-with-pytorch

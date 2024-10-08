@@ -87,8 +87,7 @@ jobs:
           papermill -k python share-data-using-registry.ipynb share-data-using-registry.output.ipynb
       working-directory: sdk/python/assets/assets-in-registry
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/upload-artifact
       with:
         name: share-data-using-registry
         path: sdk/python/assets/assets-in-registry

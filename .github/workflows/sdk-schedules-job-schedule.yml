@@ -87,8 +87,7 @@ jobs:
           papermill -k python job-schedule.ipynb job-schedule.output.ipynb
       working-directory: sdk/python/schedules
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: job-schedule
         path: sdk/python/schedules

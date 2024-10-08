@@ -78,8 +78,7 @@ jobs:
           papermill -k python distillation_chat_completion.ipynb distillation_chat_completion.output.ipynb
       working-directory: sdk/python/foundation-models/system/distillation/nli
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: distillation_chat_completion
         path: sdk/python/foundation-models/system/distillation/nli

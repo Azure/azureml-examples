@@ -87,8 +87,7 @@ jobs:
           papermill -k python debug-and-monitor.ipynb debug-and-monitor.output.ipynb
       working-directory: sdk/python/jobs/single-step/debug-and-monitor
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: debug-and-monitor
         path: sdk/python/jobs/single-step/debug-and-monitor

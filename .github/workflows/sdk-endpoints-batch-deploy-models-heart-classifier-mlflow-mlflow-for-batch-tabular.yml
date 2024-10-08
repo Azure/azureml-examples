@@ -89,8 +89,7 @@ jobs:
           papermill -k python mlflow-for-batch-tabular.ipynb mlflow-for-batch-tabular.output.ipynb --log-output
       working-directory: sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/upload-artifact
       with:
         name: mlflow-for-batch-tabular
         path: sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow

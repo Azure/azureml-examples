@@ -97,8 +97,7 @@ jobs:
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-distributed-tcn.ipynb automl-forecasting-distributed-tcn.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-distributed-tcn
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: automl-forecasting-distributed-tcn
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-distributed-tcn

@@ -86,8 +86,7 @@ jobs:
           papermill -k python deploy-model.ipynb deploy-model.output.ipynb
       working-directory: tutorials/get-started-notebooks
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: deploy-model
         path: tutorials/get-started-notebooks

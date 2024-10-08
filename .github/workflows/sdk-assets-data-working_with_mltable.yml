@@ -87,8 +87,7 @@ jobs:
           papermill -k python working_with_mltable.ipynb working_with_mltable.output.ipynb
       working-directory: sdk/python/assets/data
     - name: upload notebook's working folder as an artifact
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/upload-artifact
       with:
         name: working_with_mltable
         path: sdk/python/assets/data
