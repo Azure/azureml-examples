@@ -1,8 +1,10 @@
 ﻿using Azure.Core;
+using Azure.Identity;
 using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
 using Azure.ResourceManager.MachineLearning.Models;
 using Azure.ResourceManager.Resources;
+using Azure.Storage.Blobs;
 
 namespace Azure.MachineLearning.Samples.Assets.Model;
 
@@ -56,5 +58,50 @@ class ModelOperations
         return modelVersionResource;
     }
     // </GetOrCreateModelVersionAsync>
+
+    /// <summary>
+    /// Download the model artifact from the workspace datastore.
+    /// </summary>
+    // <DownloadLatestModelVersion>
+    public static async Task DownloadModelVersion(
+        string subscriptionId,
+        string resourceGroupName,
+        string workspaceName,
+        string modelName,
+        string version,
+        string downloadToPath)
+    {
+        var cred = new DefaultAzureCredential();
+        var armClient = new ArmClient(cred);
+
+        Console.WriteLine("Getting model version data ...");
+        var modelId = MachineLearningModelVersionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, workspaceName, modelName, version);
+        var modelResult = await armClient.GetMachineLearningModelVersionResource(modelId).GetAsync();
+        var modelData = modelResult.Value.Data;
+        Console.WriteLine($"Succeeded on id: {modelData.Id}");
+
+        Console.WriteLine("Getting workspace datastore ...");
+        var datastoreName = "workspaceblobstore";
+        var datastoreId = MachineLearningDatastoreResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, workspaceName, datastoreName);
+        var datastoreResult = await armClient.GetMachineLearningDatastoreResource(datastoreId).GetAsync();
+        var datastoreData = datastoreResult.Value.Data;
+        Console.WriteLine($"Succeeded on id: {datastoreData.Id}");
+        Console.WriteLine(datastoreData);
+
+        var blobName = modelData.Properties.ModelUri.AbsolutePath.Split("/paths/").Last();
+        Console.WriteLine($"Model blob name: {blobName}");
+
+        var datastoreProperties = (MachineLearningAzureBlobDatastore)datastoreData.Properties;
+        var storageEndpoint = $"https://{datastoreProperties.AccountName}.blob.core.windows.net/{datastoreProperties.ContainerName}";
+        Console.WriteLine($"Storage endpoint: {storageEndpoint}");
+
+        var modelUri = new Uri($"{storageEndpoint}/{blobName}");
+        Console.WriteLine($"Downloading model from {modelUri} ...");
+
+        var blobClient = new BlobClient(modelUri, cred);
+        blobClient.DownloadTo(downloadToPath);
+        Console.WriteLine($"Succeded on downloading model to {downloadToPath}");
+    }
+    // </DownloadLatestModelVersion>
 
 }
