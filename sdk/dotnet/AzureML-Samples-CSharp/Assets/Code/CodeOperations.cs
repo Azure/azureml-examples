@@ -19,7 +19,7 @@ internal class CodeOperations
     /// <param name="version"></param>
     /// <returns></returns>
     // <GetOrCreateCodeVersionAsync>
-    public static async Task<CodeVersionResource> GetOrCreateCodeVersionAsync(
+    public static async Task<MachineLearningCodeVersionResource> GetOrCreateCodeVersionAsync(
         ArmClient armClient,
         ResourceGroupResource resourceGroup,
         string workspaceName,
@@ -32,13 +32,13 @@ internal class CodeOperations
 
         string resourceId = $"{ws.Id}/codes/{codeName}";
         var id = new ResourceIdentifier(resourceId);
-        CodeContainerResource codeContainerDataResource = armClient.GetCodeContainerResource(id);
+        MachineLearningCodeContainerResource codeContainerDataResource = armClient.GetMachineLearningCodeContainerResource(id);
 
-        CodeVersionProperties properties = new CodeVersionProperties { CodeUri = new Uri(codeUri) };
-        CodeVersionData data = new CodeVersionData(properties);
+        MachineLearningCodeVersionProperties properties = new MachineLearningCodeVersionProperties { CodeUri = new Uri(codeUri) };
+        MachineLearningCodeVersionData data = new MachineLearningCodeVersionData(properties);
 
-        ArmOperation<CodeVersionResource> CodeVersionResourceOperation = await codeContainerDataResource.GetCodeVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
-        CodeVersionResource codeVersionResource = CodeVersionResourceOperation.Value;
+        ArmOperation<MachineLearningCodeVersionResource> CodeVersionResourceOperation = await codeContainerDataResource.GetMachineLearningCodeVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
+        MachineLearningCodeVersionResource codeVersionResource = CodeVersionResourceOperation.Value;
         Console.WriteLine($"codeVersionResource {codeVersionResource.Data.Id} created.");
 
         return codeVersionResource;

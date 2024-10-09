@@ -1,4 +1,5 @@
-﻿using Azure.ResourceManager;
+﻿using Azure.Core;
+using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
 using Azure.ResourceManager.MachineLearning.Models;
 using Azure.ResourceManager.Resources;
@@ -19,7 +20,7 @@ internal class BatchEndpointOperations
     /// <param name="location">Location.</param>
     /// <returns></returns>
     // <GetOrCreateBatchEndpointAsync>
-    public static async Task<BatchEndpointResource> GetOrCreateBatchEndpointAsync(
+    public static async Task<MachineLearningBatchEndpointResource> GetOrCreateBatchEndpointAsync(
         ResourceGroupResource resourceGroup,
         string workspaceName,
         string endpointName,
@@ -27,26 +28,26 @@ internal class BatchEndpointOperations
     {
         Console.WriteLine("Creating a BatchEndpoint...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        bool exists = await ws.GetBatchEndpoints().ExistsAsync(endpointName);
+        bool exists = await ws.GetMachineLearningBatchEndpoints().ExistsAsync(endpointName);
 
-        BatchEndpointResource endpointResource;
+        MachineLearningBatchEndpointResource endpointResource;
         if (exists)
         {
             Console.WriteLine($"BatchEndpoint {endpointName} exists.");
-            endpointResource = await ws.GetBatchEndpoints().GetAsync(endpointName);
+            endpointResource = await ws.GetMachineLearningBatchEndpoints().GetAsync(endpointName);
             Console.WriteLine($"BatchEndpointResource details: {endpointResource.Data.Id}");
         }
         else
         {
             Console.WriteLine($"BatchEndpoint {endpointName} does not exist.");
 
-            BatchEndpointProperties properties = new BatchEndpointProperties(EndpointAuthMode.AADToken)
+            MachineLearningBatchEndpointProperties properties = new MachineLearningBatchEndpointProperties(MachineLearningEndpointAuthMode.AadToken)
             {
                 Description = "test batch endpoint",
                 Properties = { { "additionalProp1", "value1" } },
             };
 
-            BatchEndpointData data = new BatchEndpointData(location, properties)
+            MachineLearningBatchEndpointData data = new MachineLearningBatchEndpointData(location, properties)
             {
                 Kind = "BatchSample",
                 Sku = new MachineLearningSku("Default")
@@ -59,7 +60,7 @@ internal class BatchEndpointOperations
                 Identity = new ManagedServiceIdentity(ResourceManager.Models.ManagedServiceIdentityType.SystemAssigned),
             };
 
-            ArmOperation<BatchEndpointResource> endpointResourceOperation = await ws.GetBatchEndpoints().CreateOrUpdateAsync(WaitUntil.Completed, endpointName, data);
+            ArmOperation<MachineLearningBatchEndpointResource> endpointResourceOperation = await ws.GetMachineLearningBatchEndpoints().CreateOrUpdateAsync(WaitUntil.Completed, endpointName, data);
             endpointResource = endpointResourceOperation.Value;
             Console.WriteLine($"BatchEndpointResource {endpointResource.Data.Id} created.");
         }
@@ -85,7 +86,7 @@ internal class BatchEndpointOperations
     /// <param name="location"></param>
     /// <returns></returns>
     // <GetOrCreateBatchDeploymentAsync>
-    public static async Task<BatchDeploymentResource> GetOrCreateBatchDeploymentAsync(
+    public static async Task<MachineLearningBatchDeploymentResource> GetOrCreateBatchDeploymentAsync(
         ResourceGroupResource resourceGroup,
         string workspaceName,
         string endpointName,
@@ -98,53 +99,53 @@ internal class BatchEndpointOperations
     {
         Console.WriteLine("Creating a BatchDeployment...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        BatchEndpointResource endpointResource = await ws.GetBatchEndpoints().GetAsync(endpointName);
+        MachineLearningBatchEndpointResource endpointResource = await ws.GetMachineLearningBatchEndpoints().GetAsync(endpointName);
         Console.WriteLine(endpointResource.Data.Id);
 
-        bool exists = await endpointResource.GetBatchDeployments().ExistsAsync(deploymentName);
+        bool exists = await endpointResource.GetMachineLearningBatchDeployments().ExistsAsync(deploymentName);
 
 
-        BatchDeploymentResource deploymentResource;
+        MachineLearningBatchDeploymentResource deploymentResource;
         if (exists)
         {
             Console.WriteLine($"BatchDeployment {deploymentName} exists.");
-            deploymentResource = await endpointResource.GetBatchDeployments().GetAsync(deploymentName);
+            deploymentResource = await endpointResource.GetMachineLearningBatchDeployments().GetAsync(deploymentName);
             Console.WriteLine($"BatchDeploymentResource details: {deploymentResource.Data.Id}");
         }
         else
         {
             Console.WriteLine($"BatchDeployment {deploymentName} does not exist.");
 
-            BatchDeploymentProperties properties = new BatchDeploymentProperties
+            MachineLearningBatchDeploymentProperties properties = new MachineLearningBatchDeploymentProperties
             {
                 Description = "This is a batch deployment",
                 ErrorThreshold = 10,
                 MaxConcurrencyPerInstance = 5,
-                LoggingLevel = BatchLoggingLevel.Info,
+                LoggingLevel = MachineLearningBatchLoggingLevel.Info,
                 MiniBatchSize = 10,
                 OutputFileName = "mypredictions.csv",
-                OutputAction = BatchOutputAction.AppendRow,
+                OutputAction = MachineLearningBatchOutputAction.AppendRow,
                 Properties = { { "additionalProp1", "value1" } },
                 EnvironmentId = environmentId,
                 Compute = computeId,
-                Resources = new ResourceConfiguration { InstanceCount = 1, },
+                Resources = new MachineLearningDeploymentResourceConfiguration { InstanceCount = 1, },
                 EnvironmentVariables = new Dictionary<string, string>
                 {
                     { "TestVariable", "TestValue" },
                 },
-                RetrySettings = new BatchRetrySettings
+                RetrySettings = new MachineLearningBatchRetrySettings
                 {
                     MaxRetries = 4,
                     Timeout = new TimeSpan(0, 3, 0),
                 },
-                CodeConfiguration = new CodeConfiguration("main.py")
+                CodeConfiguration = new MachineLearningCodeConfiguration("main.py")
                 {
-                    CodeId = codeArtifactId,
+                    CodeId = new ResourceIdentifier(codeArtifactId),
                 },
-                Model = new IdAssetReference(modelId),
+                Model = new MachineLearningIdAssetReference(new ResourceIdentifier(modelId)),
             };
 
-            BatchDeploymentData data = new BatchDeploymentData(location, properties)
+            MachineLearningBatchDeploymentData data = new MachineLearningBatchDeploymentData(location, properties)
             {
                 Kind = "SampleBatchDeployment",
                 Sku = new MachineLearningSku("Default")
@@ -156,7 +157,7 @@ internal class BatchEndpointOperations
                 },
             };
 
-            ArmOperation<BatchDeploymentResource> endpointResourceOperation = await endpointResource.GetBatchDeployments().CreateOrUpdateAsync(WaitUntil.Completed, deploymentName, data);
+            ArmOperation<MachineLearningBatchDeploymentResource> endpointResourceOperation = await endpointResource.GetMachineLearningBatchDeployments().CreateOrUpdateAsync(WaitUntil.Completed, deploymentName, data);
             deploymentResource = endpointResourceOperation.Value;
             Console.WriteLine($"BatchDeploymentResource {deploymentResource.Data.Id} created.");
         }
@@ -178,9 +179,9 @@ internal class BatchEndpointOperations
     {
         Console.WriteLine("Listing all Batch deployments in the workspace...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        foreach (var edp in ws.GetBatchEndpoints().GetAll())
+        foreach (var edp in ws.GetMachineLearningBatchEndpoints().GetAll())
         {
-            foreach (var dep in edp.GetBatchDeployments().GetAll())
+            foreach (var dep in edp.GetMachineLearningBatchDeployments().GetAll())
             {
                 Console.WriteLine(dep.Data.Name);
             }
