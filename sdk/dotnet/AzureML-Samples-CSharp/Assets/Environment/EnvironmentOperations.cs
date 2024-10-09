@@ -20,7 +20,7 @@ internal class EnvironmentOperations
     /// <param name="version"></param>
     /// <returns></returns>
     // <GetOrCreateEnvironmentSpecificationVersionAsync>
-    public static async Task<EnvironmentVersionResource> GetOrCreateEnvironmentVersionAsync(
+    public static async Task<MachineLearningEnvironmentVersionResource> GetOrCreateEnvironmentVersionAsync(
         ArmClient armClient,
         ResourceGroupResource resourceGroup,
         string workspaceName,
@@ -32,7 +32,7 @@ internal class EnvironmentOperations
 
         string resourceId = $"{ws.Id}/environments/{environmentName}";
         var id = new ResourceIdentifier(resourceId);
-        EnvironmentContainerResource environmentContainerResource = armClient.GetEnvironmentContainerResource(id);
+        MachineLearningEnvironmentContainerResource environmentContainerResource = armClient.GetMachineLearningEnvironmentContainerResource(id);
 
         var condaDependences = new JObject();
         condaDependences["channels"] = new JArray() { "conda-forge" };
@@ -60,20 +60,20 @@ internal class EnvironmentOperations
         condaDependences["dependencies"] = dependencies;
         Console.WriteLine($"condaDependences: {condaDependences}");
 
-        EnvironmentVersionProperties properties = new EnvironmentVersionProperties
+        MachineLearningEnvironmentVersionProperties properties = new MachineLearningEnvironmentVersionProperties
         {
             Description = "Test",
             CondaFile = condaDependences.ToString(),
             Tags = { { "key1", "value1" }, { "key2", "value2" } },
-            OSType = OperatingSystemType.Linux,
+            OSType = MachineLearningOperatingSystemType.Linux,
             IsAnonymous = false,
             Image = "mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
         };
 
-        EnvironmentVersionData data = new EnvironmentVersionData(properties);
+        MachineLearningEnvironmentVersionData data = new MachineLearningEnvironmentVersionData(properties);
 
-        ArmOperation<EnvironmentVersionResource> environmentVersionResourceOperation = await environmentContainerResource.GetEnvironmentVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
-        EnvironmentVersionResource environmentVersionResource = environmentVersionResourceOperation.Value;
+        ArmOperation<MachineLearningEnvironmentVersionResource> environmentVersionResourceOperation = await environmentContainerResource.GetMachineLearningEnvironmentVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
+        MachineLearningEnvironmentVersionResource environmentVersionResource = environmentVersionResourceOperation.Value;
         Console.WriteLine($"EnvironmentVersionResource {environmentVersionResource.Data.Id} created.");
 
         return environmentVersionResource;
