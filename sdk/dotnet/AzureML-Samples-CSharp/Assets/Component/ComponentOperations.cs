@@ -20,7 +20,7 @@ internal class ComponentOperations
     /// <param name="version"></param>
     /// <returns></returns>
     // <GetOrCreateComponentVersionAsync>
-    public static async Task<ComponentVersionResource> GetOrCreateComponentVersionAsync(
+    public static async Task<MachineLearningComponentVersionResource> GetOrCreateComponentVersionAsync(
         ArmClient armClient,
         ResourceGroupResource resourceGroup,
         string workspaceName,
@@ -34,7 +34,7 @@ internal class ComponentOperations
 
         string resourceId = $"{ws.Id}/components/{componentName}";
         var id = new ResourceIdentifier(resourceId);
-        ComponentContainerResource componentContainerResource = armClient.GetComponentContainerResource(id);
+        MachineLearningComponentContainerResource componentContainerResource = armClient.GetMachineLearningComponentContainerResource(id);
 
         JObject jsonObject = JObject.Parse(@"{
   '$schema': 'https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json',
@@ -80,11 +80,11 @@ internal class ComponentOperations
   },
 }");
 
-        ComponentVersionProperties properties = new ComponentVersionProperties { ComponentSpec = new BinaryData(jsonObject.ToString()) };
-        ComponentVersionData data = new ComponentVersionData(properties);
+        MachineLearningComponentVersionProperties properties = new MachineLearningComponentVersionProperties { ComponentSpec = new BinaryData(jsonObject.ToString()) };
+        MachineLearningComponentVersionData data = new MachineLearningComponentVersionData(properties);
 
-        ArmOperation<ComponentVersionResource> componentVersionResourceOperation = await componentContainerResource.GetComponentVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
-        ComponentVersionResource componentVersionResource = componentVersionResourceOperation.Value;
+        ArmOperation<MachineLearningComponentVersionResource> componentVersionResourceOperation = await componentContainerResource.GetMachineLearningComponentVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
+        MachineLearningComponentVersionResource componentVersionResource = componentVersionResourceOperation.Value;
         Console.WriteLine($"ComponentVersionResource {componentVersionResource.Id} created.");
         return componentVersionResource;
     }
@@ -102,7 +102,7 @@ internal class ComponentOperations
     /// <param name="version"></param>
     /// <returns></returns>
     // <GetOrCreateComponentVersion_Pipeline_Async>
-    public static async Task<ComponentVersionResource> GetOrCreateComponentVersion_Pipeline_Async(
+    public static async Task<MachineLearningComponentVersionResource> GetOrCreateComponentVersion_Pipeline_Async(
         ArmClient armClient,
         ResourceGroupResource resourceGroup,
         string workspaceName,
@@ -116,7 +116,7 @@ internal class ComponentOperations
 
         string resourceId = $"{ws.Id}/components/{componentName}";
         var id = new ResourceIdentifier(resourceId);
-        ComponentContainerResource componentContainerResource = armClient.GetComponentContainerResource(id);
+        MachineLearningComponentContainerResource componentContainerResource = armClient.GetMachineLearningComponentContainerResource(id);
 
         JObject jsonObject = JObject.Parse(@"{
   '$schema': 'https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json',
@@ -150,11 +150,11 @@ internal class ComponentOperations
   },
 }");
 
-        ComponentVersionProperties properties = new ComponentVersionProperties { ComponentSpec = new BinaryData(jsonObject.ToString()) };
-        ComponentVersionData data = new ComponentVersionData(properties);
+        MachineLearningComponentVersionProperties properties = new MachineLearningComponentVersionProperties { ComponentSpec = new BinaryData(jsonObject.ToString()) };
+        MachineLearningComponentVersionData data = new MachineLearningComponentVersionData(properties);
 
-        ArmOperation<ComponentVersionResource> componentVersionResourceOperation = await componentContainerResource.GetComponentVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
-        ComponentVersionResource componentVersionResource = componentVersionResourceOperation.Value;
+        ArmOperation<MachineLearningComponentVersionResource> componentVersionResourceOperation = await componentContainerResource.GetMachineLearningComponentVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
+        MachineLearningComponentVersionResource componentVersionResource = componentVersionResourceOperation.Value;
         Console.WriteLine($"ComponentVersionResource {componentVersionResource.Id} created.");
         return componentVersionResource;
     }

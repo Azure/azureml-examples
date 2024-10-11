@@ -177,7 +177,7 @@
             }
         },
         "spark_runtime_version": {
-            "value": "3.2.0"
+            "value": "3.3.0"
         },
         "offlineStoreStorageAccountOption": {
             "value": "new"

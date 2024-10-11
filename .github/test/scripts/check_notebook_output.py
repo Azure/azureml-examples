@@ -81,6 +81,7 @@ allowed_list = [
         "google.protobuf.service module is deprecated. RPC implementations should provide code generator plugins "
         "which generate code specific to the RPC implementation. service.py will be removed in Jan 2025"
     ),
+    "from google.protobuf import service as _service",
 ]
 
 with open(full_name, "r") as notebook_file:
