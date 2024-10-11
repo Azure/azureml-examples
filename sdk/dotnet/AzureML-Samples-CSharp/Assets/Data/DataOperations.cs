@@ -19,7 +19,7 @@ internal class DataOperations
     /// <param name="version"></param>
     /// <returns></returns>
     // <GetOrCreateDataVersionAsync>
-    public static async Task<DataVersionBaseResource> GetOrCreateDataVersionAsync(
+    public static async Task<MachineLearningDataVersionResource> GetOrCreateDataVersionAsync(
         ArmClient armClient,
         ResourceGroupResource resourceGroup,
         string workspaceName,
@@ -30,16 +30,16 @@ internal class DataOperations
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
         string resourceId = $"{ws.Id}/data/{dataName}";
         var id = new ResourceIdentifier(resourceId);
-        DataContainerResource dataContainerResource = armClient.GetDataContainerResource(id);
+        MachineLearningDataContainerResource dataContainerResource = armClient.GetMachineLearningDataContainerResource(id);
 
-        bool exists = await dataContainerResource.GetDataVersionBases().ExistsAsync(version);
+        bool exists = await dataContainerResource.GetMachineLearningDataVersions().ExistsAsync(version);
 
 
-        DataVersionBaseResource dataVersionBaseResource;
+        MachineLearningDataVersionResource dataVersionBaseResource;
         if (exists)
         {
             Console.WriteLine($"DataVersionBaseResource {dataName} exists.");
-            dataVersionBaseResource = await dataContainerResource.GetDataVersionBases().GetAsync(version);
+            dataVersionBaseResource = await dataContainerResource.GetMachineLearningDataVersions().GetAsync(version);
             Console.WriteLine($"DataVersionBaseResource details: {dataVersionBaseResource.Data.Id}");
         }
         else
@@ -47,7 +47,7 @@ internal class DataOperations
 
             Console.WriteLine($"Creating DataVersionBaseResource {dataName}");
             // UriFolderDataVersion, or UriFileDataVersion or MLTableData
-            DataVersionBaseProperties properties = new UriFileDataVersion(new Uri("https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/"))
+            MachineLearningDataVersionProperties properties = new MachineLearningUriFileDataVersion(new Uri("https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/"))
             {
                 Description = "Test description",
                 Tags = new Dictionary<string, string> { { "tag-name-1", "tag-value-1" } },
@@ -56,9 +56,9 @@ internal class DataOperations
                 IsArchived = false,
             };
 
-            DataVersionBaseData data = new DataVersionBaseData(properties);
+            MachineLearningDataVersionData data = new MachineLearningDataVersionData(properties);
 
-            ArmOperation<DataVersionBaseResource> dataVersionBaseResourceOperation = await dataContainerResource.GetDataVersionBases().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
+            ArmOperation<MachineLearningDataVersionResource> dataVersionBaseResourceOperation = await dataContainerResource.GetMachineLearningDataVersions().CreateOrUpdateAsync(WaitUntil.Completed, version, data);
             dataVersionBaseResource = dataVersionBaseResourceOperation.Value;
             Console.WriteLine($"DataVersionBaseResource {dataVersionBaseResource.Data.Id} created.");
         }
@@ -77,9 +77,9 @@ internal class DataOperations
     {
         Console.WriteLine("Listing Datasets in the workspace...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        DataContainerCollection dataContainerCollection = ws.GetDataContainers();
-        AsyncPageable<DataContainerResource> response = dataContainerCollection.GetAllAsync();
-        await foreach (DataContainerResource dataContainerResource in response)
+        MachineLearningDataContainerCollection dataContainerCollection = ws.GetMachineLearningDataContainers();
+        AsyncPageable<MachineLearningDataContainerResource> response = dataContainerCollection.GetAllAsync();
+        await foreach (MachineLearningDataContainerResource dataContainerResource in response)
         {
             Console.WriteLine(dataContainerResource.Data.Name);
         }
@@ -99,34 +99,34 @@ internal class DataOperations
     {
         Console.WriteLine("Listing Datastore in the workspace...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        DatastoreCollection datastoreCollection = ws.GetDatastores();
-        AsyncPageable<DatastoreResource> response = datastoreCollection.GetAllAsync();
-        await foreach (DatastoreResource datastoreResource in response)
+        MachineLearningDatastoreCollection datastoreCollection = ws.GetMachineLearningDatastores();
+        AsyncPageable<MachineLearningDatastoreResource> response = datastoreCollection.GetAllAsync();
+        await foreach (MachineLearningDatastoreResource datastoreResource in response)
         {
-            DatastoreProperties properties = datastoreResource.Data.Properties;
+            MachineLearningDatastoreProperties properties = datastoreResource.Data.Properties;
             switch (properties)
             {
-                case AzureFileDatastore:
-                    AzureFileDatastore azureFileDatastore = (AzureFileDatastore)datastoreResource.Data.Properties;
+                case MachineLearningAzureFileDatastore:
+                    MachineLearningAzureFileDatastore azureFileDatastore = (MachineLearningAzureFileDatastore)datastoreResource.Data.Properties;
                     Console.WriteLine($"AccountName {azureFileDatastore.AccountName}");
                     Console.WriteLine($"FileShareName {azureFileDatastore.FileShareName}");
                     Console.WriteLine($"Endpoint {azureFileDatastore.Endpoint}");
                     break;
 
-                case AzureBlobDatastore:
-                    AzureBlobDatastore azureBlobDatastore = (AzureBlobDatastore)datastoreResource.Data.Properties;
+                case MachineLearningAzureBlobDatastore:
+                    MachineLearningAzureBlobDatastore azureBlobDatastore = (MachineLearningAzureBlobDatastore)datastoreResource.Data.Properties;
                     Console.WriteLine($"AccountName {azureBlobDatastore.AccountName}");
                     Console.WriteLine($"ContainerName {azureBlobDatastore.ContainerName}");
                     Console.WriteLine($"Endpoint {azureBlobDatastore.Endpoint}");
                     break;
 
-                case AzureDataLakeGen1Datastore:
-                    AzureDataLakeGen1Datastore azureDataLakeGen1Datastore = (AzureDataLakeGen1Datastore)datastoreResource.Data.Properties;
+                case MachineLearningAzureDataLakeGen1Datastore:
+                    MachineLearningAzureDataLakeGen1Datastore azureDataLakeGen1Datastore = (MachineLearningAzureDataLakeGen1Datastore)datastoreResource.Data.Properties;
                     Console.WriteLine($"StoreName {azureDataLakeGen1Datastore.StoreName}");
                     break;
 
-                case AzureDataLakeGen2Datastore:
-                    AzureDataLakeGen2Datastore azureDataLakeGen2Datastore = (AzureDataLakeGen2Datastore)datastoreResource.Data.Properties;
+                case MachineLearningAzureDataLakeGen2Datastore:
+                    MachineLearningAzureDataLakeGen2Datastore azureDataLakeGen2Datastore = (MachineLearningAzureDataLakeGen2Datastore)datastoreResource.Data.Properties;
                     Console.WriteLine($"AccountName {azureDataLakeGen2Datastore.AccountName}");
                     Console.WriteLine($"Filesystem {azureDataLakeGen2Datastore.Filesystem}");
                     Console.WriteLine($"Endpoint {azureDataLakeGen2Datastore.Endpoint}");
