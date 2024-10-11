@@ -87,6 +87,7 @@ jobs:
           papermill -k python image_classification_keras_minist_convnet.ipynb image_classification_keras_minist_convnet.output.ipynb
       working-directory: sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: image_classification_keras_minist_convnet

@@ -87,6 +87,7 @@ jobs:
           papermill -k python delta-lake-example.ipynb delta-lake-example.output.ipynb
       working-directory: sdk/python/using-mltable/delta-lake-example
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: delta-lake-example

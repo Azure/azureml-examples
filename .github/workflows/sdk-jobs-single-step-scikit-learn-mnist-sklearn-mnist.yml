@@ -87,6 +87,7 @@ jobs:
           papermill -k python sklearn-mnist.ipynb sklearn-mnist.output.ipynb
       working-directory: sdk/python/jobs/single-step/scikit-learn/mnist
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: sklearn-mnist

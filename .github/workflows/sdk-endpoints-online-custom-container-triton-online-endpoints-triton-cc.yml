@@ -87,6 +87,7 @@ jobs:
           papermill -k python online-endpoints-triton-cc.ipynb online-endpoints-triton-cc.output.ipynb
       working-directory: sdk/python/endpoints/online/custom-container/triton
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-triton-cc

@@ -87,6 +87,7 @@ jobs:
           papermill -k python nyc_taxi_data_regression.ipynb nyc_taxi_data_regression.output.ipynb
       working-directory: sdk/python/jobs/pipelines/2c_nyc_taxi_data_regression
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: nyc_taxi_data_regression

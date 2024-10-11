@@ -96,6 +96,7 @@ jobs:
                 --check warning stderr \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-nlp-text-named-entity-recognition-task
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: automl-nlp-text-ner-task

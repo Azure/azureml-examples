@@ -88,6 +88,7 @@ jobs:
           papermill -k python azureml-in-a-day.ipynb azureml-in-a-day.output.ipynb
       working-directory: tutorials/azureml-in-a-day
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: azureml-in-a-day

@@ -87,6 +87,7 @@ jobs:
           papermill -k python configuration.ipynb configuration.output.ipynb
       working-directory: sdk/python/jobs
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: configuration

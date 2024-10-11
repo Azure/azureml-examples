@@ -87,6 +87,7 @@ jobs:
           papermill -k python translation-online-endpoint.ipynb translation-online-endpoint.output.ipynb
       working-directory: sdk/python/foundation-models/huggingface/inference/translation
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: translation-online-endpoint

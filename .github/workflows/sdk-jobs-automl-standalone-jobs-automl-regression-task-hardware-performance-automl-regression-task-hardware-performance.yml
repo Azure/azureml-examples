@@ -106,6 +106,7 @@ jobs:
                 --absolute_minimum_score -1.0 \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: automl-regression-task-hardware-performance

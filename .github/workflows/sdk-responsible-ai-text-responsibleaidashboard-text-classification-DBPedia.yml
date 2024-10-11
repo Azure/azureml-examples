@@ -89,6 +89,7 @@ jobs:
           papermill -k python responsibleaidashboard-text-classification-DBPedia.ipynb responsibleaidashboard-text-classification-DBPedia.output.ipynb
       working-directory: sdk/python/responsible-ai/text
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-text-classification-DBPedia

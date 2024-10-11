@@ -87,6 +87,7 @@ jobs:
           papermill -k python oj_sales_prediction.ipynb oj_sales_prediction.output.ipynb
       working-directory: sdk/python/jobs/parallel/1a_oj_sales_prediction
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: oj_sales_prediction

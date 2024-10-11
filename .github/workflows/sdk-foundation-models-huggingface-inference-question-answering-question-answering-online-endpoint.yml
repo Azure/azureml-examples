@@ -87,6 +87,7 @@ jobs:
           papermill -k python question-answering-online-endpoint.ipynb question-answering-online-endpoint.output.ipynb
       working-directory: sdk/python/foundation-models/huggingface/inference/question-answering
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: question-answering-online-endpoint

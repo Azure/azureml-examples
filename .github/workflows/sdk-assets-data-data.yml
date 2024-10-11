@@ -87,6 +87,7 @@ jobs:
           papermill -k python data.ipynb data.output.ipynb
       working-directory: sdk/python/assets/data
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: data

@@ -89,6 +89,7 @@ jobs:
           papermill -k python responsibleaidashboard-object-detection-MSCOCO.ipynb responsibleaidashboard-object-detection-MSCOCO.output.ipynb
       working-directory: sdk/python/responsible-ai/vision
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-object-detection-MSCOCO

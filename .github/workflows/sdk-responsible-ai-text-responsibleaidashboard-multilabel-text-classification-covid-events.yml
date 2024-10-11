@@ -89,6 +89,7 @@ jobs:
           papermill -k python responsibleaidashboard-multilabel-text-classification-covid-events.ipynb responsibleaidashboard-multilabel-text-classification-covid-events.output.ipynb
       working-directory: sdk/python/responsible-ai/text
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-multilabel-text-classification-covid-events

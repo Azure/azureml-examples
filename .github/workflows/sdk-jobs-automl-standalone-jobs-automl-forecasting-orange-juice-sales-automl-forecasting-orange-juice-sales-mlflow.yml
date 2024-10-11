@@ -110,6 +110,7 @@ jobs:
                 --absolute_maximum_score 1.0 \
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-orange-juice-sales
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: automl-forecasting-orange-juice-sales-mlflow

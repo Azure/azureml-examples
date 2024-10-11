@@ -83,6 +83,7 @@ jobs:
           papermill -k python responsibleaidashboard-finance-loan-classification.ipynb responsibleaidashboard-finance-loan-classification.output.ipynb
       working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-finance-loan-classification
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-finance-loan-classification

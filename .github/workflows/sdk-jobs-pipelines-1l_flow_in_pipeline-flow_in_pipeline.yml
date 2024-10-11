@@ -87,6 +87,7 @@ jobs:
           papermill -k python flow_in_pipeline.ipynb flow_in_pipeline.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1l_flow_in_pipeline
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: flow_in_pipeline

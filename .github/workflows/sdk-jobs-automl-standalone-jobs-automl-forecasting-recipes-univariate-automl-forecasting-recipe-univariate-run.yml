@@ -91,6 +91,7 @@ jobs:
           papermill -k python -p compute_name automl-cpu-cluster automl-forecasting-recipe-univariate-run.ipynb automl-forecasting-recipe-univariate-run.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-recipes-univariate
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: automl-forecasting-recipe-univariate-run

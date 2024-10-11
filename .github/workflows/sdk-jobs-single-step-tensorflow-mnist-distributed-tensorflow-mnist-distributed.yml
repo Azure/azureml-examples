@@ -87,6 +87,7 @@ jobs:
           papermill -k python tensorflow-mnist-distributed.ipynb tensorflow-mnist-distributed.output.ipynb
       working-directory: sdk/python/jobs/single-step/tensorflow/mnist-distributed
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: tensorflow-mnist-distributed

@@ -87,6 +87,7 @@ jobs:
           papermill -k python online-endpoints-deploy-mlflow-model.ipynb online-endpoints-deploy-mlflow-model.output.ipynb
       working-directory: sdk/python/endpoints/online/mlflow
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-deploy-mlflow-model

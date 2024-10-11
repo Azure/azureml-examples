@@ -92,6 +92,7 @@ jobs:
           papermill -k python pipeline_with_spark_nodes.ipynb pipeline_with_spark_nodes.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1i_pipeline_with_spark_nodes
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: pipeline_with_spark_nodes

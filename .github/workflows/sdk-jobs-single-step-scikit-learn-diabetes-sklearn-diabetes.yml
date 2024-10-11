@@ -87,6 +87,7 @@ jobs:
           papermill -k python sklearn-diabetes.ipynb sklearn-diabetes.output.ipynb
       working-directory: sdk/python/jobs/single-step/scikit-learn/diabetes
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: sklearn-diabetes

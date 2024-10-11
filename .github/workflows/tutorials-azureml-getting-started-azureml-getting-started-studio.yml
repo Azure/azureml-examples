@@ -88,6 +88,7 @@ jobs:
           papermill -k python azureml-getting-started-studio.ipynb azureml-getting-started-studio.output.ipynb
       working-directory: tutorials/azureml-getting-started
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: azureml-getting-started-studio

@@ -87,6 +87,7 @@ jobs:
           papermill -k python pytorch-iris.ipynb pytorch-iris.output.ipynb
       working-directory: sdk/python/jobs/single-step/pytorch/iris
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: pytorch-iris

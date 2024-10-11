@@ -87,6 +87,7 @@ jobs:
           papermill -k python online-endpoints-multimodel.ipynb online-endpoints-multimodel.output.ipynb
       working-directory: sdk/python/endpoints/online/managed
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-multimodel

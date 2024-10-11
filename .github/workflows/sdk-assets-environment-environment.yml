@@ -87,6 +87,7 @@ jobs:
           papermill -k python environment.ipynb environment.output.ipynb
       working-directory: sdk/python/assets/environment
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: environment

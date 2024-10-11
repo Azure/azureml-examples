@@ -11,7 +11,6 @@ runs:
   using: 'composite'
   steps:
     - name: Upload artifact
-      if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.name }}

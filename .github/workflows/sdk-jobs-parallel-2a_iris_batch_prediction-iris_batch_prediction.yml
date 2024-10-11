@@ -87,6 +87,7 @@ jobs:
           papermill -k python iris_batch_prediction.ipynb iris_batch_prediction.output.ipynb
       working-directory: sdk/python/jobs/parallel/2a_iris_batch_prediction
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: iris_batch_prediction

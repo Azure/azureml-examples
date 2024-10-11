@@ -87,6 +87,7 @@ jobs:
           papermill -k python from-paths-example.ipynb from-paths-example.output.ipynb
       working-directory: sdk/python/using-mltable/from-paths-example
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: from-paths-example

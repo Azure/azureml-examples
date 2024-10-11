@@ -89,6 +89,7 @@ jobs:
           papermill -k python responsibleaidashboard-housing-decision-making.ipynb responsibleaidashboard-housing-decision-making.output.ipynb
       working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-housing-decision-making
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-housing-decision-making

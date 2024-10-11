@@ -87,6 +87,7 @@ jobs:
           papermill -k python -p compute_name automl-cpu-cluster automl-text-classification-multilabel-in-pipeline.ipynb automl-text-classification-multilabel-in-pipeline.output.ipynb
       working-directory: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-text-classification-multilabel-in-pipeline
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: automl-text-classification-multilabel-in-pipeline

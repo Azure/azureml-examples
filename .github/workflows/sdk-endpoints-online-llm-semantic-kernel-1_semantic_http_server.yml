@@ -87,6 +87,7 @@ jobs:
           papermill -k python 1_semantic_http_server.ipynb 1_semantic_http_server.output.ipynb
       working-directory: sdk/python/endpoints/online/llm/semantic-kernel
     - name: upload notebook's working folder as an artifact
+      if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
       with:
         name: 1_semantic_http_server
