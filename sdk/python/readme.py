@@ -351,6 +351,7 @@ jobs:
 
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
+      if: ${{{{ always() }}}}
       uses: ./.github/actions/upload-artifact
       with:
         name: {name}
