@@ -53,7 +53,7 @@ def sample_holdout_set(df, param_name, param_values, n_sample=5):
     for v in param_values:
         sampled = df[
             df[param_name].isnull() if v == None else df[param_name] == v
-        ].sample(n_sample, random_state=42)
+        ].sample(n_sample, random_state=42, replace=True)
         out_pd = pd.concat([out_pd, sampled])
 
     return out_pd
