@@ -1,0 +1,10 @@
+numpy
+scikit-image
+pydicom
+nibabel
+SimpleITK
+Pillow
+matplotlib
+opencv-python
+requests
+urllib3

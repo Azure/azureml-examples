@@ -1,0 +1,33 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8.19
+- pip<=24.2
+- pip:
+  - mlflow==2.14.3
+  - azure-ai-ml
+  - azure-identity
+  - timm
+  - transformers==4.16.2
+  - scikit-learn
+  - setuptools==59.8.0
+  - einops
+  - mup
+  - fvcore
+  - sentencepiece
+  - tenacity
+  - ftfy
+  - ipykernel
+  - pydicom
+  - pandas
+  - simpleitk
+  - jupyter
+  - pillow
+  - matplotlib
+  - numpy
+  - openai
+  - umap-learn
+  - plotly
+  - scipy
+  - azureml-core
+name: examparamdetection
