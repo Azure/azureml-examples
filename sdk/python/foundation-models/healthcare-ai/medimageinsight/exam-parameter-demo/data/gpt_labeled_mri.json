@@ -1,0 +1,4002 @@
+[
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5038827238981423891694615695320079.1",
+        "id": 0,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SPINE SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "I_AAspine_scout",
+            "Series Description": "I_AAspine_scout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS3D\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8812480238163694177849768746455966.5",
+        "id": 1,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6926589987617370675449629801671450.5",
+        "id": 2,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T2 STAR"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX T2 STAR",
+            "Series Description": "AX T2 STAR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7163905270587090166361159943983968.11",
+        "id": 3,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT-SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0830985849733100617725857380785986.4",
+        "id": 4,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "S-MAP"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "S-Map",
+            "Series Description": "S-Map",
+            "Image Type": "ORIGINAL\\PRIMARY\\OTHER",
+            "Sequence Variant": "NONE"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9271509911215736097430470298655235.6",
+        "id": 5,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW_DFC_MIX",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D\\DFC ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0076129123627976375036614513064281.4",
+        "id": 6,
+        "gpt_label": {
+            "body_part_examined": "SPINE",
+            "plane_of_imaging": "SAGITTAL",
+            "protocol_used": "STIR"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "SAG STIR",
+            "Series Description": "SAG STIR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.138757556113308624528030244505611.6",
+        "id": 7,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.053638809148244814741598382210113.9",
+        "id": 8,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3851138988591893375912208068607659.8",
+        "id": 9,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.025480173746947695229457168626793.5",
+        "id": 10,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3247647453237288159973744417073879.5",
+        "id": 11,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9978425181315856549510652922507042.9",
+        "id": 12,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "TIME OF FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "ToF ROUTINE .7X.7X.7",
+            "Series Description": "ToF ROUTINE .7X.7X.7",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "TOF\\MTC\\SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.287477120624608703568803014847724.4",
+        "id": 13,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3DTOF"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9546175307127883835638757875701009.7",
+        "id": 14,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "3D T2"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "COR 3D T2 IAC",
+            "Series Description": "COR 3D T2 IAC",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3849378917505821756428516770435451.15",
+        "id": 15,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "T1 FAT SATURATION POST-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "COR T1 FS POST",
+            "Series Description": "COR T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.118343189179326969695279308313135.14001",
+        "id": 16,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2212612341592840446622401531566992.7",
+        "id": 17,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0720082802962927096358782385236584.5",
+        "id": 18,
+        "gpt_label": {
+            "Body Part Examined": "THORACIC SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "TSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1230283613105040750105630811260055.3",
+        "id": 19,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5942655715114573592092464329593854.7",
+        "id": 20,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.190618363493832554796554808738880.6",
+        "id": 21,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5530449709521595084044426186415862.13",
+        "id": 22,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0166981173612781201544108336701304.3",
+        "id": 23,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.294896175372573439752108253628184.10",
+        "id": 24,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9083575292920786190170320063380272.5",
+        "id": 25,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9781437205127314661522304831238509.7",
+        "id": 26,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SUPPRESSION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4362495379904526479385338906731708.3",
+        "id": 27,
+        "gpt_label": {
+            "body_part_examined": "KNEE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8848067937183608094360907335551744.5001",
+        "id": 28,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D\\DFC\\MIX\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2094288831347613453061927480435148.7",
+        "id": 29,
+        "gpt_label": {
+            "Body part examined": "SPINE",
+            "Plane of imaging": "AXIAL",
+            "Protocol used": "T2 FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "SSPINE",
+            "Protocol Name": "AX T2 FS",
+            "Series Description": "AX T2 FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.080510903137114412907651345400657.7",
+        "id": 30,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 PRECONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AXI T1 PRE",
+            "Series Description": "AXI T1 PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8710517020478193577103209122273244.7",
+        "id": 31,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD REPEAT",
+            "Series Description": "AX PD REPEAT",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7925148802944444040115562327133833.12",
+        "id": 32,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AXI DWI",
+            "Series Description": "AXI DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8944725815375872155264437320989369.11",
+        "id": 33,
+        "gpt_label": {
+            "body_part_examined": "PELVIS",
+            "plane_of_imaging": "unknown",
+            "protocol_used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9241682804340268012094860221668567.6",
+        "id": 34,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "MRA 3D TOF"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "MRA Brain 3D TOF",
+            "Series Description": "MRA Brain 3D TOF",
+            "Image Type": "ORIGINAL\\PRIMARY\\OTHER",
+            "Sequence Variant": "NONE"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3079392149280414786454528200741143.5",
+        "id": 35,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.293242037090304331422538417266281.1",
+        "id": 36,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME-OF-FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "TOF\\SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.98266655570239137586721528348714.7",
+        "id": 37,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3798186921909802481668306277011073.5",
+        "id": 38,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2704729700034707005407758276523900.5",
+        "id": 39,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9394126555078996449048804019492902.6",
+        "id": 40,
+        "gpt_label": {
+            "body_part_examined": "LUMBAR SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1201299252761820463688810676993245.5",
+        "id": 41,
+        "gpt_label": {
+            "body_part_examined": "LUMBAR SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.036769139142594384420018974350174.7",
+        "id": 42,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9514519732251233152048734767439048.6",
+        "id": 43,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.406137332923785370722864043098193.18",
+        "id": 44,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "T1 FS POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "COR T1 FS POST",
+            "Series Description": "COR T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2955933643335459661221397717192890.8",
+        "id": 45,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "3D ANGIO PRE"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "SAG 3D ANGIO PRE",
+            "Series Description": "SAG 3D ANGIO PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.56832171361507867341615807729177.4",
+        "id": 46,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.776207590541681910913539870629647.5",
+        "id": 47,
+        "gpt_label": {
+            "body_part_examined": "LUMBAR SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3034868031347988093221362148144800.5",
+        "id": 48,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8697086588741225153051605587771712.2",
+        "id": 49,
+        "gpt_label": {
+            "Body Part Examined": "ANGIO",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "ANGIO",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0426070905181304890940219139901073.3",
+        "id": 50,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.079626326833491348785461689107646.6",
+        "id": 51,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9431494696352837143467064372695151.10",
+        "id": 52,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8745370819431191365623158086254407.3",
+        "id": 53,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0391683524321780067710581567267596.6",
+        "id": 54,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX T1",
+            "Series Description": "AX T1",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.608714755742567087612543680126896.6",
+        "id": 55,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME-OF-FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1987025955611396631399498512926607.1001",
+        "id": 56,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "I_AAspine_scout",
+            "Series Description": "I_AAspine_scout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS3D\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7179807935788858315427138312818607.5",
+        "id": 57,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.775353348269596179676797687437336.11",
+        "id": 58,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4203071378469347401753943644519654.3",
+        "id": 59,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9517445473610392984238102446821088.11",
+        "id": 60,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5160672782625185767997038714171528.6001",
+        "id": 61,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7012868112314392914421521342233758.1",
+        "id": 62,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "TIME OF FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "ToF ROUTINE .7X.7X.7",
+            "Series Description": "ToF ROUTINE .7X.7X.7",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "TOF\\MTC\\SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.288710943198294827405307554437310.13001",
+        "id": 63,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST GRASP"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST GRASP",
+            "Series Description": "DYNAMIC PRE POST GRASP_RED",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.077556536771568374217008557960671.3",
+        "id": 64,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3027654921580801185250836263620258.4",
+        "id": 65,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8584380576408925194686299530988970.4",
+        "id": 66,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME-OF-FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8158527284867320102259094611847436.13",
+        "id": 67,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1393606793889420910622782970500936.7",
+        "id": 68,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.102444622024907750924455827256080.7",
+        "id": 69,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1937985634711151735883317209809716.1",
+        "id": 70,
+        "gpt_label": {
+            "Body Part Examined": "ORBIT",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "ORBIT",
+            "Protocol Name": "AAHScout",
+            "Series Description": "AAHScout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.386202755331844432927860754583016.7",
+        "id": 71,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AXI DWI",
+            "Series Description": "AXI DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1290945055614425630143042111952623.13",
+        "id": 72,
+        "gpt_label": {
+            "Body Part Examined": "PANCREAS",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "T1 FS POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PANCREAS",
+            "Protocol Name": "COR T1 FS POST",
+            "Series Description": "COR T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2537547329239574067128667405675456.8",
+        "id": 73,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1044025396749628779506157436856617.3",
+        "id": 74,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4075545966109401753320778291051576.3",
+        "id": 75,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7570782261683684009568282740775731.14",
+        "id": 76,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 3D MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX T1 3D MPR",
+            "Series Description": "AX T1 3D MPR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0900746333351634884392741293849501.7",
+        "id": 77,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1475999776611305473065858354842012.9",
+        "id": 78,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW_DFC_MIX",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D\\DFC ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.401206300558234646315936016141098.17",
+        "id": 79,
+        "gpt_label": {
+            "body_part_examined": "PELVIS",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "T1 WEIGHTED WITH FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "AX T1 FS PRE ab",
+            "Series Description": "AX T1 FS PRE ab",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3838320101266058904367768808466163.7",
+        "id": 80,
+        "gpt_label": {
+            "Body part examined": "WRIST",
+            "Plane of imaging": "CORONAL",
+            "Protocol used": "3D MEDIC"
+        },
+        "weak_label": {
+            "Body Part Examined": "WRIST",
+            "Protocol Name": "COR 3D MEDIC",
+            "Series Description": "COR 3D MEDIC",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2466792273106003732647482269222392.5",
+        "id": 81,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6683328199847654660681273251956151.10",
+        "id": 82,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.581065548095426520135759458291553.8",
+        "id": 83,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 FS PRE"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX T1 FS PRE",
+            "Series Description": "AX T1 FS PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0219831763716604997617090155664240.8",
+        "id": 84,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.962671468022687793102911463895917.6",
+        "id": 85,
+        "gpt_label": {
+            "body_part_examined": "LUMBAR SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0560707135077564675397393539985094.3",
+        "id": 86,
+        "gpt_label": {
+            "body_part_examined": "HEAD",
+            "plane_of_imaging": "SAGITTAL",
+            "protocol_used": "T1"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "SAG 3D T1",
+            "Series Description": "SAG 3D T1",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM3_2\\FIL ",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6786906672997582457863841982159664.3",
+        "id": 87,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0867929227824653199823090357635114.8",
+        "id": 88,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1"
+        },
+        "weak_label": {
+            "Body Part Examined": "SSPINE",
+            "Protocol Name": "AX T1",
+            "Series Description": "AX T1",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7021766189839714262084256770849590.3",
+        "id": 89,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.546818952084501659443074828028453.7",
+        "id": 90,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4324760059888181643476489003490899.15",
+        "id": 91,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1004522203333712050687855037817245.8001",
+        "id": 92,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL\\MFSPLIT",
+            "Sequence Variant": "SP\\SK "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2767193220887749898041696437995505.2",
+        "id": 93,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "3D T1 MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "SAG 3D T1 MPRAGE",
+            "Series Description": "SAG 3D T1 MPRAGE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6772843984423687731137288975191082.9",
+        "id": 94,
+        "gpt_label": {
+            "Body part examined": "HEAD",
+            "Plane of imaging": "AXIAL",
+            "Protocol used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.12151089736490213531588440841740.4",
+        "id": 95,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "T2"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "SAG T2",
+            "Series Description": "SAG T2",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0120166908488269072778269810852846.1",
+        "id": 96,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "AAHSCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AAHScout",
+            "Series Description": "AAHScout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.117289062948950054348070431410756.10",
+        "id": 97,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 FAT SATURATION PRE-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX T1 FS PRE",
+            "Series Description": "AX T1 FS PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0969202760752178802488572121908998.5",
+        "id": 98,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T2"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX T2",
+            "Series Description": "AX T2",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1991490863166330310304611386489192.7",
+        "id": 99,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "3D MRA HEAD"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "3D MRA HEAD",
+            "Series Description": "3D MRA HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1810185156862833138678152810314184.5",
+        "id": 100,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3327755890882841892548273800072819.9",
+        "id": 101,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.469385947527700210541813834001496.3001",
+        "id": 102,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SP\\SK "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.37092556838591665769987849217011.8",
+        "id": 103,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3012400501241583127494450561450488.5",
+        "id": 104,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2674165130764830059107540824487692.6",
+        "id": 105,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.599891776079646906914972695711055.6",
+        "id": 106,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1235691896937022876095062914484476.11",
+        "id": 107,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1884814586401934966180452317752306.12",
+        "id": 108,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.514156886466456185538735391626586.20",
+        "id": 109,
+        "gpt_label": {
+            "body_part_examined": "PANCREAS",
+            "plane_of_imaging": "CORONAL",
+            "protocol_used": "T1 FS POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PANCREAS",
+            "Protocol Name": "COR T1 FS POST",
+            "Series Description": "COR T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.225368170666540153814205200153247.6",
+        "id": 110,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0774653913429466155827297398433560.7",
+        "id": 111,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3511815295245629602834115953601168.20",
+        "id": 112,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3D MPRAGE",
+            "Series Description": "AX 3D MPRAGE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM\\FM3_2\\FIL",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.355984169611986421275407521167257.3",
+        "id": 113,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1118008076584628332895571489135118.11",
+        "id": 114,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 WITH FAT SATURATION POST-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX T1 FS POST 1",
+            "Series Description": "AX T1 FS POST 1",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6348128039244116966611798252346027.5",
+        "id": 115,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.17184093896622248848243855795309.8",
+        "id": 116,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1933492131405111278722609065595419.7",
+        "id": 117,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T2"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AXI T2",
+            "Series Description": "AXI T2",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7163914779751099674967339508462474.10",
+        "id": 118,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "T1 FAT SATURATION POST-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "COR T1 FS POST",
+            "Series Description": "COR T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1564308015592389518465790047381521.5",
+        "id": 119,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.048131864376895760220166414895712.13001",
+        "id": 120,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "3D FLAIR"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "SAG 3D FLAIR",
+            "Series Description": "SAG 3D FLAIR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SP\\SK "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.949949341651038306828830972991593.9001",
+        "id": 121,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "III_AAspine_scout",
+            "Series Description": "III_AAspine_scout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS3D\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9279332027952440119455441979887195.8001",
+        "id": 122,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL\\MFSPLIT",
+            "Sequence Variant": "SP\\SK "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6099174844351729395894751957651208.5",
+        "id": 123,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T2 STAR"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX T2 STAR",
+            "Series Description": "AX T2 STAR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.830371192881068392703463855418537.9",
+        "id": 124,
+        "gpt_label": {
+            "body_part_examined": "SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "T1 WITH FAT SATURATION POST-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX T1 FS POST",
+            "Series Description": "AX T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.099674130535034586772325879935540.10",
+        "id": 125,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1066989289483310533505532127506544.4",
+        "id": 126,
+        "gpt_label": {
+            "Body Part Examined": "SHOULDER",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SHOULDER",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6796145073485561887507908031385311.9",
+        "id": 127,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 FS PRE"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX T1 FS PRE",
+            "Series Description": "AX T1 FS PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.086871946673171919428672079091572.5",
+        "id": 128,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.02011431970139500900825933582192.5",
+        "id": 129,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.123566066886791520686607642811400.811",
+        "id": 130,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D ANGIO"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "COR 3D ANGIO POST 1",
+            "Series Description": "AXI THIN MIP",
+            "Image Type": "DERIVED\\SECONDARY\\AQNET12BITS ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.619190486943712752494628596906400.4",
+        "id": 131,
+        "gpt_label": {
+            "body_part_examined": "HEAD",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "3D TIME-OF-FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "TOF\\SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.429284902564311766211241519699051.5",
+        "id": 132,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME OF FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.724168608376968884581505245410787.4",
+        "id": 133,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TOF MRA"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX 3DTOF MRA",
+            "Series Description": "AX 3DTOF MRA",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.754002561885206855088771318318996.3",
+        "id": 134,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3475973460517669699159164073397020.8",
+        "id": 135,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3D MPRAGE",
+            "Series Description": "AX 3D MPRAGE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM\\FM3_2\\FIL",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.403989463105203122360661509124904.8",
+        "id": 136,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4503357841688693716134829673570303.5",
+        "id": 137,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.986299039891346362481441505012880.2",
+        "id": 138,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "3D T1 MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "SAG 3D T1 MPRAGE",
+            "Series Description": "SAG 3D T1 MPRAGE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2697210102718563058687046410764132.5",
+        "id": 139,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "3D MRA"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "3D MRA HEAD",
+            "Series Description": "3D MRA HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.356222917419640888956096486122757.5",
+        "id": 140,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.280349369296793111437744542333718.16001",
+        "id": 141,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "T1 VIBE DIXON"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "t1_vibe_dixon_cor_p6_bh_320_iso",
+            "Series Description": "t1_vibe_dixon_cor_p6_bh_320_iso_W",
+            "Image Type": "DERIVED\\PRIMARY\\M\\NORM\\WATER\\DIS2D\\MFSPLIT",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.682300462107338896156060465307458.4",
+        "id": 142,
+        "gpt_label": {
+            "Body Part Examined": "SHOULDER",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SHOULDER",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.610288471486353588172489838905875.5",
+        "id": 143,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3984763000536151501122338896396632.1",
+        "id": 144,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AAHead_Scout",
+            "Series Description": "AAHead_Scout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.014662911722519836274145693108513.3",
+        "id": 145,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0304162008017695579388589431029452.3",
+        "id": 146,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.124845183574342996306947680210131.5",
+        "id": 147,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T2"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AXI T2",
+            "Series Description": "AXI T2",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2842704462404961309418463700606386.5",
+        "id": 148,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.822508206149628396944024316973385.7",
+        "id": 149,
+        "gpt_label": {
+            "Body Part Examined": "SHOULDER",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SHOULDER",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4749597219409285107504572715689116.8",
+        "id": 150,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3D MPRAGE",
+            "Series Description": "AX 3D MPRAGE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM3_2\\FIL ",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2855048955054691183481439101063491.5",
+        "id": 151,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3213697093688112765958128483405903.5",
+        "id": 152,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1412964174376975876663622752735622.18",
+        "id": 153,
+        "gpt_label": {
+            "body_part_examined": "ORBIT",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "T1 3D MPR"
+        },
+        "weak_label": {
+            "Body Part Examined": "ORBIT",
+            "Protocol Name": "AX T1 3D MPR",
+            "Series Description": "AX T1 3D MPR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.607131073606921690061786939404422.12",
+        "id": 154,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3264611311530755511743278542216400.6",
+        "id": 155,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9320847626114331538884255608864874.1",
+        "id": 156,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "AAHScout"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AAHScout",
+            "Series Description": "AAHScout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2386888271451696781125007816391907.9",
+        "id": 157,
+        "gpt_label": {
+            "body_part_examined": "BRAIN",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "3D TIME-OF-FLIGHT MRA"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX 3DTOF MRA",
+            "Series Description": "AX 3DTOF MRA",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.66597425561034400033468145956853.6",
+        "id": 158,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2139430467378758979356429053173777.12",
+        "id": 159,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "UNKNOWN",
+            "Protocol Used": "DYNAMIC PRE/POST"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "DYNAMIC PRE/POST",
+            "Series Description": "DYNAMIC PRE/POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0622530854161206070953996642038600.6",
+        "id": 160,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4976120029884543297042410781339754.6",
+        "id": 161,
+        "gpt_label": {
+            "Body Part Examined": "ORBIT",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "ORBIT",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0854574232887379244149364296090533.5",
+        "id": 162,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2145745427741414820944394671856351.7",
+        "id": 163,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 WEIGHTED WITH FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX T1 FS PRE",
+            "Series Description": "AX T1 FS PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0997159876471133416155373842222869.6",
+        "id": 164,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2083117528051367924945835691151434.7",
+        "id": 165,
+        "gpt_label": {
+            "body_part_examined": "HEAD",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7874423891756722663448100619009878.5",
+        "id": 166,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T2 STAR"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX T2 STAR",
+            "Series Description": "AX T2 STAR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM3_2\\FIL ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1876439248872692373078735104170511.3",
+        "id": 167,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9553545990403866008839225747565324.5",
+        "id": 168,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1488545711202186295325553192721388.3",
+        "id": 169,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TOF"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4124810307944767852108951247154658.4",
+        "id": 170,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "TIME OF FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "ToF ROUTINE .7X.7X.7",
+            "Series Description": "ToF ROUTINE .7X.7X.7",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "TOF\\MTC\\SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1201749719514157248576557697726608.3",
+        "id": 171,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6801064884292401316319156569022824.3",
+        "id": 172,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1187208840161917587633633772838312.1001",
+        "id": 173,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "SPINAL SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "I_AAspine_scout",
+            "Series Description": "I_AAspine_scout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS3D\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9200045600658205295431130847582301.5",
+        "id": 174,
+        "gpt_label": {
+            "Body Part Examined": "CERVICAL SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "CSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2897782959799142194809235536865010.9",
+        "id": 175,
+        "gpt_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "TRUFI"
+        },
+        "weak_label": {
+            "Body Part Examined": "ABDOMEN",
+            "Protocol Name": "AX TRUFI_2",
+            "Series Description": "AX TRUFI_COMPOSED_-9",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SS"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2325246986592238942666459175099072.5",
+        "id": 176,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.768419515393661983001728150727608.5",
+        "id": 177,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5139926717089521746822623341458325.3",
+        "id": 178,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.484039734000504434949677797253981.9",
+        "id": 179,
+        "gpt_label": {
+            "Body Part Examined": "WRIST",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "3D MEDIC"
+        },
+        "weak_label": {
+            "Body Part Examined": "WRIST",
+            "Protocol Name": "COR 3D MEDIC",
+            "Series Description": "COR MEDIC 3D..",
+            "Image Type": "DERIVED\\SECONDARY\\M\\DIS2D\\CSA RESAMPLED ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.600220187495381241643356892681966.5",
+        "id": 180,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.512562434934300403070923236717817.3",
+        "id": 181,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6966242336926629646748867027178587.7",
+        "id": 182,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3239988040239242499991214523099330.5",
+        "id": 183,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2768412958280758716572306756054126.6",
+        "id": 184,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 FLAIR"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AXI T1 FLAIR",
+            "Series Description": "AXI T1 FLAIR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5057940711961399970918141895289154.4",
+        "id": 185,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TOF MRA"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX 3DTOF MRA",
+            "Series Description": "AX 3DTOF MRA",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3224304407621327367482299864606133.3",
+        "id": 186,
+        "gpt_label": {
+            "body_part_examined": "KNEE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9493450771209005796281879790088868.8001",
+        "id": 187,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL\\MFSPLIT",
+            "Sequence Variant": "SP\\SK "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4817569022059252745511765166797862.7",
+        "id": 188,
+        "gpt_label": {
+            "body_part_examined": "unknown",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.110205245270113031975681641488441.7",
+        "id": 189,
+        "gpt_label": {
+            "Body Part Examined": "SHOULDER",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SHOULDER",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.520138906331129790888691499600282.3",
+        "id": 190,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.046711091817188861114027459932871.6",
+        "id": 191,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9031193843718243652538899848438370.7",
+        "id": 192,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\NORM\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.111595404145476254734351330331744.6",
+        "id": 193,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1809274136091378563384811608460840.8",
+        "id": 194,
+        "gpt_label": {
+            "bodyPartExamined": "ARM",
+            "planeOfImaging": "AXIAL",
+            "protocolUsed": "PROTON DENSITY WITH FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "ARM",
+            "Protocol Name": "AX PD FS_2",
+            "Series Description": "AX PD FS_COMPOSED",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9172319534274705547991190907303289.3",
+        "id": 195,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2840025707026930334291380244781155.5",
+        "id": 196,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1687024741472063053769041465067061.1001",
+        "id": 197,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SCOUT"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "I_AAspine_scout",
+            "Series Description": "I_AAspine_scout",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS3D\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0174777894925343626113178887664911.7",
+        "id": 198,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 PRE-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX T1 PRE",
+            "Series Description": "AX T1 PRE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.989302987148522994680596226468864.8",
+        "id": 199,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME-OF-FLIGHT (TOF)"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9231736881782738567283324474229416.27",
+        "id": 200,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "Head_AX DWI",
+            "Series Description": "Head_AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6901163297019257702889945315293971.5",
+        "id": 201,
+        "gpt_label": {
+            "Body Part Examined": "EXTREMITY",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "EXTREMITY",
+            "Protocol Name": "SAG PD FS",
+            "Series Description": "SAG PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM3_2\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7193004760755041857917589946935810.3",
+        "id": 202,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4388144824434692203367968801650497.5",
+        "id": 203,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2958842178287557675387041919473669.4",
+        "id": 204,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AXI PD FS",
+            "Series Description": "AXI PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1155021984605574089480689959689895.8",
+        "id": 205,
+        "gpt_label": {
+            "Body Part Examined": "CLAVICLE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 WEIGHTED WITH FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "CLAVICLE",
+            "Protocol Name": "AX T1 FS POST",
+            "Series Description": "AX T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6839910738240145076357570487744848.9",
+        "id": 206,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION-WEIGHTED IMAGING (DWI)"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0763796296600122913823452910973907.5",
+        "id": 207,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AXI PD",
+            "Series Description": "AXI PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9531304404376730790937430802445023.12",
+        "id": 208,
+        "gpt_label": {
+            "Body Part Examined": "EXTREMITY",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 FAT SATURATION POST-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "EXTREMITY",
+            "Protocol Name": "AX T1 FS post",
+            "Series Description": "AX T1 FS post",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1080273691092430820075991450509149.7",
+        "id": 209,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "T1 3D VIBE"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "SAG T1 3D  VIBE KNEE",
+            "Series Description": "SAG T1 3D VIBE KNEE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.686351202248418968995345227855070.9",
+        "id": 210,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D T2"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3D T2",
+            "Series Description": "AX 3D T2",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4525970269300635681310175572206760.105",
+        "id": 211,
+        "gpt_label": {
+            "Body Part Examined": "BREAST",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "SUBTRACTION"
+        },
+        "weak_label": {
+            "Body Part Examined": "BREAST",
+            "Protocol Name": "Subtraction",
+            "Series Description": "SUBS",
+            "Image Type": "DERIVED\\PRIMARY\\M\\NORM\\DIS2D\\SUB",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8513529708477759307416587233308617.11001",
+        "id": 212,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\MFSPLIT ",
+            "Sequence Variant": "SK"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7876186765415038379712222406444535.11",
+        "id": 213,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.210709783977568809173585574178215.4",
+        "id": 214,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\NONE\\TRACEW\\DIS2D ",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.031801589244508945812554745561838.4",
+        "id": 215,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "T2"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "SAG T2",
+            "Series Description": "SAG T2",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.436150330873410730962648923839487.1",
+        "id": 216,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME-OF-FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2868029544911697670001403581291227.5",
+        "id": 217,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.068565722422806495615189338984910.15",
+        "id": 218,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D MPRAGE"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3D MPRAGE",
+            "Series Description": "AX 3D MPRAGE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\ND\\NORM\\FM3_2\\FIL",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2945277155963876278351709260647281.5",
+        "id": 219,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6300388476527142340133571803717648.11",
+        "id": 220,
+        "gpt_label": {
+            "Body Part Examined": "unknown",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "T1 FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX T1 FS POST",
+            "Series Description": "AX T1 FS POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8419223969369345507088289641809026.6",
+        "id": 221,
+        "gpt_label": {
+            "Body Part Examined": "BRAIN",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "MRA BRAIN 3D TOF"
+        },
+        "weak_label": {
+            "Body Part Examined": "BRAIN",
+            "Protocol Name": "MRA Brain 3D TOF",
+            "Series Description": "MRA Brain 3D TOF",
+            "Image Type": "ORIGINAL\\PRIMARY\\OTHER",
+            "Sequence Variant": "NONE"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6349271102739677110518251297622202.5",
+        "id": 222,
+        "gpt_label": {
+            "body_part_examined": "SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3268787099291188898851810984204226.12",
+        "id": 223,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE AND POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0377767164697111594536342693720642.5",
+        "id": 224,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6741698988171225992679086816529405.7",
+        "id": 225,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "STIR"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "SAG STIR",
+            "Series Description": "SAG STIR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SK\\SP\\MP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4890213833656611658968929858147975.14",
+        "id": 226,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "T1 3D VIBE"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "SAG T1 3D  VIBE KNEE",
+            "Series Description": "SAG T1 3D VIBE KNEE",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0629644865288821725663932826824883.5",
+        "id": 227,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6487564038671014824829216549139074.3",
+        "id": 228,
+        "gpt_label": {
+            "Body Part Examined": "SHOULDER",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SHOULDER",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4644610589879815892879214938902502.6",
+        "id": 229,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.024444596490628693803957381905705.6",
+        "id": 230,
+        "gpt_label": {
+            "Body part examined": "unknown",
+            "Plane of imaging": "AXIAL",
+            "Protocol used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.333200491116217899081655258827962.3",
+        "id": 231,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.9789311865877149929337902858283401.7",
+        "id": 232,
+        "gpt_label": {
+            "Body Part Examined": "SHOULDER",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SHOULDER",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6547186768564910324470868891168958.6",
+        "id": 233,
+        "gpt_label": {
+            "Body Part Examined": "LUMBAR SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "LSPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D\\FM\\FIL",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0245074589664374735447811442882597.15",
+        "id": 234,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.2343452177098078777716759696414021.5",
+        "id": 235,
+        "gpt_label": {
+            "Body Part Examined": "UNKNOWN",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": NaN,
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.007304540682747877132304569134453.5",
+        "id": 236,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5047814849634436516127079294508173.4",
+        "id": 237,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TIME OF FLIGHT"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.3058215573468555769628172456772004.10",
+        "id": 238,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "unknown",
+            "Protocol Used": "DYNAMIC PRE POST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "DYNAMIC PRE POST",
+            "Series Description": "DYNAMIC PRE POST",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP\\OSP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.7068742580060705453169177884200608.3",
+        "id": 239,
+        "gpt_label": {
+            "Body Part Examined": "HIP",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SUPPRESSION"
+        },
+        "weak_label": {
+            "Body Part Examined": "HIP",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.5269066692623881444812628513989006.12",
+        "id": 240,
+        "gpt_label": {
+            "Body Part Examined": "HEART",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "3D CONTRAST-ENHANCED MRA"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEART",
+            "Protocol Name": "SAG 3D CEMRA PA",
+            "Series Description": "SAG 3D CEMRA PA_TTC=18.6s",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.073204126450249642224040770721883.6",
+        "id": 241,
+        "gpt_label": {
+            "Body Part Examined": "SPINE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.6874287838383806137292144441571427.14",
+        "id": 242,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "CORONAL",
+            "Protocol Used": "POST-CONTRAST"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "COR 3D POST 1",
+            "Series Description": "COR 3D POST 1 THINS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.4244803343370615276427511843470100.3",
+        "id": 243,
+        "gpt_label": {
+            "Body Part Examined": "PELVIS",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED IMAGING"
+        },
+        "weak_label": {
+            "Body Part Examined": "PELVIS",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW_DFC_MIX",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D\\DFC",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8486811198936928156093408749391078.4",
+        "id": 244,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "3D TOF"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX 3DTOF HEAD",
+            "Series Description": "AX 3DTOF HEAD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SP"
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0693001464454277001741773234661736.7",
+        "id": 245,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1571580493340976168277564974829885.11",
+        "id": 246,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "DIFFUSION WEIGHTED"
+        },
+        "weak_label": {
+            "Body Part Examined": "HEAD",
+            "Protocol Name": "AX DWI",
+            "Series Description": "AX DWI_TRACEW",
+            "Image Type": "DERIVED\\PRIMARY\\DIFFUSION\\TRACEW\\DIS2D",
+            "Sequence Variant": "SK\\SP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.0855209978727134576729064235305432.5",
+        "id": 247,
+        "gpt_label": {
+            "body_part_examined": "SPINE",
+            "plane_of_imaging": "AXIAL",
+            "protocol_used": "PROTON DENSITY"
+        },
+        "weak_label": {
+            "Body Part Examined": "SPINE",
+            "Protocol Name": "AX PD",
+            "Series Description": "AX PD",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\DIS2D\\FM\\FIL ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.1457376002195167663346207206820530.3",
+        "id": 248,
+        "gpt_label": {
+            "Body Part Examined": "KNEE",
+            "Plane of Imaging": "AXIAL",
+            "Protocol Used": "PROTON DENSITY FAT SATURATION"
+        },
+        "weak_label": {
+            "Body Part Examined": "KNEE",
+            "Protocol Name": "AX PD FS",
+            "Series Description": "AX PD FS",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\OSP "
+        }
+    },
+    {
+        "SeriesInstanceUID": "1.3.6.1.4.1.55648.8261353259717895327546168289419061.6",
+        "id": 249,
+        "gpt_label": {
+            "Body Part Examined": "HEAD",
+            "Plane of Imaging": "SAGITTAL",
+            "Protocol Used": "3D FLAIR"
+        },
+        "weak_label": {
+            "Body Part Examined": "ORBIT",
+            "Protocol Name": "SAG 3D FLAIR",
+            "Series Description": "SAG 3D FLAIR",
+            "Image Type": "ORIGINAL\\PRIMARY\\M\\NORM\\DIS2D ",
+            "Sequence Variant": "SK\\SP\\MP"
+        }
+    }
+]
