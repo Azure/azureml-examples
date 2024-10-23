@@ -20,8 +20,11 @@
 
 
 # <az_ml_install>
-az extension add -n ml -y
+# az extension add -n ml -y
 # </az_ml_install>
+
+# Use a daily build
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.31.1-py3-none-any.whl --yes
 
 ## For backward compatibility - running on old subscription
 # <set_variables>
