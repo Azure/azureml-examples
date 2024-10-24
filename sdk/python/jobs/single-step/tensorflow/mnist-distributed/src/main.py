@@ -113,7 +113,6 @@ def main():
     # Here the batch size scales up by number of workers since
     # `tf.data.Dataset.batch` expects the global batch size.
     global_batch_size = args.per_worker_batch_size * num_workers
-
     multi_worker_dataset = mnist_dataset(global_batch_size)
 
     with strategy.scope():
