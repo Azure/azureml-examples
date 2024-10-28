@@ -29,10 +29,13 @@ def run(mini_batch):
     print(f"run method start: {__file__}, run({mini_batch})")
     resultList = []
     for test in mini_batch:
-        if os.path.splitext(test)[-1] != ".csv":
-            continue
+        if os.path.splitext(test)[-1] == ".parquet":
+            X_test = pd.read_parquet(test)
+        elif os.path.splitext(test)[-1] == ".csv":
+            X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
+        else:
+            continue  # Skip if it's neither a Parquet nor CSV file
 
-        X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
         y_test = X_test.pop(target_column_name).values
 
         # We have default quantiles values set as below(95th percentile)
