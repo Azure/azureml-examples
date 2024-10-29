@@ -79,6 +79,17 @@ def write_filepath(filepath, task_type, task_id):
     return os.path.join(dirpath, base)
 
 
+def fix_tf_config():
+    # This is necessary for TensorFlow 2.13 and later
+    tf_config = json.loads(os.environ["TF_CONFIG"])
+    if "cluster" in tf_config:
+        cluster = tf_config["cluster"]
+        if "ps" in cluster and len(cluster["ps"]) == 0:
+            cluster.pop("ps")
+            os.environ["TF_CONFIG"] = json.dumps(tf_config)
+    return tf_config
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--epochs", type=int, default=3)
@@ -93,10 +104,11 @@ def main():
 
     args = parser.parse_args()
 
-    tf_config = json.loads(os.environ["TF_CONFIG"])
+    tf_config = fix_tf_config()
+
     num_workers = len(tf_config["cluster"]["worker"])
 
-    strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
+    strategy = tf.distribute.MultiWorkerMirroredStrategy()
 
     # Here the batch size scales up by number of workers since
     # `tf.data.Dataset.batch` expects the global batch size.
