@@ -53,6 +53,8 @@ jobs:
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
           az account get-access-token --scope https://ml.azure.com/.default --output none
+
+          pwsh -c "Connect-AzAccount"
     - name: Perform Cleanup
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
