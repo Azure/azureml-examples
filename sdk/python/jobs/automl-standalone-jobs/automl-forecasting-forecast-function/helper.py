@@ -3,7 +3,6 @@
 import pandas as pd
 import numpy as np
 
-
 def get_timeseries(
     train_len: int,
     test_len: int,
@@ -107,7 +106,7 @@ def make_forecasting_query(
 
     # Now take y_future and turn it into question marks
     y_query = y_future.copy().astype(float)  # because sometimes life hands you an int
-    y_query.fill(np.NaN)
+    y_query.fill(np.nan)
 
     print("X_past is " + str(X_past.shape) + " - shaped")
     print("X_future is " + str(X_future.shape) + " - shaped")
