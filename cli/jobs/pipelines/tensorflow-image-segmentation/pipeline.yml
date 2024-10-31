@@ -44,7 +44,7 @@ jobs:
       type: tensorflow
       worker_count: 1 # needs to match instance_count (!)
 
-    environment: azureml://registries/azureml/environments/tensorflow-2.16-cuda11/labels/latest
+    environment: azureml://registries/azureml/environments/tensorflow-2.16-cuda12/labels/latest
     # uncomment below to use custom environment
     # environment:
     #   build: 
