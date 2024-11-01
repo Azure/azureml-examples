@@ -32,30 +32,7 @@ During distillation, a smaller LLM "student" learns from a larger LLM "teacher".
 
 The process of model distillation is a two stage process as seen below.
 
-```mermaid
-sequenceDiagram
-    participant TM as Teacher Model
-    participant D as Dataset (Training + Validation)
-    participant SM as Student Model
-
-    
-    D->>TM: Generate Training Responses
-    activate TM
-    TM-->>D: Responses
-    deactivate TM
-
-    activate D
-    D->>TM: Generate Validation Responses
-    deactivate D
-    activate TM
-    TM-->>D: Responses
-    deactivate TM
-
-    note over D: Datasets Complete
-
-    D->>+SM: Finetune
-
-```
+![Model Distillation](../docs/images/model_distillation.png)
 
 1. The first stage is the synthetic data generation step. In this step, using a training dataset, the teacher model is asked to generate responses for the training data. If there is a validation dataset, the teacher model also generates responses for that dataset as well.
 2. The second stage is finetuning. Once the synthetic data is collected, the student model is then finetuned off of the training and validation data created from the teacher model. This transfers the knowledge from the teacher model to the student model.
