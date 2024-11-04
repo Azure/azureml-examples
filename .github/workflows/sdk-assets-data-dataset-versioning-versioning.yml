@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/assets/data/dataset-versioning
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v3
+      uses: ./.github/actions/upload-artifact
       with:
         name: versioning
         path: sdk/python/assets/data/dataset-versioning
