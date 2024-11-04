@@ -7,7 +7,7 @@ command: >-
 inputs:
   epochs: 1
   model_dir: outputs/keras-model
-environment: azureml:AzureML-tensorflow-2.12-cuda11@latest
+environment: azureml:AzureML-tensorflow-2.16-cuda12@latest
 compute: azureml:gpu-cluster
 resources:
   instance_count: 2
