@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/pipelines/2d_image_classification_with_densenet
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: image_classification_with_densenet
         path: sdk/python/jobs/pipelines/2d_image_classification_with_densenet

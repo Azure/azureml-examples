@@ -89,7 +89,7 @@ jobs:
       working-directory: tutorials/azureml-getting-started
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: azureml-getting-started-studio
         path: tutorials/azureml-getting-started

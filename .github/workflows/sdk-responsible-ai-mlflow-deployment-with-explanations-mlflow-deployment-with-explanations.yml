@@ -90,7 +90,7 @@ jobs:
       working-directory: sdk/python/responsible-ai/mlflow-deployment-with-explanations
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: mlflow-deployment-with-explanations
         path: sdk/python/responsible-ai/mlflow-deployment-with-explanations

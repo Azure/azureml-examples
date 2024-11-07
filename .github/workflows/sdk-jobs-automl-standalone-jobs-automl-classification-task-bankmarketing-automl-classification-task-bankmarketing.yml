@@ -106,7 +106,7 @@ jobs:
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: automl-classification-task-bankmarketing
         path: sdk/python/jobs/automl-standalone-jobs/automl-classification-task-bankmarketing

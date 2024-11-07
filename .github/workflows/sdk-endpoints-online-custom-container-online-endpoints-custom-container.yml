@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/endpoints/online/custom-container
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-custom-container
         path: sdk/python/endpoints/online/custom-container

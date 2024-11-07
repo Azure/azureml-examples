@@ -107,7 +107,7 @@ jobs:
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: automl-regression-task-hardware-performance
         path: sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance

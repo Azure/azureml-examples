@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/assets/data
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: data
         path: sdk/python/assets/data

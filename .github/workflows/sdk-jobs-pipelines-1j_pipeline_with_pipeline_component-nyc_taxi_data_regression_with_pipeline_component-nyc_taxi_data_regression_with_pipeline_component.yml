@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: nyc_taxi_data_regression_with_pipeline_component
         path: sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component

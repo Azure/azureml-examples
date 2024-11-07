@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/pipelines/2a_train_mnist_with_tensorflow
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: train_mnist_with_tensorflow
         path: sdk/python/jobs/pipelines/2a_train_mnist_with_tensorflow

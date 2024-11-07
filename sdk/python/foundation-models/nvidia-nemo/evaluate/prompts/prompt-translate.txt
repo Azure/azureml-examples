@@ -1,0 +1,8 @@
+English: how are you
+French: comment vas-tu ?
+===
+English: Capital of France is Paris
+French: La capitale de la France est Paris
+===
+English: {prompt}
+French: 

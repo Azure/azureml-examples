@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/parallel/1a_oj_sales_prediction
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: oj_sales_prediction
         path: sdk/python/jobs/parallel/1a_oj_sales_prediction

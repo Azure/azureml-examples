@@ -89,7 +89,7 @@ jobs:
       working-directory: tutorials/e2e-ds-experience
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: e2e-ml-workflow
         path: tutorials/e2e-ds-experience

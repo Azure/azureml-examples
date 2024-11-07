@@ -99,7 +99,7 @@ jobs:
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: auto-ml-forecasting-github-dau
         path: sdk/python/jobs/automl-standalone-jobs/automl-forecasting-github-dau

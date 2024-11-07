@@ -84,7 +84,7 @@ jobs:
       working-directory: sdk/python/responsible-ai/tabular/responsibleaidashboard-healthcare-covid-classification
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: responsibleaidashboard-healthcare-covid-classification
         path: sdk/python/responsible-ai/tabular/responsibleaidashboard-healthcare-covid-classification

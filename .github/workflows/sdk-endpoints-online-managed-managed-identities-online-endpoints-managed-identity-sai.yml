@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/endpoints/online/managed/managed-identities
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: online-endpoints-managed-identity-sai
         path: sdk/python/endpoints/online/managed/managed-identities

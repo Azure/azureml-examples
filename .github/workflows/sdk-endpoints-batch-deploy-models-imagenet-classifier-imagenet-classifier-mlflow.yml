@@ -90,7 +90,7 @@ jobs:
       working-directory: sdk/python/endpoints/batch/deploy-models/imagenet-classifier
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: imagenet-classifier-mlflow
         path: sdk/python/endpoints/batch/deploy-models/imagenet-classifier

@@ -812,7 +812,7 @@ function replace_version(){
 function ensure_k8s_compute(){
     # Arc cluster configuration
     arc_compute=${ARC_CLUSTER_NAME}
-    echo_info "Creating amlarc cluster: '$arc_compute'"
+    echo_info "Checking amlarc cluster: '$arc_compute'"
 
     # Remove AKS if unhealthy
     compute_exists=$(az aks list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${arc_compute}']" |tail -n1|tr -d "[:cntrl:]")
@@ -826,23 +826,34 @@ function ensure_k8s_compute(){
     fi
 
     # Remove Arc if unhealthy
-    clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${arc_compute}-arc" --query connectivityStatus -o tsv)
-    echo_info "Cluster: ${arc_compute}-arc current state: ${clusterState}"
-    if [[ "${clusterState}" != "Connected" ]]; then
-        echo_info "Remove unhealthy ARC: '${arc_compute}-arc'"
-        az connectedk8s delete --resource-group "${RESOURCE_GROUP_NAME}" --name "${arc_compute}-arc" --yes
+    compute_exists=$(az connectedk8s list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${arc_compute}-arc']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${compute_exists}" = "[]" ]]; then
+        echo_info "Arc Compute ${arc_compute}-arc does not exist; will create"
+    else
+        clusterState=$(az connectedk8s show --resource-group "${RESOURCE_GROUP_NAME}" --name "${arc_compute}-arc" --query connectivityStatus -o tsv)
+        echo_info "Cluster: ${arc_compute}-arc current state: ${clusterState}"
+        if [[ "${clusterState}" != "Connected" ]]; then
+            echo_info "Remove unhealthy ARC: '${arc_compute}-arc'"
+            az connectedk8s delete --resource-group "${RESOURCE_GROUP_NAME}" --name "${arc_compute}-arc" --yes
+        fi
     fi
+    
 
     # Remove k8s compute if unhealthy
-    Status=$(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_COMPUTE_NAME}" --query provisioning_state --output tsv)
-    if
-        [[ $Status == "Succeeded" ]]
-    then
-        echo_info "Compute is healthy: $Status"
+    compute_exists=$(az ml compute list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${ARC_COMPUTE_NAME}']" |tail -n1|tr -d "[:cntrl:]")
+    if [[ "${compute_exists}" = "[]" ]]; then
+        echo_info "K8s Compute ${arc_compute}-arc does not exist; will create"
     else
-        echo_info "Compute is unhealthy: $Status"
-        az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${ARC_COMPUTE_NAME}" -y || true
-    fi
+        Status=$(az ml compute show --resource-group "${RESOURCE_GROUP_NAME}" --name "${ARC_COMPUTE_NAME}" --query provisioning_state --output tsv)
+        if
+            [[ $Status == "Succeeded" ]]
+        then
+            echo_info "K8s Compute is healthy: $Status"
+        else
+            echo_info "K8s Compute is unhealthy: $Status"
+            az ml compute detach --subscription "${SUBSCRIPTION_ID}" --resource-group "${RESOURCE_GROUP_NAME}" --workspace-name "${WORKSPACE_NAME}" --name "${ARC_COMPUTE_NAME}" -y || true
+        fi
+    fi 
 
     LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
     install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"

@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: train_cifar_10_with_pytorch
         path: sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch

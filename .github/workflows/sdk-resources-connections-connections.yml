@@ -93,7 +93,7 @@ jobs:
         PYTHON_FEED_SAS: ${{ secrets.PYTHON_FEED_SAS }}
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: connections
         path: sdk/python/resources/connections

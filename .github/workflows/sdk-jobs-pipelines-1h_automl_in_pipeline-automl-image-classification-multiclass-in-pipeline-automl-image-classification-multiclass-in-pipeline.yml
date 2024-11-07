@@ -88,7 +88,7 @@ jobs:
       working-directory: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: automl-image-classification-multiclass-in-pipeline
         path: sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline
