@@ -9,14 +9,19 @@ data_generation_type: label_generation
 data_generation_task_type: conversation
 
 # Input data
-training_data: azureml:train_conversation:1
-validation_data: azureml:validation_conversation:1
+training_data:
+  type: uri_file
+  path: ./train_conversation.jsonl
+validation_data:
+  type: uri_file
+  path: ./validation_conversation.jsonl
 
 # Teacher model serverless endpoint information
+# REPLACE WITH YOUR ENDPOINT INFORMATION
 teacher_model_endpoint_connection: 
   type: serverless
-  name: Meta-Llama-3-1-405B-Instruct-vum
-  endpoint: https://Meta-Llama-3-1-405B-Instruct-vum.westus3.models.ai.azure.com/chat/completions
+  name: Meta-Llama-3-1-405B-Instruct-vkn
+  endpoint: https://Meta-Llama-3-1-405B-Instruct-vkn.westus3.models.ai.azure.com/chat/completions
   api_key: EXAMPLE_API_KEY
 
 # Model ID
@@ -36,12 +41,8 @@ teacher_model_settings:
     max_tokens: 100
     top_p: 0.95
   endpoint_request_settings:
-    request_batch_size: 5
+    request_batch_size: 10
     min_endpoint_success_ratio: 0.7
-
-# System prompt settings (OPTIONAL)
-prompt_settings:
-  enable_chain_of_thought: true
 
 # For finetuning (OPTIONAL)
 hyperparameters:
@@ -51,5 +52,4 @@ hyperparameters:
 
 # Resource for Data Generation Step (OPTIONAL)
 resources:
-  instance_types:
-    - Standard_D2_v2
+  instance_type: Standard_D2_v2
