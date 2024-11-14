@@ -22,6 +22,7 @@ sdk/python/foundation-models/cohere/command_faiss_langchain.ipynb @stewart-co @k
 sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @kseniia-cohere
 /sdk/python/foundation-models/nixtla/ @AzulGarza
 /sdk/python/foundation-models/healthcare-ai/ @jmerkow @ivantarapov
+/sdk/python/assets/data/dataset-versioning/versioning.ipynb @ShakutaiGit
 
 #### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
