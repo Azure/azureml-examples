@@ -1,0 +1,170 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: dialogsum_eval
+description: Evaluate distilled models on dialogsum summarization dataset
+inputs:
+  task: text-summarization
+  sample_ratio: 0.01
+  ground_truth_column_name: completion
+  prediction_column_name: prediction
+  # batch_score inputs
+  endpoint_url: ""
+  deployment_name: ""
+  authentication_type: azureml_workspace_connection
+  connection_name: ""
+  additional_headers: ""
+  debug_mode: False
+  ensure_ascii: False
+  initial_worker_count: 5
+  max_worker_count: 200
+  instance_count: 1
+  max_concurrency_per_instance: 1
+jobs:
+  downloader:
+    type: command
+    component: azureml://registries/azureml/components/dataset_downloader/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset_name: knkarthick/dialogsum
+      split: validation
+    outputs:
+      output_dataset:
+        type: uri_folder
+  sampler:
+    type: command
+    component: azureml://registries/azureml/components/dataset_sampler/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.downloader.outputs.output_dataset}}
+      sampling_style: head
+      sampling_ratio: ${{parent.inputs.sample_ratio}}
+      random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  promptcrafter:
+    type: command
+    component: azureml://registries/azureml/components/prompt_crafter/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      test_data:
+        type: uri_folder
+        path: ${{parent.jobs.sampler.outputs.output_dataset}}
+      prompt_type: completions
+      prefix: ""
+      prompt_pattern: "Summarize the below text.\n\n{{dialogue}}\n\nSummary:\n"
+      few_shot_pattern: ""
+      n_shots: 0
+      output_pattern: '{{summary}}'
+      few_shot_separator: "\n\n"
+      random_seed: 0
+    outputs:
+      output_file:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  batch_score_preprocessor:
+    type: command
+    component: azureml://registries/azureml/components/batch_score_preprocessor/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      seed_data:
+        type: uri_file
+        path: ${{parent.jobs.promptcrafter.outputs.output_file}}
+    outputs:
+      payload_data:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      ground_truth_data:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  config_generator:
+    type: command
+    component: azureml://registries/azureml/components/batch_benchmark_config_generator/versions/0.0.7
+    inputs:
+      scoring_url: ${{parent.inputs.endpoint_url}}
+      deployment_name: ${{parent.inputs.deployment_name}}
+      authentication_type: ${{parent.inputs.authentication_type}}
+      connection_name: ${{parent.inputs.connection_name}}
+      additional_headers: ${{parent.inputs.additional_headers}}
+      debug_mode: ${{parent.inputs.debug_mode}}
+      ensure_ascii: ${{parent.inputs.ensure_ascii}}
+      max_retry_time_interval: ${{parent.inputs.max_retry_time_interval}}
+      initial_worker_count: ${{parent.inputs.initial_worker_count}}
+      max_worker_count: ${{parent.inputs.max_worker_count}}
+      model_type: oss
+    outputs:
+      batch_score_config:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.json
+  # Batch score job
+  batch_score:
+    type: parallel
+    component: azureml://registries/azureml/components/batch_score_oss/versions/0.0.1
+    inputs:
+      async_mode: False
+      data_input_table: ${{parent.jobs.preprocess.outputs.payload_data}}
+      configuration_file: ${{parent.jobs.config_generator.outputs.batch_score_config}}
+    outputs:
+      job_output_path:
+        type: uri_file
+      mini_batch_results_output_directory:
+        type: uri_folder
+    resources:
+      instance_count: 1
+    max_concurrency_per_instance:  1
+    mini_batch_size: ${{parent.inputs.mini_batch_size}}
+    retry_settings:
+      timeout: 6000
+      max_retries: 10
+    environment_variables:
+      BATCH_SCORE_INITIAL_REQUEST_TIMEOUT: '180'
+      BATCH_SCORE_DELAY_AFTER_SUCCESSFUL_REQUEST: 'False'
+      BATCH_SCORE_MAX_REQUEST_TIMEOUT: '300'
+  batch_score_postprocessor:
+    type: command
+    component: azureml://registries/azureml/components/batch_score_postprocessor/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      batch_score_result:
+        type: uri_folder
+        path: ${{parent.jobs.batch_score.outputs.mini_batch_results_output_directory}}
+      ground_truth_data:
+        type: uri_file
+        path: ${{parent.jobs.batch_score_preprocessor.outputs.ground_truth_data}}
+    outputs:
+      formatted_data:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      discarded_data:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  compute_metrics:
+    type: command
+    component: azureml://registries/azureml/components/compute_metrics/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      ground_truth:
+        type: uri_folder
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
+      prediction:
+        type: uri_folder
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
+      task: ${{parent.inputs.task}}
+      ground_truth_column_name: ground_truth
+      prediction_column_name: prediction
+      evaluation_config_params: '{"regexes_to_ignore": ["\\.0+$", ","]}'
+    outputs:
+      evaluation_result:
+        type: uri_folder
+settings:
+  force_rerun: false
+  default_compute: azureml:serverless
