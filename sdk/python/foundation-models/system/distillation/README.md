@@ -40,10 +40,16 @@ The process of model distillation is a two stage process as seen below.
 
 
 ## Examples
-We currently support numerous task types for model distillation. To view examples on how to distill and consume a model, click on the following task type of interest
+We currently support numerous task types for model distillation. To view examples on how to distill and consume a model with the SDK, click on the following task type of interest
+
+### SDK Examples
 - [NLI (Natural Language Interpretation)](./nli/distillation_chat_completion.ipynb)
 - [Conversation](./conversation/distillation_conversational_task.ipynb)
 - [NLU QA (Natural Language Understanding Question and Answer)](./nlu_qa/distillation_nlu_qa_task.ipynb)
 - [Math](./math/distillation_math.ipynb)
-- Summarization
 
+### CLI Examples
+- [NLI (Natural Language Interpretation)](/cli/foundation-models/system/distillation/nli/README.md)
+- [Conversation](/cli/foundation-models/system/distillation/conversation/README.md)
+- [NLU QA (Natural Language Understanding Question and Answer)](/cli/foundation-models/system/distillation/nlu_qa/README.md)
+- [Math](/cli/foundation-models/system/distillation/math/README.md)
