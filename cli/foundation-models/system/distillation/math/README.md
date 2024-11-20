@@ -10,10 +10,18 @@ Run the Distillation CLI command pointing to the .YAML file in this folder and f
 ```text
 az ml job create --file distillation_math.yaml --workspace-name [YOUR_AZURE_WORKSPACE] --resource-group [YOUR_AZURE_RESOURCE_GROUP] --subscription [YOUR_AZURE_SUBSCRIPTION]
 ```
+**Note:** To see how the train and validation files were created, see section 2 of this [notebook](/sdk/python/foundation-models/system/distillation/math/distillation_math.ipynb)
 
 ## 2. Deploy to Endpoint
-Once the job finishes running, fill out the serverless_endpoint.yaml file in this folder. The necessary information can be found by 
-1. Navigating to the `model` tab in [ml studio](https://ml.azure.com). 
+Once the distilled model is ready, you can deploy the model through the UI or CLI.
+
+### UI Deployment
+1. Navigate to the `model` tab in [ml studio](https://ml.azure.com) or navigate to the `Finetuning` tab in the [ai platform](https://ai.azure.com)
+2. If using the ml studio, locate the model using the `name` of the `registered_model` in the yaml file used to create this job. Select deploy to deploy a serverless endpoint. If using the ai platform, search for the name of the job, which in this example is `Distillation-math-llama`. Click on that name, and select Deploy to deploy a serverless endpoint.
+
+### CLI Deployment
+Fill out the serverless_endpoint.yaml file in this folder. The necessary information can be found by 
+1. Navigating to the `model` tab in [ml studio](https://ml.azure.com).
 2. Using the `name` of the `registered_model` in the yaml file used to create this job, select the model with that `name`. In this example, the name to use is `llama-math-distilled`
 3. Use the `asset_id` to fill out the `model_id` in the yaml.
 
