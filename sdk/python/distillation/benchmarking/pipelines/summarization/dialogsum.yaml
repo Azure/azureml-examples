@@ -47,6 +47,33 @@ jobs:
       output_dataset:
         type: uri_file
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  downloader_fewshot:
+    type: command
+    component: azureml://registries/azureml/components/dataset_downloader/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset_name: knkarthick/dialogsum
+      split: test
+    outputs:
+      output_dataset:
+        type: uri_folder
+  sampler_fewshot:
+    type: command
+    component: azureml://registries/azureml/components/dataset_sampler/labels/latest
+    limits:
+      timeout: 900
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.downloader_fewshot.outputs.output_dataset}}
+      sampling_style: head
+      sampling_ratio: ${{parent.inputs.sample_ratio}}
+      random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
     component: azureml://registries/azureml/components/prompt_crafter/labels/latest
@@ -56,13 +83,16 @@ jobs:
       test_data:
         type: uri_folder
         path: ${{parent.jobs.sampler.outputs.output_dataset}}
+      few_shot_data:
+        type: uri_file
+        path: ${{parent.jobs.sampler_fewshot.outputs.output_dataset}}
       prompt_type: completions
-      prefix: ""
-      prompt_pattern: "Summarize the below text.\n\n{{dialogue}}\n\nSummary:\n"
+      prefix: "Summarize the below text.\n\n"
+      prompt_pattern: "Text\n\n{{dialogue}}\n\nSummary:\n\n"
       few_shot_pattern: ""
-      n_shots: 0
+      n_shots: 5
       output_pattern: '{{summary}}'
-      few_shot_separator: "\n\n"
+      few_shot_separator: ""
       random_seed: 0
     outputs:
       output_file:
@@ -70,7 +100,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   batch_score_preprocessor:
     type: command
-    component: azureml://registries/azureml/components/batch_score_preprocessor/labels/latest
+    component: azureml://registries/azureml-preview-test1/components/batch_score_preprocess/versions/0.0.1.dev3
     limits:
       timeout: 900
     inputs:
@@ -106,7 +136,7 @@ jobs:
   # Batch score job
   batch_score:
     type: parallel
-    component: azureml://registries/azureml/components/batch_score_oss/versions/0.0.1
+    component: azureml://registries/azureml-preview-test1/components/batch_score_oss/versions/0.0.1.dev0
     inputs:
       async_mode: False
       data_input_table: ${{parent.jobs.preprocess.outputs.payload_data}}
@@ -129,7 +159,7 @@ jobs:
       BATCH_SCORE_MAX_REQUEST_TIMEOUT: '300'
   batch_score_postprocessor:
     type: command
-    component: azureml://registries/azureml/components/batch_score_postprocessor/labels/latest
+    component: azureml://registries/azureml-preview-test1/components/batch_score_postprocess/versions/0.0.1.dev5
     limits:
       timeout: 900
     inputs:
