@@ -1,0 +1,59 @@
+type: distillation
+
+name: "Distillation-math-llama"
+description: "Distill student model using a teacher model"
+experiment_name: "Distillation-Math"
+
+# Data Generation Properties
+data_generation_type: label_generation
+data_generation_task_type: math
+
+# Input data
+training_data: 
+  type: uri_file
+  path: ./train_math.jsonl
+validation_data: 
+  type: uri_file
+  path: ./validation_math.jsonl
+
+# Teacher model serverless endpoint information
+# REPLACE WITH YOUR ENDPOINT INFORMATION
+teacher_model_endpoint_connection: 
+  type: serverless
+  name: Meta-Llama-3-1-405B-Instruct-vkn
+  endpoint: https://Meta-Llama-3-1-405B-Instruct-vkn.westus3.models.ai.azure.com/chat/completions
+  api_key: EXAMPLE_API_KEY
+
+# Model ID
+student_model: azureml://registries/azureml-meta/models/Meta-Llama-3.1-8B-Instruct/versions/2
+
+# Output distilled model
+outputs:
+  registered_model:
+    type: mlflow_model
+    name: llama-math-distilled
+
+
+# Teacher model related properties (OPTIONAL)
+teacher_model_settings:
+  inference_parameters:
+    temperature: 0.1
+    max_tokens: 1024
+    top_p: 0.95
+  endpoint_request_settings:
+    request_batch_size: 10
+    min_endpoint_success_ratio: 0.7
+
+# System prompt settings (OPTIONAL)
+prompt_settings:
+  enable_chain_of_thought: true
+
+# For finetuning (OPTIONAL)
+hyperparameters:
+  learning_rate_multiplier: "0.2"
+  n_epochs: "5"
+  batch_size: "2"
+
+# Resource for Data Generation Step (OPTIONAL)
+resources:
+  instance_type: Standard_D2_v2
