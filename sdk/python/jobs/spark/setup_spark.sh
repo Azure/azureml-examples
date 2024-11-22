@@ -51,9 +51,12 @@ then
 	TIMESTAMP=`date +%m%d%H%M%S`
 	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
+	DEFAULT_STORAGE_ACCOUNT=${RESOURCE_GROUP}defaultvnet
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
+
+	az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
 
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
 	az storage container create -n $BLOB_CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT
@@ -80,7 +83,8 @@ then
 		s/<ACCESS_KEY_SECRET_NAME>/$ACCESS_KEY_SECRET_NAME/g;
 		s/<BLOB_CONTAINER_NAME>/$BLOB_CONTAINER_NAME/g;
 		s/<GEN2_STORAGE_ACCOUNT_NAME>/$GEN2_STORAGE_ACCOUNT_NAME/g;
-		s/<ADLS_CONTAINER_NAME>/$ADLS_CONTAINER_NAME/g;" $2
+		s/<ADLS_CONTAINER_NAME>/$ADLS_CONTAINER_NAME/g
+		s/<DEFAULT_STORAGE_ACCOUNT>/$DEFAULT_STORAGE_ACCOUNT/g;" $2
 #</setup_vnet_resources>
 #<setup_interactive_session_resources>
 elif [[ "$2" == *"run_interactive_session_notebook"* ]]
