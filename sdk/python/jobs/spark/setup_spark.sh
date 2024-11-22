@@ -1,6 +1,6 @@
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-LOCATION=$(az ml workspace show --query location -o tsv)
+LOCATION=eastus
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-05-01"
@@ -49,7 +49,7 @@ AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $
 if [[ "$2" == *"managed_vnet"* ]]
 then
 	TIMESTAMP=`date +%m%d%H%M%S`
-	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
+	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-spark-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
 	DEFAULT_STORAGE_ACCOUNT=${RESOURCE_GROUP}defaultvnet
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
