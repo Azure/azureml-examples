@@ -1,6 +1,6 @@
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-LOCATION=eastus
+LOCATION="eastus"
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-05-01"
