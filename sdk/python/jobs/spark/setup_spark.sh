@@ -48,10 +48,10 @@ AML_USER_MANAGED_ID_OID=$(az identity show --resource-group $RESOURCE_GROUP -n $
 #<setup_vnet_resources>
 if [[ "$2" == *"managed_vnet"* ]]
 then
-	TIMESTAMP=`date +%m%d%H%M%S`
-	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-spark-vnet-$TIMESTAMP
+	TIMESTAMP=`date +%m%d%H%M`
+	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
-	DEFAULT_STORAGE_ACCOUNT=${RESOURCE_GROUP}defaultvnet
+	DEFAULT_STORAGE_ACCOUNT="sparkdefaultvnet"
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
