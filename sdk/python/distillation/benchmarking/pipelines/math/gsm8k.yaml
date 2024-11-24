@@ -1,9 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: dialogsum_eval
-description: Evaluate distilled models on dialogsum summarization dataset
+display_name: gsm8k_eval
+description: Evaluate distilled models on grade school math dataset
 inputs:
-  task: text-summarization
+  task: question-answering
   sample_ratio: 0.01
   ground_truth_column_name: completion
   prediction_column_name: prediction
@@ -19,8 +19,9 @@ jobs:
     component: azureml://registries/azureml/components/dataset_downloader/labels/latest
     limits: {}
     inputs:
-      dataset_name: knkarthick/dialogsum
-      split: validation
+      dataset_name: gsm8k
+      configuration: main
+      split: test
     outputs:
       output_dataset:
         type: uri_folder
@@ -39,13 +40,30 @@ jobs:
       output_dataset:
         type: uri_file
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  preprocessor:
+    type: command
+    component: azureml://registries/azureml/components/dataset_preprocessor/labels/latest
+    limits: {}
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.sampler.outputs.output_dataset}}
+      template_input: "{\n  \"question\":{{question}},\n  \"solution\":{{answer.split(\"\
+        \ ####\")[0]}},\n  \"answer\":{{answer.split(\"#### \")[-1]|string}}\n}"
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   downloader_fewshot:
     type: command
     component: azureml://registries/azureml/components/dataset_downloader/labels/latest
     limits: {}
     inputs:
-      dataset_name: knkarthick/dialogsum
-      split: test
+      configuration: fewshot
+      split: dev
+      script_path:
+        type: uri_file
+        path: https://raw.githubusercontent.com/Azure/azureml-assets/main/assets/aml-benchmark/scripts/data_loaders/gsm8k_static_shots.py
     outputs:
       output_dataset:
         type: uri_folder
@@ -58,8 +76,22 @@ jobs:
         type: uri_folder
         path: ${{parent.jobs.downloader_fewshot.outputs.output_dataset}}
       sampling_style: head
-      sampling_ratio: ${{parent.inputs.sample_ratio}}
+      n_samples: 8
       random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  preprocessor_fewshot:
+    type: command
+    component: azureml://registries/azureml/components/dataset_preprocessor/labels/latest
+    limits: {}
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.sampler_fewshot.outputs.output_dataset}}
+      template_input: "{\n  \"question\":{{question}},\n  \"solution\":{{answer.split(\"\
+        \ ####\")[0]}},\n  \"answer\":{{answer.split(\"#### \")[-1]|string}}\n}"
     outputs:
       output_dataset:
         type: uri_file
@@ -71,17 +103,21 @@ jobs:
     inputs:
       test_data:
         type: uri_folder
-        path: ${{parent.jobs.sampler.outputs.output_dataset}}
+        path: ${{parent.jobs.preprocessor.outputs.output_dataset}}
       few_shot_data:
         type: uri_file
-        path: ${{parent.jobs.sampler_fewshot.outputs.output_dataset}}
+        path: ${{parent.jobs.preprocessor_fewshot.outputs.output_dataset}}
       prompt_type: completions
-      prefix: "Summarize the below text.\n\n"
-      prompt_pattern: "Text\n\n{{dialogue}}\n\nSummary:\n\n"
-      few_shot_pattern: ""
-      n_shots: 5
-      output_pattern: '{{summary}}'
+      prompt_pattern: 'Q: {{question}}
+
+        A:'
+      n_shots: 8
+      output_pattern: '{{solution}} The answer is {{answer}}.'
+      system_message: You are taking a math test. When answering the question, please
+        ensure that the last number you write in the response is the correct, numerical
+        answer to the question.
       few_shot_separator: ""
+      ground_truth_column_name: answer
       random_seed: 0
     outputs:
       output_file:
@@ -97,7 +133,7 @@ jobs:
         path: ${{parent.jobs.promptcrafter.outputs.output_file}}
       model_type: oai
       batch_input_pattern: '{"messages": [{"role": "user", "content": "###<prompt>"}], "temperature": 0.6, "top_p": 1.0, "max_new_tokens": 2048, "frequency_penalty": 0.0, "presence_penalty": 0.0}'
-      label_column_name: ${{parent.inputs.ground_truth_column_name}}
+      label_column_name: ground_truth
       is_performance_test: false
     outputs:
       formatted_data:
@@ -185,6 +221,25 @@ jobs:
       unsafe_content_blocked_requests:
         type: uri_file
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  postprocessor:
+    type: command
+    component: azureml://registries/azureml/components/inference_postprocessor/labels/latest
+    limits: {}
+    inputs:
+      ground_truth_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.batch_score_postprocessor.outputs.ground_truth}}
+      prediction_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.batch_score_postprocessor.outputs.predictions}}
+      ground_truth_column_name: ${{parent.inputs.ground_truth_column_name}}
+      prediction_column_name: ${{parent.inputs.prediction_column_name}}
+      extract_number: last
+      strip_characters: .
+    outputs:
+      output_dataset_result:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   compute_metrics:
     type: command
     component: azureml://registries/azureml/components/compute_metrics/labels/latest
@@ -192,10 +247,10 @@ jobs:
     inputs:
       ground_truth:
         type: uri_folder
-        path: ${{parent.jobs.batch_score_postprocessor.outputs.ground_truth}}
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
       prediction:
         type: uri_folder
-        path: ${{parent.jobs.batch_score_postprocessor.outputs.predictions}}
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
       task: ${{parent.inputs.task}}
       ground_truth_column_name: ${{parent.inputs.ground_truth_column_name}}
       prediction_column_name: ${{parent.inputs.prediction_column_name}}
@@ -205,7 +260,7 @@ jobs:
         type: uri_folder
 tags:
   workflow: distill_llm_benchmark
-  evaluation_type: text-summarization
+  evaluation_type: text-generation
 properties:
   _azureml.evaluation_run: Benchmark
 settings:
