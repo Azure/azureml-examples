@@ -20,7 +20,7 @@
 
 
 # <az_ml_install>
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.32.3-py3-none-any.whl
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.33.0-py3-none-any.whl
 # </az_ml_install>
 
 ## For backward compatibility - running on old subscription
