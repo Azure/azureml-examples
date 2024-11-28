@@ -1,6 +1,6 @@
 """
 This is the script that is executed on the compute instance. It relies
-on the model.pt file which is uploaded along with this script to the
+on the model.pkl file which is uploaded along with this script to the
 compute instance.
 """
 
