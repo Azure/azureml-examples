@@ -39,7 +39,9 @@ def run(mini_batch):
             continue
 
         if target_column_name not in X_test.columns:
-            raise ValueError(f"Target column `{target_column_name}` not found in the test data, required for rolling forecast.")
+            raise ValueError(
+                f"Target column `{target_column_name}` not found in the test data, required for rolling forecast."
+            )
         y_test = X_test.pop(target_column_name).values
 
         # Make a rolling forecast, advancing the forecast origin by 1 period on each iteration through the test set

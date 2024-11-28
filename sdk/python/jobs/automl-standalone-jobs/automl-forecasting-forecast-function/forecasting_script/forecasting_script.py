@@ -63,7 +63,9 @@ def run(mini_batch):
         # or at edges of time due to lags/rolling windows
         if target_column_name in X_test.columns:
             clean = X_test[
-            X_test[[target_column_name, predicted_column_name]].notnull().all(axis=1)
+                X_test[[target_column_name, predicted_column_name]]
+                .notnull()
+                .all(axis=1)
             ]
         else:
             clean = X_test[X_test[predicted_column_name].notnull()]
