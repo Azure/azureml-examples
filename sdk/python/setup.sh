@@ -21,6 +21,6 @@ pip install azure-ai-ml
 # </az_ml_sdk_test_install>
 
 # protobuf==5.29.0 has IndentationError bug
-pip install protobuf<=5.28.3
+pip install "protobuf<=5.28.3"
 
 pip list
