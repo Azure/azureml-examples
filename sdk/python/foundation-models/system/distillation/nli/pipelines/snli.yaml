@@ -66,7 +66,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
-    component: azureml://registries/azureml/components/prompt_crafter/labels/latest
+    component: azureml://registries/azureml-preview-test1/components/prompt_crafter/versions/0.0.12.dev2
     limits: {}
     inputs:
       test_data:
@@ -76,19 +76,19 @@ jobs:
         type: uri_file
         path: ${{parent.jobs.sampler_fewshot.outputs.output_dataset}}
       prompt_type: completions
-      prompt_pattern: 'Premise: {{premise}}
+      prompt_pattern: "\n
+        Premise: {{premise}}
 
         Hypothesis: {{hypothesis}}
 
-        The label is: '
+        The label is: "
       n_shots: 5
       output_pattern: '{{label}}'
-      few_shot_separator: "\n\n"
+      few_shot_separator: "\n"
       prefix: Given a partial description of an event as premise and hypothesis, 
         your task is to select the most appropriate label from the 3 options. 
         The 3 options 0, 1, 2 are - entailment, contradiction, and neutral respectively.
-        Carefully analyze the context and use your understanding of the world to make 
-        the best choice.\n 
+        Respond with only the label number. 
       random_seed: 0
     outputs:
       output_file:
@@ -135,7 +135,7 @@ jobs:
   # Batch score job
   batch_score:
     type: parallel
-    component: azureml://registries/azureml-preview-test1/components/batch_score_oss/versions/0.0.1.dev0
+    component: azureml://registries/azureml-preview-test1/components/batch_score_oss/versions/0.0.1.dev2
     inputs:
       async_mode: False
       data_input_table: ${{parent.jobs.batch_score_preprocessor.outputs.formatted_data}}
@@ -194,7 +194,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   postprocessor:
     type: command
-    component: azureml://registries/azureml/components/inference_postprocessor/labels/latest
+    component:  azureml://registries/azureml-preview-test1/components/inference_postprocessor/versions/0.0.10.dev0
     limits: {}
     inputs:
       ground_truth_dataset:
