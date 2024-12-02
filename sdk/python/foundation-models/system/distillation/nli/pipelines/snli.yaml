@@ -66,7 +66,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   promptcrafter:
     type: command
-    component: azureml://registries/azureml-preview-test1/components/prompt_crafter/versions/0.0.12.dev2
+    component: azureml://registries/azureml/components/prompt_crafter/labels/latest
     limits: {}
     inputs:
       test_data:
@@ -96,7 +96,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   batch_score_preprocessor:
     type: command
-    component: azureml://registries/azureml/components/batch_inference_preparer/versions/0.0.14
+    component: azureml://registries/azureml/components/batch_inference_preparer/labels/latest
     limits: {}
     inputs:
       input_dataset:
@@ -115,7 +115,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}
   config_generator:
     type: command
-    component: azureml://registries/azureml/components/batch_benchmark_config_generator/versions/0.0.9
+    component: azureml://registries/azureml/components/batch_benchmark_config_generator/labels/latest
     inputs:
       scoring_url: ${{parent.inputs.endpoint_url}}
       deployment_name: ${{parent.inputs.deployment_name}}
@@ -135,7 +135,7 @@ jobs:
   # Batch score job
   batch_score:
     type: parallel
-    component: azureml://registries/azureml-preview-test1/components/batch_score_oss/versions/0.0.1.dev2
+    component: azureml://registries/azureml/components/batch_score_oss/labels/latest
     inputs:
       async_mode: False
       data_input_table: ${{parent.jobs.batch_score_preprocessor.outputs.formatted_data}}
@@ -157,7 +157,7 @@ jobs:
       BATCH_SCORE_MAX_REQUEST_TIMEOUT: '300'
   batch_score_postprocessor:
     type: command
-    component: azureml://registries/azureml/components/batch_output_formatter/versions/0.0.14
+    component: azureml://registries/azureml/components/batch_output_formatter/labels/latest
     limits: {}
     inputs:
       batch_inference_output:
@@ -194,7 +194,7 @@ jobs:
         path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
   postprocessor:
     type: command
-    component:  azureml://registries/azureml-preview-test1/components/inference_postprocessor/versions/0.0.10.dev0
+    component: azureml://registries/azureml/components/inference_postprocessor/labels/latest
     limits: {}
     inputs:
       ground_truth_dataset:
