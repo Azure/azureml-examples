@@ -3,7 +3,7 @@
 ipython-genutils==0.2.0
 ipykernel==5.5.5
 papermill==2.3.3
-pandas==2.2.3
+pandas
 matplotlib==3.9.3
 torch==2.5.1
 tensorflow==2.15.0
