@@ -4,10 +4,10 @@ ipython-genutils==0.2.0
 ipykernel==5.5.5
 papermill==2.3.3
 pandas
-matplotlib==3.9.3
-torch==2.5.1
+matplotlib
+torch
 tensorflow==2.15.0
-tensorflow-hub==0.16.1
-transformers==4.46.3
+tensorflow-hub
+transformers
 keras==2.15.0
 jupyter-client==7.4.9
