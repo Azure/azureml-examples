@@ -6,8 +6,8 @@ papermill==2.3.3
 pandas
 matplotlib
 torch
-tensorflow==2.15.0
+tensorflow
 tensorflow-hub
 transformers
-keras==2.15.0
+keras
 jupyter-client==7.4.9
