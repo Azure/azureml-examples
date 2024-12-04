@@ -8,7 +8,6 @@ matplotlib==3.7.3
 torch==2.1.0
 tensorflow==2.9.3
 tensorflow-hub==0.15.0
-transformers==4.34.0
+transformers==4.46.3
 keras==2.9
 jupyter-client==7.4.9
-protobuf==3.20.1
