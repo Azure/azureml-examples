@@ -47,9 +47,11 @@ We currently support numerous task types for model distillation. To view example
 - [Conversation](./conversation/distillation_conversational_task.ipynb)
 - [NLU QA (Natural Language Understanding Question and Answer)](./nlu_qa/distillation_nlu_qa_task.ipynb)
 - [Math](./math/distillation_math.ipynb)
+- [Summarization](./summarization/distillation_summarization.ipynb)
 
 ### CLI Examples
 - [NLI (Natural Language Interpretation)](/cli/foundation-models/system/distillation/nli/README.md)
 - [Conversation](/cli/foundation-models/system/distillation/conversation/README.md)
 - [NLU QA (Natural Language Understanding Question and Answer)](/cli/foundation-models/system/distillation/nlu_qa/README.md)
 - [Math](/cli/foundation-models/system/distillation/math/README.md)
+- [Summarization](/cli/foundation-models/system/distillation/summarization/README.md)
