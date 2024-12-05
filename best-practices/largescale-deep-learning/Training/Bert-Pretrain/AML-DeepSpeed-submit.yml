@@ -2,26 +2,54 @@
 
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 
-command: python pretrain_glue_ORT.py --tensorboard_log_dir "/outputs/runs/" --deepspeed ds_config.json --num_train_epochs 1000 --output_dir outputs --disable_tqdm 1 --local_rank $RANK --evaluation_strategy "epoch"  --logging_strategy "epoch" --per_device_train_batch_size 93 --gradient_accumulation_steps 1 --per_device_eval_batch_size 93 --learning_rate 3e-05 --adam_beta1 0.8 --adam_beta2 0.999 --weight_decay 3e-07 --warmup_steps 500 --fp16 --logging_steps 1000 --model_checkpoint "bert-large-uncased" --optim "adamw_ort_fused"
+command: >-
+ python pretrain_wiki_ds.py
+ --tensorboard_log_dir="/outputs/runs/"
+ --deepspeed=ds_config.json
+ --num_train_epochs=1
+ --output_dir=outputs
+ --disable_tqdm=1
+ --local_rank=$RANK
+ --evaluation_strategy="epoch"
+ --logging_strategy="epoch"
+ --per_device_train_batch_size=8
+ --gradient_accumulation_steps=1
+ --per_device_eval_batch_size=8
+ --learning_rate=3e-05
+ --adam_beta1=0.8
+ --adam_beta2=0.999
+ --weight_decay=3e-07
+ --warmup_steps=500
+ --fp16
+ --logging_steps=1000
+ --model_checkpoint="bert-large-uncased"
+ --optim="adamw_ort_fused"
+ --max_steps=10000
 
-experiment_name: bert-pretrain-GLUE-ds-optimal
+experiment_name: BERT-pretrain
 environment: azureml:ACPT_Nebula@latest
 environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
+  DATASET_MOUNT_CACHE_SIZE: '0'
+  DATASET_MOUNT_ATTRIBUTE_CACHE_TTL: '1'
+  DATASET_MOUNT_BLOCK_BASED_CACHE_ENABLED: 'False'
+  DATASET_MOUNT_BLOCK_FILE_CACHE_ENABLED: 'False'
+  DATASET_MOUNT_MEMORY_CACHE_SIZE: '0'
 code: src
-outputs:
-  output:
-    type: uri_folder
-    mode: rw_mount
-    path: azureml://datastores/workspaceblobstore/paths/outputs
-compute: <Enter the name of your compute here>
+compute: azureml:<YOUR_COMPUTE_NAME>
 distribution:
   type: pytorch
   process_count_per_instance: 8
 resources:
   instance_count: 2
-  shm_size: 3100m
+  shm_size: 100g
+
+outputs:
+  output:
+    type: uri_folder
+    mode: rw_mount
+    path: azureml://datastores/workspaceblobstore/paths/outputs
 services:
   my_jupyterlab:
     type: jupyter_lab
@@ -33,6 +61,4 @@ services:
     nodes: all
   my_vscode:
     type: vs_code
-    nodes: all
-
-    
+    nodes: all    
