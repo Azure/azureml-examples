@@ -29,9 +29,19 @@ def run(mini_batch):
     print(f"run method start: {__file__}, run({mini_batch})")
     resultList = []
     for test in mini_batch:
-        if not test.endswith(".csv"):
+        file_ext = os.path.splitext(test)[-1]
+        if file_ext == ".parquet":
+            X_test = pd.read_parquet(test)
+        elif file_ext == ".csv":
+            X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
+        else:
+            print(f"Unsupported file type: `{file_ext}`. Skipping the file.")
             continue
-        X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
+
+        if target_column_name not in X_test.columns:
+            raise ValueError(
+                f"Target column `{target_column_name}` not found in the test data, required for rolling forecast."
+            )
         y_test = X_test.pop(target_column_name).values
 
         # Make a rolling forecast, advancing the forecast origin by 1 period on each iteration through the test set
