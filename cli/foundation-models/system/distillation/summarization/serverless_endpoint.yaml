@@ -1,0 +1,2 @@
+name: llama-summarization-distilled
+model_id: azureml://locations/{AI_PROJECT_LOCATION}/workspaces/{WORKSPACE_ID}/models/llama-summarization-distilled/versions/{VERSION}

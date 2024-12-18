@@ -29,8 +29,19 @@ def run(mini_batch):
     print(f"run method start: {__file__}, run({mini_batch})")
     resultList = []
     for test in mini_batch:
-        X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
-        y_test = X_test.pop(target_column_name).values
+        file_ext = os.path.splitext(test)[-1]
+        if file_ext == ".parquet":
+            X_test = pd.read_parquet(test)
+        elif file_ext == ".csv":
+            X_test = pd.read_csv(test, parse_dates=[fitted_model.time_column_name])
+        else:
+            print(f"Unsupported file type: `{file_ext}`. Skipping the file.")
+            continue
+
+        if target_column_name in X_test.columns:
+            y_test = X_test.pop(target_column_name).values
+        else:
+            y_test = None
 
         # We have default quantiles values set as below(95th percentile)
         quantiles = [0.025, 0.5, 0.975]
@@ -43,15 +54,21 @@ def run(mini_batch):
         pred_quantiles[PI] = pred_quantiles[[min(quantiles), max(quantiles)]].apply(
             lambda x: "[{}, {}]".format(x[0], x[1]), axis=1
         )
-        X_test[target_column_name] = y_test
-        X_test[PI] = pred_quantiles[PI]
-        X_test[predicted_column_name] = pred_quantiles[0.5]
+        if y_test is not None:
+            X_test[target_column_name] = y_test
+        X_test[PI] = pred_quantiles[PI].values
+        X_test[predicted_column_name] = pred_quantiles[0.5].values
         # drop rows where prediction or actuals are nan
         # happens because of missing actuals
         # or at edges of time due to lags/rolling windows
-        clean = X_test[
-            X_test[[target_column_name, predicted_column_name]].notnull().all(axis=1)
-        ]
+        if target_column_name in X_test.columns:
+            clean = X_test[
+                X_test[[target_column_name, predicted_column_name]]
+                .notnull()
+                .all(axis=1)
+            ]
+        else:
+            clean = X_test[X_test[predicted_column_name].notnull()]
         print(
             f"The predictions have {clean.shape[0]} rows and {clean.shape[1]} columns."
         )

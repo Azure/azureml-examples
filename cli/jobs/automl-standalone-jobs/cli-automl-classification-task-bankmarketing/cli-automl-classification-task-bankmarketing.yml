@@ -30,7 +30,7 @@ test_data:
 limits:
   timeout_minutes: 180
   max_trials: 40
-  max_concurrent_trials: 5
+  # max_concurrent_trials: 5
   trial_timeout_minutes: 20
   enable_early_termination: true
   exit_score: 0.92
