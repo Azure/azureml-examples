@@ -1,0 +1,286 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: hellaswag_eval
+description: Evaluate distilled models on hellaswag chat dataset
+inputs:
+  task: question-answering
+  sample_ratio: 0.01
+  ground_truth_column_name: completion
+  prediction_column_name: prediction
+  # batch_score inputs
+  endpoint_url: ""
+  deployment_name: ""
+  authentication_type: azureml_workspace_connection
+  connection_name: ""
+  debug_mode: False
+jobs:
+  downloader:
+    type: command
+    component: azureml://registries/azureml/components/dataset_downloader/labels/latest
+    limits: {}
+    inputs:
+      dataset_name: hellaswag
+      configuration: all
+      split: validation
+    outputs:
+      output_dataset:
+        type: uri_folder
+  sampler:
+    type: command
+    component: azureml://registries/azureml/components/dataset_sampler/labels/latest
+    limits: {}
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.downloader.outputs.output_dataset}}
+      sampling_style: head
+      sampling_ratio: ${{parent.inputs.sample_ratio}}
+      random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  preprocessor:
+    type: command
+    component: azureml://registries/azureml/components/dataset_preprocessor/labels/latest
+    limits: {}
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.sampler.outputs.output_dataset}}
+      template_input: "{\n  \"activity_label\": {{activity_label}},\n  {% for i in\
+        \ range(endings|length) %}\n    \"choice_{{(i+1)}}\": {{endings[i]}},\n  {%\
+        \ endfor %}\n  \"ctx\": {{ctx}},\n  {% set label_int = label | int %}\n  \"\
+        label\": {{(label_int + 1)}}\n}"
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  downloader_fewshot:
+    type: command
+    component: azureml://registries/azureml/components/dataset_downloader/labels/latest
+    limits: {}
+    inputs:
+      dataset_name: hellaswag
+      configuration: all
+      split: train
+    outputs:
+      output_dataset:
+        type: uri_folder
+  sampler_fewshot:
+    type: command
+    component: azureml://registries/azureml/components/dataset_sampler/labels/latest
+    limits: {}
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.downloader_fewshot.outputs.output_dataset}}
+      sampling_style: head
+      n_samples: 8
+      random_seed: 0
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  preprocessor_fewshot:
+    type: command
+    component: azureml://registries/azureml/components/dataset_preprocessor/labels/latest
+    limits: {}
+    inputs:
+      dataset:
+        type: uri_folder
+        path: ${{parent.jobs.sampler_fewshot.outputs.output_dataset}}
+      template_input: "{\n  \"activity_label\": {{activity_label}},\n  {% for i in\
+        \ range(endings|length) %}\n    \"choice_{{(i+1)}}\": {{endings[i]}},\n  {%\
+        \ endfor %}\n  \"ctx\": {{ctx}},\n  {% set label_int = label | int %}\n  \"\
+        label\": {{(label_int + 1)}}\n}"
+    outputs:
+      output_dataset:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  promptcrafter:
+    type: command
+    component: azureml://registries/azureml/components/prompt_crafter/labels/latest
+    limits: {}
+    inputs:
+      test_data:
+        type: uri_folder
+        path: ${{parent.jobs.preprocessor.outputs.output_dataset}}
+      few_shot_data:
+        type: uri_file
+        path: ${{parent.jobs.preprocessor_fewshot.outputs.output_dataset}}
+      prompt_type: chat
+      prompt_pattern: 'Category: {{activity_label}}
+
+        Text: {{ctx}}
+
+        Completion options:
+
+        (1) {{choice_1}}
+
+        (2) {{choice_2}}
+
+        (3) {{choice_3}}
+
+        (4) {{choice_4}}
+
+        The most likely text completion is: '
+      n_shots: 5
+      output_pattern: '{{label}}'
+      system_message: Given a partial description of an event as text, your task is
+        to select the most appropriate continuation from the provided options. Carefully
+        analyze the context and use your understanding of the world to make the best
+        choice. Consider logical flow, relevance, and commonsense reasoning when making
+        your selection. Always choose the answer from provided completion options
+        that best completes the given sentence or scenario.
+      random_seed: 0
+    outputs:
+      output_file:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  batch_score_preprocessor:
+    type: command
+    component: azureml://registries/azureml/components/batch_inference_preparer/labels/latest
+    limits: {}
+    inputs:
+      input_dataset:
+        type: uri_file
+        path: ${{parent.jobs.promptcrafter.outputs.output_file}}
+      model_type: oai
+      batch_input_pattern: '{"messages": ###<prompt>, "temperature": 0.0, "max_tokens": 10, "top_p": 1.0}'
+      label_column_name: ${{parent.inputs.ground_truth_column_name}}
+      is_performance_test: false
+    outputs:
+      formatted_data:
+        type: mltable
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}
+      ground_truth_metadata:
+        type: uri_folder
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}
+  config_generator:
+    type: command
+    component: azureml://registries/azureml/components/batch_benchmark_config_generator/labels/latest
+    inputs:
+      scoring_url: ${{parent.inputs.endpoint_url}}
+      deployment_name: ${{parent.inputs.deployment_name}}
+      authentication_type: ${{parent.inputs.authentication_type}}
+      connection_name: ${{parent.inputs.connection_name}}
+      additional_headers: ""
+      debug_mode: ${{parent.inputs.debug_mode}}
+      ensure_ascii: false
+      max_retry_time_interval: 300
+      initial_worker_count: 5
+      max_worker_count: 200
+      model_type: oss
+    outputs:
+      batch_score_config:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  # Batch score job
+  batch_score:
+    type: parallel
+    component: azureml://registries/azureml/components/batch_score_oss/labels/latest
+    inputs:
+      async_mode: False
+      data_input_table: ${{parent.jobs.batch_score_preprocessor.outputs.formatted_data}}
+      configuration_file: ${{parent.jobs.config_generator.outputs.batch_score_config}}
+    outputs:
+      job_output_path:
+        type: uri_file
+      mini_batch_results_output_directory:
+        type: uri_folder
+    resources:
+      instance_count: 1
+    max_concurrency_per_instance:  8
+    retry_settings:
+      timeout: 6000
+      max_retries: 10
+    environment_variables:
+      BATCH_SCORE_INITIAL_REQUEST_TIMEOUT: '180'
+      BATCH_SCORE_DELAY_AFTER_SUCCESSFUL_REQUEST: 'False'
+      BATCH_SCORE_MAX_REQUEST_TIMEOUT: '300'
+  batch_score_postprocessor:
+    type: command
+    component: azureml://registries/azureml/components/batch_output_formatter/labels/latest
+    limits: {}
+    inputs:
+      batch_inference_output:
+        type: uri_folder
+        path: ${{parent.jobs.batch_score.outputs.mini_batch_results_output_directory}}
+      ground_truth_input:
+        type: uri_file
+        path: ${{parent.jobs.batch_score_preprocessor.outputs.ground_truth_metadata}}
+      model_type: oai
+      label_column_name: ${{parent.inputs.ground_truth_column_name}}
+      endpoint_url: ${{parent.inputs.endpoint_url}}
+      handle_response_failure: use_fallback
+      min_endpoint_success_ratio: 0.0
+      is_performance_test: false
+      use_tiktoken: false
+    outputs:
+      predictions:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      performance_metadata:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      ground_truth:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      successful_requests:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      failed_requests:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+      unsafe_content_blocked_requests:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  postprocessor:
+    type: command
+    component: azureml://registries/azureml/components/inference_postprocessor/labels/latest
+    limits: {}
+    inputs:
+      ground_truth_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.batch_score_postprocessor.outputs.ground_truth}}
+      prediction_dataset:
+        type: uri_folder
+        path: ${{parent.jobs.batch_score_postprocessor.outputs.predictions}}
+      ground_truth_column_name: ${{parent.inputs.ground_truth_column_name}}
+      prediction_column_name: ${{parent.inputs.prediction_column_name}}
+      separator: '
+
+
+        '
+      find_first: 1,2,3,4
+    outputs:
+      output_dataset_result:
+        type: uri_file
+        path: azureml://datastores/${{default_datastore}}/paths/azureml/${{name}}/${{output_name}}.jsonl
+  compute_metrics:
+    type: command
+    component: azureml://registries/azureml/components/compute_metrics/labels/latest
+    limits: {}
+    inputs:
+      ground_truth:
+        type: uri_folder
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
+      prediction:
+        type: uri_folder
+        path: ${{parent.jobs.postprocessor.outputs.output_dataset_result}}
+      task: ${{parent.inputs.task}}
+      ground_truth_column_name: ${{parent.inputs.ground_truth_column_name}}
+      prediction_column_name: ${{parent.inputs.prediction_column_name}}
+      evaluation_config_params: '{"regexes_to_ignore": ["\\W"]}'
+    outputs:
+      evaluation_result:
+        type: uri_folder
+tags:
+  workflow: distill_llm_benchmark
+  evaluation_type: text-generation
+properties:
+  _azureml.evaluation_run: Benchmark
+settings:
+  force_rerun: false
+  default_compute: azureml:serverless
