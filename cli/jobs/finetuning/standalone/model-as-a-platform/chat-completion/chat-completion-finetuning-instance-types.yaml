@@ -1,0 +1,32 @@
+type: finetuning
+
+name: "Phi-3-mini-4k-instruct-with-instance-types"
+experiment_name: "Phi-3-mini-4k-instruct-finetuning-experiment-instance-types"
+display_name: "Phi-3-mini-4k-instruct-display-name"
+task: chat_completion
+model_provider: custom
+model: 
+  path: "azureml://registries/azureml/models/Phi-3-mini-4k-instruct/versions/14"
+  type: mlflow_model
+resources:
+  instance_types:
+  # You can specify multiple instance types for the training job
+  # Backend will decide which instance type to use based on the constraints on training job.
+    - "Standard_NC96ads_A100_v4"
+    - "Standard_E4s_v3"
+training_data: train.jsonl
+validation_data:
+  path: validation.jsonl
+  type: uri_file
+hyperparameters:
+  num_train_epochs: "1"
+  per_device_train_batch_size: "1"
+  learning_rate: "0.00002"
+properties:
+  my_property: "my_value"
+tags:
+  foo_tag: "bar"
+outputs:
+  registered_model:
+    name: "Phi-3-mini-4k-instruct-finetuned-model"
+    type: mlflow_model
