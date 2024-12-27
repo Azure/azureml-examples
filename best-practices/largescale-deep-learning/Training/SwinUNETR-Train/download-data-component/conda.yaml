@@ -1,0 +1,12 @@
+name: ct_segm_upload_data_conda_env
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - pip=22.2.2
+  - pip:
+    - azure-identity==1.12.0
+    - azure-keyvault==4.2.0
+    - azureml-core==1.47.0
+    - synapseclient==2.7.0
+    - tqdm==4.64.1
