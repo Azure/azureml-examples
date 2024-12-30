@@ -11,6 +11,7 @@
 /cli/monitoring/generation-safety-quality-monitoring.yaml @ahughes-msft @yunjie-hub
 /cli/monitoring/model-monitoring-with-collected-data.yaml @ahughes-msft @yunjie-hub
 /cli/monitoring/out-of-box-monitoring.yaml @ahughes-msft @yunjie-hub
+/cli/jobs/finetuning amltres@microsoft.com @sasum
 /sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
 /sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
 /sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora
@@ -23,6 +24,7 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/foundation-models/nixtla/ @AzulGarza
 /sdk/python/foundation-models/healthcare-ai/ @jmerkow @ivantarapov
 /sdk/python/assets/data/versioning.ipynb @ShakutaiGit
+/sdk/python/jobs/finetuning amltres@microsoft.com @sasum
 
 #### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
