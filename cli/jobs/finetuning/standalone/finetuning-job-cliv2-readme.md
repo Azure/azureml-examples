@@ -20,6 +20,10 @@ This guide provides instructions on how to run a fine-tuning job using the Azure
       az ml workspace create --name <workspace-name> --resource-group <resource-group-name> --location <location>
       ```
 
+**Note**: MaaS finetuning is supported in following regions due to capacity constraints.
+* Llama models can only be finetuned in westus3 region.
+* All other models which support MaaS Finetuning can be finetuned in eastus2 region
+ 
 ### Running the Fine-Tuning Job
 To run the fine-tuning job, use the following command:
 
@@ -33,6 +37,13 @@ az ml job create --file text-generation-finetuning-amlcompute.yaml --resource-gr
 * --resource-group <<resource-group-name>>: Specifies the Azure resource group.
 * --workspace-name <<azureml-workspace-or-project-name>>: Specifies the Azure Machine Learning workspace.
 * --name "ft-maap-llama3-instance-types-1209-01": Specifies the name of the job.
+
+##### InputData
+Each sample has input data files provided.
+* train.jsonl - This contains training data.
+* validation.jsonl - This contains validation data.
+
+Note that these files are for demo purposes only.
 
 Sample Yaml file for generating FineTuningJob using azureml CLIV2
 
