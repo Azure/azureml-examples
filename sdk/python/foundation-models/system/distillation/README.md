@@ -14,6 +14,7 @@ description: An explanation on model distillaton and step-by-step guide on creat
 - [Welcome](#welcome)
 - [Getting Started](#getting-started)
 - [Model Distillation](#model-distillation)
+- [Model Offerings](#model-offerings)
 - [Examples](#examples)
 
 
@@ -38,6 +39,18 @@ The process of model distillation is a two stage process as seen below.
 2. The second stage is finetuning. Once the synthetic data is collected, the student model is then finetuned off of the training and validation data created from the teacher model. This transfers the knowledge from the teacher model to the student model.
 
 
+## Model Offerings
+### Teacher Models
+We currently support Meta Llama 3.1 405B Instruct as the teacher model for all distillation scenarios.
+
+### Student Models
+- Meta Llama 3.1 8B Instruct
+- Phi 3 Mini 4k Instruct
+- Phi 3 Mini 128k Instruct
+- Phi 3.5 Mini Instruct
+- Phi 3.5 MoE Instruct
+
+We currently support Meta Llama 3.1 8B Instruct and Microsoft Phi3-Mini and Phi3.5 Instruct series models as student models.  Fine-tuning of Meta Llama 3.1 Instruct series of models is only available in West US 3 region whereas Fine-tuning of Phi 3 and Phi 3.5 Instruct series of models is only available in East US 2 region. To use the distillation offering your workspace must be setup in the appropriate region for your selected student model.
 
 ## Examples
 We currently support numerous task types for model distillation. To view examples on how to distill and consume a model with the SDK, click on the following task type of interest
