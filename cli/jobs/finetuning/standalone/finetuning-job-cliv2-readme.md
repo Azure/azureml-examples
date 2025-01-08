@@ -51,12 +51,12 @@ Sample Yaml file for generating FineTuningJob using azureml CLIV2
 1. [finetuning-with-amlcompute](./model-as-a-platform/text-generation/text-generation-finetuning-amlcompute.yaml)
 2. [finetuning-with-instance-types](./model-as-a-platform/text-generation/text-generation-finetuning-instance-types.yaml)
 
-**ChatCompletion FineTuning ((Model-As-A-Platform)**
+**ChatCompletion FineTuning (Model-As-A-Platform)**
 1. [finetuning-with-amlcompute](./model-as-a-platform/chat/chat-completion-finetuning-amlcompute.yaml)
 2. [finetuning-with-instance-types](./model-as-a-platform/chat/chat-completion-finetuning-instance-types.yaml)
 
 **Text Generation FineTuning (Model-As-A-Service)**
-1. [finetuning-with-amlcompute](./model-as-a-service/text-generation/text-generation-finetuning.yaml)
+1. [finetuning](./model-as-a-service/text-generation/text-generation-finetuning.yaml)
 
 **ChatCompletion FineTuning (Model-As-A-Service)**
-1. [finetuning-with-amlcompute](./model-as-a-service/chat-completion/chat-completion-finetuning.yaml)
+1. [finetuning](./model-as-a-service/chat-completion/chat-completion-finetuning.yaml)
