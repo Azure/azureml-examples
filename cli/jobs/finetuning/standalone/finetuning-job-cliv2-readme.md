@@ -20,6 +20,10 @@ This guide provides instructions on how to run a fine-tuning job using the Azure
       az ml workspace create --name <workspace-name> --resource-group <resource-group-name> --location <location>
       ```
 
+**Note**: MaaS finetuning is supported in following regions due to capacity constraints.
+* Llama models can only be finetuned in westus3 region.
+* All other models which support MaaS Finetuning can be finetuned in eastus2 region
+ 
 ### Running the Fine-Tuning Job
 To run the fine-tuning job, use the following command:
 
@@ -34,12 +38,25 @@ az ml job create --file text-generation-finetuning-amlcompute.yaml --resource-gr
 * --workspace-name <<azureml-workspace-or-project-name>>: Specifies the Azure Machine Learning workspace.
 * --name "ft-maap-llama3-instance-types-1209-01": Specifies the name of the job.
 
+##### InputData
+Each sample has input data files provided.
+* train.jsonl - This contains training data.
+* validation.jsonl - This contains validation data.
+
+Note that these files are for demo purposes only.
+
 Sample Yaml file for generating FineTuningJob using azureml CLIV2
 
-**Text Generation FineTuning**
+**Text Generation FineTuning (Model-As-A-Platform)**
 1. [finetuning-with-amlcompute](./model-as-a-platform/text-generation/text-generation-finetuning-amlcompute.yaml)
 2. [finetuning-with-instance-types](./model-as-a-platform/text-generation/text-generation-finetuning-instance-types.yaml)
 
-**ChatCompletion FineTuning**
+**ChatCompletion FineTuning ((Model-As-A-Platform)**
 1. [finetuning-with-amlcompute](./model-as-a-platform/chat/chat-completion-finetuning-amlcompute.yaml)
 2. [finetuning-with-instance-types](./model-as-a-platform/chat/chat-completion-finetuning-instance-types.yaml)
+
+**Text Generation FineTuning (Model-As-A-Service)**
+1. [finetuning-with-amlcompute](./model-as-a-service/text-generation/text-generation-finetuning.yaml)
+
+**ChatCompletion FineTuning (Model-As-A-Service)**
+1. [finetuning-with-amlcompute](./model-as-a-service/chat-completion/chat-completion-finetuning.yaml)
