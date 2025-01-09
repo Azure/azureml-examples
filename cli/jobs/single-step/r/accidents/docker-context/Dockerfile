@@ -4,15 +4,15 @@ FROM rocker/tidyverse:latest
 RUN apt-get update -qq && \
  apt-get install -y python3-pip tcl tk libz-dev libpng-dev
 
-RUN ln -f /usr/bin/python3 /usr/bin/python
-RUN ln -f /usr/bin/pip3 /usr/bin/pip
+RUN /usr/bin/python3 -m venv /usr/venv/
+
+RUN ln -f /usr/venv/python3 /usr/bin/python
+RUN ln -f /usr/venv/pip3 /usr/bin/pip
 
 # Install azureml-mlflow
+
 RUN pip install azureml-mlflow
 RUN pip install mlflow
-
-# Create link for python
-RUN ln -f /usr/bin/python3 /usr/bin/python
 
 # Install additional R packages
 RUN R -e "install.packages(c('mlflow'), repos = 'https://cloud.r-project.org/')"
