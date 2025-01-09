@@ -6,7 +6,7 @@ RUN apt-get update -qq && \
  apt-get install -y python3-venv
 
 RUN /usr/bin/python3 -m venv /usr/venv/
-RUN bash /usr/venv/activate
+RUN bash /usr/venv/bin/activate
 
 RUN ln -f /usr/bin/python3 /usr/bin/python
 RUN ln -f /usr/bin/pip3 /usr/bin/pip
