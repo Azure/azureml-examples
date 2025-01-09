@@ -7,8 +7,8 @@ RUN apt-get update -qq && \
 
 RUN /usr/bin/python3 -m venv /usr/venv/
 
-RUN ln -f /usr/venv/python3 /usr/bin/python
-RUN ln -f /usr/venv/pip3 /usr/bin/pip
+RUN ln -f /usr/bin/python3 /usr/bin/python
+RUN ln -f /usr/bin/pip3 /usr/bin/pip
 
 # Install azureml-mlflow
 
