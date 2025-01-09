@@ -2,7 +2,8 @@ FROM rocker/tidyverse:latest
 
 # Install python
 RUN apt-get update -qq && \
- apt-get install -y python3-pip tcl tk libz-dev libpng-dev
+ apt-get install -y python3-pip tcl tk libz-dev libpng-dev && \
+ apt-get install python3-venv
 
 RUN /usr/bin/python3 -m venv /usr/venv/
 
