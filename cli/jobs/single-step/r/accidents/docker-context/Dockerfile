@@ -13,8 +13,8 @@ RUN ln -f /usr/bin/pip3 /usr/bin/pip
 
 # Install azureml-mlflow
 
-RUN pip install azureml-mlflow
-RUN pip install mlflow
+RUN /usr/venv/bin/pip install azureml-mlflow
+RUN /usr/venv/bin/pip install mlflow
 
 # Install additional R packages
 RUN R -e "install.packages(c('mlflow'), repos = 'https://cloud.r-project.org/')"
