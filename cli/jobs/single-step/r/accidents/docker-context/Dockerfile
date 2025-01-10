@@ -12,7 +12,6 @@ RUN ln -f /usr/bin/python3 /usr/bin/python
 RUN ln -f /usr/bin/pip3 /usr/bin/pip
 
 # Install azureml-mlflow
-
 RUN /usr/venv/bin/pip install azureml-mlflow
 RUN /usr/venv/bin/pip install mlflow
 
