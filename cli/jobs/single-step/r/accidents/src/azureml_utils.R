@@ -3,6 +3,7 @@
 # 2. Manages Azure ML Token refresh for remote runs (runs that execute in Azure Machine Learning). It uses tcktk2 R libraray to schedule token refresh.
 #    Token refresh interval can be controlled by setting the environment variable MLFLOW_AML_TOKEN_REFRESH_INTERVAL and defaults to 30 seconds.
 
+library(reticulate)
 use_virtualenv("/usr/venv")
 library(mlflow)
 library(httr)
