@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 command: >
+  source /usr/venv/bin/activate
   Rscript train.R 
   --data_folder ${{inputs.iris}}
 code: src

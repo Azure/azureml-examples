@@ -4,6 +4,7 @@
 Ensure you have the proper setup.
 1. Run `az version` and ensure the `ml` extension is installed. `ml` version should be greater or equal to 2.32.0.
 2. If the `ml` extension is not installed, run `az extension add -n ml`
+3. Currently the example yaml file uses Meta Llama 3.1 8B Instruct as the student model, however Phi 3 Mini 4k, Phi 3 Mini 128k, Phi 3.5 Mini, and Phi 3.5 MoE Instruct models are also supported student models. Update the .YAML file in this folder as needed.
 
 Run the Distillation CLI command pointing to the .YAML file in this folder and fill out the Azure ML IDs needed:
 
