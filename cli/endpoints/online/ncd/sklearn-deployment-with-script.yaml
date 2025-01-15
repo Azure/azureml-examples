@@ -7,7 +7,7 @@ model:
   path: sklearn-diabetes/model
   type: mlflow_model
 environment:
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  image: mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cpu-inference
   conda_file: sklearn-diabetes/environment/conda.yaml
 code_configuration:
     code: sklearn-diabetes/src
