@@ -41,6 +41,7 @@ create_monitor:
           target_column: is_fraud
       features: 
         top_n_feature_importance: 20 # monitor drift for top 20 features
+      alert_enabled: true
       metric_thresholds:
         numberical:
           jensen_shannon_distance: 0.01
@@ -61,6 +62,7 @@ create_monitor:
           path: azureml:my_model_validation_data:1 # use training data as comparison reference dataset
           type: mltable
         data_context: validation
+      alert_enabled: true
       metric_thresholds:
         categorical:
           pearsons_chi_squared_test: 0.02

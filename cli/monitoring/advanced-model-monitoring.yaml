@@ -36,6 +36,7 @@ create_monitor:
           target_column: DEFAULT_NEXT_MONTH
       features: 
         top_n_feature_importance: 10 # monitor drift for top 10 features
+      alert_enabled: true
       metric_thresholds:
         numerical:
           jensen_shannon_distance: 0.01
@@ -52,6 +53,7 @@ create_monitor:
       features: # monitor data quality for 3 individual features only
         - SEX
         - EDUCATION
+      alert_enabled: true
       metric_thresholds:
         numerical:
           null_value_rate: 0.05
@@ -70,6 +72,7 @@ create_monitor:
         data_context: training
         data_column_names:
           target_column: DEFAULT_NEXT_MONTH
+      alert_enabled: true
       metric_thresholds:
         normalized_discounted_cumulative_gain: 0.9
   
