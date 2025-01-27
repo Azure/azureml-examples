@@ -24,7 +24,7 @@ RUN pip install 'ipykernel~=6.0' \
 				'py-spy==0.3.12' \
 		        'debugpy~=1.6.3'
 RUN pip install \
-	azure-ai-ml==1.2.0 \
+	azure-ai-ml>=1.23.1 \
         azureml-inference-server-http~=0.7.0 \
         inference-schema~=1.4.2.1 \
         MarkupSafe==2.0.1 \

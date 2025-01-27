@@ -30,7 +30,7 @@ mmtracking_sample_request_data="./sample_request_data.json"
 finetuning_pipeline_component="mmtracking_video_multi_object_tracking_pipeline"
 
 # 1. Install dependencies
-pip install azure-ai-ml==1.8.0
+pip install azure-ai-ml>=1.23.1
 pip install azure-identity==1.13.0
 
 # 2. Setup pre-requisites
