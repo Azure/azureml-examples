@@ -11,7 +11,7 @@ inputs:
   cifar:
      type: uri_folder
      path: azureml:cifar-10-example@latest
-environment: azureml:AzureML-acpt-pytorch-1.13-cuda11.7@latest
+environment: azureml:AzureML-acpt-pytorch-2.2-cuda12.1@latest
 compute: azureml:gpu-cluster
 distribution:
   type: pytorch

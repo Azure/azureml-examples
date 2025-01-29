@@ -196,6 +196,15 @@ jobs:
           bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: Eagerly cache access tokens for required scopes
+      run: |
+          # Workaround for azure-cli's lack of support for ID token refresh
+          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
+
+          # Management
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          # ML
+          az account get-access-token --scope https://ml.azure.com/.default --output none
     - name: run {posix_notebook}
       run: |
           source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
@@ -240,7 +249,7 @@ jobs:
     workflow_yaml += f"""
     - name: upload notebook's working folder as an artifact
       if: ${{{{ always() }}}}
-      uses: actions/upload-artifact@v2
+      uses: ./.github/actions/upload-artifact
       with:
         name: {name}
         path: tutorials/{posix_folder}\n"""

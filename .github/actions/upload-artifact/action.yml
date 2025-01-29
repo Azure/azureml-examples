@@ -1,0 +1,17 @@
+name: 'Upload Artifact'
+description: 'Uploads a specified folder as an artifact'
+inputs:
+  name:
+    description: 'The name of the artifact'
+    required: true
+  path:
+    description: 'The path to the artifact'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.path }}

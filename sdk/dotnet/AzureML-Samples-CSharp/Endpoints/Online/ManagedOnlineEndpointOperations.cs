@@ -1,4 +1,5 @@
-﻿using Azure.MachineLearning.Samples.Shared;
+﻿using Azure.Core;
+using Azure.MachineLearning.Samples.Shared;
 using Azure.ResourceManager;
 using Azure.ResourceManager.MachineLearning;
 using Azure.ResourceManager.MachineLearning.Models;
@@ -20,7 +21,7 @@ internal class ManagedOnlineEndpointOperations
     /// <param name="location"></param>
     /// <returns></returns>
     // <GetOrCreateOnlineEndpointAsync>
-    public static async Task<OnlineEndpointResource> GetOrCreateOnlineEndpointAsync(
+    public static async Task<MachineLearningOnlineEndpointResource> GetOrCreateOnlineEndpointAsync(
         ResourceGroupResource resourceGroup,
         string workspaceName,
         string endpointName,
@@ -28,19 +29,19 @@ internal class ManagedOnlineEndpointOperations
     {
         Console.WriteLine("Creating an OnlineEndpoint...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        bool exists = await ws.GetOnlineEndpoints().ExistsAsync(endpointName);
+        bool exists = await ws.GetMachineLearningOnlineEndpoints().ExistsAsync(endpointName);
 
-        OnlineEndpointResource endpointResource;
+        MachineLearningOnlineEndpointResource endpointResource;
         if (exists)
         {
             Console.WriteLine($"OnlineEndpoint {endpointName} exists.");
-            endpointResource = await ws.GetOnlineEndpoints().GetAsync(endpointName);
+            endpointResource = await ws.GetMachineLearningOnlineEndpoints().GetAsync(endpointName);
             Console.WriteLine($"OnlineEndpointResource details: {endpointResource.Data.Id}");
         }
         else
         {
             Console.WriteLine($"OnlineEndpoint {endpointName} does not exist.");
-            OnlineEndpointProperties properties = new OnlineEndpointProperties(EndpointAuthMode.AMLToken)
+            MachineLearningOnlineEndpointProperties properties = new MachineLearningOnlineEndpointProperties(MachineLearningEndpointAuthMode.AmlToken)
             {
                 //ARM resource ID of the compute if it exists.
                 //Compute = "",
@@ -54,7 +55,7 @@ internal class ManagedOnlineEndpointOperations
             };
 
             // ManagedServiceIdentity Identity = new ManagedServiceIdentity(ManagedServiceIdentityType.SystemAssigned);
-            OnlineEndpointData OnlineEndpointData = new OnlineEndpointData(location, properties)
+            MachineLearningOnlineEndpointData OnlineEndpointData = new MachineLearningOnlineEndpointData(location, properties)
             {
                 Kind = "SampleKind",
                 // Identity = ManagedServiceIdentity(Azure.ResourceManager.MachineLearningServices.Models.ManagedServiceIdentityType.SystemAssigned),
@@ -70,7 +71,7 @@ internal class ManagedOnlineEndpointOperations
             };
             // new OnlineEndpointTrackedResourceData(Location.WestUS2, properties) { Kind = "SampleKind", Identity = identity };
 
-            ArmOperation<OnlineEndpointResource> endpointResourceOperation = await ws.GetOnlineEndpoints().CreateOrUpdateAsync(WaitUntil.Completed, endpointName, OnlineEndpointData);
+            ArmOperation<MachineLearningOnlineEndpointResource> endpointResourceOperation = await ws.GetMachineLearningOnlineEndpoints().CreateOrUpdateAsync(WaitUntil.Completed, endpointName, OnlineEndpointData);
             endpointResource = endpointResourceOperation.Value;
             Console.WriteLine($"OnlineEndpointResource {endpointResource.Data.Id} created.");
         }
@@ -94,7 +95,7 @@ internal class ManagedOnlineEndpointOperations
     /// <param name="location"></param>
     /// <returns></returns>
     // <GetOrCreateOnlineDeploymentAsync>
-    public static async Task<OnlineDeploymentResource> GetOrCreateOnlineDeploymentAsync(
+    public static async Task<MachineLearningOnlineDeploymentResource> GetOrCreateOnlineDeploymentAsync(
         ResourceGroupResource resourceGroup,
         string workspaceName,
         string endpointName,
@@ -106,19 +107,19 @@ internal class ManagedOnlineEndpointOperations
     {
         Console.WriteLine("Creating a OnlineDeployment...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        OnlineEndpointResource endpointResource = await ws.GetOnlineEndpoints().GetAsync(endpointName);
+        MachineLearningOnlineEndpointResource endpointResource = await ws.GetMachineLearningOnlineEndpoints().GetAsync(endpointName);
         Console.WriteLine(endpointResource.Data.Id);
 
-        bool exists = await endpointResource.GetOnlineDeployments().ExistsAsync(deploymentName);
+        bool exists = await endpointResource.GetMachineLearningOnlineDeployments().ExistsAsync(deploymentName);
 
 
         // https://docs.microsoft.com/azure/machine-learning/how-to-troubleshoot-online-endpoints
 
-        OnlineDeploymentResource deploymentResource;
+        MachineLearningOnlineDeploymentResource deploymentResource;
         if (exists)
         {
             Console.WriteLine($"OnlineDeployment {deploymentName} exists.");
-            deploymentResource = await endpointResource.GetOnlineDeployments().GetAsync(deploymentName);
+            deploymentResource = await endpointResource.GetMachineLearningOnlineDeployments().GetAsync(deploymentName);
             Console.WriteLine($"OnlineDeploymentResource details: {deploymentResource.Data.Id}");
         }
         else
@@ -136,27 +137,27 @@ internal class ManagedOnlineEndpointOperations
 
             //scaleSettings = new DefaultScaleSettings();
 
-            var managedOnlineDeploymentDetails = new ManagedOnlineDeployment
+            var managedOnlineDeploymentDetails = new MachineLearningManagedOnlineDeployment
             {
                 Description = "This is a test online deployment",
                 // EgressPublicNetworkAccess=EgressPublicNetworkAccessType.Disabled,
                 // The path to mount the model in custom container.
                 // Custom model mount path for curated environments is not supported
                 // ModelMountPath = "/var/mountpath",
-                PrivateNetworkConnection = false,
+                EgressPublicNetworkAccess = MachineLearningEgressPublicNetworkAccessType.Disabled,
                 Properties = { { "additionalProp1", "value1" } },
                 EnvironmentId = environmentId,
                 EnvironmentVariables = new Dictionary<string, string>
                 {
                     { "TestVariable", "TestValue" }
                 },
-                RequestSettings = new OnlineRequestSettings
+                RequestSettings = new MachineLearningOnlineRequestSettings
                 {
                     MaxQueueWait = TimeSpan.FromMilliseconds(30),
                     RequestTimeout = TimeSpan.FromMilliseconds(60),
                     MaxConcurrentRequestsPerInstance = 3,
                 },
-                LivenessProbe = new ProbeSettings
+                LivenessProbe = new MachineLearningProbeSettings
                 {
                     FailureThreshold = 10,
                     SuccessThreshold = 1,
@@ -165,7 +166,7 @@ internal class ManagedOnlineEndpointOperations
                     Period = TimeSpan.FromSeconds(2),
                 },
                 // Only for ManagedOnlineDeployment
-                ReadinessProbe = new ProbeSettings
+                ReadinessProbe = new MachineLearningProbeSettings
                 {
                     FailureThreshold = 10,
                     SuccessThreshold = 1,
@@ -174,16 +175,16 @@ internal class ManagedOnlineEndpointOperations
                     Period = TimeSpan.FromSeconds(2),
                 },
                 AppInsightsEnabled = false,
-                CodeConfiguration = new CodeConfiguration("main.py")
+                CodeConfiguration = new MachineLearningCodeConfiguration("main.py")
                 {
-                    CodeId = codeArtifactId,
+                    CodeId = new ResourceIdentifier(codeArtifactId),
                 },
                 InstanceType = "Standard_F2s_v2",
                 Model = modelId,
                 // ScaleSettings = new DefaultScaleSettings(),
             };
 
-            OnlineDeploymentData data = new OnlineDeploymentData(location, managedOnlineDeploymentDetails)
+            MachineLearningOnlineDeploymentData data = new MachineLearningOnlineDeploymentData(location, managedOnlineDeploymentDetails)
             {
                 Kind = "SampleKindDeployment",
                 Sku = new MachineLearningSku("Default")
@@ -195,7 +196,7 @@ internal class ManagedOnlineEndpointOperations
                 },
             };
 
-            ArmOperation<OnlineDeploymentResource> deploymentResourceOperation = await endpointResource.GetOnlineDeployments().CreateOrUpdateAsync(WaitUntil.Completed, deploymentName, data);
+            ArmOperation<MachineLearningOnlineDeploymentResource> deploymentResourceOperation = await endpointResource.GetMachineLearningOnlineDeployments().CreateOrUpdateAsync(WaitUntil.Completed, deploymentName, data);
             deploymentResource = deploymentResourceOperation.Value;
             Console.WriteLine($"OnlineDeploymentResource {deploymentResource.Data.Id} created.");
         }
@@ -217,9 +218,9 @@ internal class ManagedOnlineEndpointOperations
     {
         Console.WriteLine("Listing all Online deployments in the workspace...");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
-        foreach (var edp in ws.GetOnlineEndpoints().GetAll())
+        foreach (var edp in ws.GetMachineLearningOnlineEndpoints().GetAll())
         {
-            foreach (var dep in edp.GetOnlineDeployments().GetAll())
+            foreach (var dep in edp.GetMachineLearningOnlineDeployments().GetAll())
             {
                 Console.WriteLine(dep.Data.Name);
             }
@@ -252,12 +253,12 @@ internal class ManagedOnlineEndpointOperations
 }");
         MachineLearningWorkspaceResource ws = await resourceGroup.GetMachineLearningWorkspaces().GetAsync(workspaceName);
 
-        bool exists = await ws.GetOnlineEndpoints().ExistsAsync(endpointName);
+        bool exists = await ws.GetMachineLearningOnlineEndpoints().ExistsAsync(endpointName);
 
         if (exists)
         {
             Console.WriteLine($"OnlineEndpoint {endpointName} exists.");
-            OnlineEndpointResource endpointResource = await ws.GetOnlineEndpoints().GetAsync(endpointName);
+            MachineLearningOnlineEndpointResource endpointResource = await ws.GetMachineLearningOnlineEndpoints().GetAsync(endpointName);
             Console.WriteLine($"OnlineEndpointResource details: {endpointResource.Data.Id}");
 
             var scoringUri = endpointResource.Data.Properties.ScoringUri;

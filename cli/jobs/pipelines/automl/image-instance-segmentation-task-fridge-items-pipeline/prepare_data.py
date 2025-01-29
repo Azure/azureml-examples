@@ -79,11 +79,13 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     print("Installing scikit-image and simplification package")
     subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "scikit-image==0.19.3"]
+        [sys.executable, "-m", "pip", "install", "scikit-image==0.25.0"]
     )
-    # Install numpy version compatible with scikit-image==0.19.3.
+    # Install numpy version compatible with scikit-image==0.25.0.
     subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy==1.26.4"])
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "simplification"])
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "simplification==0.7.12"]
+    )
     print("done")
 
     print("Creating jsonl files")

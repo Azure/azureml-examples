@@ -1,5 +1,8 @@
 # See for instructions on this file https://help.github.com/articles/about-codeowners/
 
+/cli/ @kingernupur @jayesh-tanna @achauhan-scc @imatiach-msft
+/infra/ @kingernupur @jayesh-tanna @achauhan-scc
+
 /python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @jeff-shepherd @raduk @swatig007 @MercyPrasanna @PhaniShekhar @sjinthehouse @vadthyavath @mispa-ms
 
 /cli/monitoring/azureml-e2e-model-monitoring @nemanjarajic @ahughes-msft @yunjie-hub
@@ -8,6 +11,7 @@
 /cli/monitoring/generation-safety-quality-monitoring.yaml @ahughes-msft @yunjie-hub
 /cli/monitoring/model-monitoring-with-collected-data.yaml @ahughes-msft @yunjie-hub
 /cli/monitoring/out-of-box-monitoring.yaml @ahughes-msft @yunjie-hub
+/cli/jobs/finetuning @amltres @sasum @marici
 /sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
 /sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
 /sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora
@@ -18,6 +22,9 @@
 sdk/python/foundation-models/cohere/command_faiss_langchain.ipynb @stewart-co @kseniia-cohere  
 sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @kseniia-cohere
 /sdk/python/foundation-models/nixtla/ @AzulGarza
+/sdk/python/foundation-models/healthcare-ai/ @jmerkow @ivantarapov
+/sdk/python/assets/data/versioning.ipynb @ShakutaiGit
+/sdk/python/jobs/finetuning @amltres @sasum @marici
 
 #### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
 /cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -179,10 +186,12 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/pipelines/cifar-10/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/cli/jobs/single-step/lightgbm/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/pytorch/cifar-distributed/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/r/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/scikit-learn/iris/job-sweep.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/scikit-learn/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/cli/jobs/single-step/tensorflow/mnist-distributed/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/attached-spark-pipeline-user-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/attached-spark-standalone-managed-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -241,5 +250,7 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /setup/setup-ci/install-pip-package.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /setup/setup-repo/azure-github.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+
+ 
 
 # End of docs files ########################################################################################################
