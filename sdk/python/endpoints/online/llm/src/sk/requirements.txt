@@ -4,6 +4,6 @@ flask[async]
 azure-keyvault
 azure-keyvault-secrets
 azure-mgmt-keyvault
-azure-ai-ml==1.23.1
+azure-ai-ml>=1.23.1
 pyyaml
 azure-cli
