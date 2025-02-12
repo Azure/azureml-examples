@@ -1,0 +1,5 @@
+gradio==5.13.0
+gradio_client==1.6.0
+orjson==3.10.15
+pillow==11.1.0
+requests==2.32.3
