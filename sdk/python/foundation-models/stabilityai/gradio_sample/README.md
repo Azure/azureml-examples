@@ -8,7 +8,7 @@ Before we start, there are certain steps we need to take to deploy the models:
 
 * Create a project and resource group
 
-* Select Stability AI models from Model catalog. This example assumes you are Stable Diffusion 3.5 Large.
+* Select Stability AI models from Model catalog and deloy any of the Stability models
 
 * Deploy with "Pay-as-you-go"
 
@@ -17,16 +17,20 @@ Before we start, there are certain steps we need to take to deploy the models:
    ```
    pip install -r requirements.txt
    ```
+
 2. Run Text_to_Image.py for Text-to-Image usecase or run Image_to_Image.py for Image_to_Image usecases.
+
 3. Replace AZURE_AI_MAAS_ENDPOINT & AZURE_AI_MAAS_ENDPOINT_KEY in the above scripts with your serverless endpoint & key on AI foundry
+
 4. Start the app
    ```
    python Text_to_Image.py
    or
    python Image_to_Image.py
    ```
+
 5. Open UI in a web browser: [http://127.0.0.1:7861](http://127.0.0.1:7861)
 
 
-### Screenshot
-![Screenshot](./images/screenshot.png)
+### Snapshot
+![Snapshot](./images/snapshot.png)
