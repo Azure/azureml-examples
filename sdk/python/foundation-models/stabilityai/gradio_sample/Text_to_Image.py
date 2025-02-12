@@ -5,9 +5,8 @@ from PIL import Image
 import requests
 import base64
 
-# Placeholder for the azure endpoint and api key
-AZURE_ENDPOINT = "" + "/images/generations"
-KEY = ""
+AZURE_ENDPOINT = "AZURE_AI_MAAS_ENDPOINT" + "/images/generations"
+KEY = "AZURE_AI_MAAS_ENDPOINT_KEY"
 
 def save_and_generate_image(prompt, output_format, negative_prompt, seed, size, progress=gr.Progress(track_tqdm=True)):
     print(f"Image Prompt is : {prompt}")

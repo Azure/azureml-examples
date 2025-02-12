@@ -6,9 +6,8 @@ import requests
 import base64
 import io
 
-# Placeholder for the azure endpoint and api key
-AZURE_ENDPOINT = "" + "/images/generations"
-KEY = ""
+AZURE_ENDPOINT = "AZURE_AI_MAAS_ENDPOINT" + "/images/generations"
+KEY = "AZURE_AI_MAAS_ENDPOINT_KEY"
 
 def save_and_generate_image(input_image, prompt, output_format, strength, negative_prompt, seed):
     print(f"Image Prompt is : {prompt}")    
