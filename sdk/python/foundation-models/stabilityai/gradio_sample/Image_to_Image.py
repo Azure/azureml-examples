@@ -4,35 +4,49 @@ import json
 from PIL import Image
 import requests
 import base64
+import io
 
-# Put the azure endpoint and api key
-AZURE_ENDPOINT = ""
+# Placeholder for the azure endpoint and api key
+AZURE_ENDPOINT = "" + "/images/generations"
 KEY = ""
 
-def save_and_generate_image(prompt, output_format, negative_prompt, seed, size, progress=gr.Progress(track_tqdm=True)):
-    print(f"Image Prompt is : {prompt}")
+def save_and_generate_image(input_image, prompt, output_format, strength, negative_prompt, seed):
+    print(f"Image Prompt is : {prompt}")    
 
-    image = generate_image(prompt, output_format, negative_prompt, seed, size)
+    # Convert the inital image object to bytes
+    buffered = io.BytesIO()
+    input_image.save(buffered, format="JPEG")
+    image_bytes = buffered.getvalue()
+
+    # Encode the bytes to base64
+    encoded_string = base64.b64encode(image_bytes).decode('utf-8')
+    
+    image = generate_image(prompt, output_format, negative_prompt, strength, encoded_string, seed)
     image_path = "./generated_image.png"
     image.save(image_path)
     print(f"Image saved to {image_path}")
 
-    return image_path    
+    return image_path
 
-def generate_image(prompt, output_format, negative_prompt, seed, size):
+def generate_image(prompt, output_format, negative_prompt, strength, encoded_string, seed):
 
     params = {
-        "prompt": prompt, 
-        "output_format": output_format,
-        "size": size,
-        "seed": seed
+      "prompt": prompt,
+      "image_prompt": {
+        "image": encoded_string,
+      },
+      "output_format": output_format,
+      "seed": seed
     }
 
     if negative_prompt:
         params["negative_prompt"] = negative_prompt
+    
+    if strength:
+        params["image_prompt"]["strength"] = strength
 
     print(f"Sending request with params: {json.dumps(params, indent=2)}")
-
+    
     headers = {
         "Authorization": f"{KEY}",
         "Accept": "application/json"
@@ -56,14 +70,15 @@ def generate_image(prompt, output_format, negative_prompt, seed, size):
 demo = gr.Interface(
     fn=save_and_generate_image,
     inputs=[
+        gr.Image(type='pil', label='Initial Image'),
         gr.Textbox(label="Enter your Image Prompt", placeholder="Describe your image..."),
         gr.Radio(choices=["jpeg", "png"], label="Output Format", value="jpeg"),
+        gr.Slider(minimum=0, maximum=1, step=0.01, label="Strength (optional)", value=0.5),
         gr.Textbox(label="Negative Prompt (optional)", placeholder="What to avoid in the image"),
-        gr.Slider(minimum=0, maximum=1000, step=1, label="Seed (optional)", value=0),
-        gr.Radio(choices=["672x1566", "768x1366", "836x1254", "916x1145", "1024x1024", "1145x916", "1254x836", "1366x768", "1566x672"], label="Image Size", value="1024x1024")
+        gr.Slider(minimum=0, maximum=1000, step=1, label="Seed (optional)", value=0)
     ],
     outputs=[gr.Image(label="Generated Image")],
-    title="Stability AI on Azure AI | Text to Image"
+    title="Stability AI on Azure AI | Image to Image"
 )
 
 if __name__ == "__main__":
