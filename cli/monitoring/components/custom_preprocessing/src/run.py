@@ -75,9 +75,10 @@ def preprocess(
     # Data column is a list of objects, convert it into string because spark.read_json cannot read object
     table = table.convert_column_types({"data": mltable.DataType.to_string()})
 
-    # Create MLTable in different location
-    save_path = tempfile.mktemp()
-    table.save(save_path)
+    # Use NamedTemporaryFile to create a secure temp file
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        save_path = temp_file.name
+        table.save(save_path)
 
     # Save preprocessed_data MLTable to temp location
     des_path = preprocessed_input_data + "temp"
