@@ -45,7 +45,7 @@ finetuning_pipeline_component="transformers_image_classification_pipeline"
 process_count_per_instance=$gpus_per_node # set to the number of GPUs available in the compute
 
 # 1. Install dependencies
-pip install azure-ai-ml==1.8.0
+pip install azure-ai-ml>=1.23.1
 pip install azure-identity==1.13.0
 
 # 2. Setup pre-requisites

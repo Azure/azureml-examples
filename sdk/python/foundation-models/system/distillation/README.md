@@ -49,8 +49,10 @@ We currently support Meta Llama 3.1 405B Instruct as the teacher model for all d
 - Phi 3 Mini 128k Instruct
 - Phi 3.5 Mini Instruct
 - Phi 3.5 MoE Instruct
+- Phi 3 Medium 4k Instruct
+- Phi 3 Medium 128k Instruct
 
-We currently support Meta Llama 3.1 8B Instruct and Microsoft Phi3-Mini and Phi3.5 Instruct series models as student models.  Fine-tuning of Meta Llama 3.1 Instruct series of models is only available in West US 3 region whereas Fine-tuning of Phi 3 and Phi 3.5 Instruct series of models is only available in East US 2 region. To use the distillation offering your workspace must be setup in the appropriate region for your selected student model.
+We currently support Meta Llama 3.1 8B Instruct and Microsoft Phi3-Mini, Phi3-Medium, and Phi3.5 Instruct series models as student models. Fine-tuning of Meta Llama 3.1 Instruct series of models is only available in West US 3 region whereas Fine-tuning of Phi 3 and Phi 3.5 Instruct series of models is only available in East US 2 region. To use the distillation offering your workspace must be setup in the appropriate region for your selected student model.
 
 ## Examples
 We currently support numerous task types for model distillation. To view examples on how to distill and consume a model with the SDK, click on the following task type of interest

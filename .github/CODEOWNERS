@@ -186,11 +186,11 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/pipelines/cifar-10/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+/cli/jobs/single-step/lightgbm/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/pytorch/cifar-distributed/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/r/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/scikit-learn/iris/job-sweep.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/scikit-learn/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/tensorflow/mnist-distributed-horovod/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/single-step/tensorflow/mnist-distributed/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/attached-spark-pipeline-user-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /cli/jobs/spark/attached-spark-standalone-managed-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
@@ -247,10 +247,10 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/train/train_component.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/using-mlflow/deploy/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /sdk/python/using-mlflow/deploy/model/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/jobs/finetuning/standalone/chat-completion/chat_completion_with_model_as_service.ipynb  @sagarsumant @srsaggam  
 /setup/setup-ci/install-pip-package.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /setup/setup-repo/azure-github.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
 /tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
+
  
 
 # End of docs files ########################################################################################################
