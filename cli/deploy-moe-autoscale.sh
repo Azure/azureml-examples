@@ -15,6 +15,7 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/s
 az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME -f endpoints/online/managed/sample/blue-deployment.yml --all-traffic
 az ml online-endpoint show -n $ENDPOINT_NAME
 
+
 # <set_other_env_variables>
 # ARM id of the deployment
 DEPLOYMENT_RESOURCE_ID=$(az ml online-deployment show -e $ENDPOINT_NAME -n $DEPLOYMENT_NAME -o tsv --query "id")
