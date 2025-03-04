@@ -10,7 +10,7 @@ trigger:
 create_monitor:
   compute:
     instance_type: "standard_e8s_v3"
-    runtime_version: "3.3"
+    runtime_version: "3.4"
 
   monitoring_signals:
     customSignal:
