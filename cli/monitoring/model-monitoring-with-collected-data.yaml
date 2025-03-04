@@ -31,7 +31,7 @@ create_monitor:
           path: azureml:my_production_inference_data_model_inputs:1  # your collected data is registered as Azure Machine Learning asset
           type: uri_folder
         data_context: model_inputs
-        pre_processing_component: azureml:production_data_preprocessing:1
+        pre_processing_component: azureml:production_data_preprocessing:1.0.0
       reference_data:
         input_data:
           path: azureml:my_model_training_data:1 # use training data as comparison baseline
@@ -43,7 +43,7 @@ create_monitor:
         top_n_feature_importance: 20 # monitor drift for top 20 features
       alert_enabled: true
       metric_thresholds:
-        numberical:
+        numerical:
           jensen_shannon_distance: 0.01
         categorical:
           pearsons_chi_squared_test: 0.02
@@ -56,7 +56,7 @@ create_monitor:
           path: azureml:my_production_inference_data_model_outputs:1  # your collected data is registered as Azure Machine Learning asset
           type: uri_folder
         data_context: model_outputs
-        pre_processing_component: azureml:production_data_preprocessing:1
+        pre_processing_component: azureml:production_data_preprocessing:1.0.0
       reference_data:
         input_data:
           path: azureml:my_model_validation_data:1 # use training data as comparison reference dataset
