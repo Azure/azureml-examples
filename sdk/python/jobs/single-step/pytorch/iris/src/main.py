@@ -15,8 +15,22 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 
 from network import SimpleMLP
+from azure.monitor.opentelemetry import configure_azure_monitor
 
-# <functions>
+configure_azure_monitor(
+    connection_string="<<CONNECTION_STRING_FOR_APPINSIGHTS>>",
+)
+from opentelemetry import metrics
+import os
+from azureml.core import Run
+
+os.environ["APPLICATIONINSIGHTS_METRIC_NAMESPACE_OPT_IN"] = "true"
+meter = metrics.get_meter_provider().get_meter("custom_training_metrics")
+
+run = Run.get_context()
+workspace = run.experiment.workspace
+
+
 # define functions
 def main(args):
     # read in data
@@ -34,9 +48,6 @@ def main(args):
 
     # evaluate model
     evaluate_model(model, X_train, X_test, y_train, y_test)
-
-
-# </functions>
 
 
 def process_data(df, random_state):
@@ -94,7 +105,7 @@ def train_model(args, X_train, X_test, y_train, y_test):
     model = SimpleMLP()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     loss_fn = nn.CrossEntropyLoss()
-
+    histogram = meter.create_histogram("loss")
     for epoch in range(args.epochs):
         # get predictions
         y_pred = model(X_train)
@@ -102,6 +113,15 @@ def train_model(args, X_train, X_test, y_train, y_test):
         # compute and log loss
         loss = loss_fn(y_pred, torch.max(y_train, 1)[1])
         mlflow.log_metric(f"loss", loss.item(), step=epoch)
+        histogram.record(
+            loss.item(),
+            {
+                "sub_id": workspace.subscription_id,
+                "run_id": run.id,
+                "workspace": workspace.name,
+                "resource_group": workspace.resource_group,
+            },
+        )
 
         # torch stuff
         optimizer.zero_grad()

@@ -10,7 +10,7 @@ inputs:
   iris_csv:
     type: uri_file 
     path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
-  epochs: 10
+  epochs: 500
   lr: 0.1
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 compute: azureml:cpu-cluster

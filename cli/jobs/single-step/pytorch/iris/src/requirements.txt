@@ -10,3 +10,4 @@ torchvision
 # tracking
 mlflow
 azureml-mlflow
+azure-monitor-opentelemetry
