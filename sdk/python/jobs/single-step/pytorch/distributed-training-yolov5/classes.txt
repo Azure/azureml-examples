@@ -1,1 +1,0 @@
-["carton", "milk_bottle", "can", "water_bottle"]
