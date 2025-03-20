@@ -17,7 +17,7 @@ inputs:
 
 jobs:
   feature_retrieval_step:
-    component: azureml://registries/azureml/components/feature_retrieval/versions/1.0.0
+    component: azureml://registries/azureml/components/feature_retrieval/versions/1.1.1
     inputs:
       feature_retrieval_spec:
         path: ${{parent.inputs.feature_retrieval_spec}}
