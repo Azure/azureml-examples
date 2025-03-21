@@ -1,0 +1,11 @@
+# Samples for NVIDIA NIM with Agents
+
+### Prerequisites
+- Set up Project in AI Foundry
+- Deploy Serverless NIM Model
+- Set up Serverless Connection Under Project (ex. target=https://<endpoint-name>.<region>.inference.ml.azure.com/v1/, api-key=<my-api-key>)
+- Run `pip install azure-ai-projects azure-identity`
+
+### To Run Samples
+- `az login --tenant <tenant-id> --use-device-code`
+- `python nvidia_nim_file_search.py`
