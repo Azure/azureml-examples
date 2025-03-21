@@ -21,6 +21,8 @@ USAGE:
        Azure AI Foundry project.
     2) MODEL_DEPLOYMENT_NAME - The deployment name of the AI model, as found under the "Name" column in 
        the "Models + endpoints" tab in your Azure AI Foundry project.
+
+       This sample is for llama 3.3 70B Instruct NIM
 """
 
 import os
@@ -30,8 +32,8 @@ from azure.ai.projects.models import FilePurpose, MessageRole
 from azure.identity import DefaultAzureCredential
 from pathlib import Path
 
-os.environ["PROJECT_CONNECTION_STRING"] = "eastus2.api.azureml.ms;75703df0-38f9-4e2e-8328-45f6fc810286;rg-kritifaujdarai;shubhiraj-0962"
-os.environ["MODEL_DEPLOYMENT_NAME"] = "https://timanghn-nims-test.eastus2.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
+os.environ["PROJECT_CONNECTION_STRING"] = "<enter project connection string>"
+os.environ["MODEL_DEPLOYMENT_NAME"] = "https://<endpoint>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
 
 project_client = AIProjectClient.from_connection_string(
     credential=DefaultAzureCredential(), conn_str=os.environ["PROJECT_CONNECTION_STRING"]
