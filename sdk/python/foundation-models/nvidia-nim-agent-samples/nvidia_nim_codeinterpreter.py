@@ -9,6 +9,8 @@ DESCRIPTION:
     This sample demonstrates how to use agent operations with code interpreter from
     the Azure Agents service using a synchronous client.
 
+    This sample is for llama 3.3 70B Instruct NIM
+
 USAGE:
     python sample_agents_code_interpreter.py
 
@@ -22,7 +24,7 @@ USAGE:
     2) MODEL_DEPLOYMENT_NAME - The deployment name of the AI model, as found under the "Name" column in 
        the "Models + endpoints" tab in your Azure AI Foundry project.
 
-       This sample is for llama 3.3 70B Instruct NIM
+       
 """
 
 import os
@@ -33,7 +35,7 @@ from azure.identity import DefaultAzureCredential
 from pathlib import Path
 
 os.environ["PROJECT_CONNECTION_STRING"] = "<enter project connection string>"
-os.environ["MODEL_DEPLOYMENT_NAME"] = "https://<endpoint>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
+os.environ["MODEL_DEPLOYMENT_NAME"] = "https://<endpoint-name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
 
 project_client = AIProjectClient.from_connection_string(
     credential=DefaultAzureCredential(), conn_str=os.environ["PROJECT_CONNECTION_STRING"]
