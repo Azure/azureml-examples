@@ -18,7 +18,7 @@ jobs:
         mode: upload
     code: src/prep
     environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
-    compute: azureml:cpu-cluster
+    compute: azureml:ivanarnulfo101
     command: >-
       python prep.py 
       --raw_data ${{inputs.raw_data}} 
@@ -33,7 +33,7 @@ jobs:
         mode: upload
     code: src/transform
     environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
-    compute: azureml:cpu-cluster
+    compute: azureml:ivanarnulfo101
     command: >-
       python transform.py 
       --clean_data ${{inputs.clean_data}} 
@@ -49,7 +49,7 @@ jobs:
         mode: upload
     code: src/train
     environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
-    compute: azureml:cpu-cluster
+    compute: azureml:ivanarnulfo101
     command: >-
       python train.py 
       --training_data ${{inputs.training_data}} 
@@ -65,7 +65,7 @@ jobs:
       predictions: 
     code: src/predict
     environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
-    compute: azureml:cpu-cluster
+    compute: azureml:ivanarnulfo101
     command: >-
       python predict.py 
       --model_input ${{inputs.model_input}} 
@@ -81,7 +81,7 @@ jobs:
       score_report: 
     code: src/score
     environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
-    compute: azureml:cpu-cluster
+    compute: azureml:ivanarnulfo101
     command: >-      
       python score.py 
       --predictions ${{inputs.predictions}} 
