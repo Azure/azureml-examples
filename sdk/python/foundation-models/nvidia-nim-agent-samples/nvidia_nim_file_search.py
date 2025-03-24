@@ -37,7 +37,8 @@ os.environ[
 ] = "https://<endpoint name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
 
 project_client = AIProjectClient.from_connection_string(
-    credential=DefaultAzureCredential(), conn_str=os.environ["PROJECT_CONNECTION_STRING"]
+    credential=DefaultAzureCredential(),
+    conn_str=os.environ["PROJECT_CONNECTION_STRING"],
 )
 
 with project_client:

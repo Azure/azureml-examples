@@ -38,7 +38,8 @@ os.environ[
 
 
 project_client = AIProjectClient.from_connection_string(
-    credential=DefaultAzureCredential(), conn_str=os.environ["PROJECT_CONNECTION_STRING"]
+    credential=DefaultAzureCredential(),
+    conn_str=os.environ["PROJECT_CONNECTION_STRING"],
 )
 
 with project_client:
@@ -62,7 +63,9 @@ with project_client:
     )
     print(f"Created message, message ID: {message.id}")
 
-    run = project_client.agents.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    run = project_client.agents.create_and_process_run(
+        thread_id=thread.id, agent_id=agent.id
+    )
     print(f"Run finished with status: {run.status}")
 
     if run.status == "failed":
