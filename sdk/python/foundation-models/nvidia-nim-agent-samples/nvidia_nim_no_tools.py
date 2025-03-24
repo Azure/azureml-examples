@@ -27,13 +27,14 @@ USAGE:
 
 import os
 from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import CodeInterpreterTool
-from azure.ai.projects.models import FilePurpose, MessageRole
+from azure.ai.projects.models import CodeInterpreterTool, FilePurpose, MessageRole
 from azure.identity import DefaultAzureCredential
 from pathlib import Path
 
 os.environ["PROJECT_CONNECTION_STRING"] = "<enter-project-connection-string>"
-os.environ["MODEL_DEPLOYMENT_NAME"] = "https://<endpoint name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
+os.environ[
+    "MODEL_DEPLOYMENT_NAME"
+] = "https://<endpoint name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
 
 
 project_client = AIProjectClient.from_connection_string(
