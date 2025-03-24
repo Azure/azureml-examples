@@ -28,13 +28,13 @@ USAGE:
 
 import os
 from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import (
-    FileSearchTool,
-)
+from azure.ai.projects.models import FileSearchTool
 from azure.identity import DefaultAzureCredential
 
 os.environ["PROJECT_CONNECTION_STRING"] = "<enter-project-connection-string>"
-os.environ["MODEL_DEPLOYMENT_NAME"] = "https://<endpoint name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
+os.environ[
+    "MODEL_DEPLOYMENT_NAME"
+] = "https://<endpoint name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
 
 project_client = AIProjectClient.from_connection_string(
     credential=DefaultAzureCredential(), conn_str=os.environ["PROJECT_CONNECTION_STRING"]
@@ -44,10 +44,14 @@ with project_client:
 
     # Upload file and create vector store
     # [START upload_file_create_vector_store_and_agent_with_file_search_tool]
-    file = project_client.agents.upload_file_and_poll(file_path="product_info_1.md", purpose="assistants")
+    file = project_client.agents.upload_file_and_poll(
+        file_path="product_info_1.md", purpose="assistants"
+    )
     print(f"Uploaded file, file ID: {file.id}")
 
-    vector_store = project_client.agents.create_vector_store_and_poll(file_ids=[file.id], name="my_vectorstore")
+    vector_store = project_client.agents.create_vector_store_and_poll(
+        file_ids=[file.id], name="my_vectorstore"
+    )
     print(f"Created vector store, vector store ID: {vector_store.id}")
 
     # Create file search tool with resources followed by creating agent
@@ -70,12 +74,16 @@ with project_client:
 
     # Create message to thread
     message = project_client.agents.create_message(
-        thread_id=thread.id, role="user", content="Hello, what Contoso products do you know?"
+        thread_id=thread.id,
+        role="user",
+        content="Hello, what Contoso products do you know?",
     )
     print(f"Created message, ID: {message.id}")
 
     # Create and process assistant run in thread with tools
-    run = project_client.agents.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    run = project_client.agents.create_and_process_run(
+        thread_id=thread.id, agent_id=agent.id
+    )
     print(f"Run finished with status: {run.status}")
 
     if run.status == "failed":
