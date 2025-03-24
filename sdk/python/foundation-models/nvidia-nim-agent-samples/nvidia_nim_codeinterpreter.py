@@ -23,19 +23,18 @@ USAGE:
        Azure AI Foundry project.
     2) MODEL_DEPLOYMENT_NAME - The deployment name of the AI model, as found under the "Name" column in 
        the "Models + endpoints" tab in your Azure AI Foundry project.
-
-       
 """
 
 import os
 from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import CodeInterpreterTool
-from azure.ai.projects.models import FilePurpose, MessageRole
+from azure.ai.projects.models import CodeInterpreterTool, FilePurpose, MessageRole
 from azure.identity import DefaultAzureCredential
 from pathlib import Path
 
 os.environ["PROJECT_CONNECTION_STRING"] = "<enter project connection string>"
-os.environ["MODEL_DEPLOYMENT_NAME"] = "https://<endpoint-name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
+os.environ[
+    "MODEL_DEPLOYMENT_NAME"
+] = "https://<endpoint-name>.<region>.inference.ml.azure.com/v1/@meta/llama-3.3-70b-instruct"
 
 project_client = AIProjectClient.from_connection_string(
     credential=DefaultAzureCredential(), conn_str=os.environ["PROJECT_CONNECTION_STRING"]
@@ -70,7 +69,10 @@ with project_client:
     message = project_client.agents.create_message(
         thread_id=thread.id,
         role="user",
-        content="Could you please create bar chart in TRANSPORTATION sector for the operating profit from the uploaded csv file and provide file to me? Use the column 'sector' in the uploaded csv.",
+        content=(
+            "Could you please create bar chart in TRANSPORTATION sector for the operating profit "
+            "from the uploaded csv file and provide file to me? Use the column 'sector' in the uploaded csv."
+        ),
     )
     print(f"Created message, message ID: {message.id}")
 
