@@ -84,7 +84,7 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "online-endpoints-deploy-mlflow-model.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python online-endpoints-deploy-mlflow-model.ipynb online-endpoints-deploy-mlflow-model.output.ipynb
+          papermill -k python online-endpoints-deploy-mlflow-model.ipynb online-endpoints-deploy-mlflow-model.output.ipynb --log-output
       working-directory: sdk/python/endpoints/online/mlflow
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
