@@ -9,5 +9,6 @@ dependencies:
   - cloudpickle==2.2.1
   - psutil==5.9.4
   - pandas==2.0.0
+  - numpy==1.26.4
   - azureml-inference-server-http
 name: mlflow-env
