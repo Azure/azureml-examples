@@ -21,7 +21,7 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # download data
-    download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-classification/fridgeObjects.zip"
+    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/fridgeObjects.zip"
     print(f"Downloading data from {download_url}")
 
     # Extract current dataset name from dataset url
