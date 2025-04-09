@@ -1,0 +1,11 @@
+Uploaded file, file ID: assistant-9hkeEG9ZVuweM1HQZaccp5
+Created vector store, vector store ID: vs_lBsHyRbHqT1gNDIonnOLT7ug
+Created agent, ID: asst_hW2rd4oJz9CGBzPZnfT9asA9
+Created thread, ID: thread_7tHWnVo7WNcy0e1lnTfCgL2f
+Created message, ID: msg_UZTso0kS33ocSFAQDdnykx2W
+Run finished with status: completed
+Deleted vector store
+Deleted file
+Deleted agent
+{'type': 'text', 'text': {'value': 'Contoso has a product called SmartView Glasses, which is a type of smart eyewear. It has features such as augmented reality interface, voice-controlled AI assistant, HD video recording with 3D audio, UV protection and blue light filtering, and wireless charging with extended battery life. The user guide for the product includes introduction, product overview, sizing and fit, proper care and maintenance, break-in period, safety tips, and troubleshooting. The product also comes with a two-year limited warranty on all electronic components and a 30-day return policy. For more information, customers can contact the customer support at support@contoso-galaxy-innovations.com. 【0†product_info_1.md】', 'annotations': [{'type': 'file_citation', 'text': '【0†product_info_1.md】', 'start_index': 679, 'end_index': 700, 'file_citation': {'file_id': 'assistant-9hkeEG9ZVuweM1HQZaccp5'}}]}}
+{'type': 'text', 'text': {'value': 'Hello, what Contoso products do you know?', 'annotations': []}}
