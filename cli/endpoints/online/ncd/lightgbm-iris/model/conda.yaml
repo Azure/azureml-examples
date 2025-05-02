@@ -10,4 +10,5 @@ dependencies:
   - psutil==5.9.4
   - typing-extensions==4.1.1
   - numpy==1.26.4
+  - azureml-inference-server-http
 name: mlflow-env
