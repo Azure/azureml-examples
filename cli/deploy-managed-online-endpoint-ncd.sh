@@ -29,8 +29,8 @@ else
 fi
 
 # cleanup of existing models
-model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 1 || true)
-model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 1 || true)
+model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 2 || true)
+model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || true)
 
 
 # <create_sklearn_deployment>
@@ -70,8 +70,8 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deploym
 # </test_lightgbm_deployment>
 
 # cleanup of models
-model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 1 || true)
-model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 1 || true)
+model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 2 || true)
+model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || true)
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes 
