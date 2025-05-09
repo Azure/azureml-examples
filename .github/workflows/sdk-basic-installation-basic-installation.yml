@@ -9,7 +9,7 @@ name: sdk-basic-installation-basic-installation
 on:
   workflow_dispatch:
   schedule:
-    - cron: "53 3/12 * * *"
+    - cron: "*/5 * * * *"
   pull_request:
     branches:
       - main
