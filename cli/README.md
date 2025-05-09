@@ -32,6 +32,14 @@ az extension add --name ml --yes
 
 ## Examples
 
+
+**Schedules**
+
+path|status|
+-|-
+[basic-installation/basic-installation.yml](basic-installation/basic-installation.yml)||
+
+
 **Scripts**
 
 path|status|
