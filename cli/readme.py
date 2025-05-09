@@ -157,10 +157,7 @@ def main(args):
 
     # get list of resources
     basic_installation = sorted(glob.glob("basic-installation/*.yml", recursive=True))
-    basic_installation = [
-        bas_int.replace(".yml", "")
-        for bas_int in basic_installation
-    ]
+    basic_installation = [bas_int.replace(".yml", "") for bas_int in basic_installation]
 
     # write workflows
     write_workflows(
@@ -399,12 +396,11 @@ def write_workflows(
     for schedule in schedules:
         # write workflow file
         write_schedule_workflow(schedule)
-    
+
     # process basic_installation
     for bas_int in basic_installation:
         # write workflow file
         write_asset_workflow(bas_int)
-
 
 
 def check_readme(before, after):
