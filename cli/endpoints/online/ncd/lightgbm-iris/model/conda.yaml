@@ -8,6 +8,7 @@ dependencies:
   - lightgbm==3.3.5
   - pandas==2.0.0
   - psutil==5.9.4
-  - typing-extensions==4.5.0
+  - typing-extensions==4.1.1
   - numpy==1.26.4
+  - azureml-inference-server-http
 name: mlflow-env

@@ -27,230 +27,229 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/jobs/finetuning @amltres @sasum @marici
 
 #### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
-/cli/assets/component/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/cloud-file-https.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/cloud-file-wasbs.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/cloud-file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/cloud-folder-https.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/cloud-folder-wasbs.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/cloud-folder.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/local-file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/data/local-folder.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/environment/docker-context.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/environment/docker-image-plus-conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/environment/docker-image.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/model/local-file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/assets/model/local-mlflow.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-custom-container-tfserving-half-plus-two.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-local-endpoint.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-managed-online-endpoint-access-resource-sai.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-managed-online-endpoint-access-resource-uai.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-managed-online-endpoint-ncd.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-managed-online-endpoint-workspacevnet.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-managed-online-endpoint.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-mlcompute-update-to-system-identity.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-mlcompute-update-to-user-identity.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-moe-autoscale.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-rest.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-safe-rollout-online-endpoints.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/deploy-triton-managed-online-endpoint.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/custom-outputs-parquet/code/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/custom-outputs-parquet/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deployment-custom/code/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deployment-custom/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deployment-simple/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/heart-dataset-unlabeled.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/huggingface-text-summarization/code/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/huggingface-text-summarization/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/huggingface-text-summarization/environment/torch200-conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/code/score-by-batch/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/code/score-by-file/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/deployment-by-batch.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/deployment-by-file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/imagenet-classifier/imagenet-sample-unlabeled.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-keras/code/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-keras/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-keras/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-torch/code/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-torch/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-torch/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/mnist-classifier/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/openai-embeddings/code/batch_driver.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/openai-embeddings/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/openai-embeddings/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/openai-embeddings/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/openai-embeddings/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-models/openai-embeddings/environment/environment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/environment/conda.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/environment/xgboost-sklearn-py38.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/inputs.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/pipeline-job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/hello-batch/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/hello-batch/deployment-from-job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/hello-batch/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/hello-batch/hello-component/hello.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/hello-batch/pipeline-job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/deploy-and-run.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-onehot/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-onehot/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-ordinal/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-ordinal/pipeline-job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-ordinal/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/environment/conda.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/environment/xgboost-sklearn-py38.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/batch/deploy-pipelines/training-with-components/inputs.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/custom-container/tfserving/half-plus-two/tfserving-deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/custom-container/tfserving/half-plus-two/tfserving-endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/deploy.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/environment/sklearn-regression-env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/package-external.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/package-moe.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/custom-model/sample-request.json @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/mlflow-model/deploy.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/mlflow-model/package-external.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/mlflow-model/sample-request.json @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/registry-model/deploy.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/deploy-with-packages/registry-model/package.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/managed-identities/2-sai-deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/managed-identities/2-uai-deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/sample/blue-deployment-with-registered-assets.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/sample/blue-deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/sample/endpoint.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/managed/sample/green-deployment.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/model-1/onlinescoring/score.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/model-1/onlinescoring/score_managedidentity.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/model-1/sample-request.json @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/ncd/create-endpoint.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/ncd/sample-request-sklearn.json @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/ncd/sklearn-deployment.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/ncd/sklearn-diabetes/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/ncd/sklearn-diabetes/src/score.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/triton/single-model/create-managed-deployment.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/endpoints/online/triton/single-model/create-managed-endpoint.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing/cli-automl-classification-task-bankmarketing-serverless.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat/cli-automl-text-classification-multilabel-paper-cat.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/automl-standalone-jobs/cli-automl-text-classification-newsgroup/cli-automl-text-classification-newsgroup.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll-distributed-sweeping/cli-automl-text-ner-conll2003-distributed-sweeping.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll/cli-automl-text-ner-conll2003.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-code.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-iris-datastore-file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-iris-datastore-folder.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-iris-file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-iris-folder.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-model-as-input.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-model-as-output.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-notebook.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-pipeline-abc.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-pipeline-io.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-pipeline-settings.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-sweep.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-world-env-var.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-world-input.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-world-org.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-world-output-data.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-world-output.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/hello-world.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/basics/src/hello-mlflow.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline-serverless.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/basics/2a_basic_component/component.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/componentA.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/train-src/train.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/train.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component/components/train_pipeline_component.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines/automl/cli-automl-text-classification-multilabel-paper-categorization-pipeline/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines/automl/cli-automl-text-classification-newsgroup-pipeline/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines/cifar-10/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/lightgbm/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/pytorch/cifar-distributed/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/r/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/scikit-learn/iris/job-sweep.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/scikit-learn/iris/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/single-step/tensorflow/mnist-distributed/job.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/spark/attached-spark-pipeline-user-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/spark/attached-spark-standalone-managed-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/jobs/spark/spark-job-component.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/misc.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/advanced-model-monitoring.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/model-monitoring-with-collected-data.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/monitoring/out-of-box-monitoring.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-basic.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-location.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-low-priority.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-minimal.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-ssh-password.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-system-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/cluster-user-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/instance-basic.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/instance-minimal.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/instance-schedule.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/compute/vm-attach.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/connections/container-registry-managed-identity.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/adls-gen1-credless.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/adls-gen1.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/adls-gen2-credless.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/adls-gen2.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/blob-credless.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/blob-protocol.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/blob-sas.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/blob.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/file-sas.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/datastore/file.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/registry/registry-storage-options.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/registry/registry.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/basic.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/cmk.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/hbi.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/mvnet-allow-internet-outbound.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/mvnet-allow-only-approved-outbound.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/privatelink.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/resources/workspace/with-existing-resources.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/schedules/cron-job-schedule.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/schedules/cron-with-settings-job-schedule.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/schedules/recurrence-job-schedule.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/schedules/schedule.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/setup.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/cli/train.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/deploy-arm-templates-az-cli.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/endpoints/online/mlflow/sklearn-diabetes/model/MLmodel @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/endpoints/online/mlflow/sklearn-diabetes/model/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/prep/prep_component.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/score/score.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/score/score.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/train/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/train/train_component.py @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/using-mlflow/deploy/environment/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/sdk/python/using-mlflow/deploy/model/conda.yaml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/setup/setup-ci/install-pip-package.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/setup/setup-repo/azure-github.sh @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-/tutorials/get-started-notebooks/workstation_env.yml @sdgilley @msakande @Blackmist @ssalgadodev @lgayhardt @fbsolo-ms1  
-
+/cli/assets/component/train.yml @Azure/AI-Platform-Docs
+/cli/assets/data/cloud-file-https.yml @Azure/AI-Platform-Docs
+/cli/assets/data/cloud-file-wasbs.yml @Azure/AI-Platform-Docs
+/cli/assets/data/cloud-file.yml @Azure/AI-Platform-Docs
+/cli/assets/data/cloud-folder-https.yml @Azure/AI-Platform-Docs
+/cli/assets/data/cloud-folder-wasbs.yml @Azure/AI-Platform-Docs
+/cli/assets/data/cloud-folder.yml @Azure/AI-Platform-Docs
+/cli/assets/data/local-file.yml @Azure/AI-Platform-Docs
+/cli/assets/data/local-folder.yml @Azure/AI-Platform-Docs
+/cli/assets/environment/docker-context.yml @Azure/AI-Platform-Docs
+/cli/assets/environment/docker-image-plus-conda.yaml @Azure/AI-Platform-Docs
+/cli/assets/environment/docker-image.yml @Azure/AI-Platform-Docs
+/cli/assets/model/local-file.yml @Azure/AI-Platform-Docs
+/cli/assets/model/local-mlflow.yml @Azure/AI-Platform-Docs
+/cli/deploy-custom-container-tfserving-half-plus-two.sh @Azure/AI-Platform-Docs
+/cli/deploy-local-endpoint.sh @Azure/AI-Platform-Docs
+/cli/deploy-managed-online-endpoint-access-resource-sai.sh @Azure/AI-Platform-Docs
+/cli/deploy-managed-online-endpoint-access-resource-uai.sh @Azure/AI-Platform-Docs
+/cli/deploy-managed-online-endpoint-ncd.sh @Azure/AI-Platform-Docs
+/cli/deploy-managed-online-endpoint-workspacevnet.sh @Azure/AI-Platform-Docs
+/cli/deploy-managed-online-endpoint.sh @Azure/AI-Platform-Docs
+/cli/deploy-mlcompute-update-to-system-identity.sh @Azure/AI-Platform-Docs
+/cli/deploy-mlcompute-update-to-user-identity.sh @Azure/AI-Platform-Docs
+/cli/deploy-moe-autoscale.sh @Azure/AI-Platform-Docs
+/cli/deploy-rest.sh @Azure/AI-Platform-Docs
+/cli/deploy-safe-rollout-online-endpoints.sh @Azure/AI-Platform-Docs
+/cli/deploy-triton-managed-online-endpoint.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/custom-outputs-parquet/code/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/custom-outputs-parquet/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/custom-outputs-parquet/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/custom-outputs-parquet/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deployment-custom/code/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deployment-custom/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/deployment-simple/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/heart-classifier-mlflow/heart-dataset-unlabeled.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/huggingface-text-summarization/code/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/huggingface-text-summarization/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/huggingface-text-summarization/environment/torch200-conda.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/code/score-by-batch/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/code/score-by-file/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/deployment-by-batch.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/deployment-by-file.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/imagenet-classifier/imagenet-sample-unlabeled.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-keras/code/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-keras/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-keras/environment/conda.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-torch/code/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-torch/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/deployment-torch/environment/conda.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/mnist-classifier/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/openai-embeddings/code/batch_driver.py @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/openai-embeddings/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/openai-embeddings/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/openai-embeddings/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/openai-embeddings/environment/conda.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-models/openai-embeddings/environment/environment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/environment/conda.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/environment/xgboost-sklearn-py38.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/inputs.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/pipeline-job.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/pipeline.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/hello-batch/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/hello-batch/deployment-from-job.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/hello-batch/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/hello-batch/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/hello-batch/hello-component/hello.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/hello-batch/pipeline-job.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/deploy-and-run.sh @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-onehot/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-onehot/pipeline.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-ordinal/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-ordinal/pipeline-job.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/deployment-ordinal/pipeline.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/environment/conda.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/environment/xgboost-sklearn-py38.yml @Azure/AI-Platform-Docs
+/cli/endpoints/batch/deploy-pipelines/training-with-components/inputs.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/custom-container/tfserving/half-plus-two/tfserving-endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/deploy.sh @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/environment/conda.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/environment/sklearn-regression-env.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/package-external.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/package-moe.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/custom-model/sample-request.json @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/mlflow-model/deploy.sh @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/mlflow-model/package-external.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/mlflow-model/sample-request.json @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/registry-model/deploy.sh @Azure/AI-Platform-Docs
+/cli/endpoints/online/deploy-with-packages/registry-model/package.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/managed-identities/1-uai-create-endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/managed-identities/2-sai-deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/managed-identities/2-uai-deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/sample/blue-deployment-with-registered-assets.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/sample/blue-deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/sample/endpoint.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/managed/sample/green-deployment.yml @Azure/AI-Platform-Docs
+/cli/endpoints/online/model-1/onlinescoring/score.py @Azure/AI-Platform-Docs
+/cli/endpoints/online/model-1/onlinescoring/score_managedidentity.py @Azure/AI-Platform-Docs
+/cli/endpoints/online/model-1/sample-request.json @Azure/AI-Platform-Docs
+/cli/endpoints/online/ncd/create-endpoint.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/online/ncd/sample-request-sklearn.json @Azure/AI-Platform-Docs
+/cli/endpoints/online/ncd/sklearn-deployment.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/online/ncd/sklearn-diabetes/environment/conda.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/online/ncd/sklearn-diabetes/src/score.py @Azure/AI-Platform-Docs
+/cli/endpoints/online/triton/single-model/create-managed-deployment.yaml @Azure/AI-Platform-Docs
+/cli/endpoints/online/triton/single-model/create-managed-endpoint.yaml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing/cli-automl-classification-task-bankmarketing-serverless.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat/cli-automl-text-classification-multilabel-paper-cat.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-text-classification-newsgroup/cli-automl-text-classification-newsgroup.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll-distributed-sweeping/cli-automl-text-ner-conll2003-distributed-sweeping.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll/cli-automl-text-ner-conll2003.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-code.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-iris-datastore-file.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-iris-datastore-folder.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-iris-file.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-iris-folder.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-model-as-input.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-model-as-output.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-notebook.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-pipeline-abc.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-pipeline-io.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-pipeline-settings.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-sweep.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-world-env-var.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-world-input.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-world-org.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-world-output-data.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-world-output.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/hello-world.yml @Azure/AI-Platform-Docs
+/cli/jobs/basics/src/hello-mlflow.py @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline-serverless.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/basics/1b_e2e_registered_components/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/basics/2a_basic_component/component.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/componentA.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/basics/3b_pipeline_with_data/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/train-src/train.py @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/pipeline_with_hyperparameter_sweep/train.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component/components/train_pipeline_component.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines-with-components/pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/cli-automl-text-classification-multilabel-paper-categorization-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/cli-automl-text-classification-newsgroup-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/cifar-10/job.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/single-step/lightgbm/iris/job.yml @Azure/AI-Platform-Docs
+/cli/jobs/single-step/pytorch/cifar-distributed/job.yml @Azure/AI-Platform-Docs
+/cli/jobs/single-step/r/iris/job.yml @Azure/AI-Platform-Docs
+/cli/jobs/single-step/scikit-learn/iris/job-sweep.yml @Azure/AI-Platform-Docs
+/cli/jobs/single-step/scikit-learn/iris/job.yml @Azure/AI-Platform-Docs
+/cli/jobs/single-step/tensorflow/mnist-distributed/job.yml @Azure/AI-Platform-Docs
+/cli/jobs/spark/attached-spark-pipeline-user-identity.yml @Azure/AI-Platform-Docs
+/cli/jobs/spark/attached-spark-standalone-managed-identity.yml @Azure/AI-Platform-Docs
+/cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @Azure/AI-Platform-Docs
+/cli/jobs/spark/spark-job-component.yml @Azure/AI-Platform-Docs
+/cli/misc.sh @Azure/AI-Platform-Docs
+/cli/monitoring/advanced-model-monitoring.yaml @Azure/AI-Platform-Docs
+/cli/monitoring/model-monitoring-with-collected-data.yaml @Azure/AI-Platform-Docs
+/cli/monitoring/out-of-box-monitoring.yaml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-basic.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-location.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-low-priority.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-minimal.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-ssh-password.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-system-identity.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/cluster-user-identity.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/instance-basic.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/instance-minimal.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/instance-schedule.yml @Azure/AI-Platform-Docs
+/cli/resources/compute/vm-attach.yml @Azure/AI-Platform-Docs
+/cli/resources/connections/container-registry-managed-identity.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/adls-gen1-credless.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/adls-gen1.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/adls-gen2-credless.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/adls-gen2.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/blob-credless.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/blob-protocol.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/blob-sas.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/blob.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/file-sas.yml @Azure/AI-Platform-Docs
+/cli/resources/datastore/file.yml @Azure/AI-Platform-Docs
+/cli/resources/registry/registry-storage-options.yml @Azure/AI-Platform-Docs
+/cli/resources/registry/registry.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/basic.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/cmk.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/hbi.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/mvnet-allow-internet-outbound.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/mvnet-allow-only-approved-outbound.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/privatelink.yml @Azure/AI-Platform-Docs
+/cli/resources/workspace/with-existing-resources.yml @Azure/AI-Platform-Docs
+/cli/schedules/cron-job-schedule.yml @Azure/AI-Platform-Docs
+/cli/schedules/cron-with-settings-job-schedule.yml @Azure/AI-Platform-Docs
+/cli/schedules/recurrence-job-schedule.yml @Azure/AI-Platform-Docs
+/cli/schedules/schedule.sh @Azure/AI-Platform-Docs
+/cli/setup.sh @Azure/AI-Platform-Docs
+/cli/train.sh @Azure/AI-Platform-Docs
+/deploy-arm-templates-az-cli.sh @Azure/AI-Platform-Docs
+/sdk/python/endpoints/online/mlflow/sample-request-sklearn.json @Azure/AI-Platform-Docs
+/sdk/python/endpoints/online/mlflow/sklearn-diabetes/model/MLmodel @Azure/AI-Platform-Docs
+/sdk/python/endpoints/online/mlflow/sklearn-diabetes/model/conda.yaml @Azure/AI-Platform-Docs
+/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/prep/prep_component.py @Azure/AI-Platform-Docs
+/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/score/score.py @Azure/AI-Platform-Docs
+/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/score/score.yaml @Azure/AI-Platform-Docs
+/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/train/conda.yaml @Azure/AI-Platform-Docs
+/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/train/train_component.py @Azure/AI-Platform-Docs
+/sdk/python/using-mlflow/deploy/environment/conda.yaml @Azure/AI-Platform-Docs
+/sdk/python/using-mlflow/deploy/model/conda.yaml @Azure/AI-Platform-Docs
+/setup/setup-ci/install-pip-package.sh @Azure/AI-Platform-Docs
+/setup/setup-repo/azure-github.sh @Azure/AI-Platform-Docs
+/tutorials/get-started-notebooks/workstation_env.yml @Azure/AI-Platform-Docs
  
 
 # End of docs files ########################################################################################################
