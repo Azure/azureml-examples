@@ -63,5 +63,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml basic-installation create -f basic-installation/basic-installation.yml
+          az ml workspace list --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME
       working-directory: cli
