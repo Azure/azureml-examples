@@ -1,0 +1,4 @@
+display_name: Basic installation of CLI v2
+description: This example shows a basic installation of CLI v2 and getting the list of workspaces in the resource group.
+tags:
+  purpose: demonstration
