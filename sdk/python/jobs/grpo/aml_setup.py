@@ -26,9 +26,9 @@ except Exception:
 
 # Input your Azure subscription ID, resource group name, and workspace name.
 # You can find these values in the Azure portal.
-AML_SUBSCRIPTION = "72c03bf3-4e69-41af-9532-dfcdc3eefef4"
-AML_RESOURCE_GROUP="rtanase"
-AML_WORKSPACE_NAME = "rtanase"
+AML_SUBSCRIPTION = "<SUBSCRIPTION_ID>"
+AML_RESOURCE_GROUP="<RESOURCE_GROUP_NAME>"
+AML_WORKSPACE_NAME = "<WORKSPACE_NAME>"
 
 # Initialize the MLClient to connect to your Azure ML workspace
 ml_client = MLClient(
