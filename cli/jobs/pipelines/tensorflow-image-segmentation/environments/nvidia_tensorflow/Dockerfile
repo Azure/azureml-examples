@@ -3,7 +3,7 @@ FROM nvcr.io/nvidia/tensorflow:22.02-tf2-py3
 
 # Install dependencies missing in this container
 # NOTE: container already has matplotlib==3.5.1 tqdm==4.62.0
-RUN python -m pip install   azureml-inference-server-http==1.4.0 \
+RUN python -m pip install   azureml-defaults==1.41.0 \
                             mlflow==1.25.1 \
                             azureml-mlflow==1.41.0 \
                             psutil==5.9.0 \
