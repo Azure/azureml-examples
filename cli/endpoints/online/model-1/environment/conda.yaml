@@ -9,5 +9,5 @@ dependencies:
   - scipy=1.10.1
   - pip:
     - azureml-inference-server-http==1.4.0
-    - inference-schema[numpy-support]==1.7
-    - joblib==1.2.0
+    - inference-schema[numpy-support]
+    - joblib
