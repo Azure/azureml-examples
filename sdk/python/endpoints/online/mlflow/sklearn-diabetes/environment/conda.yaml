@@ -5,10 +5,7 @@ dependencies:
 - pip<=23.1.2
 - pip:
   - mlflow
-  - cloudpickle==2.2.1
-  - numpy==1.26.4
   - psutil==5.9.4
-  - scikit-learn==1.2.2
-  - pandas==2.0.0
+  - scikit-learn==1.6.1
   - azureml-inference-server-http
 name: mlflow-env
